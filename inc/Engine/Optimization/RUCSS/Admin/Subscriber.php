@@ -88,8 +88,9 @@ class Subscriber implements Subscriber_Interface {
 			'wpr-rucss-progress-bar',
 			'rocket_rucss_ajax_data',
 			[
-				'api_url'   => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
-				'api_nonce' => wp_create_nonce( 'rocket-ajax' ),
+				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
+				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
+				'wpr_rucss_translations' => $this->ui_translations(),
 			]
 		);
 	}
@@ -313,5 +314,25 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->settings->display_progress_bar();
+	}
+
+	/**
+	 * Array with UI translations.
+	 *
+	 * @return array
+	 */
+	private function ui_translations() : array {
+		return [
+			'scanning'          => __( 'Scanning', 'rocket' ),
+			'from'              => __( 'from', 'rocket' ),
+			'in'                => __( 'in', 'rocket' ),
+			'seconds'           => __( 'seconds', 'rocket' ),
+			'warming_resources' => __( 'Warming resources', 'rocket' ),
+			'rucss_working'     => __( 'RUCSS working!', 'rocket' ),
+			'rucss_btn'         => __( 'Generate Used CSS now', 'rocket' ),
+			'warmed_list'       => __( 'Not warmed resources list:', 'rocket' ),
+			'warming_resources' => __( 'Warming', 'rocket' ),
+			'warming_resources' => __( 'Warming', 'rocket' ),
+		];
 	}
 }

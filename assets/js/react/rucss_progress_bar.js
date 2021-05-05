@@ -3188,7 +3188,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
   getStatus() {
     wp.apiFetch({
-      url: this.props.wpObject.api_url,
+      url: this.props.wpRUCSSObject.api_url,
       method: 'POST'
     }).then(data => this.setState({
       scan_status: typeof data.data.scan_status != 'undefined' ? data.data.scan_status : this.state.scan_status,
@@ -3292,7 +3292,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: classNames
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "spinner"
-      }), "Scanning ", this.state.scan_status.scanned, " from ", this.state.scan_status.total_pages, " in ", this.state.scan_status.duration, " seconds");
+      }), this.props.wpRUCSSObject.wpr_rucss_translations.scanning, "\xA0", this.state.scan_status.scanned, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.from, "\xA0", this.state.scan_status.total_pages, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.in, "\xA0", this.state.scan_status.duration, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.seconds, "\xA0");
     }
 
     return step1;
@@ -3307,7 +3307,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: classNames
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "spinner"
-      }), "Warming resources ", this.state.warmup_status.warmed_count, " from ", this.state.warmup_status.total, " in ", this.state.warmup_status.duration, " seconds");
+      }), this.props.wpRUCSSObject.wpr_rucss_translations.warming_resources, "\xA0", this.state.warmup_status.warmed_count, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.from, "\xA0", this.state.warmup_status.total, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.in, "\xA0", this.state.warmup_status.duration, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.seconds, "\xA0");
     }
 
     return step2;
@@ -3318,8 +3318,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     if (this.state.allow_optimization) {
       rucssEnabled = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "rucss-progress-step completed  wpr-icon-check"
-      }, "RUCSS working!");
+        className: "rucss-progress-step completed wpr-icon-check"
+      }, this.props.wpRUCSSObject.wpr_rucss_translations.rucss_working);
     }
 
     return rucssEnabled;
@@ -3333,7 +3333,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "wpr-button",
         onClick: this.enableOptimization
-      }, "Generate Used CSS now"));
+      }, this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn));
     }
 
     return btn;
@@ -3345,7 +3345,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     if (this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
       step2_list = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "rucss-progress-step wpr-icon-important rucss-progress-step2-list"
-      }, "Not warmed resources list:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+      }, this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "rucss-notwarmed-resources"
       }, this.state.warmup_status.notwarmed_resources.map(resource => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         key: "{resource}",
@@ -3359,7 +3359,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   enableOptimization(e) {
     e.preventDefault();
     wp.apiFetch({
-      url: this.props.wpObject.api_url,
+      url: this.props.wpRUCSSObject.api_url,
       method: 'POST',
       data: {
         allow_optimization: true
@@ -3389,7 +3389,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 }
 RUCSSStatus.propTypes = {
-  wpObject: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object
+  wpRUCSSObject: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object
 };
 
 /***/ }),
@@ -3408,7 +3408,7 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener('DOMContentLoaded', function () {
   ReactDOM.render( /*#__PURE__*/React.createElement(_containers_rucss_status_jsx__WEBPACK_IMPORTED_MODULE_0__["default"], {
-    wpObject: window.rocket_rucss_ajax_data
+    wpRUCSSObject: window.rocket_rucss_ajax_data
   }), document.getElementById('rucss-progressbar'));
 });
 

@@ -37,7 +37,7 @@ export default class RUCSSStatus extends Component {
 	getStatus() {
 		wp.apiFetch(
 			{
-				url: this.props.wpObject.api_url,
+				url: this.props.wpRUCSSObject.api_url,
 				method: 'POST'
 			}
 		).then(
@@ -146,7 +146,13 @@ export default class RUCSSStatus extends Component {
 			let classNames = this.step1Completed() ? 'rucss-progress-step completed step1  wpr-icon-check' : 'rucss-progress-step step1';
 			step1 = (<div className={classNames}>
 						<div className="spinner"></div>
-						Scanning {this.state.scan_status.scanned} from {this.state.scan_status.total_pages} in {this.state.scan_status.duration} seconds
+						{this.props.wpRUCSSObject.wpr_rucss_translations.scanning}&nbsp;
+						{this.state.scan_status.scanned}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.from}&nbsp;
+						{this.state.scan_status.total_pages}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.in}&nbsp;
+						{this.state.scan_status.duration}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.seconds}&nbsp;
 					</div>);
 		}
 		return step1;
@@ -158,7 +164,13 @@ export default class RUCSSStatus extends Component {
 			let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
 			step2 = <div className={classNames}>
 						<div className="spinner"></div>
-						Warming resources {this.state.warmup_status.warmed_count} from {this.state.warmup_status.total} in {this.state.warmup_status.duration} seconds
+						{this.props.wpRUCSSObject.wpr_rucss_translations.warming_resources}&nbsp;
+						{this.state.warmup_status.warmed_count}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.from}&nbsp;
+						{this.state.warmup_status.total}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.in}&nbsp;
+						{this.state.warmup_status.duration}&nbsp;
+						{this.props.wpRUCSSObject.wpr_rucss_translations.seconds}&nbsp;
 					</div>;
 		}
 		return step2;
@@ -167,9 +179,9 @@ export default class RUCSSStatus extends Component {
 	renderRUCSSEnabled() {
 		let rucssEnabled;
 		if ( this.state.allow_optimization ) {
-			rucssEnabled = <div className="rucss-progress-step completed  wpr-icon-check">
-						RUCSS working!
-					</div>;
+			rucssEnabled = <div className="rucss-progress-step completed wpr-icon-check">
+								{this.props.wpRUCSSObject.wpr_rucss_translations.rucss_working}
+							</div>;
 		}
 		return rucssEnabled;
 	}
@@ -180,7 +192,7 @@ export default class RUCSSStatus extends Component {
 		if ( ! this.state.allow_optimization && duration > 30 ) {
 			btn = <div>
 					<button className="wpr-button" onClick={this.enableOptimization}>
-						Generate Used CSS now
+						{this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn}
 					</button>
 				</div>;
 		}
@@ -191,7 +203,7 @@ export default class RUCSSStatus extends Component {
 		let step2_list;
 		if ( this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
 			step2_list = <div className="rucss-progress-step wpr-icon-important rucss-progress-step2-list">
-							Not warmed resources list:
+							{this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list}
 							<ul className="rucss-notwarmed-resources">
 								{this.state.warmup_status.notwarmed_resources.map(resource => (
 									<li key="{resource}" className="list-group-item list-group-item-primary">
@@ -210,7 +222,7 @@ export default class RUCSSStatus extends Component {
 
 		wp.apiFetch(
 			{
-				url: this.props.wpObject.api_url,
+				url: this.props.wpRUCSSObject.api_url,
 				method: 'POST',
 				data: { allow_optimization: true },
 			}
@@ -248,5 +260,5 @@ export default class RUCSSStatus extends Component {
 }
 
 RUCSSStatus.propTypes = {
-    wpObject: PropTypes.object
+    wpRUCSSObject: PropTypes.object
 };
