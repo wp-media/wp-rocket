@@ -47,7 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param HTML                  $html HTML Instance.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
-	 * @param Options_data          $options Options data instance.
+	 * @param Options_Data          $options Options data instance.
 	 */
 	public function __construct( HTML $html, $filesystem, Options_Data $options ) {
 		$this->html       = $html;
@@ -105,7 +105,7 @@ class Subscriber implements Subscriber_Interface {
 			'',
 			[],
 			'',
-			empty( $this->options->get('delay_js_exclusions', [] ) )
+			empty( $this->options->get( 'delay_js_exclusions', [] ) )
 		);
 		wp_enqueue_script( 'rocket-delay-js' );
 
