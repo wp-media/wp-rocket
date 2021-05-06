@@ -711,7 +711,7 @@ class Page {
 					'container_class'   => [
 						'wpr-field--children',
 					],
-					'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class-(.*)",
+					'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class\n#css_id\ntag",
 					'parent'            => 'remove_unused_css',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
