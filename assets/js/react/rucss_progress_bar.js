@@ -3404,7 +3404,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "wpr-field wpr-field--textarea wpr-field--children"
+      className: "wpr-field wpr-field--textarea"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "rucss-status wpr-field-description"
     }, this.renderRUCSSProgress(), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderButtonAllowOptimization(), this.renderRUCSSEnabled()));

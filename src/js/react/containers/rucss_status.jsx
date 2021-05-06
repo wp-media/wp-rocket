@@ -253,7 +253,7 @@ export default class RUCSSStatus extends Component {
 
 	render() {
 		return (
-			<div className="wpr-field wpr-field--textarea wpr-field--children">
+			<div className="wpr-field wpr-field--textarea">
 				<div className="rucss-status wpr-field-description">
 					{this.renderRUCSSProgress()}
 					{this.renderError()}
