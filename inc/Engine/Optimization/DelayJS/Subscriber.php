@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -26,6 +27,13 @@ class Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
+	 * Options Data instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Script enqueued status.
 	 *
 	 * @since 3.7
@@ -39,10 +47,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param HTML                  $html HTML Instance.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
+	 * @param Options_Data          $options Options data instance.
 	 */
-	public function __construct( HTML $html, $filesystem ) {
+	public function __construct( HTML $html, $filesystem, Options_Data $options ) {
 		$this->html       = $html;
 		$this->filesystem = $filesystem;
+		$this->options    = $options;
 	}
 
 	/**
@@ -55,7 +65,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_buffer'                               => [ 'delay_js', 26 ],
-			'wp_enqueue_scripts'                          => 'add_delay_js_script',
+			'wp_enqueue_scripts'                          => [ 'add_delay_js_script', 1 ],
 			'pre_get_rocket_option_minify_concatenate_js' => 'maybe_disable_option',
 		];
 	}
@@ -95,7 +105,7 @@ class Subscriber implements Subscriber_Interface {
 			'',
 			[],
 			'',
-			true
+			empty( $this->options->get( 'delay_js_exclusions', [] ) )
 		);
 		wp_enqueue_script( 'rocket-delay-js' );
 

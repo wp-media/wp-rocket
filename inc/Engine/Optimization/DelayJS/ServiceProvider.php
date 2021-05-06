@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )
+			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'front_subscriber' );
 	}
 }
