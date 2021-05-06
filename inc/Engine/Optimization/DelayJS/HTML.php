@@ -164,10 +164,10 @@ class HTML {
 			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
 
 			if ( null !== $delay_attr ) {
-				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'] ) . '#i', $delay_attr, $matches[0], 1 );
+				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
 			}
 		}
 
-		return str_replace( '<script', '<script type="rocketlazyloadscript"', $delay_js );
+		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
 }
