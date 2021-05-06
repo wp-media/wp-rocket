@@ -53,7 +53,7 @@ class Checker extends AbstractAPIClient {
 	public function check_warmup_status() {
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
-		if ( empty( $prewarmup_stats['scan_start_time'] ) ) {
+		if ( empty( $prewarmup_stats['fetch_finish_time'] ) ) {
 			return;
 		}
 
@@ -68,7 +68,6 @@ class Checker extends AbstractAPIClient {
 			$this->set_warmup_status_finish_time();
 
 			rocket_clean_domain();
-			$this->options_api->delete( 'prewarmup_stats' );
 
 			return;
 		}
@@ -87,7 +86,6 @@ class Checker extends AbstractAPIClient {
 			$this->set_warmup_force_optimization();
 
 			rocket_clean_domain();
-			$this->options_api->delete( 'prewarmup_stats' );
 
 			return;
 		}
