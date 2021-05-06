@@ -49,8 +49,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() : array {
-		$slug        = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
-		$plugin_slug = rocket_get_constant( 'WP_ROCKET_PLUGIN_SLUG' );
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
 			'rocket_first_install_options'       => 'add_options_first_time',
@@ -68,7 +67,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                      => 'clear_usedcss_result',
 			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
 			'rocket_after_settings_checkbox'     => 'display_progress_bar',
-			'admin_print_styles-settings_page_' . $plugin_slug => 'add_admin_js',
+			'admin_enqueue_scripts'              => 'add_admin_js',
 		];
 	}
 
@@ -78,6 +77,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_admin_js() {
+		// Retun on all pages but WP Rocket settings page.
+		$screen = get_current_screen();
+		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
