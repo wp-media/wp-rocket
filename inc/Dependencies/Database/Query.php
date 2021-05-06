@@ -31,12 +31,13 @@ defined( 'ABSPATH' ) || exit;
  * @property string $item_name_plural
  * @property string $item_shape
  * @property string $cache_group
- * @property string $columns
- * @property string $query_clauses
- * @property string $request_clauses
+ * @property int $last_changed
+ * @property array $columns
+ * @property array $query_clauses
+ * @property array $request_clauses
  * @property Queries\Meta $meta_query
  * @property Queries\Date $date_query
- * @property Queries\Compare $compare
+ * @property Queries\Compare $compare_query
  * @property array $query_vars
  * @property array $query_var_originals
  * @property array $query_var_defaults
@@ -45,7 +46,6 @@ defined( 'ABSPATH' ) || exit;
  * @property int $found_items
  * @property int $max_num_pages
  * @property string $request
- * @property int $last_changed
  */
 class Query extends Base {
 
@@ -305,7 +305,7 @@ class Query extends Base {
 	 *     @type bool         $no_found_rows     Whether to disable the `SQL_CALC_FOUND_ROWS` query.
 	 *                                           Default true.
 	 *     @type string|array $orderby           Accepts false, an empty array, or 'none' to disable `ORDER BY` clause.
-	 *                                           Default 'id'.
+	 *                                           Default '', to primary column ID.
 	 *     @type string       $item              How to item retrieved items. Accepts 'ASC', 'DESC'.
 	 *                                           Default 'DESC'.
 	 *     @type string       $search            Search term(s) to retrieve matching items for.
@@ -434,12 +434,15 @@ class Query extends Base {
 			? $this->apply_prefix( bin2hex( random_bytes( 18 ) ) )
 			: $this->apply_prefix( uniqid( '_', true ) );
 
+		// Get the primary column name
+		$primary = $this->get_primary_column_name();
+
 		// Default query variables
 		$this->query_var_defaults = array(
 			'fields'            => '',
 			'number'            => 100,
 			'offset'            => '',
-			'orderby'           => 'id',
+			'orderby'           => $primary,
 			'order'             => 'DESC',
 			'groupby'           => '',
 			'search'            => '',
@@ -1441,11 +1444,16 @@ class Query extends Base {
 	 * @param string $orderby Field for the items to be ordered by.
 	 * @return string|false Value to used in the ORDER clause. False otherwise.
 	 */
-	private function parse_orderby( $orderby = 'id' ) {
+	private function parse_orderby( $orderby = '' ) {
 
 		// Default value
 		$primary = $this->get_primary_column_name();
 		$parsed  = "{$this->table_alias}.{$primary}";
+
+		// Default to primary column
+		if ( empty( $orderby ) ) {
+			$orderby = $primary;
+		}
 
 		// __in
 		if ( false !== strstr( $orderby, '__in' ) ) {
@@ -1856,6 +1864,11 @@ class Query extends Base {
 	 */
 	public function update_item( $item_id = 0, $data = array() ) {
 
+		// Bail early if no data to update
+		if ( empty( $data ) ) {
+			return false;
+		}
+
 		// Bail if no item ID
 		$item_id = $this->shape_item_id( $item_id );
 		if ( empty( $item_id ) ) {
@@ -1876,29 +1889,30 @@ class Query extends Base {
 		// Cast as an array for easier manipulation
 		$item = (array) $item;
 
-		// Unset the primary key from data to parse
-		unset( $data[ $primary ] );
+		// Unset the primary key from item & data
+		unset(
+			$data[ $primary ],
+			$item[ $primary ]
+		);
 
-		// Splice new data into item, and cut out non-keys for meta
+		// Slice data that has columns, and cut out non-keys for meta
 		$columns = $this->get_column_names();
 		$data    = array_merge( $item, $data );
 		$meta    = array_diff_key( $data, $columns );
-		$save    = array_intersect_key( $data, $columns );
+		$diff    = array_diff( $data, $item );
+		$save    = array_intersect_key( $diff, $columns );
+
+		// Bail if nothing to save
+		if ( empty( $save ) && empty( $meta ) ) {
+			return false;
+		}
 
 		// Maybe save meta keys
 		if ( ! empty( $meta ) ) {
 			$this->save_extra_item_meta( $item_id, $meta );
 		}
 
-		// Bail if no change
-		if ( (array) $save === (array) $item ) {
-			return true;
-		}
-
-		// Unset the primary key from data to save
-		unset( $save[ $primary ] );
-
-		// If date-modified is empty, use the current time
+		// If date-modified exists, use the current time
 		$modified = $this->get_column_by( array( 'modified' => true ) );
 		if ( ! empty( $modified ) ) {
 			$save[ $modified->name ] = $this->get_current_time();
@@ -2043,11 +2057,6 @@ class Query extends Base {
 
 		// Loop through item attributes
 		foreach ( $item as $key => $value ) {
-
-			// Strip slashes from all strings
-			/*if ( is_string( $value ) ) {
-				$value = stripslashes( $value );// We removed this line at PR #3847 to solve if the content has backslash.
-			}*/
 
 			// Get the column
 			$column = $this->get_column_by( array( 'name' => $key ) );
@@ -2484,7 +2493,7 @@ class Query extends Base {
 
 		// If not empty, return table name
 		if ( ! empty( $db->{$table_name} ) ) {
-			return $table_name;
+			return $db->{$table_name};
 		}
 
 		// Default return false
