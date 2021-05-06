@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\ContentTrait;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 
 class Scanner {
 	use ContentTrait;
@@ -31,14 +32,23 @@ class Scanner {
 	public $items = [];
 
 	/**
+	 * Resources table instance.
+	 *
+	 * @var Resources
+	 */
+	private $resources_table;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param ScannerProcess $process Background process instance.
 	 * @param Options        $options_api Options API instance.
+	 * @param Resources      $resources_table Resources table instance.
 	 */
-	public function __construct( ScannerProcess $process, Options $options_api ) {
-		$this->process     = $process;
-		$this->options_api = $options_api;
+	public function __construct( ScannerProcess $process, Options $options_api, Resources $resources_table ) {
+		$this->process         = $process;
+		$this->options_api     = $options_api;
+		$this->resources_table = $resources_table;
 	}
 
 	/**
@@ -89,6 +99,7 @@ class Scanner {
 		$this->set_items();
 
 		$this->options_api->delete( 'resources_scanner' );
+		$this->resources_table->reset_prewarmup_fields();
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
