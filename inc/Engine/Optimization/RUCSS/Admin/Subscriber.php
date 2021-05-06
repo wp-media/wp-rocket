@@ -87,7 +87,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', [ 'react-dom' ], '1.0.0', true );
+		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', [ 'react-dom' ], WP_ROCKET_VERSION, true );
 
 		wp_localize_script(
 			'wpr-rucss-progress-bar',
