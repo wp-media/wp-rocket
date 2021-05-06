@@ -335,7 +335,9 @@ class Subscriber implements Subscriber_Interface {
 			'warmed_list'    => __( 'Files which could not be processed:', 'rocket' ),
 			'rucss_info_txt' => sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ), '<a href="#" target=_"blank">', '</a>'
+				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ),
+				'<a href="#" target=_"blank">',
+				'</a>'
 			),
 			'rucss_btn_txt'  => __( 'We\'ll keep trying to process the missing resources for 1 hour. Meanwhile the removal of Unused CSS will be incomplete and PageSpeed may still show a warning.', 'rocket' ),
 		];
