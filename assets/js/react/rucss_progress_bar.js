@@ -3287,12 +3287,15 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     let step1;
 
     if (this.state.success) {
+      let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step1_txt;
+      scanTxt = scanTxt.replace("{count}", this.state.scan_status.scanned);
+      scanTxt = scanTxt.replace("{total}", this.state.scan_status.total_pages);
       let classNames = this.step1Completed() ? 'rucss-progress-step completed step1  wpr-icon-check' : 'rucss-progress-step step1';
       step1 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: classNames
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "spinner"
-      }), this.props.wpRUCSSObject.wpr_rucss_translations.collected_resource, "\xA0", this.state.scan_status.scanned, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.of, "\xA0", this.state.scan_status.total_pages, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.key_pages, "\xA0");
+      }), scanTxt);
     }
 
     return step1;
@@ -3302,12 +3305,15 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     let step2;
 
     if (this.state.success && this.step1Completed()) {
+      let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step2_txt;
+      scanTxt = scanTxt.replace("{count}", this.state.warmup_status.warmed_count);
+      scanTxt = scanTxt.replace("{total}", this.state.warmup_status.total);
       let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
       step2 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: classNames
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "spinner"
-      }), this.props.wpRUCSSObject.wpr_rucss_translations.processed, "\xA0", this.state.warmup_status.warmed_count, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.of, "\xA0", this.state.warmup_status.total, "\xA0", this.props.wpRUCSSObject.wpr_rucss_translations.resource_files_found, "\xA0");
+      }), scanTxt);
     }
 
     return step2;

@@ -323,16 +323,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function ui_translations() : array {
 		return [
-			'collected_resource'   => __( 'Collected resource files from', 'rocket' ),
-			'of'                   => __( 'of', 'rocket' ),
-			'key_pages'            => __( 'key pages', 'rocket' ),
-			'processed'            => __( 'Processed', 'rocket' ),
-			'resource_files_found' => __( 'resource files found on key pages', 'rocket' ),
-			'rucss_working'        => __( 'Remove Unused CSS is working!', 'rocket' ),
-			'rucss_btn'            => __( 'Generate Used CSS now', 'rocket' ),
-			'warmed_list'          => __( 'Files which could not be processed:', 'rocket' ),
-			'rucss_info_txt'       => sprintf( __( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ), '<a href="#" target=_"blank">', '</a>' ),
-			'rucss_btn_txt'        => __( 'We\'ll keep trying to process the missing resources for 1 hour. Meanwhile the removal of Unused CSS will be incomplete and PageSpeed may still show a warning.', 'rocket' ),
+			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
+			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages', 'rocket' ),
+			'rucss_working'  => __( 'Remove Unused CSS is working!', 'rocket' ),
+			'rucss_btn'      => __( 'Generate Used CSS now', 'rocket' ),
+			'warmed_list'    => __( 'Files which could not be processed:', 'rocket' ),
+			'rucss_info_txt' => sprintf( __( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ), '<a href="#" target=_"blank">', '</a>' ),
+			'rucss_btn_txt'  => __( 'We\'ll keep trying to process the missing resources for 1 hour. Meanwhile the removal of Unused CSS will be incomplete and PageSpeed may still show a warning.', 'rocket' ),
 		];
 	}
 }
