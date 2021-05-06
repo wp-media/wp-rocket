@@ -65,7 +65,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_buffer'                               => [ 'delay_js', 26 ],
-			'wp_enqueue_scripts'                          => 'add_delay_js_script',
+			'wp_enqueue_scripts'                          => [ 'add_delay_js_script', 1 ],
 			'pre_get_rocket_option_minify_concatenate_js' => 'maybe_disable_option',
 		];
 	}
