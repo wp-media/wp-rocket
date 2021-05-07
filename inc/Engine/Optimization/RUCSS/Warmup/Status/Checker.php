@@ -66,9 +66,6 @@ class Checker extends AbstractAPIClient {
 			do_action( 'rocket_rucss_prewarmup_error' );
 
 			$this->set_warmup_status_finish_time();
-
-			rocket_clean_domain();
-
 			return;
 		}
 
