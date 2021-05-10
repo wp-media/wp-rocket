@@ -216,7 +216,7 @@ export default class RUCSSStatus extends Component {
 							{this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list}
 							<ul className="rucss-notwarmed-resources">
 								{this.state.warmup_status.notwarmed_resources.map(resource => (
-									<li key="{resource}" className="list-group-item list-group-item-primary">
+									<li key={resource} className="list-group-item list-group-item-primary">
 										{resource}
 									</li>
 								))}

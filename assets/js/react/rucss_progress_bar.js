@@ -3364,7 +3364,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       }, this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "rucss-notwarmed-resources"
       }, this.state.warmup_status.notwarmed_resources.map(resource => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        key: "{resource}",
+        key: resource,
         className: "list-group-item list-group-item-primary"
       }, resource))));
     }
