@@ -259,6 +259,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * Get url file path and contents.
 	 *
 	 * @param string $url File url.
+	 * @param string $type File type (css,js).
 	 *
 	 * @return array
 	 */
