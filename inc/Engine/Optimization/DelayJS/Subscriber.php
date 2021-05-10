@@ -64,8 +64,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                               => [ 'delay_js', 26 ],
-			'wp_enqueue_scripts'                          => [ 'add_delay_js_script', 1 ],
+			'rocket_buffer'                               => [
+				[ 'delay_js', 26 ],
+				[ 'add_delay_js_script', 26 ],
+			],
 			'pre_get_rocket_option_minify_concatenate_js' => 'maybe_disable_option',
 		];
 	}
@@ -84,46 +86,27 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds the inline script to the footer when the option is enabled.
+	 * Displays the inline script to the head when the option is enabled.
 	 *
+	 * @since 3.9 Hooked on rocket_buffer, display the script right after <head>
 	 * @since 3.7
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function add_delay_js_script() {
-		if ( $this->is_enqueued ) {
-			return;
-		}
+	public function add_delay_js_script( $html ): string {
 		if ( ! $this->html->is_allowed() ) {
-			return;
+			return $html;
 		}
 
-		// Register handle with no src to add the inline script after.
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-		wp_register_script(
-			'rocket-delay-js',
-			'',
-			[],
-			'',
-			empty( $this->options->get( 'delay_js_exclusions', [] ) )
-		);
-		wp_enqueue_script( 'rocket-delay-js' );
-
-		wp_add_inline_script(
-			'rocket-delay-js',
-			$this->html->get_ie_fallback()
-		);
+		$pattern = '/<head[^>]*>/i';
 
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
 
 		if ( false !== $lazyload_script ) {
-			wp_add_inline_script(
-				'rocket-delay-js',
-				$lazyload_script
-			);
+			$html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $html, 1 );
 		}
 
-		$this->is_enqueued = true;
+		return preg_replace( $pattern, "$0<script>" . $this->html->get_ie_fallback() . "</script>", $html, 1 );
 	}
 
 	/**
