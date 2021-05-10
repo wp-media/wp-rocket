@@ -3294,7 +3294,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   renderScanStep() {
     let step1;
 
-    if (this.state.success) {
+    if (this.state.success && this.props.wpRUCSSObject.api_debug) {
       let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step1_txt;
       scanTxt = scanTxt.replace("{count}", this.state.scan_status.scanned);
       scanTxt = scanTxt.replace("{total}", this.state.scan_status.total_pages);
@@ -3312,7 +3312,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   renderWarmupStep() {
     let step2;
 
-    if (this.state.success && this.step1Completed()) {
+    if (this.state.success && this.props.wpRUCSSObject.api_debug && this.step1Completed()) {
       let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step2_txt;
       scanTxt = scanTxt.replace("{count}", this.state.warmup_status.warmed_count);
       scanTxt = scanTxt.replace("{total}", this.state.warmup_status.total);
@@ -3410,10 +3410,25 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return rucssProgress;
   }
 
+  renderRUCSSSingleStep() {
+    let singleStep;
+
+    if (this.state.success && !this.props.wpRUCSSObject.api_debug && !this.state.allow_optimization) {
+      let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
+      singleStep = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: classNames
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "spinner"
+      }), this.props.wpRUCSSObject.wpr_rucss_translations.singlestep_txt);
+    }
+
+    return singleStep;
+  }
+
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "rucss-status wpr-field-description"
-    }, this.renderRUCSSProgress(), this.renderError(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderButtonAllowOptimization(), this.renderRUCSSEnabled());
+    }, this.renderRUCSSProgress(), this.renderError(), this.renderRUCSSSingleStep(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderButtonAllowOptimization(), this.renderRUCSSEnabled());
   }
 
 }

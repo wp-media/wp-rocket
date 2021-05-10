@@ -16,23 +16,23 @@ export default class RUCSSStatus extends Component {
 			progress:       0,
 			max:            0,
 			scan_status: {
-				scanned: 0,
-				fetched: 0,
+				scanned:     0,
+				fetched:     0,
 				total_pages: 0,
-				completed: false,
-				duration: 0,
+				completed:   false,
+				duration:    0,
 			},
 			warmup_status: {
-				total: 0,
-				warmed_count: 0,
+				total:               0,
+				warmed_count:        0,
 				notwarmed_resources: [],
-				completed: false,
-				duration: 0,
+				completed:           false,
+				duration:            0,
 			},
 			allow_optimization: false,
-			error_message: '',
-			code: 0,
-			success: true,
+			error_message:      '',
+			code:               0,
+			success:            true,
 		};
 
 		this.enableOptimization = this.enableOptimization.bind(this);
@@ -150,7 +150,7 @@ export default class RUCSSStatus extends Component {
 
 	renderScanStep() {
 		let step1;
-		if ( this.state.success ) {
+		if ( this.state.success && this.props.wpRUCSSObject.api_debug ) {
 			let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step1_txt;
 			scanTxt = scanTxt.replace("{count}", this.state.scan_status.scanned);
 			scanTxt = scanTxt.replace("{total}", this.state.scan_status.total_pages);
@@ -166,7 +166,11 @@ export default class RUCSSStatus extends Component {
 
 	renderWarmupStep() {
 		let step2;
-		if ( this.state.success && this.step1Completed() ) {
+		if ( this.state.success &&
+			this.props.wpRUCSSObject.api_debug &&
+			this.step1Completed()
+			)
+		{
 			let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step2_txt;
 			scanTxt = scanTxt.replace("{count}", this.state.warmup_status.warmed_count);
 			scanTxt = scanTxt.replace("{total}", this.state.warmup_status.total);
@@ -259,11 +263,27 @@ export default class RUCSSStatus extends Component {
 		return rucssProgress;
 	}
 
+	renderRUCSSSingleStep() {
+		let singleStep;
+		if ( this.state.success &&
+			! this.props.wpRUCSSObject.api_debug &&
+			! this.state.allow_optimization )
+		{
+			let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
+			singleStep = <div className={classNames}>
+						<div className="spinner"></div>
+						{this.props.wpRUCSSObject.wpr_rucss_translations.singlestep_txt}
+					</div>;
+		}
+		return singleStep;
+	}
+
 	render() {
 		return (
 				<div className="rucss-status wpr-field-description">
 					{this.renderRUCSSProgress()}
 					{this.renderError()}
+					{this.renderRUCSSSingleStep()}
 					{this.renderScanStep()}
 					{this.renderWarmupStep()}
 					{this.renderNotWarmedResourcesList()}

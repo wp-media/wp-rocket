@@ -95,6 +95,7 @@ class Subscriber implements Subscriber_Interface {
 			[
 				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
 				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
+				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 				'wpr_rucss_translations' => $this->ui_translations(),
 			]
 		);
@@ -330,6 +331,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages', 'rocket' ),
+			'singlestep_txt' => __( 'Please wait. We are processing the resource files.', 'rocket' ),
 			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
 			'rucss_btn'      => __( 'Generate Used CSS now', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be process:', 'rocket' ),
