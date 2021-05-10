@@ -3162,6 +3162,10 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     super(props); // Set the default states
 
     this.state = {
+      progress1: 0,
+      max1: 0,
+      progress2: 0,
+      max2: 0,
       progress: 0,
       max: 0,
       scan_status: {
@@ -3209,26 +3213,30 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return;
     }
 
-    let progress = 0;
-    let max = 0;
+    let progress1 = this.step1Progress();
+    let max1 = this.step1MaxProgress();
+    let progress2 = this.step2Progress();
+    let max2 = this.step2MaxProgress();
+    let percentageProgress1 = max1 > 0 ? Math.ceil(progress1 * 100 / max1) : 0;
+    let percentageProgress2 = max2 > 0 ? Math.ceil(progress2 * 100 / max2) : 0;
+    let progress = percentageProgress1 + percentageProgress2;
 
-    if (!this.step1Completed()) {
-      progress = this.step1Progress();
-      max = this.step1MaxProgress();
+    if (progress > 200) {
+      progress = 200;
     }
 
-    if (this.step1Completed() && !this.step2Completed()) {
-      progress = this.step2Progress();
-      max = this.step2MaxProgress();
-    }
+    let max = 200;
 
     if (this.step1Completed() && this.step2Completed()) {
       clearInterval(this.timeout);
-      progress = 100;
-      max = 100;
+      progress = 200;
     }
 
     this.setState({
+      progress1: progress1,
+      max1: max1,
+      progress2: progress2,
+      max2: max2,
       progress: progress,
       max: max
     });

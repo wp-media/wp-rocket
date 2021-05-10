@@ -126,6 +126,7 @@ class Scanner {
 			'type'       => 'front_page',
 			'url'        => home_url( '/' ),
 			'is_scanned' => false,
+			'is_fetched' => false,
 		];
 
 		$page_for_posts = get_option( 'page_for_posts' );
@@ -139,6 +140,7 @@ class Scanner {
 				'type'       => 'home',
 				'url'        => get_permalink( $page_for_posts ),
 				'is_scanned' => false,
+				'is_fetched' => false,
 			];
 		}
 
@@ -149,6 +151,7 @@ class Scanner {
 				'type'       => $post_type->post_type,
 				'url'        => get_permalink( $post_type->ID ),
 				'is_scanned' => false,
+				'is_fetched' => false,
 			];
 		}
 
@@ -159,6 +162,7 @@ class Scanner {
 				'type'       => $taxonomy->taxonomy,
 				'url'        => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
 				'is_scanned' => false,
+				'is_fetched' => false,
 			];
 		}
 	}
