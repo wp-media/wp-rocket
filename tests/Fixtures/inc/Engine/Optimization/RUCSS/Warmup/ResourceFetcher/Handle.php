@@ -15,11 +15,24 @@ return [
 			'stylewithimportedmqs.css'        => '@import "style3.css" screen;.another-imported-class{color: blue;}',
 			'stylewithimport-recursion.css'   => '@import "stylewithimport-recursion.css";.another-class-in-stylewithimport-recursion{color: white;}',
 			'stylewithrelativepathimport.css' => '@import "./../relativelypathedstyles.css";.some-imported-class{color:pink;}',
+			'style-with-only-comment.css'     => '/*
+Theme Name: Yes
+Theme URI: http://example.com/themes/neutro/
+Author: WP Media
+Author URI:
+Description:
+Version: 1.2.5
+License: GNU General Public License
+License URI: http://www.gnu.org/licenses/gpl.html
+Tags: two-columns, three-columns, right-sidebar, custom-background, custom-colors, custom-menu, featured-images, post-formats, sticky-post, theme-options, threaded-comments, translation-ready
+Text Domain: neutro
+*/',
 		],
 		'scripts' => [
 			'script1.js' => 'var first = "content 1";',
 			'script2.js' => 'var second = "content 2";',
 			'script3.js' => 'var third = "content 3";',
+
 		],
 		'relativelypathedstyles.css' => '.relatively-pathed-imported-class{color:black;}'
 	],
@@ -297,6 +310,26 @@ return [
 					[
 						'url'       => 'http://example.org/css/style1.css?ver=123&q=5',
 						'content'   => '.first{color:red}',
+						'type'      => 'css',
+						'media'     => 'all',
+						'prewarmup' => 0,
+						'page_url'  => '',
+					],
+				],
+			],
+		],
+
+		'shouldQueueResourcesWithCommentContentOnly' => [
+			'input'    => [
+				'html' => '<!DOCTYPE html><html><head><title></title>' .
+				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
+				          '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'       => 'http://example.org/css/style-with-only-comment.css',
+						'content'   => '*',
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
