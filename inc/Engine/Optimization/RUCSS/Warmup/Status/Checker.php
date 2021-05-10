@@ -58,13 +58,6 @@ class Checker extends AbstractAPIClient {
 		}
 
 		if ( time() > strtotime( '+1 hour', (int) $prewarmup_stats['scan_start_time'] ) ) {
-			/**
-			 * Fires this action when the prewarmup lifespan is expired
-			 *
-			 * @since 3.9
-			 */
-			do_action( 'rocket_rucss_prewarmup_error' );
-
 			$this->set_warmup_status_finish_time();
 			return;
 		}
@@ -72,13 +65,6 @@ class Checker extends AbstractAPIClient {
 		$items = $this->resources_query->get_waiting_prewarmup_items();
 
 		if ( empty( $items ) ) {
-			/**
-			 * Fires this action when the prewarmup is complete
-			 *
-			 * @since 3.9
-			 */
-			do_action( 'rocket_rucss_prewarmup_success' );
-
 			$this->set_warmup_status_finish_time();
 			$this->set_warmup_force_optimization();
 
@@ -100,55 +86,6 @@ class Checker extends AbstractAPIClient {
 		}
 
 		$this->update_from_response();
-	}
-
-	/**
-	 * Prepares the success transient to be used for the RUCSS prewarmup notice
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function prepare_success_notice() {
-		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup is complete!', 'rocket' ) . '</p>';
-
-		$notice_data = [
-			'message' => $message,
-		];
-
-		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
-	}
-
-	/**
-	 * Prepares the error transient to be used for the RUCSS prewarmup notice
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function prepare_error_notice() {
-		$items = $this->resources_query->get_waiting_prewarmup_items();
-
-		$urls = wp_list_pluck( $items, 'url' );
-
-		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup was not fully completed. You can find the resources that were not warmed-up below:', 'rocket' ) . '</p>';
-
-		if ( ! empty( $urls ) ) {
-			$message .= '<ul>';
-
-			foreach ( $urls as $url ) {
-				$message .= '<li>' . $url . '</li>';
-			}
-
-			$message .= '</ul>';
-		}
-
-		$notice_data = [
-			'status'  => 'warning',
-			'message' => $message,
-		];
-
-		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
 	}
 
 	/**
