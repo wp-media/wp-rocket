@@ -182,13 +182,11 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	/**
 	 * Minify and prepare JS.
 	 *
-	 * @param string $path Path of the JS file.
 	 * @param string $contents Contents of the JS file.
 	 *
 	 * @return string
 	 */
-	private function prepare_js_content( string $path, string $contents ) : string {
-		$contents = trim( $this->rewrite_paths( $path, $path, $contents ) );
+	private function prepare_js_content( string $contents ) : string {
 		$minifier = new MinifyJS( $contents );
 
 		return $minifier->minify();
@@ -282,7 +280,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
 
-		$file_content = 'js' === $type ? $this->prepare_js_content( $file_content, $file_path ) : $this->prepare_css_content( $file_content, $file_path );
+		// Minify the content if it's there.
+		if ( $file_content ) {
+			$file_content = 'js' === $type ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $file_path, $file_content );
+		}
 
 		if ( ! $file_content ) {
 			Logger::error(

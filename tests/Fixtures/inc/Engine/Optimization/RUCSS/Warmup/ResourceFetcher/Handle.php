@@ -107,7 +107,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script2.js',
-						'content'   => 'var second = "content 2";',
+						'content'   => 'var second="content 2"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
@@ -165,7 +165,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first = "content 1";',
+						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
@@ -193,7 +193,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first = "content 1";',
+						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
@@ -221,7 +221,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first = "content 1";',
+						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
@@ -249,7 +249,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first = "content 1";',
+						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
@@ -277,7 +277,7 @@ return [
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first = "content 1";',
+						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
 						'page_url'  => '',
