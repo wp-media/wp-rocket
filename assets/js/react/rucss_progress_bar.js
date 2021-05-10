@@ -3249,7 +3249,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       this.getStatus();
       this.computeProgress();
 
-      if (this.state.progress > 100) {
+      if (this.state.progress > 200) {
         clearInterval(this.timeout);
       }
     }, 3000);

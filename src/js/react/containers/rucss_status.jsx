@@ -107,7 +107,7 @@ export default class RUCSSStatus extends Component {
 			this.getStatus();
 			this.computeProgress();
 
-			if ( this.state.progress > 100 ) {
+			if ( this.state.progress > 200 ) {
 				clearInterval(this.timeout);
 			}
 		}, 3000);
