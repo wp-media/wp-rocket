@@ -91,6 +91,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.9 Hooked on rocket_buffer, display the script right after <head>
 	 * @since 3.7
 	 *
+	 * @param string $html HTML content.
+	 *
 	 * @return string
 	 */
 	public function add_delay_js_script( $html ): string {
@@ -106,7 +108,7 @@ class Subscriber implements Subscriber_Interface {
 			$html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $html, 1 );
 		}
 
-		return preg_replace( $pattern, "$0<script>" . $this->html->get_ie_fallback() . "</script>", $html, 1 );
+		return preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
 	}
 
 	/**
