@@ -58,13 +58,13 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 		$item['is_error'] = false;
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$item['is_error']   = true;
+			$item['is_error'] = true;
 		}
 
 		$html = wp_remote_retrieve_body( $response );
 
 		if ( empty( $html ) ) {
-			$item['is_error']   = true;
+			$item['is_error'] = true;
 		}
 
 		$this->resource_fetcher->data(
@@ -72,11 +72,12 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 				'html'      => $html,
 				'prewarmup' => 1,
 				'page_url'  => $item['url'],
+				'is_error'  => $item['is_error'],
 			]
 		)->dispatch();
 
-		$option             = $this->options_api->get( 'resources_scanner_scanned', [] );
-		$option[]           = $item['url'];
+		$option   = $this->options_api->get( 'resources_scanner_scanned', [] );
+		$option[] = $item['url'];
 
 		$this->options_api->set( 'resources_scanner_scanned', $option );
 

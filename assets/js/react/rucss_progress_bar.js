@@ -3187,7 +3187,6 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       code: 0,
       success: true
     };
-    this.enableOptimization = this.enableOptimization.bind(this);
   }
 
   getStatus() {
@@ -3249,7 +3248,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       this.getStatus();
       this.computeProgress();
 
-      if (this.state.progress > 200) {
+      if (this.state.progress >= 200) {
         clearInterval(this.timeout);
       }
     }, 3000);
@@ -3339,26 +3338,10 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return rucssEnabled;
   }
 
-  renderButtonAllowOptimization() {
-    let btn, duration;
-    duration = this.state.warmup_status.duration;
-
-    if (!this.state.allow_optimization && duration > 600) {
-      btn = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "wpr-button",
-        onClick: this.enableOptimization
-      }, this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "wpr-field-description wpr-field-description-helper"
-      }, this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn_txt));
-    }
-
-    return btn;
-  }
-
   renderNotWarmedResourcesList() {
     let step2_list;
 
-    if (this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
+    if (this.state.success && this.props.wpRUCSSObject.api_debug && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
       step2_list = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "rucss-progress-step wpr-icon-important rucss-progress-step2-list"
       }, this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
@@ -3372,34 +3355,11 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return step2_list;
   }
 
-  enableOptimization(e) {
-    e.preventDefault();
-    wp.apiFetch({
-      url: this.props.wpRUCSSObject.api_url,
-      method: 'POST',
-      data: {
-        allow_optimization: true
-      }
-    }).then(data => this.setState({
-      scan_status: typeof data.data.scan_status != 'undefined' ? data.data.scan_status : this.state.scan_status,
-      warmup_status: typeof data.data.warmup_status != 'undefined' ? data.data.warmup_status : this.state.warmup_status,
-      code: typeof data.code != 'undefined' ? data.code : this.state.code,
-      success: typeof data.success != 'undefined' ? data.success : this.state.success,
-      error_message: typeof data.message != 'undefined' ? data.message : this.state.error_message,
-      allow_optimization: typeof data.data.allow_optimization != 'undefined' ? data.data.allow_optimization : this.state.allow_optimization
-    }));
-  }
-
   renderRUCSSProgress() {
     let rucssProgress;
 
     if (!this.state.allow_optimization) {
       rucssProgress = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "wpr-field-description",
-        dangerouslySetInnerHTML: {
-          __html: this.props.wpRUCSSObject.wpr_rucss_translations.rucss_info_txt
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "rucss-progress-bar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_progress_bar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         value: this.state.progress,
@@ -3419,7 +3379,11 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         className: classNames
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "spinner"
-      }), this.props.wpRUCSSObject.wpr_rucss_translations.singlestep_txt);
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        dangerouslySetInnerHTML: {
+          __html: this.props.wpRUCSSObject.wpr_rucss_translations.rucss_info_txt
+        }
+      }));
     }
 
     return singleStep;
@@ -3428,7 +3392,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "rucss-status wpr-field-description"
-    }, this.renderRUCSSProgress(), this.renderError(), this.renderRUCSSSingleStep(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderButtonAllowOptimization(), this.renderRUCSSEnabled());
+    }, this.renderRUCSSProgress(), this.renderError(), this.renderRUCSSSingleStep(), this.renderScanStep(), this.renderWarmupStep(), this.renderNotWarmedResourcesList(), this.renderRUCSSEnabled());
   }
 
 }

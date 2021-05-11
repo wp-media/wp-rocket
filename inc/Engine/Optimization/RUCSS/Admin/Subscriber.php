@@ -106,8 +106,8 @@ class Subscriber implements Subscriber_Interface {
 			[
 				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
 				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
-				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_DEBUG' ),
-				'api_allow_optimization' => (bool) $prewarmup_stats['allow_optimization'],
+				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ),
+				'api_allow_optimization' => ! empty( $prewarmup_stats['allow_optimization'] ) ? (bool) $prewarmup_stats['allow_optimization'] : false,
 				'wpr_rucss_translations' => $this->ui_translations(),
 			]
 		);
@@ -343,9 +343,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages', 'rocket' ),
-			'singlestep_txt' => __( 'Please wait. We are processing the files on your site. This may take several minutes.', 'rocket' ),
 			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
-			'rucss_btn'      => __( 'Generate Used CSS now', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
 			'rucss_info_txt' => sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -353,7 +351,6 @@ class Subscriber implements Subscriber_Interface {
 				'<a href="#" target=_"blank">',
 				'</a>'
 			),
-			'rucss_btn_txt'  => __( 'We\'ll keep trying to process the missing resources for 1 hour. Meanwhile the removal of Unused CSS will be incomplete and PageSpeed may still show a warning.', 'rocket' ),
 		];
 	}
 }

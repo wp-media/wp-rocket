@@ -34,8 +34,6 @@ export default class RUCSSStatus extends Component {
 			code:               0,
 			success:            true,
 		};
-
-		this.enableOptimization = this.enableOptimization.bind(this);
 	}
 
 	getStatus() {
@@ -107,7 +105,7 @@ export default class RUCSSStatus extends Component {
 			this.getStatus();
 			this.computeProgress();
 
-			if ( this.state.progress > 200 ) {
+			if ( this.state.progress >= 200 ) {
 				clearInterval(this.timeout);
 			}
 		}, 3000);
@@ -193,25 +191,14 @@ export default class RUCSSStatus extends Component {
 		return rucssEnabled;
 	}
 
-	renderButtonAllowOptimization() {
-		let btn, duration;
-		duration = this.state.warmup_status.duration;
-		if ( ! this.state.allow_optimization && duration > 600 ) {
-			btn = <div>
-					<button className="wpr-button" onClick={this.enableOptimization}>
-						{this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn}
-					</button>
-					<div className="wpr-field-description wpr-field-description-helper">
-						{this.props.wpRUCSSObject.wpr_rucss_translations.rucss_btn_txt}
-					</div>
-				</div>;
-		}
-		return btn;
-	}
-
 	renderNotWarmedResourcesList() {
 		let step2_list;
-		if ( this.state.success && this.step1Completed() && this.state.warmup_status.notwarmed_resources.length > 0) {
+		if ( this.state.success &&
+			this.props.wpRUCSSObject.api_debug &&
+			this.step1Completed() &&
+			this.state.warmup_status.notwarmed_resources.length > 0
+			)
+		{
 			step2_list = <div className="rucss-progress-step wpr-icon-important rucss-progress-step2-list">
 							{this.props.wpRUCSSObject.wpr_rucss_translations.warmed_list}
 							<ul className="rucss-notwarmed-resources">
@@ -227,34 +214,10 @@ export default class RUCSSStatus extends Component {
 		return step2_list;
 	}
 
-	enableOptimization( e ) {
-		e.preventDefault();
-
-		wp.apiFetch(
-			{
-				url: this.props.wpRUCSSObject.api_url,
-				method: 'POST',
-				data: { allow_optimization: true },
-			}
-		).then(
-			data => this.setState(
-				{
-					scan_status: typeof data.data.scan_status != 'undefined' ?  data.data.scan_status : this.state.scan_status,
-					warmup_status: typeof data.data.warmup_status != 'undefined' ?  data.data.warmup_status : this.state.warmup_status,
-					code: typeof data.code != 'undefined' ?  data.code : this.state.code,
-					success: typeof data.success != 'undefined' ?  data.success : this.state.success,
-					error_message: typeof data.message != 'undefined' ?  data.message : this.state.error_message,
-					allow_optimization: typeof data.data.allow_optimization != 'undefined' ?  data.data.allow_optimization : this.state.allow_optimization,
-				}
-			)
-		);
-	}
-
 	renderRUCSSProgress() {
 		let rucssProgress;
 		if ( ! this.state.allow_optimization ) {
 			rucssProgress = <div>
-								<div className="wpr-field-description" dangerouslySetInnerHTML={{__html: this.props.wpRUCSSObject.wpr_rucss_translations.rucss_info_txt}}></div>
 								<div className="rucss-progress-bar">
 									<ProgressBar value={this.state.progress} max={this.state.max}/>
 								</div>
@@ -272,7 +235,7 @@ export default class RUCSSStatus extends Component {
 			let classNames = this.step2Completed() ? 'rucss-progress-step completed step2  wpr-icon-check' : 'rucss-progress-step  step2';
 			singleStep = <div className={classNames}>
 						<div className="spinner"></div>
-						{this.props.wpRUCSSObject.wpr_rucss_translations.singlestep_txt}
+						<span dangerouslySetInnerHTML={{__html: this.props.wpRUCSSObject.wpr_rucss_translations.rucss_info_txt}}></span>
 					</div>;
 		}
 		return singleStep;
@@ -287,7 +250,6 @@ export default class RUCSSStatus extends Component {
 					{this.renderScanStep()}
 					{this.renderWarmupStep()}
 					{this.renderNotWarmedResourcesList()}
-					{this.renderButtonAllowOptimization()}
 					{this.renderRUCSSEnabled()}
 				</div>
 		);

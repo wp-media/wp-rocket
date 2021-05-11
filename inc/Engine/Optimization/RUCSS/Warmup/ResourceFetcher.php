@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
@@ -71,16 +72,24 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	];
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Resource constructor.
 	 *
 	 * @param AssetsLocalCache       $local_cache Local cache instance.
 	 * @param ResourceFetcherProcess $process     Resource fetcher process instance.
 	 */
-	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
+	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process, Options $options_api ) {
 		parent::__construct();
 
 		$this->local_cache = $local_cache;
 		$this->process     = $process;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -92,7 +101,20 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 */
 	public function handle() {
 		// Grab resources from page HTML.
-		$html = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$html     = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$is_error = ! empty( $_POST['is_error'] ) ? (bool) $_POST['is_error'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$page_url = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+		if ( $is_error ) {
+			$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
+			$fetched_pages[] = [
+				'url'      => $page_url,
+				'is_error' => true,
+			];
+
+			$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
+			return;
+		}
 
 		if ( empty( $html ) ) {
 			return;
@@ -108,7 +130,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		// Send resources to the background process to be saved into DB.
 		foreach ( $this->resources as $resource ) {
 			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
-			$resource['page_url']  = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$resource['page_url']  = $page_url;
 
 			$this->process->push_to_queue( $resource );
 		}

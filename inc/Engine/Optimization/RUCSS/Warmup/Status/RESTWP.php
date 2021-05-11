@@ -110,11 +110,6 @@ class RESTWP {
 			);
 		}
 
-		$allow_optimization = $request->get_param( 'allow_optimization' );
-		if ( isset( $allow_optimization ) ) {
-			$this->set_allow_optimization();
-		}
-
 		$output = [
 			'scan_status'        => $this->get_scan_status( $resources_scanner_option ),
 			'warmup_status'      => $this->get_warmup_status(),
