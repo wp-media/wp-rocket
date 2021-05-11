@@ -72,18 +72,9 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 				'html'      => $html,
 				'prewarmup' => 1,
 				'page_url'  => $item['url'],
+				'is_error'  => $item['is_error'],
 			]
 		)->dispatch();
-
-		if ( $item['is_error'] ) {
-			$fetched_pages                 = $this->options_api->get( 'resources_scanner_fetched', [] );
-			$fetched_pages[ $item['url'] ] = [
-				'url'      => $item['url'],
-				'is_error' => true,
-			];
-
-			$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
-		}
 
 		$option   = $this->options_api->get( 'resources_scanner_scanned', [] );
 		$option[] = $item['url'];

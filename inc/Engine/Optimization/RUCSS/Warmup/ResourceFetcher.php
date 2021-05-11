@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket_WP_Async_Request;
+use WP_Rocket\Admin\Options;
 
 class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
@@ -71,16 +72,24 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	];
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Resource constructor.
 	 *
 	 * @param AssetsLocalCache       $local_cache Local cache instance.
 	 * @param ResourceFetcherProcess $process     Resource fetcher process instance.
 	 */
-	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
+	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process, Options $options_api ) {
 		parent::__construct();
 
 		$this->local_cache = $local_cache;
 		$this->process     = $process;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -95,6 +104,17 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		$html     = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$is_error = ! empty( $_POST['is_error'] ) ? (bool) $_POST['is_error'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$page_url = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+		if ( $is_error ) {
+			$fetched_pages              = $this->options_api->get( 'resources_scanner_fetched', [] );
+			$fetched_pages[ $page_url ] = [
+				'url'      => $page_url,
+				'is_error' => true,
+			];
+
+			$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
+			return;
+		}
 
 		if ( empty( $html ) ) {
 			return;

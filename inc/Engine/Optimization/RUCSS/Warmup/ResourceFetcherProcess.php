@@ -135,6 +135,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		$this->page_urls = array_unique( $this->page_urls );
 		$all_pages       = $this->options_api->get( 'resources_scanner', [] );
 		$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
+
 		foreach ( $this->page_urls as $page_url ) {
 			if ( empty( $page_url ) ) {
 				continue;
