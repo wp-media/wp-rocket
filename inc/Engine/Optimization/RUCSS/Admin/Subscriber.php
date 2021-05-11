@@ -342,13 +342,13 @@ class Subscriber implements Subscriber_Interface {
 	private function ui_translations() : array {
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
-			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages', 'rocket' ),
-			'rucss_working'  => __( 'Remove Unused CSS pre-processing is complete', 'rocket' ),
+			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
+			'rucss_working'  => __( 'Remove Unused CSS pre-processing is complete!', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
 			'rucss_info_txt' => sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ),
-				'<a href="#" target=_"blank">',
+				'<a href="#" target=_"blank" rel="noopener">',
 				'</a>'
 			),
 		];
