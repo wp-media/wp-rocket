@@ -217,6 +217,7 @@ class RESTWP {
 			}
 		}
 
+		$status['completed'] = ( $status['scanned'] === $status['total_pages'] ) ? true : false;
 		return $status;
 	}
 
@@ -245,7 +246,9 @@ class RESTWP {
 		}
 
 		if ( $status['warmed_count'] < $status['total'] ) {
-			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
+			$type = (bool) rocket_get_constant( 'WP_ROCKET_DEBUG' ) ? '' : 'css';
+
+			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls( $type ) );
 		}
 
 		return $status;

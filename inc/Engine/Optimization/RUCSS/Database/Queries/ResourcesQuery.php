@@ -176,14 +176,18 @@ class ResourcesQuery extends Query {
 	 *
 	 * @return array|string[]
 	 */
-	public function get_prewarmup_notwarmed_urls(): array {
-		return $this->query(
-			[
-				'fields'        => 'url',
-				'prewarmup'     => 1,
-				'warmup_status' => 0,
-			]
-		);
+	public function get_prewarmup_notwarmed_urls( string $type = '' ): array {
+		$params = [
+			'fields'        => 'url',
+			'prewarmup'     => 1,
+			'warmup_status' => 0,
+		];
+
+		if ( ! empty( $type ) ) {
+			$params['type'] = $type;
+		}
+
+		return $this->query( $params );
 	}
 
 	/**
