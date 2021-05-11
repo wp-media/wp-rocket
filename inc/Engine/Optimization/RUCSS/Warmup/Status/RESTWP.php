@@ -106,7 +106,7 @@ class RESTWP {
 		$resources_scanner_option = $this->options_api->get( 'resources_scanner', [] );
 		if ( empty( $resources_scanner_option ) ) {
 			return rest_ensure_response(
-				$this->return_error( __( 'Pre-Warmup process didn\'t start yet.', 'rocket' ) )
+				$this->return_error( __( 'Pre-Warmup process did not start yet.', 'rocket' ) )
 			);
 		}
 

@@ -343,7 +343,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages', 'rocket' ),
-			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
+			'rucss_working'  => __( 'Remove Unused CSS pre-processing is complete', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
 			'rucss_info_txt' => sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
