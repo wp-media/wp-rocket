@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
+use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -144,7 +145,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			list( $path, $contents ) = $this->get_url_details( $resource['url'] );
+			list( $path, $contents ) = $this->get_url_details( $resource['url'], $type );
 
 			if ( empty( $contents ) ) {
 				continue;
@@ -152,7 +153,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 			$this->resources[ $path ] = [
 				'url'     => $this->normalize_fullurl( $resource['url'], false ),
-				'content' => 'css' === $type ? $this->prepare_css_content( $path, $contents ) : $contents,
+				'content' => $contents,
 				'type'    => $type,
 			];
 
@@ -174,6 +175,19 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	private function prepare_css_content( string $path, string $contents ) : string {
 		$contents = trim( $this->rewrite_paths( $path, $path, $contents ) );
 		$minifier = new MinifyCSS( $contents );
+
+		return $minifier->minify();
+	}
+
+	/**
+	 * Minify and prepare JS.
+	 *
+	 * @param string $contents Contents of the JS file.
+	 *
+	 * @return string
+	 */
+	private function prepare_js_content( string $contents ) : string {
+		$minifier = new MinifyJS( $contents );
 
 		return $minifier->minify();
 	}
@@ -243,10 +257,11 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * Get url file path and contents.
 	 *
 	 * @param string $url File url.
+	 * @param string $type File type (css,js).
 	 *
 	 * @return array
 	 */
-	private function get_url_details( $url ) : array {
+	private function get_url_details( $url, string $type = 'css' ) : array {
 		$external_url = $this->is_external_file( $url );
 
 		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
@@ -264,6 +279,11 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
+
+		// Minify the content if it's there.
+		if ( $file_content ) {
+			$file_content = 'js' === $type ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $file_path, $file_content );
+		}
 
 		if ( ! $file_content ) {
 			Logger::error(
