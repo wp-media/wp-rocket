@@ -50,7 +50,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 *
 	 * @var string
 	 */
-	private $page_url = '';
+	private $page_urls = [];
 
 	/**
 	 * Options API instance.
@@ -87,7 +87,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
-		$this->page_url = $resource['page_url'] ?? '';
+		$this->page_urls[] = $resource['page_url'] ?? '';
 
 		if ( $this->resources_query->create_or_update( $resource ) ) {
 			$this->content_changed = true;
@@ -128,16 +128,22 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 * Batch completed callback.
 	 */
 	protected function complete_batch() {
-		if ( empty( $this->page_url ) ) {
+		if ( empty( $this->page_urls ) ) {
 			return;
 		}
 
+		$this->page_urls = array_unique( $this->page_urls );
 		$all_pages       = $this->options_api->get( 'resources_scanner', [] );
 		$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
-		$fetched_pages[] = [
-			'url'      => $this->page_url,
-			'is_error' => false,
-		];
+		foreach ( $this->page_urls as $page_url ) {
+			if ( empty( $page_url ) ) {
+				continue;
+			}
+			$fetched_pages[ $page_url ] = [
+				'url'      => $page_url,
+				'is_error' => false,
+			];
+		}
 
 		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
 
