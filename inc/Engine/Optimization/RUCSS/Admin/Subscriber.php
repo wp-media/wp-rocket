@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
@@ -31,16 +32,24 @@ class Subscriber implements Subscriber_Interface {
 	private $used_css;
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings Settings instance.
 	 * @param Database $database Database instance.
 	 * @param UsedCSS  $used_css UsedCSS instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css ) {
-		$this->settings = $settings;
-		$this->database = $database;
-		$this->used_css = $used_css;
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
+		$this->settings    = $settings;
+		$this->database    = $database;
+		$this->used_css    = $used_css;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -89,6 +98,8 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss_progress_bar.js', [ 'react-dom' ], WP_ROCKET_VERSION, true );
 
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
 		wp_localize_script(
 			'wpr-rucss-progress-bar',
 			'rocket_rucss_ajax_data',
@@ -96,6 +107,7 @@ class Subscriber implements Subscriber_Interface {
 				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
 				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
 				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_DEBUG' ),
+				'api_allow_optimization' => (bool) $prewarmup_stats['allow_optimization'],
 				'wpr_rucss_translations' => $this->ui_translations(),
 			]
 		);

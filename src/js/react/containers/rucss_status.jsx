@@ -29,7 +29,7 @@ export default class RUCSSStatus extends Component {
 				completed:           false,
 				duration:            0,
 			},
-			allow_optimization: false,
+			allow_optimization: this.props.wpRUCSSObject.api_allow_optimization,
 			error_message:      '',
 			code:               0,
 			success:            true,
