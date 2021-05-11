@@ -35,7 +35,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		$this->settings    = Mockery::mock( Settings::class );
 		$this->database    = Mockery::mock( Database::class );
 		$this->usedCSS     = Mockery::mock( UsedCSS::class );
-		$this->options_api = Mockery::mock( UsedCSS::class );
+		$this->options_api = Mockery::mock( Options::class );
 		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api );
 	}
 
