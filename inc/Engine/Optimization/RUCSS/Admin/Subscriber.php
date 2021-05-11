@@ -41,9 +41,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings Settings instance.
-	 * @param Database $database Database instance.
-	 * @param UsedCSS  $used_css UsedCSS instance.
+	 * @param Settings $settings    Settings instance.
+	 * @param Database $database    Database instance.
+	 * @param UsedCSS  $used_css    UsedCSS instance.
+	 * @param Options  $options_api Options API instance.
 	 */
 	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
 		$this->settings    = $settings;

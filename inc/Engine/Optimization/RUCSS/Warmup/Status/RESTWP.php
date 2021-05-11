@@ -232,7 +232,7 @@ class RESTWP {
 		}
 
 		if ( $status['warmed_count'] < $status['total'] ) {
-			$type = (bool) rocket_get_constant( 'WP_ROCKET_DEBUG' ) ? '' : 'css';
+			$type = (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ) ? '' : 'css';
 
 			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls( $type ) );
 		}

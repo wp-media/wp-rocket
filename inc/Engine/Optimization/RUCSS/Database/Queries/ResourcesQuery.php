@@ -174,6 +174,8 @@ class ResourcesQuery extends Query {
 	/**
 	 * Get prewarmup NOT warmed resources' urls.
 	 *
+	 * @param string $type Type of the not warmed URLS (css/js/empty for both).
+	 *
 	 * @return array|string[]
 	 */
 	public function get_prewarmup_notwarmed_urls( string $type = '' ): array {
