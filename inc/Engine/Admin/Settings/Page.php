@@ -694,15 +694,21 @@ class Page {
 					'container_class'   => [
 						'wpr-isParent',
 						'wpr-RemoveUnUsedCss',
+						'wpr-field--parent',
 					],
 					'type'              => 'checkbox',
-					'label'             => __( 'Remove Unused CSS', 'rocket' ),
+					'label'             => __( 'Remove Unused CSS (Beta)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'warning'           => [
+						'title'        => __( 'We’re still working on it!', 'rocket' ),
+						'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
+						'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
+					],
 				],
 				'remove_unused_css_safelist' => [
 					'type'              => 'textarea',
