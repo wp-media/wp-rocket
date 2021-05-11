@@ -8,6 +8,21 @@ use WP_Rocket\Admin\Options;
 
 class ScannerProcess extends WP_Rocket_WP_Background_Process {
 	/**
+	 * Background process action name.
+	 *
+	 * @var string
+	 */
+	protected $action = 'rucss_warmup_scanner';
+
+	/**
+	 * Background process prefix.
+	 *
+	 * @var string
+	 */
+
+	protected $prefix = 'rocket';
+
+	/**
 	 * Resource fetcher instance
 	 *
 	 * @var Resource Fetcher
