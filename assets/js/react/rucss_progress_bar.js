@@ -3309,7 +3309,7 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     if (this.state.success && this.props.wpRUCSSObject.api_debug) {
       let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step1_txt;
-      scanTxt = scanTxt.replace("{count}", this.state.scan_status.scanned);
+      scanTxt = scanTxt.replace("{count}", this.state.scan_status.fetched);
       scanTxt = scanTxt.replace("{total}", this.state.scan_status.total_pages);
       let classNames = this.step1Completed() ? 'rucss-progress-step completed step1  wpr-icon-check' : 'rucss-progress-step step1';
       step1 = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

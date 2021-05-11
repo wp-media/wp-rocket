@@ -162,7 +162,7 @@ export default class RUCSSStatus extends Component {
 		let step1;
 		if ( this.state.success && this.props.wpRUCSSObject.api_debug ) {
 			let scanTxt = this.props.wpRUCSSObject.wpr_rucss_translations.step1_txt;
-			scanTxt = scanTxt.replace("{count}", this.state.scan_status.scanned);
+			scanTxt = scanTxt.replace("{count}", this.state.scan_status.fetched);
 			scanTxt = scanTxt.replace("{total}", this.state.scan_status.total_pages);
 
 			let classNames = this.step1Completed() ? 'rucss-progress-step completed step1  wpr-icon-check' : 'rucss-progress-step step1';
