@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Warmup\ResourceFetcher;
 
 use Mockery;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher;
 use WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess;
@@ -23,9 +24,10 @@ class Test_Handle extends FilesystemTestCase {
 	public function testShouldDoExpected( $input, $expected ){
 
 		$local_cache = Mockery::mock( AssetsLocalCache::class );
-		$process = Mockery::mock( ResourceFetcherProcess::class );
+		$process     = Mockery::mock( ResourceFetcherProcess::class );
+		$options     = Mockery::mock( Options::class );
 
-		$resource_fetcher = new ResourceFetcher( $local_cache, $process );
+		$resource_fetcher = new ResourceFetcher( $local_cache, $process, $options );
 
 		Functions\when( 'wp_unslash' )->alias(
 			function ( $value ) {
