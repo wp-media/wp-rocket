@@ -3162,7 +3162,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     super(props); // Set the default states
 
     this.state = {
-      progress1: 0,
+      progress1a: 0,
+      progress1b: 0,
       max1: 0,
       progress2: 0,
       max2: 0,
@@ -3212,11 +3213,19 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return;
     }
 
-    let progress1 = this.step1Progress();
+    let progress1a = this.step1ProgressA();
+    let progress1b = this.step1ProgressB();
     let max1 = this.step1MaxProgress();
     let progress2 = this.step2Progress();
     let max2 = this.step2MaxProgress();
-    let percentageProgress1 = max1 > 0 ? Math.ceil(progress1 * 100 / max1) : 0;
+    let percentageProgress1a = max1 > 0 ? Math.ceil(progress1a * 50 / max1) : 0;
+    let percentageProgress1b = max1 > 0 ? Math.ceil(progress1b * 50 / max1) : 0;
+    let percentageProgress1 = percentageProgress1a + percentageProgress1b;
+
+    if (percentageProgress1 > 100) {
+      percentageProgress1 = 100;
+    }
+
     let percentageProgress2 = max2 > 0 ? Math.ceil(progress2 * 100 / max2) : 0;
     let progress = percentageProgress1 + percentageProgress2;
 
@@ -3232,7 +3241,8 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }
 
     this.setState({
-      progress1: progress1,
+      progress1a: progress1a,
+      progress1b: progress1b,
       max1: max1,
       progress2: progress2,
       max2: max2,
@@ -3258,8 +3268,12 @@ class RUCSSStatus extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return this.state.scan_status.completed;
   }
 
-  step1Progress() {
+  step1ProgressA() {
     return this.state.scan_status.scanned;
+  }
+
+  step1ProgressB() {
+    return this.state.scan_status.fetched;
   }
 
   step1MaxProgress() {
