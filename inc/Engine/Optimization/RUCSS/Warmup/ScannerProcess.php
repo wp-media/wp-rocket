@@ -80,10 +80,10 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 		)->dispatch();
 
 		$item['is_scanned'] = true;
-		$option             = $this->options_api->get( 'resources_scanner', [] );
-		$option[]           = $item;
+		$option             = $this->options_api->get( 'resources_scanner_scanned', [] );
+		$option[]           = $item['url'];
 
-		$this->options_api->set( 'resources_scanner', $option );
+		$this->options_api->set( 'resources_scanner_scanned', $option );
 
 		return false;
 	}

@@ -191,31 +191,22 @@ class RESTWP {
 	 */
 	private function get_scan_status( array $resources_scanner_option ) : array {
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
-		if ( empty( $prewarmup_stats['resources_scanner_count'] ) ) {
-			$prewarmup_stats['resources_scanner_count'] = 0;
-		}
+
 		$duration = time() - $prewarmup_stats['scan_start_time'];
 		if ( ! empty( $prewarmup_stats['fetch_finish_time'] ) ) {
 			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
 		}
 
+		$scanned_pages = $this->options_api->get( 'resources_scanner_scanned', [] );
+		$fetched_pages = $this->options_api->get( 'resources_scanner_fetched', [] );
+
 		$status = [
-			'total_pages' => $prewarmup_stats['resources_scanner_count'],
-			'scanned'     => 0,
-			'fetched'     => 0,
-			'completed'   => ! empty( $prewarmup_stats['fetch_finish_time'] ) ? true : false,
+			'total_pages' => (int) $prewarmup_stats['resources_scanner_count'],
+			'scanned'     => count( $scanned_pages ),
+			'fetched'     => count( $fetched_pages ),
+			'completed'   => ! empty( $prewarmup_stats['fetch_finish_time'] ),
 			'duration'    => $duration,
 		];
-
-		foreach ( $resources_scanner_option as $item ) {
-			if ( ! empty( $item['is_scanned'] ) ) {
-				$status['scanned']++;
-			}
-
-			if ( ! empty( $item['is_fetched'] ) ) {
-				$status['fetched']++;
-			}
-		}
 
 		$status['completed'] = ( $status['scanned'] === $status['total_pages'] ) ? true : false;
 		return $status;

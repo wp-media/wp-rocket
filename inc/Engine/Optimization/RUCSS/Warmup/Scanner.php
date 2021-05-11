@@ -98,7 +98,9 @@ class Scanner {
 	private function dispatcher() {
 		$this->set_items();
 
-		$this->options_api->delete( 'resources_scanner' );
+		$this->options_api->set( 'resources_scanner', $this->items );
+		$this->options_api->set( 'resources_scanner_scanned', [] );
+		$this->options_api->set( 'resources_scanner_fetched', [] );
 		$this->resources_table->reset_prewarmup_fields();
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );

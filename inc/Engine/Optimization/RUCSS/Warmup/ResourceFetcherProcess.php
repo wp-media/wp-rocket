@@ -132,23 +132,13 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return;
 		}
 
-		$option          = $this->options_api->get( 'resources_scanner', [] );
-		$fetched_counter = 0;
-		foreach ( $option as $key => $item ) {
-			if ( isset( $item['is_fetched'] ) && $item['is_fetched'] ) {
-				$fetched_counter++;
-			}
-			if ( $this->page_url !== $item['url'] ) {
-				continue;
-			}
+		$all_pages       = $this->options_api->get( 'resources_scanner', [] );
+		$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
+		$fetched_pages[] = $this->page_url;
 
-			$option[ $key ]['is_fetched'] = true;
-			$fetched_counter++;
-		}
+		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
 
-		$this->options_api->set( 'resources_scanner', $option );
-
-		if ( count( $option ) === $fetched_counter ) {
+		if ( count( $all_pages ) === count( $fetched_pages ) ) {
 			// Fetching resources is finished.
 			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
 			$prewarmup_stats['fetch_finish_time'] = time();
