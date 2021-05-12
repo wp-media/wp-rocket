@@ -78,11 +78,11 @@ class Checker extends AbstractAPIClient {
 	}
 
 	/**
-	 * Checks if warmup is completed.
+	 * Activate RUCSS and set warmup finish time when warmup is completed.
 	 *
 	 * @return void
 	 */
-	public function check_warmup_completed() {
+	public function activate_optimization_on_warmup_completion() {
 		// Bailout in case scanner fetching is not finished.
 		if ( ! $this->is_scanner_fetching_finished() ) {
 			return;
@@ -139,7 +139,7 @@ class Checker extends AbstractAPIClient {
 	 *
 	 * @return void
 	 */
-	public function check_warmup_status() {
+	public function update_warmup_status_while_has_items() {
 		if ( $this->is_warmup_finished() || ! $this->is_scanner_fetching_finished() ) {
 			return;
 		}
