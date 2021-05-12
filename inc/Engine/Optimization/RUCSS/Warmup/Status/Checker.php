@@ -45,31 +45,108 @@ class Checker extends AbstractAPIClient {
 		$this->resources_query = $resources_query;
 	}
 
+
 	/**
-	 * Checks warmup status for resources in the prewarmup process
+	 * Update Warmup process on completion.
 	 *
 	 * @return void
 	 */
-	public function check_warmup_status() {
+	private function set_warmup_status_completed() {
+		$this->set_warmup_status_finish_time();
+		$this->set_warmup_force_optimization();
+	}
+
+	/**
+	 * Automatically stop warmup process after 1 hour in case the process did not finished.
+	 *
+	 * @return void
+	 */
+	public function auto_stop_warmup_after_1hour() {
+		if ( $this->is_warmup_finished() ) {
+			return;
+		}
+
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
-		if ( empty( $prewarmup_stats['fetch_finish_time'] ) ) {
+		if ( empty( $prewarmup_stats['scan_start_time'] ) ) {
 			return;
 		}
 
 		if ( time() > strtotime( '+1 hour', (int) $prewarmup_stats['scan_start_time'] ) ) {
-			$this->set_warmup_status_finish_time();
+			$this->set_warmup_status_completed();
+		}
+	}
+
+	/**
+	 * Checks if warmup is completed.
+	 *
+	 * @return void
+	 */
+	public function check_warmup_completed() {
+		// Bailout in case scanner fetching is not finished.
+		if ( ! $this->is_scanner_fetching_finished() ) {
+			return;
+		}
+
+		$items = $this->resources_query->get_waiting_prewarmup_items();
+
+		if ( ! empty( $items ) ) {
+			return;
+		}
+
+		$this->set_warmup_status_completed();
+
+		rocket_clean_domain();
+	}
+
+	/**
+	 * Check if Warmup is finished.
+	 * Warmup is finished wtih allow_optimization is true.
+	 *
+	 * @return boolean
+	 */
+	public function is_warmup_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+		return ! empty( $prewarmup_stats['allow_optimization'] );
+	}
+
+	/**
+	 * Check if Scanner Fetching step is completed.
+	 * Fetching is completed if the scan_start_time is set and fetch_finish_time is set.
+	 *
+	 * @return boolean
+	 */
+	private function is_scanner_fetching_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		return ! empty( $prewarmup_stats['fetch_finish_time'] ) && $this->is_scanner_scan_finished();
+	}
+
+	/**
+	 * Check if Scanner Scan step is completed.
+	 * Scan is finished if the scan_start_time is set.
+	 *
+	 * @return boolean
+	 */
+	private function is_scanner_scan_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		return ! empty( $prewarmup_stats['scan_start_time'] );
+	}
+
+	/**
+	 * Checks warmup status for resources in the prewarmup process.
+	 *
+	 * @return void
+	 */
+	public function check_warmup_status() {
+		if ( $this->is_warmup_finished() || ! $this->is_scanner_fetching_finished() ) {
 			return;
 		}
 
 		$items = $this->resources_query->get_waiting_prewarmup_items();
 
 		if ( empty( $items ) ) {
-			$this->set_warmup_status_finish_time();
-			$this->set_warmup_force_optimization();
-
-			rocket_clean_domain();
-
 			return;
 		}
 

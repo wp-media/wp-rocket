@@ -71,7 +71,11 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer' => [ 'collect_resources', 11 ],
 			'rest_api_init' => 'register_routes',
-			'init'          => 'check_warmup_status',
+			'init'          => [
+				[ 'check_warmup_status', 10 ],
+				[ 'check_warmup_completed', 11 ],
+				[ 'auto_stop_warmup_after_1hour', 12 ],
+			],
 			// The following priority should be less than 10.
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
 		];
@@ -128,6 +132,36 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->status_checker->check_warmup_status();
+	}
+
+	/**
+	 * Checks the is prewarmup process is completed.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function check_warmup_completed() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		$this->status_checker->check_warmup_completed();
+	}
+
+	/**
+	 * Automatically stops the prewarmup process is it passed more than 1 hour.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function auto_stop_warmup_after_1hour() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
+		$this->status_checker->auto_stop_warmup_after_1hour();
 	}
 
 	/**

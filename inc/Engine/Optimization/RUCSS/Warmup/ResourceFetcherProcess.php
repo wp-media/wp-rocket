@@ -89,6 +89,12 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 
 		$this->page_urls[] = $resource['page_url'] ?? '';
 
+		// Check if no resources are sent for the page_url.
+		// This usually happens in case of page error.
+		if ( empty( $resource['url'] ) ) {
+			return false;
+		}
+
 		if ( $this->resources_query->create_or_update( $resource ) ) {
 			$this->content_changed = true;
 			return ! $this->send_warmup_request( $resource );

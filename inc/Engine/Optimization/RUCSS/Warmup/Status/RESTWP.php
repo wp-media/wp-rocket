@@ -203,7 +203,6 @@ class RESTWP {
 			'duration'    => $duration,
 		];
 
-		$status['completed'] = ( $status['scanned'] === $status['total_pages'] ) ? true : false;
 		return $status;
 	}
 
@@ -222,7 +221,7 @@ class RESTWP {
 			'duration'            => 0,
 		];
 
-		$status['completed'] = $status['total'] === $status['warmed_count'] || ! empty( $prewarmup_stats['warmup_status_finish_time'] );
+		$status['completed'] = ! empty( $prewarmup_stats['warmup_status_finish_time'] );
 
 		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
 			$duration           = $prewarmup_stats['warmup_status_finish_time'] - $prewarmup_stats['scan_start_time'];
