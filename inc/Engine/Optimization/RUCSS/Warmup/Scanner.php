@@ -124,7 +124,7 @@ class Scanner {
 	 * @return void
 	 */
 	private function set_items() {
-		$this->items['front_page'] = [
+		$this->items[ home_url( '/' ) ] = [
 			'type' => 'front_page',
 			'url'  => home_url( '/' ),
 		];
@@ -136,7 +136,7 @@ class Scanner {
 			&&
 			! empty( $page_for_posts )
 		) {
-			$this->items['home'] = [
+			$this->items[ get_permalink( $page_for_posts ) ] = [
 				'type' => 'home',
 				'url'  => get_permalink( $page_for_posts ),
 			];
@@ -145,7 +145,7 @@ class Scanner {
 		$post_types = $this->get_public_post_types();
 
 		foreach ( $post_types as $post_type ) {
-			$this->items[ $post_type->post_type ] = [
+			$this->items[ get_permalink( $post_type->ID ) ] = [
 				'type' => $post_type->post_type,
 				'url'  => get_permalink( $post_type->ID ),
 			];
@@ -154,7 +154,7 @@ class Scanner {
 		$taxonomies = $this->get_public_taxonomies();
 
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->items[ $taxonomy->taxonomy ] = [
+			$this->items[ get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ) ] = [
 				'type' => $taxonomy->taxonomy,
 				'url'  => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
 			];
