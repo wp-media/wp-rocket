@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import ProgressBar from '../components/progress_bar';
+import ProgressBar from '../components/progress-bar';
 
 export default class RUCSSStatus extends Component {
 	constructor(props) {

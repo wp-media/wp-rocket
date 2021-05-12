@@ -48,7 +48,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Current page url that has the current resource.
 	 *
-	 * @var string
+	 * @var array
 	 */
 	private $page_urls = [];
 
@@ -127,6 +127,11 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return;
 		}
 
+		/**
+		 * Fires when the resource fetcher process is complete
+		 *
+		 * @since 3.9
+		 */
 		do_action( 'rocket_rucss_file_changed' );
 	}
 

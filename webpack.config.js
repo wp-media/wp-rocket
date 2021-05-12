@@ -6,7 +6,7 @@ module.exports = (env, argv) => {
   return {
 
     entry: {
-      'rucss_progress_bar': path.resolve(__dirname, 'src/js/react/rucss_progress_bar.js'),
+      'rucss-progress-bar': path.resolve(__dirname, 'src/js/react/rucss-progress-bar.js'),
     },
 
     output: {
