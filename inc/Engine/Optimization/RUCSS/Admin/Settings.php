@@ -108,4 +108,18 @@ class Settings {
 			]
 		);
 	}
+
+	/**
+	 * Displays the RUCSS progressbar
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function display_progress_bar() {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--children"></div>';
+	}
 }

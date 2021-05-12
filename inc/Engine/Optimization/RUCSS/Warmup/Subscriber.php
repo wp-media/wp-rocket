@@ -69,12 +69,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer'                  => [ 'collect_resources', 11 ],
-			'rest_api_init'                  => 'register_routes',
-			'init'                           => 'check_warmup_status',
-			'admin_notices'                  => 'prewarmup_result_notice',
-			'rocket_rucss_prewarmup_error'   => 'prepare_error_notice',
-			'rocket_rucss_prewarmup_success' => 'prepare_success_notice',
+			'rocket_buffer' => [ 'collect_resources', 11 ],
+			'rest_api_init' => 'register_routes',
+			'init'          => [
+				[ 'update_warmup_status_while_has_items', 10 ],
+				[ 'activate_optimization_on_warmup_completion', 11 ],
+				[ 'auto_stop_warmup_after_1hour', 12 ],
+			],
 			// The following priority should be less than 10.
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
 		];
@@ -120,7 +121,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function check_warmup_status() {
+	public function update_warmup_status_while_has_items() {
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
@@ -130,64 +131,37 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->status_checker->check_warmup_status();
+		$this->status_checker->update_warmup_status_while_has_items();
 	}
 
 	/**
-	 * Displays the prewarmup result notice
+	 * Checks the is prewarmup process is completed.
 	 *
 	 * @since 3.9
 	 *
 	 * @return void
 	 */
-	public function prewarmup_result_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+	public function activate_optimization_on_warmup_completion() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 
-		$screen = get_current_screen();
-
-		if (
-			! isset( $screen->id )
-			||
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-
-		$notice = get_transient( 'rocket_rucss_prewarmup_notice' );
-
-		if ( ! $notice ) {
-			return;
-		}
-
-		delete_transient( 'rocket_rucss_prewarmup_notice' );
-
-		rocket_notice_html(
-			$notice
-		);
+		$this->status_checker->activate_optimization_on_warmup_completion();
 	}
 
 	/**
-	 * Prepares the success transient to be used for the RUCSS prewarmup notice
+	 * Automatically stops the prewarmup process is it passed more than 1 hour.
 	 *
 	 * @since 3.9
 	 *
 	 * @return void
 	 */
-	public function prepare_success_notice() {
-		$this->status_checker->prepare_success_notice();
-	}
+	public function auto_stop_warmup_after_1hour() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
 
-	/**
-	 * Prepares the error transient to be used for the RUCSS prewarmup notice
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function prepare_error_notice() {
-		$this->status_checker->prepare_error_notice();
+		$this->status_checker->auto_stop_warmup_after_1hour();
 	}
 
 	/**

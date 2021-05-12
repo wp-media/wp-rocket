@@ -67,7 +67,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 
@@ -85,7 +86,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
 			->addArgument( $this->getContainer()->get( 'local_cache' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 
 		$this->getContainer()->share( 'rucss_warmup_restwp', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP' )
 			->addArgument( $this->getContainer()->get( 'options' ) )

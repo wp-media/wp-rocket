@@ -8,6 +8,21 @@ use WP_Rocket\Admin\Options;
 
 class ScannerProcess extends WP_Rocket_WP_Background_Process {
 	/**
+	 * Background process action name.
+	 *
+	 * @var string
+	 */
+	protected $action = 'rucss_warmup_scanner';
+
+	/**
+	 * Background process prefix.
+	 *
+	 * @var string
+	 */
+
+	protected $prefix = 'rocket';
+
+	/**
 	 * Resource fetcher instance
 	 *
 	 * @var Resource Fetcher
@@ -55,14 +70,16 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 			]
 		);
 
+		$item['is_error'] = false;
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return false;
+			$item['is_error'] = true;
 		}
 
 		$html = wp_remote_retrieve_body( $response );
 
 		if ( empty( $html ) ) {
-			return false;
+			$item['is_error'] = true;
 		}
 
 		$this->resource_fetcher->data(
@@ -70,14 +87,14 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 				'html'      => $html,
 				'prewarmup' => 1,
 				'page_url'  => $item['url'],
+				'is_error'  => $item['is_error'],
 			]
 		)->dispatch();
 
-		$item['is_scanned'] = true;
-		$option             = $this->options_api->get( 'resources_scanner', [] );
-		$option[]           = $item;
+		$option   = $this->options_api->get( 'resources_scanner_scanned', [] );
+		$option[] = $item['url'];
 
-		$this->options_api->set( 'resources_scanner', $option );
+		$this->options_api->set( 'resources_scanner_scanned', array_unique( $option ) );
 
 		return false;
 	}

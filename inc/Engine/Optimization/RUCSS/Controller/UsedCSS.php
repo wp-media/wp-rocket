@@ -126,7 +126,9 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( get_option( 'wp_rocket_prewarmup_stats', false ) ) {
+		$wp_rocket_prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats', [] );
+		$allow_optimization        = $wp_rocket_prewarmup_stats['allow_optimization'] ?? false;
+		if ( ! $allow_optimization ) {
 			return false;
 		}
 

@@ -45,12 +45,27 @@ class Checker extends AbstractAPIClient {
 		$this->resources_query = $resources_query;
 	}
 
+
 	/**
-	 * Checks warmup status for resources in the prewarmup process
+	 * Update Warmup process on completion.
 	 *
 	 * @return void
 	 */
-	public function check_warmup_status() {
+	private function set_warmup_status_completed() {
+		$this->set_warmup_status_finish_time();
+		$this->set_warmup_force_optimization();
+	}
+
+	/**
+	 * Automatically stop warmup process after 1 hour in case the process did not finished.
+	 *
+	 * @return void
+	 */
+	public function auto_stop_warmup_after_1hour() {
+		if ( $this->is_warmup_finished() ) {
+			return;
+		}
+
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
 		if ( empty( $prewarmup_stats['scan_start_time'] ) ) {
@@ -58,32 +73,80 @@ class Checker extends AbstractAPIClient {
 		}
 
 		if ( time() > strtotime( '+1 hour', (int) $prewarmup_stats['scan_start_time'] ) ) {
-			/**
-			 * Fires this action when the prewarmup lifespan is expired
-			 *
-			 * @since 3.9
-			 */
-			do_action( 'rocket_rucss_prewarmup_error' );
+			$this->set_warmup_status_completed();
+		}
+	}
 
-			rocket_clean_domain();
-			$this->options_api->delete( 'prewarmup_stats' );
+	/**
+	 * Activate RUCSS and set warmup finish time when warmup is completed.
+	 *
+	 * @return void
+	 */
+	public function activate_optimization_on_warmup_completion() {
+		// Bailout in case scanner fetching is not finished.
+		if ( ! $this->is_scanner_fetching_finished() ) {
+			return;
+		}
 
+		$items = $this->resources_query->get_waiting_prewarmup_items();
+
+		if ( ! empty( $items ) ) {
+			return;
+		}
+
+		$this->set_warmup_status_completed();
+
+		rocket_clean_domain();
+	}
+
+	/**
+	 * Check if Warmup is finished.
+	 * Warmup is finished wtih allow_optimization is true.
+	 *
+	 * @return boolean
+	 */
+	public function is_warmup_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+		return ! empty( $prewarmup_stats['allow_optimization'] );
+	}
+
+	/**
+	 * Check if Scanner Fetching step is completed.
+	 * Fetching is completed if the scan_start_time is set and fetch_finish_time is set.
+	 *
+	 * @return boolean
+	 */
+	private function is_scanner_fetching_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		return ! empty( $prewarmup_stats['fetch_finish_time'] ) && $this->is_scanner_scan_finished();
+	}
+
+	/**
+	 * Check if Scanner Scan step is completed.
+	 * Scan is finished if the scan_start_time is set.
+	 *
+	 * @return boolean
+	 */
+	private function is_scanner_scan_finished(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		return ! empty( $prewarmup_stats['scan_start_time'] );
+	}
+
+	/**
+	 * Checks warmup status for resources in the prewarmup process.
+	 *
+	 * @return void
+	 */
+	public function update_warmup_status_while_has_items() {
+		if ( $this->is_warmup_finished() || ! $this->is_scanner_fetching_finished() ) {
 			return;
 		}
 
 		$items = $this->resources_query->get_waiting_prewarmup_items();
 
 		if ( empty( $items ) ) {
-			/**
-			 * Fires this action when the prewarmup is complete
-			 *
-			 * @since 3.9
-			 */
-			do_action( 'rocket_rucss_prewarmup_success' );
-
-			rocket_clean_domain();
-			$this->options_api->delete( 'prewarmup_stats' );
-
 			return;
 		}
 
@@ -100,55 +163,6 @@ class Checker extends AbstractAPIClient {
 		}
 
 		$this->update_from_response();
-	}
-
-	/**
-	 * Prepares the success transient to be used for the RUCSS prewarmup notice
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function prepare_success_notice() {
-		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup is complete!', 'rocket' ) . '</p>';
-
-		$notice_data = [
-			'message' => $message,
-		];
-
-		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
-	}
-
-	/**
-	 * Prepares the error transient to be used for the RUCSS prewarmup notice
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function prepare_error_notice() {
-		$items = $this->resources_query->get_waiting_prewarmup_items();
-
-		$urls = wp_list_pluck( $items, 'url' );
-
-		$message = '<p>' . __( 'WP Rocket: Remove Unused CSS warmup was not fully completed. You can find the resources that were not warmed-up below:', 'rocket' ) . '</p>';
-
-		if ( ! empty( $urls ) ) {
-			$message .= '<ul>';
-
-			foreach ( $urls as $url ) {
-				$message .= '<li>' . $url . '</li>';
-			}
-
-			$message .= '</ul>';
-		}
-
-		$notice_data = [
-			'status'  => 'warning',
-			'message' => $message,
-		];
-
-		set_transient( 'rocket_rucss_prewarmup_notice', $notice_data, HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -197,5 +211,28 @@ class Checker extends AbstractAPIClient {
 
 			$this->resources_query->update_warmup_status( $url );
 		}
+	}
+
+	/**
+	 * Set warmup Status process finish time.
+	 */
+	private function set_warmup_status_finish_time() {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
+		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
+			return;
+		}
+
+		$prewarmup_stats['warmup_status_finish_time'] = time();
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+	}
+
+	/**
+	 * Set warmup force optimization.
+	 */
+	private function set_warmup_force_optimization() {
+		$prewarmup_stats                       = $this->options_api->get( 'prewarmup_stats', [] );
+		$prewarmup_stats['allow_optimization'] = true;
+		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 	}
 }

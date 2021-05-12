@@ -98,14 +98,18 @@ class Scanner {
 	private function dispatcher() {
 		$this->set_items();
 
-		$this->options_api->delete( 'resources_scanner' );
+		$this->options_api->set( 'resources_scanner', $this->items );
+		$this->options_api->set( 'resources_scanner_scanned', [] );
+		$this->options_api->set( 'resources_scanner_fetched', [] );
 		$this->resources_table->reset_prewarmup_fields();
 
 		array_map( [ $this->process, 'push_to_queue' ], $this->items );
 
 		$prewarmup_stats = [
-			'scan_start_time'   => time(),
-			'fetch_finish_time' => null,
+			'scan_start_time'         => time(),
+			'fetch_finish_time'       => null,
+			'resources_scanner_count' => count( $this->items ),
+			'allow_optimization'      => false,
 		];
 		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
 
@@ -120,10 +124,11 @@ class Scanner {
 	 * @return void
 	 */
 	private function set_items() {
-		$this->items['front_page'] = [
-			'type'       => 'front_page',
-			'url'        => home_url( '/' ),
-			'is_scanned' => false,
+		$home_url = home_url( '/' );
+
+		$this->items[ $home_url ] = [
+			'type' => 'front_page',
+			'url'  => $home_url,
 		];
 
 		$page_for_posts = get_option( 'page_for_posts' );
@@ -133,30 +138,33 @@ class Scanner {
 			&&
 			! empty( $page_for_posts )
 		) {
-			$this->items['home'] = [
-				'type'       => 'home',
-				'url'        => get_permalink( $page_for_posts ),
-				'is_scanned' => false,
+			$blog_url = get_permalink( $page_for_posts );
+
+			$this->items[ $blog_url ] = [
+				'type' => 'home',
+				'url'  => $blog_url,
 			];
 		}
 
 		$post_types = $this->get_public_post_types();
 
 		foreach ( $post_types as $post_type ) {
-			$this->items[ $post_type->post_type ] = [
-				'type'       => $post_type->post_type,
-				'url'        => get_permalink( $post_type->ID ),
-				'is_scanned' => false,
+			$post_type_url = get_permalink( $post_type->ID );
+
+			$this->items[ $post_type_url ] = [
+				'type' => $post_type->post_type,
+				'url'  => $post_type_url,
 			];
 		}
 
 		$taxonomies = $this->get_public_taxonomies();
 
 		foreach ( $taxonomies as $taxonomy ) {
-			$this->items[ $taxonomy->taxonomy ] = [
-				'type'       => $taxonomy->taxonomy,
-				'url'        => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
-				'is_scanned' => false,
+			$term_url = get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy );
+
+			$this->items[ $term_url ] = [
+				'type' => $taxonomy->taxonomy,
+				'url'  => $term_url,
 			];
 		}
 	}

@@ -96,7 +96,7 @@ class RESTWP {
 	 */
 	public function respond_status( WP_REST_Request $request ): WP_REST_Response {
 		if (
-			(bool) $this->options->get( 'remove_unused_css', 0 )
+			(bool) ! $this->options->get( 'remove_unused_css', 0 )
 		) {
 			return rest_ensure_response(
 				$this->return_error( __( 'Remove unused CSS option is disabled.', 'rocket' ) )
@@ -106,13 +106,14 @@ class RESTWP {
 		$resources_scanner_option = $this->options_api->get( 'resources_scanner', [] );
 		if ( empty( $resources_scanner_option ) ) {
 			return rest_ensure_response(
-				$this->return_error( __( 'Pre-Warmup process didn\'t start yet.', 'rocket' ) )
+				$this->return_error( __( 'Pre-Warmup process did not start yet.', 'rocket' ) )
 			);
 		}
 
 		$output = [
-			'scan_status'   => $this->get_scan_status( $resources_scanner_option ),
-			'warmup_status' => $this->get_warmup_status(),
+			'scan_status'        => $this->get_scan_status( $resources_scanner_option ),
+			'warmup_status'      => $this->get_warmup_status(),
+			'allow_optimization' => $this->get_allow_optimization(),
 		];
 
 		return rest_ensure_response(
@@ -156,6 +157,16 @@ class RESTWP {
 	}
 
 	/**
+	 * Get allow RUCSS optimization.
+	 *
+	 * @return boolean
+	 */
+	private function get_allow_optimization(): bool {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+		return (bool) $prewarmup_stats['allow_optimization'];
+	}
+
+	/**
 	 * Get scan status array based on the passed option array.
 	 *
 	 * @param array $resources_scanner_option Option array that has scanning details.
@@ -163,21 +174,23 @@ class RESTWP {
 	 * @return array
 	 */
 	private function get_scan_status( array $resources_scanner_option ) : array {
-		$status = [
-			'total_pages' => count( $resources_scanner_option ),
-			'scanned'     => 0,
-			'fetched'     => 0,
-		];
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
-		foreach ( $resources_scanner_option as $item ) {
-			if ( ! empty( $item['is_scanned'] ) ) {
-				$status['scanned']++;
-			}
-
-			if ( ! empty( $item['is_fetched'] ) ) {
-				$status['fetched']++;
-			}
+		$duration = time() - $prewarmup_stats['scan_start_time'];
+		if ( ! empty( $prewarmup_stats['fetch_finish_time'] ) ) {
+			$duration = $prewarmup_stats['fetch_finish_time'] - $prewarmup_stats['scan_start_time'];
 		}
+
+		$scanned_pages = $this->options_api->get( 'resources_scanner_scanned', [] );
+		$fetched_pages = $this->options_api->get( 'resources_scanner_fetched', [] );
+
+		$status = [
+			'total_pages' => (int) $prewarmup_stats['resources_scanner_count'],
+			'scanned'     => count( $scanned_pages ),
+			'fetched'     => count( $fetched_pages ),
+			'completed'   => ! empty( $prewarmup_stats['fetch_finish_time'] ),
+			'duration'    => $duration,
+		];
 
 		return $status;
 	}
@@ -188,14 +201,28 @@ class RESTWP {
 	 * @return array
 	 */
 	private function get_warmup_status() : array {
+		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
+
 		$status = [
 			'total'               => $this->resources_query->get_prewarmup_total_count(),
 			'warmed_count'        => $this->resources_query->get_prewarmup_warmed_count(),
 			'notwarmed_resources' => [],
+			'duration'            => 0,
 		];
 
+		$status['completed'] = ! empty( $prewarmup_stats['warmup_status_finish_time'] );
+
+		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
+			$duration           = $prewarmup_stats['warmup_status_finish_time'] - $prewarmup_stats['scan_start_time'];
+			$status['duration'] = $duration;
+		} else {
+			$status['duration'] = time() - $prewarmup_stats['scan_start_time'];
+		}
+
 		if ( $status['warmed_count'] < $status['total'] ) {
-			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls() );
+			$type = (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ) ? '' : 'css';
+
+			$status['notwarmed_resources'] = array_values( $this->resources_query->get_prewarmup_notwarmed_urls( $type ) );
 		}
 
 		return $status;

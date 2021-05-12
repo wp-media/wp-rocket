@@ -70,6 +70,8 @@ class ResourcesQuery extends Query {
 	/**
 	 * Create new resource row or update its contents if not created before.
 	 *
+	 * @since 3.9
+	 *
 	 * @param array $resource Resource array.
 	 *
 	 * @return bool
@@ -145,6 +147,8 @@ class ResourcesQuery extends Query {
 	/**
 	 * Get prewarmup total resources count.
 	 *
+	 * @since 3.9
+	 *
 	 * @return int
 	 */
 	public function get_prewarmup_total_count(): int {
@@ -158,6 +162,8 @@ class ResourcesQuery extends Query {
 
 	/**
 	 * Get prewarmup warmed resources count.
+	 *
+	 * @since 3.9
 	 *
 	 * @return int
 	 */
@@ -174,16 +180,24 @@ class ResourcesQuery extends Query {
 	/**
 	 * Get prewarmup NOT warmed resources' urls.
 	 *
+	 * @since 3.9
+	 *
+	 * @param string $type Type of the not warmed URLS (css/js/empty for both).
+	 *
 	 * @return array|string[]
 	 */
-	public function get_prewarmup_notwarmed_urls(): array {
-		return $this->query(
-			[
-				'fields'        => 'url',
-				'prewarmup'     => 1,
-				'warmup_status' => 0,
-			]
-		);
+	public function get_prewarmup_notwarmed_urls( string $type = '' ): array {
+		$params = [
+			'fields'        => 'url',
+			'prewarmup'     => 1,
+			'warmup_status' => 0,
+		];
+
+		if ( ! empty( $type ) ) {
+			$params['type'] = $type;
+		}
+
+		return $this->query( $params );
 	}
 
 	/**
