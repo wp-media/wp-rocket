@@ -117,6 +117,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			$is_error = true;
 		}
 
+		// Send pages with error to background process to be saved into DB.
 		if ( $is_error ) {
 			$resource              = [];
 			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing

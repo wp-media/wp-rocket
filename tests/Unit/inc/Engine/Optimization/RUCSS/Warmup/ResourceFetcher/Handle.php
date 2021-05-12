@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher::handle
  *
- * @group  RUCSS
+ * @group  RUCSSX
  */
 class Test_Handle extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Warmup/ResourceFetcher/Handle.php';
@@ -32,6 +32,12 @@ class Test_Handle extends FilesystemTestCase {
 		Functions\when( 'wp_unslash' )->alias(
 			function ( $value ) {
 				return stripslashes( $value );
+			}
+		);
+
+		Functions\when( 'esc_url_raw' )->alias(
+			function ( $value ) {
+				return $value;
 			}
 		);
 
@@ -112,7 +118,9 @@ class Test_Handle extends FilesystemTestCase {
 		}
 
 		$_POST = [
-			'html' => $input['html'],
+			'html'     => $input['html'],
+			'is_error' => $input['is_error'],
+			'page_url' => $input['page_url'],
 		];
 
 		Functions\when( 'set_url_scheme')->alias( function ( $url ) {

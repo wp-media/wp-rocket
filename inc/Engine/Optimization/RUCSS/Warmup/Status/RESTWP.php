@@ -167,17 +167,6 @@ class RESTWP {
 	}
 
 	/**
-	 * Set allow RUCSS optimization.
-	 *
-	 * @return void
-	 */
-	private function set_allow_optimization() {
-		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
-		$prewarmup_stats['allow_optimization']        = true;
-		$prewarmup_stats['warmup_status_finish_time'] = time();
-		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
-	}
-	/**
 	 * Get scan status array based on the passed option array.
 	 *
 	 * @param array $resources_scanner_option Option array that has scanning details.
