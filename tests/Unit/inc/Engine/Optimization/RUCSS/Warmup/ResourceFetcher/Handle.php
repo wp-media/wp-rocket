@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher::handle
  *
- * @group  RUCSSX
+ * @group  RUCSS
  */
 class Test_Handle extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Warmup/ResourceFetcher/Handle.php';
