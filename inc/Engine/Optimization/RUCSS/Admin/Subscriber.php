@@ -84,12 +84,19 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Enqueue React params and Progress bar.
 	 *
+	 * @since 3.9
+	 *
 	 * @return void
 	 */
 	public function add_admin_js() {
-		// Retun on all pages but WP Rocket settings page.
+		// Return on all pages except WP Rocket settings page.
 		$screen = get_current_screen();
-		if ( 'settings_page_wprocket' !== $screen->id ) {
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
 			return;
 		}
 
@@ -97,7 +104,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_enqueue_script( 'wpr-rucss-progress-bar', WP_ROCKET_ASSETS_JS_URL . 'react/rucss-progress-bar.js', [ 'react-dom' ], WP_ROCKET_VERSION, true );
+		wp_enqueue_script( 'wpr-rucss-progress-bar', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'react/rucss-progress-bar.js', [ 'react-dom' ], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
 
 		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
 
@@ -117,6 +124,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Cron callback for deleting old rows in both table databases.
 	 * Deletes used css files and also cache file for old used css.
+	 *
+	 * @since 3.9
 	 *
 	 * @return void
 	 */
@@ -139,6 +148,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Schedules cron for used CSS.
 	 *
+	 * @since 3.9
+	 *
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
@@ -157,6 +168,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Delete used_css on Update Post or Delete post.
+	 *
+	 * @since 3.9
 	 *
 	 * @param int $post_id The post ID.
 	 *
@@ -178,6 +191,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Truncate RUCSS used_css DB table.
+	 *
+	 * @since 3.9
 	 *
 	 * @return void
 	 */
@@ -249,6 +264,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Truncate used_css table when clicking on the dashboard button.
 	 *
 	 * @since 3.9
+	 *
+	 * @return void
 	 */
 	public function truncate_used_css_handler() {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_clear_usedcss' ) ) {
@@ -289,6 +306,10 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Show admin notice after clearing used_css table.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
 	 */
 	public function clear_usedcss_result() {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
@@ -338,9 +359,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Array with UI translations.
 	 *
+	 * @since 3.9
+	 *
 	 * @return array
 	 */
-	private function ui_translations() : array {
+	private function ui_translations(): array {
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
