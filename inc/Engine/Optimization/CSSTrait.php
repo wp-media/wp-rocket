@@ -169,6 +169,11 @@ trait CSSTrait {
 			$type = ( strpos( $match[0], '@import' ) === 0 ? 'import' : 'url' );
 
 			$url = $match['path'];
+
+			if ( preg_match( '/^#/', $url ) ) {
+				continue;
+			}
+
 			if ( ! preg_match( '/^(data:|https?:|\\/)/', $url ) ) {
 				// attempting to interpret GET-params makes no sense, so let's discard them for awhile.
 				$params = strrchr( $url, '?' );
