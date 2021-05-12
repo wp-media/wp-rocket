@@ -38,30 +38,48 @@ Text Domain: neutro
 	],
 
 	'test_data' => [
-		'shouldBailoutWithNoHTMLContent' => [
+		'shouldSendURLWithNoHTMLContent' => [
 			'input'    => [
 				'html' => '',
+				'is_error'  => true,
+				'page_url'  => 'http://example.org/path/to/error/page/',
 			],
 			'expected' => [
-				'resources' => [],
+				'resources' => [
+					[
+						'is_error'  => true,
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/to/error/page/',
+					],
+				],
 			],
 		],
 
-		'shouldBailoutWithNoResourcesInHTML' => [
+		'shouldSendURLWithNoResourcesInHTML' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title></head><body>Content here</body></html>',
+				'html'     => '<!DOCTYPE html><html><head><title></title></head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
 			],
 			'expected' => [
-				'resources' => [],
+				'resources' => [
+					[
+						'is_error'  => true,
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/',
+					],
+				],
 			],
 		],
 
 		'shouldBailoutWithNotFoundResourcesOrEmptyContent' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-empty.css">' .
-						  '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-notfound.css">' .
-						  '</head><body>Content here</body></html>',
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+						      '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-empty.css">' .
+						      '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-notfound.css">' .
+						      '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
 			],
 			'expected' => [
 				'resources' => [
@@ -71,7 +89,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/css/style-notfound.css',
@@ -79,7 +98,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					]
 				],
 			],
@@ -99,6 +119,8 @@ Text Domain: neutro
 						  '<script type="application/ld+json" src="http://example.org/scripts/script1.js"></script>' .
 						  '<script src="http://example.org/scripts/script2.js"></script>' .
 						  '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
 			],
 			'expected' => [
 				'resources' => [
@@ -108,7 +130,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/css/style2.css',
@@ -116,14 +139,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script2.js',
 						'content'   => 'var second="content 2"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					]
 				],
 			],
@@ -131,10 +156,12 @@ Text Domain: neutro
 
 		'shouldQueueResourcesWithMedias' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123" media="all">' .
-						  '<link media="print" rel="stylesheet" type="text/css" href="http://example.org/css/style2.css">' .
-						  '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123" media="all">' .
+								'<link media="print" rel="stylesheet" type="text/css" href="http://example.org/css/style2.css">' .
+								'</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
@@ -144,7 +171,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/css/style2.css',
@@ -152,7 +180,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'print',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					]
 
 				],
@@ -161,10 +190,12 @@ Text Domain: neutro
 
 		'shouldQueueResourcesWithoutSchema' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="//example.org/css/style1.css?ver=123">' .
-						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
-						  '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="//example.org/css/style1.css?ver=123">' .
+								'<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+								'</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
@@ -174,14 +205,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
 						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					]
 				],
 			],
@@ -189,10 +222,12 @@ Text Domain: neutro
 
 		'shouldFindAndQueueResourcesFoundFromCSSImport' => [
 			'input' => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimport.css?ver=123">' .
-						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
-						  '</head><body>Content here</body></html>'
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimport.css?ver=123">' .
+								'<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+								'</head><body>Content here</body></html>'
 			],
 			'expected' => [
 				'resources' => [
@@ -202,14 +237,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
 						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],
@@ -217,10 +254,12 @@ Text Domain: neutro
 
 		'shouldFindAndQueueResourcesWithMediaQueryFoundFromCSSImport' => [
 			'input' => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimportedmqs.css?ver=123">' .
-						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
-						  '</head><body>Content here</body></html>'
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimportedmqs.css?ver=123">' .
+								'<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+								'</head><body>Content here</body></html>'
 			],
 			'expected' => [
 				'resources' => [
@@ -230,14 +269,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
 						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],
@@ -245,10 +286,12 @@ Text Domain: neutro
 
 		'shouldFindAndQueueResourcesWithRelativePathCSSImport' => [
 			'input' => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithrelativepathimport.css?ver=123">' .
-						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
-						  '</head><body>Content here</body></html>'
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithrelativepathimport.css?ver=123">' .
+								'<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+								'</head><body>Content here</body></html>'
 			],
 			'expected' => [
 				'resources' => [
@@ -258,14 +301,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
 						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],
@@ -273,10 +318,12 @@ Text Domain: neutro
 
 		'shouldNotRequeueResourcesFoundFromRecursiveCSSImport' => [
 			'input' => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-						  '<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimport-recursion.css?ver=123">' .
-						  '<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
-						  '</head><body>Content here</body></html>'
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="//example.org/css/stylewithimport-recursion.css?ver=123">' .
+								'<script type="text/javascript" src="//example.org/scripts/script1.js"></script>' .
+								'</head><body>Content here</body></html>'
 			],
 			'expected' => [
 				'resources' => [
@@ -286,14 +333,16 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
 						'content'   => 'var first="content 1"',
 						'type'      => 'js',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],
@@ -301,9 +350,11 @@ Text Domain: neutro
 
 		'shouldQueueResourcesWithSpecialCharacters' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123&#038;q=5">' .
-				          '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="http://example.org/css/style1.css?ver=123&#038;q=5">' .
+								'</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
@@ -313,7 +364,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],
@@ -321,9 +373,11 @@ Text Domain: neutro
 
 		'shouldQueueResourcesWithCommentContentOnly' => [
 			'input'    => [
-				'html' => '<!DOCTYPE html><html><head><title></title>' .
-				          '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
-				          '</head><body>Content here</body></html>',
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+								'<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
+								'</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
@@ -333,7 +387,8 @@ Text Domain: neutro
 						'type'      => 'css',
 						'media'     => 'all',
 						'prewarmup' => 0,
-						'page_url'  => '',
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
 					],
 				],
 			],

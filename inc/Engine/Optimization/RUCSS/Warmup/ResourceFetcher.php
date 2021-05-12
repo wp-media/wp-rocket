@@ -106,32 +106,35 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		$is_error = ! empty( $_POST['is_error'] ) ? (bool) $_POST['is_error'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$page_url = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		if ( $is_error ) {
-			$fetched_pages              = $this->options_api->get( 'resources_scanner_fetched', [] );
-			$fetched_pages[ $page_url ] = [
-				'url'      => $page_url,
-				'is_error' => true,
-			];
-
-			$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
-			return;
-		}
-
 		if ( empty( $html ) ) {
-			return;
+			$is_error = true;
 		}
 
 		$this->find_resources( $html, 'js' );
 		$this->find_resources( $html, 'css' );
 
 		if ( empty( $this->resources ) ) {
-			return;
+			$is_error = true;
+		}
+
+		// Send pages with error to background process to be saved into DB.
+		if ( $is_error ) {
+			$resource              = [];
+			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$resource['page_url']  = $page_url;
+			$resource['is_error']  = $is_error;
+
+			$this->process->push_to_queue( $resource );
 		}
 
 		// Send resources to the background process to be saved into DB.
 		foreach ( $this->resources as $resource ) {
+			if ( empty( $page_url ) ) {
+				continue;
+			}
 			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$resource['page_url']  = $page_url;
+			$resource['is_error']  = $is_error;
 
 			$this->process->push_to_queue( $resource );
 		}

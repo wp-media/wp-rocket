@@ -167,17 +167,6 @@ class RESTWP {
 	}
 
 	/**
-	 * Set allow RUCSS optimization.
-	 *
-	 * @return void
-	 */
-	private function set_allow_optimization() {
-		$prewarmup_stats                              = $this->options_api->get( 'prewarmup_stats', [] );
-		$prewarmup_stats['allow_optimization']        = true;
-		$prewarmup_stats['warmup_status_finish_time'] = time();
-		$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
-	}
-	/**
 	 * Get scan status array based on the passed option array.
 	 *
 	 * @param array $resources_scanner_option Option array that has scanning details.
@@ -203,7 +192,6 @@ class RESTWP {
 			'duration'    => $duration,
 		];
 
-		$status['completed'] = ( $status['scanned'] === $status['total_pages'] ) ? true : false;
 		return $status;
 	}
 
@@ -222,7 +210,7 @@ class RESTWP {
 			'duration'            => 0,
 		];
 
-		$status['completed'] = $status['total'] === $status['warmed_count'] || ! empty( $prewarmup_stats['warmup_status_finish_time'] );
+		$status['completed'] = ! empty( $prewarmup_stats['warmup_status_finish_time'] );
 
 		if ( ! empty( $prewarmup_stats['warmup_status_finish_time'] ) ) {
 			$duration           = $prewarmup_stats['warmup_status_finish_time'] - $prewarmup_stats['scan_start_time'];

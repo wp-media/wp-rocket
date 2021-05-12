@@ -35,6 +35,12 @@ class Test_Handle extends FilesystemTestCase {
 			}
 		);
 
+		Functions\when( 'esc_url_raw' )->alias(
+			function ( $value ) {
+				return $value;
+			}
+		);
+
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
@@ -112,7 +118,9 @@ class Test_Handle extends FilesystemTestCase {
 		}
 
 		$_POST = [
-			'html' => $input['html'],
+			'html'     => $input['html'],
+			'is_error' => $input['is_error'],
+			'page_url' => $input['page_url'],
 		];
 
 		Functions\when( 'set_url_scheme')->alias( function ( $url ) {
