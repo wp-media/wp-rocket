@@ -82,7 +82,7 @@ gulp.task('watch', function () {
     return watch();
 });
 
-gulp.task('default', ['watch', 'sass', 'sass:watch']);
+gulp.task('default', gulp.series('watch', 'sass', 'sass:watch'));
 
 /**
  * Compiles a standalone script file.

@@ -29,6 +29,8 @@ class HTML {
 		'lazyLoadOptions',
 		'lazyLoadThumb',
 		'wp-rocket/assets/js/lazyload/(.*)',
+		'et_core_page_resource_fallback',
+		'js-extra',
 	];
 
 	/**
@@ -162,10 +164,10 @@ class HTML {
 			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
 
 			if ( null !== $delay_attr ) {
-				$delay_js = str_replace( $matches['attr'], $delay_attr, $matches[0] );
+				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
 			}
 		}
 
-		return str_replace( '<script', '<script type="rocketlazyloadscript"', $delay_js );
+		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
 }

@@ -37,7 +37,7 @@ return [
 			'delay_js_exclusions'   => [
 				'(?:/wp-content|/wp-includes/)(.*)',
 				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(extra|after)',
+				'js-(before|after)',
 			],
 		],
 	],

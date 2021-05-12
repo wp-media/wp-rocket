@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
+use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket_WP_Async_Request;
+use WP_Rocket\Admin\Options;
 
 class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
@@ -70,16 +72,25 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	];
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Resource constructor.
 	 *
 	 * @param AssetsLocalCache       $local_cache Local cache instance.
 	 * @param ResourceFetcherProcess $process     Resource fetcher process instance.
+	 * @param Options                $options_api Options API instance.
 	 */
-	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process ) {
+	public function __construct( AssetsLocalCache $local_cache, ResourceFetcherProcess $process, Options $options_api ) {
 		parent::__construct();
 
 		$this->local_cache = $local_cache;
 		$this->process     = $process;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -91,21 +102,40 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 */
 	public function handle() {
 		// Grab resources from page HTML.
-		$html = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$html     = ! empty( $_POST['html'] ) ? wp_unslash( $_POST['html'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$is_error = ! empty( $_POST['is_error'] ) ? (bool) $_POST['is_error'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$page_url = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( empty( $html ) ) {
-			return;
+			$is_error = true;
 		}
 
 		$this->find_resources( $html, 'js' );
 		$this->find_resources( $html, 'css' );
 
 		if ( empty( $this->resources ) ) {
-			return;
+			$is_error = true;
+		}
+
+		// Send pages with error to background process to be saved into DB.
+		if ( $is_error ) {
+			$resource              = [];
+			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$resource['page_url']  = $page_url;
+			$resource['is_error']  = $is_error;
+
+			$this->process->push_to_queue( $resource );
 		}
 
 		// Send resources to the background process to be saved into DB.
 		foreach ( $this->resources as $resource ) {
+			if ( empty( $page_url ) ) {
+				continue;
+			}
+			$resource['prewarmup'] = (int) ! empty( $_POST['prewarmup'] );// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$resource['page_url']  = $page_url;
+			$resource['is_error']  = $is_error;
+
 			$this->process->push_to_queue( $resource );
 		}
 
@@ -141,7 +171,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			list( $path, $contents ) = $this->get_url_details( $resource['url'] );
+			list( $path, $contents ) = $this->get_url_details( $resource['url'], $type );
 
 			if ( empty( $contents ) ) {
 				continue;
@@ -149,7 +179,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 			$this->resources[ $path ] = [
 				'url'     => $this->normalize_fullurl( $resource['url'], false ),
-				'content' => 'css' === $type ? $this->prepare_css_content( $path, $contents ) : $contents,
+				'content' => $contents,
 				'type'    => $type,
 			];
 
@@ -171,6 +201,19 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	private function prepare_css_content( string $path, string $contents ) : string {
 		$contents = trim( $this->rewrite_paths( $path, $path, $contents ) );
 		$minifier = new MinifyCSS( $contents );
+
+		return $minifier->minify();
+	}
+
+	/**
+	 * Minify and prepare JS.
+	 *
+	 * @param string $contents Contents of the JS file.
+	 *
+	 * @return string
+	 */
+	private function prepare_js_content( string $contents ) : string {
+		$minifier = new MinifyJS( $contents );
 
 		return $minifier->minify();
 	}
@@ -240,10 +283,11 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * Get url file path and contents.
 	 *
 	 * @param string $url File url.
+	 * @param string $type File type (css,js).
 	 *
 	 * @return array
 	 */
-	private function get_url_details( $url ) : array {
+	private function get_url_details( $url, string $type = 'css' ) : array {
 		$external_url = $this->is_external_file( $url );
 
 		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
@@ -261,6 +305,11 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		}
 
 		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
+
+		// Minify the content if it's there.
+		if ( $file_content ) {
+			$file_content = 'js' === $type ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $file_path, $file_content );
+		}
 
 		if ( ! $file_content ) {
 			Logger::error(

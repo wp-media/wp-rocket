@@ -32,6 +32,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resource_fetcher',
 		'rucss_resources_query',
 		'rucss_warmup_api_client',
+		'rucss_warmup_restwp',
+		'rucss_scanner',
+		'rucss_scanner_process',
+		'rucss_status_checker',
 	];
 
 	/**
@@ -63,7 +67,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 
@@ -76,14 +81,37 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'rucss_resource_fetcher_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcherProcess' )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_warmup_api_client' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_warmup_api_client' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 
 		$this->getContainer()->share( 'rucss_resource_fetcher', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ResourceFetcher' )
 			->addArgument( $this->getContainer()->get( 'local_cache' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher_process' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
+
+		$this->getContainer()->share( 'rucss_warmup_restwp', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\RESTWP' )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
+
+		$this->getContainer()->add( 'rucss_scanner_process', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\ScannerProcess' )
+			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
+		$this->getContainer()->add( 'rucss_scanner', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Scanner' )
+			->addArgument( $this->getContainer()->get( 'rucss_scanner_process' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_table' ) );
+
+		$this->getContainer()->add( 'rucss_status_checker', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker' )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) );
 
 		$this->getContainer()->share( 'rucss_warmup_subscriber', '\WP_Rocket\Engine\Optimization\RUCSS\Warmup\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_resource_fetcher' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_warmup_restwp' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_scanner' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_status_checker' ) );
 	}
 }

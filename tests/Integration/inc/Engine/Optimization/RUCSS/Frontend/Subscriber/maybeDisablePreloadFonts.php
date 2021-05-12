@@ -28,6 +28,8 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 			delete_post_meta( $this->post->ID, '_rocket_exclude_remove_unused_css', 1, true );
 		}
 
+		remove_filter( 'pre_option_wp_rocket_prewarmup_stats', [ $this, 'return_prewarmup_stats' ] );
+
 		parent::tearDown();
 	}
 
@@ -53,6 +55,8 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 			add_post_meta( $this->post->ID, '_rocket_exclude_remove_unused_css', 1, true );
 		}
 
+		add_filter( 'pre_option_wp_rocket_prewarmup_stats', [ $this, 'return_prewarmup_stats' ] );
+
 		$value = apply_filters( 'rocket_disable_preload_fonts', false );
 
 		if ( $expected ) {
@@ -68,5 +72,11 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 
 	public function rucss() {
 		return $this->rucss;
+	}
+
+	public function return_prewarmup_stats( $option_value ) {
+		return [
+			'allow_optimization' => true
+		];
 	}
 }
