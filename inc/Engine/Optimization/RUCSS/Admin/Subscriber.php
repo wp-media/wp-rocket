@@ -115,7 +115,7 @@ class Subscriber implements Subscriber_Interface {
 				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
 				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
 				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ),
-				'api_allow_optimization' => ! empty( $prewarmup_stats['allow_optimization'] ) ? (bool) $prewarmup_stats['allow_optimization'] : false,
+				'api_allow_optimization' => $prewarmup_stats['allow_optimization'] ?? false,
 				'wpr_rucss_translations' => $this->ui_translations(),
 			]
 		);
