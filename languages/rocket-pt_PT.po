@@ -312,7 +312,8 @@ msgid ""
 "automatically enabled this option for compatibility."
 msgstr ""
 "Foi detectada a utilização de um plugin que requer uma cache separada para "
-"dispositivos móveis, e activámos esta opção para garantir a compatibilidade."
+"dispositivos móveis, e foi activada esta opção para garantir a "
+"compatibilidade."
 
 #: inc/Engine/Admin/Settings/Page.php:461
 msgid "User Cache"
