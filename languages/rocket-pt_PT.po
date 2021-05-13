@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-05-12 18:01-0400\n"
+"POT-Creation-Date: 2021-05-13 15:06-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2021\n"
 "Language-Team: Portuguese (Portugal) (https://www.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -2264,8 +2264,8 @@ msgstr ""
 "páginas-chave."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:370
-msgid "Remove Unused CSS pre-processing is complete!"
-msgstr "O pré-processamento da remoção de CSS não utilizado está concluído!"
+msgid "Remove Unused CSS is complete!"
+msgstr "Foi concluída a remoção de CSS não utilizado!"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:371
 msgid "These files could not be processed:"
