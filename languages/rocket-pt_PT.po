@@ -2265,7 +2265,7 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:370
 msgid "Remove Unused CSS is complete!"
-msgstr "Foi concluída a remoção de CSS não utilizado!"
+msgstr "A remoção de CSS não utilizado foi concluída!"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:371
 msgid "These files could not be processed:"
