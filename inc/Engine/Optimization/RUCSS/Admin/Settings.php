@@ -120,6 +120,6 @@ class Settings {
 		if ( ! $this->is_enabled() ) {
 			return;
 		}
-		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--children"></div>';
+		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--children wpr-field--textarea"></div>';
 	}
 }

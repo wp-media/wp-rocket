@@ -71,6 +71,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer' => [ 'collect_resources', 11 ],
 			'rest_api_init' => 'register_routes',
+			'switch_theme'  => 'restart_warmup_on_theme_change',
 			'init'          => [
 				[ 'update_warmup_status_while_has_items', 10 ],
 				[ 'activate_optimization_on_warmup_completion', 11 ],
@@ -112,6 +113,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function start_scanner( $old_value, $value ) {
 		$this->scanner->start_scanner( $old_value, $value );
+	}
+
+	/**
+	 * Launches the scanner on theme change.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function restart_warmup_on_theme_change() {
+		$this->scanner->auto_start_scanner();
 	}
 
 	/**
