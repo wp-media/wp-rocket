@@ -89,6 +89,17 @@ class Scanner {
 	}
 
 	/**
+	 * Launches the scanner.
+	 *
+	 * @since 3.9
+	 *
+	 * @return void
+	 */
+	public function auto_start_scanner() {
+		$this->dispatcher();
+	}
+
+	/**
 	 * Gets the items to scan and dispatch them to the scanner
 	 *
 	 * @since 3.9
