@@ -91,6 +91,8 @@ class Scanner {
 	/**
 	 * Launches the scanner.
 	 *
+	 * @since 3.9
+	 *
 	 * @return void
 	 */
 	public function auto_start_scanner() {

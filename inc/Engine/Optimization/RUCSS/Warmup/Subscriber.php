@@ -71,6 +71,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer' => [ 'collect_resources', 11 ],
 			'rest_api_init' => 'register_routes',
+			'switch_theme'  => 'restart_warmup_on_theme_change',
 			'init'          => [
 				[ 'update_warmup_status_while_has_items', 10 ],
 				[ 'activate_optimization_on_warmup_completion', 11 ],
@@ -78,7 +79,6 @@ class Subscriber implements Subscriber_Interface {
 			],
 			// The following priority should be less than 10.
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
-			'switch_theme'                                             => 'restart_warmup_on_theme_change',
 		];
 	}
 
@@ -117,6 +117,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Launches the scanner on theme change.
+	 *
+	 * @since 3.9
 	 *
 	 * @return void
 	 */
