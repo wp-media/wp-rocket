@@ -78,6 +78,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			// The following priority should be less than 10.
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
+			'switch_theme'                                             => 'restart_warmup_on_theme_change',
 		];
 	}
 
@@ -112,6 +113,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function start_scanner( $old_value, $value ) {
 		$this->scanner->start_scanner( $old_value, $value );
+	}
+
+	/**
+	 * Launches the scanner on theme change.
+	 *
+	 * @return void
+	 */
+	public function restart_warmup_on_theme_change() {
+		$this->scanner->auto_start_scanner();
 	}
 
 	/**
