@@ -43,7 +43,7 @@ msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
 "compatibility."
 msgstr ""
-"O seu site está alojado em %s, activámos a limpeza automática do Varnish "
+"O seu site está alojado em %s, foi activada a limpeza automática do Varnish "
 "para garantir a compatibilidade."
 
 #: inc/3rd-party/hosting/kinsta.php:161
