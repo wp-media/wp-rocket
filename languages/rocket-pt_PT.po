@@ -447,7 +447,7 @@ msgid ""
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr ""
 "Se notar quaisquer erros no seu site depois de activar esta opção, basta "
-"desactivá-la de novo para o seu site voltar ao normal."
+"desactivar de novo para o seu site voltar ao normal."
 
 #: inc/Engine/Admin/Settings/Page.php:617
 msgid "Activate minify CSS"
