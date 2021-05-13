@@ -2716,8 +2716,8 @@ msgid ""
 "WP Rocket from working correctly. Please deactivate it if you have problems."
 msgstr ""
 "O WP Rocket Footer JS não é um módulo oficial. Impede o funcionamento "
-"correcto de algumas opções do WP Rocket. Deverá desactivá-lo caso tenha "
-"algum problema."
+"correcto de algumas opções do WP Rocket. Deverá desactivar caso tenha algum "
+"problema."
 
 #: inc/admin/ui/notices.php:297
 #, php-format
