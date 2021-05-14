@@ -84,7 +84,7 @@ class Checker extends AbstractAPIClient {
 	 */
 	public function activate_optimization_on_warmup_completion() {
 		// Bailout in case scanner fetching is not finished.
-		if ( ! $this->is_scanner_fetching_finished() ) {
+		if ( $this->is_warmup_finished() || ! $this->is_scanner_fetching_finished() ) {
 			return;
 		}
 
