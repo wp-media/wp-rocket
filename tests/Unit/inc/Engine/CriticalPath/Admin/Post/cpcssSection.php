@@ -54,6 +54,15 @@ class Test_CpcssSection extends TestCase {
 				   ->with( 'metabox/container', $expected['data'] )
 				   ->andReturn( '' );
 
+		Functions\expect( 'get_post_type' )
+			->once()
+			->andReturn( $config['post']->post_type );
+
+		Functions\expect( 'is_post_type_viewable' )
+			->once()
+			->with( $config['post']->post_type )
+			->andReturn( true );
+
 		ob_start();
 		$this->post->cpcss_section();
 		ob_get_clean();
