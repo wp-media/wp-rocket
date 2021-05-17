@@ -21,7 +21,8 @@
 		"sort-packages": true,
 		"preferred-install": {
 			"wp-media/phpunit": "source"
-		}
+		},
+		"process-timeout": 0
 	},
 	"support": {
 		"issues": "https://github.com/wp-media/wp-rocket/issues",
@@ -169,6 +170,7 @@
 		"post-update-cmd": [
 			"\"vendor/bin/mozart\" compose",
 			"composer dump-autoload"
-		]
+		],
+		"code-coverage": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-clover=tests/report/coverage.clover"
 	}
 }
