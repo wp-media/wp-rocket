@@ -166,6 +166,9 @@ class Post extends Abstract_Render {
 			$this->disabled_data['option_excluded'] = 1;
 		}
 
+		if ( ! is_post_type_viewable( get_post_type( $post ) ) ) {
+			$this->disabled_data['not_viewable'] = 1;
+		}
 		return $this->disabled_data;
 	}
 
