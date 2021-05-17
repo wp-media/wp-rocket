@@ -144,11 +144,11 @@
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
-        margin-bottom: 16px;
+        margin-bottom: $space*2;
     }
 
     &.wpr-Delayjs{
-        margin-top: 16px;
+        margin-top: $space*2;
     }
 
     &.wpr-isLastElem{
@@ -171,7 +171,6 @@
 
         &.wpr-isOpen{
             display: block;
-            margin-top: $space*2;
         }
 
         &.wpr-field--textarea{
