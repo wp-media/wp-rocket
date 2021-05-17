@@ -758,6 +758,7 @@ class Page {
 					'container_class'   => [
 						$disable_combine_js ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',
+						'wpr-NoPaddingBottom',
 					],
 					'section'           => 'js',
 					'page'              => 'file_optimization',

@@ -84,12 +84,18 @@
 	margin-top: 10px;
 }
 
+#rucss-progressbar {
+    .wpr-field-description{
+	    margin-top: 0;
+	}
+}
 
 .rucss-progress-step {
     padding: 10px 0px 0px 0px;
     line-height: 24px;
 
 	&.completed {
+	    padding-top: 0;
 		.spinner {
 			visibility: hidden;
 			display: none;
