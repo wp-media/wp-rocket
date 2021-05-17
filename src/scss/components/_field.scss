@@ -144,10 +144,10 @@
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
+        margin-bottom: 16px;
     }
 
-    &.wpr-Delayjs,
-	&.wpr-RemoveUnUsedCss {
+    &.wpr-Delayjs{
         margin-top: 16px;
     }
 
