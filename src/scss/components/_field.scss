@@ -151,6 +151,14 @@
         margin-top: $space*2;
     }
 
+    &.wpr-RemoveUnUsedCss{
+	  margin-bottom: 0;
+    }
+
+    &.wpr-NoPaddingBottom{
+	  padding-bottom: 0;
+	}
+
     &.wpr-isLastElem{
         margin-top: $space*2;
     }
