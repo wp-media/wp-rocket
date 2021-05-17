@@ -9,7 +9,7 @@ use WP_Theme;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::add_divi_to_description
- * @uses   ::is_divi
+ * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty
  */

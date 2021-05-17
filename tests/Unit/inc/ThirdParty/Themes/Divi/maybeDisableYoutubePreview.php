@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
- * @uses   ::is_divi
+ * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty
  */

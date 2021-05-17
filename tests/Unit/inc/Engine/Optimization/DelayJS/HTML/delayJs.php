@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  Optimize
  * @group  DelayJS
  *
- * @uses   rocket_get_constant()
+ * @uses   ::rocket_get_constant()
  */
 class Test_DelayJs extends TestCase {
 	private $options;

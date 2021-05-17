@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::exclude_js
- * @uses   rocket_get_constant()
+ * @uses   ::rocket_get_constant()
  *
  * @group  ThirdParty
  */
