@@ -41,7 +41,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
+        coverage: xdebug
         tools: composer:v1, phpunit
 
     - name: Setup problem matchers for PHP
