@@ -625,6 +625,7 @@ class Page {
 					'container_class'   => [
 						get_rocket_option( 'minify_css' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--parent',
+						'wpr-NoPaddingBottom',
 					],
 					'section'           => 'css',
 					'page'              => 'file_optimization',
@@ -757,6 +758,7 @@ class Page {
 					'container_class'   => [
 						$disable_combine_js ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',
+						'wpr-NoPaddingBottom',
 					],
 					'section'           => 'js',
 					'page'              => 'file_optimization',
