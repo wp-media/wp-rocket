@@ -74,6 +74,16 @@ class UsedCSS {
 	private $base_url;
 
 	/**
+	 * Inline exclusions regexes not to removed from the page after treeshaking.
+	 *
+	 * @var string[]
+	 */
+	private $inline_exclusions = [
+		'rocket-lazyload-inline-css',
+		'rocket-lazyload-nojs-css',
+	];
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Options_Data   $options         Options instance.
@@ -410,7 +420,7 @@ class UsedCSS {
 	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
 		$html_nocomments    = $this->hide_comments( $html );
 		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
-		$inline_styles      = $this->find( '<style.*>(?<content>.*)<\/style>', $html_nocomments );
+		$inline_styles      = $this->find( '<style(?<atts>.*)>(?<content>.*)<\/style>', $html_nocomments );
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
 		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
@@ -427,10 +437,22 @@ class UsedCSS {
 			$html = str_replace( $style[0], '', $html );
 		}
 
+		$inline_exclusions = (array) array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			$this->inline_exclusions
+		);
+
 		foreach ( $inline_styles as $style ) {
 			if ( in_array( $this->strip_line_breaks( $style['content'] ), $unprocessed_styles, true ) ) {
 				continue;
 			}
+
+			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['atts'] ) ) {
+				continue;
+			}
+
 			$html = str_replace( $style[0], '', $html );
 		}
 
