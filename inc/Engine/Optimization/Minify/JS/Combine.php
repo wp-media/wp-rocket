@@ -654,6 +654,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'aepro',
 			'cdn.jst.ai',
 			'w2dc_fields_in_categories',
+			'jetMenuPublicSettings',
+			'JetTricksSettings',
 			'aepc_pixel',
 			'avadaWooCommerceVars',
 			'var isb',
@@ -695,6 +697,15 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'arf_footer_cl_logic_call',
 			'reload_attached_coupons',
 			'var ftpp',
+			'forminatorFront',
+			'_EPYT_',
+			'edd_free_downloads_vars',
+			'edd_stripe_vars',
+			'var ASP',
+			'ecwidOriginalTitle',
+			'defaultCategoryId',
+			'translation-revision-date',
+			'google_conversion_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

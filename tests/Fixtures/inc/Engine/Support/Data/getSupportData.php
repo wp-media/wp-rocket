@@ -30,6 +30,7 @@ return [
 			'minify_css'                  => 0,
 			'minify_css_key'              => null,
 			'minify_concatenate_css'      => 0,
+			'remove_unused_css'           => 0,
 			'minify_js'                   => 0,
 			'minify_js_key'               => null,
 			'minify_concatenate_js'       => 0,

@@ -330,6 +330,7 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 			if ( ! empty( $batch->data ) && ! $this->is_process_cancelled() ) {
 				$this->update( $batch->key, $batch->data );
 			} else {
+				$this->complete_batch();
 				$this->delete( $batch->key );
 			}
 		} while ( ! $this->time_exceeded() && ! $this->memory_exceeded() && ! $this->is_queue_empty() && ! $this->is_process_cancelled() );
@@ -404,6 +405,13 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 		}
 
 		return apply_filters( $this->identifier . '_time_exceeded', $return );
+	}
+
+	/**
+	 * Current batch is completed.
+	 */
+	protected function complete_batch(){
+		// Override this code on the instantiated process class WP_Rocket_just if needed.
 	}
 
 	/**

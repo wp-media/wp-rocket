@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_Uninstall extends FilesystemTestCase {
+
 	protected $path_to_test_data = '/inc/Engine/WPRocketUninstall/uninstall.php';
 
 	private static $options = [
@@ -47,8 +48,6 @@ class Test_Uninstall extends FilesystemTestCase {
 	private $events = [
 		'rocket_purge_time_event',
 		'rocket_database_optimization_time_event',
-		'rocket_google_tracking_cache_update',
-		'rocket_facebook_tracking_cache_update',
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
@@ -115,10 +114,13 @@ class Test_Uninstall extends FilesystemTestCase {
 	}
 
 	public function testShouldDeleteAll() {
-		$cache_path  = 'vfs://public/wp-content/cache/';
-		$config_path = 'vfs://public/wp-content/wp-rocket-config/';
+		$cache_path            = 'vfs://public/wp-content/cache/';
+		$config_path           = 'vfs://public/wp-content/wp-rocket-config/';
+		$container             = apply_filters( 'rocket_container', null );
+		$rucss_resources_table = $container->get( 'rucss_resources_table' );
+		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 
-		$uninstall = new WPRocketUninstall( $cache_path, $config_path );
+		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table );
 		$uninstall->uninstall();
 
 		foreach ( self::getOptionNames() as $option_name ) {
@@ -135,5 +137,8 @@ class Test_Uninstall extends FilesystemTestCase {
 
 		$this->assertEmpty( $this->filesystem->getListing( $cache_path ) );
 		$this->assertFalse( $this->filesystem->exists( $config_path ) );
+
+		$this->assertFalse( $rucss_resources_table->exists() );
+		$this->assertFalse( $rucss_usedcss_table->exists() );
 	}
 }

@@ -144,11 +144,20 @@
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
+        margin-bottom: $space*2;
     }
 
-    &.wpr-Delayjs {
-        margin-top: 16px;
+    &.wpr-Delayjs{
+        margin-top: $space*2;
     }
+
+    &.wpr-RemoveUnUsedCss{
+	  margin-bottom: 0;
+    }
+
+    &.wpr-NoPaddingBottom{
+	  padding-bottom: 0;
+	}
 
     &.wpr-isLastElem{
         margin-top: $space*2;
@@ -170,7 +179,6 @@
 
         &.wpr-isOpen{
             display: block;
-            margin-top: $space*2;
         }
 
         &.wpr-field--textarea{

@@ -32,6 +32,7 @@ class Data {
 		'cache_webp'              => 'WebP Cache',
 		'minify_css'              => 'Minify CSS',
 		'minify_concatenate_css'  => 'Combine CSS',
+		'remove_unused_css'       => 'Remove Unused CSS',
 		'minify_js'               => 'Minify JS',
 		'minify_concatenate_js'   => 'Combine JS',
 		'minify_google_fonts'     => 'Combine Google Fonts',
@@ -41,8 +42,6 @@ class Data {
 		'cdn'                     => 'CDN Enabled',
 		'do_cloudflare'           => 'Cloudflare Enabled',
 		'varnish_auto_purge'      => 'Varnish Purge Enabled',
-		'google_analytics_cache'  => 'Google Tracking Add-on',
-		'facebook_pixel_cache'    => 'Facebook Tracking Add-on',
 		'control_heartbeat'       => 'Hearbeat Control',
 		'sucury_waf_cache_sync'   => 'Sucuri Add-on',
 	];

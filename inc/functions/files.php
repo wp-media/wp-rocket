@@ -58,7 +58,10 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
-		return;
+		return [
+			[],
+			'',
+		];
 	}
 
 	$buffer  = "<?php\n";
@@ -1056,7 +1059,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
  *
  * @since 2.10
  *
- * @return object WP_Filesystem_Direct instance
+ * @return WP_Filesystem_Direct WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';

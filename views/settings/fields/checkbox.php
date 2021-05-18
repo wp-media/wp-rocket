@@ -67,5 +67,14 @@ defined( 'ABSPATH' ) || exit;
 
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 </div>
-<?php endif; ?>
-<?php
+	<?php
+	endif;
+	/**
+	 * Fires after displaying the checkbox field on the settings page
+	 *
+	 * @since 3.9
+	 *
+	 * @param string $id ID of the field.
+	 */
+	do_action( 'rocket_after_settings_checkbox', $data['id'] );
+
