@@ -45,7 +45,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v1, phpunit
+        tools: composer:v2, phpunit
 
     - name: Start mysql service
       run: sudo /etc/init.d/mysql start

@@ -11,16 +11,16 @@ on:
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
-    
+
     strategy:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
         wp-versions: ['5.3.6']
-  
+
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
-    
+
     env:
       WP_TESTS_DIR: "/tmp/tests/phpunit"
       WP_CORE_DIR: "/tmp/wordpress-develop"
@@ -46,11 +46,11 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: mysqli
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v1, phpunit
-        
+        tools: composer:v2, phpunit
+
     - name: Start mysql service
       run: sudo /etc/init.d/mysql start
-    
+
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
@@ -60,7 +60,7 @@ jobs:
     - name: Get composer cache directory
       id: composercache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-    
+
     - name: Cache dependencies
       uses: actions/cache@v2
       with:
@@ -70,13 +70,13 @@ jobs:
 
     - name: Remove unmet dependencies by legacy versions
       run: composer remove --dev --no-scripts phpstan/phpstan szepeviktor/phpstan-wordpress coenjacobs/mozart
-    
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
-    
+
     - name: Mysql8 auth plugin workaround
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
