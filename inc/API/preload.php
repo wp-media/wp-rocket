@@ -92,7 +92,7 @@ function do_admin_post_rocket_preload_cache() { // phpcs:ignore WordPress.Naming
 	}
 
 	$prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats' );
-	if ( empty( $prewarmup_stats['allow_optimization'] ) ) {
+	if ( get_rocket_option( 'remove_unused_css' ) && empty( $prewarmup_stats['allow_optimization'] ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}
