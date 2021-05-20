@@ -68,7 +68,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'homepage_preload' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 
