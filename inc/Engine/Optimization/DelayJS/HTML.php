@@ -30,6 +30,7 @@ class HTML {
 		'lazyLoadThumb',
 		'wp-rocket/assets/js/lazyload/(.*)',
 		'et_core_page_resource_fallback',
+		'window.\$us === undefined',
 		'js-extra',
 	];
 
