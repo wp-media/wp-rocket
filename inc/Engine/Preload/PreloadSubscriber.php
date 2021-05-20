@@ -130,7 +130,23 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_cancel_preload( $old_value, $value ) {
-		if ( isset( $old_value['manual_preload'], $value['manual_preload'] ) && $old_value['manual_preload'] !== $value['manual_preload'] && 0 === (int) $value['manual_preload'] ) {
+		if (
+			(
+				! empty( $value['remove_unused_css'] )
+				&&
+				empty( $old_value['remove_unused_css'] )
+				&&
+				! empty( $value['manual_preload'] )
+			)
+			||
+			(
+				isset( $old_value['manual_preload'], $value['manual_preload'] )
+				&&
+				$old_value['manual_preload'] !== $value['manual_preload']
+				&&
+				0 === (int) $value['manual_preload']
+			)
+		) {
 			delete_transient( 'rocket_preload_errors' );
 			$this->homepage_preloader->cancel_preload();
 		}
