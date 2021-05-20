@@ -175,7 +175,29 @@ class UsedCSS {
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
-		$used_css  = $this->get_used_css( $url, $is_mobile );
+
+		/**
+		 * Filter skipping generating used CSS this page.
+		 *
+		 * @since 3.9.1
+		 *
+		 * @param bool   $skipped   true will skip treeshaking and false will continue generating Used CSS for this page.
+		 * @param string $url       Current page url.
+		 * @param bool   $is_mobile Is mobile request or not
+		 */
+		if ( apply_filters( 'rocket_skip_treeshaker', false, $url, $is_mobile ) ) {
+			Logger::error(
+				'Generating used CSS is skipped by filter.',
+				[
+					'url'       => $url,
+					'is_mobile' => $is_mobile,
+				]
+			);
+
+			return $html;
+		}
+
+		$used_css = $this->get_used_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$config = [
