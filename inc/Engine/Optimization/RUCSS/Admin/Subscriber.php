@@ -53,6 +53,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Database $database    Database instance.
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
+	 * @param Beacon   $beacon      Beacon instance.
 	 */
 	public function __construct(
 		Settings $settings,

@@ -6,11 +6,12 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Tests\Unit\TestCase;
 use WPDieException;
 
 /**
@@ -25,6 +26,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 	private $usedCSS;
 	private $subscriber;
 	private $options_api;
+	private $beacon;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php';
 
@@ -35,7 +37,8 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		$this->database    = Mockery::mock( Database::class );
 		$this->usedCSS     = Mockery::mock( UsedCSS::class );
 		$this->options_api = Mockery::mock( Options::class );
-		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api );
+		$this->beacon      = Mockery::mock( Beacon::class );
+		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api, $this->beacon );
 	}
 
 	public function tearDown() : void {
