@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -39,6 +40,13 @@ class Subscriber implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings    Settings instance.
@@ -46,11 +54,18 @@ class Subscriber implements Subscriber_Interface {
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
+	public function __construct(
+		Settings $settings,
+		Database $database,
+		UsedCSS $used_css,
+		Options $options_api,
+		Beacon $beacon
+	) {
 		$this->settings    = $settings;
 		$this->database    = $database;
 		$this->used_css    = $used_css;
 		$this->options_api = $options_api;
+		$this->beacon      = $beacon;
 	}
 
 	/**
@@ -364,6 +379,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	private function ui_translations(): array {
+		$rucss_beacon = $this->beacon->get_suggest( 'remove_unused_css' );
+
 		return [
 			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
@@ -372,7 +389,7 @@ class Subscriber implements Subscriber_Interface {
 			'rucss_info_txt' => sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ),
-				'<a href="#" target=_"blank" rel="noopener">',
+				'<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target=_"blank" rel="noopener">',
 				'</a>'
 			),
 		];
