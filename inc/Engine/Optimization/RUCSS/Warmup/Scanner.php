@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\ContentTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 
@@ -39,16 +40,25 @@ class Scanner {
 	private $resources_table;
 
 	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param ScannerProcess $process Background process instance.
 	 * @param Options        $options_api Options API instance.
 	 * @param Resources      $resources_table Resources table instance.
+	 * @param Options_Data   $options Options instance.
 	 */
-	public function __construct( ScannerProcess $process, Options $options_api, Resources $resources_table ) {
+	public function __construct( ScannerProcess $process, Options $options_api, Resources $resources_table, Options_Data $options ) {
 		$this->process         = $process;
 		$this->options_api     = $options_api;
 		$this->resources_table = $resources_table;
+		$this->options         = $options;
 	}
 
 	/**
@@ -96,6 +106,10 @@ class Scanner {
 	 * @return void
 	 */
 	public function auto_start_scanner() {
+		if ( ! $this->options->get( 'remove_unused_css' ) ) {
+			return;
+		}
+
 		$this->dispatcher();
 	}
 
