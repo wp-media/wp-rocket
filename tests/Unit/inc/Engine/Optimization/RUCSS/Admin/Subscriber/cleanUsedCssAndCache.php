@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
@@ -26,17 +27,19 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	private $usedCSS;
 	private $subscriber;
 	private $options_api;
+	private $homepage_preloader;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php';
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->settings    = Mockery::mock( Settings::class );
-		$this->database    = Mockery::mock( Database::class );
-		$this->usedCSS     = Mockery::mock( UsedCSS::class );
-		$this->options_api = Mockery::mock( Options::class );
-		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api );
+		$this->settings           = Mockery::mock( Settings::class );
+		$this->database           = Mockery::mock( Database::class );
+		$this->usedCSS            = Mockery::mock( UsedCSS::class );
+		$this->options_api        = Mockery::mock( Options::class );
+		$this->homepage_preloader = Mockery::mock( Homepage::class );
+		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api, $this->homepage_preloader );
 	}
 
 	/**
