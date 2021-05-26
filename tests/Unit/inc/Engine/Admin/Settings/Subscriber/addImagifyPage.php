@@ -22,12 +22,9 @@ class Test_AddImagifyPage extends TestCase {
 
 	private $saved_white_label;
 
-	/*$this->options = Mockery::mock( Options_Data::class );
-	$this->options->shouldReceive( 'get' )
-	->withAnyArgs();*/
-
 	public function setUp(): void {
 		parent::setUp();
+		Functions\stubTranslationFunctions();
 		$this->saved_white_label = $this->white_label;
 	}
 
@@ -36,18 +33,21 @@ class Test_AddImagifyPage extends TestCase {
 		$this->white_label = $this->saved_white_label;
 	}
 
+	public static function setUpBeforeClass() : void {
+		parent::setUpBeforeClass();
+
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Imagify_Partner.php';
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddImagifyPage( $config, $expected ) {
+		$this->constants['test_api_key'] = $config['license'];
+
 		$page            = Mockery::mock( Page::class );
 		$subscriber      = new Subscriber( $page );
-		$imagify_partner = Mockery::mock( Imagify_Partner::class );
 
-		Functions\expect( 'get_imagify_option' )->with( 'api_key' )->andReturn( $config['license'] );
-
-		/*$imagify_partner->shouldReceive( 'has_imagify_api_key' )
-		              ->andReturn($config['license']);*/
 		$this->white_label = $config['white_label'];
 
 		$actual = $subscriber->add_imagify_page( [] );
