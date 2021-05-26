@@ -30,8 +30,8 @@ return [
 			'expected' => [
 				'imagify' => [
 					'id'               => 'imagify',
-					'title'            => __( 'Image Optimization', 'rocket' ),
-					'menu_description' => __( 'Compress your images', 'rocket' ),
+					'title'            =>  'Image Optimization',
+					'menu_description' =>  'Compress your images',
 				],
 			],
 		],
