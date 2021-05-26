@@ -41,8 +41,10 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
-				if ( ! \Imagify_Partner::has_imagify_api_key() ) {
-					$this->render_imagify_section();
+				if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+					if ( ! \Imagify_Partner::has_imagify_api_key() ) {
+						$this->render_imagify_section();
+					}
 				}
 
 				$this->render_tools_section();

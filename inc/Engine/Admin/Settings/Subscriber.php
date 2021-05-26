@@ -161,7 +161,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_imagify_page( $navigation ) {
-		if ( Imagify_Partner::has_imagify_api_key() ) {
+		if ( Imagify_Partner::has_imagify_api_key() || rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
 			return $navigation;
 		}
 
