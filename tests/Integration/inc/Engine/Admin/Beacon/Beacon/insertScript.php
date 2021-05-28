@@ -70,7 +70,7 @@ class Test_InsertScript extends TestCase {
 		}
 		$this->white_label = ( $config['white_label'] );
 		if ( null === $expected ) {
-			$this->assertNull( $this->getActualHtml() );
+			$this->assertEquals( '', $this->getActualHtml() );
 			return;
 		}
 		$this->locale         = $config['locale'];
