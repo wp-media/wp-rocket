@@ -20,7 +20,7 @@ class Test_InsertScript extends TestCase {
 		'wp_rocket_customer_data' => null,
 	];
 
-	public function setUp() : void {
+	public function setUp(): void {
 		global $wp_locale;
 
 		parent::setUp();
@@ -36,6 +36,7 @@ class Test_InsertScript extends TestCase {
 		set_current_screen( 'front' );
 
 		$wp_locale->text_direction = $this->text_direction;
+		$this->white_label = false;
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
@@ -54,12 +55,12 @@ class Test_InsertScript extends TestCase {
 		}
 	}
 
-	public function testShouldReturNullWhenNoCapacity() {
+	/*public function testShouldReturNullWhenNoCapacity() {
 		$this->createUser( 'contributor' );
 		$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
 
 		$this->assertNotContains( 'Beacon', $this->getActualHtml() );
-	}
+	}*/
 
 	/**
 	 * @dataProvider configTestData
@@ -67,9 +68,18 @@ class Test_InsertScript extends TestCase {
 	public function testShouldReturnBeaconScript( $config, $expected ) {
 		global $wp_locale;
 
-		$this->createUser( 'administrator' );
-		$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
-
+		if ( true === $config['current_user_can'] ) {
+			$this->createUser( 'administrator' );
+			$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
+		} else {
+			$this->createUser( 'contributor' );
+			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
+		}
+		$this->white_label = ( $config['white_label'] );
+		if ( null === $expected ) {
+			$this->assertNull( $this->getActualHtml() );
+			return;
+		}
 		$this->locale         = $config['locale'];
 		$this->rocket_version = '3.6';
 
@@ -90,16 +100,19 @@ class Test_InsertScript extends TestCase {
 		);
 	}
 
-	public function locale_cb() {
+	public
+	function locale_cb() {
 		return current( array_slice( explode( '_', $this->locale ), 0, 1 ) );
 	}
 
-	public function consumer_email() {
+	public
+	function consumer_email() {
 		return 'dummy@wp-rocket.me';
 	}
 
 
-	private function getActualHtml() {
+	private
+	function getActualHtml() {
 		ob_start();
 		do_action( 'admin_print_footer_scripts-settings_page_wprocket' );
 		$actual = ob_get_clean();
@@ -109,7 +122,10 @@ class Test_InsertScript extends TestCase {
 			: $this->format_the_html( $actual );
 	}
 
-	private function createUser( $role ) {
+	private
+	function createUser(
+		$role
+	) {
 		if ( 'administrator' === $role ) {
 			$admin = get_role( 'administrator' );
 			$admin->add_cap( 'rocket_manage_options' );
