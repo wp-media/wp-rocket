@@ -55,13 +55,6 @@ class Test_InsertScript extends TestCase {
 		}
 	}
 
-	/*public function testShouldReturNullWhenNoCapacity() {
-		$this->createUser( 'contributor' );
-		$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
-
-		$this->assertNotContains( 'Beacon', $this->getActualHtml() );
-	}*/
-
 	/**
 	 * @dataProvider configTestData
 	 */

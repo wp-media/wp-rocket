@@ -38,13 +38,6 @@ class Test_InsertScript extends TestCase {
 		] );
 	}
 
-	/*	public function testShouldNotInsertWhenNoCapacity() {
-			Functions\when( 'current_user_can' )->justReturn( false );
-
-			$this->assertNull( $this->beacon->insert_script() );
-		}*/
-
-
 	/**
 	 * @dataProvider configTestData
 	 */

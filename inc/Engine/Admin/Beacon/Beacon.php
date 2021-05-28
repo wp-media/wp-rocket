@@ -75,9 +75,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		if ( ! current_user_can( 'rocket_manage_options' )
-		     ||
-		     rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+		if (
+			! current_user_can( 'rocket_manage_options' )
+			||
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
 		) {
 			return;
 		}
