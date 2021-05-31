@@ -44,7 +44,7 @@ class Test_CronCleanRows extends FilesystemTestCase {
 		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
 		$rucss_resources_query = $container->get( 'rucss_resources_query' );
 		$current_date          = current_time( 'mysql', true );
-		$old_date              = strtotime( $current_date. ' - 1 month' );
+		$old_date              = strtotime( $current_date. ' - 32 days' );
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
