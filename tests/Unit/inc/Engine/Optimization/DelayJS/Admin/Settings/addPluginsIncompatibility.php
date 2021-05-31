@@ -16,9 +16,14 @@ class Test_AddPluginsIncompatibility extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $plugins, $expected ) {
-		$options  = Mockery::mock( Options_Data::class);
+	public function testShouldDoExpected( $options_data, $plugins, $expected ) {
+		$options  = Mockery::mock( Options_Data::class );
 		$settings = new Settings( $options );
+
+		$options->shouldReceive( 'get' )
+			->once()
+			->with( 'delay_js', 0 )
+			->andReturn( $options_data['delay_js'] );
 
 		$this->assertSame(
 			$expected,
