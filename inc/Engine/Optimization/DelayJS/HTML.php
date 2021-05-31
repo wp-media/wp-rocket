@@ -32,6 +32,11 @@ class HTML {
 		'et_core_page_resource_fallback',
 		'window.\$us === undefined',
 		'js-extra',
+		'fusionNavIsCollapsed',
+		'/assets/js/smush-lazy-load.min.js',
+		'eio_lazy_vars',
+		'/ewww-image-optimizer/includes/lazysizes.min.js',
+		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
 	];
 
 	/**
