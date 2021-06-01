@@ -706,6 +706,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'defaultCategoryId',
 			'translation-revision-date',
 			'google_conversion_id',
+			'hbspt',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
