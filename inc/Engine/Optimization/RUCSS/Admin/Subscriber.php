@@ -403,12 +403,7 @@ class Subscriber implements Subscriber_Interface {
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
 			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
-			'rucss_info_txt' => sprintf(
-				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ),
-				'<a href="#" target=_"blank" rel="noopener">',
-				'</a>'
-			),
+			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' )
 		];
 	}
 }
