@@ -403,7 +403,7 @@ class Subscriber implements Subscriber_Interface {
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
 			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
-			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' )
+			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
 		];
 	}
 }
