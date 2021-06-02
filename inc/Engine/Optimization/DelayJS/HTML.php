@@ -38,6 +38,7 @@ class HTML {
 		'/ewww-image-optimizer/includes/lazysizes.min.js',
 		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
 		'document\.body\.classList\.remove\("no-js"\)',
+		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 	];
 
 	/**
