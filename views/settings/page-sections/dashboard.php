@@ -248,7 +248,7 @@ defined( 'ABSPATH' ) || exit;
 					<?php endforeach; ?>
 					</ul>
 				</div>
-				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) : ?>
+				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
 					<div class="wpr-field">
 						<div class="wpr-flex wpr-flex--egal">
 							<div>
@@ -272,7 +272,7 @@ defined( 'ABSPATH' ) || exit;
 							</div>
 						</div>
 					</div>
-				<?php endif; ?>
+				<?php } ?>
 			</div>
 		</div>
 

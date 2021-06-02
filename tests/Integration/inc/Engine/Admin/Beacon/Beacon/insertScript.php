@@ -68,9 +68,9 @@ class Test_InsertScript extends TestCase {
 			$this->createUser( 'contributor' );
 			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
 		}
-		$this->white_label = ( $config['white_label'] );
+		$this->white_label =  $config['white_label'];
 		if ( null === $expected ) {
-			$this->assertEquals( '', $this->getActualHtml() );
+			$this->assertEmpty( $this->getActualHtml() );
 			return;
 		}
 		$this->locale         = $config['locale'];
@@ -93,19 +93,16 @@ class Test_InsertScript extends TestCase {
 		);
 	}
 
-	public
-	function locale_cb() {
+	public function locale_cb() {
 		return current( array_slice( explode( '_', $this->locale ), 0, 1 ) );
 	}
 
-	public
-	function consumer_email() {
+	public function consumer_email() {
 		return 'dummy@wp-rocket.me';
 	}
 
 
-	private
-	function getActualHtml() {
+	private function getActualHtml() {
 		ob_start();
 		do_action( 'admin_print_footer_scripts-settings_page_wprocket' );
 		$actual = ob_get_clean();
@@ -115,10 +112,7 @@ class Test_InsertScript extends TestCase {
 			: $this->format_the_html( $actual );
 	}
 
-	private
-	function createUser(
-		$role
-	) {
+	private function createUser( $role ) {
 		if ( 'administrator' === $role ) {
 			$admin = get_role( 'administrator' );
 			$admin->add_cap( 'rocket_manage_options' );
