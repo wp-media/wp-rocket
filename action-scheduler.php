@@ -36,7 +36,7 @@ if ( ! function_exists( 'action_scheduler_register_3_dot_2_dot_0' ) ) {
 
 	function action_scheduler_register_3_dot_2_dot_0() {
 		$versions = ActionScheduler_Versions::instance();
-		$versions->register( '3.1.6', 'action_scheduler_initialize_3_dot_2_dot_0' );
+		$versions->register( '3.2.0', 'action_scheduler_initialize_3_dot_2_dot_0' );
 	}
 
 	function action_scheduler_initialize_3_dot_2_dot_0() {
