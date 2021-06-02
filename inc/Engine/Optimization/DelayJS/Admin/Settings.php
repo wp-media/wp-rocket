@@ -72,7 +72,7 @@ class Settings {
 	 * @return void
 	 */
 	public function set_option_on_update( $old_version ) {
-		if ( version_compare( $old_version, '3.9', '>' ) ) {
+		if ( version_compare( $old_version, '3.9', '>=' ) ) {
 			return;
 		}
 
