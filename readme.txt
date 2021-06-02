@@ -1,5 +1,5 @@
 === Action Scheduler ===
-Contributors: Automattic, wpmuguru
+Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
 Requires at least: 4.7
 Tested up to: 5.4
