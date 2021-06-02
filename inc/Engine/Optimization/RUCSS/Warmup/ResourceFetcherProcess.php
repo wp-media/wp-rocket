@@ -95,6 +95,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
+		$resource['content'] = base64_decode( $resource['content'] );
 		if ( $this->resources_query->create_or_update( $resource ) ) {
 			$this->content_changed = true;
 			return ! $this->send_warmup_request( $resource );
