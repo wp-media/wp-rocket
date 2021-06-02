@@ -14,6 +14,9 @@
     "check-textdomain": "grunt checktextdomain",
     "phpcs": "grunt phpcs"
   },
+  "woorelease": {
+    "wp_org_slug": "action-scheduler"
+  },
   "devDependencies": {
     "grunt": "1.0.4",
     "grunt-checktextdomain": "1.0.1",
