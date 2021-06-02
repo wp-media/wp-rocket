@@ -37,6 +37,7 @@ class HTML {
 		'eio_lazy_vars',
 		'/ewww-image-optimizer/includes/lazysizes.min.js',
 		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
+		'document\.body\.classList\.remove\("no-js"\)',
 	];
 
 	/**
