@@ -30,7 +30,15 @@ class HTML {
 		'lazyLoadThumb',
 		'wp-rocket/assets/js/lazyload/(.*)',
 		'et_core_page_resource_fallback',
+		'window.\$us === undefined',
 		'js-extra',
+		'fusionNavIsCollapsed',
+		'/assets/js/smush-lazy-load.min.js',
+		'eio_lazy_vars',
+		'/ewww-image-optimizer/includes/lazysizes.min.js',
+		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
+		'document\.body\.classList\.remove\("no-js"\)',
+		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 	];
 
 	/**

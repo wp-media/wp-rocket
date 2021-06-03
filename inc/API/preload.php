@@ -91,6 +91,12 @@ function do_admin_post_rocket_preload_cache() { // phpcs:ignore WordPress.Naming
 		die();
 	}
 
+	$prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats' );
+	if ( get_rocket_option( 'remove_unused_css' ) && empty( $prewarmup_stats['allow_optimization'] ) ) {
+		wp_safe_redirect( wp_get_referer() );
+		die();
+	}
+
 	$preload_process = new FullProcess();
 
 	if ( $preload_process->is_process_running() ) {

@@ -19,13 +19,13 @@ class Test_InsertScript extends TestCase {
 	private $options;
 	private $data;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';
 	}
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		Functions\stubEscapeFunctions();
@@ -38,33 +38,32 @@ class Test_InsertScript extends TestCase {
 		] );
 	}
 
-	public function testShouldNotInsertWhenNoCapacity() {
-		Functions\when( 'current_user_can' )->justReturn( false );
-
-		$this->assertNull( $this->beacon->insert_script() );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnBeaconScript( $config, $expected ) {
-		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
+		$this->white_label = ( $config['white_label'] );
 		Functions\when( 'get_user_locale' )->justReturn( $config['locale'] );
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'get_transient' )->justReturn( $config['customer_data'] );
 		Functions\when( 'is_rtl' )->justReturn( $config['rtl'] );
 
+		if ( null === $expected ) {
+			$this->assertNull( $this->beacon->insert_script() );
+			return;
+		}
 		$this->options->shouldReceive( 'get' )
-			->with( 'consumer_email' )
-			->andReturn( 'dummy@wp-rocket.me' );
+		              ->with( 'consumer_email' )
+		              ->andReturn( 'dummy@wp-rocket.me' );
 
 		$this->data->shouldReceive( 'get_support_data' )
-			->once()
-			->andReturn( json_decode( $expected['data']['session'] ) );
+		           ->once()
+		           ->andReturn( json_decode( $expected['data']['session'] ) );
 
 		$this->options->shouldReceive( 'get_options' )
-			->andReturn( [] );
+		              ->andReturn( [] );
 
 		$this->setUpGenerate( 'beacon', $expected['data'] );
 
@@ -78,5 +77,11 @@ class Test_InsertScript extends TestCase {
 			->shouldReceive( 'generate' )
 			->with( $view, $data )
 			->andReturn( '' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		$this->white_label = false;
 	}
 }

@@ -11,13 +11,13 @@ on:
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
-    
+
     strategy:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.4']
-    
+
     name: WPRocket lint with PHPCS. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     steps:
     - name: Checkout
@@ -28,7 +28,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v1
+        tools: composer:v2
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
@@ -37,4 +37,4 @@ jobs:
       run: |
         vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
         composer phpcs
- 
+

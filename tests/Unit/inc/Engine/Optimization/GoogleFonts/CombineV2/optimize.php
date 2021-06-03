@@ -1,10 +1,9 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts\CombineV2;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -13,8 +12,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  Optimize
  * @group  GoogleFonts
  *
- * @uses   Logger::info
- * @uses   Logger::debug
+ * @uses   \WP_Rocket\Logger\Logger::info
+ * @uses   \WP_Rocket\Logger\Logger::debug
  */
 class Test_OptimizeV2 extends TestCase {
 

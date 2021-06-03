@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts\Combine;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 
 /**
- * @covers \ WP_Rocket\Engine\Optimization\GoogleFonts\Combine::optimize
+ * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::optimize
  * @group  Optimize
  * @group  GoogleFonts
  */
