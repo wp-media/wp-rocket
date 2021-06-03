@@ -47,7 +47,7 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 
 == Changelog ==
 
-= 3.2.0 - 2021-xx-xx =
+= 3.2.0 - 2021-06-03 =
 * Fix - Add "no ordering" option to as_next_scheduled_action().
 * Fix - Add secondary scheduled date checks when claiming actions (DBStore) | #634.
 * Fix - Add secondary scheduled date checks when claiming actions (wpPostStore) | #634.
