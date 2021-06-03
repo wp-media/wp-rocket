@@ -46,13 +46,6 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	private $content_changed = false;
 
 	/**
-	 * Current page url that has the current resource.
-	 *
-	 * @var array
-	 */
-	private $page_urls = [];
-
-	/**
 	 * Options API instance.
 	 *
 	 * @var Options
@@ -87,7 +80,25 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
-		$this->page_urls[] = $resource['page_url'] ?? '';
+		$page_url      = $resource['page_url'] ?? '';
+		$all_pages     = $this->options_api->get( 'resources_scanner', [] );
+		$fetched_pages = $this->options_api->get( 'resources_scanner_fetched', [] );
+
+		if ( ! empty( $page_url ) ) {
+			$fetched_pages[ $page_url ] = [
+				'url'      => $page_url,
+				'is_error' => false,
+			];
+		}
+
+		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
+
+		if ( count( $all_pages ) === count( $fetched_pages ) ) {
+			// Fetching resources is finished.
+			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
+			$prewarmup_stats['fetch_finish_time'] = time();
+			$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+		}
 
 		// Check if no resources are sent for the page_url.
 		// This usually happens in case of page error.
@@ -133,37 +144,5 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		 * @since 3.9
 		 */
 		do_action( 'rocket_rucss_file_changed' );
-	}
-
-	/**
-	 * Batch completed callback.
-	 */
-	protected function complete_batch() {
-		if ( empty( $this->page_urls ) ) {
-			return;
-		}
-
-		$this->page_urls = array_unique( $this->page_urls );
-		$all_pages       = $this->options_api->get( 'resources_scanner', [] );
-		$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
-
-		foreach ( $this->page_urls as $page_url ) {
-			if ( empty( $page_url ) ) {
-				continue;
-			}
-			$fetched_pages[ $page_url ] = [
-				'url'      => $page_url,
-				'is_error' => false,
-			];
-		}
-
-		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
-
-		if ( count( $all_pages ) === count( $fetched_pages ) ) {
-			// Fetching resources is finished.
-			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
-			$prewarmup_stats['fetch_finish_time'] = time();
-			$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
-		}
 	}
 }
