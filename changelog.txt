@@ -1,6 +1,6 @@
 *** Changelog ***
 
-2021-06-03 - version 3.2.0
+= 3.2.0 - 2021-xx-xx =
 * Fix - Add "no ordering" option to as_next_scheduled_action().
 * Fix - Add secondary scheduled date checks when claiming actions (DBStore) | #634.
 * Fix - Add secondary scheduled date checks when claiming actions (wpPostStore) | #634.
@@ -17,5 +17,5 @@
 * Fix - fix file permissions.
 * Fix - fixes #664 by replacing __ with esc_html__.
 
-version 3.1.6
+= 3.1.6 - 2020-05-12 =
 * Change log starts.
