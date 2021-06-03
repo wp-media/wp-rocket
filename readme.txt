@@ -44,3 +44,22 @@ There you will find:
 Action Scheduler is developed and maintained by [Automattic](http://automattic.com/) with significant early development completed by [Flightless](https://flightless.us/).
 
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
+
+== Changelog ==
+
+= 3.2.0 - 2021-xx-xx =
+* Fix - Add "no ordering" option to as_next_scheduled_action().
+* Fix - Add secondary scheduled date checks when claiming actions (DBStore) | #634.
+* Fix - Add secondary scheduled date checks when claiming actions (wpPostStore) | #634.
+* Fix - Adds a new index to the action table, reducing the potential for deadlocks (props: @glagonikas).
+* Fix - Fix unit tests infrastructure and adapt tests to PHP 8.
+* Fix - Identify in-use data store.
+* Fix - Improve test_migration_is_scheduled.
+* Fix - PHP notice on list table.
+* Fix - Speed up clean up and batch selects.
+* Fix - Update pending dependencies.
+* Fix - [PHP 8.0] Only pass action arg values through to do_action_ref_array().
+* Fix - [PHP 8] Set the PHP version to 7.1 in composer.json for PHP 8 compatibility.
+* Fix - add is_initialized() to docs.
+* Fix - fix file permissions.
+* Fix - fixes #664 by replacing __ with esc_html__.
