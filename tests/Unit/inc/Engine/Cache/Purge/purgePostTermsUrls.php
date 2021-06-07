@@ -24,9 +24,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 		$this->purge = new Purge( $this->filesystem );
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		parent::tearDown();
-
 		unset( $GLOBALS['wp_rewrite'] );
 	}
 
@@ -50,10 +49,11 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			->once()
 			->with( 'post', 'objects' )
 			->andReturn( $taxonomies );
-
+		$urls       = [];
 		$index = 0;
 		foreach ( $taxonomies as $type => $taxonomy ) {
-			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			Filters\expectApplied( 'rocket_exclude_post_taxonomy' )->once();
+			if ( ! $taxonomy->public ) {
 				continue;
 			}
 
@@ -78,6 +78,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 					->with( $term->slug, $taxonomy->name )
 					->andReturn( 'https://example.org/' . $term->slug );
 				$index++;
+				$urls[] = 'https://example.org/' . $term->slug;
 				Functions\expect( 'is_wp_error' )
 					->once()
 					->with( 'https://example.org/' . $term->slug )
@@ -104,6 +105,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 						->with( $term->parent , $taxonomy->name )
 						->andReturn( 'https://example.org/' . $term->parent );
 					$index++;
+					$urls[] = 'https://example.org/' . $term->parent ;
 				} else {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()
