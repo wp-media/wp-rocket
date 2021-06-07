@@ -55,6 +55,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
 			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
+			$events['rocket_exclude_post_taxonomy']       = [ 'exclude_product_shipping_taxonomy', 10, 2 ];
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -484,5 +485,17 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'bookyourtravel_nonce', // Book Your Travel theme.
 			'sign_signin', // Custom Login for Improvise Theme by Noomia.
 		];
+	}
+
+	/**
+	 * Exclude product_shipping_class taxonomy.
+	 *
+	 * @param bool   $excluded if taxonomy is not public exclude.
+	 * @param string $taxonomy_name taxonomy name.
+	 *
+	 * @return bool
+	 */
+	public function exclude_product_shipping_taxonomy( $excluded, $taxonomy_name ) {
+		return $excluded || 'product_shipping_class' === $taxonomy_name;
 	}
 }

@@ -180,7 +180,7 @@ class Purge {
 		$taxonomies = get_object_taxonomies( get_post_type( $post->ID ), 'objects' );
 
 		foreach ( $taxonomies as $taxonomy ) {
-			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			if ( apply_filters( 'rocket_exclude_post_taxonomy', ! $taxonomy->public, $taxonomy->name, $taxonomy ) ) {
 				continue;
 			}
 
