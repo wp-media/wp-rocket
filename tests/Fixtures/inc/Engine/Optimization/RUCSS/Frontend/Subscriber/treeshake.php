@@ -235,6 +235,62 @@ return [
 </html>'
 		],
 
+		'shouldNotProcessItemsInsideNoscriptTag' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<style>h2{color:blue;}</style>
+	<noscript><style>h3{color:green;}</style></noscript>
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => wp_json_encode(
+						[
+							'vfs://public/wp-content/themes/theme-name/style.css',
+						]
+					),
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => 'h1{color:red;}h2{color:blue;}',
+							'unProcessedCss' => [],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red}h2{color:blue}</style>
+	<noscript><style>h3{color:green;}</style></noscript>
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
+
 		'shouldNotReplaceUnprocessedCssItemsWithSpecialCharacters' => [
 			'config'       => [
 				'html'                  => '<!DOCTYPE html>
