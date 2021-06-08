@@ -26,11 +26,51 @@ $html = '<html>
 	</script>
 </head>
 <body>
+<script type="text/javascript">
+	var et_animation_data = [{"class":"et_pb_cta_0","style":"slideLeft","repeat":"once","duration":"1000ms","delay":"0ms","intensity":"50%","starting_opacity":"0%","speed_curve":"ease-in-out"}];
+</script>
 <script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>
 <script>var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};</script>
 <script src="http://example.org/wp-includes/js/comment-reply.min.js?ver=5.7" id="comment-reply-js"></script>
 <script type="module" src="http://example.org/wp-content/plugins/module/test.js"></script>
 <script id="astra-theme-js-js-extra">var astra = {"break_point:"921","isRtl:""};</script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var wpforms_settings = {
+        val_required: "This field is required.",
+        val_url: "Please enter a valid URL.",
+        val_email: "Please enter a valid email address.",
+        val_email_suggestion: "Did you mean {suggestion}?",
+        val_email_suggestion_title: "Click to accept this suggestion.",
+        val_email_restricted: "This email address is not allowed.",
+        val_number: "Please enter a valid number.",
+        val_number_positive: "Please enter a valid positive number.",
+        val_confirm: "Field values do not match.",
+        val_fileextension: "File type is not allowed.",
+        val_filesize: "File exceeds max size allowed. File was not uploaded.",
+        val_time12h: "Please enter time in 12-hour AM\/PM format (eg 8:45 AM).",
+        val_time24h: "Please enter time in 24-hour format (eg 22:45).",
+        val_requiredpayment: "Payment is required.",
+        val_creditcard: "Please enter a valid credit card number.",
+        val_post_max_size: "The total size of the selected files {totalSize} Mb exceeds the allowed limit {maxSize} Mb.",
+        val_checklimit: "You have exceeded the number of allowed selections: {#}.",
+        val_limit_characters: "{count} of {limit} max characters.",
+        val_limit_words: "{count} of {limit} max words.",
+        val_recaptcha_fail_msg: "Google reCAPTCHA verification failed, please try again later.",
+        val_empty_blanks: "Please fill out all blanks.",
+        post_max_size: "104857600",
+        uuid_cookie: "",
+        locale: "en",
+        wpforms_plugin_url: "https:\/\/domain.com\/wp-content\/plugins\/wpforms-lite\/",
+        gdpr: "",
+        ajaxurl: "https:\/\/domain.com\/wp-admin\/admin-ajax.php",
+        mailcheck_enabled: "1",
+        mailcheck_domains: [],
+        mailcheck_toplevel_domains: ["dev"],
+        is_ssl: "1",
+    };
+    /* ]]> */
+</script>
 </body>
 </html>';
 
@@ -60,11 +100,51 @@ $delay_html_upgrade = '<html>
 	</script>
 </head>
 <body>
+<script type="text/javascript">
+	var et_animation_data = [{"class":"et_pb_cta_0","style":"slideLeft","repeat":"once","duration":"1000ms","delay":"0ms","intensity":"50%","starting_opacity":"0%","speed_curve":"ease-in-out"}];
+</script>
 <script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>
 <script type="rocketlazyloadscript">var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};</script>
 <script src="http://example.org/wp-includes/js/comment-reply.min.js?ver=5.7" id="comment-reply-js"></script>
 <script type="module" src="http://example.org/wp-content/plugins/module/test.js"></script>
 <script id="astra-theme-js-js-extra">var astra = {"break_point:"921","isRtl:""};</script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var wpforms_settings = {
+        val_required: "This field is required.",
+        val_url: "Please enter a valid URL.",
+        val_email: "Please enter a valid email address.",
+        val_email_suggestion: "Did you mean {suggestion}?",
+        val_email_suggestion_title: "Click to accept this suggestion.",
+        val_email_restricted: "This email address is not allowed.",
+        val_number: "Please enter a valid number.",
+        val_number_positive: "Please enter a valid positive number.",
+        val_confirm: "Field values do not match.",
+        val_fileextension: "File type is not allowed.",
+        val_filesize: "File exceeds max size allowed. File was not uploaded.",
+        val_time12h: "Please enter time in 12-hour AM\/PM format (eg 8:45 AM).",
+        val_time24h: "Please enter time in 24-hour format (eg 22:45).",
+        val_requiredpayment: "Payment is required.",
+        val_creditcard: "Please enter a valid credit card number.",
+        val_post_max_size: "The total size of the selected files {totalSize} Mb exceeds the allowed limit {maxSize} Mb.",
+        val_checklimit: "You have exceeded the number of allowed selections: {#}.",
+        val_limit_characters: "{count} of {limit} max characters.",
+        val_limit_words: "{count} of {limit} max words.",
+        val_recaptcha_fail_msg: "Google reCAPTCHA verification failed, please try again later.",
+        val_empty_blanks: "Please fill out all blanks.",
+        post_max_size: "104857600",
+        uuid_cookie: "",
+        locale: "en",
+        wpforms_plugin_url: "https:\/\/domain.com\/wp-content\/plugins\/wpforms-lite\/",
+        gdpr: "",
+        ajaxurl: "https:\/\/domain.com\/wp-admin\/admin-ajax.php",
+        mailcheck_enabled: "1",
+        mailcheck_domains: [],
+        mailcheck_toplevel_domains: ["dev"],
+        is_ssl: "1",
+    };
+    /* ]]> */
+</script>
 </body>
 </html>';
 
@@ -94,11 +174,51 @@ $delay_html = '<html>
 	</script>
 </head>
 <body>
+<script type="text/javascript">
+	var et_animation_data = [{"class":"et_pb_cta_0","style":"slideLeft","repeat":"once","duration":"1000ms","delay":"0ms","intensity":"50%","starting_opacity":"0%","speed_curve":"ease-in-out"}];
+</script>
 <script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>
 <script type="rocketlazyloadscript">var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};</script>
 <script src="http://example.org/wp-includes/js/comment-reply.min.js?ver=5.7" id="comment-reply-js"></script>
 <script type="rocketlazyloadscript" data-rocket-type="module" src="http://example.org/wp-content/plugins/module/test.js"></script>
 <script id="astra-theme-js-js-extra">var astra = {"break_point:"921","isRtl:""};</script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var wpforms_settings = {
+        val_required: "This field is required.",
+        val_url: "Please enter a valid URL.",
+        val_email: "Please enter a valid email address.",
+        val_email_suggestion: "Did you mean {suggestion}?",
+        val_email_suggestion_title: "Click to accept this suggestion.",
+        val_email_restricted: "This email address is not allowed.",
+        val_number: "Please enter a valid number.",
+        val_number_positive: "Please enter a valid positive number.",
+        val_confirm: "Field values do not match.",
+        val_fileextension: "File type is not allowed.",
+        val_filesize: "File exceeds max size allowed. File was not uploaded.",
+        val_time12h: "Please enter time in 12-hour AM\/PM format (eg 8:45 AM).",
+        val_time24h: "Please enter time in 24-hour format (eg 22:45).",
+        val_requiredpayment: "Payment is required.",
+        val_creditcard: "Please enter a valid credit card number.",
+        val_post_max_size: "The total size of the selected files {totalSize} Mb exceeds the allowed limit {maxSize} Mb.",
+        val_checklimit: "You have exceeded the number of allowed selections: {#}.",
+        val_limit_characters: "{count} of {limit} max characters.",
+        val_limit_words: "{count} of {limit} max words.",
+        val_recaptcha_fail_msg: "Google reCAPTCHA verification failed, please try again later.",
+        val_empty_blanks: "Please fill out all blanks.",
+        post_max_size: "104857600",
+        uuid_cookie: "",
+        locale: "en",
+        wpforms_plugin_url: "https:\/\/domain.com\/wp-content\/plugins\/wpforms-lite\/",
+        gdpr: "",
+        ajaxurl: "https:\/\/domain.com\/wp-admin\/admin-ajax.php",
+        mailcheck_enabled: "1",
+        mailcheck_domains: [],
+        mailcheck_toplevel_domains: ["dev"],
+        is_ssl: "1",
+    };
+    /* ]]> */
+</script>
 </body>
 </html>';
 
