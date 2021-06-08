@@ -80,7 +80,6 @@ class UsedCSS {
 	 */
 	private $inline_exclusions = [
 		'rocket-lazyload-inline-css',
-		'rocket-lazyload-nojs-css',
 	];
 
 	/**
