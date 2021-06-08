@@ -39,6 +39,8 @@ class HTML {
 		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
 		'document\.body\.classList\.remove\("no-js"\)',
 		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
+		'et_animation_data',
+		'wpforms_settings',
 	];
 
 	/**
