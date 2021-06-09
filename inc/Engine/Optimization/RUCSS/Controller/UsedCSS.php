@@ -424,7 +424,7 @@ class UsedCSS {
 		$link_styles   = $this->find(
 			'<noscript[^>]*>.*' .
 			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>' .
-			'.*<\/noscript> (*SKIP)(*FAIL)|' .
+			'.*<\/noscript>(*SKIP)(*FAIL)|' .
 			$link_style_pattern,
 			$html_nocomments
 		);
