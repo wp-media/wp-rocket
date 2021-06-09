@@ -16,9 +16,14 @@ defined( 'ABSPATH' ) || exit;
 	<script src="https://fast.wistia.com/embed/medias/j042jylrre.jsonp" async></script><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'play-alt.svg' ); ?>" width="10" height="10" alt=""> <span class="wpr-tutorial-link wpr-Sidebar-notice-link wistia_embed wistia_async_j042jylrre popover=true popoverContent=link" style="display:inline;position:relative"><?php esc_html_e( 'Watch the video', 'rocket' ); ?></span>
 </div>
 <div class="wpr-Sidebar-notice">
-	<p><?php esc_html_e( 'Learn how to use best practices to correctly measure your site\'s performance.', 'rocket' ); ?></p>
-	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
-</div>
+	<p><?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?></p>
+	<a href="<?php
+	if ( false !== strpos( get_locale(), 'fr' ) ) {
+		echo esc_url( __( 'https://fr.docs.wp-rocket.me/article/1432-comment-ameliorer-score-mobile-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) );
+	} else {
+		echo esc_url( __( 'https://docs.wp-rocket.me/article/1402-how-to-improve-your-mobile-pagespeed-score/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) );
+	} ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
+	</div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Why Google PageSpeed grade should not matter', 'rocket' ); ?></p>
 	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read more', 'rocket' ); ?></a>
