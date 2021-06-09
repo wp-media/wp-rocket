@@ -17,12 +17,15 @@ defined( 'ABSPATH' ) || exit;
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?></p>
-	<a href="<?php
+	<a href="
+	<?php
 	if ( false !== strpos( get_locale(), 'fr' ) ) {
 		echo esc_url( __( 'https://fr.docs.wp-rocket.me/article/1432-comment-ameliorer-score-mobile-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) );
 	} else {
 		echo esc_url( __( 'https://docs.wp-rocket.me/article/1402-how-to-improve-your-mobile-pagespeed-score/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) );
-	} ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
+	}
+	?>
+	" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
 	</div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Why Google PageSpeed grade should not matter', 'rocket' ); ?></p>
