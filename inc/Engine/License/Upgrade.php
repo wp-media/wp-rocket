@@ -282,6 +282,10 @@ class Upgrade extends Abstract_Render {
 			return false;
 		}
 
+		if ( ( 14 * DAY_IN_SECONDS ) > time() - $this->user->get_creation_date() ) {
+			return false;
+		}
+
 		return $this->pricing->is_promo_active();
 	}
 

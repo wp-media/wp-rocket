@@ -47,11 +47,16 @@ class DisplayPromoBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expired'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expiration'] );
+
+		$this->user->shouldReceive( 'get_creation_date' )
+		           ->atMost()
+		           ->once()
+		           ->andReturn( $config['date_created'] );
 
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
@@ -80,7 +85,7 @@ class DisplayPromoBanner extends TestCase {
 				->atMost()
 				->twice()
 				->andReturn( $config['pricing']['plus']['websites'] );
-			
+
 			Functions\when( '_n' )
 				->justReturn( $config['message'] );
 
