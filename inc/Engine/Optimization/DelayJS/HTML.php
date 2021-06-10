@@ -41,6 +41,7 @@ class HTML {
 		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 		'et_animation_data',
 		'wpforms_settings',
+		'var nfForms',
 	];
 
 	/**
