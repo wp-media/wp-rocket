@@ -17,7 +17,8 @@ defined( 'ABSPATH' ) || exit;
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?></p>
-	<?php $rocket_mobile_doc_url = false !== strpos( get_locale(), 'fr' )
+	<?php
+	$rocket_mobile_doc_url = false !== strpos( get_locale(), 'fr' )
 			? 'https://fr.docs.wp-rocket.me/article/1432-comment-ameliorer-score-mobile-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket'
 			: 'https://docs.wp-rocket.me/article/1402-how-to-improve-your-mobile-pagespeed-score/?utm_source=wp_plugin&utm_medium=wp_rocket'
 	?>
