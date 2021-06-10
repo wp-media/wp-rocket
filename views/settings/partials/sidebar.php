@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Test and Improve Google Core Web Vitals for WordPress.', 'rocket' ); ?></p>
-	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/google-core-web-vitals-wordpress/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read more', 'rocket' ); ?></a>
+	<a href="<?php echo esc_url( 'https://wp-rocket.me/google-core-web-vitals-wordpress/?utm_source=wp_plugin&utm_medium=wp_rocket' ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read more', 'rocket' ); ?></a>
 </div>
 <?php if ( ! get_rocket_option( 'cache_logged_user', 0 ) ) : ?>
 <div class="wpr-Sidebar-info">
