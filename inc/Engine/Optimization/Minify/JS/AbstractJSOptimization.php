@@ -243,6 +243,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'booqable.com/v2/booqable.js',
 			'googleoptimize.com',
 			'cdna.hubpeople.com/js/widget_standalone_two_modes.js',
+			's3.tradingview.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
