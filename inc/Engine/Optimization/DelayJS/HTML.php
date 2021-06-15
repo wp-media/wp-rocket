@@ -42,6 +42,7 @@ class HTML {
 		'et_animation_data',
 		'wpforms_settings',
 		'var nfForms',
+		'window.RS_MODULES',
 	];
 
 	/**
