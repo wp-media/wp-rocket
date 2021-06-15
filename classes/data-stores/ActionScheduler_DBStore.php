@@ -31,6 +31,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
+		add_action( 'action_scheduler_before_schema_update', array( $this, 'update_actions_schema_4_0' ), 10, 2 );
 		$table_maker = new ActionScheduler_StoreSchema();
 		$table_maker->register_tables();
 	}
@@ -168,6 +169,19 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		if ( ! empty( $data->extended_args ) ) {
 			$data->args = $data->extended_args;
 			unset( $data->extended_args );
+		}
+
+		// Convert NULL dates to zero dates.
+		$date_fields = [
+			'scheduled_date_gmt',
+			'scheduled_date_local',
+			'last_attempt_gmt',
+			'last_attempt_gmt'
+		];
+		foreach( $date_fields as $date_field ) {
+			if ( is_null( $data->$date_field ) ) {
+				$data->$date_field = ActionScheduler_StoreSchema::DEFAULT_DATE;
+			}
 		}
 
 		try {
@@ -578,6 +592,35 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$date = $this->get_date_gmt( $action_id );
 		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		return $date;
+	}
+
+	/**
+	 * Update the actions table schema to allow the datetime fields to be NULL.
+	 * The NOT NULL causes a conflict with some versions of MySQL configured with sql_mode=NO_ZERO_DATE.
+	 *
+	 * @param string $table Name of table being updated.
+	 * @param string $db_version The existing schema version of the table.
+	 */
+	public function update_actions_schema_4_0( $table, $db_version ) {
+		global $wpdb;
+		if ( 'actionscheduler_actions' !== $table || version_compare( $db_version, '4', '>=' ) ) {
+			return;
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$table_name   = $wpdb->prefix . 'actionscheduler_actions';
+		$table_list   = $wpdb->get_col( "SHOW TABLES LIKE '${table_name}'" );
+		$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
+		if ( ! empty( $table_list ) ) {
+			$query = "ALTER TABLE ${table_name}
+				MODIFY COLUMN scheduled_date_gmt datetime NULL default '${default_date}',
+				MODIFY COLUMN scheduled_date_local datetime NULL default '${default_date}',
+				MODIFY COLUMN last_attempt_gmt datetime NULL default '${default_date}',
+				MODIFY COLUMN last_attempt_local datetime NULL default '${default_date}'
+			";
+			$wpdb->query( $query );
+		}
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**

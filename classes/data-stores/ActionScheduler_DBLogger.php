@@ -68,7 +68,11 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 			return new ActionScheduler_NullLogEntry();
 		}
 
-		$date = as_get_datetime_object( $record->log_date_gmt );
+		if ( is_null( $record->log_date_gmt ) ) {
+			$date = as_get_datetime_object( ActionScheduler_StoreSchema::DEFAULT_DATE );
+		} else {
+			$date = as_get_datetime_object( $record->log_date_gmt );
+		}
 
 		return new ActionScheduler_LogEntry( $record->action_id, $record->message, $date );
 	}
@@ -96,6 +100,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	 */
 	public function init() {
 
+		add_action( 'action_scheduler_before_schema_update', array( $this, 'update_logs_schema_4_0' ), 10, 2 );
 		$table_maker = new ActionScheduler_LoggerSchema();
 		$table_maker->register_tables();
 
@@ -142,5 +147,32 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 		$sql_query .= implode( ',', $value_rows );
 
 		$wpdb->query( $sql_query );
+	}
+
+	/**
+	 * Update the logs table schema to allow the datetime fields to be NULL.
+	 * The NOT NULL causes a conflict with some versions of MySQL configured with sql_mode=NO_ZERO_DATE.
+	 *
+	 * @param string $table Name of table being updated.
+	 * @param string $db_version The existing schema version of the table.
+	 */
+	public function update_logs_schema_4_0( $table, $db_version ) {
+		global $wpdb;
+		if ( 'actionscheduler_logs' !== $table || version_compare( $db_version, '3', '>=' ) ) {
+			return;
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$table_name   = $wpdb->prefix . 'actionscheduler_logs';
+		$table_list   = $wpdb->get_col( "SHOW TABLES LIKE '${table_name}'" );
+		$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
+		if ( ! empty( $table_list ) ) {
+			$query = "ALTER TABLE ${table_name}
+				MODIFY COLUMN log_date_gmt datetime NULL default '${default_date}',
+				MODIFY COLUMN log_date_local datetime NULL default '${default_date}'
+			";
+			$wpdb->query( $query );
+		}
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 }

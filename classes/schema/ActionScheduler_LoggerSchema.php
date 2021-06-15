@@ -13,7 +13,7 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 	/**
 	 * @var int Increment this value to trigger a schema update.
 	 */
-	protected $schema_version = 2;
+	protected $schema_version = 3;
 
 	public function __construct() {
 		$this->tables = [
@@ -29,12 +29,13 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 
 			case self::LOG_TABLE:
 
+				$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
 				return "CREATE TABLE {$table_name} (
 				        log_id bigint(20) unsigned NOT NULL auto_increment,
 				        action_id bigint(20) unsigned NOT NULL,
 				        message text NOT NULL,
-				        log_date_gmt datetime NOT NULL default '0000-00-00 00:00:00',
-				        log_date_local datetime NOT NULL default '0000-00-00 00:00:00',
+				        log_date_gmt datetime NULL default '${default_date}',
+				        log_date_local datetime NULL default '${default_date}',
 				        PRIMARY KEY  (log_id),
 				        KEY action_id (action_id),
 				        KEY log_date_gmt (log_date_gmt)
