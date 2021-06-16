@@ -170,8 +170,8 @@ class Settings {
 	 * @return string
 	 */
 	private function get_excluded_internal_paths() : string {
-		$wp_content  = wp_parse_url( content_url(), PHP_URL_PATH );
-		$wp_includes = wp_parse_url( includes_url(), PHP_URL_PATH );
+		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
 		$pattern     = '(?:placeholder)(.*)';
 		$paths       = [];
 
