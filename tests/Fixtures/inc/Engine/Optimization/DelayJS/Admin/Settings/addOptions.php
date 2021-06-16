@@ -4,8 +4,8 @@ return [
 	'shouldReturnValidOptionsWithEmptyOptions' => [
 		'input' => [
 			'options' => [],
-			'content_url' => 'https://example.org/wp-content',
-			'includes_url' => 'https://example.org/wp-includes',
+			'content_url' => 'https://example.org/wp-content/',
+			'includes_url' => 'https://example.org/wp-includes/',
 		],
 		'expected' => [
 			'delay_js'            => 1,
@@ -19,8 +19,8 @@ return [
 	'shouldReturnValidOptionsWithOptionsNotArray' => [
 		'input' => [
 			'options' => 'test_option',
-			'content_url' => 'https://example.org/wp-content',
-			'includes_url' => 'https://example.org/wp-includes',
+			'content_url' => 'https://example.org/wp-content/',
+			'includes_url' => 'https://example.org/wp-includes/',
 		],
 		'expected' => [
 			'test_option',
@@ -40,8 +40,8 @@ return [
 					'any value'
 				],
 			],
-			'content_url' => 'https://example.org/wp-content',
-			'includes_url' => 'https://example.org/wp-includes',
+			'content_url' => 'https://example.org/wp-content/',
+			'includes_url' => 'https://example.org/wp-includes/',
 		],
 		'expected' => [
 			'delay_js'            => 1,
@@ -61,8 +61,8 @@ return [
 					'any value'
 				]
 			],
-			'content_url' => 'https://example.org/wp-content',
-			'includes_url' => 'https://example.org/wp-includes',
+			'content_url' => 'https://example.org/wp-content/',
+			'includes_url' => 'https://example.org/wp-includes/',
 		],
 		'expected' => [
 			'test_option'         => 1,
