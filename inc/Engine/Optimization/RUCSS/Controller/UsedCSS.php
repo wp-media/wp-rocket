@@ -347,7 +347,7 @@ class UsedCSS {
 
 		$minifier = new MinifyCSS( $data['css'] );
 
-		$data['css'] = $minifier->minify();
+		$data['css'] = $this->apply_font_display_swap( $minifier->minify() );
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );

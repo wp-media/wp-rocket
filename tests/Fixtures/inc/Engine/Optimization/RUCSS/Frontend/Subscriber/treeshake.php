@@ -503,5 +503,57 @@ return [
 </body>
 </html>'
 		],
+		'shouldRunRucssAndAddFontDisplaySwap' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+	<style>@font-face {
+			font-family: "TestFont";
+		}
+	</style>
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => '',
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => '@font-face{font-family:"TestFont"}',
+							'unProcessedCss' => [],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><style id="wpr-usedcss">@font-face{font-display:swap;font-family:"TestFont"}</style>
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
 	],
 ];
