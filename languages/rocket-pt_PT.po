@@ -4326,7 +4326,7 @@ msgstr ""
 
 #: views/settings/partials/sidebar.php:20
 msgid "Read our guide"
-msgstr "Leia o nosso guia"
+msgstr "Ler o nosso guia"
 
 #: views/settings/partials/sidebar.php:23
 msgid "Why Google PageSpeed grade should not matter"
