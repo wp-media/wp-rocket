@@ -40,12 +40,17 @@ if ( ! function_exists( 'action_scheduler_register_3_dot_2_dot_0' ) ) {
 	}
 
 	function action_scheduler_initialize_3_dot_2_dot_0() {
-		require_once( 'classes/abstracts/ActionScheduler.php' );
-		ActionScheduler::init( __FILE__ );
+		// A final safety check is required even here, because historic versions of Action Scheduler
+		// followed a different pattern (in some unusual cases, we could reach this point and the
+		// ActionScheduler class is already defined—so we need to guard against that).
+		if ( class_exists( 'ActionScheduler' ) ) {
+			require_once( 'classes/abstracts/ActionScheduler.php' );
+			ActionScheduler::init( __FILE__ );
+		}
 	}
 
 	// Support usage in themes - load this version if no plugin has loaded a version yet.
-	if ( did_action( 'plugins_loaded' ) && ! class_exists( 'ActionScheduler' ) ) {
+	if ( did_action( 'plugins_loaded' ) && ! doing_action( 'plugins_loaded' ) && ! class_exists( 'ActionScheduler' ) ) {
 		action_scheduler_initialize_3_dot_2_dot_0();
 		do_action( 'action_scheduler_pre_theme_init' );
 		ActionScheduler_Versions::initialize_latest_version();
