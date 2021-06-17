@@ -3369,7 +3369,7 @@ msgstr "Adicionar CNAME"
 
 #: inc/deprecated/deprecated.php:1706 views/settings/partials/sidebar.php:16
 msgid "Watch the video"
-msgstr "Veja o vídeo"
+msgstr "Ver o vídeo"
 
 #: inc/deprecated/deprecated.php:1771
 msgid "Basic"
