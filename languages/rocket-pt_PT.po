@@ -4294,7 +4294,7 @@ msgstr ""
 
 #: views/settings/partials/documentation.php:22
 msgid "Read the documentation"
-msgstr "Leia a documentação"
+msgstr "Ler a documentação"
 
 #: views/settings/partials/getting-started.php:11
 msgid "What WP Rocket Does For You By Default"
