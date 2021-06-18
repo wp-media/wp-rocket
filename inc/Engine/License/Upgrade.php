@@ -282,6 +282,10 @@ class Upgrade extends Abstract_Render {
 			return false;
 		}
 
+		if ( $this->is_new_user() ) {
+			return false;
+		}
+
 		return $this->pricing->is_promo_active();
 	}
 
@@ -294,6 +298,15 @@ class Upgrade extends Abstract_Render {
 		$expiration_delay = $this->user->get_license_expiration() - time();
 
 		return 30 * DAY_IN_SECONDS > $expiration_delay;
+	}
+
+	/**
+	 * Checks if the User license bought less than 14 days
+	 *
+	 * @return boolean
+	 */
+	private function is_new_user() {
+		return ( 14 * DAY_IN_SECONDS ) > time() - $this->user->get_creation_date();
 	}
 
 	/**
