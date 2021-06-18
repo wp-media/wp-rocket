@@ -3,8 +3,10 @@
 defined( 'ABSPATH' ) || exit;
 
 // Compatibility with the currency switcher in WooCommerce Multilingual plugin.
-// @see #3998 -- We are _temporarily_ disabling this filter (@since 3.9.0.3). To be re-enabled after a future WCML release
+// @since 3.9.0.3
+// We are _temporarily_ disabling this filter . To be re-enabled after a future WCML release
 // that contains a better fix for the duplicate generation of cookies on this filter.
+// @see #3998
 if ( defined( 'WCML_VERSION' ) ) :
 	/**
 	 * Use Cookie instead of WCSession
