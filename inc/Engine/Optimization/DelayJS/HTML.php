@@ -42,8 +42,8 @@ class HTML {
 		'et_animation_data',
 		'wpforms_settings',
 		'var nfForms',
-		'//stats.wp.com', // Jetpack Stats
-		'_stq.push', 	  // Jetpack Stats
+		'//stats.wp.com', // Jetpack Stats.
+		'_stq.push', // Jetpack Stats.
 	];
 
 	/**
