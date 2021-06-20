@@ -72,6 +72,12 @@ $html = '<html>
     };
     /* ]]> */
 </script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
 </body>
 </html>';
 
@@ -147,6 +153,12 @@ $delay_html_upgrade = '<html>
     };
     /* ]]> */
 </script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
 </body>
 </html>';
 
@@ -221,6 +233,12 @@ $delay_html = '<html>
         is_ssl: "1",
     };
     /* ]]> */
+</script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
 </script>
 </body>
 </html>';
