@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 4.7
 Tested up to: 5.7
-Stable tag: 3.2.0
+Stable tag: 3.2.1
 License: GPLv3
 Requires PHP: 5.3
 
@@ -46,6 +46,8 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.2.1 - 2021-xx-xx =
 
 = 3.2.0 - 2021-06-03 =
 * Fix - Add "no ordering" option to as_next_scheduled_action().
