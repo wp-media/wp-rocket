@@ -1957,7 +1957,7 @@ msgstr "通过升级许可，您可以在多个网站使用 WP Rocket。要升�
 #, php-format
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
-msgstr "%1$sN.B.%2$s：升级您的许可并不改变失效日期"
+msgstr "%1$sN.B.%2$s：升级您的许可并不改变过期日期"
 
 #: inc/Engine/License/views/upgrade-popin.php:35
 #, php-format
