@@ -48,6 +48,9 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 == Changelog ==
 
 = 3.2.1 - 2021-06-21 =
+* Fix - Add extra safety/account for different versions of AS and different loading patterns. #714
+* Fix - Handle hidden columns (Tools → Scheduled Actions) | #600.
+
 
 = 3.2.0 - 2021-06-03 =
 * Fix - Add "no ordering" option to as_next_scheduled_action().
