@@ -495,7 +495,7 @@ msgstr "输入备用代码，以供自动生成关键路径 CSS 操作无法完�
 
 #: inc/Engine/Admin/Settings/Page.php:700
 msgid "Remove Unused CSS (Beta)"
-msgstr "移除不用的CSS (测试)"
+msgstr "移除不用的CSS（测试）"
 
 #: inc/Engine/Admin/Settings/Page.php:702
 #, php-format
