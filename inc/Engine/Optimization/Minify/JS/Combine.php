@@ -708,6 +708,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'google_conversion_id',
 			'hbspt',
 			'ifso_page_url',
+			'referrer_for_pageload',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
