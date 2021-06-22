@@ -42,6 +42,9 @@ class Test_GetHostResolver extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
+			case 'godaddy':
+				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
+				break;
 			default:
 				break;
 		}

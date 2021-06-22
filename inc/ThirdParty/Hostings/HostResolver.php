@@ -85,6 +85,10 @@ class HostResolver {
 			return 'dreampress';
 		}
 
+		if ( class_exists( '\WPaas\Plugin' ) ) {
+			return 'godaddy';
+		}
+
 		return '';
 	}
 

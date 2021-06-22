@@ -55,10 +55,13 @@ class Test_GetSubscriber extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
+			case 'godaddy':
+				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
+				break;
 			default:
 				break;
 		}
 
-		$this->assertTrue( $this->factory->get_subscriber() instanceof $expected );
+		$this->assertInstanceOf( $expected, $this->factory->get_subscriber());
 	}
 }
