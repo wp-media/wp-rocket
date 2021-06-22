@@ -344,7 +344,8 @@ class UsedCSS {
 	private function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
-		$minifier = new MinifyCSS( $data['css'] );
+		$data['css'] = $this->apply_font_display_swap( $data['css'] );
+		$minifier    = new MinifyCSS( $data['css'] );
 
 		/**
 		 * Filters Used CSS content before saving into DB and filesystem.
@@ -353,7 +354,6 @@ class UsedCSS {
 		 *
 		 * @param string $usedcss Used CSS.
 		 */
-		$data['css'] = $this->apply_font_display_swap( $data['css'] );
 		$data['css'] = apply_filters( 'rocket_usedcss_content', $minifier->minify() );
 
 		if ( empty( $used_css ) ) {
