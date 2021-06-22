@@ -44,6 +44,7 @@ class HTML {
 		'var nfForms',
 		'ninja_column_', // Ninja Tables.
 		'var rbs_gallery_', // Robo Gallery.
+		'var lepopup_', // Green Popup.
 	];
 
 	/**

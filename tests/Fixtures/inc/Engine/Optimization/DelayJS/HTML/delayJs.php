@@ -11,6 +11,7 @@ $html = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
@@ -111,6 +112,7 @@ $delay_html_upgrade = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
@@ -211,6 +213,7 @@ $delay_html = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
