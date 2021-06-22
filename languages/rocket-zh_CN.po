@@ -672,7 +672,7 @@ msgstr "延迟加载已在 %2$s 中启用。若您想要使用 WP Rocket 的延�
 
 #: inc/Engine/Admin/Settings/Page.php:959
 msgid "Image Dimensions"
-msgstr "图像大小"
+msgstr "图片规格"
 
 #: inc/Engine/Admin/Settings/Page.php:962
 #, php-format
