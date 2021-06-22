@@ -72,6 +72,7 @@ $html = '<html>
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 </body>
 </html>';
 
@@ -147,6 +148,7 @@ $delay_html_upgrade = '<html>
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 </body>
 </html>';
 
@@ -222,6 +224,7 @@ $delay_html = '<html>
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 </body>
 </html>';
 
