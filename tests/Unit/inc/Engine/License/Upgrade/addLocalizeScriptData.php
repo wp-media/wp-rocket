@@ -44,17 +44,22 @@ class AddLocalizeScriptData extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expired'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expiration'] );
 
+		$this->user->shouldReceive( 'get_creation_date' )
+			->atMost()
+			->once()
+			->andReturn( $config['date_created'] );
+
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
 			->once()
 			->andReturn( $config['promo_active'] );
-		
+
 		$this->pricing->shouldReceive( 'get_promo_end' )
 			->atMost()
 			->once()

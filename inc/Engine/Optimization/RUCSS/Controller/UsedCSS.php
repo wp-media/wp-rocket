@@ -80,7 +80,6 @@ class UsedCSS {
 	 */
 	private $inline_exclusions = [
 		'rocket-lazyload-inline-css',
-		'rocket-lazyload-nojs-css',
 	];
 
 	/**
@@ -354,6 +353,7 @@ class UsedCSS {
 		 *
 		 * @param string $usedcss Used CSS.
 		 */
+		$data['css'] = $this->apply_font_display_swap( $data['css'] );
 		$data['css'] = apply_filters( 'rocket_usedcss_content', $minifier->minify() );
 
 		if ( empty( $used_css ) ) {
@@ -425,9 +425,25 @@ class UsedCSS {
 	 * @return string HTML content.
 	 */
 	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
-		$html_nocomments    = $this->hide_comments( $html );
-		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
-		$inline_styles      = $this->find( '<style(?<atts>.*)>(?<content>.*)<\/style>', $html_nocomments );
+		$html_nocomments       = $this->hide_comments( $html );
+		$link_style_pattern    = '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>';
+		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style>';
+
+		$link_styles   = $this->find(
+			'<noscript[^>]*>.*' .
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>' .
+			'.*<\/noscript>(*SKIP)(*FAIL)|' .
+			$link_style_pattern,
+			$html_nocomments
+		);
+		$inline_styles = $this->find(
+			'<noscript[^>]*>.*' .
+			'<style(.*)>(.*)<\/style>' .
+			'.*<\/noscript>(*SKIP)(*FAIL)|' .
+			$inline_inline_pattern,
+			$html_nocomments
+		);
+
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
 		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
