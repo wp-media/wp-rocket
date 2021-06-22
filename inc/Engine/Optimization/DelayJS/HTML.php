@@ -42,7 +42,8 @@ class HTML {
 		'et_animation_data',
 		'wpforms_settings',
 		'var nfForms',
-		'ninja_column_' // Ninja Tables.
+		'ninja_column_', // Ninja Tables.
+		'var rbs_gallery_', // Robo Gallery.
 	];
 
 	/**
