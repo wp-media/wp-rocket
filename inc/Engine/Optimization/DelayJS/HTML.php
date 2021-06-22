@@ -45,6 +45,7 @@ class HTML {
 		'ninja_column_', // Ninja Tables.
 		'var rbs_gallery_', // Robo Gallery.
 		'var lepopup_', // Green Popup.
+		'var billing_additional_field', // Woo Autocomplete Nish.
 	];
 
 	/**
