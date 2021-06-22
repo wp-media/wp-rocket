@@ -74,11 +74,7 @@ $integration                                 = $default;
 $integration[ 'async_css_mobile' ]           = 1;
 $integration[ 'exclude_defer_js' ]           = [];
 $integration[ 'delay_js' ]                   = 1;
-$integration[ 'delay_js_exclusions' ]        = [
-	'(?:/wp-content/|/wp-includes/)(.*)',
-    '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-    'js-(before|after)',
-];
+$integration[ 'delay_js_exclusions' ]        = [];
 $integration[ 'remove_unused_css' ]          = 0;
 $integration[ 'remove_unused_css_safelist' ] = [];
 $integration[ 'preload_links' ]              = 1;

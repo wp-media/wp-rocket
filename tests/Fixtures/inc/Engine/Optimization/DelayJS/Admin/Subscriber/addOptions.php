@@ -7,11 +7,7 @@ return [
 		],
 		'expected' => [
 			'delay_js'            => 1,
-			'delay_js_exclusions' => [
-				'(?:/wp-content/|/wp-includes/)(.*)',
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			],
+			'delay_js_exclusions' => [],
 		]
 	],
 	'shouldReturnValidOptionsWithOptionsNotArray' => [
@@ -21,11 +17,7 @@ return [
 		'expected' => [
 			'test_option',
 			'delay_js'            => 1,
-			'delay_js_exclusions' => [
-				'(?:/wp-content/|/wp-includes/)(.*)',
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			],
+			'delay_js_exclusions' => [],
 		]
 	],
 	'shouldOverrideOptions' => [
@@ -39,11 +31,7 @@ return [
 		],
 		'expected' => [
 			'delay_js'            => 1,
-			'delay_js_exclusions' => [
-				'(?:/wp-content/|/wp-includes/)(.*)',
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			],
+			'delay_js_exclusions' => [],
 		]
 	],
 	'shouldNotOverrideOtherOptions' => [
@@ -59,11 +47,7 @@ return [
 		'expected' => [
 			'test_option'         => 1,
 			'delay_js'            => 1,
-			'delay_js_exclusions' => [
-				'(?:/wp-content/|/wp-includes/)(.*)',
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			],
+			'delay_js_exclusions' => [],
 		]
 	],
 ];
