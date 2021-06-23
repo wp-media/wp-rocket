@@ -17,8 +17,5 @@ return [
 		'testShouldReturnSavvii' => [
 			'expected' => 'savvii',
 		],
-		'testShouldReturnGodaddy' => [
-			'expected' => 'godaddy',
-		]
 	],
 ];

@@ -8,6 +8,12 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
 class Godaddy implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
+	private $vip_url;
+
+	public function __construct( $vip_url = false ) {
+		$this->vip_url = method_exists( '\WPaas\Plugin', 'vip' ) ? \WPaas\Plugin::vip() : $vip_url;
+	}
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -117,18 +123,17 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function godaddy_request( $method, $url = null ) {
-		if ( ! method_exists( '\WPaas\Plugin', 'vip' ) ) {
+		if ( false === $this->vip_url ) {
 			return;
 		}
 
 		if ( empty( $url ) ) {
 			$url = home_url();
 		}
-		var_dump($url);
+
 		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
-		var_dump('sssssss');
-		var_dump($host);
-		$url  = set_url_scheme( str_replace( $host, \WPaas\Plugin::vip(), $url ), 'http' );
+
+		$url  = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
 
 		wp_cache_flush();
 
