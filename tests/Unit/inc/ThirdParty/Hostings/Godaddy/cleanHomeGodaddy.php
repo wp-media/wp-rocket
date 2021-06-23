@@ -21,7 +21,7 @@ class Test_cleanHomeGodaddy extends TestCase {
 
 		$host_url='http://example.org';
 		$vip_url='http://vip-url.com';
-		$lang='de';
+		$lang='';
 		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
 
 		Functions\expect( 'get_rocket_i18n_home_url' )->once()->andReturn( $host_url );
@@ -41,12 +41,12 @@ class Test_cleanHomeGodaddy extends TestCase {
 
 		Functions\expect('rocket_extract_url_component')
 			->once()
-			->with('http://example.org/', PHP_URL_HOST)
+			->with($host_url.'/', PHP_URL_HOST)
 			->andReturn( $host_url);
 
 		Functions\expect('rocket_extract_url_component')
 			->once()
-			->with('http://example.org/page/', PHP_URL_HOST)
+			->with($host_url.'/page/', PHP_URL_HOST)
 			->andReturn( $host_url);
 
 		Functions\expect( 'wp_cache_flush' )->twice()->andReturn(null);
