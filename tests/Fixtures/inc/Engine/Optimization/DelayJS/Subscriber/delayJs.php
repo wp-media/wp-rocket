@@ -303,7 +303,7 @@ return [
 				'post-excluded'        => false,
 				'delay_js'             => 1,
 				'delay_js_exclusions'  => [
-					'(?:/wp-content/|/wp-includes/)(.*)',
+					'(?:/wp-content|/wp-includes/)(.*)',
 					'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 					'js-(before|after)',
 				],
