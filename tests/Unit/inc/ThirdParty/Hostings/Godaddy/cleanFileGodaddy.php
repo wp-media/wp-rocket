@@ -9,9 +9,9 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
-class Test_cleanDomainGodaddy extends TestCase {
+class Test_cleanFileGodaddy extends TestCase {
 
-	public function testShouldDoBanRequest( ) {
+	public function testShouldPurgeFile( ) {
 
 		$host_url='http://example.org';
 		$vip_url='http://vip-url.com/';
@@ -48,7 +48,7 @@ class Test_cleanDomainGodaddy extends TestCase {
 			->with(
 				$vip_url,
 				[
-					'method'      => 'BAN',
+					'method'      => 'PURGE',
 					'blocking'    => false,
 					'headers'     => [
 						'Host' => $host_url,
@@ -57,6 +57,6 @@ class Test_cleanDomainGodaddy extends TestCase {
 			);
 
 		$godaddy = new Godaddy( $vip_url );
-		$godaddy->clean_domain_godaddy();
+		$godaddy->clean_file_godaddy( $host_url );
 	}
 }

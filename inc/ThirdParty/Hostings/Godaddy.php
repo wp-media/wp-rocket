@@ -8,8 +8,18 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
 class Godaddy implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
+	/**
+	 * Godaddy vip url
+	 *
+	 * @var bool|string
+	 */
 	private $vip_url;
 
+	/**
+	 * Godaddy constructor.
+	 *
+	 * @param bool|string $vip_url Godaddy vip url.
+	 */
 	public function __construct( $vip_url = false ) {
 		$this->vip_url = method_exists( '\WPaas\Plugin', 'vip' ) ? \WPaas\Plugin::vip() : $vip_url;
 	}
@@ -123,6 +133,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function godaddy_request( $method, $url = null ) {
+
 		if ( false === $this->vip_url ) {
 			return;
 		}
@@ -133,7 +144,7 @@ class Godaddy implements Subscriber_Interface {
 
 		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
 
-		$url  = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
+		$url = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
 
 		wp_cache_flush();
 
