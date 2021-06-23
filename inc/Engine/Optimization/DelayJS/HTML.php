@@ -43,6 +43,7 @@ class HTML {
 		'wpforms_settings',
 		'var nfForms',
 		'var gtm4wp',
+		'var dataLayer_content',
 	];
 
 	/**

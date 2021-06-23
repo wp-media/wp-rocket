@@ -116,6 +116,10 @@ $html = '<html>
 	var gtm4wp_scrollerscript_scannertime       = 60;
 //]]>
 </script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
 </body>
 </html>';
 
@@ -235,6 +239,10 @@ $delay_html_upgrade = '<html>
 	var gtm4wp_scrollerscript_scannertime       = 60;
 //]]>
 </script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
 </body>
 </html>';
 
@@ -353,6 +361,10 @@ $delay_html = '<html>
 	var gtm4wp_scrollerscript_contentelementid  = "content";
 	var gtm4wp_scrollerscript_scannertime       = 60;
 //]]>
+</script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
 </script>
 </body>
 </html>';
