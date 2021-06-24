@@ -101,7 +101,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_file_godaddy( $url ) {
-		$this->godaddy_request( 'PURGE',  $url  );
+		$this->godaddy_request( 'PURGE',  $url );
 	}
 
 	/**
