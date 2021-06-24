@@ -55,7 +55,7 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 1;
+		$options['delay_js']            = 0;
 		$options['delay_js_exclusions'] = [];
 
 		return $options;
@@ -161,8 +161,8 @@ class Settings {
 	 * @return string
 	 */
 	private function get_excluded_internal_paths() : string {
-		$wp_content  = wp_parse_url( content_url(), PHP_URL_PATH );
-		$wp_includes = wp_parse_url( includes_url(), PHP_URL_PATH );
+		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
 		$pattern     = '(?:placeholder)(.*)';
 		$paths       = [];
 
