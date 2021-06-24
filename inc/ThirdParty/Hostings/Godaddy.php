@@ -141,19 +141,17 @@ class Godaddy implements Subscriber_Interface {
 		if ( empty( $url ) ) {
 			$url = home_url();
 		}
-var_dump($url);
+
 		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
-		var_dump($host);
+
 		$url = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
-		var_dump($url);
+
 		wp_cache_flush();
-		var_dump('flussssh');
+
 		// This forces the APC cache to flush across the server.
 		update_option( 'gd_system_last_cache_flush', time() );
-		var_dump('ssssssssss');
-		var_dump( esc_url_raw( $url ));
 
-		$x= wp_remote_request(
+		wp_remote_request(
 			esc_url_raw( $url ),
 			[
 				'method'   => $method,
@@ -163,7 +161,6 @@ var_dump($url);
 				],
 			]
 		);
-		var_dump($x);
 	}
 
 }
