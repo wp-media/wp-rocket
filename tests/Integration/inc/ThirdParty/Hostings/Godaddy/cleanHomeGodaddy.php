@@ -10,48 +10,28 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
+use Brain\Monkey\Filters;
 
 class Test_cleanHomeGodaddy extends TestCase {
 
-	public function tearDown() {
-		parent::tearDown();
+	public function setUp(): void {
+		parent::setUp();
+		add_filter( 'pre_http_request', [ $this, 'mock_response' ] );
+	}
 
-		unset( $GLOBALS['wp_rewrite'] );
+	protected function tearDown(): void {
+		parent::tearDown();
+		remove_filter( 'pre_http_request', [ $this, 'mock_response' ]);
 	}
 
 	public function testShouldPurgeHome( ) {
+		Filters\expectApplied('pre_http_request')->andReturn('response');
 
-		$host='example.org';
-		$vip_url='vip-url.com';
-		$lang='';
-
-		Functions\expect( 'wp_remote_request' )
-			->once()
-			->with(
-				esc_url_raw( $vip_url ).'/',
-				[
-					'method'      => 'PURGE',
-					'blocking'    => false,
-					'headers'     => [
-						'Host' => $host,
-					],
-				]
-			);
-
-		Functions\expect( 'wp_remote_request' )
-			->once()
-			->with(
-				esc_url_raw( $vip_url ).'/page/',
-				[
-					'method'      => 'PURGE',
-					'blocking'    => false,
-					'headers'     => [
-						'Host' => $host,
-					],
-				]
-			);
-
-		$godaddy = new Godaddy( $vip_url );
-		$godaddy->clean_home_godaddy( '',$lang );
+		do_action( 'before_rocket_clean_home', '','' );
 	}
+
+	public function mock_response() {
+		return 'response';
+	}
+
 }
