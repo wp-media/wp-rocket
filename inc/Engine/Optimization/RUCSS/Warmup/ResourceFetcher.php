@@ -168,15 +168,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			list( $path, $contents ) = $this->get_url_details( $resource['url'], $type );
-
-			if ( empty( $contents ) ) {
-				continue;
-			}
+			$path = $this->get_url_path( $resource['url'], $type );
 
 			$this->resources[ $path ] = [
 				'url'     => $this->normalize_fullurl( $resource['url'], false ),
-				'content' => $contents,
 				'type'    => $type,
 			];
 
@@ -274,6 +269,34 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		}
 
 		return $media_matches['media'];
+	}
+
+	/**
+	 * Get url file path.
+	 *
+	 * @param string $url File url.
+	 * @param string $type File type (css,js).
+	 *
+	 * @return string
+	 */
+	private function get_url_path( $url, string $type = 'css' ) : array {
+		$external_url = $this->is_external_file( $url );
+
+		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+
+		if ( empty( $file_path ) ) {
+			Logger::error(
+				'Couldn’t get the file path from the URL.',
+				[
+					'RUCSS warmup process',
+					'url' => $url,
+				]
+			);
+
+			return md5( uniqid() );
+		}
+
+		return $file_path;
 	}
 
 	/**
