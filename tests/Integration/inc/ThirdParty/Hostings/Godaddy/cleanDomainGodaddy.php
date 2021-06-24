@@ -1,6 +1,7 @@
 <?php
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::godaddy_varnish_field
+ * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::clean_domain_godaddy
  *
  * @group  Godaddy
  * @group  ThirdParty

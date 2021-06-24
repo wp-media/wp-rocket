@@ -101,7 +101,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_file_godaddy( $url ) {
-		$this->godaddy_request( 'PURGE', home_url( $url ) );
+		$this->godaddy_request( 'PURGE',  $url  );
 	}
 
 	/**
@@ -141,17 +141,19 @@ class Godaddy implements Subscriber_Interface {
 		if ( empty( $url ) ) {
 			$url = home_url();
 		}
-
+var_dump($url);
 		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
-
+		var_dump($host);
 		$url = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
-
+		var_dump($url);
 		wp_cache_flush();
-
+		var_dump('flussssh');
 		// This forces the APC cache to flush across the server.
 		update_option( 'gd_system_last_cache_flush', time() );
+		var_dump('ssssssssss');
+		var_dump( esc_url_raw( $url ));
 
-		wp_remote_request(
+		$x= wp_remote_request(
 			esc_url_raw( $url ),
 			[
 				'method'   => $method,
@@ -161,6 +163,7 @@ class Godaddy implements Subscriber_Interface {
 				],
 			]
 		);
+		var_dump($x);
 	}
 
 }
