@@ -92,7 +92,7 @@ class ActionScheduler_Compatibility {
 
 		if ( function_exists( 'wc_set_time_limit' ) ) {
 			wc_set_time_limit( $limit );
-		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
 			@set_time_limit( $limit );
 		}
 	}
