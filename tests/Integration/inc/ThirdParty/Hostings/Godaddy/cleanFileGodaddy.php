@@ -9,17 +9,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
-class Test_cleanFileGodaddy extends TestCase {
-
-	public function setUp(): void {
-		parent::setUp();
-		add_filter( 'pre_http_request', [ $this, 'mock_response' ] );
-	}
-
-	protected function tearDown(): void {
-		parent::tearDown();
-		remove_filter( 'pre_http_request', [ $this, 'mock_response' ]);
-	}
+class Test_cleanFileGodaddy extends GodaddyTestCase {
 
 	public function testShouldPurgeFile( ) {
 		Filters\expectApplied('pre_http_request')->andReturn('response');
@@ -27,7 +17,4 @@ class Test_cleanFileGodaddy extends TestCase {
 		do_action( 'before_rocket_clean_file', home_url() );
 	}
 
-	public function mock_response() {
-		return 'response';
-	}
 }

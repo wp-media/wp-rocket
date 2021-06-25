@@ -14,7 +14,7 @@ class Test_cleanDomainGodaddy extends TestCase {
 	public function testShouldDoBanRequest( ) {
 
 		$host_url='http://example.org';
-		$vip_url='http://vip-url.com/';
+		$vip_url='vip-url.com';
 
 		Functions\expect( 'home_url' )->andReturn( $host_url );
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {

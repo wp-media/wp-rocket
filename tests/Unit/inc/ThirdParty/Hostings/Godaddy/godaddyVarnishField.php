@@ -21,7 +21,8 @@ class Test_godaddyVarnishField extends TestCase {
 	 */
 	public function testShouldDoExpected( $settings, $expected ) {
 
-		$godaddy = new Godaddy();
+		$vip_url='vip-url.com';
+		$godaddy = new Godaddy($vip_url);
 
 		$this->assertSame(
 			$expected,

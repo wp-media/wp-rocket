@@ -20,7 +20,7 @@ class Test_cleanHomeGodaddy extends TestCase {
 	public function testShouldPurgeHome( ) {
 
 		$host_url='http://example.org';
-		$vip_url='http://vip-url.com';
+		$vip_url='vip-url.com';
 		$lang='';
 		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
 

@@ -21,7 +21,8 @@ class Test_removeHtmlExpireGoddady extends TestCase {
 	 */
 	public function testShouldDoExpected( $htaccess_rules, $expected ) {
 
-		$godaddy = new Godaddy();
+		$vip_url='vip-url.com';
+		$godaddy = new Godaddy($vip_url);
 
 		$this->assertSame(
 			$expected,
