@@ -44,6 +44,8 @@ class HTML {
 		'var nfForms',
 		'//stats.wp.com', // Jetpack Stats.
 		'_stq.push', // Jetpack Stats.
+		'var gtm4wp',
+		'var dataLayer_content',
 	];
 
 	/**

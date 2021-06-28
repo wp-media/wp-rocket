@@ -101,6 +101,31 @@ $html = '<html>
 	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
 	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
 </script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+	var gtm4wp_use_sku_instead        = 1;
+	var gtm4wp_id_prefix              = \'\';
+	var gtm4wp_remarketing            = false;
+	var gtm4wp_eec                    = 1;
+	var gtm4wp_classicec              = 1;
+	var gtm4wp_currency               = \'USD\';
+	var gtm4wp_product_per_impression = 10;
+	var gtm4wp_needs_shipping_address = false;
+	var gtm4wp_business_vertical      = \'retail\';
+	var gtm4wp_business_vertical_id   = \'id\';
+
+	var gtm4wp_scrollerscript_debugmode         = false;
+	var gtm4wp_scrollerscript_callbacktime      = 100;
+	var gtm4wp_scrollerscript_readerlocation    = 150;
+	var gtm4wp_scrollerscript_contentelementid  = "content";
+	var gtm4wp_scrollerscript_scannertime       = 60;
+//]]>
+</script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
 </body>
 </html>';
 
@@ -204,6 +229,31 @@ $delay_html_upgrade = '<html>
 	_stq = window._stq || [];
 	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
 	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+	var gtm4wp_use_sku_instead        = 1;
+	var gtm4wp_id_prefix              = \'\';
+	var gtm4wp_remarketing            = false;
+	var gtm4wp_eec                    = 1;
+	var gtm4wp_classicec              = 1;
+	var gtm4wp_currency               = \'USD\';
+	var gtm4wp_product_per_impression = 10;
+	var gtm4wp_needs_shipping_address = false;
+	var gtm4wp_business_vertical      = \'retail\';
+	var gtm4wp_business_vertical_id   = \'id\';
+
+	var gtm4wp_scrollerscript_debugmode         = false;
+	var gtm4wp_scrollerscript_callbacktime      = 100;
+	var gtm4wp_scrollerscript_readerlocation    = 150;
+	var gtm4wp_scrollerscript_contentelementid  = "content";
+	var gtm4wp_scrollerscript_scannertime       = 60;
+//]]>
+</script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
 </script>
 </body>
 </html>';
@@ -309,6 +359,31 @@ $delay_html = '<html>
 	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
 	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
 </script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+	var gtm4wp_use_sku_instead        = 1;
+	var gtm4wp_id_prefix              = \'\';
+	var gtm4wp_remarketing            = false;
+	var gtm4wp_eec                    = 1;
+	var gtm4wp_classicec              = 1;
+	var gtm4wp_currency               = \'USD\';
+	var gtm4wp_product_per_impression = 10;
+	var gtm4wp_needs_shipping_address = false;
+	var gtm4wp_business_vertical      = \'retail\';
+	var gtm4wp_business_vertical_id   = \'id\';
+
+	var gtm4wp_scrollerscript_debugmode         = false;
+	var gtm4wp_scrollerscript_callbacktime      = 100;
+	var gtm4wp_scrollerscript_readerlocation    = 150;
+	var gtm4wp_scrollerscript_contentelementid  = "content";
+	var gtm4wp_scrollerscript_scannertime       = 60;
+//]]>
+</script>
+<script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
+	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
 </body>
 </html>';
 
@@ -369,7 +444,7 @@ return [
 				'post-excluded'        => false,
 				'delay_js'             => 1,
 				'delay_js_exclusions'  => [
-					'(?:/wp-content/|/wp-includes/)(.*)',
+					'(?:/wp-content|/wp-includes/)(.*)',
 					'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
 					'js-(before|after)',
 				],
