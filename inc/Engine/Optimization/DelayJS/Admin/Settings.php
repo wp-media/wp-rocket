@@ -55,23 +55,10 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 1;
-		$options['delay_js_exclusions'] = $this->get_default_exclusion_list();
+		$options['delay_js']            = 0;
+		$options['delay_js_exclusions'] = [];
 
 		return $options;
-	}
-
-	/**
-	 * Get the default exclusion list.
-	 *
-	 * @return string[]
-	 */
-	private function get_default_exclusion_list(): array {
-		return [
-			$this->get_excluded_internal_paths(),
-			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-			'js-(before|after)',
-		];
 	}
 
 	/**
@@ -98,7 +85,11 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions']   = $this->get_default_exclusion_list();
+			$options['delay_js_exclusions']   = [
+				$this->get_excluded_internal_paths(),
+				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
+				'js-(before|after)',
+			];
 			$options['minify_concatenate_js'] = 0;
 		}
 

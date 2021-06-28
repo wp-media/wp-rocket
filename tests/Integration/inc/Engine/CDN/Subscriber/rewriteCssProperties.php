@@ -38,6 +38,11 @@ class Test_RewriteCssProperties extends TestCase {
 			$expected,
 			apply_filters( 'rocket_css_content', $original )
 		);
+
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_usedcss_content', $original )
+		);
 	}
 
 	/**
@@ -49,6 +54,11 @@ class Test_RewriteCssProperties extends TestCase {
 		$this->assertSame(
 			$original,
 			apply_filters( 'rocket_css_content', $original )
+		);
+
+		$this->assertSame(
+			$original,
+			apply_filters( 'rocket_usedcss_content', $original )
 		);
 	}
 

@@ -44,6 +44,8 @@ class HTML {
 		'var nfForms',
 		'fluent_form_ff_form_instance_', // Fluent Forms.
 		'cpLoadCSS', // Convert Pro.
+		'var gtm4wp',
+		'var dataLayer_content',
 	];
 
 	/**
