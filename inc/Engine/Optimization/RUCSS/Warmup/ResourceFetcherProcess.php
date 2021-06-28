@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
+use WP_Rocket\Logger\Logger;
 use \WP_Rocket_WP_Background_Process;
 
 class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
@@ -67,6 +68,52 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		$this->options_api     = $options_api;
 	}
 
+	/**
+	 * Get url file contents.
+	 *
+	 * @param string $url File url.
+	 * @param string $type File type (css,js).
+	 *
+	 * @return array
+	 */
+	private function get_url_contents( $url, string $type = 'css' ) : array {
+		$external_url = $this->is_external_file( $url );
+
+		$file_path = $external_url ? $this->local_cache->get_filepath( $url ) : $this->get_file_path( $url );
+
+		if ( empty( $file_path ) ) {
+			Logger::error(
+				'Couldn’t get the file path from the URL.',
+				[
+					'RUCSS warmup process',
+					'url' => $url,
+				]
+			);
+
+			return [ md5( uniqid() ), '*' ];
+		}
+
+		$file_content = $external_url ? $this->local_cache->get_content( $url ) : $this->get_file_content( $file_path );
+
+		// Minify the content if it's there.
+		if ( $file_content ) {
+			$file_content = 'js' === $type ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $file_path, $file_content );
+		}
+
+		if ( ! $file_content ) {
+			Logger::error(
+				'No file content.',
+				[
+					'RUCSS warmup process',
+					'path' => $file_path,
+				]
+			);
+
+			return [ md5( uniqid() ), '*' ];
+		}
+
+		return [ $file_path, $file_content ];
+	}
 
 	/**
 	 * Do the task for each page resources.
