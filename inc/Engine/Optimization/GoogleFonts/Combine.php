@@ -136,6 +136,7 @@ class Combine extends AbstractGFOptimization {
 	/**
 	 * Returns the combined Google fonts link tag
 	 *
+	 * @since  3.9.1 Add preload to load Fonts asynchronously.
 	 * @since  3.3.5 Add support for the display parameter
 	 * @since  3.1
 	 *
@@ -143,7 +144,7 @@ class Combine extends AbstractGFOptimization {
 	 */
 	private function get_combine_tag() {
 		return sprintf(
-			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			'<link rel="preload" href="%1$s" onload="this.onload=null;this.rel=\'stylesheet\'"/><link rel="stylesheet"href="%1$s&display=swap"media="print" onload="this.media=\'all\'"/><noscript><link rel="stylesheet" href="%1$s"/></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 			esc_url( "https://fonts.googleapis.com/css?family={$this->fonts}{$this->subsets}&display=swap" )
 		);
 	}
