@@ -178,6 +178,12 @@ $delay_html_upgrade = '<html>
     };
     /* ]]> */
 </script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
 	var dataLayer = dataLayer || [];
@@ -202,12 +208,6 @@ $delay_html_upgrade = '<html>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
-</script>
-<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
-<script>
-	_stq = window._stq || [];
-	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
-	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
 </script>
 </body>
 </html>';
