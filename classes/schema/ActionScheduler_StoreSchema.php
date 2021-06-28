@@ -16,7 +16,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 	/**
 	 * @var int Increment this value to trigger a schema update.
 	 */
-	protected $schema_version = 4;
+	protected $schema_version = 5;
 
 	public function __construct() {
 		$this->tables = [

@@ -31,7 +31,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		add_action( 'action_scheduler_before_schema_update', array( $this, 'update_actions_schema_4_0' ), 10, 2 );
+		add_action( 'action_scheduler_before_schema_update', array( $this, 'update_actions_schema_5_0' ), 10, 2 );
 		$table_maker = new ActionScheduler_StoreSchema();
 		$table_maker->register_tables();
 	}
@@ -601,9 +601,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * @param string $table Name of table being updated.
 	 * @param string $db_version The existing schema version of the table.
 	 */
-	public function update_actions_schema_4_0( $table, $db_version ) {
+	public function update_actions_schema_5_0( $table, $db_version ) {
 		global $wpdb;
-		if ( 'actionscheduler_actions' !== $table || version_compare( $db_version, '4', '>=' ) ) {
+		if ( 'actionscheduler_actions' !== $table || version_compare( $db_version, '5', '>=' ) ) {
 			return;
 		}
 
