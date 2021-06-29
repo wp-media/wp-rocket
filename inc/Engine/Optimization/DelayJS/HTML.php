@@ -33,7 +33,7 @@ class HTML {
 		'window.\$us === undefined',
 		'js-extra',
 		'fusionNavIsCollapsed',
-		'/assets/js/smush-lazy-load.min.js',
+		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
 		'eio_lazy_vars',
 		'/ewww-image-optimizer/includes/lazysizes.min.js',
 		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',

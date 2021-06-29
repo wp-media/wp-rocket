@@ -4,6 +4,7 @@ $html = '<html>
 <head>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -104,6 +105,7 @@ $delay_html_upgrade = '<html>
 <head>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -204,6 +206,7 @@ $delay_html = '<html>
 <head>
 	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
