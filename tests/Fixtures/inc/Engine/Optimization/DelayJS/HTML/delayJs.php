@@ -4,6 +4,7 @@ $html = '<html>
 <head>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -11,6 +12,7 @@ $html = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
@@ -51,6 +53,18 @@ $html = '<html>
 	<script>document.addEventListener(\'DOMContentLoaded\', function(event) {  if( typeof cpLoadCSS !== \'undefined\' ) { cpLoadCSS(\'https://example.org/wp-content/plugins/convertpro/assets/modules/css/cp-popup.min.css?ver=1.7.0\', 0, \'all\'); } }); </script>
 </head>
 <body>
+<script>
+	// Billing
+	var billing_address =\' #billing_address_1\';
+	var billing_city =\'\';
+	var billing_state =\' #billing_city\';
+	var billing_zip_code =\'\';
+	var billing_country =\'\';
+	var billing_county =\'\';
+	var billing_additional_field =\'\';
+	var country_restriction =\'HK\';
+</script>
+<script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
 window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"labelPlacement":"top","helpMessagePlacement":"with_label","errorMessagePlacement":"inline","asteriskPlacement":"asterisk-right"},"id":"39","restrictions":{"denyEmptySubmission":{"enabled":false}}},"form_instance":"ff_form_instance_1_1","form_id_selector":"fluentform_1","rules":{"first_name[first_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[middle_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[last_name]":{"required":{"value":false,"message":"This field is required"}},"email":{"required":{"value":true,"message":"This field is required"},"email":{"value":true,"message":"This field must contain a valid email"}},"biggest_challenge":{"required":{"value":false,"message":"This field is required"}}}};
 </script>
@@ -100,6 +114,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
 	var dataLayer = dataLayer || [];
@@ -132,6 +147,7 @@ $delay_html_upgrade = '<html>
 <head>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -139,6 +155,7 @@ $delay_html_upgrade = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
@@ -179,6 +196,18 @@ $delay_html_upgrade = '<html>
 	<script>document.addEventListener(\'DOMContentLoaded\', function(event) {  if( typeof cpLoadCSS !== \'undefined\' ) { cpLoadCSS(\'https://example.org/wp-content/plugins/convertpro/assets/modules/css/cp-popup.min.css?ver=1.7.0\', 0, \'all\'); } }); </script>
 </head>
 <body>
+<script>
+	// Billing
+	var billing_address =\' #billing_address_1\';
+	var billing_city =\'\';
+	var billing_state =\' #billing_city\';
+	var billing_zip_code =\'\';
+	var billing_country =\'\';
+	var billing_county =\'\';
+	var billing_additional_field =\'\';
+	var country_restriction =\'HK\';
+</script>
+<script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
 window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"labelPlacement":"top","helpMessagePlacement":"with_label","errorMessagePlacement":"inline","asteriskPlacement":"asterisk-right"},"id":"39","restrictions":{"denyEmptySubmission":{"enabled":false}}},"form_instance":"ff_form_instance_1_1","form_id_selector":"fluentform_1","rules":{"first_name[first_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[middle_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[last_name]":{"required":{"value":false,"message":"This field is required"}},"email":{"required":{"value":true,"message":"This field is required"},"email":{"value":true,"message":"This field must contain a valid email"}},"biggest_challenge":{"required":{"value":false,"message":"This field is required"}}}};
 </script>
@@ -228,6 +257,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
 	var dataLayer = dataLayer || [];
@@ -260,6 +290,7 @@ $delay_html = '<html>
 <head>
 	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -267,6 +298,7 @@ $delay_html = '<html>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
+	<script>var lepopup_customjs_handlers={};var lepopup_cookie_value="1624338829";var lepopup_events_data={};var lepopup_content_id="23638";</script>
 	<script>
 		// Store some global theme options used in JS
 		if ( window.$us === undefined ) {
@@ -307,6 +339,18 @@ $delay_html = '<html>
 	<script>document.addEventListener(\'DOMContentLoaded\', function(event) {  if( typeof cpLoadCSS !== \'undefined\' ) { cpLoadCSS(\'https://example.org/wp-content/plugins/convertpro/assets/modules/css/cp-popup.min.css?ver=1.7.0\', 0, \'all\'); } }); </script>
 </head>
 <body>
+<script>
+	// Billing
+	var billing_address =\' #billing_address_1\';
+	var billing_city =\'\';
+	var billing_state =\' #billing_city\';
+	var billing_zip_code =\'\';
+	var billing_country =\'\';
+	var billing_county =\'\';
+	var billing_additional_field =\'\';
+	var country_restriction =\'HK\';
+</script>
+<script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
 window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"labelPlacement":"top","helpMessagePlacement":"with_label","errorMessagePlacement":"inline","asteriskPlacement":"asterisk-right"},"id":"39","restrictions":{"denyEmptySubmission":{"enabled":false}}},"form_instance":"ff_form_instance_1_1","form_id_selector":"fluentform_1","rules":{"first_name[first_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[middle_name]":{"required":{"value":false,"message":"This field is required"}},"first_name[last_name]":{"required":{"value":false,"message":"This field is required"}},"email":{"required":{"value":true,"message":"This field is required"},"email":{"value":true,"message":"This field must contain a valid email"}},"biggest_challenge":{"required":{"value":false,"message":"This field is required"}}}};
 </script>
@@ -356,6 +400,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
 	var dataLayer = dataLayer || [];

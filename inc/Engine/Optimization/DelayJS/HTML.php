@@ -33,7 +33,7 @@ class HTML {
 		'window.\$us === undefined',
 		'js-extra',
 		'fusionNavIsCollapsed',
-		'/assets/js/smush-lazy-load.min.js',
+		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
 		'eio_lazy_vars',
 		'/ewww-image-optimizer/includes/lazysizes.min.js',
 		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
@@ -44,6 +44,10 @@ class HTML {
 		'var nfForms',
 		'fluent_form_ff_form_instance_', // Fluent Forms.
 		'cpLoadCSS', // Convert Pro.
+		'ninja_column_', // Ninja Tables.
+		'var rbs_gallery_', // Robo Gallery.
+		'var lepopup_', // Green Popup.
+		'var billing_additional_field', // Woo Autocomplete Nish.
 		'var gtm4wp',
 		'var dataLayer_content',
 	];
