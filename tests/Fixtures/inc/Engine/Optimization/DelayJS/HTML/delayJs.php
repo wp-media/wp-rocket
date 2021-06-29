@@ -245,6 +245,7 @@ $delay_html_upgrade = '<html>
     };
     /* ]]> */
 </script>
+<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
 	var dataLayer = dataLayer || [];
@@ -270,7 +271,6 @@ $delay_html_upgrade = '<html>
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
-<script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 </body>
 </html>';
 
