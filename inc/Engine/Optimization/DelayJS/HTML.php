@@ -42,6 +42,8 @@ class HTML {
 		'et_animation_data',
 		'wpforms_settings',
 		'var nfForms',
+		'fluent_form_ff_form_instance_', // Fluent Forms.
+		'cpLoadCSS', // Convert Pro.
 		'ninja_column_', // Ninja Tables.
 		'var rbs_gallery_', // Robo Gallery.
 		'var lepopup_', // Green Popup.
