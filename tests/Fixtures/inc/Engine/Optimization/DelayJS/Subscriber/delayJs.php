@@ -91,6 +91,12 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
 <script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
@@ -211,6 +217,12 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
+</script>
 <script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var gtm4wp_datalayer_name = "dataLayer";
@@ -330,6 +342,12 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
         is_ssl: "1",
     };
     /* ]]> */
+</script>
+<script src=\'https://stats.wp.com/e-202124.js\' defer></script>
+<script>
+	_stq = window._stq || [];
+	_stq.push([ \'view\', {v:\'ext\',j:\'1:9.8.1\',blog:\'11111111\',post:\'39721\',tz:\'-5\',srv:\'example.com\'} ]);
+	_stq.push([ \'clickTrackerInit\', \'11111111\', \'39721\' ]);
 </script>
 <script>window.ninja_table_instance_0={table_id:"1067",title:"MYGA Rates National - Sheet1.csv (Imported From Table Press)",caption:"",columns:[{name:"companyname",key:"companyname",title:"Company Name",breakpoints:"",type:"text",visible:!0,classes:["ninja_column_0","ninja_clmn_nm_companyname"],filterable:!0,sortable:!1,original:{key:"companyname",name:"Company Name",breakpoints:"",data_type:"text",dateFormat:"",enable_html_content:"false",header_html_content:"",contentAlign:"left",textAlign:"left",maxWidthUnit:"px",unsortable:"yes"}}]};</script>
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[

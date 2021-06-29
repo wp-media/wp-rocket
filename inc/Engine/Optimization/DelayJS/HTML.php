@@ -42,6 +42,8 @@ class HTML {
 		'et_animation_data',
 		'wpforms_settings',
 		'var nfForms',
+		'//stats.wp.com', // Jetpack Stats.
+		'_stq.push', // Jetpack Stats.
 		'fluent_form_ff_form_instance_', // Fluent Forms.
 		'cpLoadCSS', // Convert Pro.
 		'ninja_column_', // Ninja Tables.
