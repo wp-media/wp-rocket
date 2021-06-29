@@ -46,6 +46,8 @@ class HTML {
 		'var rbs_gallery_', // Robo Gallery.
 		'var lepopup_', // Green Popup.
 		'var billing_additional_field', // Woo Autocomplete Nish.
+		'var gtm4wp',
+		'var dataLayer_content',
 	];
 
 	/**
