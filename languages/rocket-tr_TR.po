@@ -84,7 +84,7 @@ msgstr ""
 
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:116
 msgid "All in One SEO XML sitemap"
-msgstr "Tümü Bir SEO XML site haritasında"
+msgstr "All in One SEO XML site haritası"
 
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:32
 msgid "Rank Math XML sitemap"
