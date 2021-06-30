@@ -28,6 +28,12 @@ abstract class ActionScheduler_Abstract_Schema {
 	protected $tables = [];
 
 	/**
+	 * Can optionally be used by concrete classes to carry out additional initialization work
+	 * as needed.
+	 */
+	public function init() {}
+
+	/**
 	 * Register tables with WordPress, and create them if needed.
 	 *
 	 * @param bool $force_update Optional. Default false. Use true to always run the schema update.
