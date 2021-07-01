@@ -1,6 +1,5 @@
 <?php
 
-
 namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
