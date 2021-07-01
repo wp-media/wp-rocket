@@ -243,13 +243,13 @@ return [
 	<meta charset="utf-8">
 	<title>My Awesome Page</title>
 	<style>h2{color:blue;}</style>
-	<noscript>
+	<noscript id="noscript1">
 		<style id="test1">h3{color:green;}</style>
 		<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/noscript-styles.css">
 	</noscript>
 	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
 	<style id="test3">h5{color:white;}</style>
-	<noscript><style id="test2">h2{color:green;}</style></noscript>
+	<noscript id="noscript2"><style id="test2">h2{color:green;}</style></noscript>
 </head>
 <body>
  content here
@@ -285,11 +285,11 @@ return [
 <head>
 	<meta charset="utf-8">
 	<title>My Awesome Page</title><style id="wpr-usedcss">h1{color:red}h2{color:blue}</style>
-	<noscript>
+	<noscript id="noscript1">
 		<style id="test1">h3{color:green;}</style>
 		<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/noscript-styles.css">
 	</noscript>
-	<noscript><style id="test2">h2{color:green;}</style></noscript>
+	<noscript id="noscript2"><style id="test2">h2{color:green;}</style></noscript>
 </head>
 <body>
  content here
