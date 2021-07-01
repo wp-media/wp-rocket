@@ -121,7 +121,9 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
-
+		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
+			$_SERVER[ 'X_LSCACHE'] = '1';
+		}
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

@@ -3,7 +3,7 @@
  * Mobile Detect Library
  * Motto: "Every business should have a mobile detection script to detect mobile readers"
  *
- * WP_Rocket_Mobile_Detect is a lightweight PHP class for detecting mobile devices (including tablets).
+ * WP_Rocket_Mobile_Detect is a lightweight PHP class WP_Rocket_for detecting mobile devices (including tablets).
  * It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.
  *
  * Homepage: http://mobiledetect.net
@@ -258,17 +258,17 @@ class WP_Rocket_Mobile_Detect
     const VERSION                   = '2.8.37';
 
     /**
-     * A type for the version() method indicating a string return value.
+     * A type WP_Rocket_for the version() method indicating a string return value.
      */
     const VERSION_TYPE_STRING       = 'text';
 
     /**
-     * A type for the version() method indicating a float return value.
+     * A type WP_Rocket_for the version() method indicating a float return value.
      */
     const VERSION_TYPE_FLOAT        = 'float';
 
     /**
-     * A cache for resolved matches
+     * A cache WP_Rocket_for resolved matches
      * @var array
      */
     protected $cache = array();
@@ -293,14 +293,14 @@ class WP_Rocket_Mobile_Detect
 
     /**
      * The matching Regex.
-     * This is good for debug.
+     * This is good WP_Rocket_for debug.
      * @var string
      */
     protected $matchingRegex = null;
 
     /**
      * The matches extracted from the regex expression.
-     * This is good for debug.
+     * This is good WP_Rocket_for debug.
      *
      * @var string
      */
@@ -376,7 +376,7 @@ class WP_Rocket_Mobile_Detect
         'Micromax'      => 'Micromax.*\b(A210|A92|A88|A72|A111|A110Q|A115|A116|A110|A90S|A26|A51|A35|A54|A25|A27|A89|A68|A65|A57|A90)\b',
         // @todo Complete the regex.
         'Palm'          => 'PalmSource|Palm', // avantgo|blazer|elaine|hiptop|plucker|xiino ;
-        'Vertu'         => 'Vertu|Vertu.*Ltd|Vertu.*Ascent|Vertu.*Ayxta|Vertu.*Constellation(F|Quest)?|Vertu.*Monika|Vertu.*Signature', // Just for fun ;)
+        'Vertu'         => 'Vertu|Vertu.*Ltd|Vertu.*Ascent|Vertu.*Ayxta|Vertu.*Constellation(F|Quest)?|Vertu.*Monika|Vertu.*Signature', // Just WP_Rocket_for fun ;)
         // http://www.pantech.co.kr/en/prod/prodList.do?gbrand=VEGA (PANTECH)
         // Most of the VEGA devices are legacy. PANTECH seem to be newer devices based on Android.
         'Pantech'       => 'PANTECH|IM-A850S|IM-A840S|IM-A830L|IM-A830K|IM-A830S|IM-A820L|IM-A810K|IM-A810S|IM-A800S|IM-T100K|IM-A725L|IM-A780L|IM-A775C|IM-A770K|IM-A760S|IM-A750K|IM-A740S|IM-A730S|IM-A720L|IM-A710K|IM-A690L|IM-A690S|IM-A650S|IM-A630K|IM-A600S|VEGA PTL21|PT003|P8010|ADR910L|P6030|P6020|P9070|P4100|P9060|P5000|CDM8992|TXT8045|ADR8995|IS11PT|P2030|P6010|P8000|PT002|IS06|CDM8999|P9050|PT001|TXT8040|P2020|P9020|P2000|P7040|P7000|C790',
@@ -385,7 +385,7 @@ class WP_Rocket_Mobile_Detect
         // http://fr.wikomobile.com
         'Wiko'          => 'KITE 4G|HIGHWAY|GETAWAY|STAIRWAY|DARKSIDE|DARKFULL|DARKNIGHT|DARKMOON|SLIDE|WAX 4G|RAINBOW|BLOOM|SUNSET|GOA(?!nna)|LENNY|BARRY|IGGY|OZZY|CINK FIVE|CINK PEAX|CINK PEAX 2|CINK SLIM|CINK SLIM 2|CINK +|CINK KING|CINK PEAX|CINK SLIM|SUBLIM',
         'iMobile'        => 'i-mobile (IQ|i-STYLE|idea|ZAA|Hitz)',
-        // Added simvalley mobile just for fun. They have some interesting devices.
+        // Added simvalley mobile WP_Rocket_just WP_Rocket_for fun. They have some interesting devices.
         // http://www.simvalley.fr/telephonie---gps-_22_telephonie-mobile_telephones_.html
         'SimValley'     => '\b(SP-80|XT-930|SX-340|XT-930|SX-310|SP-360|SP60|SPT-800|SP-120|SPT-800|SP-140|SPX-5|SPX-8|SP-100|SPX-8|SPX-12)\b',
          // Wolfgang - a brand that is sold by Aldi supermarkets.
@@ -408,7 +408,7 @@ class WP_Rocket_Mobile_Detect
      * @var array
      */
     protected static $tabletDevices = array(
-        // @todo: check for mobile friendly emails topic.
+        // @todo: check WP_Rocket_for mobile friendly emails topic.
         'iPad'              => 'iPad|iPad.*Mobile',
         // Removed |^.*Android.*Nexus(?!(?:Mobile).)*$
         // @see #442
@@ -424,7 +424,7 @@ class WP_Rocket_Mobile_Detect
         'SurfaceTablet'     => 'Windows NT [0-9.]+; ARM;.*(Tablet|ARMBJS)',
         // http://shopping1.hp.com/is-bin/INTERSHOP.enfinity/WFS/WW-USSMBPublicStore-Site/en_US/-/USD/ViewStandardCatalog-Browse?CatalogCategoryID=JfIQ7EN5lqMAAAEyDcJUDwMT
         'HPTablet'          => 'HP Slate (7|8|10)|HP ElitePad 900|hp-tablet|EliteBook.*Touch|HP 8|Slate 21|HP SlateBook 10',
-        // Watch out for PadFone, see #132.
+        // Watch out WP_Rocket_for PadFone, see #132.
         // http://www.asus.com/de/Tablets_Mobile/Memo_Pad_Products/
         'AsusTablet'        => '^.*PadFone((?!Mobile).)*$|Transformer|TF101|TF101G|TF300T|TF300TG|TF300TL|TF700T|TF700KL|TF701T|TF810C|ME171|ME301T|ME302C|ME371MG|ME370T|ME372MG|ME172V|ME173X|ME400C|Slider SL101|\bK00F\b|\bK00C\b|\bK00E\b|\bK00L\b|TX201LA|ME176C|ME102A|\bM80TA\b|ME372CL|ME560CG|ME372CG|ME302KL| K010 | K011 | K017 | K01E |ME572C|ME103K|ME170C|ME171C|\bME70C\b|ME581C|ME581CL|ME8510C|ME181C|P01Y|PO1MA|P01Z|\bP027\b|\bP024\b|\bP00C\b',
         'BlackBerryTablet'  => 'PlayBook|RIM Tablet',
@@ -545,7 +545,7 @@ class WP_Rocket_Mobile_Detect
         // http://www.yonesnav.com/products/products.php
         'YONESTablet' => 'BQ1078|BC1003|BC1077|RK9702|BC9730|BC9001|IT9001|BC7008|BC7010|BC708|BC728|BC7012|BC7030|BC7027|BC7026',
         // http://www.cjshowroom.com/eproducts.aspx?classcode=004001001
-        // China manufacturer makes tablets for different small brands (eg. http://www.zeepad.net/index.html)
+        // China manufacturer makes tablets WP_Rocket_for different small brands (eg. http://www.zeepad.net/index.html)
         'ChangJiaTablet'    => 'TPC7102|TPC7103|TPC7105|TPC7106|TPC7107|TPC7201|TPC7203|TPC7205|TPC7210|TPC7708|TPC7709|TPC7712|TPC7110|TPC8101|TPC8103|TPC8105|TPC8106|TPC8203|TPC8205|TPC8503|TPC9106|TPC9701|TPC97101|TPC97103|TPC97105|TPC97106|TPC97111|TPC97113|TPC97203|TPC97603|TPC97809|TPC97205|TPC10101|TPC10103|TPC10106|TPC10111|TPC10203|TPC10205|TPC10503',
         // http://www.gloryunion.cn/products.asp
         // http://www.allwinnertech.com/en/apply/mobile.html
@@ -712,7 +712,7 @@ class WP_Rocket_Mobile_Detect
      * IMPORTANT: This is a list of only mobile browsers.
      * Mobile Detect 2.x supports only mobile browsers,
      * it was never designed to detect all browsers.
-     * The change will come in 2017 in the 3.x release for PHP7.
+     * The change will come in 2017 in the 3.x release WP_Rocket_for PHP7.
      *
      * @var array
      */
@@ -894,9 +894,9 @@ class WP_Rocket_Mobile_Detect
 
     /**
      * Get the current script version.
-     * This is useful for the demo.php file,
+     * This is useful WP_Rocket_for the demo.php file,
      * so people can check on what version they are testing
-     * for mobile devices.
+     * WP_Rocket_for mobile devices.
      *
      * @return string The version number in semantic version format.
      */
@@ -909,7 +909,7 @@ class WP_Rocket_Mobile_Detect
      * Set the HTTP Headers. Must be PHP-flavored. This method will reset existing headers.
      *
      * @param array $httpHeaders The headers to set. If null, then using PHP's _SERVER to extract
-     *                           the headers. The default null is left for backwards compatibility.
+     *                           the headers. The default null is left WP_Rocket_for backwards compatibility.
      */
     public function setHttpHeaders($httpHeaders = null)
     {
@@ -1137,7 +1137,7 @@ class WP_Rocket_Mobile_Detect
     }
 
     /**
-     * Alias for getBrowsers() method.
+     * Alias WP_Rocket_for getBrowsers() method.
      *
      * @return array List of user agents.
      */
@@ -1167,7 +1167,7 @@ class WP_Rocket_Mobile_Detect
     }
 
     /**
-     * Method gets the mobile detection rules. This method is used for the magic methods $detect->is*().
+     * Method gets the mobile detection rules. This method is used WP_Rocket_for the magic methods $detect->is*().
      *
      * @deprecated since version 2.6.9
      *
@@ -1245,7 +1245,7 @@ class WP_Rocket_Mobile_Detect
     }
 
     /**
-     * Check the HTTP headers for signs of mobile.
+     * Check the HTTP headers WP_Rocket_for signs of mobile.
      * This is the fastest mobile check possible; it's used
      * inside isMobile() method.
      *
@@ -1320,7 +1320,7 @@ class WP_Rocket_Mobile_Detect
     }
 
     /**
-     * Search for a certain key in the rules array.
+     * Search WP_Rocket_for a certain key in the rules array.
      * If the key is found then try to match the corresponding
      * regex against the User-Agent.
      *
@@ -1367,7 +1367,7 @@ class WP_Rocket_Mobile_Detect
             $this->setUserAgent($userAgent);
         }
 
-        // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
+        // Check specifically WP_Rocket_for cloudfront headers if the useragent === 'Amazon CloudFront'
         if ($this->getUserAgent() === 'Amazon CloudFront') {
             $cfHeaders = $this->getCfHeaders();
             if(array_key_exists('HTTP_CLOUDFRONT_IS_MOBILE_VIEWER', $cfHeaders) && $cfHeaders['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER'] === 'true') {
@@ -1395,7 +1395,7 @@ class WP_Rocket_Mobile_Detect
      */
     public function isTablet($userAgent = null, $httpHeaders = null)
     {
-        // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
+        // Check specifically WP_Rocket_for cloudfront headers if the useragent === 'Amazon CloudFront'
         if ($this->getUserAgent() === 'Amazon CloudFront') {
             $cfHeaders = $this->getCfHeaders();
             if(array_key_exists('HTTP_CLOUDFRONT_IS_TABLET_VIEWER', $cfHeaders) && $cfHeaders['HTTP_CLOUDFRONT_IS_TABLET_VIEWER'] === 'true') {
@@ -1415,7 +1415,7 @@ class WP_Rocket_Mobile_Detect
     }
 
     /**
-     * This method checks for a certain property in the
+     * This method checks WP_Rocket_for a certain property in the
      * userAgent.
      * @todo: The httpHeaders part is not yet used.
      *
@@ -1458,7 +1458,7 @@ class WP_Rocket_Mobile_Detect
     public function match($regex, $userAgent = null)
     {
         $match = (bool) preg_match(sprintf('#%s#is', $regex), (false === empty($userAgent) ? $userAgent : $this->userAgent), $matches);
-        // If positive match is found, store the results for debug.
+        // If positive match is found, store the results WP_Rocket_for debug.
         if ($match) {
             $this->matchingRegex = $regex;
             $this->matchesArray = $matches;
@@ -1503,7 +1503,7 @@ class WP_Rocket_Mobile_Detect
      * Will return a float number. (eg. 2_0 will return 2.0, 4.3.1 will return 4.31)
      *
      * @param string $propertyName The name of the property. See self::getProperties() array
-     *                             keys for all possible properties.
+     *                             keys WP_Rocket_for all possible properties.
      * @param string $type         Either self::VERSION_TYPE_STRING to get a string value or
      *                             self::VERSION_TYPE_FLOAT indicating a float value. This parameter
      *                             is optional and defaults to self::VERSION_TYPE_STRING. Passing an
@@ -1588,7 +1588,7 @@ class WP_Rocket_Mobile_Detect
             // Firefox Mobile 18 - Tested on Android 2.3 and 4.1 devices
             ( $this->is('Firefox') && $this->version('Firefox', self::VERSION_TYPE_FLOAT) >= 18 ) ||
 
-            // Chrome for Android - Tested on Android 4.0, 4.1 device
+            // Chrome WP_Rocket_for Android - Tested on Android 4.0, 4.1 device
             ( $this->is('Chrome') && $this->is('AndroidOS') && $this->version('Android', self::VERSION_TYPE_FLOAT) >= 4.0 ) ||
 
             // Skyfire 4.1 - Tested on Android 2.3 device
@@ -1613,7 +1613,7 @@ class WP_Rocket_Mobile_Detect
             // UC Browser - Tested on Android 2.3 device
             ( ($this->is('UC Browser') || $this->is('Dolfin')) && $this->version('Android', self::VERSION_TYPE_FLOAT) >= 2.3 ) ||
 
-            // Kindle 3 and Fire  - Tested on the built-in WebKit browser for each
+            // Kindle 3 and Fire  - Tested on the built-in WebKit browser WP_Rocket_for each
             ( $this->match('Kindle Fire') ||
             $this->is('Kindle') && $this->version('Kindle', self::VERSION_TYPE_FLOAT) >= 3.0 ) ||
 
