@@ -430,12 +430,12 @@ class UsedCSS {
 		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style>';
 
 		$link_styles   = $this->find(
-			'<noscript[^>]*>.*' .
+			'(?<=<noscript>).*' .
 			'(<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>)' .
 			'.*(?=<\/noscript>)(*SKIP)(*FAIL)|' .
 			$link_style_pattern,
 			$html_nocomments,
-			'is'
+			'Uis'
 		);
 		$inline_styles = $this->find(
 			'(?<=<noscript>).*' .
