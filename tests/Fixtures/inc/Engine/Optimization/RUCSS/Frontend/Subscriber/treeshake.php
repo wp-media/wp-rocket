@@ -247,6 +247,8 @@ return [
 		<style>h3{color:green;}</style>
 		<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/noscript-styles.css">
 	</noscript>
+	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
+	<noscript><style>h2{color:green;}</style></noscript>
 </head>
 <body>
  content here
@@ -255,11 +257,7 @@ return [
 				'used-css-row-contents' => [
 					'url'            => 'http://example.org/home',
 					'css'            => '',
-					'unprocessedcss' => wp_json_encode(
-						[
-							'vfs://public/wp-content/themes/theme-name/style.css',
-						]
-					),
+					'unprocessedcss' => wp_json_encode([]),
 					'retries'        => 1,
 					'is_mobile'      => false,
 				],
@@ -290,6 +288,7 @@ return [
 		<style>h3{color:green;}</style>
 		<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/noscript-styles.css">
 	</noscript>
+	<noscript><style>h2{color:green;}</style></noscript>
 </head>
 <body>
  content here

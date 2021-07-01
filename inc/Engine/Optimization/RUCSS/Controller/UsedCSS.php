@@ -431,15 +431,16 @@ class UsedCSS {
 
 		$link_styles   = $this->find(
 			'<noscript[^>]*>.*' .
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>' .
-			'.*<\/noscript>(*SKIP)(*FAIL)|' .
+			'(<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>)' .
+			'.*(?=<\/noscript>)(*SKIP)(*FAIL)|' .
 			$link_style_pattern,
-			$html_nocomments
+			$html_nocomments,
+			'is'
 		);
 		$inline_styles = $this->find(
-			'<noscript[^>]*>.*' .
-			'<style(.*)>(.*)<\/style>' .
-			'.*<\/noscript>(*SKIP)(*FAIL)|' .
+			'(?<=<noscript>).*' .
+			'(<style(.*)>(.*)<\/style>)' .
+			'.*(?=<\/noscript>)(*SKIP)(*FAIL)|' .
 			$inline_inline_pattern,
 			$html_nocomments
 		);
