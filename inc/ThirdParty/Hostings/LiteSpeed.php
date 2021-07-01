@@ -1,12 +1,15 @@
 <?php
 
 namespace WP_Rocket\ThirdParty\Hostings;
+
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class LiteSpeed implements Subscriber_Interface {
 	/**
-	 * @var array
+	 * Headers to be added.
+	 *
+	 * @var array.
 	 */
 	private $headers = [];
 
@@ -17,9 +20,6 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-	/*	if ( ! isset( $_SERVER['X_LSCACHE'] ) ) {
-			return [];
-		}*/
 		return [
 			'before_rocket_clean_domain' => 'litespeed_clean_domain',
 			'before_rocket_clean_file'   => 'litespeed_clean_file',
@@ -29,7 +29,7 @@ class LiteSpeed implements Subscriber_Interface {
 	}
 
 	/**
-	 * wp headers filter callback to add headers to response.
+	 * Wp headers filter callback to add headers to response.
 	 *
 	 * @since  3.9.1
 	 * @param array $headers headers to be added to response.
@@ -69,11 +69,9 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @param string $lang The current lang to purge.
 	 */
 	public function litespeed_clean_home( $root, $lang ) {
-		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
-
-		$this->litespeed_header_purge_url( $home_url );
-		$this->litespeed_header_purge_url( $home_pagination_url );
+		$home_url                           = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+		$home_pagination_url                = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
+		$this->headers['X-LiteSpeed-Purge'] = get_rocket_parse_url( $home_url )['path'] . ',' . get_rocket_parse_url( $home_pagination_url )['path'];
 	}
 
 	/**
@@ -85,8 +83,8 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function litespeed_header_purge_url( $url ) {
-		$parse_url      = get_rocket_parse_url( $url );
-		$path           = rtrim( $parse_url['path'], '/' );
+		$parse_url                          = get_rocket_parse_url( $url );
+		$path                               = rtrim( $parse_url['path'], '/' );
 		$this->headers['X-LiteSpeed-Purge'] = $path;
 	}
 

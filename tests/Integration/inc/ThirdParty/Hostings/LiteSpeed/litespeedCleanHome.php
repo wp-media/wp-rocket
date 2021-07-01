@@ -10,15 +10,14 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\LiteSpeed;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
-class Test_LitespeedCleanDomain extends TestCase {
+class Test_LitespeedCleanHome extends TestCase {
 
-	public function testShouldPurgeAll( ) {
+	public function testShouldPurgeHome( ) {
 
-
-		do_action( 'before_rocket_clean_domain','','',home_url());
+		do_action( 'before_rocket_clean_home','',home_url());
 
 		$this->assertSame(
-			['X-LiteSpeed-Purge'=>'*'],
+			['X-LiteSpeed-Purge'=>'/,/page/'],
 			apply_filters('wp_headers', [])
 		);
 
