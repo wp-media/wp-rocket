@@ -19,7 +19,7 @@ class Litespeed_Subscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( ! isset( $_SERVER['HTTP_X_LSCACHE'] ) ) {
+		if ( ! isset( $_SERVER['X_LSCACHE'] ) ) {
 			return [];
 		}
 
