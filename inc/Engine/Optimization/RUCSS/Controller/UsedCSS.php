@@ -525,7 +525,7 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function hide_noscripts( string $html ): string {
-		$replace = preg_replace( '#<noscript[^>]*>.*?<\s*\/\s*noscript>#mis', '', $html );
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
 
 		if ( null === $replace ) {
 			return $html;
