@@ -2256,7 +2256,7 @@ msgstr ""
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:106
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
-msgstr "Purger le CSS utile"
+msgstr "Purger le CSS utilisé"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:284
 msgid "Used CSS option is not enabled!"
