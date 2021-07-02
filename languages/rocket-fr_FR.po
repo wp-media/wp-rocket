@@ -2260,7 +2260,7 @@ msgstr "Purger le CSS utilisé"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:284
 msgid "Used CSS option is not enabled!"
-msgstr "L'option CSS utile n'est pas activée !"
+msgstr "L'option CSS utilisé n'est pas activée !"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:299
 msgid "Used CSS cache cleared!"
