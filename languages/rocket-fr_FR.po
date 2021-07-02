@@ -4077,7 +4077,7 @@ msgstr "Régénérer le Critical CSS"
 
 #: views/settings/page-sections/dashboard.php:218
 msgid "Remove Used CSS Cache"
-msgstr "Supprimer le cache du CSS utile"
+msgstr "Supprimer le cache du CSS utilisé"
 
 #: views/settings/page-sections/dashboard.php:241
 msgid "Frequently Asked Questions"
