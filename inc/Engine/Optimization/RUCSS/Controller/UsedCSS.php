@@ -428,7 +428,7 @@ class UsedCSS {
 		$html_nocomments       = $this->hide_comments( $html );
 		$html_noscripts        = $this->hide_noscripts( $html_nocomments );
 		$link_style_pattern    = '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>';
-		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style>';
+		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style\s*>';
 
 		$link_styles   = $this->find(
 			$link_style_pattern,

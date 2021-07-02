@@ -248,7 +248,7 @@ return [
 		<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/noscript-styles.css">
 	</noscript>
 	<link rel="stylesheet" type="text/css" href="http://example.org/wp-content/themes/theme-name/style.css">
-	<style id="test3">h5{color:white;}</style>
+	<style id="test3">h5{color:white;}</style >
 	<noscript id="noscript2"><style id="test2">h2{color:green;}</style></noscript>
 	<noscript><style id="test">div{display:none !important;}</style></noscript >
 </head>
