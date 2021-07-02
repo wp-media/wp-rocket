@@ -2264,7 +2264,7 @@ msgstr "L'option CSS utilisé n'est pas activée !"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:299
 msgid "Used CSS cache cleared!"
-msgstr "Le cache du CSS utile a été purgé !"
+msgstr "Le cache du CSS utilisé a été purgé !"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:368
 msgid "Collected resource files from {count} of {total} key pages."
