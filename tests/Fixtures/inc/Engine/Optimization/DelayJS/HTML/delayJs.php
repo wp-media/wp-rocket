@@ -115,6 +115,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     /* ]]> */
 </script>
 <script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
 <script type="text/javascript">alert("text/javascript");</script>
 <script type="text/x-javascript">alert("text/x-javascript");</script>
 <script type="text/ecmascript">alert("text/ecmascript");</script>
@@ -273,8 +274,8 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
-
 <script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript">alert("text/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/x-javascript">alert("text/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/ecmascript">alert("text/ecmascript");</script>
@@ -434,6 +435,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     /* ]]> */
 </script>
 <script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/javascript">alert("text/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/x-javascript">alert("text/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="text/ecmascript">alert("text/ecmascript");</script>
