@@ -68,7 +68,11 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 			return new ActionScheduler_NullLogEntry();
 		}
 
-		$date = as_get_datetime_object( $record->log_date_gmt );
+		if ( is_null( $record->log_date_gmt ) ) {
+			$date = as_get_datetime_object( ActionScheduler_StoreSchema::DEFAULT_DATE );
+		} else {
+			$date = as_get_datetime_object( $record->log_date_gmt );
+		}
 
 		return new ActionScheduler_LogEntry( $record->action_id, $record->message, $date );
 	}
@@ -95,8 +99,8 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-
 		$table_maker = new ActionScheduler_LoggerSchema();
+		$table_maker->init();
 		$table_maker->register_tables();
 
 		parent::init();

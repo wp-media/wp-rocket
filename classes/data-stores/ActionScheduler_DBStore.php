@@ -32,6 +32,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 */
 	public function init() {
 		$table_maker = new ActionScheduler_StoreSchema();
+		$table_maker->init();
 		$table_maker->register_tables();
 	}
 
@@ -168,6 +169,19 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		if ( ! empty( $data->extended_args ) ) {
 			$data->args = $data->extended_args;
 			unset( $data->extended_args );
+		}
+
+		// Convert NULL dates to zero dates.
+		$date_fields = [
+			'scheduled_date_gmt',
+			'scheduled_date_local',
+			'last_attempt_gmt',
+			'last_attempt_gmt'
+		];
+		foreach( $date_fields as $date_field ) {
+			if ( is_null( $data->$date_field ) ) {
+				$data->$date_field = ActionScheduler_StoreSchema::DEFAULT_DATE;
+			}
 		}
 
 		try {
