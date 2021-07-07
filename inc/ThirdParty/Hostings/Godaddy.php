@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
@@ -11,9 +12,9 @@ class Godaddy implements Subscriber_Interface {
 	/**
 	 * Godaddy vip url
 	 *
-	 * @var bool|string
+	 * @var string
 	 */
-	private $vip_url;
+	private $vip_url = '';
 
 	/**
 	 * Godaddy constructor.
@@ -56,7 +57,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	public function varnish_field( $settings ) {
+	public function varnish_field( $settings ): array {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -75,7 +76,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return string
 	 */
-	public function remove_html_expire( $rules ) {
+	public function remove_html_expire( $rules ): string {
 		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
 		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
@@ -136,9 +137,9 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	private function purge_request( $method, $url = null ) {
+	private function purge_request( string $method, string $url = '' ) {
 
-		if ( false === $this->vip_url ) {
+		if ( empty( $this->vip_url ) ) {
 			return;
 		}
 
