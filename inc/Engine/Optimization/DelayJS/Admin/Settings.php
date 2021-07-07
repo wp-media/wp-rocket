@@ -85,11 +85,6 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions']   = [
-				$this->get_excluded_internal_paths(),
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			];
 			$options['minify_concatenate_js'] = 0;
 		}
 
@@ -153,35 +148,4 @@ class Settings {
 		return $value;
 	}
 
-	/**
-	 * Gets a regex pattern of excluded paths for wp-content and wp-includes
-	 *
-	 * @since 3.9
-	 *
-	 * @return string
-	 */
-	private function get_excluded_internal_paths() : string {
-		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
-		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
-		$pattern     = '(?:placeholder)(.*)';
-		$paths       = [];
-
-		if (
-			! $wp_content
-			&&
-			! $wp_includes
-		) {
-			return '';
-		}
-
-		if ( $wp_content ) {
-			$paths[] = $wp_content;
-		}
-
-		if ( $wp_includes ) {
-			$paths[] = $wp_includes;
-		}
-
-		return str_replace( 'placeholder', implode( '|', $paths ), $pattern );
-	}
 }
