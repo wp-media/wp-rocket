@@ -1,8 +1,7 @@
 <?php
 return [
 	'testShouldChangeUpdateHtaccessRules' => [
-		'htaccess_rules' => [
-			'<ifmodule mod_expires.c="">
+		'htaccess_rules' => '<ifmodule mod_expires.c="">
 	ExpiresActive on
 	ExpiresDefault                              "access plus 1 month"
 	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
@@ -39,10 +38,8 @@ return [
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
-</ifmodule>'
-		],
-		'expected' => [
-			'<ifmodule mod_expires.c="">
+</ifmodule>',
+		'expected' => '<ifmodule mod_expires.c="">
 	ExpiresActive on
 	ExpiresDefault                              "access plus 1 month"
 	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
@@ -77,7 +74,6 @@ return [
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
-</ifmodule>'
-		],
+</ifmodule>',
 	],
 ];
