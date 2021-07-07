@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Changes the text on the Varnish one-click block.
  *
+ * @since 3.9.1 deprecated
  * @since 3.0
  * @author Remy Perona
  *
@@ -26,6 +27,7 @@ function rocket_godaddy_varnish_field( $settings ) {
 /**
  * Remove expiration on HTML to prevent issue with Varnish cache.
  *
+ * @since 3.9.1 deprecated
  * @since 2.9.5
  * @author Remy Perona
  *
@@ -43,6 +45,7 @@ function rocket_remove_html_expire_goddady( $rules ) {
 /**
  * Call the Varnish server to purge the cache with GoDaddy.
  *
+ * @since 3.9.1 deprecated
  * @since 2.9.5
  *
  * @return void
@@ -55,6 +58,7 @@ function rocket_clean_domain_godaddy() {
 /**
  * Call the Varnish server to purge a specific URL with GoDaddy.
  *
+ * @since 3.9.1 deprecated
  * @since 2.9.5
  *
  * @param string $url URL to purge.
@@ -68,6 +72,7 @@ function rocket_clean_file_godaddy( $url ) {
 /**
  * Call the Varnish server to purge the home with GoDaddy.
  *
+ * @since 3.9.1 deprecated
  * @since 2.9.5
  *
  * @param string $root root URL.
@@ -86,6 +91,7 @@ function rocket_clean_home_godaddy( $root, $lang ) {
 /**
  * Perform the call to the Varnish server to purge
  *
+ * @since 3.9.1 deprecated
  * @since 2.9.5
  * @source WPaaS\Cache
  *
