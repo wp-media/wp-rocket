@@ -1,10 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\integration\inc\ThirdParty\Hostings\Godaddy;
 
-use Mockery;
-use WpeCommon;
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\WPEngine;
+use WP_Rocket\Tests\Integration\TestCase;
 
 abstract class GodaddyTestCase extends TestCase {
 
@@ -13,7 +10,7 @@ abstract class GodaddyTestCase extends TestCase {
 		add_filter( 'pre_http_request', [ $this, 'mock_response' ] );
 	}
 
-	protected function tearDown(): void {
+	public function tearDown(): void {
 		parent::tearDown();
 		remove_filter( 'pre_http_request', [ $this, 'mock_response' ]);
 	}

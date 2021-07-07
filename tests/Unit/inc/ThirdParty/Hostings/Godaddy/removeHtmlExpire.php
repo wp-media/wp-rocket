@@ -11,7 +11,7 @@ use WP_Rocket\ThirdParty\Hostings\Godaddy;
  * @group  Godaddy
  * @group  ThirdParty
  */
-class Test_removeHtmlExpire extends TestCase {
+class Test_RemoveHtmlExpire extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */

@@ -1,6 +1,6 @@
 <?php
 return [
-	'testShouldChangeVarnishTitle' => [
+	'testShouldChangeUpdateHtaccessRules' => [
 		'htaccess_rules' => [
 			'<ifmodule mod_expires.c="">
 	ExpiresActive on
