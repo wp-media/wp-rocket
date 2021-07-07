@@ -90,7 +90,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_domain_godaddy() {
-		$this->godaddy_request( 'BAN' );
+		$this->purge_request( 'BAN' );
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_file_godaddy( $url ) {
-		$this->godaddy_request( 'PURGE',  $url );
+		$this->purge_request( 'PURGE',  $url );
 	}
 
 	/**
@@ -120,8 +120,8 @@ class Godaddy implements Subscriber_Interface {
 		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
-		$this->godaddy_request( 'PURGE', $home_url );
-		$this->godaddy_request( 'PURGE', $home_pagination_url );
+		$this->purge_request( 'PURGE', $home_url );
+		$this->purge_request( 'PURGE', $home_pagination_url );
 	}
 
 
@@ -136,7 +136,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	private function godaddy_request( $method, $url = null ) {
+	private function purge_request( $method, $url = null ) {
 
 		if ( false === $this->vip_url ) {
 			return;
