@@ -72,9 +72,10 @@ class Godaddy implements Subscriber_Interface {
 	 * @since 3.9.1
 	 *
 	 * @param  string $rules htaccess rules.
-	 * @return string        Updated htaccess rules.
+	 *
+	 * @return string
 	 */
-	public function remove_html_expire_goddady( $rules ) {
+	public function remove_html_expire( $rules ) {
 		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
 		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
@@ -98,6 +99,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @since 3.9.1
 	 *
 	 * @param string $url URL to purge.
+	 *
 	 * @return void
 	 */
 	public function clean_file_godaddy( $url ) {
@@ -111,6 +113,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @param string $root root URL.
 	 * @param string $lang language code.
+	 *
 	 * @return void
 	 */
 	public function clean_home_godaddy( $root, $lang ) {
@@ -125,11 +128,12 @@ class Godaddy implements Subscriber_Interface {
 	/**
 	 * Perform the call to the Varnish server to purge
 	 *
-	 * @since 2.9.5
+	 * @since 3.9.1
 	 * @source WPaaS\Cache
 	 *
 	 * @param string $method can be BAN or PURGE.
 	 * @param string $url URL to purge.
+	 *
 	 * @return void
 	 */
 	private function godaddy_request( $method, $url = null ) {
@@ -142,7 +146,7 @@ class Godaddy implements Subscriber_Interface {
 			$url = home_url();
 		}
 
-		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
+		$host = wp_parse_url( $url, PHP_URL_HOST );
 
 		$url = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
 
@@ -163,4 +167,25 @@ class Godaddy implements Subscriber_Interface {
 		);
 	}
 
+	/**
+	 * Performs these actions during the plugin activation
+	 *
+	 * @since 3.9.1
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'activate_no_htaccess_html_expire' ] );
+	}
+
+	/**
+	 * Remove expiration on HTML on activation to prevent issue with Varnish cache.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @return void
+	 */
+	public function activate_no_htaccess_html_expire() {
+		add_filter( 'rocket_htaccess_mod_expires', [ $this, 'remove_htaccess_html_expire' ] );
+	}
 }
