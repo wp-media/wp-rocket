@@ -4,12 +4,12 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::godaddy_varnish_field
+ * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::varnish_field
  *
  * @group  Godaddy
  * @group  ThirdParty
  */
-class Test_godaddyVarnishField extends TestCase {
+class Test_VarnishField extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
