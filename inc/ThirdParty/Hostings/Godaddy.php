@@ -35,15 +35,15 @@ class Godaddy implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_varnish_field_settings'           => 'godaddy_varnish_field',
+			'rocket_varnish_field_settings'           => 'varnish_field',
 			'rocket_display_input_varnish_auto_purge' => [ 'return_false' ],
 			'set_rocket_wp_cache_define'              => [ 'return_true' ],
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
 			'rocket_htaccess_mod_rewrite'             => [ 'return_false' ],
-			'rocket_htaccess_mod_expires'             => [ 'remove_html_expire_goddady', 5 ],
-			'before_rocket_clean_domain'              => 'clean_domain_godaddy',
-			'before_rocket_clean_file'                => 'clean_file_godaddy',
-			'before_rocket_clean_home'                => [ 'clean_home_godaddy', 10, 2 ],
+			'rocket_htaccess_mod_expires'             => [ 'remove_html_expire', 5 ],
+			'before_rocket_clean_domain'              => 'clean_domain',
+			'before_rocket_clean_file'                => 'clean_file',
+			'before_rocket_clean_home'                => [ 'clean_home', 10, 2 ],
 		];
 	}
 
@@ -56,7 +56,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return array modified field settings data.
 	 */
-	public function godaddy_varnish_field( $settings ) {
+	public function varnish_field( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -89,7 +89,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_domain_godaddy() {
+	public function clean_domain() {
 		$this->purge_request( 'BAN' );
 	}
 
@@ -102,7 +102,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_file_godaddy( $url ) {
+	public function clean_file( $url ) {
 		$this->purge_request( 'PURGE',  $url );
 	}
 
@@ -116,7 +116,7 @@ class Godaddy implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_home_godaddy( $root, $lang ) {
+	public function clean_home( $root, $lang ) {
 		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
