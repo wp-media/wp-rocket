@@ -6,21 +6,26 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::remove_html_expire
+ * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::varnish_field
  *
  * @group  Godaddy
  * @group  ThirdParty
  */
-class Test_removeHtmlExpire extends TestCase {
+class Test_VarnishField extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $htaccess_rules, $expected ) {
+	public function testShouldDoExpected( $settings, $expected ) {
 		$godaddy = new Godaddy();
 
 		$this->assertSame(
 			$expected,
-			$godaddy->remove_html_expire( $htaccess_rules )
+			$godaddy->varnish_field( $settings )
 		);
 	}
 }
