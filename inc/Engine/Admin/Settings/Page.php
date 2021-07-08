@@ -5,6 +5,7 @@ use WP_Rocket\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Interfaces\Render_Interface;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -865,6 +866,13 @@ class Page {
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
+					'helper'            => sprintf(
+						// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
+						__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><code>%1$s</code><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
+						implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
+						'<a href="' . esc_url( 'https://docs.wp-rocket.me/article/1560-delay-javascript-execution-compatibility-exclusions/?utm_source=wp_plugin&utm_medium=wp_rocket' ) . '">',
+						'</a>'
+					),
 				],
 			]
 		);

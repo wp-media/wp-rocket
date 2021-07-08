@@ -148,4 +148,36 @@ class Settings {
 		return $value;
 	}
 
+	/**
+	 * Get default exclusion list.
+	 *
+	 * @return string[]
+	 */
+	public static function get_delay_js_default_exclusions(): array {
+		$exclusions  = [
+			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
+			'js-(before|after)',
+		];
+		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
+		$pattern     = '(?:placeholder)(.*)';
+		$paths       = [];
+
+		if ( ! $wp_content && ! $wp_includes ) {
+			return $exclusions;
+		}
+
+		if ( $wp_content ) {
+			$paths[] = $wp_content;
+		}
+
+		if ( $wp_includes ) {
+			$paths[] = $wp_includes;
+		}
+
+		$exclusions[] = str_replace( 'placeholder', implode( '|', $paths ), $pattern );
+
+		return $exclusions;
+	}
+
 }
