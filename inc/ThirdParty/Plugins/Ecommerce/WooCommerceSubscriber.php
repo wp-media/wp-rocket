@@ -55,7 +55,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
 			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
-			$events['rocket_exclude_post_taxonomy']       = [ 'exclude_product_shipping_taxonomy', 10, 2 ];
+			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -488,14 +488,17 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	}
 
 	/**
-	 * Exclude product_shipping_class taxonomy.
+	 * Exclude product_shipping_class taxonomy from post purge
 	 *
-	 * @param bool   $excluded if taxonomy is not public exclude.
-	 * @param string $taxonomy_name taxonomy name.
+	 * @since 3.9.1
 	 *
-	 * @return bool
+	 * @param array $excluded_taxonomies Array of excluded taxonomies names.
+	 *
+	 * @return array
 	 */
-	public function exclude_product_shipping_taxonomy( $excluded, $taxonomy_name ) {
-		return $excluded || 'product_shipping_class' === $taxonomy_name;
+	public function exclude_product_shipping_taxonomy( $excluded_taxonomies ) {
+		$excluded_taxonomies[] = 'product_shipping_class';
+
+		return $excluded_taxonomies;
 	}
 }
