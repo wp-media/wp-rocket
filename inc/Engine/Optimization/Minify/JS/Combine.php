@@ -708,6 +708,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'google_conversion_id',
 			'hbspt',
 			'WoocommerceWidget/woocommerceWidget.js',
+			'var ht_ctc_chat_var',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

@@ -84,6 +84,7 @@ class WPRocketUninstall {
 		'min',
 		'busting',
 		'critical-css',
+		'used-css',
 	];
 
 	/**
