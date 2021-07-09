@@ -7,7 +7,7 @@ return [
 				'is_allowed' => false,
 			],
 			'expected' => [
-				'style' => '',
+				'excluded' => [],
 			],
 		],
 
@@ -17,29 +17,35 @@ return [
 				'in_product_page' => false,
 			],
 			'expected' => [
-				'style' => '',
+				'excluded' => [],
 			],
 		],
 
-		'shouldBailoutIfGalleryHasMultipleImages' => [
-			'input' => [
-				'is_allowed' => true,
-				'in_product_page' => true,
-				'has_images' => true,
-			],
-			'expected' => [
-				'style' => '',
-			],
-		],
-
-		'shouldAddStyleIfGalleryHasNoImages' => [
+		'shouldBailoutIfGalleryHasNoImages' => [
 			'input' => [
 				'is_allowed' => true,
 				'in_product_page' => true,
 				'has_images' => false,
 			],
 			'expected' => [
-				'style' => '.woocommerce-product-gallery{ opacity: 1 !important; }',
+				'excluded' => []
+			],
+		],
+
+		'shouldExcludeScriptsIfGalleryHasSomeImages' => [
+			'input' => [
+				'is_allowed' => true,
+				'in_product_page' => true,
+				'has_images' => true,
+			],
+			'expected' => [
+				'excluded' => [
+					'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
+					'/woocommerce/assets/js/zoom/jquery.zoom(.min)?.js',
+					'/woocommerce/assets/js/photoswipe/',
+					'/woocommerce/assets/js/flexslider/jquery.flexslider(.min)?.js',
+					'/woocommerce/assets/js/frontend/single-product(.min)?.js',
+				],
 			],
 		],
 
