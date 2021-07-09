@@ -178,9 +178,21 @@ class Purge {
 	private function get_post_terms_urls( WP_Post $post ) {
 		$urls       = [];
 		$taxonomies = get_object_taxonomies( get_post_type( $post->ID ), 'objects' );
+		/**
+		 * Filters the taxonomies excluded from post purge
+		 *
+		 * @since 3.9.1
+		 *
+		 * @param array $excluded_taxonomies Array of excluded taxonomies names.
+		 */
+		$excluded_taxonomies = apply_filters( 'rocket_exclude_post_taxonomy', [] );
 
 		foreach ( $taxonomies as $taxonomy ) {
-			if ( apply_filters( 'rocket_exclude_post_taxonomy', ! $taxonomy->public, $taxonomy->name, $taxonomy ) ) {
+			if (
+				! $taxonomy->public
+				||
+				in_array( $taxonomy->name, $excluded_taxonomies, true )
+			) {
 				continue;
 			}
 
