@@ -18,13 +18,13 @@ use WP_Rocket\Engine\Cache\Purge;
 class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->purge = new Purge( $this->filesystem );
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		parent::tearDown();
 		unset( $GLOBALS['wp_rewrite'] );
 	}
@@ -49,10 +49,11 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			->once()
 			->with( 'post', 'objects' )
 			->andReturn( $taxonomies );
+		Filters\expectApplied( 'rocket_exclude_post_taxonomy' )
+			->once();
 		$urls       = [];
 		$index = 0;
 		foreach ( $taxonomies as $type => $taxonomy ) {
-			Filters\expectApplied( 'rocket_exclude_post_taxonomy' )->once();
 			if ( ! $taxonomy->public ) {
 				continue;
 			}
