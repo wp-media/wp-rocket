@@ -707,6 +707,8 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'translation-revision-date',
 			'google_conversion_id',
 			'hbspt',
+			'var marker_locations_',
+			'var AdmMyAjax',
 			'ifso_page_url',
 			'referrer_for_pageload',
 			'WoocommerceWidget/woocommerceWidget.js',
