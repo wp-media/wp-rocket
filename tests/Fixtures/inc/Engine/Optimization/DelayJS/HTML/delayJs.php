@@ -114,6 +114,17 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
+<script type="text/javascript">alert("text/javascript");</script>
+<script type="text/x-javascript">alert("text/x-javascript");</script>
+<script type="text/ecmascript">alert("text/ecmascript");</script>
+<script type="text/jscript">alert("text/jscript");</script>
+<script type="application/javascript">alert("application/javascript");</script>
+<script type="application/x-javascript">alert("application/x-javascript");</script>
+<script type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="application/jscript">alert("application/jscript");</script>
+<script type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
 	_stq = window._stq || [];
@@ -263,6 +274,17 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">alert("text/javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/x-javascript">alert("text/x-javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/ecmascript">alert("text/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/jscript">alert("text/jscript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
 	_stq = window._stq || [];
@@ -412,6 +434,17 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
     };
     /* ]]> */
 </script>
+<script type="invalid-type">alert("invalid-type");</script>
+<script type="module123">alert("invalid-type");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">alert("text/javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/x-javascript">alert("text/x-javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/ecmascript">alert("text/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/jscript">alert("text/jscript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
 	_stq = window._stq || [];
