@@ -151,6 +151,8 @@ class Settings {
 	/**
 	 * Get default exclusion list.
 	 *
+	 * @since 3.9.1
+	 *
 	 * @return string[]
 	 */
 	public static function get_delay_js_default_exclusions(): array {
