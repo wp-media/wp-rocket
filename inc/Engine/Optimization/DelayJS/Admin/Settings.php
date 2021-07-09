@@ -55,23 +55,10 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 1;
-		$options['delay_js_exclusions'] = $this->get_default_exclusion_list();
+		$options['delay_js']            = 0;
+		$options['delay_js_exclusions'] = [];
 
 		return $options;
-	}
-
-	/**
-	 * Get the default exclusion list.
-	 *
-	 * @return string[]
-	 */
-	private function get_default_exclusion_list(): array {
-		return [
-			$this->get_excluded_internal_paths(),
-			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-			'js-(before|after)',
-		];
 	}
 
 	/**
@@ -98,7 +85,6 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions']   = $this->get_default_exclusion_list();
 			$options['minify_concatenate_js'] = 0;
 		}
 
@@ -162,35 +148,4 @@ class Settings {
 		return $value;
 	}
 
-	/**
-	 * Gets a regex pattern of excluded paths for wp-content and wp-includes
-	 *
-	 * @since 3.9
-	 *
-	 * @return string
-	 */
-	private function get_excluded_internal_paths() : string {
-		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
-		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
-		$pattern     = '(?:placeholder)(.*)';
-		$paths       = [];
-
-		if (
-			! $wp_content
-			&&
-			! $wp_includes
-		) {
-			return '';
-		}
-
-		if ( $wp_content ) {
-			$paths[] = $wp_content;
-		}
-
-		if ( $wp_includes ) {
-			$paths[] = $wp_includes;
-		}
-
-		return str_replace( 'placeholder', implode( '|', $paths ), $pattern );
-	}
 }

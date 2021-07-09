@@ -80,7 +80,6 @@ class UsedCSS {
 	 */
 	private $inline_exclusions = [
 		'rocket-lazyload-inline-css',
-		'rocket-lazyload-nojs-css',
 	];
 
 	/**
@@ -345,9 +344,17 @@ class UsedCSS {
 	private function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
-		$minifier = new MinifyCSS( $data['css'] );
+		$data['css'] = $this->apply_font_display_swap( $data['css'] );
+		$minifier    = new MinifyCSS( $data['css'] );
 
-		$data['css'] = $this->apply_font_display_swap( $minifier->minify() );
+		/**
+		 * Filters Used CSS content before saving into DB and filesystem.
+		 *
+		 * @since 3.9.0.2
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$data['css'] = apply_filters( 'rocket_usedcss_content', $minifier->minify() );
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );
@@ -418,9 +425,21 @@ class UsedCSS {
 	 * @return string HTML content.
 	 */
 	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
-		$html_nocomments    = $this->hide_comments( $html );
-		$link_styles        = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
-		$inline_styles      = $this->find( '<style(?<atts>.*)>(?<content>.*)<\/style>', $html_nocomments );
+		$html_nocomments       = $this->hide_comments( $html );
+		$html_noscripts        = $this->hide_noscripts( $html_nocomments );
+		$link_style_pattern    = '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>';
+		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style\s*>';
+
+		$link_styles   = $this->find(
+			$link_style_pattern,
+			$html_noscripts,
+			'Uis'
+		);
+		$inline_styles = $this->find(
+			$inline_inline_pattern,
+			$html_noscripts
+		);
+
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
 		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
@@ -496,6 +515,23 @@ class UsedCSS {
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
+	}
+
+	/**
+	 * Hides <noscript> blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function hide_noscripts( string $html ): string {
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**
@@ -580,10 +616,7 @@ class UsedCSS {
 			}
 		}
 
-		$used_css = $this->handle_charsets( $used_css->css );
-
-		// This filter is documented in inc/Engine/Optimization/CSSTrait.php#52.
-		return rocket_put_content( $used_css_filepath, apply_filters( 'rocket_css_content', $used_css ) );
+		return rocket_put_content( $used_css_filepath, $this->handle_charsets( $used_css->css ) );
 	}
 
 	/**
