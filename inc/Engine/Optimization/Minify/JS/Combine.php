@@ -707,6 +707,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'translation-revision-date',
 			'google_conversion_id',
 			'hbspt',
+			'WoocommerceWidget/woocommerceWidget.js',
 			'var ht_ctc_chat_var',
 		];
 
