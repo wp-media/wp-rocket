@@ -250,7 +250,6 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
-			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',

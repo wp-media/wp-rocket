@@ -39,6 +39,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Savvii();
 			case 'dreampress':
 				return new Dreampress();
+			case 'litespeed':
+				return new LiteSpeed();
 			default:
 				return new NullSubscriber();
 		}

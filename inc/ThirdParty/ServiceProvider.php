@@ -35,7 +35,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'bigcommerce_subscriber',
 		'beaverbuilder_subscriber',
 		'amp_subscriber',
-		'litespeed_subscriber',
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
@@ -110,9 +109,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
