@@ -36,7 +36,7 @@ class Test_CpcssActions extends FilesystemTestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		unset( $GLOBALS['post'] );
 		parent::tearDown();
 	}
@@ -54,6 +54,15 @@ class Test_CpcssActions extends FilesystemTestCase {
 		$this->post->shouldReceive( 'generate' )
 				   ->with( 'metabox/generate', $expected['data'] )
 				   ->andReturn( '' );
+
+		Functions\expect( 'get_post_type' )
+			->once()
+			->andReturn( $config['post']->post_type );
+
+		Functions\expect( 'is_post_type_viewable' )
+			->once()
+			->with( $config['post']->post_type )
+			->andReturn( true );
 
 		ob_start();
 		$this->post->cpcss_actions();

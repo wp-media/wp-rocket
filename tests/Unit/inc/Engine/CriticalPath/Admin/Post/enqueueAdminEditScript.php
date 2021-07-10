@@ -55,6 +55,12 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			$this->assertNotExpected();
 		}
 
+		Functions\expect( 'get_post_type' )->andReturn( $config['post']->post_type );
+
+		Functions\expect( 'is_post_type_viewable' )
+			->with( $config['post']->post_type )
+			->andReturn( true );
+
 		$this->post->enqueue_admin_edit_script( $config['page'] );
 	}
 

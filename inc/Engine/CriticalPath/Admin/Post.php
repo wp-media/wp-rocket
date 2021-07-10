@@ -166,6 +166,12 @@ class Post extends Abstract_Render {
 			$this->disabled_data['option_excluded'] = 1;
 		}
 
+		if ( ! is_post_type_viewable( get_post_type( $post ) ) ) {
+			$this->disabled_data['not_viewable'] = 1;
+		}
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			$this->disabled_data['not_allowed'] = 1;
+		}
 		return $this->disabled_data;
 	}
 
