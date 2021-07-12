@@ -394,8 +394,8 @@ Text Domain: neutro
 				'page_url' => 'http://example.org/path/',
 				'is_error' => false,
 				'html'     => '<!DOCTYPE html><html><head><title></title>' .
-								'<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
-								'</head><body>Content here</body></html>',
+				              '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
+				              '</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
@@ -404,6 +404,30 @@ Text Domain: neutro
 						'type'      => 'css',
 						'path'      => 'vfs://public/css/style-with-only-comment.css',
 						'external'  => false,
+						'media'     => 'all',
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
+					],
+				],
+			],
+		],
+
+		'shouldQueueExternalResources' => [
+			'input'    => [
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+				              '<link rel="stylesheet" type="text/css" href="http://external.org/css/style.css">' .
+				              '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'       => 'http://external.org/css/style.css',
+						'type'      => 'css',
+						'path'      => 'thirdparty path',
+						'external'  => true,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
