@@ -170,9 +170,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			$path         = $this->get_url_path( $resource['url'], $external_url );
 
 			$this->resources[ $path ] = [
-				'url'  => $this->normalize_fullurl( $resource['url'], false ),
-				'type' => $type,
-				'path' => $path,
+				'url'      => $this->normalize_fullurl( $resource['url'], false ),
+				'type'     => $type,
+				'path'     => $path,
+				'external' => $external_url,
 			];
 
 			if ( 'css' === $type ) {
