@@ -185,9 +185,11 @@ class Settings {
 	/**
 	 * Check if current exclusion list has the default list.
 	 *
+	 * @since 3.9.1
+	 *
 	 * @return bool
 	 */
-	public static function exclusion_list_has_default() {
+	public static function exclusion_list_has_default(): bool {
 		$current_list = get_rocket_option( 'delay_js_exclusions', [] );
 		if ( empty( $current_list ) ) {
 			return false;
