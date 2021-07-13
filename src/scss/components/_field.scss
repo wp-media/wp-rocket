@@ -279,4 +279,20 @@
             color: $cBlack;
         }
     }
+
+  	&--textarea {
+	  .wpr-field-description {
+		code {
+		  display: block;
+		  padding: 1em;
+		  -webkit-touch-callout: all;
+		  -webkit-user-select: all;
+		  -khtml-user-select: all;
+		  -moz-user-select: all;
+		  -ms-user-select: all;
+		  user-select: all;
+		  margin: 1em 0 0;
+		}
+	  }
+	}
 }
