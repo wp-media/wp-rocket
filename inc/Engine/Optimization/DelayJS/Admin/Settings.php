@@ -157,7 +157,7 @@ class Settings {
 	 */
 	public static function get_delay_js_default_exclusions(): array {
 		$exclusions  = [
-			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
+			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
 			'js-(before|after)',
 		];
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
@@ -180,6 +180,32 @@ class Settings {
 		$exclusions[] = str_replace( 'placeholder', implode( '|', $paths ), $pattern );
 
 		return $exclusions;
+	}
+
+	/**
+	 * Check if current exclusion list has the default list.
+	 *
+	 * @return bool
+	 */
+	public static function exclusion_list_has_default() {
+		$current_list = get_rocket_option( 'delay_js_exclusions', [] );
+		if ( empty( $current_list ) ) {
+			return false;
+		}
+
+		$default_list = self::get_delay_js_default_exclusions();
+		if ( count( $current_list ) < count( $default_list ) ) {
+			return false;
+		}
+
+		$current_list = array_flip( $current_list );
+
+		foreach ( $default_list as $item ) {
+			if ( ! isset( $current_list[ $item ] ) ) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
