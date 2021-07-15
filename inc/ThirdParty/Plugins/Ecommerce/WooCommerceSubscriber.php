@@ -520,7 +520,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * Show product gallery main image directly when delay JS is enabled.
 	 *
 	 * @since 3.9.1
-	 *
 	 */
 	public function show_empty_product_gallery_with_delayJS() {
 		if ( ! $this->delayjs_html->is_allowed() ) {
