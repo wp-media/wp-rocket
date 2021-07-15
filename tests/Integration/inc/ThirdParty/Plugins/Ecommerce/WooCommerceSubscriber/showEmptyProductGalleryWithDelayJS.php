@@ -1,12 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
-use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
-use Mockery;
-use Brain\Monkey\Functions;
-
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_empty_product_gallery_with_delayJS
  * @group WooCommerce

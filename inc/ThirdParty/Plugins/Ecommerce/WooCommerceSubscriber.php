@@ -507,6 +507,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * Check if current product page has images in gallery.
 	 *
+	 * @since 3.9.1
+	 *
 	 * @return bool
 	 */
 	private function product_has_gallery_images() {
@@ -516,6 +518,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 	/**
 	 * Show product gallery main image directly when delay JS is enabled.
+	 *
+	 * @since 3.9.1
+	 *
 	 */
 	public function show_empty_product_gallery_with_delayJS() {
 		if ( ! $this->delayjs_html->is_allowed() ) {
@@ -536,6 +541,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 	/**
 	 * Exclude some JS files from delay JS when product gallery has images.
+	 *
+	 * @since 3.9.1
 	 *
 	 * @param array $exclusions Exclusions array.
 	 *

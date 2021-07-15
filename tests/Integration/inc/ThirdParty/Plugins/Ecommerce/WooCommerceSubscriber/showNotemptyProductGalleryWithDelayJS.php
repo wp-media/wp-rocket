@@ -1,11 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
-use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
-use Mockery;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
@@ -50,7 +46,7 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 		}
 
 		$actual = apply_filters( 'rocket_delay_js_exclusions', [] );
-		$this->assertEquals( $expected['excluded'], $actual );
+		$this->assertSame( $expected['excluded'], $actual );
 
 	}
 
