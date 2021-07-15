@@ -8,12 +8,12 @@ use Mockery;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_empty_product_gallery_with_delayJS
+ * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
  * @group WooCommerce
  * @group ThirdParty
  * @group WithWoo
  */
-class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
+class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 	use WooTrait;
 
 	private $delay_js_option;
@@ -49,28 +49,8 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 			$this->go_to( home_url() );
 		}
 
-		foreach ( wp_styles()->registered as $style ) {
-			if ( 'woocommerce-layout' === $style->handle ) {
-				$this->assertArrayNotHasKey( 'after', $style->extra );
-			}
-		}
-
-		do_action( 'wp_enqueue_scripts' );
-
-		$extra_after = [];
-		foreach ( wp_styles()->registered as $style ) {
-			if ( 'woocommerce-layout' === $style->handle ) {
-				$extra_after = $style->extra;
-			}
-		}
-
-		if ( empty( $expected['style'] ) ) {
-			$this->assertArrayNotHasKey( 'after', $extra_after );
-		}else{
-			$this->assertArrayHasKey( 'after', $extra_after );
-			$this->assertNotEmpty( $extra_after['after'] );
-			$this->assertContains( '.woocommerce-product-gallery{ opacity: 1 !important; }', $extra_after['after'] );
-		}
+		$actual = apply_filters( 'rocket_delay_js_exclusions', [] );
+		$this->assertEquals( $expected['excluded'], $actual );
 
 	}
 
