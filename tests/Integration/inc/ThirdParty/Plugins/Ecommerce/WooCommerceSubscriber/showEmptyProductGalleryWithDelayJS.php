@@ -79,13 +79,21 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 
 		do_action( 'wp_enqueue_scripts' );
 
+		$extra_after = [];
 		foreach ( wp_styles()->registered as $style ) {
 			if ( 'woocommerce-layout' === $style->handle ) {
-				$this->assertArrayHasKey( 'after', $style->extra );
-				$this->assertNotEmpty( ($style->extra)['after'] );
-				$this->assertContains( '.woocommerce-product-gallery{ opacity: 1 !important; }', ($style->extra)['after'] );
+				$extra_after = $style->extra;
 			}
 		}
+
+		if ( empty( $expected['style'] ) ) {
+			$this->assertArrayNotHasKey( 'after', $extra_after );
+		}else{
+			$this->assertArrayHasKey( 'after', $extra_after );
+			$this->assertNotEmpty( $extra_after['after'] );
+			$this->assertContains( '.woocommerce-product-gallery{ opacity: 1 !important; }', $extra_after['after'] );
+		}
+
 	}
 
 	public function set_delay_js($options) {
