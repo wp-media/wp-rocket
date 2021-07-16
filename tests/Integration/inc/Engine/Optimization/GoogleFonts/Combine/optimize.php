@@ -6,13 +6,15 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\GoogleFonts::optimize
+ *
  * @uses   \WP_Rocket\Logger\Logger
+ *
  * @group  Optimize
- * @group  CombineGoogleFonts
+ * @group  GoogleFonts
  */
 class Test_Optimize extends TestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
@@ -49,14 +51,14 @@ class Test_Optimize extends TestCase {
 		$this->doTest( $original, $combined );
 	}
 
-	private function doTest( $original, $combined ) {
+	private function doTest( $original, $expected ) {
 		add_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 
 		$actual = apply_filters( 'rocket_buffer', $original );
 
 		$this->assertSame(
-			$combined,
-			$actual
+			$this->format_the_html( $expected ),
+			$this->format_the_html( $actual )
 		);
 	}
 

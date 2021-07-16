@@ -3,9 +3,45 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
+	/**
+	 * Options data instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param Options_Data $options Options Data instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * Adds plugins incompatible with delay JS to the list
+	 *
+	 * @since 3.9.0.1
+	 *
+	 * @param string[] $plugins Array of recommended plugins to deactivate.
+	 *
+	 * @return array
+	 */
+	public function add_plugins_incompatibility( $plugins ): array {
+		if ( ! $this->options->get( 'delay_js', 0 ) ) {
+			return $plugins;
+		}
+
+		$plugins['wp-meteor'] = 'wp-meteor/wp-meteor.php';
+
+		return $plugins;
+	}
+
 	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
@@ -19,7 +55,7 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 1;
+		$options['delay_js']            = 0;
 		$options['delay_js_exclusions'] = [];
 
 		return $options;
@@ -36,7 +72,7 @@ class Settings {
 	 * @return void
 	 */
 	public function set_option_on_update( $old_version ) {
-		if ( version_compare( $old_version, '3.9', '>' ) ) {
+		if ( version_compare( $old_version, '3.9', '>=' ) ) {
 			return;
 		}
 
@@ -49,11 +85,6 @@ class Settings {
 			&&
 			1 === (int) $options['delay_js']
 		) {
-			$options['delay_js_exclusions']   = [
-				$this->get_excluded_internal_paths(),
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			];
 			$options['minify_concatenate_js'] = 0;
 		}
 
@@ -118,24 +149,24 @@ class Settings {
 	}
 
 	/**
-	 * Gets a regex pattern of excluded paths for wp-content and wp-includes
+	 * Get default exclusion list.
 	 *
-	 * @since 3.9
+	 * @since 3.9.1
 	 *
-	 * @return string
+	 * @return string[]
 	 */
-	private function get_excluded_internal_paths() : string {
-		$wp_content  = wp_parse_url( content_url(), PHP_URL_PATH );
-		$wp_includes = wp_parse_url( includes_url(), PHP_URL_PATH );
+	public static function get_delay_js_default_exclusions(): array {
+		$exclusions  = [
+			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
+			'js-(before|after)',
+		];
+		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
 		$pattern     = '(?:placeholder)(.*)';
 		$paths       = [];
 
-		if (
-			! $wp_content
-			&&
-			! $wp_includes
-		) {
-			return '';
+		if ( ! $wp_content && ! $wp_includes ) {
+			return $exclusions;
 		}
 
 		if ( $wp_content ) {
@@ -146,6 +177,37 @@ class Settings {
 			$paths[] = $wp_includes;
 		}
 
-		return str_replace( 'placeholder', implode( '|', $paths ), $pattern );
+		$exclusions[] = str_replace( 'placeholder', implode( '|', $paths ), $pattern );
+
+		return $exclusions;
 	}
+
+	/**
+	 * Check if current exclusion list has the default list.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @return bool
+	 */
+	public static function exclusion_list_has_default(): bool {
+		$current_list = get_rocket_option( 'delay_js_exclusions', [] );
+		if ( empty( $current_list ) ) {
+			return false;
+		}
+
+		$default_list = self::get_delay_js_default_exclusions();
+		if ( count( $current_list ) < count( $default_list ) ) {
+			return false;
+		}
+
+		$current_list = array_flip( $current_list );
+
+		foreach ( $default_list as $item ) {
+			if ( ! isset( $current_list[ $item ] ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

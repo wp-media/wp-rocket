@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
 
 /**
- * @covers ::get_rocket_post_terms_urls
+ * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
  * @group  Purge
  * @group  purge_actions
  */

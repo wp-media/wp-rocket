@@ -1,19 +1,18 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WooCommerce;
-use WC_API;
+use WP_Rocket\Traits\Config_Updater;
 
 /**
  * WooCommerce compatibility
  *
  * @since 3.1
- * @author Remy Perona
  */
 class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
-	use \WP_Rocket\Traits\Config_Updater;
+	use Config_Updater;
 
 	/**
 	 * The WordPress Event Manager
@@ -21,6 +20,22 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @var Event_Manager;
 	 */
 	protected $event_manager;
+
+	/**
+	 * Delay JS HTML class.
+	 *
+	 * @var HTML
+	 */
+	private $delayjs_html;
+
+	/**
+	 * WooCommerceSubscriber constructor.
+	 *
+	 * @param HTML $delayjs_html DelayJS HTML class.
+	 */
+	public function __construct( HTML $delayjs_html ) {
+		$this->delayjs_html = $delayjs_html;
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -68,6 +83,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
+
+			$events['wp_enqueue_scripts']         = 'show_empty_product_gallery_with_delayJS';
+			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -484,5 +502,70 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'bookyourtravel_nonce', // Book Your Travel theme.
 			'sign_signin', // Custom Login for Improvise Theme by Noomia.
 		];
+	}
+
+	/**
+	 * Check if current product page has images in gallery.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @return bool
+	 */
+	private function product_has_gallery_images() {
+		$product = wc_get_product( get_the_ID() );
+		return ! empty( $product->get_gallery_image_ids() );
+	}
+
+	/**
+	 * Show product gallery main image directly when delay JS is enabled.
+	 *
+	 * @since 3.9.1
+	 */
+	public function show_empty_product_gallery_with_delayJS() {
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return;
+		}
+
+		if ( ! is_product() ) {
+			return;
+		}
+
+		if ( $this->product_has_gallery_images() ) {
+			return;
+		}
+
+		$custom_css = '.woocommerce-product-gallery{ opacity: 1 !important; }';
+		wp_add_inline_style( 'woocommerce-layout', $custom_css );
+	}
+
+	/**
+	 * Exclude some JS files from delay JS when product gallery has images.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @param array $exclusions Exclusions array.
+	 *
+	 * @return array
+	 */
+	public function show_notempty_product_gallery_with_delayJS( array $exclusions = [] ) {
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return $exclusions;
+		}
+
+		if ( ! is_product() ) {
+			return $exclusions;
+		}
+
+		if ( ! $this->product_has_gallery_images() ) {
+			return $exclusions;
+		}
+
+		$exclusions[] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
+		$exclusions[] = '/woocommerce/assets/js/zoom/jquery.zoom(.min)?.js';
+		$exclusions[] = '/woocommerce/assets/js/photoswipe/';
+		$exclusions[] = '/woocommerce/assets/js/flexslider/jquery.flexslider(.min)?.js';
+		$exclusions[] = '/woocommerce/assets/js/frontend/single-product(.min)?.js';
+
+		return $exclusions;
 	}
 }

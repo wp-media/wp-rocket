@@ -71,3 +71,8 @@
     border-top: 1px solid $cGrey;
     padding-top: 16px;
 }
+
+.wpr-warningContainer+.wpr-warningContainer,
+.wpr-field + .wpr-warningContainer{
+  padding-bottom: 16px;
+}

@@ -56,7 +56,7 @@ tests_add_filter(
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
-			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+			require WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/woocommerce.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
@@ -138,7 +138,7 @@ tests_add_filter(
 		// Clean existing install first.
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		define( 'WC_REMOVE_ALL_DATA', true );
-		include WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/uninstall.php';
+		include WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/uninstall.php';
 
 		WC_Install::install();
 

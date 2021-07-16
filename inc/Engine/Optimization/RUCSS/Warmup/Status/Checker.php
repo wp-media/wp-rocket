@@ -54,6 +54,13 @@ class Checker extends AbstractAPIClient {
 	private function set_warmup_status_completed() {
 		$this->set_warmup_status_finish_time();
 		$this->set_warmup_force_optimization();
+
+		/**
+		 * Fires when the Pre-warmup process is completed.
+		 *
+		 * @since 3.9.0.1
+		 */
+		do_action( 'rocket_prewarmup_finished' );
 	}
 
 	/**
@@ -84,7 +91,7 @@ class Checker extends AbstractAPIClient {
 	 */
 	public function activate_optimization_on_warmup_completion() {
 		// Bailout in case scanner fetching is not finished.
-		if ( ! $this->is_scanner_fetching_finished() ) {
+		if ( $this->is_warmup_finished() || ! $this->is_scanner_fetching_finished() ) {
 			return;
 		}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts\Admin\Settings;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -11,7 +11,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin::enable_google_fonts()
+ * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts()
  *
  * @group  GoogleFontsAdmin
  */

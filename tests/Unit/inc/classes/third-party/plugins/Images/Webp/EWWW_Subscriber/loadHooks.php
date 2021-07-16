@@ -11,7 +11,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::::load_hooks
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::load_hooks
  * @group  ThirdParty
  * @group  Webp
  */

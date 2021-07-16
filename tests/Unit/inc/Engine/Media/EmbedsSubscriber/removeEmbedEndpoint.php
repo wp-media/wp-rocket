@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\EmbedsSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Embeds\EmbedsSubscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\EmbedsSubscriber::remove_embed_endpoint
+ * @covers \WP_Rocket\Engine\Media\Embeds\EmbedsSubscriber::remove_embed_endpoint
  *
  * @group Media
  * @group Embeds

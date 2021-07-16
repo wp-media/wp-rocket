@@ -706,6 +706,13 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'defaultCategoryId',
 			'translation-revision-date',
 			'google_conversion_id',
+			'hbspt',
+			'var marker_locations_',
+			'var AdmMyAjax',
+			'ifso_page_url',
+			'referrer_for_pageload',
+			'WoocommerceWidget/woocommerceWidget.js',
+			'var ht_ctc_chat_var',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
