@@ -85,8 +85,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style-empty.css',
-						'content'   => '*',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style-empty.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -94,8 +95,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/css/style-notfound.css',
-						'content'   => '*',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style-notfound.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -126,8 +128,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style1.css?ver=123',
-						'content'   => '.first{color:red}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style1.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -135,8 +138,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/css/style2.css',
-						'content'   => '.second{color:green}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style2.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -144,8 +148,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script2.js',
-						'content'   => 'var second="content 2"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script2.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -167,8 +172,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style1.css?ver=123',
-						'content'   => '.first{color:red}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style1.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -176,8 +182,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/css/style2.css',
-						'content'   => '.second{color:green}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style2.css',
+						'external'  => false,
 						'media'     => 'print',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -201,8 +208,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style1.css?ver=123',
-						'content'   => '.first{color:red}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style1.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -210,8 +218,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first="content 1"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -233,8 +242,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/stylewithimport.css?ver=123',
-						'content'   => '.first{color:red}.another-class-in-stylewithimport{color:#fff}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/stylewithimport.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -242,8 +252,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first="content 1"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -265,8 +276,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/stylewithimportedmqs.css?ver=123',
-						'content'   => '@media screen{.third{color:#000}}.another-imported-class{color:blue}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/stylewithimportedmqs.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -274,8 +286,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first="content 1"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -297,8 +310,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/stylewithrelativepathimport.css?ver=123',
-						'content'   => '.relatively-pathed-imported-class{color:#000}.some-imported-class{color:pink}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/stylewithrelativepathimport.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -306,8 +320,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first="content 1"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -329,8 +344,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/stylewithimport-recursion.css?ver=123',
-						'content'   => ".another-class-in-stylewithimport-recursion{color:#fff}",
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/stylewithimport-recursion.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -338,8 +354,9 @@ Text Domain: neutro
 					],
 					[
 						'url'       => 'http://example.org/scripts/script1.js',
-						'content'   => 'var first="content 1"',
 						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
 						'is_error'  => false,
@@ -360,8 +377,9 @@ Text Domain: neutro
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style1.css?ver=123&q=5',
-						'content'   => '.first{color:red}',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style1.css',
+						'external'  => false,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',
@@ -376,15 +394,40 @@ Text Domain: neutro
 				'page_url' => 'http://example.org/path/',
 				'is_error' => false,
 				'html'     => '<!DOCTYPE html><html><head><title></title>' .
-								'<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
-								'</head><body>Content here</body></html>',
+				              '<link rel="stylesheet" type="text/css" href="http://example.org/css/style-with-only-comment.css">' .
+				              '</head><body>Content here</body></html>',
 			],
 			'expected' => [
 				'resources' => [
 					[
 						'url'       => 'http://example.org/css/style-with-only-comment.css',
-						'content'   => '*',
 						'type'      => 'css',
+						'path'      => 'vfs://public/css/style-with-only-comment.css',
+						'external'  => false,
+						'media'     => 'all',
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
+					],
+				],
+			],
+		],
+
+		'shouldQueueExternalResources' => [
+			'input'    => [
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+				              '<link rel="stylesheet" type="text/css" href="http://external.org/css/style.css">' .
+				              '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'       => 'http://external.org/css/style.css',
+						'type'      => 'css',
+						'path'      => 'thirdparty path',
+						'external'  => true,
 						'media'     => 'all',
 						'prewarmup' => 0,
 						'page_url'  => 'http://example.org/path/',

@@ -24,4 +24,18 @@ trait RegexTrait {
 		return $matches;
 	}
 
+	/**
+	 * Hides unwanted blocks from the HTML to be parsed for optimization
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function hide_comments( $html ) {
+		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
+		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+
+		return $html;
+	}
 }

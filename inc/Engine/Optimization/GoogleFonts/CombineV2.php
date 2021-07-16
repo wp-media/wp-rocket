@@ -1,9 +1,9 @@
 <?php
-
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -12,21 +12,7 @@ use WP_Rocket\Logger\Logger;
  * @since  3.8
  */
 class CombineV2 extends AbstractGFOptimization {
-
-	/**
-	 * Allowed display values.
-	 *
-	 * @since 3.8
-	 *
-	 * @var array
-	 */
-	protected $display_values = [
-		'auto'     => 1,
-		'block'    => 1,
-		'swap'     => 1,
-		'fallback' => 1,
-		'optional' => 1,
-	];
+	use RegexTrait;
 
 	/**
 	 * Combines multiple Google Fonts (API v2) links into one
@@ -37,7 +23,7 @@ class CombineV2 extends AbstractGFOptimization {
 	 *
 	 * @return string
 	 */
-	public function optimize( string $html ): string {
+	public function optimize( $html ): string {
 		Logger::info( 'GOOGLE FONTS COMBINE-V2 PROCESS STARTED.', [ 'GF combine process' ] );
 
 		$processed_tags  = [];
@@ -64,10 +50,6 @@ class CombineV2 extends AbstractGFOptimization {
 			]
 		);
 
-		if ( 1 === $num_tags ) {
-			return str_replace( $font_tags[0][0], $this->get_font_with_display( $font_tags[0] ), $html );
-		}
-
 		$families = [];
 		foreach ( $font_tags as $tag ) {
 			$parsed_families = $this->parse( $tag );
@@ -83,7 +65,7 @@ class CombineV2 extends AbstractGFOptimization {
 		}
 
 		$families     = array_unique( $families );
-		$combined_tag = $this->get_combine_tag( $families );
+		$combined_tag = $this->get_optimized_markup( $this->get_combined_url( $families ) );
 		$html         = preg_replace( '@<\/title>@i', '$0' . $combined_tag, $html, 1 );
 
 		foreach ( $processed_tags as $font ) {
@@ -105,10 +87,12 @@ class CombineV2 extends AbstractGFOptimization {
 	 * Parses found matches to extract fonts and subsets.
 	 *
 	 * @since  3.8
+	 *
 	 * @param  array $tag A Google Font v2 url.
+	 *
 	 * @return array
 	 */
-	protected function parse( array $tag ) {
+	private function parse( array $tag ): array {
 		if ( false !== strpos( $tag['url'], 'text=' ) ) {
 			Logger::debug( 'GOOGLEFONTS V2 COMBINE: ' . $tag['url'] . ' SKIPPED TO PRESERVE "text" ATTRIBUTE.' );
 			return [];
@@ -137,27 +121,28 @@ class CombineV2 extends AbstractGFOptimization {
 
 
 	/**
-	 * Returns the combined Google fonts link tag.
+	 * Returns the combined Google fonts URL
 	 *
-	 * @since  3.8
+	 * @since  3.9.1
+	 *
 	 * @param  array $families Array with all Google V2 families.
+	 *
 	 * @return string
 	 */
-	protected function get_combine_tag( array $families ): string {
-		return sprintf(
-			'<link rel="stylesheet" href="%s" />', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display=swap" )
-		);
+	private function get_combined_url( array $families ): string {
+		return esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display=swap" );
 	}
 
 	/**
 	 * Get a string of the concatenated font family queries.
 	 *
 	 * @since  3.8
+	 *
 	 * @param  array $families Array with all Google V2 families.
+	 *
 	 * @return string
 	 */
-	protected function get_concatenated_families( array $families ): string {
+	private function get_concatenated_families( array $families ): string {
 		$families_string = '?';
 		foreach ( $families as $family ) {
 			$families_string .= $family . '&';

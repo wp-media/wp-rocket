@@ -178,7 +178,12 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
-			if ( false !== strpos( $matches['attr'], 'application/ld+json' ) ) {
+
+			if (
+				strpos( $matches['attr'], 'type' ) !== false
+				&&
+				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
+			) {
 				return $matches[0];
 			}
 

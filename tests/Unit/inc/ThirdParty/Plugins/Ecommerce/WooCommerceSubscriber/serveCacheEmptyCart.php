@@ -2,8 +2,10 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::serve_cache_empty_cart
@@ -16,10 +18,10 @@ class Test_ServeCacheEmptyCart extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->subscriber = new WooCommerceSubscriber();
+		$this->subscriber = new WooCommerceSubscriber( Mockery::mock( HTML::class ) );
 	}
 
-	public function tearDown() {
+	public function tearDown() : void {
 		parent::tearDown();
 
 		unset( $_GET['wc-ajax'] );
