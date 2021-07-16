@@ -25,6 +25,8 @@ class Test_ShowNotemptyProductGalleryWithDelayJS extends TestCase {
 	}
 
 	public function tearDown() : void {
+		unset( $GLOBALS['wp_version']);
+
 		parent::tearDown();
 	}
 
@@ -32,9 +34,15 @@ class Test_ShowNotemptyProductGalleryWithDelayJS extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$is_allowed      = $config['is_allowed'] ?? null;
-		$in_product_page = $config['in_product_page'] ?? null;
-		$has_images      = $config['has_images'] ?? null;
+		$is_allowed         = $config['is_allowed'] ?? null;
+		$in_product_page    = $config['in_product_page'] ?? null;
+		$has_images         = $config['has_images'] ?? null;
+		$current_wp_version = $config['wp_version'] ?? null;
+
+		if ( ! is_null( $current_wp_version ) ) {
+			global $wp_version;
+			$wp_version = $current_wp_version;
+		}
 
 		if ( ! is_null( $is_allowed ) ) {
 			$this->delayjs_html->shouldReceive( 'is_allowed' )->once()->andReturn( $is_allowed );

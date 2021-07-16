@@ -15,16 +15,25 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 	private $delay_js_option;
 	private $product_with_gallery;
 	private $product_without_gallery;
+	private $wp_version;
 
 	public function setUp() : void {
+		global $wp_version;
+
 		parent::setUp();
 
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
+
+		$this->wp_version = $wp_version;
 	}
 
 	public function tearDown() : void {
+		global $wp_version;
+
 		parent::tearDown();
+
+		$wp_version = $this->wp_version;
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 	}
@@ -33,9 +42,15 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->delay_js_option      = $config['is_allowed'] ?? false;
-		$in_product_page = $config['in_product_page'] ?? null;
-		$has_images      = $config['has_images'] ?? null;
+		$this->delay_js_option = $config['is_allowed'] ?? false;
+		$in_product_page       = $config['in_product_page'] ?? null;
+		$has_images            = $config['has_images'] ?? null;
+		$current_wp_version            = $config['wp_version'] ?? null;
+
+		if ( ! is_null( $current_wp_version ) ) {
+			global $wp_version;
+			$wp_version = $current_wp_version;
+		}
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 
