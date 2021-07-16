@@ -20,7 +20,6 @@ class Test_RocketActivation extends TestCase {
 
 		$included_files = get_included_files();
 
-		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php', $included_files );
 		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php', $included_files );
 		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php', $included_files );
 	}

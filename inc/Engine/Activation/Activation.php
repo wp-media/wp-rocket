@@ -57,10 +57,6 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 
-		if ( class_exists( 'WPaaS\Plugin' ) ) {
-			require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-		}
-
 		/**
 		 * WP Rocket activation.
 		 *

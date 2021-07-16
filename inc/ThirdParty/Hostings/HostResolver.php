@@ -85,6 +85,11 @@ class HostResolver {
 			return 'dreampress';
 		}
 
+		if ( class_exists( '\WPaas\Plugin' ) ) {
+			self::$hostname = 'godaddy';
+			return 'godaddy';
+		}
+
 		return '';
 	}
 
