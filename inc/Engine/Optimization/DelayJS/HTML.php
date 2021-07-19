@@ -52,6 +52,7 @@ class HTML {
 		'var billing_additional_field', // Woo Autocomplete Nish.
 		'var gtm4wp',
 		'var dataLayer_content',
+		'ewwwWebPInit' // EWWW WebP rewrite inline script.
 	];
 
 	/**
