@@ -93,8 +93,8 @@ class HTML {
 		$this->excluded = array_map(
 			function( $value ) {
 				return str_replace(
-					[ '+', '?ver', '#' ],
-					[ '\+', '\?ver', '\#' ],
+					[ '+', '?ver', '#', 'gtag(' ],
+					[ '\+', '\?ver', '\#', 'gtag\(' ],
 					$value
 				);
 			},
