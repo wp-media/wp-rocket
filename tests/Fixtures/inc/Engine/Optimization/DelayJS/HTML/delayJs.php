@@ -54,12 +54,6 @@ $html = '<html>
 </head>
 <body>
 <script>
-window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag(\'js\', new Date());
-	  gtag(\'config\', \'UA-111111111111-1\');
-</script>
-<script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
 	var billing_city =\'\';
@@ -220,12 +214,6 @@ $delay_html_upgrade = '<html>
 </head>
 <body>
 <script>
-window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag(\'js\', new Date());
-	  gtag(\'config\', \'UA-111111111111-1\');
-</script>
-<script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
 	var billing_city =\'\';
@@ -385,12 +373,6 @@ $delay_html = '<html>
 	<script>document.addEventListener(\'DOMContentLoaded\', function(event) {  if( typeof cpLoadCSS !== \'undefined\' ) { cpLoadCSS(\'https://example.org/wp-content/plugins/convertpro/assets/modules/css/cp-popup.min.css?ver=1.7.0\', 0, \'all\'); } }); </script>
 </head>
 <body>
-<script>
-window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag(\'js\', new Date());
-	  gtag(\'config\', \'UA-111111111111-1\');
-</script>
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
