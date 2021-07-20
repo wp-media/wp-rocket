@@ -7,6 +7,8 @@ $html = '<html>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
@@ -133,6 +135,8 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
@@ -259,6 +263,8 @@ $delay_html = '<html>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
