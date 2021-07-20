@@ -598,7 +598,7 @@ class Page {
 
 		$delay_js_list_helper = sprintf(
 			// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
-			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><code>%1$s</code><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
+			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><pre><code>%1$s</code></pre><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
 			implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
 			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
