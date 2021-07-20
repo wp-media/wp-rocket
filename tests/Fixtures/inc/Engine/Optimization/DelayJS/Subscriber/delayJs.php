@@ -126,6 +126,22 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 </body>
 </html>';
 
+$user_html = <<<USERHTML
+<html>
+<head>
+	<title>Sample Page with User Scripts</title>
+</head>
+<body>
+<script>
+window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag(\'js\', new Date());
+	  gtag(\'config\', \'UA-111111111111-1\');
+</script>
+</body>
+</html>
+USERHTML;
+
 $delay_html_upgrade = '<html>
 <head>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
@@ -378,6 +394,22 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 </body>
 </html>';
 
+$user_delay_html = <<<USERDELAYHTML
+<html>
+<head>
+	<title>Sample Page with User Scripts</title>
+</head>
+<body>
+<script>
+window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag(\'js\', new Date());
+	  gtag(\'config\', \'UA-111111111111-1\');
+</script>
+</body>
+</html>
+USERDELAYHTML;
+
 return [
 	'test_data' => [
 		'testShouldNotDelayJSWhenBypass' => [
@@ -463,6 +495,21 @@ return [
 			],
 			'html'     => $html,
 			'expected' => $delay_html_upgrade,
+		],
+
+		'testShouldExcludeUserAddedExclusions' => [
+			'config' => [
+				'type'                 => 'front-page',
+				'bypass'               => false,
+				'donotoptimize'        => false,
+				'post-excluded'        => false,
+				'delay_js'             => 1,
+				'delay_js_exclusions'  => [
+					'gtag(',
+				],
+			],
+			'html'     => $user_html,
+			'expected' => $user_delay_html,
 		],
 	]
 ];
