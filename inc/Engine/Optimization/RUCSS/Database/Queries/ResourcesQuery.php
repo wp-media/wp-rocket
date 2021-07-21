@@ -74,7 +74,7 @@ class ResourcesQuery extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int False if neither created or updated, or row-id of the new or modified resource.
 	 */
 	public function create_or_update( array $resource ) {
 		$hash = md5( $resource['content'] );
@@ -118,7 +118,7 @@ class ResourcesQuery extends Query {
 		);
 
 		// Check the content hash and bailout if the content is the same and we are not in prewarmup.
-		if ( $hash === $db_row->hash && ! $resource['prewarmup'] ) {
+		if ( $hash === $db_row->hash && 0 === ( $resource['prewarmup'] ?? 0 ) ) {
 			// Do nothing.
 			return false;
 		}
