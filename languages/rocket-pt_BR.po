@@ -570,7 +570,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:717
 msgid "Remove Unused CSS (Beta)"
-msgstr "Remove o CSS não usado (Beta)"
+msgstr "Remover o CSS não usado (Beta)"
 
 #: inc/Engine/Admin/Settings/Page.php:719
 #, php-format
