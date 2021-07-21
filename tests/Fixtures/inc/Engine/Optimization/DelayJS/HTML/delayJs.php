@@ -5,7 +5,9 @@ $html = '<html>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
@@ -167,7 +169,9 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
@@ -329,7 +333,9 @@ $delay_html = '<html>
 	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
