@@ -578,8 +578,8 @@ msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests "
 "for better performance. %1$sMore info%2$s"
 msgstr ""
-"Remove CSS não utilizado por página e ajuda a reduzir o tamanho da página e "
-"as requisições HTTP para mehor desempenho. %1$sMais informações%2$s"
+"Remove CSS não usado por páginas e ajuda a reduzir o tamanho da página e as "
+"solicitações HTTP para mehor desempenho. %1$sMais informações%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:725
 msgid "We’re still working on it!"
