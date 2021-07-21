@@ -35,7 +35,7 @@ class HTML {
 		'fusionNavIsCollapsed',
 		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
 		'eio_lazy_vars',
-		'\/lazysizes(\.min)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
+		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
 		'document\.body\.classList\.remove\("no-js"\)',
 		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 		'et_animation_data',
