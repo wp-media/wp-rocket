@@ -52,6 +52,7 @@
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/phpstan": "^0.12",
 		"phpunit/phpunit": "^7.5",
+		"phpunit/php-file-iterator": "2.0.3",
 		"roave/security-advisories": "dev-master",
 		"szepeviktor/phpstan-wordpress": "^0.7.0",
 		"wp-coding-standards/wpcs": "^2",
