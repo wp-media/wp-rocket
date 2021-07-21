@@ -77,9 +77,17 @@ class ResourcesQuery extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
+		$hash = md5( $resource['content'] );
+
 		// check the database if those resources added before.
 		$db_row = $this->get_item_by( 'url', $resource['url'] );
 
+		// If we don't have a url match, it's still possible contents are the same, so let's check the hash, too!
+		if ( empty( $db_row ) ) {
+			$db_row = $this->get_item_by( 'hash', $hash );
+		}
+
+		// If we still don't have a match, we need to save this one.
 		if ( empty( $db_row ) ) {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
@@ -88,7 +96,7 @@ class ResourcesQuery extends Query {
 					'type'          => $resource['type'],
 					'content'       => $resource['content'],
 					'media'         => $resource['media'] ?? '',
-					'hash'          => md5( $resource['content'] ),
+					'hash'          => $hash,
 					'prewarmup'     => $resource['prewarmup'] ?? 0,
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -109,8 +117,8 @@ class ResourcesQuery extends Query {
 			]
 		);
 
-		// Check the content hash and bailour if the content is the same and we are not in prewarmup.
-		if ( md5( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
+		// Check the content hash and bailout if the content is the same and we are not in prewarmup.
+		if ( $hash === $db_row->hash && ! $resource['prewarmup'] ) {
 			// Do nothing.
 			return false;
 		}
@@ -121,7 +129,7 @@ class ResourcesQuery extends Query {
 			[
 				'prewarmup' => $resource['prewarmup'] ?? 0,
 				'content'   => $resource['content'],
-				'hash'      => md5( $resource['content'] ),
+				'hash'      => $hash,
 				'modified'  => current_time( 'mysql', true ),
 			]
 		);
