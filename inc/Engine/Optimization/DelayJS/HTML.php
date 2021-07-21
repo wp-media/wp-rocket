@@ -52,6 +52,7 @@ class HTML {
 		'var billing_additional_field', // Woo Autocomplete Nish.
 		'var gtm4wp',
 		'var dataLayer_content',
+		'/ewww-image-optimizer/includes/load_webp(\.min)?.js', // EWWW WebP rewrite external script.
 		'ewwwWebPInit', // EWWW WebP rewrite inline script.
 	];
 
