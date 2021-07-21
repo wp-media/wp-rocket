@@ -601,7 +601,7 @@ msgstr "Ativa a remoção do CSS não usado"
 
 #: inc/Engine/Admin/Settings/Page.php:732
 msgid "CSS safelist"
-msgstr "Lista segura de CSS"
+msgstr "Lista de CSS seguro"
 
 #: inc/Engine/Admin/Settings/Page.php:733
 msgid ""
