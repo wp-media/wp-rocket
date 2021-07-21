@@ -50,11 +50,11 @@ jobs:
       # We post a header to instruct the file to be deleted after 10 minutes
       - name: Upload Zip
         env:
-          OS_AUTH_URL: "https://auth.cloud.ovh.net/v3"
+          OS_AUTH_URL: ${{ secrets.OBJECT_STORAGE_URL }}
           OS_PASSWORD: ${{ secrets.OBJECT_STORAGE_PASSWORD }}
           OS_PROJECT_NAME: ${{ secrets.OBJECT_STORAGE_PROJECT }}
           OS_PROJECT_ID: ${{ secrets.OBJECT_STORAGE_PROJECT_ID }}
-          OS_REGION_NAME: "SBG"
+          OS_REGION_NAME: ${{ secrets.OBJECT_STORAGE_REGION }}
           OS_USERNAME: ${{ secrets.OBJECT_STORAGE_USERNAME }}
           OS_USER_DOMAIN_NAME: "Default"
         working-directory: /tmp
@@ -68,5 +68,5 @@ jobs:
         uses: distributhor/workflow-webhook@v1
         env:
           webhook_type: 'json-extended'
-          webhook_url: https://awx.wm-mgmt.ovh:443/api/v2/job_templates/34/github/
+          webhook_url: ${{ secrets.WEBHOOK_URL_PLUGIN }}
           webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}

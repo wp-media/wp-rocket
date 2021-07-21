@@ -35,8 +35,7 @@ class HTML {
 		'fusionNavIsCollapsed',
 		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
 		'eio_lazy_vars',
-		'/ewww-image-optimizer/includes/lazysizes.min.js',
-		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
+		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
 		'document\.body\.classList\.remove\("no-js"\)',
 		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 		'et_animation_data',
@@ -54,6 +53,7 @@ class HTML {
 		'var dataLayer_content',
 		'/ewww-image-optimizer/includes/load_webp(\.min)?.js', // EWWW WebP rewrite external script.
 		'ewwwWebPInit', // EWWW WebP rewrite inline script.
+		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
 	];
 
 	/**

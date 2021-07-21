@@ -5,12 +5,17 @@ $html = '<html>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
+	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
@@ -168,12 +173,17 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
+	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
@@ -331,12 +341,17 @@ $delay_html = '<html>
 	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-post.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer-cloud/includes/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
+	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
+	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"http://example.org/#website","url":"http://example.org/"]}</script>
 	<script>var et_site_url=\'http://example.org\';var et_post_id=\'2\';function et_core_page_resource_fallback(a,b){"undefined"===typeof b&&(b=a.sheet.cssRules&&0===a.sheet.cssRules.length);b&&(a.onerror=null,a.onload=null,a.href?a.href=et_site_url+"/?et_core_page_resource="+a.id+et_post_id:a.src&&(a.src=et_site_url+"/?et_core_page_resource="+a.id+et_post_id))}
 	</script>
