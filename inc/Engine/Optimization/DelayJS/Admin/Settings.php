@@ -163,7 +163,11 @@ class Settings {
 			'js-(before|after)',
 		];
 
-		if ( version_compare( $wp_version, '5.7', '<' ) ) {
+		if (
+			isset( $wp_version )
+			&&
+			version_compare( $wp_version, '5.7', '<' )
+		) {
 			$exclusions[] = '/jquery-migrate(.min)?.js';
 		}
 
