@@ -141,22 +141,17 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue[ $pattern_field ] = rocket_sanitize_textarea_field( $pattern_field, $newvalue[ $pattern_field ] );
 
 		// Validate.
-		$newvalue[ $pattern_field ] = array_filter(
-			$newvalue[ $pattern_field ],
-			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
-				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-					/* translators: 1 and 2 can be anything. */
-					$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
-					return false;
-				}
-
-				return true;
+		foreach( $newvalue[$pattern_field] as &$excluded ) {
+			if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				/* translators: 1 and 2 can be anything. */
+				$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+				$excluded = preg_quote( $excluded );
 			}
-		);
+		}
 	}
 
 	if ( $errors ) {
-		$error_message  = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', count( $errors ), 'rocket' );
+		$error_message  = _n( 'The following pattern has been escaped to prevent errors:', 'The following patterns have been escaped to prevent errors:', count( $errors ), 'rocket' );
 		$error_message .= '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
 		$errors         = [];
 
