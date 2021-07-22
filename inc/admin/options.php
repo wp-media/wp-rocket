@@ -144,7 +144,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		foreach ( $newvalue[ $pattern_field ] as &$excluded ) {
 			if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 				/* translators: 1 and 2 can be anything. */
-				$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+				$errors[] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
 				$excluded                 = preg_quote( $excluded ); // phpcs:ignore WordPress.PHP.PregQuoteDelimiter.Missing
 			}
 		}
