@@ -19,9 +19,9 @@ class Godaddy implements Subscriber_Interface {
 	/**
 	 * Godaddy constructor.
 	 *
-	 * @param bool|string $vip_url Godaddy vip url.
+	 * @param string $vip_url Godaddy vip url.
 	 */
-	public function __construct( $vip_url = false ) {
+	public function __construct( $vip_url = '' ) {
 		$this->vip_url = method_exists( '\WPaas\Plugin', 'vip' ) ? \WPaas\Plugin::vip() : $vip_url;
 	}
 
