@@ -2,18 +2,19 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # wpmedia <contact@wp-media.me>, 2019
-# Kurumi Tokisaki, 2020
-# 码农志 <liyangobj@gmail.com>, 2020
 # Tony Tong <tw191@163.com>, 2020
+# Kurumi Tokisaki, 2021
+# 码农志 <liyangobj@gmail.com>, 2021
+# rolor r, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2020-08-25 17:35-0400\n"
+"POT-Creation-Date: 2021-05-13 15:06-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Tony Tong <tw191@163.com>, 2020\n"
+"Last-Translator: rolor r, 2021\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/wp-media/teams/18133/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +37,7 @@ msgstr ""
 #: inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27
 #: inc/ThirdParty/Hostings/Cloudways.php:90
+#: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47 inc/deprecated/3.6.php:698
@@ -66,7 +68,7 @@ msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "从Jetpack插件预缓存网站地图"
 
 #: inc/3rd-party/plugins/jetpack.php:96
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:89
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:118
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
 #: inc/3rd-party/plugins/seo/seopress.php:86
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:144
@@ -77,7 +79,7 @@ msgid ""
 "check the option to preload it."
 msgstr "已自动监测到 %s 插件生成的sitemap。 您可查看相关选项来预缓存。"
 
-#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:87
+#: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:116
 msgid "All in One SEO XML sitemap"
 msgstr "All in One SEO XML 网站地图"
 
@@ -98,8 +100,8 @@ msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML 网站地图"
 
 #: inc/Addon/Cloudflare/APIClient.php:309
-msgid "Ops Cloudflare did not provide any reply. Please try again later."
-msgstr "Cloudflare 未响应，请稍后重试。"
+msgid "Cloudflare did not provide any reply. Please try again later."
+msgstr "Cloudflare 未做回复。请稍后重试。"
 
 #: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:122
 #: inc/deprecated/3.5.php:179
@@ -171,7 +173,7 @@ msgstr "<strong>WP Rocket:</strong> 成功刷新 Cloudflare 缓存。"
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:166
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:165
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket："
@@ -231,108 +233,93 @@ msgstr "Cloudflare 浏览器缓存错误：%s"
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare 浏览器缓存设置为 %s 秒"
 
-#: inc/Addon/FacebookTracking/Subscriber.php:87
-#: inc/Addon/GoogleTracking/Subscriber.php:132
-#: inc/Engine/HealthCheck/CacheDirSizeCheck.php:88
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:92
-msgid "weekly"
-msgstr "每周"
-
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: inc/Engine/Admin/Settings/Page.php:171
+#: inc/Engine/Admin/Settings/Page.php:190
 msgid "Validate License"
 msgstr "验证授权"
 
-#: inc/Engine/Admin/Settings/Page.php:236
-#: inc/Engine/Admin/Settings/Page.php:237
+#: inc/Engine/Admin/Settings/Page.php:246
+#: inc/Engine/Admin/Settings/Page.php:247
 msgid "Unavailable"
 msgstr "不可用"
 
-#: inc/Engine/Admin/Settings/Page.php:341 inc/deprecated/deprecated.php:1789
-#: views/settings/page-sections/dashboard.php:73
+#: inc/Engine/Admin/Settings/Page.php:338 inc/deprecated/deprecated.php:1789
+#: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "授权"
 
-#: inc/Engine/Admin/Settings/Page.php:358
+#: inc/Engine/Admin/Settings/Page.php:355
 msgid "API key"
 msgstr "API key"
 
-#: inc/Engine/Admin/Settings/Page.php:373
+#: inc/Engine/Admin/Settings/Page.php:370
 msgid "Email address"
 msgstr "邮箱"
 
-#: inc/Engine/Admin/Settings/Page.php:399
+#: inc/Engine/Admin/Settings/Page.php:396
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: inc/Engine/Admin/Settings/Page.php:400
+#: inc/Engine/Admin/Settings/Page.php:397
 msgid "Get help, account info"
 msgstr "获取帮助、账户信息"
 
-#: inc/Engine/Admin/Settings/Page.php:409
+#: inc/Engine/Admin/Settings/Page.php:406
 msgid "My Status"
 msgstr "我的状态"
 
-#: inc/Engine/Admin/Settings/Page.php:419 views/settings/page.php:72
-msgid "Rocket Tester"
-msgstr "Rocket 测试者"
-
-#: inc/Engine/Admin/Settings/Page.php:420
-msgid "I am part of the WP Rocket Beta Testing Program."
-msgstr "加入WP Rocket Beta 测试计划。"
-
-#: inc/Engine/Admin/Settings/Page.php:428 views/settings/page.php:90
+#: inc/Engine/Admin/Settings/Page.php:416 views/settings/page.php:72
 msgid "Rocket Analytics"
 msgstr "Rocket 分析"
 
-#: inc/Engine/Admin/Settings/Page.php:430
+#: inc/Engine/Admin/Settings/Page.php:418
 #, php-format
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr "我同意向开发团队分享匿名数据以帮助改进 WP Rocket。%1$s我们搜集何种信息？%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:454 inc/Engine/Cache/WPCache.php:347
+#: inc/Engine/Admin/Settings/Page.php:442 inc/Engine/Cache/WPCache.php:347
 msgid "Cache"
 msgstr "缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:455
+#: inc/Engine/Admin/Settings/Page.php:443
 msgid "Basic cache options"
 msgstr "基础缓存选项"
 
-#: inc/Engine/Admin/Settings/Page.php:462
+#: inc/Engine/Admin/Settings/Page.php:450
 msgid "Mobile Cache"
 msgstr "移动端缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:464
+#: inc/Engine/Admin/Settings/Page.php:452
 msgid "Speed up your site for mobile visitors."
 msgstr "为您网站的移动端访客加速。"
 
-#: inc/Engine/Admin/Settings/Page.php:469
+#: inc/Engine/Admin/Settings/Page.php:457
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
 msgstr "我们监测到您正在使用其他的移动端缓存插件，并已自动启用该选项以确保兼容性。"
 
-#: inc/Engine/Admin/Settings/Page.php:473
+#: inc/Engine/Admin/Settings/Page.php:461
 msgid "User Cache"
 msgstr "用户端缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:476
+#: inc/Engine/Admin/Settings/Page.php:464
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
 "content on your website."
 msgstr "%1$s用户端缓存%2$s适用于您的网站有些内容仅指定用户才能查看或有限制内容时。"
 
-#: inc/Engine/Admin/Settings/Page.php:484
+#: inc/Engine/Admin/Settings/Page.php:472
 msgid "Cache Lifespan"
 msgstr "缓存有效期"
 
-#: inc/Engine/Admin/Settings/Page.php:487
+#: inc/Engine/Admin/Settings/Page.php:475
 #, php-format
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
@@ -340,19 +327,19 @@ msgid ""
 "expiration."
 msgstr "指定生命周期外的缓存文件将被删除。<br>启用 %1$s预缓存%2$s 功能，缓存将在过期时自动重建。"
 
-#: inc/Engine/Admin/Settings/Page.php:501
+#: inc/Engine/Admin/Settings/Page.php:489
 msgid "Enable caching for logged-in WordPress users"
 msgstr "为已登录的 WordPress 用户启用缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:509
+#: inc/Engine/Admin/Settings/Page.php:497
 msgid "Enable caching for mobile devices"
 msgstr "启用"
 
-#: inc/Engine/Admin/Settings/Page.php:524
+#: inc/Engine/Admin/Settings/Page.php:512
 msgid "Separate cache files for mobile devices"
 msgstr "移动端单独缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:526
+#: inc/Engine/Admin/Settings/Page.php:514
 #, php-format
 msgid ""
 "Most modern themes are responsive and should work without a separate cache. "
@@ -360,127 +347,127 @@ msgid ""
 "info%2$s"
 msgstr "现在大部分主题都是响应式的，并不需要单独缓存。只有当你正在使用移动端专用的主题或插件时才建议开启该功能。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:542
+#: inc/Engine/Admin/Settings/Page.php:530
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr "指定全局缓存刷新间隔<br>（0 = 无限制）"
 
-#: inc/Engine/Admin/Settings/Page.php:544
+#: inc/Engine/Admin/Settings/Page.php:532
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
 msgstr "如您注意到某些问题周期性出现，请将时间间隔改为10小时或更短。%1$s为什么？%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:550
-msgid "Minutes"
-msgstr "分"
-
-#: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/Admin/Settings/Page.php:538
+#: inc/Engine/License/views/promo-banner.php:30
+#: inc/Engine/License/views/renewal-soon-banner.php:13
 msgid "Hours"
 msgstr "小时"
 
-#: inc/Engine/Admin/Settings/Page.php:552
+#: inc/Engine/Admin/Settings/Page.php:539
+#: inc/Engine/License/views/promo-banner.php:29
+#: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
 msgstr "天"
 
-#: inc/Engine/Admin/Settings/Page.php:577
+#: inc/Engine/Admin/Settings/Page.php:567
 #: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "文件优化"
 
-#: inc/Engine/Admin/Settings/Page.php:578
+#: inc/Engine/Admin/Settings/Page.php:568
 msgid "Optimize CSS & JS"
 msgstr "优化 CSS 和 JS"
 
-#: inc/Engine/Admin/Settings/Page.php:585
+#: inc/Engine/Admin/Settings/Page.php:575
 msgid "CSS Files"
 msgstr "CSS 文件"
 
+#: inc/Engine/Admin/Settings/Page.php:582
 #: inc/Engine/Admin/Settings/Page.php:592
-#: inc/Engine/Admin/Settings/Page.php:602
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
 msgstr "<strong>自动优化</strong>中已启用%1$s压缩。 如您想使用 %2$s 的压缩功能，请禁用自动优化中的相关选项。"
 
-#: inc/Engine/Admin/Settings/Page.php:595
+#: inc/Engine/Admin/Settings/Page.php:585
 msgid "JavaScript Files"
 msgstr "JavaScript 文件"
 
-#: inc/Engine/Admin/Settings/Page.php:611
+#: inc/Engine/Admin/Settings/Page.php:601
 msgid "Minify CSS files"
 msgstr "压缩 CSS 文件"
 
-#: inc/Engine/Admin/Settings/Page.php:612
+#: inc/Engine/Admin/Settings/Page.php:602
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr "删除空格和注释以减小文件大小。"
 
-#: inc/Engine/Admin/Settings/Page.php:625
-#: inc/Engine/Admin/Settings/Page.php:647
-#: inc/Engine/Admin/Settings/Page.php:729
-#: inc/Engine/Admin/Settings/Page.php:751
+#: inc/Engine/Admin/Settings/Page.php:615
+#: inc/Engine/Admin/Settings/Page.php:637
+#: inc/Engine/Admin/Settings/Page.php:746
+#: inc/Engine/Admin/Settings/Page.php:769
 msgid "This could break things!"
 msgstr "可能导致页面出错！"
 
-#: inc/Engine/Admin/Settings/Page.php:626
-#: inc/Engine/Admin/Settings/Page.php:648
-#: inc/Engine/Admin/Settings/Page.php:730
-#: inc/Engine/Admin/Settings/Page.php:752
+#: inc/Engine/Admin/Settings/Page.php:616
+#: inc/Engine/Admin/Settings/Page.php:638
+#: inc/Engine/Admin/Settings/Page.php:747
+#: inc/Engine/Admin/Settings/Page.php:770
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr "如启用该设置后网站出错，直接禁用即可恢复正常。"
 
-#: inc/Engine/Admin/Settings/Page.php:627
+#: inc/Engine/Admin/Settings/Page.php:617
 msgid "Activate minify CSS"
 msgstr "启用 CSS 压缩"
 
-#: inc/Engine/Admin/Settings/Page.php:632
+#: inc/Engine/Admin/Settings/Page.php:622
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr "合并 CSS 文件<em>（需先勾选上方的\"压缩CSS文件\"）</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:634
+#: inc/Engine/Admin/Settings/Page.php:624
 #, php-format
 msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
 "recommended if your site uses HTTP/2. %1$sMore info%2$s"
 msgstr "将所有文件合并成一个文件以减少 HTTP 请求数。不推荐用于已使用 HTTP/2 的站点。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:649
+#: inc/Engine/Admin/Settings/Page.php:639
 msgid "Activate combine CSS"
 msgstr "启用 CSS 合并"
 
-#: inc/Engine/Admin/Settings/Page.php:654 inc/admin/options.php:125
+#: inc/Engine/Admin/Settings/Page.php:644 inc/admin/options.php:124
 msgid "Excluded CSS Files"
 msgstr "排除CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:655
+#: inc/Engine/Admin/Settings/Page.php:645
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
 msgstr "指定不启用压缩 & 合并的 CSS 文件 URL（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:656
+#: inc/Engine/Admin/Settings/Page.php:646
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
 "specific path."
 msgstr "<strong>内部: </strong> URL 的域名部分将被自动删除。可用 (.*).css 通配符来匹配所有相似文件。"
 
-#: inc/Engine/Admin/Settings/Page.php:658
+#: inc/Engine/Admin/Settings/Page.php:648
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external CSS. %1$sMore info%2$s"
 msgstr "<strong>第三方：</strong>使用完整的 URL 路径或仅使用域名来排除外部 CSS。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:671
+#: inc/Engine/Admin/Settings/Page.php:661
 msgid "Optimize CSS delivery"
 msgstr "CSS 递送优化"
 
-#: inc/Engine/Admin/Settings/Page.php:678
+#: inc/Engine/Admin/Settings/Page.php:668
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -488,54 +475,79 @@ msgid ""
 "to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin."
 msgstr "CSS 递送优化当前由%1$s扩展接管。如您想使用 WP Rocket 的 CSS递送优化选项，请禁用%1$s扩展。"
 
-#: inc/Engine/Admin/Settings/Page.php:680
+#: inc/Engine/Admin/Settings/Page.php:670
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
 "faster perceived load time. %1$sMore info%2$s"
 msgstr "消除您网站阻塞渲染的 CSS 以改善加载时间。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:691
+#: inc/Engine/Admin/Settings/Page.php:681
 msgid "Fallback critical CSS"
 msgstr "关键路径 CSS 备用代码"
 
-#: inc/Engine/Admin/Settings/Page.php:696
+#: inc/Engine/Admin/Settings/Page.php:686
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr "输入备用代码，以供自动生成关键路径 CSS 操作无法完成时使用。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:705
-msgid "Remove jQuery Migrate"
-msgstr "移除 jQuery 合并"
+#: inc/Engine/Admin/Settings/Page.php:700
+msgid "Remove Unused CSS (Beta)"
+msgstr "移除不用的CSS（测试）"
 
-#: inc/Engine/Admin/Settings/Page.php:707
+#: inc/Engine/Admin/Settings/Page.php:702
 #, php-format
 msgid ""
-"Remove jQuery Migrate eliminates a JS file and can improve load time. "
-"%1$sMore info%2$s"
-msgstr "移除 jQuery 合并会去除合并的 JS 文件并改善加载时间。%1$s更多信息%2$s"
+"Removes unused CSS per page and helps to reduce page size and HTTP requests "
+"for better performance. %1$sMore info%2$s"
+msgstr "移除每页上未使用的 CSS，减少页面大小及 HTTP 请求数量以优化性能。%1$s了解详情%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:708
+msgid "We’re still working on it!"
+msgstr "我们尚在开发中！"
+
+#: inc/Engine/Admin/Settings/Page.php:709
+msgid ""
+"This is a beta feature. We’re providing you early access but some changes "
+"might be added later on. If you notice any errors on your website, simply "
+"deactivate the feature."
+msgstr "这是个测试功能。我们让您提前尝试，但是后面可能会有调整。如果您在自己的网站上发现任何错误，只需禁用该功能。"
+
+#: inc/Engine/Admin/Settings/Page.php:710
+msgid "Activate Remove Unused CSS"
+msgstr "激活移除未使用的CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:715
+msgid "CSS safelist"
+msgstr "CSS 安全列表"
+
+#: inc/Engine/Admin/Settings/Page.php:716
+msgid ""
+"Specify CSS filenames, IDs or classes that should not be removed (one per "
+"line)."
+msgstr "指定不需要移除的CSS文件名、id值或class值（一行指定一个）。"
+
+#: inc/Engine/Admin/Settings/Page.php:732
 msgid "Minify JavaScript files"
 msgstr "压缩 JS 文件"
 
-#: inc/Engine/Admin/Settings/Page.php:716
+#: inc/Engine/Admin/Settings/Page.php:733
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr "移除空白字符和注释以减小文件体积。"
 
-#: inc/Engine/Admin/Settings/Page.php:731
+#: inc/Engine/Admin/Settings/Page.php:748
 msgid "Activate minify JavaScript"
 msgstr "启用 JavaScript 压缩"
 
-#: inc/Engine/Admin/Settings/Page.php:736
+#: inc/Engine/Admin/Settings/Page.php:753
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr "合并 JavaScript 文件<em>（需先勾选上方的\"压缩JS文件\"）</em>"
 
-#: inc/Engine/Admin/Settings/Page.php:738
+#: inc/Engine/Admin/Settings/Page.php:755
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -543,75 +555,76 @@ msgid ""
 "%1$sMore info%2$s"
 msgstr "合并您网站内的内部、第三方以及内联 JS 文件，以减少 HTTP 请求数。不推荐用于已使用 HTTP/2 的站点。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:753
+#: inc/Engine/Admin/Settings/Page.php:756
+msgid ""
+"For compatibility and best results, this option is disabled when delay "
+"javascript execution is enabled."
+msgstr "出于兼容性和最好效果的考虑，当启用延迟javascript执行时，该选项为禁用。"
+
+#: inc/Engine/Admin/Settings/Page.php:771
 msgid "Activate combine JavaScript"
 msgstr "启用 JavaScript 合并"
 
-#: inc/Engine/Admin/Settings/Page.php:758 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:776 inc/admin/options.php:125
 msgid "Excluded Inline JavaScript"
 msgstr "排除内联的JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:760
+#: inc/Engine/Admin/Settings/Page.php:778
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
 msgstr "指定不启用压缩 & 合并的 JS 文件 URL（每行一个）%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:776 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:794
+#: inc/Engine/Admin/Settings/Page.php:827
+#: inc/Engine/Admin/Settings/Page.php:853 inc/admin/options.php:126
 msgid "Excluded JavaScript Files"
 msgstr "排除JavaScript文件"
 
-#: inc/Engine/Admin/Settings/Page.php:777
+#: inc/Engine/Admin/Settings/Page.php:795
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
 msgstr "指定不启用压缩 & 合并的 JS 文件 URL（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:778
+#: inc/Engine/Admin/Settings/Page.php:796
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
 "specific path."
 msgstr "<strong>内部: </strong> URL 的域名部分将被自动删除。可用 (.*).js 通配符来匹配所有相似文件。"
 
-#: inc/Engine/Admin/Settings/Page.php:780
+#: inc/Engine/Admin/Settings/Page.php:798
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr "<strong>第三方：</strong>使用完整的 URL 路径或仅使用域名来排除外部 JS。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:796
+#: inc/Engine/Admin/Settings/Page.php:814
 msgid "Load JavaScript deferred"
 msgstr "JavaScript 异步加载"
 
-#: inc/Engine/Admin/Settings/Page.php:798
+#: inc/Engine/Admin/Settings/Page.php:816
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr "可以消除您网站阻塞渲染的 JS 以改善加载时间。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:809
-msgid "Safe Mode for jQuery (recommended)"
-msgstr "jQuery 的安全模式（推荐）"
-
-#: inc/Engine/Admin/Settings/Page.php:810
+#: inc/Engine/Admin/Settings/Page.php:829
+#, php-format
 msgid ""
-"Safe mode for jQuery for deferred JS ensures support for inline jQuery "
-"references from themes and plugins by loading jQuery at the top of the "
-"document as a render-blocking script.<br><em>Deactivating may result in "
-"broken functionality, test thoroughly!</em>"
-msgstr ""
-"将 jQuery 作为阻塞渲染脚本在文件头部加载，来确保主题或插件中内联的 jQuery "
-"正确执行。<br><em>禁用可能导致某些功能不可用，请谨慎测试！</em>"
+"Specify URLs or keywords of JavaScript files to be excluded from defer (one "
+"per line). %1$sMore info%2$s"
+msgstr "指定不做延迟的URL或JavaScript文件的关键词（一行指定一个）。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:823 inc/admin/ui/meta-boxes.php:79
+#: inc/Engine/Admin/Settings/Page.php:843 inc/admin/ui/meta-boxes.php:80
 msgid "Delay JavaScript execution"
 msgstr "JavaScript 延迟执行"
 
-#: inc/Engine/Admin/Settings/Page.php:825
+#: inc/Engine/Admin/Settings/Page.php:845
 #, php-format
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
@@ -619,44 +632,29 @@ msgid ""
 msgstr ""
 "在页面加载时延迟加载JaveScript文件, 只在用户需要时（如滚动、点击）才加载这些非关键资源，可以优化网页性能。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:833
-msgid "Scripts to delay"
-msgstr "要延迟加载的代码"
-
-#: inc/Engine/Admin/Settings/Page.php:834
+#: inc/Engine/Admin/Settings/Page.php:854
 msgid ""
-"Specify keywords that can identify inline or JavaScript files to be delayed "
-"(one per line)."
-msgstr "指定可用来识别内联或 JavaScript 文件的关键字（每行一个）。"
+"Specify URLs or keywords that can identify inline or JavaScript files to be "
+"excluded from delaying execution (one per line)."
+msgstr "指定不做延迟执行的URL或可以定位内嵌或JavaScript文件的关键词（一行指定一个）。"
 
-#: inc/Engine/Admin/Settings/Page.php:835
-msgid ""
-"A curated list of scripts that are safe to delay is provided. They may not "
-"all apply to your website and it is safe to leave the list as-is unless you "
-"face issues."
-msgstr "我们提供了一个已验证的可延迟脚本列表，可能会有某些脚本不适用于您的网站，除非您遇到问题，最好保持默认状态。"
-
-#: inc/Engine/Admin/Settings/Page.php:870
+#: inc/Engine/Admin/Settings/Page.php:891
 msgid "Media"
 msgstr "媒体"
 
-#: inc/Engine/Admin/Settings/Page.php:871
-msgid "LazyLoad, emojis, embeds, WebP"
-msgstr "懒加载、Emoji表情、嵌入、WebP"
+#: inc/Engine/Admin/Settings/Page.php:892
+msgid "LazyLoad, embeds, WebP"
+msgstr "懒加载、嵌入内容、WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:880
-msgid "Avada"
-msgstr "Avada"
-
-#: inc/Engine/Admin/Settings/Page.php:884
+#: inc/Engine/Admin/Settings/Page.php:901
 msgid "Autoptimize"
 msgstr "自动优化"
 
-#: inc/Engine/Admin/Settings/Page.php:929
+#: inc/Engine/Admin/Settings/Page.php:946
 msgid "LazyLoad"
 msgstr "懒加载"
 
-#: inc/Engine/Admin/Settings/Page.php:932
+#: inc/Engine/Admin/Settings/Page.php:949
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -665,39 +663,41 @@ msgid ""
 msgstr ""
 "它可帮您改善加载时间（例如: 图片, 内嵌框架和视频将仅在进入或即将进入可视区域时才加载）和减少 HTTP 请求数.%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:939
+#: inc/Engine/Admin/Settings/Page.php:956
 #, php-format
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
 msgstr "延迟加载已在 %2$s 中启用。若您想要使用 WP Rocket 的延迟加载功能，请先在 %2$s 中禁用此选项。"
 
-#: inc/Engine/Admin/Settings/Page.php:942
-msgid "Emoji 👻"
-msgstr "Emoji 👻"
+#: inc/Engine/Admin/Settings/Page.php:959
+msgid "Image Dimensions"
+msgstr "图片规格"
 
-#: inc/Engine/Admin/Settings/Page.php:944
+#: inc/Engine/Admin/Settings/Page.php:962
+#, php-format
 msgid ""
-"Use default emoji of visitor's browser instead of loading emoji from "
-"WordPress.org"
-msgstr "使用访客浏览器的默认 Emoji，而不是从 WordPress.org 加载。"
+"Add missing width and height attributes to images. Helps prevent layout "
+"shifts and improve the reading experience for your visitors. %1$sMore "
+"info%2$s"
+msgstr "为图片添加缺失的宽高属性。这有助于防止布局偏移，并为您的访客提升阅读体验。 %1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:948
+#: inc/Engine/Admin/Settings/Page.php:967
 msgid "Embeds"
 msgstr "嵌入"
 
-#: inc/Engine/Admin/Settings/Page.php:950
+#: inc/Engine/Admin/Settings/Page.php:969
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-allowed) sites, and removes JavaScript "
 "requests related to WordPress embeds"
 msgstr "阻止他人嵌入您网站的内容，阻止自己嵌入其他网站内容（白名单除外），并移除与WordPress嵌入功能相关的JavaScript请求。"
 
-#: inc/Engine/Admin/Settings/Page.php:954
+#: inc/Engine/Admin/Settings/Page.php:973
 msgid "WebP compatibility"
 msgstr "WebP 兼容性"
 
-#: inc/Engine/Admin/Settings/Page.php:958
+#: inc/Engine/Admin/Settings/Page.php:977
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -708,67 +708,74 @@ msgstr ""
 "如您想使用 WP Rocket 来增加 WebP 图片支持，可开启此选项。请注意 WP Rocket 无法为您 创建 WebP 图片。要创建 WebP "
 "图片 我们推荐使用 %1$sImagify%2$s 。%3$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:985
+#: inc/Engine/Admin/Settings/Page.php:1004
 msgid "Enable for images"
 msgstr "为图片开启"
 
-#: inc/Engine/Admin/Settings/Page.php:997
+#: inc/Engine/Admin/Settings/Page.php:1016
 #, php-format
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
 msgstr "延迟加载图像已在 %2$s 中启用。若您想要使用 %1$s 的延迟加载功能，请先在 %2$s 中禁用此选项。"
 
-#: inc/Engine/Admin/Settings/Page.php:1005
+#: inc/Engine/Admin/Settings/Page.php:1024
 msgid "Enable for iframes and videos"
 msgstr "框架 & 视频"
 
-#: inc/Engine/Admin/Settings/Page.php:1020
+#: inc/Engine/Admin/Settings/Page.php:1039
 msgid "Replace YouTube iframe with preview image"
 msgstr "用预览图替换 Youtube 框架"
 
-#: inc/Engine/Admin/Settings/Page.php:1021
+#: inc/Engine/Admin/Settings/Page.php:1041
+#, php-format
+msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
+msgstr "用预览图替换Youtube 框架 不兼容于%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1041
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr "如页面含有多个 Youtube 视频，可以极大改善页面加载时间。"
 
-#: inc/Engine/Admin/Settings/Page.php:1031
+#: inc/Engine/Admin/Settings/Page.php:1056
+msgid "Excluded images or iframes"
+msgstr "排除图片或iFrame框架"
+
+#: inc/Engine/Admin/Settings/Page.php:1058
 #, php-format
-msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
-msgstr "用预览图替换Youtube 框架 不兼容于%2$s"
+msgid ""
+"Specify keywords (e.g. image filename, CSS class, domain) from the image or "
+"iframe code to be excluded (one per line). %1$sMore info%2$s"
+msgstr "指定要排除的图片或iFrame框架代码的关键词（例如图片文件名、CSS类、域名）（每行指定一个） %1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1035
-msgid "Disable Emoji"
-msgstr "禁用 Emoji 表情"
+#: inc/Engine/Admin/Settings/Page.php:1066
+msgid "Add missing image dimensions"
+msgstr "添加缺失的图像大小信息"
 
-#: inc/Engine/Admin/Settings/Page.php:1036
-msgid "Disable Emoji will reduce the number of external HTTP requests."
-msgstr "减少外部 HTTP 请求数。"
-
-#: inc/Engine/Admin/Settings/Page.php:1044
+#: inc/Engine/Admin/Settings/Page.php:1074
 msgid "Disable WordPress embeds"
 msgstr "禁用 WordPress 嵌入功能"
 
-#: inc/Engine/Admin/Settings/Page.php:1054
+#: inc/Engine/Admin/Settings/Page.php:1084
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:362
 msgid "Enable WebP caching"
 msgstr "开启 WebP 缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1074 inc/deprecated/deprecated.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1104 inc/deprecated/deprecated.php:1776
 #: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "预缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1075
+#: inc/Engine/Admin/Settings/Page.php:1105
 msgid "Generate cache files, preload fonts"
 msgstr "生成缓存文件、预加载字体"
 
-#: inc/Engine/Admin/Settings/Page.php:1086
+#: inc/Engine/Admin/Settings/Page.php:1116
 msgid "Preload Cache"
 msgstr "预加载缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1089
+#: inc/Engine/Admin/Settings/Page.php:1119
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -781,635 +788,598 @@ msgstr ""
 "将从首页上的链接开始，按您指定的站点地图生成缓存。添加或更新网站内容时会自动触发预缓存，您也可从管理栏或%1$sWP Rocket "
 "仪表盘%2$s手动进行预缓存。"
 
-#: inc/Engine/Admin/Settings/Page.php:1097
-msgid "Prefetch DNS Requests"
-msgstr "DNS 预读取"
-
-#: inc/Engine/Admin/Settings/Page.php:1099
-msgid ""
-"DNS prefetching can make external files load faster, especially on mobile "
-"networks"
-msgstr "DNS 预读取能更快地加载外部文件，特别是移动网络"
-
-#: inc/Engine/Admin/Settings/Page.php:1107
-msgid "Preload Fonts"
-msgstr "预加载字体"
-
-#: inc/Engine/Admin/Settings/Page.php:1110
-#, php-format
-msgid ""
-"Improves performance by helping browsers discover fonts in CSS files. "
-"%1$sMore info%2$s"
-msgstr "帮助浏览器在 CSS 文件中发现字体来提高性能。%1$s了解详情%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:1118
+#: inc/Engine/Admin/Settings/Page.php:1127
 msgid "Preload Links"
 msgstr "链接预取"
 
-#: inc/Engine/Admin/Settings/Page.php:1121
+#: inc/Engine/Admin/Settings/Page.php:1130
 #, php-format
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr "链接预取是指当用户的鼠标经过某个链接时，预先下载对应网页，所以当用户点击链接时会觉得加载速度非常快。%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1135
+#: inc/Engine/Admin/Settings/Page.php:1138
+msgid "Prefetch DNS Requests"
+msgstr "DNS 预读取"
+
+#: inc/Engine/Admin/Settings/Page.php:1140
+msgid ""
+"DNS prefetching can make external files load faster, especially on mobile "
+"networks"
+msgstr "DNS 预读取能更快地加载外部文件，特别是移动网络"
+
+#: inc/Engine/Admin/Settings/Page.php:1145
+msgid "Preload Fonts"
+msgstr "预加载字体"
+
+#: inc/Engine/Admin/Settings/Page.php:1148
+#, php-format
+msgid ""
+"Improves performance by helping browsers discover fonts in CSS files. "
+"%1$sMore info%2$s"
+msgstr "帮助浏览器在 CSS 文件中发现字体来提高性能。%1$s了解详情%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:1162
 msgid "Activate Preloading"
 msgstr "开启预缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1154
+#: inc/Engine/Admin/Settings/Page.php:1181
 msgid "Activate sitemap-based cache preloading"
 msgstr "启用Sitemap预缓存"
 
-#: inc/Engine/Admin/Settings/Page.php:1173
+#: inc/Engine/Admin/Settings/Page.php:1200
 msgid "Sitemaps for preloading"
 msgstr "预缓存Sitemap URL"
 
-#: inc/Engine/Admin/Settings/Page.php:1177
+#: inc/Engine/Admin/Settings/Page.php:1204
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr "指定用于预缓存的XML sitemap"
 
-#: inc/Engine/Admin/Settings/Page.php:1187
+#: inc/Engine/Admin/Settings/Page.php:1214
 msgid "URLs to prefetch"
 msgstr "预读取的URL"
 
-#: inc/Engine/Admin/Settings/Page.php:1188
+#: inc/Engine/Admin/Settings/Page.php:1215
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
 msgstr "指定要预读取的外部主机名（不带 <code>http:</code>，每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1197
+#: inc/Engine/Admin/Settings/Page.php:1224
 msgid "Fonts to preload"
 msgstr "要预加载的字体"
 
-#: inc/Engine/Admin/Settings/Page.php:1198
+#: inc/Engine/Admin/Settings/Page.php:1225
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr "指定要预加载的字体文件的URL（每行一个）。字体必须托管在您自己的域名中，或者在CDN标签页中指定这个域名。"
 
-#: inc/Engine/Admin/Settings/Page.php:1199
+#: inc/Engine/Admin/Settings/Page.php:1226
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
 msgstr "URL的域名部分将被自动删除。<br/>允许的字体扩展为：otf，ttf，svg，woff，woff2。"
 
-#: inc/Engine/Admin/Settings/Page.php:1208
+#: inc/Engine/Admin/Settings/Page.php:1235
 msgid "Enable link preloading"
 msgstr "启用链接预取"
 
-#: inc/Engine/Admin/Settings/Page.php:1227
+#: inc/Engine/Admin/Settings/Page.php:1254
 msgid "Advanced Rules"
 msgstr "高级规则"
 
-#: inc/Engine/Admin/Settings/Page.php:1228
+#: inc/Engine/Admin/Settings/Page.php:1255
 msgid "Fine-tune cache rules"
 msgstr "微调缓存规则"
 
-#: inc/Engine/Admin/Settings/Page.php:1237
+#: inc/Engine/Admin/Settings/Page.php:1266
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr "某些特殊页面不建议缓存，如自定义的登录/注销URL。"
 
-#: inc/Engine/Admin/Settings/Page.php:1240
+#: inc/Engine/Admin/Settings/Page.php:1269
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1242
+#: inc/Engine/Admin/Settings/Page.php:1271
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "简易数字下载"
 
-#: inc/Engine/Admin/Settings/Page.php:1244
+#: inc/Engine/Admin/Settings/Page.php:1273
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes 交易"
 
-#: inc/Engine/Admin/Settings/Page.php:1246
+#: inc/Engine/Admin/Settings/Page.php:1275
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1248
+#: inc/Engine/Admin/Settings/Page.php:1277
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/Engine/Admin/Settings/Page.php:1254
+#: inc/Engine/Admin/Settings/Page.php:1283
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr "<br> 默认将自动监测并永不缓存<strong>%1$s%2$s%3$s</strong>中设置的购物车、收银台和”我的账户“页面。"
 
-#: inc/Engine/Admin/Settings/Page.php:1264 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1293 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr "永不缓存（URL）："
 
-#: inc/Engine/Admin/Settings/Page.php:1275
+#: inc/Engine/Admin/Settings/Page.php:1301
 msgid "Never Cache Cookies"
 msgstr "永不缓存（Cookies）"
 
-#: inc/Engine/Admin/Settings/Page.php:1280 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1307 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr "永不缓存（User Agents）："
 
-#: inc/Engine/Admin/Settings/Page.php:1285 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1313 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr "总是清除以下URL缓存："
 
-#: inc/Engine/Admin/Settings/Page.php:1294
+#: inc/Engine/Admin/Settings/Page.php:1319
 msgid "Cache Query String(s)"
 msgstr "缓存查询字符串："
 
-#: inc/Engine/Admin/Settings/Page.php:1297
+#: inc/Engine/Admin/Settings/Page.php:1322
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr "%1$s查询字符串缓存%2$s 可强制缓存指定GET参数。"
 
-#: inc/Engine/Admin/Settings/Page.php:1311
+#: inc/Engine/Admin/Settings/Page.php:1333
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr "指定永不缓存的页面或文章URL (每行一个)"
 
-#: inc/Engine/Admin/Settings/Page.php:1312
-#: inc/Engine/Admin/Settings/Page.php:1340
+#: inc/Engine/Admin/Settings/Page.php:1334
+#: inc/Engine/Admin/Settings/Page.php:1362
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr "URL的域名部分将被自动删除。<br>可使用 (.*) 通配符来匹配多个相似URL。"
 
-#: inc/Engine/Admin/Settings/Page.php:1321
+#: inc/Engine/Admin/Settings/Page.php:1343
 msgid ""
-"Specify the IDs of cookies that, when set in the visitor's browser, should "
-"prevent a page from getting cached (one per line)"
-msgstr "指定永不缓存的 cookies ID（每行一个）"
+"Specify full or partial IDs of cookies that, when set in the visitor's "
+"browser, should prevent a page from getting cached (one per line)"
+msgstr "指定设置在访客浏览器的能够阻止页面被缓存的部分或完整的Cookies（每行指定一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1329
+#: inc/Engine/Admin/Settings/Page.php:1351
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr "指定永不缓存的 user agent 字符串（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1330
+#: inc/Engine/Admin/Settings/Page.php:1352
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "可用 (.*) 通配符来匹配部分 UA 字符串。"
 
-#: inc/Engine/Admin/Settings/Page.php:1339
+#: inc/Engine/Admin/Settings/Page.php:1361
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr "指定当更新任何文章或页面时，要清除缓存的 URL（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1348
+#: inc/Engine/Admin/Settings/Page.php:1370
 msgid "Specify query strings for caching (one per line)"
 msgstr "指定要缓存的查询字符串（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1373 inc/deprecated/deprecated.php:1775
+#: inc/Engine/Admin/Settings/Page.php:1395 inc/deprecated/deprecated.php:1775
 msgid "Database"
 msgstr "数据库"
 
-#: inc/Engine/Admin/Settings/Page.php:1374
+#: inc/Engine/Admin/Settings/Page.php:1396
 msgid "Optimize, reduce bloat"
 msgstr "优化，减少冗余"
 
-#: inc/Engine/Admin/Settings/Page.php:1383
+#: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Post Cleanup"
 msgstr "文章清理"
 
-#: inc/Engine/Admin/Settings/Page.php:1385
+#: inc/Engine/Admin/Settings/Page.php:1405
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
 msgstr "永久删除文章的修订版本和草稿。如您需要保留修订版本或草稿， 请勿使用该选项。"
 
-#: inc/Engine/Admin/Settings/Page.php:1393
+#: inc/Engine/Admin/Settings/Page.php:1410
 msgid "Comments Cleanup"
 msgstr "评论清理"
 
-#: inc/Engine/Admin/Settings/Page.php:1395
+#: inc/Engine/Admin/Settings/Page.php:1412
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "永久删除垃圾评论和回收站评论。"
 
-#: inc/Engine/Admin/Settings/Page.php:1399
+#: inc/Engine/Admin/Settings/Page.php:1416
 msgid "Transients Cleanup"
 msgstr "临时数据清理"
 
-#: inc/Engine/Admin/Settings/Page.php:1401
+#: inc/Engine/Admin/Settings/Page.php:1418
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
 msgstr "可安全清除。插件需要时将会自动重新生成。"
 
-#: inc/Engine/Admin/Settings/Page.php:1405
+#: inc/Engine/Admin/Settings/Page.php:1422
 msgid "Database Cleanup"
 msgstr "数据库清理"
 
-#: inc/Engine/Admin/Settings/Page.php:1407
+#: inc/Engine/Admin/Settings/Page.php:1424
 msgid "Reduces overhead of database tables"
 msgstr "优化数据库表"
 
-#: inc/Engine/Admin/Settings/Page.php:1411
+#: inc/Engine/Admin/Settings/Page.php:1428
 msgid "Automatic cleanup"
 msgstr "自动清理"
 
-#: inc/Engine/Admin/Settings/Page.php:1422
+#: inc/Engine/Admin/Settings/Page.php:1439
 #: inc/classes/admin/Database/class-optimization.php:41
 msgid "Revisions"
 msgstr "修订版本"
 
-#: inc/Engine/Admin/Settings/Page.php:1424
+#: inc/Engine/Admin/Settings/Page.php:1441
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "检测到 %s 个修订版本。"
 
-#: inc/Engine/Admin/Settings/Page.php:1432
+#: inc/Engine/Admin/Settings/Page.php:1449
 #: inc/classes/admin/Database/class-optimization.php:42
 msgid "Auto Drafts"
 msgstr "自动草稿"
 
-#: inc/Engine/Admin/Settings/Page.php:1434
+#: inc/Engine/Admin/Settings/Page.php:1451
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "检测到 %s 篇草稿。"
 
-#: inc/Engine/Admin/Settings/Page.php:1442
+#: inc/Engine/Admin/Settings/Page.php:1459
 #: inc/classes/admin/Database/class-optimization.php:43
 msgid "Trashed Posts"
 msgstr "回收站文章"
 
-#: inc/Engine/Admin/Settings/Page.php:1444
+#: inc/Engine/Admin/Settings/Page.php:1461
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "检测到 %s 篇回收站文章。"
 
-#: inc/Engine/Admin/Settings/Page.php:1452
+#: inc/Engine/Admin/Settings/Page.php:1469
 #: inc/classes/admin/Database/class-optimization.php:44
 msgid "Spam Comments"
 msgstr "垃圾评论"
 
-#: inc/Engine/Admin/Settings/Page.php:1454
+#: inc/Engine/Admin/Settings/Page.php:1471
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "检测到 %s 条垃圾评论。"
 
-#: inc/Engine/Admin/Settings/Page.php:1462
+#: inc/Engine/Admin/Settings/Page.php:1479
 #: inc/classes/admin/Database/class-optimization.php:45
 msgid "Trashed Comments"
 msgstr "回收站评论"
 
-#: inc/Engine/Admin/Settings/Page.php:1464
+#: inc/Engine/Admin/Settings/Page.php:1481
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "检测到 %s 条回收站评论。"
 
-#: inc/Engine/Admin/Settings/Page.php:1472
+#: inc/Engine/Admin/Settings/Page.php:1489
 #: inc/classes/admin/Database/class-optimization.php:46
 msgid "Expired transients"
 msgstr "过期的临时数据"
 
-#: inc/Engine/Admin/Settings/Page.php:1474
+#: inc/Engine/Admin/Settings/Page.php:1491
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
 msgstr[0] "发现 %s 条过期的临时数据。"
 
-#: inc/Engine/Admin/Settings/Page.php:1482
+#: inc/Engine/Admin/Settings/Page.php:1499
 msgid "All transients"
 msgstr "所有临时数据"
 
-#: inc/Engine/Admin/Settings/Page.php:1484
+#: inc/Engine/Admin/Settings/Page.php:1501
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "检测到 %s 条过期的临时数据。"
 
-#: inc/Engine/Admin/Settings/Page.php:1492
+#: inc/Engine/Admin/Settings/Page.php:1509
 msgid "Optimize Tables"
 msgstr "优化数据表"
 
-#: inc/Engine/Admin/Settings/Page.php:1494
+#: inc/Engine/Admin/Settings/Page.php:1511
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "检测到 %s 张表可被优化。"
 
-#: inc/Engine/Admin/Settings/Page.php:1505
+#: inc/Engine/Admin/Settings/Page.php:1522
 msgid "Schedule Automatic Cleanup"
 msgstr "自动清理计划任务"
 
-#: inc/Engine/Admin/Settings/Page.php:1517
+#: inc/Engine/Admin/Settings/Page.php:1534
 msgid "Frequency"
 msgstr "频率"
 
-#: inc/Engine/Admin/Settings/Page.php:1525
+#: inc/Engine/Admin/Settings/Page.php:1542
 msgid "Daily"
 msgstr "每日"
 
-#: inc/Engine/Admin/Settings/Page.php:1526
+#: inc/Engine/Admin/Settings/Page.php:1543
 msgid "Weekly"
 msgstr "每周"
 
-#: inc/Engine/Admin/Settings/Page.php:1527
+#: inc/Engine/Admin/Settings/Page.php:1544
 msgid "Monthly"
 msgstr "每月"
 
-#: inc/Engine/Admin/Settings/Page.php:1543
-#: inc/Engine/Admin/Settings/Page.php:1554 inc/admin/ui/meta-boxes.php:76
+#: inc/Engine/Admin/Settings/Page.php:1560
+#: inc/Engine/Admin/Settings/Page.php:1571 inc/admin/ui/meta-boxes.php:77
 #: inc/deprecated/deprecated.php:1773
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1544
+#: inc/Engine/Admin/Settings/Page.php:1561
 msgid "Integrate your CDN"
 msgstr "CDN整合"
 
-#: inc/Engine/Admin/Settings/Page.php:1556
+#: inc/Engine/Admin/Settings/Page.php:1573
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
 msgstr "所有静态文件 URL（CSS、JS和图片）将被重写至下方您提供的 CNAME。"
 
-#: inc/Engine/Admin/Settings/Page.php:1558
+#: inc/Engine/Admin/Settings/Page.php:1575
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
 msgstr "Cloudflare 和 Sucuri 等服务不需要。请参考我们的可用%1$s扩展%2$s。"
 
-#: inc/Engine/Admin/Settings/Page.php:1573 inc/admin/options.php:131
+#: inc/Engine/Admin/Settings/Page.php:1590 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr "从CDN中排除文件"
 
-#: inc/Engine/Admin/Settings/Page.php:1599
-#, php-format
+#: inc/Engine/Admin/Settings/Page.php:1616
 msgid ""
-"%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
-"is not required for %2$s to work on your site."
+"%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
+"is not required for %2$l to work on your site."
 msgid_plural ""
-"%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
-"settings is not required for %2$s to work on your site."
-msgstr[0] "%1$s%2$s扩展%3$s已启用。CDN设置对于%2$s正常工作来说不是必需的。"
+"%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN "
+"settings is not required for %2$l to work on your site."
+msgstr[0] "%1$s%2$l 扩展%3$s 已启用。CDN设置对于%2$l 在贵站正常工作来说不是必须的。"
 
-#: inc/Engine/Admin/Settings/Page.php:1624
+#: inc/Engine/Admin/Settings/Page.php:1641
 msgid "Enable Content Delivery Network"
 msgstr "启用CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1633
+#: inc/Engine/Admin/Settings/Page.php:1650
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:151
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME："
 
-#: inc/Engine/Admin/Settings/Page.php:1634
+#: inc/Engine/Admin/Settings/Page.php:1651
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
 msgid "Specify the CNAME(s) below"
 msgstr "指定 CNAME"
 
-#: inc/Engine/Admin/Settings/Page.php:1641
+#: inc/Engine/Admin/Settings/Page.php:1658
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr "指定不启用 CDN 的文件 URL（每行一个）"
 
-#: inc/Engine/Admin/Settings/Page.php:1642
+#: inc/Engine/Admin/Settings/Page.php:1659
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr "URL 的域名部分将被自动删除。<br>可用 (.*) 通配符来匹配所有相似文件。"
 
-#: inc/Engine/Admin/Settings/Page.php:1664
-#: inc/Engine/Admin/Settings/Page.php:1672
+#: inc/Engine/Admin/Settings/Page.php:1682
+#: inc/Engine/Admin/Settings/Page.php:1690
 msgid "Heartbeat"
 msgstr "心跳监测"
 
-#: inc/Engine/Admin/Settings/Page.php:1665
+#: inc/Engine/Admin/Settings/Page.php:1683
 msgid "Control WordPress Heartbeat API"
 msgstr "控制 WordPress 心跳监测的 API"
 
-#: inc/Engine/Admin/Settings/Page.php:1673
+#: inc/Engine/Admin/Settings/Page.php:1691
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
 msgstr "降低其频率或禁用 API 可帮您节省部分服务器资源。"
 
-#: inc/Engine/Admin/Settings/Page.php:1682
+#: inc/Engine/Admin/Settings/Page.php:1697
 msgid "Reduce or disable Heartbeat activity"
 msgstr "减少心跳监测频率或禁用心跳监测"
 
-#: inc/Engine/Admin/Settings/Page.php:1683
+#: inc/Engine/Admin/Settings/Page.php:1698
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr "减少活动：将心跳监测频率从每分钟一次改为每2分钟一次。"
 
-#: inc/Engine/Admin/Settings/Page.php:1683
+#: inc/Engine/Admin/Settings/Page.php:1698
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr "完全禁用：可能会破坏使用此 API 的插件和主题。"
 
-#: inc/Engine/Admin/Settings/Page.php:1697
+#: inc/Engine/Admin/Settings/Page.php:1712
 msgid "Do not limit"
 msgstr "不限制"
 
-#: inc/Engine/Admin/Settings/Page.php:1698
+#: inc/Engine/Admin/Settings/Page.php:1713
 msgid "Reduce activity"
 msgstr "减少活动"
 
-#: inc/Engine/Admin/Settings/Page.php:1699
+#: inc/Engine/Admin/Settings/Page.php:1714
 msgid "Disable"
 msgstr "禁用"
 
-#: inc/Engine/Admin/Settings/Page.php:1707
+#: inc/Engine/Admin/Settings/Page.php:1722
 msgid "Control Heartbeat"
 msgstr "心跳控制"
 
-#: inc/Engine/Admin/Settings/Page.php:1716
+#: inc/Engine/Admin/Settings/Page.php:1731
 msgid "Behavior in backend"
 msgstr "后端行为监测"
 
-#: inc/Engine/Admin/Settings/Page.php:1723
+#: inc/Engine/Admin/Settings/Page.php:1738
 msgid "Behavior in post editor"
 msgstr "文章编辑器行为监测"
 
-#: inc/Engine/Admin/Settings/Page.php:1729
+#: inc/Engine/Admin/Settings/Page.php:1744
 msgid "Behavior in frontend"
 msgstr "前端行为监测"
 
-#: inc/Engine/Admin/Settings/Page.php:1745
+#: inc/Engine/Admin/Settings/Page.php:1760
 #: views/settings/page-sections/tutorials.php:36
 msgid "Add-ons"
 msgstr "扩展功能"
 
-#: inc/Engine/Admin/Settings/Page.php:1746
+#: inc/Engine/Admin/Settings/Page.php:1761
 msgid "Add more features"
 msgstr "提供更多设置"
 
-#: inc/Engine/Admin/Settings/Page.php:1753
+#: inc/Engine/Admin/Settings/Page.php:1768
 msgid "One-click Rocket Add-ons"
 msgstr "Rocket 一键扩展功能"
 
-#: inc/Engine/Admin/Settings/Page.php:1754
+#: inc/Engine/Admin/Settings/Page.php:1769
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
 msgstr "额外的功能选项。设为 “on” 即可启用，无需另外配置。"
 
-#: inc/Engine/Admin/Settings/Page.php:1764
+#: inc/Engine/Admin/Settings/Page.php:1779
 msgid "Rocket Add-ons"
 msgstr "Rocket 扩展功能"
 
-#: inc/Engine/Admin/Settings/Page.php:1765
+#: inc/Engine/Admin/Settings/Page.php:1780
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr "现有功能的补充。"
 
-#: inc/Engine/Admin/Settings/Page.php:1778
-msgid "Google Tracking"
-msgstr "Google 跟踪"
-
-#: inc/Engine/Admin/Settings/Page.php:1784
-msgid "Improve browser caching for Google Analytics"
-msgstr "为 Google Analytics 优化浏览器缓存"
-
-#: inc/Engine/Admin/Settings/Page.php:1786
-#, php-format
-msgid ""
-"WP Rocket will host these Google scripts locally on your server to help "
-"satisfy the PageSpeed recommendation for <em>Leverage browser "
-"caching</em>.<br>%1$sLearn more%2$s"
-msgstr ""
-"WP Rocket 会将这些 Google 代码保存在本地服务器, 以满足 PageSpeed "
-"关于<em>优化浏览器缓存</em>的建议.<br>%1$s了解更多%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:1801
-msgid "Facebook Pixel"
-msgstr "Facebook Pixel"
-
-#: inc/Engine/Admin/Settings/Page.php:1807
-msgid "Improve browser caching for Facebook Pixel"
-msgstr "为 Facebook Pixel 优化浏览器缓存"
-
-#: inc/Engine/Admin/Settings/Page.php:1809
-#, php-format
-msgid ""
-"WP Rocket will host these Facebook Pixels locally on your server to help "
-"satisfy the PageSpeed recommendation for <em>Leverage browser "
-"caching</em>.<br>%1$sLearn more%2$s"
-msgstr ""
-"WP Rocket 会将这些FaceBook Pixels 保存在服务器本地, 以满足 PageSpeed "
-"关于<em>优化浏览器缓存</em>的建议.<br>%1$s了解更多%2$s"
-
-#: inc/Engine/Admin/Settings/Page.php:1822
-#: inc/Engine/Admin/Settings/Page.php:1923
+#: inc/Engine/Admin/Settings/Page.php:1791
+#: inc/Engine/Admin/Settings/Page.php:1892
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1828
+#: inc/Engine/Admin/Settings/Page.php:1797
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "使用该扩展整合您的Cloudflare账户。"
 
-#: inc/Engine/Admin/Settings/Page.php:1829
+#: inc/Engine/Admin/Settings/Page.php:1798
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr "提供您的账户邮箱、全局 API key 和域名以开启相关优化选项并使用清除 Cloudflare 缓存等功能。"
 
-#: inc/Engine/Admin/Settings/Page.php:1863
+#: inc/Engine/Admin/Settings/Page.php:1832
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1869
+#: inc/Engine/Admin/Settings/Page.php:1838
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr "如服务器已启用 Varnish，该功能必须开启。"
 
-#: inc/Engine/Admin/Settings/Page.php:1871
+#: inc/Engine/Admin/Settings/Page.php:1840
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr "当 WP Rocket 每次清除缓存时，自动清除 Varnish 缓存以使内容保持最新。<br>%1$s更多信息%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1885
+#: inc/Engine/Admin/Settings/Page.php:1854
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "在 WP Rocket 的缓存被清理时，清理 Sucuri 缓存。"
 
-#: inc/Engine/Admin/Settings/Page.php:1888
+#: inc/Engine/Admin/Settings/Page.php:1857
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr "提供 Sucuri 的 API Key 以便用于当 WP Rocket 的缓存被清理时, 清理 Sucuri 缓存。"
 
-#: inc/Engine/Admin/Settings/Page.php:1896
-#: inc/Engine/Admin/Settings/Page.php:2040
+#: inc/Engine/Admin/Settings/Page.php:1865
+#: inc/Engine/Admin/Settings/Page.php:2009
 msgid "Sucuri"
 msgstr "Sucuri ( 一家CDN服务商 )"
 
-#: inc/Engine/Admin/Settings/Page.php:1902
+#: inc/Engine/Admin/Settings/Page.php:1871
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "使用此扩展同步 Sucuri 缓存。"
 
-#: inc/Engine/Admin/Settings/Page.php:1940
+#: inc/Engine/Admin/Settings/Page.php:1909
 msgid "Cloudflare credentials"
 msgstr "Cloudflare授权"
 
-#: inc/Engine/Admin/Settings/Page.php:1949
+#: inc/Engine/Admin/Settings/Page.php:1918
 msgid "Cloudflare settings"
 msgstr "Cloudflare设置"
 
-#: inc/Engine/Admin/Settings/Page.php:1963
+#: inc/Engine/Admin/Settings/Page.php:1932
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "全局 API key："
 
-#: inc/Engine/Admin/Settings/Page.php:1964
+#: inc/Engine/Admin/Settings/Page.php:1933
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "查找我的 API Key"
 
-#: inc/Engine/Admin/Settings/Page.php:1976
+#: inc/Engine/Admin/Settings/Page.php:1945
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "账户邮箱"
 
-#: inc/Engine/Admin/Settings/Page.php:1985
+#: inc/Engine/Admin/Settings/Page.php:1954
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/Engine/Admin/Settings/Page.php:1995
+#: inc/Engine/Admin/Settings/Page.php:1964
 msgid "Development mode"
 msgstr "开发者模式"
 
-#: inc/Engine/Admin/Settings/Page.php:1997
+#: inc/Engine/Admin/Settings/Page.php:1966
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr "暂时在您的网站上激活开发模式。 该设置将在3小时后自动关闭。%1$s更多%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2005
+#: inc/Engine/Admin/Settings/Page.php:1974
 msgid "Optimal settings"
 msgstr "优化设置"
 
-#: inc/Engine/Admin/Settings/Page.php:2006
+#: inc/Engine/Admin/Settings/Page.php:1975
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr "自动优化 Cloudflare 设置（基于速度，性能等级和兼容性）。"
 
-#: inc/Engine/Admin/Settings/Page.php:2014
+#: inc/Engine/Admin/Settings/Page.php:1983
 msgid "Relative protocol"
 msgstr "相对协议"
 
-#: inc/Engine/Admin/Settings/Page.php:2015
+#: inc/Engine/Admin/Settings/Page.php:1984
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1418,18 +1388,18 @@ msgstr ""
 "仅适用于 Cloudflare的 flexible SSL 功能。静态文件（CSS, JS和图片）URL的 http:// 或 https:// "
 "将被重写为 // 。"
 
-#: inc/Engine/Admin/Settings/Page.php:2053
+#: inc/Engine/Admin/Settings/Page.php:2022
 msgid "Sucuri credentials"
 msgstr "Sucuri 凭证"
 
-#: inc/Engine/Admin/Settings/Page.php:2066
+#: inc/Engine/Admin/Settings/Page.php:2035
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
 "characters}</code>:"
 msgstr "防火墙的 API Key (插件用) 应为<code>32个字符</code>."
 
-#: inc/Engine/Admin/Settings/Page.php:2067
+#: inc/Engine/Admin/Settings/Page.php:2036
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "查找我的 API Key"
@@ -1438,42 +1408,42 @@ msgstr "查找我的 API Key"
 msgid "Upload file and import settings"
 msgstr "上传文件并导入配置"
 
-#: inc/Engine/Admin/Settings/Settings.php:400
+#: inc/Engine/Admin/Settings/Settings.php:385
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
 msgstr "Sucuri 扩展: Sucuri 防火墙的 API key 长度应为<code>{32个字符}/{32个字符}</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:491
+#: inc/Engine/Admin/Settings/Settings.php:476
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "设置已保存。"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:141
+#: inc/Engine/Admin/Settings/Subscriber.php:148
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "工具"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:142
+#: inc/Engine/Admin/Settings/Subscriber.php:149
 msgid "Import, Export, Rollback"
 msgstr "导入、导出和还原"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:163
+#: inc/Engine/Admin/Settings/Subscriber.php:170
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "图片优化"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:164
+#: inc/Engine/Admin/Settings/Subscriber.php:171
 msgid "Compress your images"
 msgstr "压缩您的图片"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:181
+#: inc/Engine/Admin/Settings/Subscriber.php:188
 #: views/settings/page-sections/tutorials.php:45
 msgid "Tutorials"
 msgstr "指南"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:182
+#: inc/Engine/Admin/Settings/Subscriber.php:189
 msgid "Getting started and how to videos"
 msgstr "新手指南 和 How To 视频"
 
@@ -1545,10 +1515,94 @@ msgstr "RocketCDN 已启用"
 msgid "RocketCDN disabled"
 msgstr "RocketCDN 已禁用"
 
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:27
+#, php-format
+msgid "Valid until %s only!"
+msgstr " %s 即将到期！"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
+msgid "Speed up your website thanks to:"
+msgstr "致谢为您加速网站的贡献者："
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
+#, php-format
+msgid ""
+"High performance Content Delivery Network (CDN) with %1$sunlimited "
+"bandwith%2$s"
+msgstr "具有 %1$s无限带宽%2$s的高性能CDN"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
+#, php-format
+msgid ""
+"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
+msgstr "轻松设置：已自动为您启用了 %1$sCDN 最佳设置%2$s "
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
+#, php-format
+msgid ""
+"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
+" our plugin"
+msgstr "WP Rocket 整合: 我们的插件已为您%1$s自动配置%2$sCDN 选项"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
+#, php-format
+msgid "%s / month"
+msgstr "%s / 月"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
+msgid "Get Started"
+msgstr "新手指南"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
+msgid "Learn more about RocketCDN"
+msgstr "了解 RocketCDN 的更多信息"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:82
+msgid "Reduce this banner"
+msgstr "不想看"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+#, php-format
+msgid ""
+"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"subscription at any time."
+msgstr "* 首年 $%1$s/月，然后 $%2$s/月。您可随时取消订阅。"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+msgstr "用 RocketCDN 加速您的网站，是 WP Rocket 开发的哦 ~"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-small.php:20
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
+msgid "Learn More"
+msgstr "了解详情"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:23
+msgid "RocketCDN is unavailable on local domains and staging sites."
+msgstr "RocketCDN 无法用于本地域名或测试环境。"
+
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:32
+msgid "Get RocketCDN"
+msgstr "获取 RocketCDN"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
+msgid "New!"
+msgstr "New!"
+
+#: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
+msgid ""
+"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+msgstr "用 RocketCDN 加速您的网站，是 WP Rocket 开发的哦 ~"
+
 #: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:71
 #: inc/admin/admin.php:92 inc/deprecated/3.5.php:908
 msgid "Clear this cache"
 msgstr "清除该缓存"
+
+#: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
+msgid "WP Rocket Expired Cache Interval"
+msgstr "WP Rocket 过期缓存间隔"
 
 #: inc/Engine/Cache/WPCache.php:330
 msgid "WP_CACHE value"
@@ -1578,7 +1632,6 @@ msgid "Critical CSS for %1$s not generated. Error: %2$s"
 msgstr "%1$s的关键路径CSS未生成。错误：%2$s"
 
 #: inc/Engine/CriticalPath/APIClient.php:170
-#: inc/Engine/CriticalPath/DataManager.php:66
 #, php-format
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
@@ -1586,7 +1639,6 @@ msgid ""
 msgstr "移动端的%1$s关键CSS没有被生成。原因：API返回一个了空的响应报文"
 
 #: inc/Engine/CriticalPath/APIClient.php:173
-#: inc/Engine/CriticalPath/DataManager.php:69
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
@@ -1599,7 +1651,7 @@ msgid "Critical CSS for %1$s on mobile not generated."
 msgstr "移动端的关键CSS%1$s没有被生成"
 
 #: inc/Engine/CriticalPath/APIClient.php:187
-#: inc/Engine/CriticalPath/ProcessorService.php:193
+#: inc/Engine/CriticalPath/ProcessorService.php:194
 #, php-format
 msgid "Critical CSS for %1$s not generated."
 msgstr "%1$s的Critical CSS没有被生成"
@@ -1619,7 +1671,7 @@ msgid ""
 msgstr "%1$s的Critical CSS没有被生成。原因：API返回一个了无效的响应编码"
 
 #: inc/Engine/CriticalPath/APIClient.php:205
-#: inc/Engine/CriticalPath/ProcessorService.php:200
+#: inc/Engine/CriticalPath/ProcessorService.php:201
 #, php-format
 msgid "Error: %1$s"
 msgstr "错误:%1$s"
@@ -1660,7 +1712,7 @@ msgid "Critical CSS generation is currently running."
 msgstr "关键CSS生成 正在运行中。"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:242
+#: inc/Engine/Preload/PreloadSubscriber.php:241
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "查看进展请访问 %1$sWP Rocket 设置%2$s页面。"
@@ -1685,52 +1737,66 @@ msgstr "关键CSS生成出错。"
 msgid "Learn more."
 msgstr "了解更多。"
 
-#: inc/Engine/CriticalPath/DataManager.php:102
+#: inc/Engine/CriticalPath/DataManager.php:68
+#, php-format
+msgid ""
+"Critical CSS for %1$s on mobile not generated. Error: The destination folder"
+" could not be created."
+msgstr "移动端的 %1$s 关键CSS没有生成。原因：目标文件夹无法创建。"
+
+#: inc/Engine/CriticalPath/DataManager.php:71
+#, php-format
+msgid ""
+"Critical CSS for %1$s not generated. Error: The destination folder could not"
+" be created."
+msgstr "%1$s的关键CSS未生成。原因：目标文件夹无法创建。"
+
+#: inc/Engine/CriticalPath/DataManager.php:106
 msgid "Critical CSS file for mobile does not exist"
 msgstr "移动设备的Critical CSS文件不存在。Critical CSS指的是渲染首屏的最小 CSS 集合。"
 
-#: inc/Engine/CriticalPath/DataManager.php:104
+#: inc/Engine/CriticalPath/DataManager.php:108
 msgid "Critical CSS file does not exist"
 msgstr "Critical CSS文件不存在"
 
-#: inc/Engine/CriticalPath/DataManager.php:116
+#: inc/Engine/CriticalPath/DataManager.php:120
 msgid "Critical CSS file for mobile cannot be deleted"
 msgstr "移动端的Critical CSS文件无法删除"
 
-#: inc/Engine/CriticalPath/DataManager.php:118
+#: inc/Engine/CriticalPath/DataManager.php:122
 msgid "Critical CSS file cannot be deleted"
 msgstr "Critical CSS 文件无法删除"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:186
+#: inc/Engine/CriticalPath/ProcessorService.php:187
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
 msgstr "移动端的Critical CSS%1$s没有被生成"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:227
+#: inc/Engine/CriticalPath/ProcessorService.php:228
 #, php-format
 msgid "Critical CSS for %s in progress."
 msgstr "%s的Critical CSS进行中"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:261
+#: inc/Engine/CriticalPath/ProcessorService.php:262
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
 msgstr "移动端Critical CSS文件%s已生成"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:272
+#: inc/Engine/CriticalPath/ProcessorService.php:273
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "已为 %s 生成关键路径CSS。"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:294
+#: inc/Engine/CriticalPath/ProcessorService.php:295
 msgid "Critical CSS file deleted successfully."
 msgstr "Critical CSS 文件已删除"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:316
+#: inc/Engine/CriticalPath/ProcessorService.php:317
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr "移动端%1$s的Critical CSS 超时。请稍后再试。"
 
-#: inc/Engine/CriticalPath/ProcessorService.php:329
+#: inc/Engine/CriticalPath/ProcessorService.php:330
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr "%1$s的Critical CSS超时，请稍后再试。"
@@ -1747,6 +1813,13 @@ msgstr "您访问的文章不存在"
 #: inc/Engine/CriticalPath/RESTWPPost.php:46
 msgid "Cannot generate CPCSS for unpublished post."
 msgstr "无法为未发布的文章生成CPCSS"
+
+#: inc/Engine/HealthCheck/CacheDirSizeCheck.php:88
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:92
+#: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
+#: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
+msgid "weekly"
+msgstr "每周"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:82 inc/deprecated/3.5.php:868
 msgid ""
@@ -1784,9 +1857,172 @@ msgstr "预缓存"
 msgid "Critical Path CSS Generation Process"
 msgstr "Critical CSS 路径生成过程"
 
-#: inc/Engine/Optimization/DelayJS/Admin/Settings.php:104
-msgid "Restore Defaults"
-msgstr "重置为默认设置"
+#: inc/Engine/License/Upgrade.php:252
+#, php-format
+msgid ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Plus or Infinite!%5$s"
+msgid_plural ""
+"Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
+" for %3$supgrading your license to Infinite!%5$s"
+msgstr[0] "利用 %1$s 来加速更多网站：%2$s 获取 %3$s%4$s 于%5$s 以%3$s升级为无限许可！%5$s"
+
+#: inc/Engine/License/Upgrade.php:369 inc/Engine/License/Upgrade.php:392
+msgid "Unlimited"
+msgstr "无限制"
+
+#: inc/Engine/License/views/promo-banner.php:16
+#, php-format
+msgid "%s off"
+msgstr "立减 %s"
+
+#: inc/Engine/License/views/promo-banner.php:21
+#, php-format
+msgid "%s promotion is live!"
+msgstr "%s促销活动正在进行！"
+
+#: inc/Engine/License/views/promo-banner.php:27
+msgid "Hurry Up! Deal ends in:"
+msgstr "快点！促销将结束于："
+
+#: inc/Engine/License/views/promo-banner.php:31
+#: inc/Engine/License/views/renewal-soon-banner.php:14
+msgid "Minutes"
+msgstr "分"
+
+#: inc/Engine/License/views/promo-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:15
+msgid "Seconds"
+msgstr "秒"
+
+#: inc/Engine/License/views/promo-banner.php:34
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid "Upgrade now"
+msgstr "立即升级"
+
+#: inc/Engine/License/views/promo-banner.php:36
+#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/admin/ui/notices.php:813 views/settings/page-sections/dashboard.php:46
+msgid "Dismiss this notice."
+msgstr "关闭此通知。"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:12
+msgid "Your WP Rocket license is expired!"
+msgstr "您的 WP Rocket 许可证已过期！"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:17
+#, php-format
+msgid ""
+"Your website could be much faster if it could take advantage of our %1$snew "
+"features and enhancements.%2$s"
+msgstr "如果它可以利用我们的%1$s新功能和增强功能，您的网站可以更快。%2$s"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:27
+#, php-format
+msgid ""
+"Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
+"renewal rate: you will only pay %1$s%4$s%3$s!"
+msgstr "续订一年的许可，立即获得 %1$s%2$s 于%3$s 您的续订价格：您将只需支付 %1$s%4$s%3$s！"
+
+#: inc/Engine/License/views/renewal-expired-banner.php:37
+#: inc/Engine/License/views/renewal-soon-banner.php:42
+msgid "Renew now"
+msgstr "立即续费"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:22
+#, php-format
+msgid "Your %1$sWP Rocket license is about to expire.%2$s"
+msgstr "您的%1$sWP Rocket 许可证将要过期%2$s。"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:32
+#, php-format
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%1$s%4$s%3$s!"
+msgstr "现在还来得及，以 %1$s%2$s 的折扣%3$s %1$s%4$s%3$s！"
+
+#: inc/Engine/License/views/upgrade-popin.php:12
+msgid "Speed Up More Websites"
+msgstr "加速更多网站"
+
+#: inc/Engine/License/views/upgrade-popin.php:19
+#, php-format
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license. To "
+"upgrade, simply pay the %1$sprice difference%2$s between your current and "
+"new licenses, as shown below."
+msgstr "通过升级许可，您可以在多个网站使用 WP Rocket。要升级，只要支付如下所示的新旧许可之间的%1$s价差%2$s 。"
+
+#: inc/Engine/License/views/upgrade-popin.php:25
+#, php-format
+msgid ""
+"%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
+msgstr "%1$sN.B.%2$s：升级您的许可并不改变过期日期"
+
+#: inc/Engine/License/views/upgrade-popin.php:35
+#, php-format
+msgid "Save $%s"
+msgstr "节省 $%s"
+
+#: inc/Engine/License/views/upgrade-popin.php:48
+#, php-format
+msgid "%s websites"
+msgstr "%s 个网站"
+
+#: inc/Engine/License/views/upgrade-popin.php:54
+#, php-format
+msgid "Upgrade to %s"
+msgstr "升级到%s"
+
+#: inc/Engine/License/views/upgrade-section.php:11
+msgid ""
+"You can use WP Rocket on more websites by upgrading your license (you will "
+"only pay the price difference between your current and new licenses)."
+msgstr "您可以通过升级许可证的方式在更多网站上使用 WP Rocket（您仅需要支付新旧许可证之间的差价）。"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:106
+#: views/settings/page-sections/dashboard.php:224
+msgid "Clear Used CSS"
+msgstr "清理不用的CSS"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:284
+msgid "Used CSS option is not enabled!"
+msgstr "使用的CSS选项未启用！"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:299
+msgid "Used CSS cache cleared!"
+msgstr "使用的CSS缓存已清除！"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:368
+msgid "Collected resource files from {count} of {total} key pages."
+msgstr "{总数} 中的{计数} 的关键页面的收集的资源文件。"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:369
+msgid "Processed {count} of {total} resource files found on key pages."
+msgstr "在关键页面中找到的已处理的 {总数} 中的 {计数} 的资源文件。"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:370
+msgid "Remove Unused CSS is complete!"
+msgstr "移除未使用CSS已完成！"
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:371
+msgid "These files could not be processed:"
+msgstr "这些文件不能处理："
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:374
+#, php-format
+msgid ""
+"We are processing the CSS on your site. This may take several minutes to "
+"complete. %1$sMore info.%2$s"
+msgstr "我们正在处理贵站中的CSS文件。这可能需要几分钟来完成。%1$s更多信息%2$s"
+
+#: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:102
+msgid "Remove unused CSS option is disabled."
+msgstr "移除未使用CSS选项为禁用。"
+
+#: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:109
+msgid "Pre-Warmup process did not start yet."
+msgstr "预热进程尚未开始。"
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
@@ -1826,11 +2062,11 @@ msgid ""
 "returned the following response code: %2$s. %3$sLearn more%4$s."
 msgstr "预加载出错. 无法从%1$s获取链接, 原因: 返回错误码%2$s. %3$s更多信息%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:237
+#: inc/Engine/Preload/PreloadSubscriber.php:236
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "预缓存: WP Rocket 已开始缓存您的网站。"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:283
+#: inc/Engine/Preload/PreloadSubscriber.php:282
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -1840,13 +2076,13 @@ msgid_plural ""
 "progress)"
 msgstr[0] "预缓存: 已预缓存  %1$s 个未缓存页面。（刷新以查看进度）"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:292
+#: inc/Engine/Preload/PreloadSubscriber.php:291
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] "收集预缓存URL时出现以下错误: "
 
-#: inc/Engine/Preload/PreloadSubscriber.php:344
+#: inc/Engine/Preload/PreloadSubscriber.php:343
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "预缓存：已缓存%d个页面。"
@@ -1920,6 +2156,13 @@ msgid ""
 "your %s server."
 msgstr "在您的%s服务器上启用Varnish后，将自动启用Varnish自动清除功能。"
 
+#: inc/ThirdParty/Plugins/ModPagespeed.php:100
+#, php-format
+msgid ""
+"<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
+"may cause unexpected results. %2$sMore Info%3$s"
+msgstr "<strong>%1$s</strong>：Mod PageSpeed与本插件不兼容，可能会导致不可预知的结果。%2$s更多信息%3$s"
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -1973,7 +2216,11 @@ msgstr "%1$s%2$s资源优化%3$s与WP Rocket的%2$s文件优化%3$s相冲突"
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:367
+#: inc/ThirdParty/Themes/Avada.php:118
+msgid "Avada"
+msgstr "Avada"
+
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:368
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "支持"
@@ -1982,11 +2229,11 @@ msgstr "支持"
 msgid "Docs"
 msgstr "文档"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:355
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:356
 msgid "FAQ"
 msgstr "常见问题"
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:64
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:65
 msgid "Settings"
 msgstr "设置"
 
@@ -2030,19 +2277,19 @@ msgstr "导入配置失败: 文件内容有误。"
 msgid "Settings imported and saved."
 msgstr "已导入并保存配置。"
 
-#: inc/admin/options.php:149
+#: inc/admin/options.php:148
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
 msgstr "%1$s:<em>%2$s</em>."
 
-#: inc/admin/options.php:159
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "以下模式无效且已被删除："
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:768
-#: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
-#: views/settings/page-sections/dashboard.php:124
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
+#: inc/common/admin-bar.php:86 inc/common/admin-bar.php:138
+#: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "清除缓存"
 
@@ -2071,23 +2318,27 @@ msgid "Minify/combine CSS"
 msgstr "压缩 / 合并 CSS"
 
 #: inc/admin/ui/meta-boxes.php:75
+msgid "Remove Unused CSS"
+msgstr "移除未使用的 CSS"
+
+#: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"
 msgstr "压缩 / 合并 JS"
 
-#: inc/admin/ui/meta-boxes.php:77
+#: inc/admin/ui/meta-boxes.php:78
 msgid "Optimize CSS Delivery"
 msgstr "CSS 递送优化"
 
-#: inc/admin/ui/meta-boxes.php:78
+#: inc/admin/ui/meta-boxes.php:79
 msgid "Defer JS"
 msgstr "JS 延迟加载"
 
-#: inc/admin/ui/meta-boxes.php:85
+#: inc/admin/ui/meta-boxes.php:86
 #, php-format
 msgid "Activate first the %s option."
 msgstr "请先启用 %s 选项。"
 
-#: inc/admin/ui/meta-boxes.php:101
+#: inc/admin/ui/meta-boxes.php:102
 #, php-format
 msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
@@ -2110,30 +2361,30 @@ msgid ""
 "clear the cache if they affect the front end of your site."
 msgstr "<strong>%s</strong>：监测到插件被启用/禁用，如插件影响网站前台页面，请清除缓存。"
 
-#: inc/admin/ui/notices.php:184
+#: inc/admin/ui/notices.php:185
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
 msgstr "WP Rocket Cloudflare 扩展也是提供类似的功能。两个无法同时开启哦 ~"
 
-#: inc/admin/ui/notices.php:208
+#: inc/admin/ui/notices.php:209
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr "<strong>%s</strong>：下列插件与WP Rocket不兼容，可能导致出错："
 
-#: inc/admin/ui/notices.php:214
+#: inc/admin/ui/notices.php:215
 msgid "Deactivate"
 msgstr "停用"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:257
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
 msgstr "WP Rocket Footer JS 为非官方插件，会阻碍 WP Rocket 中某些选项的正常工作。如有问题请禁用哦。"
 
-#: inc/admin/ui/notices.php:296
+#: inc/admin/ui/notices.php:297
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2143,25 +2394,25 @@ msgstr ""
 "Endurance Cache目前已启用，这将与WP Rocket Cache冲突。请在%1$s设置>一般%2$s页面设置Endurance "
 "Cache的缓存级别为关闭(Level 0)以防止出现任何问题。"
 
-#: inc/admin/ui/notices.php:317
+#: inc/admin/ui/notices.php:318
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr "%1$s：必须先启用固定链接，插件才能正常工作。%2$s进入固定链接设置%3$s"
 
-#: inc/admin/ui/notices.php:364
+#: inc/admin/ui/notices.php:365
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s 无法修改 .htaccess 文件：无写入权限。"
 
-#: inc/admin/ui/notices.php:370 inc/admin/ui/notices.php:845
+#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "故障解决：%1$s如何将系统文件设为可写%2$s"
 
-#: inc/admin/ui/notices.php:372 inc/admin/ui/notices.php:847
+#: inc/admin/ui/notices.php:373 inc/admin/ui/notices.php:848
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2169,40 +2420,40 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "不用担心，WP Rocket 的页面缓存和设置仍将正常工作。"
 
-#: inc/admin/ui/notices.php:378
+#: inc/admin/ui/notices.php:379
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr "为了优化性能，建议添加下列代码到您的 .htaccess 文件（非必须）："
 
-#: inc/admin/ui/notices.php:525
+#: inc/admin/ui/notices.php:526
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr "%1$s准备好啦！%2$s测试您的加载时间%4$s，或访问您的%3$s设置%4$s。"
 
-#: inc/admin/ui/notices.php:598
+#: inc/admin/ui/notices.php:599
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr "您是否愿意 WP Rocket 收集此网站的脱敏诊断数据？"
 
-#: inc/admin/ui/notices.php:599
+#: inc/admin/ui/notices.php:600
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "这将有助于将来我们为您持续改进 WP Rocket 。"
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:606
 msgid "What info will we collect?"
 msgstr "我们收集何种信息？"
 
-#: inc/admin/ui/notices.php:610
+#: inc/admin/ui/notices.php:611
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2212,64 +2463,60 @@ msgstr ""
 "以下详细列出了 WP Rocket 在获得许可后将收集的所有数据。WP Rocket 绝不会传输任何域名、邮箱（授权验证除外），IP地址或第三方API "
 "key。"
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:620
 msgid "Yes, allow"
 msgstr "是，允许"
 
-#: inc/admin/ui/notices.php:622
+#: inc/admin/ui/notices.php:623
 msgid "No, thanks"
 msgstr "不，谢谢"
 
-#: inc/admin/ui/notices.php:661
+#: inc/admin/ui/notices.php:662
 msgid "Thank you!"
 msgstr "谢谢！"
 
-#: inc/admin/ui/notices.php:666
+#: inc/admin/ui/notices.php:667
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket 现在从您的网站收集这些指标："
 
-#: inc/admin/ui/notices.php:704
+#: inc/admin/ui/notices.php:705
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s：缓存已清除。"
 
-#: inc/admin/ui/notices.php:711
+#: inc/admin/ui/notices.php:712
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s：文章缓存已清除。"
 
-#: inc/admin/ui/notices.php:718
+#: inc/admin/ui/notices.php:719
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s：分类缓存已清除。"
 
-#: inc/admin/ui/notices.php:725
+#: inc/admin/ui/notices.php:726
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s：用户缓存已清除。"
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:772
 msgid "Stop Preload"
 msgstr "停止预缓存"
 
-#: inc/admin/ui/notices.php:789
+#: inc/admin/ui/notices.php:790
 msgid "Force deactivation "
 msgstr "强制停用 "
 
-#: inc/admin/ui/notices.php:802
+#: inc/admin/ui/notices.php:803
 msgid "The following code should have been written to this file:"
 msgstr "下列代码应写入到此文件："
 
-#: inc/admin/ui/notices.php:812 views/settings/page-sections/dashboard.php:46
-msgid "Dismiss this notice."
-msgstr "关闭此通知。"
-
-#: inc/admin/ui/notices.php:833
+#: inc/admin/ui/notices.php:834
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s 无法完成配置：无写入权限。"
 
-#: inc/admin/ui/notices.php:839
+#: inc/admin/ui/notices.php:840
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "受影响的文件/文件夹：%s"
@@ -2317,28 +2564,24 @@ msgstr "如无法升级，您可使用下方按钮还原至旧版本。"
 msgid "Re-install version %s"
 msgstr "重新安装 %s 版本"
 
-#: inc/classes/dependencies/wp-media/background-processing/wp-background-process.php:439
+#: inc/classes/dependencies/wp-media/background-processing/wp-background-process.php:447
 #, php-format
 msgid "Every %d Minutes"
 msgstr "每 %d 分钟"
 
-#: inc/classes/logger/class-logger.php:254
-#: inc/classes/logger/class-logger.php:286
+#: inc/classes/logger/class-logger.php:260
+#: inc/classes/logger/class-logger.php:292
 msgid "The log file does not exist."
 msgstr "日志文件不存在。"
 
-#: inc/classes/logger/class-logger.php:260
-#: inc/classes/logger/class-logger.php:292
+#: inc/classes/logger/class-logger.php:266
+#: inc/classes/logger/class-logger.php:298
 msgid "The log file could not be read."
 msgstr "日志文件不可读。"
 
-#: inc/classes/logger/class-logger.php:279
+#: inc/classes/logger/class-logger.php:285
 msgid "The logs are not saved into a file."
 msgstr "日志未保存到文件中。"
-
-#: inc/classes/subscriber/Cache/class-expired-cache-purge-subscriber.php:128
-msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Rocket 过期缓存间隔"
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:269
 #, php-format
@@ -2501,49 +2744,49 @@ msgid ""
 "href=\"%s\">contact support</a>."
 msgstr "出现未知错误。WP-Rocket.me 或当前系统配置有问题。如果持续出现这些问题，请<a href=\"%s\">联系客服</a>。"
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:293
+#: inc/common/admin-bar.php:126 inc/common/admin-bar.php:294
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "所有语言"
 
-#: inc/common/admin-bar.php:152
+#: inc/common/admin-bar.php:153
 msgid "Clear this post"
 msgstr "清除此文章"
 
-#: inc/common/admin-bar.php:166
+#: inc/common/admin-bar.php:167
 msgid "Purge this URL"
 msgstr "清除此URL"
 
-#: inc/common/admin-bar.php:192
+#: inc/common/admin-bar.php:193
 msgid "Purge OPcache"
 msgstr "清除 OPcache"
 
-#: inc/common/admin-bar.php:210
+#: inc/common/admin-bar.php:211
 msgid "Clear Cloudflare cache"
 msgstr "清除 Cloudflare 缓存"
 
-#: inc/common/admin-bar.php:228
+#: inc/common/admin-bar.php:229
 msgid "Purge Sucuri cache"
 msgstr "清除 Sucuri 缓存"
 
-#: inc/common/admin-bar.php:251 inc/common/admin-bar.php:305
-#: views/settings/page-sections/dashboard.php:144
+#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:306
+#: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "预缓存"
 
-#: inc/common/admin-bar.php:330 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:331 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "清除 RocketCDN 缓存"
 
-#: inc/common/admin-bar.php:343 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:344 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "文档"
 
-#: inc/common/purge.php:557
+#: inc/common/purge.php:562
 msgid "OPcache purge failed."
 msgstr "OPcache 清除失败。"
 
-#: inc/common/purge.php:562
+#: inc/common/purge.php:567
 msgid "OPcache successfully purged"
 msgstr "OPcache 成功清除。"
 
@@ -2735,7 +2978,7 @@ msgstr ""
 "%1$s %2$s 需要PHP %3$s 以上版本才能正常运行。要使用该版本，请联系您的主机服务商升级PHP至 %3$s "
 "或更高版本。如无法升级，您可使用下方按钮还原至旧版本。"
 
-#: inc/functions/admin.php:23
+#: inc/functions/admin.php:21
 msgid ""
 "There seems to be an issue validating your license. Please see the error "
 "message below."
@@ -2744,141 +2987,150 @@ msgid_plural ""
 "messages below."
 msgstr[0] "验证您的许可证时似乎有问题。"
 
-#: inc/functions/admin.php:363
+#: inc/functions/admin.php:361
 msgid "Server type:"
 msgstr "服务器类型："
 
-#: inc/functions/admin.php:372
+#: inc/functions/admin.php:370
 msgid "PHP version number:"
 msgstr "PHP版本号："
 
-#: inc/functions/admin.php:381
+#: inc/functions/admin.php:379
 msgid "WordPress version number:"
 msgstr "WordPress版本号："
 
-#: inc/functions/admin.php:390
+#: inc/functions/admin.php:388
 msgid "WordPress multisite:"
 msgstr "WordPress多站点："
 
-#: inc/functions/admin.php:399
+#: inc/functions/admin.php:397
 msgid "Current theme:"
 msgstr "当前主题："
 
-#: inc/functions/admin.php:408
+#: inc/functions/admin.php:406
 msgid "Current site language:"
 msgstr "当前站点语言："
 
-#: inc/functions/admin.php:417
+#: inc/functions/admin.php:415
 msgid "Active plugins:"
 msgstr "已启用插件："
 
-#: inc/functions/admin.php:420
+#: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
 msgstr "所有已启用的插件名"
 
-#: inc/functions/admin.php:426
+#: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
 msgstr "WP Rocket设置（匿名）："
 
-#: inc/functions/admin.php:429
+#: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
 msgstr "WP Rocket中已启用的选项"
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:468
+msgid "The provided license data are not valid."
+msgstr "提供的许可证信息无效。"
+
+#: inc/functions/options.php:471
+#, php-format
+msgid "To resolve, please %1$scontact support%2$s."
+msgstr "如需解决问题，请%1$s联系客服%2$s。"
+
+#: inc/functions/options.php:532 inc/functions/options.php:571
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr "验证授权失败. 我们的服务器无法处理来自您网站的请求"
 
-#: inc/functions/options.php:527 inc/functions/options.php:566
+#: inc/functions/options.php:532 inc/functions/options.php:571
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr "尝试点击下方的%1$s保存更改%2$s. 如问题仍然存在, 参考%3$s这个文档%4$s."
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:548
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr "授权验证失败. 您可能在使用破解版本. 请按以下操作:"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:548 inc/functions/options.php:590
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "登录您的 WP Rocket %1$s账户%2$s"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:548 inc/functions/options.php:590
 msgid "Download the zip file"
 msgstr "下载 zip 文件"
 
-#: inc/functions/options.php:543 inc/functions/options.php:585
+#: inc/functions/options.php:548 inc/functions/options.php:590
 msgid "Reinstall"
 msgstr "重新安装"
 
-#: inc/functions/options.php:543
+#: inc/functions/options.php:548
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "如您没有 WP Rocket 账号, 请%1$s购买授权%2$s."
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:556
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr "验证授权失败。用户不存在。"
 
-#: inc/functions/options.php:551
+#: inc/functions/options.php:556
 msgid "To resolve, please contact support."
 msgstr "如需解决问题请联系客服。"
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:564
 msgid "License validation failed. This user account is blocked."
 msgstr "验证授权失败。该用户已被锁定。"
 
-#: inc/functions/options.php:559
+#: inc/functions/options.php:564
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "更多信息请参考%1$s这个文档%2$s。"
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:584
 msgid "Your license is not valid."
 msgstr "您的授权无效。"
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:584
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "请确保您有已激活的%1$sWP Rocket 授权%2$s。"
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:586
 msgid "You have added as many sites as your current license allows."
 msgstr "您的网站数已超出授权限制。"
 
-#: inc/functions/options.php:581
+#: inc/functions/options.php:586
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr "升级您的%1$s账号%2$s或%3$s转移授权%2$s至当前域名。"
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:588
 msgid "This website is not allowed."
 msgstr "此网站未被允许。"
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:588
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "请%1$s联系客服%2$s。"
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:590
 msgid "This license key is not recognized."
 msgstr "该授权码无法识别。"
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:590
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "如问题仍然存在, 请%1$s联系客服%2$s。"
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:596
 #, php-format
 msgid "License validation failed: %s"
 msgstr "授权验证失败：%s"
@@ -3197,20 +3449,6 @@ msgstr "CSS"
 msgid "Import settings"
 msgstr "导入配置"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:31
-#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:55
-msgctxt "Active state of checkbox"
-msgid "On"
-msgstr "开启"
-
-#: views/settings/fields/one-click-addon.php:41
-#: views/settings/fields/rocket-addon.php:32
-#: views/settings/fields/sliding-checkbox.php:26 views/settings/page.php:56
-msgctxt "Inactive state of checkbox"
-msgid "Off"
-msgstr "关闭"
-
 #: views/settings/fields/one-click-addon.php:42
 #: views/settings/fields/rocket-addon.php:33
 msgid "Add-on status"
@@ -3273,9 +3511,9 @@ msgstr "您的网站应该变快啦 !"
 #: views/settings/page-sections/dashboard.php:44
 #, php-format
 msgid ""
-"To guarantee fast websites, WP Rocket applies 80% of web performance best "
-"practices."
-msgstr "为达到加速效果，WP Rocket 已自动帮您开启了80%的加速最佳操作。"
+"To guarantee fast websites, WP Rocket automatically applies 80% of web "
+"performance best practices."
+msgstr "为达到最佳效果，WP Rocket 将应用 80% 的性能优化最佳实践。"
 
 #: views/settings/page-sections/dashboard.php:44
 msgid ""
@@ -3286,61 +3524,65 @@ msgstr "我们同时也帮您的网站启用了能带来实时效果的选项。
 msgid "Continue to the options to further optimize your site!"
 msgstr "继续调整设置来进一步优化您的网站吧！"
 
-#: views/settings/page-sections/dashboard.php:55
+#: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
 msgstr "我的账户"
 
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:68
 msgid "Refresh info"
 msgstr "刷新信息"
 
-#: views/settings/page-sections/dashboard.php:75
+#: views/settings/page-sections/dashboard.php:93
 msgid "Expiration Date"
 msgstr "过期时间"
 
-#: views/settings/page-sections/dashboard.php:84
+#: views/settings/page-sections/dashboard.php:103
 msgid "View my account"
 msgstr "查看我的账户"
 
-#: views/settings/page-sections/dashboard.php:111
+#: views/settings/page-sections/dashboard.php:130
 msgid "Quick Actions"
 msgstr "快捷操作"
 
-#: views/settings/page-sections/dashboard.php:118
+#: views/settings/page-sections/dashboard.php:137
 msgid "Remove all cached files"
 msgstr "清除所有缓存"
 
-#: views/settings/page-sections/dashboard.php:138
+#: views/settings/page-sections/dashboard.php:157
 msgid "Start cache preloading"
 msgstr "开始预缓存"
 
-#: views/settings/page-sections/dashboard.php:164
+#: views/settings/page-sections/dashboard.php:183
 msgid "Purge OPCache content"
 msgstr "清除OPcache内容"
 
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:189
 msgid "Purge OPCache"
 msgstr "清除 OPcache"
 
-#: views/settings/page-sections/dashboard.php:181
-#: views/settings/page-sections/dashboard.php:187
+#: views/settings/page-sections/dashboard.php:200
+#: views/settings/page-sections/dashboard.php:206
 msgid "Regenerate Critical CSS"
 msgstr "重新生成关键路径 CSS"
 
-#: views/settings/page-sections/dashboard.php:204
+#: views/settings/page-sections/dashboard.php:218
+msgid "Remove Used CSS Cache"
+msgstr "移除未使用CSS缓存"
+
+#: views/settings/page-sections/dashboard.php:241
 msgid "Frequently Asked Questions"
 msgstr "FAQ"
 
-#: views/settings/page-sections/dashboard.php:217
+#: views/settings/page-sections/dashboard.php:254
 msgid "Still cannot find a solution?"
 msgstr "仍未找到解决方案?"
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:255
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "请发送工单以寻求帮助。我们的火箭工程师非常友好并且知识渊博哦 ~"
 
-#: views/settings/page-sections/dashboard.php:226
+#: views/settings/page-sections/dashboard.php:263
 msgid "Ask support"
 msgstr "请求帮助"
 
@@ -3534,50 +3776,20 @@ msgstr "%s 版本"
 msgid "Show Sidebar"
 msgstr "显示侧边栏"
 
-#: views/settings/page.php:76
-msgid "Thanks for choosing to participate in the WP Rocket beta program!"
-msgstr "感谢您参与 WP Rocket beta 版测试！"
-
-#: views/settings/page.php:77
-msgid ""
-"A beta version is usually one that has new features and improvements, but we"
-" want to test it a little more before full launch."
-msgstr "测试版通常加入了新功能和改进，但我们希望在正式发布前对其进行更多测试。"
-
-#: views/settings/page.php:78
-msgid ""
-"We’d love it if you took our beta versions for a ride, but please keep in "
-"mind that it might be less stable than our other releases. Don’t worry, you "
-"can switch back to a full release version at any time."
-msgstr "我们希望您使用测试版本，但请记住，它可能不如我们的其他已发布版本稳定。 别担心，您可随时切换回稳定版本。"
-
 #: views/settings/page.php:79
+#, php-format
 msgid ""
-"Your mission: please send all feedback about our beta versions, including "
-"bug reports, to support@wp-rocket.me"
-msgstr "您的任务：请将有关我们测试版的所有反馈，包括错误报告，发送至 support@wp-rocket.me"
+"Below is a detailed view of all data WP Rocket will collect %1$sif granted "
+"permission.%2$s"
+msgstr "下面是 WP Rocket 将要收集的所有数据的详细视图%1$s，如果授权允许的话。%2$s"
 
-#: views/settings/page.php:81
-msgid "If you don’t want to join the beta program, simply close this window."
-msgstr "如您不想参与测试，关闭这个窗口即可。"
-
-#: views/settings/page.php:83
-msgid "Activate Rocket Tester"
-msgstr "启用 Rocket 测试者"
-
-#: views/settings/page.php:94
-msgid ""
-"Below is a detailed view of all data WP Rocket will collect <strong>if "
-"granted permission.</strong>"
-msgstr "以下详细列出了 WP Rocket 在<strong>获得许可后</strong>将收集的所有数据。"
-
-#: views/settings/page.php:97
+#: views/settings/page.php:84
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
 msgstr "WP Rocket 绝不会传输任何域名、邮箱（授权验证除外），IP地址或第三方 API key。"
 
-#: views/settings/page.php:99
+#: views/settings/page.php:86
 msgid "Activate Rocket analytics"
 msgstr "启用 Rocket 分析"
 
@@ -3643,86 +3855,6 @@ msgstr "您尚未启用已登录用户缓存。"
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr "请使用浏览器的隐私模式来检查网站速度和外观变化。"
-
-#: views/settings/rocketcdn/cta-big.php:27
-#, php-format
-msgid "Valid until %s only!"
-msgstr " %s 即将到期！"
-
-#: views/settings/rocketcdn/cta-big.php:36
-msgid "Speed up your website thanks to:"
-msgstr "致谢为您加速网站的贡献者："
-
-#: views/settings/rocketcdn/cta-big.php:42
-#, php-format
-msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
-msgstr "具有 %1$s无限带宽%2$s的高性能CDN"
-
-#: views/settings/rocketcdn/cta-big.php:48
-#, php-format
-msgid ""
-"Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
-msgstr "轻松设置：已自动为您启用了 %1$sCDN 最佳设置%2$s "
-
-#: views/settings/rocketcdn/cta-big.php:54
-#, php-format
-msgid ""
-"WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
-" our plugin"
-msgstr "WP Rocket 整合: 我们的插件已为您%1$s自动配置%2$sCDN 选项"
-
-#: views/settings/rocketcdn/cta-big.php:69
-#, php-format
-msgid "%s / month"
-msgstr "%s / 月"
-
-#: views/settings/rocketcdn/cta-big.php:74
-msgid "Get Started"
-msgstr "新手指南"
-
-#: views/settings/rocketcdn/cta-big.php:80
-msgid "Learn more about RocketCDN"
-msgstr "了解 RocketCDN 的更多信息"
-
-#: views/settings/rocketcdn/cta-big.php:82
-msgid "Reduce this banner"
-msgstr "不想看"
-
-#: views/settings/rocketcdn/cta-big.php:88
-#, php-format
-msgid ""
-"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
-"subscription at any time."
-msgstr "* 首年 $%1$s/月，然后 $%2$s/月。您可随时取消订阅。"
-
-#: views/settings/rocketcdn/cta-small.php:17
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
-msgstr "用 RocketCDN 加速您的网站，是 WP Rocket 开发的哦 ~"
-
-#: views/settings/rocketcdn/cta-small.php:20
-#: views/settings/rocketcdn/promote-notice.php:13
-msgid "Learn More"
-msgstr "了解详情"
-
-#: views/settings/rocketcdn/dashboard-status.php:23
-msgid "RocketCDN is unavailable on local domains and staging sites."
-msgstr "RocketCDN 无法用于本地域名或测试环境。"
-
-#: views/settings/rocketcdn/dashboard-status.php:32
-msgid "Get RocketCDN"
-msgstr "获取 RocketCDN"
-
-#: views/settings/rocketcdn/promote-notice.php:11
-msgid "New!"
-msgstr "New!"
-
-#: views/settings/rocketcdn/promote-notice.php:12
-msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
-msgstr "用 RocketCDN 加速您的网站，是 WP Rocket 开发的哦 ~"
 
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28

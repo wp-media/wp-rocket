@@ -20,7 +20,7 @@ class Test_InsertScript extends TestCase {
 		'wp_rocket_customer_data' => null,
 	];
 
-	public function setUp() : void {
+	public function setUp(): void {
 		global $wp_locale;
 
 		parent::setUp();
@@ -36,6 +36,7 @@ class Test_InsertScript extends TestCase {
 		set_current_screen( 'front' );
 
 		$wp_locale->text_direction = $this->text_direction;
+		$this->white_label = false;
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
@@ -54,22 +55,24 @@ class Test_InsertScript extends TestCase {
 		}
 	}
 
-	public function testShouldReturNullWhenNoCapacity() {
-		$this->createUser( 'contributor' );
-		$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
-
-		$this->assertNotContains( 'Beacon', $this->getActualHtml() );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnBeaconScript( $config, $expected ) {
 		global $wp_locale;
 
-		$this->createUser( 'administrator' );
-		$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
-
+		if ( true === $config['current_user_can'] ) {
+			$this->createUser( 'administrator' );
+			$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
+		} else {
+			$this->createUser( 'contributor' );
+			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
+		}
+		$this->white_label =  $config['white_label'];
+		if ( null === $expected ) {
+			$this->assertEmpty( $this->getActualHtml() );
+			return;
+		}
 		$this->locale         = $config['locale'];
 		$this->rocket_version = '3.6';
 

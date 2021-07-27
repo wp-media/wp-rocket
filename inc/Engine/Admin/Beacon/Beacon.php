@@ -75,7 +75,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+			||
+			! current_user_can( 'rocket_manage_options' )
+		) {
 			return;
 		}
 
@@ -383,6 +387,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5f359695042863444aa04e26',
 					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'delay_js_exclusions'        => [
+				'en' => [
+					'id'  => '',
+					'url' => 'https://docs.wp-rocket.me/article/1560-delay-javascript-execution-compatibility-exclusions/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'async'                      => [

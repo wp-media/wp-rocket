@@ -248,29 +248,31 @@ defined( 'ABSPATH' ) || exit;
 					<?php endforeach; ?>
 					</ul>
 				</div>
-				<div class="wpr-field">
-					<div class="wpr-flex wpr-flex--egal">
-						<div>
-							<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
-							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-						</div>
-						<div>
-							<?php
-							$this->render_action_button(
-								'link',
-								'ask_support',
-								[
-									'label'      => __( 'Ask support', 'rocket' ),
-									'attributes' => [
-										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
-										'target' => '_blank',
-									],
-								]
-							);
-							?>
+				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
+					<div class="wpr-field">
+						<div class="wpr-flex wpr-flex--egal">
+							<div>
+								<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
+								<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
+							</div>
+							<div>
+								<?php
+								$this->render_action_button(
+									'link',
+									'ask_support',
+									[
+										'label'      => __( 'Ask support', 'rocket' ),
+										'attributes' => [
+											'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+											'target' => '_blank',
+										],
+									]
+								);
+								?>
+							</div>
 						</div>
 					</div>
-				</div>
+				<?php } ?>
 			</div>
 		</div>
 

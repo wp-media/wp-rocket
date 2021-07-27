@@ -5,6 +5,7 @@ use WP_Rocket\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Interfaces\Render_Interface;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -549,15 +550,16 @@ class Page {
 	 * @since 3.0
 	 */
 	private function assets_section() {
-		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
-		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
-		$async_beacon      = $this->beacon->get_suggest( 'async' );
-		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
-		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
-		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
-		$delay_js_beacon   = $this->beacon->get_suggest( 'delay_js' );
-		$exclude_defer_js  = $this->beacon->get_suggest( 'exclude_defer_js' );
-		$rucss_beacon      = $this->beacon->get_suggest( 'remove_unused_css' );
+		$combine_beacon             = $this->beacon->get_suggest( 'combine' );
+		$defer_js_beacon            = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon               = $this->beacon->get_suggest( 'async' );
+		$files_beacon               = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon           = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon          = $this->beacon->get_suggest( 'exclude_js' );
+		$delay_js_beacon            = $this->beacon->get_suggest( 'delay_js' );
+		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
+		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
+		$rucss_beacon               = $this->beacon->get_suggest( 'remove_unused_css' );
 
 		$disable_combine_js = $this->disable_combine_js();
 
@@ -592,6 +594,20 @@ class Page {
 					'helper' => rocket_maybe_disable_minify_js() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'JS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 			]
+		);
+
+		$delay_js_list_helper = sprintf(
+			// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
+			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><pre><code>%1$s</code></pre><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
+			implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
+			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
+			'</a>'
+		);
+		$delay_js_found_list_helper = sprintf(
+			// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+			__( 'Internal scripts are excluded by default to prevent issues. Remove them to take full advantage of this option.<br>If this causes trouble, restore the default exclusions, found %1$shere%2$s', 'rocket' ),
+			'<a href="' . esc_url( $delay_js_beacon['url'] ) . '"  target="_blank" rel="noopener">',
+			'</a>'
 		);
 
 		$this->settings->add_settings_fields(
@@ -865,6 +881,7 @@ class Page {
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
+					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
 				],
 			]
 		);
