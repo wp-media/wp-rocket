@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pdfembedder',
 		'divi',
 		'mod_pagespeed',
+		'adthrive',
 	];
 
 	/**
@@ -124,6 +125,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
 			->addTag( 'common_subscriber' );
 	}
 }
