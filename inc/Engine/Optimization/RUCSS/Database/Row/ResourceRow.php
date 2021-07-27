@@ -30,6 +30,8 @@ class ResourceRow extends Row {
 	/**
 	 * Decode the content if it's encoded.
 	 *
+	 * @since 3.9.2
+	 *
 	 * @return string
 	 */
 	private function get_decoded_content(): string {

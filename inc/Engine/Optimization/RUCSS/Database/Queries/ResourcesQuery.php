@@ -243,6 +243,8 @@ class ResourcesQuery extends Query {
 	/**
 	 * Hash the data (content).
 	 *
+	 * @since 3.9.2
+	 *
 	 * @param string $data Data to be hashed.
 	 *
 	 * @return string
@@ -253,6 +255,8 @@ class ResourcesQuery extends Query {
 
 	/**
 	 * Encode the data (content).
+	 *
+	 * @since 3.9.2
 	 *
 	 * @param string $data Data to be encoded.
 	 *
