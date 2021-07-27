@@ -5,7 +5,7 @@ namespace WP_Rocket\ThirdParty\Plugins\Ads;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Ads implements Subscriber_Interface {
+class Adthrive implements Subscriber_Interface {
 	/**
 	 * {@inheritdoc}
 	 */
