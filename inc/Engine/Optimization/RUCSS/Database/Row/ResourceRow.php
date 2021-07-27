@@ -33,13 +33,21 @@ class ResourceRow extends Row {
 	 * @return string
 	 */
 	private function get_decoded_content(): string {
-		// We used strict decode to return false in case the data is not encoded (backward compatibility).
-		$decoded_content = base64_decode( $this->content, true );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
-		if ( ! $decoded_content ) {
-			return $decoded_content;
+		if ( ! function_exists( 'gzdecode' ) ) {
+			return $this->content;
 		}
 
-		return (string) $this->content;
+		$decoded_content = base64_decode( $this->content, true );// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+		if ( ! $decoded_content ) {
+			return $this->content;
+		}
+
+		$decoded_content = gzdecode( $decoded_content );
+		if ( ! $decoded_content ) {
+			return $this->content;
+		}
+
+		return $decoded_content;
 	}
 
 }

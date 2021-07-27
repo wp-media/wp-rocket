@@ -109,7 +109,7 @@ class ResourcesQuery extends Query {
 			]
 		);
 
-		// Check the content hash and bailour if the content is the same and we are not in prewarmup.
+		// Check the content hash and bailout if the content is the same and we are not in prewarmup.
 		if ( $this->hash( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
 			// Do nothing.
 			return false;
@@ -259,6 +259,15 @@ class ResourcesQuery extends Query {
 	 * @return string
 	 */
 	private function encode( string $data ): string {
-		return base64_encode( $data ); //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		if ( ! function_exists( 'gzencode' ) ) {
+			return $data;
+		}
+
+		$encoded = gzencode( $data );
+		if ( ! $encoded ) {
+			return $data;
+		}
+
+		return base64_encode( $encoded ); //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	}
 }
