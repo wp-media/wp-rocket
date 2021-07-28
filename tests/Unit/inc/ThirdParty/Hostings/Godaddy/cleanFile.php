@@ -14,10 +14,10 @@ use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
 class Test_cleanFile extends TestCase {
 	public function testShouldPurgeFile( ) {
-		$url      = 'http://example.org/about/';
+		$url      = 'http://example.org/about';
 		$host     = 'example.org';
 		$vip_url  = 'vip-url.com';
-		$full_url = 'http://' . $vip_url . '/about/';
+		$full_url = 'http://' . $vip_url . '/about';
 
 		Functions\expect( 'home_url' )->andReturn( $url );
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
@@ -46,7 +46,7 @@ class Test_cleanFile extends TestCase {
 			->with(
 				$full_url,
 				[
-					'method'      => 'PURGE',
+					'method'      => 'BAN',
 					'blocking'    => false,
 					'headers'     => [
 						'Host' => $host,

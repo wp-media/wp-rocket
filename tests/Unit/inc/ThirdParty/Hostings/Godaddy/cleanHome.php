@@ -47,13 +47,13 @@ class Test_cleanHome extends TestCase {
 		Functions\expect( 'update_option' )->twice()
 			->with( 'gd_system_last_cache_flush', time() );
 
-		Functions\expect( 'esc_url_raw' )->once()->with( $full_url . '/' )->andReturnFirstArg();
-		Functions\expect( 'esc_url_raw' )->once()->with( $full_url . '/page/' )->andReturnFirstArg();
+		Functions\expect( 'esc_url_raw' )->once()->with( $full_url )->andReturnFirstArg();
+		Functions\expect( 'esc_url_raw' )->once()->with( $full_url . '/page' )->andReturnFirstArg();
 
 		Functions\expect( 'wp_remote_request' )
 			->once()
 			->with(
-				$full_url . '/',
+				$full_url,
 				[
 					'method'      => 'PURGE',
 					'blocking'    => false,
@@ -66,7 +66,7 @@ class Test_cleanHome extends TestCase {
 		Functions\expect( 'wp_remote_request' )
 			->once()
 			->with(
-				$full_url .'/page/',
+				$full_url .'/page',
 				[
 					'method'      => 'PURGE',
 					'blocking'    => false,

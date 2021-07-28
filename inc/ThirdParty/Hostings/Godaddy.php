@@ -104,7 +104,7 @@ class Godaddy implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_file( $url ) {
-		$this->purge_request( 'PURGE',  $url );
+		$this->purge_request( 'BAN',  $url );
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Godaddy implements Subscriber_Interface {
 
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
-		$url = set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' );
+		$url = untrailingslashit( set_url_scheme( str_replace( $host, $this->vip_url, $url ), 'http' ) );
 
 		wp_cache_flush();
 
