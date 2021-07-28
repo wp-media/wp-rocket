@@ -128,7 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
-			->addArgument( $this->getContainer()->get( 'options_api') )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 	}
