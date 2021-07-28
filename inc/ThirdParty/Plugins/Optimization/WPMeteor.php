@@ -25,18 +25,20 @@ class WPMeteor implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Options $options_api Options API instance.
+	 * @param Options      $options_api Options API instance.
 	 * @param Options_Data $options Options_Data instance.
 	 */
 	public function __construct( Options $options_api, Options_Data $options ) {
 		$this->options_api = $options_api;
-		$this->options = $options;
+		$this->options     = $options;
 	}
 
 	/**
-	 * @inheritDoc
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
-	public static function get_subscribed_events() {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_delay_js_settings_field'   => 'maybe_disable_delay_js_field',
 			'activate_wp-meteor/wp-meteor.php' => 'disable_delay_js',
@@ -57,10 +59,11 @@ class WPMeteor implements Subscriber_Interface {
 			return $field;
 		}
 
-		$field['container_class'][] = 'wpr-isDisabled';
-		$field['value'] = 0;
+		$field['container_class'][]      = 'wpr-isDisabled';
+		$field['value']                  = 0;
 		$field['input_attr']['disabled'] = 1;
-		$field['helper'] = sprintf(
+		$field['helper']                 = sprintf(
+			// translators: %1$s = plugin name.
 			__( 'Delay JS is currently activated in %1$s. If you want to use WP Rocket’s delay JS, disable %1$s', 'rocket' ),
 			'WP Meteor'
 		);
