@@ -852,7 +852,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'delay_js'                   => [
+				'delay_js'                   => apply_filters( 'rocket_delay_js_settings_field', [
 					'container_class'   => [
 						'wpr-isParent',
 						'wpr-Delayjs',
@@ -865,7 +865,7 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				] ),
 				'delay_js_exclusions'        => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
