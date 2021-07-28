@@ -13,6 +13,12 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_MaybeDisableDelayJsField extends TestCase {
 	private $plugin_active;
 
+	public function tearDown(): void {
+		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
