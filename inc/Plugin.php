@@ -253,6 +253,7 @@ class Plugin {
 			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
+			'elementorpro_subscriber',
 			'bridge_subscriber',
 			'avada_subscriber',
 			'ngg_subscriber',

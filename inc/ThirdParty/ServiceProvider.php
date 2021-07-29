@@ -24,6 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'woocommerce_subscriber',
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
+		'elementorpro_subscriber',
 		'bridge_subscriber',
 		'avada_subscriber',
 		'ngg_subscriber',
@@ -59,6 +60,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+		     ->share( 'elementorpro_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro' )
+		     ->addArgument( rocket_direct_filesystem() )
+			 ->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+		     ->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
