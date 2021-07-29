@@ -29,10 +29,10 @@ class ElementorPro implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
-	 * @param HTML $delayjs_html DelayJS HTML class.
+	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( $filesystem ,HTML $delayjs_html ) {
-		$this->filesystem = $filesystem;
+	public function __construct( $filesystem, HTML $delayjs_html ) {
+		$this->filesystem   = $filesystem;
 		$this->delayjs_html = $delayjs_html;
 	}
 
@@ -53,6 +53,8 @@ class ElementorPro implements Subscriber_Interface {
 
 	/**
 	 * Add Fix Elementor Pro animations script.
+	 *
+	 * @param html $html DelayJS HTML class.
 	 *
 	 * @return string HTML with Fix Elementor Pro animations script.
 	 */

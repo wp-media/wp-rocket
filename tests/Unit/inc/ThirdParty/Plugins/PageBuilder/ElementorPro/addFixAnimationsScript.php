@@ -19,7 +19,6 @@ class Test_AddFixAnimationsScript extends FilesystemTestCase {
 
 	public function setUp() : void {
 		parent::setUp();
-		var_dump($this->filesystem);
 		$this->subscriber = new ElementorPro( $this->filesystem , Mockery::mock( HTML::class ) );
 	}
 

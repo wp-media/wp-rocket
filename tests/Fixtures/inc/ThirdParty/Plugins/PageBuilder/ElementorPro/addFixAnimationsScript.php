@@ -118,13 +118,27 @@ $fix_script = "class RocketElementorAnimation {
 document.addEventListener('DOMContentLoaded', RocketElementorAnimation.run);";
 
 return [
-	'vfs_dir'   => 'wp-content/plugins/wp-rocket/',
+	'vfs_dir' => 'public/',
+
+	'structure' => [
+		'wp-content' => [
+			'plugins' => [
+				'wp-rocket' => [
+					'assets'=>[
+						'js'=>[
+							'elementor-animation.js'=>$fix_script
+						]
+					]
+				]
+			],
+		],
+	],
 	'test_data' => [
 		'testElementorProAddFixAnimationScript' => [
 			'config'                  => '<html><head><title>Sample Page</title>' .
 							                '</head><body></body></html>',
 			'expected'              => '<html><head><title>Sample Page</title>' .
-											'</head><body>.$fix_script.</body></html>',
+											'</head><body><script>'.$fix_script.'</script></body></html>',
 		]
 	]
 ];

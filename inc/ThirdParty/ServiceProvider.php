@@ -61,10 +61,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-		     ->share( 'elementorpro_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro' )
-		     ->addArgument( rocket_direct_filesystem() )
-			 ->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-		     ->addTag( 'common_subscriber' );
+			->share( 'elementorpro_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro' )
+			->addArgument( rocket_direct_filesystem() )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
