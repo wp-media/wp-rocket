@@ -13,6 +13,8 @@ use Mockery;
  * @group ThirdParty
  */
 class Test_AddFixAnimationsScript extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/ElementorPro/addFixAnimationsScript.php';
+
 	private $subscriber;
 
 	public function setUp() : void {
