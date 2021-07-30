@@ -82,9 +82,12 @@ class LiteSpeed implements Subscriber_Interface {
 			'pagination' => $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ),
 		];
 
-		array_walk( $urls, function( $url ) {
-			return wp_parse_url( $url, PHP_URL_PATH );
-		} );
+		array_walk(
+			$urls,
+			function( $url ) {
+				return wp_parse_url( $url, PHP_URL_PATH );
+			}
+		);
 
 		$urls = array_filter( $urls );
 
