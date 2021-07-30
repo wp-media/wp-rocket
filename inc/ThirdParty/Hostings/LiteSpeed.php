@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class LiteSpeed implements Subscriber_Interface {
@@ -16,7 +16,7 @@ class LiteSpeed implements Subscriber_Interface {
 	/**
 	 * Subscribed events for Litespeed.
 	 *
-	 * @since  3.9.1
+	 * @since 3.9.2
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
@@ -29,21 +29,24 @@ class LiteSpeed implements Subscriber_Interface {
 	}
 
 	/**
-	 * Wp headers filter callback to add headers to response.
+	 * Add purge headers to the request
 	 *
-	 * @since  3.9.1
+	 * @since  3.9.2
+	 *
 	 * @param array $headers headers to be added to response.
 	 *
-	 * @return array of all headers.
+	 * @return array
 	 */
-	public function litespeed_send_headers( $headers ) {
+	public function litespeed_send_headers( $headers ): array {
 		return array_merge( $headers, $this->headers );
 	}
 
 	/**
-	 * Purge Litespeed all domain.
+	 * Purge all pages in LiteSpeed
 	 *
-	 * @since  3.9.1
+	 * @since 3.9.2
+	 *
+	 * @return void
 	 */
 	public function litespeed_clean_domain() {
 		$this->litespeed_header_purge_all();
@@ -52,9 +55,11 @@ class LiteSpeed implements Subscriber_Interface {
 	/**
 	 * Purge a specific page
 	 *
-	 * @since  3.9.1
+	 * @since 3.9.2
 	 *
 	 * @param string $url The url to purge.
+	 *
+	 * @return void
 	 */
 	public function litespeed_clean_file( $url ) {
 		$this->litespeed_header_purge_url( trailingslashit( $url ) );
@@ -63,39 +68,60 @@ class LiteSpeed implements Subscriber_Interface {
 	/**
 	 * Purge the homepage and its pagination
 	 *
-	 * @since  3.9.1
+	 * @since  3.9.2
 	 *
 	 * @param string $root The path of home cache file.
 	 * @param string $lang The current lang to purge.
+	 *
+	 * @return void
 	 */
 	public function litespeed_clean_home( $root, $lang ) {
-		$home_url                           = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-		$home_pagination_url                = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
-		$this->headers['X-LiteSpeed-Purge'] = get_rocket_parse_url( $home_url )['path'] . ',' . get_rocket_parse_url( $home_pagination_url )['path'];
+		$home_url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+		$urls     = [
+			'home'       => trailingslashit( get_rocket_i18n_home_url( $lang ) ),
+			'pagination' => $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ),
+		];
+
+		array_walk( $urls, function( $url ) {
+			return wp_parse_url( $url, PHP_URL_PATH );
+		} );
+
+		$urls = array_filter( $urls );
+
+		if ( empty( $urls ) ) {
+			return;
+		}
+
+		$this->headers['X-LiteSpeed-Purge'] = implode( ',', $urls );
 	}
 
 	/**
-	 * Purge Litespeed URL
+	 * Set LiteSpeed header for the URL to purge
 	 *
-	 * @since 3.9.1
+	 * @since 3.9.2
 	 *
-	 * @param  string $url The URL to purge.
+	 * @param string $url The URL to purge.
+	 *
 	 * @return void
 	 */
-	public function litespeed_header_purge_url( $url ) {
-		$parse_url                          = get_rocket_parse_url( $url );
-		$path                               = rtrim( $parse_url['path'], '/' );
-		$this->headers['X-LiteSpeed-Purge'] = $path;
+	private function litespeed_header_purge_url( $url ) {
+		$path = wp_parse_url( $url, PHP_URL_PATH );
+
+		if ( ! $path ) {
+			return;
+		}
+
+		$this->headers['X-LiteSpeed-Purge'] = rtrim( $path, '/' );
 	}
 
 	/**
-	 * Purge Litespeed Cache
+	 * Set LiteSpeed header to purge all
 	 *
-	 * @since 3.9.1
+	 * @since 3.9.2
 	 *
 	 * @return void
 	 */
-	public function litespeed_header_purge_all() {
+	private function litespeed_header_purge_all() {
 		$this->headers['X-LiteSpeed-Purge'] = '*';
 	}
 }
