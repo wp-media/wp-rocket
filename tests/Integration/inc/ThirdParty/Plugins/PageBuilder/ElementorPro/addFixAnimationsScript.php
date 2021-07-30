@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group ElementorPro
  * @group ThirdParty
  */
-class Test_AddFixAnimationsScript extends FilesystemTestCase {
+class Test_AddFixAnimationsScript extends TestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/ElementorPro/addFixAnimationsScript.php';
 	private $delay_js = false;
 
@@ -20,14 +20,13 @@ class Test_AddFixAnimationsScript extends FilesystemTestCase {
 
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
-		//delete_option( 'elementor_css_print_method' );
 		$this->delay_js = false;
 		$this->restoreWpFilter( 'rocket_buffer' );
 		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddFixScript( $config, $html, $expected ) {
 
