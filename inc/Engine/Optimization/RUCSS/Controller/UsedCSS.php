@@ -426,22 +426,18 @@ class UsedCSS {
 	 */
 	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
 		$html_nocomments       = $this->hide_comments( $html );
+		$html_noscripts        = $this->hide_noscripts( $html_nocomments );
 		$link_style_pattern    = '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>';
-		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style>';
+		$inline_inline_pattern = '<style(?<atts>.*)>(?<content>.*)<\/style\s*>';
 
 		$link_styles   = $this->find(
-			'<noscript[^>]*>.*' .
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>' .
-			'.*<\/noscript>(*SKIP)(*FAIL)|' .
 			$link_style_pattern,
-			$html_nocomments
+			$html_noscripts,
+			'Uis'
 		);
 		$inline_styles = $this->find(
-			'<noscript[^>]*>.*' .
-			'<style(.*)>(.*)<\/style>' .
-			'.*<\/noscript>(*SKIP)(*FAIL)|' .
 			$inline_inline_pattern,
-			$html_nocomments
+			$html_noscripts
 		);
 
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
@@ -519,6 +515,23 @@ class UsedCSS {
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
+	}
+
+	/**
+	 * Hides <noscript> blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function hide_noscripts( string $html ): string {
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**

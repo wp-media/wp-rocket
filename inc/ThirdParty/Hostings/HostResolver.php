@@ -89,6 +89,12 @@ class HostResolver {
 			self::$hostname = 'litespeed';
 			return 'litespeed';
 		}
+
+		if ( class_exists( '\WPaas\Plugin' ) ) {
+			self::$hostname = 'godaddy';
+			return 'godaddy';
+		}
+
 		return '';
 	}
 

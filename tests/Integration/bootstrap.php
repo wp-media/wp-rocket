@@ -124,6 +124,12 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
 			$_SERVER[ 'X_LSCACHE'] = '1';
 		}
+
+		if ( BootstrapManager::isGroup( 'Godaddy' ) ) {
+			// Load GoDaddy mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

@@ -35,8 +35,7 @@ class HTML {
 		'fusionNavIsCollapsed',
 		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
 		'eio_lazy_vars',
-		'/ewww-image-optimizer/includes/lazysizes.min.js',
-		'/ewww-image-optimizer-cloud/includes/lazysizes.min.js',
+		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
 		'document\.body\.classList\.remove\("no-js"\)',
 		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
 		'et_animation_data',
@@ -52,6 +51,9 @@ class HTML {
 		'var billing_additional_field', // Woo Autocomplete Nish.
 		'var gtm4wp',
 		'var dataLayer_content',
+		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
+		'ewwwWebPInit', // EWWW WebP rewrite inline script.
+		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
 	];
 
 	/**
@@ -178,7 +180,12 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
-			if ( false !== strpos( $matches['attr'], 'application/ld+json' ) ) {
+
+			if (
+				strpos( $matches['attr'], 'type' ) !== false
+				&&
+				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
+			) {
 				return $matches[0];
 			}
 

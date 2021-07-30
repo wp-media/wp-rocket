@@ -41,6 +41,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Dreampress();
 			case 'litespeed':
 				return new LiteSpeed();
+			case 'godaddy':
+				return new Godaddy();
 			default:
 				return new NullSubscriber();
 		}
