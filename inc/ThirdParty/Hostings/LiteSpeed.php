@@ -84,7 +84,7 @@ class LiteSpeed implements Subscriber_Interface {
 
 		array_walk(
 			$urls,
-			function( $url ) {
+			function( &$url ) {
 				return wp_parse_url( $url, PHP_URL_PATH );
 			}
 		);
