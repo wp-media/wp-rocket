@@ -2,6 +2,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class_alias( '\WP_Rocket\ThirdParty\Hostings\LiteSpeed', '\WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber');
+
 /**
  * Changes the text on the Varnish one-click block.
  *
