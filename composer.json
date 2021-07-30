@@ -160,7 +160,7 @@
 			"@test-integration-wpcom",
 			"@test-integration-o2switch",
 			"@test-integration-dreampress",
-			"@test-integration-litespeed"
+			"@test-integration-litespeed",
 			"@test-integration-godaddy"
 		],
 		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
