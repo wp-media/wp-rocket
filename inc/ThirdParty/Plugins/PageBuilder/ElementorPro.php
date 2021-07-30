@@ -25,6 +25,7 @@ class ElementorPro implements Subscriber_Interface {
 	 */
 	private $delayjs_html;
 
+
 	/**
 	 * Constructor
 	 *
@@ -59,7 +60,9 @@ class ElementorPro implements Subscriber_Interface {
 	 * @return string HTML with Fix Elementor Pro animations script.
 	 */
 	public function add_fix_animation_script( $html ) {
-
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return $html;
+		}
 		$pattern = '/<\/body*>/i';
 
 		$fix_elementor_animation_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/elementor-animation.js' );

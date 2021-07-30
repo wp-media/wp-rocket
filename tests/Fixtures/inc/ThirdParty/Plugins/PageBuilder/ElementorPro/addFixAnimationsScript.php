@@ -19,7 +19,7 @@ $fix_script = "class RocketElementorAnimation {
 
         // Loops over all elementor elements
         document.querySelectorAll('.elementor-invisible[data-settings]').forEach(element => {
-            
+
             // Filter elements inside viewport only
             const rect = element.getBoundingClientRect();
             if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
@@ -40,14 +40,14 @@ $fix_script = "class RocketElementorAnimation {
         const elementSettings = JSON.parse(element.dataset.settings);
         const delay = elementSettings._animation_delay || elementSettings.animation_delay || 0;
         const animation = elementSettings[this.animationSettingKeys.find(key => elementSettings[key])];
-        
+
         if (animation === 'none') {
             element.classList.remove('elementor-invisible');
             return;
         }
 
         element.classList.remove(animation);
-        
+
         if (this.currentAnimation) {
             element.classList.remove(this.currentAnimation);
         }
@@ -73,7 +73,7 @@ $fix_script = "class RocketElementorAnimation {
      */
     _listAnimationSettingsKeys(deviceName = 'mobile') {
         const animationSettingSuffixes = [''];
-        
+
         // According to Elementor's code, mobile device can also use tablet or desktop settings
         // and tablet device can also use desktop settings.
         // (This is why this switch has no \"break\" statements.)
@@ -85,7 +85,7 @@ $fix_script = "class RocketElementorAnimation {
             case 'desktop':
                 animationSettingSuffixes.unshift('_desktop');
         }
-        
+
         const animationSettingPrefixes = ['animation', '_animation'];
 
         // Now let's combine all this together
@@ -118,8 +118,7 @@ $fix_script = "class RocketElementorAnimation {
 document.addEventListener('DOMContentLoaded', RocketElementorAnimation.run);";
 
 return [
-	'vfs_dir' => 'public/',
-
+	'vfs_dir' => 'wp-content/',
 	'structure' => [
 		'wp-content' => [
 			'plugins' => [
@@ -134,11 +133,23 @@ return [
 		],
 	],
 	'test_data' => [
-		'testElementorProAddFixAnimationScript' => [
-			'config'                  => '<html><head><title>Sample Page</title>' .
+		'testElementorProShouldAddFixAnimationScript' => [
+			'config'   => [
+				'delay_js'      => 1,
+			],
+			'html'                  => '<html><head><title>Sample Page</title>' .
 							                '</head><body></body></html>',
 			'expected'              => '<html><head><title>Sample Page</title>' .
 											'</head><body><script>'.$fix_script.'</script></body></html>',
+		],
+		'testElementorShouldNotAddFixAnimationScript' => [
+			'config'   => [
+				'delay_js'      => 0,
+			],
+			'html'                  => '<html><head><title>Sample Page</title>' .
+			                           '</head><body></body></html>',
+			'expected'              => '<html><head><title>Sample Page</title>' .
+			                           '</head><body></body></html>',
 		]
 	]
 ];
