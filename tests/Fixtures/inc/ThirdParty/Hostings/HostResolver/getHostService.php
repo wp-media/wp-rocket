@@ -16,6 +16,6 @@ return [
 		],
 		'testShouldReturnSavvii' => [
 			'expected' => 'savvii',
-		]
+		],
 	],
 ];
