@@ -42,7 +42,7 @@ class WPMeteor implements Subscriber_Interface {
 		return [
 			'rocket_delay_js_settings_field'   => 'maybe_disable_delay_js_field',
 			'activate_wp-meteor/wp-meteor.php' => 'disable_delay_js',
-			'wp_rocket_upgrade'                => ['maybe_disable_delay_js', 10, 2 ],
+			'wp_rocket_upgrade'                => [ 'maybe_disable_delay_js', 10, 2 ],
 		];
 	}
 
