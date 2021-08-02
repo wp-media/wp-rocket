@@ -40,9 +40,10 @@ class WPMeteor implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_delay_js_settings_field'   => 'maybe_disable_delay_js_field',
-			'activate_wp-meteor/wp-meteor.php' => 'disable_delay_js',
-			'wp_rocket_upgrade'                => [ 'maybe_disable_delay_js', 10, 2 ],
+			'rocket_delay_js_settings_field'       => 'maybe_disable_delay_js_field',
+			'activate_wp-meteor/wp-meteor.php'     => 'disable_delay_js',
+			'wp_rocket_upgrade'                    => [ 'maybe_disable_delay_js', 10, 2 ],
+			'pre_update_option_wp_rocket_settings' => 'disable_delay_js_on_option_update',
 		];
 	}
 
@@ -104,5 +105,32 @@ class WPMeteor implements Subscriber_Interface {
 		}
 
 		$this->disable_delay_js();
+	}
+
+	/**
+	 * Disable delay JS on WP Rocket settings update if WP Meteor is active
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param mixed $value The new, unserialized option value.
+	 *
+	 * @return mixed
+	 */
+	public function disable_delay_js_on_option_update( $value ) {
+		if ( ! is_plugin_active( 'wp-meteor/wp-meteor.php' ) ) {
+			return $value;
+		}
+
+		if ( ! isset( $value['delay_js'] ) ) {
+			return $value;
+		}
+
+		if ( 0 === (int) $value['delay_js'] ) {
+			return $value;
+		}
+
+		$value['delay_js'] = 0;
+
+		return $value;
 	}
 }
