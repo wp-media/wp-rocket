@@ -42,6 +42,7 @@ class WPMeteor implements Subscriber_Interface {
 		return [
 			'rocket_delay_js_settings_field'   => 'maybe_disable_delay_js_field',
 			'activate_wp-meteor/wp-meteor.php' => 'disable_delay_js',
+			'wp_rocket_upgrade'                => ['maybe_disable_delay_js', 10, 2 ],
 		];
 	}
 
@@ -81,5 +82,27 @@ class WPMeteor implements Subscriber_Interface {
 	public function disable_delay_js() {
 		$this->options->set( 'delay_js', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Disable delay JS when updating to 3.9.2 and above and WP Meteor is active
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 *
+	 * @return void
+	 */
+	public function maybe_disable_delay_js( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.9.2', '>' ) ) {
+			return;
+		}
+
+		if ( ! is_plugin_active( 'wp-meteor/wp-meteor.php' ) ) {
+			return;
+		}
+
+		$this->disable_delay_js();
 	}
 }
