@@ -285,6 +285,7 @@ class Plugin {
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
 			'optimus_webp_subscriber',
+			'wp-meteor',
 		];
 
 		$host_type = HostResolver::get_host_service();

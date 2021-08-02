@@ -32,8 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' );
 		$this->getContainer()->share( 'delay_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
 			->addTag( 'admin_subscriber' );

@@ -34,7 +34,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
 			'rocket_input_sanitize'                => [ 'sanitize_options', 13, 2 ],
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
-			'rocket_plugins_to_deactivate'         => 'add_plugins_incompatibility',
 		];
 	}
 
@@ -92,18 +91,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_combine_js( $value, $old_value ): array {
 		return $this->settings->maybe_disable_combine_js( $value, $old_value );
-	}
-
-	/**
-	 * Adds plugins incompatible with delay JS to the list
-	 *
-	 * @since 3.9.0.1
-	 *
-	 * @param string[] $plugins Array of recommended plugins to deactivate.
-	 *
-	 * @return array
-	 */
-	public function add_plugins_incompatibility( $plugins ): array {
-		return $this->settings->add_plugins_incompatibility( $plugins );
 	}
 }
