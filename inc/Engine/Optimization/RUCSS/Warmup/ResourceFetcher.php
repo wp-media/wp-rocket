@@ -318,7 +318,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return $data;
 		}
 
-		$decompressed = gzdecode( $data );
+		$decompressed = @gzdecode( $data );
 
 		if ( false === $decompressed ) {
 			return $data;
