@@ -86,9 +86,9 @@ class ResourcesQuery extends Query {
 				[
 					'url'           => $resource['url'],
 					'type'          => $resource['type'],
-					'content'       => $this->encode( $resource['content'] ),
+					'content'       => $resource['content'],
 					'media'         => $resource['media'] ?? '',
-					'hash'          => $this->hash( $resource['content'] ),
+					'hash'          => md5( $resource['content'] ),
 					'prewarmup'     => $resource['prewarmup'] ?? 0,
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -110,7 +110,7 @@ class ResourcesQuery extends Query {
 		);
 
 		// Check the content hash and bailout if the content is the same and we are not in prewarmup.
-		if ( $this->hash( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
+		if ( md5( $resource['content'] ) === $db_row->hash && ! $resource['prewarmup'] ) {
 			// Do nothing.
 			return false;
 		}
@@ -120,8 +120,8 @@ class ResourcesQuery extends Query {
 			$db_row->id,
 			[
 				'prewarmup' => $resource['prewarmup'] ?? 0,
-				'content'   => $this->encode( $resource['content'] ),
-				'hash'      => $this->hash( $resource['content'] ),
+				'content'   => $resource['content'],
+				'hash'      => md5( $resource['content'] ),
 				'modified'  => current_time( 'mysql', true ),
 			]
 		);
@@ -238,40 +238,5 @@ class ResourcesQuery extends Query {
 				'warmup_status' => 1,
 			]
 		);
-	}
-
-	/**
-	 * Hash the data (content).
-	 *
-	 * @since 3.9.2
-	 *
-	 * @param string $data Data to be hashed.
-	 *
-	 * @return string
-	 */
-	private function hash( string $data ): string {
-		return md5( $data );
-	}
-
-	/**
-	 * Encode the data (content).
-	 *
-	 * @since 3.9.2
-	 *
-	 * @param string $data Data to be encoded.
-	 *
-	 * @return string
-	 */
-	private function encode( string $data ): string {
-		if ( ! function_exists( 'gzencode' ) ) {
-			return $data;
-		}
-
-		$encoded = gzencode( $data );
-		if ( ! $encoded ) {
-			return $data;
-		}
-
-		return base64_encode( $encoded ); //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	}
 }
