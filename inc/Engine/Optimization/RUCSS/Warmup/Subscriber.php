@@ -93,7 +93,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->is_allowed() ) {
 			$this->resource_fetcher->data(
 				[
-					'html' => $html,
+					'html' => $this->resource_fetcher->compress( $html ),
 				]
 			)->dispatch();
 		}

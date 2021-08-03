@@ -84,7 +84,7 @@ class ScannerProcess extends WP_Rocket_WP_Background_Process {
 
 		$this->resource_fetcher->data(
 			[
-				'html'      => $html,
+				'html'      => $this->resource_fetcher->compress( $html ),
 				'prewarmup' => 1,
 				'page_url'  => $item['url'],
 				'is_error'  => $item['is_error'],
