@@ -57,7 +57,7 @@ class ElementorPro implements Subscriber_Interface {
 	 *
 	 * @since 3.9.2
 	 *
-	 * @param html $html DelayJS HTML class.
+	 * @param string $html HTML content.
 	 *
 	 * @return string HTML with Fix Elementor Pro animations script.
 	 */
