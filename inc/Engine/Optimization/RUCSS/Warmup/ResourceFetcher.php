@@ -295,6 +295,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 			return $data;
 		}
 
+		if ( empty( $data ) ) {
+			return '';
+		}
+
 		$compressed = gzencode( $data, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
 
 		if ( false === $compressed ) {
@@ -316,6 +320,10 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	private function decompress( string $data ): string {
 		if ( ! function_exists( 'gzdecode' ) ) {
 			return $data;
+		}
+
+		if ( empty( $data ) ) {
+			return '';
 		}
 
 		$decompressed = @gzdecode( $data ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
