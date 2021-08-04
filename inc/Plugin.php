@@ -286,6 +286,7 @@ class Plugin {
 			'ewww_webp_subscriber',
 			'optimus_webp_subscriber',
 			'adthrive',
+			'wp-meteor',
 		];
 
 		$host_type = HostResolver::get_host_service();
