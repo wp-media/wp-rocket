@@ -24,11 +24,10 @@ class Test_AddDelayJsExclusion extends TestCase {
 			->with( 'wp_rocket_settings', [] )
 			->andReturn( $settings );
 
-		if ( ! empty ( $expected ) ) {
-			Functions\expect( 'update_option' )
-				->once()
-				->with( 'wp_rocket_settings', $expected );
-		}
+		Functions\expect( 'update_option' )
+			->atMost()
+			->once()
+			->with( 'wp_rocket_settings', $expected );
 
 		$adthrive->add_delay_js_exclusion();
 	}

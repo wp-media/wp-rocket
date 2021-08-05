@@ -6,7 +6,10 @@ return [
 			'delay_js' => 0,
 			'delay_js_exclusions' => [],
 		],
-		'expected' => [],
+		'expected' => [
+			'delay_js' => 0,
+			'delay_js_exclusions' => [],
+		],
 	],
 	'shouldDoNothingWhenPatternAlreadyExists' => [
 		'settings' => [
@@ -15,7 +18,12 @@ return [
 				'adthrive',
 			],
 		],
-		'expected' => [],
+		'expected' => [
+			'delay_js' => 1,
+			'delay_js_exclusions' => [
+				'adthrive',
+			],
+		],
 	],
 	'shouldUpdateSettingsWhenPatternNotAlreadyExists' => [
 		'settings' => [
