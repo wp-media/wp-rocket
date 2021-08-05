@@ -25,6 +25,7 @@ return [
 			],
 		],
 		'expected' => [
+			'delay_js' => 1,
 			'delay_js_exclusions' => [
 				'js-(before|after)',
 				'adthrive',
