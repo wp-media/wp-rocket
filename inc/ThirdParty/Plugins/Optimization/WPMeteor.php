@@ -3,36 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class WPMeteor implements Subscriber_Interface {
-	/**
-	 * Options API instance
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
-	 * Options_Data instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Instantiate the class
-	 *
-	 * @param Options      $options_api Options API instance.
-	 * @param Options_Data $options Options_Data instance.
-	 */
-	public function __construct( Options $options_api, Options_Data $options ) {
-		$this->options_api = $options_api;
-		$this->options     = $options;
-	}
-
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -81,8 +54,11 @@ class WPMeteor implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function disable_delay_js() {
-		$this->options->set( 'delay_js', 0 );
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		$options['delay_js'] = 0;
+
+		update_option( 'wp_rocket_settings', $options );
 	}
 
 	/**
