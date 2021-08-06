@@ -1,26 +1,29 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\ElementorPro;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-use WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro::add_fix_animation_script
- * @group ElementorPro
+ * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
+ * @group Elementor
  * @group ThirdParty
  */
 class Test_AddFixAnimationsScript extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/ElementorPro/addFixAnimationsScript.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/Elementor/addFixAnimationsScript.php';
 
 	private $subscriber;
 	private $delay_js_html;
+	private $options;
 
 	public function setUp() : void {
 		parent::setUp();
 		$this->delay_js_html = Mockery::mock( HTML::class );
-		$this->subscriber = new ElementorPro( $this->filesystem , $this->delay_js_html );
+		$this->options =  Mockery::mock( Options_Data::class );
+		$this->subscriber = new Elementor( $this->options , $this->filesystem , $this->delay_js_html );
 	}
 
 	public function tearDown() : void {

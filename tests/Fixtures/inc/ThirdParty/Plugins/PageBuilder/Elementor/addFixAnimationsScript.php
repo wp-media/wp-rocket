@@ -17,7 +17,7 @@ return [
 		],
 	],
 	'test_data' => [
-		'testElementorProShouldAddFixAnimationScript' => [
+		'testElementorShouldAddFixAnimationScript' => [
 			'config'   => [
 				'delay_js'      => 1,
 			],

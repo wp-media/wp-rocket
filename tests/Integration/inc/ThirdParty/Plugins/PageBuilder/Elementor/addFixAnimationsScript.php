@@ -1,17 +1,17 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PageBuilder\ElementorPro;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\ElementorPro::add_fix_animation_script
- * @group ElementorPro
+ * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
+ * @group Elementor
  * @group ThirdParty
  */
 class Test_AddFixAnimationsScript extends TestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/ElementorPro/addFixAnimationsScript.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/Elementor/addFixAnimationsScript.php';
 	private $delay_js = false;
 
 	public function setUp(): void {
