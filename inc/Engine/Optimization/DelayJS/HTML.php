@@ -54,6 +54,7 @@ class HTML {
 		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
 		'ewwwWebPInit', // EWWW WebP rewrite inline script.
 		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
+		'__tcfapi', //Consent managemant platforms implementing the legal framework developed by IAB Europe to comply with GDPR
 	];
 
 	/**
