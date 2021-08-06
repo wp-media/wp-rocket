@@ -40,12 +40,12 @@ class Elementor implements Subscriber_Interface {
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options WP Rocket options.
+	 * @param Options_Data          $options WP Rocket options.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( Options_Data $options , $filesystem, HTML $delayjs_html) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html ) {
+		$this->options      = $options;
 		$this->filesystem   = $filesystem;
 		$this->delayjs_html = $delayjs_html;
 	}
@@ -70,7 +70,7 @@ class Elementor implements Subscriber_Interface {
 			'elementor/core/files/clear_cache'    => 'clear_cache',
 			'update_option__elementor_global_css' => 'clear_cache',
 			'delete_option__elementor_global_css' => 'clear_cache',
-			'rocket_buffer' => [ 'add_fix_animation_script', 28 ],
+			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
 		];
 	}
 
