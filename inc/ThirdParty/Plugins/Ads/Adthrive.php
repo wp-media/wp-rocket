@@ -64,7 +64,7 @@ class Adthrive implements Subscriber_Interface {
 			return;
 		}
 
-		if ( is_plugin_active( 'adthrive-ads/adthrive-ads.php' ) ) {
+		if ( ! is_plugin_active( 'adthrive-ads/adthrive-ads.php' ) ) {
 			return;
 		}
 
