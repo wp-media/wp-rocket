@@ -13,7 +13,7 @@ class Adthrive implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade'                      => [ 'add_delay_js_exclusion_on_plugin_update', 10, 2 ],
+			'wp_rocket_upgrade'                      => [ 'add_delay_js_exclusion_on_plugin_update', 20, 2 ],
 			'activate_adthrive-ads/adthrive-ads.php' => 'add_delay_js_exclusion',
 		];
 	}
