@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'divi',
 		'mod_pagespeed',
 		'wp-meteor',
+		'revolution_slider_subscriber',
 	];
 
 	/**
@@ -132,6 +133,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'wp-meteor', 'WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor' )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
 			->addTag( 'common_subscriber' );
 	}
 }
