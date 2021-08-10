@@ -24,22 +24,9 @@ class LiteSpeed implements Subscriber_Interface {
 			'before_rocket_clean_domain' => 'litespeed_clean_domain',
 			'before_rocket_clean_file'   => 'litespeed_clean_file',
 			'before_rocket_clean_home'   => [ 'litespeed_clean_home', 10, 2 ],
-			'wp_headers'                 => 'litespeed_send_headers',
 		];
 	}
 
-	/**
-	 * Add purge headers to the request
-	 *
-	 * @since  3.9.2
-	 *
-	 * @param array $headers headers to be added to response.
-	 *
-	 * @return array
-	 */
-	public function litespeed_send_headers( $headers ): array {
-		return array_merge( $headers, $this->headers );
-	}
 
 	/**
 	 * Purge all pages in LiteSpeed
@@ -76,26 +63,11 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function litespeed_clean_home( $root, $lang ) {
-		$home_url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-		$urls     = [
-			'home'       => trailingslashit( get_rocket_i18n_home_url( $lang ) ),
-			'pagination' => $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ),
-		];
+		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
-		array_walk(
-			$urls,
-			function( &$url ) {
-				$url = wp_parse_url( $url, PHP_URL_PATH );
-			}
-		);
-
-		$urls = array_filter( $urls );
-
-		if ( empty( $urls ) ) {
-			return;
-		}
-
-		$this->headers['X-LiteSpeed-Purge'] = implode( ',', $urls );
+		$this->litespeed_header_purge_url( $home_url );
+		$this->litespeed_header_purge_url( $home_pagination_url );
 	}
 
 	/**
@@ -108,13 +80,15 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function litespeed_header_purge_url( $url ) {
-		$path = wp_parse_url( $url, PHP_URL_PATH );
-
-		if ( ! $path ) {
+		if ( headers_sent() ) {
 			return;
 		}
+		$parse_url = get_rocket_parse_url( $url );
+		$path      = $parse_url['path'];
 
-		$this->headers['X-LiteSpeed-Purge'] = rtrim( $path, '/' );
+		$private_prefix = 'X-LiteSpeed-Purge: ' . $path;
+
+		@header( $private_prefix, false ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 
 	/**
@@ -125,6 +99,10 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function litespeed_header_purge_all() {
-		$this->headers['X-LiteSpeed-Purge'] = '*';
+		if ( headers_sent() ) {
+			return;
+		}
+		$private_prefix = 'X-LiteSpeed-Purge: *';
+		@header( $private_prefix ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }
