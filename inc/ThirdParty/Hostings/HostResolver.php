@@ -85,7 +85,7 @@ class HostResolver {
 			return 'dreampress';
 		}
 
-		if ( isset( $_SERVER['X_LSCACHE'] ) ) {
+		if ( isset( $_SERVER['X-LSCACHE'] ) ) {
 			self::$hostname = 'litespeed';
 			return 'litespeed';
 		}

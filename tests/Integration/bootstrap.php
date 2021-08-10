@@ -122,7 +122,7 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
-			$_SERVER[ 'X_LSCACHE'] = '1';
+			$_SERVER[ 'X-LSCACHE'] = '1';
 		}
 
 		if ( BootstrapManager::isGroup( 'Godaddy' ) ) {
