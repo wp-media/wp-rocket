@@ -76,7 +76,12 @@ jobs:
       - name: Init DB and WP
         run: ./tests/bin/install.sh woo_test root root 127.0.0.1 ${{ matrix.wp }}
 
-      - name: Run tests
+      - name: Run tests (single site)
         run: |
           ./vendor/bin/phpunit --version
           ./vendor/bin/phpunit -c ./tests/phpunit.xml.dist
+
+      - name: Run tests (multisite)
+        run: |
+          ./vendor/bin/phpunit --version
+          WP_MULTISITE=1 ./vendor/bin/phpunit -c ./tests/phpunit.xml.dist
