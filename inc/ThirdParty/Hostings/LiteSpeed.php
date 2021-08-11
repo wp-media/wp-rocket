@@ -136,7 +136,7 @@ class LiteSpeed implements Subscriber_Interface {
 	}
 
 	/**
-	 * if header is not in header_list() send it
+	 * If header is not in header_list() send it
 	 *
 	 * @since 3.9.2
 	 *
@@ -146,7 +146,7 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function send_header( $header, $replace = false ) {
-		if ( headers_sent() || in_array( $header, headers_list() ) ) {
+		if ( headers_sent() || in_array( $header, headers_list(), true ) ) {
 			return;
 		}
 		@header( $header, $replace ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
