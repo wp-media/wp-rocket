@@ -1,9 +1,9 @@
-name: Run unit tests on PR
+name: Check Code Coverage on PR
 on: 
   pull_request
 jobs:
   test:
-    name: PHP ${{ matrix.php }} WP ${{ matrix.wp }} MU ${{ matrix.multisite }}
+    name: Update Code Coverage
     timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
@@ -83,7 +83,7 @@ jobs:
         run: |
           ./vendor/bin/phpunit --version
           WP_MULTISITE=${{ matrix.multisite }} ./vendor/bin/phpunit -c ./tests/phpunit.xml.dist
-
+      
       - name: Code Coverage
         run: |
-          bash <(curl -s https://codecov.io/bash)
+          
