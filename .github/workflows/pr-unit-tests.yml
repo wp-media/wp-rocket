@@ -3,16 +3,18 @@ on:
   pull_request
 jobs:
   test:
-    name: PHP ${{ matrix.php }} WP ${{ matrix.wp }}
+    name: PHP ${{ matrix.php }} WP ${{ matrix.wp }} MU ${{ matrix.multisite }}
     timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        # We test against the earliest and latest PHP versions for each major supported version.
         php: [ '5.6', '7.0', '7.4', '8.0' ]
         wp: [ '5.2', '5.3', '5.4', '5.5', '5.6', 'latest' ]
         multisite: [ '0', '1' ]
         exclude:
+          # Earlier versions of WordPress do not support PHP 7.4+
           - php: 7.4
             wp: 5.2
           - php: 8.0
@@ -57,7 +59,7 @@ jobs:
       - name: Setup and install composer
         run: composer install
 
-      - name: Add PHP8 Compatibility.
+      - name: Setup PhpUnit
         run: |
           # PHP 5.6 and 7.0: use PhpUnit 5.7
           if [ "$(php -r "echo version_compare( PHP_VERSION, '7.1', '<' );")" ]; then
