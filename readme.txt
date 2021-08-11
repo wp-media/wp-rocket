@@ -1,11 +1,11 @@
 === Action Scheduler ===
 Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
-Requires at least: 4.7
+Requires at least: 5.2
 Tested up to: 5.7
 Stable tag: 3.2.1
 License: GPLv3
-Requires PHP: 5.3
+Requires PHP: 5.6
 
 Action Scheduler - Job Queue for WordPress
 
