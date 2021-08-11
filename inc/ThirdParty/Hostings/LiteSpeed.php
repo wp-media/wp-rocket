@@ -24,7 +24,7 @@ class LiteSpeed implements Subscriber_Interface {
 			'before_rocket_clean_domain' => 'litespeed_clean_domain',
 			'before_rocket_clean_file'   => 'litespeed_clean_file',
 			'before_rocket_clean_home'   => [ 'litespeed_clean_home', 10, 2 ],
-			'after_rocket_clean_post'    => [ 'litespeed_send_headers', 10 ],
+			// 'after_rocket_clean_post'    => [ 'litespeed_print_headers', 10 ],
 		];
 	}
 
@@ -97,8 +97,10 @@ class LiteSpeed implements Subscriber_Interface {
 		if ( empty( $urls ) ) {
 			return;
 		}
-		$this->headers[] = $urls['home'];
-		$this->headers[] = $urls['pagination'];
+
+		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['home'] );
+		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['pagination'] );
+
 	}
 
 	/**
@@ -117,7 +119,9 @@ class LiteSpeed implements Subscriber_Interface {
 			return;
 		}
 
-		$this->headers[] = $path;
+		$header = 'X-LiteSpeed-Purge: ' . $path;
+
+		$this->send_header( $header );
 	}
 
 	/**
@@ -128,6 +132,23 @@ class LiteSpeed implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function litespeed_header_purge_all() {
-		@header( 'X-LiteSpeed-Purge: *' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		$this->send_header( 'X-LiteSpeed-Purge: *', true );
+	}
+
+	/**
+	 * if header is not in header_list() send it
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param string  $header To be sent.
+	 * @param boolean $replace header.
+	 *
+	 * @return void
+	 */
+	private function send_header( $header, $replace = false ) {
+		if ( headers_sent() || in_array( $header, headers_list() ) ) {
+			return;
+		}
+		@header( $header, $replace ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }
