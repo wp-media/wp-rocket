@@ -32,8 +32,8 @@ class LiteSpeed implements Subscriber_Interface {
 		if ( empty( $this->headers ) ) {
 			return;
 		}
-		foreach ( $this->headers as $x ) {
-			@header( "X-LiteSpeed-Purge: {$x}", false ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		foreach ( $this->headers as $header ) {
+			@header( "X-LiteSpeed-Purge: {$header}", false ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 
