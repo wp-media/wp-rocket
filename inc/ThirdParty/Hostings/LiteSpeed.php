@@ -6,12 +6,6 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class LiteSpeed implements Subscriber_Interface {
-	/**
-	 * Headers to be added.
-	 *
-	 * @var array.
-	 */
-	private $headers = [];
 
 	/**
 	 * Subscribed events for Litespeed.
@@ -24,7 +18,6 @@ class LiteSpeed implements Subscriber_Interface {
 			'before_rocket_clean_domain' => 'litespeed_clean_domain',
 			'before_rocket_clean_file'   => 'litespeed_clean_file',
 			'before_rocket_clean_home'   => [ 'litespeed_clean_home', 10, 2 ],
-			// 'after_rocket_clean_post'    => [ 'litespeed_print_headers', 10 ],
 		];
 	}
 
@@ -149,6 +142,7 @@ class LiteSpeed implements Subscriber_Interface {
 		if ( headers_sent() || in_array( $header, headers_list(), true ) ) {
 			return;
 		}
+		$this->headers[] = $header;
 		@header( $header, $replace ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }
