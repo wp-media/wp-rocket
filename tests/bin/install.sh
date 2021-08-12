@@ -118,6 +118,9 @@ install_test_suite() {
 		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
+
+		# Support switching between single and multisite based on an env var.
+		echo "define( 'WP_TESTS_MULTISITE', (bool) getenv( 'WP_MULTISITE' ) );" >> "$WP_TESTS_DIR/wp-tests-config.php"
 	fi
 
 }
