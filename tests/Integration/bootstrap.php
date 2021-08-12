@@ -122,8 +122,14 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
+			$_SERVER[ 'X-LSCACHE'] = 'on';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/HeaderCollector.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/override_header_functions.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'Godaddy' ) ) {
-			// Load WP Engine mocked files.
+			// Load GoDaddy mocked files.
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
 		}
 
