@@ -133,6 +133,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
+			define( 'RS_REVISION', '6.5.5' );
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
