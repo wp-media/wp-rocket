@@ -32,6 +32,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 */
 	public function init() {
 		$table_maker = new ActionScheduler_StoreSchema();
+		$table_maker->init();
 		$table_maker->register_tables();
 	}
 
@@ -168,6 +169,19 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		if ( ! empty( $data->extended_args ) ) {
 			$data->args = $data->extended_args;
 			unset( $data->extended_args );
+		}
+
+		// Convert NULL dates to zero dates.
+		$date_fields = [
+			'scheduled_date_gmt',
+			'scheduled_date_local',
+			'last_attempt_gmt',
+			'last_attempt_gmt'
+		];
+		foreach( $date_fields as $date_field ) {
+			if ( is_null( $data->$date_field ) ) {
+				$data->$date_field = ActionScheduler_StoreSchema::DEFAULT_DATE;
+			}
 		}
 
 		try {
@@ -376,7 +390,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 
 		if ( 'select' === $select_or_count ) {
-			if ( strtoupper( $query[ 'order' ] ) == 'ASC' ) {
+			if ( 'ASC' === strtoupper( $query['order'] ) ) {
 				$order = 'ASC';
 			} else {
 				$order = 'DESC';
@@ -392,6 +406,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 					$sql .= " ORDER BY a.last_attempt_gmt $order";
 					break;
 				case 'none':
+					break;
+				case 'action_id':
+					$sql .= " ORDER BY a.action_id $order";
 					break;
 				case 'date':
 				default:
@@ -529,7 +546,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$query_args,
 			[
 				'per_page' => 1000,
-				'status' => self::STATUS_PENDING,
+				'status'   => self::STATUS_PENDING,
+				'orderby'  => 'action_id',
 			]
 		);
 

@@ -18,9 +18,20 @@ abstract class ActionScheduler_Abstract_Schema {
 	protected $schema_version = 1;
 
 	/**
+	 * @var string Schema version stored in database.
+	 */
+	protected $db_version;
+
+	/**
 	 * @var array Names of tables that will be registered by this class.
 	 */
 	protected $tables = [];
+
+	/**
+	 * Can optionally be used by concrete classes to carry out additional initialization work
+	 * as needed.
+	 */
+	public function init() {}
 
 	/**
 	 * Register tables with WordPress, and create them if needed.
@@ -42,6 +53,13 @@ abstract class ActionScheduler_Abstract_Schema {
 		// create the tables
 		if ( $this->schema_update_required() || $force_update ) {
 			foreach ( $this->tables as $table ) {
+				/**
+				 * Allow custom processing before updating a table schema.
+				 *
+				 * @param string $table Name of table being updated.
+				 * @param string $db_version Existing version of the table being updated.
+				 */
+				do_action( 'action_scheduler_before_schema_update', $table, $this->db_version );
 				$this->update_table( $table );
 			}
 			$this->mark_schema_update_complete();
@@ -63,11 +81,11 @@ abstract class ActionScheduler_Abstract_Schema {
 	 * @return bool
 	 */
 	private function schema_update_required() {
-		$option_name         = 'schema-' . static::class;
-		$version_found_in_db = get_option( $option_name, 0 );
+		$option_name      = 'schema-' . static::class;
+		$this->db_version = get_option( $option_name, 0 );
 
 		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema
-		if ( 0 === $version_found_in_db ) {
+		if ( 0 === $this->db_version ) {
 
 			$plugin_option_name = 'schema-';
 
@@ -80,12 +98,12 @@ abstract class ActionScheduler_Abstract_Schema {
 					break;
 			}
 
-			$version_found_in_db = get_option( $plugin_option_name, 0 );
+			$this->db_version = get_option( $plugin_option_name, 0 );
 
 			delete_option( $plugin_option_name );
 		}
 
-		return version_compare( $version_found_in_db, $this->schema_version, '<' );
+		return version_compare( $this->db_version, $this->schema_version, '<' );
 	}
 
 	/**

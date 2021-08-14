@@ -242,9 +242,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 		while ( ! empty( $action_ids ) ) {
 			$action_ids = $this->query_actions(
 				array(
-					'hook' => $hook,
-					'status' => self::STATUS_PENDING,
+					'hook'     => $hook,
+					'status'   => self::STATUS_PENDING,
 					'per_page' => 1000,
+					'orderby'  => 'action_id',
 				)
 			);
 
@@ -266,9 +267,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 		while ( ! empty( $action_ids ) ) {
 			$action_ids = $this->query_actions(
 				array(
-					'group' => $group,
-					'status' => self::STATUS_PENDING,
+					'group'    => $group,
+					'status'   => self::STATUS_PENDING,
 					'per_page' => 1000,
+					'orderby'  => 'action_id',
 				)
 			);
 
@@ -315,8 +317,9 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 */
 	public function has_pending_actions_due() {
 		$pending_actions = $this->query_actions( array(
-			'date'   => as_get_datetime_object(),
-			'status' => ActionScheduler_Store::STATUS_PENDING,
+			'date'    => as_get_datetime_object(),
+			'status'  => ActionScheduler_Store::STATUS_PENDING,
+			'orderby' => 'none',
 		) );
 
 		return ! empty( $pending_actions );

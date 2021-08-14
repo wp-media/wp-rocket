@@ -5,7 +5,7 @@
  * Description: A robust scheduling library for use in WordPress plugins.
  * Author: Automattic
  * Author URI: https://automattic.com/
- * Version: 3.1.6
+ * Version: 3.2.1
  * License: GPLv3
  *
  * Copyright 2019 Automattic, Inc.  (https://automattic.com/contact/)
@@ -25,28 +25,33 @@
  *
  */
 
-if ( ! function_exists( 'action_scheduler_register_3_dot_1_dot_6' ) ) {
+if ( ! function_exists( 'action_scheduler_register_3_dot_2_dot_1' ) ) {
 
 	if ( ! class_exists( 'ActionScheduler_Versions' ) ) {
 		require_once( 'classes/ActionScheduler_Versions.php' );
 		add_action( 'plugins_loaded', array( 'ActionScheduler_Versions', 'initialize_latest_version' ), 1, 0 );
 	}
 
-	add_action( 'plugins_loaded', 'action_scheduler_register_3_dot_1_dot_6', 0, 0 );
+	add_action( 'plugins_loaded', 'action_scheduler_register_3_dot_2_dot_1', 0, 0 );
 
-	function action_scheduler_register_3_dot_1_dot_6() {
+	function action_scheduler_register_3_dot_2_dot_1() {
 		$versions = ActionScheduler_Versions::instance();
-		$versions->register( '3.1.6', 'action_scheduler_initialize_3_dot_1_dot_6' );
+		$versions->register( '3.2.1', 'action_scheduler_initialize_3_dot_2_dot_1' );
 	}
 
-	function action_scheduler_initialize_3_dot_1_dot_6() {
-		require_once( 'classes/abstracts/ActionScheduler.php' );
-		ActionScheduler::init( __FILE__ );
+	function action_scheduler_initialize_3_dot_2_dot_1() {
+		// A final safety check is required even here, because historic versions of Action Scheduler
+		// followed a different pattern (in some unusual cases, we could reach this point and the
+		// ActionScheduler class is already defined—so we need to guard against that).
+		if ( ! class_exists( 'ActionScheduler' ) ) {
+			require_once( 'classes/abstracts/ActionScheduler.php' );
+			ActionScheduler::init( __FILE__ );
+		}
 	}
 
 	// Support usage in themes - load this version if no plugin has loaded a version yet.
-	if ( did_action( 'plugins_loaded' ) && ! class_exists( 'ActionScheduler' ) ) {
-		action_scheduler_initialize_3_dot_1_dot_6();
+	if ( did_action( 'plugins_loaded' ) && ! doing_action( 'plugins_loaded' ) && ! class_exists( 'ActionScheduler' ) ) {
+		action_scheduler_initialize_3_dot_2_dot_1();
 		do_action( 'action_scheduler_pre_theme_init' );
 		ActionScheduler_Versions::initialize_latest_version();
 	}

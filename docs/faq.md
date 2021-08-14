@@ -22,7 +22,7 @@ Or trigger the `'action_scheduler_run_queue'` hook and let Action Scheduler do i
 do_action( 'action_scheduler_run_queue', $context_identifier );
 ```
 
-Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/woocommerce/action-scheduler/blob/master/classes/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
+Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/woocommerce/action-scheduler/blob/master/classes/WP_CLI/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
 
 Want to create some other method for initiating Action Scheduler? [Open a new issue](https://github.com/woocommerce/action-scheduler/issues/new), we'd love to help you with it.
 

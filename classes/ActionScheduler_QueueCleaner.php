@@ -44,6 +44,7 @@ class ActionScheduler_QueueCleaner {
 				'modified'         => $cutoff,
 				'modified_compare' => '<=',
 				'per_page'         => $this->get_batch_size(),
+				'orderby'          => 'none',
 			) );
 
 			foreach ( $actions_to_delete as $action_id ) {
@@ -90,6 +91,7 @@ class ActionScheduler_QueueCleaner {
 			'modified_compare' => '<=',
 			'claimed'          => true,
 			'per_page'         => $this->get_batch_size(),
+			'orderby'          => 'none',
 		) );
 
 		foreach ( $actions_to_reset as $action_id ) {
@@ -118,6 +120,7 @@ class ActionScheduler_QueueCleaner {
 			'modified'         => $cutoff,
 			'modified_compare' => '<=',
 			'per_page'         => $this->get_batch_size(),
+			'orderby'          => 'none',
 		) );
 
 		foreach ( $actions_to_reset as $action_id ) {

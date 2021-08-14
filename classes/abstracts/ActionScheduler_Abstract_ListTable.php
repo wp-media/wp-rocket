@@ -177,7 +177,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	protected function prepare_column_headers() {
 		$this->_column_headers = array(
 			$this->get_columns(),
-			array(),
+			get_hidden_columns( $this->screen ),
 			$this->get_sortable_columns(),
 		);
 	}
