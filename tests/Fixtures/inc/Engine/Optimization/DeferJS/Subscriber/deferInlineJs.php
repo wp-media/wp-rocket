@@ -2,6 +2,12 @@
 
 $html = <<<HTML
 	<script src="http://example.org/wp-includes/js/jquery/jquery.js?v=3.1.15" id="jquery-core"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script>
 		function newContent() {
 		document.open();
@@ -34,12 +40,19 @@ $html = <<<HTML
 		hiddenBox.show();
 		});
 	</script>
+	<script>alert('ewww_webp_supported');</script>
 	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
 HTML
 ;
 
 $expected = <<<HTML
 	<script src="http://example.org/wp-includes/js/jquery/jquery.js?v=3.1.15" id="jquery-core" defer></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script>
 		function newContent() {
 		document.open();
@@ -78,6 +91,7 @@ $expected = <<<HTML
 		});
 	});
 	</script>
+	<script>alert('ewww_webp_supported');</script>
 	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
 HTML
 ;
