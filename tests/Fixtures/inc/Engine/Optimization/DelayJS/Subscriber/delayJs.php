@@ -13,6 +13,8 @@ $html = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -149,6 +151,8 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
@@ -285,6 +289,8 @@ $delay_html = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load_webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/load-webp.min.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
 	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
