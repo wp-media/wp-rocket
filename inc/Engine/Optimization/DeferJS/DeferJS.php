@@ -207,7 +207,6 @@ class DeferJS {
 			'/wp-includes/js/dist/i18n.min.js',
 			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 			'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
-			'/wp-content/plugins/ewww-image-optimizer/includes/load[-_]webp(.min)?.js',
 			'/wp-content/plugins/ewww-image-optimizer/includes/check-webp(.min)?.js',
 			'static.mailerlite.com/data/(.*).js',
 			'cdn.voxpow.com/static/libs/v1/(.*).js',
