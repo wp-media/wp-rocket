@@ -2010,7 +2010,7 @@ msgstr "\" 清理已使用的 CSS \" 功能未启用！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:333
 msgid "Used CSS cache cleared!"
-msgstr "使用的 CSS 缓存已清除！"
+msgstr "已清除使用的 CSS 缓存！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:402
 msgid "Collected resource files from {count} of {total} key pages."
