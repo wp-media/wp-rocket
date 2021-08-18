@@ -2006,7 +2006,7 @@ msgstr "清理使用的 CSS"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:318
 msgid "Used CSS option is not enabled!"
-msgstr "使用的CSS选项未启用！"
+msgstr "\" 清理使用的CSS\" 功能未启用！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:333
 msgid "Used CSS cache cleared!"
