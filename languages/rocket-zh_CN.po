@@ -2036,7 +2036,7 @@ msgstr "正在处理您网站的CSS文件, 可能需要几分钟, 请稍候哦~"
 
 #: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:102
 msgid "Remove unused CSS option is disabled."
-msgstr "移除未使用CSS选项为禁用。"
+msgstr "\" 移除未使用的CSS \" 选项已禁用。"
 
 #: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:109
 msgid "Pre-Warmup process did not start yet."
