@@ -766,7 +766,7 @@ msgstr "排除图片或 iframe 框架"
 msgid ""
 "Specify keywords (e.g. image filename, CSS class, domain) from the image or "
 "iframe code to be excluded (one per line). %1$sMore info%2$s"
-msgstr "指定要排除的图片或iFrame框架代码的关键词（例如图片文件名、CSS类、域名）（每行指定一个） %1$s更多信息%2$s"
+msgstr "指定要排除的图片或 iframe 框架代码的关键词（如图片文件名、CSS类、域名），每行一个。 %1$s更多信息%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1085
 msgid "Add missing image dimensions"
