@@ -699,7 +699,7 @@ msgid ""
 "Add missing width and height attributes to images. Helps prevent layout "
 "shifts and improve the reading experience for your visitors. %1$sMore "
 "info%2$s"
-msgstr "为图片添加缺失的宽高属性。这有助于防止布局偏移，并为您的访客提升阅读体验。 %1$s更多信息%2$s"
+msgstr "为图片添加缺失的宽高属性。这有助于防止布局偏移，并能提升访客阅读体验。 %1$s更多信息%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:986
 msgid "Embeds"
