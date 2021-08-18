@@ -1946,7 +1946,7 @@ msgstr "续订一年授权，%3$s 可立减%1$s%2$s，您只需支付 %1$s%4$s%3
 #: inc/Engine/License/views/renewal-expired-banner.php:37
 #: inc/Engine/License/views/renewal-soon-banner.php:42
 msgid "Renew now"
-msgstr "立即续费"
+msgstr "立即续期"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
