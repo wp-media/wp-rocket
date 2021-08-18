@@ -2022,7 +2022,7 @@ msgstr "已处理 {count} / {total} 个从关键页面收集到的资源文件�
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:404
 msgid "Remove Unused CSS is complete!"
-msgstr "移除未使用CSS已完成！"
+msgstr "已移除未使用的 CSS ！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:405
 msgid "These files could not be processed:"
