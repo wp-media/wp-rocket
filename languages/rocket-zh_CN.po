@@ -3527,7 +3527,7 @@ msgstr "您的网站应该变快啦 !"
 msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
-msgstr "为达到最佳效果，WP Rocket 将应用 80% 的性能优化最佳实践。"
+msgstr "为达到加速效果，WP Rocket 已自动帮您开启了80%的加速最佳操作。"
 
 #: views/settings/page-sections/dashboard.php:44
 msgid ""
