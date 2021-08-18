@@ -2002,7 +2002,7 @@ msgstr "升级授权即可将 WP Rocket 用于多个网站。（仅需补齐%1$s
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:106
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
-msgstr "清理使用的 CSS"
+msgstr "清理已使用的 CSS"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:318
 msgid "Used CSS option is not enabled!"
