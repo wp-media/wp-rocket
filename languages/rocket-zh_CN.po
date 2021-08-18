@@ -2014,7 +2014,7 @@ msgstr "已清除使用的 CSS 缓存！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:402
 msgid "Collected resource files from {count} of {total} key pages."
-msgstr "{总数} 中的{计数} 的关键页面的收集的资源文件。"
+msgstr "从 {count}  /  {total} 个关键页面中收集到的资源文件。"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:403
 msgid "Processed {count} of {total} resource files found on key pages."
