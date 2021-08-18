@@ -521,7 +521,7 @@ msgstr "移除未使用的 CSS ( 测试 )"
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests "
 "for better performance. %1$sMore info%2$s"
-msgstr "移除每页上未使用的 CSS，减少页面大小及 HTTP 请求数量以优化性能。%1$s了解详情%2$s"
+msgstr "移除每个页面未使用的 CSS, 可以减少页面大小和 HTTP 请求数来优化性能. %1$s了解详情%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:725
 msgid "We’re still working on it!"
