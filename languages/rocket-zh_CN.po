@@ -1951,7 +1951,7 @@ msgstr "立即续期"
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
 msgid "Your %1$sWP Rocket license is about to expire.%2$s"
-msgstr "您的%1$sWP Rocket 许可证将要过期%2$s。"
+msgstr "您的%1$sWP Rocket 授权即将过期%2$s"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:32
 #, php-format
