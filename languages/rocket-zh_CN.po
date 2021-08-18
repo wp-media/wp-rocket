@@ -101,7 +101,7 @@ msgstr "Yoast SEO XML 网站地图"
 
 #: inc/Addon/Cloudflare/APIClient.php:309
 msgid "Cloudflare did not provide any reply. Please try again later."
-msgstr "Cloudflare 未做回复。请稍后重试。"
+msgstr "Cloudflare 未相应, 请稍后重试."
 
 #: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:122
 #: inc/deprecated/3.5.php:179
