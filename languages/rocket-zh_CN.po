@@ -546,7 +546,7 @@ msgstr "CSS 安全列表"
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
-msgstr "指定不需要移除的CSS文件名、id值或class值（一行指定一个）。"
+msgstr "指定无需移除的CSS文件名、ID 或 class 值（每行一个）。"
 
 #: inc/Engine/Admin/Settings/Page.php:749
 msgid "Minify JavaScript files"
