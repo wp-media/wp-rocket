@@ -657,7 +657,7 @@ msgid ""
 "excluded from delaying execution (one per line)."
 msgstr ""
 "指定无需延迟执行的 URL 或内嵌或 JavaScript 文件的关键词（每行一个）。\n"
-"指定用于识别内联 / JavaScript 文件的 URL 或关键词（每行一个）。"
+"指定用于识别内联或 JavaScript 文件的 URL 或关键词（每行一个）。"
 
 #: inc/Engine/Admin/Settings/Page.php:910
 msgid "Media"
