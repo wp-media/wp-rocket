@@ -525,7 +525,7 @@ msgstr "移除每个页面未使用的 CSS, 可以减少页面大小和 HTTP 请
 
 #: inc/Engine/Admin/Settings/Page.php:725
 msgid "We’re still working on it!"
-msgstr "我们尚在开发中！"
+msgstr "功能开发中 !"
 
 #: inc/Engine/Admin/Settings/Page.php:726
 msgid ""
