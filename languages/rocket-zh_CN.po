@@ -1958,7 +1958,7 @@ msgstr "您的%1$sWP Rocket 授权即将过期%2$s"
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%1$s%4$s%3$s!"
-msgstr "现在还来得及，以 %1$s%2$s 的折扣%3$s %1$s%4$s%3$s！"
+msgstr "立享  %1$s%2$s  折扣，您只需支付 %3$s %1$s%4$s%3$s！"
 
 #: inc/Engine/License/views/upgrade-popin.php:12
 msgid "Speed Up More Websites"
