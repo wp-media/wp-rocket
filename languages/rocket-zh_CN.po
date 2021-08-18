@@ -1981,7 +1981,7 @@ msgstr "%1$s注意%2$s：升级授权并不会延长有效期"
 #: inc/Engine/License/views/upgrade-popin.php:35
 #, php-format
 msgid "Save $%s"
-msgstr "节省 $%s"
+msgstr "立省 $%s"
 
 #: inc/Engine/License/views/upgrade-popin.php:48
 #, php-format
