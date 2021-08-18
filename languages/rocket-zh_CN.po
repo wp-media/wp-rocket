@@ -536,7 +536,7 @@ msgstr "测试版功能。你可提前尝试使用，但后续可能会有调整
 
 #: inc/Engine/Admin/Settings/Page.php:727
 msgid "Activate Remove Unused CSS"
-msgstr "激活移除未使用的CSS"
+msgstr "启用移除未使用的 CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:732
 msgid "CSS safelist"
