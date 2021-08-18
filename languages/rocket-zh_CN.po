@@ -532,7 +532,7 @@ msgid ""
 "This is a beta feature. We’re providing you early access but some changes "
 "might be added later on. If you notice any errors on your website, simply "
 "deactivate the feature."
-msgstr "这是个测试功能。我们让您提前尝试，但是后面可能会有调整。如果您在自己的网站上发现任何错误，只需禁用该功能。"
+msgstr "测试版功能。你可提前尝试使用，但后续可能会有调整。如遇到错误，禁用该功能即可。"
 
 #: inc/Engine/Admin/Settings/Page.php:727
 msgid "Activate Remove Unused CSS"
