@@ -1991,7 +1991,7 @@ msgstr "%s 个网站"
 #: inc/Engine/License/views/upgrade-popin.php:54
 #, php-format
 msgid "Upgrade to %s"
-msgstr "升级到%s"
+msgstr "升级到 %s"
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid ""
