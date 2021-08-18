@@ -1997,7 +1997,7 @@ msgstr "升级到 %s"
 msgid ""
 "You can use WP Rocket on more websites by upgrading your license (you will "
 "only pay the price difference between your current and new licenses)."
-msgstr "您可以通过升级许可证的方式在更多网站上使用 WP Rocket（您仅需要支付新旧许可证之间的差价）。"
+msgstr "如您想升级授权，只需补齐%1$s差价%2$s 。升级后，即可在多个网站使用 WP Rocket。"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:106
 #: views/settings/page-sections/dashboard.php:224
