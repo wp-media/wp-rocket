@@ -1888,7 +1888,7 @@ msgstr[0] "利用 %1$s 来加速更多网站：%2$s 获取 %3$s%4$s 于%5$s 以%
 
 #: inc/Engine/License/Upgrade.php:382 inc/Engine/License/Upgrade.php:405
 msgid "Unlimited"
-msgstr "无限制"
+msgstr "无限"
 
 #: inc/Engine/License/views/promo-banner.php:16
 #, php-format
