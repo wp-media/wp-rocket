@@ -655,7 +655,9 @@ msgstr ""
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
-msgstr "指定不做延迟执行的URL或可以定位内嵌或JavaScript文件的关键词（一行指定一个）。"
+msgstr ""
+"指定无需延迟执行的 URL 或内嵌或 JavaScript 文件的关键词（每行一个）。\n"
+"指定用于识别内联 / JavaScript 文件的 URL 或关键词（每行一个）。"
 
 #: inc/Engine/Admin/Settings/Page.php:910
 msgid "Media"
