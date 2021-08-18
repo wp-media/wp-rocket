@@ -1970,7 +1970,7 @@ msgid ""
 "You can use WP Rocket on more websites by upgrading your license. To "
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
 "new licenses, as shown below."
-msgstr "如您想升级授权，只需补齐%1$s差价%2$s 。升级后，您可在多个网站使用 WP Rocket。"
+msgstr "如您想升级授权，只需补齐%1$s差价%2$s 。升级后，即可在多个网站使用 WP Rocket。"
 
 #: inc/Engine/License/views/upgrade-popin.php:25
 #, php-format
