@@ -1941,7 +1941,7 @@ msgstr "我们的%1$s魔法黑科技%2$s可以让您的网站变得更快哦。"
 msgid ""
 "Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
 "renewal rate: you will only pay %1$s%4$s%3$s!"
-msgstr "续订一年的许可，立即获得 %1$s%2$s 于%3$s 您的续订价格：您将只需支付 %1$s%4$s%3$s！"
+msgstr "续订一年授权，%3$s 可立减%1$s%2$s，您只需支付 %1$s%4$s%3$s！"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:37
 #: inc/Engine/License/views/renewal-soon-banner.php:42
