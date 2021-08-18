@@ -55,7 +55,7 @@ class Test_cleanHome extends TestCase {
 			->with(
 				$full_url,
 				[
-					'method'      => 'PURGE',
+					'method'      => 'BAN',
 					'blocking'    => false,
 					'headers'     => [
 						'Host' => $host,
@@ -68,7 +68,7 @@ class Test_cleanHome extends TestCase {
 			->with(
 				$full_url .'/page',
 				[
-					'method'      => 'PURGE',
+					'method'      => 'BAN',
 					'blocking'    => false,
 					'headers'     => [
 						'Host' => $host,
