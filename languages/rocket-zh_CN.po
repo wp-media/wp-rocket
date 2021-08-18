@@ -578,7 +578,7 @@ msgstr "合并您网站内的内部、第三方以及内联 JS 文件，以减�
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
-msgstr "出于兼容性和最好效果的考虑，当启用延迟javascript执行时，该选项为禁用。"
+msgstr "考虑到兼容性和最佳效果，如您已开启延迟执行 Javascript，该选项会被禁用。"
 
 #: inc/Engine/Admin/Settings/Page.php:789
 msgid "Activate combine JavaScript"
