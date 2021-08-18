@@ -1902,7 +1902,7 @@ msgstr "%s 促销活动正在进行！"
 
 #: inc/Engine/License/views/promo-banner.php:27
 msgid "Hurry Up! Deal ends in:"
-msgstr "快点！促销将结束于："
+msgstr "速度上车！促销倒计时："
 
 #: inc/Engine/License/views/promo-banner.php:31
 #: inc/Engine/License/views/renewal-soon-banner.php:14
