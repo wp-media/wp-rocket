@@ -3043,7 +3043,7 @@ msgstr "WP Rocket中已启用的选项"
 
 #: inc/functions/options.php:468
 msgid "The provided license data are not valid."
-msgstr "提供的许可证信息无效。"
+msgstr "提供的授权信息无效。"
 
 #: inc/functions/options.php:471
 #, php-format
