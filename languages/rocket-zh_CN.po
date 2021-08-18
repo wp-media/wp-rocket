@@ -1934,7 +1934,7 @@ msgstr "您的 WP Rocket 许可证已过期！"
 msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements.%2$s"
-msgstr "如果它可以利用我们的%1$s新功能和增强功能，您的网站可以更快。%2$s"
+msgstr "我们的%1$s魔法黑科技%2$s可以让您的网站变得更快哦。"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:27
 #, php-format
