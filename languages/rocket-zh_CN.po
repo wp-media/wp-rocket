@@ -759,7 +759,7 @@ msgstr "如页面含有多个 Youtube 视频，可以极大改善页面加载时
 
 #: inc/Engine/Admin/Settings/Page.php:1075
 msgid "Excluded images or iframes"
-msgstr "排除图片或iFrame框架"
+msgstr "排除图片或 iframe 框架"
 
 #: inc/Engine/Admin/Settings/Page.php:1077
 #, php-format
