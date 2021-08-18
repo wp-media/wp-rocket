@@ -1761,7 +1761,7 @@ msgstr "了解更多。"
 msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The destination folder"
 " could not be created."
-msgstr "移动端的 %1$s 关键CSS没有生成。原因：目标文件夹无法创建。"
+msgstr "移动端的 %1$s 关键CSS 未生成。原因：目标文件夹无法创建。"
 
 #: inc/Engine/CriticalPath/DataManager.php:71
 #, php-format
