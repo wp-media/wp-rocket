@@ -2040,7 +2040,7 @@ msgstr "\" 移除未使用的CSS \" 选项已禁用。"
 
 #: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:109
 msgid "Pre-Warmup process did not start yet."
-msgstr "预热进程尚未开始。"
+msgstr "预处理进程尚未开始。"
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
