@@ -1182,7 +1182,7 @@ msgid ""
 msgid_plural ""
 "%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$l to work on your site."
-msgstr[0] "%1$s%2$l 扩展%3$s 已启用。CDN设置对于%2$l 在贵站正常工作来说不是必须的。"
+msgstr[0] "%1$s%2$s 扩展%3$s已启用。CDN设置对于%2$s正常工作来说不是必须的哦。"
 
 #: inc/Engine/Admin/Settings/Page.php:1660
 msgid "Enable Content Delivery Network"
