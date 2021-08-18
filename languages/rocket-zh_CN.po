@@ -1898,7 +1898,7 @@ msgstr "立减  %s"
 #: inc/Engine/License/views/promo-banner.php:21
 #, php-format
 msgid "%s promotion is live!"
-msgstr "%s促销活动正在进行！"
+msgstr "%s 促销活动正在进行！"
 
 #: inc/Engine/License/views/promo-banner.php:27
 msgid "Hurry Up! Deal ends in:"
