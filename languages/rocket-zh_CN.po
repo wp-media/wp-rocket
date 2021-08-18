@@ -2018,7 +2018,7 @@ msgstr "从 {count}  /  {total} 个关键页面中收集到的资源文件。"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:403
 msgid "Processed {count} of {total} resource files found on key pages."
-msgstr "在关键页面中找到的已处理的 {总数} 中的 {计数} 的资源文件。"
+msgstr "已处理 {count} / {total} 个从关键页面收集到的资源文件。"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:404
 msgid "Remove Unused CSS is complete!"
