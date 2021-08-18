@@ -3581,7 +3581,7 @@ msgstr "重新生成关键路径 CSS"
 
 #: views/settings/page-sections/dashboard.php:218
 msgid "Remove Used CSS Cache"
-msgstr "移除未使用CSS缓存"
+msgstr "清除已使用CSS缓存"
 
 #: views/settings/page-sections/dashboard.php:241
 msgid "Frequently Asked Questions"
