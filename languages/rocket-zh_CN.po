@@ -637,7 +637,7 @@ msgstr "可以消除您网站阻塞渲染的 JS 以改善加载时间。%1$s更�
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
-msgstr "指定不做延迟的URL或JavaScript文件的关键词（一行指定一个）。%1$s更多信息%2$s"
+msgstr "指定无需延迟的 URL 或 JavaScript 文件的关键词（每行一个）。%1$s更多信息%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:861 inc/admin/ui/meta-boxes.php:80
 msgid "Delay JavaScript execution"
