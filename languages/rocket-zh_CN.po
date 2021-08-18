@@ -4,7 +4,6 @@
 # wpmedia <contact@wp-media.me>, 2019
 # Kurumi Tokisaki, 2021
 # 码农志 <liyangobj@gmail.com>, 2021
-# rolor r, 2021
 # Tony Tong <tw191@163.com>, 2021
 # 
 #, fuzzy
@@ -3795,7 +3794,7 @@ msgstr "显示侧边栏"
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect %1$sif granted "
 "permission.%2$s"
-msgstr "下面是 WP Rocket 将要收集的所有数据的详细视图%1$s，如果授权允许的话。%2$s"
+msgstr "以下详细列出了 WP Rocket 在%1$s获得许可后%2$s将收集的所有数据。"
 
 #: views/settings/page.php:87
 msgid ""
