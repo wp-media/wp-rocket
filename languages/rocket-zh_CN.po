@@ -770,7 +770,7 @@ msgstr "指定要排除的图片或 iframe 框架代码的关键词（如图片�
 
 #: inc/Engine/Admin/Settings/Page.php:1085
 msgid "Add missing image dimensions"
-msgstr "添加缺失的图像大小信息"
+msgstr "添加缺失的图像宽高属性"
 
 #: inc/Engine/Admin/Settings/Page.php:1093
 msgid "Disable WordPress embeds"
