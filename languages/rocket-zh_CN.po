@@ -2026,7 +2026,7 @@ msgstr "已移除未使用的 CSS ！"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:405
 msgid "These files could not be processed:"
-msgstr "这些文件不能处理："
+msgstr "无法处理下列文件："
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:406
 msgid ""
