@@ -1976,7 +1976,7 @@ msgstr "如您想升级授权，只需补齐%1$s差价%2$s 。升级后，即可
 #, php-format
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
-msgstr "%1$sN.B.%2$s：升级您的许可并不改变过期日期"
+msgstr "%1$s注意%2$s：升级授权并不会延长有效期"
 
 #: inc/Engine/License/views/upgrade-popin.php:35
 #, php-format
