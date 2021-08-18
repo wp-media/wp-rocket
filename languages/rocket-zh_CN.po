@@ -1884,7 +1884,7 @@ msgid ""
 msgid_plural ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to Infinite!%5$s"
-msgstr[0] "利用 %1$s 来加速更多网站：%2$s 获取 %3$s%4$s 于%5$s 以%3$s升级为无限许可！%5$s"
+msgstr[0] "利用 %1$s 来加速更多网站：%2$s 获取 %3$s%4$s 于%5$s 以%3$s升级为无限授权！%5$s"
 
 #: inc/Engine/License/Upgrade.php:382 inc/Engine/License/Upgrade.php:405
 msgid "Unlimited"
