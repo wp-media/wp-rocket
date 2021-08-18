@@ -1893,7 +1893,7 @@ msgstr "无限"
 #: inc/Engine/License/views/promo-banner.php:16
 #, php-format
 msgid "%s off"
-msgstr "立减 %s"
+msgstr "立减  %s"
 
 #: inc/Engine/License/views/promo-banner.php:21
 #, php-format
