@@ -973,7 +973,7 @@ msgstr "URL的域名部分将被自动删除。<br>可使用 (.*) 通配符来�
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
-msgstr "指定设置在访客浏览器的能够阻止页面被缓存的部分或完整的Cookies（每行指定一个）"
+msgstr "指定部分或完整的Cookies ID（每行一个），用于阻止访客浏览器缓存页面"
 
 #: inc/Engine/Admin/Settings/Page.php:1370
 msgid ""
