@@ -2179,7 +2179,7 @@ msgstr "在您的%s服务器上启用Varnish后，将自动启用Varnish自动�
 msgid ""
 "<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
 "may cause unexpected results. %2$sMore Info%3$s"
-msgstr "<strong>%1$s</strong>：Mod PageSpeed与本插件不兼容，可能会导致不可预知的结果。%2$s更多信息%3$s"
+msgstr "<strong>%1$s</strong>：Mod PageSpeed与本插件不兼容，可能导致出错。%2$s更多信息%3$s"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
