@@ -598,7 +598,7 @@ class Page {
 
 		$delay_js_list_helper = sprintf(
 			// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
-			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><code>%1$s</code><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
+			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><pre><code>%1$s</code></pre><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
 			implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
 			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
@@ -852,20 +852,23 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'delay_js'                   => [
-					'container_class'   => [
-						'wpr-isParent',
-						'wpr-Delayjs',
-					],
-					'type'              => 'checkbox',
-					'label'             => __( 'Delay JavaScript execution', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Improves performance by delaying the loading of JavaScript files until user interaction (e.g. scroll, click). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				'delay_js'                   => apply_filters(
+					'rocket_delay_js_settings_field',
+					[
+						'container_class'   => [
+							'wpr-isParent',
+							'wpr-Delayjs',
+						],
+						'type'              => 'checkbox',
+						'label'             => __( 'Delay JavaScript execution', 'rocket' ),
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						'description'       => sprintf( __( 'Improves performance by delaying the loading of JavaScript files until user interaction (e.g. scroll, click). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $delay_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $delay_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
+						'section'           => 'js',
+						'page'              => 'file_optimization',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 				'delay_js_exclusions'        => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),

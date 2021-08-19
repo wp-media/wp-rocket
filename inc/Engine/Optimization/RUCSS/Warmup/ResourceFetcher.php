@@ -104,6 +104,8 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		$is_error = ! empty( $_POST['is_error'] ) ? (bool) $_POST['is_error'] : false; // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$page_url = ! empty( $_POST['page_url'] ) ? esc_url_raw( wp_unslash( $_POST['page_url'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
+		$html = $this->decompress( $html );
+
 		if ( empty( $html ) ) {
 			$is_error = true;
 		}
@@ -279,4 +281,57 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		return [ 'all', 'css_and_js' ];
 	}
 
+	/**
+	 * Compress the HTML data before sending it to the resources fetcher
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param string $data HTML data.
+	 *
+	 * @return string
+	 */
+	public function compress( string $data ): string {
+		if ( ! function_exists( 'gzencode' ) ) {
+			return $data;
+		}
+
+		if ( empty( $data ) ) {
+			return '';
+		}
+
+		$compressed = gzencode( $data, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
+
+		if ( false === $compressed ) {
+			return $data;
+		}
+
+		return $compressed;
+	}
+
+	/**
+	 * Decompress the HTML data received by the resources fetcher
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param string $data Compressed HTML data.
+	 *
+	 * @return string
+	 */
+	private function decompress( string $data ): string {
+		if ( ! function_exists( 'gzdecode' ) ) {
+			return $data;
+		}
+
+		if ( empty( $data ) ) {
+			return '';
+		}
+
+		$decompressed = @gzdecode( $data ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+
+		if ( false === $decompressed ) {
+			return $data;
+		}
+
+		return $decompressed;
+	}
 }

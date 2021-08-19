@@ -8,41 +8,6 @@ use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
 	/**
-	 * Options data instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Instantiate the class
-	 *
-	 * @param Options_Data $options Options Data instance.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
-
-	/**
-	 * Adds plugins incompatible with delay JS to the list
-	 *
-	 * @since 3.9.0.1
-	 *
-	 * @param string[] $plugins Array of recommended plugins to deactivate.
-	 *
-	 * @return array
-	 */
-	public function add_plugins_incompatibility( $plugins ): array {
-		if ( ! $this->options->get( 'delay_js', 0 ) ) {
-			return $plugins;
-		}
-
-		$plugins['wp-meteor'] = 'wp-meteor/wp-meteor.php';
-
-		return $plugins;
-	}
-
-	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
 	 * @since 3.9 Removed delay_js_scripts key, added delay_js_exclusions.
@@ -156,10 +121,17 @@ class Settings {
 	 * @return string[]
 	 */
 	public static function get_delay_js_default_exclusions(): array {
-		$exclusions  = [
+		global $wp_version;
+
+		$exclusions = [
 			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
 			'js-(before|after)',
 		];
+
+		if ( version_compare( $wp_version, '5.7', '<' ) ) {
+			$exclusions[] = '/jquery-migrate(.min)?.js';
+		}
+
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
 		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
 		$pattern     = '(?:placeholder)(.*)';
