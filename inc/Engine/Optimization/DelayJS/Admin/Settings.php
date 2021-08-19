@@ -8,6 +8,41 @@ use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
 	/**
+	 * Options data instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Instantiate the class
+	 *
+	 * @param Options_Data $options Options Data instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
+	/**
+	 * Adds plugins incompatible with delay JS to the list
+	 *
+	 * @since 3.9.0.1
+	 *
+	 * @param string[] $plugins Array of recommended plugins to deactivate.
+	 *
+	 * @return array
+	 */
+	public function add_plugins_incompatibility( $plugins ): array {
+		if ( ! $this->options->get( 'delay_js', 0 ) ) {
+			return $plugins;
+		}
+
+		$plugins['wp-meteor'] = 'wp-meteor/wp-meteor.php';
+
+		return $plugins;
+	}
+
+	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
 	 * @since 3.9 Removed delay_js_scripts key, added delay_js_exclusions.
@@ -128,7 +163,11 @@ class Settings {
 			'js-(before|after)',
 		];
 
-		if ( version_compare( $wp_version, '5.7', '<' ) ) {
+		if (
+			isset( $wp_version )
+			&&
+			version_compare( $wp_version, '5.7', '<' )
+		) {
 			$exclusions[] = '/jquery-migrate(.min)?.js';
 		}
 
