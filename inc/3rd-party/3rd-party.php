@@ -14,10 +14,6 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 }
 
-if ( class_exists( 'WPaaS\Plugin' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-}
-
 if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
 }

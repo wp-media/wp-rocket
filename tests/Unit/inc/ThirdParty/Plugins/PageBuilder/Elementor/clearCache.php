@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 /**
  * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::clear_cache
@@ -18,7 +19,7 @@ class Test_ClearCache extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->elementor = new Elementor( Mockery::mock( Options_Data::class ) );
+		$this->elementor = new Elementor( Mockery::mock( Options_Data::class ),null ,Mockery::mock( HTML::class ));
 	}
 
 	public function testShouldDoNothingWhenNotExternal() {

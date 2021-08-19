@@ -250,7 +250,6 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
-			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
@@ -285,6 +284,8 @@ class Plugin {
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
 			'optimus_webp_subscriber',
+			'wp-meteor',
+			'revolution_slider_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
