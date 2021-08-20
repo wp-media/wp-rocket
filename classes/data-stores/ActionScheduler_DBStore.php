@@ -281,6 +281,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
+	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 *
 	 * @param array  $query Filtering options.
 	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count.
 	 *
