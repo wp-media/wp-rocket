@@ -568,7 +568,11 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$exclusions[] = '/woocommerce/assets/js/flexslider/jquery.flexslider(.min)?.js';
 		$exclusions[] = '/woocommerce/assets/js/frontend/single-product(.min)?.js';
 
-		if ( version_compare( $wp_version, '5.7', '<' ) ) {
+		if (
+			isset( $wp_version )
+			&&
+			version_compare( $wp_version, '5.7', '<' )
+		) {
 			$exclusions[] = '/jquery-migrate(.min)?.js';
 		}
 

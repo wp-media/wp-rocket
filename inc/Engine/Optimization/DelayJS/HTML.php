@@ -52,7 +52,8 @@ class HTML {
 		'var gtm4wp',
 		'var dataLayer_content',
 		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
-		'ewwwWebPInit', // EWWW WebP rewrite inline script.
+		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
+		'ewww_webp_supported', // EWWW WebP inline scripts.
 		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
 	];
 
