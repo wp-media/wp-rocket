@@ -354,6 +354,9 @@ function do_rocket_callback( $buffer ) { // phpcs:ignore WordPress.NamingConvent
 			if ( $is_html ) {
 				$footprint = get_rocket_footprint();
 			}
+			
+			// allow buffer override before saving cache file
+			$buffer = apply_filters( 'rocket_override_html_buffer', $buffer);
 
 			// Save the cache file.
 			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
