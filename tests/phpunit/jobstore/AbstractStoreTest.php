@@ -3,6 +3,7 @@
 namespace Action_Scheduler\Tests\DataStores;
 
 use ActionScheduler_Action;
+use ActionScheduler_IntervalSchedule;
 use ActionScheduler_SimpleSchedule;
 use ActionScheduler_Store;
 use ActionScheduler_UnitTestCase;
@@ -23,6 +24,21 @@ abstract class AbstractStoreTest extends ActionScheduler_UnitTestCase {
 	 */
 	abstract protected function get_store();
 
+	public function test_get_status() {
+		$time = as_get_datetime_object('-10 minutes');
+		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = $this->get_store();
+		$action_id = $store->save_action($action);
+
+		$this->assertEquals( ActionScheduler_Store::STATUS_PENDING, $store->get_status( $action_id ) );
+
+		$store->mark_complete( $action_id );
+		$this->assertEquals( ActionScheduler_Store::STATUS_COMPLETE, $store->get_status( $action_id ) );
+
+		$store->mark_failure( $action_id );
+		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
+	}
 
 	/* Start tests for \ActionScheduler_Store::query_actions() */
 

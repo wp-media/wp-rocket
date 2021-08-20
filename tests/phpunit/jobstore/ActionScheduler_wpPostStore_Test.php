@@ -304,22 +304,6 @@ class ActionScheduler_wpPostStore_Test extends AbstractStoreTest {
 		$this->assertEquals( (int)($now->getTimestamp()) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->getTimestamp() );
 	}
 
-	public function test_get_status() {
-		$time = as_get_datetime_object('-10 minutes');
-		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
-		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
-		$store = new ActionScheduler_wpPostStore();
-		$action_id = $store->save_action($action);
-
-		$this->assertEquals( ActionScheduler_Store::STATUS_PENDING, $store->get_status( $action_id ) );
-
-		$store->mark_complete( $action_id );
-		$this->assertEquals( ActionScheduler_Store::STATUS_COMPLETE, $store->get_status( $action_id ) );
-
-		$store->mark_failure( $action_id );
-		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
-	}
-
 	public function test_claim_actions_by_hooks() {
 		$hook1    = __FUNCTION__ . '_hook_1';
 		$hook2    = __FUNCTION__ . '_hook_2';
