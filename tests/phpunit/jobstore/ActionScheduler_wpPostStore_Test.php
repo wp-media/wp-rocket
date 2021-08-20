@@ -1,10 +1,21 @@
 <?php
 
+use Action_Scheduler\Tests\DataStores\AbstractStoreTest;
+
 /**
  * Class ActionScheduler_wpPostStore_Test
  * @group stores
  */
-class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
+class ActionScheduler_wpPostStore_Test extends AbstractStoreTest {
+
+	/**
+	 * Get data store for tests.
+	 *
+	 * @return ActionScheduler_wpPostStore
+	 */
+	protected function get_store() {
+		return new ActionScheduler_wpPostStore();
+	}
 
 	public function test_create_action() {
 		$time = as_get_datetime_object();
