@@ -441,4 +441,32 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 		$store->mark_failure( $action_id );
 		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
 	}
+
+	public function test_query_actions_query_type_arg_invalid_option() {
+		$this->expectException( InvalidArgumentException::class );
+
+		$store = new ActionScheduler_DBStore();
+		$store->query_actions( array( 'hook' => 'my_hook' ), 'invalid' );
+	}
+
+	public function test_query_actions_query_type_arg_valid_options() {
+		$this->delete_all_actions();
+
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
+
+		$action_id_1 = $store->save_action( new ActionScheduler_Action( 'my_hook', array( 1 ), $schedule ) );
+		$action_id_2 = $store->save_action( new ActionScheduler_Action( 'my_hook', array( 1 ), $schedule ) );
+
+		$this->assertEquals( array( $action_id_1, $action_id_2 ), $store->query_actions( array( 'hook' => 'my_hook' ) ) );
+		$this->assertEquals( 2, $store->query_actions( array( 'hook' => 'my_hook' ), 'count' ) );
+	}
+
+	/**
+	 * Delete all actions from the DB store.
+	 */
+	protected function delete_all_actions() {
+		global $wpdb;
+		$wpdb->query( "DELETE FROM {$wpdb->actionscheduler_actions}" );
+	}
 }
