@@ -337,9 +337,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = json_encode($query['args']);
 		}
 
-		if ( ! empty( $query['status'] ) ) {
-			$sql .= " AND p.post_status=%s";
-			$sql_params[] = $this->get_post_status_by_action_status( $query['status'] );
+		if ( $query['status'] ) {
+			$post_statuses = array_map( array( $this, 'get_post_status_by_action_status' ), (array) $query['status'] );
+			$placeholders  = array_fill( 0, count( $post_statuses ), '%s' );
+			$sql          .= ' AND p.post_status IN (' . join( ', ', $placeholders ) . ')';
+			$sql_params    = array_merge( $sql_params, array_values( $post_statuses ) );
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
