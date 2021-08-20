@@ -201,6 +201,8 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
  * provides less information about the action. It's recommended to use this when you only need to know whether a
  * specific action is scheduled (pending or in-progress).
  *
+ * @since x.x.x
+ *
  * @param string $hook  The hook of the action.
  * @param array  $args  Args that have been passed to the action. Null will matches any args.
  * @param string $group The group the job is assigned to.
