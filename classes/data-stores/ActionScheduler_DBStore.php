@@ -336,17 +336,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$sql_params[] = $this->get_args_for_query( $query[ 'args' ] );
 		}
 
-		if ( $query[ 'status' ] ) {
-			$status = $query[ 'status' ];
-
-			if ( is_array( $status ) ) {
-				$placeholders = array_fill( 0, count( $status ), '%s' );
-				$sql         .= ' AND a.status IN (' . join( ', ', $placeholders ) . ')';
-				$sql_params   = array_merge( $sql_params, array_values( $status ) );
-			} else {
-				$sql_params[] = $status;
-				$sql         .= " AND a.status=%s";
-			}
+		if ( $query['status'] ) {
+			$statuses = (array) $query['status'];
+			$placeholders = array_fill( 0, count( $statuses ), '%s' );
+			$sql         .= ' AND a.status IN (' . join( ', ', $placeholders ) . ')';
+			$sql_params   = array_merge( $sql_params, array_values( $statuses ) );
 		}
 
 		if ( $query[ 'date' ] instanceof \DateTime ) {
