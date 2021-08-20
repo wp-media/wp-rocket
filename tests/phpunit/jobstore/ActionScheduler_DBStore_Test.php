@@ -442,6 +442,8 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
 	}
 
+	/* Start tests for \ActionScheduler_DBStore::query_actions */
+
 	public function test_query_actions_query_type_arg_invalid_option() {
 		$this->expectException( InvalidArgumentException::class );
 
@@ -461,6 +463,67 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( array( $action_id_1, $action_id_2 ), $store->query_actions( array( 'hook' => 'my_hook' ) ) );
 		$this->assertEquals( 2, $store->query_actions( array( 'hook' => 'my_hook' ), 'count' ) );
 	}
+
+	public function test_query_actions_by_single_status() {
+		$this->delete_all_actions();
+
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
+
+		$this->assertEquals( 0, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_PENDING ), 'count' ) );
+
+		$action_id_1 = $store->save_action( new ActionScheduler_Action( 'my_hook_1', array( 1 ), $schedule ) );
+		$action_id_2 = $store->save_action( new ActionScheduler_Action( 'my_hook_2', array( 1 ), $schedule ) );
+		$action_id_3 = $store->save_action( new ActionScheduler_Action( 'my_hook_3', array( 1 ), $schedule ) );
+		$store->mark_complete( $action_id_3 );
+
+		$this->assertEquals( 2, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_PENDING ), 'count' ) );
+		$this->assertEquals( 1, $store->query_actions( array( 'status' => ActionScheduler_Store::STATUS_COMPLETE ), 'count' ) );
+	}
+
+	public function test_query_actions_by_array_status() {
+		$this->delete_all_actions();
+
+		$store    = new ActionScheduler_DBStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( 'tomorrow' ) );
+
+		$this->assertEquals(
+			0,
+			$store->query_actions(
+				array(
+					'status' => array( ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING ),
+				),
+				'count'
+			)
+		);
+
+		$action_id_1 = $store->save_action( new ActionScheduler_Action( 'my_hook_1', array( 1 ), $schedule ) );
+		$action_id_2 = $store->save_action( new ActionScheduler_Action( 'my_hook_2', array( 1 ), $schedule ) );
+		$action_id_3 = $store->save_action( new ActionScheduler_Action( 'my_hook_3', array( 1 ), $schedule ) );
+		$store->mark_failure( $action_id_3 );
+
+		$this->assertEquals(
+			3,
+			$store->query_actions(
+				array(
+					'status' => array( ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_FAILED ),
+				),
+				'count'
+			)
+		);
+		$this->assertEquals(
+			2,
+			$store->query_actions(
+				array(
+					'status' => array( ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_COMPLETE ),
+				),
+				'count'
+			)
+		);
+	}
+
+	/* End tests for \ActionScheduler_DBStore::query_actions */
+
 
 	/**
 	 * Delete all actions from the DB store.
