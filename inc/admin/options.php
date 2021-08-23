@@ -121,14 +121,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	$is_form_submit = WP_ROCKET_PLUGIN_SLUG === $is_form_submit;
 	$errors         = [];
 	$pattern_labels = [
-		'exclude_css'         => __( 'Excluded CSS Files', 'rocket' ),
-		'exclude_inline_js'   => __( 'Excluded Inline JavaScript', 'rocket' ),
-		'exclude_js'          => __( 'Excluded JavaScript Files', 'rocket' ),
-		'delay_js_exclusions' => __( 'Delay JS Exclusions', 'rocket' ),
-		'cache_reject_uri'    => __( 'Never Cache URL(s)', 'rocket' ),
-		'cache_reject_ua'     => __( 'Never Cache User Agent(s)', 'rocket' ),
-		'cache_purge_pages'   => __( 'Always Purge URL(s)', 'rocket' ),
-		'cdn_reject_files'    => __( 'Exclude files from CDN', 'rocket' ),
+		'exclude_css'                => __( 'Excluded CSS Files', 'rocket' ),
+		'exclude_inline_js'          => __( 'Excluded Inline JavaScript', 'rocket' ),
+		'exclude_js'                 => __( 'Excluded JavaScript Files', 'rocket' ),
+		'delay_js_exclusions'        => __( 'Delay JS Exclusions', 'rocket' ),
+		'cache_reject_uri'           => __( 'Never Cache URL(s)', 'rocket' ),
+		'cache_reject_ua'            => __( 'Never Cache User Agent(s)', 'rocket' ),
+		'cache_purge_pages'          => __( 'Always Purge URL(s)', 'rocket' ),
+		'cdn_reject_files'           => __( 'Exclude files from CDN', 'rocket' ),
+		'remove_unused_css_safelist' => __( 'Remove Unused CSS Safelist', 'rocket' ),
 	];
 
 	foreach ( $pattern_labels as $pattern_field => $label ) {
