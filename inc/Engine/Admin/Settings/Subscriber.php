@@ -47,6 +47,8 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'admin_enqueue_scripts'                => 'enqueue_rocket_scripts',
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
+			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11, 2 ],
+
 		];
 	}
 
@@ -194,5 +196,20 @@ class Subscriber implements Subscriber_Interface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Displays the radio option sub fields
+	 *
+	 * @since 3.9.3
+	 *
+	 * @param string $field_id ID of the settings field.
+	 * @param array  $sub_fields fields to display.
+	 *
+	 * @return void
+	 */
+	public function display_radio_options_sub_fields( $field_id, $sub_fields ) {
+
+		$this->page->display_radio_options_sub_fields( $sub_fields );
 	}
 }

@@ -192,8 +192,10 @@
                 padding-right: 0;
             }
         }
+	  &.no-space{
+		padding-left:0;
+	  }
     }
-
     // Checkbox
     &--checkbox{
         .wpr-field-description{

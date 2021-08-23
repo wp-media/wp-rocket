@@ -55,7 +55,7 @@ class Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @var Render_Interface
+	 * @var Render
 	 */
 	private $render;
 
@@ -612,7 +612,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'minify_css'                 => [
+				'minify_css'                   => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -633,7 +633,7 @@ class Page {
 						'button_label' => __( 'Activate minify CSS', 'rocket' ),
 					],
 				],
-				'minify_concatenate_css'     => [
+				'minify_concatenate_css'       => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -656,7 +656,7 @@ class Page {
 						'button_label' => __( 'Activate combine CSS', 'rocket' ),
 					],
 				],
-				'exclude_css'                => [
+				'exclude_css'                  => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
@@ -673,78 +673,85 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'async_css'                  => [
+				'optimize_css_delivery'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
-						is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
-					'description'       => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
-					// translators: %1$s = plugin name.
-					sprintf( _x( 'Optimize CSS Delivery is currently handled by the %1$s plugin. If you want to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       =>
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ? 1 : 0,
-					],
 				],
-				'critical_css'               => [
-					'type'              => 'textarea',
-					'label'             => __( 'Fallback critical CSS', 'rocket' ),
-					'container_class'   => [
+				'optimize_css_delivery_method' => [
+					'type'                    => 'radio_buttons',
+					'label'                   => __( 'Optimize CSS delivery', 'rocket' ),
+					'container_class'         => [
 						'wpr-field--children',
+						'wpr-field--optimize-css-delivery ',
 					],
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'parent'            => 'async_css',
-					'section'           => 'css',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
+					'buttons_container_class' => '',
+					'parent'                  => 'optimize_css_delivery',
+					'section'                 => 'css',
+					'page'                    => 'file_optimization',
+					'default'                 => 'remove_unused_css',
+					'sanitize_callback'       => 'sanitize_checkbox',
+					'options'                 => [
+						'remove_unused_css' => [
+							'label'       => __( 'Remove Unused CSS', 'rocket' ),
+							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
+							'sub_fields'  => [
+								'remove_unused_css_safelist' =>
+								[
+									'type'              => 'textarea',
+									'label'             => __( 'CSS safelist', 'rocket' ),
+									'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
+									'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class\n#css_id\ntag",
+									'default'           => [],
+									'value'             => '',
+									'sanitize_callback' => 'sanitize_textarea',
+									'parent'            => '',
+									'section'           => 'css',
+									'page'              => 'file_optimization',
+									'input_attr'        => [
+										'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
+									],
+								],
+							],
+						],
+						'async_css'         => [
+							'label'       => __( 'Load Asynchronously', 'rocket' ),
+							'description' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
+								// translators: %1$s = plugin name.
+								sprintf( _x( 'Optimize CSS Delivery is currently handled by the %1$s plugin. If you want to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
+								// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+								sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+							'disabled'    => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ? 'disabled' : '',
+							'sub_fields'  => [
+								'critical_css' =>
+									[
+										'type'        => 'textarea',
+										'label'       => __( 'Fallback critical CSS', 'rocket' ),
+										// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+										'helper'      => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+										'sanitize_callback' => 'sanitize_textarea',
+										'parent'      => '',
+										'section'     => 'css',
+										'page'        => 'file_optimization',
+										'placeholder' => '',
+										'default'     => [],
+										'value'       => '',
+									],
+							],
+						],
+					],
 				],
-				'remove_unused_css'          => [
-					'container_class'   => [
-						'wpr-isParent',
-						'wpr-RemoveUnUsedCss',
-						'wpr-field--parent',
-					],
-					'type'              => 'checkbox',
-					'label'             => __( 'Remove Unused CSS (Beta)', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'css',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'warning'           => [
-						'title'        => __( 'We’re still working on it!', 'rocket' ),
-						'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
-						'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
-					],
-				],
-				'remove_unused_css_safelist' => [
-					'type'              => 'textarea',
-					'label'             => __( 'CSS safelist', 'rocket' ),
-					'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class\n#css_id\ntag",
-					'parent'            => 'remove_unused_css',
-					'section'           => 'css',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-					'input_attr'        => [
-						'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
-					],
-				],
-				'minify_js'                  => [
+				'minify_js'                    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
@@ -765,7 +772,7 @@ class Page {
 						'button_label' => __( 'Activate minify JavaScript', 'rocket' ),
 					],
 				],
-				'minify_concatenate_js'      => [
+				'minify_concatenate_js'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -789,7 +796,7 @@ class Page {
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
 				],
-				'exclude_inline_js'          => [
+				'exclude_inline_js'            => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -807,7 +814,7 @@ class Page {
 						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
-				'exclude_js'                 => [
+				'exclude_js'                   => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
@@ -824,7 +831,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'defer_all_js'               => [
+				'defer_all_js'                 => [
 					'container_class'   => [
 						'wpr-isParent',
 					],
@@ -837,7 +844,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'exclude_defer_js'           => [
+				'exclude_defer_js'             => [
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -852,7 +859,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'delay_js'                   => apply_filters(
+				'delay_js'                     => apply_filters(
 					'rocket_delay_js_settings_field',
 					[
 						'container_class'   => [
@@ -869,7 +876,7 @@ class Page {
 						'sanitize_callback' => 'sanitize_checkbox',
 					]
 				),
-				'delay_js_exclusions'        => [
+				'delay_js_exclusions'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
@@ -2095,6 +2102,8 @@ class Page {
 					'cache_ssl',
 					'minify_google_fonts',
 					'emoji',
+					'remove_unused_css',
+					'async_css',
 				]
 			)
 		);
@@ -2144,5 +2153,17 @@ class Page {
 		}
 
 		return ! (bool) get_rocket_option( 'minify_js', 0 );
+	}
+
+	/**
+	 * Set optimize css delivery method value.
+	 *
+	 * @since 3.9.3
+	 *
+	 * @param array $sub_fields    Array of fields to display.
+	 */
+	public function display_radio_options_sub_fields( $sub_fields ) {
+
+		$this->render->render_fields( $sub_fields );
 	}
 }

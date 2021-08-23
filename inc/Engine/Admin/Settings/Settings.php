@@ -142,7 +142,14 @@ class Settings {
 			$page          = $args['page'];
 			$section       = $args['section'];
 			unset( $args['page'], $args['section'] );
-
+			/**
+			 * Filters the field  before add to the settings
+			 *
+			 * @since 3.9.3
+			 *
+			 * @param array    $input    Array of sanitized values after being submitted by the form.
+			 */
+			$args = apply_filters( 'rocket_before_add_field_to_settings', $args );
 			$this->settings[ $page ]['sections'][ $section ]['fields'][ $id ] = $args;
 		}
 	}

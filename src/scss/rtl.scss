@@ -357,6 +357,9 @@ Method : SUITCSS (modified)
                 padding-left: 0;
             }
         }
+	  &.no-space{
+		padding-right:0;
+	  }
     }
     // Checkbox
     &--checkbox .wpr-field-description{
