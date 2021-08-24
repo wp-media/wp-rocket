@@ -51,7 +51,7 @@ class Adthrive implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds adthrive to delay JS exclusion field on update to 3.9.2
+	 * Adds adthrive to delay JS exclusion field on update to 3.9.3
 	 *
 	 * @since 3.9.3
 	 *
@@ -61,7 +61,7 @@ class Adthrive implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_delay_js_exclusion_on_plugin_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.9.2', '>' ) ) {
+		if ( version_compare( $old_version, '3.9.3', '>' ) ) {
 			return;
 		}
 
