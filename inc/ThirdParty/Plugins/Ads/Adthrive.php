@@ -15,13 +15,14 @@ class Adthrive implements Subscriber_Interface {
 		return [
 			'wp_rocket_upgrade'                      => [ 'add_delay_js_exclusion_on_plugin_update', 20, 2 ],
 			'activate_adthrive-ads/adthrive-ads.php' => 'add_delay_js_exclusion',
+			'pre_update_option_wp_rocket_settings'   => [ 'maybe_add_delay_js_exclusion', 10, 2 ],
 		];
 	}
 
 	/**
 	 * Adds adthrive to delay JS exclusion field
 	 *
-	 * @since 3.9.2
+	 * @since 3.9.3
 	 *
 	 * @return void
 	 */
@@ -52,7 +53,7 @@ class Adthrive implements Subscriber_Interface {
 	/**
 	 * Adds adthrive to delay JS exclusion field on update to 3.9.2
 	 *
-	 * @since 3.9.2
+	 * @since 3.9.3
 	 *
 	 * @param string $new_version Plugin new version.
 	 * @param string $old_version Plugin old version.
@@ -69,5 +70,45 @@ class Adthrive implements Subscriber_Interface {
 		}
 
 		$this->add_delay_js_exclusion();
+	}
+
+	/**
+	 * Adds Adthrive pattern when saving WPR options and Adthrive is enabled
+	 *
+	 * @since 3.9.3
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_add_delay_js_exclusion( $value, $old_value ): array {
+		if ( ! is_plugin_active( 'adthrive-ads/adthrive-ads.php' ) ) {
+			return $value;
+		}
+
+		if ( empty( $value['delay_js'] ) ) {
+			return $value;
+		}
+
+		if (
+			isset( $old_value['delay_js'] )
+			&&
+			$old_value['delay_js'] === $value['delay_js']
+		) {
+			return $value;
+		}
+
+		if (
+			isset( $value['delay_js_exclusions'] )
+			&&
+			in_array( 'adthrive', $value['delay_js_exclusions'], true )
+		) {
+			return $value;
+		}
+
+		$value['delay_js_exclusions'][] = 'adthrive';
+
+		return $value;
 	}
 }
