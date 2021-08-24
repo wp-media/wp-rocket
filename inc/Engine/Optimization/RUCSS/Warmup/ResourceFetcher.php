@@ -23,7 +23,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	/**
 	 * Regex for scripts.
 	 */
-	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>|<link(?=.*(?:rel\s*=\s*[\'"]\s*preload\s*[\'"]))(?=.*(?:as\s*=\s*[\'"]\s*script\s*[\'"])).*href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*[\'"].*\/?>';
+	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>|<link(?=.*(?:rel\s*=\s*[\'"]\s*preload\s*[\'"]))(?=.*(?:as\s*=\s*[\'"]\s*script\s*[\'"])).*href\s*=\s*[\'"]\s*(?<alturl>[^\'"\s]+)\s*[\'"].*\/?>';
 
 	/**
 	 * Prefix
@@ -168,11 +168,12 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			$external_url = $this->is_external_file( $resource['url'] );
-			$path         = $this->get_url_path( $resource['url'], $external_url );
+			$url          = ! empty( $resource['url'] ) ? $resource['url'] : $resource['alturl'];
+			$external_url = $this->is_external_file( $url );
+			$path         = $this->get_url_path( $url, $external_url );
 
 			$this->resources[ $path ] = [
-				'url'      => $this->normalize_fullurl( $resource['url'], false ),
+				'url'      => $this->normalize_fullurl( $url, false ),
 				'type'     => $type,
 				'path'     => $path,
 				'external' => $external_url,
