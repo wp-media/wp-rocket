@@ -23,7 +23,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	/**
 	 * Regex for scripts.
 	 */
-	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>';
+	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>|<link(?=.*(?:rel\s*=\s*[\'"]\s*preload\s*[\'"]))(?=.*(?:as\s*=\s*[\'"]\s*script\s*[\'"])).*href\s*=\s*[\'"]\s*(?<url>[^\'"\s]+)\s*[\'"].*\/?>';
 
 	/**
 	 * Prefix
