@@ -195,7 +195,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	 * @return bool True for stylesheet; false for anything else.
 	 */
 	private function is_valid_stylesheet( string $link ) : bool {
-		$valid_rel = $this->find( '(?:rel=[\'"]stylesheet[\'"])|.*(?=.*(?:rel=[\'"]preload[\'"]))(?=.*(?:as=[\'"]style[\'"])).*', $link, 'is' );
+		$valid_rel = $this->find( '(?:rel=[\'"]stylesheet[\'"])|.*(?=.*(?:rel\s*=\s*[\'"]\s*preload\s*[\'"]))(?=.*(?:as\s*=\s*[\'"]\s*style\s*[\'"])).*', $link, 'is' );
 		if ( empty( $valid_rel ) ) {
 			return false;
 		}
