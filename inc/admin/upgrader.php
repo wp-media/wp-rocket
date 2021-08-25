@@ -391,5 +391,17 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 		wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	}
+
+	if ( version_compare( $actual_version, '3.9.2', '<' ) ) {
+		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+		if (
+			isset( $options['async_css'] ) && $options['async_css'] &&
+			isset( $options['remove_unused_css'] ) && $options['remove_unused_css']
+		) {
+
+			$options['remove_unused_css'] = 0;
+			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
+		}
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

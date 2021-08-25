@@ -91,9 +91,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
 			'admin_notices'                       => 'clear_usedcss_result',
 			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
-			// 'rocket_after_settings_checkbox'      => 'display_progress_bar',
 			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10, 2 ],
-
 			'admin_enqueue_scripts'               => 'add_admin_js',
 			'rocket_before_add_field_to_settings' => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
