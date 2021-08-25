@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\PricingClient;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -20,7 +19,7 @@ class GetPricingData extends TestCase {
 
 	private $response;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		delete_transient( 'wp_rocket_pricing' );
