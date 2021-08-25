@@ -284,6 +284,7 @@ class Plugin {
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
 			'optimus_webp_subscriber',
+			'adthrive',
 			'wp-meteor',
 			'revolution_slider_subscriber',
 		];

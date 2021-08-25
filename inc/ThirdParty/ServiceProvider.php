@@ -39,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pdfembedder',
 		'divi',
 		'mod_pagespeed',
+		'adthrive',
 		'wp-meteor',
 		'revolution_slider_subscriber',
 	];
@@ -126,9 +127,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'wp-meteor', 'WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor' )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
