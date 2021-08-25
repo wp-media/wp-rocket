@@ -15,8 +15,13 @@ return [
 		'config'   => [
 			'transient' => false,
 			'response'  => [
-				'code' => 404,
-				'body' => false,
+				'headers' => [],
+				'body' => 'error 404',
+				'response' => [
+					'code' => 404,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => false,
@@ -25,7 +30,13 @@ return [
 		'config'   => [
 			'transient' => false,
 			'response'  => [
-				'code' => 200,
+				'headers' => [],
+				'body' => '',
+				'response' => [
+					'code' => 200,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => false,
@@ -33,7 +44,15 @@ return [
 	'testShouldReturnDataWhenCached'   => [
 		'config'   => [
 			'transient' => true,
-			'response'  => false,
+			'response'  => [
+				'headers' => [],
+				'body' => $json,
+				'response' => [
+					'code' => 200,
+				],
+				'cookies' => [],
+				'filename' => '',
+			],
 		],
 		'expected' => $data,
 	],
@@ -41,8 +60,13 @@ return [
 		'config'   => [
 			'transient' => false,
 			'response'  => [
-				'code' => 200,
+				'headers' => [],
 				'body' => $json,
+				'response' => [
+					'code' => 200,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => $data,
