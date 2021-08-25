@@ -45,7 +45,15 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</div>
 
-		<?php do_action( 'rocket_after_settings_radio_options', $value, $option['sub_fields'] ); ?>
+		<?php
+		do_action(
+			'rocket_after_settings_radio_options',
+			[
+				'option_id'  => $value,
+				'sub_fields' => $option['sub_fields'],
+			]
+		);
+		?>
 
 	</div>
 	<?php endforeach; ?>
