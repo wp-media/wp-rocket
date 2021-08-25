@@ -209,7 +209,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_radio_options_sub_fields( $field_id, $sub_fields ) {
-
+		if ( empty( $sub_fields ) ) {
+			return;
+		}
 		$this->page->display_radio_options_sub_fields( $sub_fields );
 	}
 }

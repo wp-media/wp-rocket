@@ -444,10 +444,6 @@ class Render extends Abstract_render {
 	 */
 	public function render_fields( $fields ) {
 
-		if ( empty( $fields ) ) {
-			return;
-		}
-
 		foreach ( $fields as $id => $args ) {
 			$default = [
 				'type'              => 'text',
