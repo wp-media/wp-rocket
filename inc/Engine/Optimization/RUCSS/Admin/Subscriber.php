@@ -415,7 +415,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Set optimize css delivery value
 	 *
-	 * @since 3.9.3
+	 * @since 3.10
 	 *
 	 * @param array $field_args    Array of field to be added to settigs page.
 	 *
@@ -428,7 +428,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Set optimize css delivery method value
 	 *
-	 * @since 3.9.3
+	 * @since 3.10
 	 *
 	 * @param array $field_args    Array of field to be added to settigs page.
 	 *

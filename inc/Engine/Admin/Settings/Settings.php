@@ -145,7 +145,7 @@ class Settings {
 			/**
 			 * Filters the field  before add to the settings
 			 *
-			 * @since 3.9.3
+			 * @since 3.10
 			 *
 			 * @param array    $input    Array of sanitized values after being submitted by the form.
 			 */

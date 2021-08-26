@@ -425,7 +425,7 @@ class Render extends Abstract_render {
 	/**
 	 * Displays the radio_buttons field template.
 	 *
-	 * @since 3.9.2
+	 * @since 3.10
 	 *
 	 * @param array $args Array of arguments to populate the template.
 	 */
@@ -436,7 +436,7 @@ class Render extends Abstract_render {
 	/**
 	 * Renders the fields.
 	 *
-	 * @since 3.9.3
+	 * @since 3.10
 	 *
 	 * @param array $fields   fields to render.
 	 *

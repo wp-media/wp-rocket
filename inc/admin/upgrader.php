@@ -392,7 +392,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	}
 
-	if ( version_compare( $actual_version, '3.9.2', '<' ) ) {
+	if ( version_compare( $actual_version, '3.10', '<' ) ) {
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
 		if (
 			isset( $options['async_css'] ) && $options['async_css'] &&

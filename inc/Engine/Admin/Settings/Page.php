@@ -2158,7 +2158,7 @@ class Page {
 	/**
 	 * Set optimize css delivery method value.
 	 *
-	 * @since 3.9.3
+	 * @since 3.10
 	 *
 	 * @param array $sub_fields    Array of fields to display.
 	 */

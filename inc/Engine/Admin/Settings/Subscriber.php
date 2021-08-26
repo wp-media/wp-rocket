@@ -201,7 +201,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the radio option sub fields
 	 *
-	 * @since 3.9.3
+	 * @since 3.10
 	 *
 	 * @param array $option_data array of option_id and sub_fields of the option.
 	 *
