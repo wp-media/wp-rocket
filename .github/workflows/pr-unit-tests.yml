@@ -67,8 +67,8 @@ jobs:
               chmod +x /tmp/phpunit
               rm ./vendor/bin/phpunit
               mv /tmp/phpunit ./vendor/bin/phpunit
-          # PHP 8.0 or higher: use our custom fork of PhpUnit 7.5
-          elif [ "$(php -r "echo version_compare( PHP_VERSION, '8.0', '>=' );")" ]; then
+          # PHP 7.4 or higher: use our custom fork of PhpUnit 7.5
+          elif [ "$(php -r "echo version_compare( PHP_VERSION, '7.4', '>=' );")" ]; then
               curl -L https://github.com/woocommerce/phpunit/archive/add-compatibility-with-php8-to-phpunit-7.zip -o /tmp/phpunit-7.5-fork.zip
               unzip -d /tmp/phpunit-7.5-fork /tmp/phpunit-7.5-fork.zip
               composer --working-dir=/tmp/phpunit-7.5-fork/phpunit-add-compatibility-with-php8-to-phpunit-7 install
