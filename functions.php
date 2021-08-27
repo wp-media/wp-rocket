@@ -197,9 +197,8 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 /**
  * Check if there is a scheduled action in the queue but more efficiently than as_next_scheduled_action().
  *
- * This function runs fewer database queries (1, or 2 if a group is used) compared to as_next_scheduled_action() but
- * provides less information about the action. It's recommended to use this when you only need to know whether a
- * specific action is scheduled (pending or in-progress).
+ * It's recommended to use this function when you need to know whether a specific action is currently scheduled
+ * (pending or in-progress).
  *
  * @since x.x.x
  *
