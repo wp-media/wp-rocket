@@ -209,7 +209,7 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
  *
  * @return bool True if a matching action is pending or in-progress, false otherwise.
  */
-function as_has_scheduled_action( $hook, $args = NULL, $group = '' ) {
+function as_has_scheduled_action( $hook, $args = null, $group = '' ) {
 	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
 		return false;
 	}
@@ -222,7 +222,7 @@ function as_has_scheduled_action( $hook, $args = NULL, $group = '' ) {
 		'orderby'  => 'none',
 	);
 
-	if ( NULL !== $args ) {
+	if ( null !== $args ) {
 		$query_args['args'] = $args;
 	}
 

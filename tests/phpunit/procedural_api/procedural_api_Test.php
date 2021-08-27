@@ -292,7 +292,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 	public function test_as_has_scheduled_action_with_group() {
 		as_schedule_single_action( time(), 'hook_1', array(), 'group_1' );
 
-		$this->assertTrue( as_has_scheduled_action( 'hook_1', NULL, 'group_1' ) );
+		$this->assertTrue( as_has_scheduled_action( 'hook_1', null, 'group_1' ) );
 		$this->assertTrue( as_has_scheduled_action( 'hook_1', array(), 'group_1' ) );
 	}
 }
