@@ -36,6 +36,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	abstract public function fetch_action( $action_id );
 
 	/**
+	 * Find an action.
+	 *
+	 * @deprecated in x.x.x, use the query_actions method instead.
+	 * 
 	 * @param string $hook Hook name/slug.
 	 * @param array  $params Hook arguments.
 	 * @return string ID of the next action matching the criteria.

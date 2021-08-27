@@ -230,6 +230,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Find an action.
 	 *
+	 * @deprecated in x.x.x, use the query_actions method instead.
+	 *
 	 * @param string $hook Action hook.
 	 * @param array  $params Parameters of the action to find.
 	 *
