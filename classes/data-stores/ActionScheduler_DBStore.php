@@ -427,12 +427,16 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Query for action count of list of action IDs.
+	 * Query for action count or list of action IDs.
 	 *
-	 * @param array  $query Query parameters.
-	 * @param string $query_type Whether to select or count the results. Default, select.
+	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
 	 *
-	 * @return null|string|array The IDs of actions matching the query
+	 * @see ActionScheduler_Store::query_actions for $query arg usage.
+	 *
+	 * @param array  $query      Query filtering options.
+	 * @param string $query_type Whether to select or count the results. Defaults to select.
+	 *
+	 * @return string|array|null The IDs of actions matching the query. Null on failure.
 	 */
 	public function query_actions( $query = [], $query_type = 'select' ) {
 		/** @var wpdb $wpdb */
