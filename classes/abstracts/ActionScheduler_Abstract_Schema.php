@@ -150,4 +150,23 @@ abstract class ActionScheduler_Abstract_Schema {
 	protected function get_full_table_name( $table ) {
 		return $GLOBALS[ 'wpdb' ]->prefix . $table;
 	}
+
+	/**
+	 * Confirms that all of the tables registered by this schema class have been created.
+	 *
+	 * @return bool
+	 */
+	public function tables_exist() {
+		global $wpdb;
+
+		$existing_tables = $wpdb->get_col( 'SHOW TABLES' );
+		$expected_tables = array_map(
+			function ( $table_name ) use ( $wpdb ) {
+				return $wpdb->prefix . $table_name;
+			},
+			$this->tables
+		);
+
+		return count( array_intersect( $existing_tables, $expected_tables ) ) === count( $expected_tables );
+	}
 }
