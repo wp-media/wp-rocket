@@ -104,18 +104,27 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
 		return 0;
 	}
-	$params = array();
-	if ( is_array($args) ) {
+	$params = array(
+		'hook'     => $hook,
+		'status'   => ActionScheduler_Store::STATUS_PENDING,
+		'orderby'  => 'date',
+		'order'    => 'ASC',
+		'per_page' => 1,
+	);
+	if ( is_array( $args ) ) {
 		$params['args'] = $args;
 	}
-	if ( !empty($group) ) {
+	if ( ! empty( $group ) ) {
 		$params['group'] = $group;
 	}
-	$job_id = ActionScheduler::store()->find_action( $hook, $params );
 
-	if ( ! empty( $job_id ) ) {
-		ActionScheduler::store()->cancel_action( $job_id );
+	$results = ActionScheduler::store()->query_actions( $params );
+	if ( empty( $results ) ) {
+		return null;
 	}
+
+	$job_id = $results[0];
+	ActionScheduler::store()->cancel_action( $job_id );
 
 	return $job_id;
 }
