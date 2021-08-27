@@ -337,7 +337,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 
 		if ( $query['status'] ) {
-			$statuses = (array) $query['status'];
+			$statuses     = (array) $query['status'];
 			$placeholders = array_fill( 0, count( $statuses ), '%s' );
 			$sql         .= ' AND a.status IN (' . join( ', ', $placeholders ) . ')';
 			$sql_params   = array_merge( $sql_params, array_values( $statuses ) );
