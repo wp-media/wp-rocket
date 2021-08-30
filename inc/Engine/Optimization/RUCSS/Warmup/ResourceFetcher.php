@@ -23,7 +23,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 	/**
 	 * Regex for scripts.
 	 */
-	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>|<link(?=.*(?:rel\s*=\s*[\'"]\s*preload\s*[\'"]))(?=.*(?:as\s*=\s*[\'"]\s*script\s*[\'"])).*href\s*=\s*[\'"]\s*(?<alturl>[^\'"\s]+)\s*[\'"].*\/?>';
+	const SCRIPT_PATTERN = '<script\s+(?:[^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"\s]+)\s*?[\'"](?:[^>]+)?\/?>|<link(?=(?:[^>]*?rel\s*=\s*[\'"]\s*preload[\'"]))(?=(?:[^>]*?as\s*=\s*[\'"]\s*script[\'"])).*href\s*=\s*[\'"]\s*(?<alturl>[^\'"\s]+)\s*[\'"].*\/?>';
 
 	/**
 	 * Prefix
@@ -168,7 +168,7 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 				continue;
 			}
 
-			$url          = ! empty( $resource['url'] ) ? $resource['url'] : $resource['alturl'];
+			$url          = ! empty( $resource['alturl'] ) ? $resource['alturl'] : $resource['url'];
 			$external_url = $this->is_external_file( $url );
 			$path         = $this->get_url_path( $url, $external_url );
 
@@ -212,7 +212,6 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 		}
 
 		return true;
-
 	}
 
 	/**

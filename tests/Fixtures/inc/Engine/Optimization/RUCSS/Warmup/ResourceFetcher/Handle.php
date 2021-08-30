@@ -436,5 +436,39 @@ Text Domain: neutro
 				],
 			],
 		],
+
+		'shouldFindAndQueueLinkPreloadAsResources' => [
+			'input'    => [
+				'page_url' => 'http://example.org/path/',
+				'is_error' => false,
+				'html'     => '<!DOCTYPE html><html><head><title></title>' .
+				              '<link rel="preload" as="style" href="http://external.org/css/style.css">'.
+				              '<link rel="preload" as="script" href="http://example.org/scripts/script1.js">',
+				              '</head><body>Content here</body></html>',
+			],
+			'expected' => [
+				'resources' => [
+					[
+						'url'       => 'http://external.org/css/style.css',
+						'type'      => 'css',
+						'path'      => 'thirdparty path',
+						'external'  => true,
+						'media'     => 'all',
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
+					],
+					[
+						'url'       => 'http://example.org/scripts/script1.js',
+						'type'      => 'js',
+						'path'      => 'vfs://public/scripts/script1.js',
+						'external'  => false,
+						'prewarmup' => 0,
+						'page_url'  => 'http://example.org/path/',
+						'is_error'  => false,
+					],
+				],
+			],
+		],
 	],
 ];
