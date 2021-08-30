@@ -92,6 +92,7 @@ return [
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="http://external.com/css/style.css">
 	<link rel="stylesheet" type="text/css" href="//external.com/css/style.css">
+	<link rel="preload" as="style" href="http://example.org/wp-content/themes/theme-name/style.css">
 </head>
 <body>
 content here
