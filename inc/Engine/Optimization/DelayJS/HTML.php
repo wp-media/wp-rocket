@@ -115,6 +115,7 @@ class HTML {
 	 * @return bool
 	 */
 	public function is_allowed(): bool {
+
 		if ( rocket_bypass() ) {
 			return false;
 		}

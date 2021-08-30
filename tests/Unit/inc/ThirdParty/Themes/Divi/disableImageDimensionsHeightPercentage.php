@@ -23,6 +23,7 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 	public function testAddDiviToDescription( $config, $expected ) {
 		$options_api = Mockery::mock( Options::class );
 		$options     = Mockery::mock( Options_Data::class );
+		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
 		$theme->set_name( $config['theme-name'] );
 
@@ -32,7 +33,7 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
-		$divi = new Divi( $options_api, $options );
+		$divi = new Divi( $options_api, $options, $delayjs_html );
 
 		$this->assertSame( $expected, array_values( $divi->disable_image_dimensions_height_percentage( $config['images'] ) ) );
 	}
