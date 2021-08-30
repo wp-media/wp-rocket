@@ -1,6 +1,6 @@
 on:
   release:
-    types: 
+    types:
       - published
 
 name: Deploy Rocket Plugin
@@ -15,7 +15,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-          tools: composer:v1
+          tools: composer:v2
 
       - name: Get composer cache directory
         id: composercache
@@ -37,7 +37,7 @@ jobs:
       - name: Run composer
         run: composer install --no-scripts --no-dev
         working-directory: /tmp/wp-rocket
-  
+
       - name: Zip Folder
         run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
         working-directory: /tmp
@@ -61,8 +61,8 @@ jobs:
         run: |
           /usr/bin/swift upload rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
           /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
-        
-            
+
+
       # Call the webhook on AWX to fetch and deploy the zip
       - name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v1
