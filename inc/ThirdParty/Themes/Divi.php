@@ -60,7 +60,7 @@ class Divi implements Subscriber_Interface {
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
-		$events['et_builder_enable_jquery_body'] = 'disable_divi_jquery_body';
+		$events['init'] = 'disable_divi_jquery_body';
 		return $events;
 	}
 
