@@ -5,13 +5,15 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::maybe_disable_youtube_preview
+ * @covers \WP_Rocket\ThirdParty\Divi::disable_divi_jquery_body
  * @uses   ::is_divi
  *
  * @group  ThirdParty
  */
-class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php';
+class Test_disableDiviJqueryBody extends WPThemeTestcase {
+	private $delay_js = false;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/disableDiviJqueryBody.php';
+
 	private static $container;
 
 	public static function setUpBeforeClass() : void {
@@ -30,31 +32,36 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 		parent::setUp();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		define( 'ET_CORE_VERSION','4.10');
+	}
+
+	public function tearDown() : void {
+		parent::tearDown();
+		$this->delay_js = false;
+		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
+		unset( $GLOBALS['ET_CORE_VERSION'] );
 	}
 
 	/**
 	 * @dataProvider ProviderTestData
 	 */
-	public function testSetsCorrectOptions( $config, $expected ) {
+	public function testDisableDiviJqueryBody($config, $expected ) {
 
-		if ( ! $config['is-child'] ) {
-			$this->set_theme( $config['stylesheet'], $config['theme-name'] );
-		} else {
-			$this->set_theme( $config['is-child'], $config['parent-name'] )
-				->set_child_theme( $config['stylesheet'], $config['theme-name'], $config['is-child'] );
-		}
+		$this->delay_js            = true;
 
+		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
+
+		$this->set_theme( $config['stylesheet'], $config['theme-name'] );
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
 		$delayjs_html = self::$container->get( 'delay_js_html' );
 		$options_api->set( 'settings', [] );
-
 		$divi        = new Divi( $options_api, $options, $delayjs_html );
+		$divi->disable_divi_jquery_body();
+		$this->assertSame( $expected['filter_priority'], has_filter( 'et_builder_enable_jquery_body', '__return_false' ) );
+	}
 
-		switch_theme( $config['stylesheet'] );
-
-		$divi->maybe_disable_youtube_preview( $config['theme-name'], $this->theme );
-
-		$this->assertSame( $expected['settings'], $options_api->get( 'settings' ) );
+	public function set_delay_js_option() {
+		return $this->delay_js;
 	}
 }
