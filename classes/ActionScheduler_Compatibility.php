@@ -83,17 +83,27 @@ class ActionScheduler_Compatibility {
 	 *
 	 * Only allows raising the existing limit and prevents lowering it. Wrapper for wc_set_time_limit(), when available.
 	 *
-	 * @param int The time limit in seconds.
+	 * @param int $limit The time limit in seconds.
 	 */
 	public static function raise_time_limit( $limit = 0 ) {
-		if ( $limit < ini_get( 'max_execution_time' ) ) {
+		$limit = (int) $limit;
+		$max_execution_time = (int) ini_get( 'max_execution_time' );
+
+		/*
+		 * If the max execution time is already unlimited (zero), or if it exceeds or is equal to the proposed
+		 * limit, there is no reason for us to make further changes (we never want to lower it).
+		 */
+		if (
+			0 === $max_execution_time
+			|| ( $max_execution_time >= $limit && $limit !== 0 )
+		) {
 			return;
 		}
 
 		if ( function_exists( 'wc_set_time_limit' ) ) {
 			wc_set_time_limit( $limit );
 		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
-			@set_time_limit( $limit );
+			@set_time_limit( $limit ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		}
 	}
 }
