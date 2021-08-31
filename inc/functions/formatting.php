@@ -41,6 +41,10 @@ function rocket_clean_wildcards( $path ) {
 		'*'    => '(.*)',
 		'(*)'  => '(.*)',
 		'(.*)' => '(.*)',
+		'(.*'  => '(.*)',
+		'(*'   => '(.*)',
+		'.*)'  => '(.*)',
+		'*)'   => '(.*)',
 	];
 
 	foreach ( $path_components as &$path_component ) {
