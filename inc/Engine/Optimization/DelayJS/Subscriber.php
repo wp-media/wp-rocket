@@ -99,8 +99,11 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->html->is_allowed() ) {
 			return $html;
 		}
-
 		$pattern = '/<head[^>]*>/i';
+
+		if ( strpos( $html, '<meta charset' ) !== false ) {
+			$pattern = '/<meta charset[^>]*>/i';
+		}
 
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
 
