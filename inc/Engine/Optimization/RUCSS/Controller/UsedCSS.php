@@ -445,7 +445,7 @@ class UsedCSS {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				! (bool) preg_match( '/rel\s*=\s*[\'"]\s*stylesheet\s*[\'"]|(?=[^>]*as\s*=\s*[\'"]\s*style\s*[\'"])rel\s*=\s*[\'"]\s*preload\s*[\'"]/is', $style[0] )
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 				||
