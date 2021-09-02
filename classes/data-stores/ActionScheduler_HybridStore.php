@@ -135,8 +135,6 @@ class ActionScheduler_HybridStore extends Store {
 	 * After it migrates, the secondary store will logically contain
 	 * the next matching action, so return the result thence.
 	 *
-	 * @deprecated in x.x.x, use the query_actions method instead.
-	 *
 	 * @param string $hook
 	 * @param array  $params
 	 *

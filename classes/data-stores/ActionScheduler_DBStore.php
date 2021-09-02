@@ -228,59 +228,6 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Find an action.
-	 *
-	 * @deprecated in x.x.x, use the query_actions method instead.
-	 *
-	 * @param string $hook Action hook.
-	 * @param array  $params Parameters of the action to find.
-	 *
-	 * @return string|null ID of the next action matching the criteria or NULL if not found.
-	 */
-	public function find_action( $hook, $params = [] ) {
-		$params = wp_parse_args( $params, [
-			'args'   => null,
-			'status' => self::STATUS_PENDING,
-			'group'  => '',
-		] );
-
-		/** @var wpdb $wpdb */
-		global $wpdb;
-		$query = "SELECT a.action_id FROM {$wpdb->actionscheduler_actions} a";
-		$args  = [];
-		if ( ! empty( $params[ 'group' ] ) ) {
-			$query  .= " INNER JOIN {$wpdb->actionscheduler_groups} g ON g.group_id=a.group_id AND g.slug=%s";
-			$args[] = $params[ 'group' ];
-		}
-		$query  .= " WHERE a.hook=%s";
-		$args[] = $hook;
-		if ( ! is_null( $params[ 'args' ] ) ) {
-			$query  .= " AND a.args=%s";
-			$args[] = $this->get_args_for_query( $params[ 'args' ] );
-		}
-
-		$order = 'ASC';
-		if ( ! empty( $params[ 'status' ] ) ) {
-			$query  .= " AND a.status=%s";
-			$args[] = $params[ 'status' ];
-
-			if ( self::STATUS_PENDING == $params[ 'status' ] ) {
-				$order = 'ASC'; // Find the next action that matches.
-			} else {
-				$order = 'DESC'; // Find the most recent action that matches.
-			}
-		}
-
-		$query .= " ORDER BY scheduled_date_gmt $order LIMIT 1";
-
-		$query = $wpdb->prepare( $query, $args );
-
-		$id = $wpdb->get_var( $query );
-
-		return $id;
-	}
-
-	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
 	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
