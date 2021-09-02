@@ -92,7 +92,6 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *      @type int          $orderby          Accepted values are 'hook', 'group', 'modified', 'date' or 'none'. Defaults to 'date'.
 	 *      @type string       $order            Accepted values are 'ASC' or 'DESC'. Defaults to 'ASC'.
 	 * }
-	 * @param array  $query Query parameters.
 	 * @param string $query_type Whether to select or count the results. Default, select.
 	 *
 	 * @return string|array|null The IDs of actions matching the query. Null on failure.
@@ -106,7 +105,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *
 	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' and 'offset' can't be used.
 	 *
-	 * @param array $query
+	 * @param array $query Query parameters.
 	 *
 	 * @return int|null
 	 */
