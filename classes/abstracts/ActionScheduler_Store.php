@@ -104,7 +104,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *
 	 * @since x.x.x
 	 *
-	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' is always set to 1.
+	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' and 'offset' can't be used.
 	 *
 	 * @param array $query
 	 *
@@ -112,6 +112,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 */
 	public function query_action( $query ) {
 		$query['per_page'] = 1;
+		$query['offset']   = 0;
 		$results = $this->query_actions( $query );
 
 		if ( empty( $results ) ) {
