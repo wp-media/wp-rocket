@@ -112,7 +112,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	public function query_action( $query ) {
 		$query['per_page'] = 1;
 		$query['offset']   = 0;
-		$results = $this->query_actions( $query );
+		$results           = $this->query_actions( $query );
 
 		if ( empty( $results ) ) {
 			return null;
