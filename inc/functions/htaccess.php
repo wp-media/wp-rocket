@@ -461,6 +461,7 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType audio/ogg                     "access plus 4 months"
 	ExpiresByType video/mp4                     "access plus 4 months"
 	ExpiresByType video/webm                    "access plus 4 months"
+	ExpiresByType image/avif                    "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
