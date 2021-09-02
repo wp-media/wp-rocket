@@ -58,7 +58,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 		$params['per_page'] = 1;
 
 		if ( ! empty( $params['status'] ) ) {
-			if ( self::STATUS_PENDING == $params['status'] ) {
+			if ( self::STATUS_PENDING === $params['status'] ) {
 				$params['order'] = 'ASC'; // Find the next action that matches.
 			} else {
 				$params['order'] = 'DESC'; // Find the most recent action that matches.

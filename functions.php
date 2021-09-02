@@ -181,23 +181,25 @@ function as_next_scheduled_action( $hook, $args = null, $group = '' ) {
 	}
 
 	$params['status'] = ActionScheduler_Store::STATUS_RUNNING;
-	$action_id = ActionScheduler::store()->query_action( $params );
+	$action_id        = ActionScheduler::store()->query_action( $params );
 	if ( $action_id ) {
 		return true;
 	}
 
 	$params['status'] = ActionScheduler_Store::STATUS_PENDING;
-	$action_id = ActionScheduler::store()->query_action( $params );
-	if ( null === $action_id  ) {
+	$action_id        = ActionScheduler::store()->query_action( $params );
+	if ( null === $action_id ) {
 		return false;
 	}
-	$action = ActionScheduler::store()->fetch_action( $action_id );
+
+	$action         = ActionScheduler::store()->fetch_action( $action_id );
 	$scheduled_date = $action->get_schedule()->get_date();
 	if ( $scheduled_date ) {
 		return (int) $scheduled_date->format( 'U' );
 	} elseif ( null === $scheduled_date ) { // pending async action with NullSchedule
 		return true;
 	}
+
 	return false;
 }
 
