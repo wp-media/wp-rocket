@@ -100,6 +100,28 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	abstract public function query_actions( $query = array(), $query_type = 'select' );
 
 	/**
+	 * Run query to get a single action ID.
+	 *
+	 * @since x.x.x
+	 *
+	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' is always set to 1.
+	 *
+	 * @param array $query
+	 *
+	 * @return int|null
+	 */
+	public function query_action( $query ) {
+		$query['per_page'] = 1;
+		$results = $this->query_actions( $query );
+
+		if ( empty( $results ) ) {
+			return null;
+		} else {
+			return (int) $results[0];
+		}
+	}
+
+	/**
 	 * Get a count of all actions in the store, grouped by status
 	 *
 	 * @return array
