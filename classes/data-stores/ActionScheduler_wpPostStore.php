@@ -225,61 +225,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $hook
-	 * @param array $params
-	 *
-	 * @return string ID of the next action matching the criteria or NULL if not found
-	 */
-	public function find_action( $hook, $params = array() ) {
-		$params = wp_parse_args( $params, array(
-			'args' => NULL,
-			'status' => ActionScheduler_Store::STATUS_PENDING,
-			'group' => '',
-		));
-		/** @var wpdb $wpdb */
-		global $wpdb;
-		$query = "SELECT p.ID FROM {$wpdb->posts} p";
-		$args = array();
-		if ( !empty($params['group']) ) {
-			$query .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
-			$query .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
-			$query .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id AND t.slug=%s";
-			$args[] = $params['group'];
-		}
-		$query .= " WHERE p.post_title=%s";
-		$args[] = $hook;
-		$query .= " AND p.post_type=%s";
-		$args[] = self::POST_TYPE;
-		if ( !is_null($params['args']) ) {
-			$query .= " AND p.post_content=%s";
-			$args[] = json_encode($params['args']);
-		}
-
-		if ( ! empty( $params['status'] ) ) {
-			$query .= " AND p.post_status=%s";
-			$args[] = $this->get_post_status_by_action_status( $params['status'] );
-		}
-
-		switch ( $params['status'] ) {
-			case self::STATUS_COMPLETE:
-			case self::STATUS_RUNNING:
-			case self::STATUS_FAILED:
-				$order = 'DESC'; // Find the most recent action that matches
-				break;
-			case self::STATUS_PENDING:
-			default:
-				$order = 'ASC'; // Find the next action that matches
-				break;
-		}
-		$query .= " ORDER BY post_date_gmt $order LIMIT 1";
-
-		$query = $wpdb->prepare( $query, $args );
-
-		$id = $wpdb->get_var($query);
-		return $id;
-	}
-
-	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
 	 * @param array $query Filtering options
