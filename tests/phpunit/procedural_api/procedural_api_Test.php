@@ -256,4 +256,43 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$asDateTime = as_get_datetime_object( $dateTime );
 		$this->assertEquals( $dateTime->format( $f ), $asDateTime->format( $f ) );
 	}
+
+	public function test_as_has_scheduled_action() {
+		$store = ActionScheduler::store();
+
+		$time = as_get_datetime_object( 'tomorrow' );
+		$action_id = as_schedule_single_action( $time->getTimestamp(), 'hook_1' );
+
+		$this->assertTrue( as_has_scheduled_action( 'hook_1' ) );
+		$this->assertFalse( as_has_scheduled_action( 'hook_2' ) );
+
+		// Go to in-progress
+		$store->log_execution( $action_id );
+		$this->assertTrue( as_has_scheduled_action( 'hook_1' ) );
+
+		// Go to complete
+		$store->mark_complete( $action_id );
+		$this->assertFalse( as_has_scheduled_action( 'hook_1' ) );
+
+		// Go to failed
+		$store->mark_failure( $action_id );
+		$this->assertFalse( as_has_scheduled_action( 'hook_1' ) );
+	}
+
+	public function test_as_has_scheduled_action_with_args() {
+		as_schedule_single_action( time(), 'hook_1', array( 'a' ) );
+
+		$this->assertTrue( as_has_scheduled_action( 'hook_1' ) );
+		$this->assertFalse( as_has_scheduled_action( 'hook_1', array( 'b' ) ) );
+
+		// Test for any args
+		$this->assertTrue( as_has_scheduled_action( 'hook_1', array( 'a' ) ) );
+	}
+
+	public function test_as_has_scheduled_action_with_group() {
+		as_schedule_single_action( time(), 'hook_1', array(), 'group_1' );
+
+		$this->assertTrue( as_has_scheduled_action( 'hook_1', null, 'group_1' ) );
+		$this->assertTrue( as_has_scheduled_action( 'hook_1', array(), 'group_1' ) );
+	}
 }

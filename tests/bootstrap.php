@@ -29,3 +29,4 @@ if ( class_exists( 'PHPUnit\Framework\TestResult' ) ) { // PHPUnit 6.0 or newer
 
 include_once('phpunit/ActionScheduler_Mocker.php');
 include_once('phpunit/ActionScheduler_Mock_Async_Request_QueueRunner.php');
+include_once('phpunit/jobstore/AbstractStoreTest.php');

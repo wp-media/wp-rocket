@@ -1,10 +1,21 @@
 <?php
 
+use Action_Scheduler\Tests\DataStores\AbstractStoreTest;
+
 /**
  * Class ActionScheduler_wpPostStore_Test
  * @group stores
  */
-class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
+class ActionScheduler_wpPostStore_Test extends AbstractStoreTest {
+
+	/**
+	 * Get data store for tests.
+	 *
+	 * @return ActionScheduler_wpPostStore
+	 */
+	protected function get_store() {
+		return new ActionScheduler_wpPostStore();
+	}
 
 	public function test_create_action() {
 		$time = as_get_datetime_object();
@@ -291,22 +302,6 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals( (int)($now->getTimestamp()) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->getTimestamp() );
-	}
-
-	public function test_get_status() {
-		$time = as_get_datetime_object('-10 minutes');
-		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
-		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
-		$store = new ActionScheduler_wpPostStore();
-		$action_id = $store->save_action($action);
-
-		$this->assertEquals( ActionScheduler_Store::STATUS_PENDING, $store->get_status( $action_id ) );
-
-		$store->mark_complete( $action_id );
-		$this->assertEquals( ActionScheduler_Store::STATUS_COMPLETE, $store->get_status( $action_id ) );
-
-		$store->mark_failure( $action_id );
-		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
 	}
 
 	public function test_claim_actions_by_hooks() {

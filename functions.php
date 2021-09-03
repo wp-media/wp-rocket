@@ -104,20 +104,23 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
 		return 0;
 	}
-	$params = array();
-	if ( is_array($args) ) {
+	$params = array(
+		'hook'    => $hook,
+		'status'  => ActionScheduler_Store::STATUS_PENDING,
+		'orderby' => 'date',
+		'order'   => 'ASC',
+		'group'   => $group,
+	);
+	if ( is_array( $args ) ) {
 		$params['args'] = $args;
 	}
-	if ( !empty($group) ) {
-		$params['group'] = $group;
-	}
-	$job_id = ActionScheduler::store()->find_action( $hook, $params );
 
-	if ( ! empty( $job_id ) ) {
-		ActionScheduler::store()->cancel_action( $job_id );
+	$action_id = ActionScheduler::store()->query_action( $params );
+	if ( $action_id ) {
+		ActionScheduler::store()->cancel_action( $action_id );
 	}
 
-	return $job_id;
+	return $action_id;
 }
 
 /**
@@ -161,37 +164,78 @@ function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
  *
  * @return int|bool The timestamp for the next occurrence of a pending scheduled action, true for an async or in-progress action or false if there is no matching action.
  */
-function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
+function as_next_scheduled_action( $hook, $args = null, $group = '' ) {
 	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
 		return false;
 	}
-	$params = array();
-	if ( is_array($args) ) {
+
+	$params = array(
+		'hook'    => $hook,
+		'orderby' => 'date',
+		'order'   => 'ASC',
+		'group'   => $group,
+	);
+
+	if ( is_array( $args ) ) {
 		$params['args'] = $args;
-	}
-	if ( !empty($group) ) {
-		$params['group'] = $group;
 	}
 
 	$params['status'] = ActionScheduler_Store::STATUS_RUNNING;
-	$job_id = ActionScheduler::store()->find_action( $hook, $params );
-	if ( ! empty( $job_id ) ) {
+	$action_id        = ActionScheduler::store()->query_action( $params );
+	if ( $action_id ) {
 		return true;
 	}
 
 	$params['status'] = ActionScheduler_Store::STATUS_PENDING;
-	$job_id = ActionScheduler::store()->find_action( $hook, $params );
-	if ( empty($job_id) ) {
+	$action_id        = ActionScheduler::store()->query_action( $params );
+	if ( null === $action_id ) {
 		return false;
 	}
-	$job = ActionScheduler::store()->fetch_action( $job_id );
-	$scheduled_date = $job->get_schedule()->get_date();
+
+	$action         = ActionScheduler::store()->fetch_action( $action_id );
+	$scheduled_date = $action->get_schedule()->get_date();
 	if ( $scheduled_date ) {
 		return (int) $scheduled_date->format( 'U' );
-	} elseif ( NULL === $scheduled_date ) { // pending async action with NullSchedule
+	} elseif ( null === $scheduled_date ) { // pending async action with NullSchedule
 		return true;
 	}
+
 	return false;
+}
+
+/**
+ * Check if there is a scheduled action in the queue but more efficiently than as_next_scheduled_action().
+ *
+ * It's recommended to use this function when you need to know whether a specific action is currently scheduled
+ * (pending or in-progress).
+ *
+ * @since x.x.x
+ *
+ * @param string $hook  The hook of the action.
+ * @param array  $args  Args that have been passed to the action. Null will matches any args.
+ * @param string $group The group the job is assigned to.
+ *
+ * @return bool True if a matching action is pending or in-progress, false otherwise.
+ */
+function as_has_scheduled_action( $hook, $args = null, $group = '' ) {
+	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
+		return false;
+	}
+
+	$query_args = array(
+		'hook'     => $hook,
+		'status'   => array( ActionScheduler_Store::STATUS_RUNNING, ActionScheduler_Store::STATUS_PENDING ),
+		'group'    => $group,
+		'orderby'  => 'none',
+	);
+
+	if ( null !== $args ) {
+		$query_args['args'] = $args;
+	}
+
+	$action_id = ActionScheduler::store()->query_action( $query_args );
+
+	return $action_id !== null;
 }
 
 /**

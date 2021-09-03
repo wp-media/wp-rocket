@@ -36,19 +36,93 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	abstract public function fetch_action( $action_id );
 
 	/**
-	 * @param string $hook Hook name/slug.
-	 * @param array  $params Hook arguments.
-	 * @return string ID of the next action matching the criteria.
+	 * Find an action.
+	 *
+	 * Note: the query ordering changes based on the passed 'status' value.
+	 *
+	 * @param string $hook Action hook.
+	 * @param array  $params Parameters of the action to find.
+	 *
+	 * @return string|null ID of the next action matching the criteria or NULL if not found.
 	 */
-	abstract public function find_action( $hook, $params = array() );
+	public function find_action( $hook, $params = array() ) {
+		$params = wp_parse_args(
+			$params,
+			array(
+				'args'   => null,
+				'status' => self::STATUS_PENDING,
+				'group'  => '',
+			)
+		);
+
+		// These params are fixed for this method.
+		$params['hook']     = $hook;
+		$params['orderby']  = 'date';
+		$params['per_page'] = 1;
+
+		if ( ! empty( $params['status'] ) ) {
+			if ( self::STATUS_PENDING === $params['status'] ) {
+				$params['order'] = 'ASC'; // Find the next action that matches.
+			} else {
+				$params['order'] = 'DESC'; // Find the most recent action that matches.
+			}
+		}
+
+		$results = $this->query_actions( $params );
+
+		return empty( $results ) ? null : $results[0];
+	}
 
 	/**
-	 * @param array  $query Query parameters.
+	 * Query for action count or list of action IDs.
+	 *
+	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 *
+	 * @param array  $query {
+	 *      Query filtering options.
+	 *
+	 *      @type string       $hook             The name of the actions. Optional.
+	 *      @type string|array $status           The status or statuses of the actions. Optional.
+	 *      @type array        $args             The args array of the actions. Optional.
+	 *      @type DateTime     $date             The scheduled date of the action. Used in UTC timezone. Optional.
+	 *      @type string       $date_compare     Operator for selecting by $date param. Accepted values are '!=', '>', '>=', '<', '<=', '='. Defaults to '<='.
+	 *      @type DateTime     $modified         The last modified date of the action. Used in UTC timezone. Optional.
+	 *      @type string       $modified_compare Operator for comparing $modified param. Accepted values are '!=', '>', '>=', '<', '<=', '='. Defaults to '<='.
+	 *      @type string       $group            The group the action belongs to. Optional.
+	 *      @type bool|int     $claimed          TRUE to find claimed actions, FALSE to find unclaimed actions, an int to find a specific claim ID. Optional.
+	 *      @type int          $per_page         Number of results to return. Defaults to 5.
+	 *      @type int          $offset           The query pagination offset. Defaults to 0.
+	 *      @type int          $orderby          Accepted values are 'hook', 'group', 'modified', 'date' or 'none'. Defaults to 'date'.
+	 *      @type string       $order            Accepted values are 'ASC' or 'DESC'. Defaults to 'ASC'.
+	 * }
 	 * @param string $query_type Whether to select or count the results. Default, select.
 	 *
-	 * @return array|int The IDs of or count of actions matching the query.
+	 * @return string|array|null The IDs of actions matching the query. Null on failure.
 	 */
 	abstract public function query_actions( $query = array(), $query_type = 'select' );
+
+	/**
+	 * Run query to get a single action ID.
+	 *
+	 * @since x.x.x
+	 *
+	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' and 'offset' can't be used.
+	 *
+	 * @param array $query Query parameters.
+	 *
+	 * @return int|null
+	 */
+	public function query_action( $query ) {
+		$query['per_page'] = 1;
+		$query['offset']   = 0;
+		$results           = $this->query_actions( $query );
+
+		if ( empty( $results ) ) {
+			return null;
+		} else {
+			return (int) $results[0];
+		}
+	}
 
 	/**
 	 * Get a count of all actions in the store, grouped by status
