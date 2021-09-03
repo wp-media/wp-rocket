@@ -45,14 +45,17 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *
 	 * @return string|null ID of the next action matching the criteria or NULL if not found.
 	 */
-	public function find_action( $hook, $params = [] ) {
-		$params = wp_parse_args( $params, [
-			'args'     => null,
-			'status'   => self::STATUS_PENDING,
-			'group'    => '',
-		] );
+	public function find_action( $hook, $params = array() ) {
+		$params = wp_parse_args(
+			$params,
+			array(
+				'args'   => null,
+				'status' => self::STATUS_PENDING,
+				'group'  => '',
+			)
+		);
 
-		// There params are fixed for this method
+		// These params are fixed for this method.
 		$params['hook']     = $hook;
 		$params['orderby']  = 'date';
 		$params['per_page'] = 1;
