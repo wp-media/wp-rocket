@@ -101,8 +101,9 @@ class Subscriber implements Subscriber_Interface {
 		}
 		$pattern = '/<head[^>]*>/i';
 
-		if ( strpos( $html, '<meta charset' ) !== false ) {
-			$pattern = '/<meta charset[^>]*>/i';
+		$match_pattern = "/<head>((.|\n)*)(<meta.*?charset=([^\"']+)|<meta charset[^>]*>)(?=.*?((.|\n)*)<\/head>)/g";
+		if ( (bool) preg_match( $match_pattern, $html, $regs ) !== false ) {
+			$pattern = '/<meta.*?charset=([^"\']+)|<meta charset[^>]*>/i';
 		}
 
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
