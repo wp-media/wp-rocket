@@ -101,7 +101,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 		$pattern = '/<head[^>]*>/i';
 
-		$match_pattern = "/<head>((.|\n)*)(<meta.*?charset=([^\"']+)|<meta charset[^>]*>)(?=.*?((.|\n)*)<\/head>)/g";
+		$match_pattern = "/<head>((.|\n)*)(<meta.*?charset=([^\"']+)|<meta charset[^>]*>)(?=.*?((.|\n)*)<\/head>)/";
 		if ( (bool) preg_match( $match_pattern, $html, $regs ) !== false ) {
 			$pattern = '/<meta.*?charset=([^"\']+)|<meta charset[^>]*>/i';
 		}
