@@ -714,6 +714,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'WoocommerceWidget/woocommerceWidget.js',
 			'var ht_ctc_chat_var',
 			'spuvar',
+			'urls_polylangREPLACETOID',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
