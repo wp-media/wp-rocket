@@ -78,6 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
