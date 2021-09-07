@@ -37,7 +37,7 @@
 	"require": {
 		"php": ">=7.0",
 		"composer/installers": "~1.0",
-		"monolog/monolog": "^1.0",
+		"monolog/monolog": "^2.0",
 		"psr/container": "1.0.0"
 	},
 	"require-dev": {
