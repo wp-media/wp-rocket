@@ -102,12 +102,11 @@ class Subscriber implements Subscriber_Interface {
 		$pattern         = '/<head[^>]*>/i';
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
 		$replace_pattern = "$0<wpr_add_ie_fall_back_here><script>{$lazyload_script}</script>";
-
-		$match_pattern = "#(<head[^>]*>(.|\n)*)(<meta[ ]+(http-equiv=[\'\" ]Content-Type[\'\" ][^>]*|)(charset=[\'\" ]*([^\'\"> ][^\'\">]+[^\'\"> ])[\'\" ]*|charset=[ ]*([^\'\"> ][^\'\">]+[^\'\"> ]))([^>]*|)>)((.|\n)*</head>)#i";
+		$match_pattern   = "#(<meta[ ]+(http-equiv=[\'\" ]Content-Type[\'\" ][^>]*|)(charset=[\'\" ]*([^\'\"> ][^\'\">]+[^\'\"> ])[\'\" ]*|charset=[ ]*([^\'\"> ][^\'\">]+[^\'\"> ]))([^>]*|)>)(.*</head>)#Usmi";
 
 		if ( (bool) preg_match( $match_pattern, $html, $regs ) !== false ) {
 			$pattern         = $match_pattern;
-			$replace_pattern = "$1$3<wpr_add_ie_fall_back_here><script>{$lazyload_script}</script>$9";
+			$replace_pattern = "$1<wpr_add_ie_fall_back_here><script>{$lazyload_script}</script>$7";
 		}
 
 		if ( false !== $lazyload_script ) {

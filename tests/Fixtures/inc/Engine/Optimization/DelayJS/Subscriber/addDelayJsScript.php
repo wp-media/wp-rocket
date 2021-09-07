@@ -11,7 +11,7 @@ $expected = '<html>
 <body></body>
 </html>';
 
-$charset = "<meta charset=\"UTF-8\">";
+$charset = '<meta charset="UTF-8">';
 $charset_http_equiv = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>";
 
 $html_charset = "<html>
