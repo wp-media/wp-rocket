@@ -55,6 +55,7 @@ class HTML {
 		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
 		'ewww_webp_supported', // EWWW WebP inline scripts.
 		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
+		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
 		'initCubePortfolio', // Cube Portfolio show images.
 	];
 
