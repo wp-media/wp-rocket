@@ -158,11 +158,18 @@ class Settings {
 		if ( 'optimize_css_delivery_method' !== $field_args['id'] ) {
 			return $field_args;
 		}
-		$value           = 'remove_unused_css';
-		$async_css_value = $this->options->get( 'async_css', 0 );
+		$value = '';
+
+		$async_css_value = (bool) $this->options->get( 'async_css', 0 );
 		if ( $async_css_value ) {
 			$value = 'async_css';
 		}
+
+		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
+		if ( $remove_unused_css_value ) {
+			$value = 'remove_unused_css';
+		}
+
 		$field_args['value'] = $value;
 		return $field_args;
 	}

@@ -692,7 +692,7 @@ class Page {
 					'label'                   => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'         => [
 						'wpr-field--children',
-						'wpr-field--optimize-css-delivery ',
+						'wpr-field--optimize-css-delivery',
 					],
 					'buttons_container_class' => '',
 					'parent'                  => 'optimize_css_delivery',
@@ -705,6 +705,11 @@ class Page {
 							'label'       => __( 'Remove Unused CSS', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests for better performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
+							'warning'     => [
+								'title'        => __( 'We’re still working on it!', 'rocket' ),
+								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
+								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
+							],
 							'sub_fields'  => [
 								'remove_unused_css_safelist' =>
 								[
@@ -728,9 +733,9 @@ class Page {
 							'label'       => __( 'Load Asynchronously', 'rocket' ),
 							'description' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
 								// translators: %1$s = plugin name.
-								sprintf( _x( 'Optimize CSS Delivery is currently handled by the %1$s plugin. If you want to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
+								sprintf( _x( 'Loads CSS asynchronously is currently handled by the %1$s plugin. If you want to use WP Rocket’s loads CSS asynchronously option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
 								// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-								sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+								sprintf( __( 'Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'disabled'    => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ? 'disabled' : '',
 							'sub_fields'  => [
 								'critical_css' =>

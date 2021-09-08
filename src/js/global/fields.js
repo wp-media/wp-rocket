@@ -171,36 +171,67 @@ $(document).ready(function(){
         $($('#wpr-cname-model').html()).appendTo('#wpr-cnames-list');
     });
 
+	/***
+	 * Wpr Radio button
+	 ***/
+
 	$(document).on('click', '.wpr-radio-buttons-container button', function(e) {
 		e.preventDefault();
+		if($(this).hasClass('radio-active')){
+			return false;
+		}
 		$('.wpr-radio-buttons-container button').removeClass('radio-active');
+		$('.wpr-radio-buttons .wpr-extra-fields-container').removeClass('wpr-isOpen');
+		$('.wpr-radio-buttons .wpr-fieldWarning').removeClass('wpr-isOpen');
 		$(this).addClass('radio-active');
-		$(this).trigger( "radio_button_selected", [ $(this) ] );
+		wprShowRadioWarning($(this));
 
 	} );
 
+	function wprShowRadioWarning($elm){
+		if (!$elm.hasClass('has-warning')){
+			wprShowRadioButtonChildren($elm);
+			$elm.trigger( "radio_button_selected", [ $elm ] );
+			return false;
+		}
+		var $warningField = $('[data-parent="' + $elm.attr('id') + '"].wpr-fieldWarning');
+		$warningField.addClass('wpr-isOpen');
+		var $warningButton = $warningField.find('.wpr-button');
+
+		// Validate the warning
+		$warningButton.on('click', function(){
+			$warningField.removeClass('wpr-isOpen');
+			wprShowRadioButtonChildren($elm);
+			$elm.trigger( "radio_button_selected", [ $elm ] );
+			return false;
+		});
+	}
+
+	function wprShowRadioButtonChildren($elm) {
+		var $parent = $elm.parents('.wpr-radio-buttons');
+		var $children = $('.wpr-extra-fields-container[data-parent="' + $elm.attr('id') + '"]');
+		$children.addClass('wpr-isOpen');
+	}
+
+	/***
+	 * Wpr Optimize Css Delivery Field
+	 ***/
+
 	$( "#optimize_css_delivery_method .wpr-radio-buttons-container button" )
 		.on( "radio_button_selected", function( event, $elm ) {
-			wprShowOptimizeChildren($elm);
-			toogleActiveOptimizeCssDeliveryMethod($elm);
-	});
+			toggleActiveOptimizeCssDeliveryMethod($elm);
+		});
 
 	$("#optimize_css_delivery").on("change", function(){
 		if( $(this).is(":not(:checked)") ){
 			disableOptimizeCssDelivery();
 		}else{
-			$('#remove_unused_css').val(1);
+			var default_radio_button_id = '#'+$('#optimize_css_delivery_method').data( 'default' );
+			$(default_radio_button_id).trigger('click');
 		}
 	});
 
-	function wprShowOptimizeChildren($elm) {
-		var $parent = $elm.parents('.wpr-field--optimize-css-delivery');
-		$parent.find('.wpr-extra-fields-container').removeClass('wpr-isOpen');
-		var $children = $('[data-parent="' + $elm.attr('id') + '"]');
-		$children.addClass('wpr-isOpen');
-	}
-
-	function toogleActiveOptimizeCssDeliveryMethod($elm) {
+	function toggleActiveOptimizeCssDeliveryMethod($elm) {
 		var optimize_method = $elm.data('value');
 		if('remove_unused_css' === optimize_method){
 			$('#remove_unused_css').val(1);
