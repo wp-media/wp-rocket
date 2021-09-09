@@ -211,7 +211,7 @@ class HTML {
 	 * @return string
 	 */
 	public function move_meta_charset_to_head( $html ): string {
-		$meta_pattern = "#<meta[ ]+(http-equiv=[\'\" ]Content-Type[\'\" ][^>]*|)(charset=[\'\" ]*[^\'\"> ][^\'\">]+[^\'\"> ][\'\" ]*|charset=[ ]*[^\'\"> ][^\'\">]+[^\'\"> ])([^>]*|)>(?=.*</head>)#Usmi";
+		$meta_pattern = "#<meta[^h]*(http-equiv[^=]*=[^\'\"]*[\'\" ]Content-Type[\'\"][ ]*[^>]*|)(charset[^=]*=[ ]*[\'\" ]*[^\'\"> ][^\'\">]+[^\'\"> ][\'\" ]*|charset[^=]*=*[^\'\"> ][^\'\">]+[^\'\"> ])([^>]*|)>(?=.*</head>)#Usmi";
 		if ( preg_match( $meta_pattern, $html, $matches ) ) {
 			$html = preg_replace( "$meta_pattern", '', $html );
 			if ( preg_match( '/<head\b/i', $html ) ) {
