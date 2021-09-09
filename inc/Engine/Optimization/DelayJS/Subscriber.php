@@ -88,6 +88,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the inline script to the head when the option is enabled.
 	 *
+	 * @since 3.9.4 Move meta charset to head.
 	 * @since 3.9 Hooked on rocket_buffer, display the script right after <head>
 	 * @since 3.7
 	 *
@@ -99,21 +100,18 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->html->is_allowed() ) {
 			return $html;
 		}
-		$pattern         = '/<head[^>]*>/i';
-		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
-		$replace_pattern = "$0<wpr_add_ie_fall_back_here><script>{$lazyload_script}</script>";
-		$match_pattern   = "#(<meta[ ]+(http-equiv=[\'\" ]Content-Type[\'\" ][^>]*|)(charset=[\'\" ]*([^\'\"> ][^\'\">]+[^\'\"> ])[\'\" ]*|charset=[ ]*([^\'\"> ][^\'\">]+[^\'\"> ]))([^>]*|)>)(.*</head>)#Usmi";
 
-		if ( (bool) preg_match( $match_pattern, $html, $regs ) !== false ) {
-			$pattern         = $match_pattern;
-			$replace_pattern = "$1<wpr_add_ie_fall_back_here><script>{$lazyload_script}</script>$7";
-		}
+		$pattern = '/<head[^>]*>/i';
+
+		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
 
 		if ( false !== $lazyload_script ) {
-			$html = preg_replace( $pattern, $replace_pattern, $html, 1 );
+			$html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $html, 1 );
 		}
 
-		return preg_replace( '/<wpr_add_ie_fall_back_here>/i', '$1<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
+		$html = preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
+
+		return $this->html->move_meta_charset_to_head( $html );
 	}
 
 	/**

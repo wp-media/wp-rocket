@@ -200,4 +200,27 @@ class HTML {
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
+
+	/**
+	 * Move meta charset to head if not found to the top of page content.
+	 *
+	 * @since 3.9.4
+	 *
+	 * @param string $html Html content.
+	 *
+	 * @return string
+	 */
+	public function move_meta_charset_to_head( $html ): string {
+		if ( preg_match( "/<meta[ ]+(http-equiv=[\'\" ]Content-Type[\'\" ][^>]*|)(charset=[\'\" ]*([^\'\"> ][^\'\">]+[^\'\"> ])[\'\" ]*|charset=[ ]*([^\'\"> ][^\'\">]+[^\'\"> ])[^>]*|)>/i", $html, $matches ) ) {
+			$html = preg_replace( '/<meta[^>]+charset=[^>]+>/i', '', $html );
+			if ( preg_match( '/<head\b/i', $html ) ) {
+				$html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}${matches[0]}", $html );
+			} elseif ( preg_match( '/<html\b/i', $html ) ) {
+				$html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}${matches[0]}", $html );
+			} else {
+				$html = preg_replace( '/(<\w+)/', "${matches[0]}\${1}", $html, 1 );
+			}
+		}
+		return $html;
+	}
 }
