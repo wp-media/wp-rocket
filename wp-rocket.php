@@ -4,7 +4,7 @@
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
  * Version: 3.9.3
- * Requires at least: 5.3
+ * Requires at least: 5.4
  * Requires PHP: 7.0
  * Code Name: Naboo
  * Author: WP Media
