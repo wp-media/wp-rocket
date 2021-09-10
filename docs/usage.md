@@ -123,4 +123,4 @@ function eg_log_action_data() {
 add_action( 'eg_midnight_log', 'eg_log_action_data' );
 ```
 
-Note that the `as_has_scheduled_action()` function was added in 3.3.0: if you are using an earlier version, you should substitute `as_next_scheduled_action()` instead. For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
+Note that the `as_has_scheduled_action()` function was added in 3.3.0: if you are using an earlier version, you should use `as_next_scheduled_action()` instead. For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
