@@ -398,8 +398,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			isset( $options['async_css'] ) && $options['async_css'] &&
 			isset( $options['remove_unused_css'] ) && $options['remove_unused_css']
 		) {
-
-			$options['remove_unused_css'] = 0;
+			$options['async_css'] = 0;
+			$cache_path           = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH' );
+			rocket_rrmdir( $cache_path . 'used-css' );
 			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
 		}
 	}

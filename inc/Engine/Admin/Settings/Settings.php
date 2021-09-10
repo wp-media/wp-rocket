@@ -662,4 +662,23 @@ class Settings {
 
 		return $this->hosts;
 	}
+
+	/**
+	 * Sets radio buttons sub fields value from wp options.
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $sub_fields Array of fields to display..
+	 * @return array
+	 */
+	public function set_radio_buttons_sub_fields_value( $sub_fields ) {
+
+		foreach ( $sub_fields as $id => &$args ) {
+			$args['id']    = $id;
+			$args['value'] = $this->options->get( $id, $args['default'] );
+			$args          = apply_filters( 'rocket_before_render_option_extra_field', $args );
+		}
+
+		return $sub_fields;
+	}
 }

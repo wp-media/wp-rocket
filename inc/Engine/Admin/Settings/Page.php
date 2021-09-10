@@ -718,7 +718,7 @@ class Page {
 									'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
 									'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class\n#css_id\ntag",
 									'default'           => [],
-									'value'             => '',
+									'value'             => [],
 									'sanitize_callback' => 'sanitize_textarea',
 									'parent'            => '',
 									'section'           => 'css',
@@ -750,7 +750,7 @@ class Page {
 										'page'        => 'file_optimization',
 										'placeholder' => '',
 										'default'     => [],
-										'value'       => '',
+										'value'       => [],
 									],
 							],
 						],
@@ -2161,14 +2161,14 @@ class Page {
 	}
 
 	/**
-	 * Set optimize css delivery method value.
+	 * Render radio options sub fields.
 	 *
 	 * @since 3.10
 	 *
 	 * @param array $sub_fields    Array of fields to display.
 	 */
 	public function display_radio_options_sub_fields( $sub_fields ) {
-
+		$sub_fields = $this->settings->set_radio_buttons_sub_fields_value( $sub_fields );
 		$this->render->render_fields( $sub_fields );
 	}
 }
