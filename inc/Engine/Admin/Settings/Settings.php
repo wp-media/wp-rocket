@@ -222,7 +222,7 @@ class Settings {
 		$input['defer_all_js']     = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['exclude_defer_js'] = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
 
-		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;
+		$input['emoji'] = ! empty( $input['emoji'] ) ? 1 : 0;
 
 		$input['lazyload']         = ! empty( $input['lazyload'] ) ? 1 : 0;
 		$input['lazyload_iframes'] = ! empty( $input['lazyload_iframes'] ) ? 1 : 0;
