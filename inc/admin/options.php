@@ -121,14 +121,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	$is_form_submit = WP_ROCKET_PLUGIN_SLUG === $is_form_submit;
 	$errors         = [];
 	$pattern_labels = [
-		'exclude_css'         => __( 'Excluded CSS Files', 'rocket' ),
-		'exclude_inline_js'   => __( 'Excluded Inline JavaScript', 'rocket' ),
-		'exclude_js'          => __( 'Excluded JavaScript Files', 'rocket' ),
-		'delay_js_exclusions' => __( 'Delay JS Exclusions', 'rocket' ),
-		'cache_reject_uri'    => __( 'Never Cache URL(s)', 'rocket' ),
-		'cache_reject_ua'     => __( 'Never Cache User Agent(s)', 'rocket' ),
-		'cache_purge_pages'   => __( 'Always Purge URL(s)', 'rocket' ),
-		'cdn_reject_files'    => __( 'Exclude files from CDN', 'rocket' ),
+		'exclude_css'       => __( 'Excluded CSS Files', 'rocket' ),
+		'exclude_inline_js' => __( 'Excluded Inline JavaScript', 'rocket' ),
+		'exclude_js'        => __( 'Excluded JavaScript Files', 'rocket' ),
+		'cache_reject_uri'  => __( 'Never Cache URL(s)', 'rocket' ),
+		'cache_reject_ua'   => __( 'Never Cache User Agent(s)', 'rocket' ),
+		'cache_purge_pages' => __( 'Always Purge URL(s)', 'rocket' ),
+		'cdn_reject_files'  => __( 'Exclude files from CDN', 'rocket' ),
 	];
 
 	foreach ( $pattern_labels as $pattern_field => $label ) {
@@ -141,17 +140,22 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue[ $pattern_field ] = rocket_sanitize_textarea_field( $pattern_field, $newvalue[ $pattern_field ] );
 
 		// Validate.
-		foreach ( $newvalue[ $pattern_field ] as &$excluded ) {
-			if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'someteststring' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-				/* translators: 1 and 2 can be anything. */
-				$errors[] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
-				$excluded = preg_quote( $excluded ); // phpcs:ignore WordPress.PHP.PregQuoteDelimiter.Missing
+		$newvalue[ $pattern_field ] = array_filter(
+			$newvalue[ $pattern_field ],
+			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					/* translators: 1 and 2 can be anything. */
+					$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+					return false;
+				}
+
+				return true;
 			}
-		}
+		);
 	}
 
 	if ( $errors ) {
-		$error_message  = _n( 'The following pattern has been escaped to prevent errors:', 'The following patterns have been escaped to prevent errors:', count( $errors ), 'rocket' );
+		$error_message  = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', count( $errors ), 'rocket' );
 		$error_message .= '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
 		$errors         = [];
 
