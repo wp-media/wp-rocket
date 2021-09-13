@@ -8,7 +8,7 @@ use WP_Rocket_WP_Background_Process;
  *
  * @see WP_Rocket_WP_Background_Process
  */
-class Optimization_Process extends WP_Rocket_WP_Background_Process {
+class OptimizationProcess extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Prefix
 	 *
