@@ -21,7 +21,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'webp_subscriber',
-		'detect_missing_tags',
+		'detect_missing_tags_subscriber',
 	];
 
 	/**
