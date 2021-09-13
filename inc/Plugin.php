@@ -99,7 +99,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->options = $this->container->get( 'options' );
 
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Database\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
@@ -108,7 +108,6 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Database\ServiceProvider' );
 
 		$this->is_valid_key = rocket_valid_key();
 
