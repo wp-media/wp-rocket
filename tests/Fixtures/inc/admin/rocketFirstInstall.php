@@ -43,7 +43,6 @@ $default = [
 	'database_trashed_posts'      => 0,
 	'database_spam_comments'      => 0,
 	'database_trashed_comments'   => 0,
-	'database_expired_transients' => 0,
 	'database_all_transients'     => 0,
 	'database_optimize_tables'    => 0,
 	'schedule_automatic_cleanup'  => 0,

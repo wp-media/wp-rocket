@@ -1506,16 +1506,6 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'database_expired_transients' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Expired transients', 'rocket' ),
-					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s expired transient in your database.', '%s expired transients in your database.', $total['database_expired_transients'], 'rocket' ), number_format_i18n( $total['database_expired_transients'] ) ),
-					'section'           => 'transients_cleanup_section',
-					'page'              => 'database',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
 				'database_all_transients'     => [
 					'type'              => 'checkbox',
 					'label'             => __( 'All transients', 'rocket' ),

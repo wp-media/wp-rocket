@@ -315,7 +315,6 @@ class Settings {
 		$input['database_trashed_posts']      = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
 		$input['database_spam_comments']      = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
 		$input['database_trashed_comments']   = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
-		$input['database_expired_transients'] = ! empty( $input['database_expired_transients'] ) ? 1 : 0;
 		$input['database_all_transients']     = ! empty( $input['database_all_transients'] ) ? 1 : 0;
 		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
 		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;

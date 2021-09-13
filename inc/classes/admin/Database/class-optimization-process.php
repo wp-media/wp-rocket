@@ -114,20 +114,6 @@ class Optimization_Process extends WP_Rocket_WP_Background_Process {
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'database_expired_transients':
-				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) );
-
-				if ( $query ) {
-					$number = 0;
-					foreach ( $query as $transient ) {
-						$key     = str_replace( '_transient_timeout_', '', $transient );
-						$number += (int) delete_transient( $key );
-					}
-
-					$this->count[ $item ] = $number;
-				}
-				break;
 			case 'database_all_transients':
 				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) );
 				if ( $query ) {
