@@ -1,28 +1,24 @@
 <?php
-namespace WP_Rocket\Admin\Database;
+namespace WP_Rocket\Engine\Admin\Database;
 
 use WP_Rocket_WP_Background_Process;
 
 /**
  * Extends the background process class for the database optimization background process.
  *
- * @since 2.11
- *
- * @see WP_Background_Process
+ * @see WP_Rocket_WP_Background_Process
  */
 class Optimization_Process extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Prefix
 	 *
 	 * @var string
-	 * @access protected
 	 */
 	protected $prefix = 'rocket';
 
 	/**
 	 * Specific action identifier for sitemap preload.
 	 *
-	 * @access protected
 	 * @var string Action identifier
 	 */
 	protected $action = 'database_optimization';
@@ -30,7 +26,6 @@ class Optimization_Process extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Count the number of optimized items.
 	 *
-	 * @access protected
 	 * @var array $count An array of indexed number of optimized items.
 	 */
 	protected $count = [];
@@ -38,7 +33,6 @@ class Optimization_Process extends WP_Rocket_WP_Background_Process {
 	/**
 	 * Dispatch
 	 *
-	 * @access public
 	 * @return array|WP_Error
 	 */
 	public function dispatch() {

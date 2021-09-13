@@ -1,21 +1,14 @@
 <?php
-namespace WP_Rocket\Admin\Database;
-
-defined( 'ABSPATH' ) || exit;
+namespace WP_Rocket\Engine\Admin\Database;
 
 /**
  * Handles the database optimization process.
- *
- * @since 2.11
- * @author Remy Perona
  */
 class Optimization {
 	/**
 	 * Background process instance
 	 *
-	 * @since 2.11
-	 * @var Optimization_Process $process Background Process instance.
-	 * @access protected
+	 * @var OptimizationProcess $process Background Process instance.
 	 */
 	protected $process;
 
@@ -23,28 +16,24 @@ class Optimization {
 	 * Array of option name/label pairs.
 	 *
 	 * @var array
-	 * @access private
 	 */
 	private $options;
 
 	/**
 	 * Class constructor.
 	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 *
-	 * @param Optimization_Process $process Background process instance.
+	 * @param OptimizationProcess $process Background process instance.
 	 */
-	public function __construct( Optimization_Process $process ) {
+	public function __construct( OptimizationProcess $process ) {
 		$this->process = $process;
 		$this->options = [
-			'database_revisions'          => __( 'Revisions', 'rocket' ),
-			'database_auto_drafts'        => __( 'Auto Drafts', 'rocket' ),
-			'database_trashed_posts'      => __( 'Trashed Posts', 'rocket' ),
-			'database_spam_comments'      => __( 'Spam Comments', 'rocket' ),
-			'database_trashed_comments'   => __( 'Trashed Comments', 'rocket' ),
-			'database_all_transients'     => __( 'Transients', 'rocket' ),
-			'database_optimize_tables'    => __( 'Tables', 'rocket' ),
+			'database_revisions'        => __( 'Revisions', 'rocket' ),
+			'database_auto_drafts'      => __( 'Auto Drafts', 'rocket' ),
+			'database_trashed_posts'    => __( 'Trashed Posts', 'rocket' ),
+			'database_spam_comments'    => __( 'Spam Comments', 'rocket' ),
+			'database_trashed_comments' => __( 'Trashed Comments', 'rocket' ),
+			'database_all_transients'   => __( 'Transients', 'rocket' ),
+			'database_optimize_tables'  => __( 'Tables', 'rocket' ),
 		];
 	}
 
@@ -52,7 +41,6 @@ class Optimization {
 	 * Get Database options
 	 *
 	 * @since 3.0.4
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -64,7 +52,6 @@ class Optimization {
 	 * Performs the database optimization
 	 *
 	 * @since 2.11
-	 * @author Remy Perona
 	 *
 	 * @param array $options WP Rocket Database options.
 	 */
@@ -82,7 +69,6 @@ class Optimization {
 	 * Count the number of items concerned by the database cleanup
 	 *
 	 * @since 2.8
-	 * @author Remy Perona
 	 *
 	 * @param string $type Item type to count.
 	 * @return int Number of items for this type
