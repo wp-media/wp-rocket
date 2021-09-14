@@ -63,6 +63,16 @@
     .wpr-button{
         margin-top: $space*2;
     }
+  	&.wpr-radio-warning{
+		margin-left: -40px;
+	  &:before{
+		width: calc(100% + 8px);
+		left:0;
+	  }
+	  &:after{
+		left: 40px;
+	  }
+  	}
 }
 
 .wpr-warningContainer + .wpr-warningContainer,
