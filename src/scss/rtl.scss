@@ -151,6 +151,19 @@ Method : SUITCSS (modified)
         left: inherit;
         right: -$space*5;
     }
+  &.wpr-radio-warning{
+	margin-left: 0px;
+	margin-right: -40px;
+	&:before{
+	  width: calc(100% + 8px);
+	  left:inherit;
+	  right : 0;
+	}
+	&:after{
+	  right: 40px;
+	  left: inherit;
+	}
+  }
 }
 
 

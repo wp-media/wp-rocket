@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<?php foreach ( $data['options'] as $value => $option ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 		<?php if ( ! empty( $option['warning'] ) ) : ?>
-			<div class="wpr-fieldWarning" data-parent="wpr-radio-<?php echo esc_attr( $value ); ?>">
+			<div class="wpr-fieldWarning wpr-radio-warning" data-parent="wpr-radio-<?php echo esc_attr( $value ); ?>">
 				<div class="wpr-fieldWarning-title wpr-icon-important">
 					<?php echo esc_html( $option['warning']['title'] ); ?>
 				</div>
