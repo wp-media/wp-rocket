@@ -879,14 +879,13 @@ class Page {
 	private function media_section() {
 		$lazyload_beacon  = $this->beacon->get_suggest( 'lazyload' );
 		$exclude_lazyload = $this->beacon->get_suggest( 'exclude_lazyload' );
-		/*$webp_beacon      = $this->beacon->get_suggest( 'webp' );*/
-		$dimensions = $this->beacon->get_suggest( 'image_dimensions' );
+		$dimensions       = $this->beacon->get_suggest( 'image_dimensions' );
 
 		$this->settings->add_page_section(
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, embeds', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, image dimensions', 'rocket' ),
 			]
 		);
 
@@ -1723,6 +1722,7 @@ class Page {
 	 * @since 3.0
 	 */
 	private function addons_section() {
+		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 		$this->settings->add_page_section(
 			'addons',
 			[
@@ -1818,55 +1818,53 @@ class Page {
 			);
 		}
 
-		if ( apply_filters( 'rocket_display_webp_options_tab', true ) ) {
-			$webp_beacon = $this->beacon->get_suggest( 'webp' );
+		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 
-			if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
-				$imagify_link = '<a href="#imagify">';
-			} else {
-				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
-			}
-
-			$this->settings->add_settings_fields(
-				[
-					'cache_webp' =>
-					/**
-					 * Add more content to the 'cache_webp' setting field.
-					 *
-					 * @since  3.9.1
-					 *
-					 * @param array $cache_webp_field Data to be added to the setting field.
-					 */
-						apply_filters(
-							'rocket_cache_webp_setting_field',
-							[
-								'type'              => 'one_click_addon',
-								'label'             => __( 'WebP Compatibility', 'rocket' ),
-								'logo'              => [
-									'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-webp.svg',
-									'width'  => 152,
-									'height' => 135,
-								],
-								'title'             => __( 'Improve browser compatibility for WebP images.', 'rocket' ),
-								// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-								'description'       => sprintf(
-								// translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
-									__( 'Enable this option if you would like WP Rocket to serve WebP images to compatible browsers. Please note that WP Rocket cannot create WebP images for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore info%2$s', 'rocket' ),
-									$imagify_link,
-									'</a>',
-									'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">'
-								),
-								'section'           => 'one_click',
-								'page'              => 'addons',
-								'settings_page'     => 'webp',
-								'default'           => 0,
-								'helper'            => 'assassasd',
-								'sanitize_callback' => 'sanitize_checkbox',
-							]
-							),
-				]
-			);
+		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
+			$imagify_link = '<a href="#imagify">';
+		} else {
+			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 		}
+
+		$this->settings->add_settings_fields(
+			[
+				'cache_webp' =>
+				/**
+				 * Add more content to the 'cache_webp' setting field.
+				 *
+				 * @since  3.10 moved to add-on section
+				 * @since  3.4
+				 *
+				 * @param array $cache_webp_field Data to be added to the setting field.
+				 */
+					apply_filters(
+						'rocket_cache_webp_setting_field',
+						[
+							'type'              => 'one_click_addon',
+							'label'             => __( 'WebP Compatibility', 'rocket' ),
+							'logo'              => [
+								'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-webp.svg',
+								'width'  => 152,
+								'height' => 135,
+							],
+							'title'             => __( 'Improve browser compatibility for WebP images.', 'rocket' ),
+							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+							'description'       => sprintf(
+							// translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
+								__( 'Enable this option if you would like WP Rocket to serve WebP images to compatible browsers. Please note that WP Rocket cannot create WebP images for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore info%2$s', 'rocket' ),
+								$imagify_link,
+								'</a>',
+								'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">'
+							),
+							'section'           => 'one_click',
+							'page'              => 'addons',
+							'settings_page'     => 'webp',
+							'default'           => 0,
+							'sanitize_callback' => 'sanitize_checkbox',
+						]
+						),
+			]
+		);
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
 			// No need to display the dedicated tab if there is nothing to display on it.
