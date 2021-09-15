@@ -346,22 +346,15 @@ class Webp_Subscriber implements Subscriber_Interface {
 			$cache_webp_field['container_class'][] = 'wpr-field--parent';
 			$cache_webp_field['helper']            = sprintf(
 			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-				esc_html__( 'You don’t seem to be using a method to create and serve WebP that we are auto-compatible with. If you are not using WebP do not enable this option. %1$sMore info%2$s', 'rocket' ),
+				esc_html__( '%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t already have WebP images on your site consider using %3$sImagify%2$s or another supported plugin. %1$sMore info%2$s %4$s %4$s If you are not using WebP do not enable this option.',
+					'rocket' ),
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-				'</a>'
+				'</a>',
+				$imagify_link,
+				'<br>',
+				'<strong>',
+				'</strong>'
 			);
-			$cache_webp_field['warning'] = [
-				'title'        => __( 'We have not detected any compatible WebP plugin!', 'rocket' ),
-				'description'  => sprintf(
-				// Translators: %1$s and %2$s = opening <a> tags, %3$s = closing </a> tag.
-					esc_html__( 'If you activate this option WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. If you don’t already have WebP images on your site consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
-					$imagify_link,
-					'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
-					'</a>'
-				),
-				'button_label' => esc_html__( 'Enable WebP caching', 'rocket' ),
-			];
-
 			return $cache_webp_field;
 		}
 
