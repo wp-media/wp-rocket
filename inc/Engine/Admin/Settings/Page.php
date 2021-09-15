@@ -979,12 +979,6 @@ class Page {
 					'help'        => $dimensions,
 					'page'        => 'media',
 				],
-				'embeds_section'     => [
-					'title'       => __( 'Embeds', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
-					'page'        => 'media',
-				],
 			]
 		);
 
@@ -1066,14 +1060,6 @@ class Page {
 					'section'           => 'dimensions_section',
 					'page'              => 'media',
 					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'embeds'           => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
-					'section'           => 'embeds_section',
-					'page'              => 'media',
-					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
