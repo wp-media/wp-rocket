@@ -152,20 +152,45 @@ Method : SUITCSS (modified)
         right: -$space*5;
     }
   &.wpr-radio-warning{
-	margin-left: 0px;
-	margin-right: -40px;
-	&:before{
-	  width: calc(100% + 8px);
-	  left:inherit;
-	  right : 0;
-	}
+	margin-left: 0;
+	margin-right: -32px;
 	&:after{
-	  right: 40px;
 	  left: inherit;
+	  right: 40px;
 	}
   }
 }
-
+@media only screen and (max-width: 400px) {
+  .wpr-fieldWarning{
+	&.wpr-radio-warning{
+	  margin-left: 0;
+	  margin-right: -32px;
+	  .wpr-button{
+		padding-right: 8px;
+		padding-left: 32px;
+	  }
+	}
+  }
+}
+@media only screen and (max-width: 350px) {
+  .wpr-radio-buttons {
+	padding-left:0;
+	padding-right:24px;
+  }
+  .wpr-fieldWarning{
+	&.wpr-radio-warning{
+	  margin-left: 0;
+	  margin-right: -24px;
+	  padding-left: 0;
+	  padding-right: 30px;
+	  .wpr-button{
+		white-space:normal;
+		padding-right: 8px;
+		padding-left: 25px;
+	  }
+	}
+  }
+}
 
 // components/fields/checkbox
 .wpr-checkbox{
