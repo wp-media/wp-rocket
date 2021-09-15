@@ -47,10 +47,16 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 
 == Changelog ==
 
+= 3.3.0 - 2021-xx-xx =
+* Enhancement - Adds as_has_scheduled_action() to provide a performant way to test for existing actions. #645
+* Fix - Improves compatibility with environments where NO_ZERO_DATE is enabled. #519
+* Fix - Adds safety checks to guard against errors when our database tables cannot be created. #645
+* Dev - Now supports queries that use multiple statuses. #649
+* Dev - Minimum requirements for WordPress and PHP bumped (to 5.2 and 5.6 respectively). #723
+
 = 3.2.1 - 2021-06-21 =
 * Fix - Add extra safety/account for different versions of AS and different loading patterns. #714
 * Fix - Handle hidden columns (Tools → Scheduled Actions) | #600.
-
 
 = 3.2.0 - 2021-06-03 =
 * Fix - Add "no ordering" option to as_next_scheduled_action().
