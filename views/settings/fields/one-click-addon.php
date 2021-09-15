@@ -20,6 +20,7 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 <fieldset class="wpr-fieldsContainer-fieldset">
+
 	<div class="wpr-field">
 		<div class="wpr-flex">
 			<h4 class="wpr-title3"><?php echo esc_html( $data['label'] ); ?></h4>
@@ -46,7 +47,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
-	<div class="wpr-field wpr-addon">
+	<div class="wpr-field wpr-addon <?php echo esc_attr( $data['container_class'] ); ?>">
 		<div class="wpr-flex">
 			<div class="wpr-addon-logo">
 				<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>" alt="">

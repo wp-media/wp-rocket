@@ -1881,6 +1881,9 @@ class Page {
 							'settings_page'     => 'webp',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
+							'container_class'   => [
+								'wpr-webp-addon',
+							],
 						]
 						),
 			]
