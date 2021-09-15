@@ -27,6 +27,15 @@ class Test_Handle extends FilesystemTestCase {
 		$process     = Mockery::mock( ResourceFetcherProcess::class );
 		$options     = Mockery::mock( Options::class );
 
+		foreach ( $expected['resources'] as $resource ) {
+			if ( $resource['external'] ?? false ) {
+				$local_cache->shouldReceive( 'get_filepath' )
+				            ->with( $resource['url'] )
+				            ->once()
+				            ->andReturn( $resource['path'] );
+			}
+		}
+
 		$resource_fetcher = new ResourceFetcher( $local_cache, $process, $options );
 
 		Functions\when( 'wp_unslash' )->alias(

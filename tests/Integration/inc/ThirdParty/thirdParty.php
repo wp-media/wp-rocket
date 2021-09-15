@@ -17,7 +17,6 @@ class Test_ThirdParty extends TestCase {
 	}
 
 	public function testShouldNotLoadHostingFilesWhenNotPresent() {
-		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php', self::$included_files );
 		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php', self::$included_files );
 		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php', self::$included_files );
 		$this->assertNotContains( WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php', self::$included_files );

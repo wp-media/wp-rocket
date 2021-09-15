@@ -26,6 +26,7 @@ class DeferJS {
 		'N.N2_',
 		'rev_slider_wrapper',
 		'FB3D_CLIENT_LOCALE',
+		'ewww_webp_supported',
 	];
 
 	/**
@@ -206,6 +207,7 @@ class DeferJS {
 			'/wp-includes/js/dist/i18n.min.js',
 			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 			'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
+			'/wp-content/plugins/ewww-image-optimizer/includes/check-webp(.min)?.js',
 			'static.mailerlite.com/data/(.*).js',
 			'cdn.voxpow.com/static/libs/v1/(.*).js',
 			'cdn.voxpow.com/media/trackers/js/(.*).js',

@@ -325,6 +325,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
+		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
 		set_transient(
 			'rocket_clear_usedcss_response',

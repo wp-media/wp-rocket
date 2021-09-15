@@ -46,9 +46,10 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
+		$delayjs_html = self::$container->get( 'delay_js_html' );
 		$options_api->set( 'settings', [] );
 
-		$divi        = new Divi( $options_api, $options );
+		$divi        = new Divi( $options_api, $options, $delayjs_html );
 
 		switch_theme( $config['stylesheet'] );
 
