@@ -8,7 +8,6 @@ $default = [
 	'cache_logged_user'           => 0,
 	'cache_ssl'                   => 1,
 	'emoji'                       => 1,
-	'embeds'                      => 0,
 	'cache_reject_uri'            => [],
 	'cache_reject_cookies'        => [],
 	'cache_reject_ua'             => [],

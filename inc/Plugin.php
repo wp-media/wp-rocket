@@ -199,7 +199,6 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
 			'image_dimensions_subscriber',

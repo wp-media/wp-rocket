@@ -88,7 +88,7 @@ defined( 'ABSPATH' ) || exit;
 		<div id="reason-broke-panel" class="wpr-Modal-hidden">
 			<h3><?php esc_html_e( 'The plugin broke my layout or some functionality', 'rocket' ); ?></h3>
 			<p><?php esc_html_e( 'This type of issue can usually be fixed by deactivating some options in WP Rocket.', 'rocket' ); ?></p>
-			<p><?php esc_html_e( 'Click "Apply Safe Mode" to quickly disable LazyLoad, File Optimization, Embeds and CDN options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
+			<p><?php esc_html_e( 'Click "Apply Safe Mode" to quickly disable LazyLoad, File Optimization and CDN options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
 			<div class="text-center">
 				<button id="wpr-action-safe_mode" class="wpr-button"><?php esc_html_e( 'Apply safe mode', 'rocket' ); ?></button>
 			</div>
