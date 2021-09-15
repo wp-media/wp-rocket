@@ -1,6 +1,6 @@
 *** Changelog ***
 
-= 3.3.0 - 2021-xx-xx =
+= 3.3.0 - 2021-09-15 =
 * Enhancement - Adds as_has_scheduled_action() to provide a performant way to test for existing actions. #645
 * Fix - Improves compatibility with environments where NO_ZERO_DATE is enabled. #519
 * Fix - Adds safety checks to guard against errors when our database tables cannot be created. #645

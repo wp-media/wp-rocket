@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 5.7
-Stable tag: 3.2.1
+Stable tag: 3.3.0
 License: GPLv3
 Requires PHP: 5.6
 
@@ -47,7 +47,7 @@ Collaboration is cool. We'd love to work with you to improve Action Scheduler. [
 
 == Changelog ==
 
-= 3.3.0 - 2021-xx-xx =
+= 3.3.0 - 2021-09-15 =
 * Enhancement - Adds as_has_scheduled_action() to provide a performant way to test for existing actions. #645
 * Fix - Improves compatibility with environments where NO_ZERO_DATE is enabled. #519
 * Fix - Adds safety checks to guard against errors when our database tables cannot be created. #645
