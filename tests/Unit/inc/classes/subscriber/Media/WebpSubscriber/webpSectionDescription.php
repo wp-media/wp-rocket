@@ -28,16 +28,11 @@ class Test_WebpSectionDescription extends TestCase {
 		$field          = $webpSubscriber->webp_section_description( [] );
 
 		// Text under field.
-		$expectedText = 'You don’t seem to be using a method to create and serve WebP that we are auto-compatible with.';
+		$expectedText = '<strong>We have not detected any compatible WebP plugin!</strong><br>';
 
 		$this->assertArrayHasKey( 'helper', $field );
 		$this->assertStringStartsWith( $expectedText, $field['helper'] );
 
-		// Double check.
-		$expectedText = 'If you activate this option WP Rocket will create separate cache files to serve WebP images.';
-
-		$this->assertArrayHasKey( 'warning', $field );
-		$this->assertStringStartsWith( $expectedText, $field['warning']['description'] );
 	}
 
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionEnabled() {
