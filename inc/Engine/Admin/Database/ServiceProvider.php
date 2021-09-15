@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Admin\Database;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -7,9 +7,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Service Provider for database optimization
  *
  * @since 3.3
- * @author Remy Perona
  */
-class Database extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provides array is a way to let the container
@@ -23,19 +22,23 @@ class Database extends AbstractServiceProvider {
 	protected $provides = [
 		'db_optimization_process',
 		'db_optimization',
+		'db_optimization_subscriber',
 	];
 
 	/**
 	 * Registers the option array in the container
 	 *
 	 * @since 3.3
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'db_optimization_process', 'WP_Rocket\Admin\Database\Optimization_Process' );
-		$this->getContainer()->add( 'db_optimization', 'WP_Rocket\Admin\Database\Optimization' )
+		$this->getContainer()->add( 'db_optimization_process', 'WP_Rocket\Engine\Admin\Database\OptimizationProcess' );
+		$this->getContainer()->add( 'db_optimization', 'WP_Rocket\Engine\Admin\Database\Optimization' )
 			->addArgument( $this->getContainer()->get( 'db_optimization_process' ) );
+		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Engine\Admin\Database\Subscriber' )
+			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

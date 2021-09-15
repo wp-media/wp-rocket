@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use WP_Rocket\Admin\Database\Optimization;
+use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Interfaces\Render_Interface;
@@ -1488,16 +1488,6 @@ class Page {
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
 					'description'       => sprintf( _n( '%s trashed comment in your database.', '%s trashed comments in your database.', $total['database_trashed_comments'], 'rocket' ), number_format_i18n( $total['database_trashed_comments'] ) ),
 					'section'           => 'comments_cleanup_section',
-					'page'              => 'database',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'database_expired_transients' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Expired transients', 'rocket' ),
-					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s expired transient in your database.', '%s expired transients in your database.', $total['database_expired_transients'], 'rocket' ), number_format_i18n( $total['database_expired_transients'] ) ),
-					'section'           => 'transients_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
