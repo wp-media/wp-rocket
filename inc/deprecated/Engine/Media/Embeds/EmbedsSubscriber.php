@@ -1,17 +1,20 @@
 <?php
-namespace WP_Rocket\Engine\Media\Embeds;
+namespace WP_Rocket\deprecated\Engine\Media\Embeds;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\deprecated\DeprecatedClassTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Event subscriber to control Embeds behavior.
  *
+ * @since  3.10 deprecated
  * @since  3.7 Moved to new architecture.
  * @since  3.2
  */
 class EmbedsSubscriber implements Subscriber_Interface {
+	use DeprecatedClassTrait;
 	use ReturnTypesTrait;
 
 	/**
@@ -27,6 +30,7 @@ class EmbedsSubscriber implements Subscriber_Interface {
 	 * @param Options_Data $options An Options Data instance.
 	 */
 	public function __construct( Options_Data $options ) {
+		self::deprecated_class( '3.10' );
 		$this->options = $options;
 	}
 
@@ -166,18 +170,6 @@ class EmbedsSubscriber implements Subscriber_Interface {
 		if ( ! $this->can_disable_embeds() ) {
 			return;
 		}
-
-		wp_enqueue_script(
-			'rocket-disable-embeds',
-			rocket_get_constant( WP_ROCKET_ASSETS_JS_URL ) . 'editor/editor.js',
-			[
-				'wp-edit-post',
-				'wp-editor',
-				'wp-dom',
-			],
-			'1.0',
-			true
-		);
 	}
 
 	/**

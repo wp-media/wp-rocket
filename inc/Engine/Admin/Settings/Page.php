@@ -911,7 +911,7 @@ class Page {
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, embeds, WebP', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, WebP', 'rocket' ),
 			]
 		);
 
@@ -983,12 +983,6 @@ class Page {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Add missing width and height attributes to images. Helps prevent layout shifts and improve the reading experience for your visitors. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $dimensions['url'] ) . '" data-beacon-article="' . esc_attr( $dimensions['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'help'        => $dimensions,
-					'page'        => 'media',
-				],
-				'embeds_section'     => [
-					'title'       => __( 'Embeds', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-allowed) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
 				'webp_section'       => [
@@ -1089,14 +1083,6 @@ class Page {
 					'section'           => 'dimensions_section',
 					'page'              => 'media',
 					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'embeds'           => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
-					'section'           => 'embeds_section',
-					'page'              => 'media',
-					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'cache_webp'       => array_merge(

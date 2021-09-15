@@ -138,7 +138,6 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		$reset_options = apply_filters(
 			'rocket_safe_mode_reset_options',
 			[
-				'embeds'                 => 0,
 				'async_css'              => 0,
 				'lazyload'               => 0,
 				'lazyload_iframes'       => 0,
