@@ -153,7 +153,6 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the threshold at which lazyload is triggered
 		 *
 		 * @since 1.2
-		 * @author Remy Perona
 		 *
 		 * @param int $threshold Threshold value.
 		 */
@@ -167,11 +166,12 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the use of native lazyload
 		 *
 		 * @since 3.4
-		 * @author Remy Perona
 		 *
 		 * @param bool $use_native True to use native lazyload, false otherwise.
 		 */
-		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
+		$use_native =  (bool) apply_filters( 'rocket_use_native_lazyload', true );
+
+		if ( $use_native ) {
 			$inline_args['options']             = [
 				'use_native' => 'true',
 			];
@@ -179,7 +179,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $this->options->get( 'lazyload', 0 ) ) {
-			$inline_args['elements']['image']            = 'img[data-lazy-src]';
+			if ( ! $use_native ) {
+				$inline_args['elements']['image'] = 'img[data-lazy-src]';
+			}
+
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
@@ -191,7 +194,6 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the arguments array for the lazyload script options
 		 *
 		 * @since 3.3
-		 * @author Remy Perona
 		 *
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
