@@ -138,7 +138,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-		     ->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
-		     ->addTag( 'common_subscriber' );
+			->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
+			->addTag( 'common_subscriber' );
 	}
 }

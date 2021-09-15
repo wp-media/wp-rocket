@@ -15,25 +15,30 @@ use Brain\Monkey\Functions;
  * @group  WordFence
  * @group  ThirdParty
  */
-class Test_WordFence_Whitelist extends TestCase {
+class Test_WordFenceWhitelistIPs extends TestCase {
 
 	public function setUp() : void {
+
 		parent::setup();
 		wordfence::$white_listed_ips =[];
 		$this->WordFenceCompatibility        = new WordFenceCompatibility();
 	}
 
-	public function testShouldAddWitelistIPs() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldAddWitelistIPs( $expected ) {
 
 
-		$ips=['135.125.83.227'];
+		//$ips=['135.125.83.227'];
 
-		Filters\expectApplied( 'rocket_wordfence_whitelisted_ips')->with($ips)->once()
-			->andReturn( $ips );
 
 		$this->WordFenceCompatibility->whitelist_wordfence_firewall_ips();
 
-		$this->assertEquals( $ips, wordfence::getWhiteListedIPs() );
+		$this->assertEquals( $expected, wordfence::getWhiteListedIPs() );
 
+	}
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'whitelistIPs' );
 	}
 }

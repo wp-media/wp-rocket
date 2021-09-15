@@ -17,7 +17,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	/**
 	 * Whitelisted_IPS.
 	 */
-	const Whitelisted_IPS = ['135.125.83.227'];
+	const WHITELISTED_IPS = [ '135.125.83.227' ];
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -37,7 +37,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	}
 
 	/**
-	 * whitelist wp-rocket ips in wordfence firewall
+	 * Whitelist wp-rocket ips in wordfence firewall
 	 *
 	 * @since 3.10
 	 *
@@ -45,7 +45,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 */
 	public function whitelist_wordfence_firewall_ips() {
 
-		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::Whitelisted_IPS );
+		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::WHITELISTED_IPS );
 
 		if ( empty( $ips ) ) {
 			return;
