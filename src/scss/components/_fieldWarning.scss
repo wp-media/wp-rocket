@@ -87,14 +87,15 @@
 	&.wpr-radio-warning{
 	  margin-left: -32px;
 	  .wpr-button{
+		white-space:normal;
 		padding-right: 32px;
 	  }
 	}
   }
 }
 @media only screen and (max-width: 350px) {
-  .wpr-radio-buttons {
-	padding-left:24px;
+  .wpr-radio-buttons{
+	padding-left: 24px;
   }
   .wpr-fieldWarning{
 	&.wpr-radio-warning{
@@ -102,8 +103,7 @@
 	  padding-left: 30px;
 	  padding-right: 0;
 	  .wpr-button{
-		white-space:normal;
-		padding-right: 25px;
+		padding-right: 24px;
 	  }
 	}
   }

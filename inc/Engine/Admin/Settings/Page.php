@@ -708,7 +708,7 @@ class Page {
 							'warning'     => [
 								'title'        => __( 'We’re still working on it!', 'rocket' ),
 								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
-								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
+								'button_label' => __( 'Remove Unused CSS', 'rocket' ),
 							],
 							'sub_fields'  => [
 								'remove_unused_css_safelist' =>
