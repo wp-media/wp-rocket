@@ -121,8 +121,8 @@ class Godaddy implements Subscriber_Interface {
 		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
-		$this->purge_request( 'PURGE', $home_url );
-		$this->purge_request( 'PURGE', $home_pagination_url );
+		$this->purge_request( 'BAN', $home_url );
+		$this->purge_request( 'BAN', $home_pagination_url );
 	}
 
 

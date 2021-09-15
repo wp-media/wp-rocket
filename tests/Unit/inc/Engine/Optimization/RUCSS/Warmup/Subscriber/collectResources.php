@@ -54,6 +54,10 @@ class Test_CollectResources extends TestCase {
 		}
 
 		if( $expected['allowed'] ) {
+			$fetcher->shouldReceive( 'compress' )
+				->with( $input['html'] )
+				->andReturn( $input['html'] );
+
 			$fetcher
 				->shouldReceive( 'data' )
 				->with( [ 'html' => $input['html'] ] )

@@ -88,6 +88,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the inline script to the head when the option is enabled.
 	 *
+	 * @since 3.9.4 Move meta charset to head.
 	 * @since 3.9 Hooked on rocket_buffer, display the script right after <head>
 	 * @since 3.7
 	 *
@@ -108,7 +109,9 @@ class Subscriber implements Subscriber_Interface {
 			$html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $html, 1 );
 		}
 
-		return preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
+		$html = preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
+
+		return $this->html->move_meta_charset_to_head( $html );
 	}
 
 	/**

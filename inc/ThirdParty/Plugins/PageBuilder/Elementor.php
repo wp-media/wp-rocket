@@ -3,6 +3,8 @@ namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+
 
 /**
  * Compatibility file for Elementor plugin
@@ -19,15 +21,33 @@ class Elementor implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * WP_Filesystem_Direct instance.
+	 *
+	 * @var \WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
+	 * Delay JS HTML class.
+	 *
+	 * @var HTML
+	 */
+	private $delayjs_html;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options WP Rocket options.
+	 * @param Options_Data          $options WP Rocket options.
+	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
+	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html ) {
+		$this->options      = $options;
+		$this->filesystem   = $filesystem;
+		$this->delayjs_html = $delayjs_html;
 	}
 
 	/**
@@ -50,6 +70,7 @@ class Elementor implements Subscriber_Interface {
 			'elementor/core/files/clear_cache'    => 'clear_cache',
 			'update_option__elementor_global_css' => 'clear_cache',
 			'delete_option__elementor_global_css' => 'clear_cache',
+			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
 		];
 	}
 
@@ -115,5 +136,29 @@ class Elementor implements Subscriber_Interface {
 	 */
 	private function elementor_use_external_file() {
 		return 'internal' !== get_option( 'elementor_css_print_method' );
+	}
+
+	/**
+	 * Add Fix Elementor Pro animations script.
+	 *
+	 * @since 3.9.2
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string HTML with Fix Elementor Pro animations script.
+	 */
+	public function add_fix_animation_script( $html ) {
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return $html;
+		}
+		$pattern = '/<\/body*>/i';
+
+		$fix_elementor_animation_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/elementor-animation.js' );
+
+		if ( false !== $fix_elementor_animation_script ) {
+			$html = preg_replace( $pattern, "<script>{$fix_elementor_animation_script}</script>$0", $html, 1 );
+		}
+
+		return $html;
 	}
 }
