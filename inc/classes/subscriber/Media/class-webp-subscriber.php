@@ -233,7 +233,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $cache_webp_field Section description.
-	 * @return string
+	 * @return array
 	 */
 	public function webp_section_description( $cache_webp_field ) {
 		$webp_beacon            = $this->beacon->get_suggest( 'webp' );
