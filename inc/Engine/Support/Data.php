@@ -22,7 +22,6 @@ class Data {
 		'do_caching_mobile_files' => 'Specific Cache for Mobile',
 		'cache_logged_user'       => 'User Cache',
 		'emoji'                   => 'Disable Emojis',
-		'embeds'                  => 'Disable Embeds',
 		'defer_all_js'            => 'Defer JS',
 		'delay_js'                => 'Delay JS',
 		'async_css'               => 'Optimize CSS Delivery',
