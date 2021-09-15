@@ -104,20 +104,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		/**
-		 * Filters the use of the polyfill for intersectionObserver
-		 *
-		 * @since 3.3
-		 * @author Remy Perona
-		 *
-		 * @param bool $polyfill True to use the polyfill, false otherwise.
-		 */
-		$polyfill = (bool) apply_filters( 'rocket_lazyload_polyfill', false );
-
 		$script_args = [
 			'base_url' => rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload/',
 			'version'  => self::SCRIPT_VERSION,
-			'polyfill' => $polyfill,
 		];
 
 		$this->add_inline_script();
@@ -172,10 +161,8 @@ class Subscriber implements Subscriber_Interface {
 		$use_native =  (bool) apply_filters( 'rocket_use_native_lazyload', true );
 
 		if ( $use_native ) {
-			$inline_args['options']             = [
-				'use_native' => 'true',
-			];
-			$inline_args['elements']['loading'] = '[loading=lazy]';
+			$inline_args['options']['use_native'] = true;
+			$inline_args['elements']['loading']   = '[loading=lazy]';
 		}
 
 		if ( $this->options->get( 'lazyload', 0 ) ) {
