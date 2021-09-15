@@ -26,7 +26,7 @@ class Test_WordFence_Whitelist extends TestCase {
 	public function testShouldAddWitelistIPs() {
 
 
-		$ips=['1.1.1.1','2.2.2.2'];
+		$ips=['135.125.83.227'];
 
 		Filters\expectApplied( 'rocket_wordfence_whitelisted_ips')->with($ips)->once()
 			->andReturn( $ips );
