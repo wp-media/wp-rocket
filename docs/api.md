@@ -191,6 +191,29 @@ as_next_scheduled_action( $hook, $args, $group );
 (integer|boolean) The timestamp for the next occurrence, or false if nothing was found.
 
 
+## Function Reference / `as_has_scheduled_action()`
+
+### Description
+
+Check if there is a scheduled action in the queue, but more efficiently than as_next_scheduled_action(). It's recommended to use this function when you need to know whether a specific action is currently scheduled. _Available since 3.3.0._
+
+### Usage
+
+```php
+as_has_scheduled_action( $hook, $args, $group );
+```
+
+### Parameters
+
+- **$hook** (string)(required) Name of the action hook. Default: _none_.
+- **$args** (array) Arguments passed to callbacks when the hook triggers. Default: _`array()`_.
+- **$group** (string) The group the job is assigned to. Default: _''_.
+
+### Return value
+
+(boolean) True if a matching action is pending or in-progress, false otherwise.
+
+
 ## Function Reference / `as_get_scheduled_actions()`
 
 ### Description

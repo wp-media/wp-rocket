@@ -108,7 +108,7 @@ require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-
  * so that our callback is run then.
  */
 function eg_schedule_midnight_log() {
-	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
+	if ( false === as_has_scheduled_action( 'eg_midnight_log' ) ) {
 		as_schedule_recurring_action( strtotime( 'tomorrow' ), DAY_IN_SECONDS, 'eg_midnight_log' );
 	}
 }
@@ -123,4 +123,4 @@ function eg_log_action_data() {
 add_action( 'eg_midnight_log', 'eg_log_action_data' );
 ```
 
-For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
+Note that the `as_has_scheduled_action()` function was added in 3.3.0: if you are using an earlier version, you should use `as_next_scheduled_action()` instead. For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
