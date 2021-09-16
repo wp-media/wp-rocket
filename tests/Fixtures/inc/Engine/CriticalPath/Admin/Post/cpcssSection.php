@@ -71,7 +71,7 @@ return [
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
-				'disabled_description' => 'Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.',
+				'disabled_description' => 'Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
 			// For the integration test.
@@ -84,7 +84,7 @@ return [
 </div>
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 	<div class="components-notice__content">
-		<p>Publish the post, Enable Optimize CSS delivery in WP Rocket settings, and Enable Optimize CSS delivery in the options above to use this feature.</p>
+		<p>Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.</p>
 	</div>
 </div>
 HTML
@@ -108,7 +108,7 @@ HTML
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
-				'disabled_description' => 'Publish the post and Enable Optimize CSS delivery in the options above to use this feature.',
+				'disabled_description' => 'Publish the post and Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
 			// For the integration test.
@@ -121,7 +121,7 @@ HTML
 </div>
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 	<div class="components-notice__content">
-	<p>Publish the post and Enable Optimize CSS delivery in the options above to use this feature.</p>
+	<p>Publish the post and Enable Load CSS asynchronously in the options above to use this feature.</p>
 	</div>
 </div>
 HTML
@@ -182,7 +182,7 @@ HTML
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
 			'data'               => [
-				'disabled_description' => 'Enable Optimize CSS delivery in the options above to use this feature.',
+				'disabled_description' => 'Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
 			// For the integration test.
@@ -195,7 +195,7 @@ HTML
 </div>
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 	<div class="components-notice__content">
-	<p>Enable Optimize CSS delivery in the options above to use this feature.</p>
+	<p>Enable Load CSS asynchronously in the options above to use this feature.</p>
 	</div>
 </div>
 HTML
