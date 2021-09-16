@@ -37,13 +37,9 @@ defined( 'ABSPATH' ) || exit;
 				if ( apply_filters( 'rocket_display_input_' . $data['id'], true ) ) :
 					?>
 					<div class="wpr-radio wpr-radio--reverse">
-						<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class=""
-						       name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"
-						       value="1" <?php checked( $data['value'], 1 ); ?>
-							<?php echo $data['input_attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
+						<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?> <?php echo $data['input_attr'];//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
 						<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
-					<span data-l10n-active="On"
-					      data-l10n-inactive="Off" class="wpr-radio-ui"></span>
+							<span data-l10n-active="On" data-l10n-inactive="Off" class="wpr-radio-ui"></span>
 							<?php esc_html_e( 'Add-on status', 'rocket' ); ?>
 						</label>
 					</div>
@@ -54,9 +50,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-field wpr-addon">
 			<div class="wpr-flex">
 				<div class="wpr-addon-logo">
-					<img src="<?php echo esc_url( $data['logo']['url'] ); ?>"
-					     width="<?php echo esc_attr( $data['logo']['width'] ); ?>"
-					     height="<?php echo esc_attr( $data['logo']['height'] ); ?>" alt="">
+					<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>" alt="">
 				</div>
 				<div class="wpr-addon-text">
 					<?php if ( ! empty( $data['title'] ) ) : ?>
