@@ -56,13 +56,13 @@
     }
 
   	// disabled radio
-	[type="checkbox"]:disabled:not(:checked) + label:after,
-	[type="checkbox"]:disabled:checked + label:after {
+	[type="checkbox"]:disabled + label:after,
+	[type="checkbox"]:disabled + label:after {
 		background: $cGrey;
   	}
 
-	[type="checkbox"]:disabled:not(:checked) + label:before,
-	[type="checkbox"]:disabled:checked + label:before {
+	[type="checkbox"]:disabled + label:before,
+	[type="checkbox"]:disabled + label:before {
 	  border: 1px solid $cGrey;
 	}
 
