@@ -197,59 +197,7 @@ class Render extends Abstract_render {
 		if ( ! isset( $this->settings[ $page ]['sections'][ $section ]['fields'] ) ) {
 			return;
 		}
-
-		foreach ( $this->settings[ $page ]['sections'][ $section ]['fields'] as $args ) {
-			$default = [
-				'type'              => 'text',
-				'label'             => '',
-				'description'       => '',
-				'class'             => '',
-				'container_class'   => '',
-				'default'           => '',
-				'helper'            => '',
-				'placeholder'       => '',
-				'parent'            => '',
-				'section'           => '',
-				'page'              => '',
-				'sanitize_callback' => 'sanitize_text_field',
-				'input_attr'        => '',
-				'warning'           => [],
-			];
-
-			$args = wp_parse_args( $args, $default );
-
-			if ( ! empty( $args['input_attr'] ) ) {
-				$input_attr = '';
-
-				foreach ( $args['input_attr'] as $key => $value ) {
-					if ( 'disabled' === $key ) {
-						if ( 1 === $value ) {
-							$input_attr .= ' disabled';
-						}
-
-						continue;
-					}
-
-					$input_attr .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
-				}
-
-				$args['input_attr'] = $input_attr;
-			}
-
-			if ( ! empty( $args['parent'] ) ) {
-				$args['parent'] = ' data-parent="' . esc_attr( $args['parent'] ) . '"';
-			}
-
-			if ( ! empty( $args['class'] ) ) {
-				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
-			}
-
-			if ( ! empty( $args['container_class'] ) ) {
-				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
-			}
-
-			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
-		}
+		$this->render_fields( $this->settings[ $page ]['sections'][ $section ]['fields'] );
 	}
 
 	/**
@@ -472,5 +420,85 @@ class Render extends Abstract_render {
 	 */
 	public function render_part( $part ) {
 		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the radio_buttons field template.
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function radio_buttons( $args ) {
+		echo $this->generate( 'fields/radio-buttons', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Renders the fields.
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $fields   fields to render.
+	 *
+	 * @return void
+	 */
+	public function render_fields( $fields ) {
+
+		foreach ( $fields as $id => $args ) {
+			$default = [
+				'type'              => 'text',
+				'label'             => '',
+				'description'       => '',
+				'class'             => '',
+				'container_class'   => '',
+				'default'           => '',
+				'helper'            => '',
+				'placeholder'       => '',
+				'parent'            => '',
+				'section'           => '',
+				'page'              => '',
+				'sanitize_callback' => 'sanitize_text_field',
+				'input_attr'        => '',
+				'warning'           => [],
+			];
+
+			$args = wp_parse_args( $args, $default );
+
+			if ( empty( $args['id'] ) ) {
+				$args['id'] = $id;
+			}
+
+			if ( ! empty( $args['input_attr'] ) ) {
+				$input_attr = '';
+
+				foreach ( $args['input_attr'] as $key => $value ) {
+					if ( 'disabled' === $key ) {
+						if ( 1 === $value ) {
+							$input_attr .= ' disabled';
+						}
+
+						continue;
+					}
+
+					$input_attr .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
+				}
+
+				$args['input_attr'] = $input_attr;
+			}
+
+			if ( ! empty( $args['parent'] ) ) {
+				$args['parent'] = ' data-parent="' . esc_attr( $args['parent'] ) . '"';
+			}
+
+			if ( ! empty( $args['class'] ) ) {
+				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+			}
+
+			if ( ! empty( $args['container_class'] ) ) {
+				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
+			}
+
+			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
+		}
 	}
 }

@@ -362,10 +362,6 @@ class UsedCSS {
 			if ( ! $inserted ) {
 				return false;
 			}
-
-			// Save used_css into filesystem.
-			$this->save_used_css_in_filesystem( $inserted );
-
 			return $inserted;
 		}
 
@@ -374,10 +370,6 @@ class UsedCSS {
 		if ( ! $updated ) {
 			return false;
 		}
-
-		// Save used_css into filesystem.
-		$this->save_used_css_in_filesystem( $updated );
-
 		return $updated;
 	}
 
@@ -408,7 +400,6 @@ class UsedCSS {
 	 */
 	private function update_used_css( int $id, array $data ) {
 		$updated = $this->used_css_query->update_item( $id, $data );
-
 		if ( ! $updated ) {
 			return false;
 		}
@@ -590,36 +581,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Save Used CSS into filesystem in case CPCSS is enabled only.
-	 *
-	 * @param UsedCSS_Row $used_css Used CSS contents.
-	 *
-	 * @return bool
-	 */
-	private function save_used_css_in_filesystem( UsedCSS_Row $used_css ): bool {
-		if ( ! $this->cpcss_enabled() ) {
-			return false;
-		}
-
-		if ( ! $this->filesystem->is_dir( $this->base_path ) ) {
-			if ( rocket_mkdir_p( $this->base_path ) ) {
-				$this->filesystem->touch( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . 'index.html' );
-				$this->filesystem->touch( $this->base_path . DIRECTORY_SEPARATOR . 'index.html' );
-			}
-		}
-
-		$used_css_filepath = $this->base_path . $this->get_used_css_filepath( $used_css );
-
-		if ( ! $this->filesystem->is_dir( dirname( $used_css_filepath ) ) ) {
-			if ( ! rocket_mkdir_p( dirname( $used_css_filepath ) ) ) {
-				return false;
-			}
-		}
-
-		return rocket_put_content( $used_css_filepath, $this->handle_charsets( $used_css->css ) );
-	}
-
-	/**
 	 * Get Used CSS filepath.
 	 *
 	 * @param UsedCSS_Row $used_css Used CSS contents.
@@ -649,25 +610,10 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		if ( ! $this->cpcss_enabled() ) {
-			$used_css_contents = $this->handle_charsets( $used_css->css, false );
-			return sprintf(
-				'<style id="wpr-usedcss">%s</style>',
-				wp_strip_all_tags( $used_css_contents )
-			);
-		}
-
-		$used_css_filepath = $this->get_used_css_filepath( $used_css );
-		$absolute_path     = $this->base_path . $used_css_filepath;
-
-		if ( ! $this->filesystem->exists( $absolute_path ) ) {
-			$this->save_used_css_in_filesystem( $used_css );
-		}
-
+		$used_css_contents = $this->handle_charsets( $used_css->css, false );
 		return sprintf(
-			'<link rel="stylesheet" data-no-minify="" id="wpr-usedcss-css" href="%1$s?ver=%2$s">', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
-			$this->base_url . $used_css_filepath,
-			$this->filesystem->mtime( $absolute_path ) ?? strtotime( $used_css->modified )
+			'<style id="wpr-usedcss">%s</style>',
+			wp_strip_all_tags( $used_css_contents )
 		);
 	}
 
