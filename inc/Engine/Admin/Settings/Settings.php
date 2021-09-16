@@ -309,15 +309,14 @@ class Settings {
 		$input['critical_css'] = ! empty( $input['critical_css'] ) ? wp_strip_all_tags( str_replace( [ '<style>', '</style>' ], '', $input['critical_css'] ), [ "\'", '\"' ] ) : '';
 
 		// Database options.
-		$input['database_revisions']          = ! empty( $input['database_revisions'] ) ? 1 : 0;
-		$input['database_auto_drafts']        = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
-		$input['database_trashed_posts']      = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
-		$input['database_spam_comments']      = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
-		$input['database_trashed_comments']   = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
-		$input['database_expired_transients'] = ! empty( $input['database_expired_transients'] ) ? 1 : 0;
-		$input['database_all_transients']     = ! empty( $input['database_all_transients'] ) ? 1 : 0;
-		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
-		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
+		$input['database_revisions']         = ! empty( $input['database_revisions'] ) ? 1 : 0;
+		$input['database_auto_drafts']       = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
+		$input['database_trashed_posts']     = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
+		$input['database_spam_comments']     = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
+		$input['database_trashed_comments']  = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
+		$input['database_all_transients']    = ! empty( $input['database_all_transients'] ) ? 1 : 0;
+		$input['database_optimize_tables']   = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
+		$input['schedule_automatic_cleanup'] = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
 
 		$cleanup_frequencies = [
 			'daily'   => 1,

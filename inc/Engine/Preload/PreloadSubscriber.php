@@ -167,7 +167,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'database_trashed_posts'      => true,
 			'database_spam_comments'      => true,
 			'database_trashed_comments'   => true,
-			'database_expired_transients' => true,
 			'database_all_transients'     => true,
 			'database_optimize_tables'    => true,
 			'schedule_automatic_cleanup'  => true,
