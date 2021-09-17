@@ -343,8 +343,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 			}
 
-			$cache_webp_field['container_class'][] = 'wpr-field--parent';
-			$cache_webp_field['helper']            = sprintf(
+			$cache_webp_field['helper'] = sprintf(
 			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 				esc_html__( '%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t already have WebP images on your site consider using %3$sImagify%2$s or another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP do not enable this option.', 'rocket' ),
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
@@ -386,8 +385,6 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		$cache_webp_field['input_attr']['disabled'] = 1;
-		$cache_webp_field['container_class'][]      = 'wpr-isDisabled';
-		$cache_webp_field['container_class'][]      = 'wpr-isParent';
 
 		return $cache_webp_field;
 	}
