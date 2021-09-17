@@ -387,9 +387,6 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 * If the current request does not have any search or if this list table does not support
 	 * that feature it will return an empty string.
 	 *
-	 * TODO:
-	 *   - Improve search doing LIKE by word rather than by phrases.
-	 *
 	 * @return string
 	 */
 	protected function get_items_query_search() {
@@ -399,11 +396,13 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 			return '';
 		}
 
-		$search_string = sanitize_text_field( wp_unslash( $_GET['s'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$search_string = $wpdb->esc_like( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$filter = array();
 		foreach ( $this->search_by as $column ) {
-			$filter[] = $wpdb->prepare( '`' . $column . '` like "%%s%"', $wpdb->esc_like( $search_string ) );
+			$wild     = '%';
+			$sql_like = $wild . $wpdb->esc_like( $search_string ) . $wild;
+			$filter[] = $wpdb->prepare( '`%s` LIKE %s', array( $column, $sql_like ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 		return implode( ' OR ', $filter );
 	}
@@ -426,7 +425,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 				continue;
 			}
 
-			$filter[] = $wpdb->prepare( "`$column` = %s", sanitize_text_field( wp_unslash( $_GET['filter_by'][ $column ] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$filter[] = $wpdb->prepare( "`$column` = %s", sanitize_text_field( wp_unslash( $_GET['filter_by'][ $column ] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		return implode( ' AND ', $filter );
@@ -449,7 +448,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 		$this->process_row_actions();
 
-		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_REQUEST['_wp_http_referer'] && ! empty( $_SERVER['REQUEST_URI'] ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
 			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 			exit;
@@ -476,10 +475,10 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 		$sql = "SELECT $columns FROM {$this->table_name} {$where} {$order} {$limit} {$offset}";
 
-		$this->set_items( $wpdb->get_results( $sql, ARRAY_A ) );
+		$this->set_items( $wpdb->get_results( $sql, ARRAY_A ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		$query_count = "SELECT COUNT({$this->ID}) FROM {$this->table_name} {$where}";
-		$total_items = $wpdb->get_var( $query_count );
+		$total_items = $wpdb->get_var( $query_count ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$per_page    = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
 		$this->set_pagination_args(
 			array(
