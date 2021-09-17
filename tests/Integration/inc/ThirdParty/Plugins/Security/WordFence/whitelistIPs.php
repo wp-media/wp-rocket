@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Plugins\Security\WordFence;
 
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use wordfence;
 
