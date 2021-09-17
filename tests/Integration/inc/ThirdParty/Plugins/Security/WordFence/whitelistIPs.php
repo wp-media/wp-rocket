@@ -5,9 +5,6 @@ namespace WP_Rocket\ThirdParty\Plugins\Security\WordFence;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use wordfence;
-use Mockery;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility::whitelist_wordfence_firewall_ips

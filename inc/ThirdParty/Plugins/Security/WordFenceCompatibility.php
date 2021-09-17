@@ -2,10 +2,7 @@
 namespace WP_Rocket\ThirdParty\Plugins\Security;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use Exception;
 use wordfence;
-use WP_Rocket\Logger\Logger;
-
 
 /**
  * Compatibility file for WordFence plugin
@@ -44,7 +41,13 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function whitelist_wordfence_firewall_ips() {
-
+		/**
+		 * Rocket wordfence whitelisted ips filter which adds IPs to wordfence whitelist.
+		 *
+		 * @since  3.10
+		 *
+		 * @param array  list of IPs should be whitelisted
+		 */
 		$ips = apply_filters( 'rocket_wordfence_whitelisted_ips', self::WHITELISTED_IPS );
 
 		if ( empty( $ips ) ) {
