@@ -402,7 +402,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		foreach ( $this->search_by as $column ) {
 			$wild     = '%';
 			$sql_like = $wild . $wpdb->esc_like( $search_string ) . $wild;
-			$filter[] = $wpdb->prepare( '`%s` LIKE %s', array( $column, $sql_like ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$filter[] = $wpdb->prepare( '`' . $column . '` LIKE %s', $sql_like ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.DB.PreparedSQL.NotPrepared
 		}
 		return implode( ' OR ', $filter );
 	}
