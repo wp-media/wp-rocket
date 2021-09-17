@@ -570,6 +570,10 @@ function rocket_handle_settings_import() {
 		) {
 			$settings['async_css'] = 0;
 		}
+		if ( $settings['cache_webp'] && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			$settings['cache_webp'] = 0;
+		}
+
 		$options_api->set( 'settings', $settings );
 
 		rocket_settings_import_redirect( __( 'Settings imported and saved.', 'rocket' ), 'updated' );
