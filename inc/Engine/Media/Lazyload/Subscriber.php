@@ -82,7 +82,10 @@ class Subscriber implements Subscriber_Interface {
 			'init'                                     => 'lazyload_smilies',
 			'wp'                                       => 'deactivate_lazyload_on_specific_posts',
 			'wp_lazy_loading_enabled'                  => 'maybe_disable_core_lazyload',
-			'rocket_lazyload_excluded_attributes'      => 'add_exclusions',
+			'rocket_lazyload_excluded_attributes'      => [
+				[ 'add_exclusions' ],
+				[ 'maybe_add_skip_attributes' ],
+			],
 			'rocket_lazyload_excluded_src'             => 'add_exclusions',
 			'rocket_lazyload_iframe_excluded_patterns' => 'add_exclusions',
 		];
@@ -371,8 +374,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $this->can_lazyload_images() ) {
-			$html = $this->image->lazyloadPictures( $html, $buffer );
-			$html = $this->image->lazyloadImages( $html, $buffer );
+			if ( ! $this->is_native() ) {
+				$html = $this->image->lazyloadPictures( $html, $buffer );
+			}
+
+			$html = $this->image->lazyloadImages( $html, $buffer, $this->is_native() );
 
 			/**
 			 * Filters the application of lazyload on background images
@@ -398,6 +404,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function lazyload_responsive( $html ) {
+		if ( $this->is_native() ) {
+			return $html;
+		}
+
 		return $this->image->lazyloadResponsiveAttributes( $html );
 	}
 
@@ -552,5 +562,43 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function ignore_noscripts( $html ) {
 		return preg_replace( '#<noscript>(?:.+)</noscript>#Umsi', '', $html );
+	}
+
+	/**
+	 * Checks if native lazyload is enabled
+	 *
+	 * @since 3.10
+	 *
+	 * @return bool
+	 */
+	private function is_native(): bool {
+		/**
+		 * Filters the use of native lazyload
+		 *
+		 * @since 3.4
+		 *
+		 * @param bool $use_native True to use native lazyload, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_use_native_lazyload', true );
+	}
+
+	/**
+	 * Adds the skip attributes exclusions if not using native lazyload
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $exclusions Exclusions array
+	 *
+	 * @return array
+	 */
+	public function maybe_add_skip_attributes( $exclusions ): array {
+		if ( $this->is_native() ) {
+			return $exclusions;
+		}
+
+		$exclusions[] = 'data-skip-lazy';
+		$exclusions[] = 'skip-lazy';
+
+		return $exclusions;
 	}
 }
