@@ -81,7 +81,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_lazyload_html'                     => 'lazyload_responsive',
 			'init'                                     => 'lazyload_smilies',
 			'wp'                                       => 'deactivate_lazyload_on_specific_posts',
-			'wp_lazy_loading_enabled'                  => 'maybe_disable_core_lazyload',
 			'rocket_lazyload_excluded_attributes'      => [
 				[ 'add_exclusions' ],
 				[ 'maybe_add_skip_attributes' ],
@@ -458,22 +457,6 @@ class Subscriber implements Subscriber_Interface {
 		if ( is_rocket_post_excluded_option( 'lazyload_iframes' ) ) {
 			add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 		}
-	}
-
-	/**
-	 * Disable WP core lazyload if our images lazyload is active
-	 *
-	 * @since 3.5
-	 *
-	 * @param bool $value Current value for the enabling variable.
-	 * @return bool
-	 */
-	public function maybe_disable_core_lazyload( $value ) {
-		if ( false === $value ) {
-			return $value;
-		}
-
-		return ! (bool) $this->can_lazyload_images();
 	}
 
 	/**
