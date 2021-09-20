@@ -160,7 +160,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $use_native True to use native lazyload, false otherwise.
 		 */
-		$use_native =  (bool) apply_filters( 'rocket_use_native_lazyload', true );
+		$use_native = (bool) apply_filters( 'rocket_use_native_lazyload', true );
 
 		if ( $use_native ) {
 			$inline_args['options']['use_native'] = true;
@@ -570,7 +570,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $exclusions Exclusions array
+	 * @param array $exclusions Exclusions array.
 	 *
 	 * @return array
 	 */
