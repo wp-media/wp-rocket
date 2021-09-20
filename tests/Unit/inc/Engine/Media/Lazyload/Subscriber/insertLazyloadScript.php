@@ -92,12 +92,6 @@ class Test_InsertLazyloadScript extends TestCase {
 				->andReturn( $options['use_native'] );
 		}
 
-		if ( isset( $options['polyfill'] ) ) {
-			Filters\expectApplied( 'rocket_lazyload_polyfill' )
-				->once()
-				->andReturn( $options['polyfill'] );
-		}
-
 		$this->assertSame(
 			$this->format_the_html( $expected['unit']['result'] ),
 			$this->getActualHtml()

@@ -52,90 +52,7 @@ $observer = 'window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 }, false);';
 
 $script_image = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload",
-	data_src: "lazy-src",
-	data_srcset: "lazy-srcset",
-	data_sizes: "lazy-sizes",
-	class_loading: "lazyloading",
-	class_loaded: "lazyloaded",
-	threshold: 300,
-	callback_loaded: function(element) {
-		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
-			if (element.classList.contains("lazyloaded") ) {
-				if (typeof window.jQuery != "undefined") {
-					if (jQuery.fn.fitVids) {
-						jQuery(element).parent().fitVids();
-					}
-				}
-			}
-		}
-	}
-};';
-
-$script_iframe = 'window.lazyLoadOptions = {
-	elements_selector: "iframe[data-lazy-src]",
-	data_src: "lazy-src",
-	data_srcset: "lazy-srcset",
-	data_sizes: "lazy-sizes",
-	class_loading: "lazyloading",
-	class_loaded: "lazyloaded",
-	threshold: 300,
-	callback_loaded: function(element) {
-		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
-			if (element.classList.contains("lazyloaded") ) {
-				if (typeof window.jQuery != "undefined") {
-					if (jQuery.fn.fitVids) {
-						jQuery(element).parent().fitVids();
-					}
-				}
-			}
-		}
-	}
-};';
-
-$script_both = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
-	data_src: "lazy-src",
-	data_srcset: "lazy-srcset",
-	data_sizes: "lazy-sizes",
-	class_loading: "lazyloading",
-	class_loaded: "lazyloaded",
-	threshold: 300,
-	callback_loaded: function(element) {
-		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
-			if (element.classList.contains("lazyloaded") ) {
-				if (typeof window.jQuery != "undefined") {
-					if (jQuery.fn.fitVids) {
-						jQuery(element).parent().fitVids();
-					}
-				}
-			}
-		}
-	}
-};';
-
-$script_custom_threshold = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
-	data_src: "lazy-src",
-	data_srcset: "lazy-srcset",
-	data_sizes: "lazy-sizes",
-	class_loading: "lazyloading",
-	class_loaded: "lazyloaded",
-	threshold: 500,
-	callback_loaded: function(element) {
-		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
-			if (element.classList.contains("lazyloaded") ) {
-				if (typeof window.jQuery != "undefined") {
-					if (jQuery.fn.fitVids) {
-						jQuery(element).parent().fitVids();
-					}
-				}
-			}
-		}
-	};';
-
-$script_native_lazyload = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
+	elements_selector: "[loading=lazy],.rocket-lazyload",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -156,10 +73,96 @@ $script_native_lazyload = 'window.lazyLoadOptions = {
 	use_native: true
 };';
 
+$script_iframe = 'window.lazyLoadOptions = {
+	elements_selector: "[loading=lazy],iframe[data-lazy-src]",
+	data_src: "lazy-src",
+	data_srcset: "lazy-srcset",
+	data_sizes: "lazy-sizes",
+	class_loading: "lazyloading",
+	class_loaded: "lazyloaded",
+	threshold: 300,
+	callback_loaded: function(element) {
+		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+			if (element.classList.contains("lazyloaded") ) {
+				if (typeof window.jQuery != "undefined") {
+					if (jQuery.fn.fitVids) {
+						jQuery(element).parent().fitVids();
+					}
+				}
+			}
+		}
+	},
+	use_native: true
+};';
+
+$script_both = 'window.lazyLoadOptions = {
+	elements_selector: "[loading=lazy],.rocket-lazyload,iframe[data-lazy-src]",
+	data_src: "lazy-src",
+	data_srcset: "lazy-srcset",
+	data_sizes: "lazy-sizes",
+	class_loading: "lazyloading",
+	class_loaded: "lazyloaded",
+	threshold: 300,
+	callback_loaded: function(element) {
+		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+			if (element.classList.contains("lazyloaded") ) {
+				if (typeof window.jQuery != "undefined") {
+					if (jQuery.fn.fitVids) {
+						jQuery(element).parent().fitVids();
+					}
+				}
+			}
+		}
+	},
+	use_native: true
+};';
+
+$script_custom_threshold = 'window.lazyLoadOptions = {
+	elements_selector: "[loading=lazy],.rocket-lazyload,iframe[data-lazy-src]",
+	data_src: "lazy-src",
+	data_srcset: "lazy-srcset",
+	data_sizes: "lazy-sizes",
+	class_loading: "lazyloading",
+	class_loaded: "lazyloaded",
+	threshold: 500,
+	callback_loaded: function(element) {
+		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+			if (element.classList.contains("lazyloaded") ) {
+				if (typeof window.jQuery != "undefined") {
+					if (jQuery.fn.fitVids) {
+						jQuery(element).parent().fitVids();
+					}
+				}
+			}
+		}
+	},
+	use_native: true
+};';
+
+$script_no_native_lazyload = 'window.lazyLoadOptions = {
+	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
+	data_src: "lazy-src",
+	data_srcset: "lazy-srcset",
+	data_sizes: "lazy-sizes",
+	class_loading: "lazyloading",
+	class_loaded: "lazyloaded",
+	threshold: 300,
+	callback_loaded: function(element) {
+		if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+			if (element.classList.contains("lazyloaded") ) {
+				if (typeof window.jQuery != "undefined") {
+					if (jQuery.fn.fitVids) {
+						jQuery(element).parent().fitVids();
+					}
+				}
+			}
+		}
+	};';
+
 return [
-	'script_image'            => "{$script_image}{$observer}",
-	'script_iframe'           => "{$script_iframe}{$observer}",
-	'script_both'             => "{$script_both}{$observer}",
-	'script_custom_threshold' => "{$script_custom_threshold}{$observer}",
-	'script_native_lazyload'  => "{$script_native_lazyload}{$observer}",
+	'script_image'              => "{$script_image}{$observer}",
+	'script_iframe'             => "{$script_iframe}{$observer}",
+	'script_both'               => "{$script_both}{$observer}",
+	'script_custom_threshold'   => "{$script_custom_threshold}{$observer}",
+	'script_no_native_lazyload' => "{$script_no_native_lazyload}{$observer}",
 ];
