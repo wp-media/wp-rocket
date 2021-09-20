@@ -104,20 +104,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		/**
-		 * Filters the use of the polyfill for intersectionObserver
-		 *
-		 * @since 3.3
-		 * @author Remy Perona
-		 *
-		 * @param bool $polyfill True to use the polyfill, false otherwise.
-		 */
-		$polyfill = (bool) apply_filters( 'rocket_lazyload_polyfill', false );
-
 		$script_args = [
 			'base_url' => rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload/',
 			'version'  => self::SCRIPT_VERSION,
-			'polyfill' => $polyfill,
 		];
 
 		$this->add_inline_script();
@@ -153,7 +142,6 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the threshold at which lazyload is triggered
 		 *
 		 * @since 1.2
-		 * @author Remy Perona
 		 *
 		 * @param int $threshold Threshold value.
 		 */
@@ -167,19 +155,21 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the use of native lazyload
 		 *
 		 * @since 3.4
-		 * @author Remy Perona
 		 *
 		 * @param bool $use_native True to use native lazyload, false otherwise.
 		 */
-		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
-			$inline_args['options']             = [
-				'use_native' => 'true',
-			];
-			$inline_args['elements']['loading'] = '[loading=lazy]';
+		$use_native =  (bool) apply_filters( 'rocket_use_native_lazyload', true );
+
+		if ( $use_native ) {
+			$inline_args['options']['use_native'] = true;
+			$inline_args['elements']['loading']   = '[loading=lazy]';
 		}
 
 		if ( $this->options->get( 'lazyload', 0 ) ) {
-			$inline_args['elements']['image']            = 'img[data-lazy-src]';
+			if ( ! $use_native ) {
+				$inline_args['elements']['image'] = 'img[data-lazy-src]';
+			}
+
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
@@ -191,7 +181,6 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters the arguments array for the lazyload script options
 		 *
 		 * @since 3.3
-		 * @author Remy Perona
 		 *
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
