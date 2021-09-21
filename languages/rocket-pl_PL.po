@@ -450,7 +450,7 @@ msgid ""
 msgstr ""
 "Skrypty wewnętrzne są domyślnie wyłączone, aby zapobiec problemom. Usuń je, "
 "aby w pełni skorzystać z tej opcji.<br>Jeśli to spowoduje problemy, przywróć"
-" domyślne wykluczenia, które można znaleźć %1$stutaj%2$s</br>"
+" domyślne wykluczenia, które można znaleźć %1$stutaj%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:617
 msgid "Minify CSS files"
