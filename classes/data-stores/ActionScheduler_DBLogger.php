@@ -29,7 +29,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		$date_local = $date->format( 'Y-m-d H:i:s' );
 
-		/** @var \wpdb $wpdb */
+		/** @var \wpdb $wpdb */ //phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $wpdb;
 		$wpdb->insert(
 			$wpdb->actionscheduler_logs,
@@ -53,7 +53,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	 * @return ActionScheduler_LogEntry
 	 */
 	public function get_entry( $entry_id ) {
-		/** @var \wpdb $wpdb */
+		/** @var \wpdb $wpdb */ //phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $wpdb;
 		$entry = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->actionscheduler_logs} WHERE log_id=%d", $entry_id ) );
 
@@ -89,7 +89,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	 * @return ActionScheduler_LogEntry[]
 	 */
 	public function get_logs( $action_id ) {
-		/** @var \wpdb $wpdb */
+		/** @var \wpdb $wpdb */ //phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $wpdb;
 
 		$records = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->actionscheduler_logs} WHERE action_id=%d", $action_id ) );
@@ -118,7 +118,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	 * @param int $action_id Action ID.
 	 */
 	public function clear_deleted_action_logs( $action_id ) {
-		/** @var \wpdb $wpdb */
+		/** @var \wpdb $wpdb */ //phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $wpdb;
 		$wpdb->delete( $wpdb->actionscheduler_logs, array( 'action_id' => $action_id ), array( '%d' ) );
 	}
@@ -133,7 +133,7 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 			return;
 		}
 
-		/** @var \wpdb $wpdb */
+		/** @var \wpdb $wpdb */ //phpcs:ignore Generic.Commenting.DocComment.MissingShort
 		global $wpdb;
 		$date     = as_get_datetime_object();
 		$date_gmt = $date->format( 'Y-m-d H:i:s' );
