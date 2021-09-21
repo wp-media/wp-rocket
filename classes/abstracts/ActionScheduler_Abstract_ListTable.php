@@ -138,6 +138,8 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 * @param string $text The new text to translate.
 	 * @param string $context The context of the text.
 	 * @return string|void The translated text.
+	 *
+	 * @deprecated 3.0.0 Use `__()` instead.
 	 */
 	protected function translate( $text, $context = '' ) {
 		return $text;
@@ -396,7 +398,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 			return '';
 		}
 
-		$search_string = $wpdb->esc_like( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$search_string = sanitize_text_field( wp_unslash( $_GET['s'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$filter = array();
 		foreach ( $this->search_by as $column ) {
@@ -655,7 +657,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 */
 	protected function display_admin_notices() {
 		foreach ( $this->admin_notices as $notice ) {
-			echo '<div id="message" class="' . esc_html( $notice['class'] ) . '">';
+			echo '<div id="message" class="' . esc_attr( $notice['class'] ) . '">';
 			echo '	<p>' . wp_kses_post( $notice['message'] ) . '</p>';
 			echo '</div>';
 		}
