@@ -30,6 +30,7 @@ class Test_MaybeDisableYoutubePreview extends FilesystemTestCase {
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
 		$options = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 		$options->shouldReceive( 'set' )
 		        ->times( $config['set-lazy'] )
 		        ->with( 'lazyload_youtube', 0 );
@@ -43,7 +44,7 @@ class Test_MaybeDisableYoutubePreview extends FilesystemTestCase {
 		            ->with( 'settings', [ 'lazyload_youtube' => 0, ] )
 		            ->andReturn( $expected );
 
-		$divi = new Divi( $options_api, $options );
+		$divi = new Divi( $options_api, $options, $delayjs_html );
 		$divi->maybe_disable_youtube_preview( $config['stylesheet'], $theme );
 	}
 }

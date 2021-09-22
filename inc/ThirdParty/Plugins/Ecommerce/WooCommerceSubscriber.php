@@ -513,6 +513,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 */
 	private function product_has_gallery_images() {
 		$product = wc_get_product( get_the_ID() );
+		if ( empty( $product ) ) {
+			return false;
+		}
 		return ! empty( $product->get_gallery_image_ids() );
 	}
 
