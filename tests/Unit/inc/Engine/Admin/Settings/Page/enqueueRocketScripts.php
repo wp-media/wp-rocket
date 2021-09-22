@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Database\Optimization;
+use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Page;
 use WP_Rocket\Engine\Admin\Settings\Settings;

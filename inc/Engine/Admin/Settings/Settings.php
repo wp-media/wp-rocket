@@ -142,7 +142,14 @@ class Settings {
 			$page          = $args['page'];
 			$section       = $args['section'];
 			unset( $args['page'], $args['section'] );
-
+			/**
+			 * Filters the field  before add to the settings
+			 *
+			 * @since 3.10
+			 *
+			 * @param array    $input    Array of sanitized values after being submitted by the form.
+			 */
+			$args = apply_filters( 'rocket_before_add_field_to_settings', $args );
 			$this->settings[ $page ]['sections'][ $section ]['fields'][ $id ] = $args;
 		}
 	}
@@ -222,8 +229,7 @@ class Settings {
 		$input['defer_all_js']     = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['exclude_defer_js'] = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
 
-		$input['embeds'] = ! empty( $input['embeds'] ) ? 1 : 0;
-		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;
+		$input['emoji'] = ! empty( $input['emoji'] ) ? 1 : 0;
 
 		$input['lazyload']         = ! empty( $input['lazyload'] ) ? 1 : 0;
 		$input['lazyload_iframes'] = ! empty( $input['lazyload_iframes'] ) ? 1 : 0;
@@ -310,15 +316,14 @@ class Settings {
 		$input['critical_css'] = ! empty( $input['critical_css'] ) ? wp_strip_all_tags( str_replace( [ '<style>', '</style>' ], '', $input['critical_css'] ), [ "\'", '\"' ] ) : '';
 
 		// Database options.
-		$input['database_revisions']          = ! empty( $input['database_revisions'] ) ? 1 : 0;
-		$input['database_auto_drafts']        = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
-		$input['database_trashed_posts']      = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
-		$input['database_spam_comments']      = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
-		$input['database_trashed_comments']   = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
-		$input['database_expired_transients'] = ! empty( $input['database_expired_transients'] ) ? 1 : 0;
-		$input['database_all_transients']     = ! empty( $input['database_all_transients'] ) ? 1 : 0;
-		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
-		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
+		$input['database_revisions']         = ! empty( $input['database_revisions'] ) ? 1 : 0;
+		$input['database_auto_drafts']       = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
+		$input['database_trashed_posts']     = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
+		$input['database_spam_comments']     = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
+		$input['database_trashed_comments']  = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
+		$input['database_all_transients']    = ! empty( $input['database_all_transients'] ) ? 1 : 0;
+		$input['database_optimize_tables']   = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
+		$input['schedule_automatic_cleanup'] = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
 
 		$cleanup_frequencies = [
 			'daily'   => 1,
@@ -654,5 +659,24 @@ class Settings {
 		}
 
 		return $this->hosts;
+	}
+
+	/**
+	 * Sets radio buttons sub fields value from wp options.
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $sub_fields Array of fields to display..
+	 * @return array
+	 */
+	public function set_radio_buttons_sub_fields_value( $sub_fields ) {
+
+		foreach ( $sub_fields as $id => &$args ) {
+			$args['id']    = $id;
+			$args['value'] = $this->options->get( $id, $args['default'] );
+			$args          = apply_filters( 'rocket_before_render_option_extra_field', $args );
+		}
+
+		return $sub_fields;
 	}
 }

@@ -48,9 +48,11 @@ function compile(watch) {
 
     // Admin JS
     function rebundle() {
+		var isSuccess = true;
         bundler.bundle()
                 .on('error', function (err) {
                     console.error(err);
+					isSuccess = false;
                     this.emit('end');
                 })
                 .pipe(source('wpr-admin.js'))
@@ -58,7 +60,10 @@ function compile(watch) {
                 .pipe(uglify())
                 .pipe(sourcemaps.init({loadMaps: false}))
                 .pipe(sourcemaps.write('./'))
-                .pipe(gulp.dest('assets/js'));
+                .pipe(gulp.dest('assets/js'))
+				.on('end', function() {
+					if( isSuccess )console.log('Yay success!');
+				})
     }
 
     if (watch) {
