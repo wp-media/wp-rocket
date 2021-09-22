@@ -105,6 +105,7 @@ $(document).ready(function(){
     * Warning fields
     ***/
 
+    var rucssActive = $('#remove_unused_css').val();
     var $warningParent = $('.wpr-field--parent');
     var $warningParentInput = $('.wpr-field--parent input[type=checkbox]');
 
@@ -189,7 +190,7 @@ $(document).ready(function(){
 	} );
 
 	function wprShowRadioWarning($elm){
-		if (!$elm.hasClass('has-warning')){
+		if (!$elm.hasClass('has-warning') || ('remove_unused_css' === $elm.data('value') && '1' === rucssActive)) {
 			wprShowRadioButtonChildren($elm);
 			$elm.trigger( "radio_button_selected", [ $elm ] );
 			return false;
