@@ -105,7 +105,6 @@ $(document).ready(function(){
     * Warning fields
     ***/
 
-    var rucssActive = $('#remove_unused_css').val();
     var $warningParent = $('.wpr-field--parent');
     var $warningParentInput = $('.wpr-field--parent input[type=checkbox]');
 
@@ -175,22 +174,27 @@ $(document).ready(function(){
 	/***
 	 * Wpr Radio button
 	 ***/
+	var disable_radio_warning = false;
 
 	$(document).on('click', '.wpr-radio-buttons-container button', function(e) {
 		e.preventDefault();
 		if($(this).hasClass('radio-active')){
 			return false;
 		}
-		$('.wpr-radio-buttons-container button').removeClass('radio-active');
-		$('.wpr-radio-buttons .wpr-extra-fields-container').removeClass('wpr-isOpen');
-		$('.wpr-radio-buttons .wpr-fieldWarning').removeClass('wpr-isOpen');
+		var $parent = $(this).parents('.wpr-radio-buttons');
+		$parent.find('.wpr-radio-buttons-container button').removeClass('radio-active');
+		$parent.find('.wpr-extra-fields-container').removeClass('wpr-isOpen');
+		$parent.find('.wpr-fieldWarning').removeClass('wpr-isOpen');
 		$(this).addClass('radio-active');
 		wprShowRadioWarning($(this));
 
 	} );
 
+
 	function wprShowRadioWarning($elm){
-		if (!$elm.hasClass('has-warning') || ('remove_unused_css' === $elm.data('value') && '1' === rucssActive)) {
+		disable_radio_warning = false;
+		$elm.trigger( "before_show_radio_warning", [ $elm ] );
+		if (!$elm.hasClass('has-warning') || disable_radio_warning) {
 			wprShowRadioButtonChildren($elm);
 			$elm.trigger( "radio_button_selected", [ $elm ] );
 			return false;
@@ -217,6 +221,7 @@ $(document).ready(function(){
 	/***
 	 * Wpr Optimize Css Delivery Field
 	 ***/
+	var rucssActive = parseInt($('#remove_unused_css').val());
 
 	$( "#optimize_css_delivery_method .wpr-radio-buttons-container button" )
 		.on( "radio_button_selected", function( event, $elm ) {
@@ -248,4 +253,10 @@ $(document).ready(function(){
 		$('#remove_unused_css').val(0);
 		$('#async_css').val(0);
 	}
+
+	$( "#optimize_css_delivery_method .wpr-radio-buttons-container button" )
+		.on( "before_show_radio_warning", function( event, $elm ) {
+			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
+		});
+
 });
