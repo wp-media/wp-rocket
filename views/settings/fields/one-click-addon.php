@@ -61,12 +61,6 @@ defined( 'ABSPATH' ) || exit;
 					<?php if ( ! empty( $data['description'] ) ) : ?>
 						<div class="wpr-field-description">
 							<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-
-							<?php if ( ! empty( $data['helper'] ) ) : ?>
-								<div class="wpr-fieldsContainer-helper wpr-add-on-helper wpr-icon-important">
-									<?php echo $data['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-								</div>
-							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</div>
