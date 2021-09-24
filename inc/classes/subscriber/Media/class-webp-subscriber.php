@@ -264,7 +264,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		if ( $serving ) {
 			// 5, 8.
-			$cache_webp_field['helper'] = sprintf(
+			$cache_webp_field['description'] = sprintf(
 			// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
 				esc_html( _n( 'You are using %1$s to serve WebP images so you do not need to enable this option. If you prefer to have WP Rocket serve WebP for you instead, please disable them from serving in %1$s. %2$sMore info%3$s', 'You are using %1$s to serve WebP images so you do not need to enable this option. If you prefer to have WP Rocket serve WebP for you instead, please disable them from serving in %1$s. %2$sMore info%3$s', count( $serving ), 'rocket' ) ),
 				esc_html( wp_sprintf_l( '%l', $serving ) ),
@@ -277,7 +277,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		/** This filter is documented in inc/classes/buffer/class-cache.php */
 		if ( apply_filters( 'rocket_disable_webp_cache', false ) ) {
-			$cache_webp_field['helper'] = esc_html__( 'WebP cache is disabled by filter.', 'rocket' );
+			$cache_webp_field['description'] = esc_html__( 'WebP cache is disabled by filter.', 'rocket' );
 
 			return $cache_webp_field;
 		}
@@ -285,7 +285,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( $serving_not_compatible ) {
 			if ( ! $this->options_data->get( 'cache_webp' ) ) {
 				// 6.
-				$cache_webp_field['helper'] = sprintf(
+				$cache_webp_field['description'] = sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
 					esc_html( _n( 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', count( $serving_not_compatible ), 'rocket' ) ),
 					esc_html( wp_sprintf_l( '%l', $serving_not_compatible ) ),
@@ -297,7 +297,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			}
 
 			// 7.
-			$cache_webp_field['helper'] = sprintf(
+			$cache_webp_field['description'] = sprintf(
 			// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
 				esc_html( _n( 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', count( $serving_not_compatible ), 'rocket' ) ),
 				esc_html( wp_sprintf_l( '%l', $serving_not_compatible ) ),
@@ -311,7 +311,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( $creating ) {
 			if ( ! $this->options_data->get( 'cache_webp' ) ) {
 				// 3.
-				$cache_webp_field['helper'] = sprintf(
+				$cache_webp_field['description'] = sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
 					esc_html( _n( 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', count( $creating ), 'rocket' ) ),
 					esc_html( wp_sprintf_l( '%l', $creating ) ),
@@ -323,7 +323,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			}
 
 			// 4.
-			$cache_webp_field['helper'] = sprintf(
+			$cache_webp_field['description'] = sprintf(
 			// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
 				esc_html( _n( 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', count( $creating ), 'rocket' ) ),
 				esc_html( wp_sprintf_l( '%l', $creating ) ),
@@ -343,7 +343,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 			}
 
-			$cache_webp_field['helper'] = sprintf(
+			$cache_webp_field['description'] = sprintf(
 			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 				esc_html__( '%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t already have WebP images on your site consider using %3$sImagify%2$s or another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP do not enable this option.', 'rocket' ),
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
@@ -357,7 +357,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		// 2.
-		$cache_webp_field['helper'] = esc_html__( 'WP Rocket will create separate cache files to serve your WebP images.', 'rocket' );
+		$cache_webp_field['description'] = esc_html__( 'WP Rocket will create separate cache files to serve your WebP images.', 'rocket' );
 
 		return $cache_webp_field;
 	}
