@@ -682,7 +682,7 @@ class Page {
 					],
 					'description'       =>
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+						sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. Only one method can be selected. Remove Unused CSS is recommended for optimal performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -731,7 +731,7 @@ class Page {
 							],
 						],
 						'async_css'         => [
-							'label'       => __( 'Load Asynchronously', 'rocket' ),
+							'label'       => __( 'Load CSS Asynchronously', 'rocket' ),
 							'description' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
 								// translators: %1$s = plugin name.
 								sprintf( _x( 'Load CSS asynchronously is currently handled by the %1$s plugin. If you want to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
