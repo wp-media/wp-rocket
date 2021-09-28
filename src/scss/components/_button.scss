@@ -86,6 +86,25 @@
         background: $cRed;
     }
 
+  	&--gray{
+        background: $cGrey;
+	  	color: $cBlack !important;
+	  &:hover,
+	  &:active,
+	  &:focus{
+		color: $cBlack !important;
+	  }
+	  &.radio-active{
+		background: $cPurple !important;
+		color: $cWhite !important;
+		&:hover,
+		&:active,
+		&:focus{
+		  color: $cWhite !important;
+		}
+	  }
+    }
+
     &--blueDark{
         background: $cBlueDark1;
     }
