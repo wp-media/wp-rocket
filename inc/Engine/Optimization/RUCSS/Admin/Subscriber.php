@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
@@ -46,6 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $homepage_preloader;
 
+
 	/**
 	 * Instantiate the class
 	 *
@@ -72,25 +74,29 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'       => 'add_options_first_time',
-			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug             => [
+			'rocket_first_install_options'        => 'add_options_first_time',
+			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug              => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
-			'switch_theme'                       => 'truncate_used_css',
-			'rocket_rucss_file_changed'          => 'truncate_used_css',
-			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
-			'delete_post'                        => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                   => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
-			'init'                               => 'schedule_clean_not_commonly_used_rows',
-			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
-			'admin_notices'                      => 'clear_usedcss_result',
-			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_checkbox'     => 'display_progress_bar',
-			'admin_enqueue_scripts'              => 'add_admin_js',
+			'switch_theme'                        => 'truncate_used_css',
+			'rocket_rucss_file_changed'           => 'truncate_used_css',
+			'wp_trash_post'                       => 'delete_used_css_on_update_or_delete',
+			'delete_post'                         => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
+			'init'                                => 'schedule_clean_not_commonly_used_rows',
+			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
+			'admin_notices'                       => 'clear_usedcss_result',
+			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
+			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10 ],
+			'admin_enqueue_scripts'               => 'add_admin_js',
+			'rocket_before_add_field_to_settings' => [
+				[ 'set_optimize_css_delivery_value', 10, 1 ],
+				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
+			],
 		];
 	}
 
@@ -379,18 +385,17 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param string $field_id ID of the settings field.
+	 * @param array $option_data array of option_id and sub_fields of the option.
 	 *
 	 * @return void
 	 */
-	public function display_progress_bar( $field_id ) {
-		if ( 'remove_unused_css' !== $field_id ) {
+	public function display_progress_bar( $option_data ) {
+		if ( 'remove_unused_css' !== $option_data['option_id'] ) {
 			return;
 		}
 
 		$this->settings->display_progress_bar();
 	}
-
 	/**
 	 * Array with UI translations.
 	 *
@@ -406,5 +411,31 @@ class Subscriber implements Subscriber_Interface {
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
 			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
 		];
+	}
+
+	/**
+	 * Set optimize css delivery value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_value( $field_args ) : array {
+		return $this->settings->set_optimize_css_delivery_value( $field_args );
+	}
+
+	/**
+	 * Set optimize css delivery method value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 }

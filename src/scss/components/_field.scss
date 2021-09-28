@@ -192,8 +192,10 @@
                 padding-right: 0;
             }
         }
+	  &.no-space{
+		padding-left:0;
+	  }
     }
-
     // Checkbox
     &--checkbox{
         .wpr-field-description{
@@ -286,7 +288,7 @@
 		  background: rgba(0, 0, 0, .07);
 		  padding: 1em;
 		  margin: 1em 0 0;
-
+		  white-space: normal;
 		  code {
 			background: transparent;
 			-webkit-touch-callout: all;
