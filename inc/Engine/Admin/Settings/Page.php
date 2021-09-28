@@ -682,7 +682,7 @@ class Page {
 					],
 					'description'       =>
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. Only one method can be selected. Remove Unused CSS is recommended for optimal performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
+						sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
