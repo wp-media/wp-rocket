@@ -695,7 +695,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 		if ( $status_list_items ) {
 			echo '<ul class="subsubsub">';
-			echo implode( " | \n", esc_html( $status_list_items ) );
+			echo implode( " | \n", $status_list_items ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '</ul>';
 		}
 	}
