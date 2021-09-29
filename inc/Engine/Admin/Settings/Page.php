@@ -729,7 +729,7 @@ class Page {
 							],
 						],
 						'async_css'         => [
-							'label'       => __( 'Load CSS Asynchronously', 'rocket' ),
+							'label'       => __( 'Load CSS asynchronously', 'rocket' ),
 							'description' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
 								// translators: %1$s = plugin name.
 								sprintf( _x( 'Load CSS asynchronously is currently handled by the %1$s plugin. If you want to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
