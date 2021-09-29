@@ -180,8 +180,34 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			'plural'   => 'action-scheduler',
 			'ajax'     => false,
 		) );
+
+		add_screen_option(
+			'per_page',
+			array(
+				'default' => $this->items_per_page,
+			)
+		);
+
+		add_filter( 'set-screen-option', array( &$this, 'set_screen_option' ), 10, 3 );
+		set_screen_options();
 	}
 
+	/**
+	 * Set screen option.
+	 *
+	 * @param [type] $status Default false (to skip saving the current option)
+	 * @param [type] $option Screen option name.
+	 * @param [type] $value  Screen option value.
+	 * @return int
+	 */
+	public function set_screen_option( $status, $option, $value ) {
+
+        if (str_replace('-', '_', $this->screen->base) . '_per_page' === $option) {
+            return $value;
+        }
+
+		return $status;
+	}
 	/**
 	 * Convert an interval of seconds into a two part human friendly string.
 	 *
@@ -549,7 +575,8 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	public function prepare_items() {
 		$this->prepare_column_headers();
 
-		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
+		$per_page = $this->get_items_per_page( str_replace( '-', '_', $this->screen->base) . '_per_page', $this->items_per_page);
+
 		$query = array(
 			'per_page' => $per_page,
 			'offset'   => $this->get_items_offset(),
