@@ -36,10 +36,7 @@ class Test_MaybeDisableSettingField extends TestCase {
 			'input_attr'      => [
 				'disabled' => 1,
 			],
-			'container_class' => [
-				'wpr-isDisabled',
-				'wpr-isParent',
-			],
+			'container_class' => [],
 		];
 
 		$this->assertSame( $expected_field, $webpSubscriber->maybe_disable_setting_field( $cache_webp_field ) );
@@ -62,8 +59,6 @@ class Test_MaybeDisableSettingField extends TestCase {
 			],
 			'container_class' => [
 				'oh-no',
-				'wpr-isDisabled',
-				'wpr-isParent',
 			],
 		];
 
@@ -79,10 +74,7 @@ class Test_MaybeDisableSettingField extends TestCase {
 			'input_attr'      => [
 				'disabled' => 1,
 			],
-			'container_class' => [
-				'wpr-isDisabled',
-				'wpr-isParent',
-			],
+			'container_class' => [],
 		];
 
 		$this->assertSame( $expected_field, $webpSubscriber->maybe_disable_setting_field( $cache_webp_field ) );

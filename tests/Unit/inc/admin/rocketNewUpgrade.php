@@ -34,7 +34,7 @@ class Test_RocketNewUpgrade extends TestCase {
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'get_option' )
-			->once()
+			->twice()
 			->andReturn( [] );
 		Functions\expect( 'update_option' )
 			->once();

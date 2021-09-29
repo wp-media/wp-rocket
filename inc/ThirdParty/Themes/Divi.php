@@ -5,6 +5,7 @@ namespace WP_Rocket\ThirdParty\Themes;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 class Divi implements Subscriber_Interface {
 	/**
@@ -22,14 +23,23 @@ class Divi implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Delay JS HTML class.
+	 *
+	 * @var HTML
+	 */
+	private $delayjs_html;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options      $options_api Options API instance.
 	 * @param Options_Data $options     WP Rocket options instance.
+	 * @param HTML         $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( Options $options_api, Options_Data $options ) {
-		$this->options_api = $options_api;
-		$this->options     = $options;
+	public function __construct( Options $options_api, Options_Data $options, HTML $delayjs_html ) {
+		$this->options_api  = $options_api;
+		$this->options      = $options;
+		$this->delayjs_html = $delayjs_html;
 	}
 
 	/**
@@ -50,6 +60,7 @@ class Divi implements Subscriber_Interface {
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
+		$events['wp_enqueue_scripts'] = 'disable_divi_jquery_body';
 		return $events;
 	}
 
@@ -143,5 +154,22 @@ class Divi implements Subscriber_Interface {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
 		return ( 'Divi' === $theme->get( 'Name' ) || 'divi' === $theme->get_template() );
+	}
+
+	/**
+	 * Disable divi jquery body.
+	 *
+	 * @since 3.9.3
+	 */
+	public function disable_divi_jquery_body() {
+		if (
+			$this->delayjs_html->is_allowed()
+			&& defined( 'ET_CORE_VERSION' )
+			&& version_compare( ET_CORE_VERSION, '4.10', '>=' )
+		) {
+
+			add_filter( 'et_builder_enable_jquery_body', '__return_false' );
+		}
+
 	}
 }

@@ -77,5 +77,21 @@
         .button{
             margin-top: $space*3;
         }
+		.wpr-add-on-helper{
+		  font-weight:normal;
+		  color:#1eadbf;
+		  a{
+			margin-top:0
+		  }
+		}
     }
+}
+.wpr-webp-addon{
+  .wpr-addon{
+	.wpr-addon-text{
+	  a{
+		margin-top: 0px;
+	  }
+	}
+  }
 }

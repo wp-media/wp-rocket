@@ -8,6 +8,13 @@ use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
 	/**
+	 * Options data instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
 	 * @since 3.9 Removed delay_js_scripts key, added delay_js_exclusions.
@@ -128,7 +135,11 @@ class Settings {
 			'js-(before|after)',
 		];
 
-		if ( version_compare( $wp_version, '5.7', '<' ) ) {
+		if (
+			isset( $wp_version )
+			&&
+			version_compare( $wp_version, '5.7', '<' )
+		) {
 			$exclusions[] = '/jquery-migrate(.min)?.js';
 		}
 

@@ -2,9 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\Inc\ThirdParty\Plugins\Optimization\WPMeteor;
 
-use Mockery;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -16,24 +14,16 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_DisableDelayJs extends TestCase {
 	public function testShouldReturnExpected() {
-		$options_api = Mockery::mock( Options::class);
-		$options     = Mockery::mock( Options_Data::class );
-		$meteor = new WPMeteor( $options_api, $options );
+		$meteor = new WPMeteor();
 
-		$options->shouldReceive( 'set' )
+		Functions\expect( 'get_option' )
 			->once()
-			->with( 'delay_js', 0 );
+			->with( 'wp_rocket_settings', [] )
+			->andReturn( [] );
 
-		$options->shouldReceive( 'get_options' )
+		Functions\expect( 'update_option' )
 			->once()
-			->andReturn( [
-				'delay_js' => 0
-			]
-		);
-
-		$options_api->shouldReceive( 'set' )
-			->once()
-			->with( 'settings', [
+			->with( 'wp_rocket_settings', [
 				'delay_js' => 0
 			] );
 
