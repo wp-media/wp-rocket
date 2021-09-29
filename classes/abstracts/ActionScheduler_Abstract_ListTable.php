@@ -139,7 +139,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 * @param string $context The context of the text.
 	 * @return string|void The translated text.
 	 *
-	 * @deprecated 3.0.0 Use `__()` instead.
+	 * @deprecated 3.0.0 Use `_x()` instead.
 	 */
 	protected function translate( $text, $context = '' ) {
 		return $text;
