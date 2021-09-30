@@ -611,7 +611,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		$nonce  = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		$method = 'row_action_' . $action; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		if ( wp_create_nonce( $action . '::' . $row_id ) === $nonce && method_exists( $this, $method ) ) {
+		if ( wp_verify_nonce( $nonce, $action . '::' . $row_id ) && method_exists( $this, $method ) ) {
 			$this->$method( sanitize_text_field( wp_unslash( $row_id ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
