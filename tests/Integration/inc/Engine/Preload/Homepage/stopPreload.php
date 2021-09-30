@@ -30,7 +30,7 @@ class Test_StopPreload extends PreloadTestCase {
 		do_action('admin_post_rocket_rollback');
 		$is_cron_exists= wp_get_schedule('rocket_preload_cron');
 
-		$this->assertSame(  false , $is_cron_exists );
+		$this->assertFalse( $is_cron_exists );
 	}
 
 	public function testShouldStopPreloadUpgrade() {
