@@ -3713,8 +3713,9 @@ msgid ""
 "Click \"Apply Safe Mode\" to quickly disable LazyLoad, File Optimization and"
 " CDN options. Then check your site to see if the issue has resolved."
 msgstr ""
-"Clique em \"Aplicar modo de segurança\" para rapidamente desactivar o "
-"carregamento diferido, optimização de ficheiros e opções de CDN."
+"Clique em “Aplicar modo de segurança” para desactivar rapidamente as opções "
+"de carregamento diferido, optimização de ficheiros e CDN. Depois verifique "
+"se o problema do seu site foi resolvido."
 
 #: views/deactivation-intent/form.php:93
 msgid "Apply safe mode"
