@@ -601,7 +601,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	protected function process_row_actions() {
 		$parameters = array( 'row_action', 'row_id', 'nonce' );
 		foreach ( $parameters as $parameter ) {
-			if ( ! isset( $_REQUEST[ $parameter ] ) || empty( $_REQUEST[ $parameter ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( empty( $_REQUEST[ $parameter ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				return;
 			}
 		}
