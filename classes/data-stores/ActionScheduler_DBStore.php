@@ -563,7 +563,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 *
 	 * @param int $action_id Action ID.
 	 *
-	 * @throws \InvalidArgumentException If action cannont be identified.
+	 * @throws \InvalidArgumentException If action cannot be identified.
 	 * @return \DateTime The GMT date the action is scheduled to run, or the date that it ran.
 	 */
 	protected function get_date_gmt( $action_id ) {
