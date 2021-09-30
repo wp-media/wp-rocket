@@ -40,10 +40,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * Save an action.
 	 *
 	 * @param ActionScheduler_Action $action Action object.
-	 * @param \DateTime              $date Optional schedule date. Default null.
+	 * @param DateTime              $date Optional schedule date. Default null.
 	 *
 	 * @return int Action ID.
-	 * @throws \RuntimeException     Throws exception when saving the action fails.
+	 * @throws RuntimeException     Throws exception when saving the action fails.
 	 */
 	public function save_action( ActionScheduler_Action $action, \DateTime $date = null ) {
 		try {
