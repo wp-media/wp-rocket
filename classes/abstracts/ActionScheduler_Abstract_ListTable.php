@@ -186,7 +186,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		$method = 'bulk_' . $action;
 		if ( array_key_exists( $action, $this->bulk_actions ) && is_callable( array( $this, $method ) ) && ! empty( $_GET['ID'] ) && is_array( $_GET['ID'] ) ) {
 			$ids_sql = '(' . implode( ',', array_fill( 0, count( $_GET['ID'] ), '%s' ) ) . ')';
-			$id      = sanitize_text_field( wp_unslash( $_GET['ID'] ) );
+			$id      = array_map( 'absint', $_GET['ID'] );
 			$this->$method( $id, $wpdb->prepare( $ids_sql, $id ) ); //phpcs:ignore WordPress.DB.PreparedSQL
 		}
 
