@@ -727,7 +727,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 		$this->process_bulk_action();
 		$this->process_row_actions();
 
-		if ( ! empty( $_REQUEST['_wp_http_referer'] && ! empty( $_SERVER['REQUEST_URI'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_REQUEST['_wp_http_referer'] ) && ! empty( $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
 			wp_safe_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 			exit;
