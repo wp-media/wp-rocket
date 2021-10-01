@@ -714,6 +714,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'WoocommerceWidget/woocommerceWidget.js',
 			'var ht_ctc_chat_var',
 			'spuvar',
+			'var wpilFrontend',
 			'urls_polylangREPLACETOID',
 		];
 
