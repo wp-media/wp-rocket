@@ -25,6 +25,8 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->lazyload  = null;
 		$this->iframes   = null;
 		$this->threshold = null;
+
+		$this->unregisterAllCallbacksExcept( 'wp_footer', 'insert_lazyload_script', PHP_INT_MAX );
 	}
 
 	public function tearDown() {
@@ -40,8 +42,9 @@ class Test_InsertLazyloadScript extends TestCase {
 		$wp_query->is_preview = false;
 		$wp_query->is_search  = false;
 
-		set_current_screen('front');
 		unset( $GLOBALS['wp'] );
+
+		$this->restoreWpFilter( 'wp_footer' );
 
 		parent::tearDown();
 	}

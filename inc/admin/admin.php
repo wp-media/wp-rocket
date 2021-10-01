@@ -490,6 +490,7 @@ add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
 /**
  * Handle WP Rocket settings import.
  *
+ * @since 3.10 disable async_css if both async_css and remove_unused_css are enabled
  * @since 3.0 Hooked on admin_post now
  * @since 2.10.7
  * @author Remy Perona
@@ -563,6 +564,15 @@ function rocket_handle_settings_import() {
 		$settings['minify_css_key']   = $current_options['minify_css_key'];
 		$settings['minify_js_key']    = $current_options['minify_js_key'];
 		$settings['version']          = $current_options['version'];
+		if (
+			isset( $settings['async_css'] ) && $settings['async_css'] &&
+			isset( $settings['remove_unused_css'] ) && $settings['remove_unused_css']
+		) {
+			$settings['async_css'] = 0;
+		}
+		if ( $settings['cache_webp'] && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			$settings['cache_webp'] = 0;
+		}
 
 		$options_api->set( 'settings', $settings );
 

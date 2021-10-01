@@ -41,10 +41,6 @@ function rocket_clean_wildcards( $path ) {
 		'*'    => '(.*)',
 		'(*)'  => '(.*)',
 		'(.*)' => '(.*)',
-		'(.*'  => '(.*)',
-		'(*'   => '(.*)',
-		'.*)'  => '(.*)',
-		'*)'   => '(.*)',
 	];
 
 	foreach ( $path_components as &$path_component ) {
@@ -189,7 +185,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_defer_js'           => [ 'sanitize_text_field' ],
 		'exclude_js'                 => [ 'rocket_validate_js', 'rocket_clean_wildcards' ],                     // Pattern.
 		'exclude_lazyload'           => [ 'sanitize_text_field' ],
-		'delay_js_exclusions'        => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],                    // Pattern.
+		'delay_js_exclusions'        => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 		'remove_unused_css_safelist' => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 	];
 

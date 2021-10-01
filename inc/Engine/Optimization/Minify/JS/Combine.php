@@ -715,6 +715,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'var ht_ctc_chat_var',
 			'spuvar',
 			'var wpilFrontend',
+			'urls_polylangREPLACETOID',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
