@@ -153,14 +153,7 @@ class Subscriber implements Subscriber_Interface {
 			'threshold' => $threshold,
 		];
 
-		/**
-		 * Filters the use of native lazyload
-		 *
-		 * @since 3.4
-		 *
-		 * @param bool $use_native True to use native lazyload, false otherwise.
-		 */
-		$use_native = (bool) apply_filters( 'rocket_use_native_lazyload', true );
+		$use_native = $this->is_native();
 
 		if ( $use_native ) {
 			$inline_args['options']['use_native'] = true;
