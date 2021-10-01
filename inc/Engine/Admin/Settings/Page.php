@@ -919,10 +919,6 @@ class Page {
 		$disable_iframes_lazyload = [];
 		$disable_youtube_lazyload = [];
 
-		if ( rocket_maybe_disable_lazyload() ) {
-			$disable_images_lazyload[] = __( 'Autoptimize', 'rocket' );
-		}
-
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality for images.
 		 *
