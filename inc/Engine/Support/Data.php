@@ -24,7 +24,7 @@ class Data {
 		'emoji'                   => 'Disable Emojis',
 		'defer_all_js'            => 'Defer JS',
 		'delay_js'                => 'Delay JS',
-		'async_css'               => 'Optimize CSS Delivery',
+		'async_css'               => 'Load CSS asynchronously',
 		'lazyload'                => 'Lazyload Images',
 		'lazyload_iframes'        => 'Lazyload Iframes',
 		'lazyload_youtube'        => 'Lazyload Youtube',

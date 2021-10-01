@@ -65,6 +65,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.8.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.9.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 

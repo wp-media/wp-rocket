@@ -6,7 +6,7 @@
  * Version: 3.10
  * Requires at least: 5.4
  * Requires PHP: 7.0
- * Code Name: Naboo
+ * Code Name: Iego
  * Author: WP Media
  * Author URI: https://wp-media.me
  * Licence: GPLv2 or later

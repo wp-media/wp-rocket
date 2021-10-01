@@ -75,7 +75,7 @@ function rocket_display_cache_options_meta_boxes() {
 				'remove_unused_css' => __( 'Remove Unused CSS', 'rocket' ),
 				'minify_js'         => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'               => __( 'CDN', 'rocket' ),
-				'async_css'         => __( 'Optimize CSS Delivery', 'rocket' ),
+				'async_css'         => __( 'Load CSS asynchronously', 'rocket' ),
 				'defer_all_js'      => __( 'Defer JS', 'rocket' ),
 				'delay_js'          => __( 'Delay JavaScript execution', 'rocket' ),
 			];
