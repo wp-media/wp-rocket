@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Handle the lazyload required assets: inline CSS and JS
  *
@@ -19,7 +21,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertLazyloadScript( $args = [] ) {
-		echo $this->getLazyloadScript( $args );
+		echo $this->getLazyloadScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -177,7 +179,7 @@ class Assets {
 		 *
 		 * @param $script_tag HTML tag for the lazyload script.
 		 */
-		return apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' );
+		return apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	}
 
 	/**
@@ -187,7 +189,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailScript( $args = [] ) {
-		echo $this->getYoutubeThumbnailScript( $args );
+		echo $this->getYoutubeThumbnailScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -246,7 +248,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailCSS( $args = [] ) {
-		wp_register_style( 'rocket-lazyload', false );
+		wp_register_style( 'rocket-lazyload', false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'rocket-lazyload' );
 		wp_add_inline_style( 'rocket-lazyload', $this->getYoutubeThumbnailCSS( $args ) );
 	}
@@ -278,7 +280,7 @@ class Assets {
 	 * Inserts the CSS needed when Javascript is not enabled to keep the display correct
 	 */
 	public function insertNoJSCSS() {
-		echo $this->getNoJSCSS();
+		echo $this->getNoJSCSS(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
