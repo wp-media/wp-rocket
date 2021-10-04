@@ -202,7 +202,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	public function set_screen_option( $status, $option, $value ) {
 
-		if ( str_replace( '-', '_', $this->screen->base ) . '_per_page' === $option ) {
+		if ( str_replace( '-', '_', $this->screen->id ) . '_per_page' === $option ) {
 			return $value;
 		}
 
@@ -575,7 +575,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	public function prepare_items() {
 		$this->prepare_column_headers();
 
-		$per_page = $this->get_items_per_page( str_replace( '-', '_', $this->screen->base ) . '_per_page', $this->items_per_page );
+		$per_page = $this->get_items_per_page( str_replace( '-', '_', $this->screen->id ) . '_per_page', $this->items_per_page );
 
 		$query = array(
 			'per_page' => $per_page,
