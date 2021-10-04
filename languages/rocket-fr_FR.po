@@ -2242,7 +2242,7 @@ msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%1$s%4$s%3$s!"
 msgstr ""
-"Renouvelez maintenant et profitez d'une réduction%3$s de %1$s%2$s avant "
+"Renouvelez maintenant et profitez d'une %1$sréduction de %2$s %3$savant "
 "qu'il ne soit trop tard, vous ne paierez que %1$s%4$s%3$s !"
 
 #: inc/Engine/License/views/upgrade-popin.php:12
