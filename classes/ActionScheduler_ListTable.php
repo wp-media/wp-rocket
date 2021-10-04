@@ -195,16 +195,16 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	/**
 	 * Set screen option.
 	 *
-	 * @param [type] $status Default false (to skip saving the current option)
-	 * @param [type] $option Screen option name.
-	 * @param [type] $value  Screen option value.
+	 * @param mixed  $status Default false (to skip saving the current option).
+	 * @param string $option Screen option name.
+	 * @param int    $value  Screen option value.
 	 * @return int
 	 */
 	public function set_screen_option( $status, $option, $value ) {
 
-        if ( str_replace( '-', '_', $this->screen->base ) . '_per_page' === $option ) {
+		if ( str_replace( '-', '_', $this->screen->base ) . '_per_page' === $option ) {
 			return $value;
-        }
+		}
 
 		return $status;
 	}
