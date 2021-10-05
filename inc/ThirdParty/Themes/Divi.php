@@ -186,7 +186,7 @@ class Divi implements Subscriber_Interface {
 	 */
 	public function exclude_divi_css_from_combine( $exclude_css ) {
 
-		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
 			return $exclude_css;
 		}
 

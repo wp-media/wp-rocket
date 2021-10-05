@@ -17,15 +17,15 @@ class Test_ExcludeCSS extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testExcludeJS( $config, $expected ) {
+	public function testExcludeCSS( $config, $expected ) {
 		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
 		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
 		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 
 		$options->shouldReceive( 'get' )
 		        ->once()
-		        ->with( 'remove_unused_css', 0 )
-		        ->andReturn( $config['rucss_enabled'] );
+		        ->with( 'minify_concatenate_css', 0 )
+		        ->andReturn( $config['minify_concatenate_css'] );
 		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
 		Functions\when( 'wp_parse_url' )->justReturn('/wp-content/' );
 

@@ -3,16 +3,16 @@
 return [
 	'shouldExcludeCSSFilesRucssDisabled' => [
 		'config'   => [
-			'rucss_enabled'    => false,
+			'minify_concatenate_css'    => true,
 			'excluded-paths'   => [],
 		],
 		'expected' => [
 			'/wp-content/et-cache/(.*).css',
 		],
 	],
-	'shouldExcludeCSSFilesRucssEnabled' => [
+	'minify_concatenate_css' => [
 		'config'   => [
-			'rucss_enabled'    => true,
+			'minify_concatenate_css'    => false,
 			'excluded-paths'   => [],
 		],
 		'expected' => [],
