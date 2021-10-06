@@ -153,15 +153,20 @@ class Subscriber implements Subscriber_Interface {
 			'threshold' => $threshold,
 		];
 
-		$use_native = $this->is_native();
-
-		if ( $use_native ) {
+		/**
+		 * Filters the use of native lazyload
+		 *
+		 * @since 3.4
+		 *
+		 * @param bool $use_native True to use native lazyload, false otherwise.
+		 */
+		if ( (bool) apply_filters( 'rocket_use_native_lazyload', false ) ) {
 			$inline_args['options']['use_native'] = true;
 			$inline_args['elements']['loading']   = '[loading=lazy]';
 		}
 
 		if ( $this->options->get( 'lazyload', 0 ) ) {
-			if ( ! $use_native ) {
+			if ( ! $this->is_native_images() ) {
 				$inline_args['elements']['image'] = 'img[data-lazy-src]';
 			}
 
@@ -366,11 +371,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $this->can_lazyload_images() ) {
-			if ( ! $this->is_native() ) {
+			if ( ! $this->is_native_images() ) {
 				$html = $this->image->lazyloadPictures( $html, $buffer );
 			}
 
-			$html = $this->image->lazyloadImages( $html, $buffer, $this->is_native() );
+			$html = $this->image->lazyloadImages( $html, $buffer, $this->is_native_images() );
 
 			/**
 			 * Filters the application of lazyload on background images
@@ -396,7 +401,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function lazyload_responsive( $html ) {
-		if ( $this->is_native() ) {
+		if ( $this->is_native_images() ) {
 			return $html;
 		}
 
@@ -541,21 +546,21 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if native lazyload is enabled
+	 * Checks if native lazyload is enabled for images
 	 *
 	 * @since 3.10
 	 *
 	 * @return bool
 	 */
-	private function is_native(): bool {
+	private function is_native_images(): bool {
 		/**
-		 * Filters the use of native lazyload
+		 * Filters the use of native lazyload for images
 		 *
-		 * @since 3.4
+		 * @since 3.10
 		 *
-		 * @param bool $use_native True to use native lazyload, false otherwise.
+		 * @param bool $use_native True to use native lazyload for images, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_use_native_lazyload', true );
+		return (bool) apply_filters( 'rocket_use_native_lazyload_images', true );
 	}
 
 	/**
@@ -568,7 +573,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function maybe_add_skip_attributes( $exclusions ): array {
-		if ( $this->is_native() ) {
+		if ( $this->is_native_images() ) {
 			return $exclusions;
 		}
 
