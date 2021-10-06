@@ -15,7 +15,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface {
-	const SCRIPT_VERSION = '17.4';
+	const SCRIPT_VERSION = '17.5';
 
 	/**
 	 * Options_Data instance
