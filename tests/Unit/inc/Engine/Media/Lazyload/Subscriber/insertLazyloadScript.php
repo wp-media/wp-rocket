@@ -92,6 +92,13 @@ class Test_InsertLazyloadScript extends TestCase {
 				->andReturn( $options['use_native'] );
 		}
 
+		if ( isset( $options['use_native_images'] ) ) {
+			Filters\expectApplied( 'rocket_use_native_lazyload_images' )
+				->atMost()
+				->once()
+				->andReturn( $options['use_native_images'] );
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['unit']['result'] ),
 			$this->getActualHtml()

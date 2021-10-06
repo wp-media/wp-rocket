@@ -33,6 +33,8 @@ class Test_InsertLazyloadScript extends TestCase {
 		remove_filter( 'rocket_lazyload_threshold', [ $this, 'setThreshold' ] );
 		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
 		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
 
 		global $wp_query;
 		$wp_query->is_feed    = false;
@@ -106,6 +108,14 @@ class Test_InsertLazyloadScript extends TestCase {
 				add_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
 			} else {
 				add_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
+			}
+		}
+
+		if ( isset( $options['use_native_images'] ) ) {
+			if ( $options['use_native_images'] ) {
+				add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
+			} else {
+				add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
 			}
 		}
 

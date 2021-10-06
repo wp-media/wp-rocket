@@ -52,7 +52,7 @@ $observer = 'window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 }, false);';
 
 $script_image = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],.rocket-lazyload",
+	elements_selector: ".rocket-lazyload",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -69,12 +69,11 @@ $script_image = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	},
-	use_native: true
+	}
 };';
 
 $script_iframe = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],iframe[data-lazy-src]",
+	elements_selector: "iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -91,12 +90,11 @@ $script_iframe = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	},
-	use_native: true
+	}
 };';
 
 $script_both = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],.rocket-lazyload,iframe[data-lazy-src]",
+	elements_selector: ".rocket-lazyload,iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -113,12 +111,11 @@ $script_both = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	},
-	use_native: true
+	}
 };';
 
 $script_custom_threshold = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],.rocket-lazyload,iframe[data-lazy-src]",
+	elements_selector: ".rocket-lazyload,iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -135,8 +132,7 @@ $script_custom_threshold = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	},
-	use_native: true
+	}
 };';
 
 $script_no_native_lazyload = 'window.lazyLoadOptions = {

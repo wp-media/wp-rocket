@@ -38,7 +38,7 @@ class Test_LazyloadResponsive extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $html, $expected ) {
-		Filters\expectApplied( 'rocket_use_native_lazyload' )
+		Filters\expectApplied( 'rocket_use_native_lazyload_images' )
 		->andReturn( $config['is_native'] );
 
 		$this->image->shouldReceive( 'lazyloadResponsiveAttributes' )

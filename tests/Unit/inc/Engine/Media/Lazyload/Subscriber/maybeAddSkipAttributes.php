@@ -40,7 +40,7 @@ class Test_maybeAddSkipAttributes extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		Filters\expectApplied( 'rocket_use_native_lazyload' )
+		Filters\expectApplied( 'rocket_use_native_lazyload_images' )
 		->andReturn( $config['is_native'] );
 
 		$this->assertSame(

@@ -26,8 +26,8 @@ class Test_Lazyload extends TestCase {
 	public function tearDown() {
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
-		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
-		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
 
 		global $wp_query;
 		$wp_query->is_feed    = false;
@@ -62,9 +62,9 @@ class Test_Lazyload extends TestCase {
 		add_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 
 		if ( $config['is_native'] ) {
-			add_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+			add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
 		} else {
-			add_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
+			add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
 		}
 
 		$this->assertSame(

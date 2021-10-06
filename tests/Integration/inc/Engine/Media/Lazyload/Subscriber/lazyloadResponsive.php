@@ -16,7 +16,7 @@ class Test_LazyloadResponsive extends TestCase {
 	public function tearDown() : void {
 		parent::tearDown();
 
-		remove_filter( 'rocket_use_native_lazyload', [ $this, 'set_is_native' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'set_is_native' ] );
 	}
 
 	/**
@@ -25,7 +25,7 @@ class Test_LazyloadResponsive extends TestCase {
 	public function testShouldReturnExpected( $config, $html, $expected ) {
 		$this->is_native = $config['is_native'];
 
-		add_filter( 'rocket_use_native_lazyload', [ $this, 'set_is_native' ] );
+		add_filter( 'rocket_use_native_lazyload_images', [ $this, 'set_is_native' ] );
 
 		$this->assertSame(
 			$expected,
