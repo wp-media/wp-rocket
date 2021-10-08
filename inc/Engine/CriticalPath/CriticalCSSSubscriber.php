@@ -91,6 +91,8 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
+			'admin_post_rocket_rollback' => [ 'stop_critical_css_generation', 9 ],
+			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -300,10 +302,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			&&
 			0 === (int) $value['async_css']
 		) {
-			$this->critical_css->stop_generation();
-
-			delete_transient( 'rocket_critical_css_generation_process_running' );
-			delete_transient( 'rocket_critical_css_generation_process_complete' );
+			$this->stop_critical_css_generation();
 		}
 	}
 
@@ -728,5 +727,19 @@ JS;
 		}
 
 		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
+	 * Stops the critical CSS generation.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_critical_css_generation() {
+
+		$this->critical_css->stop_generation();
+		delete_transient( 'rocket_critical_css_generation_process_running' );
+		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
 }
