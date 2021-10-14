@@ -537,7 +537,7 @@ class UsedCSS {
 	 *
 	 * @since 3.10.2
 	 *
-	 * @param string $html HTML content
+	 * @param string $html HTML content.
 	 *
 	 * @return string
 	 */
