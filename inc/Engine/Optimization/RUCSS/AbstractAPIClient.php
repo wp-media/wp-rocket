@@ -83,7 +83,7 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Handle Saas request error.
+	 * Handle SaaS request error.
 	 *
 	 * @param array|WP_Error $response WP Remote request.
 	 *
