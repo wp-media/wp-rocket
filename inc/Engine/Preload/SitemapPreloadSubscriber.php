@@ -40,6 +40,8 @@ class SitemapPreloadSubscriber implements Subscriber_Interface {
 			'pagely_cache_purge_after'        => [ 'preload', 12 ],
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_cancel_preload', 10, 2 ],
 			'admin_notices'                   => [ 'simplexml_notice' ],
+			'admin_post_rocket_rollback'      => [ 'stop_sitemap_preload', 9 ],
+			'wp_rocket_upgrade'               => [ 'stop_sitemap_preload', 9 ],
 		];
 	}
 
@@ -128,5 +130,16 @@ class SitemapPreloadSubscriber implements Subscriber_Interface {
 				'message' => $message,
 			]
 		);
+	}
+
+	/**
+	 * Stops sitemap preload.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_sitemap_preload() {
+		$this->sitemap_preload->cancel_preload();
 	}
 }

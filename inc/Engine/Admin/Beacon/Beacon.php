@@ -475,8 +475,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'ecommerce'                  => [
 				'en' => [
-					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '548f492de4b034fd4862493e',
+					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '568f8291c69791436155caea',
