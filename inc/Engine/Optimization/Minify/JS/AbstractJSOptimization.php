@@ -246,6 +246,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			's3.tradingview.com',
 			'www.vbt.io/ext/vbtforms.js',
 			'cdn.callrail.com',
+			'documentcloud.adobe.com/view-sdk/main.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
