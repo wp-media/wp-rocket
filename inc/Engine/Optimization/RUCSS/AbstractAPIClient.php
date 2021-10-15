@@ -64,8 +64,8 @@ abstract class AbstractAPIClient {
 	 * @return bool WP Remote request status.
 	 */
 	protected function handle_post( array $args ): bool {
-		$api_url = rocket_get_constant( 'WP_MEDIA_SAAS_API_URL', false )
-			? rocket_get_constant( 'WP_MEDIA_SAAS_API_URL', false )
+		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
+			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			: self::API_URL;
 
 		if ( empty( $args['body'] ) ) {
