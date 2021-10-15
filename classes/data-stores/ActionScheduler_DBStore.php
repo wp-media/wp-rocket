@@ -655,10 +655,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$params[] = $group_id;
 		}
 
-		$order    = "ORDER BY attempts ASC, scheduled_date_gmt ASC, action_id ASC LIMIT %d";
+		$order    = apply_filters('action_scheduler_claim_actions_order_by', 'ORDER BY attempts ASC, scheduled_date_gmt ASC, action_id ASC' );
 		$params[] = $limit;
 
-		$sql = $wpdb->prepare( "{$update} {$where} {$order}", $params );
+		$sql = $wpdb->prepare( "{$update} {$where} {$order} LIMIT %d", $params );
 
 		$rows_affected = $wpdb->query( $sql );
 		if ( $rows_affected === false ) {
