@@ -53,10 +53,14 @@ class Test_SendWarmupRequest extends TestCase {
 		];
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
+
+		$api_url = rocket_get_constant( 'SAAS_API_URL', false )
+			? rocket_get_constant( 'SAAS_API_URL', false )
+			: $apiClient::API_URL;
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
-				$apiClient::API_URL . 'warmup',
+				$api_url . 'warmup',
 				$args
 			)
 			->andReturn( $mockResponse );

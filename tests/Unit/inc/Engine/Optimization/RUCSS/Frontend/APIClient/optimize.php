@@ -56,10 +56,13 @@ class Test_Optimize extends TestCase {
 			'wpr_key'   => 'rocket_key',
 		];
 
+		$api_url = rocket_get_constant( 'SAAS_API_URL', false )
+			? rocket_get_constant( 'SAAS_API_URL', false )
+			: $apiClient::API_URL;
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
-				$apiClient::API_URL . 'api',
+				$api_url . 'api',
 				$args
 			)
 			->andReturn( $mockResponse );
