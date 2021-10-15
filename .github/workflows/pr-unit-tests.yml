@@ -59,22 +59,30 @@ jobs:
       - name: Setup and install composer
         run: composer install
 
-      - name: Setup PhpUnit
+      - name: Setup PHPUnit 
         run: |
-          # PHP 5.6 and 7.0: use PhpUnit 5.7
+          # PHPUnit 5.7 when using PHP 5.6 - 7.0.
           if [ "$(php -r "echo version_compare( PHP_VERSION, '7.1', '<' );")" ]; then
-              curl -L https://phar.phpunit.de/phpunit-5.7.phar -o /tmp/phpunit
-              chmod +x /tmp/phpunit
-              rm ./vendor/bin/phpunit
-              mv /tmp/phpunit ./vendor/bin/phpunit
-          # PHP 7.4 or higher: use our custom fork of PhpUnit 7.5
-          elif [ "$(php -r "echo version_compare( PHP_VERSION, '7.4', '>=' );")" ]; then
-              curl -L https://github.com/woocommerce/phpunit/archive/add-compatibility-with-php8-to-phpunit-7.zip -o /tmp/phpunit-7.5-fork.zip
-              unzip -d /tmp/phpunit-7.5-fork /tmp/phpunit-7.5-fork.zip
-              composer --working-dir=/tmp/phpunit-7.5-fork/phpunit-add-compatibility-with-php8-to-phpunit-7 install
-              rm ./vendor/bin/phpunit
-              ln -sf /tmp/phpunit-7.5-fork/phpunit-add-compatibility-with-php8-to-phpunit-7/phpunit ./vendor/bin/phpunit
-           fi 
+            curl -L https://phar.phpunit.de/phpunit-5.7.phar -o /tmp/phpunit
+            OVERWRITE=1
+          # PHPUnit 7.5 when using PHP 7.1 - 7.4.
+          elif [ "$(php -r "echo version_compare( PHP_VERSION, '8.0', '<' );")" ]; then
+            curl -L https://phar.phpunit.de/phpunit-7.5.phar -o /tmp/phpunit
+            OVERWRITE=1
+          # PHPUnit 7.5 (Custom Fork) when using PHP 8.0+.
+          else
+            curl -L https://github.com/woocommerce/phpunit/archive/add-compatibility-with-php8-to-phpunit-7.zip -o /tmp/phpunit-7.5-fork.zip
+            unzip -d /tmp/phpunit-fork /tmp/phpunit-7.5-fork.zip
+            composer --working-dir=/tmp/phpunit-fork/phpunit-add-compatibility-with-php8-to-phpunit-7 install
+            rm ./vendor/bin/phpunit
+            ln -sf /tmp/phpunit-fork/phpunit-add-compatibility-with-php8-to-phpunit-7/phpunit ./vendor/bin/phpunit
+          fi
+          
+          if [ $OVERWRITE ]; then
+            rm ./vendor/bin/phpunit
+            chmod +x /tmp/phpunit
+            mv /tmp/phpunit ./vendor/bin/phpunit
+          fi
 
       - name: Init DB and WP
         run: ./tests/bin/install.sh woo_test root root 127.0.0.1 ${{ matrix.wp }}
