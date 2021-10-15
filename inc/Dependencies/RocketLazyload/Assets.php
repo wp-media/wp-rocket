@@ -202,6 +202,7 @@ class Assets {
 		$defaults = [
 			'resolution' => 'hqdefault',
 			'lazy_image' => false,
+			'native'     => true,
 		];
 
 		$allowed_resolutions = [
@@ -235,7 +236,14 @@ class Assets {
 		$image = '<img src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '">';
 
 		if ( isset( $args['lazy_image'] ) && $args['lazy_image'] ) {
-			$image = '<img loading="lazy" data-lazy-src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"><noscript><img src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"></noscript>';
+			$attributes = 'alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"';
+			$image_url  = 'https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg';
+
+			$image = '<img data-lazy-src="' . $image_url . '" ' . $attributes . '><noscript><img src="' . $image_url . '" ' . $attributes . '></noscript>';
+
+			if ( $args['native'] ) {
+				$image = '<img loading="lazy" src="' . $image_url . '" ' . $attributes . '>';
+			}
 		}
 
 		return "<script>function lazyLoadThumb(e){var t='{$image}',a='<div class=\"play\"></div>';return t.replace(\"ID\",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement(\"iframe\"),t=\"ID?autoplay=1\";t+=0===this.dataset.query.length?'':'&'+this.dataset.query;e.setAttribute(\"src\",t.replace(\"ID\",this.dataset.src)),e.setAttribute(\"frameborder\",\"0\"),e.setAttribute(\"allowfullscreen\",\"1\"),e.setAttribute(\"allow\", \"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"),this.parentNode.replaceChild(e,this)}document.addEventListener(\"DOMContentLoaded\",function(){var e,t,a=document.getElementsByClassName(\"rll-youtube-player\");for(t=0;t<a.length;t++)e=document.createElement(\"div\"),e.setAttribute(\"data-id\",a[t].dataset.id),e.setAttribute(\"data-query\", a[t].dataset.query),e.setAttribute(\"data-src\", a[t].dataset.src),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script>";
