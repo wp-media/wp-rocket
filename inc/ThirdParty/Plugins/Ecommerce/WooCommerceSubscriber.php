@@ -570,7 +570,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			'/woocommerce/assets/js/zoom/jquery.zoom(.min)?.js',
 			'/woocommerce/assets/js/photoswipe/',
 			'/woocommerce/assets/js/flexslider/jquery.flexslider(.min)?.js',
-			'/woocommerce/assets/js/frontend/single-product(.min)?.js'
+			'/woocommerce/assets/js/frontend/single-product(.min)?.js',
 		];
 
 		if (
