@@ -61,7 +61,7 @@ class Test_ExcludeDelayJs extends TestCase {
 	public function testShouldReturnExpected( $exclusions, $expected ) {
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_delay_js_exclusions', $exclusions )
+			apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions )
 		);
 	}
 }
