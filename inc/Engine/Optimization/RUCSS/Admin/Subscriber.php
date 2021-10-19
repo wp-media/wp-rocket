@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -142,7 +140,6 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
-	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @since 3.9
 	 *
@@ -151,13 +148,6 @@ class Subscriber implements Subscriber_Interface {
 	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
-		}
-
-		$old_used_css_ids = $this->database->get_old_used_css();
-		foreach ( $old_used_css_ids as $old_used_css ) {
-			$used_css_item = new UsedCSS_Row( $old_used_css );
-			// Delete file from filesystem.
-			$this->used_css->delete_used_css_file( $used_css_item );
 		}
 
 		$this->database->delete_old_used_css();
