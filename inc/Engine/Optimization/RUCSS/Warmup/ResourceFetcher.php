@@ -334,4 +334,15 @@ class ResourceFetcher extends WP_Rocket_WP_Async_Request {
 
 		return $decompressed;
 	}
+
+	/**
+	 * Cancel resource fetcher process
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function cancel_resource_fetcher_process() {
+		$this->process->cancel_process();
+	}
 }

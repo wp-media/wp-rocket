@@ -69,16 +69,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() : array {
 		return [
-			'rocket_buffer' => [ 'collect_resources', 11 ],
-			'rest_api_init' => 'register_routes',
-			'switch_theme'  => 'restart_warmup_on_theme_change',
-			'init'          => [
+			'rocket_buffer'              => [ 'collect_resources', 11 ],
+			'rest_api_init'              => 'register_routes',
+			'switch_theme'               => 'restart_warmup_on_theme_change',
+			'init'                       => [
 				[ 'update_warmup_status_while_has_items', 10 ],
 				[ 'activate_optimization_on_warmup_completion', 11 ],
 				[ 'auto_stop_warmup_after_1hour', 12 ],
 			],
 			// The following priority should be less than 10.
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'start_scanner', 9, 2 ],
+			'admin_post_rocket_rollback' => [ 'cancel_resource_fetching', 9 ],
+			'wp_rocket_upgrade'          => [ 'cancel_resource_fetching', 9 ],
 		];
 	}
 
@@ -203,4 +205,14 @@ class Subscriber implements Subscriber_Interface {
 		$this->restwp->register_status_route();
 	}
 
+	/**
+	 * Cancel resource fetching
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function cancel_resource_fetching() {
+		$this->resource_fetcher->cancel_resource_fetcher_process();
+	}
 }

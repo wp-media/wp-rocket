@@ -28,9 +28,10 @@ class Avada implements Subscriber_Interface {
 		}
 
 		return [
-			'avada_clear_dynamic_css_cache' => 'clean_domain',
-			'rocket_exclude_defer_js'       => 'exclude_defer_js',
-			'fusion_cache_reset_after'      => 'clean_domain',
+			'avada_clear_dynamic_css_cache'        => 'clean_domain',
+			'rocket_exclude_defer_js'              => 'exclude_defer_js',
+			'fusion_cache_reset_after'             => 'clean_domain',
+			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 		];
 	}
 
@@ -74,5 +75,27 @@ class Avada implements Subscriber_Interface {
 		$exclude_defer_js[] = 'maps.googleapis.com';
 
 		return $exclude_defer_js;
+	}
+
+	/**
+	 * Excludes some Avada JS from delay JS execution  when WC product gallery has images
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param array $exclusions Array of exclusion patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_delay_js( $exclusions ): array {
+		$base_path = wp_parse_url( get_stylesheet_directory_uri(), PHP_URL_PATH );
+
+		if ( empty( $base_path ) ) {
+			return $exclusions;
+		}
+
+		$exclusions[] = $base_path . '/includes/lib/assets/min/js/library/jquery.flexslider.js';
+		$exclusions[] = $base_path . '/assets/min/js/general/avada-woo-product-images.js';
+
+		return $exclusions;
 	}
 }

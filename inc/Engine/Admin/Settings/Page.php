@@ -701,9 +701,9 @@ class Page {
 					'sanitize_callback'       => 'sanitize_checkbox',
 					'options'                 => [
 						'remove_unused_css' => [
-							'label'       => __( 'Remove Unused CSS', 'rocket' ),
+							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly!  %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
+							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'warning'     => [
 								'title'        => __( 'We’re still working on it!', 'rocket' ),
 								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
@@ -729,7 +729,7 @@ class Page {
 							],
 						],
 						'async_css'         => [
-							'label'       => __( 'Load CSS Asynchronously', 'rocket' ),
+							'label'       => __( 'Load CSS asynchronously', 'rocket' ),
 							'description' => is_plugin_active( 'wp-criticalcss/wp-criticalcss.php' ) ?
 								// translators: %1$s = plugin name.
 								sprintf( _x( 'Load CSS asynchronously is currently handled by the %1$s plugin. If you want to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
