@@ -43,10 +43,10 @@ class Smush implements Subscriber_Interface {
 		}
 
 		return [
-			"update_option_wp-smush-settings"              => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_site_option_wp-smush-settings"         => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_option_wp-smush-lazy_load"             => [ 'maybe_deactivate_rocket_lazyload', 11 ],
-			"update_site_option_wp-smush-lazy_load"        => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'update_option_wp-smush-settings'              => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'update_site_option_wp-smush-settings'         => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'update_option_wp-smush-lazy_load'             => [ 'maybe_deactivate_rocket_lazyload', 11 ],
+			'update_site_option_wp-smush-lazy_load'        => [ 'maybe_deactivate_rocket_lazyload', 11 ],
 			'rocket_maybe_disable_lazyload_helper'         => 'is_smush_lazyload_active',
 			'rocket_maybe_disable_iframes_lazyload_helper' => 'is_smush_iframes_lazyload_active',
 		];
