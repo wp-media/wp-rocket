@@ -28,9 +28,9 @@ class Avada implements Subscriber_Interface {
 		}
 
 		return [
-			'avada_clear_dynamic_css_cache'        => 'clean_domain',
-			'rocket_exclude_defer_js'              => 'exclude_defer_js',
-			'fusion_cache_reset_after'             => 'clean_domain',
+			'avada_clear_dynamic_css_cache' => 'clean_domain',
+			'rocket_exclude_defer_js'       => 'exclude_defer_js',
+			'fusion_cache_reset_after'      => 'clean_domain',
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 		];
 	}
