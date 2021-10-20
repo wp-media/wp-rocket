@@ -667,10 +667,17 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$params[] = $group_id;
 		}
 
-		$order    = 'ORDER BY attempts ASC, scheduled_date_gmt ASC, action_id ASC LIMIT %d';
+		/**
+		 * Sets the order-by clause used in the action claim query.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param string $order_by_sql
+		 */
+		$order    = apply_filters( 'action_scheduler_claim_actions_order_by', 'ORDER BY attempts ASC, scheduled_date_gmt ASC, action_id ASC' );
 		$params[] = $limit;
 
-		$sql           = $wpdb->prepare( "{$update} {$where} {$order}", $params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders
+		$sql           = $wpdb->prepare( "{$update} {$where} {$order} LIMIT %d", $params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders
 		$rows_affected = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		if ( false === $rows_affected ) {
 			throw new \RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
