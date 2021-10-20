@@ -288,7 +288,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 					->getMock();
 		$store
 			->method( 'fetch_action' )
-			->with( $action_id )
+			->with( array( $action_id ) )
 			->will( $this->throwException( new Exception() ) );
 
 		// Set up a mock queue runner to verify that schedule_next_instance()
@@ -311,7 +311,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 					->getMock();
 		$store2
 			->method( 'fetch_action' )
-			->with( $action_id )
+			->with( array( $action_id ) )
 			->willReturn( null );
 
 		// Set up a mock queue runner to verify that schedule_next_instance()

@@ -12,7 +12,14 @@ class ActionScheduler_wcSystemStatus {
 	 */
 	protected $store;
 
-	function __construct( $store ) {
+	/**
+	 * Constructor method for ActionScheduler_wcSystemStatus.
+	 *
+	 * @param ActionScheduler_Store $store Active store object.
+	 *
+	 * @return void
+	 */
+	public function __construct( $store ) {
 		$this->store = $store;
 	}
 
@@ -67,12 +74,14 @@ class ActionScheduler_wcSystemStatus {
 
 		$order = 'oldest' === $date_type ? 'ASC' : 'DESC';
 
-		$action = $this->store->query_actions( array(
-			'claimed'  => false,
-			'status'   => $status,
-			'per_page' => 1,
-			'order'    => $order,
-		) );
+		$action = $this->store->query_actions(
+			array(
+				'claimed'  => false,
+				'status'   => $status,
+				'per_page' => 1,
+				'order'    => $order,
+			)
+		);
 
 		if ( ! empty( $action ) ) {
 			$date_object = $this->store->get_date( $action[0] );
@@ -92,7 +101,7 @@ class ActionScheduler_wcSystemStatus {
 	 * @param array $oldest_and_newest Date of the oldest and newest action with each status.
 	 */
 	protected function get_template( $status_labels, $action_counts, $oldest_and_newest ) {
-		$as_version = ActionScheduler_Versions::instance()->latest_version();
+		$as_version   = ActionScheduler_Versions::instance()->latest_version();
 		$as_datastore = get_class( ActionScheduler_Store::instance() );
 		?>
 
@@ -124,9 +133,9 @@ class ActionScheduler_wcSystemStatus {
 					printf(
 						'<tr><td>%1$s</td><td>&nbsp;</td><td>%2$s<span style="display: none;">, Oldest: %3$s, Newest: %4$s</span></td><td>%3$s</td><td>%4$s</td></tr>',
 						esc_html( $status_labels[ $status ] ),
-						number_format_i18n( $count ),
-						$oldest_and_newest[ $status ]['oldest'],
-						$oldest_and_newest[ $status ]['newest']
+						esc_html( number_format_i18n( $count ) ),
+						esc_html( $oldest_and_newest[ $status ]['oldest'] ),
+						esc_html( $oldest_and_newest[ $status ]['newest'] )
 					);
 				}
 				?>
@@ -137,10 +146,10 @@ class ActionScheduler_wcSystemStatus {
 	}
 
 	/**
-	 * is triggered when invoking inaccessible methods in an object context.
+	 * Is triggered when invoking inaccessible methods in an object context.
 	 *
-	 * @param string $name
-	 * @param array  $arguments
+	 * @param string $name Name of method called.
+	 * @param array  $arguments Parameters to invoke the method with.
 	 *
 	 * @return mixed
 	 * @link https://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.methods
