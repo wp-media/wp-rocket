@@ -16,7 +16,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 	/**
 	 * @var int Increment this value to trigger a schema update.
 	 */
-	protected $schema_version = 5;
+	protected $schema_version = 6;
 
 	public function __construct() {
 		$this->tables = [
@@ -64,7 +64,6 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        KEY args (args($max_index_length)),
 				        KEY group_id (group_id),
 				        KEY last_attempt_gmt (last_attempt_gmt),
-				        KEY claim_id (claim_id),
 				        KEY `claim_id_status_scheduled_date_gmt` (`claim_id`, `status`, `scheduled_date_gmt`)
 				        ) $charset_collate";
 
