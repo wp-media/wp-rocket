@@ -635,7 +635,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	protected function get_per_page_option_name() {
 		return str_replace( '-', '_', $this->screen->id ) . '_per_page';
