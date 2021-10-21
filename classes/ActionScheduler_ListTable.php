@@ -175,11 +175,13 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			),
 		);
 
-		parent::__construct( array(
-			'singular' => 'action-scheduler',
-			'plural'   => 'action-scheduler',
-			'ajax'     => false,
-		) );
+		parent::__construct(
+			array(
+				'singular' => 'action-scheduler',
+				'plural'   => 'action-scheduler',
+				'ajax'     => false,
+			)
+		);
 
 		add_screen_option(
 			'per_page',
@@ -188,7 +190,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			)
 		);
 
-		add_filter( 'set-screen-option', array( &$this, 'set_screen_option' ), 10, 3 );
+		add_filter( 'set_screen_option_' . str_replace( '-', '_', $this->screen->id ) . '_per_page', array( $this, 'set_screen_option' ), 10, 3 );
 		set_screen_options();
 	}
 
@@ -201,12 +203,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 * @return int
 	 */
 	public function set_screen_option( $status, $option, $value ) {
-
-		if ( str_replace( '-', '_', $this->screen->id ) . '_per_page' === $option ) {
-			return $value;
-		}
-
-		return $status;
+		return $value;
 	}
 	/**
 	 * Convert an interval of seconds into a two part human friendly string.
