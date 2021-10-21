@@ -263,7 +263,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	protected function get_items_query_limit() {
 		global $wpdb;
 
-		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
+		$per_page = $this->get_items_per_page( $this->get_per_page_option_name(), $this->items_per_page );
 		return $wpdb->prepare( 'LIMIT %d', $per_page );
 	}
 
@@ -273,7 +273,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 * @return int
 	 */
 	protected function get_items_offset() {
-		$per_page     = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
+		$per_page     = $this->get_items_per_page( $this->get_per_page_option_name(), $this->items_per_page );
 		$current_page = $this->get_pagenum();
 		if ( 1 < $current_page ) {
 			$offset = $per_page * ( $current_page - 1 );
@@ -481,7 +481,7 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 		$query_count = "SELECT COUNT({$this->ID}) FROM {$this->table_name} {$where}";
 		$total_items = $wpdb->get_var( $query_count ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$per_page    = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
+		$per_page    = $this->get_items_per_page( $this->get_per_page_option_name(), $this->items_per_page );
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
@@ -753,5 +753,14 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	 */
 	protected function get_search_box_placeholder() {
 		return esc_html__( 'Search', 'action-scheduler' );
+	}
+
+	/**
+	 * Gets the screen per_page option name.
+	 *
+	 * @return string
+	 */
+	protected function get_per_page_option_name() {
+		return $this->package . '_items_per_page';
 	}
 }
