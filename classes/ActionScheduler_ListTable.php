@@ -190,7 +190,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			)
 		);
 
-		add_filter( 'set_screen_option_' . str_replace( '-', '_', $this->screen->id ) . '_per_page', array( $this, 'set_screen_option' ), 10, 3 );
+		add_filter( 'set_screen_option_' . $this->get_per_page_option_name(), array( $this, 'set_screen_option' ), 10, 3 );
 		set_screen_options();
 	}
 
@@ -572,7 +572,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	public function prepare_items() {
 		$this->prepare_column_headers();
 
-		$per_page = $this->get_items_per_page( str_replace( '-', '_', $this->screen->id ) . '_per_page', $this->items_per_page );
+		$per_page = $this->get_items_per_page( $this->get_per_page_option_name(), $this->items_per_page );
 
 		$query = array(
 			'per_page' => $per_page,
@@ -632,5 +632,14 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	protected function get_search_box_button_text() {
 		return __( 'Search hook, args and claim ID', 'action-scheduler' );
+	}
+
+	/**
+	 * Gets the screen per_page option.
+	 *
+	 * @return string
+	 */
+	protected function get_per_page_option_name() {
+		return str_replace( '-', '_', $this->screen->id ) . '_per_page';
 	}
 }
