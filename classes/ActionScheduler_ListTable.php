@@ -635,7 +635,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	}
 
 	/**
-	 * Gets the screen per_page option.
+	 * Gets the screen per_page option name.
 	 *
 	 * @return string
 	 */
