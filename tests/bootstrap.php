@@ -15,6 +15,9 @@ if ( ! defined( 'WP_PLUGIN_DIR' ) ) {
 	define( 'WP_PLUGIN_DIR', dirname( dirname( dirname( __FILE__ ) ) ) );
 }
 
+// PHPUnit polyfills as required by the core WP test framework.
+require_once __DIR__ . '/../vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+
 $wordpress_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : sys_get_temp_dir() . '/wordpress-tests-lib';
 require_once $wordpress_tests_dir . '/includes/functions.php';
 require $wordpress_tests_dir . '/includes/bootstrap.php';
