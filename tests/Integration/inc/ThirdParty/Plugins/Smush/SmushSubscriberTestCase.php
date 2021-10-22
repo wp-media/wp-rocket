@@ -28,9 +28,9 @@ abstract class SmushSubscriberTestCase extends TestCase {
 		$this->options_api  = $container->get( 'options_api' );
 
 		$this->smush                      = Settings::get_instance();
-		$this->smush_settings_option_name = WP_SMUSH_PREFIX . 'settings';
+		$this->smush_settings_option_name = 'wp-smush-settings';
 		$this->smush_settings             = $this->smush->get_setting( $this->smush_settings_option_name );
-		$this->smush_lazy_option_name     = WP_SMUSH_PREFIX . 'lazy_load';
+		$this->smush_lazy_option_name     = 'wp-smush-lazy_load';
 		$this->smush_lazy                 = $this->smush->get_setting( $this->smush_lazy_option_name );
 	}
 
