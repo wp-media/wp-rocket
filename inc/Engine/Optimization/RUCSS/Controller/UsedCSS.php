@@ -161,10 +161,19 @@ class UsedCSS {
 		$is_mobile = $this->is_mobile();
 		$used_css  = $this->get_used_css( $url, $is_mobile );
 
+		/**
+		 * Filters the RUCSS safelist
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $safelist Array of safelist values.
+		 */
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+
 		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
 			$config = [
 				'treeshake'      => 1,
-				'rucss_safelist' => $this->options->get( 'remove_unused_css_safelist', [] ),
+				'rucss_safelist' => $safelist,
 			];
 
 			$treeshaked_result = $this->api->optimize( $html, $url, $config );
