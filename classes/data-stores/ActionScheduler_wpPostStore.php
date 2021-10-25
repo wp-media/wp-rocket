@@ -964,8 +964,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 *
 	 * @param string $action_id ID of the completed action.
 	 *
-	 * @throws InvalidArgumentException - When the action ID is invalid.
-	 * @throws RuntimeException         - When there was an error executing the action.
+	 * @throws InvalidArgumentException When the action ID is invalid.
+	 * @throws RuntimeException         When there was an error executing the action.
 	 */
 	public function mark_complete( $action_id ) {
 		$post = get_post( $action_id );
