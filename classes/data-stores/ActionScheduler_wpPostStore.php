@@ -504,7 +504,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Cancel action.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 *
 	 * @throws InvalidArgumentException If $action_id is not identified.
 	 */
@@ -523,7 +523,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Delete action.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 * @return void
 	 * @throws InvalidArgumentException If action is not identified.
 	 */
@@ -541,7 +541,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get date for claim id.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date( $action_id ) {
@@ -552,7 +552,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get Date GMT.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 *
 	 * @throws InvalidArgumentException If $action_id is not identified.
 	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
@@ -573,10 +573,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Stake claim.
 	 *
-	 * @param int      $max_actions - Maximum number of actions.
-	 * @param DateTime $before_date - Jobs must be schedule before this date. Defaults to now.
-	 * @param array    $hooks       - Claim only actions with a hook or hooks.
-	 * @param string   $group       - Claim only actions in the given group.
+	 * @param int      $max_actions Maximum number of actions.
+	 * @param DateTime $before_date Jobs must be schedule before this date. Defaults to now.
+	 * @param array    $hooks       Claim only actions with a hook or hooks.
+	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 * @throws RuntimeException When there is an error staking a claim.
@@ -622,11 +622,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Claim actions.
 	 *
-	 * @param string   $claim_id    - Claim ID.
-	 * @param int      $limit       - Limit.
-	 * @param DateTime $before_date - Should use UTC timezone.
-	 * @param array    $hooks       - Claim only actions with a hook or hooks.
-	 * @param string   $group       - Claim only actions in the given group.
+	 * @param string   $claim_id    Claim ID.
+	 * @param int      $limit       Limit.
+	 * @param DateTime $before_date Should use UTC timezone.
+	 * @param array    $hooks       Claim only actions with a hook or hooks.
+	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return int The number of actions that were claimed.
 	 * @throws RuntimeException  When there is a database error.
@@ -690,7 +690,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$params[] = $limit;
 
 		// Run the query and gather results.
-		$rows_affected = $wpdb->query( $wpdb->prepare( "{$update} {$where} {$order}", $params ) ); // phpcs:ignore
+		$rows_affected = $wpdb->query( $wpdb->prepare( "{$update} {$where} {$order}", $params ) ); // phpcs:ignore // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		if ( false === $rows_affected ) {
 			throw new RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
@@ -753,7 +753,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Find actions by claim ID.
 	 *
-	 * @param string $claim_id - Claim ID.
+	 * @param string $claim_id Claim ID.
 	 * @return array
 	 */
 	public function find_actions_by_claim_id( $claim_id ) {
@@ -793,7 +793,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Release claim.
 	 *
-	 * @param ActionScheduler_ActionClaim $claim - Claim object to release.
+	 * @param ActionScheduler_ActionClaim $claim Claim object to release.
 	 * @return void
 	 * @throws RuntimeException When the claim is not unlocked.
 	 */
@@ -828,8 +828,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Unclaim action.
 	 *
-	 * @param string $action_id - Action ID.
-	 * @throws RuntimeException - When unable to unlock claim on action ID.
+	 * @param string $action_id Action ID.
+	 * @throws RuntimeException When unable to unlock claim on action ID.
 	 */
 	public function unclaim_action( $action_id ) {
 		/**
@@ -859,7 +859,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $action_id - Action ID.
 	 *
 	 * @return void
-	 * @throws RuntimeException - When unable to mark failure on action ID.
+	 * @throws RuntimeException When unable to mark failure on action ID.
 	 */
 	public function mark_failure( $action_id ) {
 		/**
@@ -882,7 +882,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Return an action's claim ID, as stored in the post password column
 	 *
-	 * @param string $action_id -Action ID.
+	 * @param int $action_id Action ID.
 	 * @return mixed
 	 */
 	public function get_claim_id( $action_id ) {
@@ -892,10 +892,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Return an action's status, as stored in the post status column
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException - When the action ID is invalid.
+	 * @throws InvalidArgumentException When the action ID is invalid.
 	 */
 	public function get_status( $action_id ) {
 		$status = $this->get_post_column( $action_id, 'post_status' );
