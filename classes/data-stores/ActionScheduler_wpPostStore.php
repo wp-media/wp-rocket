@@ -73,10 +73,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Save post array.
 	 *
-	 * @param array $post_array - Post array.
-	 *
-	 * @return int - Returns the post ID.
-	 * @throws RuntimeException - Throws an exception if the action could not be saved.
+	 * @param array $post_array Post array.
+	 * @return int Returns the post ID.
+	 * @throws RuntimeException Throws an exception if the action could not be saved.
 	 */
 	protected function save_post_array( $post_array ) {
 		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
