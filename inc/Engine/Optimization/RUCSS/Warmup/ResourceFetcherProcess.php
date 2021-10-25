@@ -120,11 +120,14 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	 * @return string
 	 */
 	private function get_resource_contents( array $resource ) : string {
-		$file_content = $resource['external'] ? $this->local_cache->get_content( $resource['url'] ) : $this->get_file_content( $resource['path'] );
+
+		$resource_path = ! empty( $resource['path'] ) ? $resource['path'] : '';
+
+		$file_content = ! empty( $resource['external'] ) ? $this->local_cache->get_content( $resource['url'] ) : $this->get_file_content( $resource_path );
 
 		// Minify the content if it's there.
 		if ( $file_content ) {
-			$file_content = 'js' === $resource['type'] ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $resource['path'], $file_content );
+			$file_content = 'js' === $resource['type'] ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $resource_path, $file_content );
 		}
 
 		if ( ! $file_content ) {
@@ -132,7 +135,7 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 				'No file content.',
 				[
 					'RUCSS warmup process',
-					'path' => $resource['path'],
+					'path' => $resource_path,
 				]
 			);
 

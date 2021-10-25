@@ -3,7 +3,6 @@
 return [
 	'testShouldResetOptions' => [
 		'expected' => [
-			'embeds'                 => 0,
 			'async_css'              => 0,
 			'lazyload'               => 0,
 			'lazyload_iframes'       => 0,

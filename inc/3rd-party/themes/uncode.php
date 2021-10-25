@@ -17,8 +17,10 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 	function rocket_exclude_js_uncode( $excluded_js ) {
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
 
 		return $excluded_js;
 	}
@@ -56,6 +58,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 	function rocket_exclude_defer_js_uncode( $exclude_defer_js ) {
 		$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
 		$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+		$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
 		return $exclude_defer_js;
 	}
 	add_filter( 'rocket_exclude_defer_js', 'rocket_exclude_defer_js_uncode' );

@@ -82,6 +82,8 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'rocket_after_preload_after_purge_cache' => [
 				[ 'maybe_preload_mobile_homepage', 10, 3 ],
 			],
+			'admin_post_rocket_rollback'             => [ 'stop_homepage_preload', 9 ],
+			'wp_rocket_upgrade'                      => [ 'stop_homepage_preload', 9 ],
 		];
 	}
 
@@ -167,7 +169,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'database_trashed_posts'      => true,
 			'database_spam_comments'      => true,
 			'database_trashed_comments'   => true,
-			'database_expired_transients' => true,
 			'database_all_transients'     => true,
 			'database_optimize_tables'    => true,
 			'schedule_automatic_cleanup'  => true,
@@ -385,5 +386,16 @@ class PreloadSubscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( wp_get_referer() );
 		die();
+	}
+
+	/**
+	 * Stops homepage preload.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_homepage_preload() {
+		$this->homepage_preloader->cancel_preload();
 	}
 }

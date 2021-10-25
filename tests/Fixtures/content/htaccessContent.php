@@ -31,7 +31,7 @@ $cors = <<<HTACCESS
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
 # mod_headers, y u no match by Content-Type?!
-<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+<FilesMatch "\.(avifs?|cur|gif|png|jpe?g|svgz?|ico|webp)$">
 SetEnvIf Origin ":" IS_CORS
 Header set Access-Control-Allow-Origin "*" env=IS_CORS
 </FilesMatch>
@@ -69,6 +69,10 @@ Header append Cache-Control "public"
 </IfModule>
 </FilesMatch>
 </IfModule>
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
+</IfModule>
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
 	ExpiresActive on
@@ -95,6 +99,8 @@ Header append Cache-Control "public"
 	ExpiresByType audio/ogg                     "access plus 1 month"
 	ExpiresByType video/mp4                     "access plus 1 month"
 	ExpiresByType video/webm                    "access plus 1 month"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
