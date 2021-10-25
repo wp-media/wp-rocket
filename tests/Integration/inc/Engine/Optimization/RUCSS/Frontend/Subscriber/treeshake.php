@@ -51,7 +51,6 @@ class Test_Treeshake extends FilesystemTestCase {
 		unset( $GLOBALS['wp'] );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'set_cpcss_option' ] );
 		remove_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cached_user' ] );
 		remove_filter( 'pre_http_request', [ $this, 'set_api_response' ] );
 		remove_filter( 'pre_option_wp_rocket_prewarmup_stats', [ $this, 'return_prewarmup_stats' ] );
@@ -80,11 +79,6 @@ class Test_Treeshake extends FilesystemTestCase {
 		}
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-
-		if ( isset( $config['has_cpcss'] ) ) {
-			$this->config_data['cpcss_option'] = $config['has_cpcss'];
-			add_filter( 'pre_get_rocket_option_async_css', [ $this, 'set_cpcss_option' ] );
-		}
 
 		if ( $config['logged-in'] ?? false ) {
 			$user = $this->factory->user->create();
@@ -146,10 +140,6 @@ class Test_Treeshake extends FilesystemTestCase {
 
 	public function set_api_response() {
 		return $this->config_data['api-response'];
-	}
-
-	public function set_cpcss_option() {
-		return $this->config_data['cpcss_option'] ?? false;
 	}
 
 	public function return_prewarmup_stats( $option_value ) {

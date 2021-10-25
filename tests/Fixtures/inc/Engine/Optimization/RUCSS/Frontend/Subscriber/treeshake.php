@@ -251,6 +251,9 @@ return [
 	<style id="test3">h5{color:white;}</style >
 	<noscript id="noscript2"><style id="test2">h2{color:green;}</style></noscript>
 	<noscript><style id="test">div{display:none !important;}</style></noscript >
+	<script type="text/javascript">
+		(function($) {$("head").append("<style>.my-style{color:red;}</style>")})(jQuery);
+	</script>
 </head>
 <body>
  content here
@@ -292,6 +295,9 @@ return [
 	</noscript>
 	<noscript id="noscript2"><style id="test2">h2{color:green;}</style></noscript>
 	<noscript><style id="test">div{display:none !important;}</style></noscript >
+	<script type="text/javascript">
+		(function($) {$("head").append("<style>.my-style{color:red;}</style>")})(jQuery);
+	</script>
 </head>
 <body>
  content here
