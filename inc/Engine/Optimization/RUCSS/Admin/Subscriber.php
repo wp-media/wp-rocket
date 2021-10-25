@@ -172,6 +172,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
 		if ( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
 			return;
 		}
