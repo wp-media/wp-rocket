@@ -28,9 +28,11 @@ class Avada implements Subscriber_Interface {
 		}
 
 		return [
-			'avada_clear_dynamic_css_cache' => 'clean_domain',
-			'rocket_exclude_defer_js'       => 'exclude_defer_js',
-			'fusion_cache_reset_after'      => 'clean_domain',
+			'avada_clear_dynamic_css_cache'                 => 'clean_domain',
+			'rocket_exclude_defer_js'                       => 'exclude_defer_js',
+			'rocket_maybe_disable_lazyload_helper'          => 'maybe_disable_lazyload',
+			'fusion_cache_reset_after'                      => 'clean_domain',
+			'update_option_fusion_options'                  => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 		];
 	}
@@ -65,6 +67,25 @@ class Avada implements Subscriber_Interface {
 	}
 
 	/**
+	 * Deactivate WP Rocket lazyload if Avada lazyload is enabled.
+	 *
+	 * @since 3.3.4
+	 *
+	 * @param string $old_value Previous Avada option value.
+	 * @param string $value     New Avada option value.
+	 * @return void
+	 */
+	public function maybe_deactivate_lazyload( $old_value, $value ) {
+		if (
+			empty( $old_value['lazy_load'] )
+			||
+			( ! empty( $value['lazy_load'] ) && 'avada' === $value['lazy_load'] )
+		) {
+			update_rocket_option( 'lazyload', 0 );
+		}
+	}
+
+	/**
 	 * Excludes Avada Google Maps JS files from defer JS
 	 *
 	 * @param array $exclude_defer_js Array of JS filepaths to be excluded.
@@ -75,6 +96,28 @@ class Avada implements Subscriber_Interface {
 		$exclude_defer_js[] = 'maps.googleapis.com';
 
 		return $exclude_defer_js;
+	}
+
+	/**
+	 * Disable WP Rocket lazyload field if Avada lazyload is enabled
+	 *
+	 * @since 3.3.4
+	 * @param  array $disable_images_lazyload Array with plugins which disable lazyload functionality.
+	 * @return array
+	 */
+	public function maybe_disable_lazyload( $disable_images_lazyload ) {
+		$avada_options = get_option( 'fusion_options' );
+
+		if ( empty( $avada_options['lazy_load'] ) ) {
+			return $disable_images_lazyload;
+		}
+
+		if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+			return $disable_images_lazyload;
+		}
+
+		$disable_images_lazyload[] = __( 'Avada', 'rocket' );
+		return $disable_images_lazyload;
 	}
 
 	/**
