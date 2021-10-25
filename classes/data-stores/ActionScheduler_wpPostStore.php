@@ -170,8 +170,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Save action group.
 	 *
-	 * @param int    $post_id - Post ID.
-	 * @param string $group   - Group to save.
+	 * @param int    $post_id Post ID.
+	 * @param string $group   Group to save.
 	 * @return void
 	 */
 	protected function save_action_group( $post_id, $group ) {
@@ -185,7 +185,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Fetch actions.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 * @return object
 	 */
 	public function fetch_action( $action_id ) {
@@ -208,7 +208,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * Get post.
 	 *
 	 * @param string $action_id - Action ID.
-	 * @return WP_Post|array|null
+	 * @return WP_Post|null
 	 */
 	protected function get_post( $action_id ) {
 		if ( empty( $action_id ) ) {
@@ -229,8 +229,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Make action from post.
 	 *
-	 * @param object $post - post object.
-	 * @return object
+	 * @param WP_Post $post Post object.
+	 * @return WP_Post
 	 */
 	protected function make_action_from_post( $post ) {
 		$hook = $post->post_title;
@@ -250,9 +250,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get action status by post status.
 	 *
-	 * @param string $post_status - Post status.
+	 * @param string $post_status Post status.
 	 *
-	 * @throws InvalidArgumentException - Throw InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels().
+	 * @throws InvalidArgumentException Throw InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels().
 	 * @return string
 	 */
 	protected function get_action_status_by_post_status( $post_status ) {
@@ -278,9 +278,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get post status by action status.
 	 *
-	 * @param string $action_status - Action status.
+	 * @param string $action_status Action status.
 	 *
-	 * @throws InvalidArgumentException - Throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels().
+	 * @throws InvalidArgumentException Throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels().
 	 * @return string
 	 */
 	protected function get_post_status_by_action_status( $action_status ) {
