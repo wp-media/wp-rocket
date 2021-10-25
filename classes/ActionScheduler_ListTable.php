@@ -202,7 +202,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 * @param int    $value  Screen option value.
 	 * @return int
 	 */
-	public function set_screen_option( $status, $option, $value ) {
+	public function set_items_per_page_option( $status, $option, $value ) {
 		return $value;
 	}
 	/**
