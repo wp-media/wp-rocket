@@ -195,7 +195,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	}
 
 	/**
-	 * Set screen option.
+	 * Handles setting the items_per_page option for this screen.
 	 *
 	 * @param mixed  $status Default false (to skip saving the current option).
 	 * @param string $option Screen option name.
