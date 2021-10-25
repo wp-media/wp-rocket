@@ -1036,7 +1036,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * as we prepare to move to custom tables, and can use an indexed VARCHAR column instead, we want to warn
 	 * developers of this impending requirement.
 	 *
-	 * @param ActionScheduler_Action $action - Action object.
+	 * @param ActionScheduler_Action $action Action object.
 	 */
 	protected function validate_action( ActionScheduler_Action $action ) {
 		try {
