@@ -53,10 +53,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Create post array.
 	 *
-	 * @param ActionScheduler_Action $action - Scheduled Action.
-	 * @param DateTime               $scheduled_date - Scheduled Date.
+	 * @param ActionScheduler_Action $action Scheduled Action.
+	 * @param DateTime               $scheduled_date Scheduled Date.
 	 *
-	 * @return array - Returns an array of post data.
+	 * @return array Returns an array of post data.
 	 */
 	protected function create_post_array( ActionScheduler_Action $action, DateTime $scheduled_date = null ) {
 		$post = array(
