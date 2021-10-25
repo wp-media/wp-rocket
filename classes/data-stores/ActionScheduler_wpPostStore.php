@@ -29,10 +29,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Save action.
 	 *
-	 * @param ActionScheduler_Action $action - Scheduled Action.
-	 * @param DateTime               $scheduled_date - Scheduled Date.
+	 * @param ActionScheduler_Action $action Scheduled Action.
+	 * @param DateTime               $scheduled_date Scheduled Date.
 	 *
-	 * @throws RuntimeException - Throws an exception if the action could not be saved.
+	 * @throws RuntimeException Throws an exception if the action could not be saved.
 	 * @return int
 	 */
 	public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = null ) {
