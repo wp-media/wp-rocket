@@ -856,7 +856,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Mark failure on action.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param int $action_id Action ID.
 	 *
 	 * @return void
 	 * @throws RuntimeException When unable to mark failure on action ID.
