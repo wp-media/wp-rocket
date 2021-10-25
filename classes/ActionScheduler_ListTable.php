@@ -190,7 +190,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			)
 		);
 
-		add_filter( 'set_screen_option_' . $this->get_per_page_option_name(), array( $this, 'set_screen_option' ), 10, 3 );
+		add_filter( 'set_screen_option_' . $this->get_per_page_option_name(), array( $this, 'set_items_per_page_option' ), 10, 3 );
 		set_screen_options();
 	}
 
