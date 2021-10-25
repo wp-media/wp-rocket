@@ -42,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'adthrive',
 		'wp-meteor',
 		'revolution_slider_subscriber',
+		'wordfence_subscriber',
 	];
 
 	/**
@@ -135,6 +136,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
 			->addTag( 'common_subscriber' );
 	}
 }
