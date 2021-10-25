@@ -936,7 +936,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Log Execution.
 	 *
-	 * @param string $action_id - Action ID.
+	 * @param string $action_id Action ID.
 	 */
 	public function log_execution( $action_id ) {
 		/**
