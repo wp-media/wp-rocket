@@ -910,8 +910,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get post column
 	 *
-	 * @param string $action_id - Action ID.
-	 * @param string $column_name - Column Name.
+	 * @param string $action_id Action ID.
+	 * @param string $column_name Column Name.
 	 *
 	 * @return string|null
 	 */
