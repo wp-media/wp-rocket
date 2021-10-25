@@ -158,8 +158,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Save post schedule.
 	 *
-	 * @param int    $post_id  - post ID of the scheduled action.
-	 * @param string $schedule - Schedule to save.
+	 * @param int    $post_id  Post ID of the scheduled action.
+	 * @param string $schedule Schedule to save.
 	 *
 	 * @return void
 	 */
