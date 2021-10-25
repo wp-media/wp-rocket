@@ -106,7 +106,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Filter insert post data.
 	 *
-	 * @param array $postdata - Post data to filter.
+	 * @param array $postdata Post data to filter.
 	 *
 	 * @return array
 	 */
