@@ -67,7 +67,7 @@ class Test_Lazyload extends TestCase {
 			->with( 'lazyload_iframes', 0 )
 			->andReturn( $config['options']['lazyload_iframes'] );
 
-		Filters\expectApplied( 'rocket_use_native_lazyload' )
+		Filters\expectApplied( 'rocket_use_native_lazyload_images' )
 			->andReturn( $config['is_native'] );
 
 		if ( ! $config['is_native'] ) {
