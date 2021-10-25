@@ -221,7 +221,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Get NULL action.
 	 *
-	 * @return object
+	 * @return ActionScheduler_NullAction
 	 */
 	protected function get_null_action() {
 		return new ActionScheduler_NullAction();
