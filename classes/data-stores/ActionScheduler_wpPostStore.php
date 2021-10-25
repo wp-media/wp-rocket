@@ -992,7 +992,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Mark action as migrated when there is an error deleting the action.
 	 *
-	 * @param string $action_id Action ID.
+	 * @param int $action_id Action ID.
 	 */
 	public function mark_migrated( $action_id ) {
 		wp_update_post(
