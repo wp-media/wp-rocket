@@ -28,11 +28,11 @@ class Avada implements Subscriber_Interface {
 		}
 
 		return [
-			'avada_clear_dynamic_css_cache'                 => 'clean_domain',
-			'rocket_exclude_defer_js'                       => 'exclude_defer_js',
-			'rocket_maybe_disable_lazyload_helper'          => 'maybe_disable_lazyload',
-			'fusion_cache_reset_after'                      => 'clean_domain',
-			'update_option_fusion_options'                  => [ 'maybe_deactivate_lazyload', 10, 2 ],
+			'avada_clear_dynamic_css_cache'        => 'clean_domain',
+			'rocket_exclude_defer_js'              => 'exclude_defer_js',
+			'rocket_maybe_disable_lazyload_helper' => 'maybe_disable_lazyload',
+			'fusion_cache_reset_after'             => 'clean_domain',
+			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 		];
 	}
