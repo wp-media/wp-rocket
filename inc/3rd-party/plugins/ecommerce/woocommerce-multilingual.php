@@ -99,7 +99,7 @@ if ( defined( 'WCML_VERSION' ) ) :
 		flush_rocket_htaccess();
 		rocket_generate_config_file();
 	}
-	add_action( 'woocommerce-multilingual/wpml-woocommerce.php', 'rocket_wcml_activate', 11 );
+	add_action( 'activate_woocommerce-multilingual/wpml-woocommerce.php', 'rocket_wcml_activate', 11 );
 
 	/**
 	 * Reset WP Rocket settings on WCML deactivation.
@@ -111,7 +111,7 @@ if ( defined( 'WCML_VERSION' ) ) :
 		flush_rocket_htaccess();
 		rocket_generate_config_file();
 	}
-	add_action( 'woocommerce-multilingual/wpml-woocommerce.php', 'rocket_wcml_deactivate', 11 );
+	add_action( 'deactivate_woocommerce-multilingual/wpml-woocommerce.php', 'rocket_wcml_deactivate', 11 );
 
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 64 );
 
