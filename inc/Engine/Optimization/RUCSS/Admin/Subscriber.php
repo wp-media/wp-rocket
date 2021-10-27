@@ -162,9 +162,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
-		if ( ! $this->settings->is_enabled() ) {
+		if (
+			! $this->settings->is_enabled()
+			&&
+			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
+		) {
 			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 
+			return;
+		}
+
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
