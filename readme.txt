@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 5.7
-Stable tag: 3.3.0
+Stable tag: 3.4.0
 License: GPLv3
 Requires PHP: 5.6
 
