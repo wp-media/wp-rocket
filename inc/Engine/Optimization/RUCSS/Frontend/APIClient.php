@@ -8,14 +8,14 @@ use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 class APIClient extends AbstractAPIClient {
 
 	/**
-	 * SAAS main API path.
+	 * SaaS main API path.
 	 *
 	 * @var string
 	 */
 	protected $request_path = 'api';
 
 	/**
-	 * Calls Central Saas API.
+	 * Calls Central SaaS API.
 	 *
 	 * @param string $html    HTML content.
 	 * @param string $url     HTML url.
@@ -58,7 +58,7 @@ class APIClient extends AbstractAPIClient {
 			'code'            => $result['code'],
 			'message'         => $result['message'],
 			'css'             => $result['contents']['shakedCSS'],
-			'unprocessed_css' => ( is_array( $result['contents']['unProcessedCss'] ) ? $result['contents']['unProcessedCss'] : [] ),
+			'unprocessed_css' => is_array( $result['contents']['unProcessedCss'] ) ? $result['contents']['unProcessedCss'] : [],
 		];
 	}
 }

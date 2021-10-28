@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
-use WP_Rocket\Engine\Admin\Settings\Render;
 
 class Settings {
 	/**

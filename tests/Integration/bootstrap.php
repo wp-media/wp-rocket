@@ -136,7 +136,10 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
 			define( 'RS_REVISION', '6.5.5' );
 		}
-
+		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
+			define( 'WORDFENCE_VERSION', '1' );
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+		}
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

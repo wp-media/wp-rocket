@@ -236,6 +236,7 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
+			<?php $this->render_part( 'getting-started' ); ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
 			</div>
