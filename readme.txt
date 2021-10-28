@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 5.7
-Stable tag: 3.3.0
+Stable tag: 3.4.0
 License: GPLv3
 Requires PHP: 5.6
 
@@ -46,6 +46,19 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.4.0 - 2021-10-29 =
+* Enhancement - Number of items per page can now be set for the Scheduled Actions view (props @ovidiul). #771
+* Fix - Do not lower the max_execution_time if it is already set to 0 (unlimited) (props @barryhughes). #755
+* Fix - Avoid triggering autoloaders during the version resolution process (props @olegabr). #731 & #776
+* Dev - ActionScheduler_wcSystemStatus PHPCS fixes (props @ovidiul). #761
+* Dev - ActionScheduler_DBLogger.php PHPCS fixes (props @ovidiul). #768
+* Dev - Fixed phpcs for ActionScheduler_Schedule_Deprecated (props @ovidiul). #762
+* Dev - Improve actions table indicies (props @glagonikas). #774 & #777
+* Dev - PHPCS fixes for ActionScheduler_DBStore.php (props @ovidiul). #769 & #778
+* Dev - PHPCS Fixes for ActionScheduler_Abstract_ListTable (props @ovidiul). #763 & #779
+* Dev - Adds new filter action_scheduler_claim_actions_order_by to allow tuning of the claim query (props @glagonikas). #773
+* Dev - PHPCS fixes for ActionScheduler_WpPostStore class (props @ovidiul). #780
 
 = 3.3.0 - 2021-09-15 =
 * Enhancement - Adds as_has_scheduled_action() to provide a performant way to test for existing actions. #645
