@@ -7,6 +7,7 @@ return [
 			'url' => 'http://example.org/category/test/',
 			'wp_error' => false,
 			'term_id' => 1,
+			'removed' => false,
 		],
 	],
 	'shouldDoNothingWhenWPError' => [
@@ -15,6 +16,7 @@ return [
 			'url' => 'http://example.org/category/test/',
 			'wp_error' => true,
 			'term_id' => 1,
+			'removed' => false,
 		],
 	],
 	'shouldDelete' => [
@@ -23,6 +25,7 @@ return [
 			'url' => 'http://example.org/category/test/',
 			'wp_error' => false,
 			'term_id' => 1,
+			'removed' => true,
 		],
 	],
 ];
