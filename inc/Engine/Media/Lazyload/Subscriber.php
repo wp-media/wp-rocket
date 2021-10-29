@@ -459,7 +459,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.5
 	 *
-	 * @param bool $value Current value for the enabling variable.
+	 * @param bool   $value Current value for the enabling variable.
 	 * @param string $tag_name The tag name.
 	 *
 	 * @return bool
