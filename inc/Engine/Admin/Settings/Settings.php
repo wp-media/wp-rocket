@@ -697,6 +697,6 @@ class Settings {
 
 		add_settings_error( 'general', 'reject_uri_global_exclusion', __( 'Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site.', 'rocket' ) );
 
-		return array_diff_key( $field, array_keys( $field, '/(.*)', true ) );
+		return array_diff_key( $field, array_flip( array_keys( $field, '/(.*)', true ) ) );
 	}
 }
