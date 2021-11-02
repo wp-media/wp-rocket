@@ -81,7 +81,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_lazyload_html'                     => 'lazyload_responsive',
 			'init'                                     => 'lazyload_smilies',
 			'wp'                                       => 'deactivate_lazyload_on_specific_posts',
-			'wp_lazy_loading_enabled'                  => 'maybe_disable_core_lazyload',
+			'wp_lazy_loading_enabled'                  => [ 'maybe_disable_core_lazyload', 10, 2 ],
 			'rocket_lazyload_excluded_attributes'      => 'add_exclusions',
 			'rocket_lazyload_excluded_src'             => 'add_exclusions',
 			'rocket_lazyload_iframe_excluded_patterns' => 'add_exclusions',
@@ -459,15 +459,25 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.5
 	 *
-	 * @param bool $value Current value for the enabling variable.
+	 * @param bool   $value Current value for the enabling variable.
+	 * @param string $tag_name The tag name.
+	 *
 	 * @return bool
 	 */
-	public function maybe_disable_core_lazyload( $value ) {
+	public function maybe_disable_core_lazyload( $value, $tag_name ) {
 		if ( false === $value ) {
 			return $value;
 		}
 
-		return ! (bool) $this->can_lazyload_images();
+		if ( 'img' === $tag_name ) {
+			return ! (bool) $this->can_lazyload_images();
+		}
+
+		if ( 'iframe' === $tag_name ) {
+			return ! (bool) $this->can_lazyload_iframes();
+		}
+
+		return $value;
 	}
 
 	/**
