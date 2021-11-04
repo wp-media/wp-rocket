@@ -286,6 +286,7 @@ class Plugin {
 			'adthrive',
 			'wp-meteor',
 			'revolution_slider_subscriber',
+			'wordfence_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
