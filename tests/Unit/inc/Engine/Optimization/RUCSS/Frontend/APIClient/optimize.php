@@ -25,6 +25,7 @@ class Test_Optimize extends TestCase {
 	public function testShouldOptimizeAsExpected( $config, $mockResponse, $expected ): void {
 		$response = $this->get_reflective_property( 'response_body', AbstractAPIClient::class );
 		$error    = $this->get_reflective_property( 'error_message', AbstractAPIClient::class );
+		$api_url  = 'http://localhost';
 
 		$args = [
 			'body'    => [
@@ -38,14 +39,14 @@ class Test_Optimize extends TestCase {
 		$options = Mockery::mock( Options_Data::class );
 
 		$options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'consumer_key', '' )
-		              ->andReturn( 'rocket_key' );
+		        ->once()
+		        ->with( 'consumer_key', '' )
+		        ->andReturn( 'rocket_key' );
 
 		$options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'consumer_email', '' )
-		              ->andReturn( 'rocket_email' );
+		        ->once()
+		        ->with( 'consumer_email', '' )
+		        ->andReturn( 'rocket_email' );
 
 		$apiClient = new APIClient( $options );
 
@@ -56,9 +57,6 @@ class Test_Optimize extends TestCase {
 			'wpr_key'   => 'rocket_key',
 		];
 
-		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
-			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
-			: $apiClient::API_URL;
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(

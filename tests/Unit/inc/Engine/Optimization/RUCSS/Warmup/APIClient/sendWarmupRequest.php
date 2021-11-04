@@ -24,6 +24,7 @@ class Test_SendWarmupRequest extends TestCase {
 	public function testShouldSendWarmupRequest( $atts, $success, $mockResponse ): void {
 		$response = $this->get_reflective_property( 'response_body', AbstractAPIClient::class );
 		$error    = $this->get_reflective_property( 'error_message', AbstractAPIClient::class );
+		$api_url  = 'http://localhost';
 
 		$args = [
 			'body' => [
@@ -54,9 +55,6 @@ class Test_SendWarmupRequest extends TestCase {
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
 
-		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
-			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
-			: $apiClient::API_URL;
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
