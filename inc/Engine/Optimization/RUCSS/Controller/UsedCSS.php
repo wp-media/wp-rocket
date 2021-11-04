@@ -53,27 +53,6 @@ class UsedCSS {
 	private $api;
 
 	/**
-	 * Filesystem instance
-	 *
-	 * @var \WP_Filesystem_Direct
-	 */
-	private $filesystem;
-
-	/**
-	 * Base path for Used CSS storage
-	 *
-	 * @var string
-	 */
-	private $base_path;
-
-	/**
-	 * Base URL for Used CSS files
-	 *
-	 * @var string
-	 */
-	private $base_url;
-
-	/**
 	 * Inline exclusions regexes not to removed from the page after treeshaking.
 	 *
 	 * @var string[]
@@ -103,9 +82,6 @@ class UsedCSS {
 		$this->resources_query = $resources_query;
 		$this->purge           = $purge;
 		$this->api             = $api;
-		$this->filesystem      = rocket_direct_filesystem();
-		$this->base_path       = rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) . get_current_blog_id();
-		$this->base_url        = rocket_get_constant( 'WP_ROCKET_USED_CSS_URL' ) . get_current_blog_id();
 	}
 
 	/**
@@ -341,7 +317,7 @@ class UsedCSS {
 		$minifier    = new MinifyCSS( $data['css'] );
 
 		/**
-		 * Filters Used CSS content before saving into DB and filesystem.
+		 * Filters Used CSS content before saving into DB.
 		 *
 		 * @since 3.9.0.2
 		 *
