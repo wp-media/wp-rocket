@@ -603,7 +603,7 @@ class UsedCSS {
 		$used_css_contents = $this->handle_charsets( $used_css->css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
-			wp_strip_all_tags( $used_css_contents )
+			$used_css_contents
 		);
 	}
 
