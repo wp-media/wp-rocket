@@ -622,7 +622,7 @@ function rocket_clean_home( $lang = '' ) {
 
 	if ( $files ) {
 		foreach ( $files as $file ) {
-			if ( preg_match( '#\/index(?:\-.+\.|\.)(?:html(?:_gzip)?)$#', $file ) ) {
+			if ( preg_match( '#/index(?:-.+\.|\.)html(?:_gzip)?$#', $file ) ) {
 				rocket_direct_filesystem()->delete( $file );
 			}
 		}
