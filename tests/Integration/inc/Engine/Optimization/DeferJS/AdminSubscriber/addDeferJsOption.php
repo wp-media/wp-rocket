@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DeferJS
  */
 class Test_AddDeferJsOption extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_defer_js_option' );

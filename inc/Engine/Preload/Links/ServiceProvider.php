@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Preload\Links;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket preload links.
@@ -30,9 +30,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->share( 'preload_links_admin_subscriber', 'WP_Rocket\Engine\Preload\Links\AdminSubscriber' )
-			->withArgument( $options );
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'preload_links_subscriber', 'WP_Rocket\Engine\Preload\Links\Subscriber' )
-			->withArgument( $options )
-			->withArgument( rocket_direct_filesystem() );
+			->addArgument( $options )
+			->addArgument( rocket_direct_filesystem() )
+			->addTag( 'common_subscriber' );
 	}
 }

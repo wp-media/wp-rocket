@@ -16,13 +16,6 @@ class ImageDimensions {
 	private $options;
 
 	/**
-	 * Cache local paths for images.
-	 *
-	 * @var array
-	 */
-	private $local_paths = [];
-
-	/**
 	 * Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
@@ -160,13 +153,17 @@ class ImageDimensions {
 	private function is_external_file( $url ) {
 		$file = get_rocket_parse_url( $url );
 
+		if ( ! empty( $file['query'] ) ) {
+			return true;
+		}
+
 		if ( empty( $file['path'] ) ) {
 			return true;
 		}
 
-		$wp_content = wp_parse_url( content_url() );
+		$parsed_site_url = wp_parse_url( site_url() );
 
-		if ( empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+		if ( empty( $parsed_site_url['host'] ) ) {
 			return true;
 		}
 
@@ -179,7 +176,7 @@ class ImageDimensions {
 		 * @param array $zones Zones to check available hosts.
 		 */
 		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
-		$hosts[] = $wp_content['host'];
+		$hosts[] = $parsed_site_url['host'];
 		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
@@ -203,7 +200,6 @@ class ImageDimensions {
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
 				if ( false !== strpos( $url, $host ) ) {
-					$this->local_paths[ md5( $url ) ] = str_replace( $host, untrailingslashit( rocket_get_constant( 'ABSPATH' ) ), rocket_remove_url_protocol( $url ) );
 					return false;
 				}
 			}
@@ -211,8 +207,7 @@ class ImageDimensions {
 			return true;
 		}
 
-		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
-		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
+		return false;
 	}
 
 	/**
@@ -223,11 +218,18 @@ class ImageDimensions {
 	 * @return string Image absolute local path.
 	 */
 	private function get_local_path( $url ) {
-		if ( isset( $this->local_paths[ md5( $url ) ] ) ) {
-			return $this->local_paths[ md5( $url ) ];
+		$url = $this->normalize_url( $url );
+
+		$path = rocket_url_to_path( $url );
+		if ( $path ) {
+			return $path;
 		}
 
-		return str_replace( content_url(), rocket_get_constant( 'WP_CONTENT_DIR' ), $url );
+		$relative_url = ltrim( wp_make_link_relative( $url ), '/' );
+		$ds           = rocket_get_constant( 'DIRECTORY_SEPARATOR' );
+		$base_path    = isset( $_SERVER['DOCUMENT_ROOT'] ) ? ( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . $ds ) : '';
+
+		return $base_path . str_replace( '/', $ds, $relative_url );
 	}
 
 	/**
@@ -275,6 +277,10 @@ class ImageDimensions {
 	 * @return bool If image exists or not.
 	 */
 	private function image_exists( $image, $external = false ) {
+		if ( ! $image ) {
+			return false;
+		}
+
 		if ( ! $external ) {
 			return $this->filesystem->exists( $image );
 		}
@@ -337,6 +343,7 @@ class ImageDimensions {
 	 */
 	private function get_image_sizes( string $image_url ) {
 		if ( $this->is_external_file( $image_url ) ) {
+			$image_url = $this->normalize_url( $image_url );
 			if ( ! $this->can_specify_dimensions_external_images() ) {
 				Logger::debug(
 					'Specify Image Dimensions failed because you/server disabled specifying dimensions for external images.',
@@ -376,7 +383,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		$sizes = getimagesize( $this->get_local_path( $image_url ) );
+		$sizes = getimagesize( $local_path );
 
 		if ( ! $sizes ) {
 			Logger::debug(
@@ -388,5 +395,24 @@ class ImageDimensions {
 		}
 
 		return $sizes[3];
+	}
+
+	/**
+	 * Normalize relative url to full url.
+	 *
+	 * @param string $url Url to be normalized.
+	 *
+	 * @return string Normalized url.
+	 */
+	private function normalize_url( $url ) {
+		$url_host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( empty( $url_host ) ) {
+			$relative_url        = ltrim( wp_make_link_relative( $url ), '/' );
+			$site_url_components = wp_parse_url( site_url( '/' ) );
+			return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+		}
+
+		return $url;
 	}
 }

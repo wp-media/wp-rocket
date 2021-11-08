@@ -39,7 +39,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
 
-	public function setUp() {
+	public function setUp() : void {
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
 

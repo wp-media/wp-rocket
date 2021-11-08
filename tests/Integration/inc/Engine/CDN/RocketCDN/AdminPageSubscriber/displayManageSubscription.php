@@ -16,7 +16,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayManageSubscription extends TestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );

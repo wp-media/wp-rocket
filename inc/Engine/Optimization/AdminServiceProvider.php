@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket optimizations
@@ -26,19 +26,19 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
-	 *
-	 * @since 3.5.3
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' );
+		$this->getContainer()->share( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' )
+			->addTag( 'admin_subscriber' );
 		$this->getContainer()->add( 'google_fonts_settings', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings' )
-			->withArgument( $this->getContainer()->get( 'options' ) )
-			->withArgument( $this->getContainer()->get( 'beacon' ) )
-			->withArgument( $this->getContainer()->get( 'template_path' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addArgument( $this->getContainer()->get( 'template_path' ) );
 		$this->getContainer()->share( 'google_fonts_admin_subscriber', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'google_fonts_settings' ) );
+			->addArgument( $this->getContainer()->get( 'google_fonts_settings' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }

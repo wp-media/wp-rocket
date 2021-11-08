@@ -13,7 +13,7 @@ use AMP_Options_Manager;
 class Test_IsAmpCompatibleCallback extends TestCase {
 	protected $path_to_test_data = 'isAmpCompatibleCallback.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Updating the AMP settings will trigger this to run.

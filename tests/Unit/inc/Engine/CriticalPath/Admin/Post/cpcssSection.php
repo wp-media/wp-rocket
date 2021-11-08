@@ -17,15 +17,13 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_CpcssSection extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $post;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();
-
+		Functions\stubTranslationFunctions();
 		Functions\when( 'wp_sprintf_l' )->alias(
 			function( $pattern, $args ) {
 				return $this->wp_sprintf_l( $pattern, $args );

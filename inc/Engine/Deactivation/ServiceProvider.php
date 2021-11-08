@@ -1,8 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Deactivation;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service Provider for the activation process.
@@ -44,10 +44,10 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->withArgument( $filesystem );
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
+			->addArgument( $filesystem );
 		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
 		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
-			->withArgument( $filesystem );
+			->addArgument( $filesystem );
 	}
 }

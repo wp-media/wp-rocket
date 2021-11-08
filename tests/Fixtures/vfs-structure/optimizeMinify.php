@@ -26,6 +26,11 @@ return [
 					'script.js' => 'test',
 				],
 				'style-import.css' => '@import url(style.css)',
+				'style-import2.css' => '@import url(style-another-import.css)',
+				'style-another-import.css' => '@import url(style-another-import2.css);.style-another-import{color:red;}',
+				'style-another-import2.css' => '@import "style-import-external.css";.style-another-import2{color:green;}',
+				'style-import-external.css' => '@import "http://www.google.com/style.css";.style-import-external{color:green;}',
+				'style-import-jsfile.css' => '@import url(assets/script.js)',
 				'new-style.css' => 'footer{color:red;}',
 				'final-style.css' => 'header{color:red;}'
 			],

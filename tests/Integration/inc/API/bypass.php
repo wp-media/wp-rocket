@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group API
  */
 class Bypass extends TestCase {
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/API/bypass.php';

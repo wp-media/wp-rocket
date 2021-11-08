@@ -22,13 +22,13 @@ class GetPricingData extends TestCase {
 	private $client;
 	private $options;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->client  = new UserClient( $this->options );
 	}
@@ -42,7 +42,7 @@ class GetPricingData extends TestCase {
 			->with( 'wp_rocket_customer_data' )
 			->andReturn( true === $config['transient'] ? $expected : false );
 
-		if ( false !== $config['response'] ) {
+		if ( false === $config['transient'] ) {
 			$this->options->shouldReceive( 'get' )
 			->twice()
 			->with( 'consumer_key', '' )
@@ -67,14 +67,14 @@ class GetPricingData extends TestCase {
 
 			Functions\when( 'wp_remote_retrieve_response_code' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['code'] )
-				? $config['response']['code']
+				is_array( $config['response'] )
+				? $config['response']['response']['code']
 				: ''
 			);
 
 			Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['body'] )
+				is_array( $config['response'] )
 				? $config['response']['body']
 				: ''
 			);

@@ -5,6 +5,7 @@ namespace WP_Rocket\ThirdParty\Themes;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 class Divi implements Subscriber_Interface {
 	/**
@@ -22,15 +23,25 @@ class Divi implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Delay JS HTML class.
+	 *
+	 * @var HTML
+	 */
+	private $delayjs_html;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param Options      $options_api  Options API instance.
-	 * @param Options_Data $options      WP Rocket options instance.
+	 * @param Options      $options_api Options API instance.
+	 * @param Options_Data $options     WP Rocket options instance.
+	 * @param HTML         $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( Options $options_api, Options_Data $options ) {
-		$this->options_api = $options_api;
-		$this->options     = $options;
+	public function __construct( Options $options_api, Options_Data $options, HTML $delayjs_html ) {
+		$this->options_api  = $options_api;
+		$this->options      = $options;
+		$this->delayjs_html = $delayjs_html;
 	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -38,15 +49,19 @@ class Divi implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'switch_theme' => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 
 		if ( ! self::is_divi() ) {
 			return $events;
 		}
-
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
+
+		$events['wp_enqueue_scripts'] = 'disable_divi_jquery_body';
+
+		$events['rocket_exclude_css'] = 'exclude_css_from_combine';
 
 		return $events;
 	}
@@ -59,6 +74,7 @@ class Divi implements Subscriber_Interface {
 	 * @since 3.6.3
 	 *
 	 * @param array $excluded_js An array of JS paths to be excluded.
+	 *
 	 * @return array the updated array of paths
 	 */
 	public function exclude_js( $excluded_js ) {
@@ -78,6 +94,7 @@ class Divi implements Subscriber_Interface {
 	 *
 	 * @param string   $name  Name of the new theme.
 	 * @param WP_Theme $theme instance of the new theme.
+	 *
 	 * @return void
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
@@ -96,6 +113,7 @@ class Divi implements Subscriber_Interface {
 	 * @since 3.6.3
 	 *
 	 * @param array $disable_youtube_lazyload Array of items names.
+	 *
 	 * @return array
 	 */
 	public function add_divi_to_description( $disable_youtube_lazyload ) {
@@ -109,6 +127,25 @@ class Divi implements Subscriber_Interface {
 	}
 
 	/**
+	 * Disables setting explicit dimensions on images where Divi calculates height as percentage.
+	 *
+	 * @since 3.8.2
+	 *
+	 * @param array $images The array of images selected for adding image dimensions.
+	 *
+	 * @return array The array without images using data-height-percentage.
+	 */
+	public function disable_image_dimensions_height_percentage( array $images ) {
+		foreach ( $images as $key => $image ) {
+			if ( false !== strpos( strtolower( $image ), 'data-height-percentage' ) ) {
+				unset( $images[ $key ] );
+			}
+		}
+
+		return $images;
+	}
+
+	/**
 	 * Checks if the current theme (or parent) is Divi
 	 *
 	 * @since 3.6.3
@@ -119,5 +156,46 @@ class Divi implements Subscriber_Interface {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
 		return ( 'Divi' === $theme->get( 'Name' ) || 'divi' === $theme->get_template() );
+	}
+
+	/**
+	 * Disable divi jquery body.
+	 *
+	 * @since 3.9.3
+	 */
+	public function disable_divi_jquery_body() {
+		if (
+			$this->delayjs_html->is_allowed()
+			&& defined( 'ET_CORE_VERSION' )
+			&& version_compare( ET_CORE_VERSION, '4.10', '>=' )
+		) {
+
+			add_filter( 'et_builder_enable_jquery_body', '__return_false' );
+		}
+
+	}
+
+	/**
+	 * Excludes Divi's CSS files from CSS combination
+	 *
+	 * @since 3.10.1
+	 *
+	 * @param array $exclude_css An array of CSS to be excluded.
+	 *
+	 * @return array the updated array of paths
+	 */
+	public function exclude_css_from_combine( $exclude_css ) {
+
+		if ( ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+			return $exclude_css;
+		}
+
+		$wp_content = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+
+		if ( $wp_content ) {
+			$exclude_css[] = $wp_content . 'et-cache/(.*).css';
+		}
+
+		return $exclude_css;
 	}
 }

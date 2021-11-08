@@ -56,7 +56,7 @@ tests_add_filter(
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
-			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+			require WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/woocommerce.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
@@ -122,6 +122,24 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
+			$_SERVER[ 'X-LSCACHE'] = 'on';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/HeaderCollector.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/override_header_functions.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Godaddy' ) ) {
+			// Load GoDaddy mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
+			define( 'RS_REVISION', '6.5.5' );
+		}
+		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
+			define( 'WORDFENCE_VERSION', '1' );
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+		}
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
@@ -138,7 +156,7 @@ tests_add_filter(
 		// Clean existing install first.
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		define( 'WC_REMOVE_ALL_DATA', true );
-		include WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/uninstall.php';
+		include WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/uninstall.php';
 
 		WC_Install::install();
 

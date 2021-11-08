@@ -7,7 +7,7 @@ use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
- * @uses   ::find_wp_config_path
+ * @uses   \WP_Rocket\Engine\Cache\WPCache::find_wp_config_path
  *
  * @group  WPCache
  */

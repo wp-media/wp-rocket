@@ -10,14 +10,14 @@ use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber::maybe_purge_cache_on_term_change
  *
  * @group  purge_actions
  */
 class Test_MaybePurgeCacheOnTermChange extends TestCase {
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->subscriber = new PurgeActionsSubscriber( Mockery::mock( Options_Data::class ), Mockery::mock( Purge::class ) );

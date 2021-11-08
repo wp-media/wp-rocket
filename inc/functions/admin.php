@@ -8,12 +8,10 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_need_api_key() {
 	$message = '';
-	$errors  = get_transient( 'rocket_check_key_errors' );
+	$errors  = (array) get_transient( 'rocket_check_key_errors' );
 
-	if ( false !== $errors ) {
-		foreach ( $errors as $error ) {
-			$message .= '<p>' . $error . '</p>';
-		}
+	foreach ( $errors as $error ) {
+		$message .= '<p>' . $error . '</p>';
 	}
 
 	?>

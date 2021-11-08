@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
@@ -22,7 +23,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
@@ -47,20 +48,30 @@ class Test_Process extends TestCase {
 
 		$actual = apply_filters( 'rocket_buffer', $original );
 
+		foreach ($expected['files'] as $file) {
+			$file_mtime = $this->filesystem->mtime( $file );
+			if ( $file_mtime ) {
+				$expected['html'] = str_replace( $file."?ver={{mtime}}", $file."?ver=".$file_mtime, $expected['html'] );
+			}
+		}
+
 		$this->assertSame(
 			$this->format_the_html( $expected['html'] ),
 			$this->format_the_html( $actual )
 		);
 
 		if ( isset( $expected['css'] ) ){
-			$this->assertSame(
-				$expected['css'],
-				$this->filesystem->get_contents(
-					$this->filesystem->getUrl( $expected['files'][0] )
-				)
-			);
+			if ( ! empty( $expected['css'] ) ) {
+				$this->assertSame(
+					$expected['css'],
+					$this->filesystem->get_contents(
+						$this->filesystem->getUrl( $expected['files'][0] )
+					)
+				);
+				$this->assertFilesExists( $expected['files'] );
+			}else{
+				$this->assertFalse( $expected['css'] );
+			}
 		}
-
-		$this->assertFilesExists( $expected['files'] );
 	}
 }

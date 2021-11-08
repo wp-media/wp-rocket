@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
@@ -21,11 +22,11 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	}
 
 	public function testShouldNotDispatchWhenNoUrls() {
-		$options         = $this->createMock( Options_Data::class );
-		$partial_process = $this->createMock( PartialProcess::class );
+		$options         = Mockery::mock( Options_Data::class );
+		$partial_process = Mockery::mock( PartialProcess::class );
 		$partial_process
-			->expects( $this->never() )
-			->method( 'is_mobile_preload_enabled' );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->never();
 
 		Functions\when( 'wp_doing_ajax' )
 			->justReturn( false );
@@ -74,28 +75,26 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	private function getSubscriber( array $urls, $mobile_preload_enabled ) {
 		$nbr_items_in_queue = $mobile_preload_enabled ? 4 : 2;
 		$this->queue        = [];
-		$options            = $this->createMock( Options_Data::class );
-		$partial_process    = $this->getMockBuilder( PartialProcess::class )
-		                           ->setMethods( [ 'is_mobile_preload_enabled', 'push_to_queue', 'save', 'dispatch' ] )
-		                           ->getMock();
+		$options            = Mockery::mock( Options_Data::class );
+		$partial_process    = Mockery::mock( PartialProcess::class );
 		$partial_process
-			->expects( $this->once() )
-			->method( 'is_mobile_preload_enabled' )
-			->willReturn( $mobile_preload_enabled );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->once()
+			->andReturn( $mobile_preload_enabled );
 		$partial_process
-			->expects( $this->exactly( $nbr_items_in_queue ) )
-			->method( 'push_to_queue' )
-			->will( $this->returnCallback( function( $item ) {
+			->shouldReceive( 'push_to_queue' )
+			->times( $nbr_items_in_queue )
+			->andReturnUsing( function( $item ) {
 				$this->queue[] = $item;
-			} ) );
+			} );
 		$partial_process
-			->expects( $this->once() )
-			->method( 'save' )
-			->willReturnSelf();
+			->shouldReceive( 'save' )
+			->once()
+			->andReturnSelf();
 		$partial_process
-			->expects( $this->once() )
-			->method( 'dispatch' )
-			->willReturn( null );
+			->shouldReceive( 'dispatch' )
+			->once()
+			->andReturn( null );
 
 		Functions\when( 'wp_doing_ajax' )
 			->justReturn( false );

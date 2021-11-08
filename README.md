@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/wp-media/wp-rocket.svg?branch=master)](https://travis-ci.com/wp-media/wp-rocket)
 
-Feel free to browse the source and keep track of our plugin's progress. You can stay informed of our latest versions via our [blog](https://blog.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) or via Twitter [@wp_rocket](https://twitter.com/wp_rocket).
+Feel free to browse the source and keep track of our plugin's progress. You can stay informed of our latest versions via our [blog](https://wp-rocket.me/blog/?utm_source=github&utm_medium=wp_rocket_profile) or via Twitter [@wp_rocket](https://twitter.com/wp_rocket).
 
 We aim to help make the web faster, one WordPress website at a time. That’s why we created *WP Rocket*. It's a caching plugin that simplifies the process and helps decrease a website’s load time.
 
@@ -58,4 +58,4 @@ We also make other plugins that help speed up WordPress websites. Check out:
 
 Thank you BrowserStack for your support and helping us do cross-browser testing easily!
 
-[![BrowserStack](https://github.com/wp-media/wp-rocket/blob/master/bin/browserstack.png)](https://browserstack.com)
+[![BrowserStack](https://raw.githubusercontent.com/wp-media/wp-rocket/trunk/bin/browserstack.png)](https://browserstack.com)

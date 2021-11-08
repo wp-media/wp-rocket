@@ -19,7 +19,8 @@ $script = <<<HTML
 			});
 		});
 		</script>
-HTML;
+HTML
+;
 
 return [
 

@@ -9,21 +9,20 @@ use WP_Rocket\Engine\CriticalPath\Admin\Settings;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\AdminSubscriber::cpcss_section
+ * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  *
  * @group  CriticalPath
  */
 class Test_DisplayCpcssMobileSection extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $settings;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();
+		Functions\stubTranslationFunctions();
 
 		$this->settings = Mockery::mock( Settings::class . '[generate]', [
 				$this->options,

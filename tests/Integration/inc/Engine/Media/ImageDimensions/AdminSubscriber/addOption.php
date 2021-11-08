@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  ImageDimensions
  */
 class Test_AddOption extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_option', 14 );

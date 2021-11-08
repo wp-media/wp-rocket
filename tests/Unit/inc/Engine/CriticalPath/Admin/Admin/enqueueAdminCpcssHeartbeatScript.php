@@ -19,12 +19,11 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();
+		Functions\stubTranslationFunctions();
 
 		$this->admin = new Admin(
 			$this->options,

@@ -8,10 +8,11 @@ $simple_html_with_local_image = <<<HTML
 	<title>Title</title>
 </head>
 <body>
-	<img src="https://example.org/wp-content/themes/image.jpg">
+	<img src="http://example.org/wp-content/themes/image.jpg">
 </body>
 </html>
-HTML;
+HTML
+;
 
 $simple_html_without_images = <<<HTML
 <!DOCTYPE html>
@@ -26,7 +27,8 @@ $simple_html_without_images = <<<HTML
 	</div>
 </body>
 </html>
-HTML;
+HTML
+;
 
 
 return [
@@ -36,6 +38,9 @@ return [
 			'themes' => [
 				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/empty.jpg" )
 			]
+		],
+		'main' => [
+			'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/empty.jpg" )
 		]
 	],
 
@@ -60,20 +65,20 @@ return [
 		],
 
 		'shouldNotChangeHTMLWithImageHasWidthHeightAttributes' => [
-			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image.jpg" width="100" height="100"></body></html>',
+			'html' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image.jpg" width="100" height="100"></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
-			'expected' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image.jpg" width="100" height="100"></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image.jpg" width="100" height="100"></body></html>'
 		],
 
 		'shouldNotChangeHTMLWhenHasAttribute_data-lazy-original' => [
 			'html' => '<!DOCTYPE html>
 <html>
 <body>
-	<img src="https://example.org/wp-content/themes/image.jpg" data-lazy-original="">
+	<img src="http://example.org/wp-content/themes/image.jpg" data-lazy-original="">
 </body>
 </html>',
 			'config' => [
@@ -84,7 +89,7 @@ return [
 			'expected' => '<!DOCTYPE html>
 <html>
 <body>
-	<img src="https://example.org/wp-content/themes/image.jpg" data-lazy-original="">
+	<img src="http://example.org/wp-content/themes/image.jpg" data-lazy-original="">
 </body>
 </html>'
 		],
@@ -93,7 +98,7 @@ return [
 			'html' => '<!DOCTYPE html>
 <html>
 <body>
-	<img src="https://example.org/wp-content/themes/image.jpg" data-no-image-dimensions="">
+	<img src="http://example.org/wp-content/themes/image.jpg" data-no-image-dimensions="">
 </body>
 </html>',
 			'config' => [
@@ -104,19 +109,19 @@ return [
 			'expected' => '<!DOCTYPE html>
 <html>
 <body>
-	<img src="https://example.org/wp-content/themes/image.jpg" data-no-image-dimensions="">
+	<img src="http://example.org/wp-content/themes/image.jpg" data-no-image-dimensions="">
 </body>
 </html>'
 		],
 
 		'shouldNotChangeHTMLWhenHasImageWithoutSrcAttribute' => [
-			'html' => '<!DOCTYPE html><html><body><img anothersrc="https://example.org/wp-content/themes/image.jpg"></body></html>',
+			'html' => '<!DOCTYPE html><html><body><img anothersrc="http://example.org/wp-content/themes/image.jpg"></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 
 			],
-			'expected' => '<!DOCTYPE html><html><body><img anothersrc="https://example.org/wp-content/themes/image.jpg"></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><img anothersrc="http://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
 
 		'shouldNotChangeHTMLWhenHasExternalValidImageWithDistantFilterDisabled' => [
@@ -153,23 +158,23 @@ return [
 		],
 
 		'shouldNotChangeHTMLWhenHasInternalNotFoundImage' => [
-			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image-notfound.jpg"></body></html>',
+			'html' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image-notfound.jpg"></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],
-			'expected' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image-notfound.jpg"></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image-notfound.jpg"></body></html>'
 		],
 
 		'shouldChangeHTMLWhenHasInternalFoundImage' => [
-			'html' => '<!DOCTYPE html><html><body><img src="https://example.org/wp-content/themes/image.jpg"></body></html>',
+			'html' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image.jpg"></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],
-			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="https://example.org/wp-content/themes/image.jpg"></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
 
 		'shouldNotChangeHTMLWithImageInsidePictureWithoutFilter' => [
@@ -177,7 +182,7 @@ return [
 <html>
 <body>
 <picture>
-<img src="https://example.org/wp-content/themes/image.jpg">
+<img src="http://example.org/wp-content/themes/image.jpg">
 </picture>
 </body>
 </html>',
@@ -190,21 +195,34 @@ return [
 <html>
 <body>
 <picture>
-<img src="https://example.org/wp-content/themes/image.jpg">
+<img src="http://example.org/wp-content/themes/image.jpg">
 </picture>
 </body>
 </html>'
 		],
 
 		'shouldChangeHTMLWithImageInsidePictureWithFilter' => [
-			'html' => '<!DOCTYPE html><html><body><picture><img src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>',
+			'html' => '<!DOCTYPE html><html><body><picture><img src="http://example.org/wp-content/themes/image.jpg"></picture></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 				'rocket_specify_dimension_skip_pictures_filter' => false
 			],
-			'expected' => '<!DOCTYPE html><html><body><picture><img width="1" height="1" src="https://example.org/wp-content/themes/image.jpg"></picture></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><picture><img width="1" height="1" src="http://example.org/wp-content/themes/image.jpg"></picture></body></html>'
+		],
+
+		'shouldChangeHTMLWithRelativeImage' => [
+			'html' => '<!DOCTYPE html><html><body><img src="/wp-content/themes/image.jpg"><img src="/main/image.jpg"><img src="http://example.org/main/image.jpg"></body></html>',
+			'config' => [
+				'site_url' => 'http://example.org/wp/',
+				'home_url' => 'http://example.org/',
+				'image_dimensions' => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+				'rocket_specify_dimension_skip_pictures_filter' => false
+			],
+			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="/wp-content/themes/image.jpg"><img width="1" height="1" src="/main/image.jpg"><img width="1" height="1" src="http://example.org/main/image.jpg"></body></html>'
 		],
 
 	]

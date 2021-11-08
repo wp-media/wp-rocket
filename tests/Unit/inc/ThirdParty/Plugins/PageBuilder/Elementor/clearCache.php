@@ -1,10 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
 /**
  * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::clear_cache
@@ -14,10 +16,10 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 class Test_ClearCache extends TestCase {
 	private $elementor;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
-		$this->elementor = new Elementor( $this->createMock( Options_Data::class ) );
+		$this->elementor = new Elementor( Mockery::mock( Options_Data::class ),null ,Mockery::mock( HTML::class ));
 	}
 
 	public function testShouldDoNothingWhenNotExternal() {

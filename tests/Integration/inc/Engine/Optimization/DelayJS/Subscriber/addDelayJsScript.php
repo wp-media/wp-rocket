@@ -12,17 +12,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @uses   rocket_get_constant()
  */
 class Test_AddDelayJsScript extends TestCase {
-
 	private $delay_js = false;
+
+	public function setUp(): void {
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_delay_js_script', 26 );
+	}
 
 	public function tearDown() {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
 		$this->delay_js = false;
-
-		wp_dequeue_script('rocket-browser-checker');
-		wp_dequeue_script('rocket-delay-js');
+		$this->restoreWpFilter( 'rocket_buffer' );
 
 		parent::tearDown();
 	}
@@ -30,7 +31,7 @@ class Test_AddDelayJsScript extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldProcessScriptHTML( $config, $expected ) {
+	public function testShouldDoExpected( $config, $html, $expected ) {
 		$this->donotrocketoptimize = $config['donotoptimize'];
 		$this->delay_js            = $config['delay_js'];
 
@@ -48,16 +49,10 @@ class Test_AddDelayJsScript extends TestCase {
 			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
 		}
 
-		do_action( 'wp_enqueue_scripts' );
-
-		if ( false === $expected ) {
-			$this->assertFalse( wp_script_is( 'rocket-browser-checker' ) );
-			$this->assertFalse( wp_script_is( 'rocket-delay-js' ) );
-		} else {
-			$this->assertTrue( wp_script_is( 'rocket-browser-checker' ) );
-			$this->assertTrue( wp_script_is( 'rocket-delay-js' ) );
-		}
-
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_buffer', $html )
+		);
 	}
 
 	public function set_delay_js_option() {

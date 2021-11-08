@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_DeleteCpcss extends TestCase {
 	use SubscriberTrait;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$this->setUpTests();
 	}

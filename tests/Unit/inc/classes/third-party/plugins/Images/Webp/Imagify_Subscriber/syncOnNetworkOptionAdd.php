@@ -4,6 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagi
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -15,7 +17,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_SyncOnNetworkOptionAdd extends TestCase {
 
 	public function testShouldTriggerHookWhenDisplayWebpOptionEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option      = 'imagify_settings';
 		$value       = [ 'display_webp' => 1 ];
@@ -29,7 +31,7 @@ class Test_SyncOnNetworkOptionAdd extends TestCase {
 	}
 
 	public function testShouldNotTriggerHook() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 		$option      = 'imagify_settings';
 		$value       = [ 'display_webp' => 1 ];

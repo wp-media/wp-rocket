@@ -9,6 +9,7 @@
  *      @type string $identify Identify data to send to Helpscout.
  *      @type string $session  Session data to send to Helpscout.
  *      @type string $prefill  Prefill data to send to Helpscout.
+ *      @type string $config   Config data to send to Helpscout.
  * }
  */
 
@@ -20,6 +21,7 @@ window.Beacon('init', '<?php echo esc_js( $data['form_id'] ); ?>')
 window.Beacon("identify", <?php echo $data['identify']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
 window.Beacon("session-data", <?php echo $data['session']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
 window.Beacon("prefill", <?php echo $data['prefill']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
+window.Beacon("config", <?php echo $data['config']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>);
 window.addEventListener("hashchange", function () {
 	window.Beacon("suggest");
 }, false);</script>

@@ -10,7 +10,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use StubTrait;
 	use VirtualFilesystemTrait;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->initDefaultStructure();
 
 		parent::setUp();

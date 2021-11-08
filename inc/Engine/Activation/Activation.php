@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Activation;
 
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
@@ -56,10 +56,6 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
-
-		if ( class_exists( 'WPaaS\Plugin' ) ) {
-			require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-		}
 
 		/**
 		 * WP Rocket activation.

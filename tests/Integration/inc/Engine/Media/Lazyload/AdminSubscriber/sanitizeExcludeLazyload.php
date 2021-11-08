@@ -16,6 +16,18 @@ use Mockery;
  * @group Lazyload
  */
 class Test_SanitizeExcludeLazyload extends TestCase {
+	public function setUp(): void {
+		parent::setUp();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_input_sanitize', 'sanitize_exclude_lazyload' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		$this->restoreWpFilter( 'rocket_input_sanitize' );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

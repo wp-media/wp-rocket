@@ -3,6 +3,7 @@
 global $wp_scripts;
 
 $jquery_path = $wp_scripts->registered['jquery-core']->src;
+$timenow = time();
 
 return [
 	'vfs_dir' => 'wp-content/',
@@ -35,20 +36,21 @@ return [
 				'html' => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 						<script type="text/javascript" src="http://example.org' . $jquery_path . '"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver={{mtime}}"></script>
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js.gz',
-					'wp-content/cache/min/3rd-party/cdnjs.cloudflare.com-ajax-libs-twitter-bootstrap-4.5.0-js-bootstrap.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js.gz',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js.gz',
 				],
 			],
 			'settings' => [
@@ -68,7 +70,7 @@ return [
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalid"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
-					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-7emZq+z4THDbp1s8SKlmK0zlENQgT+twJBBAcJCe8c+mastOWEfHflsBcz9t1ste"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js" integrity="sha384-DCTGxr1MNV4fD9E8fGEPvxOCqu7hIyBSUrSwiSFtEloMCudWDuD8X75eb1x9b8eJ"></script>
 				</head>
 				<body>
 				</body>
@@ -77,17 +79,50 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js" integrity="notvalid"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver={{mtime}}" integrity="notvalid"></script>
 						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
 						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
-						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js?ver={{mtime}}"></script>
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap-2d51e1a9b3d408c46ab0057b69063753.js'
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js.gz',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js.gz',
 				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
+		'minifyJSFileForGoogleCSE' => [
+			// Test Data: Original JS files.
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script type="text/javascript" src="https://cse.google.com/cse.js?cx=xxx:xxx"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [],
 			],
 			'settings' => [
 				'minify_concatenate_js' => 0,
@@ -113,18 +148,18 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me' . $jquery_path . '"></script>
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files'   => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js.gz',
 				],
 			],
 			'settings' => [
@@ -152,18 +187,18 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me' . $jquery_path . '"></script>
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js.gz',
 				],
 			],
 			'settings' => [
@@ -190,18 +225,18 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js"></script>
-						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
+						<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 						<script type="text/javascript" src="https://123456.rocketcdn.me/cdnpath' . $jquery_path . '"></script>
 					</head>
 					<body>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js',
-					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script-cdcfd4a96e52edbc4d3e7d5e887dbd11.js.gz',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js',
-					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script-82c5174e342f25861cb20cab85ecb625.js.gz',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js.gz',
 				],
 			],
 			[

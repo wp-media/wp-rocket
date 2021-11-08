@@ -2,9 +2,9 @@ name: Rebuild Licence data file
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ trunk, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ trunk, develop ]
 
 jobs:
   licence:
@@ -23,7 +23,7 @@ jobs:
 
       - name: Add a file
         if: ${{ steps.find.outcome == 'failure' }}
-        run: git checkout origin/master licence-data.php
+        run: git checkout origin/trunk licence-data.php
         id: add
 
       - name: Commit the missing file

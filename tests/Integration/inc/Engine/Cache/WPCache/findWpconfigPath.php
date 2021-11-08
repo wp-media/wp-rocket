@@ -15,13 +15,13 @@ class Test_FindWpconfigPath extends FilesystemTestCase {
 	private static $wp_cache;
 	private $config_file_name = null;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		$container = apply_filters( 'rocket_container', null );
 
 		self::$wp_cache = $container->get( 'wp_cache' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->abspath = $this->filesystem->getUrl( $this->config['vfs_dir'] );

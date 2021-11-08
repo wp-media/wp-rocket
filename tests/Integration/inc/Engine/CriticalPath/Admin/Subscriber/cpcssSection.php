@@ -22,14 +22,14 @@ class Test_CpcssSection extends TestCase {
 	private        $post_id;
 	private static $user_id;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->set_permalink_structure( '/%postname%/' );

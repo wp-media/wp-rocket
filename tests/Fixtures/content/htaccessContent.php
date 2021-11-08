@@ -10,6 +10,7 @@ AddDefaultCharset UTF-8
 <IfModule mod_mime.c>
 AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
 </IfModule>
+
 # FileETag None is not enough for every server.
 <IfModule mod_headers.c>
 Header unset ETag
@@ -18,6 +19,7 @@ Header unset ETag
 HTACCESS;
 
 $fileETag = <<<HTACCESS
+
 # Since we’re sending far-future expires, we don’t need ETags for static content.
 # developer.yahoo.com/performance/rules.html#etags
 FileETag None
@@ -29,18 +31,20 @@ $cors = <<<HTACCESS
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
 # mod_headers, y u no match by Content-Type?!
-<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+<FilesMatch "\.(avifs?|cur|gif|png|jpe?g|svgz?|ico|webp)$">
 SetEnvIf Origin ":" IS_CORS
 Header set Access-Control-Allow-Origin "*" env=IS_CORS
 </FilesMatch>
 </IfModule>
 </IfModule>
+
 # Allow access to web fonts from all domains.
 <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
 <IfModule mod_headers.c>
 Header set Access-Control-Allow-Origin "*"
 </IfModule>
 </FilesMatch>
+
 
 HTACCESS;
 
@@ -64,6 +68,10 @@ Header unset Pragma
 Header append Cache-Control "public"
 </IfModule>
 </FilesMatch>
+</IfModule>
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
 </IfModule>
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
@@ -91,6 +99,8 @@ Header append Cache-Control "public"
 	ExpiresByType audio/ogg                     "access plus 1 month"
 	ExpiresByType video/mp4                     "access plus 1 month"
 	ExpiresByType video/webm                    "access plus 1 month"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
@@ -179,6 +189,7 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
+
 # Random
 # add a trailing slash to /wp-admin# BEGIN WordPress
 

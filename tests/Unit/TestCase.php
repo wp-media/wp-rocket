@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase {
 
 	protected $config;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}

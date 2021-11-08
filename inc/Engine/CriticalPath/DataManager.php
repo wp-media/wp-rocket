@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Error;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 /**
  * Class DataManager
@@ -11,6 +12,7 @@ use WP_Filesystem_Direct;
  * @package WP_Rocket\Engine\CriticalPath
  */
 class DataManager {
+	use CSSTrait;
 
 	/**
 	 * Base critical CSS path for posts.
@@ -63,10 +65,10 @@ class DataManager {
 						$is_mobile
 							?
 							// translators: %s = item URL.
-							__( 'Critical CSS for %1$s on mobile not generated. Error: The API returned an empty response.', 'rocket' )
+							__( 'Critical CSS for %1$s on mobile not generated. Error: The destination folder could not be created.', 'rocket' )
 							:
 							// translators: %s = item URL.
-							__( 'Critical CSS for %1$s not generated. Error: The API returned an empty response.', 'rocket' ),
+							__( 'Critical CSS for %1$s not generated. Error: The destination folder could not be created.', 'rocket' ),
 						( 'custom' === $item_type ) ? $url : $item_type
 						),
 					[
@@ -76,6 +78,8 @@ class DataManager {
 
 			}
 		}
+
+		$cpcss = $this->apply_font_display_swap( $cpcss );
 
 		return rocket_put_content(
 			$this->critical_css_path . $path,

@@ -55,6 +55,17 @@
         @include transition(all, 150ms);
     }
 
+  	// disabled radio
+	[type="checkbox"]:disabled + label:after,
+	[type="checkbox"]:disabled + label:after {
+		background: $cGrey;
+  	}
+
+	[type="checkbox"]:disabled + label:before,
+	[type="checkbox"]:disabled + label:before {
+	  border: 1px solid $cGrey;
+	}
+
     // Checked box
     [type="checkbox"]:checked + label:before {
         border-color: $cBlue;

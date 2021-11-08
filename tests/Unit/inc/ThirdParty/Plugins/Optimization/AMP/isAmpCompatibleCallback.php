@@ -5,8 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\AMP;
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
@@ -19,7 +19,7 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 	private $options;
 	private $cdn_subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options        = Mockery::mock( Options_Data::class );
@@ -27,9 +27,8 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 		$this->amp            = new AMP( $this->options, $this->cdn_subscriber );
 	}
 
-
 	/**
-	 * @dataProvider ampDataProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $theme_support, $expected ) {
 		Functions\expect( 'get_option' )
@@ -38,9 +37,5 @@ class Test_IsAmpCompatibleCallback extends TestCase {
 			->andReturn( $theme_support );
 
 		$this->assertSame( $expected, $this->amp->is_amp_compatible_callback( [] ) );
-	}
-
-	public function ampDataProvider() {
-		return require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Optimization/AMP/isAmpCompatibleCallback.php';
 	}
 }

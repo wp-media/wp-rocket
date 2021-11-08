@@ -142,6 +142,7 @@ function rocket_plugins_to_deactivate() {
 		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
 		'add-expires-headers'                        => 'add-expires-headers/add-expires-headers.php',
 		'page-optimize'                              => 'page-optimize/page-optimize.php',
+		'psn-pagespeed-ninja'                        => 'psn-pagespeed-ninja/pagespeedninja.php',
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers ::rocket_first_install
@@ -26,7 +26,7 @@ class Test_RocketFirstInstall extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->previous_user_id = get_current_user_id();
@@ -80,7 +80,7 @@ class Test_RocketFirstInstall extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [

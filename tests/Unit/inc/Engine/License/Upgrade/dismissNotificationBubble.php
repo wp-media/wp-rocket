@@ -19,7 +19,7 @@ class DismissNotificationBubble extends TestCase {
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
@@ -44,7 +44,12 @@ class DismissNotificationBubble extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expired'] );
-		
+
+		$this->user->shouldReceive( 'get_creation_date' )
+		           ->atMost()
+		           ->once()
+		           ->andReturn( $config['date_created'] );
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->once()
@@ -61,7 +66,7 @@ class DismissNotificationBubble extends TestCase {
 			->once()
 			->with( 'rocket_promo_seen_1' )
             ->andReturn( $config['transient'] );
-    
+
         if ( $expected ) {
             Functions\expect( 'set_transient' )
                 ->once()

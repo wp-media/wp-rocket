@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Heartbeat;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for Media module
@@ -24,16 +24,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the services in the container
-	 *
-	 * @since 3.6
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
-
 		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -14,11 +14,12 @@ use WP_Rocket\Engine\Preload\Sitemap;
  *
  * @param string $spider (default: 'cache-preload') The spider name: cache-preload or cache-json.
  * @param string $lang (default: '') The language code to preload.
- * @return false
+ *
+ * @return bool Status of preload.
  */
 function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	if ( ! get_rocket_option( 'manual_preload' ) ) {
-		return;
+		return false;
 	}
 
 	$urls = [];
@@ -32,6 +33,8 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) { // phpcs:igno
 	$homepage_preload = new Homepage( new FullProcess() );
 
 	$homepage_preload->preload( $urls );
+
+	return true;
 }
 
 /**
@@ -84,6 +87,12 @@ function do_admin_post_rocket_preload_cache() { // phpcs:ignore WordPress.Naming
 	}
 
 	if ( ! current_user_can( 'rocket_preload_cache' ) ) {
+		wp_safe_redirect( wp_get_referer() );
+		die();
+	}
+
+	$prewarmup_stats = get_option( 'wp_rocket_prewarmup_stats' );
+	if ( get_rocket_option( 'remove_unused_css' ) && empty( $prewarmup_stats['allow_optimization'] ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}

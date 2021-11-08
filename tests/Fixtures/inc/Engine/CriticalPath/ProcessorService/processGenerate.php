@@ -209,7 +209,7 @@ return [
 				'cpcss_job_id'               => false,
 				'save_cpcss'                 => new WP_Error(
 					'cpcss_generation_failed',
-					'Critical CSS for http://example.org/?p=7 not generated. Error: The API returned an empty response.',
+					'Critical CSS for http://example.org/?p=7 not generated. Error: The destination folder could not be created.',
 					[
 						'status' => 400,
 					]
@@ -219,7 +219,7 @@ return [
 			'expected' => [
 				'success' => false,
 				'code'    => 'cpcss_generation_failed',
-				'message' => 'Critical CSS for http://example.org/?p=7 not generated. Error: The API returned an empty response.',
+				'message' => 'Critical CSS for http://example.org/?p=7 not generated. Error: The destination folder could not be created.',
 				'data'    => [
 					'status' => 400,
 				],

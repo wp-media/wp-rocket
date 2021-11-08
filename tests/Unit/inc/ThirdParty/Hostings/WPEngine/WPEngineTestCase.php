@@ -10,14 +10,14 @@ abstract class WPEngineTestCase extends TestCase {
 	protected $wpengine;
 	protected $wpe_common_mock;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 	}
 
-	public function setup() {
+	public function setUp() : void {
 		parent::setup();
 		$this->wpengine        = new WPEngine();
 		$this->wpe_common_mock = Mockery::mock( WpeCommon::class );

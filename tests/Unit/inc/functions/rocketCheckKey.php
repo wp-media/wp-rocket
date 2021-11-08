@@ -11,12 +11,15 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Options
  */
 class Test_RocketCheckKey extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
+	}
+
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
 	}
 
 	public function testShouldReturnTrueWhenValidKey() {

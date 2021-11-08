@@ -33,6 +33,7 @@ class Avada implements Subscriber_Interface {
 			'rocket_maybe_disable_lazyload_helper' => 'maybe_disable_lazyload',
 			'fusion_cache_reset_after'             => 'clean_domain',
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
+			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 		];
 	}
 
@@ -117,5 +118,27 @@ class Avada implements Subscriber_Interface {
 
 		$disable_images_lazyload[] = __( 'Avada', 'rocket' );
 		return $disable_images_lazyload;
+	}
+
+	/**
+	 * Excludes some Avada JS from delay JS execution  when WC product gallery has images
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param array $exclusions Array of exclusion patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_delay_js( $exclusions ): array {
+		$base_path = wp_parse_url( get_stylesheet_directory_uri(), PHP_URL_PATH );
+
+		if ( empty( $base_path ) ) {
+			return $exclusions;
+		}
+
+		$exclusions[] = $base_path . '/includes/lib/assets/min/js/library/jquery.flexslider.js';
+		$exclusions[] = $base_path . '/assets/min/js/general/avada-woo-product-images.js';
+
+		return $exclusions;
 	}
 }

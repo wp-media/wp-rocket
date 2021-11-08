@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase {
 	protected static $subscriber;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$subscriber = new IEConditionalSubscriber();

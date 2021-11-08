@@ -153,7 +153,7 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 		 *
 		 * @param string $filename filename for the cache file
 		 */
-		$filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.php$/', '-' . $this->minify_key . '.' . $this->extension, $path ) );
+		$filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.php$/', '.' . $this->extension, $path ) );
 		$filename = ltrim( rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) ), '/' );
 		$filepath = $this->busting_path . $filename;
 

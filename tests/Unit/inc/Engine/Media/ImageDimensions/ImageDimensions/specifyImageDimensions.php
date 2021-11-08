@@ -23,6 +23,13 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
 		$options = Mockery::mock( Options_Data::class );
 
+		$site_url = $config['site_url'] ?? 'http://example.org/';
+		$home_url = $config['home_url'] ?? 'http://example.org/';
+
+		Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
+			return $site_url . ltrim( $path, '/' );
+		} );
+
 		if (
 			isset( $config['image_dimensions'] )
 			&&
@@ -69,7 +76,27 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				return parse_url( $url, $component );
 			} );
 
-			Functions\when( 'home_url' )->justReturn( 'https://example.org/' );
+			Functions\when( 'home_url' )->justReturn( $home_url );
+
+			if ( isset( $config['internal'] ) ) {
+				Functions\expect( 'wp_make_link_relative' )->andReturnUsing( function( $url ) {
+					return preg_replace( '|^(https?:)?//[^/]+(/?.*)|i', '$2', $url );
+				} );
+
+				Functions\when( 'sanitize_text_field' )->returnArg();
+
+				Functions\when( 'wp_unslash' )->alias(
+					function ( $value ) {
+						return stripslashes( $value );
+					}
+				);
+
+				$_SERVER['DOCUMENT_ROOT'] = "vfs://public";
+
+				Functions\expect( 'wp_basename' )->andReturnUsing( function ( $path, $suffix = '' ) {
+					return urldecode( basename( str_replace( array( '%2F', '%5C' ), '/', urlencode( $path ) ), $suffix ) );
+				} );
+			}
 
 			if ( isset( $config['rocket_specify_image_dimensions_for_distant_filter'] ) ){
 				Filters\expectApplied( 'rocket_specify_image_dimensions_for_distant' )

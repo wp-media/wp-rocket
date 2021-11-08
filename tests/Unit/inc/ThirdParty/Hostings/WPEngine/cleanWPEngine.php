@@ -17,7 +17,7 @@ class Test_CleanWPEngine extends WPEngineTestCase {
 		WpeCommon::resetCounters();
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		WpeCommon::resetCounters();

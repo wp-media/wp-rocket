@@ -28,9 +28,9 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		'rocket_manage_options',
 		'rocket_purge_cache',
 		'rocket_purge_opcache',
-		'rocket_purge_cloudflare_cache',
 		'rocket_preload_cache',
 		'rocket_regenerate_critical_css',
+		'rocket_remove_unused_css',
 	];
 
 	foreach ( $capabilities as $cap ) {
@@ -190,24 +190,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					'parent' => 'wp-rocket',
 					'id'     => 'purge-opcache',
 					'title'  => __( 'Purge OPcache', 'rocket' ),
-					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-				]
-			);
-		}
-	}
-
-	if ( current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-		/**
-		 * Purge CloudFlare cache if CloudFlare is active.
-		 */
-		if ( get_rocket_option( 'do_cloudflare', 0 ) ) {
-			$action = 'rocket_purge_cloudflare';
-
-			$wp_admin_bar->add_menu(
-				[
-					'parent' => 'wp-rocket',
-					'id'     => 'purge-cloudflare',
-					'title'  => __( 'Clear Cloudflare cache', 'rocket' ),
 					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 				]
 			);

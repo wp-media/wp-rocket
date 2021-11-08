@@ -23,7 +23,7 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 	private   $filter;
 	private   $option;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setRoleCap( 'administrator', 'rocket_regenerate_critical_css' );

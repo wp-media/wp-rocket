@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\classes\Buffer\Tests;
 
+use Mockery;
+use WP_Rocket\Buffer\Config;
 use WP_Rocket\Buffer\Tests;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -13,8 +15,8 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_IsSpeedTool extends TestCase {
 
 	private function getConfigMock( $return_value ) {
-		$config = $this->createMock( 'WP_Rocket\Buffer\Config' );
-		$config->method( 'get_server_input' )->willReturn( $return_value );
+		$config = Mockery::mock( Config::class );
+		$config->shouldReceive( 'get_server_input' )->andReturn( $return_value );
 
 		return $config;
 	}

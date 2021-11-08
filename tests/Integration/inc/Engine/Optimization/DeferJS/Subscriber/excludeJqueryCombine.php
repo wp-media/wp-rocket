@@ -16,7 +16,7 @@ class Test_ExcludeJqueryCombine extends TestCase {
 	private $defer_js;
 	private $combine_js;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		set_current_screen( 'front' );

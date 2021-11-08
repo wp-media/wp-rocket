@@ -28,7 +28,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param CDN          $cdn CDN instance.
+	 * @param CDN          $cdn     CDN instance.
 	 */
 	public function __construct( Options_Data $options, CDN $cdn ) {
 		$this->options = $options;
@@ -49,12 +49,14 @@ class Subscriber implements Subscriber_Interface {
 				[ 'rewrite_srcset', 21 ],
 			],
 			'rocket_css_content'      => 'rewrite_css_properties',
+			'rocket_usedcss_content'  => 'rewrite_css_properties',
 			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
 			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
 			'rocket_facebook_sdk_url' => 'add_cdn_url',
 			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
 			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
 			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
 		];
 	}
 
@@ -64,6 +66,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.4
 	 *
 	 * @param string $html HTML content.
+	 *
 	 * @return string
 	 */
 	public function rewrite( $html ) {
@@ -80,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.4.0.4
 	 *
 	 * @param string $html HTML content.
+	 *
 	 * @return string
 	 */
 	public function rewrite_srcset( $html ) {
@@ -96,6 +100,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.4
 	 *
 	 * @param string $content CSS content.
+	 *
 	 * @return string
 	 */
 	public function rewrite_css_properties( $content ) {
@@ -155,6 +160,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 3.4
 	 *
 	 * @param array $domains Domain names to DNS prefetch.
+	 *
 	 * @return array
 	 */
 	public function add_dns_prefetch_cdn( $domains ) {
@@ -176,8 +182,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.4
 	 *
-	 * @param string $url URL to rewrite.
+	 * @param string $url          URL to rewrite.
 	 * @param string $original_url Original URL for this URL. Optional.
+	 *
 	 * @return string
 	 */
 	public function add_cdn_url( $url, $original_url = '' ) {
@@ -195,8 +202,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.5.3
 	 *
-	 * @param string $url URL of the asset.
+	 * @param string $url   URL of the asset.
 	 * @param array  $zones Array of corresponding zones for the asset.
+	 *
 	 * @return string
 	 */
 	public function maybe_replace_url( $url, array $zones = [ 'all' ] ) {
@@ -239,6 +247,69 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Add a preconnect tag for the CDN.
+	 *
+	 * @since 3.8.3
+	 *
+	 * @param array  $urls          The initial array of wp_resource_hint urls.
+	 * @param string $relation_type The relation type for the hint: eg., 'preconnect', 'prerender', etc.
+	 *
+	 * @return array The filtered urls.
+	 */
+	public function add_preconnect_cdn( array $urls, string $relation_type ): array {
+		if (
+			'preconnect' !== $relation_type
+			||
+			rocket_bypass()
+			||
+			! $this->is_allowed()
+			||
+			! $this->is_cdn_enabled()
+		) {
+			return $urls;
+		}
+
+		$cdn_urls = $this->cdn->get_cdn_urls( [ 'all', 'images', 'css_and_js', 'css', 'js' ] );
+
+		if ( empty( $cdn_urls ) ) {
+			return $urls;
+		}
+
+		foreach ( $cdn_urls as $url ) {
+			$url_parts = get_rocket_parse_url( $url );
+
+			if ( empty( $url_parts['scheme'] ) ) {
+				if ( preg_match( '/^(?![\/])(?=[^\.]+\/).+/i', $url ) ) {
+					continue;
+				}
+
+				$url       = '//' . $url;
+				$url_parts = get_rocket_parse_url( $url );
+			}
+
+			$domain = empty( $url_parts['scheme'] )
+				? '//' . $url_parts['host']
+				: $url_parts['scheme'] . '://' . $url_parts['host'];
+
+			// Note: As of 22 Feb, 2021 we cannot add more than one instance of a domain url
+			// on the wp_resource_hint() hook -- wp_resource_hint() will
+			// only actually print the first one.
+			// Ideally, we want both because CSS resources will use the crossorigin version,
+			// But JS resources will not.
+			// Jonathan has submitted a ticket to change this behavior:
+			// @see https://core.trac.wordpress.org/ticket/52465
+			// Until then, we order these to prefer/print the non-crossorigin version.
+			$urls[] = [ 'href' => $domain ];
+			$urls[] = [
+				'href'        => $domain,
+				'crossorigin' => 'anonymous',
+			];
+		}
+
+		return $urls;
 	}
 
 	/**

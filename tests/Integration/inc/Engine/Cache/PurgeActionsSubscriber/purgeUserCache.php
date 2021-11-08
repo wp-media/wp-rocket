@@ -23,7 +23,7 @@ class Test_PurgeUserCache extends FilesystemTestCase {
 	protected        $path_to_test_data  = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeUserCache.php';
 	protected static $use_settings_trait = true;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Unhook WooCommerce, as it throws wpdb::prepare errors.

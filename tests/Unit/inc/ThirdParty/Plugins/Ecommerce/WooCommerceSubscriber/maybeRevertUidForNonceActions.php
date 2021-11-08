@@ -1,8 +1,10 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
+use Mockery;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::maybe_revert_uid_for_nonce_actions
@@ -12,10 +14,10 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_MaybeRevertUidForNonceActions extends TestCase {
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
-		$this->subscriber = new WooCommerceSubscriber();
+		$this->subscriber = new WooCommerceSubscriber( Mockery::mock( HTML::class ) );
 	}
 
 	/**

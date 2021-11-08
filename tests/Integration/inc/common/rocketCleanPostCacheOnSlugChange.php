@@ -32,7 +32,7 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	/**
 	 * Prepares the test environment before each test.
 	 */
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		wp_set_current_user( self::$user_id );

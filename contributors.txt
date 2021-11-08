@@ -1,18 +1,18 @@
 This file contains a list of people who have made large contributions to WP Rocket.
 
 Developers:
-	Jonathan Buttigieg <jonathan@wp-rocket.me>
-	Remy Perona <remy@wp-rocket.me>
-	Arun Basil Lal <arun@wp-rocket.me>
+	Jonathan Buttigieg <jonathan@wp-media.me>
+	Remy Perona <remy@wp-media.me>
 	Cristina Soponar <cristina@wp-media.me>
-	Tonya Mork <tonya@wp-media.me>
 	Ahmed Saeed <ahmed@wp-media.me>
 	Caspar Green <caspar.g@wp-media.me>
 	Vasilis Manthos <vasilis@wp-media.me>
 	Alfonso Catron <alfonso@wp-media.me>
+	Natalia Drause <natalia@wp-media.me>
 
 QA:
 	Piotr Bąk <piotr@wp-media.me>
+	Mai Saad <mai@wp-media.me>
 
 Previous contributors:
 	Julio Potier
@@ -20,3 +20,5 @@ Previous contributors:
 	David Acuna
 	Caspar Hübinger
 	Thomas Geisen
+	Tonya Mork
+	Arun Basil Lal

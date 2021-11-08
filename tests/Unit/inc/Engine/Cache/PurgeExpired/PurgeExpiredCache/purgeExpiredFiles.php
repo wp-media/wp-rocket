@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers PurgeExpiredCache::purge_expired_files
+ * @covers \WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache::purge_expired_files
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
  * @group  vfs
@@ -16,7 +16,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeExpired/PurgeExpiredCache/purgeExpiredFiles.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/i18n.php';
@@ -96,7 +96,7 @@ class Test_PurgeExpiredFiles extends FilesystemTestCase {
 	private function setFilesToExpire( $files, $expirationTime = '11 hours ago' ) {
 		foreach ( $files as $filepath ) {
 			$file = $this->filesystem->getFile( $filepath );
-			$file->lastAttributeModified( strtotime( $expirationTime ) );
+			$file->lastModified( strtotime( $expirationTime ) );
 		}
 	}
 }

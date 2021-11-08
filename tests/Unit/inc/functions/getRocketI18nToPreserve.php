@@ -18,7 +18,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
  */
 class Test_GetRocketI18nToPreserve extends TestCase {
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );

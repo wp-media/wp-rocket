@@ -27,7 +27,7 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 	private $fallback_css;
 	private $is_mobile;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container          = apply_filters( 'rocket_container', null );
@@ -41,7 +41,7 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );

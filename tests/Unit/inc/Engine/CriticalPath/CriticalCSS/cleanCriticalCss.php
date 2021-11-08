@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_CleanCriticalCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );

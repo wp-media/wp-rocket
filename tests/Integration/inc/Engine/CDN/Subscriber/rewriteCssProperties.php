@@ -9,7 +9,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  CDN
  */
 class Test_RewriteCssProperties extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->cnames = [
@@ -38,6 +38,11 @@ class Test_RewriteCssProperties extends TestCase {
 			$expected,
 			apply_filters( 'rocket_css_content', $original )
 		);
+
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_usedcss_content', $original )
+		);
 	}
 
 	/**
@@ -49,6 +54,11 @@ class Test_RewriteCssProperties extends TestCase {
 		$this->assertSame(
 			$original,
 			apply_filters( 'rocket_css_content', $original )
+		);
+
+		$this->assertSame(
+			$original,
+			apply_filters( 'rocket_usedcss_content', $original )
 		);
 	}
 

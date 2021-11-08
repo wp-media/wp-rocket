@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PreloadSubscriber;
 
+use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\FullProcess;
@@ -19,16 +21,17 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	private $prefix     = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 	public function testShouldUseMobilePrefixWhenMobilePreloadIsEnabled() {
-		$options            = $this->createMock( Options_Data::class );
-		$homepage_preloader = $this->createMock( Homepage::class );
+		$options            = Mockery::mock( Options_Data::class );
+		$homepage_preloader = Mockery::mock( Homepage::class );
+		$checker            = Mockery::mock( Checker::class );
 		$homepage_preloader
-			->expects( $this->once() )
-			->method( 'is_mobile_preload_enabled' )
-			->willReturn( true );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->once()
+			->andReturn( true );
 		$homepage_preloader
-			->expects( $this->once() )
-			->method( 'get_mobile_user_agent_prefix' )
-			->willReturn( $this->prefix );
+			->shouldReceive( 'get_mobile_user_agent_prefix' )
+			->once()
+			->andReturn( $this->prefix );
 
 		Functions\expect( 'wp_safe_remote_get' )
 			->once()
@@ -39,26 +42,27 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 				]
 			);
 
-		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options, $checker );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}
 
 	public function testShouldNotUseMobilePrefixWhenMobilePreloadIsNotEnabled() {
-		$options            = $this->createMock( Options_Data::class );
-		$homepage_preloader = $this->createMock( Homepage::class );
+		$options            = Mockery::mock( Options_Data::class );
+		$homepage_preloader = Mockery::mock( Homepage::class );
+		$checker            = Mockery::mock( Checker::class );
 		$homepage_preloader
-			->expects( $this->once() )
-			->method( 'is_mobile_preload_enabled' )
-			->willReturn( false );
+			->shouldReceive( 'is_mobile_preload_enabled' )
+			->once()
+			->andReturn( false );
 		$homepage_preloader
-			->expects( $this->never() )
-			->method( 'get_mobile_user_agent_prefix' );
+			->shouldReceive( 'get_mobile_user_agent_prefix' )
+			->never();
 
 		Functions\expect( 'wp_safe_remote_get' )
 			->never();
 
-		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options, $checker );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}

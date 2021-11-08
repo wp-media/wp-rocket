@@ -21,7 +21,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container     = apply_filters( 'rocket_container', null );
@@ -29,7 +29,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 		self::$pricing = $container->get( 'pricing' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_renewal_soon_banner', 11 );

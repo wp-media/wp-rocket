@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket Defer JS
@@ -26,16 +26,18 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
 		$this->getContainer()->add( 'defer_js', 'WP_Rocket\Engine\Optimization\DeferJS\DeferJS' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'defer_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber' )
-			->withArgument( $this->getContainer()->get( 'defer_js' ) );
+			->addArgument( $this->getContainer()->get( 'defer_js' ) )
+			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'defer_js_subscriber', 'WP_Rocket\Engine\Optimization\DeferJS\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'defer_js' ) );
+			->addArgument( $this->getContainer()->get( 'defer_js' ) )
+			->addTag( 'front_subscriber' );
 	}
 }

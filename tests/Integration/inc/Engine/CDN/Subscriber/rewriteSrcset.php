@@ -8,7 +8,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  CDN
  */
 class Test_RewriteSrcset extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->config ) ) {

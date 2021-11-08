@@ -19,7 +19,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	private $user;
 	private $renewal;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );

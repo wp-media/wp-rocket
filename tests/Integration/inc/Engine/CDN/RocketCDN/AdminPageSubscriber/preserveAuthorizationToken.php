@@ -19,13 +19,13 @@ class Test_PreserveAuthorizationToken extends TestCase {
 	private          $client;
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
 	}
 

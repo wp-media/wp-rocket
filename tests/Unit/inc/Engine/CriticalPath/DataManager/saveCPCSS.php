@@ -17,12 +17,15 @@ class Test_SaveCPCSS extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $url, $path, $cpcss_code, $is_mobile, $expected ) {
+	public function testShouldDoExpected( $url, $path, $cpcss_code, $is_mobile, $expected, $expected_cpcss ) {
 		$cache_path = $this->filesystem->getUrl( $this->config['vfs_dir'] );
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'wp_strip_all_tags' )->andReturnFirstArg();
-		Functions\expect( 'rocket_put_content' )->once()->andReturn( $expected );
+		Functions\expect( 'rocket_put_content' )
+			->once()
+			->with( $cache_path . '1/' . $path, $expected_cpcss )
+			->andReturn( $expected );
 
 		$data_manager = new DataManager( $cache_path, $this->filesystem );
 		$actual       = $data_manager->save_cpcss( $path, $cpcss_code, $url, $is_mobile );

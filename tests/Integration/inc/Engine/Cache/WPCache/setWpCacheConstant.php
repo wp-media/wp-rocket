@@ -22,7 +22,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 	protected $user_id = 0;
 	private $filter_set;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		self::hasAdminCapBeforeClass();
 
 		$container = apply_filters( 'rocket_container', null );
@@ -30,7 +30,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 		self::$wp_cache = $container->get( 'wp_cache' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		self::setAdminCap();

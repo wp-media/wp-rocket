@@ -318,12 +318,12 @@ class PurgeExpiredCache {
 				$dir_deleted = $this->purge_dir( $item->getPathname(), $file_age_limit );
 				$deleted     = array_merge( $deleted, $dir_deleted );
 
-			} elseif ( $item->isFile() && $item->getCTime() < $file_age_limit ) {
+			} elseif ( $item->isFile() && $item->getMTime() < $file_age_limit ) {
 				$file_path = $item->getPathname();
 
 				/**
 				 * The file is older than our limit.
-				 * This will also delete the file if `$item->getCTime()` fails.
+				 * This will also delete the file if `$item->getMTime()` fails.
 				 */
 				if ( ! $this->filesystem->delete( $file_path ) ) {
 					continue;

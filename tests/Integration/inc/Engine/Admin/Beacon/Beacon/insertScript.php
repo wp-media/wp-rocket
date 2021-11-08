@@ -14,24 +14,34 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_InsertScript extends TestCase {
 	private $locale;
+	private $text_direction;
+
 	protected static $transients = [
 		'wp_rocket_customer_data' => null,
 	];
 
-	public function setUp() {
+	public function setUp(): void {
+		global $wp_locale;
+
 		parent::setUp();
 
 		set_current_screen( 'settings_page_wprocket' );
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
+
+		$this->text_direction = $wp_locale->text_direction;
 	}
 
 	public function tearDown() {
-		parent::tearDown();
-
+		global $wp_locale;
 		set_current_screen( 'front' );
+
+		$wp_locale->text_direction = $this->text_direction;
+		$this->white_label = false;
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
+
+		parent::tearDown();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -45,22 +55,30 @@ class Test_InsertScript extends TestCase {
 		}
 	}
 
-	public function testShouldReturNullWhenNoCapacity() {
-		$this->createUser( 'contributor' );
-		$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
-
-		$this->assertNotContains( 'Beacon', $this->getActualHtml() );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnBeaconScript( $config, $expected ) {
-		$this->createUser( 'administrator' );
-		$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
+		global $wp_locale;
 
+		if ( true === $config['current_user_can'] ) {
+			$this->createUser( 'administrator' );
+			$this->assertTrue( current_user_can( 'rocket_manage_options' ) );
+		} else {
+			$this->createUser( 'contributor' );
+			$this->assertFalse( current_user_can( 'rocket_manage_options' ) );
+		}
+		$this->white_label =  $config['white_label'];
+		if ( null === $expected ) {
+			$this->assertEmpty( $this->getActualHtml() );
+			return;
+		}
 		$this->locale         = $config['locale'];
 		$this->rocket_version = '3.6';
+
+		if ( $config['rtl'] ) {
+			$wp_locale->text_direction = 'rtl';
+		}
 
 		if ( false !== $config['customer_data'] ) {
 			set_transient( 'wp_rocket_customer_data', $config['customer_data'] );

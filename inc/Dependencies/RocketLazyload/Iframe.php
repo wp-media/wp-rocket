@@ -2,7 +2,7 @@
 /**
  * Handles lazyloading of iframes
  *
- * @package RocketLazyload
+ * @package WP_Rocket\Dependencies\RocketLazyload
  */
 
 namespace WP_Rocket\Dependencies\RocketLazyload;

@@ -25,7 +25,7 @@ class Test_Delete extends RESTVfsTestCase {
 	private $files;
 	private $options;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );

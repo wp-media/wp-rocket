@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test__RocketNormalizePath extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/_rocketNormalizePath.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		// Reset before starting.

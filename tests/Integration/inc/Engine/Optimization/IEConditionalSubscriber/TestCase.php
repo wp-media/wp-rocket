@@ -10,7 +10,7 @@ abstract class TestCase extends BaseTestCase {
 	protected static $subscriber;
 	protected static $callbacks;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container        = apply_filters( 'rocket_container', null );

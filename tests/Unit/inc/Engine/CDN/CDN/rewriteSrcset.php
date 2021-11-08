@@ -16,7 +16,7 @@ class Test_RewriteSrcset extends TestCase {
 	private $cdn;
 	private $config;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->config ) ) {

@@ -3,6 +3,8 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
@@ -13,7 +15,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 
 	public function testShouldReturnTrueWhenExactdnIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
@@ -24,7 +26,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 	}
 
 	public function testShouldReturnTrueWhenJsRewriteIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
@@ -37,7 +39,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 	}
 
 	public function testShouldReturnTrueWhenHtaccessRewriteRewriteRulesAreEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
@@ -52,7 +54,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 	}
 
 	public function testShouldReturnFalseWhenNothingEnabledInEwww() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )

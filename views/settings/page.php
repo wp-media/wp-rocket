@@ -41,10 +41,13 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
-				if ( ! \Imagify_Partner::has_imagify_api_key() ) {
+				if (
+					! \Imagify_Partner::has_imagify_api_key()
+					&&
+					! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+				) {
 					$this->render_imagify_section();
 				}
-
 				$this->render_tools_section();
 				$this->render_tutorials_section();
 				?>
@@ -52,8 +55,8 @@ settings_errors( $data['slug'] ); ?>
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
-						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>"
-							data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
+						<span data-l10n-active="On"
+							data-l10n-inactive="Off" class="wpr-radio-ui"></span>
 						<?php esc_html_e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
@@ -73,7 +76,12 @@ settings_errors( $data['slug'] ); ?>
 			<button class="wpr-Popin-close wpr-Popin-Analytics-close wpr-icon-close"></button>
 		</div>
 		<div class="wpr-Popin-content">
-			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<p>
+			<?php
+				// translators: %1$s = <strong>, %2$s = </strong>.
+				printf( esc_html__( 'Below is a detailed view of all data WP Rocket will collect %1$sif granted permission.%2$s', 'rocket' ), '<strong>', '</strong>' );
+			?>
+			</p>
 			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>

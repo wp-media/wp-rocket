@@ -22,7 +22,7 @@ return [
 		'<!DOCTYPE html>
 		<html lang="en-US" dir="ltr">
 		<head>
-			<meta property="og:image" content="https://example.com/wp-content/uploads/2019/09/one-image.webp"/>
+			<meta property="og:image" content="https://example.com/wp-content/uploads/2019/09/one-image.png"/>
 			<link rel="image_src" href="https://example.com/wp-content/uploads/2019/09/one-image.webp" />
 			<link rel="apple-touch-icon" href="https://cdn-example.net/wp-content/uploads/2017/02/apple-touch-icon.png.webp" />
 			<link rel="icon" type="image/png" href="https://example.com/wp-content/uploads/2017/02/favicon-32x32.webp" sizes="32x32" />

@@ -25,7 +25,7 @@ abstract class TestCase extends BaseTestCase {
 		'site_url' => '',
 	];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		self::$api_credentials_config_file = WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/cloudflare.php';
@@ -62,7 +62,7 @@ abstract class TestCase extends BaseTestCase {
 		self::$api_credentials['site_url'] = static::getApiCredential( 'ROCKET_CLOUDFLARE_SITE_URL' );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );

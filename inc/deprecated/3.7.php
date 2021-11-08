@@ -109,7 +109,7 @@ function rocket_deactivate_js_minifier_with_revslider( $html_options ) {
 /**
  * Disable the emoji functionality to reduce then number of external HTTP requests.
  *
- * @sicne 3.7 Deprecated.
+ * @since 3.7 Deprecated.
  * @since 2.7
  *
  * @deprecated

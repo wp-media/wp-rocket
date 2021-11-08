@@ -21,7 +21,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 
 	private $options = [];
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		CapTrait::setAdminCap();
@@ -32,7 +32,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_cpcss_mobile_section', 10 );

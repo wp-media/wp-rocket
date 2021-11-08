@@ -20,21 +20,20 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_CpcssHeartbeat extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $admin;
 	private $processor;
 	private $wp_error;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
 	}
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
+		Functions\stubTranslationFunctions();
 		Functions\expect( 'check_ajax_referer' )
 			->once()
 			->with( 'cpcss_heartbeat_nonce', '_nonce', true )

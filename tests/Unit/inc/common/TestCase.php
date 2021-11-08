@@ -8,7 +8,7 @@ use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase {
 	protected $path_to_test_data;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_option' )->justReturn( '' );

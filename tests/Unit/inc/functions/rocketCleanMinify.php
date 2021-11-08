@@ -18,7 +18,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 	private   $valid_extensions  = [ 'css', 'css.gz', 'js', 'js.gz' ];
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

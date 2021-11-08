@@ -27,7 +27,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.
@@ -41,7 +41,7 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\expect( 'rocket_get_constant' )

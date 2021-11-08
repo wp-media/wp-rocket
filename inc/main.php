@@ -1,6 +1,6 @@
 <?php
 
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
 defined( 'ABSPATH' ) || exit;
@@ -64,6 +64,8 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.6.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.8.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.9.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 

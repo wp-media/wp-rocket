@@ -18,7 +18,7 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 	protected $is_mobile;
 	protected $cache_mobile;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		$container          = apply_filters( 'rocket_container', null );

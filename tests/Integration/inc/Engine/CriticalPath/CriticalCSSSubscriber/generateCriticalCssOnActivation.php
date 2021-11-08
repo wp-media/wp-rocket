@@ -37,7 +37,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->switchedBlog = false;

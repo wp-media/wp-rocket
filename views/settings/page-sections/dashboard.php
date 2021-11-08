@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 			<br>
 			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
 			</h2>
-				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
+				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
 				<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
 		</div>
@@ -212,6 +212,24 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</div>
 					<?php endif; ?>
+
+					<?php if ( get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
+						<div class="wpr-field">
+							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
+							<?php
+							$this->render_action_button(
+									'link',
+									'rocket_clear_usedcss',
+									[
+										'label'      => __( 'Clear Used CSS', 'rocket' ),
+										'attributes' => [
+											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+										],
+									]
+							);
+							?>
+						</div>
+					<?php endif; ?>
 				</fieldset>
 			</div>
 		</div>
@@ -230,29 +248,31 @@ defined( 'ABSPATH' ) || exit;
 					<?php endforeach; ?>
 					</ul>
 				</div>
-				<div class="wpr-field">
-					<div class="wpr-flex wpr-flex--egal">
-						<div>
-							<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
-							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-						</div>
-						<div>
-							<?php
-							$this->render_action_button(
-								'link',
-								'ask_support',
-								[
-									'label'      => __( 'Ask support', 'rocket' ),
-									'attributes' => [
-										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
-										'target' => '_blank',
-									],
-								]
-							);
-							?>
+				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
+					<div class="wpr-field">
+						<div class="wpr-flex wpr-flex--egal">
+							<div>
+								<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
+								<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
+							</div>
+							<div>
+								<?php
+								$this->render_action_button(
+									'link',
+									'ask_support',
+									[
+										'label'      => __( 'Ask support', 'rocket' ),
+										'attributes' => [
+											'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+											'target' => '_blank',
+										],
+									]
+								);
+								?>
+							</div>
 						</div>
 					</div>
-				</div>
+				<?php } ?>
 			</div>
 		</div>
 

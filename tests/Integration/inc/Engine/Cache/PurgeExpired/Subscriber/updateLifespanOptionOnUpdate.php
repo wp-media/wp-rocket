@@ -14,7 +14,7 @@ class Test_UpdateLifespanOptionOnUpdate extends TestCase {
 
 	private $options = [];
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'update_lifespan_option_on_update', 13 );

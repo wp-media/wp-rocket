@@ -24,7 +24,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.

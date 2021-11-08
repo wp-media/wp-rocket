@@ -13,7 +13,7 @@ use WPDieException;
  */
 class Test_PurgeCache extends TestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		unset( $_GET['_wpnonce'] );

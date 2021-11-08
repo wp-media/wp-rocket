@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\classes\subscriber\Media\WebpSubscriber;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Subscriber\Media\Webp_Subscriber;
 
 /**
@@ -186,29 +187,29 @@ class Test_ConvertToWebp extends TestCase {
 		// rocket_direct_filesystem().
 		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
 			$uploads_path = '/Internal/path/to/root/wp-content/uploads/';
-			$filesystem   = $this->getMockBuilder( 'WP_Filesystem_Direct' )
-			                     ->setMethods( [ 'exists' ] )
-			                     ->getMock();
-			$filesystem
-				->method( 'exists' )
-				->will(
-					$this->returnValueMap(
-						[
-							[ $uploads_path . '2019/09/one-image.webp', true ],
-							[ $uploads_path . '2019/09/one-image.png.webp', false ],
-							[ $uploads_path . '2017/02/apple-touch-icon.webp', false ],
-							[ $uploads_path . '2017/02/apple-touch-icon.png.webp', true ],
-							[ $uploads_path . '2017/02/favicon-32x32.webp', true ],
-							[ $uploads_path . '2017/02/favicon-32x32.png.webp', false ],
-							[ $uploads_path . '2017/02/mstile-144x144.webp', false ],
-							[ $uploads_path . '2017/02/mstile-144x144.png.webp', false ],
-							[ $uploads_path . '2019/09/one-image-60x60.webp', false ],
-							[ $uploads_path . '2019/09/one-image-60x60.png.webp', false ],
-							[ $uploads_path . '2017/02/stats-php.webp', false ],
-							[ $uploads_path . '2017/02/stats-php.gif.webp', true ],
-						]
-					)
-				);
+			$filesystem   = Mockery::mock( 'WP_Filesystem_Direct' );
+
+			$data = [
+				[ $uploads_path . '2019/09/one-image.webp', true ],
+				[ $uploads_path . '2019/09/one-image.png.webp', false ],
+				[ $uploads_path . '2017/02/apple-touch-icon.webp', false ],
+				[ $uploads_path . '2017/02/apple-touch-icon.png.webp', true ],
+				[ $uploads_path . '2017/02/favicon-32x32.webp', true ],
+				[ $uploads_path . '2017/02/favicon-32x32.png.webp', false ],
+				[ $uploads_path . '2017/02/mstile-144x144.webp', false ],
+				[ $uploads_path . '2017/02/mstile-144x144.png.webp', false ],
+				[ $uploads_path . '2019/09/one-image-60x60.webp', false ],
+				[ $uploads_path . '2019/09/one-image-60x60.png.webp', false ],
+				[ $uploads_path . '2017/02/stats-php.webp', false ],
+				[ $uploads_path . '2017/02/stats-php.gif.webp', true ],
+			];
+
+			foreach ( $data as $values ) {
+				$filesystem
+					->shouldReceive( 'exists' )
+					->with( $values[0] )
+					->andReturn( $values[1] );
+			}
 
 			return $filesystem;
 		} );

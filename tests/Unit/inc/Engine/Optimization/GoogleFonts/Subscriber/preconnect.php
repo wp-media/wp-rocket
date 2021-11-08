@@ -18,7 +18,7 @@ class Test_Preconnect extends TestCase {
 	private $options;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscriber = new Subscriber( Mockery::mock( Combine::class ), Mockery::mock( CombineV2::class ), $this->options );
 	}

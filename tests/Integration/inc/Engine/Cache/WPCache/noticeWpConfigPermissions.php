@@ -22,7 +22,7 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 
 	private static $user_id;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
         self::hasAdminCapBeforeClass();
@@ -34,7 +34,7 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
         self::resetAdminCap();
     }
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );

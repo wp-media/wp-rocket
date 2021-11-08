@@ -22,7 +22,7 @@ class Test_InitCriticalCssGeneration extends TestCase {
 	];
 	protected $user_id = 0;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$role = get_role( 'administrator' );

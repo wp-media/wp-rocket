@@ -20,54 +20,62 @@ return [
 	],
 
 	'test_data' => [
-		// Should update an existing file.
-		[
-			'url'        => 'http://www.example.com/?p=1',
-			'path'       => 'posts/post-1.css',
-			'cpcss_code' => 'body{color:red;}',
-			'is_mobile'  => false,
-			'expected'   => true,
+		'testShouldUpdateExistingCPCSSFile' => [
+			'url'           => 'http://www.example.com/?p=1',
+			'path'          => 'posts/post-1.css',
+			'cpcss_code'    => 'body{color:red;}',
+			'is_mobile'     => false,
+			'expected'      => true,
+			'expected_code' => 'body{color:red;}',
 		],
-		// Should create non-existent files.
-		[
-			'url'        => 'http://www.example.com/?p=500',
-			'path'       => 'posts/post-500.css',
-			'cpcss_code' => 'body{ color:red }',
-			'is_mobile'  => false,
-			'expected'   => true,
+		'testShouldCreateCPCSSFileForPost500' => [
+			'url'           => 'http://www.example.com/?p=500',
+			'path'          => 'posts/post-500.css',
+			'cpcss_code'    => 'body{ color:red }',
+			'is_mobile'     => false,
+			'expected'      => true,
+			'expected_code' => 'body{ color:red }',
 		],
-		[
-			'url'        => 'http://www.example.com/?p=1',
-			'path'       => 'posts/lorem-ipsum.css',
-			'cpcss_code' => 'body{ color:red; font-size: 2em } h1 { color: black }',
-			'is_mobile'  => false,
-			'expected'   => true,
+		'testShouldCreateCPCSSFileWithFontSwap' => [
+			'url'           => 'http://www.example.com/?p=500',
+			'path'          => 'posts/post-500.css',
+			'cpcss_code'    => "@font-face{font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}",
+			'is_mobile'     => false,
+			'expected'      => true,
+			'expected_code' => "@font-face{font-display:swap;font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff')format('woff')}",
+		],
+		'testShouldCreateCPCSSFileForPostLoremIpsum' => [
+			'url'           => 'http://www.example.com/?p=1',
+			'path'          => 'posts/lorem-ipsum.css',
+			'cpcss_code'    => 'body{ color:red; font-size: 2em } h1 { color: black }',
+			'is_mobile'     => false,
+			'expected'      => true,
+			'expected_code' => 'body{ color:red; font-size: 2em } h1 { color: black }',
 		],
 
-		// Mobile CPCSS
-		// Should update an existing file.
-		[
-			'url'        => 'http://www.example.com/?p=1',
-			'path'       => 'posts/post-1-mobile.css',
-			'cpcss_code' => 'body{color:red;}',
-			'is_mobile'  => true,
-			'expected'   => true,
+		'testShouldUpdateExistingCPCSSFileWhenMobile' => [
+			'url'           => 'http://www.example.com/?p=1',
+			'path'          => 'posts/post-1-mobile.css',
+			'cpcss_code'    => 'body{color:red;}',
+			'is_mobile'     => true,
+			'expected'      => true,
+			'expected_code' => 'body{color:red;}',
 		],
-		// Mobile CPCSS
-		// Should create non-existent files.
-		[
-			'url'        => 'http://www.example.com/?p=500',
-			'path'       => 'posts/post-500-mobile.css',
-			'cpcss_code' => 'body{ color:red }',
-			'is_mobile'  => true,
-			'expected'   => true,
+		'testShouldCrateCPCSSFileForPost500WhenMobile' => [
+			'url'           => 'http://www.example.com/?p=500',
+			'path'          => 'posts/post-500-mobile.css',
+			'cpcss_code'    => 'body{ color:red }',
+			'is_mobile'     => true,
+			'expected'      => true,
+			'expected_code' => 'body{ color:red }',
 		],
-		[
-			'url'        => 'http://www.example.com/?p=1',
-			'path'       => 'posts/lorem-ipsum-mobile.css',
-			'cpcss_code' => 'body{ color:red; font-size: 2em } h1 { color: black }',
-			'is_mobile'  => true,
-			'expected'   => true,
+		'testShouldCrateCPCSSFileForPostLoremIpsumWhenMobile' => [
+			'url'           => 'http://www.example.com/?p=1',
+			'path'          => 'posts/lorem-ipsum-mobile.css',
+			'cpcss_code'    => 'body{ color:red; font-size: 2em } h1 { color: black }',
+			'is_mobile'     => true,
+			'expected'      => true,
+			'expected_code' => 'body{ color:red; font-size: 2em } h1 { color: black }',
 		],
 	],
 ];

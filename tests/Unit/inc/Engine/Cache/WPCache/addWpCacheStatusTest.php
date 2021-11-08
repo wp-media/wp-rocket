@@ -12,26 +12,29 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group WPCache
  */
 class Test_AddWpCacheStatusTest extends TestCase {
-    protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
-    /**
+	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddWpCacheTest( $tests, $expected ) {
-        $wp_cache = new WPCache( null );
+		$wp_cache = new WPCache( null );
 
-        $result = $wp_cache->add_wp_cache_status_test( $tests );
+		$result = $wp_cache->add_wp_cache_status_test( $tests );
 
-        $this->assertArrayHasKey(
-            'wp_cache_status',
-            $result['direct']
-        );
+		$this->assertArrayHasKey(
+			'wp_cache_status',
+			$result['direct']
+		);
 
-        $this->assertSame(
-            $expected['direct']['wp_cache_status']['label'],
-            $result['direct']['wp_cache_status']['label']
-        );
+		$this->assertSame(
+			$expected['direct']['wp_cache_status']['label'],
+			$result['direct']['wp_cache_status']['label']
+		);
 
-        $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
-    }
+		$this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+	}
 }

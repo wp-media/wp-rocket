@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  CriticalPath
  */
 class test_Task extends TestCase {
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';

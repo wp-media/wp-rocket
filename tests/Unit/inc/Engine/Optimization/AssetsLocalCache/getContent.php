@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_GetContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/getContent.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->stubWpParseUrl();

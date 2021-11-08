@@ -15,7 +15,7 @@ abstract class WPThemeTestcase extends FilesystemTestCase {
 
 	protected $child_theme;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );

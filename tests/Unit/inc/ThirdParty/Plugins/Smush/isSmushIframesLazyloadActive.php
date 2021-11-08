@@ -2,6 +2,10 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Smush;
 
+use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 
 /**
@@ -10,9 +14,13 @@ use WP_Rocket\ThirdParty\Plugins\Smush;
  * @group Smush
  */
 class Test_IsSmushIframesLazyloadActive extends SmushSubscriberTestCase {
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	public function testShouldNotDisableWPRocketLazyLoad() {
-		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Smush( Mockery::mock( Options::class ), Mockery::mock( Options_Data::class ) );
 
 		// Disabled.
 		$this->mock_is_smush_lazyload_enabled(
@@ -53,9 +61,8 @@ class Test_IsSmushIframesLazyloadActive extends SmushSubscriberTestCase {
 	}
 
 	public function testShouldDisableWPRocketLazyLoadWhenIframeFormat() {
-		$this->mockCommonWpFunctions();
 
-		$subscriber = new Smush( $this->createMock( 'WP_Rocket\Admin\Options' ), $this->createMock( 'WP_Rocket\Admin\Options_Data' ) );
+		$subscriber = new Smush( Mockery::mock( Options::class ), Mockery::mock( Options_Data::class ) );
 
 		$this->mock_is_smush_lazyload_enabled(
 			true,

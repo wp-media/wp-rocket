@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Deactivation;
 
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 class Deactivation {
@@ -89,8 +89,7 @@ class Deactivation {
 		delete_site_transient( 'update_wprocket_response' );
 
 		// Unschedule WP Cron events.
-		wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
-		wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
+		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 		/**

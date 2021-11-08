@@ -20,7 +20,7 @@ class Test_MissedCron extends TestCase {
 	private $manual_preload;
 	private $schedule_automatic_cleanup;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'missed_cron', 10 );

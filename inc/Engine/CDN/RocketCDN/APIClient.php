@@ -104,7 +104,7 @@ class APIClient {
 	 *
 	 * @since 3.5
 	 *
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	public function get_pricing_data() {
 		$pricing = get_transient( 'rocketcdn_pricing' );
@@ -224,7 +224,7 @@ class APIClient {
 				'message' => sprintf(
 					// translators: %s = message returned by the API.
 					__( 'RocketCDN cache purge failed: %s.', 'rocket' ),
-					$data->message
+					isset( $data->message ) ? $data->message : ''
 				),
 			];
 		}

@@ -1,20 +1,25 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\AbstractProcess;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Process;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
-use WP_Rocket\Engine\Preload\AbstractProcess;
+use WP_Rocket\Engine\Preload\PartialProcess;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\AbstractProcess::is_mobile_preload_enabled
  * @group Preload
  */
 class Test_IsMobilePreloadEnabled extends TestCase {
+	private $process;
+
+	public function setUp() : void {
+		parent::setUp();
+
+		$this->process = new PartialProcess();
+	}
 
 	public function testShouldReturnTrueWhenOptionsEnabled() {
-		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
-
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
 				case 'manual_preload':
@@ -25,12 +30,10 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			return $default;
 		} );
 
-		$this->assertTrue( $stub->is_mobile_preload_enabled() );
+		$this->assertTrue( $this->process->is_mobile_preload_enabled() );
 	}
 
 	public function testShouldReturnFalseWhenOptionsDisabled() {
-		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
-
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
 				case 'manual_preload':
@@ -42,7 +45,7 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			return $default;
 		} );
 
-		$this->assertFalse( $stub->is_mobile_preload_enabled() );
+		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
@@ -56,7 +59,7 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			return $default;
 		} );
 
-		$this->assertFalse( $stub->is_mobile_preload_enabled() );
+		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
@@ -69,12 +72,10 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			return $default;
 		} );
 
-		$this->assertFalse( $stub->is_mobile_preload_enabled() );
+		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 	}
 
 	public function testShouldReturnBooleanWhenFiltered() {
-		$stub = $this->getMockForAbstractClass( AbstractProcess::class );
-
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
 				case 'manual_preload':
@@ -90,7 +91,7 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			->once()
 			->andReturn( 'boobar' ); // Simulate a filter.
 
-		$this->assertTrue( $stub->is_mobile_preload_enabled() );
+		$this->assertTrue( $this->process->is_mobile_preload_enabled() );
 
 		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
 			switch ( $option ) {
@@ -106,6 +107,6 @@ class Test_IsMobilePreloadEnabled extends TestCase {
 			->once()
 			->andReturn( '' ); // Simulate a filter.
 
-		$this->assertFalse( $stub->is_mobile_preload_enabled() );
+		$this->assertFalse( $this->process->is_mobile_preload_enabled() );
 	}
 }
