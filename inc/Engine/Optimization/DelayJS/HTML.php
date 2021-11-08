@@ -59,6 +59,7 @@ class HTML {
 		'lazyLoadInstance',
 		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
 		'initCubePortfolio', // Cube Portfolio show images.
+		'gforms_recaptcha_', // Gravity Forms recaptcha.
 	];
 
 	/**
