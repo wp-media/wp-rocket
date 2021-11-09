@@ -34,8 +34,13 @@ class PDFEmbedder implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_pdfembedder_scripts( $excluded_js ) {
-		if ( class_exists( 'pdfemb_basic_pdf_embedder' ) ) {
+		if (
+			class_exists( 'PDF_Embedder_Basic' )
+			||
+			class_exists( 'pdfemb_basic_pdf_embedder' )
+		) {
 			// Exclude Free version.
+			//var_dump($this->exclude_pdfembedder_scripts());die();
 			return array_merge(
 				$excluded_js,
 				$this->pdfembedder_free_scripts()
