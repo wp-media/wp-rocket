@@ -40,7 +40,6 @@ class PDFEmbedder implements Subscriber_Interface {
 			class_exists( 'pdfemb_basic_pdf_embedder' )
 		) {
 			// Exclude Free version.
-			//var_dump($this->exclude_pdfembedder_scripts());die();
 			return array_merge(
 				$excluded_js,
 				$this->pdfembedder_free_scripts()
