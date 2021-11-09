@@ -59,6 +59,8 @@ class HTML {
 		'lazyLoadInstance',
 		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
 		'initCubePortfolio', // Cube Portfolio show images.
+		'//static.cloudflareinsights.com', // Cloudflare Web Analytics.
+		'//s3.tradingview.com', // Tradingview chart widget.
 	];
 
 	/**
