@@ -59,6 +59,9 @@ class HTML {
 		'lazyLoadInstance',
 		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
 		'initCubePortfolio', // Cube Portfolio show images.
+		'/jetpack-boost/vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack Boost plugin lazyload.
+		'jetpack-lazy-images-js-enabled',  // Jetpack Boost plugin lazyload.
+		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
 	];
 
 	/**
