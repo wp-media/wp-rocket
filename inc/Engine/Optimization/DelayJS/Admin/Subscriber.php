@@ -104,8 +104,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10.4
 	 *
-	 * @param array $old_value Old Settings values array.
 	 * @param array $value New Settings values array.
+	 * @param array $old_value Old Settings values array.
 	 *
 	 * @return array Returns the new settings values array unchanged.
 	 */
