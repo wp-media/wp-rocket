@@ -2,7 +2,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( defined( 'WCML_VERSION' ) ) :
+/**
+ * @return bool
+ */
+function rocket_wcml_has_requirements() {
+	return defined( 'ICL_SITEPRESS_VERSION' )
+		&& version_compare( ICL_SITEPRESS_VERSION, '4.4.11', '>=' )
+		&& defined( 'WCML_VERSION' )
+		&& version_compare( WCML_VERSION, '4.12.0', '>=' );
+}
+
+if ( rocket_wcml_has_requirements() ) :
 	/**
 	 * Use Cookie instead of WCSession
 	 *
@@ -104,10 +114,12 @@ function rocket_wcml_reset_settings( $option, $old_data, $data ) {
  * Reset WP Rocket settings on WCML activation.
  */
 function rocket_wcml_activate() {
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 64 );
-	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_wcml_add_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_wcml_add_mandatory_cookies' );
-	flush_rocket_htaccess();
-	rocket_generate_config_file();
+	if ( rocket_wcml_has_requirements() ) {
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 64 );
+		add_filter( 'rocket_cache_dynamic_cookies', 'rocket_wcml_add_dynamic_cookies' );
+		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_wcml_add_mandatory_cookies' );
+		flush_rocket_htaccess();
+		rocket_generate_config_file();
+	}
 }
 add_action( 'activate_woocommerce-multilingual/wpml-woocommerce.php', 'rocket_wcml_activate', 11 );
