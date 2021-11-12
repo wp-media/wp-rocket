@@ -206,14 +206,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	 * The notices are stored directly in the transient instead of using `add_settings_error()`, to make sure they are displayed even if we’re outside an admin screen.
 	 */
 	$transient_errors = get_transient( 'settings_errors' );
-
 	if ( ! $transient_errors || ! is_array( $transient_errors ) ) {
 		$transient_errors = [];
 	}
 
 	$transient_errors = array_merge( $transient_errors, $rocket_settings_errors );
 
-	set_transient( 'settings_errors', $transient_errors, 30 );
+	foreach( $transient_errors as $error ) {
+		add_settings_error( $error['setting'], $error['code'], $error['message'], $error['type'] );
+	}
 
 	return $newvalue;
 }
