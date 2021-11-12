@@ -212,7 +212,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	$transient_errors = array_merge( $transient_errors, $rocket_settings_errors );
 
-	foreach( $transient_errors as $error ) {
+	foreach ( $transient_errors as $error ) {
 		add_settings_error( $error['setting'], $error['code'], $error['message'], $error['type'] );
 	}
 
