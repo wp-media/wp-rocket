@@ -888,7 +888,7 @@ msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
-"リンクのプリロードは、ユーザーがリンクにカーソルを置いたときにページをダウンロードすることで、体感読み込み時間を改善します。%1$s詳細情報%2$s"
+"リンクのプリロードは、ユーザーがリンクにカーソルを置いたときにページをダウンロードすることで、体感読込時間を改善します。%1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1122
 msgid "Prefetch DNS Requests"
