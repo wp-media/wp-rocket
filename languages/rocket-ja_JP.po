@@ -1788,7 +1788,7 @@ msgstr "%sを公開"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:203
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
-msgstr "WP Rocket の設定で CSSの非同期読み込み を有効化"
+msgstr "WP Rocket の設定で CSSの非同期読込 を有効化"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:204
 msgid "Enable Load CSS asynchronously in the options above"
