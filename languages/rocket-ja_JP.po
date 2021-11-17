@@ -1348,7 +1348,7 @@ msgstr "Cloudflare"
 
 #: inc/Engine/Admin/Settings/Page.php:1772
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr "このアドオンで Cloudflare アカウントを統合します。"
+msgstr "Cloudflare アカウントをこのアドオンで統合"
 
 #: inc/Engine/Admin/Settings/Page.php:1773
 msgid ""
