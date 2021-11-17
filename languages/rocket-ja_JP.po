@@ -621,7 +621,7 @@ msgid ""
 " to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
 msgstr ""
 "CSS 非同期読み込みは、現在%1$sプラグインによって処理されています。WP Rocket の CSS "
-"非同期読み込みオプションを使用したい場合は、%1$sプラグインを無効化してください。"
+"非同期読込オプションを使用したい場合は、%1$sプラグインを無効化してください。"
 
 #: inc/Engine/Admin/Settings/Page.php:737
 #, php-format
