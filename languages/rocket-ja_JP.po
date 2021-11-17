@@ -731,7 +731,7 @@ msgstr "JavaScript 遅延読込"
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
-msgstr "JavaScript 遅延読込では、サイトのレンダリングブロックとなる JS を排除し、読込時間を改善できます。%1$s詳細情報%2$s"
+msgstr "JavaScript 遅延読込では、サイトのレンダリングブロックとなる JS を排除し、読込時間を改善します。%1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:858
 #, php-format
