@@ -1792,7 +1792,7 @@ msgstr "WP Rocket の設定で CSSの非同期読込 を有効化"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:204
 msgid "Enable Load CSS asynchronously in the options above"
-msgstr "上のオプションで CSSの非同期読込 を有効化"
+msgstr "上のオプションで CSS の非同期読込を有効化"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
 msgid "Critical CSS generation is currently running."
