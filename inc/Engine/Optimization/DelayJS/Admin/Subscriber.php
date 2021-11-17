@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
-use phpDocumentor\Reflection\Types\Void_;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
