@@ -3894,7 +3894,7 @@ msgstr "Rocket analytics を有効化"
 
 #: views/settings/partials/documentation.php:15
 msgid "It is a great starting point to fix some of the most common issues."
-msgstr "最も一般的な問題を解決するための素晴らしいスタート地点です。"
+msgstr "よくある問題の解決に、こちらがお役に立つかもしれません。"
 
 #: views/settings/partials/documentation.php:22
 msgid "Read the documentation"
