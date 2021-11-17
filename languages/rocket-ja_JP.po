@@ -3925,7 +3925,7 @@ msgstr "ガイドを読む"
 
 #: views/settings/partials/sidebar.php:28
 msgid "Test and Improve Google Core Web Vitals for WordPress."
-msgstr "Google Core Web Vitals for WordPress をテストして、改善。"
+msgstr "WordPress で Google Core Web Vitals をテストして、改善しましょう。"
 
 #: views/settings/partials/sidebar.php:29
 msgid "Read more"
