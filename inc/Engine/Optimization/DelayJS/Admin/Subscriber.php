@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
@@ -46,26 +46,25 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
-	 * @since 3.7
-	 *
 	 * @param array $options WP Rocket options array.
 	 *
 	 * @return array
+	 * @since 3.7
 	 */
-	public function add_options( $options ) : array {
+	public function add_options( $options ): array {
 		return $this->settings->add_options( $options );
 	}
 
 	/**
 	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
-	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
-	 * @since 3.7
-	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
+	 * @since 3.7
+	 *
+	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
@@ -74,26 +73,24 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Sanitizes Delay JS options values when the settings form is submitted
 	 *
-	 * @since 3.9
-	 *
 	 * @param array         $input    Array of values submitted from the form.
 	 * @param AdminSettings $settings Settings class instance.
 	 *
 	 * @return array
+	 * @since 3.9
 	 */
-	public function sanitize_options( $input, AdminSettings $settings ) : array {
+	public function sanitize_options( $input, AdminSettings $settings ): array {
 		return $this->settings->sanitize_options( $input, $settings );
 	}
 
 	/**
 	 * Disable combine JS option when delay JS is enabled
 	 *
-	 * @since 3.9
-	 *
 	 * @param array $value     The new, unserialized option value.
 	 * @param array $old_value The old option value.
 	 *
 	 * @return array
+	 * @since 3.9
 	 */
 	public function maybe_disable_combine_js( $value, $old_value ): array {
 		return $this->settings->maybe_disable_combine_js( $value, $old_value );
@@ -102,12 +99,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add a compatibility notice to transient errors when Autoptimize Aggregate JS is 'on' and Delay JS is activated.
 	 *
-	 * @since 3.10.4
-	 *
-	 * @param array $value New Settings values array.
+	 * @param array $value     New Settings values array.
 	 * @param array $old_value Old Settings values array.
 	 *
 	 * @return array Returns the new settings values array unchanged.
+	 * @since 3.10.4
 	 */
 	public function add_notice_when_delayjs_and_autoptimize_aggregatejs( $value, $old_value ): array {
 		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
@@ -126,14 +122,17 @@ class Subscriber implements Subscriber_Interface {
 			$transient_errors = [];
 		}
 
-		$transient_errors[] = [
-			'setting' => 'general',
-			'code'    => 'compatibility_notice',
-			'message' => '</strong>We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.<strong>',
-			'type'    => 'notice',
-		];
-
-		set_transient( 'settings_errors', $transient_errors, 30 );
+		add_settings_error(
+			'general',
+			'compatibility_notice',
+			'</strong>' .
+			__(
+				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+				'rocket'
+			) .
+			'<strong>',
+			'info'
+		);
 
 		return $value;
 	}

@@ -14,7 +14,7 @@ return [
 				'setting' => 'general',
 				'code'    => 'compatibility_notice',
 				'message' => '</strong>We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.<strong>',
-				'type'    => 'notice',
+				'type'    => 'info',
 			],
 		],
 	],

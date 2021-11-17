@@ -11,7 +11,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group DelayJS
  * @group AdminOnly
- * @group cgtest
  */
 class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
 	public function setUp(): void {
@@ -22,16 +21,16 @@ class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
 			'add_notice_when_delayjs_and_autoptimize_aggregatejs',
 			11
 		);
-
-		set_transient( 'settings_errors', [] );
 	}
 
 	public function tearDown() {
+		global $wp_settings_errors;
 		parent::tearDown();
 
 		$this->restoreWpFilter( 'pre_update_option_wp_rocket_settings' );
-		set_transient( 'settings_errors', [] );
 		delete_option( 'autoptimize_js_aggregate' );
+		delete_transient( 'settings_errors' );
+		$wp_settings_errors = [];
 	}
 
 	/**
@@ -42,9 +41,9 @@ class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
 
 		apply_filters( 'pre_update_option_wp_rocket_settings', $config['delayJSActiveNew'], $config['delayJSActiveOld'] );
 
-		$transient_errors = get_transient( 'settings_errors' );
+		$settings_errors = get_settings_errors('general');
 
-		$this->assertSame( $expected, $transient_errors );
+		$this->assertSame( $expected, $settings_errors );
 	}
 
 }
