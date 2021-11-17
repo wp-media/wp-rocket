@@ -3021,7 +3021,7 @@ msgstr "サイトのホスト名を次と置換 : "
 #: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:32
 #: views/settings/fields/cnames.php:64 views/settings/fields/cnames.php:94
 msgid "reserved for"
-msgstr "次に予約"
+msgstr "右に適用"
 
 #: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
 #: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:35
