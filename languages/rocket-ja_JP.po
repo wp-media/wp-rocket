@@ -1016,7 +1016,7 @@ msgstr "キャッシュしない Cookie"
 
 #: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
 msgid "Never Cache User Agent(s)"
-msgstr "User Agent をキャッシュしない"
+msgstr "キャッシュしない User Agent"
 
 #: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
 msgid "Always Purge URL(s)"
