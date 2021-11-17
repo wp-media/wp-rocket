@@ -1400,7 +1400,7 @@ msgstr "WP Rocket のキャッシュをクリアすると、Sucuri のキャッ�
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
-msgstr "WP Rocket のキャッシュをクリアするときに、Sucuri のキャッシュをクリアするための API キーを提供します。"
+msgstr "WP Rocket のキャッシュを消去するときに、Sucuri のキャッシュを消去するには API キーを提供してください。"
 
 #: inc/Engine/Admin/Settings/Page.php:1891
 #: inc/Engine/Admin/Settings/Page.php:2035
