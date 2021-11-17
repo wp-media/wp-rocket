@@ -3726,7 +3726,7 @@ msgstr "Imagify ウェブサイト"
 
 #: views/settings/page-sections/imagify.php:29
 msgid "Review of Image Compression Plugins"
-msgstr "画像圧縮プラグインのレビュー"
+msgstr "画像圧縮プラグインの比較レビュー"
 
 #: views/settings/page-sections/imagify.php:38
 msgid "Install Imagify"
