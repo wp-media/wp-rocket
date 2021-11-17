@@ -750,7 +750,7 @@ msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
-"ユーザー操作（スクロールやクリックなど）が行われるまで、JavaScript ファイルの読み込みを遅らせることで、パフォーマンスを向上 "
+"ユーザー操作（スクロールやクリックなど）が行われるまで、JavaScript ファイルの読み込みを遅らせることで、パフォーマンスを向上します。 "
 "%1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:886
