@@ -3622,7 +3622,7 @@ msgstr "また、サイトにすぐに効果をもたらすオプションも有
 
 #: views/settings/page-sections/dashboard.php:45
 msgid "Continue to the options to further optimize your site!"
-msgstr "サイトをさらに最適化するオプションを見ましょう ! "
+msgstr "サイトをさらに最適化するオプションを見てみましょう !"
 
 #: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
