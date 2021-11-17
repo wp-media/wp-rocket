@@ -1065,7 +1065,7 @@ msgstr "ワイルドカード (.*) を使って、UA 文字列の一部を検出
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
-msgstr "記事やページを更新したときに、常にキャッシュから削除したいURLを指定 (1 行に 1 つ)"
+msgstr "記事やページを更新したときに、常にキャッシュから削除したいURLを指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1354
 msgid "Specify query strings for caching (one per line)"
