@@ -3909,7 +3909,7 @@ msgstr "WP Rocket がデフォルトで行うこと"
 
 #: views/settings/partials/sidebar.php:12
 msgid "How to correctly measure your website’s loading time"
-msgstr "サイト読込時間を正しく測定する方法"
+msgstr "サイト読込時間を正しく測定するには ?"
 
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
