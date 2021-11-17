@@ -3677,7 +3677,7 @@ msgstr "それでも解決できませんか ? "
 #: views/settings/page-sections/dashboard.php:256
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
-msgstr "チケットを出してもらうと、フレンドリーで知識豊富な Rocketeers がお助けします。"
+msgstr "質問をチケットで出してください。フレンドリーで知識豊富な Rocketeers がお助けします。"
 
 #: views/settings/page-sections/dashboard.php:264
 msgid "Ask support"
