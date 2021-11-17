@@ -3822,7 +3822,7 @@ msgstr "デバッグログファイルを作成"
 #: views/settings/page-sections/tutorials.php:13
 #: views/settings/partials/getting-started.php:18
 msgid "Getting Started"
-msgstr "始めましょう"
+msgstr "始めてみましょう"
 
 #: views/settings/page-sections/tutorials.php:15
 msgid "Getting Started with WP Rocket"
