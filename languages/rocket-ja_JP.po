@@ -421,10 +421,7 @@ msgstr "グローバルキャッシュがクリアされるまでの時間を指
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
-msgstr ""
-"Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. Why?\n"
-"\n"
-"定期的に問題が発生するようであれば、有効期間を10時間以下にしてください。%1$sその理由は ?%2$s"
+msgstr "定期的に問題が発生するようであれば、有効期間を10時間以下にしてください。%1$sその理由は ?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:540
 #: inc/Engine/License/views/promo-banner.php:30
