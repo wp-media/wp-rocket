@@ -735,7 +735,7 @@ msgstr "JavaScript 遅延読込では、サイトのレンダリングブロッ�
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
-msgstr "遅延読込から除外する JavaScript ファイルの URL またはキーワードを指定（1行に1つ）%1$s詳細情報%2$s"
+msgstr "遅延読込から除外する JavaScript ファイルの URL またはキーワードを指定 (1行に1つ) %1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:874 inc/admin/ui/meta-boxes.php:80
 msgid "Delay JavaScript execution"
