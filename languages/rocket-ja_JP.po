@@ -834,7 +834,7 @@ msgstr "YouTube の iframe をプレビュー画像へ置換 は %2$sと互換�
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
-msgstr "これにより、1 つのページにたくさんの YouTube 動画がある場合、読み込み時間を大幅に改善します。"
+msgstr "これにより、1 つのページにたくさんの YouTube 動画がある場合、読込時間を大幅に改善します。"
 
 #: inc/Engine/Admin/Settings/Page.php:1059
 msgid "Excluded images or iframes"
