@@ -687,7 +687,7 @@ msgstr "除外インライン JavaScript"
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
-msgstr "連結から除外するインライン JavaScript のパターンを指定（1行に1つ）%1$s詳細情報%2$s"
+msgstr "連結から除外するインライン JavaScript のパターンを指定 (1行に1つ) %1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:823
 #: inc/Engine/Admin/Settings/Page.php:856
