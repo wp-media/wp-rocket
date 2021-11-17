@@ -1609,7 +1609,7 @@ msgstr "%s まで有効です !"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
 msgid "Speed up your website thanks to:"
-msgstr "サイトをスピードアップに貢献 : "
+msgstr "次の理由でサイトのスピードアップに貢献 : "
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
 #, php-format
