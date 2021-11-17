@@ -116,7 +116,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! ( 0 === (int) $old_value['delay_js'] && 1 === (int) $value['delay_js'] ) ) {
 			return $value;
 		}
-		
+
 		add_settings_error(
 			'general',
 			'compatibility_notice',
