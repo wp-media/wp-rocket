@@ -388,7 +388,7 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"指定した有効期間よりも古いキャッシュファイルは削除されます。<br>%1$sプリローディング%2$sを有効にすると、有効期間が経過した後にキャッシュが自動的に再構築されるようになります。"
+"指定した有効期間よりも古いキャッシュファイルは削除します。<br>%1$sプリローディング%2$sを有効にすると、有効期間が経過した後にキャッシュが自動的に再構築されるようになります。"
 
 #: inc/Engine/Admin/Settings/Page.php:491
 msgid "Enable caching for logged-in WordPress users"
