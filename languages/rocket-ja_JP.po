@@ -607,7 +607,7 @@ msgstr "CSS セーフリスト"
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
-msgstr "削除しない CSS のファイル名、ID、クラスを指定（1 行に 1 つ）"
+msgstr "削除しない CSS のファイル名、ID、クラスを指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:732 inc/admin/ui/meta-boxes.php:78
 msgid "Load CSS asynchronously"
