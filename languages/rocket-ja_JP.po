@@ -805,7 +805,7 @@ msgid ""
 "shifts and improve the reading experience for your visitors. %1$sMore "
 "info%2$s"
 msgstr ""
-"画像に足りない width、height 属性を追加します。レイアウトのずれを防ぎ、訪問者の閲覧性向上に貢献します。 %1$s詳細情報%2$s"
+"画像に不足している width、height 属性を追加します。レイアウトのずれを防ぎ、訪問者の閲覧性向上に貢献します。 %1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1007
 msgid "Enable for images"
