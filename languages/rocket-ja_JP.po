@@ -2566,7 +2566,7 @@ msgstr "WP Rocket がこのサイトから機密性のない診断データを�
 
 #: inc/admin/ui/notices.php:600
 msgid "This would help us to improve WP Rocket for you in the future."
-msgstr "これにより、今後の WP Rocket の改善に役立つことができます。"
+msgstr "これにより、今後の WP Rocket の改善に役立ちます。"
 
 #: inc/admin/ui/notices.php:606
 msgid "What info will we collect?"
