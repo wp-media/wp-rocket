@@ -3014,7 +3014,7 @@ msgstr "警告 : "
 #: inc/deprecated/deprecated.php:1501
 msgctxt "button text"
 msgid "Download settings"
-msgstr "ダウンロード設定"
+msgstr "設定をダウンロード"
 
 #: inc/deprecated/deprecated.php:1531
 msgid "Replace site's hostname with:"
