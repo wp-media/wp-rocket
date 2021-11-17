@@ -970,7 +970,7 @@ msgstr "キャッシュルールの詳細設定"
 #: inc/Engine/Admin/Settings/Page.php:1250
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
-msgstr "カスタムログイン/ログアウト URL のような高い機密性のページは、キャッシュから除外する必要があります。"
+msgstr "カスタムログイン / ログアウト URL のような機密性の高いページは、キャッシュから除外する必要があります。"
 
 #: inc/Engine/Admin/Settings/Page.php:1253
 msgctxt "plugin name"
