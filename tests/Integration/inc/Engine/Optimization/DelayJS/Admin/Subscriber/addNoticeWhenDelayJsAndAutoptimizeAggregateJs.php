@@ -18,8 +18,7 @@ class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
 
 		$this->unregisterAllCallbacksExcept(
 			'pre_update_option_wp_rocket_settings',
-			'add_notice_when_delayjs_and_autoptimize_aggregatejs',
-			11
+			'add_notice_when_delayjs_and_autoptimize_aggregatejs'
 		);
 	}
 
