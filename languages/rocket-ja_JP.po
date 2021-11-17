@@ -3780,7 +3780,7 @@ msgstr "%1$sファイルを削除%2$s。"
 
 #: views/settings/page-sections/tools.php:37
 msgid "Export settings"
-msgstr "設定をエクスポート"
+msgstr "設定のエクスポート"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
