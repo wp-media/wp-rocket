@@ -1087,7 +1087,7 @@ msgstr "投稿のクリーンアップ"
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
-msgstr "投稿のリビジョンやドラフトを永久に削除します。リビジョンやドラフトを保持する必要がある場合は、このオプションを使用しないでください。"
+msgstr "投稿のリビジョンや下書きを永久に削除します。リビジョンや下書きを保持する必要がある場合は、このオプションを使用しないでください。"
 
 #: inc/Engine/Admin/Settings/Page.php:1394
 msgid "Comments Cleanup"
