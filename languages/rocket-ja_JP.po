@@ -2682,7 +2682,7 @@ msgstr "バージョン %s の再インストール"
 #: inc/classes/dependencies/wp-media/background-processing/wp-background-process.php:447
 #, php-format
 msgid "Every %d Minutes"
-msgstr "%d 分ごと"
+msgstr "%d分ごと"
 
 #: inc/classes/logger/class-logger.php:260
 #: inc/classes/logger/class-logger.php:292
