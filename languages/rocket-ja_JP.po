@@ -1031,7 +1031,7 @@ msgstr "キャッシュするクエリ文字列"
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
-msgstr "%1$sクエリ文字列をキャッシュ%2$sでは、特定の GET パラメータのキャッシュを強制的に行うことができます。"
+msgstr "%1$sキャッシュするクエリ文字列%2$sでは、特定の GET パラメータのキャッシュを強制的に行うことができます。"
 
 #: inc/Engine/Admin/Settings/Page.php:1317
 msgid ""
