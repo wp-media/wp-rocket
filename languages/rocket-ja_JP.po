@@ -2183,7 +2183,7 @@ msgstr[0] "プリロードする URL の収集中に以下のエラーが発生�
 #: inc/Engine/Preload/PreloadSubscriber.php:357
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr "プリロード完了 : %d ページがキャッシュされました。"
+msgstr "プリロード完了 : %dページがキャッシュされました。"
 
 #: inc/Engine/Preload/Sitemap.php:150
 #, php-format
