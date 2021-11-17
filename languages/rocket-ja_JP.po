@@ -3116,7 +3116,7 @@ msgstr "匿名化された WP Rocket 設定 : "
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr "どの WP Rocket の設定が稼働中か"
+msgstr "有効化されている WP Rocket の設定"
 
 #: inc/functions/options.php:468
 msgid "The provided license data are not valid."
