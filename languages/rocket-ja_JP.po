@@ -1069,7 +1069,7 @@ msgstr "記事やページを更新したときに、常にキャッシュから
 
 #: inc/Engine/Admin/Settings/Page.php:1354
 msgid "Specify query strings for caching (one per line)"
-msgstr "キャッシュするクエリ文字列を指定 (1 行に 1 つ)"
+msgstr "キャッシュするクエリ文字列を指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1379 inc/deprecated/deprecated.php:1775
 msgid "Database"
