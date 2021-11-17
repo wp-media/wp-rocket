@@ -946,7 +946,7 @@ msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"プリロードするフォントファイルの URL を指定します。 (1 行に 1 つ）フォントは、独自ドメイン、または CDN "
+"プリロードするフォントファイルの URL を指定します。 (1行に1つ) フォントは、独自ドメイン、または CDN "
 "タブで指定したドメインでホストされている必要があります。"
 
 #: inc/Engine/Admin/Settings/Page.php:1210
