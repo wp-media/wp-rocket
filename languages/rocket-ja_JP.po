@@ -672,7 +672,7 @@ msgstr ""
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
-msgstr "javascript 実行の遅延が有効化されている場合は、互換性と最良の結果を得るために、このオプションは無効化されます。"
+msgstr "JavaScript 実行の遅延が有効化されている場合は、互換性と最良の結果を得るために、このオプションは無効化されます。"
 
 #: inc/Engine/Admin/Settings/Page.php:800
 msgid "Activate combine JavaScript"
