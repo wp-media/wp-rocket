@@ -1641,7 +1641,7 @@ msgstr "%s / 月"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
 msgid "Get Started"
-msgstr "始めましょう"
+msgstr "始めてみましょう"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
 msgid "Learn more about RocketCDN"
