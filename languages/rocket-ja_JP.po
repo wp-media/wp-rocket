@@ -1494,7 +1494,7 @@ msgstr "API キー検索"
 
 #: inc/Engine/Admin/Settings/Render.php:409 inc/deprecated/deprecated.php:1294
 msgid "Upload file and import settings"
-msgstr "ファイルのアップロードと設定のインポート"
+msgstr "ファイルをアップロードして、設定をインポート"
 
 #: inc/Engine/Admin/Settings/Settings.php:390
 msgid ""
