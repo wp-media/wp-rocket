@@ -116,13 +116,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! ( 0 === (int) $old_value['delay_js'] && 1 === (int) $value['delay_js'] ) ) {
 			return $value;
 		}
-
-		$transient_errors = get_transient( 'settings_errors' );
-
-		if ( ! is_array( $transient_errors ) ) {
-			$transient_errors = [];
-		}
-
+		
 		add_settings_error(
 			'general',
 			'compatibility_notice',
