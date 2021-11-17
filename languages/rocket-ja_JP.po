@@ -1036,7 +1036,7 @@ msgstr "%1$sキャッシュするクエリ文字列%2$sでは、特定の GET �
 #: inc/Engine/Admin/Settings/Page.php:1317
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
-msgstr "キャッシュしないページや記事の URL を指定（1 行に 1 つ）"
+msgstr "キャッシュしないページや記事の URL を指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1318
 #: inc/Engine/Admin/Settings/Page.php:1346
