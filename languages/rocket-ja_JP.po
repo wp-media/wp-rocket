@@ -3655,7 +3655,7 @@ msgstr "OPcache のコンテンツを消去"
 
 #: views/settings/page-sections/dashboard.php:189
 msgid "Purge OPCache"
-msgstr "OPCache を消去"
+msgstr "OPcache を消去"
 
 #: views/settings/page-sections/dashboard.php:200
 #: views/settings/page-sections/dashboard.php:206
