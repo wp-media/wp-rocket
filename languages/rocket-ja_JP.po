@@ -1281,7 +1281,7 @@ msgstr "アクティビティを減らすと、Heartbeat の頻度が 1 分に 1
 #: inc/Engine/Admin/Settings/Page.php:1672
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
-msgstr "Heartbeat を完全に無効にすると、この API を使用しているプラグインやテーマを破損する可能性があります。"
+msgstr "Heartbeat を完全に無効化すると、この API を使用しているプラグインやテーマを破損する可能性があります。"
 
 #: inc/Engine/Admin/Settings/Page.php:1686
 msgid "Do not limit"
