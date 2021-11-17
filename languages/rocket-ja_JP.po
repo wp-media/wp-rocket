@@ -3547,7 +3547,7 @@ msgstr "CSS"
 
 #: views/settings/fields/import-form.php:29
 msgid "Import settings"
-msgstr "設定をインポート"
+msgstr "設定のインポート"
 
 #: views/settings/fields/one-click-addon.php:43
 #: views/settings/fields/rocket-addon.php:33
