@@ -3797,7 +3797,7 @@ msgstr "ロールバック"
 #: views/settings/page-sections/tools.php:64
 #, php-format
 msgid "Has version %s caused an issue on your website?"
-msgstr "サイト上で、バージョン %s が不具合を起こしましたか ? "
+msgstr "バージョン %s でサイトに不具合が起きましたか ?"
 
 #: views/settings/page-sections/tools.php:69
 #, php-format
