@@ -1050,7 +1050,7 @@ msgstr ""
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
-msgstr "訪問者のブラウザに設定されたときに、ページのキャッシュを防止するクッキーの完全または部分的な ID を指定 (1 行に 1 つ)"
+msgstr "訪問者のブラウザに設定されたときに、ページのキャッシュを防止するクッキーの完全または部分的な ID を指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1335
 msgid ""
