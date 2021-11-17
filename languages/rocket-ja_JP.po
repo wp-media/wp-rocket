@@ -853,7 +853,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1069
 msgid "Add missing image dimensions"
-msgstr "足りない画像サイズの追加"
+msgstr "不足している画像サイズの追加"
 
 #: inc/Engine/Admin/Settings/Page.php:1088 inc/deprecated/deprecated.php:1776
 #: views/settings/page-sections/tutorials.php:30
