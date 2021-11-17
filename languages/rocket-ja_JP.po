@@ -2895,7 +2895,7 @@ msgstr "詳細情報"
 #: inc/deprecated/3.2.php:228
 #, php-format
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "サイトマップのプリロード : %d ページをキャッシュしました。"
+msgstr "サイトマップのプリロード : %dページをキャッシュしました。"
 
 #: inc/deprecated/3.2.php:261
 #, php-format
