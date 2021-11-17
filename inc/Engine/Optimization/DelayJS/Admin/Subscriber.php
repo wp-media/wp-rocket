@@ -99,11 +99,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add a compatibility notice to transient errors when Autoptimize Aggregate JS is 'on' and Delay JS is activated.
 	 *
+	 * @since 3.10.4
+	 *
 	 * @param array $value     New Settings values array.
 	 * @param array $old_value Old Settings values array.
 	 *
 	 * @return array Returns the new settings values array unchanged.
-	 * @since 3.10.4
 	 */
 	public function add_notice_when_delayjs_and_autoptimize_aggregatejs( $value, $old_value ): array {
 		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
