@@ -1024,7 +1024,7 @@ msgstr "常に消去する URL"
 
 #: inc/Engine/Admin/Settings/Page.php:1303
 msgid "Cache Query String(s)"
-msgstr "クエリ文字列をキャッシュ"
+msgstr "キャッシュするクエリ文字列"
 
 #: inc/Engine/Admin/Settings/Page.php:1306
 #, php-format
