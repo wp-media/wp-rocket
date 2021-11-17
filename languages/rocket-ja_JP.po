@@ -1055,7 +1055,7 @@ msgstr "訪問者のブラウザに設定されたときに、ページのキャ
 #: inc/Engine/Admin/Settings/Page.php:1335
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
-msgstr "キャッシュされたページを見せないユーザーエージェントの文字列を指定 (1 行に 1 つ)"
+msgstr "キャッシュされたページを見せない User Agent の文字列を指定 (1 行に 1 つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1336
 msgid "Use (.*) wildcards to detect parts of UA strings."
