@@ -2175,7 +2175,7 @@ msgid ""
 msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
-msgstr[0] "プリロード : %1$s のキャッシュされていないページが現在プリロードされています。(更新で進行状況を表示)"
+msgstr[0] "プリロード : キャッシュされていない %1$s ページを現在プリロードしています。(更新で進行状況を表示)"
 
 #: inc/Engine/Preload/PreloadSubscriber.php:305
 msgid "The following error happened during gathering of the URLs to preload:"
