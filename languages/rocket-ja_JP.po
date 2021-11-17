@@ -780,7 +780,7 @@ msgid ""
 "and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
 "画像、iframe、動画がビューポートに入る（入ろうとしている）ときにだけ読み込み、HTTP "
-"リクエストの数を減らして、実際の読み込み時間と体感読み込み時間を改善します。%1$s詳細情報%2$s"
+"リクエストの数を減らして、実際の読込時間と体感読込時間を改善します。%1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:982
 #, php-format
