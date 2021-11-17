@@ -1008,7 +1008,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:126
 msgid "Never Cache URL(s)"
-msgstr "URL をキャッシュしない"
+msgstr "キャッシュしない URL"
 
 #: inc/Engine/Admin/Settings/Page.php:1285
 msgid "Never Cache Cookies"
