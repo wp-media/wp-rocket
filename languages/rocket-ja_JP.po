@@ -754,7 +754,7 @@ msgstr ""
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
-msgstr "実行遅延させる対象から除外するインラインおよび JavaScript ファイルを特定できる URL やキーワードを指定（1行に1つ）"
+msgstr "実行遅延させる対象から除外するインラインおよび JavaScript ファイルを特定できる URL やキーワードを指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:917
 msgid "Media"
