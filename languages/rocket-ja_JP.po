@@ -846,7 +846,7 @@ msgid ""
 "Specify keywords (e.g. image filename, CSS class, domain) from the image or "
 "iframe code to be excluded (one per line). %1$sMore info%2$s"
 msgstr ""
-"除外する画像や iframe のコードからキーワード（画像ファイル名、CSS クラス、ドメインなど）を指定（1 行に 1 つ） %1$s詳細情報%2$s"
+"除外する画像や iframe のコードからキーワード（画像ファイル名、CSS クラス、ドメインなど）を指定 (1行に1つ) %1$s詳細情報%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1069
 msgid "Add missing image dimensions"
