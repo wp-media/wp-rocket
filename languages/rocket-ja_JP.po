@@ -1020,7 +1020,7 @@ msgstr "キャッシュしない User Agent"
 
 #: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
 msgid "Always Purge URL(s)"
-msgstr "常に URL を消去する"
+msgstr "常に消去する URL"
 
 #: inc/Engine/Admin/Settings/Page.php:1303
 msgid "Cache Query String(s)"
