@@ -3788,7 +3788,7 @@ msgstr "設定のバックアップファイルをダウンロード"
 
 #: views/settings/page-sections/tools.php:46
 msgid "Download settings"
-msgstr "ダウンロード設定"
+msgstr "設定をダウンロード"
 
 #: views/settings/page-sections/tools.php:60
 msgid "Rollback"
