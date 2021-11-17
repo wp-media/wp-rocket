@@ -611,7 +611,7 @@ msgstr "削除しない CSS のファイル名、ID、クラスを指定（1 行
 
 #: inc/Engine/Admin/Settings/Page.php:732 inc/admin/ui/meta-boxes.php:78
 msgid "Load CSS asynchronously"
-msgstr "CSS 非同期読み込み"
+msgstr "CSS 非同期読込"
 
 #: inc/Engine/Admin/Settings/Page.php:735
 #, php-format
