@@ -1331,7 +1331,7 @@ msgstr "ワンクリック Rocket アドオン"
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
-msgstr "ワンクリックアドオンは、設定を必要とせずに利用可能なオプションを拡張する機能です。この画面でオプションを「オン」にすると有効化します。"
+msgstr "ワンクリックアドオンは、設定を必要とせずに利用可能なオプションを拡張する機能です。この画面でオプションを「on」にすると有効化します。"
 
 #: inc/Engine/Admin/Settings/Page.php:1754
 msgid "Rocket Add-ons"
