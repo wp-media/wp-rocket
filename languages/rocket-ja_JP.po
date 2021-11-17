@@ -2902,7 +2902,7 @@ msgstr "サイトマップのプリロード : %dページをキャッシュし�
 msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
-msgstr "サイトマップのプリロード : キャッシュされていない %d ページをプリロードしました。(更新で進行状況を表示)"
+msgstr "サイトマップのプリロード : キャッシュされていない %dページをプリロードしました。(更新で進行状況を表示)"
 
 #: inc/deprecated/3.4.php:18
 msgid "Choose a domain from the list"
