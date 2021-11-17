@@ -2570,7 +2570,7 @@ msgstr "これにより、今後の WP Rocket の改善に役立ちます。"
 
 #: inc/admin/ui/notices.php:606
 msgid "What info will we collect?"
-msgstr "どのような情報を収集するのでしょうか ?（クリックして表示）"
+msgstr "どのような情報を収集するのでしょうか ? (クリックして表示)"
 
 #: inc/admin/ui/notices.php:611
 msgid ""
