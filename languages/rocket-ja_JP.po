@@ -1242,7 +1242,7 @@ msgstr "以下に CNAME を指定してください"
 #: inc/Engine/Admin/Settings/Page.php:1632
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
-msgstr "CDN で配信しないファイルの URL を指定 (1 行に 1 つ) "
+msgstr "CDN で配信しないファイルの URL を指定 (1行に1つ)"
 
 #: inc/Engine/Admin/Settings/Page.php:1633
 msgid ""
