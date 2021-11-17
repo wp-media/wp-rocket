@@ -3651,7 +3651,7 @@ msgstr "キャッシュのプリロードを開始"
 
 #: views/settings/page-sections/dashboard.php:183
 msgid "Purge OPCache content"
-msgstr "OPCache のコンテンツを消去"
+msgstr "OPcache のコンテンツを消去"
 
 #: views/settings/page-sections/dashboard.php:189
 msgid "Purge OPCache"
