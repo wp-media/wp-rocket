@@ -1012,7 +1012,7 @@ msgstr "キャッシュしない URL"
 
 #: inc/Engine/Admin/Settings/Page.php:1285
 msgid "Never Cache Cookies"
-msgstr "Cookie をキャッシュしない"
+msgstr "キャッシュしない Cookie"
 
 #: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
 msgid "Never Cache User Agent(s)"
