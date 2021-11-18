@@ -36,7 +36,7 @@ class Subscriber implements Subscriber_Interface {
 			'pre_update_option_wp_rocket_settings' => [
 				[
 					[ 'maybe_disable_combine_js', 11, 2 ],
-					[ 'add_notice_when_delayjs_and_autoptimize_aggregatejs', 10, 2 ],
+//					[ 'add_notice_when_delayjs_and_autoptimize_aggregatejs', 10, 2 ],
 				],
 			],
 		];
