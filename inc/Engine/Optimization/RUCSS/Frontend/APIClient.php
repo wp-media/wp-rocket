@@ -26,7 +26,6 @@ class APIClient extends AbstractAPIClient {
 	public function optimize( string $html, string $url, array $options ): array {
 		$args = [
 			'body'    => [
-				'html'   => $html,
 				'url'    => $url,
 				'config' => $options,
 			],

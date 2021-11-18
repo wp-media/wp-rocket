@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -35,13 +34,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Pre-Warmup Status Checker.
-	 *
-	 * @var Checker
-	 */
-	private $checker;
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 3.2
@@ -49,12 +41,10 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @param Homepage     $homepage_preloader Homepage Preload instance.
 	 * @param Options_Data $options            WP Rocket Options instance.
-	 * @param Checker      $checker            Pre-Warmup Status Checker.
 	 */
-	public function __construct( Homepage $homepage_preloader, Options_Data $options, Checker $checker ) {
+	public function __construct( Homepage $homepage_preloader, Options_Data $options ) {
 		$this->homepage_preloader = $homepage_preloader;
 		$this->options            = $options;
-		$this->checker            = $checker;
 	}
 
 	/**
@@ -149,7 +139,7 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_preload( $old_value, $value ) {
-		if ( ! empty( $value['remove_unused_css'] ) && ! $this->checker->is_warmup_finished() ) {
+		if ( ! empty( $value['remove_unused_css'] ) ) {
 			return;
 		}
 

@@ -5,12 +5,13 @@ namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
 
 abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://central-saas.wp-rocket.me/';
+	const API_URL = 'https://rucss-test.wp-rocket.me/';
 
 	/**
 	 * Part of request Url after the main API_URL.

@@ -277,7 +277,6 @@ class Plugin {
 			'preload_links_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
-			'rucss_warmup_subscriber',
 			'webp_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
