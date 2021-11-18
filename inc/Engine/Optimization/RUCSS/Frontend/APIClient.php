@@ -26,7 +26,7 @@ class APIClient extends AbstractAPIClient {
 	public function optimize( string $html, string $url, array $options ): array {
 		$args = [
 			'body'    => [
-				'url'    => $url,
+				'url'    => add_query_arg( 'nowprocket', '1', $url ),
 				'config' => $options,
 			],
 			'timeout' => 5,
