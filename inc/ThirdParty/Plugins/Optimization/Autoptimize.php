@@ -34,12 +34,12 @@ class Autoptimize implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber listens to.
 	 *
+	 * @return array
 	 * @since  3.10.4
 	 *
-	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_get_constant('AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
+		if ( ! rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
 			return [];
 		}
 
@@ -50,30 +50,42 @@ class Autoptimize implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Add an admin warning notice when Delay JS and JS Aggregation are both activated.
+	 *
+	 * @since 3.10.4
+	 */
 	public function warn_when_js_aggregation_and_delay_js_active() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
 		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
 
-		if ( 'on' !== $autoptimize_aggregate_js_setting ) {
-			return $value;
+		if ( 'on' !== $autoptimize_aggregate_js_setting && ! (bool) $this->options->get( 'delay_js' ) ) {
+			return;
 		}
 
-		if ( ! ( 0 === (int) $old_value['delay_js'] && 1 === (int) $value['delay_js'] ) ) {
-			return $value;
-		}
+		$message = '</strong>' .
+		           __(
+			           'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+			           'rocket'
+		           ) .
+		           '<strong>';
 
-		add_settings_error(
-			'general',
-			'compatibility_notice',
-			'</strong>' .
-			__(
-				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
-				'rocket'
-			) .
-			'<strong>',
-			'info'
+		rocket_notice_html(
+			[
+				'status'         => 'warning',
+				'message'        => $message,
+				'dismissable'    => '',
+				'dismiss_button' => __FUNCTION__,
+			]
 		);
-
-		return $value;
 	}
-
 }
