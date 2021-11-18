@@ -2,6 +2,7 @@
 
 $html = '<html>
 <head>
+	<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
@@ -177,6 +178,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 
 $delay_html_upgrade = '<html>
 <head>
+	<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
 	<script src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
@@ -352,6 +354,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 
 $delay_html = '<html>
 <head>
+	<script type="rocketlazyloadscript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
 	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
