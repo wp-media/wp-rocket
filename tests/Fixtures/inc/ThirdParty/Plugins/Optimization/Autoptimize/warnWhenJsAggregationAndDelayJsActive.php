@@ -47,7 +47,7 @@ return [
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOffAndDelayJsActivated' => [
-		'config' => [
+		'config'   => [
 			'delayJSActiveOld'             => [ 'delay_js' => 0 ],
 			'delayJSActiveNew'             => [ 'delay_js' => 1 ],
 			'autoptimizeAggregateJSActive' => 'off',
@@ -56,7 +56,7 @@ return [
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOffAndDelayJsPreviouslyActivated' => [
-		'config' => [
+		'config'   => [
 			'delayJSActiveOld'             => [ 'delay_js' => 1 ],
 			'delayJSActiveNew'             => [ 'delay_js' => 1 ],
 			'autoptimizeAggregateJSActive' => 'off',
@@ -65,7 +65,7 @@ return [
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOnAndDelayJsPreviouslyActivated' => [
-		'config' => [
+		'config'   => [
 			'delayJSActiveOld'             => [ 'delay_js' => 1 ],
 			'delayJSActiveNew'             => [ 'delay_js' => 1 ],
 			'autoptimizeAggregateJSActive' => 'on',
@@ -74,7 +74,7 @@ return [
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOffAndDelayJsDeactivated' => [
-		'config' => [
+		'config'   => [
 			'delayJSActiveOld'             => [ 'delay_js' => 1 ],
 			'delayJSActiveNew'             => [ 'delay_js' => 0 ],
 			'autoptimizeAggregateJSActive' => 'off',
@@ -83,13 +83,11 @@ return [
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOnAndDelayJsDeactivated' => [
-		'config' => [
+		'config'   => [
 			'delayJSActiveOld'             => [ 'delay_js' => 1 ],
 			'delayJSActiveNew'             => [ 'delay_js' => 0 ],
 			'autoptimizeAggregateJSActive' => 'on',
 		],
 		'expected' => [],
 	],
-
-
 ];

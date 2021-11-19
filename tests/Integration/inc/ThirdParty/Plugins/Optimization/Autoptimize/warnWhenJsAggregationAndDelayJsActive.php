@@ -2,22 +2,18 @@
 
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subscriber;
-
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::add_notice_when_delayjs_and_autoptimize_aggreatejs
- *
- * @group DelayJS
- * @group AdminOnly
+ * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_js_aggregation_and_delay_js_active
  */
-class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
+class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
+
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept(
-			'pre_update_option_wp_rocket_settings',
+			'admin_notices',
 			'add_notice_when_delayjs_and_autoptimize_aggregatejs'
 		);
 	}
@@ -38,11 +34,11 @@ class Test_AddNoticeWhenDelayJsAndAutoptimizeAggregateJs extends TestCase {
 	public function testShouldAddExpectedNoticeToTransientErrorsArray( $config, $expected ) {
 		update_option( 'autoptimize_js_aggregate', $config['autoptimizeAggregateJSActive'] );
 
-		apply_filters( 'pre_update_option_wp_rocket_settings', $config['delayJSActiveNew'], $config['delayJSActiveOld'] );
+		apply_filters( 'pre_update_option_wp_rocket_settings', $config['delayJSActiveNew'],
+			$config['delayJSActiveOld'] );
 
-		$settings_errors = get_settings_errors('general');
+		$settings_errors = get_settings_errors( 'general' );
 
 		$this->assertSame( $expected, $settings_errors );
 	}
-
 }
