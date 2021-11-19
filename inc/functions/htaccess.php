@@ -506,6 +506,10 @@ function get_rocket_htaccess_charset() { // phpcs:ignore WordPress.NamingConvent
 	// Get charset of the blog.
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
 
+	if ( empty( $charset ) ) {
+		return '';
+	}
+
 	$rules = "# Use $charset encoding for anything served text/plain or text/html" . PHP_EOL;
 	$rules .= "AddDefaultCharset $charset" . PHP_EOL;
 	$rules .= "# Force $charset for a number of file formats" . PHP_EOL;

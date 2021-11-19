@@ -92,10 +92,11 @@ class Test_InsertLazyloadScript extends TestCase {
 				->andReturn( $options['use_native'] );
 		}
 
-		if ( isset( $options['polyfill'] ) ) {
-			Filters\expectApplied( 'rocket_lazyload_polyfill' )
+		if ( isset( $options['use_native_images'] ) ) {
+			Filters\expectApplied( 'rocket_use_native_lazyload_images' )
+				->atMost()
 				->once()
-				->andReturn( $options['polyfill'] );
+				->andReturn( $options['use_native_images'] );
 		}
 
 		$this->assertSame(

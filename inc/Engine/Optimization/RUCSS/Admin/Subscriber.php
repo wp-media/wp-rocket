@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -86,6 +84,8 @@ class Subscriber implements Subscriber_Interface {
 			'delete_post'                         => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
 			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
+			'edit_term'                           => 'delete_term_used_css',
+			'pre_delete_term'                     => 'delete_term_used_css',
 			'init'                                => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
@@ -142,7 +142,6 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
-	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @since 3.9
 	 *
@@ -151,13 +150,6 @@ class Subscriber implements Subscriber_Interface {
 	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
-		}
-
-		$old_used_css_ids = $this->database->get_old_used_css();
-		foreach ( $old_used_css_ids as $old_used_css ) {
-			$used_css_item = new UsedCSS_Row( $old_used_css );
-			// Delete file from filesystem.
-			$this->used_css->delete_used_css_file( $used_css_item );
 		}
 
 		$this->database->delete_old_used_css();
@@ -172,9 +164,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
-		if ( ! $this->settings->is_enabled() ) {
+		if (
+			! $this->settings->is_enabled()
+			&&
+			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
+		) {
 			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 
+			return;
+		}
+
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
@@ -202,6 +202,29 @@ class Subscriber implements Subscriber_Interface {
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
+			return;
+		}
+
+		$this->used_css->delete_used_css( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Deletes the used CSS when updating a term
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param int $term_id the term ID.
+	 *
+	 * @return void
+	 */
+	public function delete_term_used_css( $term_id ) {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( is_wp_error( $url ) ) {
 			return;
 		}
 
