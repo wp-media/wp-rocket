@@ -5,17 +5,17 @@
 # Rafael Funchal <rafaelfunchal@gmail.com>, 2019
 # Paulo Andraus <contato@pandraus.com>, 2019
 # Deblyn Prado, 2019
-# Fabio Fava <go@fabiofava.com>, 2021
 # wpmedia <contact@wp-media.me>, 2021
+# Fabio Fava <go@fabiofava.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-09-29 09:15-0400\n"
+"POT-Creation-Date: 2021-11-19 16:12-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>, 2021\n"
+"Last-Translator: Fabio Fava <go@fabiofava.com>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/wp-media/teams/18133/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -613,18 +613,18 @@ msgstr ""
 "site. Apenas um método pode ser selecionado. Remover o CSS não usado é "
 "recomendado para um desempenho ótimo."
 
-#: inc/Engine/Admin/Settings/Page.php:704 inc/admin/ui/meta-boxes.php:75
-msgid "Remove Unused CSS"
-msgstr "Remover CSS não utilizado"
+#: inc/Engine/Admin/Settings/Page.php:704
+msgid "Remove Unused CSS (Beta)"
+msgstr "Remover o CSS não usado (Beta)"
 
 #: inc/Engine/Admin/Settings/Page.php:706
 #, php-format
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
-" Recommended for best performance. Test thoroughly!  %1$sMore info%2$s"
+" Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
 "Remove o CSS não usado por página e ajuda a reduzir o tamanho das páginas e "
-"as solicitações HTTP. Recomendado para melhor desempenho. Teste "
+"as requisições HTTP. Recomendado para melhor desempenho. Teste "
 "extensivamente! %1$sMais informações%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:708
@@ -1651,7 +1651,7 @@ msgstr "Encontre a sua chave da API"
 msgid "Upload file and import settings"
 msgstr "Enviar e importar configurações"
 
-#: inc/Engine/Admin/Settings/Settings.php:390
+#: inc/Engine/Admin/Settings/Settings.php:391
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1659,10 +1659,19 @@ msgstr ""
 "Complemento Sucuri. A chave da API para o firewall Sucuri precisa estar no "
 "formato <code>{32 caracteres}/{32 caracteres}</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:481
+#: inc/Engine/Admin/Settings/Settings.php:482
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Configurações salvas."
+
+#: inc/Engine/Admin/Settings/Settings.php:698
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
+"because it disables caching and optimizations for every page on your site."
+msgstr ""
+"Adicionando /(*) em Regras avançadas > Nunca armazenar URL(s) em cache não "
+"foi salva porque ela desativa o armazenamento em cache e as otimizações para"
+" cada página do seu site."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150
 #: inc/deprecated/deprecated.php:1786
@@ -1980,18 +1989,18 @@ msgstr "Ativa o carregamento assíncrono do CSS nas configurações do WP Rocket
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "Ativa o carregamento assíncrono do CSS nas opções acima"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr "A geração do CSS crítico está sendo executada."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:255
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/Preload/PreloadSubscriber.php:257
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 "Vá até as %1$sConfigurações do WP Rocket%2$s para acompanhar o progresso."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2000,16 +2009,16 @@ msgstr ""
 "A geração do CSS crítico está sendo executada: %1$d de %2$d tipos de páginas"
 " concluídos. (Atualize a página para ver o progresso)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Geração de CSS crítico concluída para %1$d de %2$d tipos de página."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "A geração de CSS crítico encontrou um ou mais erros."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Learn more."
 msgstr "Saiba mais."
 
@@ -2284,38 +2293,38 @@ msgstr ""
 "Você pode usar o WP Rocket em mais sites atualizando a sua licença (você só "
 "paga a diferença de preço entre a sua licença atual e a nova)."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:108
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
 msgstr "Limpar CSS usado"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:347
 msgid "Used CSS option is not enabled!"
 msgstr "A opção de CSS usado não está ativa!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:340
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:363
 msgid "Used CSS cache cleared!"
 msgstr "Cache de CSS usado limpo!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:408
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr "Arquivos de recurso coletados de {count} of {total} páginas chave."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:409
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr ""
 "Processados {count} de {total} arquivos de recurso encontrados em páginas "
 "chave."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:410
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
 msgid "Remove Unused CSS is complete!"
 msgstr "A remoção do CSS não usado está concluída!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:411
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
 msgid "These files could not be processed:"
 msgstr "Estes arquivos nào podem ser pré-processados:"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:412
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2382,11 +2391,11 @@ msgstr ""
 "O pré-carregamento encontrou um erro: Não foi possível obter os links em "
 "%1$s pois retornou o seguinte código de resposta: %2$s. %3$sSaiba mais%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:250
+#: inc/Engine/Preload/PreloadSubscriber.php:252
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "Pré-carregamento: o WP Rocket começou a pré-carregar o seu website."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:296
+#: inc/Engine/Preload/PreloadSubscriber.php:298
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2401,14 +2410,14 @@ msgstr[1] ""
 "Pré-carregamento: %1$s páginas sem cache foram pré-carregadas. (atualize a "
 "página para ver o progresso)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:305
+#: inc/Engine/Preload/PreloadSubscriber.php:307
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] "Ocorreu o seguinte erro obtendo os URLs a pré-carregar:"
 msgstr[1] "Ocorreram os seguintes erros obtendo os URLs a pré-carregar:"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:357
+#: inc/Engine/Preload/PreloadSubscriber.php:359
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "Pré-carregamento concluído: %d páginas foram armazenadas em cache."
@@ -2485,7 +2494,7 @@ msgstr ""
 " links de %1$s devido a um erro durante a análise do sitemap XML. %2$sSaiba "
 "mais%3$s."
 
-#: inc/Engine/Preload/SitemapPreloadSubscriber.php:120
+#: inc/Engine/Preload/SitemapPreloadSubscriber.php:122
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
@@ -2587,11 +2596,11 @@ msgstr ""
 "Atrasar o JS está ativo no momento em %1$s. Se deseja usar o atrasar JS do "
 "WP Rocket, desative %1$s"
 
-#: inc/ThirdParty/Plugins/Smush.php:110 inc/ThirdParty/Plugins/Smush.php:128
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:118
+#: inc/ThirdParty/Themes/Avada.php:119
 msgid "Avada"
 msgstr "Avada"
 
@@ -2695,6 +2704,10 @@ msgstr "LazyLoad para iframes/vídeos"
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "Minificar/combinar o CSS"
+
+#: inc/admin/ui/meta-boxes.php:75
+msgid "Remove Unused CSS"
+msgstr "Remover CSS não utilizado"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"
