@@ -1667,8 +1667,8 @@ msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
 msgstr ""
-"Üzgünüz! Gelişmiş Kurallar > URL'leri Asla Önbellekleme içine /(.*) eklemek,"
-" sitenizdeki her sayfa için önbelleğe almayı ve iyileştirmeleri "
+"Üzgünüz! Gelişmiş Kurallar > URL’(leri)yi Asla Önbellekleme içine /(.*) "
+"eklemek, sitenizdeki her sayfa için önbelleğe almayı ve iyileştirmeleri "
 "etkisizleştirdiğinden kaydedilmedi."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150
