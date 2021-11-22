@@ -155,13 +155,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	if ( $errors ) {
-		$error_message  = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', array_sum( array_map( 'count', $errors ) ), 'rocket' );
+		$error_message = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', array_sum( array_map( 'count', $errors ) ), 'rocket' );
 
 		foreach ( $errors as $error ) {
 			$error_message .= '<ul><li>' . implode( '</li><li>', $error ) . '</li></ul>';
 		}
 
-		$errors         = [];
+		$errors = [];
 
 		$rocket_settings_errors[] = [
 			'setting' => 'general',
