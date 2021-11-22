@@ -34,6 +34,10 @@ function rocket_init() {
 		return;
 	}
 
+	if ( defined( 'WP_IMPORTING' ) ) {
+		return;
+	}
+
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
