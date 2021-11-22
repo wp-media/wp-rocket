@@ -2,43 +2,58 @@
 
 declare( strict_types=1 );
 
+use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_js_aggregation_and_delay_js_active
+ *
+ * @group  Autoptimize
+ * @group  ThirdParty
  */
 class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
+	use CapTrait;
+
+	public static function setUpBeforeClass(): void {
+		parent::setUpBeforeClass();
+
+		CapTrait::setAdminCap();
+	}
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->unregisterAllCallbacksExcept(
 			'admin_notices',
-			'add_notice_when_delayjs_and_autoptimize_aggregatejs'
+			'warn_when_js_aggregation_and_delay_js_active'
 		);
 	}
 
 	public function tearDown() {
-		global $wp_settings_errors;
 		parent::tearDown();
 
-		$this->restoreWpFilter( 'pre_update_option_wp_rocket_settings' );
-		delete_option( 'autoptimize_js_aggregate' );
-		delete_transient( 'settings_errors' );
-		$wp_settings_errors = [];
+		$this->restoreWpFilter( 'admin_notices' );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddExpectedNoticeToTransientErrorsArray( $config, $expected ) {
-		update_option( 'autoptimize_js_aggregate', $config['autoptimizeAggregateJSActive'] );
+	public function testShouldAddExpectedNotice( $config, $expected ) {
+		$this->constants['AUTOPTIMIZE_PLUGIN_VERSION'] = '1.2.3';
+		$this->stubRocketGetConstant();
 
-		apply_filters( 'pre_update_option_wp_rocket_settings', $config['delayJSActiveNew'],
-			$config['delayJSActiveOld'] );
+		$current_user = static::factory()->user->create( [ 'role' => 'administrator' ] );
+		set_current_user( $current_user );
 
-		$settings_errors = get_settings_errors( 'general' );
+		update_option( 'autoptimize_aggregate_js', 'on' );
+		add_filter( 'pre_get_rocket_option_delay_js', function () {
+			return true;
+		} );
 
-		$this->assertSame( $expected, $settings_errors );
+		ob_start();
+		do_action( 'admin_notices' );
+		$notices = ob_get_clean();
+
+		$this->assertStringContainsString( $expected, $notices );
 	}
 }

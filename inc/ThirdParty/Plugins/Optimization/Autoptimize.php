@@ -44,9 +44,7 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		return [
-			'admin_notices' => [
-				'warn_when_js_aggregation_and_delay_js_active',
-			],
+			'admin_notices' => [ 'warn_when_js_aggregation_and_delay_js_active' ]
 		];
 	}
 
