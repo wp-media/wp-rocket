@@ -74,10 +74,10 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$message = '</strong>' . __(
+		$message = '<strong>' . __(
 			'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
 				'rocket'
-			) . '<strong>';
+			) . '</strong>';
 
 		rocket_notice_html(
 			[
