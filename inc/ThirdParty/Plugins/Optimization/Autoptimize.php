@@ -36,7 +36,6 @@ class Autoptimize implements Subscriber_Interface {
 	 *
 	 * @return array
 	 * @since  3.10.4
-	 *
 	 */
 	public static function get_subscribed_events() {
 		if ( ! rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
@@ -44,7 +43,7 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		return [
-			'admin_notices' => [ 'warn_when_js_aggregation_and_delay_js_active' ]
+			'admin_notices' => [ 'warn_when_js_aggregation_and_delay_js_active' ],
 		];
 	}
 
@@ -70,12 +69,7 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$message = '</strong>' .
-		           __(
-			           'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
-			           'rocket'
-		           ) .
-		           '<strong>';
+		$message = '</strong>' . __( 'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.', 'rocket' ) . '<strong>';
 
 		rocket_notice_html(
 			[
