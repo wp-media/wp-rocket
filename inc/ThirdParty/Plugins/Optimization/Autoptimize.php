@@ -38,10 +38,6 @@ class Autoptimize implements Subscriber_Interface {
 	 * @since  3.10.4
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
-			return [];
-		}
-
 		return [
 			'admin_notices' => [ 'warn_when_js_aggregation_and_delay_js_active' ],
 		];
@@ -53,23 +49,35 @@ class Autoptimize implements Subscriber_Interface {
 	 * @since 3.10.4
 	 */
 	public function warn_when_js_aggregation_and_delay_js_active() {
+		if ( ! rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
+		$boxes                            = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( 'on' !== $autoptimize_aggregate_js_setting || false === (bool) $this->options->get( 'delay_js' ) ) {
+			if ( ! is_array( $boxes ) ) {
+				return;
+			}
+
+			$this->remove_warning_dismissal( $boxes, __FUNCTION__ );
+
+			return;
+		}
 
 		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
 			return;
 		}
 
-		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
-
-		if ( 'on' !== $autoptimize_aggregate_js_setting && ! (bool) $this->options->get( 'delay_js' ) ) {
-			return;
-		}
-
-		$message = '</strong>' . __( 'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.', 'rocket' ) . '<strong>';
+		$message = '</strong>' . __(
+			'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+				'rocket'
+			) . '<strong>';
 
 		rocket_notice_html(
 			[
@@ -79,5 +87,20 @@ class Autoptimize implements Subscriber_Interface {
 				'dismiss_button' => __FUNCTION__,
 			]
 		);
+	}
+
+	/**
+	 * Remove a warning box dismissal.
+	 *
+	 * @param array  $boxes The rocket_boxes user meta.
+	 * @param string $name  Slug for the box to be removed.
+	 */
+	private function remove_warning_dismissal( $boxes, $name ) {
+		if ( ! in_array( $name, $boxes, true ) ) {
+			return;
+		}
+
+		unset( $boxes[ array_search( $name, $boxes, true ) ] );
+		update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
 	}
 }

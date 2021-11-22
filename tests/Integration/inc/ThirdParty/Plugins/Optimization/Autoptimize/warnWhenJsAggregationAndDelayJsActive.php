@@ -2,6 +2,7 @@
 
 declare( strict_types=1 );
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -9,6 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_js_aggregation_and_delay_js_active
  *
  * @group  Autoptimize
+ * @group  AdminOnly
  * @group  ThirdParty
  */
 class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
@@ -27,12 +29,15 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 			'admin_notices',
 			'warn_when_js_aggregation_and_delay_js_active'
 		);
+
+		Functions\expect( 'wp_create_nonce' )
+			->with( 'warn_when_js_aggregation_and_delay_js_active' )
+			->andReturn( '123456' );
 	}
 
 	public function tearDown() {
-		parent::tearDown();
-
 		$this->restoreWpFilter( 'admin_notices' );
+		parent::tearDown();
 	}
 
 	/**
@@ -43,17 +48,45 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		$this->stubRocketGetConstant();
 
 		$current_user = static::factory()->user->create( [ 'role' => 'administrator' ] );
-		set_current_user( $current_user );
+		wp_set_current_user( $current_user );
 
-		update_option( 'autoptimize_aggregate_js', 'on' );
-		add_filter( 'pre_get_rocket_option_delay_js', function () {
-			return true;
+		update_option( 'autoptimize_js_aggregate', $config['autoptimizeAggregateJSActive'] );
+		add_filter( 'pre_get_rocket_option_delay_js', function () use ( $config ) {
+			return $config[ 'delayJSActive' ];
 		} );
+
+		if ( $config['dismissed'] ) {
+			update_user_meta(
+				$current_user,
+				'rocket_boxes',
+				[ 'warn_when_js_aggregation_and_delay_js_active' ]
+			);
+		}
 
 		ob_start();
 		do_action( 'admin_notices' );
 		$notices = ob_get_clean();
+		$notices = empty( $notices ) ? $notices : $this->format_the_html( $notices );
 
-		$this->assertStringContainsString( $expected, $notices );
+		$this->assertSame( $this->format_the_html( $expected ), $notices );
+
+		$boxes = get_user_meta( $current_user, 'rocket_boxes', true );
+
+		if ( $config[ 'dismissed' ]
+		     &&
+		     $config[ 'delayJSActive']
+			&&
+		     $config[ 'autoptimizeAggregateJSActive' ]
+		) {
+			$this->assertContains( 'warn_when_js_aggregation_and_delay_js_active', $boxes );
+		}
+
+		if (
+			$config[ 'dismissed' ]
+			&&
+			( ! $config[ 'delayJSActive' ] || 'off' === $config[ 'autoptimizeAggregateJSActive' ] )
+		) {
+			$this->assertNotContains('warn_when_js_aggregation_and_delay_js_active', $boxes );
+		}
 	}
 }
