@@ -16,13 +16,6 @@ class Autoptimize implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Array containing the errors
-	 *
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
