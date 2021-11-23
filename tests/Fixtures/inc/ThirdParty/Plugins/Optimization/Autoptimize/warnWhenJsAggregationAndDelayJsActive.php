@@ -3,7 +3,7 @@
 declare( strict_types=1 );
 
 $expected_html = <<<HTML
-<div class="notice notice-warning is-dismissible">
+<div class="notice notice-warning ">
 <p>
 <strong>
 We have detected that Autoptimize's JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.</strong>
