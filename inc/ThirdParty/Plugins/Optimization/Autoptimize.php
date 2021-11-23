@@ -82,7 +82,7 @@ class Autoptimize implements Subscriber_Interface {
 			[
 				'status'         => 'warning',
 				'message'        => $message,
-				'dismissable'    => '',
+				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
 			]
 		);
@@ -127,7 +127,7 @@ class Autoptimize implements Subscriber_Interface {
 			[
 				'status'         => 'warning',
 				'message'        => $message,
-				'dismissable'    => '',
+				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
 			]
 		);
