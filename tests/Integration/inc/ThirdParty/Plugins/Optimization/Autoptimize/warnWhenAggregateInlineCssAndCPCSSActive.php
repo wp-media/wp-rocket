@@ -50,8 +50,8 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 		$current_user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $current_user );
 
-		update_option( 'aggregate_inline_css', $config['autoptimizeAggregateInlineCSSActive'] );
-		add_filter( 'pre_get_rocket_option_critical_css', function () use ( $config ) {
+		update_option( 'autoptimize_css_include_inline', $config['autoptimizeAggregateInlineCSSActive'] );
+		add_filter( 'pre_get_rocket_option_async_css', function () use ( $config ) {
 			return $config['cpcssActive'];
 		} );
 

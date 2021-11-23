@@ -91,10 +91,10 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$autoptimize_aggregate_inline_css_setting = get_option( 'aggregate_inline_css' );
+		$autoptimize_aggregate_inline_css_setting = get_option( 'autoptimize_css_include_inline' );
 		$boxes                                    = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		if ( 'on' !== $autoptimize_aggregate_inline_css_setting || false === (bool) $this->options->get( 'critical_css' ) ) {
+		if ( 'on' !== $autoptimize_aggregate_inline_css_setting || false === (bool) $this->options->get( 'async_css' ) ) {
 			if ( ! is_array( $boxes ) ) {
 				return;
 			}
