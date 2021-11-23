@@ -3,7 +3,7 @@
 declare( strict_types=1 );
 
 $expected_html = <<<HTML
-<div class="notice notice-warning is-dismissible">
+<div class="notice notice-warning ">
 <p><strong>
 We have detected that Autoptimize's Aggregate Inline CSS feature is enabled. WP Rocket's Load CSS Asynchronously will not be applied to the file it creates. We suggest disabling it to take full advantage of WP Rocket's Load CSS Asynchronously Execution.
 </strong></p>
@@ -13,59 +13,59 @@ Dismiss this notice.</a></p>
 HTML;
 
 return [
-//	'shouldAddNoticeWhenAutoptimizeAggregateInlineCssOnAndCPCSSActivated' => [
-//		'config'   => [
-//			'cpcssActive'                => true,
-//			'autoptimizeAggregateInlineCSSActive' => 'on',
-//			'dismissed'                    => false,
-//		],
-//		'expected' => $expected_html
-//	],
-//
-//	'shouldSkipWhenAutoptimizeAggregateInlineCssOffAndCPCSSNotActivated' => [
-//		'config'   => [
-//			'cpcssActive'                => false,
-//			'autoptimizeAggregateInlineCSSActive' => 'off',
-//			'dismissed'                    => false,
-//		],
-//		'expected' => '',
-//	],
-//
-//	'shouldSkipWhenAutoptimizeAggregateInlineCssOffAndCPCSSActivated' => [
-//		'config'   => [
-//			'cpcssActive'                => true,
-//			'autoptimizeAggregateInlineCSSActive' => 'off',
-//			'dismissed'                    => false,
-//		],
-//		'expected' => '',
-//	],
-//
-//	'shouldSkipWhenAutoptimizeAggregateInlineCssOnAndCPCSSNotActivated' => [
-//		'config'   => [
-//			'cpcssActive'                => false,
-//			'autoptimizeAggregateInlineCSSActive' => 'on',
-//			'dismissed'                    => false,
-//		],
-//		'expected' => '',
-//	],
-//
-//	'shouldSkipWhenUserHasDismissedNotice' => [
-//		'config'   => [
-//			'cpcssActive'                => true,
-//			'autoptimizeAggregateInlineCSSActive' => 'on',
-//			'dismissed'                    => true,
-//		],
-//		'expected' => '',
-//	],
-//
-//	'shouldClearDismissalWhenUserDeactivatesCPCSS' => [
-//		'config'   => [
-//			'cpcssActive'                => false,
-//			'autoptimizeAggregateInlineCSSActive' => 'on',
-//			'dismissed'                    => true,
-//		],
-//		'expected' => '',
-//	],
+	'shouldAddNoticeWhenAutoptimizeAggregateInlineCssOnAndCPCSSActivated' => [
+		'config'   => [
+			'cpcssActive'                => true,
+			'autoptimizeAggregateInlineCSSActive' => 'on',
+			'dismissed'                    => false,
+		],
+		'expected' => $expected_html
+	],
+
+	'shouldSkipWhenAutoptimizeAggregateInlineCssOffAndCPCSSNotActivated' => [
+		'config'   => [
+			'cpcssActive'                => false,
+			'autoptimizeAggregateInlineCSSActive' => 'off',
+			'dismissed'                    => false,
+		],
+		'expected' => '',
+	],
+
+	'shouldSkipWhenAutoptimizeAggregateInlineCssOffAndCPCSSActivated' => [
+		'config'   => [
+			'cpcssActive'                => true,
+			'autoptimizeAggregateInlineCSSActive' => 'off',
+			'dismissed'                    => false,
+		],
+		'expected' => '',
+	],
+
+	'shouldSkipWhenAutoptimizeAggregateInlineCssOnAndCPCSSNotActivated' => [
+		'config'   => [
+			'cpcssActive'                => false,
+			'autoptimizeAggregateInlineCSSActive' => 'on',
+			'dismissed'                    => false,
+		],
+		'expected' => '',
+	],
+
+	'shouldSkipWhenUserHasDismissedNotice' => [
+		'config'   => [
+			'cpcssActive'                => true,
+			'autoptimizeAggregateInlineCSSActive' => 'on',
+			'dismissed'                    => true,
+		],
+		'expected' => '',
+	],
+
+	'shouldClearDismissalWhenUserDeactivatesCPCSS' => [
+		'config'   => [
+			'cpcssActive'                => false,
+			'autoptimizeAggregateInlineCSSActive' => 'on',
+			'dismissed'                    => true,
+		],
+		'expected' => '',
+	],
 
 	'shouldClearDismissalWhenUserDeactivatesAggregateInlineCss' => [
 		'config'   => [

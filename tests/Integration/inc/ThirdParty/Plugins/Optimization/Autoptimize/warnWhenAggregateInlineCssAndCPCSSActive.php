@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  Autoptimize
  * @group  AdminOnly
  * @group  ThirdParty
- * @group  cgtest
  */
 class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	use CapTrait;
