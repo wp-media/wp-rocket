@@ -50,6 +50,7 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		$current_user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $current_user );
 
+		update_option( 'autoptimize_js', $config['autoptimizeAggregateJSActive'] );
 		update_option( 'autoptimize_js_aggregate', $config['autoptimizeAggregateJSActive'] );
 		add_filter( 'pre_get_rocket_option_delay_js', function () use ( $config ) {
 			return $config[ 'delayJSActive' ];
