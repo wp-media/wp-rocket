@@ -55,9 +55,7 @@ class Autoptimize implements Subscriber_Interface {
 				'on' === get_option( 'autoptimize_js' )
 				&&
 				'on' === get_option( 'autoptimize_js_aggregate' )
-			)
-			 ||
-			 false === (bool) $this->options->get( 'delay_js' )
+			) || false === (bool) $this->options->get( 'delay_js' )
 		) {
 			if ( ! is_array( $boxes ) ) {
 				return;
