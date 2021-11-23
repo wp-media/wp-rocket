@@ -49,10 +49,16 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
-		$boxes                            = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		if ( 'on' !== $autoptimize_aggregate_js_setting || false === (bool) $this->options->get( 'delay_js' ) ) {
+		if ( ! (
+				'on' === get_option( 'autoptimize_js' )
+				&&
+				'on' === get_option( 'autoptimize_js_aggregate' )
+			)
+			 ||
+			 false === (bool) $this->options->get( 'delay_js' )
+		) {
 			if ( ! is_array( $boxes ) ) {
 				return;
 			}
@@ -91,10 +97,18 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$autoptimize_aggregate_inline_css_setting = get_option( 'autoptimize_css_include_inline' );
-		$boxes                                    = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		if ( 'on' !== $autoptimize_aggregate_inline_css_setting || false === (bool) $this->options->get( 'async_css' ) ) {
+		if ( ! (
+			'on' === get_option( 'autoptimize_css' )
+			&&
+			'on' === get_option( 'autoptimize_css_aggregate' )
+			&&
+			'on' === get_option( 'autoptimize_css_include_inline' )
+			)
+			||
+			false === (bool) $this->options->get( 'async_css' )
+		) {
 			if ( ! is_array( $boxes ) ) {
 				return;
 			}
