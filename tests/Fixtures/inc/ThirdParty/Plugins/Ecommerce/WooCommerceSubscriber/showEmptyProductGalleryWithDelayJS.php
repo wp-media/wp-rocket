@@ -6,9 +6,7 @@ return [
 			'input' => [
 				'is_allowed' => false,
 			],
-			'expected' => [
-				'style' => '',
-			],
+			'expected' => '',
 		],
 
 		'shouldBailoutIfNotInProductPage' => [
@@ -16,9 +14,8 @@ return [
 				'is_allowed' => true,
 				'in_product_page' => false,
 			],
-			'expected' => [
-				'style' => '',
-			],
+			'expected' => '',
+
 		],
 
 		'shouldBailoutIfGalleryHasMultipleImages' => [
@@ -27,9 +24,7 @@ return [
 				'in_product_page' => true,
 				'has_images' => true,
 			],
-			'expected' => [
-				'style' => '',
-			],
+			'expected' => '',
 		],
 
 		'shouldAddStyleIfGalleryHasNoImages' => [
@@ -38,9 +33,7 @@ return [
 				'in_product_page' => true,
 				'has_images' => false,
 			],
-			'expected' => [
-				'style' => '.woocommerce-product-gallery{ opacity: 1 !important; }',
-			],
+			'expected' => '<style>.woocommerce-product-gallery{ opacity: 1 !important; }</style>',
 		],
 
 	],

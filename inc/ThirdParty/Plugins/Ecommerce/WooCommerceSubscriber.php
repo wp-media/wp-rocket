@@ -84,7 +84,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
 
-			$events['wp_enqueue_scripts']         = 'show_empty_product_gallery_with_delayJS';
+			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
 			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
 		}
 
@@ -537,8 +537,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return;
 		}
 
-		$custom_css = '.woocommerce-product-gallery{ opacity: 1 !important; }';
-		wp_add_inline_style( 'woocommerce-layout', $custom_css );
+		echo '<style>.woocommerce-product-gallery{ opacity: 1 !important; }</style>';
 	}
 
 	/**
