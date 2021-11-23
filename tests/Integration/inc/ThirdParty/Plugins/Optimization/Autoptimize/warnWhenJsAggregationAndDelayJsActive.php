@@ -76,7 +76,7 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		     &&
 		     $config[ 'delayJSActive']
 			&&
-		     $config[ 'autoptimizeAggregateJSActive' ]
+		     'on' === $config[ 'autoptimizeAggregateJSActive' ]
 		) {
 			$this->assertContains( 'warn_when_js_aggregation_and_delay_js_active', $boxes );
 		}
