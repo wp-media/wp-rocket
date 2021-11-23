@@ -35,6 +35,7 @@ class Autoptimize implements Subscriber_Interface {
 			'admin_notices' => [
 				[ 'warn_when_js_aggregation_and_delay_js_active' ],
 				[ 'warn_when_aggregate_inline_css_and_cpcss_active' ],
+				[ 'warn_when_autoptimize_css_and_rucss_active' ],
 			],
 		];
 	}
@@ -127,14 +128,59 @@ class Autoptimize implements Subscriber_Interface {
 	}
 
 	/**
+	 * Add an admin warning notice when CPCSS and Aggregate Inline CSS are both activated.
+	 *
+	 * @since 3.10.4
+	 */
+	public function warn_when_autoptimize_css_and_rucss_active() {
+		if ( ! $this->can_notify() ) {
+			return;
+		}
+
+		$autoptimize_css_setting = get_option( 'autoptimize_css' );
+		$boxes                   = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( 'on' !== $autoptimize_css_setting || false === (bool) $this->options->get( 'remove_unused_css' ) ) {
+			if ( ! is_array( $boxes ) ) {
+				return;
+			}
+
+			$this->remove_warning_dismissal( $boxes, __FUNCTION__ );
+
+			return;
+		}
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			'<strong>%s</strong>',
+			__(
+				"We have detected that Autoptimize's Optimize CSS Code feature is enabled. WP Rocket's Remove Unused CSS will not be applied to the file it creates. We suggest disabling it to take full advantage of WP Rocket's Remove Unused CSS Execution.",
+				'rocket'
+			)
+		);
+
+		rocket_notice_html(
+			[
+				'status'         => 'warning',
+				'message'        => $message,
+				'dismissible'    => '',
+				'dismiss_button' => __FUNCTION__,
+			]
+		);
+	}
+
+	/**
 	 * Whether this compatibility can use notifications.
 	 *
 	 * @return bool
 	 */
 	private function can_notify() {
 		return rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false )
-			&&
-			current_user_can( 'rocket_manage_options' );
+			   &&
+			   current_user_can( 'rocket_manage_options' );
 	}
 
 	/**
