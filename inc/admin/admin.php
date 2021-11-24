@@ -248,7 +248,7 @@ function rocket_rollback() {
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
 
 /**
- * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
+ * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
  * A link to the plugins page is kept in case the plugin is not reactivated correctly.
  *
  * @since  3.2.4
