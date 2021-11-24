@@ -35,11 +35,12 @@ class Ezoic implements Subscriber_Interface {
 	/**
 	 * Adds explanation for deactivation recommendation
 	 *
-	 * @param array $plugins List of recommended plugins to deactivate explanations.
+	 * @param array $plugins_explanations List of recommended plugins to deactivate explanations.
 	 *
 	 * @return array
 	 */
 	public function add_conflict_explanations( $plugins_explanations ) {
+		// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 		$plugins_explanations['ezoic'] = sprintf(
 			__( 'This plugin blocks WP Rocket\'s caching and optimizations. Deactivate it and use %1$sEzoic\'s nameserver integration%2$s instead.', 'rocket' ),
 			'<a href="https://support.ezoic.com/support/solutions/articles/48000453926-name-server-integration" target="_blank" rel="noopener noreferrer">',
