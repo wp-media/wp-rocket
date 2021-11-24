@@ -67,4 +67,14 @@ return [
 		],
 		'expected' => '',
 	],
+
+	'shouldClearDismissalWhenUserDeactivatesDelayJS' => [
+		'config'   => [
+			'delayJSActive'                => true,
+			'autoptimizeAggregateJSActive' => 'off',
+			'dismissed'                    => true,
+		],
+		'expected' => '',
+	],
+
 ];

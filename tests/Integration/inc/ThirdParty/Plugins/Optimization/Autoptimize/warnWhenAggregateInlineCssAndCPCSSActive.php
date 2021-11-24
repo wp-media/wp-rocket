@@ -7,13 +7,13 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_js_aggregation_and_delay_js_active
+ * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize::warn_when_aggregate_inline_css_and_cpcss_active
  *
  * @group  Autoptimize
  * @group  AdminOnly
  * @group  ThirdParty
  */
-class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
+class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	use CapTrait;
 
 	public static function setUpBeforeClass(): void {
@@ -27,11 +27,11 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 
 		$this->unregisterAllCallbacksExcept(
 			'admin_notices',
-			'warn_when_js_aggregation_and_delay_js_active'
+			'warn_when_aggregate_inline_css_and_cpcss_active'
 		);
 
 		Functions\expect( 'wp_create_nonce' )
-			->with( 'warn_when_js_aggregation_and_delay_js_active' )
+			->with( 'warn_when_aggregate_inline_css_and_cpcss_active' )
 			->andReturn( '123456' );
 	}
 
@@ -50,17 +50,18 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		$current_user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $current_user );
 
-		update_option( 'autoptimize_js', $config['autoptimizeAggregateJSActive'] );
-		update_option( 'autoptimize_js_aggregate', $config['autoptimizeAggregateJSActive'] );
-		add_filter( 'pre_get_rocket_option_delay_js', function () use ( $config ) {
-			return $config[ 'delayJSActive' ];
+		update_option( 'autoptimize_css', $config['autoptimizeAggregateInlineCSSActive'] );
+		update_option( 'autoptimize_css_aggregate', $config['autoptimizeAggregateInlineCSSActive'] );
+		update_option( 'autoptimize_css_include_inline', $config['autoptimizeAggregateInlineCSSActive'] );
+		add_filter( 'pre_get_rocket_option_async_css', function () use ( $config ) {
+			return $config['cpcssActive'];
 		} );
 
 		if ( $config['dismissed'] ) {
 			update_user_meta(
 				$current_user,
 				'rocket_boxes',
-				[ 'warn_when_js_aggregation_and_delay_js_active' ]
+				[ 'warn_when_aggregate_inline_css_and_cpcss_active' ]
 			);
 		}
 
@@ -73,21 +74,21 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 
 		$boxes = get_user_meta( $current_user, 'rocket_boxes', true );
 
-		if ( $config[ 'dismissed' ]
+		if ( $config['dismissed']
 		     &&
-		     $config[ 'delayJSActive']
-			&&
-		     'on' === $config[ 'autoptimizeAggregateJSActive' ]
+		     $config['cpcssActive']
+		     &&
+		     'on' === $config['autoptimizeAggregateInlineCSSActive']
 		) {
-			$this->assertContains( 'warn_when_js_aggregation_and_delay_js_active', $boxes );
+			$this->assertContains( 'warn_when_aggregate_inline_css_and_cpcss_active', $boxes );
 		}
 
 		if (
-			$config[ 'dismissed' ]
+			( $config['dismissed']  )
 			&&
-			( ! $config[ 'delayJSActive' ] || 'off' === $config[ 'autoptimizeAggregateJSActive' ] )
+			( ! $config['cpcssActive'] || 'off' === $config['autoptimizeAggregateInlineCSSActive'] )
 		) {
-			$this->assertNotContains('warn_when_js_aggregation_and_delay_js_active', $boxes );
+			$this->assertNotContains( 'warn_when_aggregate_inline_css_and_cpcss_active', $boxes );
 		}
 	}
 }

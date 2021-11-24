@@ -16,13 +16,6 @@ class Autoptimize implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Array containing the errors
-	 *
-	 * @var array
-	 */
-	private $errors = [];
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
@@ -34,12 +27,15 @@ class Autoptimize implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber listens to.
 	 *
-	 * @return array
 	 * @since  3.10.4
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => [ 'warn_when_js_aggregation_and_delay_js_active' ],
+			'admin_notices' => [
+				[ 'warn_when_js_aggregation_and_delay_js_active' ],
+				[ 'warn_when_aggregate_inline_css_and_cpcss_active' ],
+			],
 		];
 	}
 
@@ -49,18 +45,18 @@ class Autoptimize implements Subscriber_Interface {
 	 * @since 3.10.4
 	 */
 	public function warn_when_js_aggregation_and_delay_js_active() {
-		if ( ! rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false ) ) {
+		if ( ! $this->can_notify() ) {
 			return;
 		}
 
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		$autoptimize_aggregate_js_setting = get_option( 'autoptimize_js_aggregate' );
-		$boxes                            = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( 'on' !== $autoptimize_aggregate_js_setting || false === (bool) $this->options->get( 'delay_js' ) ) {
+		if ( ! (
+				'on' === get_option( 'autoptimize_js' )
+				&&
+				'on' === get_option( 'autoptimize_js_aggregate' )
+			) || false === (bool) $this->options->get( 'delay_js' )
+		) {
 			if ( ! is_array( $boxes ) ) {
 				return;
 			}
@@ -75,7 +71,7 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		$message = '<strong>' . __(
-			'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
 				'rocket'
 			) . '</strong>';
 
@@ -87,6 +83,70 @@ class Autoptimize implements Subscriber_Interface {
 				'dismiss_button' => __FUNCTION__,
 			]
 		);
+	}
+
+	/**
+	 * Add an admin warning notice when CPCSS and Aggregate Inline CSS are both activated.
+	 *
+	 * @since 3.10.4
+	 */
+	public function warn_when_aggregate_inline_css_and_cpcss_active() {
+		if ( ! $this->can_notify() ) {
+			return;
+		}
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( ! (
+			'on' === get_option( 'autoptimize_css' )
+			&&
+			'on' === get_option( 'autoptimize_css_aggregate' )
+			&&
+			'on' === get_option( 'autoptimize_css_include_inline' )
+			)
+			||
+			false === (bool) $this->options->get( 'async_css' )
+		) {
+			if ( ! is_array( $boxes ) ) {
+				return;
+			}
+
+			$this->remove_warning_dismissal( $boxes, __FUNCTION__ );
+
+			return;
+		}
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			'<strong>%s</strong>',
+			__(
+				"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled. WP Rocket's Load CSS Asynchronously will not be applied to the file it creates. We suggest disabling it to take full advantage of WP Rocket's Load CSS Asynchronously Execution.",
+				'rocket'
+			)
+		);
+
+		rocket_notice_html(
+			[
+				'status'         => 'warning',
+				'message'        => $message,
+				'dismissible'    => '',
+				'dismiss_button' => __FUNCTION__,
+			]
+		);
+	}
+
+	/**
+	 * Whether this compatibility can use notifications.
+	 *
+	 * @return bool
+	 */
+	private function can_notify() {
+		return rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false )
+			&&
+			current_user_can( 'rocket_manage_options' );
 	}
 
 	/**
