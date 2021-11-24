@@ -43,6 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wp-meteor',
 		'revolution_slider_subscriber',
 		'wordfence_subscriber',
+		'ezoic',
 	];
 
 	/**
@@ -139,6 +140,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'ezoic', 'WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic' )
 			->addTag( 'common_subscriber' );
 	}
 }

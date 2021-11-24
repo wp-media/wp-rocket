@@ -287,6 +287,7 @@ class Plugin {
 			'wp-meteor',
 			'revolution_slider_subscriber',
 			'wordfence_subscriber',
+			'ezoic',
 		];
 
 		$host_type = HostResolver::get_host_service();
