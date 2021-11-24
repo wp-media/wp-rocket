@@ -157,16 +157,24 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	if ( $errors ) {
 		$error_message = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', array_sum( array_map( 'count', $errors ) ), 'rocket' );
 
+		$error_message .= '</strong></p>'; // close out default opening tags from WP's settings_errors().
+
 		foreach ( $errors as $error ) {
 			$error_message .= '<ul><li>' . implode( '</li><li>', $error ) . '</li></ul>';
 		}
+
+		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
+		$error_message .= sprintf(
+			'<a href="https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions">%s</a>',
+			__( 'More info.', 'rocket' )
+		);
 
 		$errors = [];
 
 		$rocket_settings_errors[] = [
 			'setting' => 'general',
 			'code'    => 'invalid_patterns',
-			'message' => __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error_message . '<strong>',
+			'message' => __( 'WP Rocket: ', 'rocket' ) . $error_message,
 			'type'    => 'error',
 		];
 	}
