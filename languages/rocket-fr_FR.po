@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-09-29 09:15-0400\n"
+"POT-Creation-Date: 2021-11-19 16:12-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>, 2021\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -613,15 +613,15 @@ msgstr ""
 " site Web. Une seule méthode peut être sélectionnée. La méthode Supprimer "
 "les CSS inutilisés est recommandée pour des performances optimales."
 
-#: inc/Engine/Admin/Settings/Page.php:704 inc/admin/ui/meta-boxes.php:75
-msgid "Remove Unused CSS"
-msgstr "Supprimer les ressources CSS inutilisées"
+#: inc/Engine/Admin/Settings/Page.php:704
+msgid "Remove Unused CSS (Beta)"
+msgstr "Supprimer les ressources CSS inutilisées (Beta)"
 
 #: inc/Engine/Admin/Settings/Page.php:706
 #, php-format
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
-" Recommended for best performance. Test thoroughly!  %1$sMore info%2$s"
+" Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
 "Supprime le CSS inutilisé par page et contribue à réduire la taille des "
 "pages et les requêtes HTTP. Recommandé pour de meilleures performances. "
@@ -1658,7 +1658,7 @@ msgstr "Trouver votre clé API"
 msgid "Upload file and import settings"
 msgstr "Envoyer le fichier et importer les réglages"
 
-#: inc/Engine/Admin/Settings/Settings.php:390
+#: inc/Engine/Admin/Settings/Settings.php:391
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1666,10 +1666,19 @@ msgstr ""
 "Add-on Sucuri : La clé API pour le Sucuri firewall doit être au format "
 "<code>{32 caractères}/{32 caractères}</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:481
+#: inc/Engine/Admin/Settings/Settings.php:482
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
+
+#: inc/Engine/Admin/Settings/Settings.php:698
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
+"because it disables caching and optimizations for every page on your site."
+msgstr ""
+"Désolé ! L'ajout de /(.*) dans Règles avancées > Ne jamais mettre en cache "
+"ces URL(s) n'a pas été sauvegardé car cette valeur désactive le cache et les"
+" optimisations sur toutes les pages du site."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150
 #: inc/deprecated/deprecated.php:1786
@@ -1985,18 +1994,18 @@ msgstr "Activez Chargement Asynchrone du CSS dans les réglages de WP Rocket"
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "Activez Chargement Asynchrone du CSS dans les options ci-dessus"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr "La génération du Critical CSS est en cours."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:255
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/Preload/PreloadSubscriber.php:257
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 "Rendez-vous aux %1$sréglages de WP Rocket%2$s pour suivre la progression."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2005,18 +2014,18 @@ msgstr ""
 "La génération du Critical CSS est en cours : %1$d de %2$d de types de page "
 "complétés. (Rafraîchir pour voir la progression)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "La génération du Critical CSS est en terminée : %1$d de %2$d de types de "
 "page."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "La génération du CSS critique a rencontré une ou plusieurs erreur(s)."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Learn more."
 msgstr "En savoir plus."
 
@@ -2292,38 +2301,38 @@ msgstr ""
 "mettant à niveau votre licence (vous ne paierez que la différence de prix "
 "entre votre licence actuelle et la nouvelle)."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:108
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
 msgstr "Purger le CSS utilisé"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:347
 msgid "Used CSS option is not enabled!"
 msgstr "L'option CSS utilisé n'est pas activée !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:340
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:363
 msgid "Used CSS cache cleared!"
 msgstr "Le cache du CSS utilisé a été purgé !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:408
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr "{nombre} ressources collectées sur {total} pages clés."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:409
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr ""
 "{nombre} traités sur {total} fichiers de ressources trouvés sur les pages "
 "clés."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:410
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
 msgid "Remove Unused CSS is complete!"
 msgstr "La suppression des ressources CSS inutilisées est terminée !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:411
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
 msgid "These files could not be processed:"
 msgstr "Ces fichiers n'ont pas pu être traités :"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:412
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2391,11 +2400,11 @@ msgstr ""
 " les lien depuis %1$s en raison de ce  code réponse : %2$s. %3$sEn savoir "
 "plus%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:250
+#: inc/Engine/Preload/PreloadSubscriber.php:252
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "Préchargement : WP Rocket a commencé à précharger votre site."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:296
+#: inc/Engine/Preload/PreloadSubscriber.php:298
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2410,7 +2419,7 @@ msgstr[1] ""
 "Préchargement : %1$s pages ont été pré-chargées.  (rafraîchir pour voir la "
 "progression)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:305
+#: inc/Engine/Preload/PreloadSubscriber.php:307
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
@@ -2420,7 +2429,7 @@ msgstr[1] ""
 "Les erreurs suivantes se sont produites lors de la collecte des URLs à "
 "précharger :"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:357
+#: inc/Engine/Preload/PreloadSubscriber.php:359
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "Préchargement terminé : %d pages ont été mises en cache."
@@ -2497,7 +2506,7 @@ msgstr ""
 " les lien depuis %1$s à cause d’une erreur lors de l’analyse du Sitemap XML."
 " %2$sEn savoir plus%3$s."
 
-#: inc/Engine/Preload/SitemapPreloadSubscriber.php:120
+#: inc/Engine/Preload/SitemapPreloadSubscriber.php:122
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
@@ -2599,11 +2608,11 @@ msgstr ""
 "Le report de l'exécution des JS est activée dans %1$s. Si vous voulez "
 "utiliser le Report de l’exécution JavaScript de WP Rocket, désactivez %1$s"
 
-#: inc/ThirdParty/Plugins/Smush.php:110 inc/ThirdParty/Plugins/Smush.php:128
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:118
+#: inc/ThirdParty/Themes/Avada.php:119
 msgid "Avada"
 msgstr "Avada"
 
@@ -2706,6 +2715,10 @@ msgstr "LazyLoad sur les iframes et vidéos"
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "Minifier / combiner le CSS"
+
+#: inc/admin/ui/meta-boxes.php:75
+msgid "Remove Unused CSS"
+msgstr "Supprimer les ressources CSS inutilisées"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"
