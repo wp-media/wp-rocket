@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-09-29 09:15-0400\n"
+"POT-Creation-Date: 2021-11-25 11:18-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -150,7 +150,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:420 inc/Addon/Cloudflare/Subscriber.php:426
 #: inc/Addon/Cloudflare/Subscriber.php:445 inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470 inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:164
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr ""
@@ -521,15 +521,15 @@ msgid ""
 "method can be selected. Remove Unused CSS is recommended for optimal performance."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:704 inc/admin/ui/meta-boxes.php:75
-msgid "Remove Unused CSS"
+#: inc/Engine/Admin/Settings/Page.php:704
+msgid "Remove Unused CSS (Beta)"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:706
 #, php-format
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests. "
-"Recommended for best performance. Test thoroughly!  %1$sMore info%2$s"
+"Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:708
@@ -921,7 +921,7 @@ msgid ""
 "will be detected and never cached by default."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr ""
 
@@ -929,11 +929,11 @@ msgstr ""
 msgid "Never Cache Cookies"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgid ""
 "%1$sAdd-ons%2$s."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr ""
 
@@ -1392,14 +1392,20 @@ msgstr ""
 msgid "Upload file and import settings"
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Settings.php:390
+#: inc/Engine/Admin/Settings/Settings.php:391
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 "
 "characters}/{32 characters}</code>."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Settings.php:481 inc/deprecated/deprecated.php:1245
+#: inc/Engine/Admin/Settings/Settings.php:482 inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
+msgstr ""
+
+#: inc/Engine/Admin/Settings/Settings.php:698
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because "
+"it disables caching and optimizations for every page on your site."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150 inc/deprecated/deprecated.php:1786
@@ -1681,33 +1687,33 @@ msgstr ""
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:255
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/Preload/PreloadSubscriber.php:257
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Learn more."
 msgstr ""
 
@@ -1948,36 +1954,36 @@ msgid ""
 "pay the price difference between your current and new licenses)."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:108
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:347
 msgid "Used CSS option is not enabled!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:340
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:363
 msgid "Used CSS cache cleared!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:408
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:409
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:410
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
 msgid "Remove Unused CSS is complete!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:411
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
 msgid "These files could not be processed:"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:412
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2029,11 +2035,11 @@ msgid ""
 "the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
 
-#: inc/Engine/Preload/PreloadSubscriber.php:250
+#: inc/Engine/Preload/PreloadSubscriber.php:252
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr ""
 
-#: inc/Engine/Preload/PreloadSubscriber.php:296
+#: inc/Engine/Preload/PreloadSubscriber.php:298
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see progress)"
@@ -2042,14 +2048,14 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Engine/Preload/PreloadSubscriber.php:305
+#: inc/Engine/Preload/PreloadSubscriber.php:307
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/Engine/Preload/PreloadSubscriber.php:357
+#: inc/Engine/Preload/PreloadSubscriber.php:359
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr ""
@@ -2106,7 +2112,7 @@ msgid ""
 "of an error during the XML sitemap parsing. %2$sLearn more%3$s."
 msgstr ""
 
-#: inc/Engine/Preload/SitemapPreloadSubscriber.php:120
+#: inc/Engine/Preload/SitemapPreloadSubscriber.php:122
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please contact "
@@ -2125,6 +2131,21 @@ msgstr ""
 msgid ""
 "<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and may "
 "cause unexpected results. %2$sMore Info%3$s"
+msgstr ""
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+msgid ""
+"We have detected that Autoptimize's JavaScript Aggregation feature is enabled. "
+"The Delay JavaScript Execution will not be applied to the file it creates. We "
+"suggest disabling it to take full advantage of Delay JavaScript Execution."
+msgstr ""
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+msgid ""
+"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled. WP "
+"Rocket's Load CSS Asynchronously will not be applied to the file it creates. We "
+"suggest disabling it to take full advantage of WP Rocket's Load CSS "
+"Asynchronously Execution."
 msgstr ""
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
@@ -2180,11 +2201,11 @@ msgid ""
 "JS, disable %1$s"
 msgstr ""
 
-#: inc/ThirdParty/Plugins/Smush.php:110 inc/ThirdParty/Plugins/Smush.php:128
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
 msgid "Smush"
 msgstr ""
 
-#: inc/ThirdParty/Themes/Avada.php:118
+#: inc/ThirdParty/Themes/Avada.php:119
 msgid "Avada"
 msgstr ""
 
@@ -2205,56 +2226,64 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: inc/admin/admin.php:225 inc/admin/admin.php:240
+#: inc/admin/admin.php:227 inc/admin/admin.php:242
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr ""
 
-#: inc/admin/admin.php:266
+#: inc/admin/admin.php:268
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
 
-#: inc/admin/admin.php:504
+#: inc/admin/admin.php:506
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 
-#: inc/admin/admin.php:508
+#: inc/admin/admin.php:510
 msgid "Settings import failed: no file uploaded."
 msgstr ""
 
-#: inc/admin/admin.php:512
+#: inc/admin/admin.php:514
 msgid "Settings import failed: incorrect filename."
 msgstr ""
 
-#: inc/admin/admin.php:523
+#: inc/admin/admin.php:525
 msgid "Settings import failed: incorrect filetype."
 msgstr ""
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:535
 msgid "Settings import failed: "
 msgstr ""
 
-#: inc/admin/admin.php:549
+#: inc/admin/admin.php:551
 msgid "Settings import failed: unexpected file content."
 msgstr ""
 
-#: inc/admin/admin.php:579
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr ""
 
-#: inc/admin/options.php:147
-#, php-format
-msgid "%1$s: <em>%2$s</em>."
+#: inc/admin/options.php:126
+msgid "Excluded Delay JavaScript Files"
 msgstr ""
 
-#: inc/admin/options.php:157
+#: inc/admin/options.php:148
+#, php-format
+msgid "%1$s: <em>%2$s</em>"
+msgstr ""
+
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] ""
 msgstr[1] ""
+
+#: inc/admin/options.php:170
+msgid "More info"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
@@ -2284,6 +2313,10 @@ msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:75
+msgid "Remove Unused CSS"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76

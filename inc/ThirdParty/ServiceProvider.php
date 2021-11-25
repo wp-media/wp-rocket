@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'divi',
 		'mod_pagespeed',
 		'adthrive',
+		'autoptimize',
 		'wp-meteor',
 		'revolution_slider_subscriber',
 		'wordfence_subscriber',
@@ -130,6 +131,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'autoptimize', 'WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize' )
+			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'wp-meteor', 'WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor' )

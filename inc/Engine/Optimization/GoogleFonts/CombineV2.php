@@ -98,7 +98,7 @@ class CombineV2 extends AbstractGFOptimization {
 			return [];
 		}
 
-		$url_pattern     = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
+		$url_pattern     = '#(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
 		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
 		$decoded_url     = html_entity_decode( $tag['url'] );
 		$query           = wp_parse_url( $decoded_url, PHP_URL_QUERY );
