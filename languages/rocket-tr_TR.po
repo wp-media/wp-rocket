@@ -2529,9 +2529,9 @@ msgid ""
 "Execution."
 msgstr ""
 "Autoptimize’ın JavaScript Toplama özelliğinin etkinleştirildiğini tespit "
-"ettik. JavaScript Çalıştırmayı Geciktir, oluşturduğu dosyaya "
-"uygulanmayacaktır. JavaScript Çalıştırmayı Geciktir’den tam olarak "
-"yararlanmak için etkisizleştirmenizi öneririz."
+"ettik. JavaScript’i Geciktir Yürütmesi, oluşturduğu dosyaya "
+"uygulanmayacaktır. JavaScript’i Geciktir Yürütmesi’nden tam olarak "
+"yararlanmak için etkisizleştirilmesini öneririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
 msgid ""
