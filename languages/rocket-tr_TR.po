@@ -727,7 +727,7 @@ msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
 msgstr ""
-"Uyumluluk ve en iyi sonuçlar için gecikme javascript yürütme "
+"Uyumluluk ve en iyi sonuçlar için javascript’i geciktir yürütmesi "
 "etkinleştirildiğinde bu seçenek etkisizleştirilir."
 
 #: inc/Engine/Admin/Settings/Page.php:800
