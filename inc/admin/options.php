@@ -167,7 +167,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$error_message .= sprintf(
 			'<a href="%1$s" data-beacon-article="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
 			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
-			__( 'More info.', 'rocket' )
+			__( 'More info', 'rocket' )
 		);
 
 		$errors = [];
