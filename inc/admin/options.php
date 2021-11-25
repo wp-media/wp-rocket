@@ -145,7 +145,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
-					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
 					return false;
 				}
 
@@ -165,7 +165,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
 		$error_message .= sprintf(
-			'<a target="_blank" rel="noopener" href="https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions">%s</a>',
+			'<a href="%1$s" data-beacon-article="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
 			__( 'More info.', 'rocket' )
 		);
 
