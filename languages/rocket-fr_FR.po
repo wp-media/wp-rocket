@@ -2544,7 +2544,7 @@ msgid ""
 msgstr ""
 "Nous avons détecté que la fonctionnalité de concaténation du JavaScript est "
 "activée dans Autoptimize. Le report de l'éxecution JavaScript de WP Rocket "
-"ne sera pas appliqué au fichier créé. Nous suggérons de désactivé cette "
+"ne sera pas appliqué au fichier créé. Nous suggérons de désactiver cette "
 "fonctionnalité pour profiter pleinement du report de l'éxecution JavaScript."
 
 #: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
