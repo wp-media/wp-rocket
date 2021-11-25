@@ -2686,7 +2686,7 @@ msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
 #: inc/admin/options.php:126
 msgid "Excluded Delay JavaScript Files"
-msgstr "Hariç Tutulan Gecikme JavaScript Dosyaları"
+msgstr "Hariç Tutulan JavaScript Dosyalarını Geciktirme"
 
 #: inc/admin/options.php:148
 #, php-format
