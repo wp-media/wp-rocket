@@ -2556,7 +2556,7 @@ msgid ""
 msgstr ""
 "Nous avons détecté que la fonctionnalité de concaténation des CSS inline est"
 " activée dans Autoptimize. Le chargement asynchrone du CSS de WP Rocket ne "
-"sera pas appliqué au fichier créé. Nous suggérons de désactivé cette "
+"sera pas appliqué au fichier créé. Nous suggérons de désactiver cette "
 "fonctionnalité pour profiter pleinement du chargement asynchrone du CSS de "
 "WP Rocket."
 
