@@ -2541,8 +2541,8 @@ msgid ""
 "CSS Asynchronously Execution."
 msgstr ""
 "Autoptimize’ın Satır İçi CSS özelliğinin etkinleştirildiğini tespit ettik. "
-"WP Rocket’ın CSS’yi Eş Zamansız Olarak Yükle, oluşturduğu dosyaya "
-"uygulanmayacaktır. WP Rocket’ın CSS’yi Eş Zamansız Olarak Yükle "
+"WP Rocket’ın CSS’yi Eşzamanlı Olmadan Yükle, oluşturduğu dosyaya "
+"uygulanmayacaktır. WP Rocket’ın CSS’yi Eşzamanlı Olmadan Yükle "
 "Yürütmesi’nden tam olarak yararlanmak için etkisizleştirilmesini öneririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
