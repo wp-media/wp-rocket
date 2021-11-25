@@ -145,7 +145,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
-					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
 					return false;
 				}
 
@@ -157,16 +157,25 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	if ( $errors ) {
 		$error_message = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', array_sum( array_map( 'count', $errors ) ), 'rocket' );
 
+		$error_message .= '</strong></p>'; // close out default opening tags from WP's settings_errors().
+
 		foreach ( $errors as $error ) {
 			$error_message .= '<ul><li>' . implode( '</li><li>', $error ) . '</li></ul>';
 		}
+
+		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
+		$error_message .= sprintf(
+			'<a href="%1$s" data-beacon-article="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+			__( 'More info', 'rocket' )
+		);
 
 		$errors = [];
 
 		$rocket_settings_errors[] = [
 			'setting' => 'general',
 			'code'    => 'invalid_patterns',
-			'message' => __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error_message . '<strong>',
+			'message' => __( 'WP Rocket: ', 'rocket' ) . $error_message,
 			'type'    => 'error',
 		];
 	}
