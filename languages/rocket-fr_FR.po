@@ -2702,7 +2702,7 @@ msgstr "Réglages importés et sauvegardés."
 
 #: inc/admin/options.php:126
 msgid "Excluded Delay JavaScript Files"
-msgstr "Fichiers JavaScript exclus de l'éxecution différée"
+msgstr "Fichiers JavaScript exclus du report de l'éxecution"
 
 #: inc/admin/options.php:148
 #, php-format
