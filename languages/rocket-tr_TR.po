@@ -806,7 +806,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:874 inc/admin/ui/meta-boxes.php:80
 msgid "Delay JavaScript execution"
-msgstr "JavaScript yürütmeyi geciktir"
+msgstr "JavaScript’i Geciktir yürütmesi"
 
 #: inc/Engine/Admin/Settings/Page.php:876
 #, php-format
