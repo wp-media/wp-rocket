@@ -165,7 +165,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
 		$error_message .= sprintf(
-			'<a href="https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions">%s</a>',
+			'<a target="_blank" rel="noopener" href="https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions">%s</a>',
 			__( 'More info.', 'rocket' )
 		);
 
