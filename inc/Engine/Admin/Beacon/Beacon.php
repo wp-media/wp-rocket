@@ -75,7 +75,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+			||
+			! current_user_can( 'rocket_manage_options' )
+		) {
 			return;
 		}
 
@@ -385,6 +389,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'delay_js_exclusions'        => [
+				'en' => [
+					'id'  => '',
+					'url' => 'https://docs.wp-rocket.me/article/1560-delay-javascript-execution-compatibility-exclusions/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'async'                      => [
 				'en' => [
 					'id'  => '5d52144c0428631e94f94ae2',
@@ -465,8 +475,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'ecommerce'                  => [
 				'en' => [
-					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '548f492de4b034fd4862493e',
+					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '568f8291c69791436155caea',

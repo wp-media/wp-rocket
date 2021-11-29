@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <div id="wpr-mobile_cpcss_view" class="wpr-tools">
 	<div class="wpr-tools-col">
-		<div class="wpr-title3 wpr-tools-label wpr-icon-stack"><?php esc_html_e( 'Optimize CSS delivery for mobile', 'rocket' ); ?></div>
+		<div class="wpr-title3 wpr-tools-label wpr-icon-stack"><?php esc_html_e( 'Load CSS asynchronously for mobile', 'rocket' ); ?></div>
 		<div class="wpr-field-description wpr-hide-on-click"><?php esc_html_e( 'Your website currently uses the same Critical Path CSS for both desktop and mobile.', 'rocket' ); ?></div>
 		<div class="wpr-field-description wpr-hide-on-click"><?php esc_html_e( 'Click the button to enable mobile-specific CPCSS for your site.', 'rocket' ); ?></div>
 		<div class="wpr-field-description wpr-hide-on-click">

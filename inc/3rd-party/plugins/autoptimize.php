@@ -4,19 +4,9 @@ defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'autoptimizeCache' ) ) :
 	/**
-	 * Improvement with Autoptimize: clear the cache when Autoptimize's cache is cleared
-	 *
-	 * @since 2.7
-	 */
-	add_action( 'autoptimize_action_cachepurged', 'rocket_clean_domain' );
-endif;
-
-if ( class_exists( 'autoptimizeConfig' ) ) :
-	/**
 	 * Deactivate WP Rocket lazyload if Autoptimize lazyload is enabled
 	 *
 	 * @since 3.3.4
-	 * @author Remy Perona
 	 *
 	 * @param string $old_value Previous autoptimize option value.
 	 * @param string $value New autoptimize option value.
@@ -31,6 +21,15 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	}
 	add_action( 'update_option_autoptimize_imgopt_settings', 'rocket_maybe_deactivate_lazyload', 10, 2 );
 
+	/**
+	 * Improvement with Autoptimize: clear the cache when Autoptimize's cache is cleared
+	 *
+	 * @since 2.7
+	 */
+	add_action( 'autoptimize_action_cachepurged', 'rocket_clean_domain' );
+endif;
+
+if ( class_exists( 'autoptimizeConfig' ) ) :
 	/**
 	 * Deactivate WP Rocket CSS Minification if Autoptimize CSS minification is enabled
 	 *
@@ -118,7 +117,6 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
  * Disable WP Rocket lazyload fields if Autoptimize lazyload is enabled
  *
  * @since 3.3.4
- * @author Remy Perona
  *
  * @return bool
  */

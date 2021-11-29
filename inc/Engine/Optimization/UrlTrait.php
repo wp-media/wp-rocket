@@ -122,6 +122,9 @@ trait UrlTrait {
 	 * @return string
 	 */
 	protected function get_file_content( $file ) {
+		if ( empty( $file ) ) {
+			return false;
+		}
 		return rocket_direct_filesystem()->get_contents( $file );
 	}
 

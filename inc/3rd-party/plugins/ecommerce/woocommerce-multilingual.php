@@ -3,6 +3,10 @@
 defined( 'ABSPATH' ) || exit;
 
 // Compatibility with the currency switcher in WooCommerce Multilingual plugin.
+// @since 3.9.0.3
+// We are _temporarily_ disabling this filter, to be re-enabled after a future WCML release.
+// that contains a better fix for the duplicate generation of cookies on this filter.
+// @see #3998.
 if ( defined( 'WCML_VERSION' ) ) :
 	/**
 	 * Use Cookie instead of WCSession
@@ -12,7 +16,8 @@ if ( defined( 'WCML_VERSION' ) ) :
 	function rocket_wcml_use_cookie_storage() {
 		return 'cookie';
 	}
-	add_filter( 'wcml_user_store_strategy', 'rocket_wcml_use_cookie_storage', 10, 2 );
+	/* add_filter( 'wcml_user_store_strategy', 'rocket_wcml_use_cookie_storage', 10, 2 ); */
+
 
 	/**
 	 * Add dynamic cookies for WCML.

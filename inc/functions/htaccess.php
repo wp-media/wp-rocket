@@ -435,6 +435,10 @@ function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingCon
  */
 function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules = <<<HTACCESS
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
+</IfModule>
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
 	ExpiresActive on
@@ -461,6 +465,8 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType audio/ogg                     "access plus 4 months"
 	ExpiresByType video/mp4                     "access plus 4 months"
 	ExpiresByType video/webm                    "access plus 4 months"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
@@ -499,6 +505,10 @@ HTACCESS;
 function get_rocket_htaccess_charset() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Get charset of the blog.
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
+
+	if ( empty( $charset ) ) {
+		return '';
+	}
 
 	$rules = "# Use $charset encoding for anything served text/plain or text/html" . PHP_EOL;
 	$rules .= "AddDefaultCharset $charset" . PHP_EOL;
@@ -600,7 +610,7 @@ function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.Nami
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
 		$rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-		$rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
+		$rules  .= '<FilesMatch "\.(avifs?|cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
 		  $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
 		  $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
 		$rules  .= '</FilesMatch>' . PHP_EOL;

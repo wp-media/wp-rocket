@@ -35,11 +35,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		'bigcommerce_subscriber',
 		'beaverbuilder_subscriber',
 		'amp_subscriber',
-		'litespeed_subscriber',
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
 		'mod_pagespeed',
+		'adthrive',
+		'autoptimize',
+		'wp-meteor',
+		'revolution_slider_subscriber',
+		'wordfence_subscriber',
 	];
 
 	/**
@@ -58,9 +62,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
 			->addArgument( $options )
+			->addArgument( rocket_direct_filesystem() )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' )
@@ -73,6 +80,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
@@ -112,9 +120,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
 			->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
 			->addTag( 'common_subscriber' );
@@ -123,6 +128,22 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'autoptimize', 'WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wp-meteor', 'WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
 			->addTag( 'common_subscriber' );
 	}
 }

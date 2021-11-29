@@ -4,10 +4,18 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Warmup;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
+use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
+use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
+use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Logger\Logger;
 use \WP_Rocket_WP_Background_Process;
 
 class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
+
+	use UrlTrait, CSSTrait;
 
 	/**
 	 * Background process action name.
@@ -46,13 +54,6 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	private $content_changed = false;
 
 	/**
-	 * Current page url that has the current resource.
-	 *
-	 * @var array
-	 */
-	private $page_urls = [];
-
-	/**
 	 * Options API instance.
 	 *
 	 * @var Options
@@ -60,20 +61,89 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 	private $options_api;
 
 	/**
+	 * Assets local cache instance
+	 *
+	 * @var AssetsLocalCache
+	 */
+	private $local_cache;
+
+	/**
 	 * ResourceFetcherProcess constructor.
 	 *
-	 * @param ResourcesQuery $resources_query ResourcesQuery instance.
-	 * @param APIClient      $api_client APIClient instance.
-	 * @param Options        $options_api Options API instance.
+	 * @param ResourcesQuery   $resources_query ResourcesQuery instance.
+	 * @param APIClient        $api_client APIClient instance.
+	 * @param Options          $options_api Options API instance.
+	 * @param AssetsLocalCache $local_cache Local cache instance.
 	 */
-	public function __construct( ResourcesQuery $resources_query, APIClient $api_client, Options $options_api ) {
+	public function __construct( ResourcesQuery $resources_query, APIClient $api_client, Options $options_api, AssetsLocalCache $local_cache ) {
 		parent::__construct();
 
 		$this->resources_query = $resources_query;
 		$this->api_client      = $api_client;
 		$this->options_api     = $options_api;
+		$this->local_cache     = $local_cache;
 	}
 
+	/**
+	 * Minify and prepare CSS.
+	 *
+	 * @param string $path Path of the CSS file.
+	 * @param string $contents Contents of the CSS file.
+	 *
+	 * @return string
+	 */
+	private function prepare_css_content( string $path, string $contents ) : string {
+		$contents = trim( $this->rewrite_paths( $path, $path, $contents ) );
+		$minifier = new MinifyCSS( $contents );
+
+		return $minifier->minify();
+	}
+
+	/**
+	 * Minify and prepare JS.
+	 *
+	 * @param string $contents Contents of the JS file.
+	 *
+	 * @return string
+	 */
+	private function prepare_js_content( string $contents ) : string {
+		$minifier = new MinifyJS( $contents );
+
+		return $minifier->minify();
+	}
+
+	/**
+	 * Get resource contents.
+	 *
+	 * @param array $resource Resource array.
+	 *
+	 * @return string
+	 */
+	private function get_resource_contents( array $resource ) : string {
+
+		$resource_path = ! empty( $resource['path'] ) ? $resource['path'] : '';
+
+		$file_content = ! empty( $resource['external'] ) ? $this->local_cache->get_content( $resource['url'] ) : $this->get_file_content( $resource_path );
+
+		// Minify the content if it's there.
+		if ( $file_content ) {
+			$file_content = 'js' === $resource['type'] ? $this->prepare_js_content( $file_content ) : $this->prepare_css_content( $resource_path, $file_content );
+		}
+
+		if ( ! $file_content ) {
+			Logger::error(
+				'No file content.',
+				[
+					'RUCSS warmup process',
+					'path' => $resource_path,
+				]
+			);
+
+			return '*';
+		}
+
+		return $file_content;
+	}
 
 	/**
 	 * Do the task for each page resources.
@@ -87,13 +157,33 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 			return false;
 		}
 
-		$this->page_urls[] = $resource['page_url'] ?? '';
+		$page_url      = $resource['page_url'] ?? '';
+		$all_pages     = $this->options_api->get( 'resources_scanner', [] );
+		$fetched_pages = $this->options_api->get( 'resources_scanner_fetched', [] );
+
+		if ( ! empty( $page_url ) ) {
+			$fetched_pages[ $page_url ] = [
+				'url'      => $page_url,
+				'is_error' => false,
+			];
+		}
+
+		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
+
+		if ( count( $all_pages ) === count( $fetched_pages ) ) {
+			// Fetching resources is finished.
+			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
+			$prewarmup_stats['fetch_finish_time'] = time();
+			$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
+		}
 
 		// Check if no resources are sent for the page_url.
 		// This usually happens in case of page error.
 		if ( empty( $resource['url'] ) ) {
 			return false;
 		}
+
+		$resource['content'] = $this->get_resource_contents( $resource );
 
 		if ( $this->resources_query->create_or_update( $resource ) ) {
 			$this->content_changed = true;
@@ -133,37 +223,5 @@ class ResourceFetcherProcess extends WP_Rocket_WP_Background_Process {
 		 * @since 3.9
 		 */
 		do_action( 'rocket_rucss_file_changed' );
-	}
-
-	/**
-	 * Batch completed callback.
-	 */
-	protected function complete_batch() {
-		if ( empty( $this->page_urls ) ) {
-			return;
-		}
-
-		$this->page_urls = array_unique( $this->page_urls );
-		$all_pages       = $this->options_api->get( 'resources_scanner', [] );
-		$fetched_pages   = $this->options_api->get( 'resources_scanner_fetched', [] );
-
-		foreach ( $this->page_urls as $page_url ) {
-			if ( empty( $page_url ) ) {
-				continue;
-			}
-			$fetched_pages[ $page_url ] = [
-				'url'      => $page_url,
-				'is_error' => false,
-			];
-		}
-
-		$this->options_api->set( 'resources_scanner_fetched', $fetched_pages );
-
-		if ( count( $all_pages ) === count( $fetched_pages ) ) {
-			// Fetching resources is finished.
-			$prewarmup_stats                      = $this->options_api->get( 'prewarmup_stats', [] );
-			$prewarmup_stats['fetch_finish_time'] = time();
-			$this->options_api->set( 'prewarmup_stats', $prewarmup_stats );
-		}
 	}
 }

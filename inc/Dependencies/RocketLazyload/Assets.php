@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Handle the lazyload required assets: inline CSS and JS
  *
@@ -19,7 +21,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertLazyloadScript( $args = [] ) {
-		echo $this->getLazyloadScript( $args );
+		echo $this->getLazyloadScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -31,7 +33,6 @@ class Assets {
 	public function getInlineLazyloadScript( $args = [] ) {
 		$defaults = [
 			'elements'  => [
-				'img',
 				'iframe',
 			],
 			'threshold' => 300,
@@ -42,13 +43,24 @@ class Assets {
 			'container'           => 1,
 			'thresholds'          => 1,
 			'data_bg'             => 1,
+			'data_bg_hidpi'       => 1,
+			'data_bg_multi'       => 1,
+			'data_bg_multi_hidpi' => 1,
+			'data_poster'         => 1,
+			'class_applied'       => 1,
 			'class_error'         => 1,
+			'class_entered'       => 1,
+			'class_exited'        => 1,
 			'cancel_on_exit'      => 1,
+			'unobserve_entered'   => 1,
 			'unobserve_completed' => 1,
 			'callback_enter'      => 1,
 			'callback_exit'       => 1,
 			'callback_loading'    => 1,
+			'callback_cancel'     => 1,
+			'callback_loaded'     => 1,
 			'callback_error'      => 1,
+			'callback_applied'    => 1,
 			'callback_finish'     => 1,
 			'use_native'          => 1,
 		];
@@ -101,7 +113,7 @@ class Assets {
                     var rocketlazy_count = 0;
 
                     mutations.forEach(function(mutation) {
-                        for (i = 0; i < mutation.addedNodes.length; i++) {
+                        for (var i = 0; i < mutation.addedNodes.length; i++) {
                             if (typeof mutation.addedNodes[i].getElementsByTagName !== \'function\') {
                                 continue;
                             }
@@ -155,16 +167,10 @@ class Assets {
 		$defaults = [
 			'base_url' => '',
 			'version'  => '',
-			'polyfill' => false,
 		];
 
-		$args   = wp_parse_args( $args, $defaults );
-		$min    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$script = '';
-
-		if ( isset( $args['polyfill'] ) && $args['polyfill'] ) {
-			$script .= '<script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=default%2CIntersectionObserver%2CIntersectionObserverEntry"></script>';
-		}
+		$args = wp_parse_args( $args, $defaults );
+		$min  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		/**
 		 * Filters the script tag for the lazyload script
@@ -173,9 +179,7 @@ class Assets {
 		 *
 		 * @param $script_tag HTML tag for the lazyload script.
 		 */
-		$script .= apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' );
-
-		return $script;
+		return apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	}
 
 	/**
@@ -185,7 +189,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailScript( $args = [] ) {
-		echo $this->getYoutubeThumbnailScript( $args );
+		echo $this->getYoutubeThumbnailScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -198,6 +202,7 @@ class Assets {
 		$defaults = [
 			'resolution' => 'hqdefault',
 			'lazy_image' => false,
+			'native'     => true,
 		];
 
 		$allowed_resolutions = [
@@ -231,10 +236,17 @@ class Assets {
 		$image = '<img src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '">';
 
 		if ( isset( $args['lazy_image'] ) && $args['lazy_image'] ) {
-			$image = '<img loading="lazy" data-lazy-src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"><noscript><img src="https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"></noscript>';
+			$attributes = 'alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"';
+			$image_url  = 'https://i.ytimg.com/vi/ID/' . $args['resolution'] . '.jpg';
+
+			$image = '<img data-lazy-src="' . $image_url . '" ' . $attributes . '><noscript><img src="' . $image_url . '" ' . $attributes . '></noscript>';
+
+			if ( $args['native'] ) {
+				$image = '<img loading="lazy" src="' . $image_url . '" ' . $attributes . '>';
+			}
 		}
 
-		return "<script>function lazyLoadThumb(e){var t='{$image}',a='<div class=\"play\"></div>';return t.replace(\"ID\",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement(\"iframe\"),t=\"ID?autoplay=1\";t+=0===this.dataset.query.length?'':'&'+this.dataset.query;e.setAttribute(\"src\",t.replace(\"ID\",this.dataset.src)),e.setAttribute(\"frameborder\",\"0\"),e.setAttribute(\"allowfullscreen\",\"1\"),e.setAttribute(\"allow\", \"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"),this.parentNode.replaceChild(e,this)}document.addEventListener(\"DOMContentLoaded\",function(){var e,t,a=document.getElementsByClassName(\"rll-youtube-player\");for(t=0;t<a.length;t++)e=document.createElement(\"div\"),e.setAttribute(\"data-id\",a[t].dataset.id),e.setAttribute(\"data-query\", a[t].dataset.query),e.setAttribute(\"data-src\", a[t].dataset.src),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script>";
+		return "<script>function lazyLoadThumb(e){var t='{$image}',a='<button class=\"play\" aria-label=\"play Youtube video\"></button>';return t.replace(\"ID\",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement(\"iframe\"),t=\"ID?autoplay=1\";t+=0===this.parentNode.dataset.query.length?'':'&'+this.parentNode.dataset.query;e.setAttribute(\"src\",t.replace(\"ID\",this.parentNode.dataset.src)),e.setAttribute(\"frameborder\",\"0\"),e.setAttribute(\"allowfullscreen\",\"1\"),e.setAttribute(\"allow\", \"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"),this.parentNode.parentNode.replaceChild(e,this.parentNode)}document.addEventListener(\"DOMContentLoaded\",function(){var e,t,p,a=document.getElementsByClassName(\"rll-youtube-player\");for(t=0;t<a.length;t++)e=document.createElement(\"div\"),e.setAttribute(\"data-id\",a[t].dataset.id),e.setAttribute(\"data-query\", a[t].dataset.query),e.setAttribute(\"data-src\", a[t].dataset.src),e.innerHTML=lazyLoadThumb(a[t].dataset.id),a[t].appendChild(e),p=e.querySelector('.play'),p.onclick=lazyLoadYoutubeIframe});</script>";
 	}
 
 	/**
@@ -244,7 +256,7 @@ class Assets {
 	 * @return void
 	 */
 	public function insertYoutubeThumbnailCSS( $args = [] ) {
-		wp_register_style( 'rocket-lazyload', false );
+		wp_register_style( 'rocket-lazyload', false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'rocket-lazyload' );
 		wp_add_inline_style( 'rocket-lazyload', $this->getYoutubeThumbnailCSS( $args ) );
 	}
@@ -263,10 +275,10 @@ class Assets {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(' . $args['base_url'] . 'img/youtube.png) no-repeat;cursor:pointer}';
+		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player:focus-within{outline: 2px solid currentColor;outline-offset: 5px;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:100%;width:100%;left:0;top:0;position:absolute;background:url(' . $args['base_url'] . 'img/youtube.png) no-repeat center;background-color: transparent !important;cursor:pointer;border:none;}';
 
 		if ( $args['responsive_embeds'] ) {
-			$css .= '.wp-has-aspect-ratio .rll-youtube-player{position:absolute;padding-bottom:0;width:100%;height:100%;top:0;bottom:0;left:0;right:0}';
+			$css .= '.wp-embed-responsive .wp-has-aspect-ratio .rll-youtube-player{position:absolute;padding-bottom:0;width:100%;height:100%;top:0;bottom:0;left:0;right:0}';
 		}
 
 		return $css;
@@ -276,7 +288,7 @@ class Assets {
 	 * Inserts the CSS needed when Javascript is not enabled to keep the display correct
 	 */
 	public function insertNoJSCSS() {
-		echo $this->getNoJSCSS();
+		echo $this->getNoJSCSS(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

@@ -28,16 +28,11 @@ class Test_WebpSectionDescription extends TestCase {
 		$field          = $webpSubscriber->webp_section_description( [] );
 
 		// Text under field.
-		$expectedText = 'You don’t seem to be using a method to create and serve WebP that we are auto-compatible with.';
+		$expectedText = '<strong>We have not detected any compatible WebP plugin!</strong><br>';
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 
-		// Double check.
-		$expectedText = 'If you activate this option WP Rocket will create separate cache files to serve WebP images.';
-
-		$this->assertArrayHasKey( 'warning', $field );
-		$this->assertStringStartsWith( $expectedText, $field['warning']['description'] );
 	}
 
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionEnabled() {
@@ -49,8 +44,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertSame( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertSame( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenPluginCreatingWebpAvailableAndCacheOptionDisabled() {
@@ -96,8 +91,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenPluginCreatingWebpAvailableAndCacheOptionEnabled() {
@@ -143,8 +138,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenPluginServingWebpNotCompatibleAndCacheOptionDisabled() {
@@ -190,8 +185,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenPluginServingWebpNotCompatibleAndCacheOptionEnabled() {
@@ -237,8 +232,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenPluginServingWebpAvailable() {
@@ -284,8 +279,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
@@ -293,8 +288,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertStringStartsWith( $expectedText, $field['description'] );
 	}
 
 	public function testShouldReturnTextWhenCacheOptionDisabledByFilter() {
@@ -345,8 +340,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriberNoCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field                 = $webpSubscriberNoCache->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertSame( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertSame( $expectedText, $field['description'] );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks( 1 );
@@ -354,8 +349,8 @@ class Test_WebpSectionDescription extends TestCase {
 		$webpSubscriberWithCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 		$field                   = $webpSubscriberWithCache->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertSame( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertSame( $expectedText, $field['description'] );
 
 		// Generating but not serving webp.
 		$webpPluginMock
@@ -369,13 +364,13 @@ class Test_WebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$field = $webpSubscriberNoCache->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertSame( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertSame( $expectedText, $field['description'] );
 
 		// Webp cache option enabled.
 		$field = $webpSubscriberWithCache->webp_section_description( [] );
 
-		$this->assertArrayHasKey( 'helper', $field );
-		$this->assertSame( $expectedText, $field['helper'] );
+		$this->assertArrayHasKey( 'description', $field );
+		$this->assertSame( $expectedText, $field['description'] );
 	}
 }

@@ -24,6 +24,7 @@ class Test_SendWarmupRequest extends TestCase {
 	public function testShouldSendWarmupRequest( $atts, $success, $mockResponse ): void {
 		$response = $this->get_reflective_property( 'response_body', AbstractAPIClient::class );
 		$error    = $this->get_reflective_property( 'error_message', AbstractAPIClient::class );
+		$api_url  = 'http://localhost';
 
 		$args = [
 			'body' => [
@@ -53,10 +54,11 @@ class Test_SendWarmupRequest extends TestCase {
 		];
 
 		Functions\when( 'wp_parse_args' )->returnArg( 1 );
+
 		Functions\expect( 'wp_remote_post' )
 			->once()
 			->with(
-				$apiClient::API_URL . 'warmup',
+				$api_url . 'warmup',
 				$args
 			)
 			->andReturn( $mockResponse );

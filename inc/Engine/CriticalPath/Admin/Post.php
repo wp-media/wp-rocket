@@ -200,8 +200,8 @@ class Post extends Abstract_Render {
 		$list   = [
 			// translators: %s = post type.
 			'not_published'   => sprintf( __( 'Publish the %s', 'rocket' ), $post->post_type ),
-			'option_disabled' => __( 'Enable Optimize CSS delivery in WP Rocket settings', 'rocket' ),
-			'option_excluded' => __( 'Enable Optimize CSS delivery in the options above', 'rocket' ),
+			'option_disabled' => __( 'Enable Load CSS asynchronously in WP Rocket settings', 'rocket' ),
+			'option_excluded' => __( 'Enable Load CSS asynchronously in the options above', 'rocket' ),
 		];
 
 		return wp_sprintf_l( $notice, array_intersect_key( $list, $disabled_data ) );

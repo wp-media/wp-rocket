@@ -32,6 +32,37 @@ class HTML {
 		'et_core_page_resource_fallback',
 		'window.\$us === undefined',
 		'js-extra',
+		'fusionNavIsCollapsed',
+		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
+		'eio_lazy_vars',
+		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
+		'document\.body\.classList\.remove\("no-js"\)',
+		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
+		'et_animation_data',
+		'wpforms_settings',
+		'var nfForms',
+		'//stats.wp.com', // Jetpack Stats.
+		'_stq.push', // Jetpack Stats.
+		'fluent_form_ff_form_instance_', // Fluent Forms.
+		'cpLoadCSS', // Convert Pro.
+		'ninja_column_', // Ninja Tables.
+		'var rbs_gallery_', // Robo Gallery.
+		'var lepopup_', // Green Popup.
+		'var billing_additional_field', // Woo Autocomplete Nish.
+		'var gtm4wp',
+		'var dataLayer_content',
+		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
+		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
+		'ewww_webp_supported', // EWWW WebP inline scripts.
+		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
+		'/perfmatters/js/lazyload.min.js',
+		'lazyLoadInstance',
+		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
+		'initCubePortfolio', // Cube Portfolio show images.
+		'gforms_recaptcha_', // Gravity Forms recaptcha.
+		'/jetpack-boost/vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack Boost plugin lazyload.
+		'jetpack-lazy-images-js-enabled',  // Jetpack Boost plugin lazyload.
+		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
 	];
 
 	/**
@@ -92,6 +123,7 @@ class HTML {
 	 * @return bool
 	 */
 	public function is_allowed(): bool {
+
 		if ( rocket_bypass() ) {
 			return false;
 		}
@@ -158,7 +190,12 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
-			if ( false !== strpos( $matches['attr'], 'application/ld+json' ) ) {
+
+			if (
+				strpos( $matches['attr'], 'type=' ) !== false
+				&&
+				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
+			) {
 				return $matches[0];
 			}
 
@@ -170,5 +207,56 @@ class HTML {
 		}
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
+	}
+
+	/**
+	 * Move meta charset to head if not found to the top of page content.
+	 *
+	 * @since 3.9.4
+	 *
+	 * @param string $html Html content.
+	 *
+	 * @return string
+	 */
+	public function move_meta_charset_to_head( $html ): string {
+		$meta_pattern = "#<meta[^h]*(http-equiv[^=]*=[^\'\"]*[\'\" ]Content-Type[\'\"][ ]*[^>]*|)(charset[^=]*=[ ]*[\'\" ]*[^\'\"> ][^\'\">]+[^\'\"> ][\'\" ]*|charset[^=]*=*[^\'\"> ][^\'\">]+[^\'\"> ])([^>]*|)>(?=.*</head>)#Usmi";
+
+		if ( ! preg_match( $meta_pattern, $html, $matches ) ) {
+			return $html;
+		}
+
+		$replaced_html = preg_replace( "$meta_pattern", '', $html );
+
+		if ( empty( $replaced_html ) ) {
+			return $html;
+		}
+
+		if ( preg_match( '/<head\b/i', $replaced_html ) ) {
+			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+
+			if ( empty( $replaced_html ) ) {
+				return $html;
+			}
+
+			return $replaced_html;
+		}
+
+		if ( preg_match( '/<html\b/i', $replaced_html ) ) {
+			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+
+			if ( empty( $replaced_html ) ) {
+				return $html;
+			}
+
+			return $replaced_html;
+		}
+
+		$replaced_html = preg_replace( '/(<\w+)/', "${matches[0]}\${1}", $replaced_html, 1 );
+
+		if ( empty( $replaced_html ) ) {
+			return $html;
+		}
+
+		return $replaced_html;
 	}
 }

@@ -33,7 +33,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'database_trashed_posts'      => true,
 		'database_spam_comments'      => true,
 		'database_trashed_comments'   => true,
-		'database_expired_transients' => true,
 		'database_all_transients'     => true,
 		'database_optimize_tables'    => true,
 		'schedule_automatic_cleanup'  => true,
@@ -121,13 +120,14 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	$is_form_submit = WP_ROCKET_PLUGIN_SLUG === $is_form_submit;
 	$errors         = [];
 	$pattern_labels = [
-		'exclude_css'       => __( 'Excluded CSS Files', 'rocket' ),
-		'exclude_inline_js' => __( 'Excluded Inline JavaScript', 'rocket' ),
-		'exclude_js'        => __( 'Excluded JavaScript Files', 'rocket' ),
-		'cache_reject_uri'  => __( 'Never Cache URL(s)', 'rocket' ),
-		'cache_reject_ua'   => __( 'Never Cache User Agent(s)', 'rocket' ),
-		'cache_purge_pages' => __( 'Always Purge URL(s)', 'rocket' ),
-		'cdn_reject_files'  => __( 'Exclude files from CDN', 'rocket' ),
+		'exclude_css'         => __( 'Excluded CSS Files', 'rocket' ),
+		'exclude_inline_js'   => __( 'Excluded Inline JavaScript', 'rocket' ),
+		'exclude_js'          => __( 'Excluded JavaScript Files', 'rocket' ),
+		'delay_js_exclusions' => __( 'Excluded Delay JavaScript Files', 'rocket' ),
+		'cache_reject_uri'    => __( 'Never Cache URL(s)', 'rocket' ),
+		'cache_reject_ua'     => __( 'Never Cache User Agent(s)', 'rocket' ),
+		'cache_purge_pages'   => __( 'Always Purge URL(s)', 'rocket' ),
+		'cdn_reject_files'    => __( 'Exclude files from CDN', 'rocket' ),
 	];
 
 	foreach ( $pattern_labels as $pattern_field => $label ) {
@@ -145,7 +145,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
-					$errors[ $pattern_field ] = sprintf( __( '%1$s: <em>%2$s</em>.', 'rocket' ), $label, esc_html( $excluded ) );
+					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
 					return false;
 				}
 
@@ -155,14 +155,27 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	if ( $errors ) {
-		$error_message  = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', count( $errors ), 'rocket' );
-		$error_message .= '<ul><li>' . implode( '</li><li>', $errors ) . '</li></ul>';
-		$errors         = [];
+		$error_message = _n( 'The following pattern is invalid and has been removed:', 'The following patterns are invalid and have been removed:', array_sum( array_map( 'count', $errors ) ), 'rocket' );
+
+		$error_message .= '</strong></p>'; // close out default opening tags from WP's settings_errors().
+
+		foreach ( $errors as $error ) {
+			$error_message .= '<ul><li>' . implode( '</li><li>', $error ) . '</li></ul>';
+		}
+
+		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
+		$error_message .= sprintf(
+			'<a href="%1$s" data-beacon-article="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+			__( 'More info', 'rocket' )
+		);
+
+		$errors = [];
 
 		$rocket_settings_errors[] = [
 			'setting' => 'general',
 			'code'    => 'invalid_patterns',
-			'message' => __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error_message . '<strong>',
+			'message' => __( 'WP Rocket: ', 'rocket' ) . $error_message,
 			'type'    => 'error',
 		];
 	}
@@ -202,19 +215,16 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		return $newvalue;
 	}
 
-	/**
-	 * Display an error notice.
-	 * The notices are stored directly in the transient instead of using `add_settings_error()`, to make sure they are displayed even if we’re outside an admin screen.
-	 */
 	$transient_errors = get_transient( 'settings_errors' );
-
 	if ( ! $transient_errors || ! is_array( $transient_errors ) ) {
 		$transient_errors = [];
 	}
 
-	$transient_errors = array_merge( $transient_errors, $rocket_settings_errors );
+	$settings_errors = array_merge( $transient_errors, $rocket_settings_errors );
 
-	set_transient( 'settings_errors', $transient_errors, 30 );
+	foreach ( $settings_errors as $error ) {
+		add_settings_error( $error['setting'], $error['code'], $error['message'], $error['type'] );
+	}
 
 	return $newvalue;
 }

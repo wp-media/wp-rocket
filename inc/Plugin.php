@@ -99,7 +99,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
 		$this->options = $this->container->get( 'options' );
 
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Database\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
@@ -199,7 +199,6 @@ class Plugin {
 			'minify_css_subscriber',
 			'minify_js_subscriber',
 			'cache_dynamic_resource',
-			'embeds_subscriber',
 			'emojis_subscriber',
 			'delay_js_subscriber',
 			'image_dimensions_subscriber',
@@ -250,7 +249,6 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
-			'litespeed_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
@@ -285,6 +283,11 @@ class Plugin {
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
 			'optimus_webp_subscriber',
+			'adthrive',
+			'autoptimize',
+			'wp-meteor',
+			'revolution_slider_subscriber',
+			'wordfence_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

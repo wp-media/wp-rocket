@@ -88,6 +88,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the inline script to the head when the option is enabled.
 	 *
+	 * @since 3.9.4 Move meta charset to head.
 	 * @since 3.9 Hooked on rocket_buffer, display the script right after <head>
 	 * @since 3.7
 	 *
@@ -104,11 +105,23 @@ class Subscriber implements Subscriber_Interface {
 
 		$lazyload_script = $this->filesystem->get_contents( rocket_get_constant( 'WP_ROCKET_PATH' ) . 'assets/js/lazyload-scripts.min.js' );
 
+		$replaced_html = $html;
+
 		if ( false !== $lazyload_script ) {
-			$html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $html, 1 );
+			$replaced_html = preg_replace( $pattern, "$0<script>{$lazyload_script}</script>", $replaced_html, 1 );
+
+			if ( empty( $replaced_html ) ) {
+				return $html;
+			}
 		}
 
-		return preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $html, 1 );
+		$replaced_html = preg_replace( $pattern, '$0<script>' . $this->html->get_ie_fallback() . '</script>', $replaced_html, 1 );
+
+		if ( empty( $replaced_html ) ) {
+			return $html;
+		}
+
+		return $this->html->move_meta_charset_to_head( $replaced_html );
 	}
 
 	/**
