@@ -518,8 +518,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$excluded_taxonomies[] = 'product_shipping_class';
 
 		return $excluded_taxonomies;
-  }
+	}
 
+	/**
 	 * Check if current product page has images in gallery.
 	 *
 	 * @since 3.9.1
