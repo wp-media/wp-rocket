@@ -222,7 +222,13 @@ class DeferJS {
 			'www.paypal.com/sdk/js',
 		];
 
-		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
+		$exclude_defer_js_option = $this->options->get( 'exclude_defer_js', [] );
+
+		foreach ( $exclude_defer_js_option as $i => $exclude ) {
+			$exclude_defer_js_option[ $i ] = preg_quote( $exclude, '/' );
+		}
+
+		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $exclude_defer_js_option ) );
 
 		/**
 		 * Filter list of Deferred JavaScript files
@@ -232,10 +238,6 @@ class DeferJS {
 		 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 		 */
 		$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
-
-		foreach ( $exclude_defer_js as $i => $exclude ) {
-			$exclude_defer_js[ $i ] = str_replace( '#', '\#', $exclude );
-		}
 
 		return $exclude_defer_js;
 	}
