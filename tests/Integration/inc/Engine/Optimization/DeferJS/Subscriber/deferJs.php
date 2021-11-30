@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\Subscriber;
 
-use ErrorException;
-use mysql_xdevapi\Exception;
 use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -11,7 +9,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_js
  *
  * @group  DeferJS
- * @group cg
  */
 class Test_DeferJs extends TestCase {
 	use ContentTrait;
