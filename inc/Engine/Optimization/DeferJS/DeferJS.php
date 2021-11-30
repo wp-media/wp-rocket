@@ -75,7 +75,7 @@ class DeferJS {
 
 		$exclude_defer_js = implode( '|', $this->get_excluded() );
 
-		if ( ! @preg_replace( '#(' . $exclude_defer_js . ')#i', '', 'dummy-string' ) ) {
+		if ( ! @preg_replace( '#(' . $exclude_defer_js . ')#i', '', 'dummy-string' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			return $html;
 		}
 
