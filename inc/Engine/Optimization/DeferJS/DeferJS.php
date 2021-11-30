@@ -75,6 +75,10 @@ class DeferJS {
 
 		$exclude_defer_js = implode( '|', $this->get_excluded() );
 
+		if ( ! @preg_replace( '#(' . $exclude_defer_js . ')#i', '', 'dummy-string' ) ) {
+			return $html;
+		}
+
 		foreach ( $matches as $tag ) {
 			if ( preg_match( '#(' . $exclude_defer_js . ')#i', $tag['url'] ) ) {
 				continue;
