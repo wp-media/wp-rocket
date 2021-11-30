@@ -247,6 +247,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'www.vbt.io/ext/vbtforms.js',
 			'cdn.callrail.com',
 			'documentcloud.adobe.com/view-sdk/main.js',
+			'static.cleverpush.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
