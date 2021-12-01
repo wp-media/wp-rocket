@@ -3,7 +3,10 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\GoogleFonts\Combine;
 
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
+use Mockery;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
+use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -22,7 +25,7 @@ class Test_Optimize extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldCombineGoogleFonts( $html, $expected ) {
+	public function testShouldCombineGoogleFonts( $html, $expected, $filtered = false ) {
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {
 			return parse_url( $url, $component );
 		} );
@@ -36,6 +39,12 @@ class Test_Optimize extends TestCase {
 		Functions\when( 'esc_url' )->alias( function( $url ) {
 			return str_replace( [ '&amp;', '&' ], '&#038;', $url );
 		} );
+
+		if ( false !== $filtered ) {
+			Filters\expectApplied('rocket_combined_google_fonts_display')
+				->with('swap', Mockery::type(AbstractAPIClient::class))
+				->andReturn( $filtered );
+		}
 
 		$combine = new Combine();
 
