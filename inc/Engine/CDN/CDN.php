@@ -59,7 +59,7 @@ class CDN {
 		}
 
 		/**
-		 * Filters the CDN rewritting of relative paths
+		 * Filters the CDN rewriting of relative paths
 		 *
 		 * @since 3.10.5
 		 *
