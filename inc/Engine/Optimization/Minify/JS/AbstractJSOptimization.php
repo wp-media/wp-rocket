@@ -248,6 +248,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.callrail.com',
 			'documentcloud.adobe.com/view-sdk/main.js',
 			'static.cleverpush.com',
+			'js.afterpay.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
