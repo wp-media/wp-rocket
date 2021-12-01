@@ -71,7 +71,7 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		$message = '<strong>' . __(
-				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of WP Rocket's Delay JavaScript Execution.',
 				'rocket'
 			) . '</strong>';
 
