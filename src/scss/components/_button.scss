@@ -23,7 +23,7 @@
     white-space: nowrap;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    @include transition(all, 200ms)
+    @include transition(all, 200ms);
     @include font-size(13,20);
 
     &:hover,

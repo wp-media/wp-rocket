@@ -6,7 +6,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var babel = require('babelify');
 var uglify = require('gulp-uglify');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('sass'));
 var rename = require("gulp-rename");
 var iife = require('gulp-iife');
 
@@ -36,11 +36,8 @@ gulp.task('sass_modal', function () {
 
  /* Task to watch sass changes */
 gulp.task('sass:watch', function () {
-  gulp.watch('./src/scss/main.scss', ['sass']);
-  gulp.watch('./src/scss/modal.scss', ['sass_modal']);
+  gulp.watch('./src/scss/**/*.scss', gulp.series('sass', 'sass_rtl', 'sass_modal'));
 });
-
-
 
 /* Task to compile JS */
 function compile(watch) {
