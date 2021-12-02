@@ -36,7 +36,7 @@ gulp.task('sass_modal', function () {
 
  /* Task to watch sass changes */
 gulp.task('sass:watch', function () {
-  gulp.watch('./src/scss/**/*.scss', gulp.series('sass', 'sass_rtl', 'sass_modal'));
+  gulp.watch('./src/scss/**/*.scss', gulp.parallel('sass', 'sass_rtl', 'sass_modal'));
 });
 
 /* Task to compile JS */
