@@ -54,6 +54,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					printf( esc_html__( 'WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in our plugin', 'rocket' ), '<strong>', '</strong>' );
 					?>
 				</li>
+				<li class="wpr-rocketcdn-cta-footer">
+					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
+				</li>
 			</ul>
 			<div class="wpr-rocketcdn-pricing">
 				<?php if ( ! empty( $data['error'] ) ) : ?>
@@ -63,23 +66,14 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<h4 class="wpr-title2 wpr-rocketcdn-pricing-regular"><del>$<?php echo esc_html( $data['regular_price'] ); ?></del></h4>
 					<?php endif; ?>
 					<h4 class="wpr-rocketcdn-pricing-current">
-						<?php
-						$major = substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) );
-						$minor = substr( $data['current_price'], strpos( $data['current_price'], '.' ) );
-						printf(
-							// translators: %s = price of RocketCDN subscription.
-							esc_html__( '%s', 'rocket' ),
-							'<span class="wpr-rocketcdn-cta-currency-minor">$</span><span class="wpr-rocketcdn-cta-currency-major">' . esc_html( $major ) . '</span><span class="wpr-rocketcdn-cta-currency-minor">' . esc_html(( $minor ) ) . '</span>'
-						);
-						?>
+						<span class="wpr-rocketcdn-cta-currency-minor">$</span>
+						<span class="wpr-rocketcdn-cta-currency-major"><?php esc_html_e( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
+						<span class="wpr-rocketcdn-cta-currency-minor"><?php esc_html_e( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?></span>
 					</h4>
 					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
 					<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
 				<?php endif; ?>
 			</div>
-		</div>
-		<div class="wpr-rocketcdn-cta-footer">
-			<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
