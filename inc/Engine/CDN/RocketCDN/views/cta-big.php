@@ -64,21 +64,24 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<?php endif; ?>
 					<h4 class="wpr-rocketcdn-pricing-current">
 						<?php
+						$major = substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) );
+						$minor = substr( $data['current_price'], strpos( $data['current_price'], '.' ) );
 						printf(
 							// translators: %s = price of RocketCDN subscription.
-							esc_html__( '%s / month', 'rocket' ),
-							'<span class="wpr-title1">$' . esc_html( $data['current_price'] ) . '</span>'
+							esc_html__( '%s', 'rocket' ),
+							'<span class="wpr-rocketcdn-cta-currency-minor">$</span><span class="wpr-rocketcdn-cta-currency-major">' . esc_html( $major ) . '</span><span class="wpr-rocketcdn-cta-currency-minor">' . esc_html(( $minor ) ) . '</span>'
 						);
 						?>
 					</h4>
+					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
 					<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
 				<?php endif; ?>
 			</div>
 		</div>
+		<div class="wpr-rocketcdn-cta-footer">
+			<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
+		</div>
 	</section>
-	<div class="wpr-rocketcdn-cta-footer">
-		<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
-	</div>
 	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
 	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
 	<p>

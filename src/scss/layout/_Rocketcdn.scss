@@ -83,7 +83,7 @@
     &-subtitle {
         color: $cGreyDark1;
         margin-top: 0;
-        @include font-size(16,24);
+        @include font-size(14,24);
     }
 
     &-content {
@@ -103,7 +103,7 @@
             padding: $space * 2;
         }
     }
-    
+
     .wpr-flex{
         display: flex;
         justify-content: space-between;
@@ -116,7 +116,6 @@
     }
 
     .wpr-rocketcdn-features {
-        border-right: 2px solid #cdd1d5;
         margin: 0;
         padding-right: $space *2;
 
@@ -126,11 +125,14 @@
     }
 
     .wpr-rocketcdn-pricing {
+	    background-color: $cWhite;
         align-items: center;
         display: flex;
         flex-direction: column;
-        padding: $space $space * 2;
+        padding: $space * 2;
+	    padding-bottom: $space * 4;
         width: calc( 100% / 3 );
+	    max-width: 219px;
 
         @include respond-to('xs') {
             width: auto;
@@ -141,9 +143,24 @@
             margin-bottom: $space;
         }
 
-        &-current {
-            margin-bottom: $space *2;
-        }
+	    .wpr-rocketcdn-cta-billing-detail {
+		  margin-bottom: $space * 2;
+		  @include font-size(16,22);
+		}
+
+	    .wpr-rocketcdn-cta-currency {
+
+		    &-major {
+			  font-weight: 700;
+			  @include font-size(48,56);
+			}
+
+		    &-minor {
+			  font-weight: 700;
+			  vertical-align: top;
+			  @include font-size(24,32);
+			}
+		}
     }
 
     .wpr-rocketcdn-feature{
@@ -173,30 +190,26 @@
     }
 
     &-footer {
-        background: $cGreyDark3;
+	    color: $cGreyDark4;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
-        color: $cWhite;
-        font-weight: 700;
+        font-weight: 600;
         padding: $space;
-        text-align: center;
-        text-transform: uppercase;
-        @include font-size(11,20);
+	    @include font-size(14,16);
 
         & a {
-            text-decoration: none;
 
             &:before {
+			    font-family: "Font Awesome 5 Pro";
                 content:"\00a1";
-                border: 1px solid $cWhite;
-                color: $cWhite;
+                border: 1px solid;
                 margin-right: $space;
-                width: 18px;
-                height: 18px;
+                width: 14px;
+                height: 14px;
                 display: inline-block;
-                border-radius: 18px;
-                @include font-size(14,16);
-                font-style: italic;
+                border-radius: 14px;
+			    text-align: center;
+                @include font-size(14,14);
             }
         }
     }
@@ -204,7 +217,7 @@
 
 .wpr-rocketcdn-subscription {
     text-align: end;
-    
+
     .wpr-rocketcdn-open {
         color: $cGreyDark2;
         text-decoration: underline;
