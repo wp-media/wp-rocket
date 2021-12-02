@@ -149,4 +149,32 @@ return [
 			</body>
 			</html>'
 	],
+	'shouldReplaceDisplayValueWithFilteredValue' => [
+		'given' =>
+			'<!doctype html>
+			<html>
+			<head>
+			<title>Sample Page</title>
+			<link rel="preconnect" href="https://fonts.gstatic.com">
+			<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&display=auto" rel="stylesheet">
+			<link rel="stylesheet" id="dt-more-fonts-css" href="https://fonts.googleapis.com/css2?family=Comfortaa" type="text/css" media="all" />
+			</head>
+			<body>
+			</body>
+			</html>'
+		,
+		'expected' =>
+			'<!doctype html>
+			<html>
+			<head>
+			<title>Sample Page</title>
+			<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Goldman:wght@700&#038;family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&#038;family=Comfortaa&#038;display=optional" /></noscript>
+			<link rel="preconnect" href="https://fonts.gstatic.com">
+			</head>
+			<body>
+			</body>
+			</html>'
+		,
+		'filtered' => 'optional'
+	],
 ];
