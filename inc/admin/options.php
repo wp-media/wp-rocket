@@ -123,6 +123,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		'exclude_css'         => __( 'Excluded CSS Files', 'rocket' ),
 		'exclude_inline_js'   => __( 'Excluded Inline JavaScript', 'rocket' ),
 		'exclude_js'          => __( 'Excluded JavaScript Files', 'rocket' ),
+		'exclude_defer_js'    => __( 'Defer JavaScript Files', 'rocket' ),
 		'delay_js_exclusions' => __( 'Excluded Delay JavaScript Files', 'rocket' ),
 		'cache_reject_uri'    => __( 'Never Cache URL(s)', 'rocket' ),
 		'cache_reject_ua'     => __( 'Never Cache User Agent(s)', 'rocket' ),

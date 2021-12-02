@@ -56,7 +56,7 @@
             position: relative;
             top: 3px;
             @include font-size(18,18);
-            margin-right: $space/2;
+            margin-right: calc($space/2);
         }
     }
 }
