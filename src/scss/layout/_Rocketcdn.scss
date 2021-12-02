@@ -164,7 +164,7 @@
     }
 
     .wpr-rocketcdn-feature{
-        margin: $space * 2 0;
+        margin: $space * 3 0;
         min-height: 30px;
         padding-left: 62px;
         position: relative;
@@ -172,7 +172,7 @@
         &:before {
             position: absolute;
             top: 50%;
-            left: 16px;
+            left: 5px;
             transform: translateY(-50%);
         }
     }
