@@ -144,9 +144,15 @@ class Autoptimize implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_notify() {
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return false;
+		}
+
 		return rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false )
 			&&
 			current_user_can( 'rocket_manage_options' );
+
+
 	}
 
 	/**
