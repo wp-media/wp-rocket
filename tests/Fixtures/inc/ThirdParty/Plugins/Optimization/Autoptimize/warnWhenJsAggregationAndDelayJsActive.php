@@ -3,7 +3,7 @@
 declare( strict_types=1 );
 
 $expected_html = <<<HTML
-<div class="notice notice-warning ">
+<div class="notice notice-info ">
 <p>
 <strong>
 We have detected that Autoptimize's JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.</strong>
@@ -21,6 +21,16 @@ return [
 			'dismissed'                    => false,
 		],
 		'expected' => $expected_html
+	],
+
+	'shouldSkipWhenNotOnWPRDashboardPage' => [
+		'config' => [
+			'delayJSActive'                => true,
+			'autoptimizeAggregateJSActive' => 'on',
+			'dismissed'                    => false,
+			'notWPRDashboard'              => true,
+		],
+		'expected' => '',
 	],
 
 	'shouldSkipWhenAutoptimizeAggregateJsOffAndDelayJsNotActivated' => [
