@@ -5,10 +5,8 @@ declare( strict_types=1 );
 $expected_html = <<<HTML
 <div class="notice notice-info ">
 <p>
-<strong>
-We have detected that Autoptimize's JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.</strong>
-</p>
-<p>
+<strong>WP Rocket: </strong>
+We have detected that Autoptimize's JavaScript Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling <strong>JavaScript Aggregation</strong> to take full advantage of Delay JavaScript Execution.</p><p>
 <a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=warn_when_js_aggregation_and_delay_js_active&amp;_wpnonce=123456">
 Dismiss this notice.</a></p></div>
 HTML;
