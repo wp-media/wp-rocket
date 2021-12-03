@@ -56,15 +56,15 @@
 
             &:before {
                 content: "\2715";
-                font-size: 2rem;
-                line-height: 0.5;
+			    font-weight: 700;
+			    @include font-size(24,32);
             }
         }
 
         &:before {
             content: "\2715";
-            font-size: 2rem;
-            line-height: 0.5;
+		    font-weight: 700;
+		    @include font-size(24,32);
         }
     }
 
