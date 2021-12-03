@@ -15,11 +15,16 @@
  */
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
+$data['promotion_campaign'] = 'Halloween 2021';
+$data['promotion_end_date'] = 'November 3, 2021';
+$data['current_price'] = '6.99';
+$data['regular_price'] = '7.99';
+$data['nopromo_variant'] = '';
 ?>
 <div class="wpr-rocketcdn-cta <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
 	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
 	<div class="wpr-flex wpr-rocketcdn-promo">
-		<h3 class="wpr-title1"><?php echo esc_html( $data['promotion_campaign'] ); ?></h3>
+		<h3 class="wpr-rocketcdn-promo-title"><?php echo esc_html( $data['promotion_campaign'] ); ?></h3>
 		<p class="wpr-title2 wpr-rocketcdn-promo-date">
 			<?php
 			printf(
@@ -57,6 +62,18 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<li class="wpr-rocketcdn-cta-footer">
 					<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
 				</li>
+				<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
+					<li class="wpr-rocketcdn-cta-promo-footer">
+						<?php
+						printf(
+						// translators: %1$s = discounted price, %2$s = regular price.
+								esc_html__( '*$%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
+								esc_html( str_replace( '*', '', $data['current_price'] ) ),
+								esc_html( $data['regular_price'] )
+						);
+						?>
+					</li>
+				<?php endif; ?>
 			</ul>
 			<div class="wpr-rocketcdn-pricing">
 				<?php if ( ! empty( $data['error'] ) ) : ?>
@@ -68,7 +85,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<h4 class="wpr-rocketcdn-pricing-current">
 						<span class="wpr-rocketcdn-cta-currency-minor">$</span>
 						<span class="wpr-rocketcdn-cta-currency-major"><?php esc_html_e( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
-						<span class="wpr-rocketcdn-cta-currency-minor"><?php esc_html_e( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?></span>
+						<span class="wpr-rocketcdn-cta-currency-minor"><?php esc_html_e( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?>
+						<?php if ( ! empty( $data['regular_price'] ) ): ?>*<?php endif; ?>
+						</span>
 					</h4>
 					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
 					<button class="wpr-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Get Started', 'rocket' ); ?></button>
@@ -77,16 +96,4 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 	</section>
 	<button class="wpr-rocketcdn-cta-close<?php echo esc_attr( $data['nopromo_variant'] ); ?>" id="wpr-rocketcdn-close-cta"><span class="screen-reader-text"><?php esc_html_e( 'Reduce this banner', 'rocket' ); ?></span></button>
-	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
-	<p>
-		<?php
-		printf(
-			// translators: %1$s = discounted price, %2$s = regular price.
-			esc_html__( '* $%1$s/month for 12 months then $%2$s/month. You can cancel your subscription at any time.', 'rocket' ),
-			esc_html( str_replace( '*', '', $data['current_price'] ) ),
-			esc_html( $data['regular_price'] )
-		);
-		?>
-	</p>
-<?php endif; ?>
 </div>

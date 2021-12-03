@@ -63,17 +63,22 @@
 
         &:before {
             content: "\2715";
+		    color: $cBlack;
 		    font-weight: 700;
 		    @include font-size(24,32);
         }
     }
 
     .wpr-rocketcdn-promo {
-        background: $cOrange;
+        background: $brightSun;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
-        color: $cWhite;
         padding: $space *2 $space *6 $space *2 $space *2;
+
+	  &-title {
+		font-weight: 700;
+		@include font-size(24,32);
+	  }
 
         &-date {
             margin: 0;
@@ -191,10 +196,8 @@
 
     &-footer {
 	    color: $cGreyDark4;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
         font-weight: 600;
-        padding: $space;
+        padding: $space * 2 $space $space;
 	    @include font-size(14,16);
 
         & a {
@@ -213,6 +216,12 @@
             }
         }
     }
+
+    &-promo-footer {
+	    color: $cGreyDark4;
+	    padding: $space * 2 $space $space;
+	    @include font-size(14,22);
+	}
 }
 
 .wpr-rocketcdn-subscription {
