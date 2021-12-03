@@ -70,8 +70,8 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$message =  sprintf(
-		/** Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
+		$message = sprintf(
+		/* Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
 			__(
 				'%1$sWP Rocket: %2$sWe have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. WP Rocket\'s Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling %1$sJavaScript Aggregation%2$s to take full advantage of Delay JavaScript Execution.',
 				'rocket'
@@ -126,7 +126,7 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		$message = sprintf(
-		/** Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
+		/* Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
 			__(
 				'%1$sWP Rocket: %2$sWe have detected that Autoptimize\'s Aggregate Inline CSS feature is enabled. WP Rocket\'s Load CSS Asynchronously will not work correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full advantage of Load CSS Asynchronously Execution.',
 				'rocket'
