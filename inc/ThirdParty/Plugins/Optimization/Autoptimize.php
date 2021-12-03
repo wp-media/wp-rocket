@@ -77,7 +77,7 @@ class Autoptimize implements Subscriber_Interface {
 
 		rocket_notice_html(
 			[
-				'status'         => 'warning',
+				'status'         => 'info',
 				'message'        => $message,
 				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
@@ -130,7 +130,7 @@ class Autoptimize implements Subscriber_Interface {
 
 		rocket_notice_html(
 			[
-				'status'         => 'warning',
+				'status'         => 'info',
 				'message'        => $message,
 				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
