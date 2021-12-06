@@ -82,6 +82,8 @@
 
         &-date {
             margin: 0;
+		    font-weight: 500;
+		    @include font-size(16,24);
         }
     }
 
