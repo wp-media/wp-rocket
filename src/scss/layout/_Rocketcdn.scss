@@ -198,7 +198,7 @@
 	    color: $cGreyDark4;
         font-weight: 600;
         padding: $space * 2 $space $space;
-	    @include font-size(14,16);
+	    @include font-size(14,22);
 
         & a {
 
@@ -212,7 +212,8 @@
                 display: inline-block;
                 border-radius: 14px;
 			    text-align: center;
-                @include font-size(14,14);
+			    vertical-align: text-bottom;
+                @include font-size(12,12);
             }
         }
     }

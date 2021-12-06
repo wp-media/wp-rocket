@@ -15,11 +15,6 @@
  */
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-$data['promotion_campaign'] = 'Halloween 2021';
-$data['promotion_end_date'] = 'November 3, 2021';
-$data['current_price'] = '6.99';
-$data['regular_price'] = '7.99';
-$data['nopromo_variant'] = '';
 ?>
 <div class="wpr-rocketcdn-cta <?php echo esc_attr( $data['container_class'] ); ?>" id="wpr-rocketcdn-cta">
 	<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
