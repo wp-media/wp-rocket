@@ -205,8 +205,7 @@
         & a {
 
             &:before {
-			    font-family: "Font Awesome 5 Pro";
-                content:"\00a1";
+                content:"i";
                 border: 1px solid;
                 margin-right: $space;
                 width: 14px;
@@ -216,6 +215,8 @@
 			    text-align: center;
 			    vertical-align: text-bottom;
                 @include font-size(12,12);
+			  	line-height: 110%;
+			  	font-style: italic;
             }
         }
     }
