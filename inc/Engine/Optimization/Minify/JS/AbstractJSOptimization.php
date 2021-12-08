@@ -249,6 +249,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'documentcloud.adobe.com/view-sdk/main.js',
 			'static.cleverpush.com',
 			'js.afterpay.com',
+			'cdn.enable.co.il/licenses/enable-',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
