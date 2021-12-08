@@ -6,12 +6,12 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var babel = require('babelify');
 var uglify = require('gulp-uglify');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('sass'));
 var rename = require("gulp-rename");
 var iife = require('gulp-iife');
 
 /* Task to compile sass admin */
-gulp.task('sass', function () {
+gulp.task('sass_admin', function () {
 	return gulp.src('./src/scss/main.scss')
 	  .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
 	  .pipe(rename('wpr-admin.css'))
@@ -34,13 +34,14 @@ gulp.task('sass_modal', function () {
     .pipe(gulp.dest('assets/css'));
 });
 
+gulp.task('sass_all', gulp.parallel('sass_admin', 'sass_rtl', 'sass_modal'));
+
+function sassWatch() {
+	gulp.watch('./src/scss/**/*.scss', gulp.series('sass_all'));
+}
+
  /* Task to watch sass changes */
-gulp.task('sass:watch', function () {
-  gulp.watch('./src/scss/main.scss', ['sass']);
-  gulp.watch('./src/scss/modal.scss', ['sass_modal']);
-});
-
-
+gulp.task('sass:watch', sassWatch);
 
 /* Task to compile JS */
 function compile(watch) {
@@ -87,7 +88,7 @@ gulp.task('watch', function () {
     return watch();
 });
 
-gulp.task('default', gulp.series('watch', 'sass', 'sass:watch'));
+gulp.task('default', gulp.parallel('watch', 'sass:watch'));
 
 /**
  * Compiles a standalone script file.

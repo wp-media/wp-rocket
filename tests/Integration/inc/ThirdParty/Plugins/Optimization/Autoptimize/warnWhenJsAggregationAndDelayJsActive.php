@@ -36,6 +36,9 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 	}
 
 	public function tearDown() {
+		global $current_screen;
+
+		unset ($current_screen);
 		$this->restoreWpFilter( 'admin_notices' );
 		parent::tearDown();
 	}
@@ -55,6 +58,12 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		add_filter( 'pre_get_rocket_option_delay_js', function () use ( $config ) {
 			return $config[ 'delayJSActive' ];
 		} );
+
+		if ( isset( $config['notWPRDashboard'] ) && $config['notWPRDashboard'] ) {
+			set_current_screen( 'post' );
+		} else {
+			set_current_screen( 'settings_page_wprocket' );
+		}
 
 		if ( $config['dismissed'] ) {
 			update_user_meta(

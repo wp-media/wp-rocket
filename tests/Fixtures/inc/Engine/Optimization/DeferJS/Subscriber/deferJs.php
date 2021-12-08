@@ -102,4 +102,32 @@ return [
 		'html'     => $html,
 		'expected' => $expected_exclusion,
 	],
+	'testShouldEvaluateRegexPatternInOptions' => [
+		'config' => [
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [
+					'/wp-content/plugins/(.*)/script.js',
+				],
+			],
+		],
+		'html'     => $html,
+		'expected' => $expected_exclusion,
+	],
+	'testShouldReturnOriginalWithoutThrowingWarningWhenBadPatternInOptions' => [
+		'config' => [
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [
+					'/wp-content/bad(pattern/script.js',
+				],
+			],
+		],
+		'html'     => $html,
+		'expected' => $html,
+	],
 ];

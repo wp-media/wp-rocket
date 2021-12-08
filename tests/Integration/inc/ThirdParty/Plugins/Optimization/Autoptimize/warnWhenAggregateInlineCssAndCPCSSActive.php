@@ -57,6 +57,12 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 			return $config['cpcssActive'];
 		} );
 
+		if ( isset( $config['notWPRDashboard'] ) && $config['notWPRDashboard'] ) {
+			set_current_screen( 'post' );
+		} else {
+			set_current_screen( 'settings_page_wprocket' );
+		}
+
 		if ( $config['dismissed'] ) {
 			update_user_meta(
 				$current_user,
