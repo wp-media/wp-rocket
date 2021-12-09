@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-11-25 11:18-0500\n"
+"POT-Creation-Date: 2021-12-08 11:49-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>, 2021\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -180,7 +180,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:179
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket :"
@@ -463,7 +463,6 @@ msgid "Days"
 msgstr "Jours"
 
 #: inc/Engine/Admin/Settings/Page.php:570
-#: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "Optimisation des fichiers"
 
@@ -937,7 +936,6 @@ msgid "Add missing image dimensions"
 msgstr "Ajouter les dimensions d'image manquantes"
 
 #: inc/Engine/Admin/Settings/Page.php:1088 inc/deprecated/deprecated.php:1776
-#: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "Préchargement"
 
@@ -1107,7 +1105,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> seront automatiquement détectées et exclues du"
 " cache par défaut."
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:128
 msgid "Never Cache URL(s)"
 msgstr "Ne jamais mettre en cache ces URL(s)"
 
@@ -1115,11 +1113,11 @@ msgstr "Ne jamais mettre en cache ces URL(s)"
 msgid "Never Cache Cookies"
 msgstr "Ne jamais mettre en cache ces Cookies"
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:129
 msgid "Never Cache User Agent(s)"
 msgstr "Ne jamais mettre en cache ces User Agents"
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:130
 msgid "Always Purge URL(s)"
 msgstr "Toujours purger ces URL(s)"
 
@@ -1344,7 +1342,7 @@ msgstr ""
 "Non requis pour des services comme Cloudflare et Sucuri. Veuillez consulter "
 "nos %1$sAdd-ons%2$s disponibles."
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:131
 msgid "Exclude files from CDN"
 msgstr "Exclure des fichiers du CDN"
 
@@ -1459,7 +1457,7 @@ msgid "Behavior in frontend"
 msgstr "Comportement en Frontend"
 
 #: inc/Engine/Admin/Settings/Page.php:1735
-#: views/settings/page-sections/tutorials.php:36
+#: views/settings/page-sections/tutorials.php:39
 msgid "Add-ons"
 msgstr "Add-ons"
 
@@ -1700,7 +1698,7 @@ msgid "Compress your images"
 msgstr "Compressez vos images"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:194
-#: views/settings/page-sections/tutorials.php:45
+#: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Tutoriels"
 
@@ -1819,31 +1817,30 @@ msgstr ""
 "Intégration à WP Rocket : l'option CDN est %1$sautomatiquement "
 "configurée%2$s dans notre plugin"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
-#, php-format
-msgid "%s / month"
-msgstr "%s / mois"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
-msgid "Get Started"
-msgstr "S'abonner"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:58
 msgid "Learn more about RocketCDN"
 msgstr "En savoir plus sur RocketCDN"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:82
-msgid "Reduce this banner"
-msgstr "Réduire cette bannière"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:65
 #, php-format
 msgid ""
-"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
 "subscription at any time."
 msgstr ""
-"* %1$s$/mois pendant 12 mois puis %2$s$/mois. Vous pouvez annuler votre "
+"*%1$s$/mois pour 12 mois puis %2$s$/mois. Vous pouvez résilier votre "
 "abonnement à tout moment."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:86
+msgid "Billed monthly"
+msgstr "Facturation mensuelle"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:87
+msgid "Get Started"
+msgstr "S'abonner"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:92
+msgid "Reduce this banner"
+msgstr "Réduire cette bannière"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
 msgid ""
@@ -2208,7 +2205,7 @@ msgstr "Mettez à niveau maintenant"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:39
-#: inc/admin/ui/notices.php:813 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Ne pas tenir compte de cet avertissement."
 
@@ -2535,30 +2532,43 @@ msgstr ""
 "<strong>%1$s</strong>: Mod PageSpeed n'est pas compatible avec ce plugin et "
 "peut entraîner des résultats inattendus. %2$sPlus d'infos%3$s"
 
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:76
+#, php-format
 msgid ""
-"We have detected that Autoptimize's JavaScript Aggregation feature is "
-"enabled. The Delay JavaScript Execution will not be applied to the file it "
-"creates. We suggest disabling it to take full advantage of Delay JavaScript "
-"Execution."
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's JavaScript "
+"Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will "
+"not be applied to the file it creates. We suggest disabling %1$sJavaScript "
+"Aggregation%2$s to take full advantage of Delay JavaScript Execution."
 msgstr ""
-"Nous avons détecté que la fonctionnalité de concaténation du JavaScript est "
-"activée dans Autoptimize. Le report de l'éxecution JavaScript de WP Rocket "
-"ne sera pas appliqué au fichier créé. Nous suggérons de désactiver cette "
-"fonctionnalité pour profiter pleinement du report de l'éxecution JavaScript."
+"%1$sWP Rocket : %2$sNous avons détecté que l'option Concaténer les fichiers "
+"JS d'Autoptimize est activée. L'option Reporter l'exécution JavaScript de WP"
+" Rocket ne sera pas appliquée au fichier qu'elle crée. Nous vous suggérons "
+"de désactiver %1$sConcaténer les fichiers JS%2$s  pour profiter pleinement "
+"de Reporter l'exécution JavaScript."
 
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:131
+#, php-format
 msgid ""
-"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled."
-" WP Rocket's Load CSS Asynchronously will not be applied to the file it "
-"creates. We suggest disabling it to take full advantage of WP Rocket's Load "
-"CSS Asynchronously Execution."
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's Aggregate Inline CSS "
+"feature is enabled. WP Rocket's Load CSS Asynchronously will not work "
+"correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
+"advantage of Load CSS Asynchronously Execution."
 msgstr ""
-"Nous avons détecté que la fonctionnalité de concaténation des CSS inline est"
-" activée dans Autoptimize. Le chargement asynchrone du CSS de WP Rocket ne "
-"sera pas appliqué au fichier créé. Nous suggérons de désactiver cette "
-"fonctionnalité pour profiter pleinement du chargement asynchrone du CSS de "
-"WP Rocket."
+"%1$sWP Rocket : %2$sNous avons détecté que l'option Concaténer le CSS inline"
+" d'Autoptimize est activée. L'option Chargement Asychrone du CSS de WP "
+"Rocket ne sera pas appliquée au fichier qu'elle crée. Nous vous suggérons de"
+" désactiver %1$sConcaténer le CSS inline%2$s  pour profiter pleinement du "
+"Chargement Asychrone du CSS."
+
+#: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
+#, php-format
+msgid ""
+"This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
+"use %1$sEzoic's nameserver integration%2$s instead."
+msgstr ""
+"Ce plugin empêche la mise en cache et les optimisations de WP Rocket. "
+"Désactivez-le et utilisez %1$sl'intégration du serveur de noms d'Ezoic%2$s à"
+" la place."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
@@ -2701,25 +2711,29 @@ msgid "Settings imported and saved."
 msgstr "Réglages importés et sauvegardés."
 
 #: inc/admin/options.php:126
+msgid "Defer JavaScript Files"
+msgstr "Charger le JavaScript en différé"
+
+#: inc/admin/options.php:127
 msgid "Excluded Delay JavaScript Files"
 msgstr "Fichiers JavaScript exclus du report de l'éxecution"
 
-#: inc/admin/options.php:148
+#: inc/admin/options.php:149
 #, php-format
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:158
+#: inc/admin/options.php:159
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Le pattern suivant est invalide et a été supprimé :"
 msgstr[1] "Les patterns suivants sont invalides et ont été supprimés :"
 
-#: inc/admin/options.php:170
+#: inc/admin/options.php:171
 msgid "More info"
 msgstr "Plus d'infos"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:777
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
@@ -2793,7 +2807,7 @@ msgstr ""
 "<strong>%s</strong>: Une ou plusieurs extensions ont été activées ou "
 "désactivées, videz le cache si elles influent sur le front de votre site."
 
-#: inc/admin/ui/notices.php:185
+#: inc/admin/ui/notices.php:184
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2801,7 +2815,7 @@ msgstr ""
 "l’Add-on Cloudflare de WP Rocket fournit les même fonctionnalités. Ils ne "
 "peuvent pas être activés en même temps."
 
-#: inc/admin/ui/notices.php:209
+#: inc/admin/ui/notices.php:217
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2810,11 +2824,11 @@ msgstr ""
 "<strong>%s</strong>: Les extensions suivantes ne sont pas compatibles avec "
 "WP Rocket et vont générer des résultats inattendus :"
 
-#: inc/admin/ui/notices.php:215
+#: inc/admin/ui/notices.php:223
 msgid "Deactivate"
 msgstr "Désactiver"
 
-#: inc/admin/ui/notices.php:257
+#: inc/admin/ui/notices.php:265
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2823,7 +2837,7 @@ msgstr ""
 "options de WP Rocket de fonctionner correctement. Veuillez le désactiver si "
 "vous avez des problèmes."
 
-#: inc/admin/ui/notices.php:297
+#: inc/admin/ui/notices.php:305
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2834,7 +2848,7 @@ msgstr ""
 " WP Rocket. Veuillez régler Endurance Cache sur Off (Niveau 0) sur la page "
 "%1$sRéglages > Général%2$s pour éviter tout problème."
 
-#: inc/admin/ui/notices.php:318
+#: inc/admin/ui/notices.php:326
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2843,7 +2857,7 @@ msgstr ""
 "%1$s: Une structure de permalien personnalisée est requise pour que WP "
 "Rocket fonctionne. %2$sRendez-vous aux réglages des permaliens%3$s"
 
-#: inc/admin/ui/notices.php:365
+#: inc/admin/ui/notices.php:373
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -2851,14 +2865,14 @@ msgstr ""
 "%s n'a pas pu modifier le fichier .htaccess en raison d'un défaut de "
 "permissions en écriture."
 
-#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
+#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:854
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
 "accessible à l'écriture%2$s"
 
-#: inc/admin/ui/notices.php:373 inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:856
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2866,7 +2880,7 @@ msgstr ""
 "https://fr.docs.wp-rocket.me/article/945-fichiers-systemes-accessible-"
 "ecriture/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:387
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -2874,7 +2888,7 @@ msgstr ""
 "Ne vous inquiétez pas, la mise en cache des pages et les réglages de WP "
 "Rocket fonctionneront toujours correctement."
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:387
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -2882,7 +2896,7 @@ msgstr ""
 "Pour des performances optimales, il est recommandé d'ajouter les lignes "
 "suivantes dans votre fichier .htaccess (pas obligatoire) :"
 
-#: inc/admin/ui/notices.php:526
+#: inc/admin/ui/notices.php:534
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2891,7 +2905,7 @@ msgstr ""
 "%1$s est prêt à décoller ! %2$sTestez votre temps de chargement%4$s, ou "
 "jetez un oeil aux %3$sréglages%4$s."
 
-#: inc/admin/ui/notices.php:599
+#: inc/admin/ui/notices.php:607
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2899,15 +2913,15 @@ msgstr ""
 "Autorisez-vous WP Rocket à collecter les données de diagnostic non sensibles"
 " de votre site web ?"
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:608
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Cela nous aiderait à améliorer WP Rocket pour vous dans le futur."
 
-#: inc/admin/ui/notices.php:606
+#: inc/admin/ui/notices.php:614
 msgid "What info will we collect?"
 msgstr "Quelles infos collecterons-nous ?"
 
-#: inc/admin/ui/notices.php:611
+#: inc/admin/ui/notices.php:619
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2919,62 +2933,62 @@ msgstr ""
 "transmettra jamais de noms de domaine ou d'adresses email (sauf pour la "
 "validation de licence), d'adresses IP ou de clés API tierces."
 
-#: inc/admin/ui/notices.php:620
+#: inc/admin/ui/notices.php:628
 msgid "Yes, allow"
 msgstr "Oui, j'autorise"
 
-#: inc/admin/ui/notices.php:623
+#: inc/admin/ui/notices.php:631
 msgid "No, thanks"
 msgstr "Non, merci"
 
-#: inc/admin/ui/notices.php:662
+#: inc/admin/ui/notices.php:670
 msgid "Thank you!"
 msgstr "Merci !"
 
-#: inc/admin/ui/notices.php:667
+#: inc/admin/ui/notices.php:675
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket collecte désormais ces données sur votre site web :"
 
-#: inc/admin/ui/notices.php:705
+#: inc/admin/ui/notices.php:713
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s : Cache vidé."
 
-#: inc/admin/ui/notices.php:712
+#: inc/admin/ui/notices.php:720
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s : Cache Article vidé."
 
-#: inc/admin/ui/notices.php:719
+#: inc/admin/ui/notices.php:727
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s : Cache Terme vidé."
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:734
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s : Cache Utilisateur vidé."
 
-#: inc/admin/ui/notices.php:772
+#: inc/admin/ui/notices.php:780
 msgid "Stop Preload"
 msgstr "Arrêter le préchargement"
 
-#: inc/admin/ui/notices.php:790
+#: inc/admin/ui/notices.php:798
 msgid "Force deactivation "
 msgstr "Forcer la désactivation"
 
-#: inc/admin/ui/notices.php:803
+#: inc/admin/ui/notices.php:811
 msgid "The following code should have been written to this file:"
 msgstr "Le code suivant aurait dû être écrit sur ce fichier :"
 
-#: inc/admin/ui/notices.php:834
+#: inc/admin/ui/notices.php:842
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s ne peut pas se configurer seul en raison de l'absence de permissions en "
 "écriture."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:848
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fichier/dossier affecté : %s"
@@ -3418,7 +3432,7 @@ msgstr "Images"
 msgid "Add CNAME"
 msgstr "Ajouter un CNAME"
 
-#: inc/deprecated/deprecated.php:1706 views/settings/partials/sidebar.php:16
+#: inc/deprecated/deprecated.php:1706
 msgid "Watch the video"
 msgstr "Voir la vidéo"
 
@@ -3844,8 +3858,8 @@ msgstr ""
 #: views/deactivation-intent/form.php:116
 #, php-format
 msgid ""
-"How to measure the load time of your site: %1$shttps://wp-rocket.me/blog"
-"/correctly-measure-websites-page-load-time/%2$s"
+"How to measure the load time of your site: %1$shttps://wp-"
+"rocket.me/blog/correctly-measure-websites-page-load-time/%2$s"
 msgstr ""
 "Comment mesurer le temps de chargement de votre site : %1$shttps://wp-"
 "rocket.me/fr/blog/mesurer-temps-chargement/%2$s"
@@ -4292,24 +4306,44 @@ msgstr "Comment vérifier si WP Rocket met en cache votre site"
 msgid "How to Measure the Speed of Your Site"
 msgstr "Comment mesurer la vitesse de votre site"
 
-#: views/settings/page-sections/tutorials.php:24
+#: views/settings/page-sections/tutorials.php:19
+msgid "How Preloading Works"
+msgstr "Comment fonctionne le préchargement"
+
+#: views/settings/page-sections/tutorials.php:23
+msgid "Passing the Core Web vitals"
+msgstr "Réussir les Core Web vitals"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "How to improve LCP with WP Rocket"
+msgstr "Comment améliorer le LCP avec WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:26
+msgid "How to improve FID with WP Rocket"
+msgstr "Comment améliorer le FID avec WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:27
+msgid "How to improve CLS with WP Rocket"
+msgstr "Comment améliorer le CLS avec WP Rocket"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "Troubleshooting"
+msgstr "Dépannage"
+
+#: views/settings/page-sections/tutorials.php:33
 msgid "Troubleshooting Display Issues with File Optimization"
 msgstr ""
 "Résolution des problèmes d'affichage liés à l'Optimisation des Fichiers"
 
-#: views/settings/page-sections/tutorials.php:25
+#: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
 msgstr "Comment trouver le bon fichier JS à exclure"
 
-#: views/settings/page-sections/tutorials.php:26
+#: views/settings/page-sections/tutorials.php:35
 msgid "How External Content Slows Your Site"
 msgstr "Comment le contenu externe ralentit votre site"
 
-#: views/settings/page-sections/tutorials.php:32
-msgid "How Preloading Works"
-msgstr "Comment fonctionne le préchargement"
-
-#: views/settings/page-sections/tutorials.php:38
+#: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
 msgstr "Configurer l’add-on Cloudflare"
 
@@ -4369,27 +4403,28 @@ msgstr "Comment bien mesurer le temps de chargement de votre site Web"
 msgid "Check our tutorial and learn how to measure the speed of your site."
 msgstr "Consultez notre tuto et apprenez à mesurer la vitesse de votre site."
 
-#: views/settings/partials/sidebar.php:19
-msgid "Learn about optimal WP Rocket settings for mobile."
-msgstr "Découvrez les réglages optimaux de WP Rocket pour les mobiles."
-
-#: views/settings/partials/sidebar.php:25
+#: views/settings/partials/sidebar.php:15
+#: views/settings/partials/sidebar.php:24
 msgid "Read our guide"
 msgstr "Lire notre guide"
 
-#: views/settings/partials/sidebar.php:28
+#: views/settings/partials/sidebar.php:18
+msgid "Learn about optimal WP Rocket settings for mobile."
+msgstr "Découvrez les réglages optimaux de WP Rocket pour les mobiles."
+
+#: views/settings/partials/sidebar.php:27
 msgid "Test and Improve Google Core Web Vitals for WordPress."
 msgstr "Test et amélioration des Google Core Web Vitals pour WordPress."
 
-#: views/settings/partials/sidebar.php:29
+#: views/settings/partials/sidebar.php:28
 msgid "Read more"
 msgstr "En savoir plus"
 
-#: views/settings/partials/sidebar.php:34
+#: views/settings/partials/sidebar.php:33
 msgid "You have not activated logged-in user cache."
 msgstr "Vous n'avez pas activé le cache utilisateur."
 
-#: views/settings/partials/sidebar.php:35
+#: views/settings/partials/sidebar.php:34
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
