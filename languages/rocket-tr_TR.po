@@ -2698,7 +2698,7 @@ msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
 #: inc/admin/options.php:126
 msgid "Defer JavaScript Files"
-msgstr "JavaScript Dosyalarını Erteleyin"
+msgstr "JavaScript Dosyalarını Ertele"
 
 #: inc/admin/options.php:127
 msgid "Excluded Delay JavaScript Files"
