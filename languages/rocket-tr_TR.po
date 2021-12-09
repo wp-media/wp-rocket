@@ -2541,11 +2541,11 @@ msgid ""
 "correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
 "advantage of Load CSS Asynchronously Execution."
 msgstr ""
-"%1$s WP Rocket: %2$s Autoptimize'ın Toplu Satır İçi CSS özelliğinin "
-"etkinleştirildiğini tespit ettik. WP Rocket'in CSS'yi Eşzamansız Olarak "
-"Yükle özelliği düzgün çalışmayacaktır. CSS'yi Eşzamansız Olarak Yüklenin tüm"
-" avantajlarından yararlanmak için %1$s Toplu Satır İçi CSS %2$s'yi devre "
-"dışı bırakmanızı öneririz."
+"%1$sWP Rocket: %2$sAutoptimize’ın Satır İçi CSS Topla özelliğinin "
+"etkinleştirildiğini tespit ettik. WP Rocket’ın CSS’yi Eşzamanlı Olmadan "
+"Yükle özelliği düzgün olarak çalışmayacaktır. CSS’yi Eşzamanlı Olmadan Yükle"
+" Yürütmesi’nden tam olarak yararlanmak için %1$sSatır İçi CSS Topla%2$s "
+"özelliğinin etkisizleştirilmesini öneririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
 #, php-format
