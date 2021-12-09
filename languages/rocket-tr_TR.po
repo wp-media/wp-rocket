@@ -2553,9 +2553,9 @@ msgid ""
 "This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
 "use %1$sEzoic's nameserver integration%2$s instead."
 msgstr ""
-"Bu eklenti, WP Rocket'in önbelleğe alınmasını ve optimizasyonlarını "
-"engeller. Devre dışı bırakın ve bunun yerine %1$s Ezoic'in ad sunucusu "
-"entegrasyonu %2$s'yi kullanın."
+"Bu eklenti, WP Rocket’in önbelleğe alınmasını ve iyileştirmelerini engeller."
+" Bunu devre dışı bırakın ve bunun yerine %1$sEzoic’in ad sunucusu "
+"bütünleştirmesi%2$s'ni kullanın."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
