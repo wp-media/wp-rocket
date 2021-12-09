@@ -2527,11 +2527,11 @@ msgid ""
 "not be applied to the file it creates. We suggest disabling %1$sJavaScript "
 "Aggregation%2$s to take full advantage of Delay JavaScript Execution."
 msgstr ""
-"%1$s WP Roketi: %2$s Autoptimize'ın JavaScript Toplama özelliğinin "
-"etkinleştirildiğini tespit ettik. WP Rocket's Delay JavaScript Execution, "
-"oluşturduğu dosyaya uygulanmaz. Gecikmeli JavaScript Yürütme özelliğinden "
-"tam olarak yararlanmak için %1$s JavaScript Toplama %2$s öğesini devre dışı "
-"bırakmanızı öneririz."
+"%1$sWP Rocket: %2$sAutoptimize’ın JavaScript Toplama özelliğinin "
+"etkinleştirildiğini tespit ettik. WP Rocket’ın JavaScript’i Geciktir "
+"Yürütmesi, oluşturduğu dosyaya uygulanmayacaktır. JavaScript’i Geciktir "
+"Yürütmesi’nden tam olarak yararlanmak için %1$sJavaScript Toplama%2$s "
+"özelliğinin etkisizleştirilmesini öneririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:131
 #, php-format
