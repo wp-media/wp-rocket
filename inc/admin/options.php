@@ -165,10 +165,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 
 		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
-		$error_message .= sprintf(
+
+		$container                 = apply_filters( 'rocket_container', [] );
+		$invalid_exclusions_beacon = $container->get( 'beacon' )->get_suggest( 'invalid_exclusions' );
+		$error_message            .= sprintf(
 			'<a href="%1$s" data-beacon-article="%2$s" rel="noopener noreferrer" target="_blank">%3$s</a>',
-			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
-			'619e90a3d3efbe495c3b26b8',
+			$invalid_exclusions_beacon['url'],
+			$invalid_exclusions_beacon['id'],
 			__( 'More info', 'rocket' )
 		);
 
