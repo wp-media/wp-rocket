@@ -70,14 +70,19 @@ class Autoptimize implements Subscriber_Interface {
 			return;
 		}
 
-		$message = '<strong>' . __(
-				'We have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. The Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling it to take full advantage of Delay JavaScript Execution.',
+		$message = sprintf(
+		/* Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
+			__(
+				'%1$sWP Rocket: %2$sWe have detected that Autoptimize\'s JavaScript Aggregation feature is enabled. WP Rocket\'s Delay JavaScript Execution will not be applied to the file it creates. We suggest disabling %1$sJavaScript Aggregation%2$s to take full advantage of Delay JavaScript Execution.',
 				'rocket'
-			) . '</strong>';
+			),
+			'<strong>',
+			'</strong>'
+		);
 
 		rocket_notice_html(
 			[
-				'status'         => 'warning',
+				'status'         => 'info',
 				'message'        => $message,
 				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
@@ -121,16 +126,18 @@ class Autoptimize implements Subscriber_Interface {
 		}
 
 		$message = sprintf(
-			'<strong>%s</strong>',
+		/* Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong> tag */
 			__(
-				"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled. WP Rocket's Load CSS Asynchronously will not be applied to the file it creates. We suggest disabling it to take full advantage of WP Rocket's Load CSS Asynchronously Execution.",
+				'%1$sWP Rocket: %2$sWe have detected that Autoptimize\'s Aggregate Inline CSS feature is enabled. WP Rocket\'s Load CSS Asynchronously will not work correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full advantage of Load CSS Asynchronously Execution.',
 				'rocket'
-			)
+			),
+			'<strong>',
+			'</strong>'
 		);
 
 		rocket_notice_html(
 			[
-				'status'         => 'warning',
+				'status'         => 'info',
 				'message'        => $message,
 				'dismissible'    => '',
 				'dismiss_button' => __FUNCTION__,
@@ -144,6 +151,10 @@ class Autoptimize implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function can_notify() {
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return false;
+		}
+
 		return rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false )
 			&&
 			current_user_can( 'rocket_manage_options' );

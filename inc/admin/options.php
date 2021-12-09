@@ -123,6 +123,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		'exclude_css'         => __( 'Excluded CSS Files', 'rocket' ),
 		'exclude_inline_js'   => __( 'Excluded Inline JavaScript', 'rocket' ),
 		'exclude_js'          => __( 'Excluded JavaScript Files', 'rocket' ),
+		'exclude_defer_js'    => __( 'Defer JavaScript Files', 'rocket' ),
 		'delay_js_exclusions' => __( 'Excluded Delay JavaScript Files', 'rocket' ),
 		'cache_reject_uri'    => __( 'Never Cache URL(s)', 'rocket' ),
 		'cache_reject_ua'     => __( 'Never Cache User Agent(s)', 'rocket' ),
@@ -164,9 +165,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 
 		$error_message .= '<p><strong>'; // Re-open tags that WP's settings_errors() will close at end of notice box.
-		$error_message .= sprintf(
-			'<a href="%1$s" data-beacon-article="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
-			'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+
+		$container                 = apply_filters( 'rocket_container', [] );
+		$invalid_exclusions_beacon = $container->get( 'beacon' )->get_suggest( 'invalid_exclusions' );
+		$error_message            .= sprintf(
+			'<a href="%1$s" data-beacon-article="%2$s" rel="noopener noreferrer" target="_blank">%3$s</a>',
+			$invalid_exclusions_beacon['url'],
+			$invalid_exclusions_beacon['id'],
 			__( 'More info', 'rocket' )
 		);
 

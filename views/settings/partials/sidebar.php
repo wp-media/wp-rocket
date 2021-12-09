@@ -12,8 +12,7 @@ defined( 'ABSPATH' ) || exit;
 <h3 class="wpr-Sidebar-title wpr-title2"><?php esc_html_e( 'How to correctly measure your website’s loading time', 'rocket' ); ?></h3>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?></p>
-	<?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript ?>
-	<script src="https://fast.wistia.com/embed/medias/j042jylrre.jsonp" async></script><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'play-alt.svg' ); ?>" width="10" height="10" alt=""> <span class="wpr-tutorial-link wpr-Sidebar-notice-link wistia_embed wistia_async_j042jylrre popover=true popoverContent=link" style="display:inline;position:relative"><?php esc_html_e( 'Watch the video', 'rocket' ); ?></span>
+	<a href="<?php echo esc_url( 'https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket' ); ?>" target="_blank" rel="noopener" class="wpr-Sidebar-notice-link"><?php esc_html_e( 'Read our guide', 'rocket' ); ?></a>
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php esc_html_e( 'Learn about optimal WP Rocket settings for mobile.', 'rocket' ); ?></p>
