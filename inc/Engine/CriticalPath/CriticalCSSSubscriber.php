@@ -640,7 +640,7 @@ JS;
 			'rocket_async_css_regex_pattern',
 			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU'
 		);
-		
+
 		// Remove comments from the buffer.
 		$buffer = $this->hide_comments( $buffer );
 
@@ -745,7 +745,7 @@ JS;
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
-	
+
 	/**
 	 * Hides unwanted blocks from the HTML to be parsed.
 	 *
