@@ -211,6 +211,10 @@ class Purge {
 				}
 			}
 		}
+		
+		// Remove entries with empty values in array.
+		$urls = array_filter( $urls, 'is_string' );
+		
 		/**
 		 * Filter the list of taxonomies URLs
 		 *
