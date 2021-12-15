@@ -74,7 +74,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 	 * @param array $exclude_delay_js Array of JS to be excluded.
 	 * @return array
 	 */
-	function rocket_exclude_defer_js_uncode( $exclude_delay_js ) {
+	function rocket_exclude_delay_js_uncode( $exclude_delay_js ) {
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
