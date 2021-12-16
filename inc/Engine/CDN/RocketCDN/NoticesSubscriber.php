@@ -222,7 +222,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'promotion_end_date' => $promotion_end_date,
 				'nopromo_variant'    => $nopromo_variant,
 				'regular_price'      => $regular_price,
-				'current_price'      => $current_price,
+				'current_price'      => str_replace( ',', '.', $current_price ),
 			];
 		}
 
