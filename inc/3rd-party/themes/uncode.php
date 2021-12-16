@@ -84,6 +84,6 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		$exclude_delay_js[] = 'UNCODE\.';
 		return $exclude_delay_js;
 	}
-	add_filter( 'exclude_delay_js', 'rocket_exclude_delay_js_uncode' );
+	add_filter( 'rocket_delay_js_exclusions', 'rocket_exclude_delay_js_uncode' );
 
 }
