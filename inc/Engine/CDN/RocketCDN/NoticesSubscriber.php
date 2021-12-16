@@ -211,7 +211,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			) {
 				$promotion_campaign = $pricing['discount_campaign_name'];
 				$regular_price      = $current_price;
-				$current_price      = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
+				$current_price      = number_format_i18n( str_replace( ',', '.', $pricing['discounted_price_monthly']), 2 ) . '*';
 				$nopromo_variant    = '';
 				$promotion_end_date = date_i18n( get_option( 'date_format' ), $end_date );
 			}
