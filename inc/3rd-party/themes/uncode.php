@@ -78,7 +78,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
-		$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
 		$exclude_delay_js[] = 'UNCODE\.';
