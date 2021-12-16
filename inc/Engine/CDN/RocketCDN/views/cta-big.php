@@ -79,8 +79,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<?php endif; ?>
 					<h4 class="wpr-rocketcdn-pricing-current">
 						<span class="wpr-rocketcdn-cta-currency-minor">$</span>
-						<span class="wpr-rocketcdn-cta-currency-major"><?php esc_html( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
-						<span class="wpr-rocketcdn-cta-currency-minor"><?php esc_html( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?>
+						<span class="wpr-rocketcdn-cta-currency-major"><?php echo esc_html( substr( $data['current_price'], 0, strpos( $data['current_price'], '.' ) ) ); ?></span>
+						<span class="wpr-rocketcdn-cta-currency-minor"><?php echo esc_html( substr( $data['current_price'], strpos( $data['current_price'], '.' ) ) ); ?>
 						</span>
 					</h4>
 					<p class="wpr-rocketcdn-cta-billing-detail"><?php esc_html_e( 'Billed monthly', 'rocket' ); ?></p>
