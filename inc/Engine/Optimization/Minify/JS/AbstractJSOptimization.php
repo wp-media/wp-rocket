@@ -250,6 +250,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'static.cleverpush.com',
 			'js.afterpay.com',
 			'cdn.enable.co.il/licenses/enable-',
+			'hcaptcha.com/1/api.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

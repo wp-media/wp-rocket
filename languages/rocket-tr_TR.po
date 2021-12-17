@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-11-19 16:12-0500\n"
+"POT-Creation-Date: 2021-11-25 11:18-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2021\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -180,7 +180,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:164
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -727,7 +727,7 @@ msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
 msgstr ""
-"Uyumluluk ve en iyi sonuçlar için gecikme javascript yürütme "
+"Uyumluluk ve en iyi sonuçlar için javascript’i geciktir yürütmesi "
 "etkinleştirildiğinde bu seçenek etkisizleştirilir."
 
 #: inc/Engine/Admin/Settings/Page.php:800
@@ -806,7 +806,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:874 inc/admin/ui/meta-boxes.php:80
 msgid "Delay JavaScript execution"
-msgstr "JavaScript yürütmeyi geciktir"
+msgstr "JavaScript’i Geciktir yürütmesi"
 
 #: inc/Engine/Admin/Settings/Page.php:876
 #, php-format
@@ -1101,7 +1101,7 @@ msgstr ""
 "\"hesabım\" sayfaları algılanacak ve varsayılan olarak asla "
 "önbelleklenmeyecektir."
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr "Asla Önbelleklenmeyen URL(ler)"
 
@@ -1109,11 +1109,11 @@ msgstr "Asla Önbelleklenmeyen URL(ler)"
 msgid "Never Cache Cookies"
 msgstr "Asla Önbelleklenmeyen Tanımlama Bilgileri"
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr "Asla Önbelleklenmeyen Kullanıcı Tanıtıcı(ları)sı"
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr "Her Zaman Temizlenen URL(ler)"
 
@@ -1336,7 +1336,7 @@ msgstr ""
 "Cloudflare ve Sucuri gibi hizmetler için gerekmez. Lütfen mevcut "
 "%1$sEklentilerimize%2$s bakın."
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr "CDN’den hariç tutulan dosyalar"
 
@@ -2521,6 +2521,30 @@ msgstr ""
 "<strong>%1$s</strong>: Mod PageSpeed bu eklenti ile uyumlu değil ve "
 "beklenmeyen sonuçlara neden olabilir. %2$sDaha Fazla Bilgi%3$s"
 
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+msgid ""
+"We have detected that Autoptimize's JavaScript Aggregation feature is "
+"enabled. The Delay JavaScript Execution will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of Delay JavaScript "
+"Execution."
+msgstr ""
+"Autoptimize’ın JavaScript Toplama özelliğinin etkinleştirildiğini tespit "
+"ettik. JavaScript’i Geciktir Yürütmesi, oluşturduğu dosyaya "
+"uygulanmayacaktır. JavaScript’i Geciktir Yürütmesi’nden tam olarak "
+"yararlanmak için etkisizleştirilmesini öneririz."
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+msgid ""
+"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled."
+" WP Rocket's Load CSS Asynchronously will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of WP Rocket's Load "
+"CSS Asynchronously Execution."
+msgstr ""
+"Autoptimize’ın Satır İçi CSS özelliğinin etkinleştirildiğini tespit ettik. "
+"WP Rocket’ın CSS’yi Eşzamanlı Olmadan Yükle, oluşturduğu dosyaya "
+"uygulanmayacaktır. WP Rocket’ın CSS’yi Eşzamanlı Olmadan Yükle "
+"Yürütmesi’nden tam olarak yararlanmak için etkisizleştirilmesini öneririz."
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -2619,57 +2643,65 @@ msgstr "SSS"
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: inc/admin/admin.php:225 inc/admin/admin.php:240
+#: inc/admin/admin.php:227 inc/admin/admin.php:242
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s Güncellemesi Geri Alma"
 
-#: inc/admin/admin.php:266
+#: inc/admin/admin.php:268
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
 "%1$sWP Rocket’a geri dönün%2$s ya da %3$sEklentiler sayfasına gidin%2$s"
 
-#: inc/admin/admin.php:504
+#: inc/admin/admin.php:506
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Ayarları içe aktarma başarısız oldu: bunu yapmak için izniniz yok."
 
-#: inc/admin/admin.php:508
+#: inc/admin/admin.php:510
 msgid "Settings import failed: no file uploaded."
 msgstr "Ayarları içe aktarma başarısız oldu: gönderilen dosya yok."
 
-#: inc/admin/admin.php:512
+#: inc/admin/admin.php:514
 msgid "Settings import failed: incorrect filename."
 msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya adı."
 
-#: inc/admin/admin.php:523
+#: inc/admin/admin.php:525
 msgid "Settings import failed: incorrect filetype."
 msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya türü."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:535
 msgid "Settings import failed: "
 msgstr "Ayarları içe aktarma başarısız oldu:"
 
-#: inc/admin/admin.php:549
+#: inc/admin/admin.php:551
 msgid "Settings import failed: unexpected file content."
 msgstr "Ayarları içe aktarma başarısız oldu: beklenmeyen dosya içeriği."
 
-#: inc/admin/admin.php:579
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
-#: inc/admin/options.php:147
-#, php-format
-msgid "%1$s: <em>%2$s</em>."
-msgstr "%1$s: <em>%2$s</em>."
+#: inc/admin/options.php:126
+msgid "Excluded Delay JavaScript Files"
+msgstr "Hariç Tutulan JavaScript Dosyalarını Geciktirme"
 
-#: inc/admin/options.php:157
+#: inc/admin/options.php:148
+#, php-format
+msgid "%1$s: <em>%2$s</em>"
+msgstr "%1$s: <em>%2$s</em>"
+
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Aşağıdaki desen geçersizdir ve kaldırıldı:"
 msgstr[1] "Aşağıdaki desenler geçersizdir ve kaldırıldı:"
+
+#: inc/admin/options.php:170
+msgid "More info"
+msgstr "Daha fazla bilgi"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137

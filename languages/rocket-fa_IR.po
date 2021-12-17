@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-09-29 09:15-0400\n"
+"POT-Creation-Date: 2021-11-25 11:18-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2021\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -178,7 +178,7 @@ msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:164
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "راکت وردپرس: "
@@ -604,19 +604,18 @@ msgstr ""
 "فقط یک روش را می توان انتخاب کرد. برای عملکرد مطلوب حذف CSS استفاده نشده "
 "توصیه می شود."
 
-#: inc/Engine/Admin/Settings/Page.php:704 inc/admin/ui/meta-boxes.php:75
-msgid "Remove Unused CSS"
-msgstr "حذف CSS بدون استفاده"
+#: inc/Engine/Admin/Settings/Page.php:704
+msgid "Remove Unused CSS (Beta)"
+msgstr "حذف CSS های بون استفاده ( بتا)"
 
 #: inc/Engine/Admin/Settings/Page.php:706
 #, php-format
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
-" Recommended for best performance. Test thoroughly!  %1$sMore info%2$s"
+" Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
-"CSS استفاده نشده را در هر صفحه حذف می کند و به کاهش اندازه صفحه و درخواست "
-"های HTTP کمک می کند. برای بهترین عملکرد توصیه می شود. کاملاً آزمایش کنید! "
-"%1$sاطلاعات بیشتر%2$s"
+"حذف CSS بلااستفاده در هر برگه و کمک به کاهش حجم و درخواست HTTP صفحه. توصیه "
+"شده برای عملکرد بهتر. امتحان کنید.%1$sاطلاعات بیشتر%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:708
 msgid "We’re still working on it!"
@@ -1087,7 +1086,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> تعیین شده‌اند تشخیص داده خواهند شد و به صورت "
 "پیش‌فرض هرگز کش نخواهند شد."
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 
@@ -1095,11 +1094,11 @@ msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 msgid "Never Cache Cookies"
 msgstr "کوکی‌هایی که هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr "عامل‌(های) کاربری هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr "URL (هایی) که همیشه پاک‌سازی شوند"
 
@@ -1319,7 +1318,7 @@ msgstr ""
 "برای سرویس هایی مانند Cloudflare و Sucuri ضروری نیست. لطفا "
 "%1$sافزودنی‌های%2$s موجود ما را مشاهده کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr "مستثنی کردن فایل‌ها از CDN"
 
@@ -1629,7 +1628,7 @@ msgstr "پیدا کردن کلید API شما"
 msgid "Upload file and import settings"
 msgstr "بارگذاری فایل و درون‌ریزی تنظیمات"
 
-#: inc/Engine/Admin/Settings/Settings.php:390
+#: inc/Engine/Admin/Settings/Settings.php:391
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1637,10 +1636,18 @@ msgstr ""
 "افزودنی Sucuri : شناسه API فایروال Sucuri باید به فرمت<code>{32 "
 "characters}/{32 characters}</code> باشد."
 
-#: inc/Engine/Admin/Settings/Settings.php:481
+#: inc/Engine/Admin/Settings/Settings.php:482
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "تنظیمات ذخیره شد."
+
+#: inc/Engine/Admin/Settings/Settings.php:698
+msgid ""
+"Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
+"because it disables caching and optimizations for every page on your site."
+msgstr ""
+"متاسفیم! افزودن/(.*) در قوانین پیشرفته > هرگز کش نکن URL(s) ذخیره نشد به "
+"دلیل اینکه کش و بهینه سازی برای هر برگه در سایت شما غیرفعال است."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150
 #: inc/deprecated/deprecated.php:1786
@@ -1941,17 +1948,17 @@ msgstr "فعالسازی بارگیری CSS بصورت نابهنگام توسط
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "فعالسازی بارگیری CSS بصورت نابهنگام در گزینه بالا"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:147
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
 msgid "Critical CSS generation is currently running."
 msgstr "ایجاد CSS بحرانی در حال اجرا می باشد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:152
-#: inc/Engine/Preload/PreloadSubscriber.php:255
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/Preload/PreloadSubscriber.php:257
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "به %1$sتنظیمات موشک وردپرس%2$s برای رهگیری پیشرفت مراجعه کنید."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:366
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1960,16 +1967,16 @@ msgstr ""
 "تولید CSS‌بحرانی در حال اجرا است: %1$d از %2$d نوع صفحه کامل شده است. (برای "
 "مشاهده پیشرفت این صفحه را رفرش کنید)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:438
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "تولید CSS‌بحرانی برای %1$d از %2$d نوع صفحه کامل شد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "ایجاد CSS بحرانی یک یا چند خطا دارد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:445
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
 msgid "Learn more."
 msgstr "اطلاعات بیشتر."
 
@@ -2236,36 +2243,36 @@ msgstr ""
 "می توانید با ارتقاء لایسنس از موشک وردپرس در وب سایت های بیشتری استفاده کنید"
 " (فقط تفاوت قیمت بین لایسنس های فعلی و جدید خود را پرداخت خواهید کرد)."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:108
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
 #: views/settings/page-sections/dashboard.php:224
 msgid "Clear Used CSS"
 msgstr "پاکسازی CSSهای استفاده شده"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:347
 msgid "Used CSS option is not enabled!"
 msgstr "گزینه CSS استفاده شده فعال نیست!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:340
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:363
 msgid "Used CSS cache cleared!"
 msgstr "استایل CSS استفاده شده پاکسازی شد!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:408
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr "فایلهای منبع از {count} از {total} صفحه کلیدی جمع آوری شده است."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:409
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr "{تعداد} از {مجموع} فایل منابع در صفحات کلیدی یافت شد."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:410
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
 msgid "Remove Unused CSS is complete!"
 msgstr "حذف CSS های بلااستفاده تکمیل شد!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:411
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
 msgid "These files could not be processed:"
 msgstr "این پرونده ها قابل پردازش نیستند:"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:412
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2329,11 +2336,11 @@ msgstr ""
 "پیش بارگذاری با خطایی مواجه شد. لینک ها در آن جمع آوری نشد %1$s زیرا کد پاسخ"
 " زیر را برمی گرداند:%2$s. %3$sراهنمایی%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:250
+#: inc/Engine/Preload/PreloadSubscriber.php:252
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "پیش بارگذاری: موشک وردپرس پیش بارگذاری سایت شما را آغاز کرده است."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:296
+#: inc/Engine/Preload/PreloadSubscriber.php:298
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2348,14 +2355,14 @@ msgstr[1] ""
 "پیش بارگذاری: %1$s صفحه کش نشده اکنون بارگیری شده است. (برای مشاهده پیشرفت "
 "صفحه را مجدد بارگذاری کنید)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:305
+#: inc/Engine/Preload/PreloadSubscriber.php:307
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] "خطای زیر هنگام جمع آوری URL ها برای پیش بارگذاری رخ داد:"
 msgstr[1] "خطای زیر هنگام جمع آوری URL ها برای پیش بارگذاری رخ داد:"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:357
+#: inc/Engine/Preload/PreloadSubscriber.php:359
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "پش بارگذاری کامل شد: %d صفحه کش شده است."
@@ -2428,7 +2435,7 @@ msgstr ""
 "پیش بارگذاری نقشه سایت با خطایی مواجه شد.لینک ها جمع آوری نشد از%1$s چون "
 "هنگام اجرای نقشه سایت خطایی رخ داده است.%2$sراهنمایی%3$s."
 
-#: inc/Engine/Preload/SitemapPreloadSubscriber.php:120
+#: inc/Engine/Preload/SitemapPreloadSubscriber.php:122
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
@@ -2455,6 +2462,29 @@ msgid ""
 msgstr ""
 "<strong>%1$s</strong>: حالت PageSpeed با این افزونه سازگار نیست و ممکن است "
 "باعث اتفاق غیرمنتظره شود.%2$s اطلاعات بیشتر%3$s"
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+msgid ""
+"We have detected that Autoptimize's JavaScript Aggregation feature is "
+"enabled. The Delay JavaScript Execution will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of Delay JavaScript "
+"Execution."
+msgstr ""
+"ما متوجه شده‌ایم که ویژگی جمع‌آوری جاوا اسکریپت Autoptimize فعال است. اجرای "
+"تاخیری جاوا اسکریپت روی فایلی که ایجاد می کند اعمال نخواهد شد. پیشنهاد می "
+"کنیم برای استفاده کامل از تاخیر اجرای جاوا اسکریپت آن را غیرفعال کنید."
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+msgid ""
+"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled."
+" WP Rocket's Load CSS Asynchronously will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of WP Rocket's Load "
+"CSS Asynchronously Execution."
+msgstr ""
+"ما متوجه شده‌ایم که ویژگی Autoptimize's Aggregate Inline CSS فعال است. WP "
+"Rocket's Load CSS Asynchronously روی فایلی که ایجاد می کند اعمال نخواهد شد. "
+"پیشنهاد می کنیم آن را غیرفعال کنید تا از مزایای اجرای ناهمزمان بارگذاری CSS "
+"WP Rocket استفاده کنید."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
@@ -2521,11 +2551,11 @@ msgstr ""
 "تاخیر JS اکنون در %1$s فعال است. اگر می خواهید از تاخیر JS افزونه استفاده "
 "کنید، %1$s غیرفعال کنید"
 
-#: inc/ThirdParty/Plugins/Smush.php:110 inc/ThirdParty/Plugins/Smush.php:128
+#: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:118
+#: inc/ThirdParty/Themes/Avada.php:119
 msgid "Avada"
 msgstr "Avada"
 
@@ -2546,57 +2576,65 @@ msgstr "سوالات متداول"
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: inc/admin/admin.php:225 inc/admin/admin.php:240
+#: inc/admin/admin.php:227 inc/admin/admin.php:242
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s بازگشتن به نسخه قبلی"
 
-#: inc/admin/admin.php:266
+#: inc/admin/admin.php:268
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sبازگشت به موشک وردپرس%2$sیا %3$s رفتن به برگه افزونه‌ها%2$s"
 
-#: inc/admin/admin.php:504
+#: inc/admin/admin.php:506
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 "درون‌ریزی تنظیمات ناموفق بود: شما دسترسی کافی برای انجام این کار را ندارید."
 
-#: inc/admin/admin.php:508
+#: inc/admin/admin.php:510
 msgid "Settings import failed: no file uploaded."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: فایلی بارگذاری نشد."
 
-#: inc/admin/admin.php:512
+#: inc/admin/admin.php:514
 msgid "Settings import failed: incorrect filename."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: نام فایل اشتباه است."
 
-#: inc/admin/admin.php:523
+#: inc/admin/admin.php:525
 msgid "Settings import failed: incorrect filetype."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: نوع فایل اشتباه است."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:535
 msgid "Settings import failed: "
 msgstr "درون‌ریزی تنظیمات ناموفق بود: "
 
-#: inc/admin/admin.php:549
+#: inc/admin/admin.php:551
 msgid "Settings import failed: unexpected file content."
 msgstr "درون ریزی تنظیمات انجام نشد: محتوای فایل غیر منتظره بود."
 
-#: inc/admin/admin.php:579
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr "تنظیمات درون‌ریزی و ذخیره شد."
 
-#: inc/admin/options.php:147
-#, php-format
-msgid "%1$s: <em>%2$s</em>."
-msgstr "%1$s: <em>%2$s</em>."
+#: inc/admin/options.php:126
+msgid "Excluded Delay JavaScript Files"
+msgstr "فایل‌های جاوا اسکریپت تاخیری حذف شدند"
 
-#: inc/admin/options.php:157
+#: inc/admin/options.php:148
+#, php-format
+msgid "%1$s: <em>%2$s</em>"
+msgstr "%1$s: <em>%2$s</em>"
+
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
+
+#: inc/admin/options.php:170
+msgid "More info"
+msgstr "اطلاعات بیشتر"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
@@ -2627,6 +2665,10 @@ msgstr "بارگذاری با تاخیر آی‌‌فریم‌ها\\ویدیوه
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "فشرده‌سازی\\ترکیب CSS"
+
+#: inc/admin/ui/meta-boxes.php:75
+msgid "Remove Unused CSS"
+msgstr "حذف CSS بدون استفاده"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"

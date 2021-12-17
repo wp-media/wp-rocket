@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-11-19 16:12-0500\n"
+"POT-Creation-Date: 2021-11-25 11:18-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Fabio Fava <go@fabiofava.com>, 2021\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/wp-media/teams/18133/pt_BR/)\n"
@@ -184,7 +184,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:164
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -1103,7 +1103,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> serão detectadas e por padrão nunca serão "
 "armazenadas em cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
 msgid "Never Cache URL(s)"
 msgstr "URL(s) Jamais em Cache"
 
@@ -1111,11 +1111,11 @@ msgstr "URL(s) Jamais em Cache"
 msgid "Never Cache Cookies"
 msgstr "Cookies Jamais em Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
 msgid "Never Cache User Agent(s)"
 msgstr "User Agent(s) Jamais em Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
 msgid "Always Purge URL(s)"
 msgstr "Sempre Esvaziar URL(s)"
 
@@ -1339,7 +1339,7 @@ msgstr ""
 "Não necessário para serviços como Cloudflare e Sucuri. Por favor veja os "
 "%1$scomplementos%2$s disponíveis."
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
 msgid "Exclude files from CDN"
 msgstr "Excluir arquivos da CDN"
 
@@ -2523,6 +2523,30 @@ msgstr ""
 "<strong>%1$s</strong>: Mod PageSpeed não é compatível com este plugin e pode"
 " causar resultados inesperados. %2$sMais informações%3$s"
 
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+msgid ""
+"We have detected that Autoptimize's JavaScript Aggregation feature is "
+"enabled. The Delay JavaScript Execution will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of Delay JavaScript "
+"Execution."
+msgstr ""
+"Detectamos que o recurso de Agregar JavaScript do Autoptimize está ativo. O "
+"Retraso na Execução de JavaScript não será aplicado ao arquivo criado por "
+"ele. Sugerimos desativá-lo para obter todas as vantagens do Retraso na "
+"Execução de JavaScript."
+
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+msgid ""
+"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled."
+" WP Rocket's Load CSS Asynchronously will not be applied to the file it "
+"creates. We suggest disabling it to take full advantage of WP Rocket's Load "
+"CSS Asynchronously Execution."
+msgstr ""
+"Detectamos que o recurso de Agregar o CSS Inline do Autoptimize está ativo. "
+"O Carregar o CSS de forma Assíncrona do WP Rocket não será aplicado ao "
+"arquivo criado por ele. Sugerimos desativá-lo para obter todas as vantagens "
+"do Carregar a Execução do CSS de forma Assíncrona do WP Rocket."
+
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
 msgctxt "Hummingbird notice"
@@ -2621,59 +2645,67 @@ msgstr "Perguntas Frequentes"
 msgid "Settings"
 msgstr "Configurações"
 
-#: inc/admin/admin.php:225 inc/admin/admin.php:240
+#: inc/admin/admin.php:227 inc/admin/admin.php:242
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Reversão da Atualização %s"
 
-#: inc/admin/admin.php:266
+#: inc/admin/admin.php:268
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sRetorne ao%2$sdo WP Rocket ou %3$svá para a página de Plugins%2$s"
 
-#: inc/admin/admin.php:504
+#: inc/admin/admin.php:506
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 "A importação das configurações falhou: você não tem permissões para fazer "
 "isso."
 
-#: inc/admin/admin.php:508
+#: inc/admin/admin.php:510
 msgid "Settings import failed: no file uploaded."
 msgstr "A importação das configurações falhou: nenhum arquivo foi enviado."
 
-#: inc/admin/admin.php:512
+#: inc/admin/admin.php:514
 msgid "Settings import failed: incorrect filename."
 msgstr "A importação das configurações falhou: nome incorreto de arquivo."
 
-#: inc/admin/admin.php:523
+#: inc/admin/admin.php:525
 msgid "Settings import failed: incorrect filetype."
 msgstr "A importação das configurações falhou: tipo de arquivo incorreto."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:535
 msgid "Settings import failed: "
 msgstr "A importação das configurações falhou:"
 
-#: inc/admin/admin.php:549
+#: inc/admin/admin.php:551
 msgid "Settings import failed: unexpected file content."
 msgstr ""
 "A importação das configurações falhou: arquivo com conteúdo inesperado."
 
-#: inc/admin/admin.php:579
+#: inc/admin/admin.php:581
 msgid "Settings imported and saved."
 msgstr "Configurações importadas e salvas."
 
-#: inc/admin/options.php:147
-#, php-format
-msgid "%1$s: <em>%2$s</em>."
-msgstr "%1$s: <em>%2$s</em>."
+#: inc/admin/options.php:126
+msgid "Excluded Delay JavaScript Files"
+msgstr "Arquivos JavaScript excluídos do retraso"
 
-#: inc/admin/options.php:157
+#: inc/admin/options.php:148
+#, php-format
+msgid "%1$s: <em>%2$s</em>"
+msgstr "%1$s: <em>%2$s</em>"
+
+#: inc/admin/options.php:158
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "O seguinte padrão é inválido e foi removido:"
 msgstr[1] "Os seguintes padrões são inválidos e foram removidos:"
+
+#: inc/admin/options.php:170
+msgid "More info"
+msgstr "Mais informações"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
