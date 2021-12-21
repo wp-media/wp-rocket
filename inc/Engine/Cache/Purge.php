@@ -47,6 +47,10 @@ class Purge {
 	 * @return void
 	 */
 	public function purge_url( $url, $pagination = false ) {
+		if ( ! is_string( $url ) ) {
+			return;
+		}
+
 		global $wp_rewrite;
 
 		$parsed_url = $this->parse_url( $url );
@@ -211,6 +215,10 @@ class Purge {
 				}
 			}
 		}
+
+		// Remove entries with empty values in array.
+		$urls = array_filter( $urls, 'is_string' );
+
 		/**
 		 * Filter the list of taxonomies URLs
 		 *
