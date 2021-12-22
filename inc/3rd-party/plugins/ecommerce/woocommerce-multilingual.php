@@ -3,6 +3,8 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Check if WCML is active and has minimum requirements.
+ *
  * @return bool
  */
 function rocket_wcml_has_requirements() {
