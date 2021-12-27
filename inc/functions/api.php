@@ -132,6 +132,7 @@ function rocket_is_live_site() {
 		'.sg-host.com',
 		'.platformsh.site',
 		'.wpstage.net',
+		'.bigscoots-staging.com',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
