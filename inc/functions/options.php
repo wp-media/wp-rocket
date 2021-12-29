@@ -405,6 +405,7 @@ function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingCo
 function get_rocket_cache_reject_ua() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$ua   = get_rocket_option( 'cache_reject_ua', [] );
 	$ua[] = 'facebookexternalhit';
+	$ua[] = 'WhatsApp';
 
 	/**
 	 * Filter the rejected User-Agent
