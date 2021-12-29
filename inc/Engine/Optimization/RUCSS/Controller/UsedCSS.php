@@ -144,6 +144,7 @@ class UsedCSS {
 			$config = [
 				'treeshake'      => 1,
 				'rucss_safelist' => $safelist,
+				'is_mobile'      => $is_mobile,
 			];
 
 			$treeshaked_result = $this->api->optimize( $html, $url, $config );
