@@ -668,10 +668,6 @@ JS;
 				}
 			}
 
-			if ( false !== strpos( $tags_match[0][ $i ], 'media="print"' ) ) {
-				continue;
-			}
-
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
 			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
