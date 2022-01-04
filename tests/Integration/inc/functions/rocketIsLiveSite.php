@@ -96,6 +96,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.wpsc.site',
 			'example.runcloud.link',
 			'example.onrocket.site',
+			'example.bigscoots-staging.com',
 		];
 	}
 }
