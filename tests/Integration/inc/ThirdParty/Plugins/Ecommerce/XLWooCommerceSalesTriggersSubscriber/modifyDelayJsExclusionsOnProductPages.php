@@ -17,11 +17,13 @@ class Test_ModifyDelayJsExclusionsOnProductPages extends TestCase {
 	use WooTrait;
 
 	private $product;
+	private $single;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->product = $this->create_product();
+		$this->single = get_post( $this->factory->post->create() );
 		$this->unregisterAllCallbacksExcept(
 			'rocket_delay_js_exclusions',
 			'modify_delayjs_exclusions_on_product_pages'
@@ -46,7 +48,7 @@ class Test_ModifyDelayJsExclusionsOnProductPages extends TestCase {
 		string $original_html,
 		string $expected_html
 	) {
-		$this->go_to( $is_product ? $this->product->get_permalink() : home_url() );
+		$this->go_to( $is_product ? $this->product->get_permalink() : get_permalink( $this->single ) );
 
 		$actual_html = apply_filters( 'rocket_buffer', $original_html );
 

@@ -44,7 +44,7 @@ DELAYEXCLUDEDHTML;
 return [
 	'test_data' => [
 
-		'shouldNotExcludeFromDelayJsWhenNotIsProduct' => [
+		'shouldNotExcludeFromDelayJsWhenSingleButNotIsProduct' => [
 			'is_product' => false,
 			'initial_html'        => $original_html,
 			'expected_html'       => $delay_js_html
