@@ -248,6 +248,7 @@ class Plugin {
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
+			'xl_woocommerce_sales_triggers_subscriber',
 			'bigcommerce_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
