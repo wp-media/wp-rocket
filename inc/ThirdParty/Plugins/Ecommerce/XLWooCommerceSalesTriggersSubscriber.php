@@ -48,7 +48,7 @@ class XLWooCommerceSalesTriggersSubscriber implements Subscriber_Interface {
 			return $exclusions;
 		}
 
-		if ( 'product' !== get_post_type() || ! is_single() ) {
+		if ( ! is_product() || ! is_single() ) {
 			return $exclusions;
 		}
 
@@ -58,8 +58,6 @@ class XLWooCommerceSalesTriggersSubscriber implements Subscriber_Interface {
 				[
 					'xl-woocommerce-sales-triggers/assets/js/wcst_combined.min.js',
 					'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
-					'js-(before|after)',
-					'(?:/wp-content/|/wp-includes/)(.*)',
 				]
 			)
 		);
