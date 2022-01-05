@@ -72,7 +72,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'xl_woocommerce_sales_triggers_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\XLWoocommerceSalesTriggersSubscriber' )
+			->share( 'xl_woocommerce_sales_triggers_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\XLWooCommerceSalesTriggersSubscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
