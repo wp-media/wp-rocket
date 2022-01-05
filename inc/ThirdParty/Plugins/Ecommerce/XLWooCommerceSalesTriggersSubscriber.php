@@ -48,7 +48,7 @@ class XLWooCommerceSalesTriggersSubscriber implements Subscriber_Interface {
 			return $exclusions;
 		}
 
-		if ( ! is_product() || ! is_single() ) {
+		if ( ! is_product() ) {
 			return $exclusions;
 		}
 
