@@ -29,6 +29,7 @@ class Test_GetExcluded extends TestCase {
 
 	public function testShouldReturnEmptyWhenCannotDefer() {
 		$this->options->shouldReceive( 'get' )
+		              ->with( 'defer_all_js', 0 )
 		              ->once()
 		              ->andReturn( false );
 
@@ -84,7 +85,7 @@ class Test_GetExcluded extends TestCase {
 		              ->once()
 		              ->andReturn(
 			              [
-							  // user adds an item already in default list.
+				              // user adds an item already in default list.
 				              'gist.github.com'
 			              ]
 		              );
