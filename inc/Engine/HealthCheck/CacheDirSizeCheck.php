@@ -126,6 +126,7 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 
 			if ( $size > self::MAX_SIZE ) {
 				$this->send_notification( $type );
+
 				/**
 				 * Fires when cache directory size is above max.
 				 *
