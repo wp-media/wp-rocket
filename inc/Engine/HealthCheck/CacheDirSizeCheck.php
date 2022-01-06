@@ -126,6 +126,15 @@ class CacheDirSizeCheck implements Subscriber_Interface {
 
 			if ( $size > self::MAX_SIZE ) {
 				$this->send_notification( $type );
+				
+				/**
+				 * Fires when cache directory size is above max.
+				 *
+				 * @param string $type Folder type.
+				 * @param string $path Folder path.
+				 * @param int    $size Folder size in bits.
+				 */
+				do_action( 'rocket_cache_dir_too_big', $type, $path, $size );
 			}
 		}
 
