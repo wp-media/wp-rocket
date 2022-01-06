@@ -181,6 +181,9 @@ class Subscriber implements Subscriber_Interface {
 			$uris .= '|' . str_replace( $site_url, '', $uri );
 		}
 
+		// exclude URL patterns used by referral plugins.
+		$uris .= '|/refer/|/go/';
+
 		return $uris;
 	}
 
