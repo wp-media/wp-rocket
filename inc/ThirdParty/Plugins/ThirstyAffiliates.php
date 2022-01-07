@@ -31,13 +31,13 @@ class ThirstyAffiliates implements Subscriber_Interface {
 			return $excluded;
 		}
 
-		$link_prefix = get_option( 'ta_link_prefix' , 'recommends' );
+		$link_prefix = get_option( 'ta_link_prefix', 'recommends' );
 
-        if ( 'custom' === $link_prefix ) {
-			$link_prefix = get_option( 'ta_link_prefix_custom' , 'recommends' );
+		if ( 'custom' === $link_prefix ) {
+			$link_prefix = get_option( 'ta_link_prefix_custom', 'recommends' );
 		}
 
-        $excluded = [
+		$excluded = [
 			'/' . $link_prefix . '/',
 		];
 
