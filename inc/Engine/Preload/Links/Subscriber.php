@@ -181,10 +181,25 @@ class Subscriber implements Subscriber_Interface {
 			$uris .= '|' . str_replace( $site_url, '', $uri );
 		}
 
-		// exclude URL patterns used by referral plugins.
-		$uris .= '|/refer/|/go/';
+		$excluded = [
+			'/refer/',
+			'/go/',
+			'/recommend/',
+			'/recommends/',
+		];
 
-		return $uris;
+		/**
+		 * Filters the patterns excluded from links preload
+		 *
+		 * @since 3.10.7
+		 *
+		 * @param string[] $excluded Array of excluded patterns.
+		 */
+		$excluded = apply_filters( 'rocket_preload_links_exclusions', $excluded );
+
+		$excluded = implode( '|', $excluded );
+
+		return $uris . '|' . $excluded;
 	}
 
 	/**
