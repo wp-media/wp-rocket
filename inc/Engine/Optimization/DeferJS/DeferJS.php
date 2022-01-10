@@ -28,6 +28,7 @@ class DeferJS {
 		'FB3D_CLIENT_LOCALE',
 		'ewww_webp_supported',
 		'anr_captcha_field_div',
+		'renderInvisibleReCaptcha',
 	];
 
 	/**
