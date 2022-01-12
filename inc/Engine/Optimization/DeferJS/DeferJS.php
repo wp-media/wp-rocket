@@ -227,6 +227,7 @@ class DeferJS {
 			'/wp-includes/js/dist/hooks(.min)?.js',
 			'www.paypal.com/sdk/js',
 			'js-eu1.hsforms.net',
+			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
