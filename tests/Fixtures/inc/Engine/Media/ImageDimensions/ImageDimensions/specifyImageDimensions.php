@@ -46,15 +46,6 @@ return [
 
 	'test_data' => [
 
-		'shouldNotChangeHTMLWhenOptionANDFilterDisabled' => [
-			'html' => $simple_html_with_local_image,
-			'config' => [
-				'image_dimensions' => false,
-				'rocket_specify_image_dimensions_filter' => false,
-			],
-			'expected' => $simple_html_with_local_image
-		],
-
 		'shouldNotChangeHTMLWhenNoImages' => [
 			'html' => $simple_html_without_images,
 			'config' => [
