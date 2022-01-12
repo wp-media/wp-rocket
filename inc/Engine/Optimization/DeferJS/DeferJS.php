@@ -28,6 +28,7 @@ class DeferJS {
 		'FB3D_CLIENT_LOCALE',
 		'ewww_webp_supported',
 		'anr_captcha_field_div',
+		'renderInvisibleReCaptcha',
 	];
 
 	/**
@@ -225,6 +226,7 @@ class DeferJS {
 			'/wp-includes/js/dist/url(.min)?.js',
 			'/wp-includes/js/dist/hooks(.min)?.js',
 			'www.paypal.com/sdk/js',
+			'js-eu1.hsforms.net',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );

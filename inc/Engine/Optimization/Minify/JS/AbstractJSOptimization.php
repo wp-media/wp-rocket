@@ -252,6 +252,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.enable.co.il/licenses/enable-',
 			'hcaptcha.com/1/api.js',
 			'voucher.getavo.it/public/js/yanovis.Voucher.js',
+			'js-eu1.hsforms.net',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
