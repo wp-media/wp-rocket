@@ -36,7 +36,7 @@ class Test_GetExcluded extends TestCase {
 		$this->assertEmpty( $this->defer_js->get_excluded() );
 	}
 
-	public function testShouldDeferDefaultItems() {
+	public function testShouldNotDeferDefaultItems() {
 		$this->options->shouldReceive( 'get' )
 		              ->with( 'defer_all_js', 0 )
 		              ->once()
@@ -53,7 +53,7 @@ class Test_GetExcluded extends TestCase {
 		);
 	}
 
-	public function testShouldDeferUserExcludedItems() {
+	public function testShouldNotDeferUserExcludedItems() {
 		$this->options->shouldReceive( 'get' )
 		              ->with( 'defer_all_js', 0 )
 		              ->once()
