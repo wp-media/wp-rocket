@@ -36,7 +36,8 @@ return [
 	'structure' => [
 		'wp-content' => [
 			'themes' => [
-				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/empty.jpg" )
+				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/empty.jpg" ),
+				'100x100image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/100x100image.jpg"),
 			]
 		],
 		'main' => [
@@ -216,5 +217,24 @@ return [
 			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="/wp-content/themes/image.jpg"><img width="1" height="1" src="/main/image.jpg"><img width="1" height="1" src="http://example.org/main/image.jpg"></body></html>'
 		],
 
-	]
+		'shouldAddMissingHeightWhenOnlyWidthSpecified' => [
+			'html'     => '<!DOCTYPE html><html><body><img width="75" src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body><img width="75" height="75" src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+		],
+
+		'shouldAddMissingWidthWhenOnlyHeightSpecified' => [
+			'html'     => '<!DOCTYPE html><html><body><img height="75" src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body><img width="75" height="75" src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+		],
+	],
 ];
