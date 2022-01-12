@@ -66,8 +66,6 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				->andReturn( $config['rocket_specify_dimension_skip_pictures_filter'] );
 		}
 
-		$frontend = new ImageDimensions( $this->options, $this->filesystem );
-
 		if ( isset( $config['external'] ) || isset( $config['internal'] ) ) {
 			Functions\expect( 'get_rocket_parse_url' )
 				->zeroOrMoreTimes()
@@ -115,7 +113,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $frontend->specify_image_dimensions( $input ) )
+			$this->format_the_html( $this->image_dimensions->specify_image_dimensions( $input ) )
 		);
 
 	}
