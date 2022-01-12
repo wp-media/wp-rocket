@@ -81,18 +81,18 @@ class ImageDimensions {
 			return $html;
 		}
 
-		// Get all images without width or height attribute.
-		$images_regex = '<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>';
+		// Get all images without width and height attributes.
+		$images_regex = '<img(?:[^>](?!height=[\'\"](?:\S+)[\'\"]))*+>|<img(?:[^>](?!width=[\'\"](?:\S+)[\'\"]))*+>';
 
 		/**
 		 * Filters Specify image dimensions inside picture tags also.
 		 *
 		 * @since  3.8
 		 *
-		 * @param bool Do or not, Default is True so it will skip all img tags that are inside picture tag.
+		 * @param bool Do or not. Default is True, so it will skip all img tags that are inside picture tag.
 		 */
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
-			$images_regex = '<\s*picture[^>]*>.*' . $images_regex . '.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
+			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 		preg_match_all( "/{$images_regex}/is", $html, $images_match );
 
