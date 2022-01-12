@@ -66,6 +66,10 @@ class HTML {
 		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
 		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
 		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
+		'/wp-search-with-algolia/js/algoliasearch/dist/algoliasearch-lite.umd.js', // WP Search with Algolia search feature.
+		'/wp-search-with-algolia/js/autocomplete-noconflict.js', // WP Search with Algolia search feature.
+		'/wp-search-with-algolia/js/autocomplete.js/dist/autocomplete.min.js', // WP Search with Algolia search feature.
+		'var algolia', // WP Search with Algolia search feature.
 	];
 
 	/**
