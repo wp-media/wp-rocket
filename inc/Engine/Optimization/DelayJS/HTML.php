@@ -66,6 +66,7 @@ class HTML {
 		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
 		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
 		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
+		'wpcp_css_disable_selection', // WP Content Copy Protection & No Right Click.
 	];
 
 	/**
