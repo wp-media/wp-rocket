@@ -131,8 +131,25 @@ class ImageDimensions {
 				continue;
 			}
 
+			$width_height = $sizes[3];
+
+			preg_match('<img.*height=[\'\"](?<height>\S+)[\'\"].*>', $image, $initial_height );
+			preg_match('<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
+
+			if ( ! empty( $initial_height['height'] ) ) {
+				$ratio = $initial_height['height'] / $sizes[1];
+
+				$width_height = 'width="' . $sizes[0] * $ratio . '" height="' . $initial_height['height'] . '"';
+			}
+
+			if ( ! empty( $initial_width['width'] ) ) {
+				$ratio = $initial_width['width'] / $sizes[0];
+
+				$width_height = 'width="' . $initial_width['width'] . '" height="' . $sizes[1] * $ratio .'"';
+			}
+
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
-			$replaces[ $image ] = $this->assign_width_height( $image, $sizes );
+			$replaces[ $image ] = $this->assign_width_height( $image, $width_height );
 		}
 
 		if ( empty( $replaces ) ) {
@@ -258,7 +275,7 @@ class ImageDimensions {
 	 */
 	private function assign_width_height( string $image, $width_height ) {
 		// Remove old width and height attributes if found.
-		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]/i', '', $image );
+		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]\s?/i', '', $image );
 		$changed_image = preg_replace( '/<\s*img/i', '<img ' . $width_height, $changed_image );
 
 		if ( null === $changed_image ) {
@@ -370,7 +387,7 @@ class ImageDimensions {
 				return false;
 			}
 
-			return $sizes[3];
+			return $sizes;
 		}
 
 		$local_path = $this->get_local_path( $image_url );
@@ -394,7 +411,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		return $sizes[3];
+		return $sizes;
 	}
 
 	/**
