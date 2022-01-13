@@ -102,8 +102,14 @@ class Bridge implements Subscriber_Interface {
 	 * @return array Excluded files with Bridge entries to be excluded.
 	 */
 	public function exclude_static_file_generation( $files ) {
-		$files[] = 'wp-content/themes/bridge/js/default_dynamic_callback.php';
-		$files[] = 'wp-content/themes/bridge/css/style_dynamic_callback.php';
+		$base_path = wp_parse_url( get_stylesheet_directory_uri(), PHP_URL_PATH );
+
+		if ( empty( $base_path ) ) {
+			return $files;
+		}
+
+		$files[] = $base_path . '/js/default_dynamic_callback.php';
+		$files[] = $base_path . '/css/style_dynamic_callback.php';
 
 		return $files;
 	}

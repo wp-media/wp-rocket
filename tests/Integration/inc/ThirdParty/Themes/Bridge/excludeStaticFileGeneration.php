@@ -70,8 +70,8 @@ class excludeStaticFileGeneration extends TestCase
 	{
 		$this->assertSame(
 			[
-				'wp-content/themes/bridge/js/default_dynamic_callback.php',
-				'wp-content/themes/bridge/css/style_dynamic_callback.php',
+				'/wp-content/themes/Bridge/js/default_dynamic_callback.php',
+				'/wp-content/themes/Bridge/css/style_dynamic_callback.php',
 			],
 			apply_filters('rocket_exclude_static_dynamic_resources', [])
 		);
