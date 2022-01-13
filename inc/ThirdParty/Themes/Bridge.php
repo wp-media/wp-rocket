@@ -34,8 +34,9 @@ class Bridge implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_lazyload_background_images' => 'disable_lazyload_background_images',
-			'update_option_qode_options_proya'  => [ 'maybe_clear_cache', 10, 2 ],
+			'rocket_lazyload_background_images'       => 'disable_lazyload_background_images',
+			'update_option_qode_options_proya'        => [ 'maybe_clear_cache', 10, 2 ],
+			'rocket_exclude_static_dynamic_resources' => 'exclude_static_file_generation',
 		];
 	}
 
@@ -63,11 +64,9 @@ class Bridge implements Subscriber_Interface {
 	/**
 	 * Maybe clear WP Rocket cache when Bridge custom CSS/JS is updated
 	 *
-	 * @since 3.3.7
-	 * @author Remy Perona
-	 *
 	 * @param array $old_value Previous option values.
 	 * @param array $new_value New option values.
+	 *
 	 * @return void
 	 */
 	public function maybe_clear_cache( $old_value, $new_value ) {
@@ -93,5 +92,19 @@ class Bridge implements Subscriber_Interface {
 			rocket_clean_domain();
 			rocket_clean_minify();
 		}
+	}
+
+	/**
+	 * Excludes Bridge statically generated files.
+	 *
+	 * @param array $files Array of static files to be excluded.
+	 *
+	 * @return array Excluded files with Bridge entries to be excluded.
+	 */
+	public function exclude_static_file_generation( $files ) {
+		$files[] = 'wp-content/themes/bridge/js/default_dynamic_callback.php';
+		$files[] = 'wp-content/themes/bridge/css/style_dynamic_callback.php';
+
+		return $files;
 	}
 }
