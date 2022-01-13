@@ -133,8 +133,8 @@ class ImageDimensions {
 
 			$width_height = $sizes[3];
 
-			preg_match('<img.*height=[\'\"](?<height>\S+)[\'\"].*>', $image, $initial_height );
-			preg_match('<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
+			preg_match( '<img.*height=[\'\"](?<height>\S+)[\'\"].*>', $image, $initial_height );
+			preg_match( '<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
 
 			if ( ! empty( $initial_height['height'] ) ) {
 				$ratio = $initial_height['height'] / $sizes[1];
@@ -145,7 +145,7 @@ class ImageDimensions {
 			if ( ! empty( $initial_width['width'] ) ) {
 				$ratio = $initial_width['width'] / $sizes[0];
 
-				$width_height = 'width="' . $initial_width['width'] . '" height="' . $sizes[1] * $ratio .'"';
+				$width_height = 'width="' . $initial_width['width'] . '" height="' . $sizes[1] * $ratio . '"';
 			}
 
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
