@@ -54,8 +54,8 @@ class InformationSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'plugins_api'        => [ 'exclude_rocket_from_wp_info', 10, 3 ],
-			'plugins_api_result' => [ 'add_rocket_info', 10, 3 ],
+			'plugins_api'              => [ 'exclude_rocket_from_wp_info', 10, 3 ],
+			'plugins_api_result'       => [ 'add_rocket_info', 10, 3 ],
 			'rocket_wp_tested_version' => 'add_wp_tested_version',
 		];
 	}
