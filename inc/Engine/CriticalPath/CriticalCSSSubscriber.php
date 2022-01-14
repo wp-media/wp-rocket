@@ -661,11 +661,8 @@ JS;
 				continue;
 			}
 
-			if ( false !== strpos( $tag, 'media' ) ) {
-				// Check if the media is anything other than all or screen.
-				if ( ! preg_match( '/(?:media\s*=\s*[\'"](all|screen)[\'"])/iU', $tag ) ) {
-					continue;
-				}
+			if ( false !== strpos( $tags_match[0][ $i ], 'media="print"' ) ) {
+				continue;
 			}
 
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
