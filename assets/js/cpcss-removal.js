@@ -1,4 +1,4 @@
-const wprRemoveCPCSS = () => {
+function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( 'link[data-rocket-async="style"][rel="preload"]' );
 	if ( preload_stylesheets && preload_stylesheets.length > 0 ) {
 		for ( let stylesheet_index = 0;stylesheet_index < preload_stylesheets.length;stylesheet_index++ ){
@@ -14,7 +14,7 @@ const wprRemoveCPCSS = () => {
 	if ( elem && 'remove' in elem ) {
 		elem.remove();
 	}
-};
+}
 
 if ( window.addEventListener ) {
 	window.addEventListener( 'load', wprRemoveCPCSS );
