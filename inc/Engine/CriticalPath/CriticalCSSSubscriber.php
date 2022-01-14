@@ -642,10 +642,10 @@ JS;
 		);
 
 		// Remove comments from the buffer.
-		$buffer = $this->hide_comments( $buffer );
+		$buffer_nocomments = $this->hide_comments( $buffer );
 
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer, $tags_match );
+		preg_match_all( $css_pattern, $buffer_nocomments, $tags_match );
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
