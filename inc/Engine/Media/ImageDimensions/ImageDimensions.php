@@ -139,13 +139,13 @@ class ImageDimensions {
 			if ( ! empty( $initial_height['height'] ) ) {
 				$ratio = $initial_height['height'] / $sizes[1];
 
-				$width_height = 'width="' . $sizes[0] * $ratio . '" height="' . $initial_height['height'] . '"';
+				$width_height = 'width="' . (int) round( $sizes[0] * $ratio ) . '" height="' . $initial_height['height'] . '"';
 			}
 
 			if ( ! empty( $initial_width['width'] ) ) {
 				$ratio = $initial_width['width'] / $sizes[0];
 
-				$width_height = 'width="' . $initial_width['width'] . '" height="' . $sizes[1] * $ratio . '"';
+				$width_height = 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';
 			}
 
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
