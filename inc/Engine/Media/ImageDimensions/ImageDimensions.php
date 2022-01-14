@@ -137,12 +137,28 @@ class ImageDimensions {
 			preg_match( '<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
 
 			if ( ! empty( $initial_height['height'] ) ) {
+				if ( ! is_numeric( $initial_height['height'] ) ) {
+					Logger::debug(
+						'Specify Image Dimensions failed because specified height is not numeric.',
+						[ 'image' => $image ]
+					);
+					continue;
+				}
+
 				$ratio = $initial_height['height'] / $sizes[1];
 
 				$width_height = 'width="' . (int) round( $sizes[0] * $ratio ) . '" height="' . $initial_height['height'] . '"';
 			}
 
 			if ( ! empty( $initial_width['width'] ) ) {
+				if ( ! is_numeric( $initial_width['width'] ) ) {
+					Logger::debug(
+						'Specify Image Dimensions failed because specified width is not numeric.',
+						[ 'image' => $image ]
+					);
+					continue;
+				}
+
 				$ratio = $initial_width['width'] / $sizes[0];
 
 				$width_height = 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';

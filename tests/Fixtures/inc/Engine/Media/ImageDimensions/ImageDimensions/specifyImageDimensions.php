@@ -246,6 +246,16 @@ return [
 				'internal' => true,
 			],
 			'expected'     => '<!DOCTYPE html><html><body><img width="287" height="172" src="http://example.org/wp-content/themes/500x300image.jpg"></body></html>',
+		],
+
+		'shouldNotChangeHTMLWhenNonNumericValueGivenForDimension' => [
+			'html'     => '<!DOCTYPE html><html><body><img height="not-a-number" src="http://example.org/wp-content/themes/500x300image.jpg"></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body><img height="not-a-number" src="http://example.org/wp-content/themes/500x300image.jpg"></body></html>',
 		]
 	],
 ];
