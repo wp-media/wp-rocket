@@ -81,18 +81,18 @@ class ImageDimensions {
 			return $html;
 		}
 
-		// Get all images without width or height attribute.
-		$images_regex = '<img(?:[^>](?!(height|width)=[\'\"](?:\S+)[\'\"]))*+>';
+		// Get all images without width and height attributes.
+		$images_regex = '<img(?:[^>](?!height=[\'\"](?:\S+)[\'\"]))*+>|<img(?:[^>](?!width=[\'\"](?:\S+)[\'\"]))*+>';
 
 		/**
 		 * Filters Specify image dimensions inside picture tags also.
 		 *
 		 * @since  3.8
 		 *
-		 * @param bool Do or not, Default is True so it will skip all img tags that are inside picture tag.
+		 * @param bool Do or not. Default is True, so it will skip all img tags that are inside picture tag.
 		 */
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
-			$images_regex = '<\s*picture[^>]*>.*' . $images_regex . '.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
+			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 		preg_match_all( "/{$images_regex}/is", $html, $images_match );
 
@@ -131,8 +131,41 @@ class ImageDimensions {
 				continue;
 			}
 
+			$width_height = $sizes[3];
+
+			preg_match( '<img.*height=[\'\"](?<height>\S+)[\'\"].*>', $image, $initial_height );
+			preg_match( '<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
+
+			if ( ! empty( $initial_height['height'] ) ) {
+				if ( ! is_numeric( $initial_height['height'] ) ) {
+					Logger::debug(
+						'Specify Image Dimensions failed because specified height is not numeric.',
+						[ 'image' => $image ]
+					);
+					continue;
+				}
+
+				$ratio = $initial_height['height'] / $sizes[1];
+
+				$width_height = 'width="' . (int) round( $sizes[0] * $ratio ) . '" height="' . $initial_height['height'] . '"';
+			}
+
+			if ( ! empty( $initial_width['width'] ) ) {
+				if ( ! is_numeric( $initial_width['width'] ) ) {
+					Logger::debug(
+						'Specify Image Dimensions failed because specified width is not numeric.',
+						[ 'image' => $image ]
+					);
+					continue;
+				}
+
+				$ratio = $initial_width['width'] / $sizes[0];
+
+				$width_height = 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';
+			}
+
 			// Replace image with new attributes, we will replace all images at once after the loop for optimizations.
-			$replaces[ $image ] = $this->assign_width_height( $image, $sizes );
+			$replaces[ $image ] = $this->assign_width_height( $image, $width_height );
 		}
 
 		if ( empty( $replaces ) ) {
@@ -258,7 +291,7 @@ class ImageDimensions {
 	 */
 	private function assign_width_height( string $image, $width_height ) {
 		// Remove old width and height attributes if found.
-		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]/i', '', $image );
+		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]\s?/i', '', $image );
 		$changed_image = preg_replace( '/<\s*img/i', '<img ' . $width_height, $changed_image );
 
 		if ( null === $changed_image ) {
@@ -370,7 +403,7 @@ class ImageDimensions {
 				return false;
 			}
 
-			return $sizes[3];
+			return $sizes;
 		}
 
 		$local_path = $this->get_local_path( $image_url );
@@ -394,7 +427,7 @@ class ImageDimensions {
 			return false;
 		}
 
-		return $sizes[3];
+		return $sizes;
 	}
 
 	/**
