@@ -366,10 +366,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_domain();
 	}
 
-	if ( version_compare( $actual_version, '3.6.1', '<' ) ) {
-		rocket_generate_config_file();
-	}
-
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
 		rocket_clean_minify( 'css' );
 		rocket_generate_advanced_cache_file();
@@ -401,6 +397,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			rocket_rrmdir( $cache_path . 'used-css' );
 			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
 		}
+	}
+
+	if ( version_compare( $actual_version, '3.10.8', '<' ) ) {
+		rocket_generate_config_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
