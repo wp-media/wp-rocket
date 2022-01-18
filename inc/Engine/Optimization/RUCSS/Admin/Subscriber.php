@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
+use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -39,18 +39,28 @@ class Subscriber implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * Homepage Preload instance
+	 *
+	 * @var Homepage
+	 */
+	private $homepage_preloader;
+
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings    Settings instance.
 	 * @param Database $database    Database instance.
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
+	 * @param Homepage $homepage_preloader Homepage Preload instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
-		$this->settings    = $settings;
-		$this->database    = $database;
-		$this->used_css    = $used_css;
-		$this->options_api = $options_api;
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
+		$this->settings           = $settings;
+		$this->database           = $database;
+		$this->used_css           = $used_css;
+		$this->options_api        = $options_api;
+		$this->homepage_preloader = $homepage_preloader;
 	}
 
 	/**
@@ -62,22 +72,31 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'       => 'add_options_first_time',
-			'rocket_input_sanitize'              => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug             => [ 'clean_used_css_and_cache', 10, 2 ],
-			'switch_theme'                       => 'truncate_used_css',
-			'rocket_rucss_file_changed'          => 'truncate_used_css',
-			'wp_trash_post'                      => 'delete_used_css_on_update_or_delete',
-			'delete_post'                        => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                   => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'            => 'delete_used_css_on_update_or_delete',
-			'init'                               => 'schedule_clean_not_commonly_used_rows',
-			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'    => 'truncate_used_css_handler',
-			'admin_notices'                      => 'clear_usedcss_result',
-			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_checkbox'     => 'display_progress_bar',
-			'admin_enqueue_scripts'              => 'add_admin_js',
+			'rocket_first_install_options'        => 'add_options_first_time',
+			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug              => [
+				[ 'clean_used_css_and_cache', 10, 2 ],
+				[ 'maybe_cancel_preload', 10, 2 ],
+			],
+			'switch_theme'                        => 'truncate_used_css',
+			'rocket_rucss_file_changed'           => 'truncate_used_css',
+			'wp_trash_post'                       => 'delete_used_css_on_update_or_delete',
+			'delete_post'                         => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
+			'edit_term'                           => 'delete_term_used_css',
+			'pre_delete_term'                     => 'delete_term_used_css',
+			'init'                                => 'schedule_clean_not_commonly_used_rows',
+			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
+			'admin_notices'                       => 'clear_usedcss_result',
+			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
+			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10 ],
+			'admin_enqueue_scripts'               => 'add_admin_js',
+			'rocket_before_add_field_to_settings' => [
+				[ 'set_optimize_css_delivery_value', 10, 1 ],
+				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
+			],
 		];
 	}
 
@@ -123,7 +142,6 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Cron callback for deleting old rows in both table databases.
-	 * Deletes used css files and also cache file for old used css.
 	 *
 	 * @since 3.9
 	 *
@@ -132,13 +150,6 @@ class Subscriber implements Subscriber_Interface {
 	public function cron_clean_rows() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
-		}
-
-		$old_used_css_ids = $this->database->get_old_used_css();
-		foreach ( $old_used_css_ids as $old_used_css ) {
-			$used_css_item = new UsedCSS_Row( $old_used_css );
-			// Delete file from filesystem.
-			$this->used_css->delete_used_css_file( $used_css_item );
 		}
 
 		$this->database->delete_old_used_css();
@@ -153,9 +164,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
-		if ( ! $this->settings->is_enabled() ) {
+		if (
+			! $this->settings->is_enabled()
+			&&
+			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
+		) {
 			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 
+			return;
+		}
+
+		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
 
@@ -183,6 +202,29 @@ class Subscriber implements Subscriber_Interface {
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
+			return;
+		}
+
+		$this->used_css->delete_used_css( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Deletes the used CSS when updating a term
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param int $term_id the term ID.
+	 *
+	 * @return void
+	 */
+	public function delete_term_used_css( $term_id ) {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( is_wp_error( $url ) ) {
 			return;
 		}
 
@@ -261,6 +303,27 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Cancels any preload currently running if the RUCSS option is enabled and preload is enabled.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @param array $old_value Previous option values.
+	 * @param array $value     New option values.
+	 */
+	public function maybe_cancel_preload( $old_value, $value ) {
+		if (
+			! empty( $value['remove_unused_css'] )
+			&&
+			empty( $old_value['remove_unused_css'] )
+			&&
+			! empty( $value['manual_preload'] )
+		) {
+			delete_transient( 'rocket_preload_errors' );
+			$this->homepage_preloader->cancel_preload();
+		}
+	}
+
+	/**
 	 * Truncate used_css table when clicking on the dashboard button.
 	 *
 	 * @since 3.9
@@ -291,6 +354,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
+		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
 		set_transient(
 			'rocket_clear_usedcss_response',
@@ -344,18 +408,17 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param string $field_id ID of the settings field.
+	 * @param array $option_data array of option_id and sub_fields of the option.
 	 *
 	 * @return void
 	 */
-	public function display_progress_bar( $field_id ) {
-		if ( 'remove_unused_css' !== $field_id ) {
+	public function display_progress_bar( $option_data ) {
+		if ( 'remove_unused_css' !== $option_data['option_id'] ) {
 			return;
 		}
 
 		$this->settings->display_progress_bar();
 	}
-
 	/**
 	 * Array with UI translations.
 	 *
@@ -369,12 +432,33 @@ class Subscriber implements Subscriber_Interface {
 			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
 			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
-			'rucss_info_txt' => sprintf(
-				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We are processing the CSS on your site. This may take several minutes to complete. %1$sMore info.%2$s', 'rocket' ),
-				'<a href="#" target=_"blank" rel="noopener">',
-				'</a>'
-			),
+			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
 		];
+	}
+
+	/**
+	 * Set optimize css delivery value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_value( $field_args ) : array {
+		return $this->settings->set_optimize_css_delivery_value( $field_args );
+	}
+
+	/**
+	 * Set optimize css delivery method value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 }

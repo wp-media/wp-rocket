@@ -7,6 +7,9 @@ $html = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js"></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
+	<script>alert('ewww_webp_supported');</script>
 HTML
 ;
 
@@ -17,6 +20,9 @@ $expected = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js" defer></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506" defer></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
+	<script>alert('ewww_webp_supported');</script>
 HTML
 ;
 
@@ -27,6 +33,9 @@ $expected_exclusion = <<<HTML
 	<script integrity="sha512-VtmdOFNyOniRUIHzkfL4GAe+yuAhoWzJIWYW/9elcd+7zNu12OKscWFIe9PRQ6VBy4djrwGVzK6MLD3oTpLpRQ==" crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" defer></script>
 	<script data-cfasync="false" src="/javascript.js" defer></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51f58c4473f92506" defer></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.js"></script>
+	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
+	<script>alert('ewww_webp_supported');</script>
 HTML
 ;
 
@@ -92,5 +101,33 @@ return [
 		],
 		'html'     => $html,
 		'expected' => $expected_exclusion,
+	],
+	'testShouldEvaluateRegexPatternInOptions' => [
+		'config' => [
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [
+					'/wp-content/plugins/(.*)/script.js',
+				],
+			],
+		],
+		'html'     => $html,
+		'expected' => $expected_exclusion,
+	],
+	'testShouldReturnOriginalWithoutThrowingWarningWhenBadPatternInOptions' => [
+		'config' => [
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [
+					'/wp-content/bad(pattern/script.js',
+				],
+			],
+		],
+		'html'     => $html,
+		'expected' => $html,
 	],
 ];

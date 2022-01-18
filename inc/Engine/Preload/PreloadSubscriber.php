@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -34,6 +35,13 @@ class PreloadSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Pre-Warmup Status Checker.
+	 *
+	 * @var Checker
+	 */
+	private $checker;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 3.2
@@ -41,10 +49,12 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @param Homepage     $homepage_preloader Homepage Preload instance.
 	 * @param Options_Data $options            WP Rocket Options instance.
+	 * @param Checker      $checker            Pre-Warmup Status Checker.
 	 */
-	public function __construct( Homepage $homepage_preloader, Options_Data $options ) {
+	public function __construct( Homepage $homepage_preloader, Options_Data $options, Checker $checker ) {
 		$this->homepage_preloader = $homepage_preloader;
 		$this->options            = $options;
+		$this->checker            = $checker;
 	}
 
 	/**
@@ -64,6 +74,7 @@ class PreloadSubscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_stop_preload'         => [ 'do_admin_post_stop_preload' ],
 			'pagely_cache_purge_after'               => [ 'run_preload', 11 ],
+			'rocket_prewarmup_finished'              => [ 'run_preload' ],
 			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_launch_preload', 11, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
@@ -71,6 +82,8 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'rocket_after_preload_after_purge_cache' => [
 				[ 'maybe_preload_mobile_homepage', 10, 3 ],
 			],
+			'admin_post_rocket_rollback'             => [ 'stop_homepage_preload', 9 ],
+			'wp_rocket_upgrade'                      => [ 'stop_homepage_preload', 9 ],
 		];
 	}
 
@@ -136,6 +149,10 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_preload( $old_value, $value ) {
+		if ( ! empty( $value['remove_unused_css'] ) && ! $this->checker->is_warmup_finished() ) {
+			return;
+		}
+
 		if ( $this->homepage_preloader->is_process_running() ) {
 			return;
 		}
@@ -152,7 +169,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 			'database_trashed_posts'      => true,
 			'database_spam_comments'      => true,
 			'database_trashed_comments'   => true,
-			'database_expired_transients' => true,
 			'database_all_transients'     => true,
 			'database_optimize_tables'    => true,
 			'schedule_automatic_cleanup'  => true,
@@ -370,5 +386,16 @@ class PreloadSubscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( wp_get_referer() );
 		die();
+	}
+
+	/**
+	 * Stops homepage preload.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_homepage_preload() {
+		$this->homepage_preloader->cancel_preload();
 	}
 }

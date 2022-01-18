@@ -26,6 +26,9 @@ class DeferJS {
 		'N.N2_',
 		'rev_slider_wrapper',
 		'FB3D_CLIENT_LOCALE',
+		'ewww_webp_supported',
+		'anr_captcha_field_div',
+		'renderInvisibleReCaptcha',
 	];
 
 	/**
@@ -73,6 +76,10 @@ class DeferJS {
 		}
 
 		$exclude_defer_js = implode( '|', $this->get_excluded() );
+
+		if ( ! @preg_replace( '#(' . $exclude_defer_js . ')#i', '', 'dummy-string' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			return $html;
+		}
 
 		foreach ( $matches as $tag ) {
 			if ( preg_match( '#(' . $exclude_defer_js . ')#i', $tag['url'] ) ) {
@@ -191,6 +198,10 @@ class DeferJS {
 	 * @return array
 	 */
 	public function get_excluded() : array {
+		if ( ! $this->can_defer_js() ) {
+			return [];
+		}
+
 		$exclude_defer_js = [
 			'gist.github.com',
 			'content.jwplatform.com',
@@ -206,6 +217,7 @@ class DeferJS {
 			'/wp-includes/js/dist/i18n.min.js',
 			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
 			'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
+			'/wp-content/plugins/ewww-image-optimizer/includes/check-webp(.min)?.js',
 			'static.mailerlite.com/data/(.*).js',
 			'cdn.voxpow.com/static/libs/v1/(.*).js',
 			'cdn.voxpow.com/media/trackers/js/(.*).js',
@@ -217,6 +229,9 @@ class DeferJS {
 			'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
 			'/wp-includes/js/dist/url(.min)?.js',
 			'/wp-includes/js/dist/hooks(.min)?.js',
+			'www.paypal.com/sdk/js',
+			'js-eu1.hsforms.net',
+			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );

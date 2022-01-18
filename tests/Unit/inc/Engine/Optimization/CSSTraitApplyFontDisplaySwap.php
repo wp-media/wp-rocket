@@ -3,21 +3,24 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization;
 
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\CSSTrait::apply_font_display_swap
  *
  * @group  Optimize
+ * @group  CSSTrait
  */
 class CSSTraitTest extends TestCase {
 	use CSSTrait;
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/CSSTraitApplyFontDisplaySwap.php';
-
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testApplyFontDisplaySwap( $css, $expected ) {
-		$this->assertEquals( $expected, $this->apply_font_display_swap( $css ) );
+		$this->assertSame(
+			$expected,
+			$this->apply_font_display_swap( $css )
+		);
 	}
 }

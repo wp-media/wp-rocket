@@ -88,6 +88,10 @@ class Resources extends Table {
 	 * @return bool|int
 	 */
 	public function reset_prewarmup_fields() {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
 		// Get the database interface.
 		$db = $this->get_db();
 

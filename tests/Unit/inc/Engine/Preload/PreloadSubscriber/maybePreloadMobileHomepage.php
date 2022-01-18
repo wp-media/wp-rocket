@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PreloadSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Optimization\RUCSS\Warmup\Status\Checker;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\FullProcess;
@@ -22,6 +23,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	public function testShouldUseMobilePrefixWhenMobilePreloadIsEnabled() {
 		$options            = Mockery::mock( Options_Data::class );
 		$homepage_preloader = Mockery::mock( Homepage::class );
+		$checker            = Mockery::mock( Checker::class );
 		$homepage_preloader
 			->shouldReceive( 'is_mobile_preload_enabled' )
 			->once()
@@ -40,7 +42,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 				]
 			);
 
-		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options, $checker );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}
@@ -48,6 +50,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	public function testShouldNotUseMobilePrefixWhenMobilePreloadIsNotEnabled() {
 		$options            = Mockery::mock( Options_Data::class );
 		$homepage_preloader = Mockery::mock( Homepage::class );
+		$checker            = Mockery::mock( Checker::class );
 		$homepage_preloader
 			->shouldReceive( 'is_mobile_preload_enabled' )
 			->once()
@@ -59,7 +62,7 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 		Functions\expect( 'wp_safe_remote_get' )
 			->never();
 
-		$subscriber = new PreloadSubscriber( $homepage_preloader, $options );
+		$subscriber = new PreloadSubscriber( $homepage_preloader, $options, $checker );
 
 		$subscriber->maybe_preload_mobile_homepage( $this->home_url, 'whatever', [] );
 	}

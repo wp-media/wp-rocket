@@ -23,7 +23,7 @@
     white-space: nowrap;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    @include transition(all, 200ms)
+    @include transition(all, 200ms);
     @include font-size(13,20);
 
     &:hover,
@@ -84,6 +84,25 @@
 
     &--red{
         background: $cRed;
+    }
+
+  	&--gray{
+        background: $cGrey;
+	  	color: $cBlack !important;
+	  &:hover,
+	  &:active,
+	  &:focus{
+		color: $cBlack !important;
+	  }
+	  &.radio-active{
+		background: $cPurple !important;
+		color: $cWhite !important;
+		&:hover,
+		&:active,
+		&:focus{
+		  color: $cWhite !important;
+		}
+	  }
     }
 
     &--blueDark{

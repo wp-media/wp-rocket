@@ -14,6 +14,7 @@ class Settings {
 	 */
 	private $options;
 
+
 	/**
 	 * Creates an instance of the class.
 	 *
@@ -120,6 +121,55 @@ class Settings {
 		if ( ! $this->is_enabled() ) {
 			return;
 		}
-		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--children wpr-field--textarea"></div>';
+		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--textarea"></div>';
+	}
+
+	/**
+	 * Set optimize css delivery value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_value( $field_args ) : array {
+		if ( 'optimize_css_delivery' !== $field_args['id'] ) {
+			return $field_args;
+		}
+		$async_css_value         = (bool) $this->options->get( 'async_css', 0 );
+		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
+		$field_args['value']     = ( $remove_unused_css_value || $async_css_value );
+
+		return $field_args;
+	}
+
+	/**
+	 * Set optimize css delivery method value
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $field_args    Array of field to be added to settigs page.
+	 *
+	 * @return array
+	 */
+	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+		if ( 'optimize_css_delivery_method' !== $field_args['id'] ) {
+			return $field_args;
+		}
+		$value = '';
+
+		$async_css_value = (bool) $this->options->get( 'async_css', 0 );
+		if ( $async_css_value ) {
+			$value = 'async_css';
+		}
+
+		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
+		if ( $remove_unused_css_value ) {
+			$value = 'remove_unused_css';
+		}
+
+		$field_args['value'] = $value;
+		return $field_args;
 	}
 }

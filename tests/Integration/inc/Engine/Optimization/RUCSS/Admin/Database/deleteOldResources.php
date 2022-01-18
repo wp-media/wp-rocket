@@ -39,7 +39,7 @@ class Test_DeleteOldResources extends TestCase{
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		$current_date = current_time( 'mysql', true );
-		$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 1 month' ) );
+		$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 32 days' ) );
 
 		$rucss_resources_query->add_item(
 			[

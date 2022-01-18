@@ -19,7 +19,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	private $user;
 	private $renewal;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
@@ -42,7 +42,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['user']['licence_expired'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['user']['licence_expiration'] );
 
@@ -63,39 +63,9 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['user']['renewal_url'] );
-			
+
 			$this->user->shouldReceive( 'get_creation_date' )
 				->andReturn( $config['user']['creation_date'] );
-			
-			$this->pricing->shouldReceive( 'get_renewals_data' )
-				->andReturn( $config['pricing']['renewals'] );
-
-			$this->pricing->shouldReceive( 'get_single_websites_count' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['single']->websites );
-
-			$this->pricing->shouldReceive( 'get_plus_websites_count' )
-				->atMost()
-				->twice()
-				->andReturn( $config['pricing']['plus']->websites );
-			
-			$this->pricing->shouldReceive( 'get_single_pricing' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['single'] );
-
-			$this->pricing->shouldReceive( 'get_plus_pricing' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['plus'] );
-
-			$this->pricing->shouldReceive( 'get_infinite_pricing' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite'] );
-
-			Functions\when( 'number_format_i18n' )->returnArg();
 
 			$this->renewal->shouldReceive( 'generate' )
 				->once()

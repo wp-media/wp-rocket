@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization;
 
@@ -169,6 +170,11 @@ trait CSSTrait {
 			$type = ( strpos( $match[0], '@import' ) === 0 ? 'import' : 'url' );
 
 			$url = $match['path'];
+
+			if ( preg_match( '/^#/', $url ) ) {
+				continue;
+			}
+
 			if ( ! preg_match( '/^(data:|https?:|\\/)/', $url ) ) {
 				// attempting to interpret GET-params makes no sense, so let's discard them for awhile.
 				$params = strrchr( $url, '?' );
@@ -372,14 +378,16 @@ trait CSSTrait {
 			'/(?:@font-face)\s*{(?<value>[^}]+)}/i',
 			function ( $matches ) {
 				if ( preg_match( '/font-display:\s*(?<swap_value>\w*);?/i', $matches['value'], $attribute ) ) {
-					return 'swap' === strtolower( $attribute['swap_value'] )
-						? $matches[0]
-						: str_replace( $attribute['swap_value'], 'swap', $matches[0] );
-				} else {
-					$swap = "font-display:swap;{$matches['value']}";
+					if ( 'swap' === strtolower( $attribute['swap_value'] ) ) {
+						return $matches[0];
+					}
+
+					$swap = str_replace( $attribute['swap_value'], 'swap', $attribute[0] );
+
+					return preg_replace( '/font-display:\s*(?<swap_value>\w*);?/i', $swap, $matches[0] );
 				}
 
-				return str_replace( $matches['value'], $swap, $matches[0] );
+				return str_replace( $matches['value'], "font-display:swap;{$matches['value']}", $matches[0] );
 			},
 			$css_file_content
 		);

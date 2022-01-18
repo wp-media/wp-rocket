@@ -11,22 +11,21 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
 
 /**
- * @covers ::get_rocket_post_terms_urls
+ * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
  * @group  Purge
  * @group  purge_actions
  */
 class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->purge = new Purge( $this->filesystem );
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
-
 		unset( $GLOBALS['wp_rewrite'] );
 	}
 
@@ -50,10 +49,12 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			->once()
 			->with( 'post', 'objects' )
 			->andReturn( $taxonomies );
-
+		Filters\expectApplied( 'rocket_exclude_post_taxonomy' )
+			->once();
+		$urls       = [];
 		$index = 0;
 		foreach ( $taxonomies as $type => $taxonomy ) {
-			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			if ( ! $taxonomy->public ) {
 				continue;
 			}
 
@@ -78,6 +79,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 					->with( $term->slug, $taxonomy->name )
 					->andReturn( 'https://example.org/' . $term->slug );
 				$index++;
+				$urls[] = 'https://example.org/' . $term->slug;
 				Functions\expect( 'is_wp_error' )
 					->once()
 					->with( 'https://example.org/' . $term->slug )
@@ -104,6 +106,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 						->with( $term->parent , $taxonomy->name )
 						->andReturn( 'https://example.org/' . $term->parent );
 					$index++;
+					$urls[] = 'https://example.org/' . $term->parent ;
 				} else {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()

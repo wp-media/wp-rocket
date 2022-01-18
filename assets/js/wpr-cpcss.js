@@ -89,7 +89,7 @@ const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 	};
 
 	xhttp.open( 'POST', rocket_cpcss.rest_url, true );
-	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json' );
 	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send( JSON.stringify( { timeout: timeout, is_mobile: is_mobile } ) );
 }
@@ -129,7 +129,7 @@ const deleteCPCSS = () => {
 	};
 
 	xhttp.open( 'DELETE', rocket_cpcss.rest_url, true );
-	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json' );
 	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send();
 }

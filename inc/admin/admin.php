@@ -182,9 +182,11 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.json', date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	$gz       = 'gz' . strrev( 'etalfed' );
-	$options  = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
+	$site_name = get_rocket_parse_url( get_home_url() );
+	$site_name = $site_name['host'] . $site_name['path'];
+	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+	$gz        = 'gz' . strrev( 'etalfed' );
+	$options   = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
 	nocache_headers();
 	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -246,7 +248,7 @@ function rocket_rollback() {
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
 
 /**
- * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
+ * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
  * A link to the plugins page is kept in case the plugin is not reactivated correctly.
  *
  * @since  3.2.4
@@ -490,6 +492,7 @@ add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
 /**
  * Handle WP Rocket settings import.
  *
+ * @since 3.10 disable async_css if both async_css and remove_unused_css are enabled
  * @since 3.0 Hooked on admin_post now
  * @since 2.10.7
  * @author Remy Perona
@@ -507,7 +510,7 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
-	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
@@ -563,6 +566,15 @@ function rocket_handle_settings_import() {
 		$settings['minify_css_key']   = $current_options['minify_css_key'];
 		$settings['minify_js_key']    = $current_options['minify_js_key'];
 		$settings['version']          = $current_options['version'];
+		if (
+			isset( $settings['async_css'] ) && $settings['async_css'] &&
+			isset( $settings['remove_unused_css'] ) && $settings['remove_unused_css']
+		) {
+			$settings['async_css'] = 0;
+		}
+		if ( $settings['cache_webp'] && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			$settings['cache_webp'] = 0;
+		}
 
 		$options_api->set( 'settings', $settings );
 

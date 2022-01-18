@@ -9,7 +9,7 @@ use WP_Theme;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::add_divi_to_description
- * @uses   ::is_divi
+ * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty
  */
@@ -20,6 +20,7 @@ class Test_AddDiviToDescription extends TestCase {
 	public function testAddDiviToDescription( $config, $expected ) {
 		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
 		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
 		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
 		$theme->set_name( $config['theme-name'] );
 
@@ -29,7 +30,7 @@ class Test_AddDiviToDescription extends TestCase {
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
-		$divi = new Divi( $options_api, $options );
+		$divi = new Divi( $options_api, $options , $delayjs_html);
 
 		$this->assertSame( $expected, $divi->add_divi_to_description( $config['disabled-items'] ) );
 	}

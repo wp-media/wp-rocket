@@ -75,7 +75,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_script() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+			||
+			! current_user_can( 'rocket_manage_options' )
+		) {
 			return;
 		}
 
@@ -385,6 +389,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'delay_js_exclusions'        => [
+				'en' => [
+					'id'  => '',
+					'url' => 'https://docs.wp-rocket.me/article/1560-delay-javascript-execution-compatibility-exclusions/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'async'                      => [
 				'en' => [
 					'id'  => '5d52144c0428631e94f94ae2',
@@ -465,8 +475,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'ecommerce'                  => [
 				'en' => [
-					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '548f492de4b034fd4862493e',
+					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '568f8291c69791436155caea',
@@ -645,6 +655,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'invalid_exclusions'         => [
+				'en' => [
+					'id'  => '619e90a3d3efbe495c3b26b8',
+					'url' => 'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+				],
+				'fr' => [
+					'id'  => '61b21c1297682b790dad345a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1659-motifs-exclusion-non-valables',
 				],
 			],
 		];

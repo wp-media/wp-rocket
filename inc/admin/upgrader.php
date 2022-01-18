@@ -181,7 +181,6 @@ function rocket_first_install() {
 				'cache_logged_user'           => 0,
 				'cache_ssl'                   => 1,
 				'emoji'                       => 1,
-				'embeds'                      => 0,
 				'cache_reject_uri'            => [],
 				'cache_reject_cookies'        => [],
 				'cache_reject_ua'             => [],
@@ -216,7 +215,6 @@ function rocket_first_install() {
 				'database_trashed_posts'      => 0,
 				'database_spam_comments'      => 0,
 				'database_trashed_comments'   => 0,
-				'database_expired_transients' => 0,
 				'database_all_transients'     => 0,
 				'database_optimize_tables'    => 0,
 				'schedule_automatic_cleanup'  => 0,
@@ -390,6 +388,19 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_rrmdir( $busting_path . 'google-tracking' );
 		wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 		wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
+	}
+
+	if ( version_compare( $actual_version, '3.10', '<' ) ) {
+		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+		if (
+			isset( $options['async_css'] ) && $options['async_css'] &&
+			isset( $options['remove_unused_css'] ) && $options['remove_unused_css']
+		) {
+			$options['async_css'] = 0;
+			$cache_path           = rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH' );
+			rocket_rrmdir( $cache_path . 'used-css' );
+			update_option( rocket_get_constant( 'WP_ROCKET_SLUG' ), $options );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
