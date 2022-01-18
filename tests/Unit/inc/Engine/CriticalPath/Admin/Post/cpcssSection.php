@@ -39,9 +39,19 @@ class Test_CpcssSection extends TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['post'] );
 		parent::tearDown();
+	}
+
+	public function testShouldReturnNullWhenCurrentUserCannot() {
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( false );
+
+		$this->assertNull(
+			$this->post->cpcss_section()
+		);
 	}
 
 	/**
@@ -49,6 +59,10 @@ class Test_CpcssSection extends TestCase {
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
 		$this->setUpTest( $config );
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( true );
 
 		$this->post->shouldReceive( 'generate' )
 				   ->with( 'metabox/container', $expected['data'] )
