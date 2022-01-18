@@ -7,19 +7,23 @@ const rocketGenerateCPCSSbtn      = document.getElementById( 'rocket-generate-po
 const rocketCPCSSGenerate         = document.querySelectorAll( '.cpcss_generate' );
 const rocketCPCSSReGenerate       = document.querySelectorAll( '.cpcss_regenerate' );
 
-rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
-	e.preventDefault();
-	deleteCPCSS();
-} );
+if ( null !== rocketDeleteCPCSSbtn ) {
+	rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
+		e.preventDefault();
+		deleteCPCSS();
+	} );
+}
 
-rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
-	e.preventDefault();
-	rocketGenerateCPCSSbtn.disabled = true;
-	checkCPCSSGeneration( null, false );
-	if ( rocket_cpcss.wprMobileCpcssEnabled ) {
-		checkCPCSSGeneration( null, true );
-	}
-} );
+if ( null !== rocketGenerateCPCSSbtn ) {
+	rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
+		e.preventDefault();
+		rocketGenerateCPCSSbtn.disabled = true;
+		checkCPCSSGeneration( null, false );
+		if ( rocket_cpcss.wprMobileCpcssEnabled ) {
+			checkCPCSSGeneration( null, true );
+		}
+	} );
+}
 
 const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 	const spinner                   = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
