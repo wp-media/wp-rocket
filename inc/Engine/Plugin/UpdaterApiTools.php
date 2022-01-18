@@ -1,35 +1,14 @@
 <?php
-namespace WP_Rocket\Traits;
+namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Logger\Logger;
 
 /**
  * Trait for the plugin updater.
- *
- * @since  3.3.6
- * @author Grégory Viguier
  */
-trait Updater_Api_Tools {
-	/**
-	 * An ID to use when a API request fails.
-	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
-	 */
-	/*protected $request_error_id;*/
-
-	/** ----------------------------------------------------------------------------------------- */
-	/** TOOLS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
+trait UpdaterApiTools {
 	/**
 	 * Get a \WP_Error object to use when the request to WP Rocket’s server fails.
-	 *
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @param  mixed $data Error data to pass along the \WP_Error object.
 	 * @return \WP_Error
@@ -60,10 +39,6 @@ trait Updater_Api_Tools {
 	/**
 	 * Get support URL.
 	 *
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
 	 * @return string
 	 */
 	protected function get_support_url() {
@@ -78,10 +53,6 @@ trait Updater_Api_Tools {
 
 	/**
 	 * Get a plugin slug, given its full path.
-	 *
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $plugin_file Full path to the plugin.
 	 * @return string

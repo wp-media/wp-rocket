@@ -1,14 +1,12 @@
 <?php
-namespace WP_Rocket\ServiceProvider;
+namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket updates.
- *
- * @since  3.3.6
  */
-class Updater_Subscribers extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * The provided array is a way to let the container
@@ -17,8 +15,7 @@ class Updater_Subscribers extends AbstractServiceProvider {
 	 * this service provider must have an alias added
 	 * to this array or it will be ignored.
 	 *
-	 * @var    array
-	 * @since  3.3.6
+	 * @var array
 	 */
 	protected $provides = [
 		'plugin_updater_common_subscriber',
@@ -34,7 +31,7 @@ class Updater_Subscribers extends AbstractServiceProvider {
 	public function register() {
 		$api_url = wp_parse_url( WP_ROCKET_WEB_INFO );
 
-		$this->getContainer()->share( 'plugin_updater_common_subscriber', 'WP_Rocket\Subscriber\Plugin\Updater_Api_Common_Subscriber' )
+		$this->getContainer()->share( 'plugin_updater_common_subscriber', 'WP_Rocket\Engine\Plugin\UpdaterApiCommonSubscriber' )
 			->addArgument(
 				[
 					'api_host'           => $api_url['host'],
@@ -46,7 +43,7 @@ class Updater_Subscribers extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_information_subscriber', 'WP_Rocket\Subscriber\Plugin\Information_Subscriber' )
+		$this->getContainer()->share( 'plugin_information_subscriber', 'WP_Rocket\Engine\Plugin\InformationSubscriber' )
 			->addArgument(
 				[
 					'plugin_file' => WP_ROCKET_FILE,
@@ -54,7 +51,7 @@ class Updater_Subscribers extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_updater_subscriber', 'WP_Rocket\Subscriber\Plugin\Updater_Subscriber' )
+		$this->getContainer()->share( 'plugin_updater_subscriber', 'WP_Rocket\Engine\Plugin\UpdaterSubscriber' )
 			->addArgument(
 				[
 					'plugin_file'    => WP_ROCKET_FILE,
