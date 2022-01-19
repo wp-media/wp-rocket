@@ -67,6 +67,8 @@ class HTML {
 		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
 		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
 		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
+		'statcounter.com/counter/counter.js', // StatsCounter.
+		'var sc_project', // Statscounter.
 	];
 
 	/**
