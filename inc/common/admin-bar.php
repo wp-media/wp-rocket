@@ -177,12 +177,13 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		 */
 		$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN );
 		$restrict_api     = ini_get( 'opcache.restrict_api' );
+		$file_cache_only  = ini_get( 'opcache.file_cache_only' );
 		$can_restrict_api = true;
 		if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
 			$can_restrict_api = false;
 		}
 
-		if ( function_exists( 'opcache_reset' ) && $opcache_enabled && $can_restrict_api ) {
+		if ( function_exists( 'opcache_reset' ) && $opcache_enabled && $can_restrict_api && ! $file_cache_only ) {
 			$action = 'rocket_purge_opcache';
 
 			$wp_admin_bar->add_menu(

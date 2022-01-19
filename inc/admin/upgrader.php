@@ -99,8 +99,7 @@ add_action( 'upgrader_process_complete', 'rocket_maybe_reset_opcache', 20, 2 );
 /**
  * Reset PHP opcache.
  *
- * @since  3.1
- * @author Grégory Viguier
+ * @since 3.1
  */
 function rocket_reset_opcache() {
 	static $can_reset;
@@ -109,7 +108,6 @@ function rocket_reset_opcache() {
 	 * Triggers before WP Rocket tries to reset OPCache
 	 *
 	 * @since 3.2.5
-	 * @author Remy Perona
 	 */
 	do_action( 'rocket_before_reset_opcache' );
 
@@ -117,6 +115,10 @@ function rocket_reset_opcache() {
 		if ( ! function_exists( 'opcache_reset' ) ) {
 			$can_reset = false;
 
+			return false;
+		}
+
+		if ( true === (bool) ini_get( 'opcache.file_cache_only' ) ) {
 			return false;
 		}
 
@@ -141,7 +143,6 @@ function rocket_reset_opcache() {
 	 * Triggers after WP Rocket tries to reset OPCache
 	 *
 	 * @since 3.2.5
-	 * @author Remy Perona
 	 */
 	do_action( 'rocket_after_reset_opcache' );
 
