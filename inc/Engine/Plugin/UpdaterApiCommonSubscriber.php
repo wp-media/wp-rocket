@@ -1,82 +1,57 @@
 <?php
-namespace WP_Rocket\Subscriber\Plugin;
+namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Manages common hooks for the plugin updater.
- *
- * @since  3.3.6
- * @author Grégory Viguier
  */
-class Updater_Api_Common_Subscriber implements Subscriber_Interface {
+class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 
 	/**
 	 * API’s URL domain.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $api_host;
 
 	/**
 	 * URL to the site’s home.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $site_url;
 
 	/**
 	 * Current version of the plugin.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $plugin_version;
 
 	/**
 	 * Key slug used when submitting new settings (POST).
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $settings_slug;
 
 	/**
 	 * The key (1st part of the action) used for the nonce field used on the settings page. It is also used in the page URL.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $settings_nonce_key;
 
 	/**
 	 * Options instance.
 	 *
-	 * @var    \WP_Rocket\Admin\Options
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var \WP_Rocket\Admin\Options
 	 */
 	private $plugin_options;
 
 	/**
 	 * Constructor
-	 *
-	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param array $args {
 	 *     Required arguments to populate the class properties.
@@ -106,15 +81,8 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 		];
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** HOOKS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Force our user agent header when we hit our URLs.
-	 *
-	 * @since  3.3.6
-	 * @access public
 	 *
 	 * @param  array  $request An array of request arguments.
 	 * @param  string $url     Requested URL.
@@ -132,16 +100,8 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 		return $request;
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** TOOLS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Get the user agent to use when requesting the API.
-	 *
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @return string WP Rocket user agent
 	 */
@@ -155,10 +115,6 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Get a plugin option. If the value is currently being posted through the settings page, it is returned instead of the one stored in the database.
-	 *
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $field_name Name of a plugin option.
 	 * @return string

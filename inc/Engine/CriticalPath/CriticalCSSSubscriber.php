@@ -641,8 +641,11 @@ JS;
 			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU'
 		);
 
+		// Remove comments from the buffer.
+		$buffer_nocomments = $this->hide_comments( $buffer );
+
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer, $tags_match );
+		preg_match_all( $css_pattern, $buffer_nocomments, $tags_match );
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
@@ -741,5 +744,28 @@ JS;
 		$this->critical_css->stop_generation();
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
+	}
+
+	/**
+	 * Hides unwanted blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function hide_comments( string $html ): string {
+		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 }

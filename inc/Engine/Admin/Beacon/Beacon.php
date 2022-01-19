@@ -657,6 +657,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'invalid_exclusions'         => [
+				'en' => [
+					'id'  => '619e90a3d3efbe495c3b26b8',
+					'url' => 'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+				],
+				'fr' => [
+					'id'  => '61b21c1297682b790dad345a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1659-motifs-exclusion-non-valables',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
@@ -64,6 +64,11 @@ class HTML {
 		'/jetpack-boost/vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack Boost plugin lazyload.
 		'jetpack-lazy-images-js-enabled',  // Jetpack Boost plugin lazyload.
 		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
+		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
+		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
+		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
+		'statcounter.com/counter/counter.js', // StatsCounter.
+		'var sc_project', // Statscounter.
 	];
 
 	/**
@@ -103,7 +108,7 @@ class HTML {
 		 */
 		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
-			function( $value ) {
+			function ( $value ) {
 				return str_replace(
 					[ '+', '?ver', '#' ],
 					[ '\+', '\?ver', '\#' ],
@@ -161,7 +166,14 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
-		$replaced_html = preg_replace_callback( '/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims', [ $this, 'replace_scripts' ], $html );
+		$replaced_html = preg_replace_callback(
+			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
+			[
+				$this,
+				'replace_scripts',
+			],
+			$html
+		);
 
 		if ( empty( $replaced_html ) ) {
 			return $html;

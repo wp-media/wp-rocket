@@ -85,7 +85,7 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		echo $this->generate( 'renewal-expired-banner', $this->get_banner_data() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate( 'renewal-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
