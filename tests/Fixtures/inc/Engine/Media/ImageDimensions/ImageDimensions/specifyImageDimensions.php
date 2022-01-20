@@ -39,6 +39,8 @@ return [
 				'image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/empty.jpg" ),
 				'100x100image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/100x100image.jpg"),
 				'500x300image.jpg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/500x300image.jpg"),
+				'image.svg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/image.svg" ),
+				'viewbox.svg' => file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . "/inc/Engine/Media/ImageDimensions/viewbox.svg" ),
 			]
 		],
 		'main' => [
@@ -256,6 +258,26 @@ return [
 				'internal' => true,
 			],
 			'expected'     => '<!DOCTYPE html><html><body><img height="not-a-number" src="http://example.org/wp-content/themes/500x300image.jpg"></body></html>',
-		]
+		],
+
+		'shouldAddDimensionsWhenSVG' => [
+			'html'     => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image.svg"></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body><img width="100" height="150" src="http://example.org/wp-content/themes/image.svg"></body></html>',
+		],
+
+		'shouldAddDimensionsFromVieBoxWhenSVGWithNoDimensionsAttributes' => [
+			'html'     => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/viewbox.svg"></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body><img width="100" height="150" src="http://example.org/wp-content/themes/viewbox.svg"></body></html>',
+		],
 	],
 ];
