@@ -471,7 +471,7 @@ class ImageDimensions {
 	private function getimagesize( string $filename ) {
 		$file = new SplFileInfo( $filename );
 
-		if( 'svg' === $file->getExtension() ) {
+		if ( 'svg' === $file->getExtension() ) {
 			return $this->svg_getimagesize( $filename );
 		}
 
@@ -511,16 +511,16 @@ class ImageDimensions {
 			return $size;
 		}
 
-		$viewBox = preg_split('/[\s,]+/', (string) $svgfile->attributes()->viewBox );
+		$view_box = preg_split( '/[\s,]+/', (string) $svgfile->attributes()->viewBox );
 
-		if ( ! empty ( $viewBox ) ) {
+		if ( ! empty ( $view_box ) ) {
 			if (
-				! empty( $viewBox[2] )
+				! empty( $view_box[2] )
 				&&
-				! empty( $viewBox[3] )
+				! empty( $view_box[3] )
 			) {
-				$size[0] = $viewBox[2];
-				$size[1] = $viewBox[3];
+				$size[0] = $view_box[2];
+				$size[1] = $view_box[3];
 				$size[2] = 0;
 				$size[3] = 'width="' . $size[0] . '" height="' . $size[1] . '"';
 
