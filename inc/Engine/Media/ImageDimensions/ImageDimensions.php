@@ -513,7 +513,7 @@ class ImageDimensions {
 
 		$view_box = preg_split( '/[\s,]+/', (string) $svgfile->attributes()->viewBox );
 
-		if ( ! empty ( $view_box ) ) {
+		if ( ! empty( $view_box ) ) {
 			if (
 				! empty( $view_box[2] )
 				&&
