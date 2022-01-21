@@ -12,7 +12,7 @@ class APIClient extends AbstractAPIClient {
 	 *
 	 * @var string
 	 */
-	protected $request_path = 'api';
+	protected $request_path = 'rucss-job';
 
 	/**
 	 * Calls Central SaaS API.
@@ -23,10 +23,10 @@ class APIClient extends AbstractAPIClient {
 	 *
 	 * @return array
 	 */
-	public function optimize( string $html, string $url, array $options ): array {
+	public function add_to_queue( string $url, array $options ): array {
 		$args = [
 			'body'    => [
-				'url'    => add_query_arg( 'nowprocket', '1', $url ),
+				'url'    => $url,
 				'config' => $options,
 			],
 			'timeout' => 5,
@@ -45,19 +45,12 @@ class APIClient extends AbstractAPIClient {
 			'code'     => 400,
 			'message'  => 'Bad json',
 			'contents' => [
-				'shakedCSS'      => '',
-				'unProcessedCss' => [],
+				'jobId'      => 0,
+				'queueName' => '',
 			],
 		];
 
 		$result = json_decode( $this->response_body, true );
-		$result = wp_parse_args( (array) $result, $default );
-
-		return [
-			'code'            => $result['code'],
-			'message'         => $result['message'],
-			'css'             => $result['contents']['shakedCSS'],
-			'unprocessed_css' => is_array( $result['contents']['unProcessedCss'] ) ? $result['contents']['unProcessedCss'] : [],
-		];
+		return wp_parse_args( (array) $result, $default );
 	}
 }

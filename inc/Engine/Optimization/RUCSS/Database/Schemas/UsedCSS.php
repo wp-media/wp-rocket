@@ -80,6 +80,39 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// JOB_ID column.
+		[
+			'name'       => 'job_id',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => null,
+			'cache_key'  => true,
+			'searchable' => false,
+			'sortable'   => false,
+		],
+
+		// QUEUE_NAME    column.
+		[
+			'name'       => 'queue_name',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => null,
+			'cache_key'  => true,
+			'searchable' => false,
+			'sortable'   => false,
+		],
+
+		// STATUS    column.
+		[
+			'name'       => 'status',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => null,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => false,
+		],
+
 		// MODIFIED column.
 		[
 			'name'       => 'modified',

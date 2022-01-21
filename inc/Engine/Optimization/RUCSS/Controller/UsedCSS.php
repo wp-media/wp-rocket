@@ -106,12 +106,103 @@ class UsedCSS {
 			return false;
 		}
 
-		// Bailout if user is logged in and cache for logged in customers is active.
-		if ( is_user_logged_in() && (bool) $this->options->get( 'cache_logged_user', 0 ) ) {
+		// Bailout if user is logged in
+		if ( is_user_logged_in() ) {
 			return false;
 		}
 
 		return true;
+	}
+
+	public function treeshake( string $html ): string {
+		if ( ! $this->is_allowed() ) {
+			return $html;
+		}
+
+		global $wp;
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->is_mobile();
+		$used_css  = $this->get_used_css( $url, $is_mobile );
+
+		if ( empty( $used_css ) ) {
+			// Send the request to add this url into the queue and get the jobId and queueName.
+
+			/**
+			 * Filters the RUCSS safelist
+			 *
+			 * @since 3.11
+			 *
+			 * @param array $safelist Array of safelist values.
+			 */
+			$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+
+			$config = [
+				'treeshake'      => 1,
+				'rucss_safelist' => $safelist,
+				'is_mobile'      => $is_mobile,
+				'is_home'        => is_home(),
+			];
+
+			$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+			if ( 200 !== $add_to_queue_response['code'] ) {
+				Logger::error(
+					'Error when contacting the RUCSS API.',
+					[
+						'rucss error',
+						'url'     => $url,
+						'code'    => $add_to_queue_response['code'],
+						'message' => $add_to_queue_response['message'],
+					]
+				);
+
+				//Increment retries.
+				$retries = 0;
+				if ( isset( $used_css->retries ) ) {
+					$retries = $used_css->retries;
+				}
+
+				$data = [
+					'url'        => $url,
+					'retries'    => $retries + 1,
+					'is_mobile'  => $is_mobile,
+					'job_id'     => null,
+					'queue_name' => '',
+					'status'     => 'failed',
+					'modified'   => current_time( 'mysql', true ),
+				];
+
+				$this->save_or_update_used_css( $data );
+
+				return $html;
+			}
+
+			//We got jobid and queue name so save them into the DB and change status to be pending
+			$data = [
+				'url'        => $url,
+				'retries'    => 0,
+				'is_mobile'  => $is_mobile,
+				'job_id'     => $add_to_queue_response['jobId'],
+				'queue_name' => $add_to_queue_response['queueName'],
+				'status'     => 'pending',
+				'modified'   => current_time( 'mysql', true ),
+			];
+
+			$this->save_or_update_used_css( $data );
+
+			return $html;
+		}
+
+		//We have the used_css inside DB so get it and insert into the page HTML.
+		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
+			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
+		}
+
+		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
+		$html = $this->add_used_css_to_html( $html, $used_css );
+
+		$this->update_last_accessed( (int) $used_css->id );
+
+		return $html;
 	}
 
 	/**
@@ -121,7 +212,7 @@ class UsedCSS {
 	 *
 	 * @return string  HTML content.
 	 */
-	public function treeshake( string $html ): string {
+	public function treeshake_old( string $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
@@ -308,17 +399,18 @@ class UsedCSS {
 	private function save_or_update_used_css( array $data ) {
 		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
 
-		$data['css'] = $this->apply_font_display_swap( $data['css'] );
-		$minifier    = new MinifyCSS( $data['css'] );
+		if ( isset( $data['css'] ) ) {
+			$data['css'] = $this->apply_font_display_swap( $data['css'] );
 
-		/**
-		 * Filters Used CSS content before saving into DB.
-		 *
-		 * @since 3.9.0.2
-		 *
-		 * @param string $usedcss Used CSS.
-		 */
-		$data['css'] = apply_filters( 'rocket_usedcss_content', $minifier->minify() );
+			/**
+			 * Filters Used CSS content before saving into DB.
+			 *
+			 * @since 3.9.0.2
+			 *
+			 * @param string $usedcss Used CSS.
+			 */
+			$data['css'] = apply_filters( 'rocket_usedcss_content', $data['css'] );
+		}
 
 		if ( empty( $used_css ) ) {
 			$inserted = $this->insert_used_css( $data );

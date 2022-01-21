@@ -23,6 +23,9 @@ class UsedCSS extends Row {
 		$this->unprocessedcss = json_decode( $this->unprocessedcss, true );
 		$this->retries        = (int) $this->retries;
 		$this->is_mobile      = (bool) $this->is_mobile;
+		$this->job_id         = (string) $this->job_id;
+		$this->queue_name     = (string) $this->queue_name;
+		$this->status         = (string) $this->status;
 		$this->modified       = false === $this->modified ? 0 : strtotime( $this->modified );
 		$this->last_accessed  = false === $this->last_accessed ? 0 : strtotime( $this->last_accessed );
 	}

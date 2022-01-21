@@ -31,7 +31,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer'                => [ 'treeshake', 12 ],
+			'rocket_buffer'                => [ 'maybe_apply_rucss', 1000 ],
 			'rocket_rucss_retries_cron'    => 'rucss_retries',
 			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
 		];
@@ -44,7 +44,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return string  HTML content.
 	 */
-	public function treeshake( string $html ): string {
+	public function maybe_apply_rucss( string $html ): string {
 		return $this->used_css->treeshake( $html );
 	}
 
