@@ -437,6 +437,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				if ( '' === $lang ) {
 					// Remove all minify cache files.
 					rocket_clean_minify();
+					rocket_clean_cache_busting();
 
 					// Generate a new random key for minify cache file.
 					$options                   = get_option( WP_ROCKET_SLUG );
