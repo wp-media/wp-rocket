@@ -181,8 +181,8 @@ class UsedCSS {
 				'url'        => $url,
 				'retries'    => 0,
 				'is_mobile'  => $is_mobile,
-				'job_id'     => $add_to_queue_response['jobId'],
-				'queue_name' => $add_to_queue_response['queueName'],
+				'job_id'     => $add_to_queue_response['contents']['jobId'],
+				'queue_name' => $add_to_queue_response['contents']['queueName'],
 				'status'     => 'pending',
 				'modified'   => current_time( 'mysql', true ),
 			];
@@ -195,6 +195,10 @@ class UsedCSS {
 		//We have the used_css inside DB so get it and insert into the page HTML.
 		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
 			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
+		}
+
+		if ( 'completed' !== $used_css->status ) {
+			return $html;
 		}
 
 		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
