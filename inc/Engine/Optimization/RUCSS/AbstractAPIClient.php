@@ -11,7 +11,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'http://localhost:5000/';
+	const API_URL = 'https://bmrucss.wp-rocket.me/';
 
 	/**
 	 * Part of request Url after the main API_URL.
