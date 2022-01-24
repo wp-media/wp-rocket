@@ -1,6 +1,6 @@
 <?php
 /**
- * Renewal soon banner.
+ * Renewal expired banner.
  *
  * @since 3.7.5
  */
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 			printf(
 				// translators: %1$s = <strong>, %2$s = </strong>.
-				esc_html__( 'Your website could be much faster if it could take advantage of our %1$snew features and enhancements.%2$s', 'rocket' ),
+				esc_html__( '%1$sYour website could be much faster%2$s if it could take advantage of our new features and enhancements. 🚀', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
@@ -23,12 +23,10 @@ defined( 'ABSPATH' ) || exit;
 		<p>
 		<?php
 			printf(
-				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
-				esc_html__( 'Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your renewal rate: you will only pay %1$s%4$s%3$s!', 'rocket' ),
+				// translators: %1$s = <strong>, %2$s = </strong>.
+				esc_html__( 'Renew your license to have access to the %1$slatest version of WP Rocket%2$s and to the wonderful %1$sassistance of our Support Team%2$s.', 'rocket' ),
 				'<strong>',
-				esc_html( $data['discount_percent'] . '%' ),
-				'</strong>',
-				esc_html( '$' . $data['discount_price'] )
+				'</strong>'
 			);
 			?>
 		</p>

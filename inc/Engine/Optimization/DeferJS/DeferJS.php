@@ -198,6 +198,10 @@ class DeferJS {
 	 * @return array
 	 */
 	public function get_excluded() : array {
+		if ( ! $this->can_defer_js() ) {
+			return [];
+		}
+
 		$exclude_defer_js = [
 			'gist.github.com',
 			'content.jwplatform.com',
@@ -228,6 +232,7 @@ class DeferJS {
 			'www.paypal.com/sdk/js',
 			'js-eu1.hsforms.net',
 			'yanovis.Voucher.js',
+			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
