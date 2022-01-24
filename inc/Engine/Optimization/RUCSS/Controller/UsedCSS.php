@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -114,6 +113,13 @@ class UsedCSS {
 		return true;
 	}
 
+	/**
+	 * Start treeshaking the current page.
+	 *
+	 * @param string $html Buffet HTML for current page.
+	 *
+	 * @return string
+	 */
 	public function treeshake( string $html ): string {
 		if ( ! $this->is_allowed() ) {
 			return $html;
@@ -140,7 +146,7 @@ class UsedCSS {
 				'treeshake'      => 1,
 				'rucss_safelist' => $safelist,
 				'is_mobile'      => $is_mobile,
-				'is_home'        => is_home(),
+				'is_home'        => $this->is_home( $url ),
 			];
 
 			$add_to_queue_response = $this->api->add_to_queue( $url, $config );
@@ -199,92 +205,6 @@ class UsedCSS {
 
 		if ( 'completed' !== $used_css->status ) {
 			return $html;
-		}
-
-		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
-		$html = $this->add_used_css_to_html( $html, $used_css );
-
-		$this->update_last_accessed( (int) $used_css->id );
-
-		return $html;
-	}
-
-	/**
-	 * Apply TreeShaked CSS to the current HTML page.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string  HTML content.
-	 */
-	public function treeshake_old( string $html ): string {
-		if ( ! $this->is_allowed() ) {
-			return $html;
-		}
-
-		global $wp;
-		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-		$is_mobile = $this->is_mobile();
-		$used_css  = $this->get_used_css( $url, $is_mobile );
-
-		/**
-		 * Filters the RUCSS safelist
-		 *
-		 * @since 3.11
-		 *
-		 * @param array $safelist Array of safelist values.
-		 */
-		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
-
-		if ( empty( $used_css ) || ( $used_css->retries < 3 ) ) {
-			$config = [
-				'treeshake'      => 1,
-				'rucss_safelist' => $safelist,
-				'is_mobile'      => $is_mobile,
-			];
-
-			$treeshaked_result = $this->api->optimize( $html, $url, $config );
-
-			if ( 200 !== $treeshaked_result['code'] ) {
-				Logger::error(
-					'Error when contacting the RUCSS API.',
-					[
-						'rucss error',
-						'url'     => $url,
-						'code'    => $treeshaked_result['code'],
-						'message' => $treeshaked_result['message'],
-					]
-				);
-
-				return $html;
-			}
-
-			$retries = 0;
-			if ( isset( $used_css->retries ) ) {
-				$retries = $used_css->retries;
-			}
-
-			if ( ! empty( $treeshaked_result['unprocessed_css'] ) ) {
-				$this->schedule_rucss_retry();
-			}
-
-			$data = [
-				'url'            => $url,
-				'css'            => $treeshaked_result['css'],
-				'unprocessedcss' => wp_json_encode( $treeshaked_result['unprocessed_css'] ),
-				'retries'        => empty( $treeshaked_result['unprocessed_css'] ) ? 3 : $retries + 1,
-				'is_mobile'      => $is_mobile,
-				'modified'       => current_time( 'mysql', true ),
-			];
-
-			$used_css = $this->save_or_update_used_css( $data );
-
-			if ( ! $used_css ) {
-				return $html;
-			}
-		}
-
-		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
-			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
 		}
 
 		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
@@ -685,6 +605,17 @@ class UsedCSS {
 			$this->options->get( 'do_caching_mobile_files', 0 )
 			&&
 			wp_is_mobile();
+	}
+
+	/**
+	 * Check if current page is the home page.
+	 *
+	 * @param string $url Current page url.
+	 *
+	 * @return bool
+	 */
+	private function is_home( string $url ): bool {
+		return $url === untrailingslashit( home_url() );
 	}
 
 	/**
