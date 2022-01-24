@@ -57,14 +57,7 @@ abstract class AbstractAPIClient {
 		$this->options = $options;
 	}
 
-	/**
-	 * Handle remote POST.
-	 *
-	 * @param array $args Array with options sent to Saas API.
-	 *
-	 * @return bool WP Remote request status.
-	 */
-	protected function handle_post( array $args ): bool {
+	private function handle_request( array $args, $type = 'post' ) {
 		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			: self::API_URL;
@@ -78,12 +71,46 @@ abstract class AbstractAPIClient {
 			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
 		];
 
-		$response = wp_remote_post(
-			$api_url . $this->request_path,
-			$args
-		);
+		switch ( strtolower( $type ) ) {
+			case 'get':
+				$response = wp_remote_get(
+					$api_url . $this->request_path,
+					$args
+				);
+				break;
+
+			case 'post':
+			default:
+				$response = wp_remote_post(
+					$api_url . $this->request_path,
+					$args
+				);
+				break;
+		}
 
 		return $this->check_response( $response );
+	}
+
+	/**
+	 * Handle remote POST.
+	 *
+	 * @param array $args Array with options sent to Saas API.
+	 *
+	 * @return bool WP Remote request status.
+	 */
+	protected function handle_post( array $args ): bool {
+		return $this->handle_request( $args );
+	}
+
+	/**
+	 * Handle remote GET.
+	 *
+	 * @param array $args Array with options sent to Saas API.
+	 *
+	 * @return bool WP Remote request status.
+	 */
+	protected function handle_get( array $args ): bool {
+		return $this->handle_request( $args, 'get' );
 	}
 
 	/**
