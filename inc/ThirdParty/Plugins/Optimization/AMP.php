@@ -48,7 +48,7 @@ class AMP implements Subscriber_Interface {
 		$events = [
 			'activate_amp/amp.php'       => 'generate_config_file',
 			'deactivate_amp/amp.php'     => 'generate_config_file',
-			'wp'                         => 'disable_options_on_amp',
+			'wp'                         => [ 'disable_options_on_amp', 20 ],
 			'rocket_cache_query_strings' => 'is_amp_compatible_callback',
 		];
 
