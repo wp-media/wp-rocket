@@ -1,16 +1,16 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Pedro Mendonça <ped.gaspar@gmail.com>, 2021
+# Pedro Mendonça <ped.gaspar@gmail.com>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-12-08 11:49-0500\n"
+"POT-Creation-Date: 2022-01-19 10:03-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2021\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2022\n"
 "Language-Team: Portuguese (Portugal) (https://www.transifex.com/wp-media/teams/18133/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -180,7 +180,7 @@ msgstr ""
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:179
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:183
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -2195,7 +2195,7 @@ msgid "Upgrade now"
 msgstr "Actualize agora"
 
 #: inc/Engine/License/views/promo-banner.php:36
-#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/Engine/License/views/renewal-expired-banner.php:37
 #: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Ignorar este aviso."
@@ -2207,32 +2207,40 @@ msgstr "A sua licença do WP Rocket está expirada!"
 #: inc/Engine/License/views/renewal-expired-banner.php:17
 #, php-format
 msgid ""
-"Your website could be much faster if it could take advantage of our %1$snew "
-"features and enhancements.%2$s"
+"%1$sYour website could be much faster%2$s if it could take advantage of our "
+"new features and enhancements. 🚀"
 msgstr ""
-"O seu site poderá ser muito mais rápido se tirar partido das nossas "
-"%1$snovas funcionalidades e melhorias.%2$s"
+"%1$sO seu site poderá ser muito mais rápido%2$s se tirar partido das nossas "
+"novas funcionalidades e melhorias. 🚀"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:27
 #, php-format
 msgid ""
-"Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
-"renewal rate: you will only pay %1$s%4$s%3$s!"
+"Renew your license to have access to the %1$slatest version of WP Rocket%2$s"
+" and to the wonderful %1$sassistance of our Support Team%2$s."
 msgstr ""
-"Renove a sua licença por 1 ano e obtenha %1$s%2$s de desconto%3$s no valor "
-"da sua renovação: Por apenas %1$s%4$s%3$s!"
+"Renove a sua licença para aceder à %1$sversão mais recente do WP Rocket%2$s "
+"e à maravilhosa %1$sassistência da nossa Equipa de Suporte%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner.php:37
-#: inc/Engine/License/views/renewal-soon-banner.php:42
+#: inc/Engine/License/views/renewal-expired-banner.php:35
+#: inc/Engine/License/views/renewal-soon-banner.php:46
 msgid "Renew now"
 msgstr "Renove agora"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
-msgid "Your %1$sWP Rocket license is about to expire.%2$s"
-msgstr "A sua %1$slicença do WP Rocket está prestes a expirar.%2$s"
+msgid ""
+"Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
+" to product updates and support."
+msgstr ""
+"A %1$slicença do WP Rocket está prestes a expirar%2$s: em breve deixará de "
+"ter acesso às actualizações e suporte do produto."
 
-#: inc/Engine/License/views/renewal-soon-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:31
+msgid "Renew before it is too late!"
+msgstr "Renove antes que seja tarde demais!"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:35
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
@@ -2334,6 +2342,18 @@ msgstr "A opção de remover CSS não utilizado está desactivada."
 #: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:109
 msgid "Pre-Warmup process did not start yet."
 msgstr "A preparação do processo ainda não começou."
+
+#: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
+#: inc/deprecated/3.3.php:770
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"Ocorreu um erro inesperado. Pode haver um problema no servidor WP-Rocker.me "
+"ou na configuração deste servidor. Se o problema persistir, <a "
+"href=\"%s\">contacte o suporte</a>."
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
@@ -2712,7 +2732,7 @@ msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Este padrão é inválido e foi removido:"
 msgstr[1] "Estes padrões são inválidos e foram removidos:"
 
-#: inc/admin/options.php:171
+#: inc/admin/options.php:175
 msgid "More info"
 msgstr "Mais informações"
 
@@ -3182,18 +3202,6 @@ msgid_plural "The Sucuri firewall API returned the following errors: %s"
 msgstr[0] "A API da firewall do Sucuri devolveu o seguinte erro: %s"
 msgstr[1] "A API da firewall do Sucuri devolveu os seguintes erros: %s"
 
-#: inc/classes/traits/trait-updater-api-tools.php:53
-#: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
-#, php-format
-msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
-msgstr ""
-"Ocorreu um erro inesperado. Pode haver um problema no servidor WP-Rocker.me "
-"ou na configuração deste servidor. Se o problema persistir, <a "
-"href=\"%s\">contacte o suporte</a>."
-
 #: inc/common/admin-bar.php:125 inc/common/admin-bar.php:275
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
@@ -3496,16 +3504,16 @@ msgstr "Opções do WP Rocket anonimizadas:"
 msgid "Which WP Rocket settings are active"
 msgstr "Quais as opções activadas no WP Rocket"
 
-#: inc/functions/options.php:468
+#: inc/functions/options.php:469
 msgid "The provided license data are not valid."
 msgstr "Os dados de licença fornecidos não são válidos."
 
-#: inc/functions/options.php:471
+#: inc/functions/options.php:472
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "Para resolver o problema, por favor %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:532 inc/functions/options.php:571
+#: inc/functions/options.php:533 inc/functions/options.php:572
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3513,7 +3521,7 @@ msgstr ""
 "Falhou ao validar a licença. O nosso servidor não conseguiu resolver o "
 "pedido do seu site."
 
-#: inc/functions/options.php:532 inc/functions/options.php:571
+#: inc/functions/options.php:533 inc/functions/options.php:572
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3522,7 +3530,7 @@ msgstr ""
 "Tente clicar em %1$sGuardar alterações%2$s abaixo. Se o erro persistir, siga"
 " %3$seste guia%4$s."
 
-#: inc/functions/options.php:548
+#: inc/functions/options.php:549
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3530,59 +3538,59 @@ msgstr ""
 "Falhou ao validar a licença. Pode estar a usar uma versão cancelada do "
 "plugin. Faça o seguinte:"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Inicie sessão na sua %1$sconta%2$s do WP Rocket"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 msgid "Download the zip file"
 msgstr "Descarregue o ficheiro zip"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 msgid "Reinstall"
 msgstr "Reinstalar"
 
-#: inc/functions/options.php:548
+#: inc/functions/options.php:549
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Se não tiver uma conta WP Rocket, %1$scompre uma licença%2$s."
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:557
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Falhou ao validar a licença. Esta conta de utilizador não existe na nossa "
 "base de dados."
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:557
 msgid "To resolve, please contact support."
 msgstr "Para resolver o problema, por favor contacte o suporte."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:565
 msgid "License validation failed. This user account is blocked."
 msgstr "Falhou ao validar a licença. Esta conta de utilizador está bloqueada."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:565
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Consulte %1$seste guia%2$s para mais informações."
 
-#: inc/functions/options.php:584
+#: inc/functions/options.php:585
 msgid "Your license is not valid."
 msgstr "A sua licença não é válida."
 
-#: inc/functions/options.php:584
+#: inc/functions/options.php:585
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Certifique-se de que tem uma %1$slicença do WP Rocket%2$s activa."
 
-#: inc/functions/options.php:586
+#: inc/functions/options.php:587
 msgid "You have added as many sites as your current license allows."
 msgstr "Já alcançou o máximo de sites permitidos pela sua licença actual."
 
-#: inc/functions/options.php:586
+#: inc/functions/options.php:587
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3591,25 +3599,25 @@ msgstr ""
 "Actualize a sua %1$sconta%2$s ou %3$stransfira a sua licença%2$s para este "
 "domínio."
 
-#: inc/functions/options.php:588
+#: inc/functions/options.php:589
 msgid "This website is not allowed."
 msgstr "Este site não é permitido."
 
-#: inc/functions/options.php:588
+#: inc/functions/options.php:589
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Por favor %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:590
+#: inc/functions/options.php:591
 msgid "This license key is not recognized."
 msgstr "Esta chave de licença não é reconhecida."
 
-#: inc/functions/options.php:590
+#: inc/functions/options.php:591
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Se o problema persistir, %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:597
 #, php-format
 msgid "License validation failed: %s"
 msgstr "A validação da licença falhou: %s"
