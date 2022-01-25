@@ -55,6 +55,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_async_css', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_minify_js', '__return_false' ) );
 
 			$this->assertSame(
 				PHP_INT_MAX,

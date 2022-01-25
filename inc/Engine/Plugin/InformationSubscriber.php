@@ -1,53 +1,37 @@
 <?php
-namespace WP_Rocket\Subscriber\Plugin;
+namespace WP_Rocket\Engine\Plugin;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Manages the plugin information.
- *
- * @since  3.3.6
- * @author Grégory Viguier
  */
-class Information_Subscriber implements Subscriber_Interface {
-	use \WP_Rocket\Traits\Updater_Api_Tools;
+class InformationSubscriber implements Subscriber_Interface {
+	use UpdaterApiTools;
 
 	/**
 	 * Plugin slug.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $plugin_slug;
 
 	/**
 	 * URL to contact to get plugin info.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private $api_url;
 
 	/**
 	 * An ID to use when a API request fails.
 	 *
-	 * @var    string
-	 * @since  3.3.6
-	 * @access protected
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	protected $request_error_id = 'plugins_api_failed';
 
 	/**
 	 * Constructor
-	 *
-	 * @since  3.3.6
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param array $args {
 	 *     Required arguments to populate the class properties.
@@ -70,22 +54,14 @@ class Information_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'plugins_api'        => [ 'exclude_rocket_from_wp_info', 10, 3 ],
-			'plugins_api_result' => [ 'add_rocket_info', 10, 3 ],
+			'plugins_api'              => [ 'exclude_rocket_from_wp_info', 10, 3 ],
+			'plugins_api_result'       => [ 'add_rocket_info', 10, 3 ],
+			'rocket_wp_tested_version' => 'add_wp_tested_version',
 		];
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** PLUGIN INFO ============================================================================= */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Don’t ask for plugin info to the repository.
-	 *
-	 * @since  3.3.6
-	 * @access public
-	 * @see    plugins_api()
-	 * @author Grégory Viguier
 	 *
 	 * @param  false|object|array $bool   The result object or array. Default false.
 	 * @param  string             $action The type of information being requested from the Plugin Install API.
@@ -102,11 +78,6 @@ class Information_Subscriber implements Subscriber_Interface {
 	/**
 	 * Insert WP Rocket plugin info.
 	 *
-	 * @since  3.3.6
-	 * @access public
-	 * @see    plugins_api()
-	 * @author Grégory Viguier
-	 *
 	 * @param  object|\WP_Error $res    Response object or WP_Error.
 	 * @param  string           $action The type of information being requested from the Plugin Install API.
 	 * @param  object           $args   Plugin API arguments.
@@ -117,39 +88,28 @@ class Information_Subscriber implements Subscriber_Interface {
 			return $res;
 		}
 
-		$request = wp_remote_post(
-			$this->api_url,
-			[
-				'timeout' => 30,
-				'action'  => 'plugin_information',
-				'request' => maybe_serialize( $args ),
-			]
-		);
-
-		if ( is_wp_error( $request ) ) {
-			return $this->get_request_error( $request->get_error_message() );
-		}
-
-		$res  = maybe_unserialize( wp_remote_retrieve_body( $request ) );
-		$code = wp_remote_retrieve_response_code( $request );
-
-		if ( 200 !== $code || ! ( is_object( $res ) || is_array( $res ) ) ) {
-			return $this->get_request_error( wp_remote_retrieve_body( $request ) );
-		}
-
-		return $res;
+		return $this->get_plugin_information();
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** TOOLS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
+	/**
+	 * Adds the WP tested version value from our API
+	 *
+	 * @param string $wp_tested_version WP tested version.
+	 *
+	 * @return string
+	 */
+	public function add_wp_tested_version( $wp_tested_version ): string {
+		$info = $this->get_plugin_information();
+
+		if ( empty( $info->tested ) ) {
+			return $wp_tested_version;
+		}
+
+		return $info->tested;
+	}
 
 	/**
 	 * Tell if requesting WP Rocket plugin info.
-	 *
-	 * @since  3.3.6
-	 * @access private
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $action The type of information being requested from the Plugin Install API.
 	 * @param  object $args   Plugin API arguments.
@@ -157,5 +117,31 @@ class Information_Subscriber implements Subscriber_Interface {
 	 */
 	private function is_requesting_rocket_info( $action, $args ) {
 		return ( 'query_plugins' === $action || 'plugin_information' === $action ) && isset( $args->slug ) && $args->slug === $this->plugin_slug;
+	}
+
+	/**
+	 * Gets the plugin information data
+	 *
+	 * @return object|\WP_Error
+	 */
+	private function get_plugin_information() {
+		$response = wp_remote_get( $this->api_url );
+
+		if ( is_wp_error( $response ) ) {
+			return $this->get_request_error( $response->get_error_message() );
+		}
+
+		$res  = maybe_unserialize( wp_remote_retrieve_body( $response ) );
+		$code = wp_remote_retrieve_response_code( $response );
+
+		if (
+			200 !== $code
+			||
+			! ( is_object( $res ) || is_array( $res ) )
+		) {
+			return $this->get_request_error( wp_remote_retrieve_body( $response ) );
+		}
+
+		return $res;
 	}
 }
