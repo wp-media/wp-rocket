@@ -97,6 +97,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 		];
 	}
 
@@ -460,5 +461,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ) : array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
+	}
+
+	/**
+	 * Disable combine CSS option when RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_css( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_css( $value, $old_value );
 	}
 }

@@ -172,4 +172,44 @@ class Settings {
 		$field_args['value'] = $value;
 		return $field_args;
 	}
+
+	/**
+	 * Disable combine CSS option when RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_css( $value, $old_value ): array {
+		if ( ! isset( $value['remove_unused_css'], $value['minify_concatenate_css'] ) ) {
+			return $value;
+		}
+
+		if (
+			0 === $value['minify_concatenate_css']
+			||
+			0 === $value['remove_unused_css']
+		) {
+			return $value;
+		}
+
+		if (
+			isset( $old_value['remove_unused_css'], $old_value['minify_concatenate_css'] )
+			&&
+			$value['remove_unused_css'] === $old_value['remove_unused_css']
+			&&
+			1 === $value['remove_unused_css']
+			&&
+			0 === $old_value['minify_concatenate_css']
+		) {
+			return $value;
+		}
+
+		$value['minify_concatenate_css'] = 0;
+
+		return $value;
+	}
 }
