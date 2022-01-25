@@ -31,9 +31,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer'                => [ 'maybe_apply_rucss', 1000 ],
-			'rocket_rucss_retries_cron'    => 'rucss_retries',
-			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
+			'rocket_buffer'                  => [ 'maybe_apply_rucss', 1000 ],
+			'rocket_rucss_retries_cron'      => 'rucss_retries',
+			'rocket_disable_preload_fonts'   => 'maybe_disable_preload_fonts',
+			'rocket_rucss_pending_jobs_cron' => 'process_pending_jobs',
+			'rocket_rucss_job_check_status'  => 'check_job_status',
 		];
 	}
 
@@ -72,5 +74,13 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $value;
+	}
+
+	public function process_pending_jobs() {
+		$this->used_css->process_pending_jobs();
+	}
+
+	public function check_job_status( $usedcss_row ) {
+		$this->used_css->check_job_status( $usedcss_row );
 	}
 }

@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -45,6 +46,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $homepage_preloader;
 
+	private $queue;
+
 
 	/**
 	 * Instantiate the class
@@ -61,6 +64,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->used_css           = $used_css;
 		$this->options_api        = $options_api;
 		$this->homepage_preloader = $homepage_preloader;
+		$this->queue              = Queue::instance();
 	}
 
 	/**
@@ -86,7 +90,10 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
 			'edit_term'                           => 'delete_term_used_css',
 			'pre_delete_term'                     => 'delete_term_used_css',
-			'init'                                => 'schedule_clean_not_commonly_used_rows',
+			'init'                                => [
+				[ 'schedule_clean_not_commonly_used_rows', ],
+				[ 'schedule_rucss_pending_jobs_cron', ],
+			],
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
 			'admin_notices'                       => 'clear_usedcss_result',
@@ -141,6 +148,23 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
+	}
+
+	public function schedule_rucss_pending_jobs_cron() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		/**
+		 * Filters the cron interval.
+		 *
+		 * @since 3.11
+		 *
+		 * @param int $interval Interval in seconds.
+		 */
+		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 5 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+
+		$this->queue->schedule_recurring( time(), $interval, 'rocket_rucss_pending_jobs_cron' );
 	}
 
 	/**

@@ -113,6 +113,18 @@ class UsedCSS {
 		return true;
 	}
 
+	private function can_optimize() {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return false;
+		}
+
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Start treeshaking the current page.
 	 *
@@ -647,5 +659,26 @@ class UsedCSS {
 		foreach ( $unprocessed_css as $resource ) {
 			$this->resources_query->remove_by_url( $resource['content'] );
 		}
+	}
+
+	public function process_pending_jobs() {
+		if ( ! $this->can_optimize() ) {
+			return;
+		}
+
+		// Get some items from the DB with status=pending & job_id isn't empty.
+		$pending_jobs = $this->used_css_query->get_pending_jobs();
+		if ( ! $pending_jobs ) {
+			return;
+		}
+
+		foreach ( $pending_jobs as $used_css_row ) {
+			Queue::instance()->add_async( 'rocket_rucss_job_check_status', [ $used_css_row ] );
+		}
+	}
+
+	public function check_job_status( $usedcss_row ) {
+		// Send the request to get the job status from SaaS.
+		//$this->api->get_queue_job_status();
 	}
 }
