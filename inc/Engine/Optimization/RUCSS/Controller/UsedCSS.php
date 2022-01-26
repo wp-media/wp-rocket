@@ -401,7 +401,6 @@ class UsedCSS {
 		);
 
 		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
-		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
 
 		foreach ( $link_styles as $style ) {
 			if (
@@ -420,11 +419,18 @@ class UsedCSS {
 			function ( $item ) {
 				return preg_quote( $item, '/' );
 			},
-			$this->inline_exclusions
+			/**
+			 * Filters the array of inline styles to preserve
+			 *
+			 * @since 3.11
+			 *
+			 * @param array $inline_exclusions Array of patterns used to match against the inline style.
+			 */
+			apply_filters( 'rocket_rucss_inline_exclusions', $this->inline_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
-			if ( in_array( $this->strip_line_breaks( $style['content'] ), $unprocessed_styles, true ) ) {
+			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['content'] ) ) {
 				continue;
 			}
 
