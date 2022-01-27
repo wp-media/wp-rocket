@@ -98,6 +98,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( $this->is_password_protected() ) {
+			return false;
+		}
+
 		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
 			return false;
 		}
@@ -118,6 +122,23 @@ class UsedCSS {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if on a single post and if it is password protected
+	 *
+	 * @since 3.11
+	 *
+	 * @return bool
+	 */
+	private function is_password_protected(): bool {
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		$post = get_post();
+
+		return ! empty( $post->post_password );
 	}
 
 	/**
