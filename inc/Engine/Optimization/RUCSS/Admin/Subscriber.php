@@ -102,7 +102,29 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'manage_post_posts_columns' => 'add_status_column',
+			'manage_post_posts_custom_column' => [ 'add_status_data', 10, 2 ],
 		];
+	}
+
+	public function add_status_column( $columns ) {
+		return array_merge( $columns, [ 'usedcss_status' => 'Status'] );
+	}
+
+	public function add_status_data( $column_key, $post_id ) {
+		if ( 'usedcss_status' !== $column_key ) {
+			return;
+		}
+
+		$permalink = get_permalink( $post_id );
+
+		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
+
+		if ( ! $status ) {
+			echo 'no job';
+		}
+
+		echo $status;
 	}
 
 	/**
