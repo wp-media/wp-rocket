@@ -129,14 +129,15 @@ class Settings {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_value( $field_args ) : array {
+	public function set_optimize_css_delivery_value( $field_args ): array {
 		if ( 'optimize_css_delivery' !== $field_args['id'] ) {
 			return $field_args;
 		}
+
 		$async_css_value         = (bool) $this->options->get( 'async_css', 0 );
 		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
 		$field_args['value']     = ( $remove_unused_css_value || $async_css_value );
@@ -149,27 +150,27 @@ class Settings {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		if ( 'optimize_css_delivery_method' !== $field_args['id'] ) {
 			return $field_args;
 		}
+
 		$value = '';
 
-		$async_css_value = (bool) $this->options->get( 'async_css', 0 );
-		if ( $async_css_value ) {
+		if ( (bool) $this->options->get( 'async_css', 0 ) ) {
 			$value = 'async_css';
 		}
 
-		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
-		if ( $remove_unused_css_value ) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			$value = 'remove_unused_css';
 		}
 
 		$field_args['value'] = $value;
+
 		return $field_args;
 	}
 
