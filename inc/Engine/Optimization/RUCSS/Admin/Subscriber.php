@@ -442,11 +442,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_value( $field_args ) : array {
+	public function set_optimize_css_delivery_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_value( $field_args );
 	}
 
@@ -455,11 +455,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 
