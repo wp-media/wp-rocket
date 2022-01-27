@@ -118,6 +118,7 @@ function rocket_is_live_site() {
 	// Check for staging sites.
 	$staging = [
 		'.wpengine.com',
+		'.wpenginepowered.com',
 		'.pantheonsite.io',
 		'.flywheelsites.com',
 		'.flywheelstaging.com',
@@ -132,6 +133,10 @@ function rocket_is_live_site() {
 		'.sg-host.com',
 		'.platformsh.site',
 		'.wpstage.net',
+		'.bigscoots-staging.com',
+		'.wpsc.site',
+		'.runcloud.link',
+		'.onrocket.site',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {

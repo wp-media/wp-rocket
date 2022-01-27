@@ -28,7 +28,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_used_css',
 		'rucss_used_css_query',
 		'rucss_frontend_subscriber',
-		'local_cache',
 		'rucss_resources_query',
 	];
 
@@ -66,9 +65,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'homepage_preload' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
-
-		$this->getContainer()->add( 'local_cache', '\WP_Rocket\Engine\Optimization\AssetsLocalCache' )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ) )
-			->addArgument( rocket_direct_filesystem() );
 	}
 }

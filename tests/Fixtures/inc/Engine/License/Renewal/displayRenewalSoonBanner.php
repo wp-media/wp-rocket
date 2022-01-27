@@ -34,9 +34,9 @@ $pricing = [
 		'extra_days'=> 90,
 		'grandfather_date'=> 1567296000,
 		'discount_percent'=> [
-			'is_grandfather' => 50,
-			'not_grandfather'=> 30,
-			'is_expired'     => 20,
+			'is_grandfather' => 20,
+			'not_grandfather'=> 0,
+			'is_expired'     => 0,
 		],
 	] ) ),
 ];
@@ -95,7 +95,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
+			'discount_percent' => 0,
 			'discount_price'   => 34.3,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -114,7 +114,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
+			'discount_percent' => 20,
 			'discount_price'   => 24.5,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -133,7 +133,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
+			'discount_percent' => 0,
 			'discount_price'   => 69.3,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -152,7 +152,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
+			'discount_percent' => 20,
 			'discount_price'   => 49.5,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -171,7 +171,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
+			'discount_percent' => 0,
 			'discount_price'   => 174.3,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -190,7 +190,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
+			'discount_percent' => 20,
 			'discount_price'   => 124.5,
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
