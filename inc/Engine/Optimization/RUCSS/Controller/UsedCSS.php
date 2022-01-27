@@ -210,16 +210,11 @@ class UsedCSS {
 			return $html;
 		}
 
-		//We have the used_css inside DB so get it and insert into the page HTML.
-		if ( 3 === $used_css->retries && ! empty( $used_css->unprocessedcss ) ) {
-			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
-		}
-
 		if ( 'completed' !== $used_css->status ) {
 			return $html;
 		}
 
-		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
+		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss ?? [] );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 
 		$this->update_last_accessed( (int) $used_css->id );
@@ -673,12 +668,59 @@ class UsedCSS {
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
-			Queue::instance()->add_async( 'rocket_rucss_job_check_status', [ $used_css_row ] );
+			Queue::instance()->add_async(
+				'rocket_rucss_job_check_status',
+				[
+					$used_css_row->id
+				]
+			);
 		}
 	}
 
-	public function check_job_status( $usedcss_row ) {
+	public function check_job_status( $id ) {
+		$row_details = $this->used_css_query->get_item( $id );
+		if ( ! $row_details ) {
+			// Nothing in DB, bailout.
+			return;
+		}
+
 		// Send the request to get the job status from SaaS.
-		//$this->api->get_queue_job_status();
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name );
+		if (
+			200 !== $job_details['code']
+			||
+			empty( $job_details['contents'] )
+			||
+			empty( $job_details['contents']['shakedCSS'] )
+		) {
+			// Failure, check the retries number.
+			if ( $row_details->retries >= 3 ) {
+				$params = [
+					'status'     => 'failed',
+					'queue_name' => '',
+					'job_id'     => '',
+				];
+				$this->used_css_query->update_item( $id, $params );
+
+				return;
+			}
+
+			// Increment the retries number with 1.
+			$this->used_css_query->increment_retries( $id, $row_details->retries );
+			//@Todo: Maybe we can add this row to the async job to get the status before the next cron
+		}
+
+		//Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
+		$params = [
+			'css'        => $job_details['contents']['shakedCSS'],
+			'status'     => 'completed',
+			'queue_name' => '',
+			'job_id'     => '',
+		];
+		$this->used_css_query->update_item( $id, $params );
+
+		//Flush cache for this url.
+		$this->purge->purge_url( $row_details->url );
+
 	}
 }

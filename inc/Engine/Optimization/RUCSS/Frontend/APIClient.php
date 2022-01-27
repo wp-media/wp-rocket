@@ -55,6 +55,32 @@ class APIClient extends AbstractAPIClient {
 	}
 
 	public function get_queue_job_status( $job_id, $queue_name ) {
+		$args = [
+			'body'    => [
+				'id'    => $job_id,
+				'force_queue' => $queue_name,
+			],
+			'timeout' => 5,
+		];
 
+		if ( ! $this->handle_get( $args ) ) {
+			return [
+				'code'    => $this->response_code,
+				'message' => $this->error_message,
+			];
+		}
+
+		$default = [
+			'code'     => 400,
+			'status'   => 'failed',
+			'message'  => 'Bad json',
+			'contents' => [
+				'success'      => false,
+				'shakedCSS' => '',
+			],
+		];
+
+		$result = json_decode( $this->response_body, true );
+		return wp_parse_args( (array) $result['returnvalue'] ?? [], $default );
 	}
 }

@@ -73,8 +73,11 @@ abstract class AbstractAPIClient {
 
 		switch ( strtolower( $type ) ) {
 			case 'get':
+				$full_url = $api_url . $this->request_path . '?' .http_build_query( $args['body'] );
+				unset( $args['body'] );
+
 				$response = wp_remote_get(
-					$api_url . $this->request_path,
+					$full_url,
 					$args
 				);
 				break;

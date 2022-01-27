@@ -78,4 +78,10 @@ class UsedCSS extends Query {
 			'order' => 'desc',
 		] );
 	}
+
+	public function increment_retries( $id, $retries ) {
+		return $this->update_item( $id, [
+			'retries' => $retries + 1
+		] );
+	}
 }
