@@ -222,6 +222,16 @@ class UsedCSS {
 		return $html;
 	}
 
+	public function get_job_status( $url ) {
+		$used_css = $this->used_css_query->get_item_by( 'url', $url );
+
+		if ( empty( $used_css ) ) {
+			return false;
+		}
+
+		return $used_css->status;
+	}
+
 	/**
 	 * Delete used css based on URL.
 	 *
