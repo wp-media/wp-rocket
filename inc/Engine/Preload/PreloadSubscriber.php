@@ -64,7 +64,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_stop_preload'         => [ 'do_admin_post_stop_preload' ],
 			'pagely_cache_purge_after'               => [ 'run_preload', 11 ],
-			'rocket_prewarmup_finished'              => [ 'run_preload' ],
 			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_launch_preload', 11, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
@@ -139,10 +138,6 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_preload( $old_value, $value ) {
-		if ( ! empty( $value['remove_unused_css'] ) ) {
-			return;
-		}
-
 		if ( $this->homepage_preloader->is_process_running() ) {
 			return;
 		}

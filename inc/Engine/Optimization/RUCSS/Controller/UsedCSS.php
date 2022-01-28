@@ -722,5 +722,7 @@ class UsedCSS {
 		//Flush cache for this url.
 		$this->purge->purge_url( $row_details->url );
 
+		do_action( 'rucss_complete_job_status', $row_details->url, $job_details );
+
 	}
 }

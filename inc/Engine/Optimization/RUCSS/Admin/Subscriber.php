@@ -7,7 +7,6 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -39,13 +38,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $options_api;
 
-	/**
-	 * Homepage Preload instance
-	 *
-	 * @var Homepage
-	 */
-	private $homepage_preloader;
-
 	private $queue;
 
 
@@ -56,14 +48,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Database $database    Database instance.
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
-	 * @param Homepage $homepage_preloader Homepage Preload instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
 		$this->settings           = $settings;
 		$this->database           = $database;
 		$this->used_css           = $used_css;
 		$this->options_api        = $options_api;
-		$this->homepage_preloader = $homepage_preloader;
 		$this->queue              = Queue::instance();
 	}
 
@@ -80,7 +70,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug              => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'switch_theme'                        => 'truncate_used_css',
 			'rocket_rucss_file_changed'           => 'truncate_used_css',
@@ -281,27 +270,6 @@ class Subscriber implements Subscriber_Interface {
 			$this->database->truncate_used_css_table();
 			// Clear all caching files.
 			rocket_clean_domain();
-		}
-	}
-
-	/**
-	 * Cancels any preload currently running if the RUCSS option is enabled and preload is enabled.
-	 *
-	 * @since 3.9.1
-	 *
-	 * @param array $old_value Previous option values.
-	 * @param array $value     New option values.
-	 */
-	public function maybe_cancel_preload( $old_value, $value ) {
-		if (
-			! empty( $value['remove_unused_css'] )
-			&&
-			empty( $old_value['remove_unused_css'] )
-			&&
-			! empty( $value['manual_preload'] )
-		) {
-			delete_transient( 'rocket_preload_errors' );
-			$this->homepage_preloader->cancel_preload();
 		}
 	}
 
