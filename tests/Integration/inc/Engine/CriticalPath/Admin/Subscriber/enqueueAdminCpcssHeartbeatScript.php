@@ -39,6 +39,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
+		set_current_screen( 'post.php' );
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_cpcss_heartbeat_nonce' );
 
