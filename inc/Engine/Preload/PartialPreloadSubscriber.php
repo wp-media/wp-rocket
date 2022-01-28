@@ -180,7 +180,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->urls[] = $url;
+		wp_remote_get( $url );
 	}
 
 	/**
