@@ -210,7 +210,7 @@ class UsedCSS {
 			return $html;
 		}
 
-		if ( 'completed' !== $used_css->status ) {
+		if ( 'completed' !== $used_css->status || empty( $used_css->css ) ) {
 			return $html;
 		}
 

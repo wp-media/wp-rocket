@@ -68,10 +68,14 @@ class Queue {
 	 * @return string The action ID.
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = array() ) {
-		if ( as_has_scheduled_action( $hook ) ) {
+		if ( as_has_scheduled_action( $hook, $args, $this->group ) ) {
 			return '';
 		}
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
+	}
+
+	public function is_scheduled( $hook, $args = [] ) {
+		return as_has_scheduled_action( $hook, $args, $this->group );
 	}
 
 	/**

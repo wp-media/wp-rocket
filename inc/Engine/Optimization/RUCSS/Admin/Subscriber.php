@@ -141,6 +141,11 @@ class Subscriber implements Subscriber_Interface {
 
 	public function schedule_rucss_pending_jobs_cron() {
 		if ( ! $this->settings->is_enabled() ) {
+			if ( ! $this->queue->is_scheduled( 'rocket_rucss_pending_jobs_cron' ) ) {
+				return;
+			}
+
+			$this->queue->cancel( 'rocket_rucss_pending_jobs_cron' );
 			return;
 		}
 
@@ -151,7 +156,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 5 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
 		$this->queue->schedule_recurring( time(), $interval, 'rocket_rucss_pending_jobs_cron' );
 	}
