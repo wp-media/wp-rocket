@@ -29,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_used_css_query',
 		'rucss_frontend_subscriber',
 		'rucss_resources_query',
+		'rucss_queue',
 	];
 
 	/**
@@ -50,18 +51,21 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_used_css_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS' );
 		$this->getContainer()->add( 'rucss_frontend_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient' )
 			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'rucss_queue', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue' );
+
 		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
 
 		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 	}

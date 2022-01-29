@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
@@ -51,6 +52,8 @@ class UsedCSS {
 	 */
 	private $api;
 
+	private $queue;
+
 	/**
 	 * Inline exclusions regexes not to removed from the page after treeshaking.
 	 *
@@ -74,13 +77,15 @@ class UsedCSS {
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
 		Purge $purge,
-		APIClient $api
+		APIClient $api,
+		QueueInterface $queue
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
 		$this->purge           = $purge;
 		$this->api             = $api;
+		$this->queue           = $queue;
 	}
 
 	/**
@@ -678,12 +683,7 @@ class UsedCSS {
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
-			Queue::instance()->add_async(
-				'rocket_rucss_job_check_status',
-				[
-					$used_css_row->id
-				]
-			);
+			$this->queue->add_job_status_check_async( $used_css_row->id );
 		}
 	}
 

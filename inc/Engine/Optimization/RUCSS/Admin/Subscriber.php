@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
@@ -32,13 +31,6 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	private $used_css;
 
-	/**
-	 * Options API instance.
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
 	private $queue;
 
 
@@ -48,14 +40,12 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @param Settings $settings    Settings instance.
 	 * @param Database $database    Database instance.
 	 * @param UsedCSS  $used_css    UsedCSS instance.
-	 * @param Options  $options_api Options API instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api ) {
-		$this->settings           = $settings;
-		$this->database           = $database;
-		$this->used_css           = $used_css;
-		$this->options_api        = $options_api;
-		$this->queue              = Queue::instance();
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
+		$this->settings = $settings;
+		$this->database = $database;
+		$this->used_css = $used_css;
+		$this->queue    = $queue;
 	}
 
 	/**
@@ -216,11 +206,11 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 	public function schedule_rucss_pending_jobs_cron() {
 		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_scheduled( 'rocket_rucss_pending_jobs_cron' ) ) {
+			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
 				return;
 			}
 
-			$this->queue->cancel( 'rocket_rucss_pending_jobs_cron' );
+			$this->queue->cancel_pending_jobs_cron();
 			return;
 		}
 
@@ -233,7 +223,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		 */
 		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-		$this->queue->schedule_recurring( time(), $interval, 'rocket_rucss_pending_jobs_cron' );
+		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**

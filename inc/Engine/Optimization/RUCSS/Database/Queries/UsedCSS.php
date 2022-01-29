@@ -68,15 +68,20 @@ class UsedCSS extends Query {
 	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
 
 	public function get_pending_jobs( int $count = 10 ) {
-		return $this->query( [
-			'number' => $count,
-			'status' => 'pending',
-			'job_id__not_in' => [
-				'not_in' => '',
-			],
-			'orderby' => 'modified',
-			'order' => 'desc',
-		] );
+		return $this->query(
+			[
+				'number' => $count,
+				'status' => 'pending',
+				'fields' => [
+					'id',
+				],
+				'job_id__not_in' => [
+					'not_in' => '',
+				],
+				'orderby' => 'modified',
+				'order' => 'desc',
+			]
+		);
 	}
 
 	public function increment_retries( $id, $retries ) {
