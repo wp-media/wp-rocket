@@ -14,7 +14,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID.
 	 */
-	public function add_async( $hook, $args = array() ) {
+	public function add_async( $hook, $args = [] ) {
 		return as_enqueue_async_action( $hook, $args, $this->group );
 	}
 
@@ -26,7 +26,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID.
 	 */
-	public function schedule_single( $timestamp, $hook, $args = array() ) {
+	public function schedule_single( $timestamp, $hook, $args = [] ) {
 		return as_schedule_single_action( $timestamp, $hook, $args, $this->group );
 	}
 
@@ -39,7 +39,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID.
 	 */
-	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = array() ) {
+	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
 		if ( as_has_scheduled_action( $hook, $args, $this->group ) ) {
 			return '';
 		}
@@ -69,7 +69,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID
 	 */
-	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = array() ) {
+	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] ) {
 		if ( as_has_scheduled_action( $hook ) ) {
 			return '';
 		}
@@ -91,7 +91,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param string $hook The hook that the job will trigger.
 	 * @param array  $args Args that would have been passed to the job.
 	 */
-	public function cancel( $hook, $args = array() ) {
+	public function cancel( $hook, $args = [] ) {
 		as_unschedule_action( $hook, $args, $this->group );
 	}
 
@@ -101,7 +101,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param string $hook The hook that the job will trigger.
 	 * @param array  $args Args that would have been passed to the job.
 	 */
-	public function cancel_all( $hook, $args = array() ) {
+	public function cancel_all( $hook, $args = [] ) {
 		as_unschedule_all_actions( $hook, $args, $this->group );
 	}
 
@@ -145,7 +145,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param string $return_format OBJECT, ARRAY_A, or ids.
 	 * @return array
 	 */
-	public function search( $args = array(), $return_format = OBJECT ) {
+	public function search( $args = [], $return_format = OBJECT ) {
 		return as_get_scheduled_actions( $args, $return_format );
 	}
 

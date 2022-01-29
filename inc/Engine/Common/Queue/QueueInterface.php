@@ -12,7 +12,7 @@ interface QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID
 	 */
-	public function add_async( $hook, $args = array() );
+	public function add_async( $hook, $args = [] );
 
 	/**
 	 * Schedule an action to run once at some time in the future
@@ -22,7 +22,7 @@ interface QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID
 	 */
-	public function schedule_single( $timestamp, $hook, $args = array() );
+	public function schedule_single( $timestamp, $hook, $args = [] );
 
 	/**
 	 * Schedule a recurring action
@@ -33,7 +33,7 @@ interface QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID
 	 */
-	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = array() );
+	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] );
 
 	public function is_scheduled( $hook, $args = [] );
 
@@ -56,7 +56,7 @@ interface QueueInterface {
 	 * @param array  $args Arguments to pass when the hook triggers.
 	 * @return string The action ID
 	 */
-	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = array() );
+	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] );
 
 	/**
 	 * Dequeue the next scheduled instance of an action with a matching hook (and optionally matching args and group).
@@ -66,7 +66,7 @@ interface QueueInterface {
 	 * @param string $hook The hook that the job will trigger.
 	 * @param array  $args Args that would have been passed to the job.
 	 */
-	public function cancel( $hook, $args = array() );
+	public function cancel( $hook, $args = [] );
 
 	/**
 	 * Dequeue all actions with a matching hook (and optionally matching args and group) so no matching actions are ever run.
@@ -74,7 +74,7 @@ interface QueueInterface {
 	 * @param string $hook The hook that the job will trigger.
 	 * @param array  $args Args that would have been passed to the job.
 	 */
-	public function cancel_all( $hook, $args = array() );
+	public function cancel_all( $hook, $args = [] );
 
 	/**
 	 * Get the date and time for the next scheduled occurence of an action with a given hook
@@ -106,6 +106,6 @@ interface QueueInterface {
 	 * @param string $return_format OBJECT, ARRAY_A, or ids.
 	 * @return array
 	 */
-	public function search( $args = array(), $return_format = OBJECT );
+	public function search( $args = [], $return_format = OBJECT );
 
 }
