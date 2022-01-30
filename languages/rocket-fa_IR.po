@@ -1,16 +1,16 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2021
+# Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-12-08 11:49-0500\n"
+"POT-Creation-Date: 2022-01-19 10:03-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2021\n"
+"Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2022\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/wp-media/teams/18133/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -178,7 +178,7 @@ msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:179
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:183
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "راکت وردپرس: "
@@ -2150,7 +2150,7 @@ msgid "Upgrade now"
 msgstr "اکنون ارتقاء دهید"
 
 #: inc/Engine/License/views/promo-banner.php:36
-#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/Engine/License/views/renewal-expired-banner.php:37
 #: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "نادیده گرفتن این پیام."
@@ -2162,32 +2162,40 @@ msgstr "لایسنس شما نامعتبر است!"
 #: inc/Engine/License/views/renewal-expired-banner.php:17
 #, php-format
 msgid ""
-"Your website could be much faster if it could take advantage of our %1$snew "
-"features and enhancements.%2$s"
+"%1$sYour website could be much faster%2$s if it could take advantage of our "
+"new features and enhancements. 🚀"
 msgstr ""
-"عملکرد سایت شما می تواند سریعتر شود اگر از %1$sامکانات و بهبودهای ما%2$s "
-"بهره ببرد"
+"عملکرد سایت شما می تواند سریعتر شود اگر از %1$sامکانات و بهبودهای جدید "
+"ما%2$s استفاده کنید..🚀"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:27
 #, php-format
 msgid ""
-"Renew your license for 1 year and get an immediate %1$s%2$s off%3$s on your "
-"renewal rate: you will only pay %1$s%4$s%3$s!"
+"Renew your license to have access to the %1$slatest version of WP Rocket%2$s"
+" and to the wonderful %1$sassistance of our Support Team%2$s."
 msgstr ""
-"لایسنس خود را برای یکسال دیگر تمدید کنید تا %1$s%2$sتخفیف%3$sتمدید بهره مند "
-"شوید: شما تنها نیاز به پرداخت %1$s%4$s%3$sدارید!"
+"لایسنس خود را تمدید کنید تا به جدیدترین نسخه %1$s افزونه%2$s دسترسی داشته و "
+"از %1$sپشتیبانی تیم فنی ما بهره مند شوید%2$s."
 
-#: inc/Engine/License/views/renewal-expired-banner.php:37
-#: inc/Engine/License/views/renewal-soon-banner.php:42
+#: inc/Engine/License/views/renewal-expired-banner.php:35
+#: inc/Engine/License/views/renewal-soon-banner.php:46
 msgid "Renew now"
 msgstr "تمدید کنید"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
-msgid "Your %1$sWP Rocket license is about to expire.%2$s"
-msgstr "لایسنس %1$sموشک وردپرس شما منقضی می شود در%2$s"
+msgid ""
+"Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
+" to product updates and support."
+msgstr ""
+"لایسنس%1$s افزونه شما در حال انقضاء%2$sاست: به زودی دسترسی به بروزرسانی "
+"محصول و پشتیبانی را نخواهید داشت."
 
-#: inc/Engine/License/views/renewal-soon-banner.php:32
+#: inc/Engine/License/views/renewal-soon-banner.php:31
+msgid "Renew before it is too late!"
+msgstr "قبل از اینکه خیلی دیر شود تمدید کنید!"
+
+#: inc/Engine/License/views/renewal-soon-banner.php:35
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
@@ -2284,6 +2292,18 @@ msgstr "حذف گزینه CSS استفاده نشده غیرفعال است."
 #: inc/Engine/Optimization/RUCSS/Warmup/Status/RESTWP.php:109
 msgid "Pre-Warmup process did not start yet."
 msgstr "روند Pre-Warmup هنوز آغاز نشده است."
+
+#: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
+#: inc/deprecated/3.3.php:770
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"یک خطای غیر منتظره رخ داد. ممکن است خطایی در WP-Rocket.me یا تنظیمات "
+"سرور&#8217;s شما باشد. اگر مشکل شما ادامه داشت، <a href=\"%s\">با پشتیبانی "
+"تماس بگیرید</a>."
 
 #: inc/Engine/Preload/Homepage.php:153
 #, php-format
@@ -2645,7 +2665,7 @@ msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 
-#: inc/admin/options.php:171
+#: inc/admin/options.php:175
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
@@ -3100,18 +3120,6 @@ msgid_plural "The Sucuri firewall API returned the following errors: %s"
 msgstr[0] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
 msgstr[1] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
 
-#: inc/classes/traits/trait-updater-api-tools.php:53
-#: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
-#, php-format
-msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
-msgstr ""
-"یک خطای غیر منتظره رخ داد. ممکن است خطایی در WP-Rocket.me یا تنظیمات "
-"سرور&#8217;s شما باشد. اگر مشکل شما ادامه داشت، <a href=\"%s\">با پشتیبانی "
-"تماس بگیرید</a>."
-
 #: inc/common/admin-bar.php:125 inc/common/admin-bar.php:275
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
@@ -3410,23 +3418,23 @@ msgstr "تنظیمات ناشناس موشک وردپرس:"
 msgid "Which WP Rocket settings are active"
 msgstr "کدام تنظیمات موشک وردپرس فعال هستند"
 
-#: inc/functions/options.php:468
+#: inc/functions/options.php:469
 msgid "The provided license data are not valid."
 msgstr "داده لایسنس شما معتبر نیست."
 
-#: inc/functions/options.php:471
+#: inc/functions/options.php:472
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "برای رفع مشکل، لطفا با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:532 inc/functions/options.php:571
+#: inc/functions/options.php:533 inc/functions/options.php:572
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
 "اعتبارسنجی لایسنس انجام نشد. سرور ما نتوانست درخواست وب سایت شما را حل کند."
 
-#: inc/functions/options.php:532 inc/functions/options.php:571
+#: inc/functions/options.php:533 inc/functions/options.php:572
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3435,7 +3443,7 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:548
+#: inc/functions/options.php:549
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3443,58 +3451,58 @@ msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. شاید شما از نسخه نال استفاده می کنید. لطفا "
 "موارد زیر را انجام دهید:"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "وارد شدن به %1$sحساب کاربری%2$s موشک وردپرس"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 msgid "Download the zip file"
 msgstr "دانلود فایل فشرده"
 
-#: inc/functions/options.php:548 inc/functions/options.php:590
+#: inc/functions/options.php:549 inc/functions/options.php:591
 msgid "Reinstall"
 msgstr "نصب مجدد"
 
-#: inc/functions/options.php:548
+#: inc/functions/options.php:549
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "اگر حساب کاربری موشک وردپرس ندارید، لطفا %1$sخرید کنید%2$s."
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:557
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری در پایگاه داده ما وجود ندارد."
 
-#: inc/functions/options.php:556
+#: inc/functions/options.php:557
 msgid "To resolve, please contact support."
 msgstr "برای رفع مشکل با پشتیبانی تماس بگیرید."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:565
 msgid "License validation failed. This user account is blocked."
 msgstr "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری بلاک شده است."
 
-#: inc/functions/options.php:564
+#: inc/functions/options.php:565
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "برای کسب اطلاعات بیشتر%1$sراهنمایی%2$s را مطالعه کنید."
 
-#: inc/functions/options.php:584
+#: inc/functions/options.php:585
 msgid "Your license is not valid."
 msgstr "لایسنس شما نامعتبر است."
 
-#: inc/functions/options.php:584
+#: inc/functions/options.php:585
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "مطمئن شوید که %1$sلایسنس موشک وردپرس%2$s فعال دارید."
 
-#: inc/functions/options.php:586
+#: inc/functions/options.php:587
 msgid "You have added as many sites as your current license allows."
 msgstr "شما به اندازه لایسنس فعلی سایت اضافه کرده اید."
 
-#: inc/functions/options.php:586
+#: inc/functions/options.php:587
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3503,25 +3511,25 @@ msgstr ""
 "حساب کاربری%1$sخودرا%2$sارتقاء دهید یا%3$sلایسنس خود را به دامنه فعلی %2$s "
 "منتقل کنید."
 
-#: inc/functions/options.php:588
+#: inc/functions/options.php:589
 msgid "This website is not allowed."
 msgstr "این وب سایت مجاز نمی باشد."
 
-#: inc/functions/options.php:588
+#: inc/functions/options.php:589
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "با %1$sپشتیبانی%2$sتماس بگیرید."
 
-#: inc/functions/options.php:590
+#: inc/functions/options.php:591
 msgid "This license key is not recognized."
 msgstr "این لایسنس شناسایی نشد."
 
-#: inc/functions/options.php:590
+#: inc/functions/options.php:591
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "اگر مشکل همچنان برقرار بود با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:597
 #, php-format
 msgid "License validation failed: %s"
 msgstr "اعتبارسنجی لایسنس شکست خورد: %s"
