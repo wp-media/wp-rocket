@@ -35,7 +35,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_retries_cron'      => 'rucss_retries',
 			'rocket_disable_preload_fonts'   => 'maybe_disable_preload_fonts',
 			'rocket_rucss_pending_jobs_cron' => 'process_pending_jobs',
-			'rocket_rucss_job_check_status'  => [ 'check_job_status' ],
+			'rocket_rucss_job_check_status'  => 'check_job_status',
 		];
 	}
 

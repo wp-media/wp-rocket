@@ -718,6 +718,8 @@ class UsedCSS {
 			// Increment the retries number with 1.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
 			//@Todo: Maybe we can add this row to the async job to get the status before the next cron
+
+			return;
 		}
 
 		//Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
