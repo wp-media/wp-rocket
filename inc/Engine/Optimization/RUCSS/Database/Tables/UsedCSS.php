@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220121;
+	protected $version = 20220131;
 
 
 	/**
@@ -38,6 +38,7 @@ class UsedCSS extends Table {
 	 */
 	protected $upgrades = [
 		20220121 => 'add_async_rucss_columns',
+		20220131 => 'make_status_column_index',
 	];
 
 	/**
@@ -61,7 +62,8 @@ class UsedCSS extends Table {
 			PRIMARY KEY (id),
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
-			KEY last_accessed (last_accessed)";
+			KEY last_accessed (last_accessed),
+			INDEX `queue_name_index` (`queue_name`)";
 	}
 
 	/**
@@ -129,6 +131,16 @@ class UsedCSS extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	protected function make_status_column_index() {
+		$queuename_column_exists = $this->column_exists( 'queue_name' );
+		if ( ! $queuename_column_exists ) {
+			return $this->is_success( false );
+		}
+
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `queue_name_index` (`queue_name`) " );
+		return $this->is_success( $index_added );
 	}
 
 }
