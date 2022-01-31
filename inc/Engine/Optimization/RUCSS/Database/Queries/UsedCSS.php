@@ -79,7 +79,7 @@ class UsedCSS extends Query {
 					'not_in' => '',
 				],
 				'orderby' => 'modified',
-				'order' => 'desc',
+				'order' => 'asc',
 			]
 		);
 	}

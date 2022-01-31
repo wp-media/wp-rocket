@@ -27,7 +27,7 @@ class Queue extends AbstractASQueue {
 	}
 
 	public function cancel_pending_jobs_cron() {
-		$this->cancel( $this->pending_job_cron );
+		$this->cancel_all( $this->pending_job_cron );
 	}
 
 	public function schedule_pending_jobs_cron( $interval ) {

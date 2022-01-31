@@ -677,7 +677,7 @@ class UsedCSS {
 		}
 
 		// Get some items from the DB with status=pending & job_id isn't empty.
-		$pending_jobs = $this->used_css_query->get_pending_jobs();
+		$pending_jobs = $this->used_css_query->get_pending_jobs( 100 );
 		if ( ! $pending_jobs ) {
 			return;
 		}
