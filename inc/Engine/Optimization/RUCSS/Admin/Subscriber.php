@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
@@ -31,6 +32,11 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	private $used_css;
 
+	/**
+	 * Queue instance
+	 *
+	 * @var QueueInterface
+	 */
 	private $queue;
 
 
@@ -95,6 +101,11 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		$this->event_manager = $event_manager;
 	}
 
+	/**
+	 * Add RUCSS status column for all public posts/terms table.
+	 *
+	 * @return void
+	 */
 	public function add_rucss_column_status() {
 		$taxonomies = get_taxonomies(
 			[
@@ -123,11 +134,26 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 	}
 
-	public function add_status_column( $columns ) {
+	/**
+	 * Add status column.
+	 *
+	 * @param array $columns Columns.
+	 *
+	 * @return array|string[]
+	 */
+	public function add_status_column( array $columns ): array {
 		return array_merge( $columns, [ 'usedcss_status' => 'RUCSS status'] );
 	}
 
-	public function add_status_data( $column_key, $post_id ) {
+	/**
+	 * Get status for post.
+	 *
+	 * @param string $column_key Current column key.
+	 * @param int $post_id Current Post ID.
+	 *
+	 * @return void
+	 */
+	public function add_status_data( string $column_key, int $post_id ) {
 		if ( 'usedcss_status' !== $column_key ) {
 			return;
 		}
@@ -136,14 +162,24 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
 
-		if ( ! $status ) {
+		if ( empty( $status ) ) {
 			echo 'no job';
+			return;
 		}
 
 		echo $status;
 	}
 
-	public function add_taxonomy_status_data( $string, $column_key, $term_id ) {
+	/**
+	 * Get status from DB for taxonomy terms.
+	 *
+	 * @param string $string String to be shown.
+	 * @param string $column_key Columnn key.
+	 * @param int $term_id Current term ID.
+	 *
+	 * @return string
+	 */
+	public function add_taxonomy_status_data( string $string, string $column_key, int $term_id ): string {
 		if ( 'usedcss_status' !== $column_key ) {
 			return $string;
 		}
@@ -152,7 +188,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
 
-		if ( ! $status ) {
+		if ( empty( $status ) ) {
 			return 'no job';
 		}
 
@@ -204,11 +240,20 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
 	}
 
+	/**
+	 * Schedule the cron job for RUCSS pending jobs.
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
 	public function schedule_rucss_pending_jobs_cron() {
 		if ( ! $this->settings->is_enabled() ) {
 			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
 				return;
 			}
+
+			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
 
 			$this->queue->cancel_pending_jobs_cron();
 			return;
@@ -222,6 +267,8 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		 * @param int $interval Interval in seconds.
 		 */
 		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+
+		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
 
 		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
@@ -415,7 +462,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */

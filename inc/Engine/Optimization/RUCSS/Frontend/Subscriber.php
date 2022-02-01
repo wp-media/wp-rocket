@@ -76,11 +76,23 @@ class Subscriber implements Subscriber_Interface {
 		return $value;
 	}
 
+	/**
+	 * Process pending jobs with Cron iteration.
+	 *
+	 * @return void
+	 */
 	public function process_pending_jobs() {
 		$this->used_css->process_pending_jobs();
 	}
 
-	public function check_job_status( $id ) {
+	/**
+	 * Handle job status by DB row ID.
+	 *
+	 * @param int $id DB Row ID.
+	 *
+	 * @return void
+	 */
+	public function check_job_status( int $id ) {
 		$this->used_css->check_job_status( $id );
 	}
 }

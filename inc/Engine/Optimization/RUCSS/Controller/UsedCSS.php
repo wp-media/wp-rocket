@@ -52,6 +52,11 @@ class UsedCSS {
 	 */
 	private $api;
 
+	/**
+	 * Queue instance.
+	 *
+	 * @var QueueInterface
+	 */
 	private $queue;
 
 	/**
@@ -118,11 +123,12 @@ class UsedCSS {
 		return true;
 	}
 
+	/**
+	 * Can optimize? used inside the CRON so post object isn't there.
+	 *
+	 * @return bool
+	 */
 	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return false;
 		}
@@ -227,11 +233,18 @@ class UsedCSS {
 		return $html;
 	}
 
-	public function get_job_status( $url ) {
+	/**
+	 * Get job status based on URL.
+	 *
+	 * @param string $url Url to get job status for.
+	 *
+	 * @return string
+	 */
+	public function get_job_status( string $url ): string {
 		$used_css = $this->used_css_query->get_item_by( 'url', $url );
 
 		if ( empty( $used_css ) ) {
-			return false;
+			return '';
 		}
 
 		return $used_css->status;
@@ -671,25 +684,61 @@ class UsedCSS {
 		}
 	}
 
+	/**
+	 * Process pending jobs inside CRON iteration.
+	 *
+	 * @return void
+	 */
 	public function process_pending_jobs() {
+		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+
 		if ( ! $this->can_optimize() ) {
+			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+
 			return;
 		}
 
 		// Get some items from the DB with status=pending & job_id isn't empty.
-		$pending_jobs = $this->used_css_query->get_pending_jobs( 100 );
+
+		/**
+		 * Filters the pending jobs count.
+		 *
+		 * @since 3.11
+		 *
+		 * @param int $rows Number of rows to grab with each CRON iteration.
+		 */
+		$rows = apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
+
+		Logger::debug( "RUCSS: Start getting number of {$rows} pending jobs." );
+
+		$pending_jobs = $this->used_css_query->get_pending_jobs( $rows );
 		if ( ! $pending_jobs ) {
+			Logger::debug( 'RUCSS: No pending jobs are there.' );
+
 			return;
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
+			Logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
+
 			$this->queue->add_job_status_check_async( $used_css_row->id );
 		}
 	}
 
-	public function check_job_status( $id ) {
+	/**
+	 * Check job status by DB row ID.
+	 *
+	 * @param int $id DB Row ID.
+	 *
+	 * @return void
+	 */
+	public function check_job_status( int $id ) {
+		Logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
+
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
+			Logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
+
 			// Nothing in DB, bailout.
 			return;
 		}
@@ -703,8 +752,12 @@ class UsedCSS {
 			||
 			empty( $job_details['contents']['shakedCSS'] )
 		) {
+			Logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
+
 			// Failure, check the retries number.
 			if ( $row_details->retries >= 3 ) {
+				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
+
 				$params = [
 					'status'     => 'failed',
 					'queue_name' => '',
@@ -723,6 +776,8 @@ class UsedCSS {
 		}
 
 		//Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
+		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
+
 		$params = [
 			'css'        => $job_details['contents']['shakedCSS'],
 			'status'     => 'completed',
@@ -732,6 +787,7 @@ class UsedCSS {
 		$this->used_css_query->update_item( $id, $params );
 
 		//Flush cache for this url.
+		Logger::debug( 'RUCSS: Purge the cache for url: ' . $row_details->url );
 		$this->purge->purge_url( $row_details->url );
 
 		do_action( 'rucss_complete_job_status', $row_details->url, $job_details );
