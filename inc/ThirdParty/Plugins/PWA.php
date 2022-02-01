@@ -27,7 +27,7 @@ class PWA implements Subscriber_Interface {
 			return $excluded;
 		}
 
-		$excluded[] = '/wp.serviceworker';
+		$excluded[] = '/wp.serviceworker/?';
 
 		return $excluded;
 	}

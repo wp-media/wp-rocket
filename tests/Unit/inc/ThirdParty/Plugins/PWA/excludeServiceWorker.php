@@ -34,7 +34,7 @@ class Test_ExcludeServiceWorker extends TestCase {
 
 		$this->assertSame(
 			[
-				'/wp.serviceworker',
+				'/wp.serviceworker/?',
 			],
 			$this->pwa->exclude_service_worker( [] )
 		);
