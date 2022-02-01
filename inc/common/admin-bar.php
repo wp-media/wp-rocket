@@ -27,7 +27,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 	$capabilities = [
 		'rocket_manage_options',
 		'rocket_purge_cache',
-		'rocket_purge_opcache',
 		'rocket_preload_cache',
 		'rocket_regenerate_critical_css',
 		'rocket_remove_unused_css',
@@ -168,31 +167,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					]
 				);
 			}
-		}
-	}
-
-	if ( current_user_can( 'rocket_purge_opcache' ) ) {
-		/**
-		 * Purge OPCache content if OPcache is active.
-		 */
-		$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN );
-		$restrict_api     = ini_get( 'opcache.restrict_api' );
-		$can_restrict_api = true;
-		if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
-			$can_restrict_api = false;
-		}
-
-		if ( function_exists( 'opcache_reset' ) && $opcache_enabled && $can_restrict_api ) {
-			$action = 'rocket_purge_opcache';
-
-			$wp_admin_bar->add_menu(
-				[
-					'parent' => 'wp-rocket',
-					'id'     => 'purge-opcache',
-					'title'  => __( 'Purge OPcache', 'rocket' ),
-					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-				]
-			);
 		}
 	}
 
