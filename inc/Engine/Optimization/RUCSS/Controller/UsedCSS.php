@@ -59,6 +59,12 @@ class UsedCSS {
 	 */
 	private $inline_exclusions = [
 		'rocket-lazyload-inline-css',
+		'divi-style-parent-inline-inline-css',
+		'gsf-custom-css',
+		'extra-style-inline-inline-css',
+		'#text-box-',
+		'#banner-',
+		'#slider-',
 	];
 
 	/**
@@ -429,12 +435,14 @@ class UsedCSS {
 			apply_filters( 'rocket_rucss_inline_exclusions', $this->inline_exclusions )
 		);
 
+		$inline_exclusions_pattern = implode( '|', $inline_exclusions );
+
 		foreach ( $inline_styles as $style ) {
-			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['content'] ) ) {
+			if ( ! empty( $inline_exclusions_pattern ) && $this->find( $inline_exclusions_pattern, $style['atts'] ) ) {
 				continue;
 			}
 
-			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['atts'] ) ) {
+			if ( ! empty( $inline_exclusions_pattern ) && $this->find( $inline_exclusions_pattern, $style['content'] ) ) {
 				continue;
 			}
 
