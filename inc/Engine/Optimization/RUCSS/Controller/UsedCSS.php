@@ -721,7 +721,7 @@ class UsedCSS {
 		foreach ( $pending_jobs as $used_css_row ) {
 			Logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
-			$this->queue->add_job_status_check_async( $used_css_row->id );
+			$this->queue->add_job_status_check_async( (int) $used_css_row->id );
 		}
 	}
 
