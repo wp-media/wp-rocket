@@ -267,8 +267,8 @@ class ImageDimensions {
 	 * @return string|false
 	 */
 	private function set_dimensions( string $image, array $sizes ) {
-		preg_match( '<img.*height=[\'\"](?<height>\S+)[\'\"].*>', $image, $initial_height );
-		preg_match( '<img.*width=[\'\"](?<width>\S+)[\'\"].*>', $image, $initial_width );
+		preg_match( '/<img.*height=[\'\"](?<height>\S+)[\'\"].*>/i', $image, $initial_height );
+		preg_match( '/<img.*width=[\'\"](?<width>\S+)[\'\"].*>/i', $image, $initial_width );
 
 		if (
 			empty( $initial_height['height'] )
