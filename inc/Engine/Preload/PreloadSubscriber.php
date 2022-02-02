@@ -67,7 +67,7 @@ class PreloadSubscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_rollback'             => [ 'stop_homepage_preload', 9 ],
 			'wp_rocket_upgrade'                      => [ 'stop_homepage_preload', 9 ],
-			'rocket_options_changed'                 => 'preload_homepage'
+			'rocket_options_changed'                 => 'preload_homepage',
 		];
 	}
 
