@@ -191,15 +191,19 @@ class Subscriber implements Subscriber_Interface {
 		/**
 		 * Filters the patterns excluded from links preload
 		 *
-		 * @since 3.10.7
+		 * @since 3.10.8
 		 *
 		 * @param string[] $excluded Array of excluded patterns.
 		 */
 		$excluded = apply_filters( 'rocket_preload_links_exclusions', $excluded );
 
-		$excluded = implode( '|', $excluded );
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
 
-		return $uris . '|' . $excluded;
+		$excluded_patterns = '|' . implode( '|', array_filter( $excluded ) );
+
+		return $uris . $excluded_patterns;
 	}
 
 	/**
