@@ -211,7 +211,7 @@ class UsedCSS {
 			$this->remove_unprocessed_from_resources( $used_css->unprocessedcss );
 		}
 
-		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
+		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 
 		$this->update_last_accessed( (int) $used_css->id );
@@ -393,12 +393,11 @@ class UsedCSS {
 	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
-	 * @param string $html            HTML content.
-	 * @param array  $unprocessed_css List with unprocesses CSS links or inline.
+	 * @param string $html HTML content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
+	private function remove_used_css_from_html( string $html ): string {
 		$clean_html = $this->hide_comments( $html );
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
@@ -414,15 +413,11 @@ class UsedCSS {
 			$clean_html
 		);
 
-		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
-
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
-				||
-				in_array( htmlspecialchars_decode( $style['url'] ), $unprocessed_links, true )
 			) {
 				continue;
 			}
@@ -568,38 +563,6 @@ class UsedCSS {
 		}
 
 		return $replace;
-	}
-
-	/**
-	 * Create dedicated array of unprocessed css.
-	 *
-	 * @param string $type            CSS type (link / inline).
-	 * @param array  $unprocessed_css Array with unprocessed CSS.
-	 *
-	 * @return array Array with type of unprocessed CSS.
-	 */
-	private function unprocessed_flat_array( string $type, array $unprocessed_css ): array {
-		$unprocessed_array = [];
-		foreach ( $unprocessed_css as $css ) {
-			if ( $type === $css['type'] ) {
-				$unprocessed_array[] = $this->strip_line_breaks( $css['content'] );
-			}
-		}
-
-		return $unprocessed_array;
-	}
-
-	/**
-	 * Strip line breaks.
-	 *
-	 * @param string $value - Value to be processed.
-	 *
-	 * @return string
-	 */
-	private function strip_line_breaks( string $value ): string {
-		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
-
-		return trim( $value );
 	}
 
 	/**
