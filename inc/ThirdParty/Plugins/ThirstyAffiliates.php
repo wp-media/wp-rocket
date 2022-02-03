@@ -20,7 +20,7 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	/**
 	 * Excludes the link prefix from preload links
 	 *
-	 * @since 3.10.7
+	 * @since 3.10.8
 	 *
 	 * @param string[] $excluded Array of excluded patterns.
 	 *
