@@ -494,8 +494,8 @@ class ImageDimensions {
 			return false;
 		}
 
-		$width  = (string) $svgfile->attributes()->width;
-		$height = (string) $svgfile->attributes()->height;
+		$width  = $this->format_svg_value( (string) $svgfile->attributes()->width );
+		$height = $this->format_svg_value( (string) $svgfile->attributes()->height );
 		$size   = [];
 
 		if (
@@ -531,6 +531,36 @@ class ImageDimensions {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Formats the SVG width/height value in case of unusual units
+	 *
+	 * @since 3.10.8
+	 *
+	 * @param string $value The value of the SVG width/height attribute.
+	 *
+	 * @return string
+	 */
+	private function format_svg_value( string $value ): string {
+		// No unit, we can use the value directly.
+		if ( is_numeric( $value ) ) {
+			return $value;
+		}
+
+		if ( empty( $value ) ) {
+			return $value;
+		}
+
+		$px_pattern = '/([0-9]+)\s*px/i';
+
+		// If pixel unit, remove the unit and return the numeric value.
+		if ( preg_match( $px_pattern, $value ) ) {
+			return preg_replace( $px_pattern, '$1', $value );
+		}
+
+		// Return an empty string for other units.
+		return '';
 	}
 
 	/**
