@@ -626,4 +626,42 @@ class UsedCSS {
 			$this->resources_query->remove_by_url( $resource['content'] );
 		}
 	}
+
+	/**
+	 * Removes the unused fonts from the fonts preload
+	 *
+	 * @since 3.11
+	 *
+	 * @param string[] $fonts Array of fonts to preload.
+	 *
+	 * @return array
+	 */
+	public function remove_unused_fonts( $fonts ): array {
+		if ( ! $this->is_allowed() ) {
+			return $fonts;
+		}
+
+		if ( empty( $fonts ) ) {
+			return $fonts;
+		}
+
+		global $wp;
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->is_mobile();
+		$used_css  = $this->get_used_css( $url, $is_mobile );
+
+		if ( empty( $used_css ) ) {
+			return $fonts;
+		}
+
+		foreach ( $fonts as $index => $font ) {
+			if ( false !== strpos( $used_css->css, wp_basename( $font ) ) ) {
+				continue;
+			}
+
+			unset( $fonts[$index] );
+		}
+
+		return $fonts;
+	}
 }

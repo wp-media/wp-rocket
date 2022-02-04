@@ -7,9 +7,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Subscriber implements Subscriber_Interface {
-
 	/**
-	 * UsedCss instance
+	 * UsedCSS instance
 	 *
 	 * @var UsedCSS
 	 */
@@ -31,9 +30,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer'                => [ 'treeshake', 12 ],
-			'rocket_rucss_retries_cron'    => 'rucss_retries',
-			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
+			'rocket_buffer'             => [ 'treeshake', 12 ],
+			'rocket_rucss_retries_cron' => 'rucss_retries',
+			'rocket_preload_fonts'      => 'remove_unused_fonts',
 		];
 	}
 
@@ -58,19 +57,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disables the preload fonts if RUCSS is enabled
+	 * Removes the unused fonts from the fonts preload
 	 *
-	 * @since 3.9
+	 * @since 3.11
 	 *
-	 * @param bool $value Value for the disable preload fonts filter.
+	 * @param string[] $fonts Array of fonts to preload.
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	public function maybe_disable_preload_fonts( $value ): bool {
-		if ( $this->used_css->is_allowed() ) {
-			return true;
-		}
-
-		return $value;
+	public function remove_unused_fonts( $fonts ): array {
+		return $this->used_css->remove_unused_fonts( $fonts );
 	}
 }
