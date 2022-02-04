@@ -201,7 +201,12 @@ class Subscriber implements Subscriber_Interface {
 			$excluded = (array) $excluded;
 		}
 
-		$excluded_patterns = '|' . implode( '|', array_filter( $excluded ) );
+		$excluded          = array_filter( $excluded );
+		$excluded_patterns = '';
+
+		if ( ! empty( $excluded ) ) {
+			$excluded_patterns = '|' . implode( '|', $excluded );
+		}
 
 		return $uris . $excluded_patterns;
 	}
