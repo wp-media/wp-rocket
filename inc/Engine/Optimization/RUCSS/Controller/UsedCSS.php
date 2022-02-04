@@ -225,7 +225,7 @@ class UsedCSS {
 			return $html;
 		}
 
-		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss ?? [] );
+		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 
 		$this->update_last_accessed( (int) $used_css->id );
@@ -278,29 +278,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Resets retries to 1 and cleans URL cache for retrying the regeneration of the used CSS.
-	 *
-	 * @return void
-	 */
-	public function retries_pages_with_unprocessed_css() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return;
-		}
-
-		$used_css_list = $this->get_used_css_with_unprocessed_css();
-
-		foreach ( $used_css_list as $used_css_item ) {
-			// Resets retries to 1.
-			$this->used_css_query->update_item(
-				$used_css_item->id,
-				[ 'retries' => 1 ]
-			);
-			// Cleans page cache.
-			$this->purge->purge_url( $used_css_item->url );
-		}
-	}
-
-	/**
 	 * Get UsedCSS from DB table based on page url.
 	 *
 	 * @param string $url       The page URL.
@@ -324,23 +301,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Get UsedCSS from DB table which has unprocessed CSS files.
-	 *
-	 * @return array
-	 */
-	private function get_used_css_with_unprocessed_css() {
-		$query = $this->used_css_query->query(
-			[
-				'unprocessedcss__not_in' => [
-					'not_in' => '[]',
-				],
-			]
-		);
-
-		return $query;
-	}
-
-	/**
 	 * Insert or update used css row based on URL.
 	 *
 	 * @param array $data           {
@@ -348,7 +308,6 @@ class UsedCSS {
 	 *
 	 * @type string $url            The page URL.
 	 * @type string $css            The page used css.
-	 * @type string $unprocessedcss A json_encoded array of the page unprocessed CSS list.
 	 * @type int    $retries        No of automatically retries for generating the unused css.
 	 * @type bool   $is_mobile      Is mobile page.
 	 * }
@@ -426,11 +385,10 @@ class UsedCSS {
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
 	 * @param string $html            HTML content.
-	 * @param array  $unprocessed_css List with unprocesses CSS links or inline.
 	 *
 	 * @return string HTML content.
 	 */
-	private function remove_used_css_from_html( string $html, array $unprocessed_css ): string {
+	private function remove_used_css_from_html( string $html ): string {
 		$clean_html = $this->hide_comments( $html );
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
@@ -446,16 +404,11 @@ class UsedCSS {
 			$clean_html
 		);
 
-		$unprocessed_links  = $this->unprocessed_flat_array( 'link', $unprocessed_css );
-		$unprocessed_styles = $this->unprocessed_flat_array( 'inline', $unprocessed_css );
-
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
-				||
-				in_array( htmlspecialchars_decode( $style['url'] ), $unprocessed_links, true )
 			) {
 				continue;
 			}
@@ -470,10 +423,6 @@ class UsedCSS {
 		);
 
 		foreach ( $inline_styles as $style ) {
-			if ( in_array( $this->strip_line_breaks( $style['content'] ), $unprocessed_styles, true ) ) {
-				continue;
-			}
-
 			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['atts'] ) ) {
 				continue;
 			}
@@ -583,38 +532,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Create dedicated array of unprocessed css.
-	 *
-	 * @param string $type            CSS type (link / inline).
-	 * @param array  $unprocessed_css Array with unprocessed CSS.
-	 *
-	 * @return array Array with type of unprocessed CSS.
-	 */
-	private function unprocessed_flat_array( string $type, array $unprocessed_css ): array {
-		$unprocessed_array = [];
-		foreach ( $unprocessed_css as $css ) {
-			if ( $type === $css['type'] ) {
-				$unprocessed_array[] = $this->strip_line_breaks( $css['content'] );
-			}
-		}
-
-		return $unprocessed_array;
-	}
-
-	/**
-	 * Strip line breaks.
-	 *
-	 * @param string $value - Value to be processed.
-	 *
-	 * @return string
-	 */
-	private function strip_line_breaks( string $value ): string {
-		$value = str_replace( [ "\r", "\n", "\r\n", "\t" ], '', $value );
-
-		return trim( $value );
-	}
-
-	/**
 	 * Return Markup for used_css into the page.
 	 *
 	 * @param UsedCSS_Row $used_css Used CSS DB Row.
@@ -651,37 +568,6 @@ class UsedCSS {
 	 */
 	private function is_home( string $url ): bool {
 		return $url === untrailingslashit( home_url() );
-	}
-
-	/**
-	 * Schedules RUCSS to retry pages with missing CSS files.
-	 * Retries happen after 30 minutes.
-	 *
-	 * @return void
-	 */
-	private function schedule_rucss_retry() {
-		$scheduled = wp_next_scheduled( 'rocket_rucss_retries_cron' );
-
-		if ( $scheduled ) {
-			return;
-		}
-
-		wp_schedule_single_event( time() + ( 0.5 * HOUR_IN_SECONDS ), 'rocket_rucss_retries_cron' );
-	}
-
-	/**
-	 * Remove any unprocessed items from the resources table.
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $unprocessed_css Unprocessed CSS Items.
-	 *
-	 * @return void
-	 */
-	private function remove_unprocessed_from_resources( $unprocessed_css ) {
-		foreach ( $unprocessed_css as $resource ) {
-			$this->resources_query->remove_by_url( $resource['content'] );
-		}
 	}
 
 	/**

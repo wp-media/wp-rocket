@@ -48,16 +48,6 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
-		// UNPROCESSEDCSS column.
-		[
-			'name'       => 'unprocessedcss',
-			'type'       => 'longtext',
-			'default'    => '',
-			'cache_key'  => false,
-			'searchable' => true,
-			'sortable'   => true,
-		],
-
 		// RETRIES column.
 		[
 			'name'       => 'retries',

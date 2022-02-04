@@ -32,7 +32,6 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_buffer'                  => [ 'maybe_apply_rucss', 1000 ],
-			'rocket_rucss_retries_cron'      => 'rucss_retries',
 			'rocket_disable_preload_fonts'   => 'maybe_disable_preload_fonts',
 			'rocket_rucss_pending_jobs_cron' => 'process_pending_jobs',
 			'rocket_rucss_job_check_status'  => 'check_job_status',
@@ -48,15 +47,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_apply_rucss( string $html ): string {
 		return $this->used_css->treeshake( $html );
-	}
-
-	/**
-	 * Retries to regenerate the used css.
-	 *
-	 * @return void
-	 */
-	public function rucss_retries() {
-		$this->used_css->retries_pages_with_unprocessed_css();
 	}
 
 	/**
