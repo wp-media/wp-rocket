@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Frontend\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
@@ -11,10 +11,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  *
  * @group  RUCSS
  */
-class Test_Treeshake extends FilesystemTestCase {
+class Test_Treeshake extends TestCase {
 	use DBTrait;
-
-	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Frontend/Subscriber/treeshake.php';
 
 	private $config_data = [];
 
@@ -32,7 +30,7 @@ class Test_Treeshake extends FilesystemTestCase {
 		self::uninstallAll();
 	}
 
-	public function setUp(): void {
+	public function set_up() {
 
 		$GLOBALS['wp'] = (object) [
 			'query_vars'        => [],
@@ -42,12 +40,12 @@ class Test_Treeshake extends FilesystemTestCase {
 			],
 		];
 
-		parent::setUp();
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'treeshake', 12 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $GLOBALS['wp'] );
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
@@ -59,13 +57,13 @@ class Test_Treeshake extends FilesystemTestCase {
 
 		self::truncateUsedCssTable();
 
-		parent::tearDown();
+		parent::tear_down();
 
 		$this->restoreWpFilter( 'rocket_buffer' );
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $mockApiResponse, $expected ): void {
 		$this->config_data = $config;
