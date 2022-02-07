@@ -469,7 +469,7 @@ class ImageDimensions {
 	 * @return array|false
 	 */
 	private function getimagesize( string $filename ) {
-		$file = new SplFileInfo( $filename );
+		$file = new SplFileInfo( strtok( $filename, '?' ) );
 
 		if ( 'svg' === $file->getExtension() ) {
 			return $this->svg_getimagesize( $filename );
