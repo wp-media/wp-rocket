@@ -27,6 +27,10 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_link_prefix( $excluded ): array {
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
+
 		if ( ! is_plugin_active( 'thirstyaffiliates/thirstyaffiliates.php' ) ) {
 			return $excluded;
 		}
