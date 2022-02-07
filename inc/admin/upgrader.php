@@ -56,58 +56,6 @@ function rocket_upgrader() {
 add_action( 'admin_init', 'rocket_upgrader' );
 
 /**
- * Reset PHP opcache.
- *
- * @since  3.1
- * @author Grégory Viguier
- */
-function rocket_reset_opcache() {
-	static $can_reset;
-
-	/**
-	 * Triggers before WP Rocket tries to reset OPCache
-	 *
-	 * @since 3.2.5
-	 * @author Remy Perona
-	 */
-	do_action( 'rocket_before_reset_opcache' );
-
-	if ( ! isset( $can_reset ) ) {
-		if ( ! function_exists( 'opcache_reset' ) ) {
-			$can_reset = false;
-
-			return false;
-		}
-
-		$restrict_api = ini_get( 'opcache.restrict_api' );
-
-		if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
-			$can_reset = false;
-
-			return false;
-		}
-
-		$can_reset = true;
-	}
-
-	if ( ! $can_reset ) {
-		return false;
-	}
-
-	$opcache_reset = opcache_reset();
-
-	/**
-	 * Triggers after WP Rocket tries to reset OPCache
-	 *
-	 * @since 3.2.5
-	 * @author Remy Perona
-	 */
-	do_action( 'rocket_after_reset_opcache' );
-
-	return $opcache_reset;
-}
-
-/**
  * Keeps this function up to date at each version
  *
  * @since 1.0
