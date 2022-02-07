@@ -13,7 +13,7 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_preload_links_exclusions' => [ 'exclude_link_prefix', 1 ],
+			'rocket_preload_links_exclusions' => [ 'exclude_link_prefix', PHP_INT_MAX ],
 		];
 	}
 
