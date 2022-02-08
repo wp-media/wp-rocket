@@ -13,7 +13,7 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_preload_links_exclusions' => [ 'exclude_link_prefix', PHP_INT_MAX ],
+			'rocket_preload_links_exclusions' => [ 'exclude_link_prefix', PHP_INT_MAX, 2 ],
 		];
 	}
 
@@ -23,10 +23,11 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 * @since 3.10.8
 	 *
 	 * @param string[] $excluded Array of excluded patterns.
+	 * @param string[] $default Array of default excluded patterns.
 	 *
 	 * @return array
 	 */
-	public function exclude_link_prefix( $excluded ): array {
+	public function exclude_link_prefix( $excluded, $default ): array {
 		if ( ! is_array( $excluded ) ) {
 			$excluded = (array) $excluded;
 		}
@@ -35,15 +36,14 @@ class ThirstyAffiliates implements Subscriber_Interface {
 			return $excluded;
 		}
 
+		$excluded    = array_diff( $excluded, $default );
 		$link_prefix = get_option( 'ta_link_prefix', 'recommends' );
 
 		if ( 'custom' === $link_prefix ) {
 			$link_prefix = get_option( 'ta_link_prefix_custom', 'recommends' );
 		}
 
-		$excluded = [
-			'/' . $link_prefix . '/',
-		];
+		$excluded[] = '/' . $link_prefix . '/';
 
 		return $excluded;
 	}
