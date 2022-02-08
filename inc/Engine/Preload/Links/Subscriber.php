@@ -181,12 +181,14 @@ class Subscriber implements Subscriber_Interface {
 			$uris .= '|' . str_replace( $site_url, '', $uri );
 		}
 
-		$excluded = [
+		$default = [
 			'/refer/',
 			'/go/',
 			'/recommend/',
 			'/recommends/',
 		];
+
+		$excluded = $default;
 
 		/**
 		 * Filters the patterns excluded from links preload
@@ -194,8 +196,9 @@ class Subscriber implements Subscriber_Interface {
 		 * @since 3.10.8
 		 *
 		 * @param string[] $excluded Array of excluded patterns.
+		 * @param string[] $default  Array of default excluded patterns.
 		 */
-		$excluded = apply_filters( 'rocket_preload_links_exclusions', $excluded );
+		$excluded = apply_filters( 'rocket_preload_links_exclusions', $excluded, $default );
 
 		if ( ! is_array( $excluded ) ) {
 			$excluded = (array) $excluded;
