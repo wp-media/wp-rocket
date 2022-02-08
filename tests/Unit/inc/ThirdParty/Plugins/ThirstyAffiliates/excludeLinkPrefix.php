@@ -23,21 +23,41 @@ class Test_ExcludeLinkPrefix extends TestCase {
 	public function testShouldReturnDefaultWhenPluginDeactivated() {
 		Functions\when( 'is_plugin_active' )->justReturn( false );
 
-		$excluded = [
+		$default = [
+			'/refer/',
 			'/go/',
+			'/recommend/',
+			'/recommends/',
+		];
+
+		$excluded = [
+			'/refer/',
+			'/go/',
+			'/recommend/',
+			'/recommends/',
 		];
 
 		$this->assertSame(
 			$excluded,
-			$this->thirsty->exclude_link_prefix( $excluded )
+			$this->thirsty->exclude_link_prefix( $excluded, $default )
 		);
 	}
 
 	public function testShouldReturnOptionValueWhenNoCustom() {
 		Functions\when( 'is_plugin_active' )->justReturn( true );
 
-		$excluded = [
+		$default = [
+			'/refer/',
 			'/go/',
+			'/recommend/',
+			'/recommends/',
+		];
+
+		$excluded = [
+			'/refer/',
+			'/go/',
+			'/recommend/',
+			'/recommends/',
 		];
 
 		Functions\expect( 'get_option' )
@@ -51,15 +71,26 @@ class Test_ExcludeLinkPrefix extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->thirsty->exclude_link_prefix( $excluded )
+			$this->thirsty->exclude_link_prefix( $excluded, $default )
 		);
 	}
 
 	public function testShouldReturnCustomOptionValueWhenCustom() {
 		Functions\when( 'is_plugin_active' )->justReturn( true );
 
-		$excluded = [
+		$default = [
+			'/refer/',
 			'/go/',
+			'/recommend/',
+			'/recommends/',
+		];
+
+		$excluded = [
+			'/refer/',
+			'/go/',
+			'/recommend/',
+			'/recommends/',
+			'/out/',
 		];
 
 		Functions\expect( 'get_option' )
@@ -73,12 +104,13 @@ class Test_ExcludeLinkPrefix extends TestCase {
 			->andReturn( 'referral' );
 
 		$expected = [
+			'/out/',
 			'/referral/',
 		];
 
 		$this->assertSame(
-			$expected,
-			$this->thirsty->exclude_link_prefix( $excluded )
+			array_values( $expected ),
+			array_values( $this->thirsty->exclude_link_prefix( $excluded, $default ) )
 		);
 	}
 }
