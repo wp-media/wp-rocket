@@ -32,7 +32,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer'             => [ 'treeshake', 12 ],
 			'rocket_rucss_retries_cron' => 'rucss_retries',
-			'rocket_preload_fonts'      => 'remove_unused_fonts',
+			'rocket_preload_fonts'      => 'remove_unused_preload_fonts',
 		];
 	}
 
@@ -65,7 +65,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function remove_unused_fonts( $fonts ): array {
-		return $this->used_css->remove_unused_fonts( $fonts );
+	public function remove_unused_preload_fonts( $fonts ): array {
+		return $this->used_css->remove_unused_preload_fonts( $fonts );
 	}
 }

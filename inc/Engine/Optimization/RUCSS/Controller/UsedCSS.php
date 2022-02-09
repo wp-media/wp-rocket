@@ -636,12 +636,12 @@ class UsedCSS {
 	 *
 	 * @return array
 	 */
-	public function remove_unused_fonts( $fonts ): array {
-		if ( ! $this->is_allowed() ) {
+	public function remove_unused_preload_fonts( $fonts ): array {
+		if ( empty( $fonts ) ) {
 			return $fonts;
 		}
 
-		if ( empty( $fonts ) ) {
+		if ( ! $this->is_allowed() ) {
 			return $fonts;
 		}
 
@@ -655,11 +655,11 @@ class UsedCSS {
 		}
 
 		foreach ( $fonts as $index => $font ) {
-			if ( false !== strpos( $used_css->css, wp_basename( $font ) ) ) {
+			if ( false !== stripos( $used_css->css, wp_basename( $font ) ) ) {
 				continue;
 			}
 
-			unset( $fonts[$index] );
+			unset( $fonts[ $index ] );
 		}
 
 		return $fonts;
