@@ -643,6 +643,7 @@ JS;
 
 		// Remove comments from the buffer.
 		$buffer = $this->hide_comments( $buffer );
+		$buffer = $this->hide_noscripts( $buffer );
 
 		// Get all css files with this regex.
 		preg_match_all( $css_pattern, $buffer, $tags_match );
@@ -761,6 +762,23 @@ JS;
 		}
 
 		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Hides <noscript> blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function hide_noscripts( string $html ): string {
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
 
 		if ( null === $replace ) {
 			return $html;
