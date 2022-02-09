@@ -255,6 +255,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'voucher.getavo.it/public/js/yanovis.Voucher.js',
 			'js-eu1.hsforms.net',
 			'statcounter.com/counter/counter.js',
+			'snapppt.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
