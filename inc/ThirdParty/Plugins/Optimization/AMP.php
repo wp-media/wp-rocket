@@ -112,7 +112,7 @@ class AMP implements Subscriber_Interface {
 		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint()
 			||
 			// Web stories uses this condition as a substitute function for is_amp_endpoint().
-			// As it is not yet registered when we get here, we do our own check.
+			// When both plugins are active, we have the AMP version, so we do our own check for web-stories.
 			 ( is_plugin_active('web-stories') && ! ( is_singular( 'web-story' ) && ! is_embed() && ! post_password_required() ) )
 		) {
 			return;
