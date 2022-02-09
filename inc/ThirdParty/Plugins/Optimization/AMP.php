@@ -109,7 +109,12 @@ class AMP implements Subscriber_Interface {
 	 * @since  3.5.2
 	 */
 	public function disable_options_on_amp() {
-		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint() ) {
+		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint()
+			||
+			// Web stories uses this condition as a substitute function for is_amp_endpoint().
+			// As it is not yet registered when we get here, we do our own check.
+			! ( is_singular( 'web-stories' ) && ! is_embed() && ! post_password_required() )
+		) {
 			return;
 		}
 
