@@ -151,6 +151,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'ezoic', 'WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'thirstyaffiliates', 'WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'pwa', 'WP_Rocket\ThirdParty\Plugins\PWA' )
 			->addTag( 'common_subscriber' );
 	}

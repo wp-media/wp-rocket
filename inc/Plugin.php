@@ -289,6 +289,7 @@ class Plugin {
 			'revolution_slider_subscriber',
 			'wordfence_subscriber',
 			'ezoic',
+			'thirstyaffiliates',
 			'pwa',
 		];
 
