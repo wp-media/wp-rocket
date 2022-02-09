@@ -9,7 +9,7 @@ add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MA
 
 global $kinsta_cache;
 
-if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) ) {
+if ( isset( $kinsta_cache ) ) {
 	/**
 	 * Clear Kinsta cache when clearing WP Rocket cache
 	 *
@@ -117,28 +117,6 @@ if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) ) {
 		remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 	}
 	add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
-
-	if ( \Kinsta\CDN_Enabler::cdn_is_enabled() ) {
-		/**
-		 * Add Kinsta CDN to WP Rocket CDN hosts list if enabled
-		 *
-		 * @since 3.0
-		 * @author Remy Perona
-		 *
-		 * @param Array $hosts Array of CDN hosts.
-		 * @return Array Updated array of CDN hosts
-		 */
-		function rocket_add_kinsta_cdn_cname( $hosts ) {
-			if ( ! isset( $_SERVER['KINSTA_CDN_DOMAIN'] ) ) {
-				return $hosts;
-			}
-
-			$hosts[] = sanitize_text_field( wp_unslash( $_SERVER['KINSTA_CDN_DOMAIN'] ) );
-
-			return $hosts;
-		}
-		add_filter( 'rocket_cdn_cnames', 'rocket_add_kinsta_cdn_cname', 1 );
-	}
 } else {
 	add_action(
 		'admin_notices',
