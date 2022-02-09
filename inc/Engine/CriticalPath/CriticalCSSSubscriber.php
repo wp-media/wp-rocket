@@ -662,7 +662,7 @@ JS;
 				continue;
 			}
 
-			if ( false !== strpos( $tags_match[0][ $i ], 'media="print"' ) ) {
+			if ( preg_match( '/media\s*=\s*[\'"]print[\'"]/i', $tags_match[0][ $i ] ) ) {
 				continue;
 			}
 
