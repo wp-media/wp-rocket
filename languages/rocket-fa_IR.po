@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2021-11-25 11:18-0500\n"
+"POT-Creation-Date: 2021-12-08 11:49-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2021\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -178,7 +178,7 @@ msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:178
+#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:179
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "راکت وردپرس: "
@@ -456,7 +456,6 @@ msgid "Days"
 msgstr "روزها"
 
 #: inc/Engine/Admin/Settings/Page.php:570
-#: views/settings/page-sections/tutorials.php:22
 msgid "File Optimization"
 msgstr "بهینه‌سازی فایل"
 
@@ -920,7 +919,6 @@ msgid "Add missing image dimensions"
 msgstr "افزودن ابعاد به تصاویر بدون ابعاد"
 
 #: inc/Engine/Admin/Settings/Page.php:1088 inc/deprecated/deprecated.php:1776
-#: views/settings/page-sections/tutorials.php:30
 msgid "Preload"
 msgstr "پیش بارگذاری"
 
@@ -1086,7 +1084,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> تعیین شده‌اند تشخیص داده خواهند شد و به صورت "
 "پیش‌فرض هرگز کش نخواهند شد."
 
-#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:127
+#: inc/Engine/Admin/Settings/Page.php:1277 inc/admin/options.php:128
 msgid "Never Cache URL(s)"
 msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 
@@ -1094,11 +1092,11 @@ msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 msgid "Never Cache Cookies"
 msgstr "کوکی‌هایی که هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:128
+#: inc/Engine/Admin/Settings/Page.php:1291 inc/admin/options.php:129
 msgid "Never Cache User Agent(s)"
 msgstr "عامل‌(های) کاربری هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1297 inc/admin/options.php:130
 msgid "Always Purge URL(s)"
 msgstr "URL (هایی) که همیشه پاک‌سازی شوند"
 
@@ -1318,7 +1316,7 @@ msgstr ""
 "برای سرویس هایی مانند Cloudflare و Sucuri ضروری نیست. لطفا "
 "%1$sافزودنی‌های%2$s موجود ما را مشاهده کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1564 inc/admin/options.php:131
 msgid "Exclude files from CDN"
 msgstr "مستثنی کردن فایل‌ها از CDN"
 
@@ -1431,7 +1429,7 @@ msgid "Behavior in frontend"
 msgstr "رفتار در frontend"
 
 #: inc/Engine/Admin/Settings/Page.php:1735
-#: views/settings/page-sections/tutorials.php:36
+#: views/settings/page-sections/tutorials.php:39
 msgid "Add-ons"
 msgstr "افزودنی‌ها"
 
@@ -1669,7 +1667,7 @@ msgid "Compress your images"
 msgstr "تصاویر خود را فشرده کنید"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:194
-#: views/settings/page-sections/tutorials.php:45
+#: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "آموزش‌ها"
 
@@ -1777,31 +1775,30 @@ msgstr ""
 "ادغام موشک وردپرس: گزینه CDN بصورت خودکار%1$sپیکربندی می شود%2$s در افزونه "
 "ما"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:69
-#, php-format
-msgid "%s / month"
-msgstr "%s / ماه"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:74
-msgid "Get Started"
-msgstr "شروع کنید"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:80
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:58
 msgid "Learn more about RocketCDN"
 msgstr "اطلاعات بیشتر راجع به RocketCDN"
 
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:82
-msgid "Reduce this banner"
-msgstr "حذف این بنر"
-
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:88
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:65
 #, php-format
 msgid ""
-"* $%1$s/month for 12 months then $%2$s/month. You can cancel your "
+"*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
 "subscription at any time."
 msgstr ""
-"* $%1$s/ ماه برای 12 ماه آنگاه $%2$s/ماه.شماهر وقت که خواستید می توانید "
-"اشتراک خود را لغو کنید."
+"*$%1$s/ماه برای 12 ماه آنگاه $%2$s/ماه. شما می توانید اشتراک خود را هرگاه که"
+" خواستید لغو کنید."
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:86
+msgid "Billed monthly"
+msgstr "صورتحساب ماهانه"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:87
+msgid "Get Started"
+msgstr "شروع کنید"
+
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:92
+msgid "Reduce this banner"
+msgstr "حذف این بنر"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
 msgid ""
@@ -2154,7 +2151,7 @@ msgstr "اکنون ارتقاء دهید"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:39
-#: inc/admin/ui/notices.php:813 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "نادیده گرفتن این پیام."
 
@@ -2463,28 +2460,40 @@ msgstr ""
 "<strong>%1$s</strong>: حالت PageSpeed با این افزونه سازگار نیست و ممکن است "
 "باعث اتفاق غیرمنتظره شود.%2$s اطلاعات بیشتر%3$s"
 
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:74
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:76
+#, php-format
 msgid ""
-"We have detected that Autoptimize's JavaScript Aggregation feature is "
-"enabled. The Delay JavaScript Execution will not be applied to the file it "
-"creates. We suggest disabling it to take full advantage of Delay JavaScript "
-"Execution."
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's JavaScript "
+"Aggregation feature is enabled. WP Rocket's Delay JavaScript Execution will "
+"not be applied to the file it creates. We suggest disabling %1$sJavaScript "
+"Aggregation%2$s to take full advantage of Delay JavaScript Execution."
 msgstr ""
-"ما متوجه شده‌ایم که ویژگی جمع‌آوری جاوا اسکریپت Autoptimize فعال است. اجرای "
-"تاخیری جاوا اسکریپت روی فایلی که ایجاد می کند اعمال نخواهد شد. پیشنهاد می "
-"کنیم برای استفاده کامل از تاخیر اجرای جاوا اسکریپت آن را غیرفعال کنید."
+"%1$sموشک وردپرس:%2$sما متوجه شده‌ایم که ویژگی Autoptimize's JavaScript "
+"Aggregation فعال است. اجرای تاخیری جاوا اسکریپت WP Rocket روی فایلی که ایجاد"
+" می کند اعمال نخواهد شد.توصیه می کنیم%1$sJavaScript Aggregation%2$s را به "
+"طور کامل برای بهترین عملکرد افزونه غیرفعال کنید."
 
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:126
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:131
+#, php-format
 msgid ""
-"We have detected that Autoptimize's Aggregate Inline CSS feature is enabled."
-" WP Rocket's Load CSS Asynchronously will not be applied to the file it "
-"creates. We suggest disabling it to take full advantage of WP Rocket's Load "
-"CSS Asynchronously Execution."
+"%1$sWP Rocket: %2$sWe have detected that Autoptimize's Aggregate Inline CSS "
+"feature is enabled. WP Rocket's Load CSS Asynchronously will not work "
+"correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
+"advantage of Load CSS Asynchronously Execution."
 msgstr ""
-"ما متوجه شده‌ایم که ویژگی Autoptimize's Aggregate Inline CSS فعال است. WP "
-"Rocket's Load CSS Asynchronously روی فایلی که ایجاد می کند اعمال نخواهد شد. "
-"پیشنهاد می کنیم آن را غیرفعال کنید تا از مزایای اجرای ناهمزمان بارگذاری CSS "
-"WP Rocket استفاده کنید."
+"%1$sموشک وردپرس: %2$sما متوجه شده‌ایم که ویژگی Autoptimize's Aggregate "
+"Inline CSS فعال است. WP Rocket's Load CSS Asynchronously به درستی کار نخواهد"
+" کرد.توصیه می کنیم%1$sAggregate Inline CSS%2$s را برای عملکرد بهتر افزونه "
+"غیرفعال کنید."
+
+#: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
+#, php-format
+msgid ""
+"This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
+"use %1$sEzoic's nameserver integration%2$s instead."
+msgstr ""
+"این افزونه از عملکرد صحیح افزونه موشک وردپرس جلوگیری می کند. غیرفعال کرده و "
+"به جای آن از %1$sEzoic's nameserver integration%2$s استفاده نمایید."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
@@ -2618,25 +2627,29 @@ msgid "Settings imported and saved."
 msgstr "تنظیمات درون‌ریزی و ذخیره شد."
 
 #: inc/admin/options.php:126
+msgid "Defer JavaScript Files"
+msgstr "به تعویق انداختن فایل های جاوا اسکریپت"
+
+#: inc/admin/options.php:127
 msgid "Excluded Delay JavaScript Files"
 msgstr "فایل‌های جاوا اسکریپت تاخیری حذف شدند"
 
-#: inc/admin/options.php:148
+#: inc/admin/options.php:149
 #, php-format
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:158
+#: inc/admin/options.php:159
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 
-#: inc/admin/options.php:170
+#: inc/admin/options.php:171
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:769
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:777
 #: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
@@ -2710,7 +2723,7 @@ msgstr ""
 "<strong>%s</strong>: یک یا چند افزونه فعال یا غیرفعال شده‌اند، اگر آن‌ها "
 "ظاهر سایت شما را به هم ریخته‌اند، کش را پاک کنید."
 
-#: inc/admin/ui/notices.php:185
+#: inc/admin/ui/notices.php:184
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2718,7 +2731,7 @@ msgstr ""
 "افزونه WP Rocket Cloudflare عملکردهای مشابهی را ارائه می دهد. آنها نمی "
 "توانند همزمان فعال باشند."
 
-#: inc/admin/ui/notices.php:209
+#: inc/admin/ui/notices.php:217
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2727,11 +2740,11 @@ msgstr ""
 "<strong>%s</strong>: افزونه‌های زیر با این افزونه سازگار نیستند و ممکن است "
 "باعث نتایج غیرمنتظره شوند:"
 
-#: inc/admin/ui/notices.php:215
+#: inc/admin/ui/notices.php:223
 msgid "Deactivate"
 msgstr "غیرفعال سازی"
 
-#: inc/admin/ui/notices.php:257
+#: inc/admin/ui/notices.php:265
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2739,7 +2752,7 @@ msgstr ""
 "WP Rocket Footer JS یک افزودنی رسمی نیست. از عملکرد صحیح برخی از گزینه ها در"
 " WP Rocket جلوگیری می کند. لطفاً در صورت بروز مشکل آن را غیرفعال کنید."
 
-#: inc/admin/ui/notices.php:297
+#: inc/admin/ui/notices.php:305
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2750,7 +2763,7 @@ msgstr ""
 "لطفاً سطح کش Endurance Cache را در حالت Off (سطح 0) در حالت تنظیم کنید "
 "%1$sتنظیمات > عمومی%2$s جلوگیری از هرگونه مشکلی میکند."
 
-#: inc/admin/ui/notices.php:318
+#: inc/admin/ui/notices.php:326
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2759,18 +2772,18 @@ msgstr ""
 "%1$s: برای درست عمل کردن افزونه نیاز است پیوند‌های یکتا را فعال کنید. %2$s "
 "رفتن به تنظیمات پیوند‌های یکتا%3$s"
 
-#: inc/admin/ui/notices.php:365
+#: inc/admin/ui/notices.php:373
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن .htaccess نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:371 inc/admin/ui/notices.php:846
+#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:854
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "عیب‌یابی: %1$s چگونه فایل‌های سیستمی را قابل نوشتن کنیم%2$s"
 
-#: inc/admin/ui/notices.php:373 inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:856
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2778,20 +2791,20 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:387
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "نگران نباشید ، ذخیره و تنظیمات صفحه WP Rocket همچنان درست کار می کند."
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:387
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
 "برای عملکرد مطلوب ، افزودن خطوط زیر به .htaccess توصیه می شود (لازم نیست):"
 
-#: inc/admin/ui/notices.php:526
+#: inc/admin/ui/notices.php:534
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2800,7 +2813,7 @@ msgstr ""
 "%1$s آماده است! %2$s زمان بارگذاری خود را امتحان کنید%4$s، یا "
 "%3$sتنظیمات%4$s خود را مشاهده کنید."
 
-#: inc/admin/ui/notices.php:599
+#: inc/admin/ui/notices.php:607
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2808,15 +2821,15 @@ msgstr ""
 "آیا اجاره می‌دهید موشک وردپرس اطلاعات مرتبط غیرحساس را از این وبسایت جمع "
 "آوری کند؟"
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:608
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "این کار به ما کمک خواهد کرد تا در آینده موشک وردپرس را بهبود ببخشیم."
 
-#: inc/admin/ui/notices.php:606
+#: inc/admin/ui/notices.php:614
 msgid "What info will we collect?"
 msgstr "چه اطلاعاتی را جمع آوری می‌کنیم؟"
 
-#: inc/admin/ui/notices.php:611
+#: inc/admin/ui/notices.php:619
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2828,60 +2841,60 @@ msgstr ""
 "فعال‌سازی لایسنس)، آدرس آی پی یا کلید‌های وب‌سرویس ثانویه را منتقل نخواهد "
 "کرد."
 
-#: inc/admin/ui/notices.php:620
+#: inc/admin/ui/notices.php:628
 msgid "Yes, allow"
 msgstr "بله، اجازه می‌دهم"
 
-#: inc/admin/ui/notices.php:623
+#: inc/admin/ui/notices.php:631
 msgid "No, thanks"
 msgstr "نه، متشکرم"
 
-#: inc/admin/ui/notices.php:662
+#: inc/admin/ui/notices.php:670
 msgid "Thank you!"
 msgstr "متشکریم!"
 
-#: inc/admin/ui/notices.php:667
+#: inc/admin/ui/notices.php:675
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "موشک وردپرس اکنون این معیارها را از وب‌سایت شما جمع‌آوری می‌کند:"
 
-#: inc/admin/ui/notices.php:705
+#: inc/admin/ui/notices.php:713
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: کش پاک شد."
 
-#: inc/admin/ui/notices.php:712
+#: inc/admin/ui/notices.php:720
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: کش نوشته پاک شد."
 
-#: inc/admin/ui/notices.php:719
+#: inc/admin/ui/notices.php:727
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: کش شرط پاک شد."
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:734
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: کش کاربر پاک شد."
 
-#: inc/admin/ui/notices.php:772
+#: inc/admin/ui/notices.php:780
 msgid "Stop Preload"
 msgstr "توقف پیش بارگذاری"
 
-#: inc/admin/ui/notices.php:790
+#: inc/admin/ui/notices.php:798
 msgid "Force deactivation "
 msgstr "غیرفعال سازی اجباری "
 
-#: inc/admin/ui/notices.php:803
+#: inc/admin/ui/notices.php:811
 msgid "The following code should have been written to this file:"
 msgstr "کدهای زیر باید داخل این فایل نوشته شوند:"
 
-#: inc/admin/ui/notices.php:834
+#: inc/admin/ui/notices.php:842
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:848
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "فایل\\فولدرهای مورد نظر: %s"
@@ -3314,7 +3327,7 @@ msgstr "تصاویر"
 msgid "Add CNAME"
 msgstr "افزودن CNAME"
 
-#: inc/deprecated/deprecated.php:1706 views/settings/partials/sidebar.php:16
+#: inc/deprecated/deprecated.php:1706
 msgid "Watch the video"
 msgstr "تماشای ویدیو"
 
@@ -3723,11 +3736,11 @@ msgstr ""
 #: views/deactivation-intent/form.php:116
 #, php-format
 msgid ""
-"How to measure the load time of your site: %1$shttps://wp-rocket.me/blog"
-"/correctly-measure-websites-page-load-time/%2$s"
+"How to measure the load time of your site: %1$shttps://wp-"
+"rocket.me/blog/correctly-measure-websites-page-load-time/%2$s"
 msgstr ""
-"چگونه زمان بارگذاری سایت را محاسبه کنید: %1$shttps://wp-rocket.me/blog"
-"/correctly-measure-websites-page-load-time/%2$s"
+"چگونه زمان بارگذاری سایت را محاسبه کنید: %1$shttps://wp-"
+"rocket.me/blog/correctly-measure-websites-page-load-time/%2$s"
 
 #: views/deactivation-intent/form.php:122
 #, php-format
@@ -3759,8 +3772,9 @@ msgid ""
 "time/%2$s"
 msgstr ""
 "بهترین راه برای مشاهده بهبود WP Rocket انجام آزمایشات سرعت است. برای اندازه "
-"گیری صحیح زمان بارگذاری وب سایت خود ، این راهنما را دنبال کنید:%1$shttps"
-"://wp-rocket.me/blog/correctly-measure-websites-page-load-time/%2$s"
+"گیری صحیح زمان بارگذاری وب سایت خود ، این راهنما را دنبال "
+"کنید:%1$shttps://wp-rocket.me/blog/correctly-measure-websites-page-load-"
+"time/%2$s"
 
 #: views/deactivation-intent/form.php:137
 msgid "The plugin is too complicated to configure"
@@ -4161,23 +4175,43 @@ msgstr "چگونه بررسی کنیم که آیا موشک وردپرس سای�
 msgid "How to Measure the Speed of Your Site"
 msgstr "چگونه سرعت سایت خود را اندازه گیری کنیم"
 
-#: views/settings/page-sections/tutorials.php:24
-msgid "Troubleshooting Display Issues with File Optimization"
-msgstr "عیب یابی مشکلات نمایش با بهینه سازی فایل"
-
-#: views/settings/page-sections/tutorials.php:25
-msgid "How to Find the Right JavaScript to Exclude"
-msgstr "چگونه می توان جاوا اسکریپت مناسب را برای حذف پیدا کرد"
-
-#: views/settings/page-sections/tutorials.php:26
-msgid "How External Content Slows Your Site"
-msgstr "چگونه محتوای خارجی سایت شما را کند می کند"
-
-#: views/settings/page-sections/tutorials.php:32
+#: views/settings/page-sections/tutorials.php:19
 msgid "How Preloading Works"
 msgstr "پیش بارگذاری چگونه کار می کند"
 
-#: views/settings/page-sections/tutorials.php:38
+#: views/settings/page-sections/tutorials.php:23
+msgid "Passing the Core Web vitals"
+msgstr "گذرندان Core Web vitals"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "How to improve LCP with WP Rocket"
+msgstr "چگونه با موشک وردپرس LCP را بهبود بخشیم"
+
+#: views/settings/page-sections/tutorials.php:26
+msgid "How to improve FID with WP Rocket"
+msgstr "چگونه با موشک وردپرس FID را بهبود بخشیم"
+
+#: views/settings/page-sections/tutorials.php:27
+msgid "How to improve CLS with WP Rocket"
+msgstr "چگونه با موشک وردپرس CLS را بهبود بخشیم"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "Troubleshooting"
+msgstr "عیب یابی"
+
+#: views/settings/page-sections/tutorials.php:33
+msgid "Troubleshooting Display Issues with File Optimization"
+msgstr "عیب یابی مشکلات نمایش با بهینه سازی فایل"
+
+#: views/settings/page-sections/tutorials.php:34
+msgid "How to Find the Right JavaScript to Exclude"
+msgstr "چگونه می توان جاوا اسکریپت مناسب را برای حذف پیدا کرد"
+
+#: views/settings/page-sections/tutorials.php:35
+msgid "How External Content Slows Your Site"
+msgstr "چگونه محتوای خارجی سایت شما را کند می کند"
+
+#: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
 msgstr "افزودنی Cloudflare راه اندازی کنید"
 
@@ -4235,27 +4269,28 @@ msgstr "چگونه سرعت بارگذاری وبسایت خود را به صو�
 msgid "Check our tutorial and learn how to measure the speed of your site."
 msgstr "آموزش ما را بررسی کنید و نحوه اندازه گیری سرعت سایت خود را بیاموزید."
 
-#: views/settings/partials/sidebar.php:19
-msgid "Learn about optimal WP Rocket settings for mobile."
-msgstr "با تنظیمات بهینه موشک وردپرس برای تلفن همراه آشنا شوید."
-
-#: views/settings/partials/sidebar.php:25
+#: views/settings/partials/sidebar.php:15
+#: views/settings/partials/sidebar.php:24
 msgid "Read our guide"
 msgstr "راهنمای ما را بخوانید"
 
-#: views/settings/partials/sidebar.php:28
+#: views/settings/partials/sidebar.php:18
+msgid "Learn about optimal WP Rocket settings for mobile."
+msgstr "با تنظیمات بهینه موشک وردپرس برای تلفن همراه آشنا شوید."
+
+#: views/settings/partials/sidebar.php:27
 msgid "Test and Improve Google Core Web Vitals for WordPress."
 msgstr "آزمایش و بهبود Google Core Web Vitals برای وردپرس."
 
-#: views/settings/partials/sidebar.php:29
+#: views/settings/partials/sidebar.php:28
 msgid "Read more"
 msgstr "اطلاعات بیشتر"
 
-#: views/settings/partials/sidebar.php:34
+#: views/settings/partials/sidebar.php:33
 msgid "You have not activated logged-in user cache."
 msgstr "شما کش کاربران وارد شده به سایت را فعال نکرده‌اید."
 
-#: views/settings/partials/sidebar.php:35
+#: views/settings/partials/sidebar.php:34
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
