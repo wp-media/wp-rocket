@@ -199,6 +199,7 @@ class UsedCSS {
 
 		$html = $this->remove_used_css_from_html( $html, $used_css->unprocessedcss );
 		$html = $this->add_used_css_to_html( $html, $used_css );
+		$html = $this->add_used_fonts_preload( $html, $used_css->css );
 
 		$this->update_last_accessed( (int) $used_css->id );
 
@@ -625,5 +626,71 @@ class UsedCSS {
 		foreach ( $unprocessed_css as $resource ) {
 			$this->resources_query->remove_by_url( $resource['content'] );
 		}
+	}
+
+	/**
+	 * Add preload links for the fonts in the used CSS
+	 *
+	 * @param string $html HTML content.
+	 * @param string $used_css Used CSS content.
+	 *
+	 * @return string
+	 */
+	private function add_used_fonts_preload( string $html, string $used_css ): string {
+		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
+			return $html;
+		}
+
+		if ( empty( $font_faces ) ) {
+			return $html;
+		}
+
+		$urls = [];
+
+		foreach ( $font_faces as $font_face ) {
+			if ( empty( $font_face['content'] ) ) {
+				continue;
+			}
+
+			if ( ! preg_match( '/src:\s*url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $font_face['content'], $matches ) ) {
+				continue;
+			}
+
+			$urls[] = trim( $matches['url'] );
+		}
+
+		if ( empty( $urls ) ) {
+			return $html;
+		}
+
+		$replace = preg_replace(
+			'#</title>#iU',
+			'</title>' . $this->preload_links( $urls ),
+			$html,
+			1
+		);
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Converts an array of URLs to preload link tags
+	 *
+	 * @param array $urls An array of URLs.
+	 *
+	 * @return string
+	 */
+	private function preload_links( array $urls ): string {
+		$links = '';
+
+		foreach ( $urls as $url ) {
+			$links .= '<link rel="preload" as="font" href="' . esc_url( $url ) . '" crossorigin>';
+		}
+
+		return $links;
 	}
 }
