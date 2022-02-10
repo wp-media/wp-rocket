@@ -522,5 +522,68 @@ return [
 </body>
 </html>'
 		],
+		'shouldPreloadFonts' => [
+			'config'       => [
+				'html'                  => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title>
+</head>
+<body>
+ content here
+</body>
+</html>',
+				'used-css-row-contents' => [
+					'url'            => 'http://example.org/home',
+					'css'            => '',
+					'unprocessedcss' => '',
+					'retries'        => 1,
+					'is_mobile'      => false,
+				],
+
+			],
+			'api-response' => [
+				'body'     => json_encode(
+					[
+						'code'     => 200,
+						'message'  => 'OK',
+						'contents' => [
+							'shakedCSS'      => '@font-face {
+								font-family: \'Open Sans\';
+								font-style: normal;
+								font-weight: 300;
+								font-stretch: 100%;
+								font-display: swap;
+								src: url(http://example.org/wp-content/themes/twentytwenty/assets/fonts/open-sans.woff) format(\'woff\');
+							  }
+							  @font-face {
+								font-family: \'Roboto\';
+								font-style: normal;
+								font-weight: 300;
+								font-stretch: 100%;
+								font-display: swap;
+								src: url("http://example.org/wp-content/themes/twentytwenty/assets/fonts/roboto.woff2") format(\'woff2\'), url("http://example.org/wp-content/themes/twentytwenty/assets/fonts/roboto.woff") format(\'woff\');
+							  }',
+							'unProcessedCss' => [],
+						],
+					]
+				),
+				'response' => [
+					'code'    => 200,
+					'message' => 'OK',
+				],
+			],
+			'expected'     => '<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My Awesome Page</title><link rel="preload" as="font" href="http://example.org/wp-content/themes/twentytwenty/assets/fonts/open-sans.woff" crossorigin><link rel="preload" as="font" href="http://example.org/wp-content/themes/twentytwenty/assets/fonts/roboto.woff2" crossorigin><style id="wpr-usedcss">@font-face{font-family:\'Open Sans\';font-style:normal;font-weight:300;font-stretch:100%;font-display:swap;src:url(http://example.org/wp-content/themes/twentytwenty/assets/fonts/open-sans.woff) format(\'woff\')}@font-face{font-family:\'Roboto\';font-style:normal;font-weight:300;font-stretch:100%;font-display:swap;src:url(http://example.org/wp-content/themes/twentytwenty/assets/fonts/roboto.woff2) format(\'woff2\'),url(http://example.org/wp-content/themes/twentytwenty/assets/fonts/roboto.woff) format(\'woff\')}</style>
+</head>
+<body>
+ content here
+</body>
+</html>'
+		],
 	],
 ];
