@@ -115,14 +115,14 @@ class AMP implements Subscriber_Interface {
 		}
 
 		// We can get a false negative from is_amp_endpoint when web stories is active, so we have to make sure neither is in play.
-		if ( ! is_amp_endpoint() && ! is_plugin_active( 'web-stories' ) ) {
+		if ( ! is_amp_endpoint() && ! is_plugin_active( 'web-stories/web-stories.php' ) ) {
 			return;
 		}
 
 		// We don't know yet whether we made it this far because AMP's endpoint check passed or if it's a webstories thing.
 		// If web stories is active BUT this is NOT a web story singular page, we bail out now.
 		if (
-			is_plugin_active( 'web-stories' )
+			is_plugin_active( 'web-stories/web-stories.php' )
 			&&
 			! ( is_singular( 'web-story' ) && ! is_embed() && ! post_password_required() )
 			) {
