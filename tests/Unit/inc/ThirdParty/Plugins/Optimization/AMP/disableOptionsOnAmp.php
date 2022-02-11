@@ -37,7 +37,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			->andReturn( $config[ 'is_amp_endpoint' ]  );
 		Functions\expect( 'is_plugin_active' )
 			->atMost()->twice()
-			->with( 'web-stories' )
+			->with( 'web-stories/web-stories.php' )
 			->andReturn( ! empty( $config['web-stories-active'] ) );
 		Functions\expect( 'is_singular' )
 			->atMost()->once()
