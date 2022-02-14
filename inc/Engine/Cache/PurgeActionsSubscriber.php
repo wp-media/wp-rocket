@@ -50,7 +50,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
-			'rucss_complete_job_status' => 'purge_url_cache',
+			'rucss_complete_job_status' => [ 'purge_url_cache', 100 ],
 		];
 	}
 
