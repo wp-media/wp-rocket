@@ -82,6 +82,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
+			'admin_post_rocket_clear_usedcss_url' => 'clear_url_usedcss',
 			'admin_notices'                       => 'clear_usedcss_result',
 			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
 			'rocket_before_add_field_to_settings' => [
@@ -494,5 +495,19 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ) : array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
+	}
+
+	public function clear_url_usedcss() {
+		$url = wp_get_referer();
+
+		if ( 0 !== strpos( $url, 'http' ) ) {
+			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
+		}
+
+		$this->used_css->clear_url_usedcss( $url );
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }

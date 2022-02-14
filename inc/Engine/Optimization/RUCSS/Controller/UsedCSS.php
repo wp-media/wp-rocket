@@ -136,6 +136,22 @@ class UsedCSS {
 		return true;
 	}
 
+	private function can_optimize_url() {
+		if ( rocket_bypass() ) {
+			return false;
+		}
+
+		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
+			return false;
+		}
+
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Start treeshaking the current page.
 	 *
@@ -535,5 +551,43 @@ class UsedCSS {
 
 		do_action( 'rucss_complete_job_status', $row_details->url, $job_details );
 
+	}
+
+	public function add_clear_usedcss_bar_item( $wp_admin_bar ) {
+		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
+			return;
+		}
+
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( ! $this->can_optimize_url() ) {
+			return;
+		}
+
+		$referer = '';
+		$action  = 'rocket_clear_usedcss_url';
+
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
+		}
+
+		/**
+		 * Clear usedCSS for this URL (frontend).
+		 */
+		$wp_admin_bar->add_menu(
+			[
+				'parent' => 'wp-rocket',
+				'id'     => 'remove-usedcss-url',
+				'title'  => __( 'Clear this URL\'s UsedCSS', 'rocket' ),
+				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
+			]
+		);
+	}
+
+	public function clear_url_usedcss( string $url ) {
+		$this->used_css_query->delete_by_url( $url );
 	}
 }

@@ -35,6 +35,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_disable_preload_fonts'   => 'maybe_disable_preload_fonts',
 			'rocket_rucss_pending_jobs_cron' => 'process_pending_jobs',
 			'rocket_rucss_job_check_status'  => 'check_job_status',
+			'rocket_admin_bar_items'         => 'add_clear_usedcss_bar_item',
 		];
 	}
 
@@ -84,5 +85,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function check_job_status( int $id ) {
 		$this->used_css->check_job_status( $id );
+	}
+
+	public function add_clear_usedcss_bar_item( $wp_admin_bar ) {
+		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
 	}
 }

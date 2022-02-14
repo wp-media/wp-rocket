@@ -93,7 +93,7 @@ class UsedCSS extends Query {
 
 	public function create_new_job( $url, bool $is_mobile = false ) {
 		$item = [
-			'url' => $url,
+			'url' => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 			'status' => 'pending',
 			'retries' => 0,
@@ -135,7 +135,7 @@ class UsedCSS extends Query {
 	public function get_css( string $url, bool $is_mobile = false ) {
 		$query = $this->query(
 			[
-				'url'       => $url,
+				'url'       => untrailingslashit( $url ),
 				'is_mobile' => $is_mobile,
 			]
 		);
@@ -161,5 +161,15 @@ class UsedCSS extends Query {
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
+	}
+
+	public function delete_by_url( string $url ) {
+		$item = $this->get_item_by( 'url', untrailingslashit( $url ) );
+
+		if ( ! $item ) {
+			return false;
+		}
+
+		return $this->delete_item( $item->id );
 	}
 }
