@@ -151,9 +151,11 @@ class UsedCSS {
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
-		$used_css  = $this->get_used_css( $url, $is_mobile );
+		$used_css  = $this->used_css_query->get_css( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
+			$row_id = (int) $this->used_css_query->create_new_job( $url, $is_mobile );
+
 			// Send the request to add this url into the queue and get the jobId and queueName.
 
 			/**
@@ -184,39 +186,15 @@ class UsedCSS {
 					]
 				);
 
-				//Increment retries.
-				$retries = 0;
-				if ( isset( $used_css->retries ) ) {
-					$retries = $used_css->retries;
+				if ( $row_id ) {
+					$this->used_css_query->make_status_failed( $row_id );
 				}
-
-				$data = [
-					'url'        => $url,
-					'retries'    => $retries + 1,
-					'is_mobile'  => $is_mobile,
-					'job_id'     => null,
-					'queue_name' => '',
-					'status'     => 'failed',
-					'modified'   => current_time( 'mysql', true ),
-				];
-
-				$this->save_or_update_used_css( $data );
 
 				return $html;
 			}
 
 			//We got jobid and queue name so save them into the DB and change status to be pending
-			$data = [
-				'url'        => $url,
-				'retries'    => 0,
-				'is_mobile'  => $is_mobile,
-				'job_id'     => $add_to_queue_response['contents']['jobId'],
-				'queue_name' => $add_to_queue_response['contents']['queueName'],
-				'status'     => 'pending',
-				'modified'   => current_time( 'mysql', true ),
-			];
-
-			$this->save_or_update_used_css( $data );
+			$this->used_css_query->make_status_pending( $row_id, $add_to_queue_response['contents']['jobId'], $add_to_queue_response['contents']['queueName'] );
 
 			return $html;
 		}
@@ -228,7 +206,7 @@ class UsedCSS {
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 
-		$this->update_last_accessed( (int) $used_css->id );
+		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
 		return $html;
 	}
@@ -275,110 +253,6 @@ class UsedCSS {
 		}
 
 		return $deleted;
-	}
-
-	/**
-	 * Get UsedCSS from DB table based on page url.
-	 *
-	 * @param string $url       The page URL.
-	 * @param bool   $is_mobile Page is_mobile.
-	 *
-	 * @return UsedCSS_Row|false
-	 */
-	private function get_used_css( string $url, bool $is_mobile = false ) {
-		$query = $this->used_css_query->query(
-			[
-				'url'       => $url,
-				'is_mobile' => $is_mobile,
-			]
-		);
-
-		if ( empty( $query[0] ) ) {
-			return false;
-		}
-
-		return $query[0];
-	}
-
-	/**
-	 * Insert or update used css row based on URL.
-	 *
-	 * @param array $data           {
-	 *                              Data to be saved / updated in database.
-	 *
-	 * @type string $url            The page URL.
-	 * @type string $css            The page used css.
-	 * @type int    $retries        No of automatically retries for generating the unused css.
-	 * @type bool   $is_mobile      Is mobile page.
-	 * }
-	 *
-	 * @return UsedCSS_Row|false
-	 */
-	private function save_or_update_used_css( array $data ) {
-		$used_css = $this->get_used_css( $data['url'], $data['is_mobile'] );
-
-		if ( isset( $data['css'] ) ) {
-			$data['css'] = $this->apply_font_display_swap( $data['css'] );
-
-			/**
-			 * Filters Used CSS content before saving into DB.
-			 *
-			 * @since 3.9.0.2
-			 *
-			 * @param string $usedcss Used CSS.
-			 */
-			$data['css'] = apply_filters( 'rocket_usedcss_content', $data['css'] );
-		}
-
-		if ( empty( $used_css ) ) {
-			$inserted = $this->insert_used_css( $data );
-
-			if ( ! $inserted ) {
-				return false;
-			}
-			return $inserted;
-		}
-
-		$updated = $this->update_used_css( (int) $used_css->id, $data );
-
-		if ( ! $updated ) {
-			return false;
-		}
-		return $updated;
-	}
-
-	/**
-	 * Insert used CSS.
-	 *
-	 * @param array $data Data to be inserted in used_css table.
-	 *
-	 * @return object|false
-	 */
-	private function insert_used_css( array $data ) {
-		$id = $this->used_css_query->add_item( $data );
-
-		if ( empty( $id ) ) {
-			return false;
-		}
-
-		return $this->used_css_query->get_item( $id );
-	}
-
-	/**
-	 * Update used CSS.
-	 *
-	 * @param integer $id   Used CSS ID.
-	 * @param array   $data Data to be updated in used_css table.
-	 *
-	 * @return object|false
-	 */
-	private function update_used_css( int $id, array $data ) {
-		$updated = $this->used_css_query->update_item( $id, $data );
-		if ( ! $updated ) {
-			return false;
-		}
-
-		return $this->used_css_query->get_item( $id );
 	}
 
 	/**
@@ -454,22 +328,6 @@ class UsedCSS {
 		}
 
 		return $replace;
-	}
-
-	/**
-	 * Update UsedCSS Row last_accessed date to current date.
-	 *
-	 * @param int $id Used CSS id.
-	 *
-	 * @return bool
-	 */
-	private function update_last_accessed( int $id ): bool {
-		return (bool) $this->used_css_query->update_item(
-			$id,
-			[
-				'last_accessed' => current_time( 'mysql', true ),
-			]
-		);
 	}
 
 	/**
@@ -567,7 +425,7 @@ class UsedCSS {
 	 * @return bool
 	 */
 	private function is_home( string $url ): bool {
-		return $url === untrailingslashit( home_url() );
+		return untrailingslashit( $url ) === untrailingslashit( home_url() );
 	}
 
 	/**
@@ -607,6 +465,9 @@ class UsedCSS {
 		foreach ( $pending_jobs as $used_css_row ) {
 			Logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
+			// Change status to in-progress.
+			$this->used_css_query->make_status_inprogress( (int) $used_css_row->id );
+
 			$this->queue->add_job_status_check_async( (int) $used_css_row->id );
 		}
 	}
@@ -644,17 +505,12 @@ class UsedCSS {
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
 
-				$params = [
-					'status'     => 'failed',
-					'queue_name' => '',
-					'job_id'     => '',
-				];
-				$this->used_css_query->update_item( $id, $params );
+				$this->used_css_query->make_status_failed( $id );
 
 				return;
 			}
 
-			// Increment the retries number with 1.
+			// Increment the retries number with 1 and Change status to pending again.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
 			//@Todo: Maybe we can add this row to the async job to get the status before the next cron
 
@@ -664,17 +520,18 @@ class UsedCSS {
 		//Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
-		$params = [
-			'css'        => $job_details['contents']['shakedCSS'],
-			'status'     => 'completed',
-			'queue_name' => '',
-			'job_id'     => '',
-		];
-		$this->used_css_query->update_item( $id, $params );
+		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
-		//Flush cache for this url.
-		Logger::debug( 'RUCSS: Purge the cache for url: ' . $row_details->url );
-		$this->purge->purge_url( $row_details->url );
+		/**
+		 * Filters Used CSS content before saving into DB.
+		 *
+		 * @since 3.9.0.2
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$css = apply_filters( 'rocket_usedcss_content', $css );
+
+		$this->used_css_query->make_status_completed( $id, $css );
 
 		do_action( 'rucss_complete_job_status', $row_details->url, $job_details );
 

@@ -84,9 +84,82 @@ class UsedCSS extends Query {
 		);
 	}
 
-	public function increment_retries( $id, $retries ) {
+	public function increment_retries( $id, $retries = null ) {
 		return $this->update_item( $id, [
-			'retries' => $retries + 1
+			'retries' => $retries + 1,
+			'status' => 'pending'
 		] );
+	}
+
+	public function create_new_job( $url, bool $is_mobile = false ) {
+		$item = [
+			'url' => $url,
+			'is_mobile' => $is_mobile,
+			'status' => 'pending',
+			'retries' => 0,
+		];
+		return $this->add_item( $item );
+	}
+
+	public function make_status_inprogress( int $id ) {
+		return $this->update_item( $id, [
+			'status' => 'in-progress'
+		] );
+	}
+
+	public function make_status_pending( int $id, string $job_id, string $queue_name ) {
+		return $this->update_item( $id, [
+			'job_id'     => $job_id,
+			'queue_name' => $queue_name,
+			'status'     => 'pending'
+		] );
+	}
+
+	public function make_status_failed( int $id ) {
+		return $this->update_item( $id, [
+			'status'     => 'failed',
+			'queue_name' => '',
+			'job_id'     => '',
+		] );
+	}
+
+	public function make_status_completed( int $id, string $css = '' ) {
+		return $this->update_item( $id, [
+			'css'        => $css,
+			'status'     => 'completed',
+			'queue_name' => '',
+			'job_id'     => '',
+		] );
+	}
+
+	public function get_css( string $url, bool $is_mobile = false ) {
+		$query = $this->query(
+			[
+				'url'       => $url,
+				'is_mobile' => $is_mobile,
+			]
+		);
+
+		if ( empty( $query[0] ) ) {
+			return false;
+		}
+
+		return $query[0];
+	}
+
+	/**
+	 * Update UsedCSS Row last_accessed date to current date.
+	 *
+	 * @param int $id Used CSS id.
+	 *
+	 * @return bool
+	 */
+	public function update_last_accessed( int $id ): bool {
+		return (bool) $this->update_item(
+			$id,
+			[
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
 	}
 }
