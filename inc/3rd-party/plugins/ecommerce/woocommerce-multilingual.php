@@ -11,7 +11,7 @@ function rocket_wcml_has_requirements() {
 	return defined( 'ICL_SITEPRESS_VERSION' )
 		&& version_compare( ICL_SITEPRESS_VERSION, '4.4.11', '>=' )
 		&& defined( 'WCML_VERSION' )
-		&& version_compare( WCML_VERSION, '4.12.0', '>=' );
+		&& version_compare( WCML_VERSION, '4.12.6', '>=' );
 }
 
 if ( rocket_wcml_has_requirements() ) :
