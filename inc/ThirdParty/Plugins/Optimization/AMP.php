@@ -48,7 +48,7 @@ class AMP implements Subscriber_Interface {
 		$events = [
 			'activate_amp/amp.php'       => 'generate_config_file',
 			'deactivate_amp/amp.php'     => 'generate_config_file',
-			'wp'                         => 'disable_options_on_amp',
+			'wp'                         => [ 'disable_options_on_amp', 20 ],
 			'rocket_cache_query_strings' => 'is_amp_compatible_callback',
 		];
 
@@ -109,7 +109,23 @@ class AMP implements Subscriber_Interface {
 	 * @since  3.5.2
 	 */
 	public function disable_options_on_amp() {
-		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint() ) {
+		// No endpoint function means we're not running amp here.
+		if ( ! function_exists( 'is_amp_endpoint' ) ) {
+			return;
+		}
+
+		// We can get a false negative from is_amp_endpoint when web stories is active, so we have to make sure neither is in play.
+		if ( ! is_amp_endpoint() && ! is_plugin_active( 'web-stories/web-stories.php' ) ) {
+			return;
+		}
+
+		// We don't know yet whether we made it this far because AMP's endpoint check passed or if it's a webstories thing.
+		// If web stories is active BUT this is NOT a web story singular page, we bail out now.
+		if (
+			is_plugin_active( 'web-stories/web-stories.php' )
+			&&
+			! ( is_singular( 'web-story' ) && ! is_embed() && ! post_password_required() )
+			) {
 			return;
 		}
 

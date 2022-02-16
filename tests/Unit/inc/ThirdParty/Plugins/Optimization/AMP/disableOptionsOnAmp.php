@@ -35,6 +35,20 @@ class Test_DisableOptionsOnAmp extends TestCase {
 		Functions\expect( 'is_amp_endpoint' )
 			->once()
 			->andReturn( $config[ 'is_amp_endpoint' ]  );
+		Functions\expect( 'is_plugin_active' )
+			->atMost()->twice()
+			->with( 'web-stories/web-stories.php' )
+			->andReturn( ! empty( $config['web-stories-active'] ) );
+		Functions\expect( 'is_singular' )
+			->atMost()->once()
+			->with( 'web-story')
+			->andReturn( ! empty( $config['is-web-story'] ) );
+		Functions\expect( 'is_embed' )
+			->atMost()->once()
+			->andReturn( false );
+		Functions\expect( 'post_password_required' )
+			->atMost()->once()
+			->andReturn( false );
 
 		if ( $expected[ 'bailout' ] ) {
 			Functions\expect( 'remove_filter' )->never();

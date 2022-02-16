@@ -17,7 +17,6 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		'rocket_purge_posts',
 		'rocket_purge_terms',
 		'rocket_purge_users',
-		'rocket_purge_opcache',
 		'rocket_purge_cloudflare_cache',
 		'rocket_purge_sucuri_cache',
 		'rocket_preload_cache',

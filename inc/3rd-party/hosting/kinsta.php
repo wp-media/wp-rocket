@@ -9,7 +9,7 @@ add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MA
 
 global $kinsta_cache;
 
-if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) ) {
+if ( isset( $kinsta_cache ) ) {
 	/**
 	 * Clear Kinsta cache when clearing WP Rocket cache
 	 *
@@ -117,28 +117,6 @@ if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) ) {
 		remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 	}
 	add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
-
-	if ( \Kinsta\CDN_Enabler::cdn_is_enabled() ) {
-		/**
-		 * Add Kinsta CDN to WP Rocket CDN hosts list if enabled
-		 *
-		 * @since 3.0
-		 * @author Remy Perona
-		 *
-		 * @param Array $hosts Array of CDN hosts.
-		 * @return Array Updated array of CDN hosts
-		 */
-		function rocket_add_kinsta_cdn_cname( $hosts ) {
-			if ( ! isset( $_SERVER['KINSTA_CDN_DOMAIN'] ) ) {
-				return $hosts;
-			}
-
-			$hosts[] = sanitize_text_field( wp_unslash( $_SERVER['KINSTA_CDN_DOMAIN'] ) );
-
-			return $hosts;
-		}
-		add_filter( 'rocket_cdn_cnames', 'rocket_add_kinsta_cdn_cname', 1 );
-	}
 } else {
 	add_action(
 		'admin_notices',
@@ -158,7 +136,7 @@ if ( isset( $kinsta_cache ) && class_exists( '\\Kinsta\\CDN_Enabler' ) ) {
 					'status'      => 'error',
 					'dismissible' => '',
 					// translators: %1$s = opening link tag, %2$s = closing link tag.
-					'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing and CDN, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
+					'message'     => sprintf( __( 'Your installation seems to be missing core Kinsta files managing Cache clearing, which will prevent your Kinsta installation and WP Rocket from working correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s account to resolve this issue.', 'rocket' ), '<a href="https://my.kinsta.com/login/" target="_blank">', '</a>' ),
 				]
 			);
 		}

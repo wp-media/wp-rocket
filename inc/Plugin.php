@@ -289,6 +289,8 @@ class Plugin {
 			'revolution_slider_subscriber',
 			'wordfence_subscriber',
 			'ezoic',
+			'thirstyaffiliates',
+			'pwa',
 		];
 
 		$host_type = HostResolver::get_host_service();
