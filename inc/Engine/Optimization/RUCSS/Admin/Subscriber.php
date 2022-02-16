@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
@@ -90,6 +91,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'admin_init' => 'add_rucss_column_status',
+			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches'
 		];
 	}
 
@@ -259,6 +261,8 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 			$this->queue->cancel_pending_jobs_cron();
 			return;
 		}
+
+		RUCSSQueueRunner::instance()->init();
 
 		/**
 		 * Filters the cron interval.
@@ -509,5 +513,9 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	public function adjust_as_concurrent_batches( int $num = 1 ) {
+		return 2;
 	}
 }
