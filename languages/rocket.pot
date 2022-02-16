@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-01-19 10:03-0500\n"
+"POT-Creation-Date: 2022-02-16 09:41-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -40,11 +40,11 @@ msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
 msgstr ""
 
-#: inc/3rd-party/hosting/kinsta.php:161
+#: inc/3rd-party/hosting/kinsta.php:139
 #, php-format
 msgid ""
-"Your installation seems to be missing core Kinsta files managing Cache clearing "
-"and CDN, which will prevent your Kinsta installation and WP Rocket from working "
+"Your installation seems to be missing core Kinsta files managing Cache clearing, "
+"which will prevent your Kinsta installation and WP Rocket from working "
 "correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s "
 "account to resolve this issue."
 msgstr ""
@@ -1659,28 +1659,32 @@ msgstr ""
 msgid "Regenerate Critical Path CSS"
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:132 views/cpcss/metabox/generate.php:47
+#: inc/Engine/CriticalPath/Admin/Post.php:144 views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:133 views/cpcss/metabox/generate.php:45
+#: inc/Engine/CriticalPath/Admin/Post.php:145 views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:199
+#: inc/Engine/CriticalPath/Admin/Post.php:216
+msgid "This feature is not available for non-public post types."
+msgstr ""
+
+#: inc/Engine/CriticalPath/Admin/Post.php:219
 msgid "%l to use this feature."
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:202
+#: inc/Engine/CriticalPath/Admin/Post.php:222
 #, php-format
 msgid "Publish the %s"
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:203
+#: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr ""
 
-#: inc/Engine/CriticalPath/Admin/Post.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:224
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr ""
 
@@ -1874,7 +1878,7 @@ msgstr ""
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:37
-#: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:789 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr ""
 
@@ -1958,7 +1962,7 @@ msgid ""
 msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
-#: views/settings/page-sections/dashboard.php:224
+#: views/settings/page-sections/dashboard.php:199
 msgid "Clear Used CSS"
 msgstr ""
 
@@ -2231,7 +2235,7 @@ msgstr ""
 msgid "Avada"
 msgstr ""
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:349
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:323
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr ""
@@ -2240,11 +2244,11 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:337
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:311
 msgid "FAQ"
 msgstr ""
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:64
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:63
 msgid "Settings"
 msgstr ""
 
@@ -2311,8 +2315,8 @@ msgstr[1] ""
 msgid "More info"
 msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:777
-#: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:745
+#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr ""
@@ -2424,12 +2428,12 @@ msgstr ""
 msgid "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:854
+#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:822
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:856
+#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:824
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2452,81 +2456,81 @@ msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s."
 msgstr ""
 
-#: inc/admin/ui/notices.php:607
+#: inc/admin/ui/notices.php:575
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this "
 "website?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:608
+#: inc/admin/ui/notices.php:576
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 
-#: inc/admin/ui/notices.php:614
+#: inc/admin/ui/notices.php:582
 msgid "What info will we collect?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:587
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email addresses "
 "(except for license validation), IP addresses, or third-party API keys."
 msgstr ""
 
-#: inc/admin/ui/notices.php:628
+#: inc/admin/ui/notices.php:596
 msgid "Yes, allow"
 msgstr ""
 
-#: inc/admin/ui/notices.php:631
+#: inc/admin/ui/notices.php:599
 msgid "No, thanks"
 msgstr ""
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:638
 msgid "Thank you!"
 msgstr ""
 
-#: inc/admin/ui/notices.php:675
+#: inc/admin/ui/notices.php:643
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:713
+#: inc/admin/ui/notices.php:681
 #, php-format
 msgid "%s: Cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:720
+#: inc/admin/ui/notices.php:688
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:727
+#: inc/admin/ui/notices.php:695
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:734
+#: inc/admin/ui/notices.php:702
 #, php-format
 msgid "%s: User cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:780
+#: inc/admin/ui/notices.php:748
 msgid "Stop Preload"
 msgstr ""
 
-#: inc/admin/ui/notices.php:798
+#: inc/admin/ui/notices.php:766
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:811
+#: inc/admin/ui/notices.php:779
 msgid "The following code should have been written to this file:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:842
+#: inc/admin/ui/notices.php:810
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:816
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr ""
@@ -2698,45 +2702,41 @@ msgid_plural "The Sucuri firewall API returned the following errors: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:275
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:249
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr ""
 
-#: inc/common/admin-bar.php:152
+#: inc/common/admin-bar.php:151
 msgid "Clear this post"
 msgstr ""
 
-#: inc/common/admin-bar.php:166
+#: inc/common/admin-bar.php:165
 msgid "Purge this URL"
 msgstr ""
 
-#: inc/common/admin-bar.php:192
-msgid "Purge OPcache"
-msgstr ""
-
-#: inc/common/admin-bar.php:210
+#: inc/common/admin-bar.php:184
 msgid "Purge Sucuri cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:233 inc/common/admin-bar.php:287
+#: inc/common/admin-bar.php:207 inc/common/admin-bar.php:261
 #: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:312 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:286 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:325 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:299 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr ""
 
-#: inc/common/purge.php:562
+#: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
 msgstr ""
 
-#: inc/common/purge.php:567
+#: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
 msgstr ""
 
@@ -3478,37 +3478,29 @@ msgstr ""
 msgid "Start cache preloading"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:183
-msgid "Purge OPCache content"
-msgstr ""
-
-#: views/settings/page-sections/dashboard.php:189
-msgid "Purge OPCache"
-msgstr ""
-
-#: views/settings/page-sections/dashboard.php:200
-#: views/settings/page-sections/dashboard.php:206
+#: views/settings/page-sections/dashboard.php:175
+#: views/settings/page-sections/dashboard.php:181
 msgid "Regenerate Critical CSS"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:193
 msgid "Remove Used CSS Cache"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:241
+#: views/settings/page-sections/dashboard.php:216
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:255
+#: views/settings/page-sections/dashboard.php:230
 msgid "Still cannot find a solution?"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:256
+#: views/settings/page-sections/dashboard.php:231
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:264
+#: views/settings/page-sections/dashboard.php:239
 msgid "Ask support"
 msgstr ""
 
