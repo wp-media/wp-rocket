@@ -19,7 +19,8 @@ return [
 
 	'shouldNotShowNoticeWhenNoCapability' => [
 		'config' => [
-			'capability' => false,
+			'capability'     => false,
+			'current_screen' => 'front'
 		],
 		'expected' => [
 			'show_notice' => 0,

@@ -137,6 +137,7 @@ function rocket_is_live_site() {
 		'.wpsc.site',
 		'.runcloud.link',
 		'.onrocket.site',
+		'.singlestaging.com',
 	];
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {

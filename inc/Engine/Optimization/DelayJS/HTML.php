@@ -69,6 +69,7 @@ class HTML {
 		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
 		'statcounter.com/counter/counter.js', // StatsCounter.
 		'var sc_project', // Statscounter.
+		'/jetpack/jetpack_vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack plugin lazyload.
 	];
 
 	/**

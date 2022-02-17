@@ -642,10 +642,11 @@ JS;
 		);
 
 		// Remove comments from the buffer.
-		$buffer_nocomments = $this->hide_comments( $buffer );
+		$clean_buffer = $this->hide_comments( $buffer );
+		$clean_buffer = $this->hide_noscripts( $clean_buffer );
 
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer_nocomments, $tags_match );
+		preg_match_all( $css_pattern, $clean_buffer, $tags_match );
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
@@ -661,12 +662,12 @@ JS;
 				continue;
 			}
 
-			if ( false !== strpos( $tags_match[0][ $i ], 'media="print"' ) ) {
+			if ( preg_match( '/media\s*=\s*[\'"]print[\'"]/i', $tags_match[0][ $i ] ) ) {
 				continue;
 			}
 
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload="" onerror="this.removeAttribute(\'data-rocket-async\')" ' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
@@ -761,6 +762,23 @@ JS;
 		}
 
 		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Hides <noscript> blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	private function hide_noscripts( string $html ): string {
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
 
 		if ( null === $replace ) {
 			return $html;

@@ -276,7 +276,7 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 	}
 
 	// Exclude feeds.
-	$uris[] = '/(.+/)?' . $wp_rewrite->feed_base . '/?.+/?';
+	$uris[] = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
 
 	// Exlude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';

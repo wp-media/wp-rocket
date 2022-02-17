@@ -544,38 +544,6 @@ function rocket_thank_you_license() {
 add_action( 'admin_notices', 'rocket_thank_you_license' );
 
 /**
- * This notice is displayed after purging OPcache
- *
- * @since 3.4.1
- * @author Soponar Cristina
- */
-function rocket_opcache_purge_result() {
-	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
-		return;
-	}
-
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	$user_id = get_current_user_id();
-	$notice  = get_transient( $user_id . '_opcache_purge_result' );
-	if ( ! $notice ) {
-		return;
-	}
-
-	delete_transient( $user_id . '_opcache_purge_result' );
-
-	rocket_notice_html(
-		[
-			'status'  => $notice['result'],
-			'message' => $notice['message'],
-		]
-	);
-}
-add_action( 'admin_notices', 'rocket_opcache_purge_result' );
-
-/**
  * Displays a notice for analytics opt-in
  *
  * @since 2.11
