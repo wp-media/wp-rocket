@@ -57,7 +57,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
-			->addArgument( $this->getContainer()->get( 'purge' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
 

@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -30,13 +29,6 @@ class UsedCSS {
 	 * @var ResourcesQuery
 	 */
 	private $resources_query;
-
-	/**
-	 * Purge instance
-	 *
-	 * @var Purge
-	 */
-	private $purge;
 
 	/**
 	 * Plugin options instance.
@@ -74,21 +66,18 @@ class UsedCSS {
 	 * @param Options_Data   $options         Options instance.
 	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
-	 * @param Purge          $purge           Purge instance.
 	 * @param APIClient      $api             Apiclient instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
-		Purge $purge,
 		APIClient $api,
 		QueueInterface $queue
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
-		$this->purge           = $purge;
 		$this->api             = $api;
 		$this->queue           = $queue;
 	}
@@ -136,6 +125,11 @@ class UsedCSS {
 		return true;
 	}
 
+	/**
+	 * Can optimize url.
+	 *
+	 * @return bool
+	 */
 	private function can_optimize_url() {
 		if ( rocket_bypass() ) {
 			return false;
@@ -167,11 +161,9 @@ class UsedCSS {
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
-		$used_css  = $this->used_css_query->get_css( $url, $is_mobile );
+		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
-			$row_id = (int) $this->used_css_query->create_new_job( $url, $is_mobile );
-
 			// Send the request to add this url into the queue and get the jobId and queueName.
 
 			/**
@@ -202,15 +194,16 @@ class UsedCSS {
 					]
 				);
 
-				if ( $row_id ) {
-					$this->used_css_query->make_status_failed( $row_id );
-				}
-
 				return $html;
 			}
 
-			//We got jobid and queue name so save them into the DB and change status to be pending
-			$this->used_css_query->make_status_pending( $row_id, $add_to_queue_response['contents']['jobId'], $add_to_queue_response['contents']['queueName'] );
+			//We got jobid and queue name so save them into the DB and change status to be pending.
+			$this->used_css_query->create_new_job(
+				$url,
+				$add_to_queue_response['contents']['jobId'],
+				$add_to_queue_response['contents']['queueName'],
+				$is_mobile
+			);
 
 			return $html;
 		}
@@ -553,6 +546,11 @@ class UsedCSS {
 
 	}
 
+	/**
+	 * @param $wp_admin_bar
+	 *
+	 * @return void
+	 */
 	public function add_clear_usedcss_bar_item( $wp_admin_bar ) {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
@@ -587,7 +585,18 @@ class UsedCSS {
 		);
 	}
 
+	/**
+	 * Clear specific url.
+	 *
+	 * @param string $url Page url.
+	 *
+	 * @return void
+	 */
 	public function clear_url_usedcss( string $url ) {
 		$this->used_css_query->delete_by_url( $url );
+
+		if ( $is_mobile = $this->is_mobile() ) {
+			$this->used_css_query->delete_by_url( $url, $is_mobile );
+		}
 	}
 }
