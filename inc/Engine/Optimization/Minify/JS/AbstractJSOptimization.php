@@ -256,6 +256,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'js-eu1.hsforms.net',
 			'statcounter.com/counter/counter.js',
 			'snapppt.com',
+			'secure.gravatar.com/js/gprofiles.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
