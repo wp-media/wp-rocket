@@ -67,10 +67,21 @@ class UsedCSS extends Query {
 	 */
 	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
 
-	public function get_pending_jobs( int $count = 10 ) {
+	public function get_pending_jobs( int $count = 100 ) {
+		$inprogress_count = $this->query(
+			[
+				'count' => true,
+				'status' => 'in-progress'
+			]
+		);
+
+		if ( $inprogress_count >= $count ) {
+			return [];
+		}
+
 		return $this->query(
 			[
-				'number' => $count,
+				'number' => ( $count - $inprogress_count ),
 				'status' => 'pending',
 				'fields' => [
 					'id',
