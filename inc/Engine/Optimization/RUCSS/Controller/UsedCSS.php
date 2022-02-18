@@ -500,7 +500,7 @@ class UsedCSS {
 		}
 
 		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name );
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
 		if (
 			200 !== $job_details['code']
 			||

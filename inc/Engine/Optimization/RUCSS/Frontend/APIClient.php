@@ -54,11 +54,12 @@ class APIClient extends AbstractAPIClient {
 		return wp_parse_args( (array) $result, $default );
 	}
 
-	public function get_queue_job_status( $job_id, $queue_name ) {
+	public function get_queue_job_status( $job_id, $queue_name, $is_home = false ) {
 		$args = [
 			'body'    => [
 				'id'    => $job_id,
 				'force_queue' => $queue_name,
+				'is_home' => $is_home,
 			],
 			'timeout' => 5,
 		];
