@@ -197,7 +197,7 @@ class UsedCSS {
 				return $html;
 			}
 
-			//We got jobid and queue name so save them into the DB and change status to be pending.
+			// We got jobid and queue name so save them into the DB and change status to be pending.
 			$this->used_css_query->create_new_job(
 				$url,
 				$add_to_queue_response['contents']['jobId'],
@@ -521,12 +521,12 @@ class UsedCSS {
 
 			// Increment the retries number with 1 and Change status to pending again.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
-			//@Todo: Maybe we can add this row to the async job to get the status before the next cron
+			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
 		}
 
-		//Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
+		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );

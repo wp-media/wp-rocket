@@ -45,7 +45,7 @@ class APIClient extends AbstractAPIClient {
 			'code'     => 400,
 			'message'  => 'Bad json',
 			'contents' => [
-				'jobId'      => 0,
+				'jobId'     => 0,
 				'queueName' => '',
 			],
 		];
@@ -57,9 +57,9 @@ class APIClient extends AbstractAPIClient {
 	public function get_queue_job_status( $job_id, $queue_name, $is_home = false ) {
 		$args = [
 			'body'    => [
-				'id'    => $job_id,
+				'id'          => $job_id,
 				'force_queue' => $queue_name,
-				'is_home' => $is_home,
+				'is_home'     => $is_home,
 			],
 			'timeout' => 5,
 		];
@@ -76,7 +76,7 @@ class APIClient extends AbstractAPIClient {
 			'status'   => 'failed',
 			'message'  => 'Bad json',
 			'contents' => [
-				'success'      => false,
+				'success'   => false,
 				'shakedCSS' => '',
 			],
 		];

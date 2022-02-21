@@ -5,6 +5,11 @@ namespace WP_Rocket\Engine\Common\Queue;
 
 abstract class AbstractASQueue implements QueueInterface {
 
+	/**
+	 * Queue shared Group.
+	 *
+	 * @var string
+	 */
 	protected $group = 'rocket';
 
 	/**
@@ -46,6 +51,14 @@ abstract class AbstractASQueue implements QueueInterface {
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
 	}
 
+	/**
+	 * Checks if the hook is scheduled.
+	 *
+	 * @param string $hook The hook to check.
+	 * @param array  $args Passed arguments.
+	 *
+	 * @return bool
+	 */
 	public function is_scheduled( $hook, $args = [] ) {
 		return as_has_scheduled_action( $hook, $args, $this->group );
 	}

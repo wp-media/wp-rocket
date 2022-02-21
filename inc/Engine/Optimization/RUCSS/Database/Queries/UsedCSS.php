@@ -77,8 +77,8 @@ class UsedCSS extends Query {
 	public function get_pending_jobs( int $count = 100 ) {
 		$inprogress_count = $this->query(
 			[
-				'count' => true,
-				'status' => 'in-progress'
+				'count'  => true,
+				'status' => 'in-progress',
 			]
 		);
 
@@ -88,16 +88,16 @@ class UsedCSS extends Query {
 
 		return $this->query(
 			[
-				'number' => ( $count - $inprogress_count ),
-				'status' => 'pending',
-				'fields' => [
+				'number'         => ( $count - $inprogress_count ),
+				'status'         => 'pending',
+				'fields'         => [
 					'id',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby' => 'modified',
-				'order' => 'asc',
+				'orderby'        => 'modified',
+				'order'          => 'asc',
 			]
 		);
 	}
@@ -111,10 +111,13 @@ class UsedCSS extends Query {
 	 * @return bool
 	 */
 	public function increment_retries( $id, $retries = null ) {
-		return $this->update_item( $id, [
-			'retries' => $retries + 1,
-			'status' => 'pending'
-		] );
+		return $this->update_item(
+			 $id,
+			[
+				'retries' => $retries + 1,
+				'status'  => 'pending',
+			]
+			);
 	}
 
 	/**
@@ -123,18 +126,18 @@ class UsedCSS extends Query {
 	 * @param string $url Current page url.
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
-	 * @param bool $is_mobile if the request is for mobile page.
+	 * @param bool   $is_mobile if the request is for mobile page.
 	 *
 	 * @return bool
 	 */
 	public function create_new_job( string $url, string $job_id, string $queue_name, bool $is_mobile = false ) {
 		$item = [
-			'url' => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
+			'url'        => untrailingslashit( $url ),
+			'is_mobile'  => $is_mobile,
 			'job_id'     => $job_id,
 			'queue_name' => $queue_name,
-			'status' => 'pending',
-			'retries' => 0,
+			'status'     => 'pending',
+			'retries'    => 0,
 		];
 		return $this->add_item( $item );
 	}
@@ -147,26 +150,32 @@ class UsedCSS extends Query {
 	 * @return bool
 	 */
 	public function make_status_inprogress( int $id ) {
-		return $this->update_item( $id, [
-			'status' => 'in-progress'
-		] );
+		return $this->update_item(
+			 $id,
+			[
+				'status' => 'in-progress',
+			]
+			);
 	}
 
 	/**
 	 * Change the status to be pending.
 	 *
-	 * @param int $id DB row ID.
+	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 *
 	 * @return bool
 	 */
 	public function make_status_pending( int $id, string $job_id, string $queue_name ) {
-		return $this->update_item( $id, [
-			'job_id'     => $job_id,
-			'queue_name' => $queue_name,
-			'status'     => 'pending'
-		] );
+		return $this->update_item(
+			 $id,
+			[
+				'job_id'     => $job_id,
+				'queue_name' => $queue_name,
+				'status'     => 'pending',
+			]
+			);
 	}
 
 	/**
@@ -177,35 +186,41 @@ class UsedCSS extends Query {
 	 * @return bool
 	 */
 	public function make_status_failed( int $id ) {
-		return $this->update_item( $id, [
-			'status'     => 'failed',
-			'queue_name' => '',
-			'job_id'     => '',
-		] );
+		return $this->update_item(
+			 $id,
+			[
+				'status'     => 'failed',
+				'queue_name' => '',
+				'job_id'     => '',
+			]
+			);
 	}
 
 	/**
 	 * Complete a job.
 	 *
-	 * @param int $id DB row ID.
+	 * @param int    $id DB row ID.
 	 * @param string $css Used CSS.
 	 *
 	 * @return bool
 	 */
 	public function make_status_completed( int $id, string $css = '' ) {
-		return $this->update_item( $id, [
-			'css'        => $css,
-			'status'     => 'completed',
-			'queue_name' => '',
-			'job_id'     => '',
-		] );
+		return $this->update_item(
+			 $id,
+			[
+				'css'        => $css,
+				'status'     => 'completed',
+				'queue_name' => '',
+				'job_id'     => '',
+			]
+			);
 	}
 
 	/**
 	 * Get Used CSS for specific url.
 	 *
 	 * @param string $url Page Url.
-	 * @param bool $is_mobile if the request is for mobile page.
+	 * @param bool   $is_mobile if the request is for mobile page.
 	 *
 	 * @return false|mixed
 	 */
@@ -244,7 +259,7 @@ class UsedCSS extends Query {
 	 * Delete DB row by url.
 	 *
 	 * @param string $url
-	 * @param bool $is_mobile if the request is for mobile page.
+	 * @param bool   $is_mobile if the request is for mobile page.
 	 *
 	 * @return bool
 	 */

@@ -78,8 +78,8 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'edit_term'                           => 'delete_term_used_css',
 			'pre_delete_term'                     => 'delete_term_used_css',
 			'init'                                => [
-				[ 'schedule_clean_not_commonly_used_rows', ],
-				[ 'schedule_rucss_pending_jobs_cron', ],
+				[ 'schedule_clean_not_commonly_used_rows' ],
+				[ 'schedule_rucss_pending_jobs_cron' ],
 			],
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
@@ -90,8 +90,8 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'admin_init' => 'add_rucss_column_status',
-			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches'
+			'admin_init'                          => 'add_rucss_column_status',
+			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 		];
 	}
 
@@ -145,14 +145,14 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return array|string[]
 	 */
 	public function add_status_column( array $columns ): array {
-		return array_merge( $columns, [ 'usedcss_status' => 'RUCSS status'] );
+		return array_merge( $columns, [ 'usedcss_status' => 'RUCSS status' ] );
 	}
 
 	/**
 	 * Get status for post.
 	 *
 	 * @param string $column_key Current column key.
-	 * @param int $post_id Current Post ID.
+	 * @param int    $post_id Current Post ID.
 	 *
 	 * @return void
 	 */
@@ -178,7 +178,7 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @param string $string String to be shown.
 	 * @param string $column_key Columnn key.
-	 * @param int $term_id Current term ID.
+	 * @param int    $term_id Current term ID.
 	 *
 	 * @return string
 	 */
