@@ -231,6 +231,7 @@ class DeferJS {
 			'/wp-includes/js/dist/hooks(.min)?.js',
 			'www.paypal.com/sdk/js',
 			'js-eu1.hsforms.net',
+			'yanovis.Voucher.js',
 			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
 		];
 

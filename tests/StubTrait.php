@@ -116,6 +116,9 @@ trait StubTrait {
 			case 'WP_ROCKET_MINIFY_CACHE_URL':
 				return 'http://example.org/wp-content/cache/min/';
 
+			case 'WP_ROCKET_CACHE_BUSTING_PATH':
+				return "{$this->wp_content_dir}/cache/busting/";
+
 			case 'WP_ROCKET_PATH':
 				return "{$this->wp_content_dir}/plugins/wp-rocket/";
 
