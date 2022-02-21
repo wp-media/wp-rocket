@@ -62,6 +62,8 @@ class UsedCSS {
 		'divi-style-parent-inline-inline-css',
 		'gsf-custom-css',
 		'extra-style-inline-inline-css',
+		'woodmart-inline-css-inline-css',
+		'woodmart_shortcodes-custom-css',
 	];
 
 	/**
