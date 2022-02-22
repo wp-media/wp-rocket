@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
@@ -13,13 +12,6 @@ use WP_Rocket\Engine\Optimization\DelayJS\HTML;
  * @author Remy Perona
  */
 class Elementor implements Subscriber_Interface {
-	/**
-	 * WP Rocket options.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
 	/**
 	 * WP_Filesystem_Direct instance.
 	 *
@@ -40,12 +32,10 @@ class Elementor implements Subscriber_Interface {
 	 * @since 3.3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data          $options WP Rocket options.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html ) {
-		$this->options      = $options;
+	public function __construct( $filesystem, HTML $delayjs_html ) {
 		$this->filesystem   = $filesystem;
 		$this->delayjs_html = $delayjs_html;
 	}
@@ -65,8 +55,7 @@ class Elementor implements Subscriber_Interface {
 
 		return [
 			'wp_rocket_loaded'                    => 'remove_widget_callback',
-			'added_post_meta'                     => [ 'maybe_clear_cache', 10, 3 ],
-			'deleted_post_meta'                   => [ 'maybe_clear_cache', 10, 3 ],
+			'rocket_exclude_css'                  => 'exclude_post_css',
 			'elementor/core/files/clear_cache'    => 'clear_cache',
 			'update_option__elementor_global_css' => 'clear_cache',
 			'delete_option__elementor_global_css' => 'clear_cache',
@@ -84,29 +73,6 @@ class Elementor implements Subscriber_Interface {
 	 */
 	public function remove_widget_callback() {
 		remove_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
-	}
-
-	/**
-	 * Clears WP Rocket caches if the combine CSS option is active.
-	 *
-	 * @since 3.3.1
-	 * @author Remy Perona
-	 *
-	 * @param int    $meta_id   The meta ID.
-	 * @param int    $object_id Object ID.
-	 * @param string $meta_key  Meta key.
-	 * @return void
-	 */
-	public function maybe_clear_cache( $meta_id, $object_id, $meta_key ) {
-		if ( '_elementor_css' !== $meta_key ) {
-			return;
-		}
-
-		if ( ! $this->options->get( 'minify_concatenate_css' ) ) {
-			return;
-		}
-
-		$this->clear_cache();
 	}
 
 	/**
@@ -160,5 +126,31 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Excludes Elementor CSS from minify/combine
+	 *
+	 * @since 3.10.9
+	 *
+	 * @param array $excluded Array of excluded patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_post_css( $excluded ): array {
+		if ( ! $this->elementor_use_external_file() ) {
+			return $excluded;
+		}
+
+		$upload   = wp_get_upload_dir();
+		$basepath = wp_parse_url( $upload['baseurl'], PHP_URL_PATH );
+
+		if ( empty( $basepath ) ) {
+			return $excluded;
+		}
+
+		$excluded[] = $basepath . '/elementor/css/(.*).css';
+
+		return $excluded;
 	}
 }
