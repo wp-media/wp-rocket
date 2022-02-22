@@ -6,7 +6,7 @@ return [
 		'excluded' => [],
 		'expected' => [],
 	],
-	'shouldReturnDefaultWhenInternal' => [
+	'shouldReturnUpdatedWhenExternal' => [
 		'config' => 'external',
 		'excluded' => [],
 		'expected' => [
