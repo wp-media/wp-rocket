@@ -76,8 +76,8 @@ class Test_Optimize extends TestCase {
 					->andReturn( $mockResponse['body'] );
 			} else {
 				Functions\expect( 'wp_remote_retrieve_response_message' )
-					->once()
-					->andReturn( $mockResponse['response']['message'] );
+					->once()					->andReturn( $mockResponse['response']['message'] );
+
 			}
 		}
 
