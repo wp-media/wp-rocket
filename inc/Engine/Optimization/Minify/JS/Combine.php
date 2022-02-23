@@ -845,6 +845,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'jQuery("#td_uid_',
 			'find(\'#td_uid_',
 			'variation_estimate_msg',
+			'try{Typekit.load',
 		];
 
 		/**
