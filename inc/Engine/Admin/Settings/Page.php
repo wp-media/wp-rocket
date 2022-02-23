@@ -1409,7 +1409,7 @@ class Page {
 					'page'        => 'database',
 				],
 				'schedule_cleanup_section'   => [
-					'title' => __( 'Automatic cleanup', 'rocket' ),
+					'title' => __( 'Automatic Cleanup', 'rocket' ),
 					'type'  => 'fields_container',
 					'page'  => 'database',
 				],
