@@ -35,6 +35,14 @@ interface QueueInterface {
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] );
 
+	/**
+	 * Checks if the hook is scheduled.
+	 *
+	 * @param string $hook The hook to check.
+	 * @param array  $args Passed arguments.
+	 *
+	 * @return bool
+	 */
 	public function is_scheduled( $hook, $args = [] );
 
 	/**

@@ -126,7 +126,7 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 */
 	public function maybe_dispatch_async_request() {
 		if ( is_admin() && ! \ActionScheduler::lock()->is_locked( 'async-request-runner' ) ) {
-			// Only start an async queue at most once every 60 seconds
+			// Only start an async queue at most once every 60 seconds.
 			\ActionScheduler::lock()->set( 'async-request-runner' );
 			$this->async_request->maybe_dispatch();
 		}
@@ -149,19 +149,18 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	public function run( $context = 'WP Cron' ) {
 		\ActionScheduler_Compatibility::raise_memory_limit();
 		\ActionScheduler_Compatibility::raise_time_limit( $this->get_time_limit() );
-		do_action( 'action_scheduler_before_process_queue' );
+		do_action( 'action_scheduler_before_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$this->run_cleanup();
 		$processed_actions = 0;
 		if ( false === $this->has_maximum_concurrent_batches() ) {
-			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			do {
 				$processed_actions_in_batch = $this->do_batch( $batch_size, $context );
-				error_log( 'test: ' . $processed_actions_in_batch );
-				$processed_actions += $processed_actions_in_batch;
-			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $processed_actions ) ); // keep going until we run out of actions, time, or memory
+				$processed_actions         += $processed_actions_in_batch;
+			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $processed_actions ) ); // keep going until we run out of actions, time, or memory.
 		}
 
-		do_action( 'action_scheduler_after_process_queue' );
+		do_action( 'action_scheduler_after_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return $processed_actions;
 	}
 
@@ -182,8 +181,8 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 		$processed_actions = 0;
 
 		foreach ( $claim->get_actions() as $action_id ) {
-			// bail if we lost the claim
-			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
+			// bail if we lost the claim.
+			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
 				break;
 			}
 			$this->process_action( $action_id, $context );
@@ -208,20 +207,26 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 * add_filter( 'action_scheduler_queue_runner_flush_cache', '__return_true' );
 	 */
 	protected function clear_caches() {
-		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {
+		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			wp_cache_flush();
 		}
 	}
 
 	/**
-	 * @param $schedules
+	 * Add the cron schedule.
 	 *
-	 * @return mixed
+	 * @param array $schedules Array of current schedules.
+	 *
+	 * @return array
 	 */
 	public function add_wp_cron_schedule( $schedules ) {
+		if ( isset( $schedules['every_minute'] ) ) {
+			return $schedules;
+		}
+
 		$schedules['every_minute'] = [
-			'interval' => 60, // in seconds
-			'display'  => __( 'Every minute', 'action-scheduler' ),
+			'interval' => 60, // in seconds.
+			'display'  => __( 'Every minute', 'rocket' ),
 		];
 
 		return $schedules;

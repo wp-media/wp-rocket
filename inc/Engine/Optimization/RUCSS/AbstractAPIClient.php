@@ -57,7 +57,15 @@ abstract class AbstractAPIClient {
 		$this->options = $options;
 	}
 
-	private function handle_request( array $args, $type = 'post' ) {
+	/**
+	 * Handle the request.
+	 *
+	 * @param array  $args Passed arguments.
+	 * @param string $type GET or POST.
+	 *
+	 * @return bool
+	 */
+	private function handle_request( array $args, string $type = 'post' ) {
 		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			: self::API_URL;

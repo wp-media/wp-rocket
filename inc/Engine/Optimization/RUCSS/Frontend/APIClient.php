@@ -17,8 +17,7 @@ class APIClient extends AbstractAPIClient {
 	/**
 	 * Calls Central SaaS API.
 	 *
-	 * @param string $html    HTML content.
-	 * @param string $url     HTML url.
+	 * @param string $url Page url.
 	 * @param array  $options Array with options sent to Saas API.
 	 *
 	 * @return array
@@ -54,6 +53,15 @@ class APIClient extends AbstractAPIClient {
 		return wp_parse_args( (array) $result, $default );
 	}
 
+	/**
+	 * Get job status from RUCSS queue.
+	 *
+	 * @param string $job_id Job ID.
+	 * @param string $queue_name Queue Name.
+	 * @param bool   $is_home Is home or not.
+	 *
+	 * @return array
+	 */
 	public function get_queue_job_status( $job_id, $queue_name, $is_home = false ) {
 		$args = [
 			'body'    => [
@@ -82,6 +90,6 @@ class APIClient extends AbstractAPIClient {
 		];
 
 		$result = json_decode( $this->response_body, true );
-		return wp_parse_args( (array) $result['returnvalue'] ?? [], $default );
+		return (array) wp_parse_args( (array) $result['returnvalue'] ?? [], $default );
 	}
 }

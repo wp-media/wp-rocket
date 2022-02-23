@@ -44,9 +44,10 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings    Settings instance.
-	 * @param Database $database    Database instance.
-	 * @param UsedCSS  $used_css    UsedCSS instance.
+	 * @param Settings       $settings Settings instance.
+	 * @param Database       $database Database instance.
+	 * @param UsedCSS        $used_css UsedCSS instance.
+	 * @param QueueInterface $queue    Queue instance.
 	 */
 	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
 		$this->settings = $settings;
@@ -163,14 +164,11 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		$permalink = get_permalink( $post_id );
 
-		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
-
-		if ( empty( $status ) ) {
-			echo 'no job';
-			return;
-		}
-
-		echo $status;
+		echo esc_html(
+			$this->used_css->get_job_status(
+				untrailingslashit( $permalink )
+			)
+		);
 	}
 
 	/**
@@ -501,6 +499,11 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 
+	/**
+	 * Clear UsedCSS for the current URL.
+	 *
+	 * @return void
+	 */
 	public function clear_url_usedcss() {
 		$url = wp_get_referer();
 
@@ -515,6 +518,13 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
+	/**
+	 * Adjust Action Scheduler to have two concurrent batches on the same time.
+	 *
+	 * @param int $num Number of concurrent batches.
+	 *
+	 * @return int
+	 */
 	public function adjust_as_concurrent_batches( int $num = 1 ) {
 		return 2;
 	}

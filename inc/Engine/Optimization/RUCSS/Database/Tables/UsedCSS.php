@@ -109,7 +109,7 @@ class UsedCSS extends Table {
 	}
 
 	/**
-	 * Add.
+	 * Add queue columns.
 	 *
 	 * @return bool
 	 */
@@ -133,6 +133,11 @@ class UsedCSS extends Table {
 		return $this->is_success( $created );
 	}
 
+	/**
+	 * Make status column as index.
+	 *
+	 * @return bool
+	 */
 	protected function make_status_column_index() {
 		$queuename_column_exists = $this->column_exists( 'queue_name' );
 		if ( ! $queuename_column_exists ) {
@@ -143,6 +148,11 @@ class UsedCSS extends Table {
 		return $this->is_success( $index_added );
 	}
 
+	/**
+	 * Drop unprocessedcss column.
+	 *
+	 * @return bool
+	 */
 	protected function drop_unprocesscss_column() {
 		$unprocesscss_column_exists = $this->column_exists( 'unprocessedcss' );
 		if ( ! $unprocesscss_column_exists ) {

@@ -112,12 +112,12 @@ class UsedCSS extends Query {
 	 */
 	public function increment_retries( $id, $retries = null ) {
 		return $this->update_item(
-			 $id,
+			$id,
 			[
 				'retries' => $retries + 1,
 				'status'  => 'pending',
 			]
-			);
+		);
 	}
 
 	/**
@@ -151,11 +151,11 @@ class UsedCSS extends Query {
 	 */
 	public function make_status_inprogress( int $id ) {
 		return $this->update_item(
-			 $id,
+			$id,
 			[
 				'status' => 'in-progress',
 			]
-			);
+		);
 	}
 
 	/**
@@ -169,13 +169,13 @@ class UsedCSS extends Query {
 	 */
 	public function make_status_pending( int $id, string $job_id, string $queue_name ) {
 		return $this->update_item(
-			 $id,
+			$id,
 			[
 				'job_id'     => $job_id,
 				'queue_name' => $queue_name,
 				'status'     => 'pending',
 			]
-			);
+		);
 	}
 
 	/**
@@ -187,13 +187,13 @@ class UsedCSS extends Query {
 	 */
 	public function make_status_failed( int $id ) {
 		return $this->update_item(
-			 $id,
+			$id,
 			[
 				'status'     => 'failed',
 				'queue_name' => '',
 				'job_id'     => '',
 			]
-			);
+		);
 	}
 
 	/**
@@ -206,14 +206,14 @@ class UsedCSS extends Query {
 	 */
 	public function make_status_completed( int $id, string $css = '' ) {
 		return $this->update_item(
-			 $id,
+			$id,
 			[
 				'css'        => $css,
 				'status'     => 'completed',
 				'queue_name' => '',
 				'job_id'     => '',
 			]
-			);
+		);
 	}
 
 	/**
@@ -258,7 +258,7 @@ class UsedCSS extends Query {
 	/**
 	 * Delete DB row by url.
 	 *
-	 * @param string $url
+	 * @param string $url Page url to be deleted.
 	 * @param bool   $is_mobile if the request is for mobile page.
 	 *
 	 * @return bool

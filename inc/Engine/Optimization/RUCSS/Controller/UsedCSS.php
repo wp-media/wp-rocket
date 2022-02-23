@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
+use WP_Admin_Bar;
 
 class UsedCSS {
 	use RegexTrait, CSSTrait;
@@ -66,7 +67,8 @@ class UsedCSS {
 	 * @param Options_Data   $options         Options instance.
 	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
-	 * @param APIClient      $api             Apiclient instance.
+	 * @param APIClient      $api             APIClient instance.
+	 * @param QueueInterface $queue           Queue instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -104,7 +106,7 @@ class UsedCSS {
 			return false;
 		}
 
-		// Bailout if user is logged in
+		// Bailout if user is logged in.
 		if ( is_user_logged_in() ) {
 			return false;
 		}
@@ -231,7 +233,7 @@ class UsedCSS {
 		$used_css = $this->used_css_query->get_item_by( 'url', $url );
 
 		if ( empty( $used_css ) ) {
-			return '';
+			return __( 'No Job', 'rocket' );
 		}
 
 		return $used_css->status;
@@ -542,16 +544,18 @@ class UsedCSS {
 
 		$this->used_css_query->make_status_completed( $id, $css );
 
-		do_action( 'rucss_complete_job_status', $row_details->url, $job_details );
+		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
 
 	}
 
 	/**
-	 * @param $wp_admin_bar
+	 * Add clear UsedCSS adminbar item.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
 	 *
 	 * @return void
 	 */
-	public function add_clear_usedcss_bar_item( $wp_admin_bar ) {
+	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
@@ -595,8 +599,10 @@ class UsedCSS {
 	public function clear_url_usedcss( string $url ) {
 		$this->used_css_query->delete_by_url( $url );
 
-		if ( $is_mobile = $this->is_mobile() ) {
-			$this->used_css_query->delete_by_url( $url, $is_mobile );
+		if ( ! $this->is_mobile() ) {
+			return;
 		}
+
+		$this->used_css_query->delete_by_url( $url, true );
 	}
 }

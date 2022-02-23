@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Admin_Bar;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -87,7 +88,14 @@ class Subscriber implements Subscriber_Interface {
 		$this->used_css->check_job_status( $id );
 	}
 
-	public function add_clear_usedcss_bar_item( $wp_admin_bar ) {
+	/**
+	 * Add clear UsedCSS adminbar item.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
+	 *
+	 * @return void
+	 */
+	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
 	}
 }

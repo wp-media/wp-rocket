@@ -69,7 +69,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
 			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
 			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
-			'rucss_complete_job_status'          => 'preload_url_after_rucss_generation',
+			'rocket_rucss_complete_job_status'   => 'preload_url_after_rucss_generation',
 			'shutdown'                           => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}
@@ -175,6 +175,13 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 		$this->urls = array_merge( $this->urls, $purge_urls );
 	}
 
+	/**
+	 * Preload url after RUCSS.
+	 *
+	 * @param string $url URL to be preloaded.
+	 *
+	 * @return void
+	 */
 	public function preload_url_after_rucss_generation( $url ) {
 		if ( ! $this->options->get( 'manual_preload' ) ) {
 			return;
