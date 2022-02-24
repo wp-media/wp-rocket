@@ -557,11 +557,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'rocketcdn_error'            => [
 				'en' => [
-					'id'  => '',
+					'id'  => '60ddc72d9e87cb3d01249270',
 					'url' => 'https://docs.wp-rocket.me/article/1608-error-notices-during-the-rocketcdn-subscription-process/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '',
+					'id'  => '60df1cb200fd0d7c253fc044',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1620-messages-derreur-pendant-le-processus-dabonnement/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
