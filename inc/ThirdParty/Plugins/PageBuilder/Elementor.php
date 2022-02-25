@@ -165,7 +165,7 @@ class Elementor implements Subscriber_Interface {
 			return $excluded_files;
 		}
 
-		$excluded_files[] = '/wp-includes/js/dist/hooks.min.js';
+		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
 
 		return $excluded_files;
 	}

@@ -32,7 +32,7 @@ return [
 			'logged_in'  => true,
 		],
 		'expected' => [
-			'/wp-includes/js/dist/hooks.min.js',
+			'/wp-includes/js/dist/hooks(.min)?.js',
 		],
 	],
 ];
