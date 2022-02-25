@@ -716,6 +716,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'spuvar',
 			'var wpilFrontend',
 			'urls_polylangREPLACETOID',
+			'try{Typekit.load',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -845,7 +846,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'jQuery("#td_uid_',
 			'find(\'#td_uid_',
 			'variation_estimate_msg',
-			'try{Typekit.load',
 		];
 
 		/**
