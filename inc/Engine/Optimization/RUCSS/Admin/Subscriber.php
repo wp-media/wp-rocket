@@ -101,6 +101,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'rocket_localize_admin_script'        => 'add_localize_script_data',
 		];
 	}
 
@@ -370,9 +371,7 @@ class Subscriber implements Subscriber_Interface {
 
 		set_transient(
 			'rocket_rucss_processing',
-			[
-				'start_time' => time(),
-			],
+			time() + 60,
 			MINUTE_IN_SECONDS
 		);
 
@@ -480,5 +479,17 @@ class Subscriber implements Subscriber_Interface {
 
 	public function display_success_notice() {
 		$this->settings->display_success_notice();
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		return $this->settings->add_localize_script_data( $data );
 	}
 }
