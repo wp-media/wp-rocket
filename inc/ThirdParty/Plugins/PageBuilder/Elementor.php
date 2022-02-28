@@ -35,7 +35,7 @@ class Elementor implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket options.
+	 * @param Options_Data          $options WP Rocket options.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
