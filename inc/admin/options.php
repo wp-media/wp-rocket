@@ -62,15 +62,14 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		// Purge all cache files.
 		rocket_clean_domain();
 
-		wp_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
+		/**
+		 * Fires after WP Rocket options that require a cache purge have changed
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $value An array of submitted values for the settings.
+		 */
+		do_action( 'rocket_options_changed', $value );
 	}
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
