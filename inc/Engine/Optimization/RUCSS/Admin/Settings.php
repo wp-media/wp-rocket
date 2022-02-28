@@ -191,9 +191,17 @@ class Settings {
 			return;
 		}
 
+		$current_time = time();
+
+		if ( $transient < $current_time ) {
+			return;
+		}
+
+		$remaining = $transient - $current_time;
+
 		$message = sprintf(
 			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
-			'60'
+			$remaining
 		);
 
 		rocket_notice_html(
@@ -262,5 +270,34 @@ class Settings {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $data Localize script data.
+	 *
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		if ( ! is_array( $data ) ) {
+			$data = (array) $data;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return $data;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+
+		if ( false === $transient ) {
+			return $data;
+		}
+
+		$data['notice_end_time'] = $transient;
+
+		return $data;
 	}
 }
