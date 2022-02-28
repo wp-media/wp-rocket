@@ -233,6 +233,7 @@ class DeferJS {
 			'js-eu1.hsforms.net',
 			'yanovis.Voucher.js',
 			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
+			'use.typekit.com',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );

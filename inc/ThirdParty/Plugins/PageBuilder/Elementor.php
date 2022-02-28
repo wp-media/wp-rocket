@@ -1,15 +1,14 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility file for Elementor plugin
- *
- * @since 3.3.1
- * @author Remy Perona
  */
 class Elementor implements Subscriber_Interface {
 	/**
@@ -30,7 +29,6 @@ class Elementor implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
@@ -42,9 +40,6 @@ class Elementor implements Subscriber_Interface {
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -60,14 +55,12 @@ class Elementor implements Subscriber_Interface {
 			'update_option__elementor_global_css' => 'clear_cache',
 			'delete_option__elementor_global_css' => 'clear_cache',
 			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
+			'rocket_exclude_js'                   => 'exclude_js',
 		];
 	}
 
 	/**
 	 * Remove the callback to clear the cache on widget update
-	 *
-	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -77,9 +70,6 @@ class Elementor implements Subscriber_Interface {
 
 	/**
 	 * Clear WP Rocket caches when Elementor changes the CSS
-	 *
-	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -94,9 +84,6 @@ class Elementor implements Subscriber_Interface {
 
 	/**
 	 * Checks whether elementor is set use external CSS file or not.
-	 *
-	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return bool
 	 */
@@ -152,5 +139,32 @@ class Elementor implements Subscriber_Interface {
 		$excluded[] = $basepath . '/elementor/css/(.*).css';
 
 		return $excluded;
+	}
+
+	/**
+	 * Excludes JS files from minify/combine JS
+	 *
+	 * @since 3.10.9
+	 *
+	 * @param array $excluded_files Array of excluded patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_js( $excluded_files ): array {
+		if ( ! $this->options->get( 'minify_concatenate_js', false ) ) {
+			return $excluded_files;
+		}
+
+		if ( ! $this->options->get( 'cache_logged_user', false ) ) {
+			return $excluded_files;
+		}
+
+		if ( ! is_user_logged_in() ) {
+			return $excluded_files;
+		}
+
+		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
+
+		return $excluded_files;
 	}
 }
