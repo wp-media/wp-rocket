@@ -1,10 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use Mockery;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
@@ -20,7 +21,7 @@ class Test_AddFixAnimationsScript extends FilesystemTestCase {
 	public function setUp() : void {
 		parent::setUp();
 		$this->delay_js_html = Mockery::mock( HTML::class );
-		$this->subscriber = new Elementor( $this->filesystem , $this->delay_js_html );
+		$this->subscriber = new Elementor( Mockery::mock( Options_Data::class ), $this->filesystem , $this->delay_js_html );
 	}
 
 	public function tearDown() : void {

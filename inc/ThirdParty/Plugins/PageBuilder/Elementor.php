@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 
@@ -10,6 +11,13 @@ use WP_Rocket\Engine\Optimization\DelayJS\HTML;
  * Compatibility file for Elementor plugin
  */
 class Elementor implements Subscriber_Interface {
+	/**
+	 * WP Rocket options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
 	/**
 	 * WP_Filesystem_Direct instance.
 	 *
@@ -27,10 +35,12 @@ class Elementor implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
+	 * @param Options_Data $options WP Rocket options.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
 	 */
-	public function __construct( $filesystem, HTML $delayjs_html ) {
+	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html ) {
+		$this->options      = $options;
 		$this->filesystem   = $filesystem;
 		$this->delayjs_html = $delayjs_html;
 	}
