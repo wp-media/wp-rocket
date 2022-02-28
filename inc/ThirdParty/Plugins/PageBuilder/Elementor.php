@@ -5,7 +5,6 @@ namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility file for Elementor plugin
@@ -27,8 +26,6 @@ class Elementor implements Subscriber_Interface {
 
 	/**
 	 * Constructor
-	 *
-	 * @since 3.3.1
 	 *
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
