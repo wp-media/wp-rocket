@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Preload\Homepage;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Settings instance
 	 *
@@ -32,35 +34,26 @@ class Subscriber implements Subscriber_Interface {
 	private $used_css;
 
 	/**
-	 * Options API instance.
+	 * Queue instance
 	 *
-	 * @var Options
+	 * @var QueueInterface
 	 */
-	private $options_api;
-
-	/**
-	 * Homepage Preload instance
-	 *
-	 * @var Homepage
-	 */
-	private $homepage_preloader;
+	private $queue;
 
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings    Settings instance.
-	 * @param Database $database    Database instance.
-	 * @param UsedCSS  $used_css    UsedCSS instance.
-	 * @param Options  $options_api Options API instance.
-	 * @param Homepage $homepage_preloader Homepage Preload instance.
+	 * @param Settings       $settings Settings instance.
+	 * @param Database       $database Database instance.
+	 * @param UsedCSS        $used_css UsedCSS instance.
+	 * @param QueueInterface $queue    Queue instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
-		$this->settings           = $settings;
-		$this->database           = $database;
-		$this->used_css           = $used_css;
-		$this->options_api        = $options_api;
-		$this->homepage_preloader = $homepage_preloader;
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
+		$this->settings = $settings;
+		$this->database = $database;
+		$this->used_css = $used_css;
+		$this->queue    = $queue;
 	}
 
 	/**
@@ -76,7 +69,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug              => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'switch_theme'                        => 'truncate_used_css',
 			'rocket_rucss_file_changed'           => 'truncate_used_css',
@@ -86,58 +78,122 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
 			'edit_term'                           => 'delete_term_used_css',
 			'pre_delete_term'                     => 'delete_term_used_css',
-			'init'                                => 'schedule_clean_not_commonly_used_rows',
+			'init'                                => [
+				[ 'schedule_clean_not_commonly_used_rows' ],
+				[ 'schedule_rucss_pending_jobs_cron' ],
+			],
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
+			'admin_post_rocket_clear_usedcss_url' => 'clear_url_usedcss',
 			'admin_notices'                       => 'clear_usedcss_result',
 			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10 ],
-			'admin_enqueue_scripts'               => 'add_admin_js',
 			'rocket_before_add_field_to_settings' => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'admin_init'                          => 'add_rucss_column_status',
+			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 		];
 	}
 
 	/**
-	 * Enqueue React params and Progress bar.
+	 * Sets the event manager for the subscriber.
 	 *
-	 * @since 3.9
+	 * @param Event_Manager $event_manager Event Manager instance.
+	 */
+	public function set_event_manager( Event_Manager $event_manager ) {
+		$this->event_manager = $event_manager;
+	}
+
+	/**
+	 * Add RUCSS status column for all public posts/terms table.
 	 *
 	 * @return void
 	 */
-	public function add_admin_js() {
-		// Return on all pages except WP Rocket settings page.
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		wp_enqueue_script( 'wpr-rucss-progress-bar', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'react/rucss-progress-bar.js', [ 'react-dom' ], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
-
-		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
-
-		wp_localize_script(
-			'wpr-rucss-progress-bar',
-			'rocket_rucss_ajax_data',
+	public function add_rucss_column_status() {
+		$taxonomies = get_taxonomies(
 			[
-				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
-				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
-				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ),
-				'api_allow_optimization' => $prewarmup_stats['allow_optimization'] ?? false,
-				'wpr_rucss_translations' => $this->ui_translations(),
+				'public'             => true,
+				'publicly_queryable' => true,
 			]
 		);
+
+		$post_types = get_post_types(
+			[
+				'public'             => true,
+				'publicly_queryable' => true,
+			]
+		);
+
+		$post_types[] = 'page';
+
+		foreach ( $post_types as $post_type ) {
+			$this->event_manager->add_callback( "manage_{$post_type}_posts_columns", [ $this, 'add_status_column' ] );
+			$this->event_manager->add_callback( "manage_{$post_type}_posts_custom_column", [ $this, 'add_status_data' ], 10, 2 );
+		}
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$this->event_manager->add_callback( "manage_edit-{$taxonomy}_columns", [ $this, 'add_status_column' ] );
+			$this->event_manager->add_callback( "manage_{$taxonomy}_custom_column", [ $this, 'add_taxonomy_status_data' ], 10, 3 );
+		}
+	}
+
+	/**
+	 * Add status column.
+	 *
+	 * @param array $columns Columns.
+	 *
+	 * @return array|string[]
+	 */
+	public function add_status_column( array $columns ): array {
+		return array_merge( $columns, [ 'usedcss_status' => 'RUCSS status' ] );
+	}
+
+	/**
+	 * Get status for post.
+	 *
+	 * @param string $column_key Current column key.
+	 * @param int    $post_id Current Post ID.
+	 *
+	 * @return void
+	 */
+	public function add_status_data( string $column_key, int $post_id ) {
+		if ( 'usedcss_status' !== $column_key ) {
+			return;
+		}
+
+		$permalink = get_permalink( $post_id );
+
+		echo esc_html(
+			$this->used_css->get_job_status(
+				untrailingslashit( $permalink )
+			)
+		);
+	}
+
+	/**
+	 * Get status from DB for taxonomy terms.
+	 *
+	 * @param string $string String to be shown.
+	 * @param string $column_key Columnn key.
+	 * @param int    $term_id Current term ID.
+	 *
+	 * @return string
+	 */
+	public function add_taxonomy_status_data( string $string, string $column_key, int $term_id ): string {
+		if ( 'usedcss_status' !== $column_key ) {
+			return $string;
+		}
+
+		$permalink = get_term_link( $term_id );
+
+		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
+
+		if ( empty( $status ) ) {
+			return 'no job';
+		}
+
+		return $status;
 	}
 
 	/**
@@ -183,6 +239,41 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
+	}
+
+	/**
+	 * Schedule the cron job for RUCSS pending jobs.
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function schedule_rucss_pending_jobs_cron() {
+		if ( ! $this->settings->is_enabled() ) {
+			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+				return;
+			}
+
+			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+
+			$this->queue->cancel_pending_jobs_cron();
+			return;
+		}
+
+		RUCSSQueueRunner::instance()->init();
+
+		/**
+		 * Filters the cron interval.
+		 *
+		 * @since 3.11
+		 *
+		 * @param int $interval Interval in seconds.
+		 */
+		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+
+		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
+
+		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**
@@ -303,27 +394,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Cancels any preload currently running if the RUCSS option is enabled and preload is enabled.
-	 *
-	 * @since 3.9.1
-	 *
-	 * @param array $old_value Previous option values.
-	 * @param array $value     New option values.
-	 */
-	public function maybe_cancel_preload( $old_value, $value ) {
-		if (
-			! empty( $value['remove_unused_css'] )
-			&&
-			empty( $old_value['remove_unused_css'] )
-			&&
-			! empty( $value['manual_preload'] )
-		) {
-			delete_transient( 'rocket_preload_errors' );
-			$this->homepage_preloader->cancel_preload();
-		}
-	}
-
-	/**
 	 * Truncate used_css table when clicking on the dashboard button.
 	 *
 	 * @since 3.9
@@ -395,45 +465,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */
 	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
 		$this->settings->add_clean_used_css_menu_item( $wp_admin_bar );
-	}
-
-	/**
-	 * Displays the RUCSS progressbar
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $option_data array of option_id and sub_fields of the option.
-	 *
-	 * @return void
-	 */
-	public function display_progress_bar( $option_data ) {
-		if ( 'remove_unused_css' !== $option_data['option_id'] ) {
-			return;
-		}
-
-		$this->settings->display_progress_bar();
-	}
-	/**
-	 * Array with UI translations.
-	 *
-	 * @since 3.9
-	 *
-	 * @return array
-	 */
-	private function ui_translations(): array {
-		return [
-			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
-			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
-			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
-			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
-			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
-		];
 	}
 
 	/**
@@ -460,5 +497,35 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ) : array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
+	}
+
+	/**
+	 * Clear UsedCSS for the current URL.
+	 *
+	 * @return void
+	 */
+	public function clear_url_usedcss() {
+		$url = wp_get_referer();
+
+		if ( 0 !== strpos( $url, 'http' ) ) {
+			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
+		}
+
+		$this->used_css->clear_url_usedcss( $url );
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Adjust Action Scheduler to have two concurrent batches on the same time.
+	 *
+	 * @param int $num Number of concurrent batches.
+	 *
+	 * @return int
+	 */
+	public function adjust_as_concurrent_batches( int $num = 1 ) {
+		return 2;
 	}
 }
