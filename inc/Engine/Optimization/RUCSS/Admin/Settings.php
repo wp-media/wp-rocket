@@ -172,4 +172,95 @@ class Settings {
 		$field_args['value'] = $value;
 		return $field_args;
 	}
+
+	/**
+	 * Displays the RUCSS currently processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_processing_notice() {
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+
+		if ( false === $transient ) {
+			return;
+		}
+
+		$message = sprintf(
+			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
+			'60'
+		);
+
+		rocket_notice_html(
+			[
+				'status' => 'info',
+				'message' => $message,
+			]
+		);
+	}
+
+	/**
+	 * Displays the RUCSS success notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_success_notice() {
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+
+		if ( false !== $transient ) {
+			return;
+		}
+
+		$message = sprintf(
+			__( 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %1$s URLs per %2$s second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.', 'rocket' ),
+			apply_filters( 'action_scheduler_queue_runner_batch_size', 25 ),
+			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
+		);
+
+		rocket_notice_html(
+			[
+				'message' => $message,
+			]
+		);
+	}
+
+	/**
+	 * Checks if we can display the RUCSS notices
+	 *
+	 * @since 3.11
+	 *
+	 * @return bool
+	 */
+	private function can_display_notice(): bool {
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return false;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return false;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return false;
+		}
+
+		return true;
+	}
 }

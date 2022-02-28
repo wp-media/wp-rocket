@@ -89,7 +89,11 @@ class Subscriber implements Subscriber_Interface {
 			'init'                                => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
-			'admin_notices'                       => 'clear_usedcss_result',
+			'admin_notices'                       => [
+				[ 'clear_usedcss_result' ],
+				[ 'display_processing_notice' ],
+				[ 'display_success_notice' ],
+			],
 			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
 			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10 ],
 			'admin_enqueue_scripts'               => 'add_admin_js',
@@ -364,6 +368,14 @@ class Subscriber implements Subscriber_Interface {
 			]
 		);
 
+		set_transient(
+			'rocket_rucss_processing',
+			[
+				'start_time' => time(),
+			],
+			MINUTE_IN_SECONDS
+		);
+
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
@@ -460,5 +472,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ) : array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
+	}
+
+	public function display_processing_notice() {
+		$this->settings->display_processing_notice();
+	}
+
+	public function display_success_notice() {
+		$this->settings->display_success_notice();
 	}
 }
