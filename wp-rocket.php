@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.10.8
+ * Version: 3.10.9
  * Requires at least: 5.4
  * Requires PHP: 7.0
  * Code Name: Iego
@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.10.8' );
+define( 'WP_ROCKET_VERSION',               '3.10.9' );
 define( 'WP_ROCKET_WP_VERSION',            '5.4' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.8' );
 define( 'WP_ROCKET_PHP_VERSION',           '7.0' );

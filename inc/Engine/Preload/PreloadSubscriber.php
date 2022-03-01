@@ -243,6 +243,10 @@ class PreloadSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+
 		if ( false === get_transient( 'rocket_preload_triggered' ) ) {
 			return;
 		}
