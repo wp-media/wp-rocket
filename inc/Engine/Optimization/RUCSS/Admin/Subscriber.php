@@ -7,12 +7,11 @@ use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Event_Management\Event_Manager;
-use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
-class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Settings instance
 	 *
@@ -95,109 +94,8 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'admin_init'                          => 'add_rucss_column_status',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 		];
-	}
-
-	/**
-	 * Sets the event manager for the subscriber.
-	 *
-	 * @param Event_Manager $event_manager Event Manager instance.
-	 */
-	public function set_event_manager( Event_Manager $event_manager ) {
-		$this->event_manager = $event_manager;
-	}
-
-	/**
-	 * Add RUCSS status column for all public posts/terms table.
-	 *
-	 * @return void
-	 */
-	public function add_rucss_column_status() {
-		$taxonomies = get_taxonomies(
-			[
-				'public'             => true,
-				'publicly_queryable' => true,
-			]
-		);
-
-		$post_types = get_post_types(
-			[
-				'public'             => true,
-				'publicly_queryable' => true,
-			]
-		);
-
-		$post_types[] = 'page';
-
-		foreach ( $post_types as $post_type ) {
-			$this->event_manager->add_callback( "manage_{$post_type}_posts_columns", [ $this, 'add_status_column' ] );
-			$this->event_manager->add_callback( "manage_{$post_type}_posts_custom_column", [ $this, 'add_status_data' ], 10, 2 );
-		}
-
-		foreach ( $taxonomies as $taxonomy ) {
-			$this->event_manager->add_callback( "manage_edit-{$taxonomy}_columns", [ $this, 'add_status_column' ] );
-			$this->event_manager->add_callback( "manage_{$taxonomy}_custom_column", [ $this, 'add_taxonomy_status_data' ], 10, 3 );
-		}
-	}
-
-	/**
-	 * Add status column.
-	 *
-	 * @param array $columns Columns.
-	 *
-	 * @return array|string[]
-	 */
-	public function add_status_column( array $columns ): array {
-		return array_merge( $columns, [ 'usedcss_status' => 'RUCSS status' ] );
-	}
-
-	/**
-	 * Get status for post.
-	 *
-	 * @param string $column_key Current column key.
-	 * @param int    $post_id Current Post ID.
-	 *
-	 * @return void
-	 */
-	public function add_status_data( string $column_key, int $post_id ) {
-		if ( 'usedcss_status' !== $column_key ) {
-			return;
-		}
-
-		$permalink = get_permalink( $post_id );
-
-		echo esc_html(
-			$this->used_css->get_job_status(
-				untrailingslashit( $permalink )
-			)
-		);
-	}
-
-	/**
-	 * Get status from DB for taxonomy terms.
-	 *
-	 * @param string $string String to be shown.
-	 * @param string $column_key Columnn key.
-	 * @param int    $term_id Current term ID.
-	 *
-	 * @return string
-	 */
-	public function add_taxonomy_status_data( string $string, string $column_key, int $term_id ): string {
-		if ( 'usedcss_status' !== $column_key ) {
-			return $string;
-		}
-
-		$permalink = get_term_link( $term_id );
-
-		$status = $this->used_css->get_job_status( untrailingslashit( $permalink ) );
-
-		if ( empty( $status ) ) {
-			return 'no job';
-		}
-
-		return $status;
 	}
 
 	/**

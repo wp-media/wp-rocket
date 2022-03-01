@@ -219,23 +219,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Get job status based on URL.
-	 *
-	 * @param string $url Url to get job status for.
-	 *
-	 * @return string
-	 */
-	public function get_job_status( string $url ): string {
-		$used_css = $this->used_css_query->get_item_by( 'url', $url );
-
-		if ( empty( $used_css ) ) {
-			return __( 'No Job', 'rocket' );
-		}
-
-		return $used_css->status;
-	}
-
-	/**
 	 * Delete used css based on URL.
 	 *
 	 * @param string $url The page URL.
