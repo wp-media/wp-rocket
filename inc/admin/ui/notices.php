@@ -10,6 +10,12 @@ defined( 'ABSPATH' ) || exit;
 function rocket_bad_deactivations() {
 	global $current_user;
 
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+
 	$msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' );
 	if ( current_user_can( 'rocket_manage_options' ) && $msgs ) {
 
