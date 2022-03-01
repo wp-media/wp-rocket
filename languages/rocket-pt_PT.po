@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-01-19 10:03-0500\n"
+"POT-Creation-Date: 2022-03-01 09:44-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2022\n"
 "Language-Team: Portuguese (Portugal) (https://www.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -47,18 +47,18 @@ msgstr ""
 "O seu site está alojado em %s, foi activada a limpeza automática do Varnish "
 "para garantir a compatibilidade."
 
-#: inc/3rd-party/hosting/kinsta.php:161
+#: inc/3rd-party/hosting/kinsta.php:139
 #, php-format
 msgid ""
 "Your installation seems to be missing core Kinsta files managing Cache "
-"clearing and CDN, which will prevent your Kinsta installation and WP Rocket "
-"from working correctly. Please get in touch with Kinsta support through your"
-" %1$sMyKinsta%2$s account to resolve this issue."
+"clearing, which will prevent your Kinsta installation and WP Rocket from "
+"working correctly. Please get in touch with Kinsta support through your "
+"%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
 "A sua instalação parece não ter ficheiros essenciais do Kinsta que gerem a "
-"limpeza de cache e a CDN, o que impedirá o funcionamento correcto da sua "
-"instalação Kinsta e do WP Rocket. Para corrigir o problema, por favor entre "
-"em contacto com o suporte do Kinsta através da sua conta %1$sMyKinsta%2$s."
+"limpeza de cache, o que impedirá o funcionamento correcto da sua instalação "
+"Kinsta e do WP Rocket. Para corrigir o problema, por favor entre em contacto"
+" com o suporte do Kinsta através da sua conta %1$sMyKinsta%2$s."
 
 #: inc/3rd-party/plugins/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
@@ -239,6 +239,51 @@ msgstr "Erro na cache do navegador da Cloudflare: %s"
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cache do navegador da Cloudflare definido para %s segundos"
+
+#: inc/Addon/Sucuri/Subscriber.php:95
+#, php-format
+msgid "Sucuri cache purge error: %s"
+msgstr "Erro na limpeza da cache do Sucuri: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:100
+msgid ""
+"The Sucuri cache is being cleared. Note that it may take up to two minutes "
+"for it to be fully flushed."
+msgstr ""
+"O cache do Sucuri está a ser limpa. Atenção que poderá demorar até dois "
+"minutos a ser completamente limpa."
+
+#: inc/Addon/Sucuri/Subscriber.php:217
+msgid "Sucuri firewall API key was not found."
+msgstr "A chave de API do Sucuri não foi encontrada."
+
+#: inc/Addon/Sucuri/Subscriber.php:230
+msgid "Sucuri firewall API key is invalid."
+msgstr "A chave de API do Sucuri é inválida."
+
+#: inc/Addon/Sucuri/Subscriber.php:285
+#, php-format
+msgid "Error when contacting Sucuri firewall API. Error message was: %s"
+msgstr "Erro ao ligar à API da firewall do Sucuri. A mensagem de erro: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:300
+msgid "Could not get a response from the Sucuri firewall API."
+msgstr "Não foi possível obter uma resposta da API de firewall do Sucuri."
+
+#: inc/Addon/Sucuri/Subscriber.php:315
+msgid "Got an invalid response from the Sucuri firewall API."
+msgstr "Resposta inválida da API da firewall do Sucuri."
+
+#: inc/Addon/Sucuri/Subscriber.php:329
+msgid "The Sucuri firewall API returned an unknown error."
+msgstr "A API da firewall do Sucuri devolveu um erro desconhecido."
+
+#: inc/Addon/Sucuri/Subscriber.php:333
+#, php-format
+msgid "The Sucuri firewall API returned the following error: %s"
+msgid_plural "The Sucuri firewall API returned the following errors: %s"
+msgstr[0] "A API da firewall do Sucuri devolveu o seguinte erro: %s"
+msgstr[1] "A API da firewall do Sucuri devolveu os seguintes erros: %s"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
 #: inc/Engine/Admin/Settings/Page.php:1423
@@ -1228,7 +1273,7 @@ msgid "Reduces overhead of database tables"
 msgstr "Reduz a sobrecarga das tabelas da base de dados"
 
 #: inc/Engine/Admin/Settings/Page.php:1412
-msgid "Automatic cleanup"
+msgid "Automatic Cleanup"
 msgstr "Limpeza automática"
 
 #: inc/Engine/Admin/Settings/Page.php:1425
@@ -1955,44 +2000,49 @@ msgstr "Erro: %1$s"
 msgid "Regenerate Critical Path CSS"
 msgstr "Regenerar CSS do caminho crítico"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:132
+#: inc/Engine/CriticalPath/Admin/Post.php:144
 #: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr "Gerar CSS crítico específico"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:133
+#: inc/Engine/CriticalPath/Admin/Post.php:145
 #: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr "Regenerar CSS crítico específico"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:199
+#: inc/Engine/CriticalPath/Admin/Post.php:216
+msgid "This feature is not available for non-public post types."
+msgstr ""
+"Esta funcionalidade não está disponível para tipos de conteúdo não públicos."
+
+#: inc/Engine/CriticalPath/Admin/Post.php:219
 msgid "%l to use this feature."
 msgstr "%l para usar esta funcionalidade."
 
-#: inc/Engine/CriticalPath/Admin/Post.php:202
+#: inc/Engine/CriticalPath/Admin/Post.php:222
 #, php-format
 msgid "Publish the %s"
 msgstr "Publique o(a) %s"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:203
+#: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "Active o carregamento assíncrono do CSS nas opções do WP Rocket"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:224
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "Active o carregamento assíncrono do CSS nas opções acima"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:153
 msgid "Critical CSS generation is currently running."
 msgstr "A geração do CSS crítico está em curso."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
-#: inc/Engine/Preload/PreloadSubscriber.php:257
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:158
+#: inc/Engine/Preload/PreloadSubscriber.php:261
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Vá às %1$sopções do WP Rocket%2$s para acompanhar o progresso."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:369
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2001,16 +2051,16 @@ msgstr ""
 "A geração do CSS crítico está em curso: %1$d de %2$d páginas concluídas. "
 "(Actualize a página para ver o progresso)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:441
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "A geração de CSS crítico foi concluída para %1$d de %2$d páginas."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:448
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Foram encontrados um ou mais erros ao gerar o CSS crítico."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:448
 msgid "Learn more."
 msgstr "Saiba mais."
 
@@ -2196,7 +2246,7 @@ msgstr "Actualize agora"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:37
-#: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:795 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "Ignorar este aviso."
 
@@ -2295,7 +2345,7 @@ msgstr ""
 " a diferença de preço entre a sua licença actual e a nova)."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
-#: views/settings/page-sections/dashboard.php:224
+#: views/settings/page-sections/dashboard.php:199
 msgid "Clear Used CSS"
 msgstr "Limpar CSS utilizado"
 
@@ -2307,27 +2357,27 @@ msgstr "A opção do CSS utilizado não está activada!"
 msgid "Used CSS cache cleared!"
 msgstr "A cache do CSS utilizado foi limpa!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr ""
 "Foram recolhidos ficheiros de recursos de {count} de um total de {total} "
 "páginas-chave."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:436
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr ""
 "Foram processados {count} de {total} ficheiros de recursos encontrados em "
 "páginas-chave."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:437
 msgid "Remove Unused CSS is complete!"
 msgstr "A remoção de CSS não utilizado foi concluída!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:438
 msgid "These files could not be processed:"
 msgstr "Não foi possível processar estes ficheiros:"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:439
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2407,11 +2457,11 @@ msgstr ""
 "porque foi devolvido o seguinte código de resposta: %2$s. %3$sSaiba "
 "mais%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:252
+#: inc/Engine/Preload/PreloadSubscriber.php:256
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "Pré-carregamento: o WP Rocket começou a pré-carregar o seu website."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:298
+#: inc/Engine/Preload/PreloadSubscriber.php:302
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2426,14 +2476,14 @@ msgstr[1] ""
 "Pré-carregamento: %1$s páginas sem cache foram pré-carregadas. (actualize a "
 "página para ver o progresso)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:307
+#: inc/Engine/Preload/PreloadSubscriber.php:311
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] "Ocorreu o seguinte erro ao obter os URL a pré-carregar:"
 msgstr[1] "Ocorreram os seguintes erros ao obter os URL a pré-carregar:"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:359
+#: inc/Engine/Preload/PreloadSubscriber.php:363
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "Pré-carregamento concluído: %d páginas adicionadas à cache."
@@ -2656,7 +2706,7 @@ msgstr "Smush"
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:349
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:323
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "Suporte"
@@ -2665,11 +2715,11 @@ msgstr "Suporte"
 msgid "Docs"
 msgstr "Documentação"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:337
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:311
 msgid "FAQ"
 msgstr "Perguntas frequentes"
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:64
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:63
 msgid "Settings"
 msgstr "Opções"
 
@@ -2736,8 +2786,8 @@ msgstr[1] "Estes padrões são inválidos e foram removidos:"
 msgid "More info"
 msgstr "Mais informações"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:777
-#: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:751
+#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "Limpar cache"
@@ -2792,7 +2842,7 @@ msgstr ""
 "%1$sAtenção:%2$s Nenhuma destas opções será aplicada se este conteúdo tiver "
 "sido excluído da cache nas opções globais da cache."
 
-#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:38
+#: inc/admin/ui/notices.php:31 inc/admin/ui/notices.php:44
 #, php-format
 msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
@@ -2801,7 +2851,7 @@ msgstr ""
 "O <strong>%1$s</strong> não foi desactivado por falta de permissão de escrita.<br>\n"
 "Active a permissão de escrita para o <strong>%2$s</strong> e tente de novo, ou force a desativação agora:"
 
-#: inc/admin/ui/notices.php:91
+#: inc/admin/ui/notices.php:97
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
@@ -2810,7 +2860,7 @@ msgstr ""
 "<strong>%s</strong>: Um ou mais plugins foram activados ou desactivados, "
 "caso afectem a interface do seu site, deve limpar a cache."
 
-#: inc/admin/ui/notices.php:184
+#: inc/admin/ui/notices.php:190
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2818,7 +2868,7 @@ msgstr ""
 "O módulo da Cloudflare para o WP Rocket inclui funcionalidades idênticas. "
 "Não podem estar activos ao mesmo tempo."
 
-#: inc/admin/ui/notices.php:217
+#: inc/admin/ui/notices.php:223
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2827,11 +2877,11 @@ msgstr ""
 "<strong>%s</strong>: Os seguintes plugins não são compatíveis com este "
 "plugin e poderão causar resultados inesperados:"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:229
 msgid "Deactivate"
 msgstr "Desactivar"
 
-#: inc/admin/ui/notices.php:265
+#: inc/admin/ui/notices.php:271
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2840,7 +2890,7 @@ msgstr ""
 "correcto de algumas opções do WP Rocket. Deverá ser desactivado caso tenha "
 "algum problema."
 
-#: inc/admin/ui/notices.php:305
+#: inc/admin/ui/notices.php:311
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2852,7 +2902,7 @@ msgstr ""
 "Cache para Inactivo (Level 0) na página %1$sConfigurações > Geral%2$s para "
 "evitar quaisquer problemas."
 
-#: inc/admin/ui/notices.php:326
+#: inc/admin/ui/notices.php:332
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2862,7 +2912,7 @@ msgstr ""
 " o plugin funcionar correctamente. %2$sVá para as opções das ligações "
 "permanentes%3$s"
 
-#: inc/admin/ui/notices.php:373
+#: inc/admin/ui/notices.php:379
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -2870,14 +2920,14 @@ msgstr ""
 "O %s não pôde modificar o ficheiro .htaccess devido à falta de permissões de"
 " escrita."
 
-#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:854
+#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:828
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Resolução de problemas: %1$sComo activar a permissão escrita nos ficheiros "
 "do sistema%2$s"
 
-#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:856
+#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:830
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2885,7 +2935,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:387
+#: inc/admin/ui/notices.php:393
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -2893,7 +2943,7 @@ msgstr ""
 "Não se preocupe, a cache de páginas e as opções do WP Rocket continuarão a "
 "funcionar correctamente."
 
-#: inc/admin/ui/notices.php:387
+#: inc/admin/ui/notices.php:393
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -2901,7 +2951,7 @@ msgstr ""
 "Para um óptimo desempenho, é recomendado adicionar estas linhas ao seu "
 "ficheiro .htaccess (não obrigatório):"
 
-#: inc/admin/ui/notices.php:534
+#: inc/admin/ui/notices.php:540
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2910,7 +2960,7 @@ msgstr ""
 "O %1$s está pronto! %2$sTeste o tempo de carregamento%4$s ou consulte as "
 "suas %3$sopções%4$s."
 
-#: inc/admin/ui/notices.php:607
+#: inc/admin/ui/notices.php:581
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2918,15 +2968,15 @@ msgstr ""
 "Permite que o WP Rocket recolha dados não sensíveis de diagnóstico deste "
 "site?"
 
-#: inc/admin/ui/notices.php:608
+#: inc/admin/ui/notices.php:582
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Isto ajuda-nos a melhorar o WP Rocket no futuro."
 
-#: inc/admin/ui/notices.php:614
+#: inc/admin/ui/notices.php:588
 msgid "What info will we collect?"
 msgstr "Que informação vamos recolher?"
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:593
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2938,61 +2988,61 @@ msgstr ""
 " de domínio ou endereços de email (excepto para validação de licença), "
 "endereços de IP ou chaves de API de terceiros."
 
-#: inc/admin/ui/notices.php:628
+#: inc/admin/ui/notices.php:602
 msgid "Yes, allow"
 msgstr "Sim, permitir"
 
-#: inc/admin/ui/notices.php:631
+#: inc/admin/ui/notices.php:605
 msgid "No, thanks"
 msgstr "Não, obrigado"
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:644
 msgid "Thank you!"
 msgstr "Obrigado!"
 
-#: inc/admin/ui/notices.php:675
+#: inc/admin/ui/notices.php:649
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "O WP Rocket agora recolhe as seguintes métricas do seu site:"
 
-#: inc/admin/ui/notices.php:713
+#: inc/admin/ui/notices.php:687
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: A cache foi limpa."
 
-#: inc/admin/ui/notices.php:720
+#: inc/admin/ui/notices.php:694
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: A cache do conteúdo foi limpa."
 
-#: inc/admin/ui/notices.php:727
+#: inc/admin/ui/notices.php:701
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: A cache do termo foi limpa."
 
-#: inc/admin/ui/notices.php:734
+#: inc/admin/ui/notices.php:708
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: A cache do utilizador foi limpa."
 
-#: inc/admin/ui/notices.php:780
+#: inc/admin/ui/notices.php:754
 msgid "Stop Preload"
 msgstr "Parar pré-carregamento"
 
-#: inc/admin/ui/notices.php:798
+#: inc/admin/ui/notices.php:772
 msgid "Force deactivation "
 msgstr "Forçar desactivação "
 
-#: inc/admin/ui/notices.php:811
+#: inc/admin/ui/notices.php:785
 msgid "The following code should have been written to this file:"
 msgstr "Deveria ter sido escrito neste ficheiro o seguinte código:"
 
-#: inc/admin/ui/notices.php:842
+#: inc/admin/ui/notices.php:816
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "Não é possível configurar o %s devido à falta de permissões de escrita."
 
-#: inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:822
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Ficheiro/pasta afectados: %s"
@@ -3153,94 +3203,41 @@ msgstr ""
 "https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
 "working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:116
-#, php-format
-msgid "Sucuri cache purge error: %s"
-msgstr "Erro na limpeza da cache do Sucuri: %s"
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:121
-msgid ""
-"The Sucuri cache is being cleared. Note that it may take up to two minutes "
-"for it to be fully flushed."
-msgstr ""
-"O cache do Sucuri está a ser limpa. Atenção que poderá demorar até dois "
-"minutos a ser completamente limpa."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:244
-msgid "Sucuri firewall API key was not found."
-msgstr "A chave de API do Sucuri não foi encontrada."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:256
-msgid "Sucuri firewall API key is invalid."
-msgstr "A chave de API do Sucuri é inválida."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
-msgid "Error when contacting Sucuri firewall API."
-msgstr "Erro ao ligar à API da firewall do Sucuri."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
-#, php-format
-msgid "Error when contacting Sucuri firewall API. Error message was: %s"
-msgstr "Erro ao ligar à API da firewall do Sucuri. A mensagem de erro: %s"
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:338
-msgid "Could not get a response from the Sucuri firewall API."
-msgstr "Não foi possível obter uma resposta da API de firewall do Sucuri."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:352
-msgid "Got an invalid response from the Sucuri firewall API."
-msgstr "Resposta inválida da API da firewall do Sucuri."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:365
-msgid "The Sucuri firewall API returned an unknown error."
-msgstr "A API da firewall do Sucuri devolveu um erro desconhecido."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:368
-#, php-format
-msgid "The Sucuri firewall API returned the following error: %s"
-msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "A API da firewall do Sucuri devolveu o seguinte erro: %s"
-msgstr[1] "A API da firewall do Sucuri devolveu os seguintes erros: %s"
-
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:275
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:249
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "Todos os idiomas"
 
-#: inc/common/admin-bar.php:152
+#: inc/common/admin-bar.php:151
 msgid "Clear this post"
 msgstr "Limpar este conteúdo"
 
-#: inc/common/admin-bar.php:166
+#: inc/common/admin-bar.php:165
 msgid "Purge this URL"
 msgstr "Limpar este URL"
 
-#: inc/common/admin-bar.php:192
-msgid "Purge OPcache"
-msgstr "Limpar OPcache"
-
-#: inc/common/admin-bar.php:210
+#: inc/common/admin-bar.php:184
 msgid "Purge Sucuri cache"
 msgstr "Limpar cache do Sucuri"
 
-#: inc/common/admin-bar.php:233 inc/common/admin-bar.php:287
+#: inc/common/admin-bar.php:207 inc/common/admin-bar.php:261
 #: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "Pré-carregar cache"
 
-#: inc/common/admin-bar.php:312 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:286 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "Limpar a cache da RocketCDN"
 
-#: inc/common/admin-bar.php:325 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:299 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Documentação"
 
-#: inc/common/purge.php:562
+#: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
 msgstr "Falhou ao limpar a OPcache."
 
-#: inc/common/purge.php:567
+#: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
 msgstr "A OPcache foi limpa com sucesso"
 
@@ -3513,7 +3510,7 @@ msgstr "Os dados de licença fornecidos não são válidos."
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "Para resolver o problema, por favor %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:533 inc/functions/options.php:572
+#: inc/functions/options.php:531 inc/functions/options.php:570
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3521,7 +3518,7 @@ msgstr ""
 "Falhou ao validar a licença. O nosso servidor não conseguiu resolver o "
 "pedido do seu site."
 
-#: inc/functions/options.php:533 inc/functions/options.php:572
+#: inc/functions/options.php:531 inc/functions/options.php:570
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3530,7 +3527,7 @@ msgstr ""
 "Tente clicar em %1$sGuardar alterações%2$s abaixo. Se o erro persistir, siga"
 " %3$seste guia%4$s."
 
-#: inc/functions/options.php:549
+#: inc/functions/options.php:547
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3538,59 +3535,59 @@ msgstr ""
 "Falhou ao validar a licença. Pode estar a usar uma versão cancelada do "
 "plugin. Faça o seguinte:"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Inicie sessão na sua %1$sconta%2$s do WP Rocket"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Download the zip file"
 msgstr "Descarregue o ficheiro zip"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Reinstall"
 msgstr "Reinstalar"
 
-#: inc/functions/options.php:549
+#: inc/functions/options.php:547
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Se não tiver uma conta WP Rocket, %1$scompre uma licença%2$s."
 
-#: inc/functions/options.php:557
+#: inc/functions/options.php:555
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Falhou ao validar a licença. Esta conta de utilizador não existe na nossa "
 "base de dados."
 
-#: inc/functions/options.php:557
+#: inc/functions/options.php:555
 msgid "To resolve, please contact support."
 msgstr "Para resolver o problema, por favor contacte o suporte."
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:563
 msgid "License validation failed. This user account is blocked."
 msgstr "Falhou ao validar a licença. Esta conta de utilizador está bloqueada."
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:563
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Consulte %1$seste guia%2$s para mais informações."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:583
 msgid "Your license is not valid."
 msgstr "A sua licença não é válida."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:583
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Certifique-se de que tem uma %1$slicença do WP Rocket%2$s activa."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:585
 msgid "You have added as many sites as your current license allows."
 msgstr "Já alcançou o máximo de sites permitidos pela sua licença actual."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:585
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3599,25 +3596,25 @@ msgstr ""
 "Actualize a sua %1$sconta%2$s ou %3$stransfira a sua licença%2$s para este "
 "domínio."
 
-#: inc/functions/options.php:589
+#: inc/functions/options.php:587
 msgid "This website is not allowed."
 msgstr "Este site não é permitido."
 
-#: inc/functions/options.php:589
+#: inc/functions/options.php:587
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Por favor %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:589
 msgid "This license key is not recognized."
 msgstr "Esta chave de licença não é reconhecida."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:589
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Se o problema persistir, %1$scontacte o suporte%2$s."
 
-#: inc/functions/options.php:597
+#: inc/functions/options.php:595
 #, php-format
 msgid "License validation failed: %s"
 msgstr "A validação da licença falhou: %s"
@@ -4081,39 +4078,31 @@ msgstr "Remover todos os ficheiros em cache"
 msgid "Start cache preloading"
 msgstr "Iniciar pré-carregamento da cache"
 
-#: views/settings/page-sections/dashboard.php:183
-msgid "Purge OPCache content"
-msgstr "Limpar o conteúdo da OPcache"
-
-#: views/settings/page-sections/dashboard.php:189
-msgid "Purge OPCache"
-msgstr "Limpar OPcache"
-
-#: views/settings/page-sections/dashboard.php:200
-#: views/settings/page-sections/dashboard.php:206
+#: views/settings/page-sections/dashboard.php:175
+#: views/settings/page-sections/dashboard.php:181
 msgid "Regenerate Critical CSS"
 msgstr "Regenerar CSS crítico"
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:193
 msgid "Remove Used CSS Cache"
 msgstr "Remover cache do CSS utilizado"
 
-#: views/settings/page-sections/dashboard.php:241
+#: views/settings/page-sections/dashboard.php:216
 msgid "Frequently Asked Questions"
 msgstr "Perguntas frequentes"
 
-#: views/settings/page-sections/dashboard.php:255
+#: views/settings/page-sections/dashboard.php:230
 msgid "Still cannot find a solution?"
 msgstr "Ainda não conseguiu encontrar uma solução?"
 
-#: views/settings/page-sections/dashboard.php:256
+#: views/settings/page-sections/dashboard.php:231
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Submeta um ticket e obtenha ajuda dos nossos simpáticos e experientes "
 "Rocketeers."
 
-#: views/settings/page-sections/dashboard.php:264
+#: views/settings/page-sections/dashboard.php:239
 msgid "Ask support"
 msgstr "Pedir suporte"
 
