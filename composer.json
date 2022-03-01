@@ -38,7 +38,6 @@
 		"php": ">=7.0",
 		"composer/installers": "~1.0",
 		"monolog/monolog": "^1.0",
-		"psr/container": "1.0.0",
 		"woocommerce/action-scheduler": "^3.4"
 	},
 	"require-dev": {
@@ -54,6 +53,7 @@
 		"phpstan/phpstan": "^0.12",
 		"phpunit/php-file-iterator": "2.0.3",
 		"phpunit/phpunit": "^7.5",
+		"psr/container": "1.0.0",
 		"roave/security-advisories": "dev-master",
 		"szepeviktor/phpstan-wordpress": "^0.7.0",
 		"wp-coding-standards/wpcs": "^2",
