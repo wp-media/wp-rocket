@@ -177,14 +177,14 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Preload url after RUCSS.
+	 * Purge cache of given URL after generating or clearing used CSS.
 	 *
 	 * @param string $url URL to be preloaded.
 	 *
 	 * @return void
 	 */
 	public function preload_url_after_rucss( $url ) {
-		if ( ! $this->options->get( 'manual_preload' ) ) {
+		if ( ! (bool) $this->options->get( 'manual_preload', 0 ) ) {
 			return;
 		}
 

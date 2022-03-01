@@ -98,11 +98,11 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
 			return false;
 		}
 
@@ -137,15 +137,11 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
-			return false;
-		}
-
 		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return false;
 		}
 
-		return true;
+		return ! is_rocket_post_excluded_option( 'remove_unused_css' );
 	}
 
 	/**

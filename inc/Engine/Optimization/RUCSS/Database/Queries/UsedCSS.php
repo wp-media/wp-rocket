@@ -111,7 +111,7 @@ class UsedCSS extends Query {
 	 *
 	 * @return bool
 	 */
-	public function increment_retries( $id, $retries = null ) {
+	public function increment_retries( $id, $retries = 0 ) {
 		return $this->update_item(
 			$id,
 			[

@@ -5,10 +5,6 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
 /**
  * Queue
  *
