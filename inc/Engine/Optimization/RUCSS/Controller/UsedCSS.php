@@ -631,11 +631,13 @@ class UsedCSS {
 				continue;
 			}
 
-			if ( ! preg_match( '/src:\s*url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $font_face['content'], $matches ) ) {
+			$font_url = $this->extract_first_font( $font_face['content'] );
+
+			if ( empty( $font_url ) ) {
 				continue;
 			}
 
-			$urls[] = trim( $matches['url'] );
+			$urls[] = $font_url;
 		}
 
 		if ( empty( $urls ) ) {
@@ -654,6 +656,43 @@ class UsedCSS {
 		}
 
 		return $replace;
+	}
+
+	/**
+	 * Extracts the first font URL from the font-face declaration
+	 *
+	 * Skips .eot fonts if it exists
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $font_face Font-face declaration content.
+	 *
+	 * @return string
+	 */
+	private function extract_first_font( string $font_face ): string {
+		if ( ! preg_match( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $src ) ) {
+			return '';
+		}
+
+		if ( empty( $src['urls'] ) ) {
+			return '';
+		}
+
+		$urls = explode( ',', $src['urls'] );
+
+		foreach ( $urls as $url ) {
+			if ( false !== strpos( $url, '.eot' ) ) {
+				continue;
+			}
+
+			if ( ! preg_match( '/url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $url, $matches ) ) {
+				continue;
+			}
+
+			return trim( $matches['url'] );
+		}
+
+		return '';
 	}
 
 	/**
