@@ -5,9 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
-use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
@@ -26,7 +24,6 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 	private $database;
 	private $usedCSS;
 	private $subscriber;
-	private $queue;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php';
 
@@ -36,8 +33,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		$this->settings   = Mockery::mock( Settings::class );
 		$this->database   = Mockery::mock( Database::class );
 		$this->usedCSS    = Mockery::mock( UsedCSS::class );
-		$this->queue      = new Queue();
-		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->queue );
+		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
 	}
 
 	public function tearDown() : void {

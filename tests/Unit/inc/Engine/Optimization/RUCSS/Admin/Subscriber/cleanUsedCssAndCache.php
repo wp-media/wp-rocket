@@ -25,7 +25,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	private $database;
 	private $usedCSS;
 	private $subscriber;
-	private $queue;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php';
 
@@ -35,8 +34,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		$this->settings    = Mockery::mock( Settings::class );
 		$this->database    = Mockery::mock( Database::class );
 		$this->usedCSS     = Mockery::mock( UsedCSS::class );
-		$this->queue       = new Queue();
-		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->queue );
+		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
 	}
 
 	/**
