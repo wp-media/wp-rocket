@@ -66,11 +66,12 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
-			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
-			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
-			'rocket_rucss_complete_job_status'   => 'preload_url_after_rucss_generation',
-			'shutdown'                           => [ 'maybe_dispatch', PHP_INT_MAX ],
+			'after_rocket_clean_post'             => [ 'preload_after_clean_post', 10, 3 ],
+			'after_rocket_clean_term'             => [ 'preload_after_clean_term', 10, 3 ],
+			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
+			'rocket_rucss_complete_job_status'    => 'preload_url_after_rucss',
+			'rocket_rucss_after_clearing_usedcss' => 'preload_url_after_rucss',
+			'shutdown'                            => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}
 
@@ -182,12 +183,12 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function preload_url_after_rucss_generation( $url ) {
+	public function preload_url_after_rucss( $url ) {
 		if ( ! $this->options->get( 'manual_preload' ) ) {
 			return;
 		}
 
-		wp_remote_get( $url );
+		$this->urls[] = $url;
 	}
 
 	/**

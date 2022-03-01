@@ -583,7 +583,7 @@ class UsedCSS {
 			[
 				'parent' => 'wp-rocket',
 				'id'     => 'remove-usedcss-url',
-				'title'  => __( 'Clear this URL\'s UsedCSS', 'rocket' ),
+				'title'  => __( 'Regenerate UsedCSS', 'rocket' ),
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
 			]
 		);
@@ -599,10 +599,6 @@ class UsedCSS {
 	public function clear_url_usedcss( string $url ) {
 		$this->used_css_query->delete_by_url( $url );
 
-		if ( ! $this->is_mobile() ) {
-			return;
-		}
-
-		$this->used_css_query->delete_by_url( $url, true );
+		do_action( 'rocket_rucss_after_clearing_usedcss', $url );
 	}
 }

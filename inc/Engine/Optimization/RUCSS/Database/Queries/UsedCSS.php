@@ -92,6 +92,7 @@ class UsedCSS extends Query {
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
+					'url',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
@@ -240,6 +241,27 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Get all rows with the same url (desktop and mobile versions).
+	 *
+	 * @param string $url Page url.
+	 *
+	 * @return array|false
+	 */
+	public function get_rows_by_url( string $url ) {
+		$query = $this->query(
+			[
+				'url' => untrailingslashit( $url ),
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Update UsedCSS Row last_accessed date to current date.
 	 *
 	 * @param int $id Used CSS id.
@@ -259,17 +281,22 @@ class UsedCSS extends Query {
 	 * Delete DB row by url.
 	 *
 	 * @param string $url Page url to be deleted.
-	 * @param bool   $is_mobile if the request is for mobile page.
 	 *
 	 * @return bool
 	 */
-	public function delete_by_url( string $url, bool $is_mobile = false ) {
-		$item = $this->get_row( $url, $is_mobile );
+	public function delete_by_url( string $url ) {
+		$items = $this->get_rows_by_url( $url );
 
-		if ( ! $item ) {
+		if ( ! $items ) {
 			return false;
 		}
 
-		return $this->delete_item( $item->id );
+		$deleted = true;
+		foreach ( $items as $item ) {
+			$deleted = $deleted && $this->delete_item( $item->id );
+		}
+
+		return $deleted;
 	}
+
 }

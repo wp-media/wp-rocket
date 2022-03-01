@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
+use WP_Admin_Bar;
 
 class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
@@ -86,7 +87,10 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
 			'admin_post_rocket_clear_usedcss_url' => 'clear_url_usedcss',
 			'admin_notices'                       => 'clear_usedcss_result',
-			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
+			'rocket_admin_bar_items'              => [
+				[ 'add_clean_used_css_menu_item' ],
+				[ 'add_clear_usedcss_bar_item' ],
+			],
 			'rocket_before_add_field_to_settings' => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
@@ -527,5 +531,16 @@ class Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function adjust_as_concurrent_batches( int $num = 1 ) {
 		return 2;
+	}
+
+	/**
+	 * Add clear UsedCSS adminbar item.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
+	 *
+	 * @return void
+	 */
+	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
 	}
 }
