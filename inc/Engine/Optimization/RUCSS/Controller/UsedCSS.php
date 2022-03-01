@@ -670,26 +670,28 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function extract_first_font( string $font_face ): string {
-		if ( ! preg_match( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $src ) ) {
+		if ( ! preg_match_all( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $sources ) ) {
 			return '';
 		}
 
-		if ( empty( $src['urls'] ) ) {
-			return '';
-		}
-
-		$urls = explode( ',', $src['urls'] );
-
-		foreach ( $urls as $url ) {
-			if ( false !== strpos( $url, '.eot' ) ) {
+		foreach ( $sources as $src ) {
+			if ( empty( $src['urls'] ) ) {
 				continue;
 			}
 
-			if ( ! preg_match( '/url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $url, $matches ) ) {
-				continue;
-			}
+			$urls = explode( ',', $src['urls'] );
 
-			return trim( $matches['url'] );
+			foreach ( $urls as $url ) {
+				if ( false !== strpos( $url, '.eot' ) ) {
+					continue;
+				}
+
+				if ( ! preg_match( '/url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $url, $matches ) ) {
+					continue;
+				}
+
+				return trim( $matches['url'] );
+			}
 		}
 
 		return '';
