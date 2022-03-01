@@ -39,7 +39,6 @@ class UsedCSS extends Table {
 	protected $upgrades = [
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
-		20220204 => 'drop_unprocesscss_column',
 	];
 
 	/**
@@ -52,6 +51,7 @@ class UsedCSS extends Table {
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
+			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
 			job_id           varchar(255)        NOT NULL default '',
@@ -146,21 +146,6 @@ class UsedCSS extends Table {
 
 		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `queue_name_index` (`queue_name`) " );
 		return $this->is_success( $index_added );
-	}
-
-	/**
-	 * Drop unprocessedcss column.
-	 *
-	 * @return bool
-	 */
-	protected function drop_unprocesscss_column() {
-		$unprocesscss_column_exists = $this->column_exists( 'unprocessedcss' );
-		if ( ! $unprocesscss_column_exists ) {
-			return $this->is_success( true );
-		}
-
-		$column_removed = $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP COLUMN `unprocessedcss` " );
-		return $this->is_success( $column_removed );
 	}
 
 }
