@@ -72,36 +72,38 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'        => 'add_options_first_time',
-			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug              => [
+			'rocket_first_install_options'         => 'add_options_first_time',
+			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
-			'switch_theme'                        => 'truncate_used_css',
-			'rocket_rucss_file_changed'           => 'truncate_used_css',
-			'wp_trash_post'                       => 'delete_used_css_on_update_or_delete',
-			'delete_post'                         => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
-			'edit_term'                           => 'delete_term_used_css',
-			'pre_delete_term'                     => 'delete_term_used_css',
-			'init'                                => 'schedule_clean_not_commonly_used_rows',
-			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
+			'switch_theme'                         => 'truncate_used_css',
+			'rocket_rucss_file_changed'            => 'truncate_used_css',
+			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
+			'delete_post'                          => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                     => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
+			'edit_term'                            => 'delete_term_used_css',
+			'pre_delete_term'                      => 'delete_term_used_css',
+			'init'                                 => 'schedule_clean_not_commonly_used_rows',
+			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
 			'admin_notices'                       => [
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 			],
-			'rocket_admin_bar_items'              => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_radio_options' => [ 'display_progress_bar', 10 ],
-			'admin_enqueue_scripts'               => 'add_admin_js',
-			'rocket_before_add_field_to_settings' => [
+			'rocket_admin_bar_items'               => 'add_clean_used_css_menu_item',
+			'rocket_after_settings_radio_options'  => [ 'display_progress_bar', 10 ],
+			'admin_enqueue_scripts'                => 'add_admin_js',
+			'rocket_before_add_field_to_settings'  => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
 		];
 	}
 
@@ -452,11 +454,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_value( $field_args ) : array {
+	public function set_optimize_css_delivery_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_value( $field_args );
 	}
 
@@ -465,18 +467,32 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 
+	/**
+	 * Displays the RUCSS currently processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
 	public function display_processing_notice() {
 		$this->settings->display_processing_notice();
 	}
 
+	/**
+	 * Displays the RUCSS success notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
 	public function display_success_notice() {
 		$this->settings->display_success_notice();
 	}
@@ -491,5 +507,33 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_localize_script_data( $data ): array {
 		return $this->settings->add_localize_script_data( $data );
+	}
+
+	/**
+	 * Disable combine CSS option when RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_css( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_css( $value, $old_value );
+	}
+
+	/**
+	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function set_option_on_update( $new_version, $old_version ) {
+		$this->settings->set_option_on_update( $old_version );
 	}
 }
