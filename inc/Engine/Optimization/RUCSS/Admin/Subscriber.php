@@ -98,6 +98,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
 		];
 	}
 
@@ -475,5 +476,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_combine_css( $value, $old_value ): array {
 		return $this->settings->maybe_disable_combine_css( $value, $old_value );
+	}
+
+	/**
+	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function set_option_on_update( $new_version, $old_version ) {
+		$this->settings->set_option_on_update( $old_version );
 	}
 }

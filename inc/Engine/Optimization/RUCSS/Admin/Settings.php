@@ -213,4 +213,31 @@ class Settings {
 
 		return $value;
 	}
+
+	/**
+	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function set_option_on_update( $old_version ) {
+		if ( version_compare( $old_version, '3.11', '>=' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if (
+			isset( $options['remove_unused_css'] )
+			&&
+			1 === (int) $options['remove_unused_css']
+		) {
+			$options['minify_concatenate_css'] = 0;
+		}
+
+		update_option( 'wp_rocket_settings', $options );
+	}
 }
