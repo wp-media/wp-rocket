@@ -206,8 +206,9 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'status' => 'info',
+				'status'  => 'info',
 				'message' => $message,
+				'id'      => 'rocket-notice-rucss-processing',
 			]
 		);
 	}
@@ -225,9 +226,10 @@ class Settings {
 		}
 
 		$transient = get_transient( 'rocket_rucss_processing' );
+		$class     = '';
 
 		if ( false !== $transient ) {
-			return;
+			$class = ' hidden';
 		}
 
 		$message = sprintf(
@@ -238,7 +240,9 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'message' => $message,
+				'message'     => $message,
+				'dismissible' => 'is-dismissible' . $class,
+				'id'          => 'rocket-notice-rucss-success',
 			]
 		);
 	}
