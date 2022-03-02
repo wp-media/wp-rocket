@@ -65,9 +65,9 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'        => 'add_options_first_time',
-			'rocket_input_sanitize'               => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug              => [
+			'rocket_first_install_options'         => 'add_options_first_time',
+			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
 			],
 			'switch_theme'                        => 'truncate_used_css',
@@ -94,6 +94,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
+			'pre_update_option_wp_rocket_settings'             => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                                => [ 'set_option_on_update', 14, 2 ],
 		];
 	}
 
@@ -390,11 +392,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_value( $field_args ) : array {
+	public function set_optimize_css_delivery_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_value( $field_args );
 	}
 
@@ -403,11 +405,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
 	}
 
@@ -450,5 +452,33 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Disable combine CSS option when RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_css( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_css( $value, $old_value );
+	}
+
+	/**
+	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function set_option_on_update( $new_version, $old_version ) {
+		$this->settings->set_option_on_update( $old_version );
 	}
 }
