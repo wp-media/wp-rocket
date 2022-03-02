@@ -90,7 +90,7 @@ class Subscriber implements Subscriber_Interface {
 			'init'                                 => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
-			'admin_notices'                       => [
+			'admin_notices'                        => [
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
@@ -102,7 +102,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'rocket_localize_admin_script'        => 'add_localize_script_data',
+			'rocket_localize_admin_script'         => 'add_localize_script_data',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
 		];

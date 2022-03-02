@@ -200,6 +200,7 @@ class Settings {
 
 		$remaining = $transient - $current_time;
 
+		// translators: %s = number of seconds.
 		$message = sprintf(
 			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
 			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
@@ -233,9 +234,10 @@ class Settings {
 			$class = ' hidden';
 		}
 
+		// translators: %1$s = number of URLS, %2$s = number of seconds.
 		$message = sprintf(
 			__( 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %1$s URLs per %2$s second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.', 'rocket' ),
-			apply_filters( 'action_scheduler_queue_runner_batch_size', 25 ),
+			apply_filters( 'action_scheduler_queue_runner_batch_size', 25 ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
 		);
 
