@@ -33,12 +33,6 @@ class Test_ExcludeJs extends TestCase {
 			->with( 'minify_concatenate_js', false )
 			->andReturn( $config['combine_js'] );
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cache_logged_user', false )
-			->andReturn( $config['user_cache'] );
-
-		Functions\when( 'is_user_logged_in' )->justReturn( $config['logged_in'] );
-
 		$this->assertSame(
 			$expected,
 			$this->elementor->exclude_js( [] )
