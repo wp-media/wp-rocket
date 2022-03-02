@@ -201,7 +201,7 @@ class Settings {
 
 		$message = sprintf(
 			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
-			$remaining
+			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
 		);
 
 		rocket_notice_html(
