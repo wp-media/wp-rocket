@@ -234,6 +234,7 @@ class DeferJS {
 			'yanovis.Voucher.js',
 			'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
 			'use.typekit.com',
+			'/artale/modules/kirki/assets/webfont.js',
 		];
 
 		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
