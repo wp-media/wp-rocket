@@ -48,6 +48,8 @@ function initializeClock(id, endtime) {
 
 function rucssTimer(id, endtime) {
 	const timer = document.getElementById(id);
+	const notice = document.getElementById('rocket-notice-rucss-processing');
+	const success = document.getElementById('rocket-notice-rucss-success');
 
 	if (timer === null) {
 		return;
@@ -57,8 +59,16 @@ function rucssTimer(id, endtime) {
 		const start = Date.now();
 		const remaining = Math.floor( ( (endtime * 1000) - start ) / 1000 );
 
-		if (remaining < 0) {
+		if (remaining <= 0) {
 			clearInterval(timerInterval);
+
+			if (notice !== null) {
+				notice.classList.add('hidden');
+			}
+
+			if (success !== null) {
+				success.classList.remove('hidden');
+			}
 
 			return;
 		}
