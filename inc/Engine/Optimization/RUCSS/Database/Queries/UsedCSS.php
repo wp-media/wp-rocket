@@ -299,4 +299,38 @@ class UsedCSS extends Query {
 		return $deleted;
 	}
 
+	/**
+	 * Get the count of not completed rows.
+	 *
+	 * @return int
+	 */
+	public function get_not_completed_count() {
+		return $this->query(
+			[
+				'count'      => true,
+				'status__in' => [ 'pending', 'in-progress' ],
+			]
+		);
+	}
+
+	/**
+	 * Remove all completed rows one by one.
+	 *
+	 * @return void
+	 */
+	public function remove_all_completed_rows() {
+		$rows = $this->query(
+			[
+				'status__in' => [ 'failed', 'completed' ],
+				'fields'     => [
+					'id',
+				],
+			]
+		);
+
+		foreach ( $rows as $row ) {
+			$this->delete_item( $row->id );
+		}
+	}
+
 }

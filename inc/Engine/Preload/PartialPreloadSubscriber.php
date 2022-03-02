@@ -70,7 +70,7 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 			'after_rocket_clean_term'             => [ 'preload_after_clean_term', 10, 3 ],
 			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
 			'rocket_rucss_complete_job_status'    => 'preload_url_after_rucss',
-			'rocket_rucss_after_clearing_usedcss' => 'preload_url_after_rucss',
+			'rocket_rucss_after_clearing_usedcss' => [ 'preload_url_after_rucss', 20 ],
 			'shutdown'                            => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}

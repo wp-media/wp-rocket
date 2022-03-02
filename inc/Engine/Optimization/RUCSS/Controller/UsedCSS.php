@@ -587,4 +587,22 @@ class UsedCSS {
 		 */
 		do_action( 'rocket_rucss_after_clearing_usedcss', $url );
 	}
+
+	/**
+	 * Remove all completed rows one by one.
+	 *
+	 * @return void
+	 */
+	public function remove_all_completed_rows() {
+		$this->used_css_query->remove_all_completed_rows();
+	}
+
+	/**
+	 * Get the count of not completed rows.
+	 *
+	 * @return int
+	 */
+	public function get_not_completed_count() {
+		return $this->used_css_query->get_not_completed_count();
+	}
 }

@@ -41,16 +41,17 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'profile_update'                   => 'purge_user_cache',
-			'delete_user'                      => 'purge_user_cache',
-			'create_term'                      => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'                        => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'delete_term'                      => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'after_rocket_clean_post'          => [
+			'profile_update'                      => 'purge_user_cache',
+			'delete_user'                         => 'purge_user_cache',
+			'create_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'                           => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'after_rocket_clean_post'             => [
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
-			'rocket_rucss_complete_job_status' => [ 'purge_url_cache', 100 ],
+			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
+			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 		];
 	}
 

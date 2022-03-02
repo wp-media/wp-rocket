@@ -71,7 +71,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clean_used_css_and_cache', 10, 2 ],
 			],
 			'switch_theme'                        => 'truncate_used_css',
-			'rocket_rucss_file_changed'           => 'truncate_used_css',
 			'wp_trash_post'                       => 'delete_used_css_on_update_or_delete',
 			'delete_post'                         => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
@@ -236,6 +235,12 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( 0 < $this->used_css->get_not_completed_count() ) {
+			$this->used_css->remove_all_completed_rows();
+
+			return;
+		}
+
 		$this->database->truncate_used_css_table();
 	}
 
@@ -324,7 +329,12 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		$this->database->truncate_used_css_table();
+		if ( 0 < $this->used_css->get_not_completed_count() ) {
+			$this->used_css->remove_all_completed_rows();
+		} else {
+			$this->database->truncate_used_css_table();
+		}
+
 		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
