@@ -616,6 +616,17 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function add_used_fonts_preload( string $html, string $used_css ): string {
+		/**
+		 * Filters the fonts preload from the used CSS
+		 *
+		 * @since 3.11
+		 *
+		 * @param bool $enable True to enable, false to disable.
+		 */
+		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
+			return $html;
+		}
+
 		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
 			return $html;
 		}
@@ -670,7 +681,7 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function extract_first_font( string $font_face ): string {
-		if ( ! preg_match_all( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $sources ) ) {
+		if ( ! preg_match_all( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $sources, PREG_SET_ORDER ) ) {
 			return '';
 		}
 
