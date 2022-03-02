@@ -79,22 +79,12 @@ abstract class AbstractAPIClient {
 			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
 		];
 
-		switch ( strtolower( $type ) ) {
-			case 'get':
-				$response = wp_remote_get(
-					$api_url . $this->request_path,
-					$args
-				);
-				break;
+		$args['method'] = $type;
 
-			case 'post':
-			default:
-				$response = wp_remote_post(
-					$api_url . $this->request_path,
-					$args
-				);
-				break;
-		}
+		$response = wp_remote_request(
+			$api_url . $this->request_path,
+			$args
+		);
 
 		return $this->check_response( $response );
 	}

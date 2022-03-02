@@ -578,6 +578,13 @@ class UsedCSS {
 	public function clear_url_usedcss( string $url ) {
 		$this->used_css_query->delete_by_url( $url );
 
+		/**
+		 * Fires after clearing usedcss for specific url.
+		 *
+		 * @since 3.11
+		 *
+		 * @param string $url Current page URL.
+		 */
 		do_action( 'rocket_rucss_after_clearing_usedcss', $url );
 	}
 }
