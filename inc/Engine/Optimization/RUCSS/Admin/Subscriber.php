@@ -77,6 +77,7 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
+				[ 'maybe_set_processing_transient', 10, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
 			'rocket_rucss_file_changed'            => 'truncate_used_css',
@@ -371,11 +372,7 @@ class Subscriber implements Subscriber_Interface {
 			]
 		);
 
-		set_transient(
-			'rocket_rucss_processing',
-			time() + 60,
-			MINUTE_IN_SECONDS
-		);
+		$this->set_notice_transient();
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
@@ -535,5 +532,46 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
+	}
+
+	/**
+	 * Sets the processing transient if RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_processing_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 0 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		$this->set_notice_transient();
+	}
+
+	/**
+	 * Sets the transient for the processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function set_notice_transient() {
+		set_transient(
+			'rocket_rucss_processing',
+			time() + 60,
+			MINUTE_IN_SECONDS
+		);
 	}
 }
