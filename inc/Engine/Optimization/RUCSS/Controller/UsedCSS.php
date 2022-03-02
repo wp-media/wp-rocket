@@ -53,12 +53,28 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * Inline exclusions regexes not to removed from the page after treeshaking.
+	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
-	private $inline_exclusions = [
+	private $inline_atts_exclusions = [
 		'rocket-lazyload-inline-css',
+		'divi-style-parent-inline-inline-css',
+		'gsf-custom-css',
+		'extra-style-inline-inline-css',
+		'woodmart-inline-css-inline-css',
+		'woodmart_shortcodes-custom-css',
+	];
+
+	/**
+	 * Inline CSS content exclusions patterns to be preserved on the page after treeshaking.
+	 *
+	 * @var string[]
+	 */
+	private $inline_content_exclusions = [
+		'#text-box-',
+		'#banner-',
+		'#slider-',
 	];
 
 	/**
@@ -248,7 +264,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
-	 * @param string $html            HTML content.
+	 * @param string $html HTML content.
 	 *
 	 * @return string HTML content.
 	 */
@@ -279,15 +295,40 @@ class UsedCSS {
 			$html = str_replace( $style[0], '', $html );
 		}
 
-		$inline_exclusions = (array) array_map(
+		$inline_atts_exclusions = (array) array_map(
 			function ( $item ) {
 				return preg_quote( $item, '/' );
 			},
-			$this->inline_exclusions
+			/**
+			 * Filters the array of inline CSS attributes patterns to preserve
+			 *
+			 * @since 3.11
+			 *
+			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS attributes.
+			 */
+			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
+		);
+
+		$inline_content_exclusions = (array) array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			/**
+			 * Filters the array of inline CSS content patterns to preserve
+			 *
+			 * @since 3.11
+			 *
+			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS content.
+			 */
+			apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
-			if ( ! empty( $inline_exclusions ) && $this->find( implode( '|', $inline_exclusions ), $style['atts'] ) ) {
+			if ( ! empty( $inline_atts_exclusions ) && $this->find( implode( '|', $inline_atts_exclusions ), $style['atts'] ) ) {
+				continue;
+			}
+
+			if ( ! empty( $inline_content_exclusions ) && $this->find( implode( '|', $inline_content_exclusions ), $style['content'] ) ) {
 				continue;
 			}
 
