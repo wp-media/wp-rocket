@@ -655,6 +655,8 @@ class UsedCSS {
 			return $html;
 		}
 
+		$urls = array_unique( $urls );
+
 		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->preload_links( $urls ),
