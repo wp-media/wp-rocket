@@ -119,6 +119,13 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			}
 
+			Functions\expect( 'set_transient' )
+				->once()
+				->with(
+					'rocket_rucss_processing',
+					Mockery::type( 'int' ),
+					60
+				);
 			Functions\expect( 'rocket_clean_domain' )->once();
 			Functions\expect( 'rocket_dismiss_box' )->with('rocket_warning_plugin_modification')->once();
 		}
