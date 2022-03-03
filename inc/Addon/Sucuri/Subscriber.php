@@ -1,50 +1,37 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Security;
+declare(strict_types=1);
 
-use WP_Rocket\Admin\Options_Data as Options;
+namespace WP_Rocket\Addon\Sucuri;
+
+use WP_Error;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || exit;
-
-/**
- * Sucuri Security compatibility.
- * %s is here for the other query args.
- *
- * @since  3.2
- * @author Grégory Viguier
- */
-class Sucuri_Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * URL of the API.
 	 *
-	 * @var    string
-	 * @since  3.2
-	 * @author Grégory Viguier
+	 * %s is here for the other query args.
+	 *
+	 * @var string
 	 */
 	const API_URL = 'https://waf.sucuri.net/api?v2&%s';
 
 	/**
 	 * Instance of the Option_Data class.
 	 *
-	 * @var    Options
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var Options_Data
 	 */
 	private $options;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param Options $options Instance of the Option_Data class.
+	 * @param Options_Data $options Instance of the Option_Data class.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
@@ -64,16 +51,10 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		];
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** HOOK CALLBACKS ========================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
 	 * Clear Sucuri firewall cache.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 */
 	public function maybe_clean_firewall_cache() {
 		static $done = false;
@@ -94,9 +75,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/**
 	 * Ajax callback to empty Sucury cache.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 */
 	public function do_admin_post_rocket_purge_sucuri() {
 		if ( empty( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_sucuri' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
@@ -131,9 +110,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/**
 	 * Print an admin notice if the cache failed to be cleared.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 */
 	public function maybe_print_notice() {
 		if ( ! current_user_can( 'rocket_purge_sucuri_cache' ) ) {
@@ -141,6 +118,10 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'sucury_waf_cache_sync', 0 ) ) {
 			return;
 		}
 
@@ -162,19 +143,14 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		);
 	}
 
-	/** ----------------------------------------------------------------------------------------- */
-	/** TOOLS =================================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
 	/**
-	 * Tell if a API key is well formatted.
+	 * Tell if an API key is well formatted.
 	 *
-	 * @since  3.2.3
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2.3
 	 *
-	 * @param  string $api_key An API kay.
-	 * @return array|bool      An array with the keys 'k' and 's' (required by the API) if valid. False otherwise.
+	 * @param string $api_key An API key.
+	 *
+	 * @return array|false An array with the keys 'k' and 's' (required by the API) if valid. False otherwise.
 	 */
 	public static function is_api_key_valid( $api_key ) {
 		if ( '' !== $api_key && preg_match( '@^(?<k>[a-z0-9]{32})/(?<s>[a-z0-9]{32})$@', $api_key, $matches ) ) {
@@ -187,11 +163,9 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/**
 	 * Clear Sucuri firewall cache.
 	 *
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
-	 * @return bool|object True on success. A WP_Error object on failure.
+	 * @return true|WP_Error True on success. A WP_Error object on failure.
 	 */
 	private function clean_firewall_cache() {
 		$api_key = $this->get_api_key();
@@ -225,11 +199,9 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/**
 	 * Get the API key.
 	 *
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
-	 * @return array|object An array with the keys 'k' and 's', required by the API. A WP_Error object if no key or invalid key.
+	 * @return array|WP_Error An array with the keys 'k' and 's', required by the API. A WP_Error object if no key or invalid key.
 	 */
 	private function get_api_key() {
 		$api_key = trim( $this->options->get( 'sucury_waf_api_key', '' ) );
@@ -241,7 +213,8 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'sucuri firewall cache',
 				]
 			);
-			return new \WP_Error( 'no_sucuri_api_key', __( 'Sucuri firewall API key was not found.', 'rocket' ) );
+
+			return new WP_Error( 'no_sucuri_api_key', __( 'Sucuri firewall API key was not found.', 'rocket' ) );
 		}
 
 		$matches = self::is_api_key_valid( $api_key );
@@ -253,7 +226,8 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'sucuri firewall cache',
 				]
 			);
-			return new \WP_Error( 'invalid_sucuri_api_key', __( 'Sucuri firewall API key is invalid.', 'rocket' ) );
+
+			return new WP_Error( 'invalid_sucuri_api_key', __( 'Sucuri firewall API key is invalid.', 'rocket' ) );
 		}
 
 		return [
@@ -265,51 +239,37 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/**
 	 * Request against the API.
 	 *
-	 * @since  3.2
-	 * @access private
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
-	 * @param  array $params Parameters to send.
-	 * @return array|object The response data on success. A WP_Error object on failure.
+	 * @param array $params Parameters to send.
+	 *
+	 * @return array|WP_Error The response data on success. A WP_Error object on failure.
 	 */
 	private function request_api( $params = [] ) {
 		$params['time'] = time();
 		$params         = $this->build_query( $params );
 		$url            = sprintf( static::API_URL, $params );
 
-		try {
-			/**
-			 * Filters the arguments for the Sucuri API request
-			 *
-			 * @since 3.3.4
-			 * @author Soponar Cristina
-			 *
-			 * @param array $args Arguments for the request.
-			 */
-			$args = apply_filters(
-				'rocket_sucuri_api_request_args',
-				[
-					'timeout'     => 5,
-					'redirection' => 5,
-					'httpversion' => '1.1',
-					'blocking'    => true,
-					/** This filter is documented in wp-includes/class-wp-http-streams.php */
-					'sslverify'   => apply_filters( 'https_ssl_verify', true ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-				]
-			);
+		/**
+		 * Filters the arguments for the Sucuri API request
+		 *
+		 * @since 3.3.4
+		 *
+		 * @param array $args Arguments for the request.
+		 */
+		$args = apply_filters(
+			'rocket_sucuri_api_request_args',
+			[
+				'timeout'     => 5,
+				'redirection' => 5,
+				'httpversion' => '1.1',
+				'blocking'    => true,
+				// This filter is documented in wp-includes/class-wp-http-streams.php.
+				'sslverify'   => apply_filters( 'https_ssl_verify', true ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
 
-			$response = wp_remote_get( $url, $args );
-		} catch ( \Exception $e ) {
-			Logger::error(
-				'Error when contacting the API.',
-				[
-					'sucuri firewall cache',
-					'url'      => $url,
-					'response' => $e->getMessage(),
-				]
-			);
-			return new \WP_Error( 'error_sucuri_api', __( 'Error when contacting Sucuri firewall API.', 'rocket' ) );
-		}
+		$response = wp_remote_get( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
 			Logger::error(
@@ -320,13 +280,14 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'response' => $response->get_error_message(),
 				]
 			);
-			/* translators: %s is an error message. */
-			return new \WP_Error( 'wp_error_sucuri_api', sprintf( __( 'Error when contacting Sucuri firewall API. Error message was: %s', 'rocket' ), $response->get_error_message() ) );
+
+			// translators: %s is an error message.
+			return new WP_Error( 'wp_error_sucuri_api', sprintf( __( 'Error when contacting Sucuri firewall API. Error message was: %s', 'rocket' ), $response->get_error_message() ) );
 		}
 
 		$contents = wp_remote_retrieve_body( $response );
 
-		if ( ! $contents ) {
+		if ( empty( $contents ) ) {
 			Logger::error(
 				'Could not get a response from the API.',
 				[
@@ -335,10 +296,11 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'response' => $response,
 				]
 			);
-			return new \WP_Error( 'sucuri_api_no_response', __( 'Could not get a response from the Sucuri firewall API.', 'rocket' ) );
+
+			return new WP_Error( 'sucuri_api_no_response', __( 'Could not get a response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
-		$data = @json_decode( $contents, true );
+		$data = json_decode( $contents, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
 			Logger::error(
@@ -349,7 +311,8 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'response_body' => $contents,
 				]
 			);
-			return new \WP_Error( 'sucuri_api_invalid_response', __( 'Got an invalid response from the Sucuri firewall API.', 'rocket' ) );
+
+			return new WP_Error( 'sucuri_api_invalid_response', __( 'Got an invalid response from the Sucuri firewall API.', 'rocket' ) );
 		}
 
 		if ( empty( $data['status'] ) ) {
@@ -361,25 +324,29 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 					'response_data' => $data,
 				]
 			);
+
 			if ( empty( $data['messages'] ) || ! is_array( $data['messages'] ) ) {
-				return new \WP_Error( 'sucuri_api_error_status', __( 'The Sucuri firewall API returned an unknown error.', 'rocket' ) );
+				return new WP_Error( 'sucuri_api_error_status', __( 'The Sucuri firewall API returned an unknown error.', 'rocket' ) );
 			}
-			/* translators: %s is an error message. */
+
+			// translators: %s is an error message.
 			$message = _n( 'The Sucuri firewall API returned the following error: %s', 'The Sucuri firewall API returned the following errors: %s', count( $data['messages'] ), 'rocket' );
 			$message = sprintf( $message, '<br/>' . implode( '<br/>', $data['messages'] ) );
-			return new \WP_Error( 'sucuri_api_error_status', $message );
+
+			return new WP_Error( 'sucuri_api_error_status', $message );
 		}
 
 		return $data;
 	}
 
 	/**
-	 * An i18n-firendly alternative to the built-in PHP method `http_build_query()`.
+	 * An i18n-friendly alternative to the built-in PHP method `http_build_query()`.
 	 *
-	 * @param  array|object $params An array or object containing properties.
-	 * @return string               A URL-encoded string.
+	 * @param array|object $params An array or object containing properties.
+	 *
+	 * @return string An URL-encoded string.
 	 */
-	private function build_query( $params ) {
+	private function build_query( $params ): string {
 		if ( ! $params ) {
 			return '';
 		}

@@ -140,6 +140,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
 		if ( false === get_transient( 'rocket_critical_css_generation_triggered' ) ) {
 			return;
 		}

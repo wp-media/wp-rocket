@@ -476,8 +476,6 @@ function rocket_valid_key() {
 		return $valid_details;
 	}
 
-	delete_transient( 'rocket_check_key_errors' );
-
 	return $valid_details;
 }
 

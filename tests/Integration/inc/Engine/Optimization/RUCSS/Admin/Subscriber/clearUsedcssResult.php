@@ -18,6 +18,7 @@ class Test_ClearUsedcssResult extends TestCase {
 
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
+	private $enabled;
 
 	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
@@ -32,6 +33,7 @@ class Test_ClearUsedcssResult extends TestCase {
 	public function tearDown() : void {
 		parent::tearDown();
 
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss'] );
 		delete_transient( 'rocket_clear_usedcss_response' );
 	}
 
@@ -47,6 +49,10 @@ class Test_ClearUsedcssResult extends TestCase {
 			}
 			wp_set_current_user( $user_id );
 		}
+
+		$this->enabled = $input['enabled'];
+
+		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss'] );
 
 		if ( isset( $input['transient'] ) && $input['transient'] ) {
 			set_transient( 'rocket_clear_usedcss_response', $input['transient'] );
@@ -69,5 +75,9 @@ class Test_ClearUsedcssResult extends TestCase {
 		do_action( 'admin_notices' );
 
 		return $this->format_the_html( ob_get_clean() );
+	}
+
+	public function set_rucss() {
+		return $this->enabled;
 	}
 }
