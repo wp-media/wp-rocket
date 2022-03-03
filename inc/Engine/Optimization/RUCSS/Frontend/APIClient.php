@@ -90,6 +90,6 @@ class APIClient extends AbstractAPIClient {
 		];
 
 		$result = json_decode( $this->response_body, true );
-		return (array) wp_parse_args( ( $result && (array) $result['returnvalue'] ) ? $result['returnvalue'] : [], $default );
+		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
 	}
 }
