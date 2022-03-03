@@ -191,8 +191,6 @@ class UsedCSS extends Query {
 			$id,
 			[
 				'status'     => 'failed',
-				'queue_name' => '',
-				'job_id'     => '',
 			]
 		);
 	}
@@ -211,8 +209,6 @@ class UsedCSS extends Query {
 			[
 				'css'        => $css,
 				'status'     => 'completed',
-				'queue_name' => '',
-				'job_id'     => '',
 			]
 		);
 	}
