@@ -70,32 +70,32 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
 			],
-			'switch_theme'                        => 'truncate_used_css',
-			'wp_trash_post'                       => 'delete_used_css_on_update_or_delete',
-			'delete_post'                         => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                    => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'             => 'delete_used_css_on_update_or_delete',
-			'edit_term'                           => 'delete_term_used_css',
-			'pre_delete_term'                     => 'delete_term_used_css',
-			'init'                                => [
+			'switch_theme'                         => 'truncate_used_css',
+			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
+			'delete_post'                          => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                     => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
+			'edit_term'                            => 'delete_term_used_css',
+			'pre_delete_term'                      => 'delete_term_used_css',
+			'init'                                 => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_rucss_pending_jobs_cron' ],
 			],
-			'rocket_rucss_clean_rows_time_event'  => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'     => 'truncate_used_css_handler',
-			'admin_post_rocket_clear_usedcss_url' => 'clear_url_usedcss',
-			'admin_notices'                       => 'clear_usedcss_result',
-			'rocket_admin_bar_items'              => [
+			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
+			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
+			'admin_notices'                        => 'clear_usedcss_result',
+			'rocket_admin_bar_items'               => [
 				[ 'add_clean_used_css_menu_item' ],
 				[ 'add_clear_usedcss_bar_item' ],
 			],
-			'rocket_before_add_field_to_settings' => [
+			'rocket_before_add_field_to_settings'  => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
-			'pre_update_option_wp_rocket_settings'             => [ 'maybe_disable_combine_css', 11, 2 ],
-			'wp_rocket_upgrade'                                => [ 'set_option_on_update', 14, 2 ],
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
 		];
 	}
 
