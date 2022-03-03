@@ -528,7 +528,7 @@ class UsedCSS {
 			||
 			empty( $job_details['contents'] )
 			||
-			empty( $job_details['contents']['shakedCSS'] )
+			! isset( $job_details['contents']['shakedCSS'] )
 		) {
 			Logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
 
