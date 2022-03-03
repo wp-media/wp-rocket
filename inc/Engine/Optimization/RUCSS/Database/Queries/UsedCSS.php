@@ -190,7 +190,7 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status'     => 'failed',
+				'status' => 'failed',
 			]
 		);
 	}
@@ -207,8 +207,8 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'css'        => $css,
-				'status'     => 'completed',
+				'css'    => $css,
+				'status' => 'completed',
 			]
 		);
 	}
