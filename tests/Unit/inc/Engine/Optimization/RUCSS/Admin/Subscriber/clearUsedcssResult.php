@@ -5,14 +5,12 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Engine\Preload\Homepage;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WPDieException;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clear_usedcss_result
@@ -25,20 +23,16 @@ class Test_ClearUsedcssResult extends TestCase {
 	private $database;
 	private $usedCSS;
 	private $subscriber;
-	private $options_api;
-	private $homepage_preloader;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/clearUsedcssResult.php';
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->settings           = Mockery::mock( Settings::class );
-		$this->database           = Mockery::mock( Database::class );
-		$this->usedCSS            = Mockery::mock( UsedCSS::class );
-		$this->options_api        = Mockery::mock( Options::class );
-		$this->homepage_preloader = Mockery::mock( Homepage::class );
-		$this->subscriber         = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api, $this->homepage_preloader );
+		$this->settings   = Mockery::mock( Settings::class );
+		$this->database   = Mockery::mock( Database::class );
+		$this->usedCSS    = Mockery::mock( UsedCSS::class );
+		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
 	}
 
 	/**

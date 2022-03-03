@@ -75,7 +75,7 @@ class Settings {
 	 *
 	 * @since 3.9
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */
@@ -108,20 +108,6 @@ class Settings {
 				'href'   => wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ),
 			]
 		);
-	}
-
-	/**
-	 * Displays the RUCSS progressbar
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function display_progress_bar() {
-		if ( ! $this->is_enabled() ) {
-			return;
-		}
-		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--textarea"></div>';
 	}
 
 	/**
