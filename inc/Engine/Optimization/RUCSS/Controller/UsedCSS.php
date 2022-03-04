@@ -228,6 +228,7 @@ class UsedCSS {
 
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
+		$html = $this->add_used_fonts_preload( $html, $used_css->css );
 
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
@@ -645,5 +646,125 @@ class UsedCSS {
 	 */
 	public function get_not_completed_count() {
 		return $this->used_css_query->get_not_completed_count();
+	}
+
+	/**
+	 * Add preload links for the fonts in the used CSS
+	 *
+	 * @param string $html HTML content.
+	 * @param string $used_css Used CSS content.
+	 *
+	 * @return string
+	 */
+	private function add_used_fonts_preload( string $html, string $used_css ): string {
+		/**
+		 * Filters the fonts preload from the used CSS
+		 *
+		 * @since 3.11
+		 *
+		 * @param bool $enable True to enable, false to disable.
+		 */
+		if ( ! apply_filters( 'rocket_enable_rucss_fonts_preload', true ) ) {
+			return $html;
+		}
+
+		if ( ! preg_match_all( '/@font-face\s*{\s*(?<content>[^}]+)}/is', $used_css, $font_faces, PREG_SET_ORDER ) ) {
+			return $html;
+		}
+
+		if ( empty( $font_faces ) ) {
+			return $html;
+		}
+
+		$urls = [];
+
+		foreach ( $font_faces as $font_face ) {
+			if ( empty( $font_face['content'] ) ) {
+				continue;
+			}
+
+			$font_url = $this->extract_first_font( $font_face['content'] );
+
+			if ( empty( $font_url ) ) {
+				continue;
+			}
+
+			$urls[] = $font_url;
+		}
+
+		if ( empty( $urls ) ) {
+			return $html;
+		}
+
+		$urls = array_unique( $urls );
+
+		$replace = preg_replace(
+			'#</title>#iU',
+			'</title>' . $this->preload_links( $urls ),
+			$html,
+			1
+		);
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Extracts the first font URL from the font-face declaration
+	 *
+	 * Skips .eot fonts if it exists
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $font_face Font-face declaration content.
+	 *
+	 * @return string
+	 */
+	private function extract_first_font( string $font_face ): string {
+		if ( ! preg_match_all( '/src:\s*(?<urls>[^;}]*)/is', $font_face, $sources, PREG_SET_ORDER ) ) {
+			return '';
+		}
+
+		foreach ( $sources as $src ) {
+			if ( empty( $src['urls'] ) ) {
+				continue;
+			}
+
+			$urls = explode( ',', $src['urls'] );
+
+			foreach ( $urls as $url ) {
+				if ( false !== strpos( $url, '.eot' ) ) {
+					continue;
+				}
+
+				if ( ! preg_match( '/url\(\s*[\'"]?(?<url>[^\'")]+)[\'"]?\)/is', $url, $matches ) ) {
+					continue;
+				}
+
+				return trim( $matches['url'] );
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Converts an array of URLs to preload link tags
+	 *
+	 * @param array $urls An array of URLs.
+	 *
+	 * @return string
+	 */
+	private function preload_links( array $urls ): string {
+		$links = '';
+
+		foreach ( $urls as $url ) {
+			$links .= '<link rel="preload" as="font" href="' . esc_url( $url ) . '" crossorigin>';
+		}
+
+		return $links;
 	}
 }
