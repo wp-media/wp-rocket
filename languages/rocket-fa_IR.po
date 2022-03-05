@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-01-19 10:03-0500\n"
+"POT-Creation-Date: 2022-03-01 09:44-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2022\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -47,13 +47,13 @@ msgstr ""
 "سایت شما توسط %s میزبانی می‌شود، ما برای سازگاری پاک‌سازی خودکار وارنیش را "
 "فعال کرده‌ایم."
 
-#: inc/3rd-party/hosting/kinsta.php:161
+#: inc/3rd-party/hosting/kinsta.php:139
 #, php-format
 msgid ""
 "Your installation seems to be missing core Kinsta files managing Cache "
-"clearing and CDN, which will prevent your Kinsta installation and WP Rocket "
-"from working correctly. Please get in touch with Kinsta support through your"
-" %1$sMyKinsta%2$s account to resolve this issue."
+"clearing, which will prevent your Kinsta installation and WP Rocket from "
+"working correctly. Please get in touch with Kinsta support through your "
+"%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
 "به نظر می رسد نصب شما فاقد فایل های اصلی Kinsta است که حذف کش و CDN را "
 "مدیریت می کند، که از نصب Kinsta شما و کارکرد صحیح موشک وردپرس جلوگیری می "
@@ -237,6 +237,52 @@ msgstr "CloudFlare خطای کش مرورگر: %s"
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "کش مرورگر Cloudflare به %s ثانیه تنظیم شد"
+
+#: inc/Addon/Sucuri/Subscriber.php:95
+#, php-format
+msgid "Sucuri cache purge error: %s"
+msgstr "خطای پاک کردن حافظه Sucuri:%s"
+
+#: inc/Addon/Sucuri/Subscriber.php:100
+msgid ""
+"The Sucuri cache is being cleared. Note that it may take up to two minutes "
+"for it to be fully flushed."
+msgstr ""
+"حافظه پنهان Sucuri در حال پاک شدن است. توجه داشته باشید که ممکن است دو دقیقه"
+" طول بکشد تا کامل تخلیه شود."
+
+#: inc/Addon/Sucuri/Subscriber.php:217
+msgid "Sucuri firewall API key was not found."
+msgstr "کلید API فایروال Sucuri یافت نشد."
+
+#: inc/Addon/Sucuri/Subscriber.php:230
+msgid "Sucuri firewall API key is invalid."
+msgstr "کلید API فایروال Sucuri نامعتبر است."
+
+#: inc/Addon/Sucuri/Subscriber.php:285
+#, php-format
+msgid "Error when contacting Sucuri firewall API. Error message was: %s"
+msgstr ""
+"هنگام ارتباط با کلید API فایروال Sucuri خطایی رخ داده است. پیام خطا: %s"
+
+#: inc/Addon/Sucuri/Subscriber.php:300
+msgid "Could not get a response from the Sucuri firewall API."
+msgstr "نمی تواند پاسخی از API فایروال Sucuri دریافت کند."
+
+#: inc/Addon/Sucuri/Subscriber.php:315
+msgid "Got an invalid response from the Sucuri firewall API."
+msgstr "پاسخ نامعتبر از API فایروال Sucuri دریافت شد."
+
+#: inc/Addon/Sucuri/Subscriber.php:329
+msgid "The Sucuri firewall API returned an unknown error."
+msgstr "API فایروال Sucuri خطای نامشخصی برگرداند."
+
+#: inc/Addon/Sucuri/Subscriber.php:333
+#, php-format
+msgid "The Sucuri firewall API returned the following error: %s"
+msgid_plural "The Sucuri firewall API returned the following errors: %s"
+msgstr[0] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
+msgstr[1] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
 #: inc/Engine/Admin/Settings/Page.php:1423
@@ -1209,7 +1255,7 @@ msgid "Reduces overhead of database tables"
 msgstr "بهینه سازی جداول دیتابیس"
 
 #: inc/Engine/Admin/Settings/Page.php:1412
-msgid "Automatic cleanup"
+msgid "Automatic Cleanup"
 msgstr "پاک‌سازی خودکار"
 
 #: inc/Engine/Admin/Settings/Page.php:1425
@@ -1918,44 +1964,48 @@ msgstr "خطا: %1$s"
 msgid "Regenerate Critical Path CSS"
 msgstr "بازسازی مسیر بحرانی CSS"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:132
+#: inc/Engine/CriticalPath/Admin/Post.php:144
 #: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
 msgstr "بازسازی مسیر قطعی CSS"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:133
+#: inc/Engine/CriticalPath/Admin/Post.php:145
 #: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
 msgstr "بازسازی مسیر قطعی CSS"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:199
+#: inc/Engine/CriticalPath/Admin/Post.php:216
+msgid "This feature is not available for non-public post types."
+msgstr "این ویژگی برای انواع نوشته‌های منتشر نشده قابل دسترس نیست."
+
+#: inc/Engine/CriticalPath/Admin/Post.php:219
 msgid "%l to use this feature."
 msgstr "%l برای استفاده از این ویژگی."
 
-#: inc/Engine/CriticalPath/Admin/Post.php:202
+#: inc/Engine/CriticalPath/Admin/Post.php:222
 #, php-format
 msgid "Publish the %s"
 msgstr "انتشار %s"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:203
+#: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "فعالسازی بارگیری CSS بصورت نابهنگام توسط تنظیمات موشک وردپرس"
 
-#: inc/Engine/CriticalPath/Admin/Post.php:204
+#: inc/Engine/CriticalPath/Admin/Post.php:224
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "فعالسازی بارگیری CSS بصورت نابهنگام در گزینه بالا"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:149
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:153
 msgid "Critical CSS generation is currently running."
 msgstr "ایجاد CSS بحرانی در حال اجرا می باشد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
-#: inc/Engine/Preload/PreloadSubscriber.php:257
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:158
+#: inc/Engine/Preload/PreloadSubscriber.php:261
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "به %1$sتنظیمات موشک وردپرس%2$s برای رهگیری پیشرفت مراجعه کنید."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:365
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:369
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1964,16 +2014,16 @@ msgstr ""
 "تولید CSS‌بحرانی در حال اجرا است: %1$d از %2$d نوع صفحه کامل شده است. (برای "
 "مشاهده پیشرفت این صفحه را رفرش کنید)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:437
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:441
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "تولید CSS‌بحرانی برای %1$d از %2$d نوع صفحه کامل شد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:448
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "ایجاد CSS بحرانی یک یا چند خطا دارد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:444
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:448
 msgid "Learn more."
 msgstr "اطلاعات بیشتر."
 
@@ -2151,7 +2201,7 @@ msgstr "اکنون ارتقاء دهید"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner.php:37
-#: inc/admin/ui/notices.php:821 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:795 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice."
 msgstr "نادیده گرفتن این پیام."
 
@@ -2249,7 +2299,7 @@ msgstr ""
 " (فقط تفاوت قیمت بین لایسنس های فعلی و جدید خود را پرداخت خواهید کرد)."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:107
-#: views/settings/page-sections/dashboard.php:224
+#: views/settings/page-sections/dashboard.php:199
 msgid "Clear Used CSS"
 msgstr "پاکسازی CSSهای استفاده شده"
 
@@ -2261,23 +2311,23 @@ msgstr "گزینه CSS استفاده شده فعال نیست!"
 msgid "Used CSS cache cleared!"
 msgstr "استایل CSS استفاده شده پاکسازی شد!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:431
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
 msgid "Collected resource files from {count} of {total} key pages."
 msgstr "فایلهای منبع از {count} از {total} صفحه کلیدی جمع آوری شده است."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:432
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:436
 msgid "Processed {count} of {total} resource files found on key pages."
 msgstr "{تعداد} از {مجموع} فایل منابع در صفحات کلیدی یافت شد."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:433
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:437
 msgid "Remove Unused CSS is complete!"
 msgstr "حذف CSS های بلااستفاده تکمیل شد!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:434
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:438
 msgid "These files could not be processed:"
 msgstr "این پرونده ها قابل پردازش نیستند:"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:435
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:439
 msgid ""
 "We are processing the CSS on your site. This may take several minutes to "
 "complete."
@@ -2353,11 +2403,11 @@ msgstr ""
 "پیش بارگذاری با خطایی مواجه شد. لینک ها در آن جمع آوری نشد %1$s زیرا کد پاسخ"
 " زیر را برمی گرداند:%2$s. %3$sراهنمایی%4$s."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:252
+#: inc/Engine/Preload/PreloadSubscriber.php:256
 msgid "Preload: WP Rocket has started preloading your website."
 msgstr "پیش بارگذاری: موشک وردپرس پیش بارگذاری سایت شما را آغاز کرده است."
 
-#: inc/Engine/Preload/PreloadSubscriber.php:298
+#: inc/Engine/Preload/PreloadSubscriber.php:302
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2372,14 +2422,14 @@ msgstr[1] ""
 "پیش بارگذاری: %1$s صفحه کش نشده اکنون بارگیری شده است. (برای مشاهده پیشرفت "
 "صفحه را مجدد بارگذاری کنید)"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:307
+#: inc/Engine/Preload/PreloadSubscriber.php:311
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] "خطای زیر هنگام جمع آوری URL ها برای پیش بارگذاری رخ داد:"
 msgstr[1] "خطای زیر هنگام جمع آوری URL ها برای پیش بارگذاری رخ داد:"
 
-#: inc/Engine/Preload/PreloadSubscriber.php:359
+#: inc/Engine/Preload/PreloadSubscriber.php:363
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "پش بارگذاری کامل شد: %d صفحه کش شده است."
@@ -2588,7 +2638,7 @@ msgstr "Smush"
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:349
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:323
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "پشتیبانی"
@@ -2597,11 +2647,11 @@ msgstr "پشتیبانی"
 msgid "Docs"
 msgstr "مستندات"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:337
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:311
 msgid "FAQ"
 msgstr "سوالات متداول"
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:64
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:63
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -2669,8 +2719,8 @@ msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:777
-#: inc/common/admin-bar.php:85 inc/common/admin-bar.php:137
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:751
+#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:143
 msgid "Clear cache"
 msgstr "پاک کردن کش"
@@ -2725,7 +2775,7 @@ msgstr ""
 "%1$sنکته:%2$s هیچکدام از این گزینه ها اعمال نمی شود اگر این نوشته از کش شدن "
 "مستثنی شده باشد در تنظیمات کش کلی."
 
-#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:38
+#: inc/admin/ui/notices.php:31 inc/admin/ui/notices.php:44
 #, php-format
 msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
@@ -2734,7 +2784,7 @@ msgstr ""
 "<strong>%1$s</strong> به خاطر مشکل در دسترسی‌های نوشتن فعال نشده است.<br>\n"
 "<strong>%2$s</strong> را قابل نوشتن کرده و سپس غیرفعال سازی را دوباره امتحان کنید، یا الان غیرفعال کنید:"
 
-#: inc/admin/ui/notices.php:91
+#: inc/admin/ui/notices.php:97
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
@@ -2743,7 +2793,7 @@ msgstr ""
 "<strong>%s</strong>: یک یا چند افزونه فعال یا غیرفعال شده‌اند، اگر آن‌ها "
 "ظاهر سایت شما را به هم ریخته‌اند، کش را پاک کنید."
 
-#: inc/admin/ui/notices.php:184
+#: inc/admin/ui/notices.php:190
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
@@ -2751,7 +2801,7 @@ msgstr ""
 "افزونه WP Rocket Cloudflare عملکردهای مشابهی را ارائه می دهد. آنها نمی "
 "توانند همزمان فعال باشند."
 
-#: inc/admin/ui/notices.php:217
+#: inc/admin/ui/notices.php:223
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2760,11 +2810,11 @@ msgstr ""
 "<strong>%s</strong>: افزونه‌های زیر با این افزونه سازگار نیستند و ممکن است "
 "باعث نتایج غیرمنتظره شوند:"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:229
 msgid "Deactivate"
 msgstr "غیرفعال سازی"
 
-#: inc/admin/ui/notices.php:265
+#: inc/admin/ui/notices.php:271
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2772,7 +2822,7 @@ msgstr ""
 "WP Rocket Footer JS یک افزودنی رسمی نیست. از عملکرد صحیح برخی از گزینه ها در"
 " WP Rocket جلوگیری می کند. لطفاً در صورت بروز مشکل آن را غیرفعال کنید."
 
-#: inc/admin/ui/notices.php:305
+#: inc/admin/ui/notices.php:311
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2783,7 +2833,7 @@ msgstr ""
 "لطفاً سطح کش Endurance Cache را در حالت Off (سطح 0) در حالت تنظیم کنید "
 "%1$sتنظیمات > عمومی%2$s جلوگیری از هرگونه مشکلی میکند."
 
-#: inc/admin/ui/notices.php:326
+#: inc/admin/ui/notices.php:332
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2792,18 +2842,18 @@ msgstr ""
 "%1$s: برای درست عمل کردن افزونه نیاز است پیوند‌های یکتا را فعال کنید. %2$s "
 "رفتن به تنظیمات پیوند‌های یکتا%3$s"
 
-#: inc/admin/ui/notices.php:373
+#: inc/admin/ui/notices.php:379
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن .htaccess نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:379 inc/admin/ui/notices.php:854
+#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:828
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "عیب‌یابی: %1$s چگونه فایل‌های سیستمی را قابل نوشتن کنیم%2$s"
 
-#: inc/admin/ui/notices.php:381 inc/admin/ui/notices.php:856
+#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:830
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2811,20 +2861,20 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:387
+#: inc/admin/ui/notices.php:393
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "نگران نباشید ، ذخیره و تنظیمات صفحه WP Rocket همچنان درست کار می کند."
 
-#: inc/admin/ui/notices.php:387
+#: inc/admin/ui/notices.php:393
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
 "برای عملکرد مطلوب ، افزودن خطوط زیر به .htaccess توصیه می شود (لازم نیست):"
 
-#: inc/admin/ui/notices.php:534
+#: inc/admin/ui/notices.php:540
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -2833,7 +2883,7 @@ msgstr ""
 "%1$s آماده است! %2$s زمان بارگذاری خود را امتحان کنید%4$s، یا "
 "%3$sتنظیمات%4$s خود را مشاهده کنید."
 
-#: inc/admin/ui/notices.php:607
+#: inc/admin/ui/notices.php:581
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -2841,15 +2891,15 @@ msgstr ""
 "آیا اجاره می‌دهید موشک وردپرس اطلاعات مرتبط غیرحساس را از این وبسایت جمع "
 "آوری کند؟"
 
-#: inc/admin/ui/notices.php:608
+#: inc/admin/ui/notices.php:582
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "این کار به ما کمک خواهد کرد تا در آینده موشک وردپرس را بهبود ببخشیم."
 
-#: inc/admin/ui/notices.php:614
+#: inc/admin/ui/notices.php:588
 msgid "What info will we collect?"
 msgstr "چه اطلاعاتی را جمع آوری می‌کنیم؟"
 
-#: inc/admin/ui/notices.php:619
+#: inc/admin/ui/notices.php:593
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -2861,60 +2911,60 @@ msgstr ""
 "فعال‌سازی لایسنس)، آدرس آی پی یا کلید‌های وب‌سرویس ثانویه را منتقل نخواهد "
 "کرد."
 
-#: inc/admin/ui/notices.php:628
+#: inc/admin/ui/notices.php:602
 msgid "Yes, allow"
 msgstr "بله، اجازه می‌دهم"
 
-#: inc/admin/ui/notices.php:631
+#: inc/admin/ui/notices.php:605
 msgid "No, thanks"
 msgstr "نه، متشکرم"
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:644
 msgid "Thank you!"
 msgstr "متشکریم!"
 
-#: inc/admin/ui/notices.php:675
+#: inc/admin/ui/notices.php:649
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "موشک وردپرس اکنون این معیارها را از وب‌سایت شما جمع‌آوری می‌کند:"
 
-#: inc/admin/ui/notices.php:713
+#: inc/admin/ui/notices.php:687
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: کش پاک شد."
 
-#: inc/admin/ui/notices.php:720
+#: inc/admin/ui/notices.php:694
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: کش نوشته پاک شد."
 
-#: inc/admin/ui/notices.php:727
+#: inc/admin/ui/notices.php:701
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: کش شرط پاک شد."
 
-#: inc/admin/ui/notices.php:734
+#: inc/admin/ui/notices.php:708
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: کش کاربر پاک شد."
 
-#: inc/admin/ui/notices.php:780
+#: inc/admin/ui/notices.php:754
 msgid "Stop Preload"
 msgstr "توقف پیش بارگذاری"
 
-#: inc/admin/ui/notices.php:798
+#: inc/admin/ui/notices.php:772
 msgid "Force deactivation "
 msgstr "غیرفعال سازی اجباری "
 
-#: inc/admin/ui/notices.php:811
+#: inc/admin/ui/notices.php:785
 msgid "The following code should have been written to this file:"
 msgstr "کدهای زیر باید داخل این فایل نوشته شوند:"
 
-#: inc/admin/ui/notices.php:842
+#: inc/admin/ui/notices.php:816
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:822
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "فایل\\فولدرهای مورد نظر: %s"
@@ -3070,95 +3120,41 @@ msgstr ""
 "https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
 "working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:116
-#, php-format
-msgid "Sucuri cache purge error: %s"
-msgstr "خطای پاک کردن حافظه Sucuri:%s"
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:121
-msgid ""
-"The Sucuri cache is being cleared. Note that it may take up to two minutes "
-"for it to be fully flushed."
-msgstr ""
-"حافظه پنهان Sucuri در حال پاک شدن است. توجه داشته باشید که ممکن است دو دقیقه"
-" طول بکشد تا کامل تخلیه شود."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:244
-msgid "Sucuri firewall API key was not found."
-msgstr "کلید API فایروال Sucuri یافت نشد."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:256
-msgid "Sucuri firewall API key is invalid."
-msgstr "کلید API فایروال Sucuri نامعتبر است."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
-msgid "Error when contacting Sucuri firewall API."
-msgstr "هنگام ارتباط با کلید API فایروال Sucuri خطایی رخ داده است."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
-#, php-format
-msgid "Error when contacting Sucuri firewall API. Error message was: %s"
-msgstr ""
-"هنگام ارتباط با کلید API فایروال Sucuri خطایی رخ داده است. پیام خطا: %s"
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:338
-msgid "Could not get a response from the Sucuri firewall API."
-msgstr "نمی تواند پاسخی از API فایروال Sucuri دریافت کند."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:352
-msgid "Got an invalid response from the Sucuri firewall API."
-msgstr "پاسخ نامعتبر از API فایروال Sucuri دریافت شد."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:365
-msgid "The Sucuri firewall API returned an unknown error."
-msgstr "API فایروال Sucuri خطای نامشخصی برگرداند."
-
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:368
-#, php-format
-msgid "The Sucuri firewall API returned the following error: %s"
-msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
-msgstr[1] "API فایروال Sucuri خطای نامشخص زیر را برگرداند:%s"
-
-#: inc/common/admin-bar.php:125 inc/common/admin-bar.php:275
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:249
 #: inc/functions/i18n.php:41 inc/functions/i18n.php:51
 msgid "All languages"
 msgstr "همه‌ی زبان‌ها"
 
-#: inc/common/admin-bar.php:152
+#: inc/common/admin-bar.php:151
 msgid "Clear this post"
 msgstr "پاک کردن این نوشته"
 
-#: inc/common/admin-bar.php:166
+#: inc/common/admin-bar.php:165
 msgid "Purge this URL"
 msgstr "پاک‌سازی این لینک"
 
-#: inc/common/admin-bar.php:192
-msgid "Purge OPcache"
-msgstr "پاکسازی OPcache"
-
-#: inc/common/admin-bar.php:210
+#: inc/common/admin-bar.php:184
 msgid "Purge Sucuri cache"
 msgstr "تخلیه کش Sucuri"
 
-#: inc/common/admin-bar.php:233 inc/common/admin-bar.php:287
+#: inc/common/admin-bar.php:207 inc/common/admin-bar.php:261
 #: views/settings/page-sections/dashboard.php:163
 msgid "Preload cache"
 msgstr "پیش‌بارگذاری کش"
 
-#: inc/common/admin-bar.php:312 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:286 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "تخلیه کش RocketCDN"
 
-#: inc/common/admin-bar.php:325 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:299 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "مستندات"
 
-#: inc/common/purge.php:562
+#: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
 msgstr "تخلیه کش OPcache شکست خورد."
 
-#: inc/common/purge.php:567
+#: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
 msgstr "OPcache با موفقیت تخلیه شد"
 
@@ -3427,14 +3423,14 @@ msgstr "داده لایسنس شما معتبر نیست."
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "برای رفع مشکل، لطفا با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:533 inc/functions/options.php:572
+#: inc/functions/options.php:531 inc/functions/options.php:570
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
 "اعتبارسنجی لایسنس انجام نشد. سرور ما نتوانست درخواست وب سایت شما را حل کند."
 
-#: inc/functions/options.php:533 inc/functions/options.php:572
+#: inc/functions/options.php:531 inc/functions/options.php:570
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3443,7 +3439,7 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:549
+#: inc/functions/options.php:547
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3451,58 +3447,58 @@ msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. شاید شما از نسخه نال استفاده می کنید. لطفا "
 "موارد زیر را انجام دهید:"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "وارد شدن به %1$sحساب کاربری%2$s موشک وردپرس"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Download the zip file"
 msgstr "دانلود فایل فشرده"
 
-#: inc/functions/options.php:549 inc/functions/options.php:591
+#: inc/functions/options.php:547 inc/functions/options.php:589
 msgid "Reinstall"
 msgstr "نصب مجدد"
 
-#: inc/functions/options.php:549
+#: inc/functions/options.php:547
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "اگر حساب کاربری موشک وردپرس ندارید، لطفا %1$sخرید کنید%2$s."
 
-#: inc/functions/options.php:557
+#: inc/functions/options.php:555
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری در پایگاه داده ما وجود ندارد."
 
-#: inc/functions/options.php:557
+#: inc/functions/options.php:555
 msgid "To resolve, please contact support."
 msgstr "برای رفع مشکل با پشتیبانی تماس بگیرید."
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:563
 msgid "License validation failed. This user account is blocked."
 msgstr "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری بلاک شده است."
 
-#: inc/functions/options.php:565
+#: inc/functions/options.php:563
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "برای کسب اطلاعات بیشتر%1$sراهنمایی%2$s را مطالعه کنید."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:583
 msgid "Your license is not valid."
 msgstr "لایسنس شما نامعتبر است."
 
-#: inc/functions/options.php:585
+#: inc/functions/options.php:583
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "مطمئن شوید که %1$sلایسنس موشک وردپرس%2$s فعال دارید."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:585
 msgid "You have added as many sites as your current license allows."
 msgstr "شما به اندازه لایسنس فعلی سایت اضافه کرده اید."
 
-#: inc/functions/options.php:587
+#: inc/functions/options.php:585
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3511,25 +3507,25 @@ msgstr ""
 "حساب کاربری%1$sخودرا%2$sارتقاء دهید یا%3$sلایسنس خود را به دامنه فعلی %2$s "
 "منتقل کنید."
 
-#: inc/functions/options.php:589
+#: inc/functions/options.php:587
 msgid "This website is not allowed."
 msgstr "این وب سایت مجاز نمی باشد."
 
-#: inc/functions/options.php:589
+#: inc/functions/options.php:587
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "با %1$sپشتیبانی%2$sتماس بگیرید."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:589
 msgid "This license key is not recognized."
 msgstr "این لایسنس شناسایی نشد."
 
-#: inc/functions/options.php:591
+#: inc/functions/options.php:589
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "اگر مشکل همچنان برقرار بود با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:597
+#: inc/functions/options.php:595
 #, php-format
 msgid "License validation failed: %s"
 msgstr "اعتبارسنجی لایسنس شکست خورد: %s"
@@ -3987,37 +3983,29 @@ msgstr "حذف همه فایل‌های کش شده"
 msgid "Start cache preloading"
 msgstr "شروع پیش بارگذاری کش"
 
-#: views/settings/page-sections/dashboard.php:183
-msgid "Purge OPCache content"
-msgstr "پاک‌سازی محتوای OPCache"
-
-#: views/settings/page-sections/dashboard.php:189
-msgid "Purge OPCache"
-msgstr "پاک‌سازی OPCache"
-
-#: views/settings/page-sections/dashboard.php:200
-#: views/settings/page-sections/dashboard.php:206
+#: views/settings/page-sections/dashboard.php:175
+#: views/settings/page-sections/dashboard.php:181
 msgid "Regenerate Critical CSS"
 msgstr "بازسازی مسیر قطعی CSS"
 
-#: views/settings/page-sections/dashboard.php:218
+#: views/settings/page-sections/dashboard.php:193
 msgid "Remove Used CSS Cache"
 msgstr "حذف کش CSS استفاده شده"
 
-#: views/settings/page-sections/dashboard.php:241
+#: views/settings/page-sections/dashboard.php:216
 msgid "Frequently Asked Questions"
 msgstr "سوالات متداول"
 
-#: views/settings/page-sections/dashboard.php:255
+#: views/settings/page-sections/dashboard.php:230
 msgid "Still cannot find a solution?"
 msgstr "هنوز مشکل شما حل نشده است؟"
 
-#: views/settings/page-sections/dashboard.php:256
+#: views/settings/page-sections/dashboard.php:231
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "تیکی ارسال کنید و از پشتیبان‌های با دانش ما کمک بگیرید."
 
-#: views/settings/page-sections/dashboard.php:264
+#: views/settings/page-sections/dashboard.php:239
 msgid "Ask support"
 msgstr "درخواست پشتیبانی"
 
