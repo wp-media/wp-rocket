@@ -768,6 +768,7 @@ function rocket_notice_html( $args ) {
 		'action'           => '',
 		'dismiss_button'   => false,
 		'readonly_content' => '',
+		'id'               => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -800,8 +801,14 @@ function rocket_notice_html( $args ) {
 			break;
 	}
 
+	$notice_id = '';
+
+	if ( ! empty( $args['id'] ) ) {
+		$notice_id = ' id="' . esc_attr( $args['id'] ) . '"';
+	}
+
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>">
+	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 

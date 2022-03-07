@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
+use WP_Admin_Bar;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -32,35 +34,26 @@ class Subscriber implements Subscriber_Interface {
 	private $used_css;
 
 	/**
-	 * Options API instance.
+	 * Queue instance
 	 *
-	 * @var Options
+	 * @var QueueInterface
 	 */
-	private $options_api;
-
-	/**
-	 * Homepage Preload instance
-	 *
-	 * @var Homepage
-	 */
-	private $homepage_preloader;
+	private $queue;
 
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings    Settings instance.
-	 * @param Database $database    Database instance.
-	 * @param UsedCSS  $used_css    UsedCSS instance.
-	 * @param Options  $options_api Options API instance.
-	 * @param Homepage $homepage_preloader Homepage Preload instance.
+	 * @param Settings       $settings Settings instance.
+	 * @param Database       $database Database instance.
+	 * @param UsedCSS        $used_css UsedCSS instance.
+	 * @param QueueInterface $queue    Queue instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
-		$this->settings           = $settings;
-		$this->database           = $database;
-		$this->used_css           = $used_css;
-		$this->options_api        = $options_api;
-		$this->homepage_preloader = $homepage_preloader;
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
+		$this->settings = $settings;
+		$this->database = $database;
+		$this->used_css = $used_css;
+		$this->queue    = $queue;
 	}
 
 	/**
@@ -76,70 +69,40 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_cancel_preload', 10, 2 ],
+				[ 'maybe_set_processing_transient', 10, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
-			'rocket_rucss_file_changed'            => 'truncate_used_css',
 			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
 			'delete_post'                          => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                     => 'delete_used_css_on_update_or_delete',
 			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
 			'edit_term'                            => 'delete_term_used_css',
 			'pre_delete_term'                      => 'delete_term_used_css',
-			'init'                                 => 'schedule_clean_not_commonly_used_rows',
+			'init'                                 => [
+				[ 'schedule_clean_not_commonly_used_rows' ],
+				[ 'schedule_rucss_pending_jobs_cron' ],
+			],
 			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
-			'admin_notices'                        => 'clear_usedcss_result',
-			'rocket_admin_bar_items'               => 'add_clean_used_css_menu_item',
-			'rocket_after_settings_radio_options'  => [ 'display_progress_bar', 10 ],
-			'admin_enqueue_scripts'                => 'add_admin_js',
+			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
+			'admin_notices'                        => [
+				[ 'clear_usedcss_result' ],
+				[ 'display_processing_notice' ],
+				[ 'display_success_notice' ],
+			],
+			'rocket_admin_bar_items'               => [
+				[ 'add_clean_used_css_menu_item' ],
+				[ 'add_clear_usedcss_bar_item' ],
+			],
 			'rocket_before_add_field_to_settings'  => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'rocket_localize_admin_script'         => 'add_localize_script_data',
+			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
 		];
-	}
-
-	/**
-	 * Enqueue React params and Progress bar.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function add_admin_js() {
-		// Return on all pages except WP Rocket settings page.
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		wp_enqueue_script( 'wpr-rucss-progress-bar', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'react/rucss-progress-bar.js', [ 'react-dom' ], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
-
-		$prewarmup_stats = $this->options_api->get( 'prewarmup_stats', [] );
-
-		wp_localize_script(
-			'wpr-rucss-progress-bar',
-			'rocket_rucss_ajax_data',
-			[
-				'api_url'                => rest_url( 'wp-rocket/v1/rucss/warmup/status' ),
-				'api_nonce'              => wp_create_nonce( 'rocket-ajax' ),
-				'api_debug'              => (bool) rocket_get_constant( 'WP_ROCKET_RUCSS_DEBUG' ),
-				'api_allow_optimization' => $prewarmup_stats['allow_optimization'] ?? false,
-				'wpr_rucss_translations' => $this->ui_translations(),
-			]
-		);
 	}
 
 	/**
@@ -185,6 +148,41 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
+	}
+
+	/**
+	 * Schedule the cron job for RUCSS pending jobs.
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function schedule_rucss_pending_jobs_cron() {
+		if ( ! $this->settings->is_enabled() ) {
+			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+				return;
+			}
+
+			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+
+			$this->queue->cancel_pending_jobs_cron();
+			return;
+		}
+
+		RUCSSQueueRunner::instance()->init();
+
+		/**
+		 * Filters the cron interval.
+		 *
+		 * @since 3.11
+		 *
+		 * @param int $interval Interval in seconds.
+		 */
+		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+
+		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
+
+		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**
@@ -242,6 +240,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function truncate_used_css() {
 		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		if ( 0 < $this->used_css->get_not_completed_count() ) {
+			$this->used_css->remove_all_completed_rows();
+
 			return;
 		}
 
@@ -305,27 +309,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Cancels any preload currently running if the RUCSS option is enabled and preload is enabled.
-	 *
-	 * @since 3.9.1
-	 *
-	 * @param array $old_value Previous option values.
-	 * @param array $value     New option values.
-	 */
-	public function maybe_cancel_preload( $old_value, $value ) {
-		if (
-			! empty( $value['remove_unused_css'] )
-			&&
-			empty( $old_value['remove_unused_css'] )
-			&&
-			! empty( $value['manual_preload'] )
-		) {
-			delete_transient( 'rocket_preload_errors' );
-			$this->homepage_preloader->cancel_preload();
-		}
-	}
-
-	/**
 	 * Truncate used_css table when clicking on the dashboard button.
 	 *
 	 * @since 3.9
@@ -354,7 +337,12 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		$this->database->truncate_used_css_table();
+		if ( 0 < $this->used_css->get_not_completed_count() ) {
+			$this->used_css->remove_all_completed_rows();
+		} else {
+			$this->database->truncate_used_css_table();
+		}
+
 		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
@@ -365,6 +353,8 @@ class Subscriber implements Subscriber_Interface {
 				'message' => __( 'Used CSS cache cleared!', 'rocket' ),
 			]
 		);
+
+		$this->set_notice_transient();
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
@@ -397,45 +387,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.9
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */
 	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
 		$this->settings->add_clean_used_css_menu_item( $wp_admin_bar );
-	}
-
-	/**
-	 * Displays the RUCSS progressbar
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $option_data array of option_id and sub_fields of the option.
-	 *
-	 * @return void
-	 */
-	public function display_progress_bar( $option_data ) {
-		if ( 'remove_unused_css' !== $option_data['option_id'] ) {
-			return;
-		}
-
-		$this->settings->display_progress_bar();
-	}
-	/**
-	 * Array with UI translations.
-	 *
-	 * @since 3.9
-	 *
-	 * @return array
-	 */
-	private function ui_translations(): array {
-		return [
-			'step1_txt'      => __( 'Collected resource files from {count} of {total} key pages.', 'rocket' ),
-			'step2_txt'      => __( 'Processed {count} of {total} resource files found on key pages.', 'rocket' ),
-			'rucss_working'  => __( 'Remove Unused CSS is complete!', 'rocket' ),
-			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
-			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
-		];
 	}
 
 	/**
@@ -465,6 +422,81 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Displays the RUCSS currently processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_processing_notice() {
+		$this->settings->display_processing_notice();
+	}
+
+	/**
+	 * Displays the RUCSS success notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_success_notice() {
+		$this->settings->display_success_notice();
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		return $this->settings->add_localize_script_data( $data );
+	}
+
+	/**
+	 * Clear UsedCSS for the current URL.
+	 *
+	 * @return void
+	 */
+	public function clear_url_usedcss() {
+		$url = wp_get_referer();
+
+		if ( 0 !== strpos( $url, 'http' ) ) {
+			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
+		}
+
+		$this->used_css->clear_url_usedcss( $url );
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Adjust Action Scheduler to have two concurrent batches on the same time.
+	 *
+	 * @param int $num Number of concurrent batches.
+	 *
+	 * @return int
+	 */
+	public function adjust_as_concurrent_batches( int $num = 1 ) {
+		return 2;
+	}
+
+	/**
+	 * Add clear UsedCSS adminbar item.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
+	 *
+	 * @return void
+	 */
+	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
+	}
+
+	/**
 	 * Disable combine CSS option when RUCSS is enabled
 	 *
 	 * @since 3.11
@@ -490,5 +522,60 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
+
+		$this->database->truncate_used_css_table();
+		rocket_clean_domain();
+		$this->set_notice_transient();
+
+		wp_safe_remote_get(
+			home_url(),
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
+	}
+
+	/**
+	 * Sets the processing transient if RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_processing_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 0 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		$this->set_notice_transient();
+	}
+
+	/**
+	 * Sets the transient for the processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function set_notice_transient() {
+		set_transient(
+			'rocket_rucss_processing',
+			time() + 60,
+			MINUTE_IN_SECONDS
+		);
 	}
 }

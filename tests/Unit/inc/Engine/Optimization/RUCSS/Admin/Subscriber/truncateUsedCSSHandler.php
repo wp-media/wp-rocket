@@ -5,8 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Engine\Preload\Homepage;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
@@ -25,20 +24,16 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 	private $database;
 	private $usedCSS;
 	private $subscriber;
-	private $options_api;
-	private $homepage_preloader;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php';
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->settings    = Mockery::mock( Settings::class );
-		$this->database    = Mockery::mock( Database::class );
-		$this->usedCSS     = Mockery::mock( UsedCSS::class );
-		$this->options_api = Mockery::mock( Options::class );
-		$this->homepage_preloader = Mockery::mock( Homepage::class );
-		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, $this->options_api, $this->homepage_preloader );
+		$this->settings   = Mockery::mock( Settings::class );
+		$this->database   = Mockery::mock( Database::class );
+		$this->usedCSS    = Mockery::mock( UsedCSS::class );
+		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
 	}
 
 	public function tearDown() : void {
@@ -116,7 +111,21 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		}
 
 		if ( $expected['truncated'] ) {
-			$this->database->shouldReceive( 'truncate_used_css_table' )->once();
+			$this->usedCSS->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
+
+			if ( $input['not_completed_count'] > 0 ) {
+				$this->usedCSS->shouldReceive( 'remove_all_completed_rows' )->once();
+			} else {
+				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
+			}
+
+			Functions\expect( 'set_transient' )
+				->once()
+				->with(
+					'rocket_rucss_processing',
+					Mockery::type( 'int' ),
+					60
+				);
 			Functions\expect( 'rocket_clean_domain' )->once();
 			Functions\expect( 'rocket_dismiss_box' )->with('rocket_warning_plugin_modification')->once();
 		}
