@@ -63,7 +63,7 @@ class Test_TruncateUsedCssTable extends TestCase{
 		$this->assertTrue( $rucss_usedcss_table->exists() );
 		$this->assertCount( 2, $result );
 
-		do_action( 'rocket_rucss_file_changed' );
+		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ) );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();

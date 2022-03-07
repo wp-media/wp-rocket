@@ -75,7 +75,7 @@ class Settings {
 	 *
 	 * @since 3.9
 	 *
-	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
+	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */
@@ -111,32 +111,19 @@ class Settings {
 	}
 
 	/**
-	 * Displays the RUCSS progressbar
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function display_progress_bar() {
-		if ( ! $this->is_enabled() ) {
-			return;
-		}
-		echo '<div id="rucss-progressbar" data-parent="remove_unused_css" class="wpr-field wpr-field--textarea"></div>';
-	}
-
-	/**
 	 * Set optimize css delivery value
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_value( $field_args ) : array {
+	public function set_optimize_css_delivery_value( $field_args ): array {
 		if ( 'optimize_css_delivery' !== $field_args['id'] ) {
 			return $field_args;
 		}
+
 		$async_css_value         = (bool) $this->options->get( 'async_css', 0 );
 		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
 		$field_args['value']     = ( $remove_unused_css_value || $async_css_value );
@@ -149,27 +136,94 @@ class Settings {
 	 *
 	 * @since 3.10
 	 *
-	 * @param array $field_args    Array of field to be added to settigs page.
+	 * @param array $field_args Array of field to be added to settings page.
 	 *
 	 * @return array
 	 */
-	public function set_optimize_css_delivery_method_value( $field_args ) : array {
+	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		if ( 'optimize_css_delivery_method' !== $field_args['id'] ) {
 			return $field_args;
 		}
+
 		$value = '';
 
-		$async_css_value = (bool) $this->options->get( 'async_css', 0 );
-		if ( $async_css_value ) {
+		if ( (bool) $this->options->get( 'async_css', 0 ) ) {
 			$value = 'async_css';
 		}
 
-		$remove_unused_css_value = (bool) $this->options->get( 'remove_unused_css', 0 );
-		if ( $remove_unused_css_value ) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			$value = 'remove_unused_css';
 		}
 
 		$field_args['value'] = $value;
+
 		return $field_args;
+	}
+
+	/**
+	 * Disable combine CSS option when RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_combine_css( $value, $old_value ): array {
+		if ( ! isset( $value['remove_unused_css'], $value['minify_concatenate_css'] ) ) {
+			return $value;
+		}
+
+		if (
+			0 === $value['minify_concatenate_css']
+			||
+			0 === $value['remove_unused_css']
+		) {
+			return $value;
+		}
+
+		if (
+			isset( $old_value['remove_unused_css'], $old_value['minify_concatenate_css'] )
+			&&
+			$value['remove_unused_css'] === $old_value['remove_unused_css']
+			&&
+			1 === $value['remove_unused_css']
+			&&
+			0 === $old_value['minify_concatenate_css']
+		) {
+			return $value;
+		}
+
+		$value['minify_concatenate_css'] = 0;
+
+		return $value;
+	}
+
+	/**
+	 * Disables combine CSS if RUCSS is enabled when updating to 3.11
+	 *
+	 * @since 3.11
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function set_option_on_update( $old_version ) {
+		if ( version_compare( $old_version, '3.11', '>=' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if (
+			isset( $options['remove_unused_css'] )
+			&&
+			1 === (int) $options['remove_unused_css']
+		) {
+			$options['minify_concatenate_css'] = 0;
+		}
+
+		update_option( 'wp_rocket_settings', $options );
 	}
 }

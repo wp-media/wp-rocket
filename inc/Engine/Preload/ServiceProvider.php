@@ -53,7 +53,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
 			->addArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'rucss_status_checker' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' )
 			->addArgument( $this->getContainer()->get( 'sitemap_preload' ) )
