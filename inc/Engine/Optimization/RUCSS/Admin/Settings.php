@@ -161,6 +161,140 @@ class Settings {
 	}
 
 	/**
+	 * Displays the RUCSS currently processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_processing_notice() {
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+
+		if ( false === $transient ) {
+			return;
+		}
+
+		$current_time = time();
+
+		if ( $transient < $current_time ) {
+			return;
+		}
+
+		$remaining = $transient - $current_time;
+
+		$message = sprintf(
+			// translators: %s = number of seconds.
+			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
+			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'  => 'info',
+				'message' => $message,
+				'id'      => 'rocket-notice-rucss-processing',
+			]
+		);
+	}
+
+	/**
+	 * Displays the RUCSS success notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_success_notice() {
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+		$class     = '';
+
+		if ( false !== $transient ) {
+			$class = ' hidden';
+		}
+
+		$message = sprintf(
+			// translators: %1$s = number of URLS, %2$s = number of seconds.
+			__( 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %1$s URLs per %2$s second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.', 'rocket' ),
+			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
+			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
+		);
+
+		rocket_notice_html(
+			[
+				'message'     => $message,
+				'dismissible' => 'is-dismissible' . $class,
+				'id'          => 'rocket-notice-rucss-success',
+			]
+		);
+	}
+
+	/**
+	 * Checks if we can display the RUCSS notices
+	 *
+	 * @since 3.11
+	 *
+	 * @return bool
+	 */
+	private function can_display_notice(): bool {
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return false;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return false;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $data Localize script data.
+	 *
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		if ( ! is_array( $data ) ) {
+			$data = (array) $data;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return $data;
+		}
+
+		$transient = get_transient( 'rocket_rucss_processing' );
+
+		if ( false === $transient ) {
+			return $data;
+		}
+
+		$data['notice_end_time'] = $transient;
+
+		return $data;
+	}
+
+	/**
 	 * Disable combine CSS option when RUCSS is enabled
 	 *
 	 * @since 3.11

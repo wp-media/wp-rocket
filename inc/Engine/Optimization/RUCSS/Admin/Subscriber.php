@@ -69,6 +69,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
 				[ 'clean_used_css_and_cache', 10, 2 ],
+				[ 'maybe_set_processing_transient', 10, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
 			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
@@ -84,7 +85,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
 			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
-			'admin_notices'                        => 'clear_usedcss_result',
+			'admin_notices'                        => [
+				[ 'clear_usedcss_result' ],
+				[ 'display_processing_notice' ],
+				[ 'display_success_notice' ],
+			],
 			'rocket_admin_bar_items'               => [
 				[ 'add_clean_used_css_menu_item' ],
 				[ 'add_clear_usedcss_bar_item' ],
@@ -93,6 +98,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
+			'rocket_localize_admin_script'         => 'add_localize_script_data',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
@@ -348,6 +354,8 @@ class Subscriber implements Subscriber_Interface {
 			]
 		);
 
+		$this->set_notice_transient();
+
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
@@ -411,6 +419,40 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
+	}
+
+	/**
+	 * Displays the RUCSS currently processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_processing_notice() {
+		$this->settings->display_processing_notice();
+	}
+
+	/**
+	 * Displays the RUCSS success notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function display_success_notice() {
+		$this->settings->display_success_notice();
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @since 3.11
+	 *
+	 * @param array $data Localize script data.
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		return $this->settings->add_localize_script_data( $data );
 	}
 
 	/**
@@ -480,5 +522,60 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
+
+		$this->database->truncate_used_css_table();
+		rocket_clean_domain();
+		$this->set_notice_transient();
+
+		wp_safe_remote_get(
+			home_url(),
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
+	}
+
+	/**
+	 * Sets the processing transient if RUCSS is enabled
+	 *
+	 * @since 3.11
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_processing_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 0 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		$this->set_notice_transient();
+	}
+
+	/**
+	 * Sets the transient for the processing notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function set_notice_transient() {
+		set_transient(
+			'rocket_rucss_processing',
+			time() + 60,
+			MINUTE_IN_SECONDS
+		);
 	}
 }
