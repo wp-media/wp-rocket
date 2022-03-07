@@ -44,7 +44,7 @@ return [
 			'transient'         => time(),
 		],
 		'expected' => [
-			'message'     => 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 25 URLs per 60 second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.',
+			'message'     => 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.',
 			'dismissible' => 'is-dismissible hidden',
 			'id'          => 'rocket-notice-rucss-success',
 		],
@@ -59,7 +59,7 @@ return [
 			'transient'         => false,
 		],
 		'expected' => [
-			'message'     => 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 25 URLs per 60 second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.',
+			'message'     => 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.',
 			'dismissible' => 'is-dismissible',
 			'id'          => 'rocket-notice-rucss-success',
 		],
