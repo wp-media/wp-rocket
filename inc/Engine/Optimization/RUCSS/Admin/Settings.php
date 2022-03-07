@@ -223,7 +223,7 @@ class Settings {
 		$message = sprintf(
 			// translators: %1$s = number of URLS, %2$s = number of seconds.
 			__( 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %1$s URLs per %2$s second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.', 'rocket' ),
-			apply_filters( 'action_scheduler_queue_runner_batch_size', 25 ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
 		);
 
