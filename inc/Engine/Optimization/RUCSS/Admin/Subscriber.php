@@ -522,6 +522,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
+
+		$this->database->truncate_used_css_table();
+		rocket_clean_domain();
+		$this->set_notice_transient();
 	}
 
 	/**
