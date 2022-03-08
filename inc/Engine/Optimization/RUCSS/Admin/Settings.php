@@ -213,11 +213,17 @@ class Settings {
 			return;
 		}
 
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'rucss_success_notice', (array) $boxes, true ) ) {
+			return;
+		}
+
 		$transient = get_transient( 'rocket_rucss_processing' );
 		$class     = '';
 
 		if ( false !== $transient ) {
-			$class = ' hidden';
+			$class = 'hidden';
 		}
 
 		$message = sprintf(
@@ -229,9 +235,10 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'message'     => $message,
-				'dismissible' => 'is-dismissible' . $class,
-				'id'          => 'rocket-notice-rucss-success',
+				'message'        => $message,
+				'dismissible'    => $class,
+				'id'             => 'rocket-notice-rucss-success',
+				'dismiss_button' => 'rucss_success_notice',
 			]
 		);
 	}
