@@ -32,6 +32,8 @@ class Test_DisplaySuccessNotice extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'remove_unused_css', 0 )
