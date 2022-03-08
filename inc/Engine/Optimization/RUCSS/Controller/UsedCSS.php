@@ -75,6 +75,7 @@ class UsedCSS {
 		'#text-box-',
 		'#banner-',
 		'#slider-',
+		'.wp-container-',
 	];
 
 	/**
