@@ -577,5 +577,7 @@ class Subscriber implements Subscriber_Interface {
 			time() + 60,
 			MINUTE_IN_SECONDS
 		);
+
+		rocket_renew_box( 'rucss_success_notice' );
 	}
 }
