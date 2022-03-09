@@ -244,7 +244,7 @@ class Settings {
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
 		);
 
-		if ( ! $this->options->get('manual_preload', 0 ) ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
