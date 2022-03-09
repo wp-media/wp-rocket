@@ -437,6 +437,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				if ( '' === $lang ) {
 					// Remove all minify cache files.
 					rocket_clean_minify();
+					rocket_clean_cache_busting();
 
 					// Generate a new random key for minify cache file.
 					$options                   = get_option( WP_ROCKET_SLUG );
@@ -539,41 +540,6 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 	}
 }
 add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
-
-/**
- * Purge OPCache content in Admin Bar
- *
- * @since 2.7
- */
-function do_admin_post_rocket_purge_opcache() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_opcache' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
-		return;
-	}
-
-	$reset_opcache = rocket_reset_opcache();
-
-	if ( ! $reset_opcache ) {
-		$op_purge_result = [
-			'result'  => 'error',
-			'message' => __( 'OPcache purge failed.', 'rocket' ),
-		];
-	} else {
-		$op_purge_result = [
-			'result'  => 'success',
-			'message' => __( 'OPcache successfully purged', 'rocket' ),
-		];
-	}
-
-	set_transient( get_current_user_id() . '_opcache_purge_result', $op_purge_result );
-
-	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-	die();
-}
-add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
 /**
  * Clean the cache when the current theme is updated.

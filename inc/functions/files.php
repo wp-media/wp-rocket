@@ -334,6 +334,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 	$min_path       = $min_cache_path . get_current_blog_id() . '/';
 	$iterator       = _rocket_get_cache_path_iterator( $min_path );
+
 	if ( false === $iterator ) {
 		return;
 	}
@@ -402,9 +403,23 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	if ( empty( $extensions ) ) {
+		return;
+	}
 
-	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
+	if ( is_string( $extensions ) ) {
+		$extensions = (array) $extensions;
+	}
+
+	$cache_busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . get_current_blog_id() . '/';
+	$iterator           = _rocket_get_cache_path_iterator( $cache_busting_path );
+
+	if ( false === $iterator ) {
+		return;
+	}
+
+	$filesystem         = rocket_direct_filesystem();
+	$busting_path_regex = str_replace( '/', '\/', $cache_busting_path );
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
 		rocket_mkdir_p( $cache_busting_path );
@@ -420,20 +435,6 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		return;
 	}
 
-	try {
-		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
-	} catch ( UnexpectedValueException $e ) {
-		// No logging yet.
-		return;
-	}
-
-	try {
-		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( Exception $e ) {
-		// No logging yet.
-		return;
-	}
-
 	foreach ( $extensions as $ext ) {
 		/**
 		 * Fires before the cache busting files are deleted
@@ -445,13 +446,13 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'before_rocket_clean_busting', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
-			foreach ( $files as $file ) {
-				rocket_direct_filesystem()->delete( $file[0] );
-			}
-		} catch ( InvalidArgumentException $e ) {
-			// No logging yet.
+			$entries = new RegexIterator( $iterator, "/{$busting_path_regex}.*\.{$ext}/" );
+		} catch ( Exception $e ) {
 			return;
+		}
+
+		foreach ( $entries as $entry ) {
+			$filesystem->delete( $entry->getPathname() );
 		}
 
 		/**
@@ -464,21 +465,10 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	try {
-		foreach ( $iterator as $item ) {
-			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-				rocket_direct_filesystem()->delete( $item );
-			}
+	foreach ( $iterator as $item ) {
+		if ( $filesystem->is_dir( $item ) ) {
+			$filesystem->delete( $item );
 		}
-	} catch ( UnexpectedValueException $e ) {
-		// Log the error.
-		Logger::debug(
-			'Cache Busting folder structure contains a directory we cannot recurse into.',
-			[
-				'Full error',
-				'UnexpectedValueException' => $e->getMessage(),
-			]
-		);
 	}
 }
 
