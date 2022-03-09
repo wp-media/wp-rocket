@@ -139,6 +139,7 @@ class UsedCSS extends Query {
 			'queue_name' => $queue_name,
 			'status'     => 'pending',
 			'retries'    => 0,
+			'last_accessed' => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}
