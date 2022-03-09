@@ -356,6 +356,13 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->set_notice_transient();
 
+		/**
+		 * Fires after the used CSS has been cleaned in the database
+		 *
+		 * @since 3.11
+		 */
+		do_action( 'rocket_after_clean_used_css' );
+
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
