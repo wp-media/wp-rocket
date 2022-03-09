@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\ENgine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
@@ -14,14 +15,22 @@ class Settings {
 	 */
 	private $options;
 
+	/**
+	 * Instance of Beacon class.
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
 
 	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param Beacon       $beacon  Beacon instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, Beacon $beacon ) {
 		$this->options = $options;
+		$this->beacon  = $beacon;
 	}
 
 	/**
@@ -187,8 +196,9 @@ class Settings {
 		$remaining = $transient - $current_time;
 
 		$message = sprintf(
-			// translators: %s = number of seconds.
-			__( 'Please wait %s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
+			// translators: %1$s = plugin name, %2$s = number of seconds.
+			__( '%1$s: please wait %2$s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
+			'<strong>WP Rocket</strong>',
 			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
 		);
 
@@ -227,10 +237,29 @@ class Settings {
 		}
 
 		$message = sprintf(
-			// translators: %1$s = number of URLS, %2$s = number of seconds.
-			__( 'Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %1$s URLs per %2$s second(s). We suggest enabling Preload for the fastest results. To learn more about the process check our documentation.', 'rocket' ),
+			// translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of seconds.
+			__( '%1$s: The Used CSS of your homepage has been generated. WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
+			'<strong>WP Rocket</strong>',
 			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
+		);
+
+		if ( ! $this->options->get('manual_preload', 0 ) ) {
+			$message .= ' ' . sprintf(
+				// translators: %1$s = opening link tag, %2$s = closing link tag.
+				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
+				'<a href="#preload">',
+				'</a>'
+			);
+		}
+
+		$beacon = $this->beacon->get_suggest( 'remove_unused_css' );
+
+		$message .= '<br>' . sprintf(
+			// translators: %1$s = opening link tag, %2$s = closing link tag.
+			__( 'To learn more about the process check our %1$sdocumentation%2$s.', 'rocket' ),
+			'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
+			'</a>'
 		);
 
 		rocket_notice_html(
