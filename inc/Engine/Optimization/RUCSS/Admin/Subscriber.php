@@ -329,7 +329,11 @@ class Subscriber implements Subscriber_Interface {
 				'rocket_clear_usedcss_response',
 				[
 					'status'  => 'error',
-					'message' => __( 'Used CSS option is not enabled!', 'rocket' ),
+					'message' => sprintf(
+						//translators: %1$s = plugin name.
+						__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
+						'<strong>WP Rocket</strong>'
+					),
 				]
 			);
 
@@ -350,7 +354,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_clear_usedcss_response',
 			[
 				'status'  => 'success',
-				'message' => __( 'Used CSS cache cleared!', 'rocket' ),
+				'message' => sprintf(
+					//translators: %1$s = plugin name.
+					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
+					'<strong>WP Rocket</strong>'
+				),
 			]
 		);
 
