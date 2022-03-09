@@ -564,6 +564,7 @@ class Page {
 
 		$disable_combine_js  = $this->disable_combine_js();
 		$disable_combine_css = $this->disable_combine_css();
+		$disable_ocd = 'local' === wp_get_environment_type();
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -680,6 +681,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
+						$disable_ocd ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'description'       => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
@@ -687,6 +689,10 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => $disable_ocd ? 1 : 0,
+					],
+					'helper'            => $disable_ocd ? __( 'This option is not available for local websites.', 'rocket' ) : '',
 				],
 				'optimize_css_delivery_method' => [
 					'type'                    => 'radio_buttons',
