@@ -330,7 +330,7 @@ class Subscriber implements Subscriber_Interface {
 				[
 					'status'  => 'error',
 					'message' => sprintf(
-						//translators: %1$s = plugin name.
+						// translators: %1$s = plugin name.
 						__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
 						'<strong>WP Rocket</strong>'
 					),
@@ -355,7 +355,7 @@ class Subscriber implements Subscriber_Interface {
 			[
 				'status'  => 'success',
 				'message' => sprintf(
-					//translators: %1$s = plugin name.
+					// translators: %1$s = plugin name.
 					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
 					'<strong>WP Rocket</strong>'
 				),
