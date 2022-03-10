@@ -564,7 +564,7 @@ class Page {
 
 		$disable_combine_js  = $this->disable_combine_js();
 		$disable_combine_css = $this->disable_combine_css();
-		$disable_ocd = 'local' === wp_get_environment_type();
+		$disable_ocd         = 'local' === wp_get_environment_type();
 
 		$this->settings->add_page_section(
 			'file_optimization',
