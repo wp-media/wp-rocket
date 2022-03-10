@@ -450,7 +450,8 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		$used_css_contents = $this->handle_charsets( $used_css->css, false );
+		$css               = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
+		$used_css_contents = $this->handle_charsets( $css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
 			$used_css_contents
