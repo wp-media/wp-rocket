@@ -246,10 +246,24 @@ class Subscriber implements Subscriber_Interface {
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->used_css->remove_all_completed_rows();
 
+			/**
+			 * Fires after the used CSS has been cleaned in the database
+			 *
+			 * @since 3.11
+			 */
+			do_action( 'rocket_after_clean_used_css' );
+
 			return;
 		}
 
 		$this->database->truncate_used_css_table();
+
+		/**
+		 * Fires after the used CSS has been cleaned in the database
+		 *
+		 * @since 3.11
+		 */
+		do_action( 'rocket_after_clean_used_css' );
 	}
 
 	/**
