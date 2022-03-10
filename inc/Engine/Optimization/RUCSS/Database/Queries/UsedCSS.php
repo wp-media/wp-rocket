@@ -133,12 +133,13 @@ class UsedCSS extends Query {
 	 */
 	public function create_new_job( string $url, string $job_id, string $queue_name, bool $is_mobile = false ) {
 		$item = [
-			'url'        => untrailingslashit( $url ),
-			'is_mobile'  => $is_mobile,
-			'job_id'     => $job_id,
-			'queue_name' => $queue_name,
-			'status'     => 'pending',
-			'retries'    => 0,
+			'url'           => untrailingslashit( $url ),
+			'is_mobile'     => $is_mobile,
+			'job_id'        => $job_id,
+			'queue_name'    => $queue_name,
+			'status'        => 'pending',
+			'retries'       => 0,
+			'last_accessed' => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}

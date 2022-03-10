@@ -380,6 +380,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
 		$response = get_transient( 'rocket_clear_usedcss_response' );
 		if ( ! $response ) {
 			return;
