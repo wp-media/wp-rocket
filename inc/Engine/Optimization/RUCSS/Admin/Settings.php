@@ -350,16 +350,18 @@ class Settings {
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
+		if ( 'local' === wp_get_environment_type() ) {
+			$options['optimize_css_delivery'] = 0;
+			$options['remove_unused_css']     = 0;
+			$options['async_css']             = 0;
+		}
+
 		if (
 			isset( $options['remove_unused_css'] )
 			&&
 			1 === (int) $options['remove_unused_css']
 		) {
 			$options['minify_concatenate_css'] = 0;
-		}
-
-		if ( 'local' === wp_get_environment_type() ) {
-			$options['optimize_css_delivery'] = 0;
 		}
 
 		update_option( 'wp_rocket_settings', $options );
