@@ -22,7 +22,10 @@
 		"preferred-install": {
 			"wp-media/phpunit": "source"
 		},
-		"process-timeout": 0
+		"process-timeout": 0,
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	},
 	"support": {
 		"issues": "https://github.com/wp-media/wp-rocket/issues",

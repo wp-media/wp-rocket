@@ -46,6 +46,9 @@ class Test_ClearUsedcssResult extends TestCase {
 				->andReturn( $input['cap'] );
 		}
 
+		$this->settings->shouldReceive( 'is_enabled' )
+			->andReturn( $input['enabled'] );
+
 		if ( isset( $input['transient'] ) ) {
 			Functions\expect( 'get_transient' )
 				->once()
