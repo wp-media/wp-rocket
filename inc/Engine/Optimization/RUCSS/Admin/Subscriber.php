@@ -581,5 +581,13 @@ class Subscriber implements Subscriber_Interface {
 			time() + 60,
 			MINUTE_IN_SECONDS
 		);
+
+		wp_safe_remote_get(
+			site_url( '/wp-cron.php' ),
+			[
+				'blocking' => false,
+				'timeout'  => 0.01,
+			]
+		);
 	}
 }
