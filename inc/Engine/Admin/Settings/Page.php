@@ -692,7 +692,12 @@ class Page {
 					'input_attr'        => [
 						'disabled' => $disable_ocd ? 1 : 0,
 					],
-					'helper'            => $disable_ocd ? __( 'This option is not available for local websites.', 'rocket' ) : '',
+					'helper'            => $disable_ocd ? sprintf(
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Optimize CSS Delivery features are disabled on local environments. %1$sLearn more%2$s', 'rocket' ),
+						'<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">',
+						'</a>'
+					) : '',
 				],
 				'optimize_css_delivery_method' => [
 					'type'                    => 'radio_buttons',
