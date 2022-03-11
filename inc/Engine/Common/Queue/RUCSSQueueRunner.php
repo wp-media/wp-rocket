@@ -3,6 +3,8 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\Queue;
 
+use WP_Rocket\Logger\Logger;
+
 class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 
 	/**
@@ -176,26 +178,33 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 * @return int The number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
-		$claim = $this->store->stake_claim( $size, null, [], $this->group );
-		$this->monitor->attach( $claim );
-		$processed_actions = 0;
+		try {
+			$claim = $this->store->stake_claim( $size, null, [], $this->group );
+			$this->monitor->attach( $claim );
+			$processed_actions = 0;
 
-		foreach ( $claim->get_actions() as $action_id ) {
-			// bail if we lost the claim.
-			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
-				break;
-			}
-			$this->process_action( $action_id, $context );
-			$processed_actions++;
+			foreach ( $claim->get_actions() as $action_id ) {
+				// bail if we lost the claim.
+				if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
+					break;
+				}
+				$this->process_action( $action_id, $context );
+				$processed_actions++;
 
-			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
-				break;
+				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+					break;
+				}
 			}
+			$this->store->release_claim( $claim );
+			$this->monitor->detach();
+			$this->clear_caches();
+
+			return $processed_actions;
+		} catch ( \Exception $exception ) {
+			Logger::debug( $exception->getMessage() );
+
+			return 0;
 		}
-		$this->store->release_claim( $claim );
-		$this->monitor->detach();
-		$this->clear_caches();
-		return $processed_actions;
 	}
 
 	/**

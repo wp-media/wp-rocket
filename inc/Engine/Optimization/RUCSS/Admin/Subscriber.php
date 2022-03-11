@@ -102,6 +102,7 @@ class Subscriber implements Subscriber_Interface {
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
+			'rocket_deactivation'                  => 'cancel_queues',
 		];
 	}
 
@@ -581,5 +582,20 @@ class Subscriber implements Subscriber_Interface {
 			time() + 60,
 			MINUTE_IN_SECONDS
 		);
+	}
+
+	/**
+	 * Cancel queues and crons for RUCSS.
+	 *
+	 * @return void
+	 */
+	public function cancel_queues() {
+		$this->queue->cancel_pending_jobs_cron();
+
+		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
+			return;
+		}
+
+		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 	}
 }
