@@ -41,11 +41,10 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $input ) {
-		if ( $input['remove_unused_css']
-				&&
-				isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
-				&&
-				$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
+		if (
+			isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
+			&&
+			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
@@ -61,6 +60,10 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 					Mockery::type( 'int' ),
 					60
 				);
+
+			Functions\expect( 'rocket_renew_box' )
+				->once()
+				->with( 'rucss_success_notice' );
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )

@@ -290,7 +290,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $old_value, $value ) {
-		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] ) {
+		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist']  ) ) {
 			return;
 		}
 
