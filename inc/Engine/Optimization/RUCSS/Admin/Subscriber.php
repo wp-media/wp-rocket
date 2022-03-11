@@ -290,22 +290,20 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $old_value, $value ) {
-		if ( ! current_user_can( 'rocket_manage_options' )
-			||
-			! $this->settings->is_enabled()
-		) {
+		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] ) {
 			return;
 		}
 
-		if (
-			isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] )
-			&&
-			$value['remove_unused_css_safelist'] !== $old_value['remove_unused_css_safelist']
-		) {
-			$this->database->truncate_used_css_table();
-			// Clear all caching files.
-			rocket_clean_domain();
+
+		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
+			return;
 		}
+
+		$this->database->truncate_used_css_table();
+
+		rocket_clean_domain();
+
+		$this->set_notice_transient();
 	}
 
 	/**

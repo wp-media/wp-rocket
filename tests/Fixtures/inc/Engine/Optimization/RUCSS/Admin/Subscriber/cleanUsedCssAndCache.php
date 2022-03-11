@@ -81,7 +81,6 @@ return [
 	'test_data' => [
 		'shouldNotTruncateUnusedCSSDueToMissingSettings' => [
 			'input' => [
-				'remove_unused_css' => false,
 				'items'             => $items,
 				'settings'          => [],
 				'old_settings'      => [],
@@ -91,7 +90,6 @@ return [
 		],
 		'shouldNotTruncateUnusedCSSDueToSettings' => [
 			'input' => [
-				'remove_unused_css' => true,
 				'items'             => $items,
 				'settings'          => [
 					'remove_unused_css_safelist' => [],
@@ -105,7 +103,6 @@ return [
 		],
 		'shouldTruncateUnusedCSS' => [
 			'input' => [
-				'remove_unused_css' => true,
 				'items'             => $items,
 				'settings'          => [
 					'remove_unused_css_safelist' => [],
