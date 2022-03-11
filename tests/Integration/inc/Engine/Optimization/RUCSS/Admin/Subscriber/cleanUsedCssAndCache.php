@@ -58,11 +58,10 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();
 
-		if ( $this->input['remove_unused_css']
-				&&
-				isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
-				&&
-				$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
+		if (
+			isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
+			&&
+			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->assertCount( 0, $resultAfterTruncate );
 
