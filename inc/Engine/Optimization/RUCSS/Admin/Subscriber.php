@@ -306,22 +306,18 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $old_value, $value ) {
-		if ( ! current_user_can( 'rocket_manage_options' )
-			||
-			! $this->settings->is_enabled()
-		) {
+		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] ) ) {
 			return;
 		}
 
-		if (
-			isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] )
-			&&
-			$value['remove_unused_css_safelist'] !== $old_value['remove_unused_css_safelist']
-		) {
-			$this->delete_used_css_rows();
-			// Clear all caching files.
-			rocket_clean_domain();
+		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
+			return;
 		}
+
+		$this->delete_used_css_rows();
+		rocket_clean_domain();
+
+		$this->set_notice_transient();
 	}
 
 	/**
@@ -345,7 +341,11 @@ class Subscriber implements Subscriber_Interface {
 				'rocket_clear_usedcss_response',
 				[
 					'status'  => 'error',
-					'message' => __( 'Used CSS option is not enabled!', 'rocket' ),
+					'message' => sprintf(
+						// translators: %1$s = plugin name.
+						__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
+						'<strong>WP Rocket</strong>'
+					),
 				]
 			);
 
@@ -362,7 +362,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_clear_usedcss_response',
 			[
 				'status'  => 'success',
-				'message' => __( 'Used CSS cache cleared!', 'rocket' ),
+				'message' => sprintf(
+					// translators: %1$s = plugin name.
+					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
+					'<strong>WP Rocket</strong>'
+				),
 			]
 		);
 
@@ -593,5 +597,7 @@ class Subscriber implements Subscriber_Interface {
 			time() + 60,
 			MINUTE_IN_SECONDS
 		);
+
+		rocket_renew_box( 'rucss_success_notice' );
 	}
 }

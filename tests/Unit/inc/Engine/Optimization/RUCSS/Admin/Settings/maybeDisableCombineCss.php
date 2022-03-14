@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Settings;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -17,7 +18,7 @@ class Test_MaybeDisableCombineCss extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$settings = new Settings( Mockery::mock( Options_Data::class ) );
+		$settings = new Settings( Mockery::mock( Options_Data::class ), Mockery::mock( Beacon::class ) );
 
 		$this->assertSame(
 			$expected,

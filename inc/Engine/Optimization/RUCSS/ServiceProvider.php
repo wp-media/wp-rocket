@@ -39,7 +39,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'rucss_settings', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings' )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) );
 		// Instantiate the RUCSS Resources Table class.
 		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
 		$this->getContainer()->add( 'rucss_usedcss_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS' );

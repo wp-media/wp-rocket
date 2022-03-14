@@ -105,7 +105,7 @@ return [
 				'reason' => 'option',
 				'notice_details' => [
 					'status'  => 'error',
-					'message' => 'Used CSS option is not enabled!',
+					'message' => '<strong>WP Rocket</strong>: Used CSS option is not enabled!',
 				],
 			],
 		],
@@ -124,7 +124,7 @@ return [
 				'truncated' => true,
 				'notice_details' => [
 					'status'  => 'success',
-					'message' => 'Used CSS cache cleared!',
+					'message' => '<strong>WP Rocket</strong>: Used CSS cache cleared!',
 				],
 			],
 		],
@@ -143,7 +143,7 @@ return [
 				'truncated' => true,
 				'notice_details' => [
 					'status'  => 'success',
-					'message' => 'Used CSS cache cleared!',
+					'message' => '<strong>WP Rocket</strong>: Used CSS cache cleared!',
 				],
 			],
 		],
