@@ -42,8 +42,13 @@ class Test_MaybeSetProcessingTransient extends TestCase {
 
 			Functions\expect( 'spawn_cron' )
 				->once();
+			Functions\expect( 'rocket_renew_box' )
+				->once()
+				->with( 'rucss_success_notice' );
 		} else {
 			Functions\expect( 'set_transient' )->never();
+			Functions\expect( 'spawn_cron' )->never();
+			Functions\expect( 'rocket_renew_box' )->never();
 		}
 
 		$this->subscriber->maybe_set_processing_transient( $input['old_value'], $input['value'] );

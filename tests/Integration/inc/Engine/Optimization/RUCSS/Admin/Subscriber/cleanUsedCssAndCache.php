@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -16,10 +15,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	use DBTrait;
-	use CapTrait;
 
-	private        $input;
-	private static $user_id;
+	private $input;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php';
 
@@ -27,11 +24,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		self::installFresh();
 
 		parent::setUpBeforeClass();
-
-		CapTrait::hasAdminCapBeforeClass();
-		CapTrait::setAdminCap();
-
-		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public static function tearDownAfterClass() {
@@ -40,23 +32,14 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
-		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-
-		parent::tearDown();
-	}
-
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $input ){
-		wp_set_current_user( static::$user_id );
-
 		$container              = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
 
 		$this->input = $input;
-		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		foreach ( $input['items'] as $item ) {
 			$rucss_usedcss_query->add_item( $item );
@@ -75,11 +58,10 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();
 
-		if ( $this->input['remove_unused_css']
-				&&
-				isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
-				&&
-				$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
+		if (
+			isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
+			&&
+			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->assertCount( 0, $resultAfterTruncate );
 
@@ -102,9 +84,5 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 				$this->assertTrue( $this->filesystem->exists( $file ) );
 			}
 		}
-	}
-
-	public function set_rucss_option() {
-		return $this->input['remove_unused_css'] ?? false;
 	}
 }

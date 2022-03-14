@@ -129,6 +129,9 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 
 			Functions\expect( 'spawn_cron' )
 				->once();
+			Functions\expect( 'rocket_renew_box' )
+				->once()
+				->with( 'rucss_success_notice' );
 			Functions\expect( 'rocket_clean_domain' )->once();
 			Functions\expect( 'rocket_dismiss_box' )->with('rocket_warning_plugin_modification')->once();
 		}
