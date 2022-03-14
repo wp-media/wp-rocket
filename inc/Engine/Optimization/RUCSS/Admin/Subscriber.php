@@ -243,20 +243,22 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$this->delete_used_css_rows();
+	}
+
+	/**
+	 * Deletes the used CSS from the table
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function delete_used_css_rows() {
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->used_css->remove_all_completed_rows();
-
-			/**
-			 * Fires after the used CSS has been cleaned in the database
-			 *
-			 * @since 3.11
-			 */
-			do_action( 'rocket_after_clean_used_css' );
-
-			return;
+		} else {
+			$this->database->truncate_used_css_table();
 		}
-
-		$this->database->truncate_used_css_table();
 
 		/**
 		 * Fires after the used CSS has been cleaned in the database
@@ -316,7 +318,7 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			$value['remove_unused_css_safelist'] !== $old_value['remove_unused_css_safelist']
 		) {
-			$this->database->truncate_used_css_table();
+			$this->delete_used_css_rows();
 			// Clear all caching files.
 			rocket_clean_domain();
 		}
@@ -351,11 +353,7 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		if ( 0 < $this->used_css->get_not_completed_count() ) {
-			$this->used_css->remove_all_completed_rows();
-		} else {
-			$this->database->truncate_used_css_table();
-		}
+		$this->delete_used_css_rows();
 
 		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -369,13 +367,6 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		$this->set_notice_transient();
-
-		/**
-		 * Fires after the used CSS has been cleaned in the database
-		 *
-		 * @since 3.11
-		 */
-		do_action( 'rocket_after_clean_used_css' );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
