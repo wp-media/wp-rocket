@@ -41,21 +41,10 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $input ) {
-		Functions\expect( 'current_user_can' )
-				->once()
-				->with( 'rocket_manage_options' )
-				->andReturn( true );
-
-		$this->settings
-				->shouldReceive( 'is_enabled' )
-				->once()
-				->andReturn( $input['remove_unused_css'] );
-
-		if ( $input['remove_unused_css']
-				&&
-				isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
-				&&
-				$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
+		if (
+			isset( $input['settings']['remove_unused_css_safelist'], $input['old_settings']['remove_unused_css_safelist'] )
+			&&
+			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
@@ -63,12 +52,27 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 			Functions\expect( 'rocket_clean_domain' )
 				->once();
+
+			Functions\expect( 'set_transient' )
+				->once()
+				->with(
+					'rocket_rucss_processing',
+					Mockery::type( 'int' ),
+					60
+				);
+
+			Functions\expect( 'rocket_renew_box' )
+				->once()
+				->with( 'rucss_success_notice' );
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
 				->never();
 
 			Functions\expect( 'rocket_clean_domain' )
+				->never();
+
+			Functions\expect( 'set_transient' )
 				->never();
 		}
 
