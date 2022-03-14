@@ -583,4 +583,5 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		spawn_cron();
+	}
 }
