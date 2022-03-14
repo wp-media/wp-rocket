@@ -40,18 +40,8 @@ class Test_MaybeSetProcessingTransient extends TestCase {
 					60
 				);
 
-			Functions\when( 'site_url' )
-				->justReturn( 'http://example.org/wp-cron.php' );
-
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					'http://example.org/wp-cron.php',
-					[
-						'blocking' => false,
-						'timeout'  => 0.01,
-					]
-				);
+			Functions\expect( 'spawn_cron' )
+				->once();
 		} else {
 			Functions\expect( 'set_transient' )->never();
 		}

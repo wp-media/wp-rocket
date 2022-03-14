@@ -127,18 +127,8 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 					60
 				);
 
-			Functions\when( 'site_url' )
-				->justReturn( 'http://example.org/wp-cron.php' );
-
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					'http://example.org/wp-cron.php',
-					[
-						'blocking' => false,
-						'timeout'  => 0.01,
-					]
-				);
+			Functions\expect( 'spawn_cron' )
+				->once();
 			Functions\expect( 'rocket_clean_domain' )->once();
 			Functions\expect( 'rocket_dismiss_box' )->with('rocket_warning_plugin_modification')->once();
 		}

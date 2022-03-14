@@ -582,12 +582,5 @@ class Subscriber implements Subscriber_Interface {
 			MINUTE_IN_SECONDS
 		);
 
-		wp_safe_remote_get(
-			site_url( '/wp-cron.php' ),
-			[
-				'blocking' => false,
-				'timeout'  => 0.01,
-			]
-		);
-	}
+		spawn_cron();
 }
