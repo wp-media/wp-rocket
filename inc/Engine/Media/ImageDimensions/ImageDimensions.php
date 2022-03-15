@@ -522,7 +522,7 @@ class ImageDimensions {
 				$size[0] = $view_box[2];
 				$size[1] = $view_box[3];
 				$size[2] = 0;
-				$size[3] = 'width="' . absint($size[0]) . '" height="' . absint($size[1]) . '"';
+				$size[3] = 'width="' . absint( $size[0] ) . '" height="' . absint( $size[1] ) . '"';
 
 				return $size;
 			}
