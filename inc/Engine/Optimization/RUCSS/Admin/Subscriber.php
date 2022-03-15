@@ -296,7 +296,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Truncate UsedCSS DB Table and WP Rocket cache when `remove_unused_css_safelist` is changed.
+	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
 	 *
 	 * @since 3.9
 	 *
@@ -315,7 +315,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->delete_used_css_rows();
-		rocket_clean_domain();
 
 		$this->set_notice_transient();
 	}
