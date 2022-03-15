@@ -506,7 +506,7 @@ class ImageDimensions {
 			$size[0] = $width;
 			$size[1] = $height;
 			$size[2] = 0;
-			$size[3] = 'width="' . absint($width) . '" height="' . absint($height) . '"';
+			$size[3] = 'width="' . absint( $width ) . '" height="' . absint( $height ) . '"';
 
 			return $size;
 		}
