@@ -54,9 +54,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			}
 
-			Functions\expect( 'rocket_clean_domain' )
-				->once();
-
 			Functions\expect( 'set_transient' )
 				->once()
 				->with(
@@ -71,9 +68,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
-				->never();
-
-			Functions\expect( 'rocket_clean_domain' )
 				->never();
 
 			Functions\expect( 'set_transient' )
