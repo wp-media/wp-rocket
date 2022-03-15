@@ -68,8 +68,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'         => 'add_options_first_time',
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
-				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_set_processing_transient', 10, 2 ],
+				[ 'clean_used_css_and_cache', 51, 2 ],
+				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
 			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
