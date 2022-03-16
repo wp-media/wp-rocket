@@ -642,7 +642,7 @@ class Page {
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'helper'            => get_rocket_option( 'remove_unused_css' ) ? __( 'For compatibility and best results, this option is disabled when remove unused CSS is enabled.', 'rocket' ) : '',
+					'helper'            => get_rocket_option( 'remove_unused_css' ) ? __( 'For compatibility and best results, this option is disabled when Remove unused CSS is enabled.', 'rocket' ) : '',
 					'container_class'   => [
 						$disable_combine_css ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',

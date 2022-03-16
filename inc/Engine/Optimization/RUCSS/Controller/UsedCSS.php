@@ -625,7 +625,7 @@ class UsedCSS {
 			[
 				'parent' => 'wp-rocket',
 				'id'     => 'remove-usedcss-url',
-				'title'  => __( 'Regenerate UsedCSS', 'rocket' ),
+				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
 			]
 		);
