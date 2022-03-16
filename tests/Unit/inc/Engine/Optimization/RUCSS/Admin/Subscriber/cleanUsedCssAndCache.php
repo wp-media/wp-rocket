@@ -46,12 +46,13 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 			&&
 			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
-			$this->database
-				->shouldReceive( 'truncate_used_css_table' )
-				->once();
+			$this->usedCSS->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
 
-			Functions\expect( 'rocket_clean_domain' )
-				->once();
+			if ( $input['not_completed_count'] > 0 ) {
+				$this->usedCSS->shouldReceive( 'remove_all_completed_rows' )->once();
+			} else {
+				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
+			}
 
 			Functions\expect( 'set_transient' )
 				->once()
@@ -67,9 +68,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 		} else {
 			$this->database
 				->shouldReceive( 'truncate_used_css_table' )
-				->never();
-
-			Functions\expect( 'rocket_clean_domain' )
 				->never();
 
 			Functions\expect( 'set_transient' )

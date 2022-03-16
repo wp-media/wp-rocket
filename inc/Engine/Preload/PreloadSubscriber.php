@@ -56,7 +56,8 @@ class PreloadSubscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_rollback'             => [ 'stop_homepage_preload', 9 ],
 			'wp_rocket_upgrade'                      => [ 'stop_homepage_preload', 9 ],
-			'rocket_options_changed'                 => 'preload_homepage',
+			'rocket_options_changed'                 => 'preload_after_options_change',
+			'rocket_after_clean_used_css'            => 'preload_after_clean_used_css',
 		];
 	}
 
@@ -379,7 +380,7 @@ class PreloadSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Preloads the homepage (desktop & mobile if enabled)
+	 * Preloads the homepage after changing the options
 	 *
 	 * @since 3.11
 	 *
@@ -387,7 +388,47 @@ class PreloadSubscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function preload_homepage( $value ) {
+	public function preload_after_options_change( $value ) {
+		$mobile = false;
+
+		if (
+			isset( $value['do_caching_mobile_files'] )
+			&&
+			1 === $value['do_caching_mobile_files']
+		) {
+			$mobile = true;
+		}
+
+		$this->preload_homepage( $mobile );
+	}
+
+	/**
+	 * Preloads the homepage after cleaning the used CSS in the database
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function preload_after_clean_used_css() {
+		$mobile = false;
+
+		if ( $this->options->get( 'do_caching_mobile_files', 0 ) ) {
+			$mobile = true;
+		}
+
+		$this->preload_homepage( $mobile );
+	}
+
+	/**
+	 * Preloads the homepage (desktop & mobile if enabled)
+	 *
+	 * @since 3.11
+	 *
+	 * @param bool $mobile True to preload the mobile version, false otherwise.
+	 *
+	 * @return void
+	 */
+	private function preload_homepage( $mobile = false ) {
 		wp_safe_remote_get(
 			home_url(),
 			[
@@ -398,11 +439,7 @@ class PreloadSubscriber implements Subscriber_Interface {
 			]
 		);
 
-		if (
-			isset( $value['do_caching_mobile_files'] )
-			&&
-			1 === $value['do_caching_mobile_files']
-		) {
+		if ( $mobile ) {
 			wp_safe_remote_get(
 				home_url(),
 				[

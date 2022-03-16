@@ -68,8 +68,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'         => 'add_options_first_time',
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
-				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_set_processing_transient', 10, 2 ],
+				[ 'clean_used_css_and_cache', 9, 2 ],
+				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
 			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
@@ -244,13 +244,29 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$this->delete_used_css_rows();
+	}
+
+	/**
+	 * Deletes the used CSS from the table
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function delete_used_css_rows() {
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->used_css->remove_all_completed_rows();
-
-			return;
+		} else {
+			$this->database->truncate_used_css_table();
 		}
 
-		$this->database->truncate_used_css_table();
+		/**
+		 * Fires after the used CSS has been cleaned in the database
+		 *
+		 * @since 3.11
+		 */
+		do_action( 'rocket_after_clean_used_css' );
 	}
 
 	/**
@@ -281,7 +297,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Truncate UsedCSS DB Table and WP Rocket cache when `remove_unused_css_safelist` is changed.
+	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
 	 *
 	 * @since 3.9
 	 *
@@ -299,9 +315,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->database->truncate_used_css_table();
-
-		rocket_clean_domain();
+		$this->delete_used_css_rows();
 
 		$this->set_notice_transient();
 	}
@@ -339,11 +353,7 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		if ( 0 < $this->used_css->get_not_completed_count() ) {
-			$this->used_css->remove_all_completed_rows();
-		} else {
-			$this->database->truncate_used_css_table();
-		}
+		$this->delete_used_css_rows();
 
 		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
