@@ -253,7 +253,7 @@ class Settings {
 			);
 		}
 
-		$beacon = $this->beacon->get_suggest( 'remove_unused_css' );
+		$beacon = $this->beacon->get_suggest( 'async_opti' );
 
 		$message .= '<br>' . sprintf(
 			// translators: %1$s = opening link tag, %2$s = closing link tag.
