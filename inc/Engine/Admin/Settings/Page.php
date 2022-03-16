@@ -561,6 +561,7 @@ class Page {
 		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
 		$rucss_beacon               = $this->beacon->get_suggest( 'remove_unused_css' );
+		$offline_beacon             = $this->beacon->get_suggest( 'offline' );
 
 		$disable_combine_js  = $this->disable_combine_js();
 		$disable_combine_css = $this->disable_combine_css();
@@ -695,7 +696,7 @@ class Page {
 					'helper'            => $disable_ocd ? sprintf(
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 						__( 'Optimize CSS Delivery features are disabled on local environments. %1$sLearn more%2$s', 'rocket' ),
-						'<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">',
+						'<a href="' . esc_url( $offline_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $offline_beacon['id'] ) . '" target="_blank">',
 						'</a>'
 					) : '',
 				],
