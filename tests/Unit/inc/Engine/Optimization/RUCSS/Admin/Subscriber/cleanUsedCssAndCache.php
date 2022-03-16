@@ -61,9 +61,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 					60
 				);
 
-			Functions\expect( 'spawn_cron' )
-				->once();
-
 			Functions\expect( 'rocket_renew_box' )
 				->once()
 				->with( 'rucss_success_notice' );
