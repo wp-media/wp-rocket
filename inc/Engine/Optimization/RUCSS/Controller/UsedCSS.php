@@ -601,6 +601,10 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
