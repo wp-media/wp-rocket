@@ -72,9 +72,6 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [
-		'#text-box-',
-		'#banner-',
-		'#slider-',
 		'.wp-container-',
 		'.wp-elements-',
 	];
