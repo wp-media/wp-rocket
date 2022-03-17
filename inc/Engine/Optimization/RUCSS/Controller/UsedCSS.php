@@ -452,11 +452,23 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		$css               = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css_contents = $this->handle_charsets( $css, false );
+		$css = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
+		$css = $this->handle_charsets( $css, false );
+		$css = $this->apply_font_display_swap( $css );
+
+		/**
+		 * Filters Used CSS content after getting from DB.
+		 *
+		 * @since 3.9.0.2
+		 * @since 3.11 Change its location to be after getting CSS from DB.
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$css = apply_filters( 'rocket_usedcss_content', $css );
+
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
-			$used_css_contents
+			$css
 		);
 	}
 
@@ -573,24 +585,12 @@ class UsedCSS {
 			return;
 		}
 
-		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
+		// Everything is fine, save the usedcss into DB and change status to completed.
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
-		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
-
-		/**
-		 * Filters Used CSS content before saving into DB.
-		 *
-		 * @since 3.9.0.2
-		 *
-		 * @param string $usedcss Used CSS.
-		 */
-		$css = apply_filters( 'rocket_usedcss_content', $css );
-
-		$this->used_css_query->make_status_completed( $id, $css );
+		$this->used_css_query->make_status_completed( $id, $job_details['contents']['shakedCSS'] );
 
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-
 	}
 
 	/**
