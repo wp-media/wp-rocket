@@ -59,6 +59,7 @@ class UsedCSS {
 	 */
 	private $inline_exclusions = [
 		'rocket-lazyload-inline-css',
+		'trx_addons-inline-styles-inline-css',
 	];
 
 	/**
