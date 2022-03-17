@@ -4,21 +4,17 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
-use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clean_used_css_and_cache
  *
- * @uses   ::rocket_clean_domain
- *
  * @group  RUCSS
  */
-class Test_CleanUsedCssAndCache extends FilesystemTestCase {
+class Test_CleanUsedCssAndCache extends TestCase {
 	use DBTrait;
 
 	private $input;
-
-	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php';
 
 	public static function setUpBeforeClass(): void {
 		self::installFresh();
@@ -33,9 +29,9 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input ){
+	public function testShouldDoExpected( $input ) {
 		$container              = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
 
@@ -48,11 +44,6 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 		$this->assertCount( count( $input['items'] ), $result );
 
-		// Test that cache Files are available.
-		foreach ( $input['cache_files'] as $file => $content ) {
-			$this->assertTrue( $this->filesystem->exists( $file ) );
-		}
-
 		do_action( 'update_option_wp_rocket_settings', $input['settings'], $input['old_settings'] );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
@@ -64,25 +55,8 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
 			$this->assertCount( 0, $resultAfterTruncate );
-
-			// Test that cache Files are deleted.
-			$this->checkEntriesDeleted( $input['cache_files'] );
-
-			// Test that Used CSS Files are NOT deleted.
-			foreach ( $input['used_css_files'] as $file => $content ) {
-				$this->assertTrue( $this->filesystem->exists( $file ) );
-			}
 		} else {
 			$this->assertCount( count( $input['items'] ), $result );
-
-			// Test that cache Files are still available.
-			foreach ( $input['cache_files'] as $file => $content ) {
-				$this->assertTrue( $this->filesystem->exists( $file ) );
-			}
-
-			foreach ( $input['used_css_files'] as $file => $content ) {
-				$this->assertTrue( $this->filesystem->exists( $file ) );
-			}
 		}
 	}
 }
