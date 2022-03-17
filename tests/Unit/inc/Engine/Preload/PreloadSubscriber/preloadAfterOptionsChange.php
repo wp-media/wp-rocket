@@ -11,11 +11,11 @@ use WP_Rocket\Engine\Preload\PreloadSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\PreloadSubscriber::preload_homepage
+ * @covers \WP_Rocket\Engine\Preload\PreloadSubscriber::preload_after_options_change
  *
  * @group  Preload
  */
-class Test_PreloadHomepage extends TestCase {
+class Test_PreloadAfterOptionsChange extends TestCase {
 	private $subscriber;
 	private $homepage_preloader;
 	private $home_url   = 'https://example.org/';
@@ -48,7 +48,7 @@ class Test_PreloadHomepage extends TestCase {
 				]
 			);
 
-		$this->subscriber->preload_homepage( [] );
+		$this->subscriber->preload_after_options_change( [] );
 	}
 
 	public function testShouldPreloadDesktopAndMobileHomepage() {
@@ -81,7 +81,7 @@ class Test_PreloadHomepage extends TestCase {
 				]
 			);
 
-		$this->subscriber->preload_homepage(
+		$this->subscriber->preload_after_options_change(
 			[
 				'do_caching_mobile_files' => 1,
 			]

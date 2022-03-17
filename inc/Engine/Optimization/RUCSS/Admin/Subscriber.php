@@ -68,8 +68,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'         => 'add_options_first_time',
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
-				[ 'clean_used_css_and_cache', 10, 2 ],
-				[ 'maybe_set_processing_transient', 10, 2 ],
+				[ 'clean_used_css_and_cache', 9, 2 ],
+				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
 			'switch_theme'                         => 'truncate_used_css',
 			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
@@ -102,6 +102,7 @@ class Subscriber implements Subscriber_Interface {
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
+			'rocket_deactivation'                  => 'cancel_queues',
 		];
 	}
 
@@ -243,13 +244,29 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$this->delete_used_css_rows();
+	}
+
+	/**
+	 * Deletes the used CSS from the table
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	private function delete_used_css_rows() {
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->used_css->remove_all_completed_rows();
-
-			return;
+		} else {
+			$this->database->truncate_used_css_table();
 		}
 
-		$this->database->truncate_used_css_table();
+		/**
+		 * Fires after the used CSS has been cleaned in the database
+		 *
+		 * @since 3.11
+		 */
+		do_action( 'rocket_after_clean_used_css' );
 	}
 
 	/**
@@ -280,7 +297,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Truncate UsedCSS DB Table and WP Rocket cache when `remove_unused_css_safelist` is changed.
+	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
 	 *
 	 * @since 3.9
 	 *
@@ -290,22 +307,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_used_css_and_cache( $old_value, $value ) {
-		if ( ! current_user_can( 'rocket_manage_options' )
-			||
-			! $this->settings->is_enabled()
-		) {
+		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] ) ) {
 			return;
 		}
 
-		if (
-			isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] )
-			&&
-			$value['remove_unused_css_safelist'] !== $old_value['remove_unused_css_safelist']
-		) {
-			$this->database->truncate_used_css_table();
-			// Clear all caching files.
-			rocket_clean_domain();
+		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
+			return;
 		}
+
+		$this->delete_used_css_rows();
+
+		$this->set_notice_transient();
 	}
 
 	/**
@@ -329,7 +341,11 @@ class Subscriber implements Subscriber_Interface {
 				'rocket_clear_usedcss_response',
 				[
 					'status'  => 'error',
-					'message' => __( 'Used CSS option is not enabled!', 'rocket' ),
+					'message' => sprintf(
+						// translators: %1$s = plugin name.
+						__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
+						'<strong>WP Rocket</strong>'
+					),
 				]
 			);
 
@@ -337,11 +353,7 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		if ( 0 < $this->used_css->get_not_completed_count() ) {
-			$this->used_css->remove_all_completed_rows();
-		} else {
-			$this->database->truncate_used_css_table();
-		}
+		$this->delete_used_css_rows();
 
 		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -350,7 +362,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_clear_usedcss_response',
 			[
 				'status'  => 'success',
-				'message' => __( 'Used CSS cache cleared!', 'rocket' ),
+				'message' => sprintf(
+					// translators: %1$s = plugin name.
+					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
+					'<strong>WP Rocket</strong>'
+				),
 			]
 		);
 
@@ -585,5 +601,22 @@ class Subscriber implements Subscriber_Interface {
 			time() + 60,
 			MINUTE_IN_SECONDS
 		);
+
+		rocket_renew_box( 'rucss_success_notice' );
+	}
+
+	/**
+	 * Cancel queues and crons for RUCSS.
+	 *
+	 * @return void
+	 */
+	public function cancel_queues() {
+		$this->queue->cancel_pending_jobs_cron();
+
+		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
+			return;
+		}
+
+		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 	}
 }
