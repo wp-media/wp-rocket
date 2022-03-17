@@ -126,6 +126,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 					Mockery::type( 'int' ),
 					60
 				);
+
 			Functions\expect( 'rocket_renew_box' )
 				->once()
 				->with( 'rucss_success_notice' );

@@ -70,6 +70,17 @@ function rucssTimer(id, endtime) {
 				success.classList.remove('hidden');
 			}
 
+			const data = new FormData();
+
+			data.append( 'action', 'rocket_spawn_cron' );
+			data.append( 'nonce', rocket_ajax_data.nonce );
+
+			fetch( ajaxurl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: data
+			} );
+
 			return;
 		}
 

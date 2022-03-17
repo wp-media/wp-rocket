@@ -102,6 +102,7 @@ class Subscriber implements Subscriber_Interface {
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
+			'wp_ajax_rocket_spawn_cron'            => 'spawn_cron',
 			'rocket_deactivation'                  => 'cancel_queues',
 		];
 	}
@@ -603,6 +604,26 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		rocket_renew_box( 'rucss_success_notice' );
+	}
+
+	/**
+	 * Sends a request to run cron when switching to RUCSS completed notice
+	 *
+	 * @since 3.11
+	 *
+	 * @return void
+	 */
+	public function spawn_cron() {
+		check_ajax_referer( 'rocket-ajax', 'nonce' );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return;
+		}
+
+		spawn_cron();
+
+		wp_send_json_success();
 	}
 
 	/**
