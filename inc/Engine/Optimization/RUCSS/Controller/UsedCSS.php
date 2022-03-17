@@ -601,6 +601,10 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
@@ -628,7 +632,7 @@ class UsedCSS {
 			[
 				'parent' => 'wp-rocket',
 				'id'     => 'remove-usedcss-url',
-				'title'  => __( 'Regenerate UsedCSS', 'rocket' ),
+				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
 			]
 		);

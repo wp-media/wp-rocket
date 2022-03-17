@@ -89,6 +89,10 @@ class Settings {
 	 * @return void
 	 */
 	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
@@ -385,6 +389,12 @@ class Settings {
 		}
 
 		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( 'local' === wp_get_environment_type() ) {
+			$options['optimize_css_delivery'] = 0;
+			$options['remove_unused_css']     = 0;
+			$options['async_css']             = 0;
+		}
 
 		if (
 			isset( $options['remove_unused_css'] )

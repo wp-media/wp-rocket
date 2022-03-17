@@ -204,6 +204,12 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['cache_ssl'] = 1;
 	}
 
+	if ( 'local' === wp_get_environment_type() ) {
+		$newvalue['optimize_css_delivery'] = 0;
+		$newvalue['remove_unused_css']     = 0;
+		$newvalue['async_css']             = 0;
+	}
+
 	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
