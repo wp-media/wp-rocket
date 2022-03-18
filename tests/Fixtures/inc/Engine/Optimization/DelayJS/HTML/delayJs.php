@@ -173,6 +173,31 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
+<script>
+function wprRemoveCPCSS() {
+	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
+	if ( preload_stylesheets && preload_stylesheets.length > 0 ) {
+		for ( let stylesheet_index = 0;stylesheet_index < preload_stylesheets.length;stylesheet_index++ ){
+			let media = preload_stylesheets[stylesheet_index].getAttribute(\'media\') || \'all\';
+			if( window.matchMedia(media).matches ){
+				setTimeout( wprRemoveCPCSS, 200 );
+				return;
+			}
+		}
+	}
+
+	const elem = document.getElementById( \'rocket-critical-css\' );
+	if ( elem && \'remove\' in elem ) {
+		elem.remove();
+	}
+}
+
+if ( window.addEventListener ) {
+	window.addEventListener( \'load\', wprRemoveCPCSS );
+} else if ( window.attachEvent ) {
+	window.attachEvent( \'onload\', wprRemoveCPCSS );
+}
+</script>
 </body>
 </html>';
 
@@ -349,6 +374,31 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
+<script>
+function wprRemoveCPCSS() {
+	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
+	if ( preload_stylesheets && preload_stylesheets.length > 0 ) {
+		for ( let stylesheet_index = 0;stylesheet_index < preload_stylesheets.length;stylesheet_index++ ){
+			let media = preload_stylesheets[stylesheet_index].getAttribute(\'media\') || \'all\';
+			if( window.matchMedia(media).matches ){
+				setTimeout( wprRemoveCPCSS, 200 );
+				return;
+			}
+		}
+	}
+
+	const elem = document.getElementById( \'rocket-critical-css\' );
+	if ( elem && \'remove\' in elem ) {
+		elem.remove();
+	}
+}
+
+if ( window.addEventListener ) {
+	window.addEventListener( \'load\', wprRemoveCPCSS );
+} else if ( window.attachEvent ) {
+	window.attachEvent( \'onload\', wprRemoveCPCSS );
+}
+</script>
 </body>
 </html>';
 
@@ -524,6 +574,31 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script data-cfasync="false" data-pagespeed-no-defer type="text/javascript">//<![CDATA[
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
+</script>
+<script>
+function wprRemoveCPCSS() {
+	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
+	if ( preload_stylesheets && preload_stylesheets.length > 0 ) {
+		for ( let stylesheet_index = 0;stylesheet_index < preload_stylesheets.length;stylesheet_index++ ){
+			let media = preload_stylesheets[stylesheet_index].getAttribute(\'media\') || \'all\';
+			if( window.matchMedia(media).matches ){
+				setTimeout( wprRemoveCPCSS, 200 );
+				return;
+			}
+		}
+	}
+
+	const elem = document.getElementById( \'rocket-critical-css\' );
+	if ( elem && \'remove\' in elem ) {
+		elem.remove();
+	}
+}
+
+if ( window.addEventListener ) {
+	window.addEventListener( \'load\', wprRemoveCPCSS );
+} else if ( window.attachEvent ) {
+	window.attachEvent( \'onload\', wprRemoveCPCSS );
+}
 </script>
 </body>
 </html>';
