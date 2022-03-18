@@ -68,7 +68,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'         => 'add_options_first_time',
 			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug               => [
-				[ 'clean_used_css_with_safelist', 9, 2 ],
+				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'clean_used_css_with_cdn', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
@@ -307,7 +307,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function clean_used_css_with_safelist( $old_value, $value ) {
+	public function clean_used_css_and_cache( $old_value, $value ) {
 		if ( ! isset( $value['remove_unused_css_safelist'], $old_value['remove_unused_css_safelist'] ) ) {
 			return;
 		}
