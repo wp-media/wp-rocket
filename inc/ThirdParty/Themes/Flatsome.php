@@ -51,6 +51,7 @@ class Flatsome implements Subscriber_Interface {
 	private static function is_flatsome( $theme = null ) {
 		$theme = $theme instanceof \WP_Theme ? $theme : wp_get_theme();
 
-		return 'flatsome' === ( strtolower( $theme->get( 'Name' ) ) || strtolower( $theme->get_template() ) );
+		return 'flatsome' ===  strtolower( $theme->get( 'Name' ) )
+                || 'flatsome' ===  strtolower( $theme->get_template() );
 	}
 }
