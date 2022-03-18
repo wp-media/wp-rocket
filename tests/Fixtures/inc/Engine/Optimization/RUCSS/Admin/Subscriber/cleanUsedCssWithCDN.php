@@ -17,40 +17,7 @@ $items = [
 	],
 ];
 
-$cache_files = [
-	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'                                     => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip'                                => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html'      => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-594d03f6ae698691165999/index.html_gzip' => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html'          => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-Foo-594d03f6ae698691165999/index.html_gzip'     => null,
-];
-
 return [
-	'vfs_dir' => 'wp-content/',
-
-	// Virtual filesystem structure.
-	'structure' => [
-		'wp-content' => [
-			'cache' => [
-				'wp-rocket' => [
-					'example.org'                                => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-					'example.org-wpmedia-594d03f6ae698691165999' => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-					'example.org-Foo-594d03f6ae698691165999'     => [
-						'index.html'      => '',
-						'index.html_gzip' => '',
-					],
-				],
-
-			],
-		],
-	],
 
 	// Test data.
 	'test_data' => [
@@ -59,7 +26,6 @@ return [
 				'items'             => $items,
 				'settings'          => [],
 				'old_settings'      => [],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => false,
@@ -76,7 +42,6 @@ return [
 					'remove_unused_css' => 1,
 					'cdn'               => 1,
 				],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => false,
@@ -93,7 +58,6 @@ return [
 					'remove_unused_css' => 1,
 					'cdn'               => 1,
 				],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => true,
@@ -117,7 +81,6 @@ return [
 						'cdn2.example.org'
 					],
 				],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => true,
@@ -148,7 +111,6 @@ return [
 						'css'
 					],
 				],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => true,
@@ -167,7 +129,6 @@ return [
 					'remove_unused_css' => 1,
 					'cdn'               => 1,
 				],
-				'cache_files'       => $cache_files,
 			],
 			'expected' => [
 				'truncated' => true,

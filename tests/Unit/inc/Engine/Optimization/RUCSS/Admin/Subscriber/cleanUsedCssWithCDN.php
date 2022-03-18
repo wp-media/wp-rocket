@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
@@ -19,7 +19,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
  *
  * @group  RUCSS
  */
-class Test_CleanUsedCssWithCDN extends FilesystemTestCase {
+class Test_CleanUsedCssWithCDN extends TestCase {
 
 	private $settings;
 	private $database;
@@ -38,7 +38,7 @@ class Test_CleanUsedCssWithCDN extends FilesystemTestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $input, $expected ) {
 		if ( $expected['truncated'] ) {
