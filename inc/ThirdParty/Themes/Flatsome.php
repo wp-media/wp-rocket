@@ -36,6 +36,7 @@ class Flatsome implements Subscriber_Interface {
 			'#text-box-',
 			'#banner-',
 			'#slider-',
+			'#gap-',
 		];
 
 		return array_merge( $patterns, $preserve );
