@@ -50,6 +50,7 @@ class AMP implements Subscriber_Interface {
 			'deactivate_amp/amp.php'     => 'generate_config_file',
 			'wp'                         => [ 'disable_options_on_amp', 20 ],
 			'rocket_cache_query_strings' => 'is_amp_compatible_callback',
+			'rocket_delay_js_exclusions' => 'exclude_script_from_delay_js',
 		];
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
@@ -176,5 +177,18 @@ class AMP implements Subscriber_Interface {
 				'(.*).js',
 			]
 		);
+	}
+
+	/**
+	 * Adds the switching script from AMP to excluded files
+	 *
+	 * @since 3.10.1
+	 *
+	 * @param  array $excluded List of excluded files.
+	 * @return array        List of excluded files.
+	 */
+	public function exclude_script_from_delay_js($excluded) {
+		$excluded[] = 'amp-mobile-version-switcher';
+		return $excluded;
 	}
 }
