@@ -246,6 +246,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->delete_used_css_rows();
+		$this->set_notice_transient();
 	}
 
 	/**
