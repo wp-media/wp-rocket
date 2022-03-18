@@ -322,9 +322,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
+	 * Truncate UsedCSS DB Table when CDN option is changed.
 	 *
-	 * @since 3.9
+	 * @since 3.11
 	 *
 	 * @param array $old_value An array of submitted values for the settings.
 	 * @param array $value     An array of previous values for the settings.
