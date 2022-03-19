@@ -3701,7 +3701,7 @@ msgstr ""
 
 #: views/cpcss/metabox/generate.php:56
 msgid "Revert back to the default CPCSS"
-msgstr "Reverter de volta para o CPCSS padrão"
+msgstr "Reverter ao CPCSS padrão"
 
 #: views/deactivation-intent/form.php:21
 msgid "Return"
