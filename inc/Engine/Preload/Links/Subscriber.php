@@ -60,8 +60,8 @@ class Subscriber implements Subscriber_Interface {
 	public function add_preload_script() {
 
 		/**
-		 * bail out if user is logged in
-		 * don't add preload link script
+		 * Bail out if user is logged in
+		 * Don't add preload link script
 		 */
 		if ( is_user_logged_in() ) {
 			return;
