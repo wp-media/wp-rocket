@@ -35,7 +35,4 @@ class Test_ExcludeScriptFromDelayJs extends TestCase
 		$this->assertEquals($expected['excluded'], $this->amp->exclude_script_from_delay_js($config['excluded']));
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'excludeScriptFromDelayJs' );
-	}
 }
