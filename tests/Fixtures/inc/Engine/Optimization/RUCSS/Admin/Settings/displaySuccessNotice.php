@@ -67,10 +67,11 @@ return [
 			'transient'         => time(),
 		],
 		'expected' => [
-			'message'     => '<strong>WP Rocket</strong>: Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling <a href="#preload">Sitemap Preload</a> for the fastest results.<br>To learn more about the process check our <a href="http://example.org" data-beacon-article="123" rel="noopener noreferrer" target="_blank">documentation</a>.',
+			'message'     => '<strong>WP Rocket</strong>: The Used CSS of your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling <a href="#preload">Sitemap Preload</a> for the fastest results.<br>To learn more about the process check our <a href="http://example.org" data-beacon-article="123" rel="noopener noreferrer" target="_blank">documentation</a>.',
 			'dismissible' => 'hidden',
 			'id'          => 'rocket-notice-rucss-success',
 			'dismiss_button' => 'rucss_success_notice',
+			'dismiss_button_class' => 'button-primary',
 		],
 	],
 	'shouldShowNoticeWhenNoTransient' => [
@@ -85,10 +86,11 @@ return [
 			'transient'         => false,
 		],
 		'expected' => [
-			'message'     => '<strong>WP Rocket</strong>: Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling <a href="#preload">Sitemap Preload</a> for the fastest results.<br>To learn more about the process check our <a href="http://example.org" data-beacon-article="123" rel="noopener noreferrer" target="_blank">documentation</a>.',
+			'message'     => '<strong>WP Rocket</strong>: The Used CSS of your homepage has been processed. WP Rocket will continue to generate Used CSS for up to 100 URLs per 60 second(s). We suggest enabling <a href="#preload">Sitemap Preload</a> for the fastest results.<br>To learn more about the process check our <a href="http://example.org" data-beacon-article="123" rel="noopener noreferrer" target="_blank">documentation</a>.',
 			'dismissible' => '',
 			'id'          => 'rocket-notice-rucss-success',
 			'dismiss_button' => 'rucss_success_notice',
+			'dismiss_button_class' => 'button-primary',
 		],
 	],
 ];
