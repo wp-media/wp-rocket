@@ -89,6 +89,10 @@ class Settings {
 	 * @return void
 	 */
 	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return;
 		}
@@ -238,7 +242,7 @@ class Settings {
 
 		$message = sprintf(
 			// translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of seconds.
-			__( '%1$s: The Used CSS of your homepage has been generated. WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
+			__( '%1$s: Your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
 			'<strong>WP Rocket</strong>',
 			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
@@ -247,13 +251,13 @@ class Settings {
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
+				__( 'We suggest enabling %1$sSitemap Preload%2$s for the fastest results.', 'rocket' ),
 				'<a href="#preload">',
 				'</a>'
 			);
 		}
 
-		$beacon = $this->beacon->get_suggest( 'remove_unused_css' );
+		$beacon = $this->beacon->get_suggest( 'async_opti' );
 
 		$message .= '<br>' . sprintf(
 			// translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -385,6 +389,12 @@ class Settings {
 		}
 
 		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( 'local' === wp_get_environment_type() ) {
+			$options['optimize_css_delivery'] = 0;
+			$options['remove_unused_css']     = 0;
+			$options['async_css']             = 0;
+		}
 
 		if (
 			isset( $options['remove_unused_css'] )
