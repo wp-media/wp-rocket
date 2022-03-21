@@ -90,7 +90,7 @@ return [
 			'dismissible' => '',
 			'id'          => 'rocket-notice-rucss-success',
 			'dismiss_button' => 'rucss_success_notice',
-			'dismiss_button_class' => 'button-primary','
+			'dismiss_button_class' => 'button-primary',
 		],
 	],
 ];
