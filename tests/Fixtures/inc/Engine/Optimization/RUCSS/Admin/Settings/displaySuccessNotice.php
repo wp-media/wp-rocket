@@ -71,6 +71,7 @@ return [
 			'dismissible' => 'hidden',
 			'id'          => 'rocket-notice-rucss-success',
 			'dismiss_button' => 'rucss_success_notice',
+			'dismiss_button_class' => 'button-primary',
 		],
 	],
 	'shouldShowNoticeWhenNoTransient' => [
@@ -89,6 +90,7 @@ return [
 			'dismissible' => '',
 			'id'          => 'rocket-notice-rucss-success',
 			'dismiss_button' => 'rucss_success_notice',
+			'dismiss_button_class' => 'button-primary','
 		],
 	],
 ];
