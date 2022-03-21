@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options_Data;
  * @author Remy Perona
  */
 abstract class AbstractOptimization {
-
+	use RegexTrait;
 	/**
 	 * Plugin options.
 	 *
