@@ -22,7 +22,4 @@ class Test_ExcludeScriptFromDelayJs extends TestCase
 		$this->assertEquals($expected['excluded'], apply_filters( 'rocket_delay_js_exclusions', $config['excluded']));
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'excludeScriptFromDelayJs' );
-	}
 }
