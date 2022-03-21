@@ -7,7 +7,7 @@ $expected_html = <<<HTML
 <p><strong>WP Rocket: </strong>
 We have detected that Autoptimize's Aggregate Inline CSS feature is enabled. WP Rocket's Load CSS Asynchronously will not work correctly. We suggest disabling <strong>Aggregate Inline CSS</strong> to take full advantage of Load CSS Asynchronously Execution.
 </p><p>
-<a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=warn_when_aggregate_inline_css_and_cpcss_active&amp;_wpnonce=123456">
+<a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=warn_when_aggregate_inline_css_and_cpcss_active&amp;_wpnonce=123456">
 Dismiss this notice</a></p></div>
 HTML;
 
