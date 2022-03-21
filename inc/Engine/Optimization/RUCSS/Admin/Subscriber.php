@@ -600,8 +600,8 @@ class Subscriber implements Subscriber_Interface {
 	private function set_notice_transient() {
 		set_transient(
 			'rocket_rucss_processing',
-			time() + 60,
-			MINUTE_IN_SECONDS
+			time() + 90,
+			1.5 * MINUTE_IN_SECONDS
 		);
 
 		rocket_renew_box( 'rucss_success_notice' );
