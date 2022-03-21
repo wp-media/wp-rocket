@@ -53,7 +53,7 @@ class AMP implements Subscriber_Interface {
 		];
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['update_option_amp-options'] = 'generate_config_file';
+			$events['update_option_amp-options']  = 'generate_config_file';
 			$events['rocket_delay_js_exclusions'] = 'exclude_script_from_delay_js';
 		}
 
@@ -187,7 +187,7 @@ class AMP implements Subscriber_Interface {
 	 * @param  array $excluded List of excluded files.
 	 * @return array        List of excluded files.
 	 */
-	public function exclude_script_from_delay_js($excluded) {
+	public function exclude_script_from_delay_js( $excluded ) {
 		$excluded[] = 'amp-mobile-version-switcher';
 		return $excluded;
 	}
