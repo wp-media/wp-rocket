@@ -63,7 +63,7 @@ class Subscriber implements Subscriber_Interface {
 		 * bail out if user is logged in
 		 * don't add preload link script
 		 */
-		if( is_user_logged_in() ) { 
+		if ( is_user_logged_in() ) {
 			return;
 		}
 
