@@ -29,7 +29,7 @@ class Test_ExcludeScriptFromDelayJs extends TestCase
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected($config, $expected) {
 		$this->assertEquals($expected['excluded'], $this->amp->exclude_script_from_delay_js($config['excluded']));
