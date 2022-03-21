@@ -16,7 +16,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 class Test_ExcludeScriptFromDelayJs extends TestCase
 {
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldExcludeScriptWhenAmpPresent($config, $expected) {
 		$this->assertEquals($expected['excluded'], apply_filters( 'rocket_delay_js_exclusions', $config['excluded']));
