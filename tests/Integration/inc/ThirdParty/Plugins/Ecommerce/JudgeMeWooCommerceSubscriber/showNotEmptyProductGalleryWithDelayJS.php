@@ -5,9 +5,8 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\JudgeMeWooCommerceSubscriber::show_not_empty_product_gallery_with_delayJS
- * @group WooCommerce
  * @group ThirdParty
- * @group WithWoo
+ * @group JudgeMe
  */
 class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 

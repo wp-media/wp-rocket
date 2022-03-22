@@ -248,6 +248,7 @@ class Plugin {
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
+			'judge_me_woocommerce_subscriber',
 			'bigcommerce_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',

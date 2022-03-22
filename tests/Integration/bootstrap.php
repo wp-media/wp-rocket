@@ -133,6 +133,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'JudgeMe' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Ecommerce/JudgeMeWooCommerceSubscriber/judgeme.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
 			define( 'RS_REVISION', '6.5.5' );
 		}
