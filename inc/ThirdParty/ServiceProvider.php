@@ -21,6 +21,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'mobile_subscriber',
+		'judge_me_woocommerce_subscriber',
 		'woocommerce_subscriber',
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
@@ -69,6 +70,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' )
+			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'judge_me_woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\JudgeMeWooCommerceSubscriber' )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
