@@ -7,9 +7,11 @@ use SplFileInfo;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
+	use RegexTrait;
 	/**
 	 * Options_Data instance
 	 *
@@ -97,6 +99,9 @@ class ImageDimensions {
 		if ( apply_filters( 'rocket_specify_dimension_skip_pictures', true ) ) {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
+
+		$html = $this->hide_scripts($html);
+		$html = $this->hide_noscripts($html);
 
 		preg_match_all( "/{$images_regex}/Uis", $html, $images_match );
 

@@ -279,5 +279,15 @@ return [
 			],
 			'expected'     => '<!DOCTYPE html><html><body><img width="100" height="150" src="http://example.org/wp-content/themes/viewbox.svg"></body></html>',
 		],
+
+		'testShouldNotAddDimensionsWhenImageInsideAScript' => [
+			'html'     => '<!DOCTYPE html><html><body><script><img src="http://example.org/wp-content/themes/viewbox.svg"></script></body></html>',
+			'config'   => [
+				'image_dimensions'                       => true,
+				'rocket_specify_image_dimensions_filter' => true,
+				'internal' => true,
+			],
+			'expected'     => '<!DOCTYPE html><html><body></body></html>',
+		],
 	],
 ];

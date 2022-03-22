@@ -33,10 +33,19 @@ trait RegexTrait {
 	 * @return string
 	 */
 	protected function hide_comments( $html ) {
-		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
 
-		return $html;
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 
 	/**

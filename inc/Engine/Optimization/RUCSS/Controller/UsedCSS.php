@@ -478,29 +478,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Hides unwanted blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_comments( string $html ): string {
-		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
 	 * Create dedicated array of unprocessed css.
 	 *
 	 * @param string $type            CSS type (link / inline).
