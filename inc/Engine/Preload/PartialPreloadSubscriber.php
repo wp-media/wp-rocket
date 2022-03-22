@@ -66,10 +66,12 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
-			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
-			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
-			'shutdown'                           => [ 'maybe_dispatch', PHP_INT_MAX ],
+			'after_rocket_clean_post'             => [ 'preload_after_clean_post', 10, 3 ],
+			'after_rocket_clean_term'             => [ 'preload_after_clean_term', 10, 3 ],
+			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
+			'rocket_rucss_complete_job_status'    => 'preload_url_after_rucss',
+			'rocket_rucss_after_clearing_usedcss' => [ 'preload_url_after_rucss', 20 ],
+			'shutdown'                            => [ 'maybe_dispatch', PHP_INT_MAX ],
 		];
 	}
 
@@ -172,6 +174,21 @@ class PartialPreloadSubscriber implements Subscriber_Interface {
 		$purge_urls = array_filter( $purge_urls );
 
 		$this->urls = array_merge( $this->urls, $purge_urls );
+	}
+
+	/**
+	 * Purge cache of given URL after generating or clearing used CSS.
+	 *
+	 * @param string $url URL to be preloaded.
+	 *
+	 * @return void
+	 */
+	public function preload_url_after_rucss( $url ) {
+		if ( ! (bool) $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+
+		$this->urls[] = $url;
 	}
 
 	/**
