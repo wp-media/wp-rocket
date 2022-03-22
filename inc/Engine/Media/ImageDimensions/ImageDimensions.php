@@ -100,8 +100,8 @@ class ImageDimensions {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 
-		$clean_html = $this->hide_scripts($html);
-		$clean_html = $this->hide_noscripts($clean_html);
+		$clean_html = $this->hide_scripts( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
 
 		preg_match_all( "/{$images_regex}/Uis", $clean_html, $images_match );
 
