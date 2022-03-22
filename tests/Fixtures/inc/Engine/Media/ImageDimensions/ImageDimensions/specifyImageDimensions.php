@@ -287,7 +287,7 @@ return [
 				'rocket_specify_image_dimensions_filter' => true,
 				'internal' => true,
 			],
-			'expected'     => '<!DOCTYPE html><html><body></body></html>',
+			'expected'     => '<!DOCTYPE html><html><body><script><img src="http://example.org/wp-content/themes/viewbox.svg"></script></body></html>',
 		],
 	],
 ];

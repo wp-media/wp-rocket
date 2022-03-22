@@ -100,10 +100,10 @@ class ImageDimensions {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 
-		$html = $this->hide_scripts($html);
-		$html = $this->hide_noscripts($html);
+		$clean_html = $this->hide_scripts($html);
+		$clean_html = $this->hide_noscripts($clean_html);
 
-		preg_match_all( "/{$images_regex}/Uis", $html, $images_match );
+		preg_match_all( "/{$images_regex}/Uis", $clean_html, $images_match );
 
 		if ( empty( $images_match ) ) {
 			Logger::debug( 'Specify Image Dimensions failed because there is no image without dimensions on this page.' );
