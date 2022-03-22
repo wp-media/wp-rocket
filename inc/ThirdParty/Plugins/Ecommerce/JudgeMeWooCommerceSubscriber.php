@@ -44,7 +44,8 @@ class JudgeMeWooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Int
 	/**
 	 * Exclude Judge.me script
 	 *
-	 * @param array $exclusions Array of excluded scripts
+	 * @param array $exclusions Array of excluded scripts.
+	 *
 	 * @return array Array of excluded scripts
 	 */
 	public function show_not_empty_product_gallery_with_delayJS( array $exclusions = [] ) {
