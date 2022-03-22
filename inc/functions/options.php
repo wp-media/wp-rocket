@@ -217,6 +217,8 @@ function rocket_get_ignored_parameters() {
 		'dm_i'                  => 1,
 		'epik'                  => 1,
 		'pp'                    => 1,
+		'gbraid'                => 1,
+		'wbraid'                => 1,
 	];
 
 	/**
