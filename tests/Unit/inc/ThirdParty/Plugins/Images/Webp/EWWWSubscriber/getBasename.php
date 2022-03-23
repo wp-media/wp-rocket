@@ -1,15 +1,15 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::get_basename
+ * @covers \WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber::get_basename
  * @group  ThirdParty
  * @group  Webp
  */
@@ -18,7 +18,7 @@ class Test_GetBasename extends TestCase {
 	private function getSubscriber() {
 		$optionsData = Mockery::mock( Options_Data::class );
 
-		return new EWWW_Subscriber( $optionsData );
+		return new EWWWSubscriber( $optionsData );
 	}
 
 	public function testShouldReturnBasenameWhenEwwwNotEnabled() {

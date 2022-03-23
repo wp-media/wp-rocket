@@ -1,35 +1,34 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Images\Webp\EwwwSubscriber;
 
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::is_serving_webp
+ * @covers \WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber::is_serving_webp_compatible_with_cdn
  * @group  ThirdParty
- * @group  Webp
  */
-class Test_IsServingWebp extends TestCase {
+class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 
 	public function testShouldReturnTrueWhenExactdnIsEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWWSubscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->once()
 			->andReturn( true );
 
-		$this->assertTrue( $subscriber->is_serving_webp() );
+		$this->assertTrue( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	public function testShouldReturnTrueWhenJsRewriteIsEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWWSubscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->twice()
@@ -37,12 +36,12 @@ class Test_IsServingWebp extends TestCase {
 				return 'ewww_image_optimizer_webp_for_cdn' === $option_name;
 			} );
 
-		$this->assertTrue( $subscriber->is_serving_webp() );
+		$this->assertTrue( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	public function testShouldReturnTrueWhenHtaccessRewriteRewriteRulesAreEnabled() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWWSubscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->twice()
@@ -50,19 +49,14 @@ class Test_IsServingWebp extends TestCase {
 
 		Functions\when( 'get_home_path' );
 		Functions\when( 'extract_from_markers' );
-		Functions\expect( 'ewww_image_optimizer_webp_rewrite_verify' )
-			->once();
+		Functions\when( 'ewww_image_optimizer_webp_rewrite_verify' );
 
-		Filters\expectApplied( 'rocket_webp_ewww_use_rewrite_rules' )
-			->once()
-			->with( true );
-
-		$this->assertTrue( $subscriber->is_serving_webp() );
+		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	public function testShouldReturnFalseWhenNothingEnabledInEwww() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$subscriber  = new EWWW_Subscriber( $optionsData );
+		$subscriber  = new EWWWSubscriber( $optionsData );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->twice()
@@ -71,13 +65,8 @@ class Test_IsServingWebp extends TestCase {
 		Functions\when( 'get_home_path' );
 		Functions\when( 'extract_from_markers' );
 		Functions\expect( 'ewww_image_optimizer_webp_rewrite_verify' )
-			->once()
 			->andReturn( 'random rewrite rules' );
 
-		Filters\expectApplied( 'rocket_webp_ewww_use_rewrite_rules' )
-			->once()
-			->with( false );
-
-		$this->assertFalse( $subscriber->is_serving_webp() );
+		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 }
