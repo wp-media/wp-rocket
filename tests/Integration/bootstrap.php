@@ -133,6 +133,11 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'Enfold' ) ) {
+			// Load GoDaddy mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Themes/Enfold/enfold.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
 			define( 'RS_REVISION', '6.5.5' );
 		}

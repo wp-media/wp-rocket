@@ -16,7 +16,7 @@ class Enfold implements Subscriber_Interface {
 		if ( function_exists( 'avia_lang_setup' ) ) {
 			$events['rocket_delay_js_exclusions'] = 'exclude_js';
 		}
-		 return $events;
+		return $events;
 	}
 
 	/**

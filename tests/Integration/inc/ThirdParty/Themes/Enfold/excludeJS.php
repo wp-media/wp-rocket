@@ -8,14 +8,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\ThirdParty\Themes\Enfold::exclude_js()
  *
  * @group  ThirdParty
+ * @group  Enfold
  */
 class Test_ExcludeJS extends TestCase {
-
-	public function setUp() : void {
-		parent::setUp();
-
-		Functions\when( 'avia_lang_setup' )->justReturn();
-	}
 
 	/**
 	 * @dataProvider configTestData
