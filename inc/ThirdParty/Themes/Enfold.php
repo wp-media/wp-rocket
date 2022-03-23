@@ -6,7 +6,11 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Enfold implements Subscriber_Interface {
 
-
+	/**
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
+	 */
 	public static function get_subscribed_events() {
 		$events = [];
 		if ( function_exists( 'avia_lang_setup' ) ) {
