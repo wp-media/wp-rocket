@@ -105,7 +105,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'ewww_webp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber')
+			->share( 'ewww_webp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Images\Webp\EWWWSubscriber' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()

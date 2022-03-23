@@ -8,8 +8,8 @@ namespace WP_Rocket\ThirdParty\Plugins\Images\Webp;
  * @since  3.4
  * @author Grégory Viguier
  */
-trait WebpCommon
-{
+trait WebpCommon {
+
 	/**
 	 * Register the plugin.
 	 *

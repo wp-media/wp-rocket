@@ -5,8 +5,8 @@ namespace WP_Rocket\ThirdParty\Plugins\Images\Webp;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class EWWWSubscriber implements Subscriber_Interface
-{
+class EWWWSubscriber implements Subscriber_Interface {
+
 	use WebpCommon;
 	/**
 	 * Options_Data instance.
@@ -39,10 +39,15 @@ class EWWWSubscriber implements Subscriber_Interface
 		$this->options = $options;
 	}
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Subscribed events for EWWW module.
+	 *
+	 * @since  3.11.1
+	 * @inheritDoc
+	 */
+	public static function get_subscribed_events() {
 		return [
-			'wp_rocket_loaded'    => 'load_hooks',
+			'wp_rocket_loaded' => 'load_hooks',
 		];
 	}
 
