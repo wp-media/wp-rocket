@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
 		'bridge_subscriber',
+		'enfold_subscriber',
 		'avada_subscriber',
 		'ngg_subscriber',
 		'smush_subscriber',
@@ -77,6 +78,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'enfold_subscriber', 'WP_Rocket\ThirdParty\Themes\Enfold' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
