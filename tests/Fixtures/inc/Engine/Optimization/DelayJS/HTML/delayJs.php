@@ -173,6 +173,26 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
+<script>
+	var corner_video = \'left\';
+
+	function handlePixMessage (e) {
+	// Reference to element for data display
+	let regexServed = /served-by.pixfuture.com/g;
+	let regexDFP = /.googlesyndication.com/g;
+
+	if ( e.origin.match(regexServed) != null || e.origin.match(regexDFP) != null) {
+	e.source.postMessage(\' {"pixHashes":true} \', e.origin);
+	}
+	}
+	window.addEventListener("message", handlePixMessage, false);
+	var _pixHashes = \'{"pixHashes":true}\';
+</script>
+<script src="http://cdn.pixfuture.com/hb_v2.js"></script>
+<script src="http://cdn.pixfuture.com/pbix.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
+<script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
 </body>
 </html>';
 
@@ -349,6 +369,26 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
+<script>
+	var corner_video = \'left\';
+
+	function handlePixMessage (e) {
+	// Reference to element for data display
+	let regexServed = /served-by.pixfuture.com/g;
+	let regexDFP = /.googlesyndication.com/g;
+
+	if ( e.origin.match(regexServed) != null || e.origin.match(regexDFP) != null) {
+	e.source.postMessage(\' {"pixHashes":true} \', e.origin);
+	}
+	}
+	window.addEventListener("message", handlePixMessage, false);
+	var _pixHashes = \'{"pixHashes":true}\';
+</script>
+<script src="http://cdn.pixfuture.com/hb_v2.js"></script>
+<script src="http://cdn.pixfuture.com/pbix.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
+<script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
 </body>
 </html>';
 
@@ -525,6 +565,26 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 	var dataLayer_content = {"visitorDoNotTrack":1,"pagePostType":"product","pagePostType2":"single-product","pagePostAuthor":"remy","productRatingCounts":[],"productAverageRating":0,"productReviewCount":0,"productType":"simple","productIsVariable":0,"event":"gtm4wp.changeDetailViewEEC","ecommerce":{"currencyCode":"CAD","detail":{"products":[{"id":1762,"name":"Beanie","sku":1762,"category":"Accessories","price":18,"stocklevel":null}]}}};
 	dataLayer.push( dataLayer_content );//]]>
 </script>
+<script>
+	var corner_video = \'left\';
+
+	function handlePixMessage (e) {
+	// Reference to element for data display
+	let regexServed = /served-by.pixfuture.com/g;
+	let regexDFP = /.googlesyndication.com/g;
+
+	if ( e.origin.match(regexServed) != null || e.origin.match(regexDFP) != null) {
+	e.source.postMessage(\' {"pixHashes":true} \', e.origin);
+	}
+	}
+	window.addEventListener("message", handlePixMessage, false);
+	var _pixHashes = \'{"pixHashes":true}\';
+</script>
+<script src="http://cdn.pixfuture.com/hb_v2.js"></script>
+<script src="http://cdn.pixfuture.com/pbix.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
+<script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
+<script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
 </body>
 </html>';
 
