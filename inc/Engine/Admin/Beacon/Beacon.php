@@ -667,6 +667,26 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1659-motifs-exclusion-non-valables',
 				],
 			],
+			'async_opti'                 => [
+				'en' => [
+					'id'  => '622a725a2ce7ed0fb0914056',
+					'url' => 'https://docs.wp-rocket.me/article/1688-asynchronous-optimizations?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6231fc24c1688a6d26a75ee1',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1689-optimisations-asynchrones?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'offline'                    => [
+				'en' => [
+					'id'  => '60623465c44f5d025f4491de',
+					'url' => 'https://docs.wp-rocket.me/article/1514-private-intranet-offline?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6065cb184466ce6ddc5f05fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1521-utiliser-wp-rocket-sur-un-intranet-prive-ou-hors-ligne?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

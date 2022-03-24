@@ -23,6 +23,8 @@ require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
 
 rocket_fix_cf_flexible_ssl();
 
+require_once WP_ROCKET_PATH . 'vendor' . DIRECTORY_SEPARATOR . 'woocommerce' . DIRECTORY_SEPARATOR . 'action-scheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
+
 /**
  * Tell WP what to do when plugin is loaded.
  *

@@ -57,22 +57,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
 	$value_diff    = array_diff_key( $value, $removed );
 
-	// If it's different, clean the domain.
-	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
-		// Purge all cache files.
-		rocket_clean_domain();
-
-		wp_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
-	}
-
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
 		||
@@ -99,6 +83,21 @@ function rocket_after_save_options( $oldvalue, $value ) {
 
 	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
+	}
+
+	// If it's different, clean the domain.
+	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
+		// Purge all cache files.
+		rocket_clean_domain();
+
+		/**
+		 * Fires after WP Rocket options that require a cache purge have changed
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $value An array of submitted values for the settings.
+		 */
+		do_action( 'rocket_options_changed', $value );
 	}
 }
 add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
@@ -203,6 +202,12 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Checked the SSL option if the whole website is on SSL.
 	if ( rocket_is_ssl_website() ) {
 		$newvalue['cache_ssl'] = 1;
+	}
+
+	if ( 'local' === wp_get_environment_type() ) {
+		$newvalue['optimize_css_delivery'] = 0;
+		$newvalue['remove_unused_css']     = 0;
+		$newvalue['async_css']             = 0;
 	}
 
 	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
