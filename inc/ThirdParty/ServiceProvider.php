@@ -156,5 +156,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'pwa', 'WP_Rocket\ThirdParty\Plugins\PWA' )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'yoast_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\Yoast' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -291,6 +291,7 @@ class Plugin {
 			'ezoic',
 			'thirstyaffiliates',
 			'pwa',
+			'yoast_seo',
 		];
 
 		$host_type = HostResolver::get_host_service();
