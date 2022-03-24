@@ -2413,7 +2413,7 @@ msgstr "%1$s: A cache do CSS utilizado foi limpa!"
 
 #: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:632
 msgid "Clear Used CSS of this URL"
-msgstr "Limpar o CSS utilizado deste URL"
+msgstr "Limpar CSS utilizado deste URL"
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
 #: inc/deprecated/3.3.php:770
