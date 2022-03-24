@@ -25,7 +25,7 @@ class APIClient extends AbstractAPIClient {
 	public function add_to_queue( string $url, array $options ): array {
 		$args = [
 			'body'    => [
-				'url'    => $url,
+				'url'    => add_query_arg( [ 'nowprocket' => 1 ], $url ),
 				'config' => $options,
 			],
 			'timeout' => 5,
