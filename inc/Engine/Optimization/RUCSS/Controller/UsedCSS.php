@@ -193,7 +193,7 @@ class UsedCSS {
 		}
 
 		global $wp;
-		$url       = untrailingslashit( home_url( add_query_arg( [ 'nowprocket' => 1 ], $wp->request ) ) );
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
