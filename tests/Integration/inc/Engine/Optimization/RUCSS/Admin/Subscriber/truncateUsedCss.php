@@ -52,7 +52,7 @@ class Test_TruncateUsedCss extends TestCase{
 
 		$this->assertCount( count( $input['items'] ), $result );
 
-		do_action( 'rocket_rucss_file_changed' );
+		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ) );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();
