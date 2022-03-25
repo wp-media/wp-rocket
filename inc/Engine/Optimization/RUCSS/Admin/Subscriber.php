@@ -539,7 +539,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return int
 	 */
 	public function adjust_as_concurrent_batches( int $num = 1 ) {
-		return 2;
+		return ( 2 < $num ) ? $num : 2;
 	}
 
 	/**
