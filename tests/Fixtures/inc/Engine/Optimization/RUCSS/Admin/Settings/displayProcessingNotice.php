@@ -63,7 +63,7 @@ return [
 			],
 			'capability'        => true,
 			'remove_unused_css' => 1,
-			'transient'         => time() + 60,
+			'transient'         => time() + 3600,
 		],
 		'expected' => true,
 	],
