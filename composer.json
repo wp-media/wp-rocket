@@ -24,7 +24,9 @@
 		},
 		"process-timeout": 0,
 		"allow-plugins": {
-			"composer/installers": true
+			"composer/installers": true,
+			"mnsami/composer-custom-directory-installer": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"support": {
@@ -97,7 +99,8 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
+			"vendor/woocommerce/action-scheduler/": ["woocommerce/action-scheduler"],
+		  	"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
 			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
 			"./inc/Addon/Varnish/": ["wp-media/module-varnish"],
 			"./inc/Engine/CDN/RocketCDN/": ["wp-media/module-rocketcdn"]
