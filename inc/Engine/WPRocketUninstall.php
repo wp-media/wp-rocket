@@ -89,7 +89,7 @@ class WPRocketUninstall {
 
 	/**
 	 * WP Rocket Post MetaData Entries
-	 * 
+	 *
 	 * @var array
 	 */
 	private $wpr_post_meta = [
@@ -198,8 +198,8 @@ class WPRocketUninstall {
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
 		// Delete all post meta related to WP Rocket.
-		foreach( $this->wpr_post_meta as $pm){
-			delete_metadata( 'post', '', $pm, '', true);
+		foreach ( $this->wpr_post_meta as $pm ) {
+			delete_metadata( 'post', '', $pm, '', true );
 		}
 
 		array_walk( $this->transients, 'delete_transient' );
