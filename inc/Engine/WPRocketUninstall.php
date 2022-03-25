@@ -88,6 +88,23 @@ class WPRocketUninstall {
 	];
 
 	/**
+	 * WP Rocket Post MetaData Entries
+	 * 
+	 * @var array
+	 */
+	private $wpr_post_meta = [
+		'_rocket_exclude_minify_css',
+		'_rocket_exclude_minify_js',
+		'_rocket_exclude_cdn',
+		'_rocket_exclude_lazyload',
+		'_rocket_exclude_lazyload_iframes',
+		'_rocket_exclude_async_css',
+		'_rocket_exclude_defer_all_js',
+		'_rocket_exclude_delay_js',
+		'_rocket_exclude_remove_unused_css',
+	];
+
+	/**
 	 * Instance of RUCSS resources table.
 	 *
 	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources
@@ -179,6 +196,11 @@ class WPRocketUninstall {
 
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
+
+		// Delete all post meta related to WP Rocket.
+		foreach( $this->wpr_post_meta as $pm){
+			delete_metadata( 'post', '', $pm, '', true);
+		}
 
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->options, 'delete_option' );
