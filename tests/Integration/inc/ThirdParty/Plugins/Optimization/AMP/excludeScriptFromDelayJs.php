@@ -2,11 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\AMP;
 
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\Subscriber;
-use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
-use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::exclude_script_from_delay_js
