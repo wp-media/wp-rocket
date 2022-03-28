@@ -180,7 +180,7 @@ class AMP implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds the switching script from AMP to excluded files
+	 * Adds the switching script from AMP to delay JS excluded files
 	 *
 	 * @since 3.11.1
 	 *
