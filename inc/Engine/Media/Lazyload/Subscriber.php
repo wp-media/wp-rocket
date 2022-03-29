@@ -373,6 +373,9 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->can_lazyload_images() ) {
 			if ( ! $this->is_native_images() ) {
 				$html = $this->image->lazyloadPictures( $html, $buffer );
+
+				$buffer = $this->hide_scripts( $html );
+				$buffer = $this->hide_noscripts( $buffer );
 			}
 
 			$html = $this->image->lazyloadImages( $html, $buffer, $this->is_native_images() );
