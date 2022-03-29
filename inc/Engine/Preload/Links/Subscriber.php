@@ -122,13 +122,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function get_preload_links_config() {
 		$use_trailing_slash = $this->use_trailing_slash();
-		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif';
+		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls';
 
 		$config = [
 			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
-			'fileExt'           => $images_ext . '|php|pdf|html|htm',
+			'fileExt'           => $images_ext . '|php|html|htm',
 			'siteUrl'           => home_url(),
 			'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
 			'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
