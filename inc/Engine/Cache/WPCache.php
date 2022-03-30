@@ -326,6 +326,11 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return array
 	 */
 	public function add_wp_cache_status_test( $tests ) {
+
+		if ( ! (bool) apply_filters( 'rocket_set_wp_cache_constant', true ) ) {
+			return $tests;
+		}
+
 		$tests['direct']['wp_cache_status'] = [
 			'label' => __( 'WP_CACHE value', 'rocket' ),
 			'test'  => [ $this, 'check_wp_cache_value' ],
