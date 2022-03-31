@@ -4,22 +4,14 @@ return [
     'test_data' => [
         'testShouldBailOutWhenSetCacheConstFilterFalse' => [
             'config' => [
-				'set_filter_to_false'   => false,
+				'filter_constant_value'   => true,
 			],
 			'tests'   => [],
-			'expected' => [
-                'direct' => [
-                    'wp_cache_status' => [
-                        'label' => 'WP_CACHE value',
-                    ],
-                ],
-            ],
+			'expected' => [],
 		],
 
         'testShouldAddTestToEmptyArray' => [
-            'config' => [
-				'set_filter_to_false'   => false,
-			],
+            'config' => [],
             'tests' => [],
             'expected' => [
                 'direct' => [
@@ -30,9 +22,7 @@ return [
             ],
         ],
         'testShouldAddTestToExistingArray' => [
-            'config' => [
-				'set_filter_to_false'   => false,
-			],
+            'config' => [],
             'tests' => [
                 'direct' => [
                     'api' => [],
