@@ -16,24 +16,29 @@ class Test_AddWpCacheStatusTest extends AdminTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldAddWpCacheTest( $tests, $config, $expected ) {
+	public function testShouldAddWpCacheTest( $config, $tests, $expected ) {
         $result = apply_filters( 'site_status_tests', $tests );
 
-        if ( isset( $config['set_filter_to_false'] ) && $config['set_filter_to_false'] ) {
+        if ( isset( $config['filter_constant_value'] ) ) {
 			add_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 		}
 
-        $this->assertArrayHasKey(
-            'wp_cache_status',
-            $result['direct']
-        );
-
-        $this->assertSame(
-            $expected['direct']['wp_cache_status']['label'],
-            $result['direct']['wp_cache_status']['label']
-        );
-
-        $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+        if ( isset( $expected['direct'] ) ){
+			$this->assertArrayHasKey(
+                'wp_cache_status',
+                $result['direct']
+            );
+    
+            $this->assertSame(
+                $expected['direct']['wp_cache_status']['label'],
+                $result['direct']['wp_cache_status']['label']
+            );
+    
+            $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+		}
+		else{
+			$this->assertTrue( is_array( $result ) );
+		}
 	}
 
 	public function providerTestData() {
