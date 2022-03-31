@@ -21,25 +21,31 @@ class Test_AddWpCacheStatusTest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddWpCacheTest( $tests, $config, $expected ) {
+	public function testShouldAddWpCacheTest( $config, $tests, $expected ) {
 		$wp_cache = new WPCache( null );
 
-		$result = $wp_cache->add_wp_cache_status_test( $tests );
-
-		if ( isset( $config['set_filter_to_false'] ) && $config['set_filter_to_false'] ) {
+		if ( isset( $config['filter_constant_value'] ) ) {
 			Filters\expectApplied( 'rocket_set_wp_cache_constant' )->andReturn( false );
 		}
 
-		$this->assertArrayHasKey(
-			'wp_cache_status',
-			$result['direct']
-		);
+		$result = $wp_cache->add_wp_cache_status_test( $tests );
 
-		$this->assertSame(
-			$expected['direct']['wp_cache_status']['label'],
-			$result['direct']['wp_cache_status']['label']
-		);
+		if ( isset( $expected['direct'] ) ){
+			$this->assertArrayHasKey(
+				'wp_cache_status',
+				$result['direct']
+			);
 
-		$this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+			$this->assertSame(
+				$expected['direct']['wp_cache_status']['label'],
+				$result['direct']['wp_cache_status']['label']
+			);
+
+			$this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+		}
+		else{
+			$this->assertTrue( is_array( $result ) );
+		}
+		
 	}
 }
