@@ -176,6 +176,28 @@ class DeactivationIntent extends Abstract_Render {
 		}
 
 		wp_enqueue_style( 'wpr-modal', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
-		wp_enqueue_script( 'wpr-modal', WP_ROCKET_ASSETS_JS_URL . 'wpr-modal.js', null, WP_ROCKET_VERSION, true );
+		wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
+		wp_add_inline_script( 'micromodal', 'var rocket_deactivation_link = document.getElementById("deactivate-wp-rocket"); rocket_deactivation_link.addEventListener("click", function(e) { e.preventDefault();});MicroModal.init();' );
+	}
+
+	/**
+	 * Add data attribute to WP Rocket deactivation link for the modal
+	 *
+	 * @since 3.11.1
+	 *
+	 * @param string[] $actions An array of plugin action links.
+	 *
+	 * @return string[]
+	 */
+	public function add_data_attribute( $actions ) {
+		if ( ! isset( $actions['deactivate'] ) ) {
+			return $actions;
+		}
+
+		$deactivate_link = str_replace( '<a', '<a data-micromodal-trigger="wpr-deactivation-modal"', $actions['deactivate'] );
+
+		$actions['deactivate'] = $deactivate_link;
+
+		return $actions;
 	}
 }

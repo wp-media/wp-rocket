@@ -31,6 +31,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_footer'                   => 'insert_deactivation_intent_form',
 			'admin_enqueue_scripts'          => 'add_modal_assets',
 			'admin_post_rocket_deactivation' => 'safe_mode_or_deactivate',
+			'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ) => 'add_data_attribute',
 		];
 	}
 
@@ -89,5 +90,18 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( $referer );
 		exit;
+	}
+
+	/**
+	 * Add data attribute to WP Rocket deactivation link for the modal
+	 *
+	 * @since 3.11.1
+	 *
+	 * @param string[] $actions An array of plugin action links.
+	 *
+	 * @return string[]
+	 */
+	public function add_data_attribute( $actions ) {
+		return $this->deactivation->add_data_attribute( $actions );
 	}
 }
