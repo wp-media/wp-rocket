@@ -176,7 +176,7 @@ class DeactivationIntent extends Abstract_Render {
 		}
 
 		wp_enqueue_style( 'wpr-modal', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
-		wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.2', true );
+		wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.10', true );
 		wp_add_inline_script( 'micromodal', 'var rocket_deactivation_link = document.getElementById("deactivate-wp-rocket"); rocket_deactivation_link.addEventListener("click", function(e) { e.preventDefault();});MicroModal.init();' );
 	}
 
