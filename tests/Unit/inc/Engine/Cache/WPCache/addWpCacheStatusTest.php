@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\WPCache::add_wp_cache_status_test
@@ -20,10 +21,14 @@ class Test_AddWpCacheStatusTest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddWpCacheTest( $tests, $expected ) {
+	public function testShouldAddWpCacheTest( $tests, $config, $expected ) {
 		$wp_cache = new WPCache( null );
 
 		$result = $wp_cache->add_wp_cache_status_test( $tests );
+
+		if ( isset( $config['set_filter_to_false'] ) && $config['set_filter_to_false'] ) {
+			Filters\expectApplied( 'rocket_set_wp_cache_constant' )->andReturn( false );
+		}
 
 		$this->assertArrayHasKey(
 			'wp_cache_status',
