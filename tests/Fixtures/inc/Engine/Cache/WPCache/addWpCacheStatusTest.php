@@ -3,10 +3,10 @@
 return [
     'test_data' => [
         'testShouldBailOutWhenSetCacheConstFilterFalse' => [
-			'tests'   => [],
             'config' => [
-				'set_filter_to_false'   => true,
+				'set_filter_to_false'   => false,
 			],
+			'tests'   => [],
 			'expected' => [
                 'direct' => [
                     'wp_cache_status' => [
