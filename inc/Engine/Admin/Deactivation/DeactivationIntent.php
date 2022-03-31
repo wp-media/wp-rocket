@@ -46,7 +46,7 @@ class DeactivationIntent extends Abstract_Render {
 	 *
 	 * @return bool
 	 */
-	private function is_snoozed() {
+	private function is_snoozed(): bool {
 		if ( 1 === get_option( 'wp_rocket_hide_deactivation_form', 0 ) ) {
 			return true;
 		}

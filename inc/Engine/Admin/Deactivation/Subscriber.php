@@ -99,9 +99,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param string[] $actions An array of plugin action links.
 	 *
-	 * @return string[]
+	 * @return array
 	 */
-	public function add_data_attribute( $actions ) {
+	public function add_data_attribute( $actions ): array {
 		return $this->deactivation->add_data_attribute( $actions );
 	}
 }
