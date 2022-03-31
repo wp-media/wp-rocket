@@ -16,8 +16,12 @@ class Test_AddWpCacheStatusTest extends AdminTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldAddWpCacheTest( $tests, $expected ) {
+	public function testShouldAddWpCacheTest( $tests, $config, $expected ) {
         $result = apply_filters( 'site_status_tests', $tests );
+
+        if ( isset( $config['set_filter_to_false'] ) && $config['set_filter_to_false'] ) {
+			add_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
+		}
 
         $this->assertArrayHasKey(
             'wp_cache_status',
