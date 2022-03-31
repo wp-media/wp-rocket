@@ -34,28 +34,30 @@ defined( 'ABSPATH' ) || exit;
 				</p>
 				<p><strong><?php esc_html_e( 'Do you want to use our Safe Mode to troubleshoot WP Rocket?', 'rocket' ); ?></strong></p>
 				<form method="post" action="<?php echo esc_attr( $data['form_action'] ); ?>">
-					<div>
-						<input type="radio" id="safe_mode" value="safe_mode" name="mode" checked />
-						<label for="safe_mode">
-							<?php
-							printf(
-								// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-								esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"', 'rocket' ),
-								'<strong>',
-								'</strong>'
-							);
-							?>
-						</label>
-					</div>
-					<div>
-						<input type="radio" id="deactivate" value="deactivate" name="mode" /><label for="deactivate"><?php esc_html_e( 'No, deactivate and snooze this message for', 'rocket' ) ?></label>
-						<select name="snooze">
-							<option value="1"><?php esc_html_e( '1 day', 'rocket' ); ?></option>
-							<option value="7"><?php esc_html_e( '7 days', 'rocket' ); ?></option>
-							<option value="30"><?php esc_html_e( '30 days', 'rocket' ); ?></option>
-							<option value="0"><?php esc_html_e( 'Forever', 'rocket' ); ?></option>
-						</select>
-					</div>
+					<ul>
+						<li>
+							<input type="radio" id="safe_mode" value="safe_mode" name="mode" checked />
+							<label for="safe_mode">
+								<?php
+								printf(
+									// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"', 'rocket' ),
+									'<strong>',
+									'</strong>'
+								);
+								?>
+							</label>
+						</li>
+						<li>
+							<input type="radio" id="deactivate" value="deactivate" name="mode" /><label for="deactivate"><?php esc_html_e( 'No, deactivate and snooze this message for', 'rocket' ) ?></label>
+							<select name="snooze">
+								<option value="1"><?php esc_html_e( '1 day', 'rocket' ); ?></option>
+								<option value="7"><?php esc_html_e( '7 days', 'rocket' ); ?></option>
+								<option value="30"><?php esc_html_e( '30 days', 'rocket' ); ?></option>
+								<option value="0"><?php esc_html_e( 'Forever', 'rocket' ); ?></option>
+							</select>
+						</li>
+					</ul>
 					<?php wp_nonce_field( 'rocket_deactivation' ); ?>
 					<div class="wpr-modal-footer">
 						<button aria-label="Close modal" class="wpr-modal-button wpr-modal-cancel" data-micromodal-close><?php esc_html_e( 'Cancel', 'rocket' ); ?></button>
