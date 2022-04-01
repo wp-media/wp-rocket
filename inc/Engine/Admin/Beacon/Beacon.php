@@ -687,6 +687,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1521-utiliser-wp-rocket-sur-un-intranet-prive-ou-hors-ligne?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'fallback_css'             => [
+				'en' => [
+					'id'  => '5ec5c4072c7d3a5ea54b7de7',
+					'url' => 'https://docs.wp-rocket.me/article/1321-critical-css-issues-fouc#use-fallback-critical-css',
+				],
+				'fr' => [
+					'id'  => '5edf8a5504286306f804e1dc',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
