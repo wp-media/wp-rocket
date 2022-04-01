@@ -37,9 +37,7 @@ class Test_AddWpCacheStatusTest extends AdminTestCase {
             $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
 		}
 		else{
-			if ( ! (bool) apply_filters( 'rocket_set_wp_cache_constant', true ) ) {
-				$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
-			}
+			$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
 		}
 	}
 
