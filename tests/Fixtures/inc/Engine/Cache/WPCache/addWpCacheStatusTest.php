@@ -6,7 +6,11 @@ return [
             'config' => [
 				'filter_constant_value'   => true,
 			],
-			'tests'   => [],
+			'tests'   => [
+                'direct' => [
+                    'api' => [],
+                ],
+            ],
 			'expected' => [],
 		],
 
