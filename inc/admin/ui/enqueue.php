@@ -42,8 +42,6 @@ add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket
  * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
  *
  * @since 2.1
- *
- * @param string $hook Current admin page.
  */
 function rocket_add_admin_css_js_everywhere() {
 	wp_enqueue_script( 'wpr-admin-common', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin-common.js', [ 'jquery' ], WP_ROCKET_VERSION, true );
