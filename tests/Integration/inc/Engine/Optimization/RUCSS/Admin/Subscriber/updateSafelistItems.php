@@ -31,7 +31,7 @@ class Test_UpdateSafelistItems extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		$this->mergeExistingSettingsAndUpdate( $config['options'] );
 
-		do_action( 'wp_rocket_upgrade', '', $config['old_version'] );
+		do_action( 'wp_rocket_upgrade', '', $config['version'] );
 
 		$updated = get_option( 'wp_rocket_settings' );
 
