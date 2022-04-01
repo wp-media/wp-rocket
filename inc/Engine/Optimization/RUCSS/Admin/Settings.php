@@ -433,11 +433,11 @@ class Settings {
 				continue;
 			}
 
-			if ( str_starts_with( $value, '(') ) {
+			if ( str_starts_with( $value, '(' ) ) {
 				continue;
 			}
 
-			$options['remove_unused_css_safelist'][$key] = '(.*)' . $value;
+			$options['remove_unused_css_safelist'][ $key ] = '(.*)' . $value;
 		}
 
 		update_option( 'wp_rocket_settings', $options );
