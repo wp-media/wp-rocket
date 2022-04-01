@@ -49,7 +49,7 @@ defined( 'ABSPATH' ) || exit;
 							</label>
 						</li>
 						<li>
-							<input type="radio" id="deactivate" value="deactivate" name="mode" /><label for="deactivate"><?php esc_html_e( 'No, deactivate and snooze this message for', 'rocket' ) ?></label>
+							<input type="radio" id="deactivate" value="deactivate" name="mode" /><label for="deactivate"><?php esc_html_e( 'No, deactivate and snooze this message for', 'rocket' ); ?></label>
 							<select name="snooze">
 								<option value="1"><?php esc_html_e( '1 day', 'rocket' ); ?></option>
 								<option value="7"><?php esc_html_e( '7 days', 'rocket' ); ?></option>
