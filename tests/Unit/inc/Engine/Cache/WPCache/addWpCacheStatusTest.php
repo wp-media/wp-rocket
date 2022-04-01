@@ -44,7 +44,7 @@ class Test_AddWpCacheStatusTest extends TestCase {
 			$this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
 		}
 		else{
-			$this->assertTrue( is_array( $result ) );
+			$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
 		}
 		
 	}
