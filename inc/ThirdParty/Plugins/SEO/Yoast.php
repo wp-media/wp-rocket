@@ -84,7 +84,6 @@ class Yoast implements Subscriber_Interface {
 			return $sitemaps;
 		}
 
-
 		if ( ! $this->options->get( 'yoast_xml_sitemap', 0 ) ) {
 			return $sitemaps;
 		}
