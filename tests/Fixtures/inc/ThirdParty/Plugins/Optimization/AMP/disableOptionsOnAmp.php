@@ -13,7 +13,7 @@ return [
 	'testShouldBailOutIfNotAmpEndpointAndWebStoriesNotActive' => [
 		'config'   => [
 			'is_amp_endpoint'             => false,
-			'web-stories-active'          => false,
+			'is-web-story'                => false,
 			'do_cloudflare'               => 0,
 			'cloudflare_protocol_rewrite' => -1, // -1 - means Expect never
 			'do_rocket_protocol_rewrite'  => -1, // -1 - means Expect never
@@ -23,23 +23,9 @@ return [
 			'bailout'       => true,
 		]
 	],
-	'testShouldBailOutIfWebStoriesActiveButNotWebStoryPage'   => [
-		'config'   => [
-			'is_amp_endpoint'             => false,
-			'web-stories-active'          => true,
-			'do_cloudflare'               => 0,
-			'cloudflare_protocol_rewrite' => -1, // -1 - means Expect never
-			'do_rocket_protocol_rewrite'  => -1, // -1 - means Expect never
-			'amp_options'                 => ['theme_support' => 'standard'],
-		],
-		'expected' => [
-			'bailout' => true,
-		]
-	],
 	'testShouldDisableOptionsForWebStory' => [
 		'config' => [
 			'is_amp_endpoint' => false,
-			'web-stories-active' => true,
 			'is-web-story' => true,
 			'do_cloudflare'               => 0,
 			'cloudflare_protocol_rewrite' => -1, // -1 - means Expect never

@@ -46,6 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wordfence_subscriber',
 		'ezoic',
 		'pwa',
+		'flatsome',
 	];
 
 	/**
@@ -159,6 +160,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'yoast_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\Yoast' )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
 			->addTag( 'common_subscriber' );
 	}
 }

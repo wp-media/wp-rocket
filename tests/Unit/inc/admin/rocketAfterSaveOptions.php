@@ -54,19 +54,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private function rocket_clean_domain() {
 		if ( isset( $this->expected['rocket_clean_domain'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
-			Functions\expect( 'home_url' )->andReturn( 'http://example.org' );
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with(
-					'http://example.org',
-					[
-						'timeout'    => 0.01,
-						'blocking'   => false,
-						'user-agent' => 'WP Rocket/Homepage Preload',
-						'sslverify'  => false,
-					]
-				)
-				->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}

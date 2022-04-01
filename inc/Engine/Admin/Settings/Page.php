@@ -561,8 +561,11 @@ class Page {
 		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
 		$rucss_beacon               = $this->beacon->get_suggest( 'remove_unused_css' );
+		$offline_beacon             = $this->beacon->get_suggest( 'offline' );
 
-		$disable_combine_js = $this->disable_combine_js();
+		$disable_combine_js  = $this->disable_combine_js();
+		$disable_combine_css = $this->disable_combine_css();
+		$disable_ocd         = 'local' === wp_get_environment_type();
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -639,8 +642,9 @@ class Page {
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'helper'            => get_rocket_option( 'remove_unused_css' ) ? __( 'For compatibility and best results, this option is disabled when Remove unused CSS is enabled.', 'rocket' ) : '',
 					'container_class'   => [
-						get_rocket_option( 'minify_css' ) ? '' : 'wpr-isDisabled',
+						$disable_combine_css ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',
 						'wpr-NoPaddingBottom',
 					],
@@ -649,7 +653,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => get_rocket_option( 'minify_css' ) ? 0 : 1,
+						'disabled' => $disable_combine_css ? 1 : 0,
 					],
 					'warning'           => [
 						'title'        => __( 'This could break things!', 'rocket' ),
@@ -678,6 +682,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
+						$disable_ocd ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'description'       => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
@@ -685,6 +690,15 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => $disable_ocd ? 1 : 0,
+					],
+					'helper'            => $disable_ocd ? sprintf(
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Optimize CSS Delivery features are disabled on local environments. %1$sLearn more%2$s', 'rocket' ),
+						'<a href="' . esc_url( $offline_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $offline_beacon['id'] ) . '" target="_blank">',
+						'</a>'
+					) : '',
 				],
 				'optimize_css_delivery_method' => [
 					'type'                    => 'radio_buttons',
@@ -1409,7 +1423,7 @@ class Page {
 					'page'        => 'database',
 				],
 				'schedule_cleanup_section'   => [
-					'title' => __( 'Automatic cleanup', 'rocket' ),
+					'title' => __( 'Automatic Cleanup', 'rocket' ),
 					'type'  => 'fields_container',
 					'page'  => 'database',
 				],
@@ -2150,6 +2164,21 @@ class Page {
 		}
 
 		return ! (bool) get_rocket_option( 'minify_js', 0 );
+	}
+
+	/**
+	 * Checks if combine CSS option should be disabled
+	 *
+	 * @since 3.11
+	 *
+	 * @return bool
+	 */
+	private function disable_combine_css(): bool {
+		if ( (bool) get_rocket_option( 'remove_unused_css', 0 ) ) {
+			return true;
+		}
+
+		return ! (bool) get_rocket_option( 'minify_css', 0 );
 	}
 
 	/**

@@ -53,6 +53,8 @@ class Test_AddRegenerateMenuItem extends TestCase {
 		$_SERVER['REQUEST_URI'] = $request;
 		$wp_admin_bar           = new WP_Admin_Bar();
 
+		Functions\when( 'wp_get_environment_type' )->justReturn( 'production' );
+
 		Functions\expect( 'current_user_can' )
 			->once()
 			->with( 'rocket_regenerate_critical_css' )

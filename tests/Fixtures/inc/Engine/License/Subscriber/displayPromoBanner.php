@@ -182,7 +182,7 @@ return [
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
-		Dismiss this notice.</span>
+		Dismiss this notice</span>
 		</button>
 		</div>',
 	],
@@ -265,7 +265,7 @@ return [
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
-		Dismiss this notice.</span>
+		Dismiss this notice</span>
 		</button>
 		</div>',
 	],
