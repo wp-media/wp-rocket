@@ -407,4 +407,39 @@ class Settings {
 
 		update_option( 'wp_rocket_settings', $options );
 	}
+
+	/**
+	 * Updates safelist items for new SaaS compatibility
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function update_safelist_items( $old_version ) {
+		if ( version_compare( $old_version, '3.11.0.2', '>=' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( empty( $options['remove_unused_css_safelist'] ) ) {
+			return;
+		}
+
+		foreach ( $options['remove_unused_css_safelist'] as $key => $value ) {
+			if ( str_contains( $value, '.css' ) ) {
+				continue;
+			}
+
+			if ( str_starts_with( $value, '(') ) {
+				continue;
+			}
+
+			$options['remove_unused_css_safelist'][$key] = '(.*)' . $value;
+		}
+
+		update_option( 'wp_rocket_settings', $options );
+	}
 }
