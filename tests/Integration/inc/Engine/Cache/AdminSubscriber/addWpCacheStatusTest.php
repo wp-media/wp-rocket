@@ -23,7 +23,7 @@ class Test_AddWpCacheStatusTest extends AdminTestCase {
 			add_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 		}
 
-        if ( isset( $expected['direct'] ) ){
+        if ( isset( $expected['direct'] ) ) {
 			$this->assertArrayHasKey(
                 'wp_cache_status',
                 $result['direct']
@@ -37,7 +37,9 @@ class Test_AddWpCacheStatusTest extends AdminTestCase {
             $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
 		}
 		else{
-			$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
+			if ( ! (bool) apply_filters( 'rocket_set_wp_cache_constant', true ) ) {
+				$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
+			}
 		}
 	}
 
