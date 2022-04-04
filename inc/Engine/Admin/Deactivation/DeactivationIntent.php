@@ -47,7 +47,7 @@ class DeactivationIntent extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_snoozed(): bool {
-		if ( 1 === get_option( 'wp_rocket_hide_deactivation_form', 0 ) ) {
+		if ( 1 === (int) get_option( 'wp_rocket_hide_deactivation_form', 0 ) ) {
 			return true;
 		}
 
@@ -175,8 +175,8 @@ class DeactivationIntent extends Abstract_Render {
 			return;
 		}
 
-		wp_enqueue_style( 'wpr-modal', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
-		wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.10', true );
+		wp_enqueue_style( 'wpr-modal', rocket_get_constant( 'WP_ROCKET_ASSETS_CSS_URL' ) . 'wpr-modal.css', null, rocket_get_constant( 'WP_ROCKET_VERSION' ) );
+		wp_enqueue_script( 'micromodal', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'micromodal.min.js', null, '0.4.10', true );
 		wp_add_inline_script( 'micromodal', 'var rocket_deactivation_link = document.getElementById("deactivate-wp-rocket"); rocket_deactivation_link.addEventListener("click", function(e) { e.preventDefault();});MicroModal.init();' );
 	}
 
@@ -187,7 +187,7 @@ class DeactivationIntent extends Abstract_Render {
 	 *
 	 * @param string[] $actions An array of plugin action links.
 	 *
-	 * @return string[]
+	 * @return array
 	 */
 	public function add_data_attribute( $actions ) {
 		if ( ! isset( $actions['deactivate'] ) ) {
