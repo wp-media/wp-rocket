@@ -39,7 +39,7 @@ jobs:
         working-directory: /tmp/wp-rocket
 
       - name: Remove composer installers
-        run: composer remove composer/installers
+        run: composer remove composer/installers --no-install --no-scripts
         working-directory: /tmp/wp-rocket
 
       - name: Optimize autoloader
