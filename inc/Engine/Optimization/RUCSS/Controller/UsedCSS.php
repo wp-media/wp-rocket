@@ -450,7 +450,16 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		$css               = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
+		/**
+		 * Filters Used CSS content before saving into DB.
+		 *
+		 * @since 3.9.0.2
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+
+		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
 		$used_css_contents = $this->handle_charsets( $css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
@@ -575,15 +584,6 @@ class UsedCSS {
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
-
-		/**
-		 * Filters Used CSS content before saving into DB.
-		 *
-		 * @since 3.9.0.2
-		 *
-		 * @param string $usedcss Used CSS.
-		 */
-		$css = apply_filters( 'rocket_usedcss_content', $css );
 
 		$this->used_css_query->make_status_completed( $id, $css );
 
