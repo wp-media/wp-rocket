@@ -63,6 +63,7 @@ class Elementor implements Subscriber_Interface {
 			'delete_option__elementor_global_css' => 'clear_cache',
 			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
 			'rocket_exclude_js'                   => 'exclude_js',
+			'rocket_delay_js_exclusions'          => 'exclude_delay_js',
 		];
 	}
 
@@ -163,6 +164,20 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
+
+		return $excluded_files;
+	}
+
+	/**
+	 * Excludes JS files from Delay JS
+	 *
+	 *
+	 * @param array $excluded_files Array of excluded patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_delay_js($exluded_files): array {
+		$excluded_files[] = '/ocean-elementor-widgets/assets/js/vendors/photoswipe.min.js';
 
 		return $excluded_files;
 	}
