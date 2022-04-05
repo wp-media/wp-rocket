@@ -37,7 +37,6 @@ class Test_InsertDeactivationIntentForm extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'get_option' )->justReturn( $config['option'] );
 		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
-		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'admin_url' )->alias( function( $path ) {
 			return 'http://example.org/wp-admin/' . $path;
 		} );
