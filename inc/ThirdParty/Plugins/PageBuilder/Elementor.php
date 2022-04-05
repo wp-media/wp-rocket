@@ -171,12 +171,11 @@ class Elementor implements Subscriber_Interface {
 	/**
 	 * Excludes JS files from Delay JS
 	 *
-	 *
 	 * @param array $excluded_files Array of excluded patterns.
 	 *
 	 * @return array
 	 */
-	public function exclude_delay_js($exluded_files): array {
+	public function exclude_delay_js( $excluded_files ): array {
 		$excluded_files[] = '/ocean-elementor-widgets/assets/js/vendors/photoswipe.min.js';
 
 		return $excluded_files;
