@@ -28,10 +28,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_footer'                   => 'insert_deactivation_intent_form',
-			'admin_enqueue_scripts'          => 'add_modal_assets',
-			'admin_post_rocket_deactivation' => 'safe_mode_or_deactivate',
-			'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ) => 'add_data_attribute',
+			'admin_footer-plugins.php'                    => 'insert_deactivation_intent_form',
+			'admin_enqueue_scripts'                       => 'add_modal_assets',
+			'admin_post_rocket_deactivation'              => 'safe_mode_or_deactivate',
+			'plugin_action_links_wp-rocket/wp-rocket.php' => 'add_data_attribute',
 		];
 	}
 
