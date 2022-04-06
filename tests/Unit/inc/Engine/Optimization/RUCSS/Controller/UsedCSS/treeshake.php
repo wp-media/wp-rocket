@@ -10,7 +10,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-
+/**
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
+ *
+ * @group  RUCSS
+ */
 class Test_Treeshake extends TestCase {
 	protected $options;
 	protected $usedCssQuery;
@@ -33,6 +37,12 @@ class Test_Treeshake extends TestCase {
 				$this->resourcesQuery,
 			$this->api,
 			$this->queue]);
+	}
+
+	protected function tearDown(): void
+	{
+		error_reporting('E_ALL');
+		parent::tearDown();
 	}
 
 	/**
