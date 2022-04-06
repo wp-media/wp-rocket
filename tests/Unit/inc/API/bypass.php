@@ -10,22 +10,22 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group API
  */
 class Bypass extends TestCase {
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/API/bypass.php';
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		$this->stubWpParseUrl();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tear_down() {
 		unset( $GLOBALS['wp'] );
+
+		parent::tear_down();
 	}
 
 	/**

@@ -17,14 +17,10 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/noticeWpConfigPermissions.php';
 
-	public function setUp() : void {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
         Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
-    }
-
-    public function tearDown() {
-        parent::tearDown();
     }
 
 	/**

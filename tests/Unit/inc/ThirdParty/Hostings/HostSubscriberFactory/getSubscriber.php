@@ -17,8 +17,8 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetSubscriber extends TestCase {
 	private $factory;
 
-	public function setUp() : void {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		$this->factory = new HostSubscriberFactory(
 			Mockery::mock( AdminSubscriber::class ),
@@ -26,11 +26,11 @@ class Test_GetSubscriber extends TestCase {
 		);
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tear_down() {
 		unset( $_SERVER['cw_allowed_ip'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
+
+		parent::tear_down();
 	}
 
 	/**

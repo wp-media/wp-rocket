@@ -15,16 +15,16 @@ use WP_Rocket\Engine\Cache\Purge;
 class Test_PurgeDatesArchives extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeDatesArchives.php';
 
-	public function setUp() : void {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		$this->purge = new Purge( $this->filesystem );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tear_down() {
 		unset( $GLOBALS['wp_rewrite'] );
+
+		parent::tear_down();
 	}
 
 	/**

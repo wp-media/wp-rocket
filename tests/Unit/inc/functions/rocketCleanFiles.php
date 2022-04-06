@@ -24,24 +24,24 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass():  void {
 		parent::tearDownAfterClass();
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tear_down() {
 		unset( $GLOBALS['debug_fs'] );
+
+		parent::tear_down();
 	}
 
 	/**

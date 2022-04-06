@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use stdClass;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::get_rocket_cache_reject_uri
@@ -11,15 +11,14 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group Options
  */
 class Test_GetRocketCacheRejectUri extends TestCase {
-
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tear_down() {
 		unset( $GLOBALS['wp_rewrite'] );
+
+		parent::tear_down();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldGetRocketCacheRejectUri( $config, $expected ) {
 		$GLOBALS['wp_rewrite']            = new stdClass();
@@ -40,9 +39,5 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 			$expected,
 			get_rocket_cache_reject_uri( true )
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'getRocketCacheRejectUri' );
 	}
 }

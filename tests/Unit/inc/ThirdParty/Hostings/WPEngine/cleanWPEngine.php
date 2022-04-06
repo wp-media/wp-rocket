@@ -11,14 +11,14 @@ use WpeCommon;
  * @group  ThirdParty
  */
 class Test_CleanWPEngine extends WPEngineTestCase {
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		parent::tearDownAfterClass();
 
 		WpeCommon::resetCounters();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		WpeCommon::resetCounters();
 	}
