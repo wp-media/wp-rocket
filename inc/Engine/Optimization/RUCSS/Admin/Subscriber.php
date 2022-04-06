@@ -79,10 +79,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
 			'edit_term'                            => 'delete_term_used_css',
 			'pre_delete_term'                      => 'delete_term_used_css',
-			'init'                                 => [
-				[ 'schedule_clean_not_commonly_used_rows' ],
-				[ 'schedule_rucss_pending_jobs_cron' ],
-			],
+			'init'                                 => 'schedule_clean_not_commonly_used_rows',
 			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
 			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
@@ -108,6 +105,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'wp_ajax_rocket_spawn_cron'            => 'spawn_cron',
 			'rocket_deactivation'                  => 'cancel_queues',
+			'shutdown'                             => 'schedule_rucss_pending_jobs_cron',
 		];
 	}
 
