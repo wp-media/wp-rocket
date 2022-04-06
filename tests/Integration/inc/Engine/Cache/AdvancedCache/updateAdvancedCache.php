@@ -14,8 +14,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_UpdateAdvancedCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/updateAdvancedCache.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'rocket_generate_advanced_cache_file', [ $this, 'return_false' ] );
 	}

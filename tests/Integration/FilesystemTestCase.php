@@ -17,8 +17,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	protected static $skip_setting_up_settings = false;
 	protected static $transients         = [];
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		if ( static::$use_settings_trait ) {
 			SettingsTrait::getOriginalSettings();
@@ -34,9 +34,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
+	public static function tear_down_after_class() {
 		if ( static::$use_settings_trait ) {
 			SettingsTrait::resetOriginalSettings();
 		}
@@ -51,21 +49,23 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		$this->initDefaultStructure();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
 
-		parent::setUp();
-
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
@@ -74,6 +74,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		unset( $GLOBALS['debug_fs'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 }

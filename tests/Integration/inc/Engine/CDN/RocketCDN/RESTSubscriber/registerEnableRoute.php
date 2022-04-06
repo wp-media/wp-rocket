@@ -46,7 +46,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -72,7 +75,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -98,7 +104,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -125,7 +134,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -152,7 +164,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -179,7 +194,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**
@@ -207,7 +225,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			$this->assertSame( $value, $actual[ $key] );
+		}
 	}
 
 	/**

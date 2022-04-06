@@ -23,9 +23,9 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	private $authors_map = [];
 	private $post_data   = [];
 
-	public function setUp() : void {
+	public function set_up() {
 		$this->set_permalink_structure( "/%postname%/" );
-		parent::setUp();
+		parent::set_up();
 
 		$this->create_posts( $this->config['urls']['posts'] );
 
@@ -34,8 +34,8 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		foreach ( $this->site_options as $option_name => $option_value ) {
 			remove_filter( 'pre_option_'.$option_name, [$this, 'prepare_option'], 10 );
 		}

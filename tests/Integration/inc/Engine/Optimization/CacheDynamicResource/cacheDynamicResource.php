@@ -16,15 +16,15 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	private $isCSSTestData;
 	private $minify_type;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->isCSSTestData = false;
 		$this->minify_type   = '';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
 	}

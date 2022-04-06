@@ -14,7 +14,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 	private $config_data = [];
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( isset( $this->config_data['image_dimensions'] ) ){
 			remove_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
 		}
@@ -38,7 +38,7 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 		unset( $GLOBALS['wp'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

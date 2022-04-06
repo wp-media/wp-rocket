@@ -17,8 +17,8 @@ class Test_ShowAdminNotice extends TestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::setAdminCap();
 
@@ -68,6 +68,6 @@ class Test_ShowAdminNotice extends TestCase {
 		do_action( 'admin_notices' );
 		$actual = ob_get_clean();
 
-		$this->assertContains( $this->format_the_html( str_replace('{{nonce}}', wp_create_nonce('rocket_ignore_rocket_error_mod_pagespeed'), $expected['html'] ?? '') ), $this->format_the_html( $actual ) );
+		$this->assertStringContainsString( $this->format_the_html( str_replace('{{nonce}}', wp_create_nonce('rocket_ignore_rocket_error_mod_pagespeed'), $expected['html'] ?? '') ), $this->format_the_html( $actual ) );
 	}
 }

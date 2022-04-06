@@ -14,8 +14,8 @@ use WP_Rocket\Tests\Integration\CapTrait;
 class Test_ActivateSafeMode extends AjaxTestCase {
 	protected static $use_settings_trait = true;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$_POST['action'] = 'rocket_safe_mode';
 		$this->action    = 'rocket_safe_mode';

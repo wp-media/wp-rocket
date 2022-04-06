@@ -23,8 +23,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 	private   $filter;
 	private   $option;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->setRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
@@ -33,8 +33,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		add_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 

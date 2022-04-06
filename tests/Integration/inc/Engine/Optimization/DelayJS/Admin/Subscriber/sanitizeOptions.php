@@ -13,20 +13,20 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_SanitizeOptions extends TestCase {
     private static $admin_settings;
 
-    public static function setUpBeforeClass() : void {
+    public static function set_up_before_class() {
         $container = apply_filters( 'rocket_container', null );
 
         self::$admin_settings = $container->get( 'settings' );
     }
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_input_sanitize', 'sanitize_options', 13 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->restoreWpFilter( 'rocket_input_sanitize' );
 	}
@@ -45,9 +45,9 @@ class Test_SanitizeOptions extends TestCase {
 			$result['delay_js']
 		);
 
-        $this->assertArraySubset(
+		$this->assertSame(
 			$expected['delay_js_exclusions'],
-			array_values( $result['delay_js_exclusions'] )
+			$result['delay_js_exclusions']
 		);
 	}
 }

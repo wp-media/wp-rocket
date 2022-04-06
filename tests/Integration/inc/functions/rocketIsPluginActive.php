@@ -13,8 +13,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_RocketIsPluginActive extends TestCase {
 	private $config;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();

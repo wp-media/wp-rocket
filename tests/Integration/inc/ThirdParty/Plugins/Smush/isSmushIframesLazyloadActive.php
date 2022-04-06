@@ -15,7 +15,7 @@ class Test_IsSmushIframesLazyloadActive extends SmushSubscriberTestCase {
 	public function testShouldNotDisableWPRocketLazyLoad( $lazyload_enabled, array $lazyload_formats ) {
 		$this->setSmushSettings( $lazyload_enabled, $lazyload_formats );
 
-		$this->assertNotContains( 'Smush', $this->subscriber->is_smush_iframes_lazyload_active( [] ) );
+		$this->assertStringNotContainsString( 'Smush', $this->subscriber->is_smush_iframes_lazyload_active( [] ) );
 	}
 
 	/**
