@@ -79,7 +79,10 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
 			'edit_term'                            => 'delete_term_used_css',
 			'pre_delete_term'                      => 'delete_term_used_css',
-			'init'                                 => 'schedule_clean_not_commonly_used_rows',
+			'init'                                 => [
+				[ 'schedule_clean_not_commonly_used_rows' ],
+				[ 'initialize_rucss_queue_runner' ],
+			],
 			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
 			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
@@ -173,8 +176,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		RUCSSQueueRunner::instance()->init();
-
 		/**
 		 * Filters the cron interval.
 		 *
@@ -187,6 +188,19 @@ class Subscriber implements Subscriber_Interface {
 		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
 
 		$this->queue->schedule_pending_jobs_cron( $interval );
+	}
+
+	/**
+	 * Initialize the queue runner for our RUCSS.
+	 *
+	 * @return void
+	 */
+	public function initialize_rucss_queue_runner() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		RUCSSQueueRunner::instance()->init();
 	}
 
 	/**
