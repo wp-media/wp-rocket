@@ -90,7 +90,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
-				[ 'display_AS_missed_tables_notice' ],
+				[ 'display_as_missed_tables_notice' ],
 			],
 			'rocket_admin_bar_items'               => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -166,7 +166,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_rucss_pending_jobs_cron() {
-		if ( ! $this->is_valid_AS_tables() ) {
+		if ( ! $this->is_valid_as_tables() ) {
 			return;
 		}
 
@@ -205,7 +205,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_valid_AS_tables() ) {
+		if ( ! $this->is_valid_as_tables() ) {
 			return;
 		}
 
@@ -219,10 +219,20 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function is_valid_AS_tables() {
+	private function is_valid_as_tables() {
+		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
+		if ( false !== $cached_count ) {
+			return $cached_count;
+		}
+
 		global $wpdb;
 
-		$found_as_tables = $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$found_as_tables = $wpdb->get_col(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
+		);
+
+		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
 
 		return 4 === count( $found_as_tables );
 	}
@@ -546,12 +556,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function display_AS_missed_tables_notice() {
-		if ( $this->is_valid_AS_tables() ) {
+	public function display_as_missed_tables_notice() {
+		if ( $this->is_valid_as_tables() ) {
 			return;
 		}
 
-		$this->settings->display_AS_missed_tables_notice();
+		$this->settings->display_as_missed_tables_notice();
 	}
 
 	/**
