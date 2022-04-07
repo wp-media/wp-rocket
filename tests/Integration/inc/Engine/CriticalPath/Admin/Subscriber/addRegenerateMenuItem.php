@@ -34,8 +34,6 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		remove_filter( 'show_admin_bar', [ $this, 'return_true' ] );
@@ -43,6 +41,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		remove_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
 
 		unset( $_SERVER['REQUEST_URI'] );
+
+		parent::tear_down();
 	}
 
 	/**
