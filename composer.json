@@ -65,7 +65,7 @@
 		"wp-media/cloudflare": "^1.0",
 		"wp-media/module-rocketcdn": "^2.0",
 		"wp-media/module-varnish": "^2.0",
-		"wp-media/phpunit": "^2.0",
+		"wp-media/phpunit": "dev-develop",
 		"wp-media/rocket-lazyload-common": "^3.0",
 		"wp-media/wp-imagify-partner": "^1.0",
 		"wpackagist-plugin/amp": "^1.1.4",
