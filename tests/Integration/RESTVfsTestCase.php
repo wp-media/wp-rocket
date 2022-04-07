@@ -58,13 +58,14 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 	}
 
 	public function set_up() {
+		parent::set_up();
+
 		$this->initDefaultStructure();
+		$this->init();
 
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
-
-		parent::set_up();
 
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
