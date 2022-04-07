@@ -15,6 +15,7 @@ return [
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		],
 	],
@@ -31,6 +32,7 @@ return [
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		],
 	],
@@ -47,6 +49,7 @@ return [
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		],
 	],

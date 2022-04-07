@@ -43,6 +43,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -72,6 +73,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -101,6 +103,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'url' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -131,6 +134,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -161,6 +165,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -191,6 +196,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key' => 'Invalid parameter.',
 					'url' => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
@@ -222,6 +228,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key'   => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
+				'details' => [],
 			],
 		];
 
