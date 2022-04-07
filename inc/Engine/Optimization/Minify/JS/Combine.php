@@ -320,13 +320,15 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		foreach ( $this->scripts as $script ) {
 			if ( 'file' === $script['type'] ) {
 				$file_content = $this->add_comment( "START {$script['content']}" ) . $this->get_file_content(
-					$script['content'] ) . $this->add_comment( "END {$script['content']}" );
+					$script['content']
+					) . $this->add_comment( "END {$script['content']}" );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
 			} elseif ( 'url' === $script['type'] ) {
 				$file_content = $this->add_comment( "START {$script['content']}" ) . $this->local_cache->get_content(
-					rocket_add_url_protocol( $script['content'] ) ) . $this->add_comment( "END {$script['content']}" );
+					rocket_add_url_protocol( $script['content'] )
+					) . $this->add_comment( "END {$script['content']}" );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
