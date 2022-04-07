@@ -61,6 +61,9 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadBackgroundImages( $html, $buffer ) {
+
+		$bg_with_linear_gradient = '';
+
 		if ( ! preg_match_all( '#<(?<tag>div|figure|section|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
 			return $html;
 		}
@@ -73,6 +76,21 @@ class Image {
 			if ( ! preg_match( '#background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?#is', $element['styles'], $url ) ) {
 				continue;
 			}
+
+
+			foreach( $element['styles'] as $style ){
+				if( strpos( $style, 'linear-gradient' ) !== false )  {
+					$bg_with_linear_gradient = $style;
+					break;
+				}
+			}
+
+			if( $bg_with_linear_gradient != '' ){
+				preg_match( '#(\s*url\s*\(([^)]+)\))\s*;?#is', $bg_with_linear_gradient, $url_from_bg );
+
+				$url_extract_from_linear_gradient = str_replace( ',' . $url_from_bg[0], '', $bg_with_linear_gradient );
+			}
+
 
 			$url['url'] = esc_url(
 				trim(
@@ -91,11 +109,16 @@ class Image {
 			}
 
 			$lazy_bg = $this->addLazyCLass( $element[0] );
+
 			$lazy_bg = str_replace( $url[0], '', $lazy_bg );
+
 			$lazy_bg = str_replace( '<' . $element['tag'], '<' . $element['tag'] . ' data-bg="' . esc_attr( $url['url'] ) . '"', $lazy_bg );
+
+			$lazy_bg = str_replace( $bg_with_linear_gradient, $url_extract_from_linear_gradient, $lazy_bg );
 
 			$html = str_replace( $element[0], $lazy_bg, $html );
 			unset( $lazy_bg );
+			
 		}
 
 		return $html;
