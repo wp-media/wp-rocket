@@ -39,9 +39,9 @@ class Test_ExcludeJqueryDefer extends TestCase {
 
 		$options = get_option( 'wp_rocket_settings' );
 
-		$this->assertSame(
-			$expected,
-			$options
-		);
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $expected );
+			$this->assertSame( $value, $expected[ $key ] );
+		}
 	}
 }

@@ -46,8 +46,8 @@ class Test_SanitizeOptions extends TestCase {
 		);
 
 		$this->assertSame(
-			$expected['delay_js_exclusions'],
-			$result['delay_js_exclusions']
+			array_values( $expected['delay_js_exclusions'] ),
+			array_values( $result['delay_js_exclusions'] )
 		);
 	}
 }

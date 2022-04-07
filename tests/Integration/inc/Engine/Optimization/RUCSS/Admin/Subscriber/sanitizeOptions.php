@@ -45,8 +45,8 @@ class Test_SanitizeOptions extends TestCase {
 		);
 
 		$this->assertSame(
-			$expected['remove_unused_css_safelist'],
-			$result['remove_unused_css_safelist']
+			array_values( $expected['remove_unused_css_safelist'] ),
+			array_values( $result['remove_unused_css_safelist'] )
 		);
 	}
 }
