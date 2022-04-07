@@ -301,11 +301,11 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 
 				$file_content = $this->get_file_content( $filepath );
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
-				$file_content = $this->add_comment("START {$style['url']}") . $file_content . $this->add_comment("END {$style['url']}");
+				$file_content = $this->add_comment( "START {$style['url']}" ) . $file_content . $this->add_comment( "END {$style['url']}" );
 			} elseif ( 'external' === $style['type'] ) {
 				$file_content = $this->local_cache->get_content( $style['url'] );
 				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
-				$file_content = $this->add_comment("START {$style['url']}") . $file_content . $this->add_comment("END {$style['url']}");
+				$file_content = $this->add_comment( "START {$style['url']}" ) . $file_content . $this->add_comment( "END {$style['url']}" );
 			}
 
 			if ( empty( $file_content ) ) {
