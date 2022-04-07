@@ -63,7 +63,7 @@ class Test_WarningNotice extends TestCase {
 
 		update_option( 'wphb_settings', $hb_settings );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$this->format_the_html( '<div class="notice notice-error is-dismissible">' . $html . '</div>' ),
 			$this->getActualHtml()
 		);
