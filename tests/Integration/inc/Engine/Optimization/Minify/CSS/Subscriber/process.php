@@ -25,7 +25,6 @@ class Test_Process extends TestCase {
 
 	public function setUp() : void {
 		parent::setUp();
-
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
 	}
@@ -43,6 +42,9 @@ class Test_Process extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $settings ) {
+
+		$this->wp_rocket_debug = $settings['wp_debug'];
+
 		$this->settings = $settings;
 		$this->setSettings();
 

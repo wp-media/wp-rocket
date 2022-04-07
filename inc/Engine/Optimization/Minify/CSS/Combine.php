@@ -349,9 +349,9 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string the comment maybe added.
 	 */
 	private function add_comment( string $comment_message ) {
-		if ( ! rocket_get_constant( 'WP_DEBUG' ) ) {
+		if ( ! rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
 			return '';
 		}
-		return "/*{$comment_message}*/\r\n";
+		return "/*!{$comment_message}*/\r\n";
 	}
 }
