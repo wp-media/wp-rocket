@@ -57,6 +57,7 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		parent::set_up();
 
 		$this->initDefaultStructure();
+		$this->init();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
