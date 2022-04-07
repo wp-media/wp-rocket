@@ -90,6 +90,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
+				[ 'display_AS_missed_tables_notice' ],
 			],
 			'rocket_admin_bar_items'               => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -165,6 +166,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_rucss_pending_jobs_cron() {
+		if ( ! $this->is_valid_AS_tables() ) {
+			return;
+		}
+
 		if ( ! $this->settings->is_enabled() ) {
 			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
 				return;
@@ -200,7 +205,26 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_valid_AS_tables() ) {
+			return;
+		}
+
 		RUCSSQueueRunner::instance()->init();
+	}
+
+	/**
+	 * Checks if Action scheduler tables are there or not.
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @return bool
+	 */
+	private function is_valid_AS_tables() {
+		global $wpdb;
+
+		$found_as_tables = $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' ) );
+
+		return 4 === count( $found_as_tables );
 	}
 
 	/**
@@ -513,6 +537,21 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_success_notice() {
 		$this->settings->display_success_notice();
+	}
+
+	/**
+	 * Display admin notice when detecting any missed Action scheduler tables.
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @return void
+	 */
+	public function display_AS_missed_tables_notice() {
+		if ( $this->is_valid_AS_tables() ) {
+			return;
+		}
+
+		$this->settings->display_AS_missed_tables_notice();
 	}
 
 	/**
