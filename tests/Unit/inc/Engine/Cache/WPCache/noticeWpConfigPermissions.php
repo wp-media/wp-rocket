@@ -17,8 +17,8 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/noticeWpConfigPermissions.php';
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
         Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
     }

@@ -13,11 +13,11 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  ThirdParty
  */
 class Test_GetHostResolver extends TestCase {
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

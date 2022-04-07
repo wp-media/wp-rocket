@@ -16,17 +16,17 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetRocketI18nHomeUrl extends TestCase {
 	use i18nTrait;
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->always_qtranxf_convertURL = true;
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

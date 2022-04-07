@@ -16,10 +16,10 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_MaybeDispatch extends TestCase {
 	private $queue = [];
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		$this->queue = [];
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	public function testShouldNotDispatchWhenNoUrls() {

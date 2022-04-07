@@ -28,8 +28,8 @@ class Test_AddRegenerateMenuItem extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Admin_Bar.php';
 	}
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->setUpMocks();
 		$this->stubTranslationFunctions();
@@ -40,10 +40,10 @@ class Test_AddRegenerateMenuItem extends TestCase {
 		);
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $_SERVER['REQUEST_URI'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

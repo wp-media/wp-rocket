@@ -24,8 +24,8 @@ class Test_InsertScript extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';
 	}
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->stubEscapeFunctions();
 		$this->options = Mockery::mock( Options_Data::class );
@@ -37,10 +37,10 @@ class Test_InsertScript extends TestCase {
 		] );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		$this->white_label = false;
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

@@ -23,16 +23,16 @@ class Test_GetRocketI18nUri extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 	}
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

@@ -20,7 +20,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $subscriber;
 	private $property;
 
-	protected function set_up() {
+	protected function setUp(): void {
 		$this->options         = Mockery::mock( Options_Data::class );
 		$this->partial_process = Mockery::mock( PartialProcess::class );
 		$this->subscriber      = new PartialPreloadSubscriber( $this->partial_process, $this->options );
@@ -32,11 +32,11 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		} );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		$this->urls = [];
 		$this->property->setAccessible( false );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

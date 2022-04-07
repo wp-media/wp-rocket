@@ -16,16 +16,16 @@ class Bypass extends TestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/API/bypass.php';
 	}
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->stubWpParseUrl();
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['wp'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

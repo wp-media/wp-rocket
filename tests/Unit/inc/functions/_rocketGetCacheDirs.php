@@ -23,11 +23,11 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		// Reset after each test.
 		_rocket_get_cache_dirs( '', '', true );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

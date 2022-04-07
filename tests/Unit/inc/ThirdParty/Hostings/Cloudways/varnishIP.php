@@ -10,12 +10,12 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishIP extends TestCase {
-	protected function tear_down() {
+	protected function tearDown(): void {
 		// Reset after each test.
 		unset( $_SERVER['HTTP_X_VARNISH'] );
 		unset( $_SERVER['HTTP_X_APPLICATION'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 	/**
 	 * @dataProvider configTestData

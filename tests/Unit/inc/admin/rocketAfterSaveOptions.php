@@ -16,8 +16,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 	private $expected;
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
 
@@ -28,11 +28,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		);
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $_POST['rocket_after_save_options'] );
 		$this->expected = [];
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

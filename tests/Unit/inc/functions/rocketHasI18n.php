@@ -11,10 +11,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group i18n
  */
 class Test_RocketHasI18n extends TestCase {
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

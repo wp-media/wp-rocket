@@ -17,8 +17,8 @@ abstract class WPEngineTestCase extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 	}
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->wpengine        = new WPEngine();
 		$this->wpe_common_mock = Mockery::mock( WpeCommon::class );

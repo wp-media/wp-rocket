@@ -11,10 +11,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Options
  */
 class Test_GetRocketCacheRejectUri extends TestCase {
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['wp_rewrite'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

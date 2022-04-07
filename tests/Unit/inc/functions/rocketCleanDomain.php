@@ -41,10 +41,10 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['debug_fs'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

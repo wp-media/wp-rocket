@@ -14,10 +14,10 @@ abstract class TestCase extends BaseTestCase {
 		self::$subscriber = new IEConditionalSubscriber();
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		$this->setConditionalsValue( [] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	protected function setConditionalsValue( $value ) {

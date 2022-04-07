@@ -15,11 +15,11 @@ class Test_ClearCacheAfterSavvii extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Savvii/CacheFlusherPlugin.php';
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $_REQUEST['warpdrive_flush_now'] );
 		unset( $_REQUEST['warpdrive_domainflush_now'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

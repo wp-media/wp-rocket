@@ -2,11 +2,9 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
-use Mockery;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
@@ -15,16 +13,16 @@ use WP_Rocket\Engine\Cache\Purge;
 class Test_PurgeDatesArchives extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeDatesArchives.php';
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->purge = new Purge( $this->filesystem );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['wp_rewrite'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

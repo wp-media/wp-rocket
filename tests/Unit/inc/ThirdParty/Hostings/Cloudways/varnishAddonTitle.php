@@ -10,18 +10,18 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishAddonTitle extends TestCase {
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->stubTranslationFunctions();
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		// Reset after each test.
 		unset( $_SERVER['HTTP_X_VARNISH'] );
 		unset( $_SERVER['HTTP_X_APPLICATION'] );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**

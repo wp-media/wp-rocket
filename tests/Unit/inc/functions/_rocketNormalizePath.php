@@ -24,11 +24,11 @@ class Test__RocketNormalizePath extends FilesystemTestCase {
 		_rocket_is_windows_fs( true );
 	}
 
-	protected function tear_down() {
+	protected function tearDown(): void {
 		// Reset after each test.
 		_rocket_is_windows_fs( true );
 
-		parent::tear_down();
+		parent::tearDown();
 	}
 
 	/**
