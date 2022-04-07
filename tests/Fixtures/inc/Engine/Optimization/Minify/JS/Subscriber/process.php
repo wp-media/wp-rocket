@@ -274,12 +274,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+						<script src="http://example.org/wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js" data-minify="1"></script>
 					</body>
 				</html>',
 				'files'   => [
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js.gz',
 				],
 			],
 			'settings' => [
@@ -318,12 +318,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js" data-minify="1"></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js.gz',
 				],
 			],
 
@@ -364,12 +364,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="http://example.org/wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js.gz',
 				],
 			],
 
@@ -412,12 +412,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="http://example.org/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="http://example.org/wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js.gz',
 				],
 			],
 
@@ -458,12 +458,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js.gz',
 				],
 			],
 
@@ -506,12 +506,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js" data-minify="1" defer></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js" data-minify="1" defer></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js',
-					'wp-content/cache/min/1/1100e4606ab35f45752eb8c3c8da0427.js.gz',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js',
+					'wp-content/cache/min/1/43dc05913310510a5720bf2848d41d76.js.gz',
 				],
 			],
 
@@ -551,12 +551,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+						<script src="https://123456.rocketcdn.me/wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js" data-minify="1"></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js.gz',
 				],
 			],
 
@@ -597,12 +597,12 @@ return [
 						</script>
 					</head>
 					<body>
-						<script src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+						<script src="https://123456.rocketcdn.me/cdnpath/wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js" data-minify="1"></script>
 					</body>
 				</html>',
 				'files' => [
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
-					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js',
+					'wp-content/cache/min/1/b187b10164bc9da02d01e89e8d74b3bf.js.gz',
 				],
 			],
 
