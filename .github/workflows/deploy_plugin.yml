@@ -38,6 +38,14 @@ jobs:
         run: composer install --no-scripts --no-dev
         working-directory: /tmp/wp-rocket
 
+      - name: Remove composer installers
+        run: composer remove composer/installers --update-no-dev --no-scripts
+        working-directory: /tmp/wp-rocket
+
+      - name: Optimize autoloader
+        run: composer dumpautoload -o
+        working-directory: /tmp/wp-rocket
+
       - name: Zip Folder
         run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
         working-directory: /tmp
