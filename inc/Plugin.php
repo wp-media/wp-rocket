@@ -173,6 +173,7 @@ class Plugin {
 			'critical_css_admin_subscriber',
 			'health_check',
 			'minify_css_admin_subscriber',
+			'minify_js_admin_subscriber',
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
 			'license_subscriber',
