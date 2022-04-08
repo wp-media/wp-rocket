@@ -43,13 +43,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'email' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -73,13 +77,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'key' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -103,13 +111,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 				'params' => [
 					'url' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -134,13 +146,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'key'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -165,13 +181,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'email' => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -196,13 +216,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key' => 'Invalid parameter.',
 					'url' => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
@@ -228,13 +252,17 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 					'key'   => 'Invalid parameter.',
 					'url'   => 'Invalid parameter.',
 				],
-				'details' => [],
 			],
 		];
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 

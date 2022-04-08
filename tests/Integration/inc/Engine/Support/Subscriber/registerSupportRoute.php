@@ -78,7 +78,12 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			$this->assertSame( $value, $actual[ $key] );
+			
+			if ( is_array( $value ) ) {
+				$this->assertContains( $value, $actual[ $key ] );
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
 		}
 	}
 
