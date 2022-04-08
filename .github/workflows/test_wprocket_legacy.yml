@@ -68,11 +68,11 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Require PHPUnit 7.5 for WP compatibility
-      run: composer require --dev phpunit/phpunit "^7.5"
-
     - name: Remove unmet dependencies by legacy versions
       run: composer remove --dev --no-scripts phpstan/phpstan szepeviktor/phpstan-wordpress coenjacobs/mozart
+
+    - name: Require PHPUnit 7.5 for WP compatibility
+      run: composer require --dev --no-scripts phpunit/phpunit "^7.5"
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
