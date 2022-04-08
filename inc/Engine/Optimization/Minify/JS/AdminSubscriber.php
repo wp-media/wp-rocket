@@ -4,6 +4,10 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
+/**
+ * Minify/Combine JS Admin subscriber
+ *
+ */
 class AdminSubscriber implements Subscriber_Interface {
 
 
