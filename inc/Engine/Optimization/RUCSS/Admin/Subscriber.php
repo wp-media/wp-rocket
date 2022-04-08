@@ -215,10 +215,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_valid_as_tables() ) {
-			return;
-		}
-
 		RUCSSQueueRunner::instance()->init();
 	}
 
