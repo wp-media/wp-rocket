@@ -4,21 +4,20 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class AdminSubscriber implements Subscriber_Interface
-{
+class AdminSubscriber implements Subscriber_Interface {
 
-    /**
-     * @inheritDoc
-     */
-    public static function get_subscribed_events()
-    {
+
+	/**
+	 * @inheritDoc
+	 */
+	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
 			"update_option_{$slug}"     => [ 'clean_minify', 10, 2 ],
 			"pre_update_option_{$slug}" => [ 'regenerate_minify_js_key', 10, 2 ],
 		];
-    }
+	}
 
 	/**
 	 * Clean minify JS files when options change.
