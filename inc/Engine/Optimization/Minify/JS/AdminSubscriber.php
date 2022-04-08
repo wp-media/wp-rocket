@@ -46,7 +46,7 @@ class AdminSubscriber implements Subscriber_Interface
 	 * @param array $new An array of submitted settings.
 	 * @param array $old An array of previous settings.
 	 *
-	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
+	 * @return array Updates 'minify_js_key' setting when regenerated; else, original submitted settings.
 	 */
 	public function regenerate_minify_js_key( $new, $old ) {
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
@@ -74,8 +74,8 @@ class AdminSubscriber implements Subscriber_Interface
 	 */
 	protected function maybe_minify_regenerate( array $new, array $old ) {
 		$settings_to_check = [
-			'minify_css',
-			'exclude_css',
+			'minify_js',
+			'exclude_js',
 			'cdn',
 		];
 
@@ -94,4 +94,24 @@ class AdminSubscriber implements Subscriber_Interface
 		);
 	}
 
+	/**
+	 * Checks if the given setting's value changed.
+	 *
+	 * @since 3.5.4
+	 *
+	 * @param string $setting The settings's value to check in the old and new values.
+	 * @param array  $new     An array of submitted settings.
+	 * @param array  $old     An array of previous settings.
+	 *
+	 * @return bool
+	 */
+	protected function did_setting_change( $setting, array $new, array $old ) {
+		return (
+			array_key_exists( $setting, $old )
+			&&
+			array_key_exists( $setting, $new )
+			&&
+			$old[ $setting ] !== $new[ $setting ]
+		);
+	}
 }

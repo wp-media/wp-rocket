@@ -60,11 +60,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	}
 
 	private function rocket_clean_minify() {
-		if ( isset( $this->expected['rocket_clean_minify'] ) ) {
-			Functions\expect( 'rocket_clean_minify' )->once()->with( 'js' )->andReturnNull();
-		} else {
-			Functions\expect( 'rocket_clean_minify' )->never();
-		}
+		Functions\expect( 'rocket_clean_minify' )->never();
 	}
 
 	private function flush_rocket_htaccess() {
