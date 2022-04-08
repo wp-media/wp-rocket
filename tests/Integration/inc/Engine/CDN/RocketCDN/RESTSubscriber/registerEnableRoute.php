@@ -50,7 +50,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -84,7 +87,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -118,7 +124,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -153,7 +162,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -188,7 +200,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -223,7 +238,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
@@ -259,7 +277,10 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 			$this->assertArrayHasKey( $key, $actual );
 			
 			if ( is_array( $value ) ) {
-				$this->assertContains( $value, $actual[ $key ] );
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
 			} else {
 				$this->assertSame( $value, $actual[ $key] );
 			}
