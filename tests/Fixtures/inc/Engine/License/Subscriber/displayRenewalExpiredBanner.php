@@ -44,7 +44,7 @@ return [
 		<div class="rocket-expired-cta-container">
 			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
 		</div>
-		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text">Dismiss this notice.</span></button>
+		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text">Dismiss this notice</span></button>
 	</div>',
 	],
 ];

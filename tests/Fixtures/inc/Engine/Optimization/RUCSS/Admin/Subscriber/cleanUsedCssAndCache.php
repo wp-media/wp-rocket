@@ -81,7 +81,6 @@ return [
 	'test_data' => [
 		'shouldNotTruncateUnusedCSSDueToMissingSettings' => [
 			'input' => [
-				'remove_unused_css' => false,
 				'items'             => $items,
 				'settings'          => [],
 				'old_settings'      => [],
@@ -91,7 +90,6 @@ return [
 		],
 		'shouldNotTruncateUnusedCSSDueToSettings' => [
 			'input' => [
-				'remove_unused_css' => true,
 				'items'             => $items,
 				'settings'          => [
 					'remove_unused_css_safelist' => [],
@@ -105,7 +103,6 @@ return [
 		],
 		'shouldTruncateUnusedCSS' => [
 			'input' => [
-				'remove_unused_css' => true,
 				'items'             => $items,
 				'settings'          => [
 					'remove_unused_css_safelist' => [],
@@ -115,6 +112,21 @@ return [
 				],
 				'cache_files'       => $cache_files,
 				'used_css_files' => $used_css_files,
+				'not_completed_count' => 0,
+			],
+		],
+		'shouldDleteCompletedUnusedCSS' => [
+			'input' => [
+				'items'             => $items,
+				'settings'          => [
+					'remove_unused_css_safelist' => [],
+				],
+				'old_settings'      => [
+					'remove_unused_css_safelist' => [ 'class1' ],
+				],
+				'cache_files'       => $cache_files,
+				'used_css_files' => $used_css_files,
+				'not_completed_count' => 10,
 			],
 		],
 	],

@@ -10,7 +10,7 @@ define( 'WP_ROCKET_IS_TESTING', true );
 // Set the path and URL to our virtual filesystem.
 define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
-
+define( 'OBJECT', 'OBJECT' );
 /**
  * The original files need to loaded into memory before we mock them with Patchwork. Add files here before the unit
  * tests start.
@@ -43,3 +43,4 @@ function load_original_files_before_mocking() {
 }
 
 load_original_files_before_mocking();
+require_once WP_ROCKET_PLUGIN_ROOT . 'inc/compat.php';
