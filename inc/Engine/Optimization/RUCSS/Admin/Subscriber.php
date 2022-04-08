@@ -65,51 +65,52 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'         => 'add_options_first_time',
-			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug               => [
+			'rocket_first_install_options'           => 'add_options_first_time',
+			'rocket_input_sanitize'                  => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug                 => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'clean_used_css_with_cdn', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
-			'switch_theme'                         => 'truncate_used_css',
-			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
-			'delete_post'                          => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                     => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
-			'edit_term'                            => 'delete_term_used_css',
-			'pre_delete_term'                      => 'delete_term_used_css',
-			'init'                                 => [
+			'switch_theme'                           => 'truncate_used_css',
+			'wp_trash_post'                          => 'delete_used_css_on_update_or_delete',
+			'delete_post'                            => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                       => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'                => 'delete_used_css_on_update_or_delete',
+			'edit_term'                              => 'delete_term_used_css',
+			'pre_delete_term'                        => 'delete_term_used_css',
+			'init'                                   => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'initialize_rucss_queue_runner' ],
 			],
-			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
-			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
-			'admin_notices'                        => [
+			'rocket_rucss_clean_rows_time_event'     => 'cron_clean_rows',
+			'admin_post_rocket_clear_usedcss'        => 'truncate_used_css_handler',
+			'admin_post_rocket_clear_usedcss_url'    => 'clear_url_usedcss',
+			'admin_notices'                          => [
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 			],
-			'rocket_admin_bar_items'               => [
+			'rocket_admin_bar_items'                 => [
 				[ 'add_clean_used_css_menu_item' ],
 				[ 'add_clear_usedcss_bar_item' ],
 			],
-			'rocket_before_add_field_to_settings'  => [
+			'rocket_before_add_field_to_settings'    => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'rocket_localize_admin_script'         => 'add_localize_script_data',
+			'rocket_localize_admin_script'           => 'add_localize_script_data',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
-			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
-			'wp_rocket_upgrade'                    => [
+			'pre_update_option_wp_rocket_settings'   => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                      => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
 			],
-			'wp_ajax_rocket_spawn_cron'            => 'spawn_cron',
-			'rocket_deactivation'                  => 'cancel_queues',
-			'shutdown'                             => 'schedule_rucss_pending_jobs_cron',
+			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
+			'rocket_deactivation'                    => 'cancel_queues',
+			'shutdown'                               => 'schedule_rucss_pending_jobs_cron',
+			'admin_head-tools_page_action-scheduler' => 'delete_as_tables_transient_on_tools_page',
 		];
 	}
 
@@ -166,6 +167,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_rucss_pending_jobs_cron() {
+		$error = error_get_last();
+
+		// Delete the transient when any error happens.
+		if ( null !== $error ) {
+			delete_transient( 'rocket_rucss_as_tables_count' );
+
+			return;
+		}
+
 		if ( ! $this->is_valid_as_tables() ) {
 			return;
 		}
@@ -222,7 +232,7 @@ class Subscriber implements Subscriber_Interface {
 	private function is_valid_as_tables() {
 		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
 		if ( false !== $cached_count ) {
-			return $cached_count;
+			return 4 === (int) $cached_count;
 		}
 
 		global $wpdb;
@@ -557,6 +567,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_as_missed_tables_notice() {
+		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
+			return;
+		}
+
 		if ( $this->is_valid_as_tables() ) {
 			return;
 		}
@@ -753,5 +767,14 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+	}
+
+	/**
+	 * Delete the transient for Action scheduler once admin visits the AS tools page.
+	 *
+	 * @return void
+	 */
+	public function delete_as_tables_transient_on_tools_page() {
+		delete_transient( 'rocket_rucss_as_tables_count' );
 	}
 }
