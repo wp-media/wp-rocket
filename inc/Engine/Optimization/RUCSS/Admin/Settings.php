@@ -296,6 +296,7 @@ class Settings {
 
 		rocket_notice_html(
 			[
+				'status'  => 'error',
 				'message' => $message,
 				'id'      => 'rocket-notice-as-missed-tables',
 			]
