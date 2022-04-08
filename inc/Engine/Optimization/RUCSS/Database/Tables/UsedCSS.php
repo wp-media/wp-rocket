@@ -144,6 +144,10 @@ class UsedCSS extends Table {
 			return $this->is_success( false );
 		}
 
+		if ( $this->index_exists( 'queue_name_index' ) ) {
+			return $this->is_success( true );
+		}
+
 		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `queue_name_index` (`queue_name`) " );
 		return $this->is_success( $index_added );
 	}
