@@ -72,7 +72,7 @@ jobs:
       run: composer remove --dev --no-scripts phpstan/phpstan szepeviktor/phpstan-wordpress coenjacobs/mozart
 
     - name: Require PHPUnit 7.5 for WP compatibility
-      run: composer require --dev --no-scripts phpunit/phpunit "^7.5"
+      run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
