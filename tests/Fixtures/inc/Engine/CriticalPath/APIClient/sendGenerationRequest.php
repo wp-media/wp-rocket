@@ -4,6 +4,7 @@ return [
 	'test_data' => [
 		'testShouldBailoutIfBlockExternal'     => [
 			'config'   => [
+				'block_external' => true,
 				'item_url'     => 'http://www.example.com/?p=1',
 				'response' => new WP_Error('code', 'User has blocked requests through HTTP.'),
 			],
