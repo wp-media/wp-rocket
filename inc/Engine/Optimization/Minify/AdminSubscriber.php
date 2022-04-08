@@ -17,16 +17,14 @@ class AdminSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			"switch_theme "     => [ 'clean_all_min_cache' ],
+			"switch_theme"     => 'clean_all_min_cache',
 		];
 	}
 
     /**
      * Delete all minified cache file
-     *
-     * @return void
      */
-	public function clean_all_min_cache(): void {
+	public function clean_all_min_cache() {
 
         // Delete all minify cache files.
         rocket_clean_minify();
