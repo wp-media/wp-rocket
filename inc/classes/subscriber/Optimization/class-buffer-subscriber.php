@@ -32,7 +32,10 @@ class Buffer_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'template_redirect' => [ 'start_content_process', 2 ],
+			'template_redirect' => [
+				[ 'redirect_canonical', 1 ],
+				[ 'start_content_process', 2 ],
+			],
 		];
 	}
 
@@ -45,5 +48,14 @@ class Buffer_Subscriber implements Subscriber_Interface {
 	 */
 	public function start_content_process() {
 		return $this->optimizer->maybe_init_process();
+	}
+
+	/**
+	 * Call the WordPress redirect canonical function.
+	 *
+	 * @return void
+	 */
+	public function redirect_canonical() {
+		redirect_canonical();
 	}
 }
