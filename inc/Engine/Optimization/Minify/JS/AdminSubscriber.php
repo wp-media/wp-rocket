@@ -5,14 +5,15 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Minify/Combine JS Admin subscriber
- *
+ * Minify/Combine JS Admin subscriber.
  */
 class AdminSubscriber implements Subscriber_Interface {
 
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
