@@ -18,9 +18,9 @@ class Test_RedirectCanonical extends TestCase
 
 	public function setUp(): void
 	{
+		parent::setUp();
 		$this->optimizer = \Mockery::mock(Optimization::class);
 		$this->subscriber = new Buffer_Subscriber($this->optimizer);
-		parent::setUp();
 	}
 
 	public function testShouldCallRedirect() {
