@@ -7,9 +7,11 @@ use SplFileInfo;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
+	use RegexTrait;
 	/**
 	 * Options_Data instance
 	 *
@@ -98,7 +100,10 @@ class ImageDimensions {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 
-		preg_match_all( "/{$images_regex}/Uis", $html, $images_match );
+		$clean_html = $this->hide_scripts( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+
+		preg_match_all( "/{$images_regex}/Uis", $clean_html, $images_match );
 
 		if ( empty( $images_match ) ) {
 			Logger::debug( 'Specify Image Dimensions failed because there is no image without dimensions on this page.' );
