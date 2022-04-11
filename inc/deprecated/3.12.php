@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Add All in One SEO Sitemap option to WP Rocket options
  *
+ * @since 3.12 deprecated
  * @since 2.8
  * @author Remy Perona
  *
@@ -12,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @return Array Updated array of WP Rocket options
  */
 function rocket_add_all_in_one_seo_sitemap_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['all_in_one_seo_xml_sitemap'] = 0;
 
 	return $options;
@@ -20,6 +22,7 @@ function rocket_add_all_in_one_seo_sitemap_option( $options ) {
 /**
  * Sanitize the AIO SEO option value
  *
+ * @since 3.12 deprecated
  * @since 2.8
  * @author Remy Perona
  *
@@ -27,6 +30,7 @@ function rocket_add_all_in_one_seo_sitemap_option( $options ) {
  * @return Array Updated array of inputs $values
  */
 function rocket_all_in_one_seo_sitemap_option_sanitize( $inputs ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$inputs['all_in_one_seo_xml_sitemap'] = ! empty( $inputs['all_in_one_seo_xml_sitemap'] ) ? 1 : 0;
 
 	return $inputs;
@@ -35,6 +39,7 @@ function rocket_all_in_one_seo_sitemap_option_sanitize( $inputs ) {
 /**
  * Add All in One SEO Sitemap sub-option on WP Rocket settings page
  *
+ * @since 3.12 deprecated
  * @since 2.8
  * @author Remy Perona
  *
@@ -42,6 +47,7 @@ function rocket_all_in_one_seo_sitemap_option_sanitize( $inputs ) {
  * @return Array Updated array of WP Rocket options
  */
 function rocket_sitemap_preload_all_in_one_seo_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['all_in_one_seo_xml_sitemap'] = [
 		'type'              => 'checkbox',
 		'container_class'   => [
@@ -63,12 +69,14 @@ function rocket_sitemap_preload_all_in_one_seo_option( $options ) {
 /**
  * Add sitemap option to WP Rocket settings
  *
+ * @since 3.12 deprecated
  * @since 3.2.3
  *
  * @param array $options WP Rocket settings array.
  * @return array Updated WP Rocket settings array
  */
 function rank_math_rocket_sitemap_preload_option( $options ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['rank_math_xml_sitemap'] = [
 		'type'              => 'checkbox',
 		'container_class'   => [
@@ -90,12 +98,14 @@ function rank_math_rocket_sitemap_preload_option( $options ) { // phpcs:ignore W
 /**
  * Add sitemap option to WP Rocket default options
  *
+ * @since 3.12 deprecated
  * @since 3.2.3
  *
  * @param array $options WP Rocket options array.
  * @return array Updated WP Rocket options array
  */
 function rank_math_rocket_add_sitemap_option( $options ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['rank_math_xml_sitemap'] = 0;
 
 	return $options;
@@ -104,12 +114,14 @@ function rank_math_rocket_add_sitemap_option( $options ) { // phpcs:ignore WordP
 /**
  * Sanitize SEO sitemap option value
  *
+ * @since 3.12 deprecated
  * @since 3.2.3
  *
  * @param array $inputs WP Rocket inputs array.
  * @return array Sanitized WP Rocket inputs array
  */
 function rank_math_rocket_sitemap_option_sanitize( $inputs ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$inputs['rank_math_xml_sitemap'] = ! empty( $inputs['rank_math_xml_sitemap'] ) ? 1 : 0;
 
 	return $inputs;
@@ -118,6 +130,7 @@ function rank_math_rocket_sitemap_option_sanitize( $inputs ) { // phpcs:ignore W
 /**
  * Add SEOPress sitemap option to WP Rocket default options
  *
+ * @since 3.12 deprecated
  * @since 3.3.6
  * @author Benjamin Denis
  * @source ./yoast-seo.php (Remy Perona)
@@ -126,6 +139,7 @@ function rank_math_rocket_sitemap_option_sanitize( $inputs ) { // phpcs:ignore W
  * @return array Updated WP Rocket options array
  */
 function rocket_add_seopress_sitemap_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['seopress_xml_sitemap'] = 0;
 
 	return $options;
@@ -134,6 +148,7 @@ function rocket_add_seopress_sitemap_option( $options ) {
 /**
  * Sanitize SEOPress sitemap option value
  *
+ * @since 3.12 deprecated
  * @since 3.3.6
  * @author Benjamin Denis
  * @source ./yoast-seo.php (Remy Perona)
@@ -142,6 +157,7 @@ function rocket_add_seopress_sitemap_option( $options ) {
  * @return array Sanitized WP Rocket inputs array
  */
 function rocket_seopress_sitemap_option_sanitize( $inputs ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$inputs['seopress_xml_sitemap'] = ! empty( $inputs['seopress_xml_sitemap'] ) ? 1 : 0;
 
 	return $inputs;
@@ -150,6 +166,7 @@ function rocket_seopress_sitemap_option_sanitize( $inputs ) {
 /**
  * Add SEOPress option to WP Rocket settings
  *
+ * @since 3.12 deprecated
  * @since 3.3.6
  * @author Benjamin Denis
  * @source ./yoast-seo.php (Remy Perona)
@@ -158,6 +175,7 @@ function rocket_seopress_sitemap_option_sanitize( $inputs ) {
  * @return array Updated WP Rocket settings array
  */
 function rocket_sitemap_preload_seopress_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['seopress_xml_sitemap'] = [
 		'type'              => 'checkbox',
 		'container_class'   => [
@@ -179,6 +197,7 @@ function rocket_sitemap_preload_seopress_option( $options ) {
 /**
  * Adds a sitemap option in WP Rocket for The SEO Framework.
  *
+ * @since 3.12 deprecated
  * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
@@ -187,6 +206,7 @@ function rocket_sitemap_preload_seopress_option( $options ) {
  * @return array Updated WP Rocket options array
  */
 function rocket_add_tsf_seo_sitemap_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['tsf_xml_sitemap'] = 0;
 
 	return $options;
@@ -195,6 +215,7 @@ function rocket_add_tsf_seo_sitemap_option( $options ) {
 /**
  * Sanitizes the added sitemap option for The SEO Framework.
  *
+ * @since 3.12 deprecated
  * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
@@ -203,6 +224,7 @@ function rocket_add_tsf_seo_sitemap_option( $options ) {
  * @return array Sanitized WP Rocket inputs array
  */
 function rocket_tsf_seo_sitemap_option_sanitize( $inputs ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$inputs['tsf_xml_sitemap'] = ! empty( $inputs['tsf_xml_sitemap'] ) ? 1 : 0;
 
 	return $inputs;
@@ -211,6 +233,7 @@ function rocket_tsf_seo_sitemap_option_sanitize( $inputs ) {
 /**
  * Add The SEO Framework SEO option to WP Rocket settings
  *
+ * @since 3.12 deprecated
  * @since 3.2.1
  * @author Sybre Waaijer
  * @source ./yoast-seo.php (Remy Perona)
@@ -219,6 +242,7 @@ function rocket_tsf_seo_sitemap_option_sanitize( $inputs ) {
  * @return array Updated WP Rocket settings array
  */
 function rocket_sitemap_add_tsf_sitemap_to_preload_option( $options ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
 	$options['tsf_xml_sitemap'] = [
 		'type'              => 'checkbox',
 		'container_class'   => [
