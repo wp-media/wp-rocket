@@ -280,7 +280,7 @@ class Settings {
 	/**
 	 * Display admin notice when detecting any missed Action scheduler tables.
 	 *
-	 * @since 3.11.0.2
+	 * @since 3.11.0.3
 	 *
 	 * @return void
 	 */
@@ -288,7 +288,7 @@ class Settings {
 		$as_tools_link = menu_page_url( 'action-scheduler', false );
 		$message       = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it\'s needed for WP Rocket to work correctly.', 'rocket' ),
+			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
 			'<strong>WP Rocket</strong>',
 			'<a href="' . $as_tools_link . '">',
 			'</a>'

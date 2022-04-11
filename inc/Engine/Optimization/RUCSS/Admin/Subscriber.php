@@ -221,7 +221,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Checks if Action scheduler tables are there or not.
 	 *
-	 * @since 3.11.0.2
+	 * @since 3.11.0.3
 	 *
 	 * @return bool
 	 */
@@ -558,7 +558,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Display admin notice when detecting any missed Action scheduler tables.
 	 *
-	 * @since 3.11.0.2
+	 * @since 3.11.0.3
 	 *
 	 * @return void
 	 */
