@@ -227,7 +227,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function is_valid_as_tables() {
 		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
-		if ( false !== $cached_count ) {
+		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
 			return 4 === (int) $cached_count;
 		}
 
