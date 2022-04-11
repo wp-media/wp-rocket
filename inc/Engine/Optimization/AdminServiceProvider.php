@@ -42,6 +42,7 @@ class AdminServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'google_fonts_settings' ) )
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'minify_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\AdminSubscriber' )
-			->addTag( 'admin_subscriber' );
+			->addTag( 'admin_subscriber' )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
