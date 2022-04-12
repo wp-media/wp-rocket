@@ -68,6 +68,18 @@ class UsedCSS extends Query {
 	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
 
 	/**
+	 * Magic isset'ter for immutability.
+	 *
+	 * @since 3.11.1
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function __isset( $key = '' ) {
+		parent::__isset( $key );
+	}
+
+	/**
 	 * Get pending jobs.
 	 *
 	 * @param int $count Number of rows.
