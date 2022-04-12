@@ -19,8 +19,8 @@ class Test_MaybeDispatch extends TestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'return_true' ] );
@@ -36,8 +36,8 @@ class Test_MaybeDispatch extends TestCase {
 		$process_ref->setValue( $this->subscriber, $this->process_wrapper );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'return_true' ] );

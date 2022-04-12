@@ -20,20 +20,20 @@ class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
 	private        $subscriber;
 	private static $container;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->subscriber = self::$container->get( 'critical_css_subscriber' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 	}

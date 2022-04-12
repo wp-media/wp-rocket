@@ -16,19 +16,17 @@ class Test_AddDismissScript extends TestCase {
 	protected $user_id = 0;
 	protected $cap;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rocket_nonce' );
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
 		delete_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice' );
-
-		parent::tearDown();
 
 		set_current_screen( 'front' );
 		if ( $this->user_id > 0 ) {
@@ -36,6 +34,8 @@ class Test_AddDismissScript extends TestCase {
 		}
 
 		$this->removeRoleCap( 'administrator', $this->cap );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Test_AddDismissScript extends TestCase {
 
 		if ( isset( $config['role'] ) ) {
 			$this->setCurrentUser( $config['role'] );
-		}       
+		}
 
 		if ( isset( $config['screen'] ) ) {
 			set_current_screen( $config['screen'] );
