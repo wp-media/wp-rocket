@@ -28,7 +28,7 @@ class Test_Treeshake extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		// fix a bug from mockery with __isset function
-		error_reporting('E_ALL ^ E_STRICT');
+		error_reporting(E_ALL ^ E_STRICT);
 		$this->usedCssQuery = Mockery::mock(UsedCSS_Query::class);
 		$this->resourcesQuery = Mockery::mock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
@@ -41,7 +41,7 @@ class Test_Treeshake extends TestCase {
 
 	protected function tearDown(): void
 	{
-		error_reporting('E_ALL');
+		error_reporting(E_ALL);
 		parent::tearDown();
 	}
 
