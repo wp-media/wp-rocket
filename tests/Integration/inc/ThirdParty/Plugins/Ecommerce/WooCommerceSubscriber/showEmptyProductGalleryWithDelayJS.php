@@ -16,15 +16,15 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 	private $product_with_gallery;
 	private $product_without_gallery;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
 	}
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 

@@ -19,15 +19,15 @@ class DisplayRenewalExpiredBanner extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container  = apply_filters( 'rocket_container', null );
 		self::$user = $container->get( 'user' );
 	}
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_renewal_expired_banner', 12 );
 
@@ -36,14 +36,14 @@ class DisplayRenewalExpiredBanner extends TestCase {
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->restoreWpFilter( 'rocket_before_dashboard_content' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
 		delete_transient( 'rocket_renewal_banner_' . self::$user_id );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

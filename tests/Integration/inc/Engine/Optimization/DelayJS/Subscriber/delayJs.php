@@ -18,13 +18,13 @@ class Test_DelayJs extends TestCase {
 	private $delay_js = 0;
 	private $delay_js_exclusions = [];
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
@@ -35,7 +35,7 @@ class Test_DelayJs extends TestCase {
 
 		$this->restoreWpFilter( 'rocket_buffer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
