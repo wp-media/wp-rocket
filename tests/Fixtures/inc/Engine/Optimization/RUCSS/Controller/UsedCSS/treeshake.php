@@ -3,6 +3,7 @@
 return [
 	'expectSameHtmlWhenNotAllowed' => [
 		'config' => [
+			'home_url' => 'http://example.com',
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
 			'is_allowed' => false,
 		],
@@ -65,6 +66,7 @@ return [
 				],
 				'response' => [
 					'code' => 400,
+					'message' => 'message',
 				]
 			]
 		],
@@ -84,6 +86,7 @@ return [
 				'used_css' => (object) [
 					'status' => 'failed',
 					'id' => 'id',
+					'css' => '',
 				]
 			],
 		],

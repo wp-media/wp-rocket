@@ -28,7 +28,7 @@ class Test_Treeshake extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		// fix a bug from mockery with __isset function
-		error_reporting(E_ALL ^ E_STRICT);
+		error_reporting(E_ALL ^ E_WARNING);
 		$this->usedCssQuery = Mockery::mock(UsedCSS_Query::class);
 		$this->resourcesQuery = Mockery::mock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
@@ -121,7 +121,7 @@ class Test_Treeshake extends TestCase {
 	}
 
 	protected function configureCreateNewJob($config) {
-		if(!$config['create_new_job']) {
+		if(!key_exists('create_new_job', $config) || !$config['create_new_job']) {
 			return;
 		}
 
@@ -131,7 +131,7 @@ class Test_Treeshake extends TestCase {
 
 		$this->api->expects()->add_to_queue($config['home_url'], $config['create_new_job']['config'])->andReturn
 		($config['create_new_job']['response']);
-		if(! $config['create_new_job']['is_success_response']){
+		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response']){
 			return;
 		}
 
