@@ -352,12 +352,16 @@ class Tests {
 			return false;
 		}
 
+		if($this->has_test( 'is_html' )) {
+			if($this->is_feed_uri() || defined( 'REST_REQUEST' )) {
+				unset($this->tests['is_html']);
+			}
+		}
+
 		if (
 			$this->has_test( 'is_html' )
 			&&
 			! $this->is_html( $buffer )
-			&&
-			! defined( 'REST_REQUEST' )
 		) {
 			// Don't process if there isn't a closing </html>.
 			$this->set_error( 'No closing </html> was found.' );
@@ -442,6 +446,17 @@ class Tests {
 		$is_rejected = $extension && isset( $extensions[ $extension ] );
 
 		return self::memoize( __FUNCTION__, [], $is_rejected );
+	}
+
+	/**
+	 * Tell if the current url is a feed.
+	 *
+	 * @return bool
+	 */
+	public function is_feed_uri(){
+		global $wp_rewrite;
+		$feed_uri = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
+		return (bool) preg_match( '#^(' . $feed_uri . ')$#i', $this->get_clean_request_uri() );
 	}
 
 	/**
