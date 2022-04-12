@@ -384,65 +384,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Hides <noscript> blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_noscripts( string $html ): string {
-		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides unwanted blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_comments( string $html ): string {
-		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides scripts from the HTML to be parsed when removing CSS from it
-	 *
-	 * @since 3.10.2
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_scripts( string $html ): string {
-		$replace = preg_replace( '#<script[^>]*>.*?<\/script\s*>#mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
 	 * Return Markup for used_css into the page.
 	 *
 	 * @param UsedCSS_Row $used_css Used CSS DB Row.

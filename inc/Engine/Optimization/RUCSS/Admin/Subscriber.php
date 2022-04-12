@@ -102,7 +102,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_localize_admin_script'         => 'add_localize_script_data',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
-			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
+			'wp_rocket_upgrade'                    => [
+				[ 'set_option_on_update', 14, 2 ],
+				[ 'update_safelist_items', 15, 2 ],
+			],
 			'wp_ajax_rocket_spawn_cron'            => 'spawn_cron',
 			'rocket_deactivation'                  => 'cancel_queues',
 		];
@@ -597,6 +600,20 @@ class Subscriber implements Subscriber_Interface {
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
+	}
+
+	/**
+	 * Updates safelist items for new SaaS compatibility
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function update_safelist_items( $new_version, $old_version ) {
+		$this->settings->update_safelist_items( $old_version );
 	}
 
 	/**

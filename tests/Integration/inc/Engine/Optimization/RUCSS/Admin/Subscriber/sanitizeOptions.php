@@ -12,20 +12,20 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_SanitizeOptions extends TestCase {
     private static $admin_settings;
 
-    public static function setUpBeforeClass() : void {
+    public static function set_up_before_class() {
         $container = apply_filters( 'rocket_container', null );
 
         self::$admin_settings = $container->get( 'settings' );
     }
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_input_sanitize', 'sanitize_options', 14 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->restoreWpFilter( 'rocket_input_sanitize' );
 	}
@@ -44,8 +44,8 @@ class Test_SanitizeOptions extends TestCase {
 			$result['remove_unused_css']
 		);
 
-        $this->assertArraySubset(
-			$expected['remove_unused_css_safelist'],
+		$this->assertSame(
+			array_values( $expected['remove_unused_css_safelist'] ),
 			array_values( $result['remove_unused_css_safelist'] )
 		);
 	}

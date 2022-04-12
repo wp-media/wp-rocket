@@ -14,23 +14,23 @@ class DisplayUpgradeSection extends TestCase {
 	private static $user;
 	private $original_value;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container   = apply_filters( 'rocket_container', null );
 		self::$user  = $container->get( 'user' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->original_value = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->set_reflective_property( $this->original_value, 'user', self::$user );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

@@ -15,13 +15,13 @@ class Test_StopPreload extends PreloadTestCase {
 	use FilterTrait;
 	protected $setUpFilters = true;
 	protected $tearDownFilters = true;
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'stop_homepage_preload', 9 );
 		$this->unregisterAllCallbacksExcept( 'admin_post_rocket_rollback', 'stop_homepage_preload', 9 );
 	}
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
 		$this->restoreWpFilter( 'admin_post_rocket_rollback' );
 	}

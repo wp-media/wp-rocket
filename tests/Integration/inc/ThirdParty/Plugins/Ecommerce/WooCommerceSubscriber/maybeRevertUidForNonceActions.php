@@ -11,8 +11,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
  */
 class Test_MaybeRevertUidForNonceActions extends TestCase {
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->handler = new WC_Session_Handler();
 	}

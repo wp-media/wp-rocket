@@ -33,9 +33,54 @@ trait RegexTrait {
 	 * @return string
 	 */
 	protected function hide_comments( $html ) {
-		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
 
-		return $html;
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Hides scripts from the HTML to be parsed when removing CSS from it
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	protected function hide_scripts( $html ) {
+		$replace = preg_replace( '#<script[^>]*>.*?<\/script\s*>#mis', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Hides <noscript> blocks from the HTML to be parsed.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	protected function hide_noscripts( $html ) {
+		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
 	}
 }

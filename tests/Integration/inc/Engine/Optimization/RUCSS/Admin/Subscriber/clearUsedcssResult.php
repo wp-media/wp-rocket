@@ -20,8 +20,8 @@ class Test_ClearUsedcssResult extends TestCase {
 	private static $contributer_user_id = 0;
 	private $enabled;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$admin_role = get_role( 'administrator' );
 		$admin_role->add_cap( 'rocket_remove_unused_css' );
@@ -30,8 +30,8 @@ class Test_ClearUsedcssResult extends TestCase {
 		self::$contributer_user_id = static::factory()->user->create( [ 'role' => 'contributor' ] );
 	}
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss'] );
 		delete_transient( 'rocket_clear_usedcss_response' );
@@ -63,9 +63,9 @@ class Test_ClearUsedcssResult extends TestCase {
 		$actual = $this->getActualHtml();
 
 		if ( $expected['show_notice'] ) {
-			$this->assertContains( $this->format_the_html( $expected['notice_html'] ), $actual );
+			$this->assertStringContainsString( $this->format_the_html( $expected['notice_html'] ), $actual );
 		}else{
-			$this->assertNotContains( $this->format_the_html( $expected['notice_html'] ), $actual );
+			$this->assertStringNotContainsString( $this->format_the_html( $expected['notice_html'] ), $actual );
 		}
 
 	}
