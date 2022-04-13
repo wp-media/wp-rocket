@@ -22,7 +22,7 @@ class Test_CanProcessBuffer extends TestCase {
 	{
 		parent::setUp();
 		$this->config = \Mockery::mock(Config::class);
-		$this->tests = Mockery::mock(Tests::class.'[has_donotcachepage,is_404,is_search,is_feed_uri,is_html]',
+		$this->tests = Mockery::mock(Tests::class.'[has_donotcachepage,is_404,is_search,is_feed_uri,is_html,get_http_response_code]',
 			[$this->config]);
 	}
 
@@ -30,7 +30,6 @@ class Test_CanProcessBuffer extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->markTestIncomplete('Prevent fail');
 		$this->configureRocketFunction($config);
 		$this->configureHttpResponse($config);
 		$this->configureCache($config);
@@ -52,7 +51,7 @@ class Test_CanProcessBuffer extends TestCase {
 		if(! key_exists('response_code', $config)) {
 			return;
 		}
-		Functions\expect('http_response_code')->once()->andReturn($config['response_code']);
+		$this->tests->expects()->get_http_response_code()->andReturn($config['response_code']);
 	}
 
 	protected function configureCache($config) {
