@@ -24,7 +24,7 @@ class Test_RedirectCanonical extends TestCase
 	}
 
 	public function testShouldCallRedirect() {
-		Functions\expect('redirect_canonical')->with();
+		Functions\expect('redirect_canonical')->once();
 		$this->subscriber->redirect_canonical();
 	}
 
