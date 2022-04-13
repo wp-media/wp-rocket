@@ -1,10 +1,18 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\classes\Buffer\Tests;
+
 use WP_Rocket\Buffer\Config;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Mockery;
 
+/**
+ * @covers \WP_Rocket\Buffer\Tests::can_process_buffer
+ *
+ * @group  Buffer
+ */
 class Test_CanProcessBuffer extends TestCase {
 
 	protected $tests;
