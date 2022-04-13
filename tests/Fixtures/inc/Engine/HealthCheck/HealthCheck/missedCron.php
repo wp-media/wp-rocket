@@ -7,10 +7,10 @@ return [
 			'screen'       => 'options_general',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 0,
-				'async_css'                  => 0,
-				'manual_preload'             => 0,
-				'schedule_automatic_cleanup' => 0,
+				0,
+				0,
+				0,
+				0,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => false,
@@ -30,10 +30,10 @@ return [
 			'screen'       => 'options_general',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 0,
-				'async_css'                  => 0,
-				'manual_preload'             => 0,
-				'schedule_automatic_cleanup' => 0,
+				0,
+				0,
+				0,
+				0,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => false,
@@ -55,10 +55,10 @@ return [
 				'rocket_warning_cron',
 			],
 			'options'      => [
-				'purge_cron'                 => 0,
-				'async_css'                  => 0,
-				'manual_preload'             => 0,
-				'schedule_automatic_cleanup' => 0,
+				0,
+				0,
+				0,
+				0,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => false,
@@ -78,10 +78,10 @@ return [
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 0,
-				'async_css'                  => 0,
-				'manual_preload'             => 0,
-				'schedule_automatic_cleanup' => 0,
+				0,
+				0,
+				0,
+				0,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => false,
@@ -100,10 +100,10 @@ return [
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => false,
@@ -122,10 +122,10 @@ return [
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'disable_cron' => false,
 			'events'       => [
@@ -145,10 +145,10 @@ return [
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => time() - 3600,
@@ -177,10 +177,10 @@ HTML
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => time() - 3600,
@@ -211,10 +211,10 @@ HTML
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => time() - 7200,
@@ -244,10 +244,10 @@ HTML
 			'screen'       => 'settings_page_wprocket',
 			'dismissed'    => [],
 			'options'      => [
-				'purge_cron'                 => 1,
-				'async_css'                  => 1,
-				'manual_preload'             => 1,
-				'schedule_automatic_cleanup' => 1,
+				1,
+				1,
+				1,
+				1,
 			],
 			'events'       => [
 				'rocket_purge_time_event'                      => time() - 7200,
