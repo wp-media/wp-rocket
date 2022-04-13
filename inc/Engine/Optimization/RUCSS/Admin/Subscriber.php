@@ -167,12 +167,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_rucss_pending_jobs_cron() {
-		$error = error_get_last();
-
-		// Delete the transient when any error happens.
-		if ( null !== $error ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
-
+		if ( ! is_admin() ) {
 			return;
 		}
 
