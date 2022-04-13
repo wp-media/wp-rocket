@@ -87,10 +87,10 @@ class Test_MissedCron extends TestCase {
 	}
 
 	protected function configOptions( $config ) {
-		$this->purge_cron                 = $config['options']['purge_cron'];
-		$this->async_css                  = $config['options']['async_css'];
-		$this->manual_preload             = $config['options']['manual_preload'];
-		$this->schedule_automatic_cleanup = $config['options']['schedule_automatic_cleanup'];
+		$this->purge_cron                 = $config['options'][0];
+		$this->async_css                  = $config['options'][1];
+		$this->manual_preload             = $config['options'][2];
+		$this->schedule_automatic_cleanup = $config['options'][3];
 
 		$this->disable_wp_cron = $config['disable_cron'];
 
