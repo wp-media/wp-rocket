@@ -328,7 +328,7 @@ class Tests {
 			return false;
 		}
 
-		if ( http_response_code() !== 200 ) {
+		if ( $this->get_http_response_code() !== 200 ) {
 			// Only cache 200.
 			$this->set_error( 'Page is not a 200 HTTP response and cannot be cached.' );
 			return false;
@@ -371,6 +371,10 @@ class Tests {
 		$this->last_error = [];
 
 		return true;
+	}
+
+	protected function get_http_response_code() {
+		return http_response_code();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
