@@ -167,7 +167,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_rucss_pending_jobs_cron() {
-		if ( ! is_admin() ) {
+		if ( ! did_action( 'init' ) ) {
 			return;
 		}
 
