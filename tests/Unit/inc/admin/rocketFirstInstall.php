@@ -24,9 +24,9 @@ class Test_RocketFirstInstall extends TestCase {
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [
-			$expected['unit']['secret_cache_key'],
-			$expected['unit']['minify_css_key'],
-			$expected['unit']['minify_js_key'],
+			'secret_cache_key' => $expected['unit']['secret_cache_key'],
+			'minify_css_key' =>$expected['unit']['minify_css_key'],
+			'minify_js_key' =>$expected['unit']['minify_js_key'],
 		];
 
 		Functions\expect( 'create_rocket_uniqid' )
