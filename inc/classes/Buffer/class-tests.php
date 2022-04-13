@@ -352,9 +352,9 @@ class Tests {
 			return false;
 		}
 
-		if($this->has_test( 'is_html' )) {
-			if($this->is_feed_uri() || defined( 'REST_REQUEST' )) {
-				unset($this->tests['is_html']);
+		if ( $this->has_test( 'is_html' ) ) {
+			if ( $this->is_feed_uri() || defined( 'REST_REQUEST' ) ) {
+				unset( $this->tests['is_html'] );
 			}
 		}
 
@@ -453,7 +453,7 @@ class Tests {
 	 *
 	 * @return bool
 	 */
-	public function is_feed_uri(){
+	public function is_feed_uri() {
 		global $wp_rewrite;
 		$feed_uri = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
 		return (bool) preg_match( '#^(' . $feed_uri . ')$#i', $this->get_clean_request_uri() );
