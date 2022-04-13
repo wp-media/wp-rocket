@@ -362,7 +362,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 				'fr' => [
 					'id'  => '60d499a705ff892e6bc2a89e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket'
+					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_inline_js'          => [
