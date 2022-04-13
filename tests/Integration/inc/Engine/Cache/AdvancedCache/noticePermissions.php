@@ -22,23 +22,23 @@ class Test_NoticePermissions extends FilesystemTestCase {
 
 	private static $user_id;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::setAdminCap();
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		Functions\when( 'wp_create_nonce' )->justReturn( '123456' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_user_meta( get_current_user_id(), 'rocket_boxes', [ 'rocket_warning_advanced_cache_permissions' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

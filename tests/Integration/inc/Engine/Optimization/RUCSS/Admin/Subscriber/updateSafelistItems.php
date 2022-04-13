@@ -11,15 +11,15 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_UpdateSafelistItems extends TestCase {
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->setUpSettings();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'update_safelist_items', 15 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->tearDownSettings();
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );

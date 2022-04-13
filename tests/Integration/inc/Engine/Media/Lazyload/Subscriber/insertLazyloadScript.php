@@ -16,8 +16,8 @@ class Test_InsertLazyloadScript extends TestCase {
 	private $iframes;
 	private $threshold;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->lazyload  = null;
 		$this->iframes   = null;
@@ -26,7 +26,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->unregisterAllCallbacksExcept( 'wp_footer', 'insert_lazyload_script', PHP_INT_MAX );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'rocket_lazyload_script_tag', [ $this, 'set_js_to_min' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
@@ -45,7 +45,7 @@ class Test_InsertLazyloadScript extends TestCase {
 
 		$this->restoreWpFilter( 'wp_footer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	private function getActualHtml() {
@@ -120,7 +120,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		}
 
 		if ( empty( $expected['integration'] ) ) {
-			$this->assertNotContains(
+			$this->assertStringNotContainsString(
 				'http://example.org/wp-content/plugins/wp-rocket/assets/js/lazyload',
 				$this->getActualHtml()
 			);

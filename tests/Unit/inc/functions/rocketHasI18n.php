@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::rocket_has_i18n
@@ -11,15 +11,14 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group i18n
  */
 class Test_RocketHasI18n extends TestCase {
-
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $globals, $expected, array $config = [] ) {
 		foreach( $globals as $key => $value ) {
@@ -35,9 +34,5 @@ class Test_RocketHasI18n extends TestCase {
 		}
 
 		$this->assertSame( $expected, rocket_has_i18n() );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
 }

@@ -21,11 +21,11 @@ class Test_Generate extends RESTVfsTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	protected function doTest( $site_id, $config, $expected ) {

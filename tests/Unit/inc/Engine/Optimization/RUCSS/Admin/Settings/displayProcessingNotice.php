@@ -18,8 +18,8 @@ class Test_DisplayProcessingNotice extends TestCase {
 	private $options;
 	private $settings;
 
-	public function set_up() {
-		parent::set_up();
+	public function setUp(): void {
+		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
 		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ) );

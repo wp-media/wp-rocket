@@ -22,8 +22,8 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Subscriber/process.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );

@@ -17,12 +17,12 @@ class Test_AddDelayJsExclusion extends TestCase {
 	private $delay_js;
 	private $delay_js_exclusions;
 
-	public function tearDown(): void {
+	public function tear_down() {
 		$this->tearDownSettings();
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
