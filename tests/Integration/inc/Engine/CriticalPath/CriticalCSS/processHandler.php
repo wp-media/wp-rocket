@@ -27,8 +27,8 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	private $to_be_removed;
 	private $expected_items;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->to_be_removed  = [
 			'filters'    => [],
@@ -48,8 +48,8 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		];
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		foreach ( $this->to_be_removed as $item_name => $item ) {
 			switch ( $item_name ) {

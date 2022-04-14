@@ -65,6 +65,7 @@ class UsedCSS {
 		'woodmart-inline-css-inline-css',
 		'woodmart_shortcodes-custom-css',
 		'rs-plugin-settings-inline-css', // For revolution slider, it saves settings for each slider.
+		'divi-style-inline-inline-css',
 	];
 
 	/**

@@ -34,16 +34,16 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		wp_set_current_user( self::$user_id );
 		set_current_screen( 'front' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->reset_post_types();
 		$this->reset_taxonomies();

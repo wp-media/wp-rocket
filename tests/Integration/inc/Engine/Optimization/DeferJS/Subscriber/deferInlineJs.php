@@ -17,19 +17,19 @@ class Test_DeferInlineJs extends TestCase {
 	private $exclude_defer_js;
 	private $rocket_defer_inline_exclusions_filter;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		set_current_screen( 'front' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'rocket_defer_inline_exclusions', [ $this, 'add_defer_inline_exclusion' ] );
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
