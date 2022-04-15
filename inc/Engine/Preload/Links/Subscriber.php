@@ -128,7 +128,7 @@ class Subscriber implements Subscriber_Interface {
 			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
-			'fileExt'           => $images_ext . '|php|html|htm',
+			'fileExt'           => $images_ext . '|html|htm',
 			'siteUrl'           => home_url(),
 			'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
 			'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
