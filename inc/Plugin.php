@@ -292,6 +292,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'us_map_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

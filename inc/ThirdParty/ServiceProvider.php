@@ -47,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'us_map_subscriber',
 	];
 
 	/**
@@ -163,6 +164,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'us_map_subscriber', 'WP_Rocket\ThirdParty\Plugins\USMap' )
 			->addTag( 'common_subscriber' );
 	}
 }
