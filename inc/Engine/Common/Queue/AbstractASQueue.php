@@ -60,6 +60,10 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @return bool
 	 */
 	public function is_scheduled( $hook, $args = [] ) {
+		if ( ! function_exists( 'as_has_scheduled_action' ) ) {
+			return ! is_null( $this->get_next( $hook, $args ) );
+		}
+
 		return as_has_scheduled_action( $hook, $args, $this->group );
 	}
 
@@ -83,7 +87,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @return string The action ID
 	 */
 	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] ) {
-		if ( as_has_scheduled_action( $hook ) ) {
+		if ( $this->is_scheduled( $hook, $args ) ) {
 			return '';
 		}
 		return as_schedule_cron_action( $timestamp, $cron_schedule, $hook, $args, $this->group );

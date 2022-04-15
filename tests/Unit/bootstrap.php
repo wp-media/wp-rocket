@@ -43,3 +43,4 @@ function load_original_files_before_mocking() {
 }
 
 load_original_files_before_mocking();
+require_once WP_ROCKET_PLUGIN_ROOT . 'inc/compat.php';

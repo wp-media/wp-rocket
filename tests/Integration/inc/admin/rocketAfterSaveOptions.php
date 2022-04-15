@@ -39,11 +39,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
 
-	public function setUp() : void {
+	public function set_up() {
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
 
-		parent::setUp();
+		parent::set_up();
 
 		// Save the original global state.
 		$this->is_apache = isset( $GLOBALS['is_apache'] ) ? $GLOBALS['is_apache'] : null;
@@ -65,8 +65,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->dicontainer->tearDown();
 
@@ -178,7 +178,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$actual = $this->filesystem->get_contents( 'vfs://public/.htaccess' );
 		foreach ( (array) $this->expected['flush_rocket_htaccess'] as $content ) {
-			$this->assertContains( $content, $actual );
+			$this->assertStringContainsString( $content, $actual );
 		}
 	}
 
