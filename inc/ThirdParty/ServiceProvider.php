@@ -47,7 +47,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
-		'us_map_subscriber',
 	];
 
 	/**
@@ -122,9 +121,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
 			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'us_map_subscriber', 'WP_Rocket\ThirdParty\Plugins\USMap' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
