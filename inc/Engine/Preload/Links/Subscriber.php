@@ -122,7 +122,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function get_preload_links_config() {
 		$use_trailing_slash = $this->use_trailing_slash();
-		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls';
+		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php';
 
 		$config = [
 			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
