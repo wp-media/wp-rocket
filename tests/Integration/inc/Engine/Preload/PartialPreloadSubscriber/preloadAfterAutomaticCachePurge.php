@@ -15,8 +15,8 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $permalink_structure;
 	private $manual_preload;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$container        = apply_filters( 'rocket_container', null );
 		$this->subscriber = $container->get( 'partial_preload_subscriber' );
@@ -25,8 +25,8 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		$this->property->setValue( $this->subscriber, [] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->property->setValue( $this->subscriber, [] );
 		$this->property->setAccessible( false );

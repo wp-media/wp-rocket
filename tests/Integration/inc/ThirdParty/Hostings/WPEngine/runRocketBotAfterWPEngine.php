@@ -23,8 +23,8 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 	private static $subscriber;
 	private static $wpengine;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::hasAdminCapBeforeClass();
 		CapTrait::setAdminCap();
@@ -34,14 +34,14 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 		self::$wpengine   = $container->get( 'wpengine' );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		CapTrait::resetAdminCap();
 	}
 
-	public function setUp() : void {
-		parent::setup();
+	public function set_up() {
+		parent::set_up();
 
 		$this->user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );

@@ -18,8 +18,8 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayRocketcdnCta extends TestCase {
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		update_option( 'date_format', 'Y-m-d' );
 	}
@@ -48,14 +48,14 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		}
 
 		if ( isset( $expected['integration']['assertNotContains'] ) ) {
-			$this->assertNotContains( $expected['integration']['assertNotContains'], $this->getActualHtml() );
+			$this->assertStringNotContainsString( $expected['integration']['assertNotContains'], $this->getActualHtml() );
 
 			return;
 		}
 
 		if ( isset( $expected['integration']['not_expected'] ) ) {
 			foreach ( $expected['integration']['not_expected'] as $not_expected ) {
-				$this->assertNotContains( $not_expected, $this->getActualHtml() );
+				$this->assertStringNotContainsString( $not_expected, $this->getActualHtml() );
 			}
 
 			return;
@@ -75,6 +75,6 @@ class Test_DisplayRocketcdnCta extends TestCase {
 			add_user_meta( $user_id, 'rocket_rocketcdn_cta_hidden', true );
 		}
 
-		$this->assertContains( $this->format_the_html( $expected['integration'] ), $this->getActualHtml() );
+		$this->assertStringContainsString( $this->format_the_html( $expected['integration'] ), $this->getActualHtml() );
 	}
 }

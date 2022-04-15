@@ -65,6 +65,7 @@ class UsedCSS {
 		'woodmart-inline-css-inline-css',
 		'woodmart_shortcodes-custom-css',
 		'rs-plugin-settings-inline-css', // For revolution slider, it saves settings for each slider.
+		'divi-style-inline-inline-css',
 	];
 
 	/**
@@ -375,65 +376,6 @@ class UsedCSS {
 			$html,
 			1
 		);
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides <noscript> blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_noscripts( string $html ): string {
-		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides unwanted blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_comments( string $html ): string {
-		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides scripts from the HTML to be parsed when removing CSS from it
-	 *
-	 * @since 3.10.2
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_scripts( string $html ): string {
-		$replace = preg_replace( '#<script[^>]*>.*?<\/script\s*>#mis', '', $html );
 
 		if ( null === $replace ) {
 			return $html;

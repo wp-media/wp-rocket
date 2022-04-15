@@ -278,6 +278,32 @@ class Settings {
 	}
 
 	/**
+	 * Display admin notice when detecting any missed Action scheduler tables.
+	 *
+	 * @since 3.11.0.3
+	 *
+	 * @return void
+	 */
+	public function display_as_missed_tables_notice() {
+		$as_tools_link = menu_page_url( 'action-scheduler', false );
+		$message       = sprintf(
+		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
+			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
+			'<strong>WP Rocket</strong>',
+			'<a href="' . $as_tools_link . '">',
+			'</a>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'  => 'error',
+				'message' => $message,
+				'id'      => 'rocket-notice-as-missed-tables',
+			]
+		);
+	}
+
+	/**
 	 * Checks if we can display the RUCSS notices
 	 *
 	 * @since 3.11
@@ -403,6 +429,41 @@ class Settings {
 			1 === (int) $options['remove_unused_css']
 		) {
 			$options['minify_concatenate_css'] = 0;
+		}
+
+		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Updates safelist items for new SaaS compatibility
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function update_safelist_items( $old_version ) {
+		if ( version_compare( $old_version, '3.11.0.2', '>=' ) ) {
+			return;
+		}
+
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		if ( empty( $options['remove_unused_css_safelist'] ) ) {
+			return;
+		}
+
+		foreach ( $options['remove_unused_css_safelist'] as $key => $value ) {
+			if ( str_contains( $value, '.css' ) ) {
+				continue;
+			}
+
+			if ( str_starts_with( $value, '(' ) ) {
+				continue;
+			}
+
+			$options['remove_unused_css_safelist'][ $key ] = '(.*)' . $value;
 		}
 
 		update_option( 'wp_rocket_settings', $options );

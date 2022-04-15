@@ -38,7 +38,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+	$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if (
 		'wprocket' === $page
