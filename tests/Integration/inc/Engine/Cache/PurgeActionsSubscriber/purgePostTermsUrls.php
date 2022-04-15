@@ -24,8 +24,8 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );

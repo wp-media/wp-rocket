@@ -13,8 +13,8 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  */
 class Test_EnableGoogleFonts extends AjaxTestCase {
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$options                        = get_option( 'wp_rocket_settings' );
 		$options['minify_google_fonts'] = 0;

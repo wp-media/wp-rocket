@@ -22,8 +22,8 @@ class Test_TruncateUsedCSSHandler extends FilesystemTestCase {
 	private static $contributer_user_id = 0;
 	private $rucss_option = false;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::installFresh();
 
@@ -34,14 +34,14 @@ class Test_TruncateUsedCSSHandler extends FilesystemTestCase {
 		self::$contributer_user_id = static::factory()->user->create( [ 'role' => 'contributor' ] );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		unset( $_GET['_wpnonce'] );

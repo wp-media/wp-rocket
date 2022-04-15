@@ -17,10 +17,10 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 	private $product_without_gallery;
 	private $wp_version;
 
-	public function setUp() : void {
+	public function set_up() {
 		global $wp_version;
 
-		parent::setUp();
+		parent::set_up();
 
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
@@ -28,10 +28,10 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() : void {
+	public function tear_down() : void {
 		global $wp_version;
 
-		parent::tearDown();
+		parent::tear_down();
 
 		$wp_version = $this->wp_version;
 
