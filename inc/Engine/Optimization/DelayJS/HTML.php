@@ -70,7 +70,7 @@ class HTML {
 		'statcounter.com/counter/counter.js', // StatsCounter.
 		'var sc_project', // Statscounter.
 		'/jetpack/jetpack_vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack plugin lazyload.
-		'/photonic/include/js/front-end/', // Photonic plugin.
+		'/photonic/include/js/front-end/nomodule/photonic-baguettebox.min.js', // Photonic plugin.
 	];
 
 	/**
