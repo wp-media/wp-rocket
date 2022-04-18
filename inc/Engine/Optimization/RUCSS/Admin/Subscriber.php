@@ -171,15 +171,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$error = error_get_last();
-
-		// Delete the transient when any error happens.
-		if ( null !== $error ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
-
-			return;
-		}
-
 		if ( ! $this->is_valid_as_tables() ) {
 			return;
 		}
