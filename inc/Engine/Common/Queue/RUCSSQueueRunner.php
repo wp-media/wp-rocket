@@ -59,7 +59,11 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 * @param \ActionScheduler_QueueCleaner|null             $cleaner Cleaner instance.
 	 * @param \ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
 	 */
-	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, \ActionScheduler_QueueCleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, Cleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+		if ( is_null( $cleaner ) ) {
+			$cleaner = new Cleaner( $store, 20, $this->group );
+		}
+
 		parent::__construct( $store, $monitor, $cleaner );
 
 		if ( is_null( $async_request ) ) {
