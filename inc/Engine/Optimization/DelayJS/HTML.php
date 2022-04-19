@@ -73,6 +73,7 @@ class HTML {
 		'/themify-builder/themify/js/modules/fallback(\.min)?.js',
 		'wprRemoveCPCSS',
 		'window.jdgmSettings', // Judge.me plugin.
+		'window.wsf_form_json_config', // WSF Form plugin.
 	];
 
 	/**
