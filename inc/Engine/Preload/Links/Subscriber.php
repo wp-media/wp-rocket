@@ -174,13 +174,6 @@ class Subscriber implements Subscriber_Interface {
 			}
 		}
 
-		foreach ( [ wp_logout_url(), wp_login_url() ] as $uri ) {
-			if ( strpos( $uri, '?' ) !== false ) {
-				continue;
-			}
-			$uris .= '|' . str_replace( $site_url, '', $uri );
-		}
-
 		$default = [
 			'/refer/',
 			'/go/',
