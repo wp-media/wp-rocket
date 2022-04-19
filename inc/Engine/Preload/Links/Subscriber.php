@@ -167,13 +167,6 @@ class Subscriber implements Subscriber_Interface {
 		$uris     = get_rocket_cache_reject_uri();
 		$uris     = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
 
-		foreach ( [ '/wp-admin', '/logout' ] as $uri ) {
-			$uris .= "|{$uri}";
-			if ( $use_trailing_slash ) {
-				$uris .= '/';
-			}
-		}
-
 		$default = [
 			'/refer/',
 			'/go/',
