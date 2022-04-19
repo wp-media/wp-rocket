@@ -56,7 +56,7 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 		 *
 		 * @return array
 		 */
-		$lifespan = apply_filters( 'rocket_action_scheduler_retention_period', (int) $lifespan );
+		$lifespan = apply_filters( 'rocket_action_scheduler_retention_period', (int) $lifespan, $this->group );
 		$cutoff   = as_get_datetime_object( $lifespan . ' seconds ago' );
 
 		$statuses_to_purge = [
