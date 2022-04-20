@@ -47,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'minimalist_blogger',
 	];
 
 	/**
@@ -163,6 +164,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
 			->addTag( 'common_subscriber' );
 	}
 }

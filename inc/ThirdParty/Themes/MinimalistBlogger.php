@@ -17,6 +17,15 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 		return $events;
     }
 
+	/**
+	 * Excludes some MinimalistBlogger JS from delay JS execution
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param array $exclusions Array of exclusion patterns.
+	 *
+	 * @return array
+	 */
 	public function exclude_jquery_from_delay_js( array $exclusions = [] ) {
 		$exclusions[] = '/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js';
 		$exclusions[] = '/jquery-migrate(.min)?.js';

@@ -292,6 +292,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'minimalist_blogger',
 		];
 
 		$host_type = HostResolver::get_host_service();
