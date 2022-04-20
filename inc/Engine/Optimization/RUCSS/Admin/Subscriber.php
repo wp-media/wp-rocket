@@ -109,7 +109,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
 			'rocket_deactivation'                    => 'cancel_queues',
-			'shutdown'                               => 'schedule_rucss_pending_jobs_cron',
+			'admin_init'                             => 'schedule_rucss_pending_jobs_cron',
 			'admin_head-tools_page_action-scheduler' => 'delete_as_tables_transient_on_tools_page',
 		];
 	}
@@ -171,33 +171,35 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_valid_as_tables() ) {
-			return;
-		}
+		try {
+			if ( ! $this->settings->is_enabled() ) {
+				if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+					return;
+				}
 
-		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+				Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+
+				$this->queue->cancel_pending_jobs_cron();
 				return;
 			}
 
-			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+			/**
+			 * Filters the cron interval.
+			 *
+			 * @since 3.11
+			 *
+			 * @param int $interval Interval in seconds.
+			 */
+			$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-			$this->queue->cancel_pending_jobs_cron();
-			return;
+			Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
+
+			$this->queue->schedule_pending_jobs_cron( $interval );
+		} catch ( \RuntimeException $exception ) {
+			delete_transient( 'rocket_rucss_as_tables_count' );
+
+			Logger::error( 'RUCSS: Action scheduler ERROR: ' . $exception->getMessage() );
 		}
-
-		/**
-		 * Filters the cron interval.
-		 *
-		 * @since 3.11
-		 *
-		 * @param int $interval Interval in seconds.
-		 */
-		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**
