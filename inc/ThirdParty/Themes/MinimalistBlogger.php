@@ -6,7 +6,9 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 
 
 	/**
-	 * @inheritDoc
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		$events = [];
@@ -32,7 +34,7 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 	}
 
 	/**
-	 * Checks if the current theme (or parent) is Divi
+	 * Checks if the current theme (or parent) is MinimalistBlogger
 	 *
 	 * @since 3.6.3
 	 *
