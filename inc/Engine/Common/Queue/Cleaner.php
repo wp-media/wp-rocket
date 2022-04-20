@@ -45,7 +45,7 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 	 * @return void
 	 */
 	public function delete_old_actions() {
-		$lifespan = apply_filters( 'action_scheduler_retention_period', $this->hour_in_seconds );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$lifespan = (int) apply_filters( 'action_scheduler_retention_period', $this->hour_in_seconds );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
 		 * Filters the retention period for our tasks only.
@@ -56,7 +56,7 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 		 *
 		 * @return array
 		 */
-		$lifespan = apply_filters( 'rocket_action_scheduler_retention_period', (int) $lifespan, $this->group );
+		$lifespan = (int) apply_filters( 'rocket_action_scheduler_retention_period', $lifespan, $this->group );
 		$cutoff   = as_get_datetime_object( $lifespan . ' seconds ago' );
 
 		$statuses_to_purge = [
