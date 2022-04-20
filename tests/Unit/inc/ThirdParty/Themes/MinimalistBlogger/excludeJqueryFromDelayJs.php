@@ -17,6 +17,9 @@ class Test_ExcludeJqueryFromDelayJs extends \WP_Rocket\Tests\Unit\TestCase {
 		$this->subscriber = new MinimalistBlogger();
 	}
 
+	/**
+	 * @dataProvider configTestData
+	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		$this->assertEquals($expected, $this->subscriber->exclude_jquery_from_delay_js($config['excluded']));
 	}
