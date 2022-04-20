@@ -2,20 +2,19 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interface
-{
+class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interface {
 
-    /**
-     * @inheritDoc
-     */
-    public static function get_subscribed_events()
-    {
-        $events = [];
-		if(self::is_mb()) {
+
+	/**
+	 * @inheritDoc
+	 */
+	public static function get_subscribed_events() {
+		$events = [];
+		if ( self::is_mb() ) {
 			$events['rocket_delay_js_exclusions'] = 'exclude_jquery_from_delay_js';
 		}
 		return $events;
-    }
+	}
 
 	/**
 	 * Excludes some MinimalistBlogger JS from delay JS execution
@@ -42,6 +41,6 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 	private static function is_mb( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
-		return ( str_contains('minimalist-blogger', $theme->get_template()));
+		return ( str_contains( 'minimalist-blogger', $theme->get_template() ) );
 	}
 }
