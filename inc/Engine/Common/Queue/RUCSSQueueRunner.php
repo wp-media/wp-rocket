@@ -56,12 +56,22 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @param \ActionScheduler_Store|null                    $store Store Instance.
 	 * @param \ActionScheduler_FatalErrorMonitor|null        $monitor Fatal Error monitor instance.
-	 * @param \ActionScheduler_QueueCleaner|null             $cleaner Cleaner instance.
+	 * @param Cleaner|null                                   $cleaner Cleaner instance.
 	 * @param \ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
 	 */
 	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, Cleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		if ( is_null( $cleaner ) ) {
-			$cleaner = new Cleaner( $store, 20, $this->group );
+			/**
+			 * Filters the clean batch size.
+			 *
+			 * @since 3.11.0.5
+			 *
+			 * @param int $batch_size Batch size.
+			 *
+			 * @return int
+			 */
+			$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $this->group );
+			$cleaner    = new Cleaner( $store, $batch_size, $this->group );
 		}
 
 		parent::__construct( $store, $monitor, $cleaner );

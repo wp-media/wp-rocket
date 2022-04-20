@@ -50,11 +50,11 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 		/**
 		 * Filters the retention period for our tasks only.
 		 *
-		 * @since 3.11.1
+		 * @since 3.11.0.5
 		 *
 		 * @param int $lifespan Lifespan in seconds.
 		 *
-		 * @return array
+		 * @return int
 		 */
 		$lifespan = (int) apply_filters( 'rocket_action_scheduler_retention_period', $lifespan, $this->group );
 		$cutoff   = as_get_datetime_object( $lifespan . ' seconds ago' );
