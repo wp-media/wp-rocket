@@ -567,7 +567,7 @@ class Page {
 		$disable_combine_css = $this->disable_combine_css();
 		$disable_ocd         = 'local' === wp_get_environment_type();
 
-		$invalid_license = get_transient( 'wp_rocket_no_licence');
+		$invalid_license = get_transient( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -718,9 +718,9 @@ class Page {
 					'options'                 => [
 						'remove_unused_css' => [
 							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
-							'disabled' => 'disabled',
+							'disabled'    => 'disabled',
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							'description'       =>  $invalid_license ? __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance, but limited only to the users with active license.', 'rocket' ) : __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
+							'description' => $invalid_license ? __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance, but limited only to the users with active license.', 'rocket' ) : __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
 							'warning'     => $invalid_license ? [] : [
 								'title'        => __( 'We’re still working on it!', 'rocket' ),
 								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),

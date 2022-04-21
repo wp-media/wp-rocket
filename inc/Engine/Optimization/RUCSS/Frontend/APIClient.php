@@ -90,7 +90,7 @@ class APIClient extends AbstractAPIClient {
 		];
 
 		$result = json_decode( $this->response_body, true );
-		if(key_exists('code', $result) && $result['code'] === 401) {
+		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
 			set_transient( 'wp_rocket_no_licence', true, WEEK_IN_SECONDS );
 		}
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
