@@ -31,6 +31,14 @@ class APIClient extends AbstractAPIClient {
 			'timeout' => 5,
 		];
 
+		if(! $this->options->get( 'consumer_email', '' ) || ! $this->options->get( 'consumer_key', '' )) {
+			set_transient( 'wp_rocket_no_licence', true, WEEK_IN_SECONDS );
+			return [
+				'code'    => 401,
+				'message' => 'Unauthorized',
+			];
+		}
+
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
@@ -90,6 +98,9 @@ class APIClient extends AbstractAPIClient {
 		];
 
 		$result = json_decode( $this->response_body, true );
+		if(key_exists('code', $result) && $result['code'] === 401) {
+			set_transient( 'wp_rocket_no_licence', true, WEEK_IN_SECONDS );
+		}
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
 	}
 }
