@@ -20,7 +20,7 @@ class Test_CleanMinify extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCleanMinifyAll( $expected ) {
+	public function testCleanMinifyAll( $option, $expected ) {
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
