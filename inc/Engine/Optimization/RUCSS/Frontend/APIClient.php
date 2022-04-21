@@ -31,14 +31,6 @@ class APIClient extends AbstractAPIClient {
 			'timeout' => 5,
 		];
 
-		if(! $this->options->get( 'consumer_email', '' ) || ! $this->options->get( 'consumer_key', '' )) {
-			set_transient( 'wp_rocket_no_licence', true, WEEK_IN_SECONDS );
-			return [
-				'code'    => 401,
-				'message' => 'Unauthorized',
-			];
-		}
-
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
