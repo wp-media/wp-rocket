@@ -45,7 +45,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @return string The action ID.
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
-		if ( $this->is_scheduled( $hook, $args, $this->group ) ) {
+		if ( $this->is_scheduled( $hook, $args ) ) {
 			return '';
 		}
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
