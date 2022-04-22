@@ -118,7 +118,6 @@ abstract class Abstract_Render implements Render_Interface {
 				break;
 			case 'purge_cache':
 			case 'preload':
-			case 'rocket_purge_opcache':
 			case 'rocket_purge_cloudflare':
 			case 'rocket_purge_sucuri':
 			case 'rocket_rollback':

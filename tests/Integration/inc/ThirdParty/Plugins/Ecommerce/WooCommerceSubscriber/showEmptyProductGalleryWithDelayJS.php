@@ -2,6 +2,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_empty_product_gallery_with_delayJS
  * @group WooCommerce
@@ -15,17 +16,19 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 	private $product_with_gallery;
 	private $product_without_gallery;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->product_without_gallery = $this->create_product();
 		$this->product_with_gallery = $this->create_product( [1, 2, 3] );
 	}
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
+
+		$this->restoreWpFilter( 'wp_head' );
 	}
 
 	/**
@@ -40,36 +43,18 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 
 		if ( $in_product_page ) {
 			$this->go_to( $has_images ? $this->product_with_gallery->get_permalink() : $this->product_without_gallery->get_permalink() );
-		}else{
+		} else {
 			$this->go_to( home_url() );
 		}
 
-		foreach ( wp_styles()->registered as $style ) {
-			if ( 'woocommerce-layout' === $style->handle ) {
-				$this->assertArrayNotHasKey( 'after', $style->extra );
-			}
-		}
+		$this->unregisterAllCallbacksExcept( 'wp_head', 'show_empty_product_gallery_with_delayJS' );
 
-		do_action( 'wp_enqueue_scripts' );
+		do_action( 'wp_head' );
 
-		$extra_after = [];
-		foreach ( wp_styles()->registered as $style ) {
-			if ( 'woocommerce-layout' === $style->handle ) {
-				$extra_after = $style->extra;
-			}
-		}
-
-		if ( empty( $expected['style'] ) ) {
-			$this->assertArrayNotHasKey( 'after', $extra_after );
-		}else{
-			$this->assertArrayHasKey( 'after', $extra_after );
-			$this->assertNotEmpty( $extra_after['after'] );
-			$this->assertContains( '.woocommerce-product-gallery{ opacity: 1 !important; }', $extra_after['after'] );
-		}
-
+		$this->expectOutputString( $expected );
 	}
 
-	public function set_delay_js($options) {
+	public function set_delay_js() {
 		return $this->delay_js_option;
 	}
 

@@ -40,8 +40,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		'divi',
 		'mod_pagespeed',
 		'adthrive',
+		'autoptimize',
 		'wp-meteor',
 		'revolution_slider_subscriber',
+		'wordfence_subscriber',
+		'ezoic',
+		'pwa',
+		'flatsome',
 	];
 
 	/**
@@ -131,10 +136,33 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'adthrive', 'WP_Rocket\ThirdParty\Plugins\Ads\Adthrive' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'autoptimize', 'WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'wp-meteor', 'WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'revolution_slider_subscriber', 'WP_Rocket\ThirdParty\Plugins\RevolutionSlider' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wordfence_subscriber', 'WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'ezoic', 'WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'thirstyaffiliates', 'WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'pwa', 'WP_Rocket\ThirdParty\Plugins\PWA' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'yoast_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\Yoast' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
 			->addTag( 'common_subscriber' );
 	}
 }

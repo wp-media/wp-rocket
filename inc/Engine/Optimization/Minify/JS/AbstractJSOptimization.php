@@ -53,6 +53,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/pdf.min.js';
 		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/three.min.js';
 		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/3d-flip-book.min.js';
+		$excluded_files[] = '/google-site-kit/dist/assets/js/(.*)\.js';
 
 		/**
 		 * Filter JS files to exclude from minification/concatenation.
@@ -245,6 +246,20 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdna.hubpeople.com/js/widget_standalone_two_modes.js',
 			's3.tradingview.com',
 			'www.vbt.io/ext/vbtforms.js',
+			'cdn.callrail.com',
+			'documentcloud.adobe.com/view-sdk/main.js',
+			'static.cleverpush.com',
+			'js.afterpay.com',
+			'cdn.enable.co.il/licenses/enable-',
+			'hcaptcha.com/1/api.js',
+			'voucher.getavo.it/public/js/yanovis.Voucher.js',
+			'js-eu1.hsforms.net',
+			'statcounter.com/counter/counter.js',
+			'snapppt.com',
+			'use.typekit.com',
+			'secure.gravatar.com/js/gprofiles.js',
+			'cdn.jsdelivr.net/npm/hockeystack',
+			'widget.prod.faslet.net',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

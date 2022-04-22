@@ -56,11 +56,13 @@ class Divi implements Subscriber_Interface {
 		if ( ! self::is_divi() ) {
 			return $events;
 		}
-
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
 		$events['wp_enqueue_scripts'] = 'disable_divi_jquery_body';
+
+		$events['rocket_exclude_css'] = 'exclude_css_from_combine';
+
 		return $events;
 	}
 
@@ -171,5 +173,29 @@ class Divi implements Subscriber_Interface {
 			add_filter( 'et_builder_enable_jquery_body', '__return_false' );
 		}
 
+	}
+
+	/**
+	 * Excludes Divi's CSS files from CSS combination
+	 *
+	 * @since 3.10.1
+	 *
+	 * @param array $exclude_css An array of CSS to be excluded.
+	 *
+	 * @return array the updated array of paths
+	 */
+	public function exclude_css_from_combine( $exclude_css ) {
+
+		if ( ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+			return $exclude_css;
+		}
+
+		$wp_content = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
+
+		if ( $wp_content ) {
+			$exclude_css[] = $wp_content . 'et-cache/(.*).css';
+		}
+
+		return $exclude_css;
 	}
 }

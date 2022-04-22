@@ -14,20 +14,20 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php';
 	private static $container;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
 	}

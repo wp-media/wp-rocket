@@ -13,9 +13,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_DisplayGoogleFontsEnabler extends TestCase {
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'setGoogleFontsOption' ] );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

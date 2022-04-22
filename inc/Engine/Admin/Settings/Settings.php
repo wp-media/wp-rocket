@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
+use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 
 /**
  * Settings class.
@@ -43,7 +43,7 @@ class Settings {
 	 * @since 3.6
 	 * @see   $this->sanitize_font()
 	 *
-	 * @var string|bool
+	 * @var array
 	 */
 	private $font_formats = [
 		'otf',
@@ -263,6 +263,7 @@ class Settings {
 		// Option : Never cache the following pages.
 		if ( ! empty( $input['cache_reject_uri'] ) ) {
 			$input['cache_reject_uri'] = rocket_sanitize_textarea_field( 'cache_reject_uri', $input['cache_reject_uri'] );
+			$input['cache_reject_uri'] = $this->check_global_exclusion( $input['cache_reject_uri'] );
 		} else {
 			$input['cache_reject_uri'] = [];
 		}
@@ -383,7 +384,7 @@ class Settings {
 
 		$input['sucury_waf_api_key'] = trim( $input['sucury_waf_api_key'] );
 
-		if ( ! Sucuri_Subscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
+		if ( ! SucuriSubscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
 			$input['sucury_waf_api_key'] = '';
 
 			if ( $input['sucury_waf_cache_sync'] && empty( $input['ignore'] ) ) {
@@ -678,5 +679,24 @@ class Settings {
 		}
 
 		return $sub_fields;
+	}
+
+	/**
+	 * Checks if the global exclusion pattern is used in the given field
+	 *
+	 * @since 3.10.3
+	 *
+	 * @param array $field A field array value.
+	 *
+	 * @return array
+	 */
+	private function check_global_exclusion( $field ) {
+		if ( ! in_array( '/(.*)', $field, true ) ) {
+			return $field;
+		}
+
+		add_settings_error( 'general', 'reject_uri_global_exclusion', __( 'Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site.', 'rocket' ) );
+
+		return array_diff_key( $field, array_flip( array_keys( $field, '/(.*)', true ) ) );
 	}
 }

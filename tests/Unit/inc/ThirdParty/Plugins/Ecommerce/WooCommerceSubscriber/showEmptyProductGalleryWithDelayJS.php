@@ -70,14 +70,7 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 				->andReturn( $product );
 		}
 
-		if ( ! empty( $expected['style'] ) ) {
-			Functions\expect( 'wp_add_inline_style' )
-				->once()
-				->with( 'woocommerce-layout', $expected['style'] );
-		}else{
-			Functions\expect( 'wp_add_inline_style' )
-				->never();
-		}
+		$this->expectOutputString( $expected );
 
 		$this->subscriber->show_empty_product_gallery_with_delayJS();
 	}

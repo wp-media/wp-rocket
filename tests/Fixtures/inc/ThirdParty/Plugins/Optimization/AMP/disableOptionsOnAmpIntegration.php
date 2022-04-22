@@ -17,7 +17,7 @@ return [
 			'bailout' => false,
 		],
 	],
-	'testShouldDisableOptionForAmpExceptImageSrcSetAndThemeSupport'      => [
+	'testShouldDisableOptionForAmpExceptImageSrcSetAndThemeSupportTransitional'      => [
 		'config'  => [
 			'amp_options' => [ 'theme_support' => 'transitional' ],
 		],
@@ -25,7 +25,7 @@ return [
 			'bailout' => false,
 		],
 	],
-	'testShouldDisableOptionForAmpExceptImageSrcSetAndThemeSupport'      => [
+	'testShouldDisableOptionForAmpExceptImageSrcSetAndThemeSupportReader'      => [
 		'config'  => [
 			'amp_options' => [ 'theme_support' => 'reader' ],
 		],

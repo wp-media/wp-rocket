@@ -81,6 +81,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.docksal.site',
 			'example.lndo.site',
 			'example.wpengine.com',
+			'example.wpenginepowered.com',
 			'example.pantheonsite.io',
 			'example.flywheelsites.com',
 			'example.flywheelstaging.com',
@@ -91,6 +92,12 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.wpserveur.net',
 			'example-liquidwebsites.com',
 			'example.myftpupload.com',
+			'example.wpstage.net',
+			'example.wpsc.site',
+			'example.runcloud.link',
+			'example.onrocket.site',
+			'example.bigscoots-staging.com',
+			'example.singlestaging.com',
 		];
 	}
 }

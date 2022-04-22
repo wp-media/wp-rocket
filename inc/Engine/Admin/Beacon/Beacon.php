@@ -475,8 +475,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'ecommerce'                  => [
 				'en' => [
-					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '548f492de4b034fd4862493e',
+					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '568f8291c69791436155caea',
@@ -655,6 +655,36 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'invalid_exclusions'         => [
+				'en' => [
+					'id'  => '619e90a3d3efbe495c3b26b8',
+					'url' => 'https://docs.wp-rocket.me/article/1657-invalid-patterns-of-exclusions',
+				],
+				'fr' => [
+					'id'  => '61b21c1297682b790dad345a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1659-motifs-exclusion-non-valables',
+				],
+			],
+			'async_opti'                 => [
+				'en' => [
+					'id'  => '622a725a2ce7ed0fb0914056',
+					'url' => 'https://docs.wp-rocket.me/article/1688-asynchronous-optimizations?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6231fc24c1688a6d26a75ee1',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1689-optimisations-asynchrones?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'offline'                    => [
+				'en' => [
+					'id'  => '60623465c44f5d025f4491de',
+					'url' => 'https://docs.wp-rocket.me/article/1514-private-intranet-offline?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6065cb184466ce6ddc5f05fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1521-utiliser-wp-rocket-sur-un-intranet-prive-ou-hors-ligne?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

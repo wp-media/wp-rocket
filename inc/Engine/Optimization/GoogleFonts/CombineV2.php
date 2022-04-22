@@ -98,7 +98,7 @@ class CombineV2 extends AbstractGFOptimization {
 			return [];
 		}
 
-		$url_pattern     = '#^(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
+		$url_pattern     = '#(family=[A-Za-z0-9;:,=%&\+\@\.]+)$#';
 		$display_pattern = '#&display=(?:swap|auto|block|fallback|optional)#';
 		$decoded_url     = html_entity_decode( $tag['url'] );
 		$query           = wp_parse_url( $decoded_url, PHP_URL_QUERY );
@@ -130,7 +130,9 @@ class CombineV2 extends AbstractGFOptimization {
 	 * @return string
 	 */
 	private function get_combined_url( array $families ): string {
-		return esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display=swap" );
+		$display = $this->get_font_display_value();
+
+		return esc_url( "https://fonts.googleapis.com/css2{$this->get_concatenated_families( $families )}&display={$display}" );
 	}
 
 	/**

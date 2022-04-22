@@ -16,8 +16,8 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	protected $smush_lazy_option_name;
 	protected $smush_lazy;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->assertTrue( class_exists( '\Smush\Core\Settings' ), 'Smush plugin not loaded' );
 
@@ -28,14 +28,14 @@ abstract class SmushSubscriberTestCase extends TestCase {
 		$this->options_api  = $container->get( 'options_api' );
 
 		$this->smush                      = Settings::get_instance();
-		$this->smush_settings_option_name = WP_SMUSH_PREFIX . 'settings';
+		$this->smush_settings_option_name = 'wp-smush-settings';
 		$this->smush_settings             = $this->smush->get_setting( $this->smush_settings_option_name );
-		$this->smush_lazy_option_name     = WP_SMUSH_PREFIX . 'lazy_load';
+		$this->smush_lazy_option_name     = 'wp-smush-lazy_load';
 		$this->smush_lazy                 = $this->smush->get_setting( $this->smush_lazy_option_name );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->options_api->set( 'settings', $this->options_data->get_options() );
 		$this->set_reflective_property( $this->options_data, 'options', $this->subscriber );

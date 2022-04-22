@@ -14,8 +14,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_Optimize extends TestCase {
 
-	public function setUp(): void {
-		parent::setUp();
+	private $filter_value;
+
+	public function set_up() {
+		parent::set_up();
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
 			'request'    => 'http://example.org',
@@ -25,34 +27,43 @@ class Test_Optimize extends TestCase {
         ];
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
-		parent::tearDown();
+		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
+
+		unset( $this->filter_value );
+
+		parent::tear_down();
 	}
 
 	/**
      * @dataProvider addDataProviderV1
      */
-	public function testShouldCombineGoogleFontsV1( $original, $combined ) {
-		$this->doTest( $original, $combined );
+	public function testShouldCombineGoogleFontsV1( $original, $combined, $filtered = false ) {
+		$this->doTest( $original, $combined, $filtered );
 	}
 
 	/**
      * @dataProvider addDataProviderV2
      */
-	public function testShouldCombineGoogleFontsV2( $original, $combined ) {
-		$this->doTest( $original, $combined );
+	public function testShouldCombineGoogleFontsV2( $original, $combined, $filtered = false ) {
+		$this->doTest( $original, $combined, $filtered );
 	}
 
 	/**
      * @dataProvider addDataProviderV1V2
      */
-	public function testShouldCombineGoogleFontsV1V2( $original, $combined ) {
-		$this->doTest( $original, $combined );
+	public function testShouldCombineGoogleFontsV1V2( $original, $combined, $filtered = false ) {
+		$this->doTest( $original, $combined, $filtered );
 	}
 
-	private function doTest( $original, $expected ) {
+	private function doTest( $original, $expected, $filtered ) {
 		add_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
+
+		if ( $filtered ) {
+			$this->filter_value = $filtered;
+			add_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
+		}
 
 		$actual = apply_filters( 'rocket_buffer', $original );
 
@@ -72,5 +83,9 @@ class Test_Optimize extends TestCase {
 
 	public function addDataProviderV1V2() {
 		return $this->getTestData( __DIR__ . 'V1V2', 'optimize' );
+	}
+
+	public function set_display_value( $filtered ) {
+		return $this->filter_value;
 	}
 }

@@ -5,12 +5,13 @@ namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
 
 abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://central-saas.wp-rocket.me/';
+	const API_URL = 'https://saas.wp-rocket.me/';
 
 	/**
 	 * Part of request Url after the main API_URL.
@@ -57,13 +58,17 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Handle remote POST.
+	 * Handle the request.
 	 *
-	 * @param array $args Array with options sent to Saas API.
+	 * @param array  $args Passed arguments.
+	 * @param string $type GET or POST.
 	 *
-	 * @return bool WP Remote request status.
+	 * @return bool
 	 */
-	protected function handle_post( array $args ): bool {
+	private function handle_request( array $args, string $type = 'post' ) {
+		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
+			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
+			: self::API_URL;
 
 		if ( empty( $args['body'] ) ) {
 			$args['body'] = [];
@@ -74,8 +79,10 @@ abstract class AbstractAPIClient {
 			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
 		];
 
-		$response = wp_remote_post(
-			self::API_URL . $this->request_path,
+		$args['method'] = strtoupper( $type );
+
+		$response = wp_remote_request(
+			$api_url . $this->request_path,
 			$args
 		);
 
@@ -83,7 +90,29 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Handle Saas request error.
+	 * Handle remote POST.
+	 *
+	 * @param array $args Array with options sent to Saas API.
+	 *
+	 * @return bool WP Remote request status.
+	 */
+	protected function handle_post( array $args ): bool {
+		return $this->handle_request( $args );
+	}
+
+	/**
+	 * Handle remote GET.
+	 *
+	 * @param array $args Array with options sent to Saas API.
+	 *
+	 * @return bool WP Remote request status.
+	 */
+	protected function handle_get( array $args ): bool {
+		return $this->handle_request( $args, 'get' );
+	}
+
+	/**
+	 * Handle SaaS request error.
 	 *
 	 * @param array|WP_Error $response WP Remote request.
 	 *

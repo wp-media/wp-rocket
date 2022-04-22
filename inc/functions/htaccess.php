@@ -474,7 +474,7 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType font/otf                      "access plus 4 months"
 	ExpiresByType font/woff                     "access plus 4 months"
 	ExpiresByType font/woff2                    "access plus 4 months"
-	ExpiresByType image/svg+xml                 "access plus 1 month"
+	ExpiresByType image/svg+xml                 "access plus 4 months"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
@@ -505,6 +505,10 @@ HTACCESS;
 function get_rocket_htaccess_charset() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Get charset of the blog.
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
+
+	if ( empty( $charset ) ) {
+		return '';
+	}
 
 	$rules = "# Use $charset encoding for anything served text/plain or text/html" . PHP_EOL;
 	$rules .= "AddDefaultCharset $charset" . PHP_EOL;
