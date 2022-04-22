@@ -643,12 +643,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.11
 	 *
-	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
 	 */
-	public function set_option_on_update( $new_version, $old_version ) {
+	public function set_option_on_update( $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
 
 		if ( version_compare( $old_version, '3.11', '>=' ) ) {
@@ -675,12 +674,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.11.0.2
 	 *
-	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
 	 */
-	public function update_safelist_items( $new_version, $old_version ) {
+	public function update_safelist_items( $old_version ) {
 		$this->settings->update_safelist_items( $old_version );
 	}
 
