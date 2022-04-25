@@ -3,6 +3,8 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\Queue;
 
+use ActionScheduler_Store;
+
 abstract class AbstractASQueue implements QueueInterface {
 
 	/**
@@ -46,8 +48,13 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
+			$running = $this->search( ['status' => ActionScheduler_Store::STATUS_RUNNING] );
+			if(count($running) > 1) {
+				$this->cancel_all( $hook, $args );
+			}
 			return '';
 		}
+
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
 	}
 
@@ -90,6 +97,7 @@ abstract class AbstractASQueue implements QueueInterface {
 		if ( $this->is_scheduled( $hook, $args ) ) {
 			return '';
 		}
+
 		return as_schedule_cron_action( $timestamp, $cron_schedule, $hook, $args, $this->group );
 	}
 
