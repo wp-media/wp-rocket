@@ -312,7 +312,7 @@ class Settings {
 	 *
 	 * @return bool
 	 */
-	private function can_display_notice($check_enabled = true): bool {
+	private function can_display_notice( $check_enabled = true ): bool {
 		$screen = get_current_screen();
 
 		if (
@@ -327,7 +327,7 @@ class Settings {
 			return false;
 		}
 
-		if ($check_enabled && ! $this->is_enabled() ) {
+		if ( $check_enabled && ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -477,7 +477,7 @@ class Settings {
 	 * @return void
 	 */
 	public function display_wrong_license_notice() {
-		if ( ! $this->can_display_notice(false) ) {
+		if ( ! $this->can_display_notice( false ) ) {
 			return;
 		}
 
@@ -487,7 +487,7 @@ class Settings {
 			return;
 		}
 
-		$message       = sprintf(
+		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
 			__( "%1\$s: <p>We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance..</p>%2\$sClick here to get a WP Rocket single license at 10%% off!%3\$s", 'rocket' ),
 			'<strong>WP Rocket</strong>',
@@ -499,8 +499,8 @@ class Settings {
 			[
 				'status'      => 'error',
 				'dismissible' => '',
-				'message'              => $message,
-				'id'                   => 'rocket-notice-rucss-wrong-licence',
+				'message'     => $message,
+				'id'          => 'rocket-notice-rucss-wrong-licence',
 			]
 		);
 	}
