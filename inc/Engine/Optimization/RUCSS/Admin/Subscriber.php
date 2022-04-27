@@ -108,11 +108,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
 			],
-			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
-			'rocket_deactivation'                     => 'cancel_queues',
-			'shutdown'                                => 'schedule_rucss_pending_jobs_cron',
-			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
-			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
 	}
 
@@ -173,42 +168,35 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$error = error_get_last();
+		try {
+			if ( ! $this->settings->is_enabled() ) {
+				if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+					return;
+				}
 
-		// Delete the transient when any error happens.
-		if ( null !== $error ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
+				Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
 
-			return;
-		}
-
-		if ( ! $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+				$this->queue->cancel_pending_jobs_cron();
 				return;
 			}
 
-			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+			/**
+			 * Filters the cron interval.
+			 *
+			 * @since 3.11
+			 *
+			 * @param int $interval Interval in seconds.
+			 */
+			$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-			$this->queue->cancel_pending_jobs_cron();
-			return;
+			Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
+
+			$this->queue->schedule_pending_jobs_cron( $interval );
+		} catch ( \RuntimeException $exception ) {
+			delete_transient( 'rocket_rucss_as_tables_count' );
+
+			Logger::error( 'RUCSS: Action scheduler ERROR: ' . $exception->getMessage() );
 		}
-
-		/**
-		 * Filters the cron interval.
-		 *
-		 * @since 3.11
-		 *
-		 * @param int $interval Interval in seconds.
-		 */
-		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**
