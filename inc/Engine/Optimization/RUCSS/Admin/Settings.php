@@ -306,7 +306,7 @@ class Settings {
 	/**
 	 * Checks if we can display the RUCSS notices
 	 *
-	 * @param $check_enabled check if RUCSS is enabled.
+	 * @param bool $check_enabled check if RUCSS is enabled.
 	 *
 	 * @since 3.11
 	 *
