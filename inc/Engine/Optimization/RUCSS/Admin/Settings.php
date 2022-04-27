@@ -306,11 +306,13 @@ class Settings {
 	/**
 	 * Checks if we can display the RUCSS notices
 	 *
+	 * @param $check_enabled check if RUCSS is enabled.
+	 *
 	 * @since 3.11
 	 *
 	 * @return bool
 	 */
-	private function can_display_notice(): bool {
+	private function can_display_notice($check_enabled = true): bool {
 		$screen = get_current_screen();
 
 		if (
@@ -325,7 +327,7 @@ class Settings {
 			return false;
 		}
 
-		if ( ! $this->is_enabled() ) {
+		if ($check_enabled && ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -475,7 +477,7 @@ class Settings {
 	 * @return void
 	 */
 	public function display_wrong_license_notice() {
-		if ( ! $this->can_display_notice() ) {
+		if ( ! $this->can_display_notice(false) ) {
 			return;
 		}
 
@@ -487,14 +489,16 @@ class Settings {
 
 		$message       = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( "%1\$s: We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance..Click here to get a WP Rocket single license at 10% off!", 'rocket' ),
+			__( "%1\$s: <p>We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance..</p>%2\$sClick here to get a WP Rocket single license at 10%% off!%3\$s", 'rocket' ),
 			'<strong>WP Rocket</strong>',
-			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" rel="noopener noreferrer" target="_blank">',
+			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" class="button button-primary" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
 
 		rocket_notice_html(
 			[
+				'status'      => 'error',
+				'dismissible' => '',
 				'message'              => $message,
 				'id'                   => 'rocket-notice-rucss-wrong-licence',
 			]

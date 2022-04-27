@@ -569,9 +569,9 @@ class Subscriber implements Subscriber_Interface {
 	public function display_wrong_license_notice() {
 		$transient = get_transient( 'wp_rocket_no_licence' );
 
-		if(! $transient) {
+		/*if(! $transient) {
 			return;
-		}
+		}*/
 
 		$this->settings->display_wrong_license_notice();
 	}
