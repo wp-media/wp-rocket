@@ -260,6 +260,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'secure.gravatar.com/js/gprofiles.js',
 			'cdn.jsdelivr.net/npm/hockeystack',
 			'widget.prod.faslet.net',
+			'ga.getresponse.com/script/ga.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
