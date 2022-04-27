@@ -91,6 +91,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
+				[ 'display_wrong_license_notice' ],
 			],
 			'rocket_admin_bar_items'                 => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -111,6 +112,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_deactivation'                    => 'cancel_queues',
 			'shutdown'                               => 'schedule_rucss_pending_jobs_cron',
 			'admin_head-tools_page_action-scheduler' => 'delete_as_tables_transient_on_tools_page',
+			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
 	}
 
@@ -560,6 +562,21 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Display a notification on wrong license.
+	 *
+	 * @return void
+	 */
+	public function display_wrong_license_notice() {
+		$transient = get_transient( 'wp_rocket_no_licence' );
+
+		if(! $transient) {
+			return;
+		}
+
+		$this->settings->display_wrong_license_notice();
+	}
+
+	/**
 	 * Display admin notice when detecting any missed Action scheduler tables.
 	 *
 	 * @since 3.11.0.3
@@ -776,5 +793,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_as_tables_transient_on_tools_page() {
 		delete_transient( 'rocket_rucss_as_tables_count' );
+	}
+
+	/**
+	 * Disable RUCSS on wrong license.
+	 *
+	 * @return bool
+	 */
+	public function disable_russ_on_wrong_license() {
+		return (bool) get_transient( 'wp_rocket_no_licence' );
 	}
 }
