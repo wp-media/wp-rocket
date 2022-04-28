@@ -127,7 +127,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay' , 1);
+		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay', 1 );
 
 		if ( $delete_delay <= 0 ) {
 			return;
