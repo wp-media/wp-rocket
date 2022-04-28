@@ -44,7 +44,9 @@ class Test_DeleteTermUsedCss extends TestCase {
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
 		$this->rucss_option = $config['remove_unused_css'];
-		$this->rucss_enabled = $config['is_disabled'];
+		if(key_exists('is_disabled', $config)) {
+			$this->rucss_enabled = $config['is_disabled'];
+		}
 		$this->set_permalink_structure( "/%postname%/" );
 
 		$term = $this->factory->term->create_and_get([
