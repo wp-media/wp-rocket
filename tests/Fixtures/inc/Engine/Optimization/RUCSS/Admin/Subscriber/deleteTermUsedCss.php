@@ -39,6 +39,8 @@ return [
 			'is_disabled' => false,
 			'url' => 'http://example.org/category/test/',
 			'term_id' => 1,
+			'wp_error' => false,
+			'removed' => false,
 		]
 	]
 ];
