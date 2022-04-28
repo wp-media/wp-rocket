@@ -23,12 +23,35 @@ return [
 		'input' => [
 			'remove_unused_css' => false,
 			'items'             => $items,
-		]
+		],
+		'config' => [
+			'remove_unused_css' => true,
+			'is_disabled' => true,
+			'delete_used_css_row' => true,
+			'used_css_count' => 10,
+		],
 	],
 	'shouldTruncateUnusedCSS' => [
 		'input' => [
 			'remove_unused_css' => true,
 			'items'             => $items,
-		]
+		],
+		'config' => [
+			'remove_unused_css' => true,
+			'is_disabled' => true,
+			'delete_used_css_row' => true,
+			'used_css_count' => 10,
+		],
 	],
+	'shouldNoTruncateOnHookDisabled' =>  [
+		'input' => [
+			'remove_unused_css' => true,
+			'items'             => $items,
+		],
+		'config' => [
+			'remove_unused_css' => true,
+			'is_disabled' => false,
+			'used_css_count' => 10,
+		],
+	]
 ];
