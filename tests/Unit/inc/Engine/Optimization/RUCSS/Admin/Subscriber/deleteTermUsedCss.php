@@ -44,15 +44,28 @@ class Test_DeleteTermUsedCss extends TestCase {
 		Functions\when( 'get_term_link' )
 			->justReturn( $config['url'] );
 
+		$this->configureHook($config);
+		$this->configureDeletion($config);
+
+		$this->subscriber->delete_term_used_css( $config['term_id'] );
+	}
+
+	protected function configureHook($config) {
+		if(! array_key_exists('is_disabled', $config)) {
+			return;
+		}
+		Functions\expect('apply_filters')->with( 'rocket_rucss_deletion_activated' )->andReturn($config['is_disabled']);
+	}
+
+	protected function configureDeletion($config) {
+		if(! array_key_exists('deletion_activated', $config)) {
+			return;
+		}
 		Functions\expect( 'is_wp_error' )
 			->andReturn( $config['wp_error'] );
-
-
 		$this->usedCSS->shouldReceive( 'delete_used_css' )
 			->atMost()
 			->once()
 			->with( rtrim( $config['url'], '/' ) );
-
-		$this->subscriber->delete_term_used_css( $config['term_id'] );
 	}
 }
