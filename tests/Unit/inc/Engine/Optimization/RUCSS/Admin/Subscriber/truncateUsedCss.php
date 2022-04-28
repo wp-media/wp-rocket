@@ -1,5 +1,7 @@
 <?php
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
+use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
@@ -8,6 +10,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
+ *
+ * @group  RUCSS
+ */
 class Test_TruncateUsedCss extends TestCase {
 
 	private $settings;

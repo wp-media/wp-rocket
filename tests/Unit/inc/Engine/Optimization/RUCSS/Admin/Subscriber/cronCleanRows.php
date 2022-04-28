@@ -1,5 +1,7 @@
 <?php
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
+use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
@@ -7,6 +9,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::cron_clean_rows
+ *
+ * @group  RUCSS
+ */
 class Test_CronCleanRows extends \WP_Rocket\Tests\Unit\TestCase {
 
 	private $settings;
