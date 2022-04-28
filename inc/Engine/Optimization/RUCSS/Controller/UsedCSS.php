@@ -76,6 +76,7 @@ class UsedCSS {
 	private $inline_content_exclusions = [
 		'.wp-container-',
 		'.wp-elements-',
+		'#wpv-expandable-',
 	];
 
 	/**
