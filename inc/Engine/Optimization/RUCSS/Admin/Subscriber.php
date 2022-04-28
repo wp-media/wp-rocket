@@ -127,14 +127,14 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$delete_delay = apply_filters('rocket_rucss_css_delete_delay');
+		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay' );
 
-		if($delete_delay <= 0) {
+		if ( $delete_delay <= 0 ) {
 			return;
 		}
 
-		$this->database->delete_old_used_css($delete_delay);
-		$this->database->delete_old_resources($delete_delay);
+		$this->database->delete_old_used_css( $delete_delay );
+		$this->database->delete_old_resources( $delete_delay );
 	}
 
 	/**
@@ -263,7 +263,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$deletion_activated = $this->is_rucss_deletion_activated();
 
-		if(! $deletion_activated) {
+		if ( ! $deletion_activated ) {
 			return;
 		}
 
@@ -292,7 +292,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$deletion_activated = $this->is_rucss_deletion_activated();
 
-		if(! $deletion_activated) {
+		if ( ! $deletion_activated ) {
 			return;
 		}
 
@@ -319,7 +319,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$deletion_activated = $this->is_rucss_deletion_activated();
 
-		if(! $deletion_activated) {
+		if ( ! $deletion_activated ) {
 			return;
 		}
 
@@ -802,7 +802,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return mixed|null
 	 */
 	protected function is_rucss_deletion_activated() {
-		return apply_filters('rocket_rucss_deletion_activated');
+		return apply_filters( 'rocket_rucss_deletion_activated' );
 	}
 
 	/**
@@ -811,8 +811,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_filters() {
-		add_filter('rocket_rucss_deletion_activated', '__return_true');
-		add_filter('rocket_rucss_css_delete_delay', [$this, 'set_delete_delay']);
+		add_filter( 'rocket_rucss_deletion_activated', '__return_true' );
+		add_filter( 'rocket_rucss_css_delete_delay', [ $this, 'set_delete_delay' ] );
 	}
 
 	/**

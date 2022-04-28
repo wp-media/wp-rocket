@@ -65,9 +65,11 @@ class Resources extends Table {
 	/**
 	 * Delete all resources which were not accessed in the last month.
 	 *
+	 * @param int $delete_delay number of months before deleting.
+	 *
 	 * @return bool|int
 	 */
-	public function delete_old_items($delete_delay = 1) {
+	public function delete_old_items( $delete_delay = 1 ) {
 		// Get the database interface.
 		$db = $this->get_db();
 
