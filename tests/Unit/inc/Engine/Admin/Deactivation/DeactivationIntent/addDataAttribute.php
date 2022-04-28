@@ -7,10 +7,10 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
+ * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::add_data_attribute
  * @group  DeactivationIntent
  */
-class Test_ActivateSafeMode extends TestCase {
+class Test_AddDataAttribute extends TestCase {
 	private $deactivation;
 	private $options;
 	private $options_api;
@@ -26,17 +26,10 @@ class Test_ActivateSafeMode extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldResetOptions( $expected ) {
-		$this->options->shouldReceive( 'set_values' )
-			->once()
-			->with( $expected );
-		$this->options->shouldReceive( 'get_options' )
-			->once()
-			->andReturn( $expected );
-		$this->options_api->shouldReceive( 'set' )
-			->once()
-			->with( 'settings', $expected );
-
-		$this->deactivation->activate_safe_mode();
+	public function testShouldReturnExpected( $actions, $expected ) {
+		$this->assertSame(
+			$expected,
+			$this->deactivation->add_data_attribute( $actions )
+		);
 	}
 }
