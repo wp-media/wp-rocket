@@ -37,6 +37,8 @@ return [
 		'config' => [
 			'remove_unused_css' => true,
 			'is_disabled' => false,
+			'url' => 'http://example.org/category/test/',
+			'term_id' => 1,
 		]
 	]
 ];
