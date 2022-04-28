@@ -71,7 +71,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return bool|int
 	 */
-	public function delete_old_used_css() {
+	public function delete_old_used_css($delete_delay = 1) {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -81,7 +81,7 @@ class UsedCSS extends Table {
 		}
 
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_delay month)";
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;

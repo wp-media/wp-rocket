@@ -64,9 +64,9 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function delete_old_used_css() {
+	public function delete_old_used_css($delete_delay = 1) {
 		if ( $this->rucss_usedcss_table->exists() ) {
-			$this->rucss_usedcss_table->delete_old_used_css();
+			$this->rucss_usedcss_table->delete_old_used_css($delete_delay);
 		}
 	}
 
@@ -75,9 +75,9 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function delete_old_resources() {
+	public function delete_old_resources($delete_delay = 1) {
 		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->delete_old_items();
+			$this->rucss_resources_table->delete_old_items($delete_delay);
 		}
 	}
 
