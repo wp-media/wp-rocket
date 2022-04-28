@@ -127,7 +127,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay' );
+		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay' , 1);
 
 		if ( $delete_delay <= 0 ) {
 			return;
@@ -802,7 +802,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return mixed|null
 	 */
 	protected function is_rucss_deletion_activated() {
-		return apply_filters( 'rocket_rucss_deletion_activated' );
+		return apply_filters( 'rocket_rucss_deletion_activated', true );
 	}
 
 	/**
