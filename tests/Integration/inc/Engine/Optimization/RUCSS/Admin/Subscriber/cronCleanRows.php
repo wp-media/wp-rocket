@@ -30,6 +30,7 @@ class Test_CronCleanRows extends TestCase {
 
 	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		remove_filter( 'rocket_rucss_css_delete_delay', [ $this, 'set_rucss_delay' ] );
 
 		parent::tear_down();
 	}
@@ -46,6 +47,7 @@ class Test_CronCleanRows extends TestCase {
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		add_filter( 'rocket_rucss_css_delete_delay', [ $this, 'set_rucss_delay' ] );
 		$this->set_permalink_structure( "/%postname%/" );
 
 		$count_remain_used_css = 0;
@@ -79,7 +81,7 @@ class Test_CronCleanRows extends TestCase {
 		$resultResourcesAfterClean = $rucss_resources_query->query();
 
 
-		if ( $this->input['remove_unused_css'] ) {
+		if ( $this->input['remove_unused_css'] && $this->input['delay'] ) {
 			$this->assertCount( $count_remain_used_css,$resultUsedCssAfterClean );
 			$this->assertCount( $count_remain_resources, $resultResourcesAfterClean );
 		} else {
@@ -90,5 +92,9 @@ class Test_CronCleanRows extends TestCase {
 
 	public function set_rucss_option() {
 		return $this->input['remove_unused_css'] ?? false;
+	}
+
+	public function set_rucss_delay() {
+		return $this->input['delay'];
 	}
 }
