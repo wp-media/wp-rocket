@@ -75,7 +75,6 @@ abstract class AbstractASQueue implements QueueInterface {
 			}
 
 			$this->cancel_all( $hook, $args );
-			return '';
 		}
 
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
