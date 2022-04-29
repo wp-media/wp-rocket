@@ -292,6 +292,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'themify_woocommerce_product_filter',
 		];
 
 		$host_type = HostResolver::get_host_service();
