@@ -64,6 +64,9 @@
             <property name="strict_class_file_names" value="false" />
         </properties>
     </rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound">
+		<exclude-pattern>inc/compat.php</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 	</rule>

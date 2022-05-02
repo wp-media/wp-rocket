@@ -11,8 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Emojis
  */
 class disableEmoji extends TestCase {
-	public function tearDown() {
-        parent::tearDown();
+	public function tear_down() {
+        parent::tear_down();
 
         unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_emoji', [ $this, 'set_emoji_value' ] );

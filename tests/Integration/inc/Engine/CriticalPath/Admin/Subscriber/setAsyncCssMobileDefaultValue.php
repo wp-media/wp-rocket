@@ -15,14 +15,14 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     use ProviderTrait;
 	protected static $provider_class = 'Settings';
 
-    public function setUp() : void {
-        parent::setUp();
+    public function set_up() {
+        parent::set_up();
 
         remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tear_down() {
+        parent::tear_down();
 
         add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
     }

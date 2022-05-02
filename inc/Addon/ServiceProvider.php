@@ -34,7 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		// Sucuri Addon.
-		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
+		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Addon\Sucuri\Subscriber' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 
@@ -50,9 +50,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @param Options_Data $options Instance of options.
 	 */
 	protected function addon_cloudflare( Options_Data $options ) {
-		// If the addon is not enabled, delete the transient and bail out. Don't load the addon.
+		// If the option is not enabled, bail out. Don't load the addon.
 		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
-			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 			return;
 		}
 

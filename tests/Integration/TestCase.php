@@ -18,8 +18,8 @@ abstract class TestCase extends BaseTestCase {
 
 	protected $config;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::hasAdminCapBeforeClass();
 
@@ -34,8 +34,8 @@ abstract class TestCase extends BaseTestCase {
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		CapTrait::resetAdminCap();
 
@@ -52,28 +52,28 @@ abstract class TestCase extends BaseTestCase {
 		}
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
 		$this->stubRocketGetConstant();
 
-		parent::setUp();
-
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		$this->resetStubProperties();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
 	}
 
 	public function configTestData() {

@@ -25,8 +25,8 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

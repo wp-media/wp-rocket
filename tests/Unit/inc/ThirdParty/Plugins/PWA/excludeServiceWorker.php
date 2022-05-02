@@ -16,8 +16,8 @@ class Test_ExcludeServiceWorker extends TestCase {
 
 	private $pwa;
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->pwa = new PWA();
 	}

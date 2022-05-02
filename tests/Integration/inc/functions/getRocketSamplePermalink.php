@@ -12,14 +12,14 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_GetRocketSamePermalink extends TestCase {
 	private $did_filter;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->did_filter = [ 'editable_slug' => 0 ];
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
 	}
