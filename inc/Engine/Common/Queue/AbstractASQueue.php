@@ -3,6 +3,8 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Common\Queue;
 
+use ActionScheduler_Store;
+
 abstract class AbstractASQueue implements QueueInterface {
 
 	/**
@@ -46,8 +48,35 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
-			return '';
+			// TODO: When v3.3.0 from Action Scheduler is commonly used use the array notation for status to reduce search queries to one.
+			$pending_actions = $this->search(
+				[
+					'hook'   => $hook,
+					'status' => ActionScheduler_Store::STATUS_PENDING,
+				],
+				'ids'
+			);
+
+			if ( 1 < count( $pending_actions ) ) {
+				$this->cancel_all( $hook, $args );
+				return '';
+			}
+
+			$running_actions = $this->search(
+				[
+					'hook'   => $hook,
+					'status' => ActionScheduler_Store::STATUS_RUNNING,
+				],
+				'ids'
+			);
+
+			if ( 1 === count( $pending_actions ) + count( $running_actions ) ) {
+				return '';
+			}
+
+			$this->cancel_all( $hook, $args );
 		}
+
 		return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
 	}
 
@@ -90,6 +119,7 @@ abstract class AbstractASQueue implements QueueInterface {
 		if ( $this->is_scheduled( $hook, $args ) ) {
 			return '';
 		}
+
 		return as_schedule_cron_action( $timestamp, $cron_schedule, $hook, $args, $this->group );
 	}
 

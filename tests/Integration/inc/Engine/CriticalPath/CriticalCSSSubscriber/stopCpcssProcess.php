@@ -24,8 +24,8 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'stop_critical_css_generation', 9 );
 		$this->unregisterAllCallbacksExcept( 'admin_post_rocket_rollback', 'stop_critical_css_generation', 9 );
 		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
@@ -33,8 +33,8 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		if($this->filesystem->exists( $this->cancel_file_path )){
 			$this->filesystem->delete( $this->cancel_file_path );
 		}

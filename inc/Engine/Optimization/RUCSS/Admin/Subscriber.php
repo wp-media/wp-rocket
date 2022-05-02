@@ -69,7 +69,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'                  => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug                 => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
-				[ 'clean_used_css_with_cdn', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
 			'switch_theme'                           => 'truncate_used_css',
@@ -367,40 +366,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
-			return;
-		}
-
-		$this->delete_used_css_rows();
-
-		$this->set_notice_transient();
-	}
-
-	/**
-	 * Truncate UsedCSS DB Table when CDN option is changed.
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $old_value An array of submitted values for the settings.
-	 * @param array $value     An array of previous values for the settings.
-	 *
-	 * @return void
-	 */
-	public function clean_used_css_with_cdn( $old_value, $value ) {
-		if ( ! isset( $value['cdn'], $old_value['cdn'] ) ) {
-			return;
-		}
-
-		if ( empty( $value['remove_unused_css'] ) ) {
-			return;
-		}
-
-		if (
-			$value['cdn'] === $old_value['cdn']
-			&&
-			$value['cdn_cnames'] === $old_value['cdn_cnames']
-			&&
-			$value['cdn_zone'] === $old_value['cdn_zone']
-		) {
 			return;
 		}
 

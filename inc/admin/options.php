@@ -115,7 +115,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	$rocket_settings_errors = [];
 
 	// Make sure that fields that allow users to enter patterns are well formatted.
-	$is_form_submit = filter_input( INPUT_POST, 'option_page', FILTER_SANITIZE_STRING );
+	$is_form_submit = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$is_form_submit = WP_ROCKET_PLUGIN_SLUG === $is_form_submit;
 	$errors         = [];
 	$pattern_labels = [

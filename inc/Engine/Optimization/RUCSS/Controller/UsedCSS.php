@@ -76,6 +76,7 @@ class UsedCSS {
 	private $inline_content_exclusions = [
 		'.wp-container-',
 		'.wp-elements-',
+		'#wpv-expandable-',
 	];
 
 	/**
@@ -385,65 +386,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Hides <noscript> blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_noscripts( string $html ): string {
-		$replace = preg_replace( '#<noscript[^>]*>.*?<\/noscript\s*>#mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides unwanted blocks from the HTML to be parsed.
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_comments( string $html ): string {
-		$replace = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		$replace = preg_replace( '/<!--(.*)-->/Uis', '', $replace );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Hides scripts from the HTML to be parsed when removing CSS from it
-	 *
-	 * @since 3.10.2
-	 *
-	 * @param string $html HTML content.
-	 *
-	 * @return string
-	 */
-	private function hide_scripts( string $html ): string {
-		$replace = preg_replace( '#<script[^>]*>.*?<\/script\s*>#mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
 	 * Return Markup for used_css into the page.
 	 *
 	 * @param UsedCSS_Row $used_css Used CSS DB Row.
@@ -451,7 +393,16 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		$css               = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
+		/**
+		 * Filters Used CSS content before saving into DB.
+		 *
+		 * @since 3.9.0.2
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+
+		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
 		$used_css_contents = $this->handle_charsets( $css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
@@ -576,15 +527,6 @@ class UsedCSS {
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
-
-		/**
-		 * Filters Used CSS content before saving into DB.
-		 *
-		 * @since 3.9.0.2
-		 *
-		 * @param string $usedcss Used CSS.
-		 */
-		$css = apply_filters( 'rocket_usedcss_content', $css );
 
 		$this->used_css_query->make_status_completed( $id, $css );
 

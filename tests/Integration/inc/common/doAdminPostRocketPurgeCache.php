@@ -44,22 +44,22 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		foreach ( self::$original_transients as $transient => $value ) {
 			set_transient( $transient, $value, HOUR_IN_SECONDS );
 		}
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->set_permalink_structure( '/%postname%/' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['tonya'] );
 

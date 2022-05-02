@@ -10,16 +10,16 @@ abstract class TestCase extends BaseTestCase {
 	protected static $subscriber;
 	protected static $callbacks;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'ie_conditionals_subscriber' );
 		self::resetConditionalValue();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		self::resetConditionalValue();
 	}
