@@ -162,14 +162,6 @@ class Elementor implements Subscriber_Interface {
 			return $excluded_files;
 		}
 
-		if ( ! $this->options->get( 'cache_logged_user', false ) ) {
-			return $excluded_files;
-		}
-
-		if ( ! is_user_logged_in() ) {
-			return $excluded_files;
-		}
-
 		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
 
 		return $excluded_files;

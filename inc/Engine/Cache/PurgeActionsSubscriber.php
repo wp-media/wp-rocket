@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Cache;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Subscriber for the cache purge actions
@@ -40,15 +41,17 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'profile_update'          => 'purge_user_cache',
-			'delete_user'             => 'purge_user_cache',
-			'create_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'               => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'delete_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'after_rocket_clean_post' => [
+			'profile_update'                      => 'purge_user_cache',
+			'delete_user'                         => 'purge_user_cache',
+			'create_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'                           => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'                         => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'after_rocket_clean_post'             => [
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
+			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
+			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 		];
 	}
 
@@ -136,5 +139,19 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 
 		// This filter is documented in /inc/functions/files.php.
 		return ! (bool) apply_filters( 'rocket_common_cache_logged_users', false );
+	}
+
+	/**
+	 * Purge cache after RUCSS
+	 *
+	 * @param string $url URL to be purged.
+	 *
+	 * @return void
+	 */
+	public function purge_url_cache( string $url ) {
+		// Flush cache for this url.
+		Logger::debug( 'RUCSS: Purge the cache for url: ' . $url );
+
+		$this->purge->purge_url( $url );
 	}
 }

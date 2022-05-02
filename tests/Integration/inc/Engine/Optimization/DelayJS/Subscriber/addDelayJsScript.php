@@ -14,18 +14,18 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddDelayJsScript extends TestCase {
 	private $delay_js = false;
 
-	public function setUp(): void {
+	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_delay_js_script', 26 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
 		$this->delay_js = false;
 		$this->restoreWpFilter( 'rocket_buffer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
