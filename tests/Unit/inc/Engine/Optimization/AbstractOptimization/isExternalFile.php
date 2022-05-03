@@ -1,11 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\AbstractOptimization;
 
-use ReflectionClass;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\TestCase;
 
-class Test_IsExternalFile extends \WP_Rocket\Tests\Unit\TestCase {
+class Test_IsExternalFile extends TestCase {
 
 	protected $optimization;
 
@@ -22,7 +22,8 @@ class Test_IsExternalFile extends \WP_Rocket\Tests\Unit\TestCase {
 		Functions\expect('get_rocket_parse_url')->with($config['url'])->andReturn($config['file']);
 		$this->configureParseContent($config);
 		$this->configureCollectHosts($config);
-		$this->assertEquals($expected, self::callProtectedMethod($this->optimization, 'is_external_file', array($config['url'])));
+		$this->assertEquals($expected, $this->callProtectedMethod($this->optimization, 'is_external_file', array
+		($config['url'])));
 	}
 
 	protected function configureParseContent($config) {
@@ -43,9 +44,8 @@ class Test_IsExternalFile extends \WP_Rocket\Tests\Unit\TestCase {
 		Functions\expect('wp_parse_url')->with($config['lang_url'], PHP_URL_HOST)->andReturn($config['url_host']);
 	}
 
-	public static function callProtectedMethod($object, $method, array $args=array()) {
-		$class = new ReflectionClass(get_class($object));
-		$method = $class->getMethod($method);
+	public function callProtectedMethod($object, $method, array $args=array()) {
+		$method = self::get_reflective_method($method, get_class($object));
 		$method->setAccessible(true);
 		return $method->invokeArgs($object, $args);
 	}
