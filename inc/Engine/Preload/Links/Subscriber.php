@@ -58,6 +58,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_preload_script() {
+
+		/**
+		 * Bail out if user is logged in
+		 * Don't add preload link script
+		 */
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
 		if ( $this->is_enqueued ) {
 			return;
 		}
