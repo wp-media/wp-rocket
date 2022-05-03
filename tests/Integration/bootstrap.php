@@ -67,6 +67,10 @@ tests_add_filter(
 			define( 'ELEMENTOR_VERSION', '2.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'ConvertPlug' ) ) {
+			define( 'CP_VERSION', '1.0' );
+		}
+
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
 			define( 'WP_ADMIN', true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
