@@ -22,7 +22,7 @@ class Test_IsExternalFile extends TestCase {
 		Functions\expect('get_rocket_parse_url')->with($config['url'])->andReturn($config['file']);
 		$this->configureParseContent($config);
 		$this->configureCollectHosts($config);
-		$this->assertEquals($expected, $this->callProtectedMethod($this->optimization, 'is_external_file', array
+		$this->assertSame($expected, $this->callProtectedMethod($this->optimization, 'is_external_file', array
 		($config['url'])));
 	}
 
@@ -46,7 +46,6 @@ class Test_IsExternalFile extends TestCase {
 
 	public function callProtectedMethod($object, $method, array $args=array()) {
 		$method = self::get_reflective_method($method, get_class($object));
-		$method->setAccessible(true);
 		return $method->invokeArgs($object, $args);
 	}
 }
