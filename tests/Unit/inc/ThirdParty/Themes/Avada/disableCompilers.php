@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Avada;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Themes\Avada;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Avada::disable_compilers
@@ -22,10 +22,14 @@ class Test_DisableCompilers extends TestCase {
 		$this->subscriber = new Avada($this->options);
 	}
 
-	public function testShouldDefinedConstant() {
+	/**
+	 * @dataProvider providerTestData
+	 */
+	public function testShouldDefinedConstant($config, $expected) {
+		$this->options->expects()->get('remove_unused_css' , false)->andReturn($config['rucss_enable']);
 		$this->assertFalse(defined('FUSION_DISABLE_COMPILERS'));
 		$this->subscriber->disable_compilers();
-		$this->assertTrue(defined('FUSION_DISABLE_COMPILERS'));
+		$this->assertSame($expected, defined('FUSION_DISABLE_COMPILERS'));
 
 	}
 }
