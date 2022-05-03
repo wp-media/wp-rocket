@@ -269,8 +269,8 @@ class Page {
 			$data['license_type'] = 'Plus';
 		}
 
-		$data['license_class']      = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
 		$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
 
 		return $data;
