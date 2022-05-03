@@ -6,19 +6,18 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for compatibility with ConvertPlug.
- *
  */
-class ConvertPlug implements Subscriber_Interface
-{
+class ConvertPlug implements Subscriber_Interface {
+
 
 	/**
 	 * Subscriber for compatibility with ConvertPlug.
+	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events()
-	{
+	public static function get_subscribed_events() {
 		$events = [];
-		if(! self::isActivated()) {
+		if ( ! self::isActivated() ) {
 			return $events;
 		}
 
@@ -33,17 +32,17 @@ class ConvertPlug implements Subscriber_Interface
 	 * @return bool
 	 */
 	protected static function isActivated() {
-		return defined('CP_VERSION');
+		return defined( 'CP_VERSION' );
 	}
 
 	/**
 	 * Exclude css from RUCSS.
 	 *
-	 * @param $excluded excluded css.
+	 * @param array $excluded excluded css.
 	 * @return array
 	 */
-	public function excluded_from_rucss($excluded) {
+	public function excluded_from_rucss( $excluded ) {
 		$excluded[] = '.content-';
-  		return $excluded;
+		return $excluded;
 	}
 }
