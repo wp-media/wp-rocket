@@ -562,6 +562,7 @@ class Page {
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
 		$rucss_beacon               = $this->beacon->get_suggest( 'remove_unused_css' );
 		$offline_beacon             = $this->beacon->get_suggest( 'offline' );
+		$fallback_css_beacon        = $this->beacon->get_suggest( 'fallback_css' );
 
 		$disable_combine_js  = $this->disable_combine_js();
 		$disable_combine_css = $this->disable_combine_css();
@@ -756,7 +757,7 @@ class Page {
 										'type'        => 'textarea',
 										'label'       => __( 'Fallback critical CSS', 'rocket' ),
 										// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-										'helper'      => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+										'helper'      => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fallback_css_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $fallback_css_beacon['id'] ) . '" target="_blank">', '</a>' ),
 										'sanitize_callback' => 'sanitize_textarea',
 										'parent'      => '',
 										'section'     => 'css',
