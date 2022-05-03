@@ -33,7 +33,7 @@ class Avada implements Subscriber_Interface {
 			'fusion_cache_reset_after'             => 'clean_domain',
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
-			'init' => 'disable_compilers',
+			'init'                                 => 'disable_compilers',
 		];
 	}
 
