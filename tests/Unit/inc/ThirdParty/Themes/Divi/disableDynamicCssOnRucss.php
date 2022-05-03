@@ -19,16 +19,16 @@ use WP_Theme;
 class Test_DisableDynamicCssOnRucss extends TestCase {
 
 	protected $subscriber;
-
+	protected $options;
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$options_api = Mockery::mock( Options::class );
-		$options     = Mockery::mock( Options_Data::class );
+		$this->options     = Mockery::mock( Options_Data::class );
 		$delayjs_html     = Mockery::mock( HTML::class );
 		$theme       = new WP_Theme( 'Divi', 'wp-content/themes/' );
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
-		$this->subscriber = new Divi($options_api, $options , $delayjs_html);
+		$this->subscriber = new Divi($options_api, $this->options, $delayjs_html);
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Test_DisableDynamicCssOnRucss extends TestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 
-		Filters\expectApplied('pre_get_rocket_option_remove_unused_css')->andReturn($config['rucss_enabled']);
+		$this->options->expects()->get('remove_unused_css', false)->andReturn($config['rucss_enabled']);
 		if($config['rucss_enabled']) {
 			Filters\expectAdded('et_use_dynamic_css')->with('__return_false');
 		}

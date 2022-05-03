@@ -207,8 +207,7 @@ class Divi implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function disable_dynamic_css_on_rucss() {
-
-		if ( ! apply_filters( 'pre_get_rocket_option_remove_unused_css', false ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		if (! $this->options->get('remove_unused_css', false) ) {
 			return;
 		}
 		add_filter( 'et_use_dynamic_css', '__return_false' );
