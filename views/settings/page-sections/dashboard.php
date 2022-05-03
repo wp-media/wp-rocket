@@ -83,8 +83,8 @@ defined( 'ABSPATH' ) || exit;
 						</span>
 						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
 							<span>
-								<?php echo esc_html( 'with ' ); ?> 
-								<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'one-com-logo.svg' ); ?>" width="80" alt="Logo One.com">
+								<?php echo esc_html_e( 'with', 'rocket' ); ?> 
+								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
 							</span>
 						<?php endif; ?>
 						<br>
