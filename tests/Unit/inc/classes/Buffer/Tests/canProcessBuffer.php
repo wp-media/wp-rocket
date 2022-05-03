@@ -36,7 +36,7 @@ class Test_CanProcessBuffer extends TestCase {
 		$this->configure404($config);
 		$this->configureSearch($config);
 		$this->configureHTML($config);
-		$this->assertEquals($expected['buffer_results'], $this->tests->can_process_buffer($config['buffer']));
+		$this->assertSame($expected['buffer_results'], $this->tests->can_process_buffer($config['buffer']));
 		$this->assertEquals($expected['error'], $this->tests->get_last_error());
 	}
 

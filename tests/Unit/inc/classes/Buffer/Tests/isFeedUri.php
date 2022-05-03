@@ -33,6 +33,6 @@ class Test_IsFeedURI extends TestCase {
 		$wp_rewrite->feed_base = $config['feed_base'];
 		$GLOBALS['wp_rewrite'] = $wp_rewrite;
 		$this->tests->expects()->get_clean_request_uri()->andReturn($config['clean_uri']);
-		$this->assertEquals($expected, $this->tests->is_feed_uri());
+		$this->assertSame($expected, $this->tests->is_feed_uri());
 	}
 }
