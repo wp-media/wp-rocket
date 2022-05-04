@@ -6,7 +6,7 @@ return [
 			'excluded' => []
 		],
 		'excluded' => [
-			'.content-'
+			'cp-form-css'
 		]
 	]
 ];
