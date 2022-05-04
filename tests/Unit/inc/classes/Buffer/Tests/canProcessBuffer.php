@@ -37,7 +37,7 @@ class Test_CanProcessBuffer extends TestCase {
 		$this->configureSearch($config);
 		$this->configureHTML($config);
 		$this->assertSame($expected['buffer_results'], $this->tests->can_process_buffer($config['buffer']));
-		$this->assertEquals($expected['error'], $this->tests->get_last_error());
+		$this->assertSame($expected['error'], $this->tests->get_last_error());
 	}
 
 	protected function configureRocketFunction($config) {
