@@ -42,7 +42,7 @@ class ConvertPlug implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function excluded_from_rucss( $excluded ) {
-		$excluded[] = '.content-';
+		$excluded[] = 'cp-form-css';
 		return $excluded;
 	}
 }
