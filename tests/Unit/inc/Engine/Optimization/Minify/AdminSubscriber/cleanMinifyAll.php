@@ -35,11 +35,15 @@ class Test_RocketCleanMinifyAll extends FilesystemTestCase {
         ->with( 'minify_js', 0 )
         ->andReturn($option['minify_js']);
 
-        $options->shouldReceive( 'get' )
-        ->once()
-        ->with( 'minify_css', 0 )
-        ->andReturn($option['minify_css']);
-
+        if( $option['minify_js'] == 1 ){
+            $options->shouldReceive( 'get' )->never();
+        }
+        else{
+            $options->shouldReceive( 'get' )
+            ->once()
+            ->with( 'minify_css', 0 )
+            ->andReturn($option['minify_css']);
+        }
 
         if( $option['minify_css'] == 1 || $option['minify_js'] == 1 ) {
             Functions\expect( 'rocket_clean_minify' )->once();
