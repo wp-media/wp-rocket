@@ -481,15 +481,12 @@ class Settings {
 			return;
 		}
 
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( 'rucss_wrong_licence_notice', (array) $boxes, true ) ) {
-			return;
-		}
+		$main_message = __( "We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance..", 'rocket' );
+		$cta_message  = __( 'Click here to get a WP Rocket single license at 10%% off!', 'rocket' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( "%1\$s: <p>We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance..</p>%2\$sClick here to get a WP Rocket single license at 10%% off!%3\$s", 'rocket' ),
+			"%1\$s: <p>$main_message</p>%2\$s$cta_message%3\$s",
 			'<strong>WP Rocket</strong>',
 			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" class="button button-primary" rel="noopener noreferrer" target="_blank">',
 			'</a>'

@@ -687,7 +687,7 @@ class Page {
 						$disable_ocd ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
-					'description'       => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
+					'description'       => $invalid_license ? __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance, but limited only to the users with active license.', 'rocket' ) : __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -720,7 +720,7 @@ class Page {
 							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
 							'disabled'    => $invalid_license ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							'description' => $invalid_license ? __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance, but limited only to the users with active license.', 'rocket' ) : __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
+							'description' => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
 							'warning'     => $invalid_license ? [] : [
 								'title'        => __( 'We’re still working on it!', 'rocket' ),
 								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
