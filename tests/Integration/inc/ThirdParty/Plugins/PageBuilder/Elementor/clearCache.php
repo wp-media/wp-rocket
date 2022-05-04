@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_ClearCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/Elementor/clearCache.php';
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_option( 'elementor_css_print_method' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

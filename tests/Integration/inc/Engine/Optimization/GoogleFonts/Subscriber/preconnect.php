@@ -11,18 +11,18 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_Preconnect extends TestCase {
 	private $option_value;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->option_value = null;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'set_option' ] );
 
 		unset( $GLOBALS['wp'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
     /**

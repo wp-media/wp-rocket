@@ -78,6 +78,8 @@ class HTML {
 		'served-by.pixfuture.com/www/delivery/ads.js',
 		'served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js',
 		'serv-vdo.pixfuture.com/vpaid/ads.js',
+		'wprRemoveCPCSS',
+		'window.jdgmSettings', // Judge.me plugin.
 	];
 
 	/**

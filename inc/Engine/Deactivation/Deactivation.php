@@ -90,7 +90,6 @@ class Deactivation {
 		delete_site_transient( 'wp_rocket_update_data' );
 
 		// Unschedule WP Cron events.
-		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 		/**

@@ -7,13 +7,13 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 abstract class LiteSpeedTestCase extends TestCase {
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		HeaderCollector::clean();
 	}
 
-	protected function tearDown(): void {
-		parent::tearDown();
+	protected function tear_down() {
+		parent::tear_down();
 	}
 
 }

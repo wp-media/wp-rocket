@@ -26,8 +26,8 @@ class Test_RocketFirstInstall extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->previous_user_id = get_current_user_id();
 
@@ -49,8 +49,8 @@ class Test_RocketFirstInstall extends TestCase {
 		set_transient( $this->box_name, 'foobar' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		wp_set_current_user( $this->previous_user_id );
 

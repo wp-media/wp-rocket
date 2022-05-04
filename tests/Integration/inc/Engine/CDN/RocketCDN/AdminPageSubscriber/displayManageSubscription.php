@@ -16,16 +16,16 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayManageSubscription extends TestCase {
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
+
+		parent::tear_down();
 	}
 
 	/**
