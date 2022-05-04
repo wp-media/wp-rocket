@@ -24,6 +24,12 @@ class Test_IsFeedURI extends TestCase {
 	}
 
 
+	protected function tearDown(): void
+	{
+		unset($GLOBALS['wp_rewrite']);
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
