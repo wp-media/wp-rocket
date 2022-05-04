@@ -45,7 +45,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 */
 	public function clean_minify_all() {
 		// Bail out if minify_js or minify_css is not enabled.
-		if ( ! (bool) $this->options->get( 'minify_js', 0 ) & ! (bool) $this->options->get( 'minify_css', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'minify_js', 0 ) && ! (bool) $this->options->get( 'minify_css', 0 ) ) {
 			return;
 		}
 
