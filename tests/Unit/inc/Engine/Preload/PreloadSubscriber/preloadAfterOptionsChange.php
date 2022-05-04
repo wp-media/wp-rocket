@@ -22,8 +22,8 @@ class Test_PreloadAfterOptionsChange extends TestCase {
 	private $user_agent = 'WP Rocket/Homepage Preload';
 	private $prefix     = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
-	protected function set_up() {
-		parent::set_up();
+	protected function setUp(): void {
+		parent::setUp();
 
 		$this->homepage_preloader = Mockery::mock( Homepage::class );
 		$this->subscriber         = new PreloadSubscriber(

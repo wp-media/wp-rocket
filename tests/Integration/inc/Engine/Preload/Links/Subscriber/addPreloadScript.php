@@ -12,8 +12,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddPreloadScript extends TestCase {
 	private $preload_links;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_links' ] );

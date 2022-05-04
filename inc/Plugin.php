@@ -291,6 +291,7 @@ class Plugin {
 			'ezoic',
 			'thirstyaffiliates',
 			'pwa',
+			'yoast_seo',
 			'flatsome',
 		];
 
