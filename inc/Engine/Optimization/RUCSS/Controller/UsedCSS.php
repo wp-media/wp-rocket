@@ -210,7 +210,7 @@ class UsedCSS {
 			 *
 			 * @param array $safelist Array of safelist values.
 			 */
-			$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [ '//fonts.googleapis.com/css' ] ) );
+			$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [ ] ) );
 
 			$config = [
 				'treeshake'      => 1,
@@ -311,8 +311,6 @@ class UsedCSS {
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
-				||
-				strstr( $style['url'], '//fonts.googleapis.com/css' )
 			) {
 				continue;
 			}
