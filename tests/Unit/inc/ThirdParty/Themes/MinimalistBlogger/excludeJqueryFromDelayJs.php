@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\MinimalistBlogger;
 
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 
 /**
@@ -8,7 +9,7 @@ use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
  *
  * @group  ThirdParty
  */
-class Test_ExcludeJqueryFromDelayJs extends \WP_Rocket\Tests\Unit\TestCase {
+class Test_ExcludeJqueryFromDelayJs extends TestCase {
 	protected $subscriber;
 
 	protected function setUp(): void

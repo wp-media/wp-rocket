@@ -2,8 +2,14 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interface {
+class MinimalistBlogger extends ThirdpartyTheme {
 
+	/**
+	 * Name from the theme.
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'minimalist-blogger';
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -12,7 +18,7 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 	 */
 	public static function get_subscribed_events() {
 		$events = [];
-		if ( self::is_mb() ) {
+		if ( self::is_theme() ) {
 			$events['rocket_delay_js_exclusions'] = 'exclude_jquery_from_delay_js';
 		}
 		return $events;
@@ -21,7 +27,7 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 	/**
 	 * Excludes some MinimalistBlogger JS from delay JS execution
 	 *
-	 * @since 3.10.2
+	 * @since 3.11.2
 	 *
 	 * @param array $exclusions Array of exclusion patterns.
 	 *
@@ -31,18 +37,5 @@ class MinimalistBlogger implements \WP_Rocket\Event_Management\Subscriber_Interf
 		$exclusions[] = '/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js';
 		$exclusions[] = '/jquery-migrate(.min)?.js';
 		return $exclusions;
-	}
-
-	/**
-	 * Checks if the current theme (or parent) is MinimalistBlogger
-	 *
-	 * @since 3.6.3
-	 *
-	 * @param WP_Theme $theme Instance of the theme.
-	 */
-	private static function is_mb( $theme = null ) {
-		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
-
-		return ( str_contains( 'minimalist-blogger', $theme->get_template() ) );
 	}
 }
