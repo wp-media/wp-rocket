@@ -41,13 +41,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_rucss_pending_jobs_cron'     => 'process_pending_jobs',
+			'rocket_rucss_pending_jobs'          => 'process_pending_jobs',
 			'rocket_rucss_job_check_status'      => 'check_job_status',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
 			'init'                               => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
-				[ 'schedule_pending_jobs_cron' ],
+				[ 'schedule_pending_jobs' ],
 				[ 'initialize_rucss_queue_runner' ],
 			],
 		];
@@ -62,7 +62,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
 		if (
-			! $this->used_css->can_optimize()
+			! $this->used_css->is_enabled()
 			&&
 			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
 		) {
@@ -71,7 +71,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->used_css->can_optimize() ) {
+		if ( ! $this->used_css->is_enabled() ) {
 			return;
 		}
 
@@ -88,7 +88,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function initialize_rucss_queue_runner() {
-		if ( ! $this->used_css->can_optimize() ) {
+		if ( ! $this->used_css->is_enabled() ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_rows() {
-		if ( ! $this->used_css->can_optimize() ) {
+		if ( ! $this->used_css->is_enabled() ) {
 			return;
 		}
 
@@ -165,25 +165,25 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function schedule_pending_jobs_cron() {
+	public function schedule_pending_jobs() {
 		if (
-			! $this->used_css->can_optimize()
+			! $this->used_css->is_enabled()
 			&&
-			wp_next_scheduled( 'rocket_rucss_pending_jobs_cron' )
+			wp_next_scheduled( 'rocket_rucss_pending_jobs' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_pending_jobs_cron' );
+			wp_clear_scheduled_hook( 'rocket_rucss_pending_jobs' );
 
 			return;
 		}
 
-		if ( ! $this->used_css->can_optimize() ) {
+		if ( ! $this->used_css->is_enabled() ) {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_rucss_pending_jobs_cron' ) ) {
+		if ( wp_next_scheduled( 'rocket_rucss_pending_jobs' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'every_minute', 'rocket_rucss_pending_jobs_cron' );
+		wp_schedule_event( time(), 'every_minute', 'rocket_rucss_pending_jobs' );
 	}
 }
