@@ -53,7 +53,7 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
@@ -141,12 +141,8 @@ class UsedCSS {
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function can_optimize() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
