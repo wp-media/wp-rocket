@@ -17,6 +17,18 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 class Test_CleanMinify extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/AdminSubscriber/cleanMinifyAll.php';
 
+	public function set_up(){
+		parent::set_up();
+
+		add_action('switch_theme', [$this, 'testCleanMinifyAll']);
+	}
+
+	public function tear_down(){
+		parent::tear_down();
+
+		remove_action('switch_theme', [$this, 'testCleanMinifyAll']);
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
