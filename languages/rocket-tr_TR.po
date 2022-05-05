@@ -3792,7 +3792,7 @@ msgstr "Evet, \"%1$sGüvenli Kip%2$s\"i uygula"
 
 #: views/deactivation-intent/form.php:52
 msgid "No, deactivate and snooze this message for"
-msgstr "Hayır, bu iletiyi devre dışı bırak ve ertele"
+msgstr "Hayır, bu iletiyi devre dışı bırak ve şu süre kadar ertele"
 
 #: views/deactivation-intent/form.php:54
 msgid "1 day"
