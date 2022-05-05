@@ -4,27 +4,30 @@ namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Kinsta implements Subscriber_Interface
-{
+class Kinsta implements Subscriber_Interface {
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Subscribed events for Kinsta.
+	 *
+	 * @inheritDoc
+	 */
+	public static function get_subscribed_events() {
 		global $kinsta_cache;
 
 		$events = [
-			'do_rocket_generate_caching_files' => [ 'do_rocket_generate_caching_files', PHP_INT_MAX ],
+			'do_rocket_generate_caching_files'   => [ 'do_rocket_generate_caching_files', PHP_INT_MAX ],
 			'rocket_display_varnish_options_tab' => 'rocket_display_varnish_options_tab',
-			'rocket_cache_mandatory_cookies' => [ 'rocket_cache_mandatory_cookies', PHP_INT_MAX ],
+			'rocket_cache_mandatory_cookies'     => [ 'rocket_cache_mandatory_cookies', PHP_INT_MAX ],
 		];
 
-		if(isset($kinsta_cache)) {
-			$events['after_rocket_clean_domain'] = 'rocket_clean_kinsta_cache';
-			$events['after_rocket_clean_post'] = 'rocket_clean_kinsta_post_cache';
+		if ( isset( $kinsta_cache ) ) {
+			$events['after_rocket_clean_domain']           = 'rocket_clean_kinsta_cache';
+			$events['after_rocket_clean_post']             = 'rocket_clean_kinsta_post_cache';
 			$events['rocket_rucss_after_clearing_usedcss'] = 'rocket_clean_kinsta_post_cache';
-			$events['rocket_rucss_complete_job_status'] = 'rocket_clean_kinsta_post_cache';
-			$events['after_rocket_clean_home'] = [ 'rocket_clean_kinsta_cache_home', 10, 2 ];
-			$events['after_rocket_clean_file'] = 'rocket_clean_kinsta_cache_url';
-			$events['wp_rocket_loaded'] = 'rocket_remove_partial_purge_hooks';
+			$events['rocket_rucss_complete_job_status']    = 'rocket_clean_kinsta_post_cache';
+			$events['after_rocket_clean_home']             = [ 'rocket_clean_kinsta_cache_home', 10, 2 ];
+			$events['after_rocket_clean_file']             = 'rocket_clean_kinsta_cache_url';
+			$events['wp_rocket_loaded']                    = 'rocket_remove_partial_purge_hooks';
 			return $events;
 		}
 
