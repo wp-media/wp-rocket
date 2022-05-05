@@ -27,6 +27,7 @@ class Kinsta implements Subscriber_Interface
 			$events['wp_rocket_loaded'] = 'rocket_remove_partial_purge_hooks';
 			return $events;
 		}
+
 		$events['admin_notices'] = 'display_error_notice';
 		return $events;
 	}
@@ -134,18 +135,38 @@ class Kinsta implements Subscriber_Interface
 		remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 	}
 
+	/**
+	 * Disactivate generation from caching files.
+	 *
+	 * @return false
+	 */
 	public function do_rocket_generate_caching_files() {
 		return false;
 	}
 
+	/**
+	 * Disable varnish options tab.
+	 *
+	 * @return false
+	 */
 	public function rocket_display_varnish_options_tab() {
 		return false;
 	}
 
+	/**
+	 * Empty mandatory cookies.
+	 *
+	 * @return array
+	 */
 	public function rocket_cache_mandatory_cookies() {
 		return [];
 	}
 
+	/**
+	 * Display notice when we are on Kinsta but the plugin is not present.
+	 *
+	 * @return void
+	 */
 	public function display_error_notice() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;

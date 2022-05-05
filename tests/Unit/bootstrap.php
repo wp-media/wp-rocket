@@ -37,6 +37,7 @@ function load_original_files_before_mocking() {
 		'/WP.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
+		'/Kinsta_Cache.php',
 	];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;
