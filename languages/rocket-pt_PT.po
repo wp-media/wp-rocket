@@ -3746,7 +3746,7 @@ msgstr "Reverter p/ CSS crítico por omissão"
 
 #: views/deactivation-intent/form.php:21
 msgid "Facing an issue?"
-msgstr "Encontrou um problema?"
+msgstr "Enfrentou um problema?"
 
 #: views/deactivation-intent/form.php:24
 msgid ""
