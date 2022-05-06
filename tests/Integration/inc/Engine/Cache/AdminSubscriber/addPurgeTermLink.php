@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_AddPurgeTermLink extends AdminTestCase {
 	private $tag;
 
-	public function tear_down(): void {
+	public function tear_down() {
 		parent::tear_down();
 
 		wp_delete_term( $this->tag->term_id, 'post_tag' );

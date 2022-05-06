@@ -33,7 +33,7 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		add_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		remove_filter( 'show_admin_bar', [ $this, 'return_true' ] );

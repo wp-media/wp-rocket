@@ -16,7 +16,7 @@ class Test_EnqueueRocketScripts extends AdminTestCase {
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );
     }
 
-    public function tear_down(): void {
+    public function tear_down() {
         set_current_screen( 'front' );
 
         $this->removeRoleCap( 'administrator', 'rocket_manage_options' );
