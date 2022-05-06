@@ -32,7 +32,7 @@ abstract class AdminTestCase extends BaseTestCase {
 		error_reporting( $this->error_level & ~E_WARNING );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		$_POST = [];
 		$_GET  = [];
 		unset( $GLOBALS['post'], $GLOBALS['comment'] );
