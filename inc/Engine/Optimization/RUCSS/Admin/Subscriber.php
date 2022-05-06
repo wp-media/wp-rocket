@@ -794,6 +794,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function disable_russ_on_wrong_license() {
-		return (bool) get_transient( 'wp_rocket_no_licence' );
+		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+			return false;
+		}
+		return null;
 	}
 }

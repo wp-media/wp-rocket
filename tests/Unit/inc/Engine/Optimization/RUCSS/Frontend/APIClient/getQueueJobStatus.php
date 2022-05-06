@@ -45,6 +45,7 @@ class Test_GetQueueJobStatus extends TestCase {
 			return;
 		}
 		Functions\expect('set_transient')->with('wp_rocket_no_licence', true, WEEK_IN_SECONDS );
+		$this->options->expects()->set('remove_unused_css', 0);
 	}
 
 	protected function configureCheckResponse($config) {
