@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 use WC_Install;
+use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
 
@@ -53,7 +54,9 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup('Kinsta') ) {
-			define( 'KINSTA_CACHE_ZONE', true );
+			$_SERVER['KINSTA_CACHE_ZONE'] = true ;
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/Kinsta_Cache.php';
+			$GLOBALS['kinsta_cache'] = new Kinsta_Cache();
 		}
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {

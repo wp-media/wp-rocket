@@ -4,10 +4,10 @@ return [
 		'config' => [
 			'lang' => 'lang',
 			'root' => 'root',
-			'base_url' => 'https://example.com',
+			'base_url' => 'http://example.org',
 		],
 		'expected' => [
-			'url' => 'https://example.com/kinsta-clear-cache/',
+			'url' => 'http://example.org/kinsta-clear-cache/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,

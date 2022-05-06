@@ -1,14 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Kinsta;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Kinsta;
 
 use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\Kinsta;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Actions;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_remove_partial_purge_hooks
@@ -18,21 +15,19 @@ use Brain\Monkey\Actions;
  */
 class Test_RocketRemovePartialPurgeHooks extends TestCase
 {
-	protected $subscriber;
 	protected $cache;
 	protected $cache_purge;
 
-	protected function setUp(): void
+	public function setUp(): void
 	{
 		parent::setUp();
 		$this->cache_purge = Mockery::mock(Cache_Purge::class);
 		$this->cache = new Kinsta_Cache();
 		$this->cache->kinsta_cache_purge = $this->cache_purge;
 		$GLOBALS['kinsta_cache'] = $this->cache;
-		$this->subscriber = new Kinsta();
 	}
 
-	protected function tearDown(): void
+	public function tearDown(): void
 	{
 		unset($GLOBALS['kinsta_cache']);
 		parent::tearDown();
@@ -42,12 +37,13 @@ class Test_RocketRemovePartialPurgeHooks extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisablePurgeHooks($expected) {
+		do_action('wp_rocket_loaded');
+
 		foreach ($expected['actions'] as $action) {
-			Actions\expectRemoved($action['action'])->with($action['callback']);
+			 $this->assertFalse(has_action($action['action'], $action['callback']));
 		}
 		foreach ($expected['filters'] as $filter) {
-			Filters\expectRemoved($filter['filter'])->with($filter['callback']);
+			$this->assertFalse(has_filter($filter['filter'], $filter['callback']));
 		}
-		$this->subscriber->rocket_remove_partial_purge_hooks();
 	}
 }

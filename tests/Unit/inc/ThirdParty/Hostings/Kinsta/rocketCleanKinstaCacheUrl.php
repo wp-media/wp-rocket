@@ -7,16 +7,14 @@ use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Kinsta;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Actions;
-
+use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_remove_partial_purge_hooks
+ * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_clean_kinsta_cache_url
  *
  * @group  Kinsta
  * @group  ThirdParty
  */
-class Test_RocketRemovePartialPurgeHooks extends TestCase
+class Test_RocketCleanKinstaCacheUrl extends TestCase
 {
 	protected $subscriber;
 	protected $cache;
@@ -41,13 +39,9 @@ class Test_RocketRemovePartialPurgeHooks extends TestCase
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDisablePurgeHooks($expected) {
-		foreach ($expected['actions'] as $action) {
-			Actions\expectRemoved($action['action'])->with($action['callback']);
-		}
-		foreach ($expected['filters'] as $filter) {
-			Filters\expectRemoved($filter['filter'])->with($filter['callback']);
-		}
-		$this->subscriber->rocket_remove_partial_purge_hooks();
+	public function testShouldReturnAsExpected($config, $expected)
+	{
+		Functions\expect('wp_remote_get')->with($expected['url'], $expected['config']);
+		$this->subscriber->rocket_clean_kinsta_cache_url($config['url']);
 	}
 }
