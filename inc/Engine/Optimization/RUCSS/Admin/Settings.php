@@ -482,7 +482,7 @@ class Settings {
 		}
 
 		$main_message = __( "We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance.", 'rocket' );
-		$cta_message  = sprintf( __( 'Click here to get a WP Rocket single license at %1\$s off!', 'rocket' ), '10%%' );
+		$cta_message  = sprintf( __( 'Click here to get a WP Rocket single license at %1$s off!', 'rocket' ), '10%%' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
