@@ -63,6 +63,7 @@ class Elementor implements Subscriber_Interface {
 			'delete_option__elementor_global_css' => 'clear_cache',
 			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
 			'rocket_exclude_js'                   => 'exclude_js',
+			'current_screen'                      => 'remove_rocket_metabox_row_action',
 		];
 	}
 
@@ -165,5 +166,24 @@ class Elementor implements Subscriber_Interface {
 		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
 
 		return $excluded_files;
+	}
+
+	/**
+	 * Remove WP Rocket Metabox & row actionfrom Elementor Template Page
+	 *
+	 * @return void
+	 */
+	public function remove_rocket_metabox_row_action() {
+		$current_screen = get_current_screen();
+
+		// Remove metabox Template Page.
+		if ( 'elementor_library' === $current_screen->post_type && 'post' === $current_screen->base ) {
+			remove_action( 'add_meta_boxes', 'rocket_cache_options_meta_boxes' );
+		}
+
+		// Remove Row Action.
+		if ( 'elementor_library' === $current_screen->post_type && 'edit' === $current_screen->base ) {
+			remove_filter( 'post_row_actions', 'rocket_post_row_actions', 10 );
+		}
 	}
 }
