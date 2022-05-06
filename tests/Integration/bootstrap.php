@@ -52,6 +52,10 @@ tests_add_filter(
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
 		}
 
+		if ( BootstrapManager::isGroup('Kinsta') ) {
+			define( 'KINSTA_CACHE_ZONE', true );
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
