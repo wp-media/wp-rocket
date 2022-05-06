@@ -38,6 +38,8 @@ class Flatsome implements Subscriber_Interface {
 			'#slider-',
 			'#gap-',
 			'#image_',
+			'#row-',
+			'#text-',
 		];
 
 		return array_merge( $patterns, $preserve );
