@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_AddWpCacheStatusTest extends AdminTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/addWpCacheStatusTest.php';
 
-	public function tearDown(): void {
+	public function tear_down() {
 		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
