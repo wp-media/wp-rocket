@@ -141,6 +141,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_interval( $schedules ) {
+		if ( ! $this->used_css->is_enabled() ) {
+			return $schedules;
+		}
+
 		/**
 		 * Filters the cron interval.
 		 *
@@ -184,6 +188,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'every_minute', 'rocket_rucss_pending_jobs' );
+		wp_schedule_event( time(), 'rocket_rucss_pending_jobs', 'rocket_rucss_pending_jobs' );
 	}
 }
