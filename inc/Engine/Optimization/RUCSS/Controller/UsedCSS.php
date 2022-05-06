@@ -77,6 +77,7 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'.wprm-advanced-list-',
 	];
 
 	/**
