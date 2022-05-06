@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\AdminSubscriber;
 
-use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
+use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\Minify\AdminSubscriber::clean_minify_all
@@ -14,29 +14,42 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @group  AdminSubscriber
  * @group  AdminOnly
  */
-class Test_CleanMinify extends TestCase {
+class Test_CleanMinifyAll extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/AdminSubscriber/cleanMinifyAll.php';
 
-	public function set_up(){
-		parent::set_up();
+	private $minify_js;
+	private $minify_css;
 
-		add_action('switch_theme', [$this, 'testCleanMinifyAll']);
-	}
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'set_minify_js' ] );
+		remove_filter( 'pre_get_rocket_option_minify_css', [ $this, 'set_minify_css' ] );
 
-	public function tear_down(){
 		parent::tear_down();
-
-		remove_action('switch_theme', [$this, 'testCleanMinifyAll']);
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testCleanMinifyAll( $option, $expected ) {
-		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->minify_js  = $option['minify_js'];
+		$this->minify_css = $option['minify_css'];
+
+		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'set_minify_js' ] );
+		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'set_minify_css' ] );
+
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
+
+		switch_theme( 'twentynineteen/style.css' );
 
 		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();
+	}
+
+	public function set_minify_js() {
+		return $this->minify_js;
+	}
+
+	public function set_minify_css() {
+		return $this->minify_css;
 	}
 }
