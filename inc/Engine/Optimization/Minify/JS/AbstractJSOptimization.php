@@ -261,6 +261,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.jsdelivr.net/npm/hockeystack',
 			'widget.prod.faslet.net',
 			'usercentrics.eu',
+			'cdn.amcharts.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
