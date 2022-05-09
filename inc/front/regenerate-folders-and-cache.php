@@ -1,4 +1,5 @@
 <?php
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -22,7 +23,7 @@ function wp_rocket_regenerate_cache_filesystem_and_config() {
 	if ( ! file_exists( ABSPATH . 'wp-content/cache/wp-rocket-config/' ) ) {
 		rocket_generate_config_file();
 	}
-	
+
 	// If advanced-cache.php is missing, then regenerate.
 	if ( ! file_exists( ABSPATH . 'wp-content/cache/advanced-cache.php' ) ) {
 		rocket_generate_advanced_cache_file();
