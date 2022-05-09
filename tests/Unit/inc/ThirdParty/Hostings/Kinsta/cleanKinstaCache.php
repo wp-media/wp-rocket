@@ -1,26 +1,26 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Kinsta;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Kinsta;
 
 use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Kinsta;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_clean_kinsta_cache
+ * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache
  *
  * @group  Kinsta
  * @group  ThirdParty
  */
-class Test_RocketCleanKinstaCache extends TestCase
+class Test_CleanKinstaCache extends TestCase
 {
-
+	protected $subscriber;
 	protected $cache;
 	protected $cache_purge;
 
-	public function setUp(): void
+	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->cache_purge = Mockery::mock(Cache_Purge::class);
@@ -30,7 +30,7 @@ class Test_RocketCleanKinstaCache extends TestCase
 		$this->subscriber = new Kinsta();
 	}
 
-	public function tearDown(): void
+	protected function tearDown(): void
 	{
 		unset($GLOBALS['kinsta_cache']);
 		parent::tearDown();
@@ -48,6 +48,6 @@ class Test_RocketCleanKinstaCache extends TestCase
 		} else {
 			$this->cache_purge->shouldReceive('purge_complete_caches')->never();
 		}
-		do_action('after_rocket_clean_domain');
+		$this->subscriber->clean_kinsta_cache();
 	}
 }

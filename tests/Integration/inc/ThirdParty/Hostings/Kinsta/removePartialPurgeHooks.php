@@ -6,15 +6,14 @@ use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_clean_kinsta_cache_home
+ * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::remove_partial_purge_hooks
  *
  * @group  Kinsta
  * @group  ThirdParty
  */
-class Test_RocketCleanKinstaCacheHome extends TestCase
+class Test_RemovePartialPurgeHooks extends TestCase
 {
 	protected $cache;
 	protected $cache_purge;
@@ -37,8 +36,14 @@ class Test_RocketCleanKinstaCacheHome extends TestCase
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\expect('wp_remote_get')->with($expected['url'], $expected['config']);
-		do_action('after_rocket_clean_home', $config['root'], $config['lang']);
+	public function testShouldDisablePurgeHooks($expected) {
+		do_action('wp_rocket_loaded');
+
+		foreach ($expected['actions'] as $action) {
+			 $this->assertFalse(has_action($action['action'], $action['callback']));
+		}
+		foreach ($expected['filters'] as $filter) {
+			$this->assertFalse(has_filter($filter['filter'], $filter['callback']));
+		}
 	}
 }

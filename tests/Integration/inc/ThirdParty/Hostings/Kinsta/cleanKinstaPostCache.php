@@ -1,36 +1,33 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Kinsta;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Kinsta;
 
 use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Hostings\Kinsta;
-use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\TestCase;
+use WP_Post;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_clean_kinsta_cache_url
+ * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_post_cache
  *
  * @group  Kinsta
  * @group  ThirdParty
  */
-class Test_RocketCleanKinstaCacheUrl extends TestCase
+class Test_CleanKinstaPostCache extends TestCase
 {
-	protected $subscriber;
 	protected $cache;
 	protected $cache_purge;
 
-	protected function setUp(): void
+	public function setUp(): void
 	{
 		parent::setUp();
 		$this->cache_purge = Mockery::mock(Cache_Purge::class);
 		$this->cache = new Kinsta_Cache();
 		$this->cache->kinsta_cache_purge = $this->cache_purge;
 		$GLOBALS['kinsta_cache'] = $this->cache;
-		$this->subscriber = new Kinsta();
 	}
 
-	protected function tearDown(): void
+	public function tearDown(): void
 	{
 		unset($GLOBALS['kinsta_cache']);
 		parent::tearDown();
@@ -41,7 +38,8 @@ class Test_RocketCleanKinstaCacheUrl extends TestCase
 	 */
 	public function testShouldReturnAsExpected($config, $expected)
 	{
-		Functions\expect('wp_remote_get')->with($expected['url'], $expected['config']);
-		$this->subscriber->rocket_clean_kinsta_cache_url($config['url']);
+		$this->cache_purge->expects()->initiate_purge($expected['id'], $expected['type']);
+		$post = new WP_Post($config['post']);
+		do_action('after_rocket_clean_post', $post, [], 'lang');
 	}
 }

@@ -9,12 +9,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Kinsta;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::rocket_clean_kinsta_cache_home
+ * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache_home
  *
  * @group  Kinsta
  * @group  ThirdParty
  */
-class Test_RocketCleanKinstaCacheHome extends TestCase
+class Test_CleanKinstaCacheHome extends TestCase
 {
 	protected $subscriber;
 	protected $cache;
@@ -42,7 +42,7 @@ class Test_RocketCleanKinstaCacheHome extends TestCase
 	public function testShouldReturnAsExpected($config, $expected)
 	{
 		Functions\expect('get_rocket_i18n_home_url')->with($config['lang'])->andReturn($config['base_url']);
-		Functions\expect('wp_remote_get')->with($expected['url'], $expected['config']);
-		$this->subscriber->rocket_clean_kinsta_cache_home($config['root'], $config['lang']);
+		Functions\expect('wp_safe_remote_get')->with($expected['url'], $expected['config']);
+		$this->subscriber->clean_kinsta_cache_home($config['root'], $config['lang']);
 	}
 }

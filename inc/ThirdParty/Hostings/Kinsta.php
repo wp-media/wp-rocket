@@ -3,9 +3,10 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Kinsta implements Subscriber_Interface {
-
+	use ReturnTypesTrait;
 	/**
 	 * Subscribed events for Kinsta.
 	 *
@@ -15,19 +16,19 @@ class Kinsta implements Subscriber_Interface {
 		global $kinsta_cache;
 
 		$events = [
-			'do_rocket_generate_caching_files'   => [ 'do_rocket_generate_caching_files', PHP_INT_MAX ],
-			'rocket_display_varnish_options_tab' => 'rocket_display_varnish_options_tab',
-			'rocket_cache_mandatory_cookies'     => [ 'rocket_cache_mandatory_cookies', PHP_INT_MAX ],
+			'do_rocket_generate_caching_files'   => [ 'return_false', PHP_INT_MAX ],
+			'rocket_display_varnish_options_tab' => 'return_false',
+			'rocket_cache_mandatory_cookies'     => [ 'return_empty_array', PHP_INT_MAX ],
 		];
 
 		if ( isset( $kinsta_cache ) ) {
-			$events['after_rocket_clean_domain']           = 'rocket_clean_kinsta_cache';
-			$events['after_rocket_clean_post']             = 'rocket_clean_kinsta_post_cache';
-			$events['rocket_rucss_after_clearing_usedcss'] = 'rocket_clean_kinsta_cache_url';
-			$events['rocket_rucss_complete_job_status']    = 'rocket_clean_kinsta_cache_url';
-			$events['after_rocket_clean_home']             = [ 'rocket_clean_kinsta_cache_home', 10, 2 ];
-			$events['after_rocket_clean_file']             = 'rocket_clean_kinsta_cache_url';
-			$events['wp_rocket_loaded']                    = 'rocket_remove_partial_purge_hooks';
+			$events['after_rocket_clean_domain']           = 'clean_kinsta_cache';
+			$events['after_rocket_clean_post']             = 'clean_kinsta_post_cache';
+			$events['rocket_rucss_after_clearing_usedcss'] = 'clean_kinsta_cache_url';
+			$events['rocket_rucss_complete_job_status']    = 'clean_kinsta_cache_url';
+			$events['after_rocket_clean_home']             = [ 'clean_kinsta_cache_home', 10, 2 ];
+			$events['after_rocket_clean_file']             = 'clean_kinsta_cache_url';
+			$events['wp_rocket_loaded']                    = 'remove_partial_purge_hooks';
 			return $events;
 		}
 
@@ -39,11 +40,10 @@ class Kinsta implements Subscriber_Interface {
 	 * Clear Kinsta cache when clearing WP Rocket cache
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
-	public function rocket_clean_kinsta_cache() {
+	public function clean_kinsta_cache() {
 		global $kinsta_cache;
 
 		if ( ! empty( $kinsta_cache->kinsta_cache_purge ) ) {
@@ -55,12 +55,11 @@ class Kinsta implements Subscriber_Interface {
 	 * Partially clear Kinsta cache when partially clearing WP Rocket cache
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @param object $post Post object.
 	 * @return void
 	 */
-	public function rocket_clean_kinsta_post_cache( $post ) {
+	public function clean_kinsta_post_cache( $post ) {
 		global $kinsta_cache;
 		$kinsta_cache->kinsta_cache_purge->initiate_purge( $post->ID, 'post' );
 	}
@@ -69,17 +68,16 @@ class Kinsta implements Subscriber_Interface {
 	 * Clears Kinsta cache for the homepage URL when using "Purge this URL" from the admin bar on the front end
 	 *
 	 * @since 3.0.4
-	 * @author Remy Perona
 	 *
 	 * @param string $root WP Rocket root cache path.
 	 * @param string $lang Current language.
 	 * @return void
 	 */
-	public function rocket_clean_kinsta_cache_home( $root = '', $lang = '' ) {
+	public function clean_kinsta_cache_home( $root = '', $lang = '' ) {
 		$url = get_rocket_i18n_home_url( $lang );
 		$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
 
-		wp_remote_get(
+		wp_safe_remote_get(
 			$url,
 			[
 				'blocking' => false,
@@ -92,15 +90,14 @@ class Kinsta implements Subscriber_Interface {
 	 * Clears Kinsta cache for a specific URL when using "Purge this URL" from the admin bar on the front end
 	 *
 	 * @since 3.0.4
-	 * @author Remy Perona
 	 *
 	 * @param string $url URL to purge.
 	 * @return void
 	 */
-	public function rocket_clean_kinsta_cache_url( $url ) {
+	public function clean_kinsta_cache_url( $url ) {
 		$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
 
-		wp_remote_get(
+		wp_safe_remote_get(
 			$url,
 			[
 				'blocking' => false,
@@ -113,12 +110,11 @@ class Kinsta implements Subscriber_Interface {
 	 * Remove WP Rocket functions on WP core action hooks to prevent triggering a double cache clear.
 	 *
 	 * @since 3.0
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
-	public function rocket_remove_partial_purge_hooks() {
-		// WP core action hooks rocket_clean_post() gets hooked into.
+	public function remove_partial_purge_hooks() {
+		// WP core action hooks clean_post() gets hooked into.
 		$clean_post_hooks = [
 			// Disables the refreshing of partial cache when content is edited.
 			'wp_trash_post',
@@ -136,33 +132,6 @@ class Kinsta implements Subscriber_Interface {
 		);
 
 		remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
-	}
-
-	/**
-	 * Disactivate generation from caching files.
-	 *
-	 * @return false
-	 */
-	public function do_rocket_generate_caching_files() {
-		return false;
-	}
-
-	/**
-	 * Disable varnish options tab.
-	 *
-	 * @return false
-	 */
-	public function rocket_display_varnish_options_tab() {
-		return false;
-	}
-
-	/**
-	 * Empty mandatory cookies.
-	 *
-	 * @return array
-	 */
-	public function rocket_cache_mandatory_cookies() {
-		return [];
 	}
 
 	/**
