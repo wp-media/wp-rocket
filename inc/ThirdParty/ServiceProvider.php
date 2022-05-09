@@ -168,5 +168,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'jevelin', 'WP_Rocket\ThirdParty\Themes\Jevelin' )
+			->addTag( 'common_subscriber' );
 	}
 }
