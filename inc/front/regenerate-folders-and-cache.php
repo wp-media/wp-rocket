@@ -1,5 +1,4 @@
 <?php
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -18,7 +17,7 @@ function wp_rocket_regenerate_cache_filesystem_and_config() {
 		! file_exists( ABSPATH . 'wp-content/cache/critical-css/' ) ) {
 		rocket_init_cache_dir();
 	}
-	
+
 	// If config folder is missing, then regenerate.
 	if ( ! file_exists( ABSPATH . 'wp-content/cache/wp-rocket-config/' ) ) {
 		rocket_generate_config_file();
