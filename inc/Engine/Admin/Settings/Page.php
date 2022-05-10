@@ -1166,48 +1166,7 @@ class Page {
 					],
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-			]
-		);
-
-		// Add this separately to be able to filter it easily.
-		$this->settings->add_settings_fields(
-			apply_filters(
-				'rocket_sitemap_preload_options',
-				[
-					'sitemap_preload' => [
-						'type'              => 'checkbox',
-						'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
-						'container_class'   => [
-							'wpr-isParent',
-							'wpr-field--children',
-						],
-						'parent'            => 'manual_preload',
-						'section'           => 'preload_section',
-						'page'              => 'preload',
-						'default'           => 0,
-						'sanitize_callback' => 'sanitize_checkbox',
-					],
-				]
-			)
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'sitemaps'      => [
-					'type'              => 'textarea',
-					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
-					'placeholder'       => 'http://example.com/sitemap.xml',
-					'parent'            => 'sitemap_preload',
-					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'  => [
+				'dns_prefetch'   => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
@@ -1217,7 +1176,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_fonts' => [
+				'preload_fonts'  => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
@@ -1228,7 +1187,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_links' => [
+				'preload_links'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable link preloading', 'rocket' ),
 					'section'           => 'preload_links_section',
@@ -2109,7 +2068,6 @@ class Page {
 					'minify_js_key',
 					'version',
 					'cloudflare_old_settings',
-					'sitemap_preload_url_crawl',
 					'cache_ssl',
 					'minify_google_fonts',
 					'emoji',
