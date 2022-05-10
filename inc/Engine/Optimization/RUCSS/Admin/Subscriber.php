@@ -97,6 +97,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                      => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
+				[ 'cancel_pending_jobs_as', 16, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
 			'rocket_deactivation'                    => 'cancel_queues',
@@ -537,6 +538,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_safelist_items( $new_version, $old_version ) {
 		$this->settings->update_safelist_items( $old_version );
+	}
+
+	/**
+	 * Cancel pending jobs actions in Action Scheduler on update to 3.11.3
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function cancel_pending_jobs_as( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.3', '>=' ) ) {
+			return;
+		}
+
+		try {
+			$this->queue->cancel_pending_jobs_cron();
+		} catch ( \InvalidArgumentException $e ) {
+			// nothing to do.
+		}
 	}
 
 	/**
