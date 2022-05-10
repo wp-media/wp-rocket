@@ -7,7 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Subscriber for compatibility with Themify WooCommerce Product Filter.
  *
- * @since  3.11.0.5
+ * @since  3.11.3
  */
 class ThemifyWooCommerceProductFilter implements Subscriber_Interface {
 
@@ -21,7 +21,7 @@ class ThemifyWooCommerceProductFilter implements Subscriber_Interface {
 	/**
 	 * Subscribed events for Themify WooCommerce Product Filter.
 	 *
-	 * @since  3.11.0.5
+	 * @since  3.11.3
 	 *
 	 * @return array
 	 */
@@ -34,7 +34,7 @@ class ThemifyWooCommerceProductFilter implements Subscriber_Interface {
 	/**
 	 * Exclude jquery
 	 *
-	 * @since 3.11.0.5
+	 * @since 3.11.3
 	 *
 	 * @param array $exclude_defer_js Files paths to be excluded.
 	 * @return array
