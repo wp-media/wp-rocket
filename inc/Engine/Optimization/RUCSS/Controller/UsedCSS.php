@@ -52,6 +52,8 @@ class UsedCSS {
 	 */
 	private $queue;
 
+	private $filesystem;
+
 	/**
 	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
@@ -93,13 +95,15 @@ class UsedCSS {
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
 		APIClient $api,
-		QueueInterface $queue
+		QueueInterface $queue,
+		Filesystem $filesystem
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
 		$this->api             = $api;
 		$this->queue           = $queue;
+		$this->filesystem      = $filesystem;
 	}
 
 	/**
@@ -249,9 +253,11 @@ class UsedCSS {
 			return $html;
 		}
 
+		$used_css_content = $this->filesystem->get_used_css( $used_css->css );
+
 		$html = $this->remove_used_css_from_html( $html );
-		$html = $this->add_used_css_to_html( $html, $used_css );
-		$html = $this->add_used_fonts_preload( $html, $used_css->css );
+		$html = $this->add_used_css_to_html( $html, $used_css_content );
+		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
@@ -365,12 +371,12 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html     HTML content.
-	 * @param UsedCSS_Row $used_css Used CSS DB row.
+	 * @param string $html     HTML content.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function add_used_css_to_html( string $html, UsedCSS_Row $used_css ): string {
+	private function add_used_css_to_html( string $html, string $used_css ): string {
 		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
@@ -388,25 +394,26 @@ class UsedCSS {
 	/**
 	 * Return Markup for used_css into the page.
 	 *
-	 * @param UsedCSS_Row $used_css Used CSS DB Row.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string
 	 */
-	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
+	private function get_used_css_markup( string $used_css ): string {
 		/**
-		 * Filters Used CSS content before saving into DB.
+		 * Filters Used CSS content before output.
 		 *
 		 * @since 3.9.0.2
 		 *
-		 * @param string $usedcss Used CSS.
+		 * @param string $usedcss Used CSS content.
 		 */
-		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
-		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css_contents = $this->handle_charsets( $css, false );
+		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
+		$used_css = $this->handle_charsets( $used_css, false );
+
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
-			$used_css_contents
+			$used_css
 		);
 	}
 
@@ -528,7 +535,10 @@ class UsedCSS {
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
-		$this->used_css_query->make_status_completed( $id, $css );
+		$hash = md5( $css );
+
+		$this->used_css_query->make_status_completed( $id, $hash );
+		$this->filesystem->write_used_css( $hash, $css );
 
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
 
