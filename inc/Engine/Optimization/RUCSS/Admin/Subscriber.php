@@ -559,6 +559,7 @@ class Subscriber implements Subscriber_Interface {
 			$this->queue->cancel_pending_jobs_cron();
 		} catch ( \InvalidArgumentException $e ) {
 			// nothing to do.
+			return;
 		}
 	}
 
