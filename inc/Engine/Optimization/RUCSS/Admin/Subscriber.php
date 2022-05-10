@@ -105,6 +105,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                      => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
+				[ 'delete_used_css', 16, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
 			'rocket_deactivation'                    => 'cancel_queues',
@@ -734,5 +735,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_as_tables_transient_on_tools_page() {
 		delete_transient( 'rocket_rucss_as_tables_count' );
+	}
+
+	/**
+	 * Deletes the used CSS on update to 3.11.3 for new storage method
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function delete_used_css( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.3', '>=' ) ) {
+			return;
+		}
+
+		$this->database->truncate_used_css_table();
 	}
 }
