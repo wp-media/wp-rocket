@@ -293,6 +293,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'themify_woocommerce_product_filter',
+			'convertplug',
 		];
 
 		$host_type = HostResolver::get_host_service();

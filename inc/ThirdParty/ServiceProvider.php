@@ -48,6 +48,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pwa',
 		'flatsome',
 		'themify_woocommerce_product_filter',
+		'convertplug',
 	];
 
 	/**
@@ -167,6 +168,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'themify_woocommerce_product_filter', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\ThemifyWooCommerceProductFilter' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
 	}
 }
