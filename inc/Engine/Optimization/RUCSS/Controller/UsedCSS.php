@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -89,6 +88,7 @@ class UsedCSS {
 	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api             APIClient instance.
 	 * @param QueueInterface $queue           Queue instance.
+	 * @param Filesystem     $filesystem      Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -255,6 +255,10 @@ class UsedCSS {
 
 		$used_css_content = $this->filesystem->get_used_css( $used_css->css );
 
+		if ( empty( $used_css_content ) ) {
+			return $html;
+		}
+
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
@@ -286,6 +290,12 @@ class UsedCSS {
 			}
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+
+			$count = $this->used_css_query->count_rows_by_hash( $used_css->css );
+
+			if ( 0 === $count ) {
+				$this->filesystem->delete_used_css( $used_css->css );
+			}
 		}
 
 		return $deleted;
