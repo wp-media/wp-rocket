@@ -1,27 +1,28 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 class Filesystem {
 	/**
-	 * Undocumented variable
+	 * WP Filesystem instance
 	 *
-	 * @var [type]
+	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
 	/**
-	 * Undocumented variable
+	 * Path to the used CSS storage
 	 *
-	 * @var [type]
+	 * @var string
 	 */
 	private $path;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param [type] $filesystem
-	 * @param [type] $base_path
+	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
+	 * @param string               $base_path Base path to the used CSS storage.
 	 */
 	public function __construct( $filesystem = null, $base_path ) {
 		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
@@ -35,8 +36,8 @@ class Filesystem {
 	 *
 	 * @return string
 	 */
-	public function get_used_css( $hash ) {
-		$file = $this->path . $hash . '.css.gz';
+	public function get_used_css( string $hash ): string {
+		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
 
 		if ( ! $this->filesystem->exists( $file ) ) {
 			return '';
@@ -59,8 +60,12 @@ class Filesystem {
 	 *
 	 * @return bool
 	 */
-	public function write_used_css( $hash, $used_css ) {
-		$file = $this->path . $hash . '.css.gz';
+	public function write_used_css( string $hash, string $used_css ): bool {
+		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
+
+		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
+			return false;
+		}
 
 		// This filter is documented in inc/classes/Buffer/class-cache.php.
 		$css = gzencode( $used_css, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
@@ -68,5 +73,46 @@ class Filesystem {
 		return $this->filesystem->put_contents( $file, $css );
 	}
 
-	public function delete_used_css() {}
+	/**
+	 * Deletes the used CSS files for the corresponding hash
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $hash md5 hash string.
+	 *
+	 * @return bool
+	 */
+	public function delete_used_css( string $hash ): bool {
+		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
+
+		return $this->filesystem->delete( $file, false, 'f' );
+	}
+
+	/**
+	 * Converts hash to path with filtered number of levels
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $hash md5 hash string.
+	 *
+	 * @return string
+	 */
+	private function hash_to_path( string $hash ): string {
+		/**
+		 * Filters the number of sub-folders level to create for used CSS storage
+		 *
+		 * @since 3.11.3
+		 *
+		 * @param int $levels Number of levels.
+		 */
+		$levels = apply_filters( 'rocket_used_css_dir_level', 3 );
+
+		$base   = substr( $hash, 0, $levels );
+		$remain = substr( $hash, $levels );
+
+		$base_array = str_split( $base );
+		$path_array = array_merge( $base_array, [ $remain ] );
+
+		return implode( '/', $path_array );
+	}
 }
