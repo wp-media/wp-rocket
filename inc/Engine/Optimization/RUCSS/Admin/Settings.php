@@ -389,7 +389,7 @@ class Settings {
 			&&
 			$value['remove_unused_css'] === $old_value['remove_unused_css']
 			&&
-			1 === $value['remove_unused_css']
+			$value['minify_concatenate_css'] === $old_value['minify_concatenate_css']
 			&&
 			0 === $old_value['minify_concatenate_css']
 		) {

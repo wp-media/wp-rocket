@@ -48,6 +48,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pwa',
 		'flatsome',
 		'minimalist_blogger',
+		'convertplug',
 	];
 
 	/**
@@ -167,6 +168,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
+      ->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
 	}
 }

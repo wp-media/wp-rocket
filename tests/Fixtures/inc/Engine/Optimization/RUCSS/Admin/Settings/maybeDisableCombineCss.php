@@ -127,4 +127,26 @@ return [
 			'cdn'                   => 0,
 		],
 	],
+	'testShouldReturnUpdatedWhenCombineCssAndRUCSSEnabledAtTheSameTime' => [
+		'config' => [
+			'value'     => [
+				'minify_css'             => 1,
+				'minify_concatenate_css' => 1,
+				'remove_unused_css'      => 1,
+				'cdn'                   => 0,
+			],
+			'old_value' => [
+				'minify_css'             => 0,
+				'minify_concatenate_css' => 0,
+				'remove_unused_css'      => 1,
+				'cdn'                   => 0,
+			],
+		],
+		'expected' => [
+			'minify_css'             => 1,
+			'minify_concatenate_css' => 0,
+			'remove_unused_css'      => 1,
+			'cdn'                   => 0,
+		],
+	],
 ];
