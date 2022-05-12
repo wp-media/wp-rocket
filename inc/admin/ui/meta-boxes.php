@@ -25,11 +25,13 @@ function rocket_cache_options_meta_boxes() {
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
 			[
-				'public' => true,
+				'public'             => true,
 			],
 			'objects'
 		);
 		unset( $cpts['attachment'] );
+
+		$cpts = apply_filters( 'rocket_metabox_options_post_types', $cpts );
 
 		foreach ( $cpts as $cpt => $cpt_object ) {
 			$label = $cpt_object->labels->singular_name;
