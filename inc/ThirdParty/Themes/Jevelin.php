@@ -29,11 +29,9 @@ class Jevelin implements Subscriber_Interface {
 			return $patterns;
 		}
 
-		$preserve = [
-			'#heading-',
-		];
+		$patterns[] = '#heading-';
 
-		return array_merge( $patterns, $preserve );
+		return $patterns;
 	}
 
 	/**
