@@ -63,7 +63,8 @@ class Elementor implements Subscriber_Interface {
 			'delete_option__elementor_global_css' => 'clear_cache',
 			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
 			'rocket_exclude_js'                   => 'exclude_js',
-			'current_screen'                      => 'remove_rocket_metabox_row_action',
+			'rocket_skip_post_row_actions'        => [ 'remove_rocket_row_action', 1, 2 ],
+			'rocket_metabox_options_post_types'   => 'remove_rocket_metabox_option',
 		];
 	}
 
@@ -169,21 +170,31 @@ class Elementor implements Subscriber_Interface {
 	}
 
 	/**
-	 * Remove WP Rocket Metabox & row actionfrom Elementor Template Page
+	 * Remove rocket metabox option from post.
 	 *
-	 * @return void
+	 * @param array $cpts Custom post type.
+	 * @return array
 	 */
-	public function remove_rocket_metabox_row_action() {
-		$current_screen = get_current_screen();
+	public function remove_rocket_metabox_option( array $cpts ): array {
+		if ( isset( $cpts['elementor_library'] ) ) {
+			unset( $cpts['elementor_library'] );
 
-		// Remove metabox Template Page.
-		if ( 'elementor_library' === $current_screen->post_type && 'post' === $current_screen->base ) {
-			remove_action( 'add_meta_boxes', 'rocket_cache_options_meta_boxes' );
+			return $cpts;
+		}
+	}
+
+	/**
+	 * Remove rocket option from row actions.
+	 *
+	 * @param boolean $default Filter default value.
+	 * @param mixed   $post Post object.
+	 * @return boolean
+	 */
+	public function remove_rocket_row_action( bool $default, $post ): bool {
+		if ( 'elementor_library' === $post->post_type ) {
+			$default = true;
 		}
 
-		// Remove Row Action.
-		if ( 'elementor_library' === $current_screen->post_type && 'edit' === $current_screen->base ) {
-			remove_filter( 'post_row_actions', 'rocket_post_row_actions', 10 );
-		}
+		return $default;
 	}
 }
