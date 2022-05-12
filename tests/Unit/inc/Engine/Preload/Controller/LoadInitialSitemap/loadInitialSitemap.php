@@ -1,0 +1,50 @@
+<?php
+
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
+use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Tests\Unit\TestCase;
+
+class Test_LoadInitialSitemap extends TestCase {
+	protected $queue;
+	protected $controller;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->queue = Mockery::mock(Queue::class);
+		$this->controller = new LoadInitialSitemap($this->queue);
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoAsExpected($config, $expected) {
+		Filters\expectApplied('rocket_sitemap_preload_list')->with($config['sitemaps'])->andReturn($config['filter_sitemaps']);
+		foreach ($config['filter_sitemaps'] as $sitemap) {
+			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
+		}
+		if(key_exists('transient', $expected)) {
+			Functions\expect('set_transient')->with('wpr_preload_running', true);
+		}
+		$this->configureWordPressSitemap($config);
+		$this->controller->load_initial_sitemap();
+	}
+
+	protected function configureWordPressSitemap($config) {
+		if(count($config['filter_sitemaps']) > 0) {
+			return ;
+		}
+
+		$mock = Mockery::mock(WP_Sitemaps_Index::class);
+		$mock->expects()->get_index_url()->andReturn($config['wp_sitemap']);
+		$sitemap = (object) ['index' => $mock];
+
+
+		Functions\expect('wp_sitemaps_get_server')->with()->andReturn($sitemap);
+		if($config['wp_sitemap']) {
+			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($config['wp_sitemap']);
+		}
+	}
+}
