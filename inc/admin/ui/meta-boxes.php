@@ -25,7 +25,7 @@ function rocket_cache_options_meta_boxes() {
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
 			[
-				'public'             => true,
+				'public' => true,
 			],
 			'objects'
 		);
