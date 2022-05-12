@@ -59,6 +59,7 @@ class WPRocketUninstall {
 		'rocket_preload_errors',
 		'rocket_database_optimization_process',
 		'rocket_database_optimization_process_complete',
+		'wp_rocket_no_licence',
 	];
 
 	/**
