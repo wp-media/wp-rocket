@@ -259,6 +259,28 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Get number of rows with the same hash value.
+	 *
+	 * @param string $hash Hash.
+	 *
+	 * @return int|false
+	 */
+	public function count_rows_by_hash( string $hash ) {
+		$query = $this->query(
+			[
+				'css'   => $hash,
+				'count' => true,
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Update UsedCSS Row last_accessed date to current date.
 	 *
 	 * @param int $id Used CSS id.
