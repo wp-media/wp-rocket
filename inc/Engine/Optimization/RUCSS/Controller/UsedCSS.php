@@ -249,11 +249,11 @@ class UsedCSS {
 			return $html;
 		}
 
-		if ( 'completed' !== $used_css->status || empty( $used_css->css ) ) {
+		if ( 'completed' !== $used_css->status || empty( $used_css->hash ) ) {
 			return $html;
 		}
 
-		$used_css_content = $this->filesystem->get_used_css( $used_css->css );
+		$used_css_content = $this->filesystem->get_used_css( $used_css->hash );
 
 		if ( empty( $used_css_content ) ) {
 			return $html;
@@ -291,10 +291,10 @@ class UsedCSS {
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
 
-			$count = $this->used_css_query->count_rows_by_hash( $used_css->css );
+			$count = $this->used_css_query->count_rows_by_hash( $used_css->hash );
 
 			if ( 0 === $count ) {
-				$this->filesystem->delete_used_css( $used_css->css );
+				$this->filesystem->delete_used_css( $used_css->hash );
 			}
 		}
 
