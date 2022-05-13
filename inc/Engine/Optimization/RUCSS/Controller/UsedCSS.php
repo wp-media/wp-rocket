@@ -302,6 +302,17 @@ class UsedCSS {
 	}
 
 	/**
+	 * Deletes all the used CSS files
+	 *
+	 * @since 3.11.3
+	 *
+	 * @return void
+	 */
+	public function delete_all_used_css() {
+		$this->filesystem->delete_all_used_css();
+	}
+
+	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
 	 * @param string $html HTML content.

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 class Filesystem {
 	/**
 	 * WP Filesystem instance
@@ -86,6 +89,27 @@ class Filesystem {
 		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
 
 		return $this->filesystem->delete( $file, false, 'f' );
+	}
+
+	/**
+	 * Deletes all the used CSS files
+	 *
+	 * @since 3.11.3
+	 *
+	 * @return void
+	 */
+	public function delete_all_used_css() {
+		try {
+			$dir = new RecursiveDirectoryIterator( $this->path, \FilesystemIterator::SKIP_DOTS );
+
+			$items = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
+
+			foreach ( $items as $item ) {
+				$this->filesystem->delete( $item );
+			}
+		} catch( \Exception $e ) {
+			return;
+		}
 	}
 
 	/**

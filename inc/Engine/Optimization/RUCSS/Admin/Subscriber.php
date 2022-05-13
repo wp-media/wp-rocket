@@ -316,6 +316,8 @@ class Subscriber implements Subscriber_Interface {
 			$this->database->truncate_used_css_table();
 		}
 
+		$this->used_css->delete_all_used_css();
+
 		/**
 		 * Fires after the used CSS has been cleaned in the database
 		 *
