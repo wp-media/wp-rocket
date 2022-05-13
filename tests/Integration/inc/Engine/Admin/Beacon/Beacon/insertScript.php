@@ -20,10 +20,10 @@ class Test_InsertScript extends TestCase {
 		'wp_rocket_customer_data' => null,
 	];
 
-	public function setUp(): void {
+	public function set_up() {
 		global $wp_locale;
 
-		parent::setUp();
+		parent::set_up();
 
 		set_current_screen( 'settings_page_wprocket' );
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
@@ -31,7 +31,7 @@ class Test_InsertScript extends TestCase {
 		$this->text_direction = $wp_locale->text_direction;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_locale;
 		set_current_screen( 'front' );
 
@@ -41,7 +41,7 @@ class Test_InsertScript extends TestCase {
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {

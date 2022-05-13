@@ -14,9 +14,9 @@ use wordfence;
  */
 class Test_WordFenceWhitelistIPs extends TestCase {
 
-	public function setUp() : void {
+	public function set_up() {
 
-		parent::setup();
+		parent::set_up();
 		wordfence::$white_listed_ips =[];
 		$this->WordFenceCompatibility        = new WordFenceCompatibility();
 	}
