@@ -268,7 +268,7 @@ class UsedCSS extends Query {
 	public function count_rows_by_hash( string $hash ) {
 		$query = $this->query(
 			[
-				'hash'   => $hash,
+				'hash'  => $hash,
 				'count' => true,
 			]
 		);
