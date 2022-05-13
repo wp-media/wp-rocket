@@ -32,6 +32,7 @@ class ParseSitemap
 	 */
 	public function parse_sitemap(string $url) {
 		$response  = wp_remote_get($url);
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return;
 		}

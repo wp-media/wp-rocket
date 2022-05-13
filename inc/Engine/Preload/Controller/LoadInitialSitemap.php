@@ -26,7 +26,6 @@ class LoadInitialSitemap
 	 */
 	public function load_initial_sitemap() {
 		$sitemaps = apply_filters('rocket_sitemap_preload_list', []);
-
 		if(count($sitemaps) > 0) {
 			$this->add_task_to_queue($sitemaps);
 			return;

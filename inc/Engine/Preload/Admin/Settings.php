@@ -30,7 +30,7 @@ class Settings
 		}
 
 		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = number of seconds.
+		// translators: %1$s = plugin name.
 			__( '%1$s: Please wait. The preload service is processing your pages.', 'rocket' ),
 			'<strong>WP Rocket</strong>',
 		);

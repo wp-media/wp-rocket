@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'preload_admin_subscriber',
 		];
 	}
 
@@ -240,10 +241,6 @@ class Plugin {
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'expired_cache_purge_subscriber',
-			'preload_subscriber',
-			'sitemap_preload_subscriber',
-			'partial_preload_subscriber',
-			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
 			'mobile_subscriber',
@@ -273,6 +270,8 @@ class Plugin {
 			'rucss_admin_subscriber',
 			'rucss_frontend_subscriber',
 			'divi',
+			'full_preload_process',
+			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',
