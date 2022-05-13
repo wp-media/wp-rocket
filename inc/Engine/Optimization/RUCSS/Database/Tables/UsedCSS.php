@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220204;
+	protected $version = 20220513;
 
 
 	/**
@@ -39,6 +39,7 @@ class UsedCSS extends Table {
 	protected $upgrades = [
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
+		20220513 => 'add_hash_column',
 	];
 
 	/**
@@ -51,6 +52,7 @@ class UsedCSS extends Table {
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
+			hash             varchar(32)                  default '',
 			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
@@ -63,7 +65,8 @@ class UsedCSS extends Table {
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
-			INDEX `queue_name_index` (`queue_name`)";
+			INDEX `queue_name_index` (`queue_name`),
+			KEY hash (hash)";
 	}
 
 	/**
@@ -152,4 +155,20 @@ class UsedCSS extends Table {
 		return $this->is_success( $index_added );
 	}
 
+	/**
+	 * Add hash column and index
+	 *
+	 * @return bool
+	 */
+	protected function add_hash_column() {
+		$hash_column_exists = $this->column_exists( 'hash' );
+
+		$created = true;
+
+		if ( ! $hash_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN hash VARCHAR(32) NULL default '' AFTER css, ADD KEY hash (hash) " );
+		}
+
+		return $this->is_success( $created );
+	}
 }
