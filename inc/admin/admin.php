@@ -67,12 +67,15 @@ function rocket_post_row_actions( $actions, $post ) {
 		return $actions;
 	}
 
+	if ( apply_filters( 'rocket_skip_post_row_actions', false, $post ) ) {
+		return $actions;
+	}
+
 	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
-	if ( ! apply_filters( 'rocket_skip_post_row_actions', false, $post ) ) {
-		return $actions;
-	}
+	return $actions;
+
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
