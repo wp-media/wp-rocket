@@ -200,15 +200,15 @@ class UsedCSS extends Query {
 	 * Complete a job.
 	 *
 	 * @param int    $id DB row ID.
-	 * @param string $css Used CSS.
+	 * @param string $hash Hash.
 	 *
 	 * @return bool
 	 */
-	public function make_status_completed( int $id, string $css = '' ) {
+	public function make_status_completed( int $id, string $hash = '' ) {
 		return $this->update_item(
 			$id,
 			[
-				'css'    => $css,
+				'hash'    => $hash,
 				'status' => 'completed',
 			]
 		);
