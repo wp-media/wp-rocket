@@ -208,7 +208,7 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'hash'    => $hash,
+				'hash'   => $hash,
 				'status' => 'completed',
 			]
 		);

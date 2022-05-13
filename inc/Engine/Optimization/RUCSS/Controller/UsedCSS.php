@@ -51,6 +51,11 @@ class UsedCSS {
 	 */
 	private $queue;
 
+	/**
+	 * Filesystem instance
+	 *
+	 * @var Filesystem
+	 */
 	private $filesystem;
 
 	/**

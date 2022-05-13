@@ -29,13 +29,13 @@ class Filesystem {
 	 */
 	public function __construct( $filesystem = null, $base_path ) {
 		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
-		$this->path = $base_path . get_current_blog_id() . '/';
+		$this->path       = $base_path . get_current_blog_id() . '/';
 	}
 
 	/**
 	 * Gets the used CSS content corresponding to the provided hash
 	 *
-	 * @param string $hash Hash of the corresponding used CSS
+	 * @param string $hash Hash of the corresponding used CSS.
 	 *
 	 * @return string
 	 */
@@ -107,7 +107,7 @@ class Filesystem {
 			foreach ( $items as $item ) {
 				$this->filesystem->delete( $item );
 			}
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			return;
 		}
 	}
