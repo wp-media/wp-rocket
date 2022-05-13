@@ -228,6 +228,8 @@ class HTML {
 			if ( null !== $delay_attr ) {
 				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
 			}
+
+			$delay_js = str_replace( 'src="', 'data-rocket-src="', $delay_js );
 		}
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
