@@ -178,9 +178,9 @@ class Elementor implements Subscriber_Interface {
 	public function remove_rocket_metabox_option( array $cpts ): array {
 		if ( isset( $cpts['elementor_library'] ) ) {
 			unset( $cpts['elementor_library'] );
-
-			return $cpts;
 		}
+
+		return $cpts;
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Elementor implements Subscriber_Interface {
 	 */
 	public function remove_rocket_row_action( bool $default, $post ): bool {
 		if ( 'elementor_library' === $post->post_type ) {
-			$default = true;
+			return true;
 		}
 
 		return $default;
