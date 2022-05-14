@@ -3941,7 +3941,7 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:45
 msgid "Continue to the options to further optimize your site!"
-msgstr "Sitenizi ileride iyileştirmek için seçeneklere devam edin!"
+msgstr "Sitenizi daha da iyileştirmek için seçeneklere devam edin!"
 
 #: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
