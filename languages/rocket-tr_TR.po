@@ -400,8 +400,8 @@ msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"WP Rocket’i iyileştirmemize yardımcı olmak için geliştirme ekibi ile isimsiz"
-" verileri paylaşmayı kabul ediyorum. %1$sNe tür bilgi toplayacağız?%2$s"
+"WP Rocket’i iyileştirmeye yardımcı olmak için geliştirme ekibiyle isimsiz "
+"verileri paylaşmayı kabul ediyorum. %1$sNe tür bilgi toplayacağız?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:444 inc/Engine/Cache/WPCache.php:354
 msgid "Cache"
