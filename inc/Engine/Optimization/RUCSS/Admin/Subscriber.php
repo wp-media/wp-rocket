@@ -46,6 +46,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $homepage_preloader;
 
+	private $shutdown;
+
 	/**
 	 * Instantiate the class
 	 *
@@ -55,12 +57,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options  $options_api Options API instance.
 	 * @param Homepage $homepage_preloader Homepage Preload instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader, Shutdown $shutdown ) {
 		$this->settings           = $settings;
 		$this->database           = $database;
 		$this->used_css           = $used_css;
 		$this->options_api        = $options_api;
 		$this->homepage_preloader = $homepage_preloader;
+		$this->shutdown           = $shutdown;
 	}
 
 	/**
@@ -91,6 +94,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
 			'rocket_after_settings_checkbox'     => 'display_progress_bar',
 			'admin_enqueue_scripts'              => 'add_admin_js',
+			'rocket_before_dashboard_content'    => 'display_before_shutdown_rucss_banner',
 		];
 	}
 
@@ -406,5 +410,9 @@ class Subscriber implements Subscriber_Interface {
 			'warmed_list'    => __( 'These files could not be processed:', 'rocket' ),
 			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
 		];
+	}
+
+	public function display_before_shutdown_rucss_banner() {
+		$this->shutdown->display_shutdown_banner();
 	}
 }
