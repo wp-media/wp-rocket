@@ -12,8 +12,13 @@
 			?>
 		</p>
 		<p>
-			<?php esc_html_e( 'This feature is a great option to address the PageSpeed Insights recommendation and improve your website performance,
-			but the option was enhanced and you now need a more recent version to use it.', 'rocket' ); ?>
+			<?php
+			esc_html_e(
+				'This feature is a great option to address the PageSpeed Insights recommendation and improve your website performance,
+			but the option was enhanced and you now need a more recent version to use it.',
+				'rocket'
+			);
+			?>
 		</p>
 		<p>
 			<?php
@@ -21,7 +26,7 @@
 			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
 					esc_html__( '%1$sRenew your license now and get %2$s OFF%3$s to update your WP Rocket version!', 'rocket' ),
 					'<strong>',
-					$data['discount_percentage'] . '%',
+					(int) sanitize_text_field( $data['discount_percentage'] ) . '%',
 					'</strong>'
 			);
 			?>

@@ -8,13 +8,18 @@
 					esc_html__( 'You’re running on an old version of WP Rocket whose %1$sRemove Unused CSS feature%2$s will be shut down %1$sfrom %3$s.%2$s', 'rocket' ),
 					'<strong>',
 					'</strong>',
-					$data['formatted_date']
+					esc_html( $data['formatted_date'] )
 			);
 			?>
 		</p>
 		<p>
-			<?php esc_html_e( 'This option was completely revamped in 3.11 to more easily address the PageSpeed Insights recommendation
-			and improve your page performance.', 'rocket' ); ?>
+			<?php
+			esc_html_e(
+				'This option was completely revamped in 3.11 to more easily address the PageSpeed Insights recommendation
+			and improve your page performance.',
+				'rocket'
+			);
+			?>
 		</p>
 		<p>
 			<?php
@@ -22,7 +27,7 @@
 			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>.
 				esc_html__( '%1$sRenew your license now and get %2$s OFF%3$s to update your WP Rocket version!', 'rocket' ),
 				'<strong>',
-				$data['discount_percentage'] . '%',
+					(int) sanitize_text_field( $data['discount_percentage'] ) . '%',
 				'</strong>'
 			);
 			?>

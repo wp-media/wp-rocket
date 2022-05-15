@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use Exception;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -46,6 +47,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $homepage_preloader;
 
+	/**
+	 * RUCSS Shutdown banner render object.
+	 *
+	 * @var Shutdown
+	 */
 	private $shutdown;
 
 	/**
@@ -56,6 +62,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
 	 * @param Homepage $homepage_preloader Homepage Preload instance.
+	 * @param Shutdown $shutdown RUCSS Shutdown instance.
 	 */
 	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader, Shutdown $shutdown ) {
 		$this->settings           = $settings;
@@ -412,7 +419,17 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Display RUCSS shutdown warning banner.
+	 *
+	 * @return void
+	 */
 	public function display_before_shutdown_rucss_banner() {
-		$this->shutdown->display_shutdown_banner();
+		try {
+			$this->shutdown->display_shutdown_banner();
+		} catch ( Exception $e ) {
+			// Do nothing, Don't show the banner.
+			return;
+		}
 	}
 }

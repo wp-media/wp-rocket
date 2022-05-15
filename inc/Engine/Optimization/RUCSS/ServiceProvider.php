@@ -49,7 +49,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'rucss_shutdown', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown' )
 			->addArgument( $this->getContainer()->get( 'user' ) )
-		    ->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
 
 		// Instantiate the RUCSS Resources Table class.
 		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
