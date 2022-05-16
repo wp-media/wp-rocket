@@ -617,7 +617,9 @@ class Page {
 
 		$rucss_shutdown_warning = $rucss_shutdown_details['status'] ? [
 			'title'        => __( 'You need an active license to enable this option!', 'rocket' ),
-			'description'  => __( 'The Remove Unused CSS feature is a great option to address the PageSpeed Insights recommendation and improve your website performance. But you need a version higher than 3.11 one to use it.Renew your license now at 20% OFF and update your WP Rocket version!', 'rocket' ),
+			'description'  => __( 'The Remove Unused CSS feature is a great option to address the PageSpeed Insights recommendation and improve your website performance. But you need a version higher than 3.11 one to use it.', 'rocket' ) .
+			                  "<br><br>".
+			                  __( 'Renew your license now at 20% OFF and update your WP Rocket version!', 'rocket' ),
 			'button_label' => __( 'Renew your license now', 'rocket' ),
 			'button_url'   => $rucss_shutdown_details['renewal_url'] ?? '',
 		] : [];
