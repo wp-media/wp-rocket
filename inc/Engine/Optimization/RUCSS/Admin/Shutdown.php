@@ -16,7 +16,7 @@ class Shutdown extends Abstract_Render {
 	 *
 	 * @var string
 	 */
-	private $shutdown_date = '2022-05-30';
+	private $shutdown_date = '2022-05-10';
 
 	/**
 	 * Renewal discount percentage.
@@ -44,6 +44,17 @@ class Shutdown extends Abstract_Render {
 		$this->user = $user;
 	}
 
+	public function is_expired( DateTime $shutdown_date = null ) {
+		$timezone      = new DateTimeZone( 'UTC' );
+		$now           = new DateTime( 'now', $timezone );
+
+		if ( ! $shutdown_date ) {
+			$shutdown_date = new DateTime( $this->shutdown_date, $timezone );
+		}
+
+		return $shutdown_date <= $now;
+	}
+
 	/**
 	 * Display RUCSS shutdown warning banner.
 	 *
@@ -53,10 +64,9 @@ class Shutdown extends Abstract_Render {
 	public function display_shutdown_banner() {
 		// Will compare the current GMT timestamp with the shutdown date timestamp.
 		$timezone      = new DateTimeZone( 'UTC' );
-		$now           = new DateTime( 'now', $timezone );
 		$shutdown_date = new DateTime( $this->shutdown_date, $timezone );
 
-		if ( $shutdown_date <= $now ) {
+		if ( $this->is_expired( $shutdown_date ) ) {
 			$this->display_after_shutdown_rucss_banner();
 			return;
 		}
@@ -91,6 +101,17 @@ class Shutdown extends Abstract_Render {
 			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 		echo $this->generate( 'after', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	public function get_shutdown_details( array $details ) {
+		if ( ! $this->is_expired() ) {
+			return $details;
+		}
+
+		return [
+			'status'      => 1,
+			'renewal_url' => $this->user->get_renewal_url(),
+		];
 	}
 
 }

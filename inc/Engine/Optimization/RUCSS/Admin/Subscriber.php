@@ -102,6 +102,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_settings_checkbox'     => 'display_progress_bar',
 			'admin_enqueue_scripts'              => 'add_admin_js',
 			'rocket_before_dashboard_content'    => 'display_before_shutdown_rucss_banner',
+			'get_rocket_option_remove_unused_css' => 'disable_rucss_with_shutdown_date',
+			'rocket_rucss_shutdown_details'       => 'get_shutdown_details',
 		];
 	}
 
@@ -430,6 +432,29 @@ class Subscriber implements Subscriber_Interface {
 		} catch ( Exception $e ) {
 			// Do nothing, Don't show the banner.
 			return;
+		}
+	}
+
+	public function disable_rucss_with_shutdown_date( $enabled ) {
+		try {
+			return $enabled && !$this->shutdown->is_expired();
+		} catch ( Exception $e ) {
+			// Do nothing, Don't show the banner.
+			return $enabled;
+		}
+	}
+
+	public function get_shutdown_details( $details ) {
+		try {
+			$default = [
+				'status'      => 0,
+				'renewal_url' => '',
+			];
+
+			return wp_parse_args( $this->shutdown->get_shutdown_details( $details ), $default );
+		} catch ( Exception $e ) {
+			// Do nothing, Don't change anything.
+			return $details;
 		}
 	}
 }

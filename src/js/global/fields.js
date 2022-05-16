@@ -133,6 +133,11 @@ $(document).ready(function(){
 
             // Validate the warning
             $warningButton.on('click', function(){
+				if ( $warningButton.data( 'url' ).length > 0 ) {
+					window.open($warningButton.data( 'url' ), '_blank').focus();
+					return;
+				}
+
                 $thisCheckbox.prop('checked', true);
                 $warningField.removeClass('wpr-isOpen');
                 $children.addClass('wpr-isOpen');

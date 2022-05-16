@@ -47,10 +47,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_settings', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings' )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->add( 'rucss_shutdown', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown' )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
-
 		// Instantiate the RUCSS Resources Table class.
 		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
 		$this->getContainer()->add( 'rucss_usedcss_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS' );
