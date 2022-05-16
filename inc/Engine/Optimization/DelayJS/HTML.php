@@ -230,7 +230,7 @@ class HTML {
 			}
 		}
 
-		$delay_js = str_replace( 'src=', 'data-rocket-src=', $delay_js );
+		$delay_js = str_replace( ' src=', 'data-rocket-src=', $delay_js );
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
