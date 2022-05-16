@@ -203,7 +203,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	public function replace_scripts( $matches ): string {
+	public function replace_scripts( $matches ) {
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
 				return $matches[0];
@@ -230,7 +230,9 @@ class HTML {
 			}
 		}
 
-		$delay_js = str_replace( ' src=', 'data-rocket-src=', $delay_js );
+		if ( empty( $matches['content'] ) ) {
+			$delay_js = str_replace( ' src=', ' data-rocket-src=', $delay_js );
+		}
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
