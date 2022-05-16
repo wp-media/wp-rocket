@@ -734,7 +734,7 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-					'warning'           => $rucss_shutdown_warning ?? [
+					'warning'           => ! empty( $rucss_shutdown_warning ) ? $rucss_shutdown_warning : [
 						'title'        => __( 'We’re still working on it!', 'rocket' ),
 						'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
 						'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),

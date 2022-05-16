@@ -16,7 +16,7 @@ class Shutdown extends Abstract_Render {
 	 *
 	 * @var string
 	 */
-	private $shutdown_date = '2022-05-10';
+	private $shutdown_date = '2022-05-30';
 
 	/**
 	 * Renewal discount percentage.
