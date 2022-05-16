@@ -4,21 +4,29 @@ namespace WP_Rocket\Engine\Preload\Admin;
 
 use WP_Rocket\Admin\Options_Data;
 
-class Settings
-{
+class Settings {
+
 	/**
+	 * Instance of options handler.
+	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
 	/**
-	 * @param Options_Data $options
+	 * Instantiate the class
+	 *
+	 * @param Options_Data $options Instance of options handler.
 	 */
-	public function __construct(Options_Data $options)
-	{
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
+	/**
+	 * Maybe display the preload notice.
+	 *
+	 * @return void
+	 */
 	public function maybe_display_preload_notice() {
 		if ( ! $this->can_display_notice() ) {
 			return;
@@ -32,7 +40,7 @@ class Settings
 		$message = sprintf(
 		// translators: %1$s = plugin name.
 			__( '%1$s: Please wait. The preload service is processing your pages.', 'rocket' ),
-			'<strong>WP Rocket</strong>',
+			'<strong>WP Rocket</strong>'
 		);
 
 		rocket_notice_html(
@@ -45,9 +53,7 @@ class Settings
 	}
 
 	/**
-	 * Checks if we can display the RUCSS notices
-	 *
-	 * @since 3.11
+	 * Checks if we can display the Preload notices.
 	 *
 	 * @return bool
 	 */
@@ -74,9 +80,7 @@ class Settings
 	}
 
 	/**
-	 * Determines if Remove Unused CSS option is enabled.
-	 *
-	 * @since 3.9
+	 * Determines if Preload sitemap option is enabled.
 	 *
 	 * @return boolean
 	 */

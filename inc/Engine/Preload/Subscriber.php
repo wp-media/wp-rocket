@@ -5,19 +5,21 @@ namespace WP_Rocket\Engine\Preload;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements Subscriber_Interface
-{
+class Subscriber implements Subscriber_Interface {
+
 	/**
 	 * Controller to load initial tasks.
+	 *
 	 * @var LoadInitialSitemap
 	 */
 	protected $controller;
 
 	/**
-	 * @param LoadInitialSitemap $controller
+	 * Creates an instance of the class.
+	 *
+	 * @param LoadInitialSitemap $controller controller creating the initial task.
 	 */
-	public function __construct(LoadInitialSitemap $controller)
-	{
+	public function __construct( LoadInitialSitemap $controller ) {
 		$this->controller = $controller;
 	}
 
@@ -27,8 +29,7 @@ class Subscriber implements Subscriber_Interface
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events()
-	{
+	public static function get_subscribed_events() {
 		return [
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_load_initial_sitemap', 10, 2 ],
 		];
@@ -36,11 +37,12 @@ class Subscriber implements Subscriber_Interface
 
 	/**
 	 * Load first tasks from preload when configuuration from sitemap changed.
-	 * @param $old_value
-	 * @param $value
+	 *
+	 * @param array $old_value old configuration values.
+	 * @param array $value new configuration values.
 	 * @return void
 	 */
-	public function maybe_load_initial_sitemap($old_value, $value ) {
+	public function maybe_load_initial_sitemap( $old_value, $value ) {
 		if ( ! isset( $value['sitemap_preload'], $old_value['sitemap_preload'] ) ) {
 			return;
 		}
@@ -49,7 +51,7 @@ class Subscriber implements Subscriber_Interface
 			return;
 		}
 
-		if(! $value['sitemap_preload']) {
+		if ( ! $value['sitemap_preload'] ) {
 			return;
 		}
 
