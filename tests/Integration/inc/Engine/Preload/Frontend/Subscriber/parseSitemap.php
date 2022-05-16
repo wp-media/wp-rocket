@@ -15,6 +15,20 @@ class Test_ParseSitemap extends AdminTestCase {
 
 	use ASTrait;
 
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -26,6 +40,7 @@ class Test_ParseSitemap extends AdminTestCase {
 
 		foreach ($expected['children'] as $child) {
 			$this->assertEquals($expected['children_exists'], self::taskExist('rocket_preload_job_parse_sitemap', [$child]));
+			$this->assertEquals($expected['children_exists'], self::cacheFound(['url' => $child]));
 		}
 
 		foreach ($expected['links'] as $link) {

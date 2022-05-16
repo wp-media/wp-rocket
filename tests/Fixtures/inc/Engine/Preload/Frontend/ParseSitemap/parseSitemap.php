@@ -7,6 +7,7 @@ return [
 			'status' => 400,
 			'content' => '',
 			'links' => [],
+			'jobs' => [],
 		],
 	],
 	'shouldParseOnRequestSucceed' => [
@@ -19,6 +20,14 @@ return [
 			'links' => [
 				'url1',
 				'url2',
+			],
+			'jobs' => [
+				[
+					['url' => 'url1',]
+				],
+				[
+					['url' => 'url2',]
+				]
 			],
 			'children' => [
 				'children1',
