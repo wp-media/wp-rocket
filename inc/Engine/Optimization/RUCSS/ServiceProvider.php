@@ -36,7 +36,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_scanner',
 		'rucss_scanner_process',
 		'rucss_status_checker',
-		'rucss_shutdown',
 	];
 
 	/**
@@ -47,10 +46,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'rucss_settings', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings' )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-
-		$this->getContainer()->add( 'rucss_shutdown', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown' )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
 
 		// Instantiate the RUCSS Resources Table class.
 		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
@@ -75,8 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'homepage_preload' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_shutdown' ) );
+			->addArgument( $this->getContainer()->get( 'homepage_preload' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
 

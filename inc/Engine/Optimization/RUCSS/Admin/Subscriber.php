@@ -48,13 +48,6 @@ class Subscriber implements Subscriber_Interface {
 	private $homepage_preloader;
 
 	/**
-	 * RUCSS Shutdown banner render object.
-	 *
-	 * @var Shutdown
-	 */
-	private $shutdown;
-
-	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings    Settings instance.
@@ -62,15 +55,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @param UsedCSS  $used_css    UsedCSS instance.
 	 * @param Options  $options_api Options API instance.
 	 * @param Homepage $homepage_preloader Homepage Preload instance.
-	 * @param Shutdown $shutdown RUCSS Shutdown instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader, Shutdown $shutdown ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Options $options_api, Homepage $homepage_preloader ) {
 		$this->settings           = $settings;
 		$this->database           = $database;
 		$this->used_css           = $used_css;
 		$this->options_api        = $options_api;
 		$this->homepage_preloader = $homepage_preloader;
-		$this->shutdown           = $shutdown;
 	}
 
 	/**
@@ -101,9 +92,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_admin_bar_items'             => 'add_clean_used_css_menu_item',
 			'rocket_after_settings_checkbox'     => 'display_progress_bar',
 			'admin_enqueue_scripts'              => 'add_admin_js',
-			'rocket_before_dashboard_content'    => 'display_before_shutdown_rucss_banner',
-			'get_rocket_option_remove_unused_css' => 'disable_rucss_with_shutdown_date',
-			'rocket_rucss_shutdown_details'       => 'get_shutdown_details',
 		];
 	}
 
@@ -421,40 +409,4 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
-	/**
-	 * Display RUCSS shutdown warning banner.
-	 *
-	 * @return void
-	 */
-	public function display_before_shutdown_rucss_banner() {
-		try {
-			$this->shutdown->display_shutdown_banner();
-		} catch ( Exception $e ) {
-			// Do nothing, Don't show the banner.
-			return;
-		}
-	}
-
-	public function disable_rucss_with_shutdown_date( $enabled ) {
-		try {
-			return $enabled && !$this->shutdown->is_expired();
-		} catch ( Exception $e ) {
-			// Do nothing, Don't show the banner.
-			return $enabled;
-		}
-	}
-
-	public function get_shutdown_details( $details ) {
-		try {
-			$default = [
-				'status'      => 0,
-				'renewal_url' => '',
-			];
-
-			return wp_parse_args( $this->shutdown->get_shutdown_details( $details ), $default );
-		} catch ( Exception $e ) {
-			// Do nothing, Don't change anything.
-			return $details;
-		}
-	}
 }

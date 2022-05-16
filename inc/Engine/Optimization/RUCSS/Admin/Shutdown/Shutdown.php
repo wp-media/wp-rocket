@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
+namespace WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown;
 
 use WP_Rocket\Abstract_Render;
 use DateTimeZone;
