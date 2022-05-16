@@ -30,7 +30,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'upgrade',
 		'renewal',
 		'license_subscriber',
-		'rucss_shutdown',
 	];
 
 	/**
@@ -60,8 +59,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'upgrade' ) )
 			->addArgument( $this->getContainer()->get( 'renewal' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->add( 'rucss_shutdown', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown' )
-		     ->addArgument( $this->getContainer()->get( 'user' ) )
-		     ->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
 	}
 }
