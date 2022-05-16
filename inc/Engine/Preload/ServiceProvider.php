@@ -43,15 +43,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\RocketCache' );
-		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Optimization\Preload\Database\Queries\RocketCache' );
-
+		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\RocketCache' );
+		$cache_query = $this->getContainer()->get('preload_caches_query');
 		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
 		$queue = $this->getContainer()->get( 'preload_queue' );
 		$this->getContainer()->add( 'sitemap_parser', 'WP_Rocket\Engine\Preload\Frontend\SitemapParser' );
 		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
 		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\ParseSitemap' )
 			->addArgument( $sitemap_parser )
-			->addArgument( $queue );
+			->addArgument( $queue )
+			->addArgument( $cache_query );
 		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
 			->addArgument( $queue );

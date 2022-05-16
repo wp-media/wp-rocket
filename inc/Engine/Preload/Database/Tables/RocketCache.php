@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Tables;
 
-class RocketCache extends \WP_Rocket\Dependencies\Database\Table {
+use WP_Rocket\Dependencies\Database\Table;
+
+class RocketCache extends Table {
 
 	/**
 	 * Table name
