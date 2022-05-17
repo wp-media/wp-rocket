@@ -73,6 +73,10 @@ class Filesystem {
 		// This filter is documented in inc/classes/Buffer/class-cache.php.
 		$css = gzencode( $used_css, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
 
+		if ( ! $css ) {
+			return false;
+		}
+
 		return $this->filesystem->put_contents( $file, $css );
 	}
 
