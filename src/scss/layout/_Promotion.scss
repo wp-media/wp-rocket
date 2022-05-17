@@ -17,16 +17,18 @@
         flex-flow: column;
     }
 
-    & > div {
-        display: flex;
-        flex-flow: column;
+	.rocket-expired-message{
+	  width: 70%;
 
-        @include respond-to('xs') {
-            width: 100%;
-        }
+	  @include respond-to('xs') {
+		width: 100%;
+	  }
+	}
 
-        width: 50%;
-    }
+	& > div {
+	  display: flex;
+	  flex-flow: column;
+	}
 }
 
 .rocket-promo-title {
