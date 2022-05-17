@@ -131,7 +131,7 @@ class APIClient {
 		}
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return $this->get_wp_error( __( 'The RocketCDN API returned an unexpected response code.', 'rocket' ) );
+			return $this->get_wp_error( __( 'We could not fetch the current price because RocketCDN API returned an unexpected error code.', 'rocket' ) );
 		}
 
 		$data = wp_remote_retrieve_body( $response );
