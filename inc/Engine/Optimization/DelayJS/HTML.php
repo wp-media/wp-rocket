@@ -203,7 +203,7 @@ class HTML {
 	 *
 	 * @return string
 	 */
-	public function replace_scripts( $matches ) {
+	public function replace_scripts( $matches ): string {
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
 				return $matches[0];
