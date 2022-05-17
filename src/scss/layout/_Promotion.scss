@@ -17,15 +17,17 @@
         flex-flow: column;
     }
 
+	.rocket-expired-message{
+	  width: 70%;
+
+	  @include respond-to('xs') {
+		width: 100%;
+	  }
+	}
+
     & > div {
         display: flex;
         flex-flow: column;
-
-        @include respond-to('xs') {
-            width: 100%;
-        }
-
-        width: 50%;
     }
 }
 
