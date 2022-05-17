@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Preload\Homepage;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use Exception;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -408,5 +407,4 @@ class Subscriber implements Subscriber_Interface {
 			'rucss_info_txt' => __( 'We are processing the CSS on your site. This may take several minutes to complete.', 'rocket' ),
 		];
 	}
-
 }
