@@ -21,7 +21,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Shutdown $shutdown RUCSS Shutdown instance.
 	 */
 	public function __construct( Shutdown $shutdown ) {
-		$this->shutdown           = $shutdown;
+		$this->shutdown = $shutdown;
 	}
 
 	/**
@@ -51,6 +51,13 @@ class Subscriber implements Subscriber_Interface {
 		}
 	}
 
+	/**
+	 * Disable RUCSS option with the shutdown date.
+	 *
+	 * @param bool $enabled RUCSS option status.
+	 *
+	 * @return bool
+	 */
 	public function disable_rucss_with_shutdown_date( $enabled ) {
 		try {
 			return $enabled && ! $this->shutdown->is_expired();
@@ -60,6 +67,13 @@ class Subscriber implements Subscriber_Interface {
 		}
 	}
 
+	/**
+	 * Get shutdown event details.
+	 *
+	 * @param array $details array of shutdown details.
+	 *
+	 * @return array
+	 */
 	public function get_shutdown_details( $details ) {
 		try {
 			$default = [

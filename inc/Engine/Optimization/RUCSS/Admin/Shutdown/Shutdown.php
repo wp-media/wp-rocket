@@ -44,9 +44,17 @@ class Shutdown extends Abstract_Render {
 		$this->user = $user;
 	}
 
+	/**
+	 * Check if shutdown notice expired or not.
+	 *
+	 * @param DateTime|null $shutdown_date Optional shutdown date object.
+	 *
+	 * @return bool
+	 * @throws Exception When date is invalid.
+	 */
 	public function is_expired( DateTime $shutdown_date = null ) {
-		$timezone      = new DateTimeZone( 'UTC' );
-		$now           = new DateTime( 'now', $timezone );
+		$timezone = new DateTimeZone( 'UTC' );
+		$now      = new DateTime( 'now', $timezone );
 
 		if ( ! $shutdown_date ) {
 			$shutdown_date = new DateTime( $this->shutdown_date, $timezone );
@@ -103,6 +111,14 @@ class Shutdown extends Abstract_Render {
 		echo $this->generate( 'after', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
+	/**
+	 * Get shutdown event details.
+	 *
+	 * @param array $details Shutdown details.
+	 *
+	 * @return array
+	 * @throws Exception When date is invalid.
+	 */
 	public function get_shutdown_details( array $details ) {
 		if ( ! $this->is_expired() ) {
 			return $details;

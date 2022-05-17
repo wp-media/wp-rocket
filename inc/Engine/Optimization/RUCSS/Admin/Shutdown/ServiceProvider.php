@@ -31,10 +31,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'rucss_shutdown', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown\Shutdown' )
-		     ->addArgument( $this->getContainer()->get( 'user' ) )
-		     ->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
+			->addArgument( $this->getContainer()->get( 'user' ) )
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/rucss-shutdown' );
 
 		$this->getContainer()->add( 'rucss_shutdown_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown\Subscriber' )
-		     ->addArgument( $this->getContainer()->get( 'rucss_shutdown' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_shutdown' ) );
 	}
 }
