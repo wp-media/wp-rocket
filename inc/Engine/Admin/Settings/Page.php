@@ -610,6 +610,23 @@ class Page {
 			'</a>'
 		);
 
+		$rucss_shutdown_details = apply_filters(
+			'rocket_rucss_shutdown_details',
+			[
+				'status'      => 0,
+				'renewal_url' => '',
+			]
+		);
+
+		$rucss_shutdown_warning = $rucss_shutdown_details['status'] ? [
+			'title'        => __( 'You need an active license to enable this option!', 'rocket' ),
+			'description'  => __( 'The Remove Unused CSS feature is a great option to address the PageSpeed Insights recommendation and improve your website performance. But you need a version higher than 3.11 one to use it.', 'rocket' ) .
+							'<br><br>' .
+							__( 'Renew your license now at 20% OFF and update your WP Rocket version!', 'rocket' ),
+			'button_label' => __( 'Renew your license now', 'rocket' ),
+			'button_url'   => $rucss_shutdown_details['renewal_url'] ?? '',
+		] : [];
+
 		$this->settings->add_settings_fields(
 			[
 				'minify_css'                 => [
@@ -712,6 +729,7 @@ class Page {
 						'wpr-isParent',
 						'wpr-RemoveUnUsedCss',
 						'wpr-field--parent',
+						$rucss_shutdown_details['status'] ? 'wpr-isDisabled' : '',
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove Unused CSS (Beta)', 'rocket' ),
@@ -721,7 +739,7 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-					'warning'           => [
+					'warning'           => ! empty( $rucss_shutdown_warning ) ? $rucss_shutdown_warning : [
 						'title'        => __( 'We’re still working on it!', 'rocket' ),
 						'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
 						'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
