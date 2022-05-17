@@ -45,7 +45,7 @@ defined( 'ABSPATH' ) || exit;
 						<?php echo $option['warning']['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 					</div>
 				<?php endif; ?>
-				<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $option['warning']['button_label'] ); ?></button>
+				<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check" data-url="<?php echo ( ! empty( $option['warning']['button_url'] ) ? esc_url( $option['warning']['button_url'] ) : '' ); ?>"><?php echo esc_html( $option['warning']['button_label'] ); ?></button>
 			</div>
 		<?php endif; ?>
 

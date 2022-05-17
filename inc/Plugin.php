@@ -161,6 +161,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\License\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Shutdown\ServiceProvider' );
 
 		return [
 			'beacon',
@@ -179,6 +180,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'rucss_shutdown_subscriber',
 		];
 	}
 
