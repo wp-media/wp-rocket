@@ -38,30 +38,29 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rocketcdn_api_client', 'WP_Rocket\Engine\CDN\RocketCDN\APIClient' );
 		// RocketCDN CDN options manager.
 		$this->getContainer()->add( 'rocketcdn_options_manager', 'WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager' )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options );
+		     ->addArgument( $this->getContainer()->get( 'options_api' ) )
+		     ->addArgument( $options );
 		// RocketCDN Data manager subscriber.
 		$this->getContainer()->share( 'rocketcdn_data_manager_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber' )
-			->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
-			->addArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
-			->addTag( 'admin_subscriber' );
+		     ->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
+		     ->addArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
+		     ->addTag( 'admin_subscriber' );
 		// RocketCDN REST API Subscriber.
 		$this->getContainer()->share( 'rocketcdn_rest_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber' )
-			->addArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
+		     ->addArgument( $this->getContainer()->get( 'rocketcdn_options_manager' ) )
+		     ->addArgument( $options )
+		     ->addTag( 'common_subscriber' );
 		// RocketCDN Notices Subscriber.
 		$this->getContainer()->share( 'rocketcdn_notices_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber' )
-			->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( __DIR__ . '/views' )
-			->addTag( 'admin_subscriber' );
+		     ->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
+		     ->addArgument( __DIR__ . '/views' )
+		     ->addTag( 'admin_subscriber' );
 		// RocketCDN settings page subscriber.
 		$this->getContainer()->share( 'rocketcdn_admin_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber' )
-			->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( __DIR__ . '/views' )
-			->addTag( 'admin_subscriber' );
+		     ->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
+		     ->addArgument( $options )
+		     ->addArgument( $this->getContainer()->get( 'beacon' ) )
+		     ->addArgument( __DIR__ . '/views' )
+		     ->addTag( 'admin_subscriber' );
 	}
 }
