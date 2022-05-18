@@ -77,6 +77,8 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'#ultib3-',
+		'.uvc-wrap-',
 	];
 
 	/**
