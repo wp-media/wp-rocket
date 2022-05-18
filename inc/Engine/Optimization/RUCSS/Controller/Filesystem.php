@@ -24,10 +24,10 @@ class Filesystem {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
 	 * @param string               $base_path Base path to the used CSS storage.
+	 * @param WP_Filesystem_Direct $filesystem WP Filesystem instance.
 	 */
-	public function __construct( $filesystem = null, $base_path ) {
+	public function __construct( $base_path, $filesystem = null ) {
 		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 		$this->path       = $base_path . get_current_blog_id() . '/';
 	}

@@ -24,7 +24,7 @@ class test_GetUsedCss extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $hash, $expected ) {
-		$filesystem = new Filesystem( null, $this->filesystem->getUrl( 'wp-content/cache/used-css/' ) );
+		$filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/used-css/', null ) );
 
 		$this->assertSame(
 			$expected,

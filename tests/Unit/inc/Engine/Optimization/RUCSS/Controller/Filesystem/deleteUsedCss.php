@@ -24,7 +24,7 @@ class test_DeleteUsedCss extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $hash, $file ) {
-		$filesystem = new Filesystem( null, $this->filesystem->getUrl( 'wp-content/cache/used-css/' ) );
+		$filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/used-css/', null ) );
 
 		$this->assertTrue( $filesystem->delete_used_css( $hash ) );
 		$this->assertFalse( $this->filesystem->exists( $file ) );

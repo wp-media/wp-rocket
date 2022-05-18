@@ -55,8 +55,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'rucss_queue', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue' );
 		$this->getContainer()->add( 'rucss_filesystem', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem' )
-			->addArgument( rocket_direct_filesystem() )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) );
+			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
+			->addArgument( rocket_direct_filesystem() );
 		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )

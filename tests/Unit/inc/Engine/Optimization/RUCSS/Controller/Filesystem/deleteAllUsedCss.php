@@ -24,7 +24,7 @@ class test_DeleteAllUsedCss extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $files ) {
-		$filesystem = new Filesystem( null, $this->filesystem->getUrl( 'wp-content/cache/used-css/' ) );
+		$filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/used-css/', null ) );
 
 		$filesystem->delete_all_used_css();
 

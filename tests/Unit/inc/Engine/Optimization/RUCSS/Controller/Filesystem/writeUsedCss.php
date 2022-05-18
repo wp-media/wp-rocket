@@ -24,7 +24,7 @@ class test_WriteUsedCss extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $hash, $file ) {
-		$filesystem = new Filesystem( null, $this->filesystem->getUrl( 'wp-content/cache/used-css/' ) );
+		$filesystem = new Filesystem( $this->filesystem->getUrl( 'wp-content/cache/used-css/', null ) );
 
 		$this->assertTrue( $filesystem->write_used_css( $hash, $file['content'] ) );
 		$this->assertTrue( $this->filesystem->exists( $file['path'] ) );
