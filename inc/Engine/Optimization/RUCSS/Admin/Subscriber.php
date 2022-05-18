@@ -62,9 +62,9 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'           => 'add_options_first_time',
-			'rocket_input_sanitize'                  => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug                 => [
+			'rocket_first_install_options'            => 'add_options_first_time',
+			'rocket_input_sanitize'                   => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
@@ -82,19 +82,20 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
+				[ 'display_wrong_license_notice' ],
 			],
-			'rocket_admin_bar_items'                 => [
+			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
 				[ 'add_clear_usedcss_bar_item' ],
 			],
-			'rocket_before_add_field_to_settings'    => [
+			'rocket_before_add_field_to_settings'     => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'rocket_localize_admin_script'           => 'add_localize_script_data',
+			'rocket_localize_admin_script'            => 'add_localize_script_data',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
-			'pre_update_option_wp_rocket_settings'   => [ 'maybe_disable_combine_css', 11, 2 ],
-			'wp_rocket_upgrade'                      => [
+			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
 				[ 'cancel_pending_jobs_as', 16, 2 ],
@@ -102,6 +103,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
 			'rocket_deactivation'                    => 'cancel_queues',
 			'admin_head-tools_page_action-scheduler' => 'delete_as_tables_transient_on_tools_page',
+			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
 	}
 
@@ -409,6 +411,21 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Display a notification on wrong license.
+	 *
+	 * @return void
+	 */
+	public function display_wrong_license_notice() {
+		$transient = get_transient( 'wp_rocket_no_licence' );
+
+		if ( ! $transient ) {
+			return;
+		}
+
+		$this->settings->display_wrong_license_notice();
+	}
+
+	/**
 	 * Display admin notice when detecting any missed Action scheduler tables.
 	 *
 	 * @since 3.11.0.3
@@ -648,5 +665,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_as_tables_transient_on_tools_page() {
 		delete_transient( 'rocket_rucss_as_tables_count' );
+	}
+
+	/**
+	 * Disable RUCSS on wrong license.
+	 *
+	 * @return bool
+	 */
+	public function disable_russ_on_wrong_license() {
+		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+			return false;
+		}
+		return null;
 	}
 }
