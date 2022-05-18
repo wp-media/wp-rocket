@@ -4,11 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
-use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class Subscriber implements Subscriber_Interface {
@@ -36,20 +34,19 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Queue instance
 	 *
-	 * @var QueueInterface
+	 * @var Queue
 	 */
 	private $queue;
-
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings       $settings Settings instance.
-	 * @param Database       $database Database instance.
-	 * @param UsedCSS        $used_css UsedCSS instance.
-	 * @param QueueInterface $queue    Queue instance.
+	 * @param Settings $settings Settings instance.
+	 * @param Database $database Database instance.
+	 * @param UsedCSS  $used_css UsedCSS instance.
+	 * @param Queue    $queue    Queue instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Queue $queue ) {
 		$this->settings = $settings;
 		$this->database = $database;
 		$this->used_css = $used_css;
@@ -78,11 +75,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'                 => 'delete_used_css_on_update_or_delete',
 			'edit_term'                               => 'delete_term_used_css',
 			'pre_delete_term'                         => 'delete_term_used_css',
-			'init'                                    => [
-				[ 'schedule_clean_not_commonly_used_rows' ],
-				[ 'initialize_rucss_queue_runner' ],
-			],
-			'rocket_rucss_clean_rows_time_event'      => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'         => 'truncate_used_css_handler',
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
@@ -106,114 +98,13 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
+				[ 'cancel_pending_jobs_as', 16, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
 			'rocket_deactivation'                     => 'cancel_queues',
-			'shutdown'                                => 'schedule_rucss_pending_jobs_cron',
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
-	}
-
-	/**
-	 * Cron callback for deleting old rows in both table databases.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function cron_clean_rows() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		$this->database->delete_old_used_css();
-		$this->database->delete_old_resources();
-	}
-
-	/**
-	 * Schedules cron for used CSS.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function schedule_clean_not_commonly_used_rows() {
-		if (
-			! $this->settings->is_enabled()
-			&&
-			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
-		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
-
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		if ( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
-			return;
-		}
-
-		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
-	}
-
-	/**
-	 * Schedule the cron job for RUCSS pending jobs.
-	 *
-	 * @since 3.11
-	 *
-	 * @return void
-	 */
-	public function schedule_rucss_pending_jobs_cron() {
-		if ( ! did_action( 'init' ) ) {
-			return;
-		}
-
-		try {
-			if ( ! $this->settings->is_enabled() ) {
-				if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
-					return;
-				}
-
-				Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
-
-				$this->queue->cancel_pending_jobs_cron();
-				return;
-			}
-
-			/**
-			 * Filters the cron interval.
-			 *
-			 * @since 3.11
-			 *
-			 * @param int $interval Interval in seconds.
-			 */
-			$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-			Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-			$this->queue->schedule_pending_jobs_cron( $interval );
-		} catch ( \RuntimeException $exception ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
-
-			Logger::error( 'RUCSS: Action scheduler ERROR: ' . $exception->getMessage() );
-		}
-	}
-
-	/**
-	 * Initialize the queue runner for our RUCSS.
-	 *
-	 * @return void
-	 */
-	public function initialize_rucss_queue_runner() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		RUCSSQueueRunner::instance()->init();
 	}
 
 	/**
@@ -664,6 +555,29 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_safelist_items( $new_version, $old_version ) {
 		$this->settings->update_safelist_items( $old_version );
+	}
+
+	/**
+	 * Cancel pending jobs actions in Action Scheduler on update to 3.11.3
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function cancel_pending_jobs_as( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.3', '>=' ) ) {
+			return;
+		}
+
+		try {
+			$this->queue->cancel_pending_jobs_cron();
+		} catch ( \InvalidArgumentException $e ) {
+			// nothing to do.
+			return;
+		}
 	}
 
 	/**
