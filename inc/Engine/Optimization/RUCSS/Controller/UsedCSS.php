@@ -53,7 +53,7 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
@@ -77,6 +77,7 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'.wprm-advanced-list-',
 	];
 
 	/**
@@ -116,7 +117,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -137,16 +138,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize? used inside the CRON so post object isn't there.
+	 * Check if RUCSS option is enabled.
+	 *
+	 * Used inside the CRON so post object isn't there.
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
@@ -159,7 +158,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -312,7 +311,11 @@ class UsedCSS {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] ) ||
+
+				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
+				||
 				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
@@ -436,15 +439,15 @@ class UsedCSS {
 	}
 
 	/**
-	 * Process pending jobs inside CRON iteration.
+	 * Process pending jobs inside cron iteration.
 	 *
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
-		if ( ! $this->can_optimize() ) {
-			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+		if ( ! $this->is_enabled() ) {
+			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
