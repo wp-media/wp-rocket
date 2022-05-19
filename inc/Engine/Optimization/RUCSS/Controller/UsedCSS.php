@@ -308,9 +308,12 @@ class UsedCSS {
 			$clean_html
 		);
 
+		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] ) ||
+				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
 			}
