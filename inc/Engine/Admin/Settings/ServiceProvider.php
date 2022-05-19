@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Buffer\Config;
 
 /**
  * Service provider for the WP Rocket settings.
@@ -33,6 +34,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+
+		$config = new Config( [] );
+
 		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
@@ -46,6 +50,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'user_client' ) );
 		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'settings_page' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $config )
 			->addTag( 'admin_subscriber' );
 	}
 }
