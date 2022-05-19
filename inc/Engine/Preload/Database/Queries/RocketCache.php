@@ -188,4 +188,12 @@ class RocketCache extends Query {
 			$this->delete_item( $row->id );
 		}
 	}
+
+	public function get_pending_jobs(int $total) {
+
+	}
+
+	public function make_status_inprogress(int $id) {
+
+	}
 }
