@@ -31,10 +31,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_buffer'                  => [ 'treeshake', 1000 ],
-			'rocket_disable_preload_fonts'   => 'maybe_disable_preload_fonts',
-			'rocket_rucss_pending_jobs_cron' => 'process_pending_jobs',
-			'rocket_rucss_job_check_status'  => 'check_job_status',
+			'rocket_buffer'                => [ 'treeshake', 1000 ],
+			'rocket_disable_preload_fonts' => 'maybe_disable_preload_fonts',
 		];
 	}
 
@@ -65,25 +63,4 @@ class Subscriber implements Subscriber_Interface {
 
 		return $value;
 	}
-
-	/**
-	 * Process pending jobs with Cron iteration.
-	 *
-	 * @return void
-	 */
-	public function process_pending_jobs() {
-		$this->used_css->process_pending_jobs();
-	}
-
-	/**
-	 * Handle job status by DB row ID.
-	 *
-	 * @param int $id DB Row ID.
-	 *
-	 * @return void
-	 */
-	public function check_job_status( int $id ) {
-		$this->used_css->check_job_status( $id );
-	}
-
 }
