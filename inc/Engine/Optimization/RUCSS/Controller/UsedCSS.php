@@ -298,7 +298,7 @@ class UsedCSS {
 		$clean_html = $this->hide_scripts( $clean_html );
 
 		$link_styles = $this->find(
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
