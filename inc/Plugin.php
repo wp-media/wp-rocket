@@ -293,6 +293,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'cache_config',
 		];
 
 		$host_type = HostResolver::get_host_service();
