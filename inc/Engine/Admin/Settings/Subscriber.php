@@ -67,10 +67,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_menu'                           => 'add_admin_page',
-			'admin_init'                           => [
-				[ 'configure' ],
-				[ 'save_permalink_structure' ],
-			],
+			'admin_init'                           => 'configure',
 			'wp_ajax_rocket_refresh_customer_data' => 'refresh_customer_data',
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
 			'rocket_settings_menu_navigation'      => [
@@ -245,34 +242,5 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->page->display_radio_options_sub_fields( $option_data['sub_fields'] );
-	}
-
-	/**
-	 * Save permalink structure to save in config
-	 *
-	 * @return void
-	 */
-	public function save_permalink_structure() {
-		if ( $this->options->has( 'permalink_structure' ) ) {
-
-			/**
-			 * Check if permalink config is the same as rocket option. bail out if the same
-			 */
-			$permalink_in_wpr_config = $this->config->get_config( 'permalink_structure' );
-			$permalink_in_wpr_option = $this->options->get( 'permalink_structure' );
-			$permalink_in_option     = get_option( 'permalink_structure' );
-
-			if ( $permalink_in_wpr_option === $permalink_in_option ) {
-				if ( $permalink_in_wpr_config === $permalink_in_wpr_option ) {
-					return;
-				}
-			}
-		}
-
-		$this->options->set( 'permalink_structure', get_option( 'permalink_structure' ) );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
-		// regenerate config file when permalink value changes.
-		rocket_generate_config_file();
 	}
 }
