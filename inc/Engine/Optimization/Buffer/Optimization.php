@@ -1,11 +1,15 @@
 <?php
-namespace WP_Rocket\Buffer;
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\Optimization\Buffer;
+
+use WP_Rocket\Buffer\Abstract_Buffer;
+use WP_Rocket\Buffer\Tests;
 
 /**
  * Handle page optimizations.
  *
- * @since  3.3
- * @author Grégory Viguier
+ * @since 3.3
  */
 class Optimization extends Abstract_Buffer {
 
@@ -14,8 +18,6 @@ class Optimization extends Abstract_Buffer {
 	 *
 	 * @var    string
 	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
 	 */
 	protected $process_id = 'optimization process';
 
@@ -30,8 +32,6 @@ class Optimization extends Abstract_Buffer {
 	 * Constructor.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param Tests $tests Tests instance.
 	 */
@@ -49,8 +49,6 @@ class Optimization extends Abstract_Buffer {
 	 * Do preliminary tests and maybe launch the buffer process.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 */
 	public function maybe_init_process() {
 		if ( ! $this->tests->can_init_process() ) {
@@ -65,8 +63,6 @@ class Optimization extends Abstract_Buffer {
 	 * Maybe optimize the page content.
 	 *
 	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
 	 *
 	 * @param  string $buffer The buffer content.
 	 * @return string         The buffered content.
