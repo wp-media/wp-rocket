@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_ExcludeJs extends TestCase {
 	private $combine_js = false;
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, 'set_combine_js' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

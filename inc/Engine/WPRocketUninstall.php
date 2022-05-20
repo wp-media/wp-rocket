@@ -32,6 +32,7 @@ class WPRocketUninstall {
 		'rocket_analytics_notice_displayed',
 		'rocketcdn_user_token',
 		'rocketcdn_process',
+		'wp_rocket_hide_deactivation_form',
 	];
 
 	/**
@@ -59,6 +60,8 @@ class WPRocketUninstall {
 		'rocket_preload_errors',
 		'rocket_database_optimization_process',
 		'rocket_database_optimization_process_complete',
+		'wp_rocket_no_licence',
+		'rocket_hide_deactivation_form',
 	];
 
 	/**
@@ -85,6 +88,23 @@ class WPRocketUninstall {
 		'busting',
 		'critical-css',
 		'used-css',
+	];
+
+	/**
+	 * WP Rocket Post MetaData Entries
+	 *
+	 * @var array
+	 */
+	private $post_meta = [
+		'minify_css',
+		'minify_js',
+		'cdn',
+		'lazyload',
+		'lazyload_iframes',
+		'async_css',
+		'defer_all_js',
+		'delay_js',
+		'remove_unused_css',
 	];
 
 	/**
@@ -179,6 +199,11 @@ class WPRocketUninstall {
 
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
+
+		// Delete all post meta related to WP Rocket.
+		foreach ( $this->post_meta as $post_meta ) {
+			delete_post_meta_by_key( "_rocket_exclude_{$post_meta}" );
+		}
 
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->options, 'delete_option' );

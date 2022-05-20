@@ -11,14 +11,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_ExcludeJqueryDefer extends TestCase {
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'exclude_jquery_defer', 14 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
 
@@ -39,9 +39,9 @@ class Test_ExcludeJqueryDefer extends TestCase {
 
 		$options = get_option( 'wp_rocket_settings' );
 
-		$this->assertSame(
-			$expected,
-			$options
-		);
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $expected );
+			$this->assertSame( $value, $expected[ $key ] );
+		}
 	}
 }

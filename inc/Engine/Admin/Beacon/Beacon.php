@@ -360,6 +360,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '6076083ff8c0ef2d98df1f97',
 					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '60d499a705ff892e6bc2a89e',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'exclude_inline_js'          => [
 				'en' => [
@@ -555,6 +559,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'rocketcdn_error'            => [
+				'en' => [
+					'id'  => '60ddc72d9e87cb3d01249270',
+					'url' => 'https://docs.wp-rocket.me/article/1608-error-notices-during-the-rocketcdn-subscription-process/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '60df1cb200fd0d7c253fc044',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1620-messages-derreur-pendant-le-processus-dabonnement/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'exclude_cdn'                => [
 				'en' => [
 					'id'  => '5434667fe4b0310ce5ee867a',
@@ -685,6 +699,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '6065cb184466ce6ddc5f05fb',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1521-utiliser-wp-rocket-sur-un-intranet-prive-ou-hors-ligne?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'fallback_css'               => [
+				'en' => [
+					'id'  => '5ec5c4072c7d3a5ea54b7de7',
+					'url' => 'https://docs.wp-rocket.me/article/1321-critical-css-issues-fouc#use-fallback-critical-css',
+				],
+				'fr' => [
+					'id'  => '5edf8a5504286306f804e1dc',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
 				],
 			],
 		];

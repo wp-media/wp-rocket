@@ -71,6 +71,15 @@ class HTML {
 		'var sc_project', // Statscounter.
 		'/jetpack/jetpack_vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack plugin lazyload.
 		'/themify-builder/themify/js/modules/fallback(\.min)?.js',
+		'handlePixMessage',
+		'var corner_video',
+		'cdn.pixfuture.com/hb_v2.js',
+		'cdn.pixfuture.com/pbix.js',
+		'served-by.pixfuture.com/www/delivery/ads.js',
+		'served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js',
+		'serv-vdo.pixfuture.com/vpaid/ads.js',
+		'wprRemoveCPCSS',
+		'window.jdgmSettings', // Judge.me plugin.
 	];
 
 	/**

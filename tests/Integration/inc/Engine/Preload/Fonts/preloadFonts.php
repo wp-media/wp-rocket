@@ -15,7 +15,7 @@ class Test_PreloadFonts extends TestCase {
 	private   $cdn;
 	private   $cnames;
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_preload_fonts' ] );
 		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_cdn' ] );
 		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cdn_cnames' ] );
@@ -24,7 +24,7 @@ class Test_PreloadFonts extends TestCase {
 
 		unset( $GLOBALS['wp'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -53,13 +53,13 @@ class Test_PreloadFonts extends TestCase {
 		$actual = $this->format_the_html( $output );
 
 		if ( empty( $expected ) ) {
-			$this->assertNotContains(
+			$this->assertStringNotContainsString(
 				'<link rel="preload" as="font"',
 				$actual
 			);
 
 		} else {
-			$this->assertContains(
+			$this->assertStringContainsString(
 				$this->format_the_html( $expected ),
 				$actual
 			);

@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_NoticeWpConfigPermissions extends AdminTestCase {
 	private static $subscriber;
 
-	public static function setUpBeforeClass() : void {
+	public static function set_up_before_class() {
 		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'admin_cache_subscriber' );
 	}

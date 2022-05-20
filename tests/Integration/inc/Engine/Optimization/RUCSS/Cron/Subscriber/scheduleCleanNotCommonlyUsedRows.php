@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::schedule_clean_not_commonly_used_rows
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
  * @group  RUCSS
  */
 class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase{
 
-	public function tearDown() : void {
+	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

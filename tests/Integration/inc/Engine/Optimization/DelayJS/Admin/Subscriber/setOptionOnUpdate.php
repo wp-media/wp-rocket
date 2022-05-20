@@ -11,15 +11,15 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_SetOptionOnUpdate extends TestCase{
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->setUpSettings();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update', 13 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->tearDownSettings();
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
