@@ -105,6 +105,13 @@ class Optimization extends Abstract_Buffer {
 
 		$this->log( 'Page optimized.', [], 'info' );
 
+		/**
+		 * Fires after processing the buffer
+		 *
+		 * @since 3.12
+		 */
+		do_action( 'after_rocket_buffer' );
+
 		return $buffer;
 	}
 }
