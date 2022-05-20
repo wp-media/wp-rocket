@@ -171,4 +171,32 @@ $(document).ready(function(){
 			}
         );
     } );
+	$( '#wpr-update-exclusion-list' ).on( 'click', function( e ) {
+		e.preventDefault();
+		/*$.post(
+			'wp-rocket/v1/wpr-dynamic-lists',
+			{
+				action: 'wpr_dynamic_lists',
+				nonce: rocket_ajax_data.nonce
+			},
+			function(response) {
+				if ( response.success ) {
+
+				}
+			}
+		);*/
+		$.ajax({
+			url: rocket_dynamic_lists.rest_url,
+			data:{
+				nonce: rocket_dynamic_lists.nonce
+			},
+			method: "PUT",
+			// or type: "PUT", if your jquery version is prior to 1.9
+			success: function(response) {
+				if ( response.success ) {
+
+				}
+			}
+		});
+	} );
 });

@@ -54,6 +54,28 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 	</div>
 
 	<?php $this->render_import_form(); ?>
+	<div class="wpr-tools">
+		<div class="wpr-tools-col">
+			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php esc_html_e( 'Update Inclusion and Exclusion List', 'rocket' ); ?></div>
+			<div class="wpr-field-description"><?php esc_html_e( 'Update Inclusion and Exclusion List', 'rocket' ); ?></div>
+			<div id="wpr-update-exclusion-msg" class="wpr-field-description"></div>
+		</div>
+		<div class="wpr-tools-col">
+			<?php
+			$this->render_action_button(
+				'link',
+				'',
+				[
+					'label'      => __( 'Update lists', 'rocket' ),
+					'attributes' => [
+						'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-chevron-down',
+						'id'=>'wpr-update-exclusion-list'
+					],
+				]
+			);
+			?>
+		</div>
+	</div>
 
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
