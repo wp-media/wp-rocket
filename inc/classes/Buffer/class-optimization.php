@@ -110,7 +110,7 @@ class Optimization extends Abstract_Buffer {
 		 *
 		 * @since 3.12
 		 */
-		do_action( 'after_rocket_buffer' );
+		do_action( 'rocket_after_process_buffer' );
 
 		return $buffer;
 	}

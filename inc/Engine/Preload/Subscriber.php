@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_buffer' => 'update_cache_row',
+			'rocket_after_process_buffer' => 'update_cache_row',
 		];
 	}
 
@@ -45,7 +45,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->query->create_or_update(
 			[
-				'url' => $url,
+				'url'    => $url,
 				'status' => 'completed',
 			]
 		);
