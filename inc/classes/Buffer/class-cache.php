@@ -684,27 +684,27 @@ class Cache extends Abstract_Buffer {
 		$permalink_last_char = substr( $permalink_structure, -1 );
 
 		// Request uri without protocol & TLD.
-		$clean_request_uri = $this->tests->get_clean_request_uri();
+		$request_uri = $this->tests->get_raw_request_uri();
 
 		// Last character of request uri.
-		$clean_request_uri_last_char = substr( $clean_request_uri, -1 );
+		$request_uri_last_char = substr( $request_uri, -1 );
 
 		// Check if permalink forces a trailing slash and update var. else set char to empty.
 		$permalink_last_char = '/' === $permalink_last_char ? '/' : '';
 
 		// Check also if request_uri has a trailing slash and update var. else set char to empty.
-		$clean_request_uri_last_char = '/' === $clean_request_uri_last_char ? '/' : '';
+		$request_uri_last_char = '/' === $request_uri_last_char ? '/' : '';
 
 		// If permalink_structure is 'plain'.
-		$clean_request_uri_last_char = '' === $permalink_structure ? '' : $clean_request_uri_last_char;
+		$request_uri_last_char = '' === $permalink_structure ? '' : $request_uri_last_char;
 
 		// Bail out if permalink structure and url are the same.
-		if ( $permalink_last_char === $clean_request_uri_last_char ) {
+		if ( $permalink_last_char === $request_uri_last_char ) {
 			return;
 		}
 
 		$protocol = $this->tests->is_ssl() ? 'https://' : 'http://';
-		$url      = $protocol . $host . rtrim( $clean_request_uri, '/' ) . $permalink_last_char . $this->tests->get_query_string();
+		$url      = $protocol . $host . rtrim( $request_uri, '/' ) . $permalink_last_char . $this->tests->get_query_string();
 		header( 'Location: ' . $url );
 		exit;
 	}
