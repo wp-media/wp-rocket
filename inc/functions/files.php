@@ -148,11 +148,9 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 		if ( 'cache_reject_ua' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_ua() . "';\n";
 		}
-
-		if ( 'permalink_structure' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . $value . "';\n";
-		}
 	}
+
+	$buffer .= '$rocket_permalink_structure = ' . get_option( 'permalink_structure' ) . ";\n";
 
 	$buffer .= '$rocket_cache_ignored_parameters = ' . call_user_func( 'var_export', rocket_get_ignored_parameters(), true ) . ";\n";
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
