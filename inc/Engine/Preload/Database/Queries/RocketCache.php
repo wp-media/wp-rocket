@@ -80,7 +80,7 @@ class RocketCache extends Query {
 		$rows = $this->query(
 			[
 				'url'       => untrailingslashit( $resource['url'] ),
-				'is_mobile' => key_exists('is_mobile', $resource)  ? $resource['is_mobile']: false,
+				'is_mobile' => key_exists( 'is_mobile', $resource ) ? $resource['is_mobile'] : false,
 			]
 		);
 
@@ -89,8 +89,8 @@ class RocketCache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => $resource['url'],
-					'is_mobile'     => key_exists('is_mobile', $resource) ? $resource['is_mobile']: false,
-					'status'        => key_exists('status', $resource) ? $resource['status']: 'pending',
+					'is_mobile'     => key_exists( 'is_mobile', $resource ) ? $resource['is_mobile'] : false,
+					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -189,11 +189,80 @@ class RocketCache extends Query {
 		}
 	}
 
-	public function get_pending_jobs(int $total) {
+	/**
+	 * Fetch pending jobs.
+	 *
+	 * @param int $total total of jobs to fetch.
+	 * @return array
+	 */
+	public function get_pending_jobs( int $total ) {
+		$inprogress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+			]
+		);
 
+		if ( $inprogress_count >= $total ) {
+			return [];
+		}
+
+		return $this->query(
+			[
+				'number'         => ( $total - $inprogress_count ),
+				'status'         => 'pending',
+				'fields'         => [
+					'id',
+					'url',
+				],
+				'job_id__not_in' => [
+					'not_in' => '',
+				],
+				'orderby'        => 'modified',
+				'order'          => 'asc',
+			]
+		);
 	}
 
-	public function make_status_inprogress(int $id) {
+	/**
+	 * Change the status from the task to inprogress.
+	 *
+	 * @param int $id id from the task.
+	 * @return bool
+	 */
+	public function make_status_inprogress( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'status' => 'in-progress',
+			]
+		);
+	}
 
+	/**
+	 * Make the status from the task to complete.
+	 *
+	 * @param string $url url from the task.
+	 * @return bool
+	 */
+	public function make_status_complete( string $url ) {
+		$tasks = $this->query(
+			[
+				'url' => $url,
+			]
+			);
+
+		if ( count( $tasks ) === 0 ) {
+			return false;
+		}
+
+		$task = array_pop( $tasks );
+
+		return $this->update_item(
+			$task->id,
+			[
+				'status' => 'completed',
+			]
+			);
 	}
 }

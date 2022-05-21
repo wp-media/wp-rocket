@@ -17,6 +17,12 @@ trait DBTrait {
 		}
 	}
 
+	public static function addCache( array $resource ): bool {
+		$container = apply_filters( 'rocket_container', null );
+		$cache_query = $container->get( 'preload_caches_query' );
+		return $cache_query->query( $resource );
+	}
+
 	public static function installFresh() {
 		$container             = apply_filters( 'rocket_container', null );
 

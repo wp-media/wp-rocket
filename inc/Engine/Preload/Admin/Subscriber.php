@@ -10,23 +10,29 @@ use WP_Rocket\Logger\Logger;
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Settings instance
+	 * Settings instance.
 	 *
 	 * @var Settings
 	 */
 	protected $settings;
 
 	/**
+	 * Preload queue.
+	 *
 	 * @var Queue
 	 */
 	protected $queue;
 
 	/**
+	 * Preload queue runner.
+	 *
 	 * @var PreloadQueueRunner
 	 */
-	protected $queueRunner;
+	protected $queue_runner;
 
 	/**
+	 * Logger instance.
+	 *
 	 * @var Logger
 	 */
 	protected $logger;
@@ -34,13 +40,16 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Settings $settings Settings instance.
+	 * @param Settings           $settings Settings instance.
+	 * @param Queue              $queue preload queue.
+	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
+	 * @param Logger             $logger logger instance.
 	 */
-	public function __construct( Settings $settings, Queue $queue, PreloadQueueRunner $preloadQueueRunner, Logger $logger) {
-		$this->settings = $settings;
-		$this->queue = $queue;
-		$this->queueRunner = $preloadQueueRunner;
-		$this->logger = $logger;
+	public function __construct( Settings $settings, Queue $queue, PreloadQueueRunner $preload_queue_runner, Logger $logger ) {
+		$this->settings     = $settings;
+		$this->queue        = $queue;
+		$this->queue_runner = $preload_queue_runner;
+		$this->logger       = $logger;
 	}
 
 	/**
@@ -63,6 +72,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->settings->maybe_display_preload_notice();
 	}
 
+	/**
+	 * Set the preload queue runner.
+	 *
+	 * @return void
+	 */
 	public function schedule_preload_pending_jobs_cron() {
 		if ( ! $this->settings->is_enabled() ) {
 			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
@@ -75,7 +89,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->queueRunner->init();
+		$this->queue_runner->init();
 
 		/**
 		 * Filters the cron interval.

@@ -11,6 +11,10 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::schedule_preload_pending_jobs_cron
+ * @group  Preload
+ */
 class Test_SchedulePreloadPendingJobsCron extends TestCase
 {
 	protected $settings;

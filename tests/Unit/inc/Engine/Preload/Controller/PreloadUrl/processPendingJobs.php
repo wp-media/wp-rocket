@@ -9,6 +9,10 @@ use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::process_pending_jobs
+ * @group  Preload
+ */
 class Test_processPendingJobs extends TestCase
 {
 	protected $queue;

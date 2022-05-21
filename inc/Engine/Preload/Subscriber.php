@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -13,6 +14,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @var LoadInitialSitemap
 	 */
 	protected $controller;
+
+
 
 	/**
 	 * Creates an instance of the class.

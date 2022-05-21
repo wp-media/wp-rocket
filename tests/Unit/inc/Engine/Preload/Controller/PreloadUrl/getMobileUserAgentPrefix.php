@@ -9,6 +9,10 @@ use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::get_mobile_user_agent_prefix
+ * @group  Preload
+ */
 class Test_getMobileUserAgentPrefix extends TestCase
 {
 	protected $queue;

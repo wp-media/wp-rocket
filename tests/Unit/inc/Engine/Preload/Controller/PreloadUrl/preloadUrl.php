@@ -10,6 +10,10 @@ use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
+ * @group  Preload
+ */
 class Test_PreloadUrl extends TestCase
 {
 	protected $queue;
@@ -34,6 +38,7 @@ class Test_PreloadUrl extends TestCase
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 		$this->configureMobileRequest($config);
 		$this->controller->preload_url($config['url']);
+		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
 	}
 
 
