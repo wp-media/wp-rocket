@@ -12,8 +12,6 @@ use WP_Rocket\ThirdParty\Hostings\O2Switch;
  * @group  ThirdParty
  */
 class Test_RemoveRegexFromPurgeUrl extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	/**
 	 * @dataProvider configTestData
 	 */

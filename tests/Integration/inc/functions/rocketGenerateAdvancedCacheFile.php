@@ -26,16 +26,16 @@ class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 
 	private $dicontainer;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Set up the container.
 		$this->dicontainer = new DIContainer();
 		$this->dicontainer->setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->dicontainer->tearDown();
 

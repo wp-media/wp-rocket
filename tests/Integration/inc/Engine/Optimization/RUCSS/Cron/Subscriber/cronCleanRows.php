@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::cron_clean_rows
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::cron_clean_rows
  *
  * @group  RUCSS
  */
@@ -16,22 +16,22 @@ class Test_CronCleanRows extends TestCase {
 
 	private $input;
 
-	public static function setUpBeforeClass(): void {
+	public static function set_up_before_class() {
 		self::installFresh();
 
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
+	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

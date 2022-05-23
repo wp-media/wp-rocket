@@ -186,7 +186,7 @@ function rocket_do_options_export() {
 	$site_name = $site_name['host'] . $site_name['path'];
 	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 	$gz        = 'gz' . strrev( 'etalfed' );
-	$options   = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
+	$options   = wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ); // do not use get_rocket_option() here.
 	nocache_headers();
 	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -425,12 +425,6 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = count( $data['cdn_cnames'] );
 	} else {
 		$data['cdn_cnames'] = 0;
-	}
-
-	if ( ! empty( $data['sitemaps'] ) && is_array( $data['sitemaps'] ) ) {
-		$data['sitemaps'] = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
-	} else {
-		$data['sitemaps'] = [];
 	}
 
 	return $data;

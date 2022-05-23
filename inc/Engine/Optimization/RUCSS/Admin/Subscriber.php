@@ -4,11 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
-use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class Subscriber implements Subscriber_Interface {
@@ -36,20 +34,19 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Queue instance
 	 *
-	 * @var QueueInterface
+	 * @var Queue
 	 */
 	private $queue;
-
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings       $settings Settings instance.
-	 * @param Database       $database Database instance.
-	 * @param UsedCSS        $used_css UsedCSS instance.
-	 * @param QueueInterface $queue    Queue instance.
+	 * @param Settings $settings Settings instance.
+	 * @param Database $database Database instance.
+	 * @param UsedCSS  $used_css UsedCSS instance.
+	 * @param Queue    $queue    Queue instance.
 	 */
-	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, QueueInterface $queue ) {
+	public function __construct( Settings $settings, Database $database, UsedCSS $used_css, Queue $queue ) {
 		$this->settings = $settings;
 		$this->database = $database;
 		$this->used_css = $used_css;
@@ -65,127 +62,74 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'         => 'add_options_first_time',
-			'rocket_input_sanitize'                => [ 'sanitize_options', 14, 2 ],
-			'update_option_' . $slug               => [
+			'rocket_first_install_options'            => 'add_options_first_time',
+			'rocket_input_sanitize'                   => [ 'sanitize_options', 14, 2 ],
+			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
-				[ 'clean_used_css_with_cdn', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
-			'switch_theme'                         => 'truncate_used_css',
-			'wp_trash_post'                        => 'delete_used_css_on_update_or_delete',
-			'delete_post'                          => 'delete_used_css_on_update_or_delete',
-			'clean_post_cache'                     => 'delete_used_css_on_update_or_delete',
-			'wp_update_comment_count'              => 'delete_used_css_on_update_or_delete',
-			'edit_term'                            => 'delete_term_used_css',
-			'pre_delete_term'                      => 'delete_term_used_css',
-			'init'                                 => [
-				[ 'schedule_clean_not_commonly_used_rows' ],
-				[ 'schedule_rucss_pending_jobs_cron' ],
-			],
-			'rocket_rucss_clean_rows_time_event'   => 'cron_clean_rows',
-			'admin_post_rocket_clear_usedcss'      => 'truncate_used_css_handler',
-			'admin_post_rocket_clear_usedcss_url'  => 'clear_url_usedcss',
-			'admin_notices'                        => [
+			'switch_theme'                            => 'truncate_used_css',
+			'wp_trash_post'                           => 'delete_used_css_on_update_or_delete',
+			'delete_post'                             => 'delete_used_css_on_update_or_delete',
+			'clean_post_cache'                        => 'delete_used_css_on_update_or_delete',
+			'wp_update_comment_count'                 => 'delete_used_css_on_update_or_delete',
+			'edit_term'                               => 'delete_term_used_css',
+			'pre_delete_term'                         => 'delete_term_used_css',
+			'admin_post_rocket_clear_usedcss'         => 'truncate_used_css_handler',
+			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
+			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
+				[ 'display_as_missed_tables_notice' ],
+				[ 'display_wrong_license_notice' ],
 			],
-			'rocket_admin_bar_items'               => [
+			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
 				[ 'add_clear_usedcss_bar_item' ],
 			],
-			'rocket_before_add_field_to_settings'  => [
+			'rocket_before_add_field_to_settings'     => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'rocket_localize_admin_script'         => 'add_localize_script_data',
+			'rocket_localize_admin_script'            => 'add_localize_script_data',
 			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
-			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_css', 11, 2 ],
-			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 14, 2 ],
-			'wp_ajax_rocket_spawn_cron'            => 'spawn_cron',
-			'rocket_deactivation'                  => 'cancel_queues',
+			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
+			'wp_rocket_upgrade'                       => [
+				[ 'set_option_on_update', 14, 2 ],
+				[ 'update_safelist_items', 15, 2 ],
+				[ 'cancel_pending_jobs_as', 16, 2 ],
+			],
+			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
+			'rocket_deactivation'                     => 'cancel_queues',
+			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
+			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
 	}
 
 	/**
-	 * Cron callback for deleting old rows in both table databases.
+	 * Checks if Action scheduler tables are there or not.
 	 *
-	 * @since 3.9
+	 * @since 3.11.0.3
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function cron_clean_rows() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
+	private function is_valid_as_tables() {
+		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
+		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
+			return 4 === (int) $cached_count;
 		}
 
-		$this->database->delete_old_used_css();
-		$this->database->delete_old_resources();
-	}
+		global $wpdb;
 
-	/**
-	 * Schedules cron for used CSS.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function schedule_clean_not_commonly_used_rows() {
-		if (
-			! $this->settings->is_enabled()
-			&&
-			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
-		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$found_as_tables = $wpdb->get_col(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
+		);
 
-			return;
-		}
+		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
 
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		if ( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
-			return;
-		}
-
-		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
-	}
-
-	/**
-	 * Schedule the cron job for RUCSS pending jobs.
-	 *
-	 * @since 3.11
-	 *
-	 * @return void
-	 */
-	public function schedule_rucss_pending_jobs_cron() {
-		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
-				return;
-			}
-
-			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
-
-			$this->queue->cancel_pending_jobs_cron();
-			return;
-		}
-
-		RUCSSQueueRunner::instance()->init();
-
-		/**
-		 * Filters the cron interval.
-		 *
-		 * @since 3.11
-		 *
-		 * @param int $interval Interval in seconds.
-		 */
-		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-		$this->queue->schedule_pending_jobs_cron( $interval );
+		return 4 === count( $found_as_tables );
 	}
 
 	/**
@@ -315,40 +259,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
-			return;
-		}
-
-		$this->delete_used_css_rows();
-
-		$this->set_notice_transient();
-	}
-
-	/**
-	 * Truncate UsedCSS DB Table when CDN option is changed.
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $old_value An array of submitted values for the settings.
-	 * @param array $value     An array of previous values for the settings.
-	 *
-	 * @return void
-	 */
-	public function clean_used_css_with_cdn( $old_value, $value ) {
-		if ( ! isset( $value['cdn'], $old_value['cdn'] ) ) {
-			return;
-		}
-
-		if ( empty( $value['remove_unused_css'] ) ) {
-			return;
-		}
-
-		if (
-			$value['cdn'] === $old_value['cdn']
-			&&
-			$value['cdn_cnames'] === $old_value['cdn_cnames']
-			&&
-			$value['cdn_zone'] === $old_value['cdn_zone']
-		) {
 			return;
 		}
 
@@ -501,6 +411,40 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Display a notification on wrong license.
+	 *
+	 * @return void
+	 */
+	public function display_wrong_license_notice() {
+		$transient = get_transient( 'wp_rocket_no_licence' );
+
+		if ( ! $transient ) {
+			return;
+		}
+
+		$this->settings->display_wrong_license_notice();
+	}
+
+	/**
+	 * Display admin notice when detecting any missed Action scheduler tables.
+	 *
+	 * @since 3.11.0.3
+	 *
+	 * @return void
+	 */
+	public function display_as_missed_tables_notice() {
+		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
+			return;
+		}
+
+		if ( $this->is_valid_as_tables() ) {
+			return;
+		}
+
+		$this->settings->display_as_missed_tables_notice();
+	}
+
+	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -600,6 +544,43 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Updates safelist items for new SaaS compatibility
+	 *
+	 * @since 3.11.0.2
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function update_safelist_items( $new_version, $old_version ) {
+		$this->settings->update_safelist_items( $old_version );
+	}
+
+	/**
+	 * Cancel pending jobs actions in Action Scheduler on update to 3.11.3
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function cancel_pending_jobs_as( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.3', '>=' ) ) {
+			return;
+		}
+
+		try {
+			$this->queue->cancel_pending_jobs_cron();
+		} catch ( \InvalidArgumentException $e ) {
+			// nothing to do.
+			return;
+		}
+	}
+
+	/**
 	 * Sets the processing transient if RUCSS is enabled
 	 *
 	 * @since 3.11
@@ -675,5 +656,26 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+	}
+
+	/**
+	 * Delete the transient for Action scheduler once admin visits the AS tools page.
+	 *
+	 * @return void
+	 */
+	public function delete_as_tables_transient_on_tools_page() {
+		delete_transient( 'rocket_rucss_as_tables_count' );
+	}
+
+	/**
+	 * Disable RUCSS on wrong license.
+	 *
+	 * @return bool
+	 */
+	public function disable_russ_on_wrong_license() {
+		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+			return false;
+		}
+		return null;
 	}
 }

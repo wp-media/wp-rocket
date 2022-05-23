@@ -7,9 +7,11 @@ use SplFileInfo;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
+	use RegexTrait;
 	/**
 	 * Options_Data instance
 	 *
@@ -98,7 +100,10 @@ class ImageDimensions {
 			$images_regex = '<\s*picture[^>]*>.*<\s*\/\s*picture\s*>(*SKIP)(*FAIL)|' . $images_regex;
 		}
 
-		preg_match_all( "/{$images_regex}/Uis", $html, $images_match );
+		$clean_html = $this->hide_scripts( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+
+		preg_match_all( "/{$images_regex}/Uis", $clean_html, $images_match );
 
 		if ( empty( $images_match ) ) {
 			Logger::debug( 'Specify Image Dimensions failed because there is no image without dimensions on this page.' );
@@ -506,7 +511,7 @@ class ImageDimensions {
 			$size[0] = $width;
 			$size[1] = $height;
 			$size[2] = 0;
-			$size[3] = 'width="' . $width . '" height="' . $height . '"';
+			$size[3] = 'width="' . absint( $width ) . '" height="' . absint( $height ) . '"';
 
 			return $size;
 		}
@@ -522,7 +527,7 @@ class ImageDimensions {
 				$size[0] = $view_box[2];
 				$size[1] = $view_box[3];
 				$size[2] = 0;
-				$size[3] = 'width="' . $size[0] . '" height="' . $size[1] . '"';
+				$size[3] = 'width="' . absint( $size[0] ) . '" height="' . absint( $size[1] ) . '"';
 
 				return $size;
 			}

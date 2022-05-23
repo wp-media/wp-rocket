@@ -19,8 +19,8 @@ class Test_DisplaySuccessNotice extends TestCase {
 	private $beacon;
 	private $settings;
 
-	public function set_up() {
-		parent::set_up();
+	public function setUp(): void {
+		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->beacon =  Mockery::mock( Beacon::class );
