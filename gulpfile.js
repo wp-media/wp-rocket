@@ -26,15 +26,7 @@ gulp.task('sass_rtl', function () {
       .pipe(gulp.dest('assets/css'));
   });
 
-/* Task to compile sass modal */
-gulp.task('sass_modal', function () {
-  return gulp.src('./src/scss/modal.scss')
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-    .pipe(rename('wpr-modal.css'))
-    .pipe(gulp.dest('assets/css'));
-});
-
-gulp.task('sass_all', gulp.parallel('sass_admin', 'sass_rtl', 'sass_modal'));
+gulp.task('sass_all', gulp.parallel('sass_admin', 'sass_rtl'));
 
 function sassWatch() {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass_all'));
