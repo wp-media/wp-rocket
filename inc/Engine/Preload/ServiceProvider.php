@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -50,15 +51,21 @@ class ServiceProvider extends AbstractServiceProvider {
 		$queue = $this->getContainer()->get( 'preload_queue' );
 		$this->getContainer()->add( 'sitemap_parser', 'WP_Rocket\Engine\Preload\Frontend\SitemapParser' );
 		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
+		$this->getContainer()->add( 'preload_url_controller', 'WP_Rocket\Engine\Preload\Controller\PreloadUrl' )
+			->addArgument( $options )
+			->addArgument( $queue )
+			->addArgument( $cache_query );
 		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\ParseSitemap' )
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
+		$preload_url_controller = $this->getContainer()->get( 'preload_url_controller' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
 			->addArgument( $queue );
 		$this->getContainer()->add( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $parse_sitemap_controller )
+			->addArgument( $preload_url_controller )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )

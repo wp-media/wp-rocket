@@ -61,6 +61,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		$this->preload_url( $url );
+		$this->preload_controller->preload_url( $url );
 	}
 }

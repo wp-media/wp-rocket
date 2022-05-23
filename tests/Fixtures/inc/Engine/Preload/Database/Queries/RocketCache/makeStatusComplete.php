@@ -14,6 +14,7 @@ return [
 				'url' => 'url',
 			],
 			'results' => [],
+			'update_status' => false,
 		],
 		'expected' => false
 	],
@@ -23,9 +24,11 @@ return [
 			'query_params' => [
 				'url' => 'url',
 			],
+			'task_id' => 10,
 			'results' => [
 				$rocket_cache_row
 			],
+			'update_status' => false,
 		],
 		'expected' => false
 	],
@@ -35,9 +38,11 @@ return [
 			'query_params' => [
 				'url' => 'url',
 			],
+			'task_id' => 10,
 			'results' => [
 				$rocket_cache_row
 			],
+			'update_status' => true,
 		],
 		'expected' => true
 	]

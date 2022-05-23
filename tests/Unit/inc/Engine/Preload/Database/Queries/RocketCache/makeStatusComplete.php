@@ -19,13 +19,13 @@ class Test_MakeStatusComplete extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'delete_item', 'query']);
+		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'delete_item', 'query', 'update_item']);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	protected function testShouldReturnPending($config, $expected) {
+	public function testShouldReturnPending($config, $expected) {
 		$this->query->expects(self::once())->method('query')->with($config['query_params'])->willReturn($config['results']);
 		$this->configureUpdate($config);
 		$this->assertSame($expected, $this->query->make_status_complete($config['url']));

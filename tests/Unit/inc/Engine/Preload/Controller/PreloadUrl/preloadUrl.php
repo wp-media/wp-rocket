@@ -37,8 +37,8 @@ class Test_PreloadUrl extends TestCase
 		$this->configureRequest($config);
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 		$this->configureMobileRequest($config);
-		$this->controller->preload_url($config['url']);
 		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
+		$this->controller->preload_url($config['url']);
 	}
 
 

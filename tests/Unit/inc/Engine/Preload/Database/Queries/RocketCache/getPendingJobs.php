@@ -15,17 +15,17 @@ class Test_GetPendingJobs extends TestCase {
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'delete_item']);
+		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'query']);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	protected function testShouldReturnPending($config, $expected) {
-		$this->query->expects(self::once())->method('query')->withConsecutive([
+	public function testShouldReturnPending($config, $expected) {
+		$this->query->expects(self::atLeastOnce())->method('query')->withConsecutive([[
 			'count'  => true,
 			'status' => 'in-progress',
-		], [
+		]], [[
 			'number'         => ( $config['total'] - $config['in_progress'] ),
 			'status'         => 'pending',
 			'fields'         => [
@@ -37,7 +37,7 @@ class Test_GetPendingJobs extends TestCase {
 			],
 			'orderby'        => 'modified',
 			'order'          => 'asc',
-		])->willReturnOnConsecutiveCalls($config['in_progress'], $config['results']);
+		]])->willReturnOnConsecutiveCalls($config['in_progress'], $config['results']);
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}
 
