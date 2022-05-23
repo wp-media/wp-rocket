@@ -77,6 +77,7 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'.wprm-advanced-list-',
 	];
 
 	/**
@@ -296,7 +297,7 @@ class UsedCSS {
 		$clean_html = $this->hide_scripts( $clean_html );
 
 		$link_styles = $this->find(
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
@@ -309,6 +310,8 @@ class UsedCSS {
 		foreach ( $link_styles as $style ) {
 			if (
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 			) {
