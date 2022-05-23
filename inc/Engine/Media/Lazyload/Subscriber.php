@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\RocketLazyload\Assets;
 use WP_Rocket\Dependencies\RocketLazyload\Image;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -15,6 +16,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface {
+	use RegexTrait;
+
 	const SCRIPT_VERSION = '17.5';
 
 	/**
@@ -356,8 +359,8 @@ class Subscriber implements Subscriber_Interface {
 			return $html;
 		}
 
-		$buffer = $this->ignore_scripts( $html );
-		$buffer = $this->ignore_noscripts( $buffer );
+		$buffer = $this->hide_scripts( $html );
+		$buffer = $this->hide_noscripts( $buffer );
 
 		if ( $this->can_lazyload_iframes() ) {
 			$args = [
@@ -370,6 +373,9 @@ class Subscriber implements Subscriber_Interface {
 		if ( $this->can_lazyload_images() ) {
 			if ( ! $this->is_native_images() ) {
 				$html = $this->image->lazyloadPictures( $html, $buffer );
+
+				$buffer = $this->hide_scripts( $html );
+				$buffer = $this->hide_noscripts( $buffer );
 			}
 
 			$html = $this->image->lazyloadImages( $html, $buffer, $this->is_native_images() );
@@ -499,18 +505,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Remove inline scripts from the HTML to parse
-	 *
-	 * @since 3.3
-	 *
-	 * @param string $html HTML content.
-	 * @return string
-	 */
-	private function ignore_scripts( $html ) {
-		return preg_replace( '/<script\b(?:[^>]*)>(?:.+)?<\/script>/Umsi', '', $html );
-	}
-
-	/**
 	 * Checks if we can lazyload images.
 	 *
 	 * @since 3.3
@@ -552,18 +546,6 @@ class Subscriber implements Subscriber_Interface {
 		 * @param bool $do_rocket_lazyload_iframes True to apply lazyload, false otherwise.
 		 */
 		return apply_filters( 'do_rocket_lazyload_iframes', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	}
-
-	/**
-	 * Remove noscript tags from the HTML to parse
-	 *
-	 * @since 3.3
-	 *
-	 * @param string $html HTML content.
-	 * @return string
-	 */
-	private function ignore_noscripts( $html ) {
-		return preg_replace( '#<noscript>(?:.+)</noscript>#Umsi', '', $html );
 	}
 
 	/**

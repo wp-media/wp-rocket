@@ -16,17 +16,16 @@ class Test_RunPreload extends PreloadTestCase {
 	protected $setUpFilters = true;
 	protected $tearDownFilters = true;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->markTestSkipped(
 			'Skipping sitemap test'
 		  );
 	}
 
-	public function tearDown(): void {
-		parent::tearDown();
-
+	public function tear_down() {
+		parent::tear_down();
 		$this->post_id = null;
 	}
 

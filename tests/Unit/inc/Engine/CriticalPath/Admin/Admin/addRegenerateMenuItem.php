@@ -22,17 +22,17 @@ class Test_AddRegenerateMenuItem extends TestCase {
 
 	private $admin;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Admin_Bar.php';
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setUpMocks();
-		Functions\stubTranslationFunctions();
+		$this->stubTranslationFunctions();
 
 		$this->admin = new Admin(
 			$this->options,
@@ -40,10 +40,10 @@ class Test_AddRegenerateMenuItem extends TestCase {
 		);
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_SERVER['REQUEST_URI'] );
+
+		parent::tearDown();
 	}
 
 	/**

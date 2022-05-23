@@ -112,9 +112,6 @@ function rocket_first_install() {
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
 				'manual_preload'              => 1,
-				'sitemap_preload'             => 0,
-				'sitemap_preload_url_crawl'   => '500000',
-				'sitemaps'                    => [],
 				'dns_prefetch'                => 0,
 				'preload_fonts'               => [],
 				'database_revisions'          => 0,
@@ -306,8 +303,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.10.8', '<' ) ) {
+	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
 		rocket_generate_config_file();
 	}
+
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

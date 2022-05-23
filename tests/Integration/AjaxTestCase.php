@@ -20,8 +20,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 	protected $config;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::hasAdminCapBeforeClass();
 
@@ -36,9 +36,7 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
+	public static function tear_down_after_class() {
 		CapTrait::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
@@ -52,9 +50,13 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
@@ -63,23 +65,21 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 		$this->stubRocketGetConstant();
 
-		parent::setUp();
-
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $_POST['action'], $_POST['nonce'] );
 		$this->action = null;
 		CapTrait::resetAdminCap();
 
-		parent::tearDown();
-
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
 	}
 
 	public function configTestData() {

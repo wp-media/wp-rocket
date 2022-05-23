@@ -15,14 +15,14 @@ abstract class PreloadTestCase extends TestCase {
 	protected $setUpFilters       = false;
 	protected $tearDownFilters    = false;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Process_Wrapper.php';
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );
 
@@ -39,8 +39,8 @@ abstract class PreloadTestCase extends TestCase {
 		return $this->site_url;
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
 

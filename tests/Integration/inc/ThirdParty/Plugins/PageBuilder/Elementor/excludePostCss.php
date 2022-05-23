@@ -10,10 +10,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group ThirdParty
  */
 class Test_ExcludePostCss extends TestCase {
-	public function tearDown() {
+	public function tear_down() {
 		delete_option( 'elementor_css_print_method' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

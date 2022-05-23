@@ -15,8 +15,6 @@ if ( class_exists( 'autoptimizeCache' ) ) :
 	function rocket_maybe_deactivate_lazyload( $old_value, $value ) {
 		if ( empty( $old_value['autoptimize_imgopt_checkbox_field_3'] ) && ! empty( $value['autoptimize_imgopt_checkbox_field_3'] ) ) {
 			update_rocket_option( 'lazyload', 0 );
-			update_rocket_option( 'lazyload_iframes', 0 );
-			update_rocket_option( 'lazyload_youtube', 0 );
 		}
 	}
 	add_action( 'update_option_autoptimize_imgopt_settings', 'rocket_maybe_deactivate_lazyload', 10, 2 );
@@ -107,8 +105,6 @@ function rocket_activate_autoptimize() {
 
 	if ( ! empty( $lazyload['autoptimize_imgopt_checkbox_field_3'] ) ) {
 		update_rocket_option( 'lazyload', 0 );
-		update_rocket_option( 'lazyload_iframes', 0 );
-		update_rocket_option( 'lazyload_youtube', 0 );
 	}
 }
 add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize', 11 );

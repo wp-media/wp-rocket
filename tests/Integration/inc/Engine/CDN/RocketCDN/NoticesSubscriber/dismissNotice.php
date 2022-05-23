@@ -27,17 +27,17 @@ class Test_DismissNotice extends AjaxTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
 		$this->action = 'rocketcdn_dismiss_notice';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		delete_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice' );
+
+		parent::tear_down();
 	}
 
 	/**

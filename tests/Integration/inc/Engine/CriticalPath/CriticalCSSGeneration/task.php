@@ -21,8 +21,8 @@ class test_Task extends TestCase {
 	protected static $generation;
 	protected static $processor;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		set_transient( 'rocket_critical_css_generation_process_running', [
 			'total'     => 1,
@@ -33,11 +33,11 @@ class test_Task extends TestCase {
 		self::$generation = new CriticalCSSGeneration( self::$processor );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

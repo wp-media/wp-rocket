@@ -26,8 +26,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'cache_mobile'                => true,
 		'purge_cron_interval'         => true,
 		'purge_cron_unit'             => true,
-		'sitemap_preload'             => true,
-		'sitemaps'                    => true,
 		'database_revisions'          => true,
 		'database_auto_drafts'        => true,
 		'database_trashed_posts'      => true,

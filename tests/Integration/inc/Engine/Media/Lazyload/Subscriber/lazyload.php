@@ -14,8 +14,8 @@ class Test_Lazyload extends TestCase {
 	private $lazyload;
 	private $iframes;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->lazyload  = null;
 		$this->iframes   = null;
@@ -23,7 +23,7 @@ class Test_Lazyload extends TestCase {
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lazyload', 18 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
@@ -36,7 +36,7 @@ class Test_Lazyload extends TestCase {
 
 		$this->restoreWpFilter( 'rocket_buffer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
