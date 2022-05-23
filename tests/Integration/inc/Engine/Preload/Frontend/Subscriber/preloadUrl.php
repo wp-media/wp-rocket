@@ -33,13 +33,13 @@ class Test_PreloadUrl extends AdminTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		add_filter('get_rocket_option_mobile_cache', [$this, 'mobile_cache']);
+		add_filter('pre_get_rocket_option_cache_mobile', [$this, 'mobile_cache']);
 	}
 
 	public function tearDown(): void
 	{
 		parent::tearDown();
-		remove_filter('get_rocket_option_mobile_cache', [$this, 'mobile_cache']);
+		remove_filter('pre_get_rocket_option_cache_mobile', [$this, 'mobile_cache']);
 	}
 
 	/**
@@ -49,14 +49,14 @@ class Test_PreloadUrl extends AdminTestCase
 
 		$this->mobile_cache = $config['mobile_cache'];
 
-		self::addCache($config['existing_job']);
 
+		self::addCache($config['existing_job']);
 		$this->configureRequest($config);
 		$this->configureMobileRequest($config);
 
 		do_action('rocket_preload_job_preload_url', $config['url']);
 
-		$this->assertEquals($expected, self::cacheFound(['url' => $config['url']]));
+		$this->assertTrue(self::cacheFound($expected));
 	}
 
 	protected function configureRequest($config) {
