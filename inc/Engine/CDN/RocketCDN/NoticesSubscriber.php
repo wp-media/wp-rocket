@@ -2,6 +2,7 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -18,15 +19,24 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $api_client;
 
 	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient $api_client RocketCDN API Client instance.
+	 * @param Beacon    $beacon  Beacon instance.
 	 * @param string    $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, $template_path ) {
+	public function __construct( APIClient $api_client, Beacon $beacon, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api_client = $api_client;
+		$this->beacon     = $beacon;
 	}
 
 	/**
@@ -192,14 +202,24 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		];
 
 		if ( is_wp_error( $pricing ) ) {
+			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
+			$more_info = sprintf(
+				// translators: %1$is = opening link tag, %2$s = closing link tag.
+				__( '%1$sMore Info%2$s', 'rocket' ),
+				'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			);
+
+			$message = $pricing->get_error_message() . ' ' . $more_info;
+
 			$big_cta_data = [
 				'container_class' => $cta_big_class,
 				'nopromo_variant' => $nopromo_variant,
 				'error'           => true,
-				'message'         => $pricing->get_error_message(),
+				'message'         => $message,
 			];
 		} else {
-			$current_price      = number_format_i18n( $this->normalize_number( $pricing['monthly_price'] ), 2 );
+			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
 			$promotion_campaign = '';
 			$end_date           = strtotime( $pricing['end_date'] );
 			$promotion_end_date = '';
@@ -211,7 +231,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			) {
 				$promotion_campaign = $pricing['discount_campaign_name'];
 				$regular_price      = $current_price;
-				$current_price      = number_format_i18n( $this->normalize_number( $pricing['discounted_price_monthly'] ), 2 ) . '*';
+				$current_price      = number_format_i18n( $pricing['discounted_price_monthly'], 2 ) . '*';
 				$nopromo_variant    = '';
 				$promotion_end_date = date_i18n( get_option( 'date_format' ), $end_date );
 			}
@@ -222,7 +242,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'promotion_end_date' => $promotion_end_date,
 				'nopromo_variant'    => $nopromo_variant,
 				'regular_price'      => $regular_price,
-				'current_price'      => $this->normalize_number( $current_price ),
+				'current_price'      => $current_price,
 			];
 		}
 
@@ -277,12 +297,26 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		$message = $purge_response['message'];
+
+		if ( 'error' === $purge_response['status'] ) {
+			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
+			$more_info = sprintf(
+				// translators: %1$is = opening link tag, %2$s = closing link tag.
+				__( '%1$sMore Info%2$s', 'rocket' ),
+				'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			);
+
+			$message .= ' ' . $more_info;
+		}
+
 		delete_transient( 'rocketcdn_purge_cache_response' );
 
 		rocket_notice_html(
 			[
 				'status'  => $purge_response['status'],
-				'message' => $purge_response['message'],
+				'message' => $message,
 			]
 		);
 	}
@@ -296,16 +330,5 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
-	}
-
-	/**
-	 * Normalize the number by replacing comma with a dot.
-	 *
-	 * @param string|int $number Number to be normalized.
-	 *
-	 * @return string|float
-	 */
-	private function normalize_number( $number ) {
-		return str_replace( ',', '.', $number );
 	}
 }

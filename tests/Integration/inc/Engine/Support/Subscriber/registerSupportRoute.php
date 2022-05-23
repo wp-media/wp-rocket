@@ -20,14 +20,14 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	private $consumer_key;
 	private $consumer_email;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
@@ -43,7 +43,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_version;
 
 		$wp_version = $this->wp_version;
@@ -53,7 +53,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		$this->resetStubProperties();
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testShouldRegisterRoute() {
@@ -74,10 +74,20 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
 		];
 
-		$this->assertArraySubset(
-			$expected,
-			$this->requestSupportEndpoint( $body )
-		);
+		$actual = $this->requestSupportEndpoint( $body );
+
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+			
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	protected function requestSupportEndpoint(  array $body_params = [] ) {

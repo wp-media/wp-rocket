@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.1', '7.2']
@@ -70,6 +70,9 @@ jobs:
 
     - name: Remove unmet dependencies by legacy versions
       run: composer remove --dev --no-scripts phpstan/phpstan szepeviktor/phpstan-wordpress coenjacobs/mozart
+
+    - name: Require PHPUnit 7.5 for WP compatibility
+      run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts

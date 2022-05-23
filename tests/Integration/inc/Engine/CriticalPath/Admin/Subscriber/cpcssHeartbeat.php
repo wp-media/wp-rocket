@@ -38,8 +38,8 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	protected $async_css;
 	protected $subscriber;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		CapTrait::setAdminCap();
 
@@ -47,8 +47,8 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->action = 'rocket_cpcss_heartbeat';
 
@@ -60,10 +60,10 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
-		parent::tearDown();
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		delete_transient( 'rocket_critical_css_generation_process_running' );

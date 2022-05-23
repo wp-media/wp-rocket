@@ -34,6 +34,7 @@ function load_original_files_before_mocking() {
 
 	$fixtures = [
 		'/WP_Error.php',
+		'/WP.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
 		'/WP_Sitemaps_Index.php',
@@ -44,3 +45,4 @@ function load_original_files_before_mocking() {
 }
 
 load_original_files_before_mocking();
+require_once WP_ROCKET_PLUGIN_ROOT . 'inc/compat.php';
