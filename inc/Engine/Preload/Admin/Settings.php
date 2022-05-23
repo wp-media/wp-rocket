@@ -85,6 +85,6 @@ class Settings {
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
-		return (bool) $this->options->get( 'sitemap_preload', 0 );
+		return (bool) $this->options->get( 'manual_preload', 0 );
 	}
 }

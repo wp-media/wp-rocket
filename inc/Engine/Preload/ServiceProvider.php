@@ -20,7 +20,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'full_preload_process',
+		'preload_subscriber',
 		'fonts_preload_subscriber',
 		'preload_front_subscriber',
 		'preload_queue',
@@ -59,7 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $parse_sitemap_controller )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\Subscriber' )
+		$this->getContainer()->add( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )

@@ -33,7 +33,7 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		if(! key_exists('enabled', $config)) {
 			return;
 		}
-		$this->options->expects()->get('sitemap_preload', 0)->andReturn($config['enabled']);
+		$this->options->expects()->get('manual_preload', 0)->andReturn($config['enabled']);
 	}
 
 	protected function configureTransient($config) {
