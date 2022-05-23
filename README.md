@@ -13,7 +13,7 @@ If you are not a developer, visit our [documentation](http://docs.wp-rocket.me/?
 Need detailed setup instructions?
 
 We are very proud of WP Rocket’s knowledge base.
-We have [documentation](http://docs.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) in English, French, Italian, Spanish and German.
+We have [documentation](http://docs.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) in English and French.
 
 You can also check out our [changelog](https://wp-rocket.me/changelog/?utm_source=github&utm_medium=wp_rocket_profile).
 

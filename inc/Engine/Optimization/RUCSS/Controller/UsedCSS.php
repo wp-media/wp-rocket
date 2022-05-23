@@ -53,7 +53,7 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
@@ -76,6 +76,7 @@ class UsedCSS {
 	private $inline_content_exclusions = [
 		'.wp-container-',
 		'.wp-elements-',
+		'#wpv-expandable-',
 	];
 
 	/**
@@ -115,7 +116,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -136,16 +137,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize? used inside the CRON so post object isn't there.
+	 * Check if RUCSS option is enabled.
+	 *
+	 * Used inside the CRON so post object isn't there.
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
@@ -158,7 +157,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -392,7 +391,16 @@ class UsedCSS {
 	 * @return string
 	 */
 	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
-		$css               = str_replace( '\\', '\\\\', $used_css->css );// Guard the backslashes before passing the content to preg_replace.
+		/**
+		 * Filters Used CSS content before saving into DB.
+		 *
+		 * @since 3.9.0.2
+		 *
+		 * @param string $usedcss Used CSS.
+		 */
+		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+
+		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
 		$used_css_contents = $this->handle_charsets( $css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
@@ -425,15 +433,15 @@ class UsedCSS {
 	}
 
 	/**
-	 * Process pending jobs inside CRON iteration.
+	 * Process pending jobs inside cron iteration.
 	 *
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
-		if ( ! $this->can_optimize() ) {
-			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+		if ( ! $this->is_enabled() ) {
+			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
@@ -517,15 +525,6 @@ class UsedCSS {
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
-
-		/**
-		 * Filters Used CSS content before saving into DB.
-		 *
-		 * @since 3.9.0.2
-		 *
-		 * @param string $usedcss Used CSS.
-		 */
-		$css = apply_filters( 'rocket_usedcss_content', $css );
 
 		$this->used_css_query->make_status_completed( $id, $css );
 

@@ -272,6 +272,7 @@ class Plugin {
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
 			'rucss_frontend_subscriber',
+			'rucss_cron_subscriber',
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
@@ -292,6 +293,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'convertplug',
 		];
 
 		$host_type = HostResolver::get_host_service();

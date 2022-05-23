@@ -58,6 +58,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_preload_script() {
+
+		/**
+		 * Bail out if user is logged in
+		 * Don't add preload link script
+		 */
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
 		if ( $this->is_enqueued ) {
 			return;
 		}
@@ -122,13 +131,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function get_preload_links_config() {
 		$use_trailing_slash = $this->use_trailing_slash();
-		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif';
+		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php';
 
 		$config = [
 			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
-			'fileExt'           => $images_ext . '|php|pdf|html|htm',
+			'fileExt'           => $images_ext . '|html|htm',
 			'siteUrl'           => home_url(),
 			'onHoverDelay'      => 100, // milliseconds. -1 disables the "on hover" feature.
 			'rateThrottle'      => 3, // on hover: limits the number of links preloaded per second.
