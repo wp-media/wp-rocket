@@ -23,7 +23,7 @@ class Test_DisableCompilers extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDefinedConstant($config, $expected) {
 		$this->options->expects()->get('remove_unused_css' , false)->andReturn($config['rucss_enable']);
