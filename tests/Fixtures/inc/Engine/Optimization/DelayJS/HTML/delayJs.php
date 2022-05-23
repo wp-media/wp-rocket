@@ -194,6 +194,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -416,6 +420,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -638,6 +646,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
