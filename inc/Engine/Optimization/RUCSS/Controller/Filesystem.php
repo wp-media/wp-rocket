@@ -138,8 +138,8 @@ class Filesystem {
 		$base   = substr( $hash, 0, $levels );
 		$remain = substr( $hash, $levels );
 
-		$base_array = str_split( $base );
-		$path_array = array_merge( $base_array, [ $remain ] );
+		$path_array   = str_split( $base );
+		$path_array[] = $remain;
 
 		return implode( '/', $path_array );
 	}
