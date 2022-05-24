@@ -77,6 +77,7 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
 	];
