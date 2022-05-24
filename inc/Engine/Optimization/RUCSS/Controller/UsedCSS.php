@@ -696,13 +696,13 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 		$links      = $this->find(
-			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]preconnect[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
 
 		foreach ( $links as $link ) {
-			if ( preg_match( '/href=[\'"]https:\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
+			if ( preg_match( '/href=[\'"](https:)?\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
 				$html = str_replace( $link[0], '', $html );
 			}
 		}
