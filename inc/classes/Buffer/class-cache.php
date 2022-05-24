@@ -678,7 +678,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_redirect_with_trailing_slash() {
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
-		$host                = $this->config->get_host() . ':10003';
+		$host                = $this->config->get_host();
 
 		// Last character of permalink.
 		$permalink_last_char = substr( $permalink_structure, -1 );
