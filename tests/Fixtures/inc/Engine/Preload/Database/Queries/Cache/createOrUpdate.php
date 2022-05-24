@@ -4,12 +4,10 @@ return [
 		'config' => [
 			'resource' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 			],
 			'save' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 				'last_accessed' => '838:59:59.000000'
 			],
@@ -23,12 +21,10 @@ return [
 		'config' => [
 			'resource' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 			],
 			'save' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 				'last_accessed' => '838:59:59.000000'
 			],
@@ -42,12 +38,10 @@ return [
 		'config' => [
 			'resource' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 			],
 			'save' => [
 				'url' => 'http://example.com',
-				'is_mobile' => false,
 				'status' => 'pending',
 				'modified' => '838:59:59.000001'
 			],
@@ -62,7 +56,6 @@ return [
 			'rows' => [
 				(object) [
 					'url' => 'http://example.com',
-					'is_mobile' => false,
 					'status' => 'completed',
 					'id' => 10,
 					'last_accessed' => '838:59:59.000000'

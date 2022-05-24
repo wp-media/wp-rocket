@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Preload\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
 
-class RocketCache extends Query {
+class Cache extends Query {
 
 
 	/**
@@ -78,7 +78,6 @@ class RocketCache extends Query {
 		$rows = $this->query(
 			[
 				'url'       => untrailingslashit( $resource['url'] ),
-				'is_mobile' => $resource['is_mobile'] ?: false,
 			]
 		);
 
@@ -87,7 +86,6 @@ class RocketCache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => $resource['url'],
-					'is_mobile'     => $resource['is_mobile'] ?: false,
 					'status'        => $resource['status'],
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -115,7 +113,6 @@ class RocketCache extends Query {
 			$db_row->id,
 			[
 				'url'       => $resource['url'],
-				'is_mobile' => $resource['is_mobile'],
 				'status'    => $resource['status'],
 				'modified'  => current_time( 'mysql', true ),
 			]

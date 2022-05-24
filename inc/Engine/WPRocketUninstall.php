@@ -2,7 +2,7 @@
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
-use WP_Rocket\Engine\Preload\Database\Tables\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
@@ -125,7 +125,7 @@ class WPRocketUninstall {
 	/**
 	 * Instance of Preload rocket_cache table.
 	 *
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	private $rocket_cache;
 
@@ -136,7 +136,7 @@ class WPRocketUninstall {
 	 * @param string      $config_path           Path to the config folder.
 	 * @param Resources   $rucss_resources_table RUCSS resources table.
 	 * @param UsedCSS     $rucss_usedcss_table   RUCSS used_css table.
-	 * @param RocketCache $rocket_cache   Preload rocket_cache table.
+	 * @param Cache $rocket_cache   Preload rocket_cache table.
 	 */
 	public function __construct( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table, $rocket_cache ) {
 		$this->cache_path            = trailingslashit( $cache_path );
@@ -255,7 +255,9 @@ class WPRocketUninstall {
 	 */
 	private function delete_preload_table() {
 		// If the table exist, then drop the table.
-		$this->drop_rucss_current_site_tables();
+		if ( $this->rocket_cache->exists() ) {
+			$this->rocket_cache->uninstall();
+		}
 
 		if ( ! is_multisite() ) {
 			return;
