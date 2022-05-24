@@ -261,6 +261,8 @@ class UsedCSS {
 		$used_css_content = $this->filesystem->get_used_css( $used_css->hash );
 
 		if ( empty( $used_css_content ) ) {
+			$this->used_css_query->delete_by_url( $url );
+
 			return $html;
 		}
 
