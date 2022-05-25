@@ -77,6 +77,8 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'.jet-listing-dynamic-post-',
+		'.vcex_',
 		'.wprm-advanced-list-',
 	];
 
@@ -251,7 +253,7 @@ class UsedCSS {
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 		$html = $this->add_used_fonts_preload( $html, $used_css->css );
-
+		$html = $this->remove_google_font_preconnect( $html );
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
 		return $html;
@@ -307,13 +309,16 @@ class UsedCSS {
 			$clean_html
 		);
 
+		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
 		foreach ( $link_styles as $style ) {
 			if (
+
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
 				&&
 				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
 				||
-				strstr( $style['url'], '//fonts.googleapis.com/css' )
+				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
 			}
@@ -680,6 +685,31 @@ class UsedCSS {
 		}
 
 		return $replace;
+	}
+
+	/**
+	 * Remove preconnect tag for google api.
+	 *
+	 * @param string $html html content.
+	 * @return string
+	 */
+	protected function remove_google_font_preconnect( string $html ): string {
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+		$links      = $this->find(
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
+			$clean_html,
+			'Uis'
+		);
+
+		foreach ( $links as $link ) {
+			if ( preg_match( '/href=[\'"](https:)?\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
+				$html = str_replace( $link[0], '', $html );
+			}
+		}
+
+		return $html;
 	}
 
 	/**
