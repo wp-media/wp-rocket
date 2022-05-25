@@ -260,6 +260,8 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'secure.gravatar.com/js/gprofiles.js',
 			'cdn.jsdelivr.net/npm/hockeystack',
 			'widget.prod.faslet.net',
+			'ga.getresponse.com/script/ga.js',
+			'cognitoforms.com',
 			'usercentrics.eu',
 		];
 

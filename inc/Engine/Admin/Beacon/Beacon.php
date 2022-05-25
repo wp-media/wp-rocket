@@ -559,6 +559,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'rocketcdn_error'            => [
+				'en' => [
+					'id'  => '60ddc72d9e87cb3d01249270',
+					'url' => 'https://docs.wp-rocket.me/article/1608-error-notices-during-the-rocketcdn-subscription-process/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '60df1cb200fd0d7c253fc044',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1620-messages-derreur-pendant-le-processus-dabonnement/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'exclude_cdn'                => [
 				'en' => [
 					'id'  => '5434667fe4b0310ce5ee867a',
