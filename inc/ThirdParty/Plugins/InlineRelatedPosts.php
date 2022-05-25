@@ -20,7 +20,7 @@ class InlineRelatedPosts implements Subscriber_Interface {
 			return [];
 		}
 
-		$events['rocket_rucss_inline_content_exclusions'] = 'excluded_inline_from_rucss';
+		$events['rocket_rucss_inline_content_exclusions'] = 'exclude_inline_from_rucss';
 
 		return $events;
 	}
@@ -31,7 +31,7 @@ class InlineRelatedPosts implements Subscriber_Interface {
 	 * @param array $excluded excluded css.
 	 * @return array
 	 */
-	public function excluded_inline_from_rucss( $excluded ) {
+	public function exclude_inline_from_rucss( $excluded ) {
 		$excluded[] = '.centered-text-area';
 		$excluded[] = '.ctaText';
 
