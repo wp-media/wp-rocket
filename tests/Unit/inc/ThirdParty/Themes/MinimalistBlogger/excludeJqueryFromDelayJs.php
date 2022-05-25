@@ -22,6 +22,6 @@ class Test_ExcludeJqueryFromDelayJs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->assertEquals($expected, $this->subscriber->exclude_jquery_from_delay_js($config['excluded']));
+		$this->assertSame($expected, $this->subscriber->exclude_jquery_from_delay_js($config['excluded']));
 	}
 }

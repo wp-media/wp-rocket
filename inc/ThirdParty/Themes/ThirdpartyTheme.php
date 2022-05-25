@@ -26,6 +26,6 @@ abstract class ThirdpartyTheme implements \WP_Rocket\Event_Management\Subscriber
 	protected static function is_theme() {
 		$theme = self::$theme instanceof WP_Theme ? self::$theme : wp_get_theme();
 
-		return ( str_contains( static::$theme_name, $theme->get_template() ) );
+		return ( str_contains( static::$theme_name, strtolower( $theme->get_template() ) ) );
 	}
 }
