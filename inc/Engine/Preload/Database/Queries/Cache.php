@@ -77,7 +77,7 @@ class Cache extends Query {
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url'       => untrailingslashit( $resource['url'] ),
+				'url' => untrailingslashit( $resource['url'] ),
 			]
 		);
 
@@ -112,9 +112,9 @@ class Cache extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'       => $resource['url'],
-				'status'    => $resource['status'],
-				'modified'  => current_time( 'mysql', true ),
+				'url'      => $resource['url'],
+				'status'   => $resource['status'],
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 

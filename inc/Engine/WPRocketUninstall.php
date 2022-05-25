@@ -132,11 +132,11 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string      $cache_path            Path to the cache folder.
-	 * @param string      $config_path           Path to the config folder.
-	 * @param Resources   $rucss_resources_table RUCSS resources table.
-	 * @param UsedCSS     $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache $rocket_cache   Preload rocket_cache table.
+	 * @param string    $cache_path            Path to the cache folder.
+	 * @param string    $config_path           Path to the config folder.
+	 * @param Resources $rucss_resources_table RUCSS resources table.
+	 * @param UsedCSS   $rucss_usedcss_table   RUCSS used_css table.
+	 * @param Cache     $rocket_cache   Preload rocket_cache table.
 	 */
 	public function __construct( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table, $rocket_cache ) {
 		$this->cache_path            = trailingslashit( $cache_path );
