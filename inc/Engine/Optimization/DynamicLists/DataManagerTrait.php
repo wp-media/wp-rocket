@@ -5,11 +5,6 @@ namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 trait DataManagerTrait {
 	/**
-	 * Transient name
-	 */
-	const CACHE_KEY = 'wpr_dynamic_lists';
-
-	/**
 	 * Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
@@ -31,7 +26,7 @@ trait DataManagerTrait {
 	 * @return string
 	 */
 	private function get_json_filepath(): string {
-		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' , '' ) . 'dynamic-lists.json';
+		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ) . 'dynamic-lists.json';
 	}
 
 	/**
@@ -40,7 +35,7 @@ trait DataManagerTrait {
 	 * @return string
 	 */
 	protected function get_lists() {
-		$transient = get_transient( self::CACHE_KEY );
+		$transient = get_transient( 'wpr_dynamic_lists' );
 
 		if ( false !== $transient ) {
 			return $transient;
@@ -110,6 +105,6 @@ trait DataManagerTrait {
 	 * @return bool
 	 */
 	private function set_lists_cache( string $content ): bool {
-		return set_transient( self::CACHE_KEY, $content, WEEK_IN_SECONDS );
+		return set_transient( 'wpr_dynamic_lists', $content, WEEK_IN_SECONDS );
 	}
 }
