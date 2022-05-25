@@ -49,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_dynamic_lists',
 			[
 				'rest_url'              => rest_url( "wp-rocket/v1/wpr-dynamic-lists/" ),
-				'rest_nonce'            => wp_create_nonce( 'rocket_dynamic_lists' ),
+				'rest_nonce'            => wp_create_nonce( 'wp_rest' ),
 			]
 		);
 	}

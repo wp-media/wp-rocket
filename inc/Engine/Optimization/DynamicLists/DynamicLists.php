@@ -33,9 +33,20 @@ class DynamicLists {
 			[
 				'methods'             => 'PUT',
 				'callback'            => [ $this, 'rest_update_response' ],
-				//'permission_callback' => current_user_can( 'rocket_manage_options' ),
+				'permission_callback' => [ $this, 'check_permissions' ],
 			]
 		);
+	}
+
+	/**
+	 * Checks user's permissions. This is a callback registered to REST route's "permission_callback" parameter.
+	 *
+	 * @since 3.6
+	 *
+	 * @return bool true if the user has permission; else false.
+	 */
+	public function check_permissions() {
+		return current_user_can( 'rocket_manage_options' );
 	}
 
 	/**
@@ -47,35 +58,35 @@ class DynamicLists {
 	 */
 	public function rest_update_response( \WP_REST_Request $request ) {
 		$response = $this->update_lists_from_remote();
+
 		return rest_ensure_response( $response );
 	}
 
 	public function update_lists_from_remote() {
 		$hash   = $this->get_lists_from_file() ? md5( $this->get_lists_from_file() ) : '';
 		$result = $this->api->get_exclusions_list( $hash );
-		var_dump($result);
 		if ( 200 !== $result['code'] || empty( $result['body'] ) ) {
 			return [
 				'success' => false,
 				'data'    => '',
+				'message' => __( 'Couldn\'t get updated lists from server', 'rocket' )
 			];
 		}
 		if ( ! $this->put_lists_to_file( $result['body'] ) ) {
 			return [
 				'success' => false,
 				'data'    => '',
+				'message' => __( 'Couldn\'t update lists', 'rocket' )
 			];
 		}
 
 		return [
 			'success' => true,
 			'data'    => $result['body'],
+			'message' => __( 'Lists are successfully updated.', 'rocket' )
 		];
 	}
 
-	/*public function display_resync_lists_section() {
-		echo $this->generate( 'settings/resync-lists', [] );
-	}*/
 	public function update_lists_after_upgrade() {
 		$this->update_lists_from_remote();
 	}
