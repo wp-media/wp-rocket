@@ -190,7 +190,17 @@ class Subscriber implements Subscriber_Interface {
 			$excluded = (array) $excluded;
 		}
 
-		$excluded          = array_filter( $excluded );
+		$excluded = array_filter( $excluded );
+
+		$login_uri = apply_filters( 'login_url', '/wp-login' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		$excluded = array_filter(
+			$excluded,
+			function ( $uri ) use ( $login_uri ) {
+				return str_contains( $login_uri, $uri );
+			}
+			);
+
 		$excluded_patterns = '';
 
 		if ( ! empty( $excluded ) ) {
