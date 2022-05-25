@@ -41,7 +41,7 @@ class Subscriber implements Subscriber_Interface {
 	public function update_cache_row() {
 		global $wp;
 
-		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		$this->query->create_or_update(
 			[
