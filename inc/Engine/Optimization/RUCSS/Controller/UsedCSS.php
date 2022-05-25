@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManagerTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
@@ -15,7 +16,7 @@ use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class UsedCSS {
-	use RegexTrait, CSSTrait;
+	use RegexTrait, CSSTrait, DataManagerTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -53,40 +54,27 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
-	private $inline_atts_exclusions = [
-		'rocket-lazyload-inline-css',
-		'divi-style-parent-inline-inline-css',
-		'gsf-custom-css',
-		'extra-style-inline-inline-css',
-		'woodmart-inline-css-inline-css',
-		'woodmart_shortcodes-custom-css',
-		'rs-plugin-settings-inline-css', // For revolution slider, it saves settings for each slider.
-		'divi-style-inline-inline-css',
-	];
+	private $inline_atts_exclusions = [];
 
 	/**
 	 * Inline CSS content exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
-	private $inline_content_exclusions = [
-		'.wp-container-',
-		'.wp-elements-',
-		'#wpv-expandable-',
-	];
+	private $inline_content_exclusions = [];
 
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data   $options         Options instance.
-	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
+	 * @param Options_Data $options Options instance.
+	 * @param UsedCSS_Query $used_css_query Usedcss Query instance.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
-	 * @param APIClient      $api             APIClient instance.
-	 * @param QueueInterface $queue           Queue instance.
+	 * @param APIClient $api APIClient instance.
+	 * @param QueueInterface $queue Queue instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -116,7 +104,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -137,16 +125,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize? used inside the CRON so post object isn't there.
+	 * Check if RUCSS option is enabled.
+	 *
+	 * Used inside the CRON so post object isn't there.
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
@@ -159,7 +145,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -252,7 +238,7 @@ class UsedCSS {
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 		$html = $this->add_used_fonts_preload( $html, $used_css->css );
-
+		$html = $this->remove_google_font_preconnect( $html );
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
 		return $html;
@@ -296,9 +282,13 @@ class UsedCSS {
 		$clean_html = $this->hide_comments( $html );
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
+		$this->inline_atts_exclusions = $this->get_inline_atts_exclusions();
+		$this->inline_content_exclusions = $this->get_inline_content_exclusions();
+		error_log($this->inline_atts_exclusions);
+		error_log($this->inline_content_exclusions);
 
 		$link_styles = $this->find(
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
@@ -308,11 +298,16 @@ class UsedCSS {
 			$clean_html
 		);
 
+		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
 		foreach ( $link_styles as $style ) {
 			if (
+
 				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
 				||
-				strstr( $style['url'], '//fonts.googleapis.com/css' )
+				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
 			}
@@ -365,7 +360,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html     HTML content.
+	 * @param string $html HTML content.
 	 * @param UsedCSS_Row $used_css Used CSS DB row.
 	 *
 	 * @return string HTML content.
@@ -404,6 +399,7 @@ class UsedCSS {
 
 		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
 		$used_css_contents = $this->handle_charsets( $css, false );
+
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
 			$used_css_contents
@@ -417,10 +413,10 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-			&&
-			wp_is_mobile();
+		       &&
+		       $this->options->get( 'do_caching_mobile_files', 0 )
+		       &&
+		       wp_is_mobile();
 	}
 
 	/**
@@ -435,15 +431,15 @@ class UsedCSS {
 	}
 
 	/**
-	 * Process pending jobs inside CRON iteration.
+	 * Process pending jobs inside cron iteration.
 	 *
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
-		if ( ! $this->can_optimize() ) {
-			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+		if ( ! $this->is_enabled() ) {
+			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
@@ -518,6 +514,7 @@ class UsedCSS {
 
 			// Increment the retries number with 1 and Change status to pending again.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
+
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
@@ -682,6 +679,31 @@ class UsedCSS {
 	}
 
 	/**
+	 * Remove preconnect tag for google api.
+	 *
+	 * @param string $html html content.
+	 * @return string
+	 */
+	protected function remove_google_font_preconnect( string $html ): string {
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+		$links      = $this->find(
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
+			$clean_html,
+			'Uis'
+		);
+
+		foreach ( $links as $link ) {
+			if ( preg_match( '/href=[\'"](https:)?\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
+				$html = str_replace( $link[0], '', $html );
+			}
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Extracts the first font URL from the font-face declaration
 	 *
 	 * Skips .eot fonts if it exists
@@ -735,5 +757,27 @@ class UsedCSS {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Get Rucss inline attr exclusions
+	 *
+	 * @return array
+	 */
+	private function get_inline_atts_exclusions(): array {
+		$wpr_dynamic_lists = json_decode( $this->get_lists() );
+		return $wpr_dynamic_lists['inline_atts_exclusions'] ? $wpr_dynamic_lists['inline_atts_exclusions'] : '';
+
+	}
+
+	/**
+	 * Get Rucss inline content exclusions
+	 *
+	 * @return array
+	 */
+	private function get_inline_content_exclusions(): array {
+		$wpr_dynamic_lists = json_decode( $this->get_lists() );
+		return $wpr_dynamic_lists['inline_content_exclusions'] ? $wpr_dynamic_lists['inline_content_exclusions'] : '';
+
 	}
 }
