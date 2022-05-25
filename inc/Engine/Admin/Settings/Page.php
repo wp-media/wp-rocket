@@ -269,8 +269,9 @@ class Page {
 			$data['license_type'] = 'Plus';
 		}
 
-		$data['license_class']      = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
-		$data['license_expiration'] = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
+		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
+		$data['is_from_one_dot_com'] = (bool) $user->{'has_one-com_account'};
 
 		return $data;
 	}
@@ -561,8 +562,14 @@ class Page {
 		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
 		$rucss_beacon               = $this->beacon->get_suggest( 'remove_unused_css' );
+		$offline_beacon             = $this->beacon->get_suggest( 'offline' );
+		$fallback_css_beacon        = $this->beacon->get_suggest( 'fallback_css' );
 
-		$disable_combine_js = $this->disable_combine_js();
+		$disable_combine_js  = $this->disable_combine_js();
+		$disable_combine_css = $this->disable_combine_css();
+		$disable_ocd         = 'local' === wp_get_environment_type();
+
+		$invalid_license = get_transient( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -639,8 +646,9 @@ class Page {
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'helper'            => get_rocket_option( 'remove_unused_css' ) ? __( 'For compatibility and best results, this option is disabled when Remove unused CSS is enabled.', 'rocket' ) : '',
 					'container_class'   => [
-						get_rocket_option( 'minify_css' ) ? '' : 'wpr-isDisabled',
+						$disable_combine_css ? 'wpr-isDisabled' : '',
 						'wpr-field--parent',
 						'wpr-NoPaddingBottom',
 					],
@@ -649,7 +657,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => get_rocket_option( 'minify_css' ) ? 0 : 1,
+						'disabled' => $disable_combine_css ? 1 : 0,
 					],
 					'warning'           => [
 						'title'        => __( 'This could break things!', 'rocket' ),
@@ -678,13 +686,23 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
 					'container_class'   => [
+						$disable_ocd ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
-					'description'       => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
+					'description'       => $invalid_license ? __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance, but limited only to the users with active license.', 'rocket' ) : __( 'Optimize CSS delivery eliminates render-blocking CSS on your website. Only one method can be selected. Remove Unused CSS is recommended for optimal performance.', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => $disable_ocd ? 1 : 0,
+					],
+					'helper'            => $disable_ocd ? sprintf(
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Optimize CSS Delivery features are disabled on local environments. %1$sLearn more%2$s', 'rocket' ),
+						'<a href="' . esc_url( $offline_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $offline_beacon['id'] ) . '" target="_blank">',
+						'</a>'
+					) : '',
 				],
 				'optimize_css_delivery_method' => [
 					'type'                    => 'radio_buttons',
@@ -702,14 +720,15 @@ class Page {
 					'options'                 => [
 						'remove_unused_css' => [
 							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
+							'disabled'    => $invalid_license ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'warning'     => [
+							'warning'     => $invalid_license ? [] : [
 								'title'        => __( 'We’re still working on it!', 'rocket' ),
 								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
 								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
 							],
-							'sub_fields'  => [
+							'sub_fields'  => $invalid_license ? [] : [
 								'remove_unused_css_safelist' =>
 								[
 									'type'              => 'textarea',
@@ -742,7 +761,7 @@ class Page {
 										'type'        => 'textarea',
 										'label'       => __( 'Fallback critical CSS', 'rocket' ),
 										// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-										'helper'      => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
+										'helper'      => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $fallback_css_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $fallback_css_beacon['id'] ) . '" target="_blank">', '</a>' ),
 										'sanitize_callback' => 'sanitize_textarea',
 										'parent'      => '',
 										'section'     => 'css',
@@ -2150,6 +2169,21 @@ class Page {
 		}
 
 		return ! (bool) get_rocket_option( 'minify_js', 0 );
+	}
+
+	/**
+	 * Checks if combine CSS option should be disabled
+	 *
+	 * @since 3.11
+	 *
+	 * @return bool
+	 */
+	private function disable_combine_css(): bool {
+		if ( (bool) get_rocket_option( 'remove_unused_css', 0 ) ) {
+			return true;
+		}
+
+		return ! (bool) get_rocket_option( 'minify_css', 0 );
 	}
 
 	/**

@@ -18,22 +18,22 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_InitCriticalCssGeneration extends TestCase {
 	use SubscriberTrait;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WPDieException.php';
 	}
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		Functions\stubEscapeFunctions();
+		$this->stubEscapeFunctions();
 		unset( $_GET['_wpnonce'] );
 
 		$this->setUpTests();
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		unset( $_GET['_wpnonce'] );
 
 		parent::tearDown();

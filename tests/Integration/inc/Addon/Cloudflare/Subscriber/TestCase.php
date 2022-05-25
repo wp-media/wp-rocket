@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 use ReflectionClass;
 use WPMedia\Cloudflare\Cloudflare;
-use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
+use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
 	protected static $container;
@@ -25,8 +25,8 @@ abstract class TestCase extends BaseTestCase {
 		'site_url' => '',
 	];
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$api_credentials_config_file = WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/cloudflare.php';
 
@@ -45,14 +45,14 @@ abstract class TestCase extends BaseTestCase {
 		self::$subscriber_options = self::$options_property->getValue( self::$subscriber );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
+	public static function tear_down_after_class() {
 		// Restore original state.
 		self::$cf_property->setValue( self::$subscriber, self::$subscriber_cf );
 		self::$cf_property->setAccessible( false );
 		self::$options_property->setValue( self::$subscriber, self::$subscriber_options );
 		self::$options_property->setAccessible( false );
+
+		parent::tear_down_after_class();
 	}
 
 	protected static function setApiCredentials() {
@@ -62,18 +62,18 @@ abstract class TestCase extends BaseTestCase {
 		self::$api_credentials['site_url'] = static::getApiCredential( 'ROCKET_CLOUDFLARE_SITE_URL' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'site_url', [ $this, 'setSiteUrl' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		self::resetTransients();
 
 		remove_filter( 'site_url', [ $this, 'setSiteUrl' ] );
+
+		parent::tear_down();
 	}
 
 	protected static function resetTransients() {

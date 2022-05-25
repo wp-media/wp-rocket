@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options_Data;
  * @author Remy Perona
  */
 abstract class AbstractOptimization {
-
+	use RegexTrait;
 	/**
 	 * Plugin options.
 	 *
@@ -126,18 +126,17 @@ abstract class AbstractOptimization {
 		if ( empty( $hosts ) ) {
 			return true;
 		}
-
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
-				if ( false !== strpos( $url, $host ) ) {
+				$check_url = strtok( $url, '?' );
+				if ( false !== strpos( $check_url, $host ) ) {
 					return false;
 				}
 			}
 
 			return true;
 		}
-
 		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
 		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
 	}
@@ -230,4 +229,13 @@ abstract class AbstractOptimization {
 
 		return add_query_arg( 'ver', $version, $minified_url );
 	}
+
+	/**
+	 * Gets the CDN zones.
+	 *
+	 * @since  3.1
+	 *
+	 * @return array
+	 */
+	abstract public function get_zones();
 }

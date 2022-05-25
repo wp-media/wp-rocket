@@ -165,7 +165,7 @@ return [
 	<ul>
 		<li>Scheduled Cache Purge</li>
 	</ul>
-	<p>Please contact your host to check if CRON is working.</p>	<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p>
+	<p>Please contact your host to check if CRON is working.</p>	<p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice</a></p>
 </div>
 HTML
 		,
@@ -199,7 +199,7 @@ HTML
 		<li>Scheduled Database Optimization</li>
 	</ul>
 	<p>Please contact your host to check if CRON is working.</p>
-	<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p>
+	<p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice</a></p>
 </div>
 HTML
 		,
@@ -232,7 +232,7 @@ HTML
 		<li>Scheduled Cache Purge</li>
 	</ul>
 	<p>Please contact your host to check if CRON is working.</p>
-	<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p>
+	<p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice</a></p>
 </div>
 HTML
 		,
@@ -266,7 +266,7 @@ HTML
 		<li>Scheduled Database Optimization</li>
 	</ul>
 	<p>Please contact your host to check if CRON is working.</p>
-	<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p>
+	<p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice</a></p>
 </div>
 HTML
 	,

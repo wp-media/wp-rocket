@@ -12,22 +12,22 @@ abstract class TestCase extends BaseTestCase {
 		'rocketcdn_status' => null,
 	];
 
-	public static function setUpBeforeClass() : void {
+	public static function set_up_before_class() {
 		static::$use_settings_trait = true;
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		set_current_screen( 'settings_page_wprocket' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
 		set_current_screen( 'front' );
+
+		parent::tear_down();
 	}
 
 	public function home_url_cb() {

@@ -38,7 +38,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+	$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if (
 		'wprocket' === $page
@@ -306,8 +306,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.10.8', '<' ) ) {
+	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
 		rocket_generate_config_file();
 	}
+
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

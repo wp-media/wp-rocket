@@ -16,7 +16,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 	private $expected;
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
@@ -28,11 +28,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		);
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_POST['rocket_after_save_options'] );
 		$this->expected = [];
+
+		parent::tearDown();
 	}
 
 	/**
@@ -54,19 +54,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private function rocket_clean_domain() {
 		if ( isset( $this->expected['rocket_clean_domain'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
-			Functions\expect( 'home_url' )->andReturn( 'http://example.org' );
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with(
-					'http://example.org',
-					[
-						'timeout'    => 0.01,
-						'blocking'   => false,
-						'user-agent' => 'WP Rocket/Homepage Preload',
-						'sslverify'  => false,
-					]
-				)
-				->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_clean_domain' )->never();
 		}

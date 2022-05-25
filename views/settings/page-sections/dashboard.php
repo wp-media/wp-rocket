@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 			</h2>
 				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
-				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
+				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
@@ -80,7 +80,14 @@ defined( 'ABSPATH' ) || exit;
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
 							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span><br>
+						</span>
+						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
+							<span>
+								<?php esc_html_e( 'with', 'rocket' ); ?> 
+								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
+							</span>
+						<?php endif; ?>
+						<br>
 						<?php
 						/**
 						 * Fires when displaying the license information
@@ -170,7 +177,7 @@ defined( 'ABSPATH' ) || exit;
 					</div>
 					<?php endif; ?>
 
-					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
+					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
 						<?php
@@ -188,7 +195,7 @@ defined( 'ABSPATH' ) || exit;
 					</div>
 					<?php endif; ?>
 
-					<?php if ( get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
+					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
 						<div class="wpr-field">
 							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
 							<?php
