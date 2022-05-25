@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'preload_admin_subscriber',
 		];
 	}
 

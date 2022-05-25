@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Preload\Database\Rows\RocketCacheRow;
+use WP_Rocket\Engine\Preload\Database\Schemas\RocketCache as Schema;
 
 class RocketCache extends Query {
 
@@ -29,7 +31,7 @@ class RocketCache extends Query {
 	 *
 	 * @var string
 	 */
-	protected $table_schema = self::class;
+	protected $table_schema = Schema::class;
 
 	/** Item ******************************************************************/
 
@@ -62,7 +64,7 @@ class RocketCache extends Query {
 	 *
 	 * @var mixed
 	 */
-	protected $item_shape = self::class;
+	protected $item_shape = RocketCacheRow::class;
 
 	/**
 	 * Create new resource row or update its contents if not created before.
@@ -78,7 +80,7 @@ class RocketCache extends Query {
 		$rows = $this->query(
 			[
 				'url'       => untrailingslashit( $resource['url'] ),
-				'is_mobile' => $resource['is_mobile'] ?: false,
+				'is_mobile' => key_exists( 'is_mobile', $resource ) ? $resource['is_mobile'] : false,
 			]
 		);
 
@@ -87,7 +89,7 @@ class RocketCache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => $resource['url'],
-					'is_mobile'     => $resource['is_mobile'] ?: false,
+					'is_mobile'     => key_exists( 'is_mobile', $resource ) ? $resource['is_mobile'] : false,
 					'status'        => $resource['status'],
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -115,7 +117,7 @@ class RocketCache extends Query {
 			$db_row->id,
 			[
 				'url'       => $resource['url'],
-				'is_mobile' => $resource['is_mobile'],
+				'is_mobile' => key_exists( 'is_mobile', $resource ) ? $resource['is_mobile'] : false,
 				'status'    => $resource['status'],
 				'modified'  => current_time( 'mysql', true ),
 			]

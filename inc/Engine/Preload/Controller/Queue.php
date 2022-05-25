@@ -4,10 +4,20 @@ namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
-class Queue extends AbstractASQueue
-{
+class Queue extends AbstractASQueue {
+
+	/**
+	 * Group from the queue.
+	 *
+	 * @var string
+	 */
 	protected $group = 'rocket-preload';
 
+	/**
+	 * Cron name.
+	 *
+	 * @var string
+	 */
 	private $pending_job_cron = 'rocket_preload_pending_job_cron';
 
 	/**

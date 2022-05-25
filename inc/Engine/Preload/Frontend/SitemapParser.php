@@ -4,19 +4,21 @@ namespace WP_Rocket\Engine\Preload\Frontend;
 
 use SimpleXMLElement;
 
-class SitemapParser
-{
+class SitemapParser {
+
 	/**
-	 * XML document to parse
+	 * XML document to parse.
+	 *
 	 * @var SimpleXMLElement|false
 	 */
 	protected $xml;
 
 	/**
 	 * Set the content from the sitemap to parse.
+	 *
 	 * @param string $content content from the sitemap to parse.
 	 */
-	public function set_content(string $content): void {
+	public function set_content( string $content ) {
 		libxml_use_internal_errors( true );
 
 		$this->xml = simplexml_load_string( $content );
@@ -34,14 +36,14 @@ class SitemapParser
 			return [];
 		}
 
-		$url_count        = count( $this->xml->url );
+		$url_count = count( $this->xml->url );
 
 		for ( $i = 0; $i < $url_count; $i++ ) {
 			$url = (string) $this->xml->url[ $i ]->loc;
 			if ( ! $url ) {
 				continue;
 			}
-			$links []= $url;
+			$links [] = $url;
 		}
 
 		return $links;

@@ -6,6 +6,10 @@ use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
+ * @group Preload
+ */
 class Test_LoadInitialSitemap extends TestCase {
 	protected $queue;
 	protected $controller;

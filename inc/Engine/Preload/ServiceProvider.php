@@ -28,6 +28,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'sitemap_preload_subscriber',
 		'partial_preload_subscriber',
 		'fonts_preload_subscriber',
+		'preload_caches_table',
+		'preload_caches_query',
+		'preload_admin_subscriber',
+		'preload_clean_controller',
 	];
 
 	/**
@@ -38,6 +42,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\RocketCache' );
+		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\RocketCache' );
 		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 
@@ -65,6 +71,23 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
+			->addArgument( $options );
+		$preload_settings = $this->getContainer()->get( 'preload_settings' );
+
+		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+
+		$this->getContainer()->add( 'preload_clean_controller', 'WP_Rocket\Engine\Preload\Controller\ClearCache' )
+			->addArgument( $cache_query );
+
+		$clean_controller = $this->getContainer()->get( 'preload_clean_controller' );
+
+		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
+			->addArgument( $options )
+			->addArgument( $preload_settings )
+			->addArgument( $clean_controller )
 			->addTag( 'common_subscriber' );
 	}
 }

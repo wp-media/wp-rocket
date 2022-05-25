@@ -5,6 +5,10 @@ use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Admin\Settings::maybe_display_preload_notice
+ * @group Preload
+ */
 class Test_MaybeDisplayPreloadNotice extends TestCase {
 	protected $settings;
 	protected $options;

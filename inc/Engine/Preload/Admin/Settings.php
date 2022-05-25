@@ -4,21 +4,29 @@ namespace WP_Rocket\Engine\Preload\Admin;
 
 use WP_Rocket\Admin\Options_Data;
 
-class Settings
-{
+class Settings {
+
 	/**
+	 * Options instance.
+	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
 	/**
-	 * @param Options_Data $options
+	 * Initialise Settings.
+	 *
+	 * @param Options_Data $options Options instance.
 	 */
-	public function __construct(Options_Data $options)
-	{
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
+	/**
+	 * Display a notice if the preload is running.
+	 *
+	 * @return void
+	 */
 	public function maybe_display_preload_notice() {
 		if ( ! $this->can_display_notice() ) {
 			return;
@@ -32,7 +40,7 @@ class Settings
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = number of seconds.
 			__( '%1$s: Please wait. The preload service is processing your pages.', 'rocket' ),
-			'<strong>WP Rocket</strong>',
+			'<strong>WP Rocket</strong>'
 		);
 
 		rocket_notice_html(
@@ -45,7 +53,7 @@ class Settings
 	}
 
 	/**
-	 * Checks if we can display the RUCSS notices
+	 * Checks if we can display the RUCSS notices.
 	 *
 	 * @since 3.11
 	 *

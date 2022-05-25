@@ -4,18 +4,21 @@ namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 
-class ClearCache
-{
+class ClearCache {
+
 	/**
+	 * DB query.
+	 *
 	 * @var RocketCache
 	 */
 	protected $query;
 
 	/**
-	 * @param RocketCache $query
+	 * Initialise ClearCache.
+	 *
+	 * @param RocketCache $query DB query.
 	 */
-	public function __construct(RocketCache $query)
-	{
+	public function __construct( RocketCache $query ) {
 		$this->query = $query;
 	}
 
@@ -25,12 +28,14 @@ class ClearCache
 	 * @param array $urls urls to clean.
 	 * @return void
 	 */
-	public function partial_clean(array $urls) {
-		foreach ($urls as $url) {
-			$this->query->create_or_update([
-				'url' => $url,
-				'status' => 'pending'
-			]);
+	public function partial_clean( array $urls ) {
+		foreach ( $urls as $url ) {
+			$this->query->create_or_update(
+				[
+					'url'    => $url,
+					'status' => 'pending',
+				]
+				);
 		}
 	}
 
@@ -41,13 +46,15 @@ class ClearCache
 	 */
 	public function full_clean() {
 
-		$urls = $this->query->query([]);
+		$urls = $this->query->query( [] );
 
-		foreach ($urls as $url) {
-			$this->query->create_or_update([
-				'url' => $url,
-				'status' => 'pending'
-			]);
+		foreach ( $urls as $url ) {
+			$this->query->create_or_update(
+				[
+					'url'    => $url,
+					'status' => 'pending',
+				]
+				);
 		}
 	}
 }

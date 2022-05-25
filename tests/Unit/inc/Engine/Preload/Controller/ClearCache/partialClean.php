@@ -2,11 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\ClearCache;
 
-use Mockery;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Controller\ClearCache::partial_clean
+ * @group Preload
+ */
 class Test_PartialClean extends TestCase
 {
 	protected $query;
