@@ -26,7 +26,6 @@ class Avada implements Subscriber_Interface {
 		if ( ! self::is_avada() ) {
 			return [];
 		}
-
 		return [
 			'avada_clear_dynamic_css_cache'        => 'clean_domain',
 			'rocket_exclude_defer_js'              => 'exclude_defer_js',
@@ -34,6 +33,7 @@ class Avada implements Subscriber_Interface {
 			'fusion_cache_reset_after'             => 'clean_domain',
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
+			'init'                                 => 'disable_compilers',
 		];
 	}
 
@@ -140,5 +140,14 @@ class Avada implements Subscriber_Interface {
 		$exclusions[] = $base_path . '/assets/min/js/general/avada-woo-product-images.js';
 
 		return $exclusions;
+	}
+
+	/**
+	 * Disable CSS and JS combine file from Avada.
+	 */
+	public function disable_compilers() {
+		if ( $this->options->get( 'remove_unused_css', false ) && ! defined( 'FUSION_DISABLE_COMPILERS' ) ) {
+			define( 'FUSION_DISABLE_COMPILERS', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+		}
 	}
 }

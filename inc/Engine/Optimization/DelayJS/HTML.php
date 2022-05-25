@@ -80,6 +80,7 @@ class HTML {
 		'serv-vdo.pixfuture.com/vpaid/ads.js',
 		'wprRemoveCPCSS',
 		'window.jdgmSettings', // Judge.me plugin.
+		'window.wsf_form_json_config', // WSF Form plugin.
 	];
 
 	/**

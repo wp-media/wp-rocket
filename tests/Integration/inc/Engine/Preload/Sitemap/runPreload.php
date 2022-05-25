@@ -26,7 +26,6 @@ class Test_RunPreload extends PreloadTestCase {
 
 	public function tear_down() {
 		parent::tear_down();
-
 		$this->post_id = null;
 	}
 

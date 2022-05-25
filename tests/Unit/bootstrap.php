@@ -37,6 +37,8 @@ function load_original_files_before_mocking() {
 		'/WP.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
+		'/WP_Sitemaps_Index.php',
+		'/Action_Scheduler/ActionScheduler_Abstract_QueueRunner.php',
 	];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;
