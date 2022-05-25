@@ -168,7 +168,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
-      ->addTag( 'common_subscriber' );
+		->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
