@@ -69,7 +69,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'                  => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug                 => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
-				[ 'clean_used_css_with_cdn', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 			],
 			'switch_theme'                           => 'truncate_used_css',
@@ -109,7 +108,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'wp_ajax_rocket_spawn_cron'              => 'spawn_cron',
 			'rocket_deactivation'                    => 'cancel_queues',
-			'shutdown'                               => 'schedule_rucss_pending_jobs_cron',
+			'admin_init'                             => 'schedule_rucss_pending_jobs_cron',
 			'admin_head-tools_page_action-scheduler' => 'delete_as_tables_transient_on_tools_page',
 		];
 	}
@@ -171,42 +170,35 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$error = error_get_last();
+		try {
+			if ( ! $this->settings->is_enabled() ) {
+				if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+					return;
+				}
 
-		// Delete the transient when any error happens.
-		if ( null !== $error ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
+				Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
 
-			return;
-		}
-
-		if ( ! $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
+				$this->queue->cancel_pending_jobs_cron();
 				return;
 			}
 
-			Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
+			/**
+			 * Filters the cron interval.
+			 *
+			 * @since 3.11
+			 *
+			 * @param int $interval Interval in seconds.
+			 */
+			$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-			$this->queue->cancel_pending_jobs_cron();
-			return;
+			Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
+
+			$this->queue->schedule_pending_jobs_cron( $interval );
+		} catch ( \RuntimeException $exception ) {
+			delete_transient( 'rocket_rucss_as_tables_count' );
+
+			Logger::error( 'RUCSS: Action scheduler ERROR: ' . $exception->getMessage() );
 		}
-
-		/**
-		 * Filters the cron interval.
-		 *
-		 * @since 3.11
-		 *
-		 * @param int $interval Interval in seconds.
-		 */
-		$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-		Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 
 	/**
@@ -374,40 +366,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $value['remove_unused_css_safelist'] === $old_value['remove_unused_css_safelist'] ) {
-			return;
-		}
-
-		$this->delete_used_css_rows();
-
-		$this->set_notice_transient();
-	}
-
-	/**
-	 * Truncate UsedCSS DB Table when CDN option is changed.
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $old_value An array of submitted values for the settings.
-	 * @param array $value     An array of previous values for the settings.
-	 *
-	 * @return void
-	 */
-	public function clean_used_css_with_cdn( $old_value, $value ) {
-		if ( ! isset( $value['cdn'], $old_value['cdn'] ) ) {
-			return;
-		}
-
-		if ( empty( $value['remove_unused_css'] ) ) {
-			return;
-		}
-
-		if (
-			$value['cdn'] === $old_value['cdn']
-			&&
-			$value['cdn_cnames'] === $old_value['cdn_cnames']
-			&&
-			$value['cdn_zone'] === $old_value['cdn_zone']
-		) {
 			return;
 		}
 
