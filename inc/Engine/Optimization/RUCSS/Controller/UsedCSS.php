@@ -82,6 +82,7 @@ class UsedCSS {
 		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
+		'#uc_unlimited_timeline_elementor',
 	];
 
 	/**
