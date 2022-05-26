@@ -695,16 +695,25 @@ class Cache extends Abstract_Buffer {
 		// Check also if request_uri has a trailing slash and update var. else set char to empty.
 		$request_uri_last_char = '/' === $request_uri_last_char ? '/' : '';
 
-		// If permalink_structure is 'plain'.
-		$request_uri_last_char = '' === $permalink_structure ? '' : $request_uri_last_char;
+		// check if permalink is withouth trailing slash url is home.
+		if ( '' === $permalink_last_char ) {
+			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
+		}
 
 		// Bail out if permalink structure and url are the same.
 		if ( $permalink_last_char === $request_uri_last_char ) {
 			return;
 		}
 
-		$protocol = $this->tests->is_ssl() ? 'https://' : 'http://';
-		$url      = $protocol . $host . rtrim( $request_uri, '/' ) . $permalink_last_char . $this->tests->get_query_string();
+		// Prepare query string.
+		$query_string = $this->tests->get_query_string();
+		$query_string = empty( $query_string ) ? '' : '?' . $query_string;
+		$protocol     = $this->tests->is_ssl() ? 'https://' : 'http://';
+
+		// // Construct redirect url.
+		$url = $protocol . $host . rtrim( $request_uri, '/' ) . $permalink_last_char . $query_string;
+
+		// Respect Permalink Structure and Force Redirect.
 		header( 'Location: ' . $url );
 		exit;
 	}
