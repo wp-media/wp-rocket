@@ -3,30 +3,21 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
-trait DataManagerTrait {
+class DataManager {
 	/**
 	 * Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
-	protected $filesystem;
+	private $filesystem;
 
 	/**
-	 * Gets the filesystem instance
+	 * Instantiate the class
 	 *
-	 * @return WP_Filesystem_Direct
+	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
-	private function get_filesystem() {
-		return ! is_null( $this->filesystem ) ? $this->filesystem : rocket_direct_filesystem();
-	}
-
-	/**
-	 * Gets the path to the dynamic lists JSON file
-	 *
-	 * @return string
-	 */
-	private function get_json_filepath(): string {
-		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ) . 'dynamic-lists.json';
+	public function __construct( $filesystem = null ) {
+		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
 	/**
@@ -34,7 +25,7 @@ trait DataManagerTrait {
 	 *
 	 * @return string
 	 */
-	protected function get_lists() {
+	public function get_lists() {
 		$transient = get_transient( 'wpr_dynamic_lists' );
 
 		if ( false !== $transient ) {
@@ -55,6 +46,15 @@ trait DataManagerTrait {
 	}
 
 	/**
+	 * Gets the path to the dynamic lists JSON file
+	 *
+	 * @return string
+	 */
+	private function get_json_filepath(): string {
+		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ) . 'dynamic-lists.json';
+	}
+
+	/**
 	 * Gets lists JSON content from file
 	 *
 	 * @return string
@@ -63,8 +63,8 @@ trait DataManagerTrait {
 		$content        = '';
 		$lists_filepath = $this->get_json_filepath();
 
-		if ( $this->get_filesystem()->exists( $lists_filepath ) ) {
-			$content = $this->get_filesystem()->get_contents( $lists_filepath );
+		if ( $this->filesystem->exists( $lists_filepath ) ) {
+			$content = $this->filesystem->get_contents( $lists_filepath );
 		}
 
 		if ( ! empty( $content ) ) {
@@ -73,8 +73,8 @@ trait DataManagerTrait {
 
 		$fallback_filepath = rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'dynamic-lists.json';
 
-		if ( $this->get_filesystem()->exists( $fallback_filepath ) ) {
-			$content = $this->get_filesystem()->get_contents( $fallback_filepath );
+		if ( $this->filesystem->exists( $fallback_filepath ) ) {
+			$content = $this->filesystem->get_contents( $fallback_filepath );
 		}
 
 		if ( ! empty( $content ) ) {
@@ -93,8 +93,8 @@ trait DataManagerTrait {
 	 *
 	 * @return bool
 	 */
-	protected function put_lists_to_file( string $content ): bool {
-		return $this->get_filesystem()->put_contents( $this->get_json_filepath(), $content );
+	private function put_lists_to_file( string $content ): bool {
+		return $this->filesystem->put_contents( $this->get_json_filepath(), $content );
 	}
 
 	/**
