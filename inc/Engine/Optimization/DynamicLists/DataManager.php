@@ -45,6 +45,21 @@ class DataManager {
 		return $lists;
 	}
 
+	public function get_lists_hash() {
+		return md5( $this->get_lists_from_file() );
+	}
+
+	/**
+	 * Write lists content to JSON file
+	 *
+	 * @param string $content JSON content.
+	 *
+	 * @return bool
+	 */
+	public function put_lists_to_file( string $content ): bool {
+		return $this->filesystem->put_contents( $this->get_json_filepath(), $content );
+	}
+
 	/**
 	 * Gets the path to the dynamic lists JSON file
 	 *
@@ -84,17 +99,6 @@ class DataManager {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Write lists content to JSON file
-	 *
-	 * @param string $content JSON content.
-	 *
-	 * @return bool
-	 */
-	private function put_lists_to_file( string $content ): bool {
-		return $this->filesystem->put_contents( $this->get_json_filepath(), $content );
 	}
 
 	/**
