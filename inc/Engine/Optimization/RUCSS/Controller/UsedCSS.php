@@ -66,7 +66,6 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
-
 	/**
 	 * Instantiate the class.
 	 *
