@@ -11,9 +11,7 @@ class APIClient {
 	/**
 	 * API URL.
 	 */
-	//const API_URL = 'https://b.rucss.wp-rocket.me/api/';
-	const API_URL = 'http://127.0.0.1:8000/api/';
-
+	const API_URL = 'https://b.rucss.wp-rocket.me/api/';
 
 	/**
 	 * Response Code.
@@ -55,8 +53,8 @@ class APIClient {
 	/**
 	 * Handle the request.
 	 *
-	 * @param array $args Passed arguments.
 	 * @param string $request_path request path.
+	 * @param array  $args Passed arguments.
 	 * @param string $type GET or POST.
 	 *
 	 * @return bool
@@ -97,7 +95,7 @@ class APIClient {
 			? wp_remote_retrieve_response_code( $response )
 			: $response->get_error_code();
 
-		if ( 200 !== $this->response_code ) {
+		if ( 200 !== $this->response_code && 201 !== $this->response_code ) {
 			$this->error_message = is_array( $response )
 				? wp_remote_retrieve_response_message( $response )
 				: $response->get_error_message();
@@ -113,12 +111,14 @@ class APIClient {
 	/**
 	 * Get exclusions list.
 	 *
+	 * @param string $hash of lists content to compare.
+	 *
 	 * @return array
 	 */
 	public function get_exclusions_list( $hash ) {
 		$args = [
 			'body'    => [
-				'hash' => $hash
+				'hash' => $hash,
 			],
 			'timeout' => 5,
 		];

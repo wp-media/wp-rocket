@@ -6,7 +6,6 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 
 /**
  * Service provider for the WP Rocket DynamicLists
- *
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -32,11 +31,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'dynamic_lists_api_client', APIClient::class )
-			 ->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'dynamic_lists', DynamicLists::class )
-		     ->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) );
-		     /*->addArgument( __DIR__ . '/views' );*/
-		$this->getContainer()->share( 'dynamic_lists_subscriber', Subscriber::class )
-		     ->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()
+			->add( 'dynamic_lists', DynamicLists::class )->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) );
+		$this->getContainer()
+			->share( 'dynamic_lists_subscriber', Subscriber::class )->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 	}
 }

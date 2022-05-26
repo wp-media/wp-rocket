@@ -69,10 +69,10 @@ class UsedCSS {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param UsedCSS_Query $used_css_query Usedcss Query instance.
+	 * @param Options_Data   $options Options instance.
+	 * @param UsedCSS_Query  $used_css_query Usedcss Query instance.
 	 * @param ResourcesQuery $resources_query Resources Query instance.
-	 * @param APIClient $api APIClient instance.
+	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 */
 	public function __construct(
@@ -278,13 +278,10 @@ class UsedCSS {
 	 * @return string HTML content.
 	 */
 	private function remove_used_css_from_html( string $html ): string {
-		$clean_html                      = $this->hide_comments( $html );
-		$clean_html                      = $this->hide_noscripts( $clean_html );
-		$clean_html                      = $this->hide_scripts( $clean_html );
-		$this->inline_atts_exclusions    = $this->get_inline_atts_exclusions();
-		$this->inline_content_exclusions = $this->get_inline_content_exclusions();
-		error_log( $this->inline_atts_exclusions );
-		error_log( $this->inline_content_exclusions );
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+		$this->set_inline_exclusions_lists();
 
 		$link_styles = $this->find(
 			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
@@ -359,7 +356,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string $html HTML content.
+	 * @param string      $html HTML content.
 	 * @param UsedCSS_Row $used_css Used CSS DB row.
 	 *
 	 * @return string HTML content.
@@ -411,11 +408,7 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 )
-		       &&
-		       $this->options->get( 'do_caching_mobile_files', 0 )
-		       &&
-		       wp_is_mobile();
+		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 ) && wp_is_mobile();
 	}
 
 	/**
@@ -760,26 +753,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Get Rucss inline attr exclusions
+	 * Set Rucss inline attr exclusions
 	 *
-	 * @return array
+	 *  @return void
 	 */
-	private function get_inline_atts_exclusions(): array {
-		$wpr_dynamic_lists = json_decode( $this->get_lists() );
-
-		return $wpr_dynamic_lists['inline_atts_exclusions'] ? $wpr_dynamic_lists['inline_atts_exclusions'] : '';
-
-	}
-
-	/**
-	 * Get Rucss inline content exclusions
-	 *
-	 * @return array
-	 */
-	private function get_inline_content_exclusions(): array {
-		$wpr_dynamic_lists = json_decode( $this->get_lists() );
-
-		return $wpr_dynamic_lists['inline_content_exclusions'] ? $wpr_dynamic_lists['inline_content_exclusions'] : '';
+	private function set_inline_exclusions_lists() {
+		$wpr_dynamic_lists               = json_decode( $this->get_lists(), true );
+		$this->inline_atts_exclusions    = $wpr_dynamic_lists['inline_atts_exclusions'] ? $wpr_dynamic_lists['inline_atts_exclusions'] : [];
+		$this->inline_content_exclusions = $wpr_dynamic_lists['inline_content_exclusions'] ? $wpr_dynamic_lists['inline_content_exclusions'] : [];
 
 	}
 }

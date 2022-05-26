@@ -69,7 +69,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 					'label'      => __( 'Update lists', 'rocket' ),
 					'attributes' => [
 						'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-chevron-down',
-						'id'=>'wpr-update-exclusion-list'
+						'id'    => 'wpr-update-exclusion-list',
 					],
 				]
 			);

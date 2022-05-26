@@ -29,8 +29,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => 'register_rest_route',
-			'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG => ['add_dynamic_lists_script',11],
+			'rest_api_init'               => 'register_rest_route',
+			'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG => [ 'add_dynamic_lists_script', 11 ],
+			'init'                        => 'schedule_lists_update',
+			'rocket_update_dynamic_lists' => 'update_lists',
+			'rocket_deactivation'         => 'clear_schedule_lists_update',
 		];
 	}
 
@@ -43,14 +46,44 @@ class Subscriber implements Subscriber_Interface {
 		$this->dynamic_lists->register_rest_route();
 	}
 
-	public function add_dynamic_lists_script(){
+	/**
+	 * Add js script contains REST data.
+	 *
+	 * @return void
+	 */
+	public function add_dynamic_lists_script() {
 		wp_localize_script(
 			'wpr-admin',
 			'rocket_dynamic_lists',
 			[
-				'rest_url'              => rest_url( "wp-rocket/v1/wpr-dynamic-lists/" ),
-				'rest_nonce'            => wp_create_nonce( 'wp_rest' ),
+				'rest_url'   => rest_url( 'wp-rocket/v1/wpr-dynamic-lists/' ),
+				'rest_nonce' => wp_create_nonce( 'wp_rest' ),
 			]
 		);
+	}
+
+	/**
+	 * Scheduling the update_dynamic_lists cron event.
+	 */
+	public function schedule_lists_update() {
+		$this->dynamic_lists->schedule_lists_update();
+	}
+
+	/**
+	 * Clear the update_dynamic_lists Schedule.
+	 *
+	 *  @return void
+	 */
+	public function clear_schedule_lists_update() {
+		$this->dynamic_lists->clear_schedule_lists_update();
+	}
+
+	/**
+	 * Update dynamic_lists from Api.
+	 *
+	 * * @return void
+	 */
+	public function update_lists() {
+		$this->dynamic_lists->update_lists_from_remote();
 	}
 }

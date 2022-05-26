@@ -17,7 +17,7 @@ trait DataManagerTrait {
 	 * @return string json file path.
 	 */
 	protected function get_json_file_path() {
-		return 'wp-content/wp-rocket-config/dynamic-lists.json';
+		return WP_CONTENT_DIR . '/wp-rocket-config/dynamic-lists.json';
 	}
 
 	/**
@@ -26,7 +26,7 @@ trait DataManagerTrait {
 	 *
 	 * @return string wpr_dynamic_lists.
 	 */
-	public function get_lists() {
+	protected function get_lists() {
 		$wpr_dynamic_lists = get_transient( 'wpr_dynamic_lists' );
 		if ( false === $wpr_dynamic_lists ) {
 			$wpr_dynamic_lists = $this->get_lists_from_file();
@@ -64,20 +64,35 @@ trait DataManagerTrait {
 	}
 
 	/**
-	 * set wpr_dynamic_lists in json file.
+	 * Set wpr_dynamic_lists in json file.
+	 *
+	 * @param string $content to save in file.
 	 *
 	 * @return bool True if the value was set, false otherwise.
 	 */
-	protected function put_lists_to_file( string $content ) {
+	private function put_lists_to_file( string $content ) {
 		return $this->filesystem->put_contents( $this->get_json_file_path(), $content, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
-	 * set wpr_dynamic_lists transient.
+	 * Set wpr_dynamic_lists transient.
+	 *
+	 * @param string $content to save in transient.
 	 *
 	 * @return bool True if the value was set, false otherwise.
 	 */
-	protected function set_lists_cache( string $content ) {
+	private function set_lists_cache( string $content ) {
 		return set_transient( 'wpr_dynamic_lists', $content, WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * Save wpr_dynamic_lists.
+	 *
+	 * @param string $content to save.
+	 *
+	 * @return bool True if the value was set, false otherwise.
+	 */
+	protected function save_dynamic_lists( string $content ) {
+		return $this->put_lists_to_file( $content ) && $this->set_lists_cache( $content );
 	}
 }
