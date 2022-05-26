@@ -114,7 +114,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 			$this->usedCSS->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
 
 			if ( $input['not_completed_count'] > 0 ) {
-				$this->usedCSS->shouldReceive( 'remove_all_completed_rows' )->once();
+				$this->database->shouldReceive( 'remove_all_completed_rows' )->once();
 			} else {
 				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			}
