@@ -234,6 +234,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -294,6 +295,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'dynamic_lists_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
