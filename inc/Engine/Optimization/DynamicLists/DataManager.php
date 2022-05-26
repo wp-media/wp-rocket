@@ -45,6 +45,11 @@ class DataManager {
 		return $lists;
 	}
 
+	/**
+	 * Returns the hash of the current JSON
+	 *
+	 * @return string
+	 */
 	public function get_lists_hash() {
 		return md5( $this->get_lists_from_file() );
 	}
