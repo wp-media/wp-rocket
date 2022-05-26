@@ -20,9 +20,7 @@ class InlineRelatedPosts implements Subscriber_Interface {
 			return [];
 		}
 
-		$events['rocket_rucss_inline_content_exclusions'] = 'exclude_inline_from_rucss';
-
-		return $events;
+		return [ 'rocket_rucss_inline_content_exclusions' => 'exclude_inline_from_rucss' ];
 	}
 
 	/**
