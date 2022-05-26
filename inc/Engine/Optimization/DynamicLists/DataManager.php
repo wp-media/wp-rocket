@@ -23,7 +23,7 @@ class DataManager {
 	/**
 	 * Gets the lists content
 	 *
-	 * @return string
+	 * @return object
 	 */
 	public function get_lists() {
 		$transient = get_transient( 'wpr_dynamic_lists' );
@@ -100,11 +100,11 @@ class DataManager {
 	/**
 	 * Sets transient for lists content
 	 *
-	 * @param string $content Lists content.
+	 * @param object $content Lists content.
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	private function set_lists_cache( string $content ): bool {
-		return set_transient( 'wpr_dynamic_lists', $content, WEEK_IN_SECONDS );
+	private function set_lists_cache( $content ) {
+		set_transient( 'wpr_dynamic_lists', $content, WEEK_IN_SECONDS );
 	}
 }
