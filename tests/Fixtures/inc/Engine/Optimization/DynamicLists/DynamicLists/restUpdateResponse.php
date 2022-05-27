@@ -41,7 +41,7 @@ return [
 			'expected'               => [
 				'success' => false,
 				'data'    => '',
-				'message' => 'Couldn\'t get updated lists from server.'
+				'message' => 'Could not get updated lists from server.'
 			],
 		],
 		'testShouldReturnCouldNotUpdateLists'         => [
@@ -53,7 +53,7 @@ return [
 			'expected'               => [
 				'success' => false,
 				'data'    => '',
-				'message' => 'Couldn\'t update lists.'
+				'message' => 'Could not update lists.'
 			],
 		],
 	]

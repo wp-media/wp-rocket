@@ -1,14 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\DynamicLists;
 
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Engine\Optimization\DynamicLists\Subscriber;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists::rest_update_response
@@ -37,7 +36,7 @@ class Test_restUpdateResponse extends FilesystemTestCase {
 			->with( $hash )
 			->once()
 			->andReturn( $exclusions_list_result );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, Mockery::mock( DataManager::class ) );
 		if ( $exclusions_list_result['code'] == 200 ) {
 			Functions\expect( 'set_transient' )
 				->with( $exclusions_list_result['body'] )->once()->andReturn(true);
