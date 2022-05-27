@@ -1,5 +1,5 @@
 <?php
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
@@ -16,7 +16,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Instantiate the class
 	 *
-	 * @param DynamicLists $dynamic_lists Rest instance.
+	 * @param DynamicLists $dynamic_lists DynamicLists instance.
 	 */
 	public function __construct( DynamicLists $dynamic_lists ) {
 		$this->dynamic_lists = $dynamic_lists;
@@ -29,11 +29,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'               => 'register_rest_route',
-			'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG => [ 'add_dynamic_lists_script', 11 ],
-			'init'                        => 'schedule_lists_update',
-			'rocket_update_dynamic_lists' => 'update_lists',
-			'rocket_deactivation'         => 'clear_schedule_lists_update',
+			'rest_api_init'                => 'register_rest_route',
+			'rocket_localize_admin_script' => [ 'add_dynamic_lists_script', 11 ],
+			'init'                         => 'schedule_lists_update',
+			'rocket_update_dynamic_lists'  => 'update_lists',
+			'rocket_deactivation'          => 'clear_schedule_lists_update',
 		];
 	}
 
@@ -51,15 +51,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function add_dynamic_lists_script() {
-		wp_localize_script(
-			'wpr-admin',
-			'rocket_dynamic_lists',
-			[
-				'rest_url'   => rest_url( 'wp-rocket/v1/wpr-dynamic-lists/' ),
-				'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-			]
-		);
+	public function add_dynamic_lists_script( $data ) {
+		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/' );
+		$data['rest_nonce'] = wp_create_nonce( 'wp_rest' );
+
+		return $data;
 	}
 
 	/**
