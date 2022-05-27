@@ -364,7 +364,19 @@ class UsedCSS {
 				continue;
 			}
 
-			$html = str_replace( $style[0], '', $html );
+			/**
+			 * Filters the status of preserving inline style tags.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param bool $preserve_status Status of preserve.
+			 * @param array $style Full match style tag.
+			 */
+			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', false, $style ) ) {
+				$html = str_replace( $style['content'], '', $html );
+			}else{
+				$html = str_replace( $style[0], '', $html );
+			}
 		}
 
 		return $html;
