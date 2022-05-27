@@ -446,7 +446,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			array( '%s' ),
 			array( '%d' )
 		);
-		if ( empty( $updated ) ) {
+		if ( false === $updated ) {
 			/* translators: %s: action ID */
 			throw new \InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
