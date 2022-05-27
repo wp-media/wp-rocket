@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManagerTrait;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
@@ -16,7 +16,7 @@ use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class UsedCSS {
-	use RegexTrait, CSSTrait, DataManagerTrait;
+	use RegexTrait, CSSTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -54,6 +54,13 @@ class UsedCSS {
 	private $queue;
 
 	/**
+	 * DataManager instance
+	 *
+	 * @var DataManager
+	 */
+	private $data_manager;
+
+	/**
 	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
@@ -74,19 +81,22 @@ class UsedCSS {
 	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
+	 * @param DataManager    $data_manager DataManager instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
 		APIClient $api,
-		QueueInterface $queue
+		QueueInterface $queue,
+		DataManager $data_manager
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
 		$this->api             = $api;
 		$this->queue           = $queue;
+		$this->data_manager    = $data_manager;
 	}
 
 	/**
@@ -758,9 +768,9 @@ class UsedCSS {
 	 *  @return void
 	 */
 	private function set_inline_exclusions_lists() {
-		$wpr_dynamic_lists               = json_decode( $this->get_lists(), true );
-		$this->inline_atts_exclusions    = isset($wpr_dynamic_lists['inline_atts_exclusions']) ? $wpr_dynamic_lists['inline_atts_exclusions'] : [];
-		$this->inline_content_exclusions = isset($wpr_dynamic_lists['inline_content_exclusions']) ? $wpr_dynamic_lists['inline_content_exclusions'] : [];
+		$wpr_dynamic_lists               = $this->data_manager->get_lists();
+		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->inline_atts_exclusions ) ? $wpr_dynamic_lists->inline_atts_exclusions : [];
+		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->inline_content_exclusions ) ? $wpr_dynamic_lists->inline_content_exclusions : [];
 
 	}
 }
