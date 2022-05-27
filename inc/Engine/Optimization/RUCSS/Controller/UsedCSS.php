@@ -655,7 +655,7 @@ class UsedCSS {
 
 			$font_url = $this->extract_first_font( $font_face['content'] );
 
-			$font_url = apply_filters( 'rocket_asset_url', $font_url, [ 'all' ] );
+			$font_url = apply_filters( 'rocket_font_url', $font_url );
 
 			if ( empty( $font_url ) ) {
 				continue;
