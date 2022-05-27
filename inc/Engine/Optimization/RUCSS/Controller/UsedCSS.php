@@ -700,7 +700,7 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 		$links      = $this->find(
-			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch)|(stylesheet)|(preload))[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
