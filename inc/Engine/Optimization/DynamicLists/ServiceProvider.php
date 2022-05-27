@@ -19,6 +19,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'dynamic_lists_data_manager',
 		'dynamic_lists_api_client',
 		'dynamic_lists',
 		'dynamic_lists_subscriber',
@@ -30,11 +31,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->add( 'dynamic_lists_data_manager', DataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_api_client', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()
-			->add( 'dynamic_lists', DynamicLists::class )->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) );
-		$this->getContainer()
-			->share( 'dynamic_lists_subscriber', Subscriber::class )->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
+		$this->getContainer()->add( 'dynamic_lists', DynamicLists::class )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) );
+		$this->getContainer()->share( 'dynamic_lists_subscriber', Subscriber::class )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 	}
 }
