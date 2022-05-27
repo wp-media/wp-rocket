@@ -67,7 +67,7 @@ class Test_Treeshake extends TestCase {
 		$this->configValidUsedCss($config);
 
 		$this->configApplyUsedCss($config);
-
+		Functions\expect( 'get_transient' )->andReturn('');
 		$this->assertEquals($this->format_the_html($expected), $this->format_the_html($this->usedCss->treeshake($config['html'])));
 	}
 

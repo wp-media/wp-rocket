@@ -759,8 +759,8 @@ class UsedCSS {
 	 */
 	private function set_inline_exclusions_lists() {
 		$wpr_dynamic_lists               = json_decode( $this->get_lists(), true );
-		$this->inline_atts_exclusions    = $wpr_dynamic_lists['inline_atts_exclusions'] ? $wpr_dynamic_lists['inline_atts_exclusions'] : [];
-		$this->inline_content_exclusions = $wpr_dynamic_lists['inline_content_exclusions'] ? $wpr_dynamic_lists['inline_content_exclusions'] : [];
+		$this->inline_atts_exclusions    = isset($wpr_dynamic_lists['inline_atts_exclusions']) ? $wpr_dynamic_lists['inline_atts_exclusions'] : [];
+		$this->inline_content_exclusions = isset($wpr_dynamic_lists['inline_content_exclusions']) ? $wpr_dynamic_lists['inline_content_exclusions'] : [];
 
 	}
 }

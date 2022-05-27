@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DynamicLists\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::register_rest_route
+ * @covers \WP_Rocket\Engine\Optimization\DynamicLists::register_rest_route
  *
  * @group  DynamicLists
  */

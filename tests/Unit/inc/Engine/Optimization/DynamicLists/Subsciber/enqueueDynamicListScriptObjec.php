@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DynamicLists\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
+ * @covers \WP_Rocket\Engine\Optimization\DynamicLists::add_dynamic_lists_script
  *
  * @group  DynamicLists
  */

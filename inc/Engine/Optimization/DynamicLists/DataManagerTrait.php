@@ -17,7 +17,7 @@ trait DataManagerTrait {
 	 * @return string json file path.
 	 */
 	protected function get_json_file_path() {
-		return WP_CONTENT_DIR . '/wp-rocket-config/dynamic-lists.json';
+		return rocket_get_constant('WP_CONTENT_DIR') . '/wp-rocket-config/dynamic-lists.json';
 	}
 
 	/**
