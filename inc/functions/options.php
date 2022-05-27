@@ -233,16 +233,16 @@ function rocket_get_ignored_parameters() {
 /**
  * Get all uri we don't cache.
  *
+ * @param bool $force Force the static uris to be reverted to null.
+ * @param bool $show_safe_content show sensitive uris.
+ * @return string A pipe separated list of rejected uri.
+ * @since 2.0
+ *
  * @since 3.3.2 Exclude embedded URLs
  * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API.
  * @since 2.4.1 Auto-exclude WordPress REST API.
- * @since 2.0
- *
- * @param bool $force Force the static uris to be reverted to null.
- *
- * @return string A pipe separated list of rejected uri.
  */
-function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
 	global $wp_rewrite;
 
@@ -253,7 +253,8 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 		return $uris;
 	}
 
-	$uris              = (array) get_rocket_option( 'cache_reject_uri', [] );
+	$uris = (array) get_rocket_option( 'cache_reject_uri', [] );
+
 	$home_root         = rocket_get_home_dirname();
 	$home_root_escaped = preg_quote( $home_root, '/' ); // The site is not at the domain root, it's in a folder.
 	$home_root_len     = strlen( $home_root );
@@ -288,7 +289,7 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 	 *
 	 * @param array $uris List of rejected uri
 	*/
-	$uris = apply_filters( 'rocket_cache_reject_uri', $uris );
+	$uris = apply_filters( 'rocket_cache_reject_uri', $uris, $show_safe_content );
 	$uris = array_filter( $uris );
 
 	if ( ! $uris ) {
