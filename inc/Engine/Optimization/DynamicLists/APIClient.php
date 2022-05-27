@@ -1,11 +1,10 @@
 <?php
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
 
 class APIClient {
 	/**
@@ -32,7 +31,7 @@ class APIClient {
 	 *
 	 * @var string
 	 */
-	protected $response_body;
+	protected $response_body = '';
 
 	/**
 	 * Plugin options instance.
@@ -51,15 +50,42 @@ class APIClient {
 	}
 
 	/**
+	 * Get exclusions list.
+	 *
+	 * @param string $hash Hash of lists content to compare.
+	 *
+	 * @return array
+	 */
+	public function get_exclusions_list( $hash ) {
+		$args = [
+			'body'    => [
+				'hash' => $hash,
+			],
+			'timeout' => 5,
+		];
+
+		if ( ! $this->handle_request( 'exclusions/list', $args ) ) {
+			return [
+				'code'    => $this->response_code,
+				'message' => $this->error_message,
+			];
+		}
+
+		return [
+			'code' => $this->response_code,
+			'body' => $this->response_body,
+		];
+	}
+
+	/**
 	 * Handle the request.
 	 *
 	 * @param string $request_path request path.
 	 * @param array  $args Passed arguments.
-	 * @param string $type GET or POST.
 	 *
 	 * @return bool
 	 */
-	private function handle_request( string $request_path, array $args, string $type = 'post' ) {
+	private function handle_request( string $request_path, array $args ) {
 		$api_url = rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			: self::API_URL;
@@ -73,9 +99,7 @@ class APIClient {
 			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
 		];
 
-		$args['method'] = strtoupper( $type );
-
-		$response = wp_remote_request(
+		$response = wp_remote_get(
 			$api_url . $request_path,
 			$args
 		);
@@ -106,36 +130,5 @@ class APIClient {
 		$this->response_body = wp_remote_retrieve_body( $response );
 
 		return true;
-	}
-
-	/**
-	 * Get exclusions list.
-	 *
-	 * @param string $hash of lists content to compare.
-	 *
-	 * @return array
-	 */
-	public function get_exclusions_list( $hash ) {
-		$args = [
-			'body'    => [
-				'hash' => $hash,
-			],
-			'timeout' => 5,
-		];
-
-		if ( ! $this->handle_request( 'exclusions/list', $args, 'get' ) ) {
-			return [
-				'code'    => $this->response_code,
-				'message' => $this->error_message,
-			];
-		}
-
-		$result = [
-			'code' => $this->response_code,
-			'body' => $this->response_body,
-		];
-
-		return $result;
-
 	}
 }
