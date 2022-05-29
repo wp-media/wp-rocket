@@ -374,7 +374,7 @@ class UsedCSS {
 			 */
 			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', false, $style ) ) {
 				$html = str_replace( $style['content'], '', $html );
-			}else{
+			}else {
 				$html = str_replace( $style[0], '', $html );
 			}
 		}
