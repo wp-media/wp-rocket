@@ -48,6 +48,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pwa',
 		'flatsome',
 		'convertplug',
+		'unlimited_elements',
 	];
 
 	/**
@@ -167,6 +168,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
 			->addTag( 'common_subscriber' );
 	}
 }
