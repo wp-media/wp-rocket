@@ -296,6 +296,7 @@ class Plugin {
 			'flatsome',
 			'convertplug',
 			'dynamic_lists_subscriber',
+			'inline_related_posts',
 		];
 
 		$host_type = HostResolver::get_host_service();
