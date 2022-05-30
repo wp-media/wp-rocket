@@ -316,9 +316,9 @@ class UsedCSS {
 		foreach ( $link_styles as $style ) {
 			if (
 
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
 				&&
-				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
 				||
 				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
@@ -700,7 +700,7 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 		$links      = $this->find(
-			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch)|(stylesheet)|(preload))[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
