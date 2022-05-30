@@ -29,17 +29,25 @@ class Test_restUpdateResponse extends FilesystemTestCase {
 	public function testShouldReturnExpected( $exclusions_list_result, $expected ) {
 		$WP_REST_Request   = Mockery::mock( \WP_REST_Request::class );
 		$dynamic_lists_api = Mockery::mock( APIClient::class );
+		$data_manager = Mockery::mock( DataManager::class );
 
 		$hash = '';
+		$data_manager
+			->shouldReceive( 'get_lists_hash' )
+			->once()
+			->andReturn( $hash );
 		$dynamic_lists_api
 			->shouldReceive( 'get_exclusions_list' )
 			->with( $hash )
 			->once()
 			->andReturn( $exclusions_list_result );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, Mockery::mock( DataManager::class ) );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager );
 		if ( $exclusions_list_result['code'] == 200 ) {
-			Functions\expect( 'set_transient' )
-				->with( $exclusions_list_result['body'] )->once()->andReturn(true);
+			$data_manager
+				->shouldReceive( 'save_dynamic_lists' )
+				->with( $exclusions_list_result['body'] )
+				->once()
+				->andReturn( true );
 		}
 		Functions\expect( 'rest_ensure_response' )
 			->with( $exclusions_list_result )->once();
