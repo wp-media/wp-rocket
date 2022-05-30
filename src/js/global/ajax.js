@@ -175,9 +175,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		$('#wpr-update-exclusion-msg').html('');
 		$.ajax({
-			url: rocket_dynamic_lists.rest_url,
+			url: rocket_ajax_data.rest_url,
 			beforeSend: function ( xhr ) {
-				xhr.setRequestHeader( 'X-WP-Nonce', rocket_dynamic_lists.rest_nonce );
+				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
 			},
 			method: "PUT",
 			success: function(response) {
