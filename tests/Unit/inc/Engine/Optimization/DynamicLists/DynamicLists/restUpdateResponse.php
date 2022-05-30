@@ -21,7 +21,7 @@ class Test_restUpdateResponse extends FilesystemTestCase {
 		Functions\stubTranslationFunctions();
 	}
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/restUpdateResponse.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/DynamicLists/restUpdateResponse.php';
 
 	/**
 	 * @dataProvider providerTestData

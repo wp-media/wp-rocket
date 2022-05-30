@@ -20,25 +20,13 @@ class Test_EnqueueDynamicListScriptObject extends TestCase {
 		$subscriber    = new Subscriber( $dynamic_lists );
 		Functions\expect( 'rest_url' )
 			->once()
-			->with( "wp-rocket/v1/wpr-dynamic-lists/" )
-			->andReturn( "http://example.org/wp-rocket/v1/wpr-dynamic-lists/" );
+			->with( "wp-rocket/v1/dynamic_lists/update/" )
+			->andReturn( "http://example.org/wp-rocket/v1/dynamic_lists/update/" );
 
 		Functions\expect( 'wp_create_nonce' )
 			->once()
 			->with( 'wp_rest' )
 			->andReturn( 'wp_rest_nonce' );
-
-		Functions\expect( 'wp_localize_script' )
-			->once()
-			->with(
-				'wpr-admin',
-				'rocket_dynamic_lists',
-				[
-					'rest_url'   => 'http://example.org/wp-rocket/v1/wpr-dynamic-lists/',
-					'rest_nonce' => 'wp_rest_nonce',
-				]
-			)
-			->andReturnNull();
-		$subscriber->add_dynamic_lists_script();
+		$subscriber->add_dynamic_lists_script([]);
 	}
 }
