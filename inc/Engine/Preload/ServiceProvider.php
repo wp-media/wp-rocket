@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -77,6 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_settings )
 			->addArgument( $queue )
 			->addArgument( PreloadQueueRunner::instance() )
+			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
