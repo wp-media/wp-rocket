@@ -165,19 +165,33 @@ class Cache extends Query {
 	}
 
 	/**
+	 * Get all preload caches which were not accessed in the last month.
+	 *
+	 * @return array
+	 */
+	public function get_old_cache() : array {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return [];
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$rows_affected       = $db->get_results( $query );
+
+		return $rows_affected;
+	}
+
+	/**
 	 * Remove all completed rows one by one.
 	 *
 	 * @return void
 	 */
 	public function remove_all_not_accessed_rows() {
-		$rows = $this->query(
-			[
-				'status__in' => [ 'failed', 'pending' ],
-				'fields'     => [
-					'id',
-				],
-			]
-		);
+		$rows = $this->get_old_cache();
 
 		foreach ( $rows as $row ) {
 			$this->delete_item( $row->id );

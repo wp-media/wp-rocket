@@ -18,14 +18,14 @@ class Test_RemoveAllNotAccessedRows extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(Cache::class, ['query', 'delete_item']);
+		$this->query = $this->createPartialMock(Cache::class, ['query', 'delete_item', 'get_old_cache']);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDeleteAsExpected($config, $expected) {
-		$this->query->expects(self::once())->method('query')->with($config['params'])->willReturn($config['results']);
+		$this->query->expects(self::once())->method('get_old_cache')->willReturn($config['results']);
 		$this->query->expects(self::any())->method('delete_item')->withConsecutive(...$expected);
 		$this->query->remove_all_not_accessed_rows();
 	}
