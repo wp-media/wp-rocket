@@ -85,6 +85,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->dynamic_lists->update_lists_from_remote();
 	}
 
+	/**
+	 * Displays the dynamic lists update section on tools tab
+	 *
+	 * @return void
+	 */
 	public function display_update_lists_section() {
 		$this->dynamic_lists->display_update_lists_section();
 	}

@@ -139,6 +139,11 @@ class DynamicLists extends Abstract_Render {
 		wp_clear_scheduled_hook( 'rocket_update_dynamic_lists' );
 	}
 
+	/**
+	 * Displays the dynamic lists update section on tools tab
+	 *
+	 * @return void
+	 */
 	public function display_update_lists_section() {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
