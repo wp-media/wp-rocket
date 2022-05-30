@@ -10,6 +10,8 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
@@ -22,6 +24,7 @@ class Test_Treeshake extends TestCase {
 	protected $api;
 	protected $queue;
 	protected $usedCss;
+	protected $data_manager;
 
 	protected function setUp(): void
 	{
@@ -31,10 +34,12 @@ class Test_Treeshake extends TestCase {
 		$this->resourcesQuery = $this->createMock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
+		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->usedCss = Mockery::mock(UsedCSS::class . '[is_allowed,update_last_accessed]', [$this->options, $this->usedCssQuery,
 				$this->resourcesQuery,
 			$this->api,
-			$this->queue]);
+			$this->queue,
+			$this->data_manager]);
 	}
 
 	protected function tearDown(): void
@@ -67,7 +72,12 @@ class Test_Treeshake extends TestCase {
 		$this->configValidUsedCss($config);
 
 		$this->configApplyUsedCss($config);
-		Functions\expect( 'get_transient' )->andReturn('');
+
+		$this->data_manager->shouldReceive( 'get_lists' )
+			->atMost()
+			->once()
+			->andReturn( [] );
+
 		$this->assertEquals($this->format_the_html($expected), $this->format_the_html($this->usedCss->treeshake($config['html'])));
 	}
 
