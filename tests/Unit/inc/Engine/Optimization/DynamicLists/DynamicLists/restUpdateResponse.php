@@ -41,7 +41,7 @@ class Test_restUpdateResponse extends FilesystemTestCase {
 			->with( $hash )
 			->once()
 			->andReturn( $exclusions_list_result );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, '' );
 		if ( $exclusions_list_result['code'] == 200 ) {
 			$data_manager
 				->shouldReceive( 'save_dynamic_lists' )

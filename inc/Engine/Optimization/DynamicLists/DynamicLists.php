@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Rocket\Abstract_Render;
 
-class DynamicLists {
+class DynamicLists extends Abstract_Render {
 	/**
 	 * APIClient instance
 	 *
@@ -27,8 +27,11 @@ class DynamicLists {
 	 *
 	 * @param APIClient   $api APIClient instance.
 	 * @param DataManager $data_manager DataManager instance.
+	 * @param string      $template_path Path to views.
 	 */
-	public function __construct( APIClient $api, DataManager $data_manager ) {
+	public function __construct( APIClient $api, DataManager $data_manager, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->api          = $api;
 		$this->data_manager = $data_manager;
 	}
@@ -134,5 +137,13 @@ class DynamicLists {
 	 */
 	public function clear_schedule_lists_update() {
 		wp_clear_scheduled_hook( 'rocket_update_dynamic_lists' );
+	}
+
+	public function display_update_lists_section() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		echo $this->generate( 'settings/dynamic-lists-update' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

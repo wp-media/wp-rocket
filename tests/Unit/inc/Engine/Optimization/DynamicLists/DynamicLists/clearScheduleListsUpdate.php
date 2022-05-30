@@ -16,7 +16,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_ClearScheduleListsUpdate extends TestCase {
 	public function testShouldDoExpect() {
-		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ) );
+		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ), '' );
 
 		Functions\expect( 'wp_clear_scheduled_hook' )
 			->with( 'rocket_update_dynamic_lists' )
