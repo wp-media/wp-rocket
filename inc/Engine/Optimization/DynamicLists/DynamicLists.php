@@ -64,7 +64,7 @@ class DynamicLists {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function rest_update_response() {
-		return rest_ensure_request( $this->update_lists_from_remote() );
+		return rest_ensure_response( $this->update_lists_from_remote() );
 	}
 
 	/**
