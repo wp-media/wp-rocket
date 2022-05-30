@@ -7,51 +7,52 @@ use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists::rest_update_response
  *
  * @group  DynamicLists
  */
-class Test_restUpdateResponse extends FilesystemTestCase {
-
-	public function setUp(): void {
+class Test_restUpdateResponse extends TestCase {
+	protected function setUp(): void {
 		parent::setUp();
-		Functions\stubTranslationFunctions();
+
+		$this->stubTranslationFunctions();
 	}
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/DynamicLists/restUpdateResponse.php';
-
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $exclusions_list_result, $expected ) {
-		$WP_REST_Request   = Mockery::mock( \WP_REST_Request::class );
 		$dynamic_lists_api = Mockery::mock( APIClient::class );
 		$data_manager = Mockery::mock( DataManager::class );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, '' );
 
 		$hash = '';
+
 		$data_manager
 			->shouldReceive( 'get_lists_hash' )
 			->once()
 			->andReturn( $hash );
+
 		$dynamic_lists_api
 			->shouldReceive( 'get_exclusions_list' )
 			->with( $hash )
 			->once()
 			->andReturn( $exclusions_list_result );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, '' );
+
 		if ( $exclusions_list_result['code'] == 200 ) {
 			$data_manager
 				->shouldReceive( 'save_dynamic_lists' )
 				->with( $exclusions_list_result['body'] )
 				->once()
-				->andReturn( true );
+				->andReturn( $exclusions_list_result['not_saved'] );
 		}
-		Functions\expect( 'rest_ensure_response' )
-			->with( $exclusions_list_result )->once();
 
-		$dynamic_lists->rest_update_response( $WP_REST_Request );
+		Functions\expect( 'rest_ensure_response' )
+			->with( $expected )->once();
+
+		$dynamic_lists->rest_update_response();
 	}
 }
