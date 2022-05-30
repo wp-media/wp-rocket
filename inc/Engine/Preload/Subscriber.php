@@ -46,15 +46,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_load_initial_sitemap( $old_value, $value ) {
-		if ( ! isset( $value['sitemap_preload'], $old_value['sitemap_preload'] ) ) {
+		if ( ! isset( $value['manual_preload'], $old_value['manual_preload'] ) ) {
 			return;
 		}
 
-		if ( $value['sitemap_preload'] === $old_value['sitemap_preload'] ) {
+		if ( $value['manual_preload'] === $old_value['manual_preload'] ) {
 			return;
 		}
 
-		if ( ! $value['sitemap_preload'] ) {
+		if ( ! $value['manual_preload'] ) {
 			return;
 		}
 
