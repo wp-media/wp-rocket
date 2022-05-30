@@ -25,6 +25,17 @@ class Cache extends Schema {
 		],
 
 
+		// URL    column.
+		[
+			'name'       => 'url',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => null,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => false,
+		],
+
 		// STATUS    column.
 		[
 			'name'       => 'status',
