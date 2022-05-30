@@ -113,15 +113,6 @@ class DynamicLists extends Abstract_Render {
 	}
 
 	/**
-	 * Update dynamic list from API after plugin update.
-	 *
-	 * @return void
-	 */
-	public function update_lists_after_upgrade() {
-		$this->update_lists_from_remote();
-	}
-
-	/**
 	 * Schedule cron to update dynamic lists weekly.
 	 *
 	 * @return void
