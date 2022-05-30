@@ -35,11 +35,12 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_update_dynamic_lists'   => 'update_lists',
 			'rocket_deactivation'           => 'clear_schedule_lists_update',
 			'rocket_settings_tools_content' => 'display_update_lists_section',
+			'wp_rocket_upgrade'             => 'update_lists',
 		];
 	}
 
 	/**
-	 * Registers the rest support route
+	 * Registers the REST dynamic lists update route
 	 *
 	 * @return void
 	 */
@@ -48,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add js script contains REST data.
+	 * Add REST data to our localize script data.
 	 *
 	 * @param array $data Localize script data.
 	 * @return array
@@ -61,14 +62,14 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Scheduling the update_dynamic_lists cron event.
+	 * Scheduling the dynamic lists update cron event.
 	 */
 	public function schedule_lists_update() {
 		$this->dynamic_lists->schedule_lists_update();
 	}
 
 	/**
-	 * Clear the update_dynamic_lists Schedule.
+	 * Clear the dynamic lists update cron event.
 	 *
 	 *  @return void
 	 */
@@ -77,7 +78,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Update dynamic_lists from Api.
+	 * Update dynamic lists from API.
 	 *
 	 * * @return void
 	 */
