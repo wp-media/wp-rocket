@@ -45,9 +45,17 @@ class DynamicLists {
 			[
 				'methods'             => 'PUT',
 				'callback'            => [ $this, 'rest_update_response' ],
-				'permission_callback' => current_user_can( 'rocket_manage_options' ),
+				'permission_callback' => [ $this, 'check_permissions' ],
 			]
 		);
+	}
+	/**
+	 * Checks user's permissions. This is a callback registered to REST route's "permission_callback" parameter.
+	 *
+	 * @return bool true if the user has permission; else false.
+	 */
+	public function check_permissions() {
+		return current_user_can( 'rocket_manage_options' );
 	}
 
 	/**

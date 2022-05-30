@@ -59,7 +59,7 @@ class DataManager {
 	 *
 	 * @param string $content Lists content.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function save_dynamic_lists( string $content ) {
 		$result = $this->put_lists_to_file( $content );

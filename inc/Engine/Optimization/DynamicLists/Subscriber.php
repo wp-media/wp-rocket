@@ -49,7 +49,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add js script contains REST data.
 	 *
-	 * @return void
+	 * @param array $data Localize script data.
+	 * @return array
 	 */
 	public function add_dynamic_lists_script( $data ) {
 		$data['rest_url']   = rest_url( 'wp-rocket/v1/dynamic_lists/update/' );
