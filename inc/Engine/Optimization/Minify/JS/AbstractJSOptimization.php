@@ -265,7 +265,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'usercentrics.eu',
 			'cdn.popt.in/pixel.js',
 			'm2d.m2.ai',
-			'c.pubguru.net',
+			'pubguru.net',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
