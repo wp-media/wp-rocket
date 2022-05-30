@@ -25,6 +25,7 @@ return [
 		],
 		'testShouldReturnListsAreSuccessfullyUpdated' => [
 			'exclusions_list_result' => [
+				'not_saved' => false,
 				'code' => 200,
 				'body' => $data
 			],
