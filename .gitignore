@@ -3,3 +3,4 @@
 /tests/env/local/
 composer.lock
 vfs:/
+tests/Unit/.phpunit.result.cache
