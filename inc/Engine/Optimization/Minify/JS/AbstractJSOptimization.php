@@ -264,6 +264,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cognitoforms.com',
 			'usercentrics.eu',
 			'umami',
+			'cdn.popt.in/pixel.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
