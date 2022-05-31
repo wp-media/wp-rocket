@@ -16,7 +16,7 @@ class WPML implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
+		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) && ICL_SITEPRESS_VERSION ) {
 			return [];
 		}
 
