@@ -119,7 +119,7 @@ class APIClient {
 			? wp_remote_retrieve_response_code( $response )
 			: $response->get_error_code();
 
-		if ( 200 !== $this->response_code && 201 !== $this->response_code ) {
+		if ( 200 !== $this->response_code && 206 !== $this->response_code ) {
 			$this->error_message = is_array( $response )
 				? wp_remote_retrieve_response_message( $response )
 				: $response->get_error_message();

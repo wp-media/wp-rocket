@@ -14,7 +14,7 @@ return [
 	'test_data' => [
 		'testShouldReturnListsAreUpToDate'            => [
 			'exclusions_list_result' => [
-				'code' => 201,
+				'code' => 206,
 				'body' => $data
 			],
 			'expected'               => [

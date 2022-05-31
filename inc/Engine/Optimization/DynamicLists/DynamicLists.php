@@ -79,7 +79,7 @@ class DynamicLists extends Abstract_Render {
 		$result = $this->api->get_exclusions_list( $this->data_manager->get_lists_hash() );
 
 		if (
-			( 200 !== $result['code'] && 201 !== $result['code'] )
+			( 200 !== $result['code'] && 206 !== $result['code'] )
 			|| empty( $result['body'] )
 		) {
 			return [
@@ -89,7 +89,7 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		if ( 201 === $result['code'] ) {
+		if ( 206 === $result['code'] ) {
 			return [
 				'success' => true,
 				'data'    => '',
