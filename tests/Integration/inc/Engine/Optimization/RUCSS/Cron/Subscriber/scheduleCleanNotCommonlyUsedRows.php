@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::schedule_clean_not_commonly_used_rows
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
  * @group  RUCSS
  */

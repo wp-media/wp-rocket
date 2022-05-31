@@ -219,6 +219,9 @@ if ( window.addEventListener ) {
 	window.attachEvent( \'onload\', wprRemoveCPCSS );
 }
 </script>
+<script>
+window.wsf_form_json_config = {};
+</script>
 </body>
 </html>';
 
@@ -441,6 +444,9 @@ if ( window.addEventListener ) {
 	window.attachEvent( \'onload\', wprRemoveCPCSS );
 }
 </script>
+<script>
+window.wsf_form_json_config = {};
+</script>
 </body>
 </html>';
 
@@ -662,6 +668,9 @@ if ( window.addEventListener ) {
 } else if ( window.attachEvent ) {
 	window.attachEvent( \'onload\', wprRemoveCPCSS );
 }
+</script>
+<script>
+window.wsf_form_json_config = {};
 </script>
 </body>
 </html>';
