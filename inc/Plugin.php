@@ -295,6 +295,7 @@ class Plugin {
 			'flatsome',
 			'convertplug',
 			'inline_related_posts',
+			'wpml',
 		];
 
 		$host_type = HostResolver::get_host_service();
