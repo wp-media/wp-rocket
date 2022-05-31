@@ -4,3 +4,4 @@
 composer.lock
 vfs:/
 tests/Unit/.phpunit.result.cache
+tests/Integration/.phpunit.result.cache
