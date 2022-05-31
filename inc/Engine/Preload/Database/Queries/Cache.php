@@ -85,7 +85,7 @@ class Cache extends Query {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
 				[
-					'url'           => $resource['url'],
+					'url'           => untrailingslashit( $resource['url'] ),
 					'status'        => $resource['status'],
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -112,13 +112,50 @@ class Cache extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'      => $resource['url'],
+				'url'      => untrailingslashit( $resource['url'] ),
 				'status'   => $resource['status'],
 				'modified' => current_time( 'mysql', true ),
 			]
 		);
 
 		return $db_row->id;
+	}
+
+	/**
+	 * Create new resource row or update its contents if not created before.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $resource Resource array.
+	 *
+	 * @return bool
+	 */
+	public function create_or_nothing( array $resource ) {
+		// check the database if those resources added before.
+		$rows = $this->query(
+			[
+				'url' => untrailingslashit( $resource['url'] ),
+			]
+		);
+
+		if ( count( $rows ) > 0 ) {
+			return false;
+		}
+
+		// Create this new row in DB.
+		$resource_id = $this->add_item(
+			[
+				'url'           => untrailingslashit( $resource['url'] ),
+				'status'        => $resource['status'],
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+
+		if ( $resource_id ) {
+			return $resource_id;
+		}
+
+		return false;
 	}
 
 	/**
