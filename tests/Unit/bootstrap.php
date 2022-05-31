@@ -37,6 +37,7 @@ function load_original_files_before_mocking() {
 		'/WP.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
+		'/Kinsta_Cache.php',
 		'/WP_Rewrite.php',
 	];
 	foreach ( $fixtures as $file ) {
