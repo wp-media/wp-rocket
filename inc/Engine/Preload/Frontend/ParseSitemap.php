@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Preload\Frontend;
 
 use WP_Rocket\Engine\Preload\Controller\Queue;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class ParseSitemap {
 
@@ -23,7 +23,7 @@ class ParseSitemap {
 
 	/**
 	 * DB query.
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	protected $query;
 	/**
@@ -31,9 +31,9 @@ class ParseSitemap {
 	 *
 	 * @param SitemapParser $sitemap_parser Parse controller.
 	 * @param Queue         $queue Queue instance.
-	 * @param RocketCache $rocketCache DB query.
+	 * @param Cache $rocketCache DB query.
 	 */
-	public function __construct( SitemapParser $sitemap_parser, Queue $queue, RocketCache $rocketCache) {
+	public function __construct( SitemapParser $sitemap_parser, Queue $queue, Cache $rocketCache) {
 		$this->sitemap_parser = $sitemap_parser;
 		$this->queue          = $queue;
 		$this->query = $rocketCache;
@@ -57,10 +57,11 @@ class ParseSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			$this->queue->add_job_preload_job_preload_url_async( $link );
-			$this->query->create_or_update([
+			if($this->query->create_or_nothing([
 				'url' => $link
-			]);
+			])) {
+				$this->queue->add_job_preload_job_preload_url_async( $link );
+			}
 		}
 
 		$children = $this->sitemap_parser->get_children();

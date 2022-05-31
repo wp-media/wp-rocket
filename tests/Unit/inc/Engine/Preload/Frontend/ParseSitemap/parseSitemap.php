@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Frontend\ParseSitemap;
 
 use Mockery;
 use WP_Rocket\Engine\Preload\Controller\Queue;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Frontend\ParseSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -23,7 +23,7 @@ class Test_ParseSitemap extends TestCase {
 		parent::setUp();
 		$this->sitemap_parser = Mockery::mock(SitemapParser::class);
 		$this->queue = Mockery::mock(Queue::class);
-		$this->query = $this->createMock(RocketCache::class);
+		$this->query = $this->createMock(Cache::class);
 		$this->controller = new ParseSitemap($this->sitemap_parser, $this->queue, $this->query);
 	}
 
@@ -55,9 +55,12 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser->expects()->get_links()->andReturn($config['links']);
 		$this->sitemap_parser->expects()->get_children()->andReturn($config['children']);
 
-		foreach ($config['links'] as $link) {
+		foreach ($config['links'] as $index => $link) {
+			$this->query->expects(self::any())->method('create_or_nothing')->withConsecutive(...$config['jobs'])
+				->willReturn(true);
+
 			$this->queue->expects()->add_job_preload_job_preload_url_async($link);
-			$this->query->expects(self::any())->method('create_or_update')->withConsecutive(...$config['jobs']);
+
 		}
 
 		foreach ($config['children'] as $child) {

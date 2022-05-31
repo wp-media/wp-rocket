@@ -80,7 +80,6 @@ class Cache extends Query {
 		$rows = $this->query(
 			[
 				'url' => untrailingslashit( $resource['url'] ),
-				'is_mobile' => key_exists('is_mobile', $resource)  ? $resource['is_mobile']: false,
 			]
 		);
 
@@ -89,7 +88,6 @@ class Cache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => untrailingslashit( $resource['url'] ),
-					'is_mobile'     => key_exists('is_mobile', $resource) ? $resource['is_mobile']: false,
 					'status'        => key_exists('status', $resource) ? $resource['status']: 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
