@@ -47,6 +47,6 @@ class Test_CreateOrUpdate extends TestCase {
 		if(count($config['rows']) === 0) {
 			return;
 		}
-		$this->query->expects(self::exactly(2))->method('update_item')->withConsecutive($config['update_time'], [$config['id'], $config['save']]);
+		$this->query->expects(self::exactly(1))->method('update_item')->with($config['id'], $config['save']);
 	}
 }
