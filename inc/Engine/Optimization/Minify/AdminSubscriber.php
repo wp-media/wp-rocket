@@ -1,15 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\Minify;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-/**
- * Minify Admin subscriber
- *
- * @since 3.5.4
- */
 class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * WP Rocket Options
@@ -19,7 +15,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Run on new instance
+	 * Instantiate the class
 	 *
 	 * @param Options_Data $options WP Rocket Options Instance.
 	 */
@@ -39,13 +35,17 @@ class AdminSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Delete all minified cache file
+	 * Delete all minified cache files
 	 *
 	 * @return void
 	 */
 	public function clean_minify_all() {
 		// Bail out if minify_js or minify_css is not enabled.
-		if ( ! (bool) $this->options->get( 'minify_js', 0 ) && ! (bool) $this->options->get( 'minify_css', 0 ) ) {
+		if (
+			! (bool) $this->options->get( 'minify_js', 0 )
+			&&
+			! (bool) $this->options->get( 'minify_css', 0 )
+		) {
 			return;
 		}
 
