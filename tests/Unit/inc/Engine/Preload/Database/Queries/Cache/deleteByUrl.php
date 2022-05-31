@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\RocketCache;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::delete_by_url
+ * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::delete_by_url
  *
  * @group Database
  * @group Preload
@@ -18,7 +18,7 @@ class Test_DeleteByUrl extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'delete_item']);
+		$this->query = $this->createPartialMock(Cache::class, ['get_rows_by_url', 'delete_item']);
 	}
 
 	/**

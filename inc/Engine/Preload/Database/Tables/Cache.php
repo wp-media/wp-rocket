@@ -4,7 +4,8 @@ namespace WP_Rocket\Engine\Preload\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
 
-class RocketCache extends Table {
+
+class Cache extends Table {
 
 	/**
 	 * Table name
@@ -36,7 +37,6 @@ class RocketCache extends Table {
 		$this->schema = "
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			url              varchar(2000)       NOT NULL default '',
-			is_mobile        tinyint(1)          NOT NULL default 0,
 			status           varchar(255)        NOT NULL default '',
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',

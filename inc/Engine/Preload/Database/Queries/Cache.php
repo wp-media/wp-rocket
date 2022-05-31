@@ -3,10 +3,10 @@
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
-use WP_Rocket\Engine\Preload\Database\Rows\RocketCacheRow;
-use WP_Rocket\Engine\Preload\Database\Schemas\RocketCache as Schema;
+use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
+use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
-class RocketCache extends Query {
+class Cache extends Query {
 
 
 	/**
@@ -64,7 +64,7 @@ class RocketCache extends Query {
 	 *
 	 * @var mixed
 	 */
-	protected $item_shape = RocketCacheRow::class;
+	protected $item_shape = CacheRow::class;
 
 	/**
 	 * Create new resource row or update its contents if not created before.
@@ -79,7 +79,7 @@ class RocketCache extends Query {
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url'       => untrailingslashit( $resource['url'] ),
+				'url' => untrailingslashit( $resource['url'] ),
 				'is_mobile' => key_exists('is_mobile', $resource)  ? $resource['is_mobile']: false,
 			]
 		);
@@ -88,7 +88,7 @@ class RocketCache extends Query {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
 				[
-					'url'           => $resource['url'],
+					'url'           => untrailingslashit( $resource['url'] ),
 					'is_mobile'     => key_exists('is_mobile', $resource) ? $resource['is_mobile']: false,
 					'status'        => key_exists('status', $resource) ? $resource['status']: 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
@@ -116,14 +116,50 @@ class RocketCache extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'       => $resource['url'],
-				'is_mobile' => $resource['is_mobile'],
-				'status'    => $resource['status'],
-				'modified'  => current_time( 'mysql', true ),
+				'url'      => untrailingslashit( $resource['url'] ),
+				'status'   => $resource['status'],
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 
 		return $db_row->id;
+	}
+
+	/**
+	 * Create new resource row or update its contents if not created before.
+	 *
+	 * @since 3.9
+	 *
+	 * @param array $resource Resource array.
+	 *
+	 * @return bool
+	 */
+	public function create_or_nothing( array $resource ) {
+		// check the database if those resources added before.
+		$rows = $this->query(
+			[
+				'url' => untrailingslashit( $resource['url'] ),
+			]
+		);
+
+		if ( count( $rows ) > 0 ) {
+			return false;
+		}
+
+		// Create this new row in DB.
+		$resource_id = $this->add_item(
+			[
+				'url'           => untrailingslashit( $resource['url'] ),
+				'status'        => $resource['status'],
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+
+		if ( $resource_id ) {
+			return $resource_id;
+		}
+
+		return false;
 	}
 
 	/**
@@ -170,19 +206,33 @@ class RocketCache extends Query {
 	}
 
 	/**
+	 * Get all preload caches which were not accessed in the last month.
+	 *
+	 * @return array
+	 */
+	public function get_old_cache() : array {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return [];
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$rows_affected       = $db->get_results( $query );
+
+		return $rows_affected;
+	}
+
+	/**
 	 * Remove all completed rows one by one.
 	 *
 	 * @return void
 	 */
 	public function remove_all_not_accessed_rows() {
-		$rows = $this->query(
-			[
-				'status__in' => [ 'failed', 'pending' ],
-				'fields'     => [
-					'id',
-				],
-			]
-		);
+		$rows = $this->get_old_cache();
 
 		foreach ( $rows as $row ) {
 			$this->delete_item( $row->id );

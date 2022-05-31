@@ -1,12 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\RocketCache;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_rows_by_url
+ * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::get_rows_by_url
  *
  * @group Database
  * @group Preload
@@ -18,7 +18,7 @@ class Test_GetRowsByUrl extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['query']);
+		$this->query = $this->createPartialMock(Cache::class, ['query']);
 	}
 
 	/**

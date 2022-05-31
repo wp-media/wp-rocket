@@ -4,10 +4,10 @@ namespace WP_Rocket\Engine\Preload\Database\Rows;
 
 use WP_Rocket\Dependencies\Database\Row;
 
-class RocketCacheRow extends Row {
+class CacheRow extends Row {
 
 	/**
-	 * RocketCacheRow constructor.
+	 * CacheRow constructor.
 	 *
 	 * @param object $item Current row details.
 	 */
@@ -15,7 +15,6 @@ class RocketCacheRow extends Row {
 		parent::__construct( $item );
 
 		$this->id            = (int) $this->id;
-		$this->is_mobile     = (bool) $this->is_mobile;
 		$this->url           = (string) $this->url;
 		$this->status        = (string) $this->status;
 		$this->modified      = false === $this->modified ? 0 : strtotime( $this->modified );

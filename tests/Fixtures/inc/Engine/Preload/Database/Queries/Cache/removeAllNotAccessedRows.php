@@ -2,12 +2,6 @@
 return [
 	'oneShouldDeleteOnce' => [
 		'config' => [
-			'params' => [
-				'status__in' => [ 'failed', 'pending' ],
-				'fields'     => [
-					'id',
-				],
-			],
 			'results' => [
 				(object) [
 					'id' => 1
@@ -18,12 +12,6 @@ return [
 	],
 	'twoShouldDeleteTwice' => [
 		'config' => [
-			'params' => [
-				'status__in' => [ 'failed', 'pending' ],
-				'fields'     => [
-					'id',
-				],
-			],
 			'results' => [
 				(object) [
 					'id' => 1

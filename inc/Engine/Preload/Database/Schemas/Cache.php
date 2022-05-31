@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Preload\Database\Schemas;
 
 use WP_Rocket\Dependencies\Database\Schema;
 
-class RocketCache extends Schema {
+class Cache extends Schema {
 
 	/**
 	 * Array of database column objects
@@ -24,17 +24,17 @@ class RocketCache extends Schema {
 			'sortable' => true,
 		],
 
-		// IS_MOBILE column.
+
+		// URL    column.
 		[
-			'name'       => 'is_mobile',
-			'type'       => 'tinyint',
-			'length'     => '1',
-			'default'    => 0,
+			'name'       => 'url',
+			'type'       => 'varchar',
+			'length'     => '255',
+			'default'    => null,
 			'cache_key'  => true,
 			'searchable' => true,
-			'sortable'   => true,
+			'sortable'   => false,
 		],
-
 
 		// STATUS    column.
 		[

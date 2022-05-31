@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\RocketCache;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::create_or_update
+ * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_update
  *
  * @group Database
  * @group Preload
@@ -18,7 +18,7 @@ class Test_CreateOrUpdate extends TestCase {
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['query','add_item','update_item']);
+		$this->query = $this->createPartialMock(Cache::class, ['query','add_item','update_item']);
 	}
 
 	/**
@@ -28,7 +28,6 @@ class Test_CreateOrUpdate extends TestCase {
 		Functions\when('current_time')->justReturn($config['time']);
 		$this->query->expects(self::once())->method('query')->with([
 			'url' => $config['resource']['url'],
-			'is_mobile' => $config['resource']['is_mobile'],
 		])->willReturn($config['rows']);
 
 		$this->configureCreate($config);
