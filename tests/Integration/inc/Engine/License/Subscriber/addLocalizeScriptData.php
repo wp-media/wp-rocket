@@ -29,15 +29,11 @@ class AddLocalizeScriptData extends TestCase {
 
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
-
-		$this->unregisterAllCallbacksExcept( 'rocket_localize_admin_script', 'add_localize_script_data' );
 	}
 
 	public function tear_down() {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
-
-		$this->restoreWpFilter( 'rocket_localize_admin_script' );
 
 		parent::tear_down();
 	}
@@ -49,9 +45,16 @@ class AddLocalizeScriptData extends TestCase {
 		$this->set_reflective_property( $config['user'], 'user', self::$user );
 		$this->set_reflective_property( $config['pricing'], 'pricing', self::$pricing );
 
-		$this->assertSame(
-			$expected,
-			apply_filters( 'rocket_localize_admin_script', $data )
-		);
+		$result = apply_filters( 'rocket_localize_admin_script', $data );
+
+		if ( empty( $expected ) ) {
+			$this->assertArrayNotHasKey( 'licence_expiration', $result );
+			$this->assertArrayNotHasKey( 'promo_end', $result );
+		} else {
+			foreach ( $expected as $key => $value ) {
+				$this->assertArrayHasKey( $key, $result );
+				$this->assertContains( $value, $result );
+			}
+		}
 	}
 }
