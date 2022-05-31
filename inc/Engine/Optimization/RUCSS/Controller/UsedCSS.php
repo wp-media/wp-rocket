@@ -439,7 +439,15 @@ class UsedCSS {
 	 * @return bool
 	 */
 	private function is_home( string $url ): bool {
-		return untrailingslashit( $url ) === untrailingslashit( home_url() );
+		/**
+		 * Filters the home url.
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param bool  $is_home boolean return if current url is_home.
+		 * @param type  $url url of current page.
+		 */
+		return apply_filters( 'rocket_rucss_is_home_url', ( untrailingslashit( $url ) === untrailingslashit( home_url() ) ), $url );
 	}
 
 	/**
