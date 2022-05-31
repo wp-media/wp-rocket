@@ -36,6 +36,13 @@ class WPML implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public static function is_home( $is_home, $url ) {
+		/**
+		 * Filters the home url.
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param string  $url url of homepage.
+		 */
 		$home_url = apply_filters( 'wpml_home_url', home_url() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
