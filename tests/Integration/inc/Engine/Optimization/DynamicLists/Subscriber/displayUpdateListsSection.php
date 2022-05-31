@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -8,6 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::display_update_lists_section
  *
  * @group  DynamicLists
+ * @group  AdminOnly
  */
 class Test_DisplayUpdateListsSection extends TestCase {
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
