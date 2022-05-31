@@ -263,6 +263,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'ga.getresponse.com/script/ga.js',
 			'cognitoforms.com',
 			'usercentrics.eu',
+			'umami',
 			'cdn.popt.in/pixel.js',
 		];
 
