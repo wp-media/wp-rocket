@@ -294,6 +294,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'inline_related_posts',
 		];
 
 		$host_type = HostResolver::get_host_service();

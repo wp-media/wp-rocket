@@ -263,6 +263,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'ga.getresponse.com/script/ga.js',
 			'cognitoforms.com',
 			'usercentrics.eu',
+			'cdn.popt.in/pixel.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

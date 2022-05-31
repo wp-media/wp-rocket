@@ -77,6 +77,8 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'#ultib3-',
+		'.uvc-wrap-',
 		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
@@ -314,9 +316,9 @@ class UsedCSS {
 		foreach ( $link_styles as $style ) {
 			if (
 
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
 				&&
-				! ( (bool) preg_match( '/rel=[\'"]preload[\'"]/is', $style[0] ) && (bool) preg_match( '/as=[\'"]style[\'"]/is', $style[0] ) )
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
 				||
 				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
@@ -659,6 +661,15 @@ class UsedCSS {
 			}
 
 			$font_url = $this->extract_first_font( $font_face['content'] );
+
+			/**
+			 * Filters font URL with CDN hostname
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param type  $url url to be rewritten.
+			 */
+			$font_url = apply_filters( 'rocket_font_url', $font_url );
 
 			if ( empty( $font_url ) ) {
 				continue;

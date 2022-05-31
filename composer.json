@@ -33,7 +33,7 @@
 		"issues": "https://github.com/wp-media/wp-rocket/issues",
 		"source": "https://github.com/wp-media/wp-rocket"
 	},
-	"repositories":[
+	"repositories": [
 		{
 			"type": "composer",
 			"url": "https://wpackagist.org"
@@ -72,7 +72,7 @@
 		"wpackagist-plugin/pdf-embedder": "^4.6",
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
-		"wpackagist-plugin/woocommerce": "^4.9.2",
+		"wpackagist-plugin/woocommerce": "^5.3",
 		"wpackagist-plugin/wp-smushit": "^3.0"
 	},
 	"autoload": {
@@ -131,7 +131,7 @@
 		"test-integration-withampcloudflare": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithAmpAndCloudflare",
 		"test-integration-withsccss": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithSCCSS",
 		"test-integration-withwoo": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WithWoo",
-	    "test-integration-wpengine": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WPEngine",
+		"test-integration-wpengine": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WPEngine",
 		"test-integration-spinupwp": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group SpinUpWP",
 		"test-integration-wpcom": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WordPressCom",
 		"test-integration-pdfembedder": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PDFEmbedder",
@@ -163,19 +163,19 @@
 			"@test-integration-pdfembeddersecure",
 			"@test-integration-multisite",
 			"@test-integration-cloudways",
-		    "@test-integration-wpengine",
-		    "@test-integration-spinupwp",
-		    "@test-integration-wpcom",
-		    "@test-integration-o2switch",
-		    "@test-integration-dreampress",
-		    "@test-integration-godaddy",
-		    "@test-integration-revolutionslider",
-		    "@test-integration-litespeed",
-		    "@test-integration-wordfence",
-		    "@test-integration-kinsta",
-		    "@test-integration-convertplug"
+			"@test-integration-wpengine",
+			"@test-integration-spinupwp",
+			"@test-integration-wpcom",
+			"@test-integration-o2switch",
+			"@test-integration-dreampress",
+			"@test-integration-godaddy",
+			"@test-integration-revolutionslider",
+		  "@test-integration-litespeed",
+		  "@test-integration-wordfence",
+		  "@test-integration-kinsta",
+		  "@test-integration-convertplug"
 		],
-		"run-stan":"vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
+		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"phpcs": "phpcs --basepath=.",
 		"phpcs-changed": "./bin/phpcs-changed.sh",

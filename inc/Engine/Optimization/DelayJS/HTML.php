@@ -80,6 +80,8 @@ class HTML {
 		'serv-vdo.pixfuture.com/vpaid/ads.js',
 		'wprRemoveCPCSS',
 		'window.jdgmSettings', // Judge.me plugin.
+		'/photonic/include/js/front-end/nomodule/photonic-baguettebox.min.js', // Photonic plugin.
+		'/photonic/include/ext/baguettebox/baguettebox.min.js', // Photonic plugin.
 		'window.wsf_form_json_config', // WSF Form plugin.
 	];
 
