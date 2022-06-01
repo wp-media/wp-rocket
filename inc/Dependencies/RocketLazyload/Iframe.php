@@ -106,6 +106,7 @@ class Iframe {
 				'loading="eager"',
 				'data-skip-lazy',
 				'skip-lazy',
+				'google_ads_iframe_',
 			]
 		);
 	}

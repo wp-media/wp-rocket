@@ -53,7 +53,7 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
@@ -77,6 +77,11 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'#ultib3-',
+		'.uvc-wrap-',
+		'.jet-listing-dynamic-post-',
+		'.vcex_',
+		'.wprm-advanced-list-',
 	];
 
 	/**
@@ -116,7 +121,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -137,16 +142,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize? used inside the CRON so post object isn't there.
+	 * Check if RUCSS option is enabled.
+	 *
+	 * Used inside the CRON so post object isn't there.
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
@@ -159,7 +162,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -252,7 +255,7 @@ class UsedCSS {
 		$html = $this->remove_used_css_from_html( $html );
 		$html = $this->add_used_css_to_html( $html, $used_css );
 		$html = $this->add_used_fonts_preload( $html, $used_css->css );
-
+		$html = $this->remove_google_font_preconnect( $html );
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
 		return $html;
@@ -298,7 +301,7 @@ class UsedCSS {
 		$clean_html = $this->hide_scripts( $clean_html );
 
 		$link_styles = $this->find(
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
@@ -308,11 +311,16 @@ class UsedCSS {
 			$clean_html
 		);
 
+		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
 				||
-				strstr( $style['url'], '//fonts.googleapis.com/css' )
+				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
 			}
@@ -435,15 +443,15 @@ class UsedCSS {
 	}
 
 	/**
-	 * Process pending jobs inside CRON iteration.
+	 * Process pending jobs inside cron iteration.
 	 *
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
-		if ( ! $this->can_optimize() ) {
-			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+		if ( ! $this->is_enabled() ) {
+			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
@@ -654,6 +662,15 @@ class UsedCSS {
 
 			$font_url = $this->extract_first_font( $font_face['content'] );
 
+			/**
+			 * Filters font URL with CDN hostname
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param type  $url url to be rewritten.
+			 */
+			$font_url = apply_filters( 'rocket_font_url', $font_url );
+
 			if ( empty( $font_url ) ) {
 				continue;
 			}
@@ -679,6 +696,31 @@ class UsedCSS {
 		}
 
 		return $replace;
+	}
+
+	/**
+	 * Remove preconnect tag for google api.
+	 *
+	 * @param string $html html content.
+	 * @return string
+	 */
+	protected function remove_google_font_preconnect( string $html ): string {
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+		$links      = $this->find(
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
+			$clean_html,
+			'Uis'
+		);
+
+		foreach ( $links as $link ) {
+			if ( preg_match( '/href=[\'"](https:)?\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
+				$html = str_replace( $link[0], '', $html );
+			}
+		}
+
+		return $html;
 	}
 
 	/**
