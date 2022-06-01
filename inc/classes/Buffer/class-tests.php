@@ -1058,7 +1058,7 @@ class Tests {
 	private function remove_dot_segments( string $input ) {
 		$output = '';
 
-		while ( strpos( $input, './' ) !== false || strpos( $input, '/.' ) !== false || $input === '.' || $input === '..') {
+		while ( strpos( $input, './' ) !== false || strpos( $input, '/.' ) !== false || '.' === $input || '..' === $input ) {
 			/**
 			 * A: If the input buffer begins with a prefix of "../" or "./",
 			 * then remove that prefix from the input buffer; otherwise,
@@ -1066,7 +1066,7 @@ class Tests {
 			if ( strpos( $input, '../' ) === 0 ) {
 				$input = substr( $input, 3 );
 			}
-			elseif ( strpos($input, './' ) === 0 ) {
+			elseif ( strpos( $input, './' ) === 0 ) {
 				$input = substr( $input, 2 );
 			}
 			/**
@@ -1077,7 +1077,7 @@ class Tests {
 			elseif ( strpos( $input, '/./' ) === 0 ) {
 				$input = substr( $input, 2 );
 			}
-			elseif ( $input === '/.' ) {
+			elseif ( '/.' === $input ) {
 				$input = '/';
 			}
 			/**
@@ -1090,7 +1090,7 @@ class Tests {
 				$input  = substr( $input, 3 );
 				$output = substr_replace( $output, '', strrpos( $output, '/' ) );
 			}
-			elseif ( $input === '/..' ) {
+			elseif ( '/..' === $input ) {
 				$input  = '/';
 				$output = substr_replace( $output, '', strrpos( $output, '/' ) );
 			}
@@ -1107,7 +1107,8 @@ class Tests {
 			 * and any subsequent characters up to, but not including, the next
 			 * "/" character or the end of the input buffer
 			 */
-			elseif ( ( $pos = strpos( $input, '/', 1 ) ) !== false ) {
+			elseif ( strpos( $input, '/', 1 ) !== false ) {
+				$pos     = strpos( $input, '/', 1 );
 				$output .= substr( $input, 0, $pos );
 				$input   = substr_replace( $input, '', 0, $pos );
 			}
