@@ -21,8 +21,8 @@ class Test_ExcludeInlineFromRucss extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected( $config, $expected ) {
 
-		$this->assertSame($expected, $this->unlimited_elements->exclude_inline_from_rucss($config['excluded']));
+		$this->assertSame( $expected, $this->unlimited_elements->exclude_inline_from_rucss( $config['excluded'] ) );
 	}
 }
