@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'minify_admin_subscriber',
 		];
 	}
 
@@ -296,6 +297,7 @@ class Plugin {
 			'flatsome',
 			'convertplug',
 			'dynamic_lists_subscriber',
+			'unlimited_elements',
 			'inline_related_posts',
 		];
 

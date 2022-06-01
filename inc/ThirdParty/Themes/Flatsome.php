@@ -40,6 +40,21 @@ class Flatsome implements Subscriber_Interface {
 			'#image_',
 			'#row-',
 			'#text-',
+			'#banner-grid-',
+			'#cats-',
+			'#col-',
+			'#gallery-',
+			'#instagram-',
+			'#map-',
+			'#page-header-',
+			'#pages-',
+			'#panel-',
+			'#portfolio-',
+			'#product-flip-',
+			'#product-grid-',
+			'#stack-',
+			'#timer-',
+			'#title-',
 		];
 
 		return array_merge( $patterns, $preserve );
