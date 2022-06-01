@@ -606,15 +606,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Remove all completed rows one by one.
-	 *
-	 * @return void
-	 */
-	public function remove_all_completed_rows() {
-		$this->used_css_query->remove_all_completed_rows();
-	}
-
-	/**
 	 * Get the count of not completed rows.
 	 *
 	 * @return int
