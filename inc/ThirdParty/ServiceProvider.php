@@ -49,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'flatsome',
 		'convertplug',
 		'unlimited_elements',
+		'inline_related_posts',
 	];
 
 	/**
@@ -171,6 +172,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
+			->addTag( 'unlimited_elements' );
+		$this->getContainer()
+			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
 			->addTag( 'common_subscriber' );
 	}
 }
