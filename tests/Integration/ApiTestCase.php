@@ -7,6 +7,26 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	protected static $api_credentials_config_file = 'rocketcdn.php';
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_email' ] );
+		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_key' ] );
+	}
+
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_email' ] );
+		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_key' ] );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
 	 *
@@ -42,5 +62,13 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 		}
 
 		return $this->doRestPut( '/wp-rocket/v1/rocketcdn/enable', $body_params );
+	}
+
+	public function set_email() {
+		return self::getApiCredential( 'ROCKET_EMAIL' );
+	}
+
+	public function set_key() {
+		return self::getApiCredential( 'ROCKET_KEY' );
 	}
 }
