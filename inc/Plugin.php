@@ -294,6 +294,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'unlimited_elements',
 			'inline_related_posts',
 		];
 
