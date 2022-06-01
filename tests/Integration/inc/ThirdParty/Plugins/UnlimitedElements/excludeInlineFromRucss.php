@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\UnlimitedElements;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
