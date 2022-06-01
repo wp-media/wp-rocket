@@ -1098,7 +1098,7 @@ class Tests {
 			 * D: if the input buffer consists only of "." or "..", then remove
 			 * that from the input buffer; otherwise,
 			 */
-			elseif ( $input === '.' || $input === '..' ) {
+			elseif ( '.' === $input || '..' === $input ) {
 				$input = '';
 			}
 			/**
