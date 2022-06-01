@@ -147,7 +147,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			 * @param bool  $should_add_option Should add rocket option to admin bar.
 			 * @param type  $post Post object.
 			 */
-			if ( ! apply_filters( 'rocket_skip_admin_bar_options', false, $post ) ) {
+			if ( ! apply_filters( 'rocket_skip_admin_bar_cache_purge_option', false, $post ) ) {
 				if ( is_admin() ) {
 					/**
 					 * Purge a post.
