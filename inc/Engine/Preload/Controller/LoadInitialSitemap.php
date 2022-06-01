@@ -40,6 +40,13 @@ class LoadInitialSitemap {
 		}
 
 		$this->add_task_to_queue( [ $sitemap ] );
+
+		$urls = apply_filters( 'rocket_preload_load_custom_urls', [] );
+		$urls = array_filter( $urls );
+
+		foreach ( $urls as $url ) {
+			$this->queue->add_job_preload_job_preload_url_async( $url );
+		}
 	}
 
 	/**
