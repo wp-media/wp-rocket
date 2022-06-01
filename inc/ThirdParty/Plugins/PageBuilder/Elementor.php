@@ -202,7 +202,7 @@ class Elementor implements Subscriber_Interface {
 	/**
 	 * Remove cache or purge option from elementor template post.
 	 *
-	 * @param boolean $should_add_option Should add rocket option to admin bar.
+	 * @param boolean $should_skip Should skip rocket option to admin bar.
 	 * @param mixed   $post Post object.
 	 * @return boolean
 	 */
