@@ -140,11 +140,11 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			}
 
 			/**
-			 * Filters Rocket Admin Bar options.
+			 * Filters the rocket clear post admin bar menu.
 			 *
 			 * @since 3.11.4
 			 *
-			 * @param bool  $should_add_option Should add rocket option to admin bar.
+			 * @param bool  $should_skip Should skip adding clear post to rocket option in admin bar.
 			 * @param type  $post Post object.
 			 */
 			if ( ! apply_filters( 'rocket_skip_admin_bar_cache_purge_option', false, $post ) ) {

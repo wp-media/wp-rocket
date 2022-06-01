@@ -211,6 +211,6 @@ class Elementor implements Subscriber_Interface {
 			return true;
 		}
 
-		return $should_add_option;
+		return $should_skip;
 	}
 }
