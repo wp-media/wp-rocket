@@ -206,7 +206,7 @@ class Elementor implements Subscriber_Interface {
 	 * @param mixed   $post Post object.
 	 * @return boolean
 	 */
-	public function skip_admin_bar_cache_purge_option( bool $should_add_option, $post ): bool {
+	public function skip_admin_bar_cache_purge_option( bool $should_skip, $post ): bool {
 		if ( 'elementor_library' === $post->post_type ) {
 			return true;
 		}
