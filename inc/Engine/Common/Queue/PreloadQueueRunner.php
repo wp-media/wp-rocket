@@ -19,6 +19,11 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	private static $runner = null;
 
 	/**
+	 * Cron schedule interval.
+	 */
+	const WP_CRON_SCHEDULE = 'every_minute';
+
+	/**
 	 * Queue group.
 	 *
 	 * @var string
@@ -85,10 +90,15 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		$this->compatibility->raise_time_limit( $this->get_time_limit() );
 		$this->run_cleanup();
 		$total = 0;
-		while ( false === $this->has_maximum_concurrent_batches() ) {
-			$size   = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			$total += $this->do_batch( $size, $context );
+
+		if ( false === $this->has_maximum_concurrent_batches() ) {
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			do {
+				$processed_actions_in_batch = $this->do_batch( $batch_size, $context );
+				$total                     += $processed_actions_in_batch;
+			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $total ) ); // keep going until we run out of actions, time, or memory.
 		}
+
 		do_action( 'action_scheduler_after_process_queue' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		return $total;
 	}
@@ -120,10 +130,10 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		$cron_params = [ 'WP Cron' ];
 
-		$next_schedule = wp_next_scheduled( $cron_params, self::WP_CRON_HOOK );
+		$next_schedule = wp_next_scheduled( self::WP_CRON_HOOK, $cron_params );
 
 		if ( ! $next_schedule ) {
-			$schedule = apply_filters( 'rocket_action_scheduler_run_schedule', [ self::WP_CRON_HOOK ] );
+			$schedule = apply_filters( 'rocket_action_scheduler_run_schedule', [ self::WP_CRON_SCHEDULE ] );
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_params );
 		}
 		add_action( self::WP_CRON_HOOK, [ $this, 'run' ] );

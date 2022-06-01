@@ -60,6 +60,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices' => [ 'maybe_display_preload_notice' ],
+			'init'          => [ 'schedule_preload_pending_jobs_cron' ],
 		];
 	}
 

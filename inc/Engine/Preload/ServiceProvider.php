@@ -1,9 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Preload;
 
+use ActionScheduler_Compatibility;
+use ActionScheduler_Lock;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
-use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -33,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'parse_sitemap_controller',
 		'load_initial_sitemap_controller',
 		'preload_admin_subscriber',
+		'preload_queue_runner',
 	];
 
 	/**
@@ -74,10 +76,28 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
 			->addArgument( $options );
 		$preload_settings = $this->getContainer()->get( 'preload_settings' );
+
+		$this->getContainer()->share(
+			'preload_queue_runner',
+			static function() {
+				return new PreloadQueueRunner(
+				null,
+				null,
+				null,
+				null,
+				new ActionScheduler_Compatibility(),
+				new Logger(),
+				ActionScheduler_Lock::instance()
+				);
+			}
+			);
+
+		$preload_queue_runner = $this->getContainer()->get( 'preload_queue_runner' );
+
 		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
 			->addArgument( $preload_settings )
 			->addArgument( $queue )
-			->addArgument( PreloadQueueRunner::instance() )
+			->addArgument( $preload_queue_runner )
 			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );

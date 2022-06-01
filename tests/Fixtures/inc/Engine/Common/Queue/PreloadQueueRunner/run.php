@@ -25,6 +25,6 @@ return [
 			'processed' => 10,
 			'context' => 'context'
 		],
-		'expected' => 10
+		'expected' => 20
 	],
 ];
