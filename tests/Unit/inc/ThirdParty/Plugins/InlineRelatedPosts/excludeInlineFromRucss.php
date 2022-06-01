@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\InlineRelatedPosts;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
