@@ -95,6 +95,11 @@ class HostResolver {
 			return 'godaddy';
 		}
 
+		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+			self::$hostname = 'kinsta';
+			return 'kinsta';
+		}
+
 		return '';
 	}
 
