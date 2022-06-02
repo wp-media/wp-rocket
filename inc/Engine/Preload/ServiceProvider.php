@@ -36,6 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_admin_subscriber',
 		'preload_queue_runner',
 		'cron_subscriber',
+		'wp_direct_filesystem',
 	];
 
 	/**
@@ -48,6 +49,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getContainer()->add('wp_direct_filesystem', '\WP_Filesystem_Direct')
+			->addArgument( [] );
+		$wp_file_system = $this->getContainer()->get('wp_direct_filesystem');
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\RocketCache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\RocketCache' );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
@@ -58,7 +62,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_url_controller', 'WP_Rocket\Engine\Preload\Controller\PreloadUrl' )
 			->addArgument( $options )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $wp_file_system );
 		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\ParseSitemap' )
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
