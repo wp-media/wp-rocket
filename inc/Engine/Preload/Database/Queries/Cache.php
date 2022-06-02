@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
+use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
 class Cache extends Query {
 
@@ -29,7 +31,7 @@ class Cache extends Query {
 	 *
 	 * @var string
 	 */
-	protected $table_schema = self::class;
+	protected $table_schema = Schema::class;
 
 	/** Item ******************************************************************/
 
@@ -62,7 +64,7 @@ class Cache extends Query {
 	 *
 	 * @var mixed
 	 */
-	protected $item_shape = self::class;
+	protected $item_shape = CacheRow::class;
 
 	/**
 	 * Create new resource row or update its contents if not created before.
