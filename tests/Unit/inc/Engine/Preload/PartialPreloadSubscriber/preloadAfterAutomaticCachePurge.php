@@ -4,10 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\PartialPreloadSubscriber;
 use WP_Rocket\Engine\Preload\PartialProcess;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::preload_after_automatic_cache_purge
@@ -20,7 +20,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	private $subscriber;
 	private $property;
 
-	public function setUp() : void {
+	protected function setUp() : void {
 		$this->options         = Mockery::mock( Options_Data::class );
 		$this->partial_process = Mockery::mock( PartialProcess::class );
 		$this->subscriber      = new PartialPreloadSubscriber( $this->partial_process, $this->options );
@@ -33,13 +33,14 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	}
 
 	protected function tearDown() : void {
-		parent::tearDown();
 		$this->urls = [];
 		$this->property->setAccessible( false );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $permalink_structure, $option_value, $deleted, $expected ) {
 		if ( $deleted ) {
@@ -60,9 +61,5 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 		foreach ( $expected as $url ) {
 			$this->assertContains( $url, $this->urls );
 		}
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'preloadAfterAutomaticCachePurge' );
 	}
 }
