@@ -28,6 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'sitemap_preload_subscriber',
 		'partial_preload_subscriber',
 		'fonts_preload_subscriber',
+		'preload_caches_table',
+		'preload_caches_query',
 	];
 
 	/**
@@ -40,6 +42,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
+
+		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\Cache' );
+		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
+		$this->getContainer()->get( 'preload_caches_table' );
 
 		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
 		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
