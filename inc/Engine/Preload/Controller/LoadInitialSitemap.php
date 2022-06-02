@@ -82,8 +82,7 @@ class LoadInitialSitemap {
 	 *
 	 * @return void
 	 */
-	public function cancel_preload()
-	{
+	public function cancel_preload() {
 		$this->queue->cancel_pending_jobs_cron();
 	}
 }
