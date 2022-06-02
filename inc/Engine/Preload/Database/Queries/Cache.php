@@ -104,9 +104,9 @@ class Cache extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'      => untrailingslashit( $resource['url'] ),
-				'status'   => $resource['status'],
-				'modified' => current_time( 'mysql', true ),
+				'url'           => untrailingslashit( $resource['url'] ),
+				'status'        => $resource['status'],
+				'modified'      => current_time( 'mysql', true ),
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
