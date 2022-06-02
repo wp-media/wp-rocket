@@ -43,6 +43,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
+			->addArgument( $options );
+		$preload_settings = $this->getContainer()->get( 'preload_settings' );
+
 		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 
@@ -67,18 +71,25 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
+
+		$this->getContainer()->add( 'check_finished_controller', 'WP_Rocket\Engine\Preload\Controller\CheckFinished' )
+			->addArgument( $preload_settings )
+			->addArgument( $cache_query )
+			->addArgument( $queue );
+
+		$check_finished_controller   = $this->getContainer()->get( 'check_finished_controller' );
+
 		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
 			->addArgument( $queue );
 		$this->getContainer()->add( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $parse_sitemap_controller )
+			->addArgument( $check_finished_controller )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
-			->addArgument( $options );
-		$preload_settings = $this->getContainer()->get( 'preload_settings' );
+
 		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
 			->addArgument( $preload_settings )
 			->addTag( 'common_subscriber' );

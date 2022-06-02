@@ -236,4 +236,20 @@ class Cache extends Query {
 			$this->delete_item( $row->id );
 		}
 	}
+
+	/**
+	 * Check if pending jobs are remaining.
+	 *
+	 * @return bool
+	 */
+	public function has_pending_jobs()
+	{
+		$pending_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'pending',
+			]
+		);
+		return $pending_count != 0;
+	}
 }
