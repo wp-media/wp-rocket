@@ -62,7 +62,6 @@
 		"woocommerce/action-scheduler": "^3.4",
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/background-processing": "^1.3",
-		"wp-media/cloudflare": "^1.0",
 		"wp-media/module-varnish": "^2.0",
 		"wp-media/phpunit": "^3.0",
 		"wp-media/rocket-lazyload-common": "^3.0",
@@ -99,7 +98,6 @@
 		"installer-paths": {
 		  	"./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
 			"vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"],
-			"./inc/Addon/Cloudflare/": ["wp-media/cloudflare"],
 			"./inc/Addon/Varnish/": ["wp-media/module-varnish"]
 		},
 		"mozart": {
