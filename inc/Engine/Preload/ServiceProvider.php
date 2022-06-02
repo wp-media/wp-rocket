@@ -60,9 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
 			->addArgument( $full_preload_process );
 
-
-
-		$cache_query = $this->getContainer()->get('preload_caches_query');
+		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
 		$queue = $this->getContainer()->get( 'preload_queue' );
 		$this->getContainer()->add( 'sitemap_parser', 'WP_Rocket\Engine\Preload\Frontend\SitemapParser' );
@@ -77,7 +75,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $queue );
 
-		$check_finished_controller   = $this->getContainer()->get( 'check_finished_controller' );
+		$check_finished_controller = $this->getContainer()->get( 'check_finished_controller' );
 
 		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )

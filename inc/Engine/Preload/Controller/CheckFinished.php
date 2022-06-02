@@ -5,30 +5,50 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
-class CheckFinished
-{
+class CheckFinished {
+
 	/**
+	 * Preload settings.
+	 *
 	 * @var Settings
 	 */
 	protected $settings;
 
 	/**
+	 * Preload queue.
+	 *
 	 * @var Queue
 	 */
 	protected $queue;
 
 	/**
-	 * @param Queue $queue
+	 * Db query.
+	 *
+	 * @var Cache
 	 */
-	public function __construct(Settings $settings, Cache $cache, Queue $queue)
-	{
+	protected $query;
+
+	/**
+	 * Instantiate class.
+	 *
+	 * @param Settings $settings Preload settings.
+	 * @param Cache    $cache Db query.
+	 * @param Queue    $queue Preload queue.
+	 */
+	public function __construct( Settings $settings, Cache $cache, Queue $queue ) {
 		$this->settings = $settings;
-		$this->query = $cache;
-		$this->queue = $queue;
+		$this->query    = $cache;
+		$this->queue    = $queue;
 	}
+
+	/**
+	 * Check if the preload is finished.
+	 *
+	 * @return void
+	 */
 	public function checkFinished() {
-		if((! $this->queue->has_tasks_remain() && ! $this->query->has_pending_jobs()) || ! $this->settings->is_enabled()) {
-			delete_transient('wpr_preload_running');
+		if ( ( ! $this->queue->has_tasks_remain() && ! $this->query->has_pending_jobs() ) || ! $this->settings->is_enabled() ) {
+			delete_transient( 'wpr_preload_running' );
 			return;
 		}
 

@@ -23,6 +23,7 @@ class ParseSitemap {
 
 	/**
 	 * DB query.
+	 *
 	 * @var Cache
 	 */
 	protected $query;
@@ -31,12 +32,12 @@ class ParseSitemap {
 	 *
 	 * @param SitemapParser $sitemap_parser Parse controller.
 	 * @param Queue         $queue Queue instance.
-	 * @param Cache $rocketCache DB query.
+	 * @param Cache         $rocket_cache DB query.
 	 */
-	public function __construct( SitemapParser $sitemap_parser, Queue $queue, Cache $rocketCache) {
+	public function __construct( SitemapParser $sitemap_parser, Queue $queue, Cache $rocket_cache ) {
 		$this->sitemap_parser = $sitemap_parser;
 		$this->queue          = $queue;
-		$this->query = $rocketCache;
+		$this->query          = $rocket_cache;
 	}
 
 	/**
@@ -57,9 +58,11 @@ class ParseSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			if($this->query->create_or_nothing([
-				'url' => $link
-			])) {
+			if ( $this->query->create_or_nothing(
+				[
+					'url' => $link,
+				]
+				) ) {
 				$this->queue->add_job_preload_job_preload_url_async( $link );
 			}
 		}
