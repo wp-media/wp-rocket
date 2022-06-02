@@ -35,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'load_initial_sitemap_controller',
 		'preload_admin_subscriber',
 		'preload_queue_runner',
+		'cron_subscriber',
 	];
 
 	/**
@@ -104,6 +105,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->add( 'cron_subscriber', 'WP_Rocket\Engine\Preload\Cron\Subscriber' )
+			->addArgument( $preload_settings )
+			->addArgument( $cache_query )
+			->addArgument( $preload_url_controller )
 			->addTag( 'common_subscriber' );
 	}
 }
