@@ -16,7 +16,7 @@ use WP_Rocket\Engine\Preload\PartialProcess;
 class Test_MaybePreloadMobileHomepage extends TestCase {
 	private $queue = [];
 
-	protected function tearDown() {
+	protected function tearDown() : void {
 		parent::tearDown();
 		$this->queue = [];
 	}
