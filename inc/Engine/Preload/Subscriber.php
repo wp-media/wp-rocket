@@ -34,12 +34,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_load_initial_sitemap', 10, 2 ],
+			'update_option_' . WP_ROCKET_SLUG => [
+				[ 'maybe_load_initial_sitemap', 11, 2 ],
+				[ 'maybe_cancel_preload', 10, 2 ],
+			],
 		];
 	}
 
 	/**
-	 * Load first tasks from preload when configuuration from sitemap changed.
+	 * Load first tasks from preload when configuration from sitemap changed.
 	 *
 	 * @param array $old_value old configuration values.
 	 * @param array $value new configuration values.
@@ -59,5 +62,28 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->controller->load_initial_sitemap();
+	}
+
+	/**
+	 * Cancel preload when configuration from sitemap changed.
+	 *
+	 * @param array $old_value old configuration values.
+	 * @param array $value new configuration values.
+	 * @return void
+	 */
+	public function maybe_cancel_preload( $old_value, $value ) {
+		if ( ! isset( $value['manual_preload'], $old_value['manual_preload'] ) ) {
+			return;
+		}
+
+		if ( $value['manual_preload'] === $old_value['manual_preload'] ) {
+			return;
+		}
+
+		if ( $value['manual_preload'] ) {
+			return;
+		}
+
+		$this->controller->cancel_preload();
 	}
 }

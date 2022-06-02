@@ -76,4 +76,14 @@ class LoadInitialSitemap {
 
 		return $sitemaps->index->get_index_url();
 	}
+
+	/**
+	 * Cancel the preloading.
+	 *
+	 * @return void
+	 */
+	public function cancel_preload()
+	{
+		$this->queue->cancel_pending_jobs_cron();
+	}
 }
