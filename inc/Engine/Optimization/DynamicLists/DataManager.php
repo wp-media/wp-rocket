@@ -120,7 +120,7 @@ class DataManager {
 	 * @return bool
 	 */
 	private function put_lists_to_file( string $content ): bool {
-		return $this->filesystem->put_contents( $this->get_json_filepath(), $content );
+		return $this->filesystem->put_contents( $this->get_json_filepath(), $content, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
