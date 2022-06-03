@@ -36,7 +36,7 @@ class Test_CheckFinished extends TestCase
 	public function testShouldDoAsExpected($config) {
 
 		$this->settings->shouldReceive('is_enabled')->andReturn($config['is_enabled'])->zeroOrMoreTimes();
-		$this->queue->expects()->has_tasks_remain()->andReturn($config['remaining'])->atLeast()->zeroOrMoreTimes();
+		$this->queue->expects()->has_remaining_tasks()->andReturn($config['remaining'])->atLeast()->zeroOrMoreTimes();
 		$this->query->expects(self::atLeast(0))->method('has_pending_jobs')->willReturn($config['have_pending']);
 		$this->configureRecreateTask($config);
 		$this->configureEndProcess($config);

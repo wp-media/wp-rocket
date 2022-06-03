@@ -27,6 +27,10 @@ class LoadInitialSitemap {
 	 * Load the initial sitemap to the queue.
 	 */
 	public function load_initial_sitemap() {
+		/**
+		 * Filter sitemaps URL.
+		 * @param array Array of sitemaps URL
+		 */
 		$sitemaps = apply_filters( 'rocket_sitemap_preload_list', [] );
 		if ( count( $sitemaps ) > 0 ) {
 			$this->add_task_to_queue( $sitemaps );

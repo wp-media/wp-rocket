@@ -65,7 +65,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$queue = $this->getContainer()->get( 'preload_queue' );
 		$this->getContainer()->add( 'sitemap_parser', 'WP_Rocket\Engine\Preload\Frontend\SitemapParser' );
 		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
-		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\ParseSitemap' )
+		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\FetchSitemap')
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
@@ -82,7 +82,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $queue );
 		$this->getContainer()->add( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $parse_sitemap_controller )
-			->addArgument( $check_finished_controller )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )

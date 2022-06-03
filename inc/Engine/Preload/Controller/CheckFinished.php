@@ -46,8 +46,8 @@ class CheckFinished {
 	 *
 	 * @return void
 	 */
-	public function checkFinished() {
-		if ( ( ! $this->queue->has_tasks_remain() && ! $this->query->has_pending_jobs() ) || ! $this->settings->is_enabled() ) {
+	public function check_finished() {
+		if ( ( ! $this->queue->has_remaining_tasks() && ! $this->query->has_pending_jobs() ) || ! $this->settings->is_enabled() ) {
 			delete_transient( 'wpr_preload_running' );
 			return;
 		}

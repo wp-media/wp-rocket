@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Preload\Frontend;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
-class ParseSitemap {
+class FetchSitemap {
 
 	/**
 	 * Parse controller.
@@ -46,7 +46,7 @@ class ParseSitemap {
 	 * @param string $url url from the sitemap.
 	 */
 	public function parse_sitemap( string $url ) {
-		$response = wp_remote_get( $url );
+		$response = wp_safe_remote_get( $url );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return;

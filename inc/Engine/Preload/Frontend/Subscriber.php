@@ -10,26 +10,17 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Controller parsing the sitemap.
 	 *
-	 * @var ParseSitemap
+	 * @var FetchSitemap
 	 */
 	protected $parse_sitemap;
 
 	/**
-	 * Controller to check the process is finished.
-	 *
-	 * @var CheckFinished
-	 */
-	protected $check_finished;
-
-	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param ParseSitemap  $parse_sitemap controller parsing the sitemap.
-	 * @param CheckFinished $check_finished controller to check the process is finished.
+	 * @param FetchSitemap  $parse_sitemap controller parsing the sitemap.
 	 */
-	public function __construct( ParseSitemap $parse_sitemap, CheckFinished $check_finished ) {
+	public function __construct(FetchSitemap $parse_sitemap ) {
 		$this->parse_sitemap  = $parse_sitemap;
-		$this->check_finished = $check_finished;
 	}
 
 	/**
