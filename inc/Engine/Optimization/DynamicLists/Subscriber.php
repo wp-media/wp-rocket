@@ -35,7 +35,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_update_dynamic_lists'   => 'update_lists',
 			'rocket_deactivation'           => 'clear_schedule_lists_update',
 			'rocket_settings_tools_content' => 'display_update_lists_section',
-			'wp_rocket_upgrade'             => 'update_lists',
 		];
 	}
 
