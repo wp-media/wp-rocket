@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::maybe_dispatch
  * @group  Preload
  */
-class Test_MaybeDispatch extends TestCase {
+class Test_MaybePreloadMobileHomepage extends TestCase {
 	private $queue = [];
 
-	protected function tearDown(): void {
+	protected function tearDown() : void {
 		$this->queue = [];
 
 		parent::tearDown();

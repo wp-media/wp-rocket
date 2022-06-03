@@ -34,18 +34,9 @@ class Test_GetQueueJobStatus extends TestCase {
 		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->andReturn($config['response']);
 
 		$this->configureCheckResponse($config);
-		$this->configeAuthorized($config);
 
 		$this->assertEquals($expected, $this->client->get_queue_job_status($config['job_id'], $config['queue_name'],
 			$config['is_home']));
-	}
-
-	protected function configeAuthorized($config) {
-		if(! $config['is_unauthorized']) {
-			return;
-		}
-		Functions\expect('set_transient')->with('wp_rocket_no_licence', true, WEEK_IN_SECONDS );
-		Functions\expect('update_rocket_option')->with('remove_unused_css', 0);
 	}
 
 	protected function configureCheckResponse($config) {

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 use WC_Install;
+use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
 
@@ -50,6 +51,12 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
+		if ( BootstrapManager::isGroup('Kinsta') ) {
+			$_SERVER['KINSTA_CACHE_ZONE'] = true ;
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/Kinsta_Cache.php';
+			$GLOBALS['kinsta_cache'] = new Kinsta_Cache();
 		}
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {

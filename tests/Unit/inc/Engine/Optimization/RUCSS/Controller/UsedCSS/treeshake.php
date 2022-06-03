@@ -27,10 +27,8 @@ class Test_Treeshake extends TestCase {
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
-		// fix a bug from mockery with __isset function
-		$this->markTestIncomplete();// Todo: When mockery will be updated reactivate the test
-		$this->usedCssQuery = Mockery::mock(UsedCSS_Query::class);
-		$this->resourcesQuery = Mockery::mock(ResourcesQuery::class);
+		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
+		$this->resourcesQuery = $this->createMock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->usedCss = Mockery::mock(UsedCSS::class . '[is_allowed,update_last_accessed]', [$this->options, $this->usedCssQuery,
@@ -108,15 +106,12 @@ class Test_Treeshake extends TestCase {
 			->andReturn( $config['home_url'] );
 
 		if($config['get_existing_used_css']['used_css']) {
-			$usedCssRow = Mockery::mock(UsedCSS_Row::class);
-			$usedCssRow->status = $config['get_existing_used_css']['used_css']->status;
-			$usedCssRow->css = $config['get_existing_used_css']['used_css']->css;
-			$usedCssRow->id = $config['get_existing_used_css']['used_css']->id;
+			$usedCssRow = new UsedCSS_Row($config['get_existing_used_css']['used_css']);
 		} else {
 			$usedCssRow = null;
 		}
 
-		$this->usedCssQuery->expects()->get_row($config['home_url'], $config['is_mobile']['is_mobile'])->andReturn($usedCssRow);
+		$this->usedCssQuery->expects(self::once())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
 	}
 
@@ -135,8 +130,7 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->usedCssQuery->expects()->create_new_job($config['home_url'], $config['create_new_job']['response']['contents']['jobId'],
-			$config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
+		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
 	}
 
 	protected function configValidUsedCss($config) {
@@ -150,6 +144,6 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->usedCssQuery->expects()->update_last_accessed($config['get_existing_used_css']['used_css']->id);
+		$this->usedCssQuery->expects(self::once())->method('update_last_accessed')->with($config['get_existing_used_css']['used_css']->id);
 	}
 }
