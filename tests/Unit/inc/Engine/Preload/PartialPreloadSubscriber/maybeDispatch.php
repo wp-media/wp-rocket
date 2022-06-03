@@ -4,10 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\PartialPreloadSubscriber;
 use WP_Rocket\Engine\Preload\PartialProcess;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::maybe_dispatch
@@ -17,6 +17,8 @@ class Test_MaybePreloadMobileHomepage extends TestCase {
 	private $queue = [];
 
 	protected function tearDown(): void {
+		$this->queue = [];
+
 		parent::tearDown();
 		$this->queue = [];
 	}
