@@ -29,13 +29,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_front_subscriber',
 		'preload_queue',
 		'sitemap_parser',
-		'preload_caches_table',
-		'preload_caches_query',
 		'parse_sitemap_controller',
 		'load_initial_sitemap_controller',
 		'preload_admin_subscriber',
 		'preload_queue_runner',
 		'cron_subscriber',
+		'preload_caches_table',
+		'preload_caches_query',
 	];
 
 	/**
@@ -112,5 +112,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
 			->addTag( 'common_subscriber' );
+    
+    		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
+		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
+			->addArgument( $full_preload_process );
+		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
+			->addArgument( $full_preload_process );
 	}
 }
