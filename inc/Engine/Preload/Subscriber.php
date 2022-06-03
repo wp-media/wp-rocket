@@ -3,20 +3,21 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
 	 * Cache query instance
 	 *
-	 * @var CacheQuery
+	 * @var Cache
 	 */
 	private $query;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param [type] $query Cache query instance.
+	 * @param Cache $query Cache query instance.
 	 */
 	public function __construct( $query ) {
 		$this->query = $query;
@@ -34,7 +35,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Update the cache row when processing the buffer
+	 * Create or update the cache row after processing the buffer
 	 *
 	 * @return void
 	 */
