@@ -164,10 +164,11 @@ class Purge {
 	 * @param WP_Post $post Post object.
 	 */
 	public function purge_post_terms_urls( WP_Post $post ) {
-		foreach ( $this->get_post_terms_urls( $post ) as $url ) {
+		$urls = $this->get_post_terms_urls( $post );
+		foreach ( $urls as $url ) {
 			$this->purge_url( $url );
 		}
-
+		do_action('after_rocket_clean_terms', $urls);
 	}
 
 	/**
