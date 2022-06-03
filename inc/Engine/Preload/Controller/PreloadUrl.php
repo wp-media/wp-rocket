@@ -137,7 +137,7 @@ class PreloadUrl {
 	 * }
 	 * @return bool
 	 */
-	protected function is_already_cached( string $url ) {
+	public function is_already_cached( string $url ) {
 		static $https;
 
 		if ( ! isset( $https ) ) {

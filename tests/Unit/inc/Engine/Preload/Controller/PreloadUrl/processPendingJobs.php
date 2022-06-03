@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\PreloadUrl;
 
+use Mockery;
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -19,6 +21,7 @@ class Test_processPendingJobs extends TestCase
 	protected $query;
 	protected $options;
 	protected $controller;
+	protected $file_system;
 
 	protected function setUp(): void
 	{
@@ -26,7 +29,8 @@ class Test_processPendingJobs extends TestCase
 		$this->options = \Mockery::mock(Options_Data::class);
 		$this->query = $this->createMock(RocketCache::class);
 		$this->queue = \Mockery::mock(Queue::class);
-		$this->controller = new PreloadUrl($this->options, $this->queue, $this->query);
+		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
+		$this->controller = new PreloadUrl($this->options, $this->queue, $this->query, $this->file_system);
 	}
 
 	/**

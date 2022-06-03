@@ -49,9 +49,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->add('wp_direct_filesystem', '\WP_Filesystem_Direct')
+		$this->getContainer()->add( 'wp_direct_filesystem', '\WP_Filesystem_Direct' )
 			->addArgument( [] );
-		$wp_file_system = $this->getContainer()->get('wp_direct_filesystem');
+		$wp_file_system = $this->getContainer()->get( 'wp_direct_filesystem' );
 
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\RocketCache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\RocketCache' );
