@@ -17,10 +17,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param FetchSitemap  $parse_sitemap controller parsing the sitemap.
+	 * @param FetchSitemap $parse_sitemap controller parsing the sitemap.
 	 */
-	public function __construct(FetchSitemap $parse_sitemap ) {
-		$this->parse_sitemap  = $parse_sitemap;
+	public function __construct( FetchSitemap $parse_sitemap ) {
+		$this->parse_sitemap = $parse_sitemap;
 	}
 
 	/**
