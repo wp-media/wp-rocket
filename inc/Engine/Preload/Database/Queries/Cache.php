@@ -102,21 +102,14 @@ class Cache extends Query {
 
 		$db_row = array_pop( $rows );
 
-		// In all cases update last_accessed column with current date/time.
-		$this->update_item(
-			$db_row->id,
-			[
-				'last_accessed' => current_time( 'mysql', true ),
-			]
-		);
-
 		// Update this row with the new content.
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'      => untrailingslashit( $resource['url'] ),
-				'status'   => $resource['status'],
-				'modified' => current_time( 'mysql', true ),
+				'url'           => untrailingslashit( $resource['url'] ),
+				'status'        => $resource['status'],
+				'modified'      => current_time( 'mysql', true ),
+				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
 

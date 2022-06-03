@@ -2,7 +2,6 @@
 
 $full_result = (object) [
 	'url' => 'http://example.com',
-	'is_mobile' => false,
 	'status' => 'pending',
 	'last_accessed' => '838:59:59.000000'
 ];

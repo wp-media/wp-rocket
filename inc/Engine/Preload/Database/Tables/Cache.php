@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Preload\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
 
-
 class Cache extends Table {
 
 	/**
@@ -41,7 +40,7 @@ class Cache extends Table {
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
-			KEY url (url(150), is_mobile),
+			KEY url (url(150)),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed)";
 	}
