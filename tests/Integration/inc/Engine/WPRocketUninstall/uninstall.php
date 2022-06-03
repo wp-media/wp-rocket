@@ -119,8 +119,9 @@ class Test_Uninstall extends FilesystemTestCase {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_resources_table = $container->get( 'rucss_resources_table' );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$preload_table         = $container->get( 'preload_caches_table' );
 
-		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table );
+		$uninstall = new WPRocketUninstall( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table, $preload_table );
 		$uninstall->uninstall();
 
 		foreach ( self::getOptionNames() as $option_name ) {

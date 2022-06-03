@@ -52,6 +52,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add('wp_direct_filesystem', '\WP_Filesystem_Direct')
 			->addArgument( [] );
 		$wp_file_system = $this->getContainer()->get('wp_direct_filesystem');
+
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\RocketCache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\RocketCache' );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
@@ -117,5 +118,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
 			->addTag( 'common_subscriber' );
+
+		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
+		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
+			->addArgument( $full_preload_process );
+		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
+			->addArgument( $full_preload_process );
 	}
 }
