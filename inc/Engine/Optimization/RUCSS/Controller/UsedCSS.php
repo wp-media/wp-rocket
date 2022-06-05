@@ -444,10 +444,11 @@ class UsedCSS {
 		 *
 		 * @since 3.11.4
 		 *
-		 * @param bool  $is_home boolean return if current url is_home.
+		 * @param bool  $home_url home url.
 		 * @param string  $url url of current page.
 		 */
-		return apply_filters( 'rocket_rucss_is_home_url', ( untrailingslashit( $url ) === untrailingslashit( home_url() ) ), $url );
+		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
+		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
 
 	/**
