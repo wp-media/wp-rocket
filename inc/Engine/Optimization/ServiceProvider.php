@@ -47,9 +47,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
 			->addArgument( $this->getContainer()->get( 'config' ) );
-		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
+		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Engine\Optimization\Buffer\Optimization' )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
-		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
+		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Engine\Optimization\Buffer\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'cache_dynamic_resource', 'WP_Rocket\Engine\Optimization\CacheDynamicResource' )
