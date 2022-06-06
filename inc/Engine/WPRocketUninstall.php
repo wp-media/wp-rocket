@@ -256,6 +256,7 @@ class WPRocketUninstall {
 	 */
 	private function delete_preload_table() {
 		// If the table exist, then drop the table.
+
 		if ( $this->rocket_cache->exists() ) {
 			$this->rocket_cache->uninstall();
 		}

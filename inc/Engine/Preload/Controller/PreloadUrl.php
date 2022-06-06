@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Filesystem_Direct;
 
 class PreloadUrl {
 
@@ -29,16 +30,25 @@ class PreloadUrl {
 	protected $options;
 
 	/**
+	 * Filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Instantiate preload controller.
 	 *
-	 * @param Options_Data $options configuration options.
-	 * @param Queue        $queue preload queue.
-	 * @param RocketCache  $rocket_cache preload database query.
+	 * @param Options_Data         $options configuration options.
+	 * @param Queue                $queue preload queue.
+	 * @param RocketCache          $rocket_cache preload database query.
+	 * @param WP_Filesystem_Direct $filesystem Filesystem.
 	 */
-	public function __construct( Options_Data $options, Queue $queue, RocketCache $rocket_cache ) {
-		$this->options = $options;
-		$this->query   = $rocket_cache;
-		$this->queue   = $queue;
+	public function __construct( Options_Data $options, Queue $queue, RocketCache $rocket_cache, WP_Filesystem_Direct $filesystem ) {
+		$this->options    = $options;
+		$this->query      = $rocket_cache;
+		$this->queue      = $queue;
+		$this->filesystem = $filesystem;
 	}
 
 	/**
@@ -48,6 +58,11 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
+		if ( $this->is_already_cached( $url ) ) {
+			$this->query->make_status_complete( $url );
+			return;
+		}
+
 		wp_remote_get(
 			$url,
 			[
@@ -102,5 +117,37 @@ class PreloadUrl {
 			$this->query->make_status_inprogress( $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 		}
+	}
+
+	/**
+	 * Check if the cache file for $item already exists.
+	 *
+	 * @param  string $url The URL to preload.
+	 * @return bool
+	 */
+	public function is_already_cached( string $url ) {
+		static $https;
+
+		if ( ! isset( $https ) ) {
+			$https = is_ssl() && get_rocket_option( 'cache_ssl' ) ? '-https' : '';
+		}
+
+		$url = get_rocket_parse_url( $url );
+
+		/** This filter is documented in inc/functions/htaccess.php */
+		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+			$url['host'] = str_replace( '.', '_', $url['host'] );
+		}
+
+		$url['path'] = trailingslashit( $url['path'] );
+
+		if ( '' !== $url['query'] ) {
+			$url['query'] = '#' . $url['query'] . '/';
+		}
+
+		$mobile          = '';
+		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
+
+		return $this->filesystem->exists( $file_cache_path );
 	}
 }

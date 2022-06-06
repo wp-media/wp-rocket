@@ -54,8 +54,8 @@ class Test_Run extends TestCase
 		$this->compatibility->expects()->raise_time_limit($config['time_limit']);
 		$this->queueRunner->expects()->run_cleanup();
 		$this->queueRunner->expects()->get_time_limit()->andReturn($config['time_limit']);
-		$this->queueRunner->shouldReceive('has_maximum_concurrent_batches')->andReturnValues($config['has_max'])
-			->atLeast()->once();
+		$this->queueRunner->shouldReceive('has_maximum_concurrent_batches')->andReturn(! $config['do_batch'])->once();
+
 		Actions\expectDone('action_scheduler_after_process_queue');
 		$this->configureBatch($config);
 		$this->assertSame($expected, $this->queueRunner->run($config['context']));
@@ -65,6 +65,8 @@ class Test_Run extends TestCase
 		if(! $config['do_batch']) {
 			return;
 		}
+		$this->queueRunner->shouldReceive('batch_limits_exceeded')->andReturnValues($config['has_max'])
+			->atLeast()->once();
 		Filters\expectApplied('action_scheduler_queue_runner_batch_size')->with(25)->andReturn($config['batch_size']);
 		$this->queueRunner->shouldReceive('do_batch')->with($config['batch_size'], $config['context'])->andReturn($config['processed'])->atLeast()->once();
 	}

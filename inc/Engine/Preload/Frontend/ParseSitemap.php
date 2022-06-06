@@ -58,7 +58,6 @@ class ParseSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			$this->queue->add_job_preload_job_preload_url_async( $link );
 			$this->query->create_or_update(
 				[
 					'url' => $link,

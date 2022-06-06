@@ -1,9 +1,11 @@
 <?php
 namespace WP_Rocket\Engine\Preload;
 
+use ActionScheduler_Compatibility;
+use ActionScheduler_Lock;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
-use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -32,6 +34,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_admin_subscriber',
 		'preload_caches_table',
 		'preload_caches_query',
+		'preload_queue_runner',
+		'cron_subscriber',
+		'wp_direct_filesystem',
 	];
 
 	/**
@@ -44,7 +49,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
-
+		$this->getContainer()->add( 'wp_direct_filesystem', '\WP_Filesystem_Direct' )
+			->addArgument( [] );
+		$wp_file_system = $this->getContainer()->get( 'wp_direct_filesystem' );
 		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
 			->addArgument( $options );
 		$preload_settings = $this->getContainer()->get( 'preload_settings' );
@@ -70,7 +77,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_url_controller', 'WP_Rocket\Engine\Preload\Controller\PreloadUrl' )
 			->addArgument( $options )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $wp_file_system );
 		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\ParseSitemap' )
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
@@ -95,15 +103,49 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addTag( 'common_subscriber' );
 
+		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
+			->addArgument( $options );
+		$preload_settings = $this->getContainer()->get( 'preload_settings' );
+
+		$this->getContainer()->share(
+			'preload_queue_runner',
+			static function() {
+				return new PreloadQueueRunner(
+				null,
+				null,
+				null,
+				null,
+				new ActionScheduler_Compatibility(),
+				new Logger(),
+				ActionScheduler_Lock::instance()
+				);
+			}
+			);
+
+		$preload_queue_runner = $this->getContainer()->get( 'preload_queue_runner' );
+
 		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
 			->addArgument( $preload_settings )
 			->addArgument( $queue )
-			->addArgument( PreloadQueueRunner::instance() )
+			->addArgument( $preload_queue_runner )
+			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->add( 'cron_subscriber', 'WP_Rocket\Engine\Preload\Cron\Subscriber' )
+			->addArgument( $preload_settings )
+			->addArgument( $cache_query )
+			->addArgument( $preload_url_controller )
+			->addTag( 'common_subscriber' );
+
+		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
+		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
+			->addArgument( $full_preload_process );
+		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
+			->addArgument( $full_preload_process );
 	}
 }
