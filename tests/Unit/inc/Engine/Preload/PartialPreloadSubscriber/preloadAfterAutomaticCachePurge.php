@@ -4,10 +4,10 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\PartialPreloadSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\PartialPreloadSubscriber;
 use WP_Rocket\Engine\Preload\PartialProcess;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\PartialPreloadSubscriber::preload_after_automatic_cache_purge
@@ -39,7 +39,7 @@ class Test_PreloadAfterAutomaticCachePurge extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $permalink_structure, $option_value, $deleted, $expected ) {
 		if ( $deleted ) {

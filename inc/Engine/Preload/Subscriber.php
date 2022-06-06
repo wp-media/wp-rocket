@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
-use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -15,8 +14,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	protected $controller;
 
-
-
 	/**
 	 * Creates an instance of the class.
 	 *
@@ -25,7 +22,6 @@ class Subscriber implements Subscriber_Interface {
 	public function __construct( LoadInitialSitemap $controller ) {
 		$this->controller = $controller;
 	}
-
 
 	/**
 	 * Return an array of events that this subscriber listens to.
@@ -39,22 +35,22 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Load first tasks from preload when configuuration from sitemap changed.
+	 * Load first tasks from preload when preload option is enabled.
 	 *
 	 * @param array $old_value old configuration values.
 	 * @param array $value new configuration values.
 	 * @return void
 	 */
 	public function maybe_load_initial_sitemap( $old_value, $value ) {
-		if ( ! isset( $value['sitemap_preload'], $old_value['sitemap_preload'] ) ) {
+		if ( ! isset( $value['manual_preload'], $old_value['manual_preload'] ) ) {
 			return;
 		}
 
-		if ( $value['sitemap_preload'] === $old_value['sitemap_preload'] ) {
+		if ( $value['manual_preload'] === $old_value['manual_preload'] ) {
 			return;
 		}
 
-		if ( ! $value['sitemap_preload'] ) {
+		if ( ! $value['manual_preload'] ) {
 			return;
 		}
 

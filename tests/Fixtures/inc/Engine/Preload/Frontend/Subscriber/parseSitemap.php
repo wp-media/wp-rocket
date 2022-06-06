@@ -78,7 +78,7 @@ return [
 				'http://www.photoshoptuto.com/sitemap/2',
 			],
 			'links' => [
-				'http://www.photoshoptuto.com/',
+				'http://www.photoshoptuto.com',
 				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
 				'http://www.photoshoptuto.com/proposer-un-tuto',
 				'http://www.photoshoptuto.com/tag/35mm',

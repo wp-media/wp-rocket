@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Preload\Frontend;
 
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
+use WP_Rocket\Engine\Preload\Controller\CheckFinished;
+
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -10,7 +12,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Controller parsing the sitemap.
 	 *
-	 * @var ParseSitemap
+	 * @var FetchSitemap
 	 */
 	protected $parse_sitemap;
 
@@ -24,10 +26,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param ParseSitemap $parse_sitemap controller parsing the sitemap.
+	 * @param FetchSitemap $parse_sitemap controller parsing the sitemap.
 	 * @param PreloadUrl   $preload_controller controller preloading urls.
 	 */
-	public function __construct( ParseSitemap $parse_sitemap, PreloadUrl $preload_controller ) {
+	public function __construct( FetchSitemap $parse_sitemap, PreloadUrl $preload_controller ) {
 		$this->parse_sitemap      = $parse_sitemap;
 		$this->preload_controller = $preload_controller;
 	}

@@ -31,9 +31,8 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-		$transient = get_transient( 'rocket_rucss_processing' );
 
-		if ( false === $transient ) {
+		if ( false === get_transient( 'wpr_preload_running' ) ) {
 			return;
 		}
 
@@ -72,19 +71,15 @@ class Settings {
 			return false;
 		}
 
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
-		return true;
+		return $this->is_enabled();
 	}
 
 	/**
-	 * Determines if Preload sitemap option is enabled.
+	 * Determines if Preload option is enabled.
 	 *
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
-		return (bool) $this->options->get( 'sitemap_preload', 0 );
+		return (bool) $this->options->get( 'manual_preload', 0 );
 	}
 }

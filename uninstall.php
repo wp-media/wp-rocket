@@ -1,5 +1,7 @@
 <?php
 
+use WP_Rocket\Engine\Preload\Database\Tables\Cache;
+
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
@@ -24,17 +26,11 @@ require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Date.php'
 require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Compare.php';
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/Resources.php';
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
-<<<<<<< HEAD
-require_once dirname( __FILE__ ) . '/inc/Engine/Preload/Database/Tables/RocketCache.php';
-$rocket_rucss_resources_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources();
-$rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
-$rocket_cache_table           = new \WP_Rocket\Engine\Preload\Database\Tables\RocketCache();
-$rocket_uninstall             = new WPRocketUninstall( WP_ROCKET_CACHE_ROOT_PATH, WP_ROCKET_CONFIG_PATH, $rocket_rucss_resources_table, $rocket_rucss_usedcss_table );
-=======
+
 require_once dirname( __FILE__ ) . '/inc/Engine/Preload/Database/Tables/Cache.php';
 $rocket_rucss_resources_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources();
 $rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
-$rocket_cache_table           = new \WP_Rocket\Engine\Preload\Database\Tables\Cache();
+$rocket_cache_table           = new Cache();
 $rocket_uninstall             = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
 	WP_ROCKET_CONFIG_PATH,
@@ -42,5 +38,4 @@ $rocket_uninstall             = new WPRocketUninstall(
 	$rocket_rucss_usedcss_table,
 	$rocket_cache_table
 	);
->>>>>>> feature/new-preload
 $rocket_uninstall->uninstall();

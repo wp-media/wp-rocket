@@ -7,10 +7,13 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
+/**
+ * Settings instance.
+ */
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Settings instance.
+	 * Settings instance
 	 *
 	 * @var Settings
 	 */

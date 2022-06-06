@@ -2,6 +2,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Admin\Settings;
 
 use Mockery;
+
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -39,7 +40,8 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		if(! key_exists('enabled', $config)) {
 			return;
 		}
-		$this->options->expects()->get('sitemap_preload', 0)->andReturn($config['enabled']);
+
+		$this->options->expects()->get('manual_preload', 0)->andReturn($config['enabled']);
 	}
 
 	protected function configureTransient($config) {
