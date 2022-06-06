@@ -77,6 +77,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $queue );
 		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $cache_query )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
 			->addArgument( $options );
