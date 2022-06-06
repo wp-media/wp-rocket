@@ -20,13 +20,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'full_preload_process',
-		'partial_preload_process',
-		'homepage_preload',
-		'sitemap_preload',
-		'preload_subscriber',
-		'sitemap_preload_subscriber',
-		'partial_preload_subscriber',
 		'fonts_preload_subscriber',
 		'preload_caches_table',
 		'preload_caches_query',
@@ -40,34 +33,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
-		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
 
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\Cache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
 		$this->getContainer()->get( 'preload_caches_table' );
 
-		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
-		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
-			->addArgument( $full_preload_process );
-		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
-			->addArgument( $full_preload_process );
-
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
-			->addArgument( $this->getContainer()->get( 'homepage_preload' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' )
-			->addArgument( $this->getContainer()->get( 'sitemap_preload' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\PartialPreloadSubscriber' )
-			->addArgument( $this->getContainer()->get( 'partial_preload_process' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
