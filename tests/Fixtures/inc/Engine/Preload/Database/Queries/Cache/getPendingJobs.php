@@ -1,8 +1,8 @@
 <?php
 
-use WP_Rocket\Engine\Preload\Database\Rows\RocketCacheRow;
+use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 
-$cache = new RocketCacheRow((object)[]);
+$cache = new CacheRow((object)[]);
 
 return [
 	'shouldReturnElements' => [

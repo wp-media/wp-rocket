@@ -88,7 +88,7 @@ class Cache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => untrailingslashit( $resource['url'] ),
-					'status'        => $resource['status'],
+					'status'        => key_exists('status', $resource) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -228,5 +228,82 @@ class Cache extends Query {
 		foreach ( $rows as $row ) {
 			$this->delete_item( $row->id );
 		}
+	}
+
+	/**
+	 * Fetch pending jobs.
+	 *
+	 * @param int $total total of jobs to fetch.
+	 * @return array
+	 */
+	public function get_pending_jobs( int $total ) {
+		$inprogress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+			]
+		);
+
+		if ( $inprogress_count >= $total ) {
+			return [];
+		}
+
+		return $this->query(
+			[
+				'number'         => ( $total - $inprogress_count ),
+				'status'         => 'pending',
+				'fields'         => [
+					'id',
+					'url',
+				],
+				'job_id__not_in' => [
+					'not_in' => '',
+				],
+				'orderby'        => 'modified',
+				'order'          => 'asc',
+			]
+		);
+	}
+
+	/**
+	 * Change the status from the task to inprogress.
+	 *
+	 * @param int $id id from the task.
+	 * @return bool
+	 */
+	public function make_status_inprogress( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'status' => 'in-progress',
+			]
+		);
+	}
+
+	/**
+	 * Make the status from the task to complete.
+	 *
+	 * @param string $url url from the task.
+	 * @return bool
+	 */
+	public function make_status_complete( string $url ) {
+		$tasks = $this->query(
+			[
+				'url' => $url,
+			]
+		);
+
+		if ( count( $tasks ) === 0 ) {
+			return false;
+		}
+
+		$task = array_pop( $tasks );
+
+		return $this->update_item(
+			$task->id,
+			[
+				'status' => 'completed',
+			]
+		);
 	}
 }

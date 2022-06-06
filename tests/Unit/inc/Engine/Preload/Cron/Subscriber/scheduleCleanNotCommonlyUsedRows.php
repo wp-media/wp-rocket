@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -20,7 +21,7 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createMock(RocketCache::class);
+		$this->query = $this->createMock(Cache::class);
 		$this->settings = Mockery::mock(Settings::class);
 		$this->controller = Mockery::mock(PreloadUrl::class);
 

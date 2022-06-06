@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Filesystem_Direct;
 
@@ -18,7 +19,7 @@ class PreloadUrl {
 	/**
 	 * Preload database query.
 	 *
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	protected $query;
 
@@ -41,10 +42,10 @@ class PreloadUrl {
 	 *
 	 * @param Options_Data         $options configuration options.
 	 * @param Queue                $queue preload queue.
-	 * @param RocketCache          $rocket_cache preload database query.
+	 * @param Cache          $rocket_cache preload database query.
 	 * @param WP_Filesystem_Direct $filesystem Filesystem.
 	 */
-	public function __construct( Options_Data $options, Queue $queue, RocketCache $rocket_cache, WP_Filesystem_Direct $filesystem ) {
+	public function __construct( Options_Data $options, Queue $queue, Cache $rocket_cache, WP_Filesystem_Direct $filesystem ) {
 		$this->options    = $options;
 		$this->query      = $rocket_cache;
 		$this->queue      = $queue;

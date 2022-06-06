@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Preload\Cron;
 
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -19,7 +20,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Db query.
 	 *
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	protected $query;
 
@@ -34,10 +35,10 @@ class Subscriber implements Subscriber_Interface {
 	 * Creates an instance of the class.
 	 *
 	 * @param Settings    $settings Preload settings.
-	 * @param RocketCache $query Db query.
+	 * @param Cache $query Db query.
 	 * @param PreloadUrl  $preload_controller Preload url controller.
 	 */
-	public function __construct( Settings $settings, RocketCache $query, PreloadUrl $preload_controller ) {
+	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller ) {
 		$this->settings           = $settings;
 		$this->query              = $query;
 		$this->preload_controller = $preload_controller;

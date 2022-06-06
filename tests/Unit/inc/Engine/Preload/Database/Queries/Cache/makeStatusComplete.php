@@ -2,12 +2,13 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\RocketCache;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::make_status_complete
- * @uses \WP_Rocket\Engine\Preload\Database\Queries\RocketCacheRow
+ * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::make_status_complete
+ * @uses \WP_Rocket\Engine\Preload\Database\Queries\CacheRow
  *
  * @group Database
  * @group Preload
@@ -19,7 +20,7 @@ class Test_MakeStatusComplete extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'delete_item', 'query', 'update_item']);
+		$this->query = $this->createPartialMock(Cache::class, ['get_rows_by_url', 'delete_item', 'query', 'update_item']);
 	}
 
 	/**

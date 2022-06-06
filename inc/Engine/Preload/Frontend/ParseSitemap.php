@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload\Frontend;
 
 use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 
 class ParseSitemap {
@@ -24,7 +25,7 @@ class ParseSitemap {
 	/**
 	 * DB query.
 	 *
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	protected $query;
 	/**
@@ -32,9 +33,9 @@ class ParseSitemap {
 	 *
 	 * @param SitemapParser $sitemap_parser Parse controller.
 	 * @param Queue         $queue Queue instance.
-	 * @param RocketCache   $rocket_cache DB query.
+	 * @param Cache   $rocket_cache DB query.
 	 */
-	public function __construct( SitemapParser $sitemap_parser, Queue $queue, RocketCache $rocket_cache ) {
+	public function __construct( SitemapParser $sitemap_parser, Queue $queue, Cache $rocket_cache ) {
 		$this->sitemap_parser = $sitemap_parser;
 		$this->queue          = $queue;
 		$this->query          = $rocket_cache;

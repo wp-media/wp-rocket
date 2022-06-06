@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Frontend\ParseSitemap;
 
 use Mockery;
 use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Engine\Preload\Frontend\ParseSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
@@ -23,7 +24,7 @@ class Test_ParseSitemap extends TestCase {
 		parent::setUp();
 		$this->sitemap_parser = Mockery::mock(SitemapParser::class);
 		$this->queue = Mockery::mock(Queue::class);
-		$this->query = $this->createMock(RocketCache::class);
+		$this->query = $this->createMock(Cache::class);
 		$this->controller = new ParseSitemap($this->sitemap_parser, $this->queue, $this->query);
 	}
 

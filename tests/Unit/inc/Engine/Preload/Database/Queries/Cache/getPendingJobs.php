@@ -1,5 +1,6 @@
 <?php
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -15,7 +16,7 @@ class Test_GetPendingJobs extends TestCase {
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->query = $this->createPartialMock(RocketCache::class, ['get_rows_by_url', 'query']);
+		$this->query = $this->createPartialMock(Cache::class, ['get_rows_by_url', 'query']);
 	}
 
 	/**

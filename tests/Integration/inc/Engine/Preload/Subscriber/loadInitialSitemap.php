@@ -31,8 +31,10 @@ class Test_LoadInitialSitemap extends AdminTestCase
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
+		global $wpdb;
 		$this->sitemaps = $config['return_sitemaps'];
 		do_action('update_option_' . WP_ROCKET_SLUG , $config['old_values'], $config['values']);
+		var_dump($wpdb->get_results("select * from {$wpdb->prefix}actionscheduler_actions;"));
 
 		foreach ($expected['sitemaps'] as $sitemap) {
 			$this->assertEquals($expected['exist'], self::taskExist('rocket_preload_job_parse_sitemap', [$sitemap]));

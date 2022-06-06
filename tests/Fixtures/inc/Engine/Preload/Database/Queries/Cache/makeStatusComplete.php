@@ -1,8 +1,8 @@
 <?php
 
-use WP_Rocket\Engine\Preload\Database\Rows\RocketCacheRow;
+use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 
-$rocket_cache_row = new RocketCacheRow((object) [
+$rocket_cache_row = new CacheRow((object) [
 	'id' => 10,
 ]);
 

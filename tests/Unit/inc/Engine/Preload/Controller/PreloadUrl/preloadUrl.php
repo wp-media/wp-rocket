@@ -8,6 +8,7 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -28,7 +29,7 @@ class Test_PreloadUrl extends TestCase
 	{
 		parent::setUp();
 		$this->options = \Mockery::mock(Options_Data::class);
-		$this->query = $this->createMock(RocketCache::class);
+		$this->query = $this->createMock(Cache::class);
 		$this->queue = \Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->controller = \Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]', [$this->options,

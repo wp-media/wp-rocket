@@ -1,15 +1,15 @@
 <?php
 
-use WP_Rocket\Engine\Preload\Database\Rows\RocketCacheRow;
+use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 
-$row1 = new RocketCacheRow([
+$row1 = new CacheRow([
 	'id' => 10,
 	'is_mobile' => false,
 	'url' => 'http://example1',
 	'status' => 'pending',
 ]);
 
-$row2 = new RocketCacheRow([
+$row2 = new CacheRow([
 	'id' => 11,
 	'is_mobile' => false,
 	'url' => 'http://example2',

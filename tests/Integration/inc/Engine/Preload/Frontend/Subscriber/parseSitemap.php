@@ -40,11 +40,10 @@ class Test_ParseSitemap extends AdminTestCase {
 
 		foreach ($expected['children'] as $child) {
 			$this->assertEquals($expected['children_exists'], self::taskExist('rocket_preload_job_parse_sitemap', [$child]));
-			$this->assertEquals($expected['children_exists'], self::cacheFound(['url' => $child]));
 		}
 
 		foreach ($expected['links'] as $link) {
-			$this->assertEquals($expected['links_exists'], self::taskExist('rocket_preload_job_preload_url', [$link]));
+			$this->assertEquals($expected['children_exists'], self::cacheFound(['url' => $link]));
 		}
 	}
 
