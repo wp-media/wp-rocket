@@ -68,7 +68,7 @@ class Test_PreloadUrl extends AdminTestCase
 			Functions\expect( 'wp_remote_get' )
 				->once()
 				->with(
-					$config['url'],
+					$config['url'] . '/',
 					$config['config']
 				)
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
@@ -77,7 +77,7 @@ class Test_PreloadUrl extends AdminTestCase
 			Functions\expect( 'wp_remote_get' )
 				->once()
 				->with(
-					$config['url'],
+					$config['url'] . '/',
 					$config['config']
 				)
 				->andReturn( [ 'body' => $message, 'response' => ['code' => 200 ]] );

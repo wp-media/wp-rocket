@@ -52,7 +52,7 @@ class Test_PreloadUrl extends TestCase
 		}
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 
-		Functions\expect('wp_remote_get')->with($config['url'], $config['request']['config']);
+		Functions\expect('wp_remote_get')->with($config['url'] . '/', $config['request']['config']);
 
 		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
 	}
@@ -66,6 +66,6 @@ class Test_PreloadUrl extends TestCase
 			return;
 		}
 		$this->controller->expects()->get_mobile_user_agent_prefix()->andReturn($config['user_agent']);
-		Functions\expect('wp_remote_get')->with($config['url'], $config['request_mobile']['config']);
+		Functions\expect('wp_remote_get')->with($config['url'] . '/', $config['request_mobile']['config']);
 	}
 }

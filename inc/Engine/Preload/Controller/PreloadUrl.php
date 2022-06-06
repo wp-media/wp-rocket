@@ -64,7 +64,7 @@ class PreloadUrl {
 		}
 
 		wp_remote_get(
-			$url,
+			user_trailingslashit( $url ),
 			[
 				'blocking' => false,
 				'timeout'  => 0.01,
@@ -72,7 +72,7 @@ class PreloadUrl {
 			);
 		if ( $this->options->get( 'cache_mobile', false ) ) {
 			wp_remote_get(
-				$url,
+				user_trailingslashit( $url ),
 				[
 					'blocking'   => false,
 					'timeout'    => 0.01,
