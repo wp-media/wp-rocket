@@ -39,16 +39,15 @@ class PreloadUrl {
 	/**
 	 * Instantiate preload controller.
 	 *
-	 * @param Options_Data $options configuration options.
-	 * @param Queue $queue preload queue.
-	 * @param RocketCache $rocket_cache preload database query.
+	 * @param Options_Data         $options configuration options.
+	 * @param Queue                $queue preload queue.
+	 * @param RocketCache          $rocket_cache preload database query.
 	 * @param WP_Filesystem_Direct $filesystem Filesystem.
 	 */
-	public function __construct( Options_Data $options, Queue $queue, RocketCache $rocket_cache, WP_Filesystem_Direct
-	$filesystem ) {
-		$this->options = $options;
-		$this->query   = $rocket_cache;
-		$this->queue   = $queue;
+	public function __construct( Options_Data $options, Queue $queue, RocketCache $rocket_cache, WP_Filesystem_Direct $filesystem ) {
+		$this->options    = $options;
+		$this->query      = $rocket_cache;
+		$this->queue      = $queue;
 		$this->filesystem = $filesystem;
 	}
 
@@ -59,11 +58,10 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		if($this->is_already_cached($url)) {
+		if ( $this->is_already_cached( $url ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
-
 
 		wp_remote_get(
 			$url,
@@ -124,17 +122,7 @@ class PreloadUrl {
 	/**
 	 * Check if the cache file for $item already exists.
 	 *
-	 * @since  3.2
-	 * @since  3.5 $item is an array.
-	 * @author Remy Perona
-	 *
-	 * @param  array $item {
-	 *     The item to preload: an array containing the following values.
-	 *
-	 *     @type string $url    The URL to preload.
-	 *     @type bool   $mobile True when we want to send a "mobile" user agent with the request.
-	 *     @type string $source An identifier related to the source of the preload.
-	 * }
+	 * @param  string $url The URL to preload.
 	 * @return bool
 	 */
 	public function is_already_cached( string $url ) {
