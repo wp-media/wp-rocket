@@ -3,10 +3,10 @@ return [
 	'sitemapFromThirdPartyShouldCreateJob' => [
 		'config' => [
 			'old_values' => [
-				'sitemap_preload' => false
+				'manual_preload' => false
 			],
 			'values' => [
-				'sitemap_preload' => true
+				'manual_preload' => true
 			],
 			'return_sitemaps' => [
 				'http://example.com'
@@ -22,10 +22,10 @@ return [
 	'noChangeShouldNotCreateAJob' => [
 		'config' => [
 			'old_values' => [
-				'sitemap_preload' => true
+				'manual_preload' => true
 			],
 			'values' => [
-				'sitemap_preload' => true
+				'manual_preload' => true
 			],
 			'return_sitemaps' => [
 				'http://example.com'
@@ -41,10 +41,10 @@ return [
 	'disableShouldNotCreateAJob' => [
 		'config' => [
 			'old_values' => [
-				'sitemap_preload' => true
+				'manual_preload' => true
 			],
 			'values' => [
-				'sitemap_preload' => false
+				'manual_preload' => false
 			],
 			'return_sitemaps' => [
 				'http://example.com'
@@ -60,10 +60,10 @@ return [
 	'sitemapFromWordPressShouldCreateJob' => [
 		'config' => [
 			'old_values' => [
-				'sitemap_preload' => false
+				'manual_preload' => false
 			],
 			'values' => [
-				'sitemap_preload' => true
+				'manual_preload' => true
 			],
 			'return_sitemaps' => []
 		],
