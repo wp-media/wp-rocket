@@ -29,6 +29,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 			->with( 'cache_reject_uri', [] )
 			->andReturn( $config['options']['cache_reject_uri'] );
 
+
 		Functions\when( 'rocket_get_home_dirname' )->justReturn( $config['home_dirname'] );
 
 		Functions\expect( 'apply_filters' )

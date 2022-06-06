@@ -1,0 +1,19 @@
+Index: tests/Fixtures/inc/Engine/Preload/Frontend/Subscriber/parseSitemap.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\n\n$sitemap = <<<XML\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n    <url>\n        <loc>http://www.photoshoptuto.com/</loc>\n        <lastmod>2013-02-08T08:29:01+00:00</lastmod>\n        <changefreq>daily</changefreq>\n        <priority>1.0</priority>\n    </url>\n    <url>\n        <loc>http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018</loc>\n        <lastmod>2013-02-08T08:29:01+00:00</lastmod>\n        <changefreq>monthly</changefreq>\n        <priority>0.2</priority>\n    </url>\n    <url>\n        <loc>http://www.photoshoptuto.com/proposer-un-tuto</loc>\n        <lastmod>2009-12-21T18:19:47+00:00</lastmod>\n        <changefreq>weekly</changefreq>\n        <priority>0.6</priority>\n    </url>\n    <url>\n        <loc>http://www.photoshoptuto.com/tag/35mm</loc>\n        <changefreq>weekly</changefreq>\n        <priority>0.3</priority>\n    </url>\n    <sitemap>\n        <loc>http://www.photoshoptuto.com/sitemap/1</loc>\n        <changefreq>weekly</changefreq>\n        <priority>0.3</priority>\n    </sitemap>\n    <sitemap>\n        <loc>http://www.photoshoptuto.com/sitemap/2</loc>\n        <changefreq>weekly</changefreq>\n        <priority>0.3</priority>\n    </sitemap>\n</urlset>\nXML;\n\nreturn [\n\t'errorOnFetchShouldAddNoJob' => [\n\t\t'config' => [\n\t\t\t'sitemap_url' => 'http://example.com',\n\t\t\t'process_generate' => [\n\t\t\t\t'is_wp_error' => true,\n\t\t\t\t'response' => $sitemap\n\t\t\t]\n\t\t],\n\t\t'expected' => [\n\t\t\t'children_exists' => false,\n\t\t\t'links_exists' => false,\n\t\t\t'children' => [\n\t\t\t\t'http://www.photoshoptuto.com/sitemap/2',\n\t\t\t\t'http://www.photoshoptuto.com/sitemap/2',\n\t\t\t],\n\t\t\t'links' => [\n\t\t\t\t'http://www.photoshoptuto.com/',\n\t\t\t\t'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',\n\t\t\t\t'http://www.photoshoptuto.com/proposer-un-tuto',\n\t\t\t\t'http://www.photoshoptuto.com/tag/35mm',\n\t\t\t]\n\t\t],\n\t],\n\t'fetchSitemapShouldCreateJobs' => [\n\t\t'config' => [\n\t\t\t'sitemap_url' => 'http://example.com',\n\t\t\t'process_generate' => [\n\t\t\t\t'response' => $sitemap\n\t\t\t]\n\t\t],\n\t\t'expected' => [\n\t\t\t'children_exists' => true,\n\t\t\t'links_exists' => true,\n\t\t\t'children' => [\n\t\t\t\t'http://www.photoshoptuto.com/sitemap/2',\n\t\t\t\t'http://www.photoshoptuto.com/sitemap/2',\n\t\t\t],\n\t\t\t'links' => [\n\t\t\t\t'http://www.photoshoptuto.com/',\n\t\t\t\t'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',\n\t\t\t\t'http://www.photoshoptuto.com/proposer-un-tuto',\n\t\t\t\t'http://www.photoshoptuto.com/tag/35mm',\n\t\t\t]\n\t\t]\n\t]\n];\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tests/Fixtures/inc/Engine/Preload/Frontend/Subscriber/parseSitemap.php b/tests/Fixtures/inc/Engine/Preload/Frontend/Subscriber/parseSitemap.php
+--- a/tests/Fixtures/inc/Engine/Preload/Frontend/Subscriber/parseSitemap.php	(revision c716c04bc370096ebc6fb595ba0f62df2766ac4f)
++++ b/tests/Fixtures/inc/Engine/Preload/Frontend/Subscriber/parseSitemap.php	(date 1654506282537)
+@@ -78,7 +78,7 @@
+ 				'http://www.photoshoptuto.com/sitemap/2',
+ 			],
+ 			'links' => [
+-				'http://www.photoshoptuto.com/',
++				'http://www.photoshoptuto.com',
+ 				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
+ 				'http://www.photoshoptuto.com/proposer-un-tuto',
+ 				'http://www.photoshoptuto.com/tag/35mm',
