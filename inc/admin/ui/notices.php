@@ -10,6 +10,12 @@ defined( 'ABSPATH' ) || exit;
 function rocket_bad_deactivations() {
 	global $current_user;
 
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+
 	$msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' );
 	if ( current_user_can( 'rocket_manage_options' ) && $msgs ) {
 
@@ -544,38 +550,6 @@ function rocket_thank_you_license() {
 add_action( 'admin_notices', 'rocket_thank_you_license' );
 
 /**
- * This notice is displayed after purging OPcache
- *
- * @since 3.4.1
- * @author Soponar Cristina
- */
-function rocket_opcache_purge_result() {
-	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
-		return;
-	}
-
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	$user_id = get_current_user_id();
-	$notice  = get_transient( $user_id . '_opcache_purge_result' );
-	if ( ! $notice ) {
-		return;
-	}
-
-	delete_transient( $user_id . '_opcache_purge_result' );
-
-	rocket_notice_html(
-		[
-			'status'  => $notice['result'],
-			'message' => $notice['message'],
-		]
-	);
-}
-add_action( 'admin_notices', 'rocket_opcache_purge_result' );
-
-/**
  * Displays a notice for analytics opt-in
  *
  * @since 2.11
@@ -768,6 +742,7 @@ function rocket_notice_html( $args ) {
 		'action'           => '',
 		'dismiss_button'   => false,
 		'readonly_content' => '',
+		'id'               => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -800,8 +775,14 @@ function rocket_notice_html( $args ) {
 			break;
 	}
 
+	$notice_id = '';
+
+	if ( ! empty( $args['id'] ) ) {
+		$notice_id = ' id="' . esc_attr( $args['id'] ) . '"';
+	}
+
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>">
+	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 
@@ -818,7 +799,7 @@ function rocket_notice_html( $args ) {
 		<p>
 			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss <?php echo $args['dismiss_button_class'] ?? ''; ?>" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>

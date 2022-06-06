@@ -13,8 +13,8 @@ use WPDieException;
  */
 class Test_PurgeCache extends TestCase {
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		unset( $_GET['_wpnonce'] );
 		set_current_screen( 'settings_page_wprocket' );

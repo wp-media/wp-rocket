@@ -14,10 +14,6 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 }
 
-if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
-}
-
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/presslabs.php';
 }
@@ -58,7 +54,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/custom-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/seopress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/rank-math-seo.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/yoast-seo.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/the-seo-framework.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/all-in-one-seo-pack.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/premium-seo-pack.php';

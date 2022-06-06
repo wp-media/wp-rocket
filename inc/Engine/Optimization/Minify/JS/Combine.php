@@ -717,6 +717,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'var wpilFrontend',
 			'urls_polylangREPLACETOID',
 			'e.setAttribute(\'unselectable\',on);',
+			'try{Typekit.load',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

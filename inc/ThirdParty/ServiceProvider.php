@@ -45,6 +45,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		'revolution_slider_subscriber',
 		'wordfence_subscriber',
 		'ezoic',
+		'pwa',
+		'flatsome',
+		'convertplug',
+		'unlimited_elements',
+		'inline_related_posts',
 	];
 
 	/**
@@ -148,6 +153,28 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'ezoic', 'WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'thirstyaffiliates', 'WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'pwa', 'WP_Rocket\ThirdParty\Plugins\PWA' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'yoast_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\Yoast' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
 			->addTag( 'common_subscriber' );
 	}
 }

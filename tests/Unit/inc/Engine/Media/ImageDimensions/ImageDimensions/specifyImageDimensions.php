@@ -17,11 +17,33 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_SpecifyImageDimensions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Media/ImageDimensions/ImageDimensions/specifyImageDimensions.php';
 
+	private $options;
+	private $image_dimensions;
+
+	public function setUp(): void
+	{
+		parent::setUp();
+
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->image_dimensions = new ImageDimensions( $this->options, $this->filesystem );
+	}
+
+	public function testShouldReturnUnchangedHTMLWhenCannotSpecifyImageDimensions() {
+		$this->options->shouldReceive( 'get' )
+		              ->once()
+		              ->with( 'image_dimensions', false )
+		              ->andReturn( false );
+
+		$this->assertSame(
+			'<img src="http://example.com/path/to/image.jpg" />',
+			$this->image_dimensions->specify_image_dimensions('<img src="http://example.com/path/to/image.jpg" />')
+		);
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldAddMissedDimensions( $input, $config, $expected ) {
-		$options = Mockery::mock( Options_Data::class );
 
 		$site_url = $config['site_url'] ?? 'http://example.org/';
 		$home_url = $config['home_url'] ?? 'http://example.org/';
@@ -29,21 +51,6 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 		Functions\when( 'site_url' )->alias( function( $path = '') use ( $site_url ) {
 			return $site_url . ltrim( $path, '/' );
 		} );
-
-		if (
-			isset( $config['image_dimensions'] )
-			&&
-			(
-				! isset( $config['rocket_specify_image_dimensions_filter'] )
-				||
-				! $config['rocket_specify_image_dimensions_filter']
-			)
-		){
-			$options->shouldReceive( 'get' )
-			        ->once()
-			        ->with( 'image_dimensions', false )
-			        ->andReturn( $config['image_dimensions'] );
-		}
 
 		if ( isset( $config['rocket_specify_image_dimensions_filter'] ) ){
 			Filters\expectApplied( 'rocket_specify_image_dimensions' )
@@ -58,8 +65,6 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 				->with( true )
 				->andReturn( $config['rocket_specify_dimension_skip_pictures_filter'] );
 		}
-
-		$frontend = new ImageDimensions( $options, $this->filesystem );
 
 		if ( isset( $config['external'] ) || isset( $config['internal'] ) ) {
 			Functions\expect( 'get_rocket_parse_url' )
@@ -105,10 +110,9 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 					->andReturn( $config['rocket_specify_image_dimensions_for_distant_filter'] );
 			}
 		}
-
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $frontend->specify_image_dimensions( $input ) )
+			$this->format_the_html( $this->image_dimensions->specify_image_dimensions( $input ) )
 		);
 
 	}

@@ -34,7 +34,17 @@ class Test_DisableOptionsOnAmp extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\expect( 'is_amp_endpoint' )
 			->once()
-			->andReturn( $config[ 'is_amp_endpoint' ]  );
+			->andReturn( $config['is_amp_endpoint'] );
+		Functions\expect( 'is_singular' )
+			->atMost()->once()
+			->with( 'web-story')
+			->andReturn( ! empty( $config['is-web-story'] ) );
+		Functions\expect( 'is_embed' )
+			->atMost()->once()
+			->andReturn( false );
+		Functions\expect( 'post_password_required' )
+			->atMost()->once()
+			->andReturn( false );
 
 		if ( $expected[ 'bailout' ] ) {
 			Functions\expect( 'remove_filter' )->never();
@@ -55,6 +65,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_async_css', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_minify_js', '__return_false' ) );
 
 			$this->assertSame(
 				PHP_INT_MAX,

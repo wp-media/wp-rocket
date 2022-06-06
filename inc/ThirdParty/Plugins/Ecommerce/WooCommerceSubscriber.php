@@ -69,7 +69,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
-			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
 			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
 
 			/**
@@ -80,7 +79,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 * @param bool true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
-				$events['after_setup_theme'] = [ 'serve_cache_empty_cart', 11 ];
+				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
@@ -438,72 +437,6 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		return array_merge( $excluded_taxonomies, wc_get_attribute_taxonomy_names() );
 	}
 
-	/**
-	 * Set $user_id to 0 for certain nonce actions.
-	 *
-	 * WooCommerce core changes how nonces are used for non-logged customers.
-	 * When a user is logged out, but has items in their cart, WC core sets the $uid as a random string customer id.
-	 * This is going to mess out nonce validation with WP Rocket and third party plugins which do not bypass WC nonce changes.
-	 * WP Rocket caches the page so the nonce $uid will be always different than the session customer $uid.
-	 * This function will check the nonce against a UID of 0 because this is how WP Rocket generated the cached page.
-	 *
-	 * @since  3.5.1
-	 * @author Soponar Cristina
-	 *
-	 * @param string|int $user_id ID of the nonce-owning user.
-	 * @param string|int $action  The nonce action.
-	 *
-	 * @return int $uid      ID of the nonce-owning user.
-	 */
-	public function maybe_revert_uid_for_nonce_actions( $user_id, $action ) {
-		// User ID is invalid.
-		if ( empty( $user_id ) || 0 === $user_id ) {
-			return $user_id;
-		}
-
-		// The nonce action is not in the list.
-		if ( ! $action || ! in_array( $action, $this->get_nonce_actions(), true ) ) {
-			return $user_id;
-		}
-
-		return 0;
-	}
-
-	/**
-	 * List with nonce actions which needs to revert the $uid.
-	 *
-	 * @since  3.5.1
-	 * @author Soponar Cristina
-	 *
-	 * @return array $nonce_actions List with all nonce actions.
-	 */
-	private function get_nonce_actions() {
-		return [
-			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
-			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
-			'codevz_selective_refresh', // xtra theme.
-			'xtra_quick_view', // xtra theme quick view.
-			'ajax_search_nonce', // xtra theme AJAX search.
-			'xtra_wishlist_content', // xtra theme wishlist feature.
-			'ajax-login-security', // OneSocial theme pop-up login.
-			'dokan_pageview', // Dokan related pageview.
-			'dokan_report_abuse', // Dokan report abuse popup.
-			'uabb_subscribe_form_submit', // Ultimate Addons for Beaver Builder - MailChimp signup form.
-			'konte-add-to-cart', // Add to cart feature of the Konte theme.
-			'wpuf_form_add', // WP User Frontend Pro.
-			'everest_forms_ajax_form_submission', // Everest forms AJAX submission.
-			'everest-forms_process_submit', // Everest forms submission.
-			'ajax-login-nonce', // Rehub theme login modal.
-			'filter-nonce', // Rehub theme filter.
-			'log-out', // WordPress's log-out action (wp_nonce_ays() function).
-			'ybws123456', // Custom Bookly form.
-			'_wc_additional_variation_images_nonce', // WooCommerce Additional Variation Images.
-			'get_price_table', // Tiered Pricing Table for WooCommerce.
-			'wccs_single_product_nonce', // Discount Rules and Dynamic Pricing for WooCommerce.
-			'bookyourtravel_nonce', // Book Your Travel theme.
-			'sign_signin', // Custom Login for Improvise Theme by Noomia.
-		];
-	}
 
 	/**
 	 * Exclude product_shipping_class taxonomy from post purge

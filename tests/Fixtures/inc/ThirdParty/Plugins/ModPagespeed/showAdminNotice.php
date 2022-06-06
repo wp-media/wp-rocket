@@ -8,8 +8,8 @@ WP Rocket</strong>
 More Info</a>
 </p>
 <p>
-<a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce={{nonce}}">
-Dismiss this notice.</a>
+<a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce={{nonce}}">
+Dismiss this notice</a>
 </p>
 </div>
 HTML;
@@ -19,7 +19,8 @@ return [
 
 	'shouldNotShowNoticeWhenNoCapability' => [
 		'config' => [
-			'capability' => false,
+			'capability'     => false,
+			'current_screen' => 'front'
 		],
 		'expected' => [
 			'show_notice' => 0,
