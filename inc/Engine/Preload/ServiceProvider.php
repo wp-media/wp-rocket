@@ -100,7 +100,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_queue_runner )
 			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
-    
+
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
