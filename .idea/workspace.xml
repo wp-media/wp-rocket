@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7ba496a2-cd15-4513-8974-805017e68ae1" name="Changes" comment="Fixed a bug">
+      <change beforePath="$PROJECT_DIR$/tests/Integration/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Integration/.phpunit.result.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/.phpunit.result.cache" afterDir="false" />
+    </list>
+    <list id="64460cfa-6855-475e-bc39-db58baf414eb" name="Remove from the branch 4931 issue commit" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable path="composer" />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/new-preload-big-bang" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/inc/Dependencies/ActionScheduler/classes/ActionScheduler_ActionClaim.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Dependencies/ActionScheduler/classes/ActionScheduler_FatalErrorMonitor.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Dependencies/ActionScheduler/classes/abstracts/ActionScheduler_Abstract_QueueRunner.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Dependencies/ActionScheduler/classes/data-stores/ActionScheduler_DBStore.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Dependencies/Database/Query.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/GoogleFonts/Subscriber.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/RUCSS/Admin/Database.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/RUCSS/Admin/Subscriber.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/RUCSS/Database/Queries/UsedCSS.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/Engine/Preload/ServiceProvider.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/ThirdParty/ReturnTypesTrait.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/inc/classes/admin/class-options-data.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Fixtures/inc/Engine/Optimization/RUCSS/Admin/Subscriber/sanitizeOptions.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/FilesystemTestCase.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/Engine/Cache/Purge/purgeDatesArchives.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/Engine/Media/Lazyload/AdminSubscriber/addOption.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/Engine/Optimization/RUCSS/Admin/Subscriber/clearUsedcssResult.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/functions/getRocketCacheRejectUri.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/Unit/inc/functions/rocketCleanDomain.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/mnsami/composer-custom-directory-installer" />
+      <path value="$PROJECT_DIR$/vendor/mockery/mockery" />
+      <path value="$PROJECT_DIR$/vendor/league/mime-type-detection" />
+      <path value="$PROJECT_DIR$/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-invoker" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/vendor/yoast/wp-test-utils" />
+      <path value="$PROJECT_DIR$/vendor/yoast/phpunit-polyfills" />
+      <path value="$PROJECT_DIR$/vendor/brain/monkey" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/phpcompatibility/phpcompatibility-wp" />
+      <path value="$PROJECT_DIR$/vendor/phpcompatibility/php-compatibility" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/vendor/phpcompatibility/phpcompatibility-paragonie" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/vendor/szepeviktor/phpstan-wordpress" />
+      <path value="$PROJECT_DIR$/vendor/dealerdirect/phpcodesniffer-composer-installer" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/spinupwp" />
+      <path value="$PROJECT_DIR$/vendor/wp-coding-standards/wpcs" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/amp" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/hummingbird-performance" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/wp-smushit" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/simple-custom-css" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/pdf-embedder" />
+      <path value="$PROJECT_DIR$/vendor/wpackagist-plugin/woocommerce" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/vendor/antecedent/patchwork" />
+      <path value="$PROJECT_DIR$/vendor/coenjacobs/mozart" />
+      <path value="$PROJECT_DIR$/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/code-unit" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/vendor/wp-media/phpunit" />
+      <path value="$PROJECT_DIR$/vendor/php-stubs/wordpress-stubs" />
+      <path value="$PROJECT_DIR$/vendor/mikey179/vfsstream" />
+      <path value="$PROJECT_DIR$/vendor/wp-media/wp-imagify-partner" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="/var/www/wp" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="27SdTPjFounXEj0OIO3kVkPt3QQ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Git.Branch.Popup.ShowAllLocals": "false",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/cf0/wp-rocket/tests/Unit/inc/Engine/Preload/Database/Queries/Cache",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "php.override.implement.member.chooser.php.doc": "NONE",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/Unit/inc/Engine/Preload/Database/Queries/Cache" />
+      <recent name="$PROJECT_DIR$/tests/Fixtures/inc/Engine/Preload/Database/Queries/Cache" />
+      <recent name="$PROJECT_DIR$/tests/Unit/inc/Engine/Preload/Cron/Subscriber" />
+      <recent name="$PROJECT_DIR$/inc/Engine/Preload/Controller" />
+      <recent name="$PROJECT_DIR$/tests/Integration/inc/Engine/Optimization/Minify/JS" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/Fixtures/inc/Engine/Preload/Admin/Subscriber" />
+      <recent name="$PROJECT_DIR$/tests/Unit/inc/Engine/Common/Queue/PreloadQueueRunner" />
+      <recent name="$PROJECT_DIR$/tests/Unit/inc/Engine" />
+      <recent name="$PROJECT_DIR$/tests/Integration/inc/Engine" />
+      <recent name="$PROJECT_DIR$/tests/Unit/inc/Engine/Preload/Controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="PHPUnit.Unnamed">
+    <configuration name="phpcs" type="ComposerRunConfigurationType" factoryName="Composer Script" temporary="true">
+      <option name="pathToComposerJson" value="$PROJECT_DIR$/composer.json" />
+      <option name="script" value="phpcs" />
+      <method v="2" />
+    </configuration>
+    <configuration name="phpcs:fix" type="ComposerRunConfigurationType" factoryName="Composer Script" temporary="true">
+      <option name="pathToComposerJson" value="$PROJECT_DIR$/composer.json" />
+      <option name="script" value="phpcs:fix" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run-tests" type="ComposerRunConfigurationType" factoryName="Composer Script" temporary="true">
+      <option name="pathToComposerJson" value="$PROJECT_DIR$/composer.json" />
+      <option name="script" value="run-tests" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Test_RegenerateMinifyCssKey" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="WP_Rocket\Tests\Unit\inc\Engine\Optimization\Minify\JS\AdminSubscriber\Test_RegenerateMinifyCssKey" file="$PROJECT_DIR$/tests/Unit/inc/Engine/Optimization/Minify/JS/AdminSubscriber/regenerateMinifyJsKey.php" scope="Class" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" nameIsGenerated="true">
+      <CommandLine>
+        <PhpTestInterpreterSettings>
+          <option name="interpreterName" value="PHP 7.4" />
+        </PhpTestInterpreterSettings>
+      </CommandLine>
+      <TestRunner configuration_file="$PROJECT_DIR$/tests/Integration/phpunit.xml.dist" scope="XML" options="--exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,DoCloudflare,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <configuration name="phpunit.xml.dist" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <CommandLine>
+        <PhpTestInterpreterSettings>
+          <option name="interpreterName" value="PHP 7.4" />
+        </PhpTestInterpreterSettings>
+      </CommandLine>
+      <TestRunner configuration_file="$PROJECT_DIR$/tests/Unit/phpunit.xml.dist" scope="XML" use_alternative_configuration_file="true" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Composer Script.run-tests" />
+      <item itemvalue="Composer Script.phpcs" />
+      <item itemvalue="Composer Script.phpcs:fix" />
+      <item itemvalue="PHPUnit.Unnamed" />
+      <item itemvalue="PHPUnit.Test_RegenerateMinifyCssKey" />
+      <item itemvalue="PHPUnit.phpunit.xml.dist" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="PHPUnit.phpunit.xml.dist" />
+        <item itemvalue="PHPUnit.Test_RegenerateMinifyCssKey" />
+        <item itemvalue="Composer Script.phpcs:fix" />
+        <item itemvalue="Composer Script.phpcs" />
+        <item itemvalue="Composer Script.run-tests" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7ba496a2-cd15-4513-8974-805017e68ae1" name="Changes" comment="" />
+      <changelist id="64460cfa-6855-475e-bc39-db58baf414eb" name="Remove from the branch 4931 issue commit" comment="" />
+      <created>1649317427505</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1649317427505</updated>
+      <workItem from="1649317429771" duration="5965000" />
+      <workItem from="1649331763960" duration="12157000" />
+      <workItem from="1649402316934" duration="13412000" />
+      <workItem from="1649584228325" duration="109000" />
+      <workItem from="1649661320166" duration="3253000" />
+      <workItem from="1649748389801" duration="31206000" />
+      <workItem from="1649834341670" duration="19563000" />
+      <workItem from="1649920919410" duration="18554000" />
+      <workItem from="1649957001236" duration="606000" />
+      <workItem from="1650008152572" duration="1015000" />
+      <workItem from="1650015161313" duration="7922000" />
+      <workItem from="1650105870551" duration="1258000" />
+      <workItem from="1650352237324" duration="5271000" />
+      <workItem from="1650369116067" duration="4601000" />
+      <workItem from="1650439587040" duration="9044000" />
+      <workItem from="1650526548415" duration="11457000" />
+      <workItem from="1650613121167" duration="31000" />
+      <workItem from="1650618749582" duration="11425000" />
+      <workItem from="1650871494943" duration="12379000" />
+      <workItem from="1650959825041" duration="17476000" />
+      <workItem from="1651045214657" duration="18892000" />
+      <workItem from="1651131709233" duration="1877000" />
+      <workItem from="1651136637250" duration="19280000" />
+      <workItem from="1651171742211" duration="141000" />
+      <workItem from="1651217319040" duration="2668000" />
+      <workItem from="1651225992017" duration="1029000" />
+      <workItem from="1651244510194" duration="626000" />
+      <workItem from="1651401023887" duration="573000" />
+      <workItem from="1651476536475" duration="16167000" />
+      <workItem from="1651565824696" duration="17372000" />
+      <workItem from="1651650777970" duration="19794000" />
+      <workItem from="1651736150638" duration="2952000" />
+      <workItem from="1651822339234" duration="23416000" />
+      <workItem from="1651920379150" duration="69000" />
+      <workItem from="1652085430556" duration="6062000" />
+      <workItem from="1652099109550" duration="10081000" />
+      <workItem from="1652168764529" duration="23399000" />
+      <workItem from="1652254777901" duration="22972000" />
+      <workItem from="1652294200752" duration="125000" />
+      <workItem from="1652341817199" duration="22022000" />
+      <workItem from="1652428108867" duration="3095000" />
+      <workItem from="1652431218195" duration="23081000" />
+      <workItem from="1652529216775" duration="9000" />
+      <workItem from="1652686594323" duration="23708000" />
+      <workItem from="1652773651921" duration="23821000" />
+      <workItem from="1652858670228" duration="23861000" />
+      <workItem from="1652946324847" duration="13242000" />
+      <workItem from="1653132713981" duration="10209000" />
+      <workItem from="1653209355990" duration="12441000" />
+      <workItem from="1653290126889" duration="9052000" />
+      <workItem from="1653308680715" duration="7448000" />
+      <workItem from="1653378014055" duration="9959000" />
+      <workItem from="1653464820993" duration="19231000" />
+      <workItem from="1653636425817" duration="11135000" />
+      <workItem from="1653894347754" duration="10606000" />
+      <workItem from="1653981843884" duration="11254000" />
+      <workItem from="1654012109248" duration="325000" />
+      <workItem from="1654068137747" duration="18216000" />
+      <workItem from="1654154689060" duration="11978000" />
+      <workItem from="1654171497648" duration="73000" />
+      <workItem from="1654171573715" duration="16992000" />
+      <workItem from="1654273965849" duration="3491000" />
+      <workItem from="1654334251979" duration="804000" />
+      <workItem from="1654499753426" duration="29040000" />
+    </task>
+    <task id="LOCAL-00109" summary="Fixed code standards">
+      <created>1652688460180</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1652688460180</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Added query to db on creating preload url task">
+      <created>1652694990316</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1652694990316</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Added fix due to table bugs">
+      <created>1652695685885</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1652695685885</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Added Preload controller and QueueRunner">
+      <created>1652973940864</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1652973940865</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Added add QueueRunner tests">
+      <created>1652975418431</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1652975418431</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Added last unit and integration tests">
+      <created>1653291120513</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1653291120514</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Fixed code standards">
+      <created>1653293295179</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1653293295179</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Added missing code from integration test">
+      <created>1653293392720</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1653293392720</updated>
+    </task>
+    <task id="LOCAL-00117" summary="Added missing code from integration test">
+      <created>1653295565448</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1653295565448</updated>
+    </task>
+    <task id="LOCAL-00118" summary="Fixed CR">
+      <created>1653299370544</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1653299370544</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Fixed CR">
+      <created>1653299383275</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1653299383275</updated>
+    </task>
+    <task id="LOCAL-00120" summary="Added new controller to clean urls">
+      <created>1653385881371</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1653385881373</updated>
+    </task>
+    <task id="LOCAL-00121" summary="Added new hooks on clean cache and its tests">
+      <created>1653480147157</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1653480147158</updated>
+    </task>
+    <task id="LOCAL-00122" summary="Fixed CR">
+      <created>1653482681936</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1653482681937</updated>
+    </task>
+    <task id="LOCAL-00123" summary="Fixed CR">
+      <created>1653483248046</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1653483248046</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Fixed CR">
+      <created>1653484472631</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1653484472631</updated>
+    </task>
+    <task id="LOCAL-00125" summary="Fixed code standards">
+      <created>1653485269978</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1653485269980</updated>
+    </task>
+    <task id="LOCAL-00126" summary="Added a call to `login_url` filter to exclude custom login url">
+      <created>1653488724018</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1653488724018</updated>
+    </task>
+    <task id="LOCAL-00127" summary="Added new fix for v1 google font">
+      <created>1653640489249</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1653640489250</updated>
+    </task>
+    <task id="LOCAL-00128" summary="Added services for berlinDB">
+      <created>1653895197746</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1653895197747</updated>
+    </task>
+    <task id="LOCAL-00129" summary="Fixed query to delete old cache">
+      <created>1653898102531</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1653898102531</updated>
+    </task>
+    <task id="LOCAL-00130" summary="Fixed a bug on the service provider mapping">
+      <created>1653898819859</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1653898819859</updated>
+    </task>
+    <task id="LOCAL-00131" summary="Fixed a problem with the new value from the option `manual_preload`">
+      <created>1653902519925</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1653902519925</updated>
+    </task>
+    <task id="LOCAL-00132" summary="Fixed a problem with cache schema">
+      <created>1653908304597</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1653908304597</updated>
+    </task>
+    <task id="LOCAL-00133" summary="Fixed a problem with duplication of urls">
+      <created>1653986797960</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1653986797960</updated>
+    </task>
+    <task id="LOCAL-00134" summary="Fixed a problem with updating old statuses">
+      <created>1653990656963</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1653990656963</updated>
+    </task>
+    <task id="LOCAL-00135" summary="Added the new task to check the end of the process">
+      <created>1654011754609</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1654011754610</updated>
+    </task>
+    <task id="LOCAL-00136" summary="Fixed the queue runner">
+      <created>1654071901763</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1654071901764</updated>
+    </task>
+    <task id="LOCAL-00137" summary="Added a filter to add custom urls with a filter">
+      <created>1654074894191</created>
+      <option name="number" value="00137" />
+      <option name="presentableId" value="LOCAL-00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1654074894191</updated>
+    </task>
+    <task id="LOCAL-00138" summary="Added cron jobs">
+      <created>1654164042992</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1654164042992</updated>
+    </task>
+    <task id="LOCAL-00139" summary="Removed idea">
+      <created>1654171639351</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1654171639351</updated>
+    </task>
+    <task id="LOCAL-00140" summary="Added cancel action">
+      <created>1654172306583</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1654172306583</updated>
+    </task>
+    <task id="LOCAL-00141" summary="Changed the condition to check end of the process">
+      <created>1654173049407</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1654173049407</updated>
+    </task>
+    <task id="LOCAL-00142" summary="Removed a cache file">
+      <created>1654173330474</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1654173330474</updated>
+    </task>
+    <task id="LOCAL-00143" summary="Added tests for `check_finished`">
+      <created>1654178785071</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1654178785071</updated>
+    </task>
+    <task id="LOCAL-00144" summary="Fixed code standards">
+      <created>1654179174699</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1654179174699</updated>
+    </task>
+    <task id="LOCAL-00145" summary="Fixed problem with query">
+      <created>1654179255538</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1654179255538</updated>
+    </task>
+    <task id="LOCAL-00146" summary="Fixed code standards">
+      <created>1654183607835</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1654183607835</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Fixed code standards">
+      <created>1654183775623</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1654183775623</updated>
+    </task>
+    <task id="LOCAL-00148" summary="Added check on cache before preloading">
+      <created>1654190954756</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1654190954756</updated>
+    </task>
+    <task id="LOCAL-00149" summary="Fixed tests">
+      <created>1654191313911</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1654191313911</updated>
+    </task>
+    <task id="LOCAL-00150" summary="Fixed CR">
+      <created>1654277105289</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1654277105290</updated>
+    </task>
+    <task id="LOCAL-00151" summary="Fixed code standards">
+      <created>1654277194740</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1654277194740</updated>
+    </task>
+    <task id="LOCAL-00152" summary="Fixed integrations tests">
+      <created>1654505220539</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1654505220540</updated>
+    </task>
+    <task id="LOCAL-00153" summary="Fixed code standards">
+      <created>1654505392467</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1654505392467</updated>
+    </task>
+    <task id="LOCAL-00154" summary="Fixed code standards">
+      <created>1654506555112</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1654506555112</updated>
+    </task>
+    <task id="LOCAL-00155" summary="Removed old classes">
+      <created>1654507889984</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1654507889984</updated>
+    </task>
+    <task id="LOCAL-00156" summary="Added user trailing slash">
+      <created>1654521914007</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1654521914007</updated>
+    </task>
+    <task id="LOCAL-00157" summary="Fixed a bug">
+      <created>1654535554168</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1654535554168</updated>
+    </task>
+    <option name="localTasksCounter" value="158" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="feature/4932-create-cron-and-scheduled-actions" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added services for berlinDB" />
+    <MESSAGE value="Fixed query to delete old cache" />
+    <MESSAGE value="Fixed a bug on the service provider mapping" />
+    <MESSAGE value="Fixed a problem with the new value from the option `manual_preload`" />
+    <MESSAGE value="Fixed a problem with cache schema" />
+    <MESSAGE value="Fixed a problem with duplication of urls" />
+    <MESSAGE value="Fixed a problem with updating old statuses" />
+    <MESSAGE value="Added the new task to check the end of the process" />
+    <MESSAGE value="Fixed the queue runner" />
+    <MESSAGE value="Added a filter to add custom urls with a filter" />
+    <MESSAGE value="Added cron jobs" />
+    <MESSAGE value="Removed idea" />
+    <MESSAGE value="Added cancel action" />
+    <MESSAGE value="Changed the condition to check end of the process" />
+    <MESSAGE value="Removed a cache file" />
+    <MESSAGE value="Added tests for `check_finished`" />
+    <MESSAGE value="Fixed problem with query" />
+    <MESSAGE value="Added check on cache before preloading" />
+    <MESSAGE value="Fixed tests" />
+    <MESSAGE value="Fixed CR" />
+    <MESSAGE value="Fixed integrations tests" />
+    <MESSAGE value="Fixed code standards" />
+    <MESSAGE value="Removed old classes" />
+    <MESSAGE value="Added user trailing slash" />
+    <MESSAGE value="Fixed a bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed a bug" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/tests/Integration/inc/Engine/Preload/Admin/Subscriber/maybeDisplayPreloadNotice.php</url>
+          <line>51</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/tests/Unit/inc/Engine/Common/Queue/PreloadQueueRunner/run.php</url>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/wp_rocket@Unnamed.xml" NAME="Unnamed Coverage Results" MODIFIED="1649663586169" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/wp_rocket@phpunit_xml_dist.xml" NAME="phpunit.xml.dist Coverage Results" MODIFIED="1651837428086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="PhpCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

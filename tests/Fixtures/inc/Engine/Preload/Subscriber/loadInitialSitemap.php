@@ -70,7 +70,7 @@ return [
 		'expected' => [
 			'exist' => true,
 			'sitemaps' => [
-				'http://example.org/?sitemap=index'
+				'http://example.org/wp-sitemap.xml'
 			]
 		]
 	]
