@@ -23,14 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'full_preload_process',
-		'partial_preload_process',
-		'homepage_preload',
-		'preload_admin_subscriber',
-		'sitemap_preload',
 		'preload_subscriber',
-		'sitemap_preload_subscriber',
-		'partial_preload_subscriber',
 		'preload_front_subscriber',
 		'fonts_preload_subscriber',
 		'preload_caches_table',
@@ -107,6 +100,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_queue_runner )
 			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
+    
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
@@ -117,11 +111,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
 			->addTag( 'common_subscriber' );
-
-		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
-		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
-			->addArgument( $full_preload_process );
-		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
-			->addArgument( $full_preload_process );
 	}
 }
