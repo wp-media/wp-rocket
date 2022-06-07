@@ -31,9 +31,8 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-		$transient = get_transient( 'wpr_preload_running' );
 
-		if ( false === $transient ) {
+		if ( false === get_transient( 'wpr_preload_running' ) ) {
 			return;
 		}
 
@@ -72,15 +71,11 @@ class Settings {
 			return false;
 		}
 
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
-		return true;
+		return $this->is_enabled();
 	}
 
 	/**
-	 * Determines if Preload sitemap option is enabled.
+	 * Determines if Preload option is enabled.
 	 *
 	 * @return boolean
 	 */

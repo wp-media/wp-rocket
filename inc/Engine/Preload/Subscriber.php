@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -36,7 +36,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Array of events this subscriber listens to
+	 * Return an array of events that this subscriber listens to.
 	 *
 	 * @return array
 	 */

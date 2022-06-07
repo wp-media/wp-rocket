@@ -20,13 +20,13 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->settings = new Settings($this->options);
+		$this->stubTranslationFunctions();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\when('__')->returnArg(1);
 		Functions\expect('get_current_screen')->with()->andReturn($config['screen']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['has_right']);
 		$this->configureEnabled($config);

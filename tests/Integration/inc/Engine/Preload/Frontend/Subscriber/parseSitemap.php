@@ -15,16 +15,24 @@ class Test_ParseSitemap extends AdminTestCase {
 
 	use ASTrait;
 
+	protected $config;
 
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
 		self::installFresh();
-
+		$container             = apply_filters( 'rocket_container', null );
+		$cache_table   = $container->get( 'preload_caches_table' );
+		$cache_table->install();
 	}
 
 	public static function tear_down_after_class()
 	{
+		$container             = apply_filters( 'rocket_container', null );
+		$cache_table   = $container->get( 'preload_caches_table' );
+		if ( $cache_table->exists() ) {
+			$cache_table->uninstall();
+		}
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
@@ -34,7 +42,9 @@ class Test_ParseSitemap extends AdminTestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 
-		$this->configureRequest($config);
+		$this->config = $config;
+
+		add_filter('pre_http_request', [$this, 'requestResult']);
 
 		do_action('rocket_preload_job_parse_sitemap', $config['sitemap_url']);
 
@@ -43,30 +53,17 @@ class Test_ParseSitemap extends AdminTestCase {
 		}
 
 		foreach ($expected['links'] as $link) {
-			$this->assertEquals($expected['children_exists'], self::cacheFound(['url' => $link]));
+			$exists = $expected['links_exists'] ? "" :"n't";
+			$this->assertEquals($expected['links_exists'], self::cacheFound(['url' => $link]), "Link {$link} should$exists exist");
 		}
 	}
 
-	protected function configureRequest($config) {
-		if ( ! isset( $config['process_generate'] ) ) {
-			return;
-		}
-
-		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with(
-					$config['sitemap_url']
-				)
-				->andReturn( new WP_Error( 'error', 'error_data' ) );
+	public function requestResult() {
+		if ( ! empty( $this->config['process_generate']['is_wp_error'] ) ) {
+			return new WP_Error( 'error', 'error_data' );
 		} else {
-			$message = $config['process_generate']['response'];
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with(
-					$config['sitemap_url']
-				)
-				->andReturn( [ 'body' => $message, 'response' => ['code' => 200 ]] );
+			$message = $this->config['process_generate']['response'];
+			return [ 'body' => $message, 'response' => ['code' => 200 ]];
 		}
 	}
 
