@@ -68,11 +68,14 @@ trait DBTrait {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_resources_table = $container->get( 'rucss_resources_table' );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$preload_table         = $container->get( 'preload_caches_table' );
 
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_resources_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_resources_table ), 'switch_blog', 10);
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);
+		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10);
+		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10);
 	}
 
 	public static function forceRemoveTableAdminInitHooks( $hook_name = '', $class_name = '', $method_name = '', $priority = 0 ) {

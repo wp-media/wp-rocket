@@ -38,6 +38,8 @@ function load_original_files_before_mocking() {
 		'/WP_Theme.php',
 		'/WPDieException.php',
 		'/WP_Sitemaps_Index.php',
+		'/Kinsta_Cache.php',
+		'/WP_Rewrite.php',
 	];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;

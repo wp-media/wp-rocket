@@ -2,23 +2,23 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class ClearCache {
 
 	/**
 	 * DB query.
 	 *
-	 * @var RocketCache
+	 * @var Cache
 	 */
 	protected $query;
 
 	/**
 	 * Initialise ClearCache.
 	 *
-	 * @param RocketCache $query DB query.
+	 * @param Cache $query DB query.
 	 */
-	public function __construct( RocketCache $query ) {
+	public function __construct( Cache $query ) {
 		$this->query = $query;
 	}
 
