@@ -53,7 +53,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
 		$this->getContainer()->get( 'preload_caches_table' );
 		// Subscribers.
-		$options = $this->getContainer()->get( 'options' );
+		$options     = $this->getContainer()->get( 'options' );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
 		$queue = $this->getContainer()->get( 'preload_queue' );

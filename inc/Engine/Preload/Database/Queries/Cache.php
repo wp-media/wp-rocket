@@ -88,7 +88,7 @@ class Cache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => untrailingslashit( $resource['url'] ),
-					'status'        => key_exists('status', $resource) ? $resource['status'] : 'pending',
+					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);

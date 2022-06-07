@@ -16,23 +16,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	protected $controller;
 
-  	/**
+	/**
 	 * Cache query instance
 	 *
 	 * @var Cache
 	 */
 	private $query;
 
-  
+
 	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param LoadInitialSitemap $controller controller creating the initial task.
-   * @param Cache $query Cache query instance.
+	 * @param Cache              $query Cache query instance.
 	 */
 	public function __construct( LoadInitialSitemap $controller, $query ) {
 		$this->controller = $controller;
-    $this->query = $query;
+		$this->query      = $query;
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_load_initial_sitemap', 10, 2 ],
-			'rocket_after_process_buffer' => 'update_cache_row',
+			'rocket_after_process_buffer'     => 'update_cache_row',
 		];
 	}
 
@@ -68,9 +68,9 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->controller->load_initial_sitemap();
-  }
-  
-   /**
+	}
+
+	/**
 	 * Create or update the cache row after processing the buffer
 	 *
 	 * @return void

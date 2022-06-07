@@ -42,7 +42,7 @@ class PreloadUrl {
 	 *
 	 * @param Options_Data         $options configuration options.
 	 * @param Queue                $queue preload queue.
-	 * @param Cache          $rocket_cache preload database query.
+	 * @param Cache                $rocket_cache preload database query.
 	 * @param WP_Filesystem_Direct $filesystem Filesystem.
 	 */
 	public function __construct( Options_Data $options, Queue $queue, Cache $rocket_cache, WP_Filesystem_Direct $filesystem ) {

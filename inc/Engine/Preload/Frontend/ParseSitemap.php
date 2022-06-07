@@ -33,7 +33,7 @@ class ParseSitemap {
 	 *
 	 * @param SitemapParser $sitemap_parser Parse controller.
 	 * @param Queue         $queue Queue instance.
-	 * @param Cache   $rocket_cache DB query.
+	 * @param Cache         $rocket_cache DB query.
 	 */
 	public function __construct( SitemapParser $sitemap_parser, Queue $queue, Cache $rocket_cache ) {
 		$this->sitemap_parser = $sitemap_parser;
