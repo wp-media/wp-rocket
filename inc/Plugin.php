@@ -180,6 +180,7 @@ class Plugin {
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
 			'preload_admin_subscriber',
+			'minify_admin_subscriber',
 		];
 	}
 
