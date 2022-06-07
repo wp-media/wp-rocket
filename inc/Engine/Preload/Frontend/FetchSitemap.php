@@ -54,7 +54,7 @@ class FetchSitemap {
 
 		$data = wp_remote_retrieve_body( $response );
 
-		if(! $data) {
+		if ( ! $data ) {
 			return;
 		}
 
