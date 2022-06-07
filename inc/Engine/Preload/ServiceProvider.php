@@ -135,7 +135,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );
-
-
 	}
 }
