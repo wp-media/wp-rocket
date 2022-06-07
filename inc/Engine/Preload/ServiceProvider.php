@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'full_preload_process',
 		'partial_preload_process',
 		'homepage_preload',
+		'preload_admin_subscriber',
 		'sitemap_preload',
 		'preload_subscriber',
 		'sitemap_preload_subscriber',
