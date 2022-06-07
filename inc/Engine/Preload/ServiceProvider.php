@@ -47,12 +47,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options );
 		$preload_settings = $this->getContainer()->get( 'preload_settings' );
 
-
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\Cache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
 		$this->getContainer()->get( 'preload_caches_table' );
-
-
 
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
@@ -74,17 +71,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
 			->addArgument( $queue );
-		$this->getContainer()->add( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
+		$this->getContainer()->share( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $parse_sitemap_controller )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->add( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
+		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->getContainer()->get( 'preload_caches_query' ) )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
+		$this->getContainer()->share( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
 			->addArgument( $preload_settings )
 			->addTag( 'common_subscriber' );
-
 
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
