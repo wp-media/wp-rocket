@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Engine\Preload\Frontend;
 
-use WP_Rocket\Engine\Preload\Controller\CheckFinished;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {

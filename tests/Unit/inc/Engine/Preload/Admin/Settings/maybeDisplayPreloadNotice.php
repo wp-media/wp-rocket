@@ -20,7 +20,7 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\when('__')->returnArg(1);
+		$this->stubTranslationFunctions();
 		Functions\expect('get_current_screen')->with()->andReturn($config['screen']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['has_right']);
 		$this->configureEnabled($config);
