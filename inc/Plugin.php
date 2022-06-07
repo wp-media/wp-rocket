@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'preload_admin_subscriber',
 			'minify_admin_subscriber',
 		];
 	}
@@ -272,6 +273,8 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
+			'preload_subscriber',
+			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',

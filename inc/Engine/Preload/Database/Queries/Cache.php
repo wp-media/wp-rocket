@@ -88,7 +88,7 @@ class Cache extends Query {
 			$resource_id = $this->add_item(
 				[
 					'url'           => untrailingslashit( $resource['url'] ),
-					'status'        => $resource['status'],
+					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -141,7 +141,7 @@ class Cache extends Query {
 		$resource_id = $this->add_item(
 			[
 				'url'           => untrailingslashit( $resource['url'] ),
-				'status'        => $resource['status'],
+				'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
@@ -228,5 +228,20 @@ class Cache extends Query {
 		foreach ( $rows as $row ) {
 			$this->delete_item( $row->id );
 		}
+	}
+
+	/**
+	 * Check if pending jobs are remaining.
+	 *
+	 * @return bool
+	 */
+	public function has_pending_jobs() {
+		$pending_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'pending',
+			]
+		);
+		return 0 !== $pending_count;
 	}
 }
