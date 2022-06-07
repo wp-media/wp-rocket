@@ -42,12 +42,12 @@ class Test_CleanPartialCache extends AdminTestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
+
 		$this->manual_preload = $config['manual_preload'];
 		foreach ($config['data'] as $cache) {
 			self::addCache($cache);
 		}
 		do_action($config['hook'], $config['object'], $config['urls'], $config['lang']);
-
 		foreach ($expected['data'] as $cache) {
 			$this->assertTrue(self::cacheFound($cache));
 		}

@@ -51,7 +51,7 @@ class ClearCache {
 		foreach ( $urls as $url ) {
 			$this->query->create_or_update(
 				[
-					'url'    => $url,
+					'url'    => $url->url,
 					'status' => 'pending',
 				]
 				);

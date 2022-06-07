@@ -3,8 +3,8 @@ return [
 	'testAddUrls' => [
 		'config' => [
 			'urls' => [
-				'url',
-				'url1',
+				(object) ['url' => 'url'],
+				(object) ['url' => 'url1'],
 			]
 		],
 		'expected' => [

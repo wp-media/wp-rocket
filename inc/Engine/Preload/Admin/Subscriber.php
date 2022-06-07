@@ -73,6 +73,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_full_cache() {
+		if ( ! $this->options->get( 'manual_preload' ) ) {
+			return;
+		}
+
 		$this->controller->full_clean();
 	}
 

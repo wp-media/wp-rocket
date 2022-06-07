@@ -14,12 +14,10 @@ return [
 				[
 					'url' => 'https://example.org/url',
 					'status' => 'completed',
-					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
+					'url' => 'http://example.org',
 					'status' => 'completed',
-					'is_mobile' => false,
 				],
 			],
 			'lang' => 'en'
@@ -30,17 +28,14 @@ return [
 				[
 					'url' => 'https://example.org/url',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 				[
 					'url' => 'https://example.org/url1',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
+					'url' => 'http://example.org',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 			],
 		]
@@ -58,12 +53,10 @@ return [
 				[
 					'url' => 'https://example.org/url',
 					'status' => 'completed',
-					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
+					'url' => 'http://example.org',
 					'status' => 'completed',
-					'is_mobile' => false,
 				],
 			],
 			'lang' => 'en'
@@ -74,17 +67,14 @@ return [
 				[
 					'url' => 'https://example.org/url',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 				[
 					'url' => 'https://example.org/url1',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
+					'url' => 'http://example.org',
 					'status' => 'pending',
-					'is_mobile' => false,
 				],
 			],
 		]

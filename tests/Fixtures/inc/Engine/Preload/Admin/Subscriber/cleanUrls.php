@@ -14,7 +14,7 @@ return [
 					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
+					'url' => 'http://example.org',
 					'status' => 'completed',
 					'is_mobile' => false,
 				],
@@ -34,8 +34,8 @@ return [
 					'is_mobile' => false,
 				],
 				[
-					'url' => 'https://example.org',
-					'status' => 'pending',
+					'url' => 'http://example.org',
+					'status' => 'completed',
 					'is_mobile' => false,
 				],
 			],
