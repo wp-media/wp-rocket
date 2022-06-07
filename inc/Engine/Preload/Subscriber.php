@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
@@ -14,15 +15,33 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	protected $controller;
 
+  	/**
+	 * Cache query instance
+	 *
+	 * @var Cache
+	 */
+	private $query;
+
 	/**
-	 * Return an array of events that this subscriber wants to listen to.
+	 * Instantiate the class
+	 * 
+   * @param LoadInitialSitemap $controller Controller to load initial tasks.
+	 * @param Cache $query Cache query instance.
+	 */
+	public function __construct( LoadInitialSitemap $controller, $query ) {
+    $this->controller = $controller;
+		$this->query = $query;
+	}
+
+	/**
+	 * Array of events this subscriber listens to
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
 			'update_option_' . WP_ROCKET_SLUG => [ 'load_initial_sitemap', 10, 2 ],
-
+			'rocket_after_process_buffer' => 'update_cache_row',
 		];
 	}
 
@@ -33,5 +52,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function load_initial_sitemap() {
 		$this->controller->load_initial_sitemap();
+  }
+  
+   /**
+	 * Create or update the cache row after processing the buffer
+	 *
+	 * @return void
+	 */
+	public function update_cache_row() {
+		global $wp;
+
+		$url = home_url( add_query_arg( [], $wp->request ) );
+
+		$this->query->create_or_update(
+			[
+				'url'    => $url,
+				'status' => 'completed',
+			]
+		);
 	}
 }
