@@ -16,13 +16,13 @@ class Test_MaybeDisplayPreloadNotice extends AdminTestCase {
 	public function setUp(): void
 	{
 		parent::setUp();
-		add_filter('pre_get_rocket_option_sitemap_preload', [$this, 'get_sitemap_preload']);
+		add_filter('pre_get_rocket_option_manual_preload', [$this, 'get_sitemap_preload']);
 	}
 
 	public function tearDown(): void
 	{
+		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'get_sitemap_preload']);
 		parent::tearDown();
-		remove_filter('pre_get_rocket_option_sitemap_preload', [$this, 'get_sitemap_preload']);
 	}
 
 	/**
@@ -36,15 +36,15 @@ class Test_MaybeDisplayPreloadNotice extends AdminTestCase {
 		}
 		set_current_screen( $config['screen'] );
 		if(key_exists('transient', $config)) {
-			set_transient('rocket_rucss_processing', true);
+			set_transient('wpr_preload_running', true);
 		}
 		ob_start();
 		do_action('admin_notices');
-		$content = ob_get_flush();
+		$content = ob_get_clean();
 		if($expected['should_contain']) {
-			$this->assertContains($this->format_the_html($expected['html']), $this->format_the_html($content));
+			$this->assertStringContainsString($this->format_the_html($expected['html']), $this->format_the_html($content));
 		} else {
-			$this->assertNotContains($this->format_the_html($expected['html']), $this->format_the_html($content));
+			$this->assertStringNotContainsString($this->format_the_html($expected['html']), $this->format_the_html($content));
 		}
 	}
 

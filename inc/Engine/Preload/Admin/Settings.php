@@ -31,7 +31,7 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-		$transient = get_transient( 'rocket_rucss_processing' );
+		$transient = get_transient( 'wpr_preload_running' );
 
 		if ( false === $transient ) {
 			return;
