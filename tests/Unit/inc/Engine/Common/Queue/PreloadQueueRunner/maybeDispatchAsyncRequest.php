@@ -40,7 +40,8 @@ class Test_MaybeDispatchAsyncRequest extends TestCase
 			$this->async_request,
 			$this->compatibility,
 			$this->logger,
-			$this->locker,);
+			$this->locker
+		);
 	}
 
 	/**

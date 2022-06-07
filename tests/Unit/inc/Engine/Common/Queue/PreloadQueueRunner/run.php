@@ -41,7 +41,7 @@ class Test_Run extends TestCase
 			$this->async_request,
 			$this->compatibility,
 			$this->logger,
-			$this->locker,
+			$this->locker
 		]);
 	}
 
