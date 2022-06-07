@@ -142,4 +142,15 @@ class DynamicLists extends Abstract_Render {
 
 		echo $this->generate( 'settings/dynamic-lists-update' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Get the cached ignored parameters
+	 *
+	 * @return array
+	 */
+	public function get_cache_ignored_parameters(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->cache_ignored_parameters ) ? array_flip( $lists->cache_ignored_parameters ) : [];
+	}
 }

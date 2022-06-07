@@ -29,12 +29,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'                 => 'register_rest_route',
-			'rocket_localize_admin_script'  => [ 'add_dynamic_lists_script', 11 ],
-			'init'                          => 'schedule_lists_update',
-			'rocket_update_dynamic_lists'   => 'update_lists',
-			'rocket_deactivation'           => 'clear_schedule_lists_update',
-			'rocket_settings_tools_content' => 'display_update_lists_section',
+			'rest_api_init'                   => 'register_rest_route',
+			'rocket_localize_admin_script'    => [ 'add_dynamic_lists_script', 11 ],
+			'init'                            => 'schedule_lists_update',
+			'rocket_update_dynamic_lists'     => 'update_lists',
+			'rocket_deactivation'             => 'clear_schedule_lists_update',
+			'rocket_settings_tools_content'   => 'display_update_lists_section',
+			'rocket_cache_ignored_parameters' => 'get_cache_ignored_parameters',
 		];
 	}
 
@@ -92,5 +93,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_update_lists_section() {
 		$this->dynamic_lists->display_update_lists_section();
+	}
+
+	/**
+	 * Get the cached ignored parameters
+	 *
+	 * @return array
+	 */
+	public function get_cache_ignored_parameters(): array {
+		return $this->dynamic_lists->get_cache_ignored_parameters();
 	}
 }
