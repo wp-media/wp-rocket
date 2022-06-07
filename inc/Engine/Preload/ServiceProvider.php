@@ -23,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'preload_admin_subscriber',
 		'preload_subscriber',
 		'preload_front_subscriber',
 		'fonts_preload_subscriber',
