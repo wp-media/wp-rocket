@@ -29,7 +29,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'url',
-			'status' => 'completed',
+			'status' => 'pending',
 		]
 	],
 	'preloadNoMobileShouldPreloadOnlyOnce' => [
@@ -43,7 +43,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'url',
-			'status' => 'completed',
+			'status' => 'pending',
 		]
 	],
 	'preloadWithSuccessShouldContinue' => [
@@ -75,7 +75,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'url',
-			'status' => 'completed',
+			'status' => 'pending',
 		]
 	]
 ];

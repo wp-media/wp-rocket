@@ -81,7 +81,6 @@ class PreloadUrl {
 				]
 				);
 		}
-		$this->query->make_status_complete( $url );
 	}
 
 	/**
