@@ -168,7 +168,7 @@ class Purge {
 		foreach ( $urls as $url ) {
 			$this->purge_url( $url );
 		}
-		do_action('after_rocket_clean_terms', $urls);
+		do_action( 'after_rocket_clean_terms', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	/**

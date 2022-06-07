@@ -53,7 +53,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                          => [ 'maybe_display_preload_notice' ],
 			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'                => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_terms'                => [ 'clean_urls', 10, 3 ],
+			'after_rocket_clean_terms'               => [ 'clean_urls', 10, 3 ],
 			'rocket_after_preload_after_purge_cache' => [ 'clean_full_cache', 10, 3 ],
 		];
 	}
@@ -102,7 +102,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $urls urls.
 	 * @return void
 	 */
-	public function clean_urls(array $urls) {
+	public function clean_urls( array $urls ) {
 		$this->controller->partial_clean( $urls );
 	}
 }
