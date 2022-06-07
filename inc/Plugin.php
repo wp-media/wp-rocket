@@ -277,7 +277,7 @@ class Plugin {
 			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
-			'preload_front_subscriber',
+			'preload_cron_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
@@ -296,7 +296,6 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
-			'cron_subscriber',
 			'unlimited_elements',
 			'inline_related_posts',
 		];
