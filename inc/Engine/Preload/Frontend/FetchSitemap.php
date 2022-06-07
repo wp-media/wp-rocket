@@ -54,6 +54,10 @@ class FetchSitemap {
 
 		$data = wp_remote_retrieve_body( $response );
 
+		if(! $data) {
+			return;
+		}
+
 		$this->sitemap_parser->set_content( $data );
 		$links = $this->sitemap_parser->get_links();
 
