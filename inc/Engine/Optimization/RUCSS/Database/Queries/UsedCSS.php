@@ -332,24 +332,4 @@ class UsedCSS extends Query {
 		);
 	}
 
-	/**
-	 * Remove all completed rows one by one.
-	 *
-	 * @return void
-	 */
-	public function remove_all_completed_rows() {
-		$rows = $this->query(
-			[
-				'status__in' => [ 'failed', 'completed' ],
-				'fields'     => [
-					'id',
-				],
-			]
-		);
-
-		foreach ( $rows as $row ) {
-			$this->delete_item( $row->id );
-		}
-	}
-
 }

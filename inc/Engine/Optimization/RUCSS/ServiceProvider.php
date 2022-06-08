@@ -31,6 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_resources_query',
 		'rucss_queue',
 		'rucss_filesystem',
+		'rucss_cron_subscriber',
 	];
 
 	/**
@@ -72,5 +73,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
 		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
+		$this->getContainer()->share( 'rucss_cron_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber' )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_database' ) );
 	}
 }
