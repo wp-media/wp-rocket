@@ -444,7 +444,7 @@ class UsedCSS {
 		 *
 		 * @since 3.11.4
 		 *
-		 * @param bool  $home_url home url.
+		 * @param string  $home_url home url.
 		 * @param string  $url url of current page.
 		 */
 		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
