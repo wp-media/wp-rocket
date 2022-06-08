@@ -8,11 +8,11 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Controller parsing the sitemap.
+	 * Controller fetching the sitemap.
 	 *
 	 * @var FetchSitemap
 	 */
-	protected $parse_sitemap;
+	protected $fetch_sitemap;
 
 	/**
 	 * Controller preloading urls.
@@ -24,11 +24,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param FetchSitemap $parse_sitemap controller parsing the sitemap.
+	 * @param FetchSitemap $fetch_sitemap controller fetching the sitemap.
 	 * @param PreloadUrl   $preload_controller controller preloading urls.
 	 */
-	public function __construct( FetchSitemap $parse_sitemap, PreloadUrl $preload_controller ) {
-		$this->parse_sitemap      = $parse_sitemap;
+	public function __construct( FetchSitemap $fetch_sitemap, PreloadUrl $preload_controller ) {
+		$this->fetch_sitemap      = $fetch_sitemap;
 		$this->preload_controller = $preload_controller;
 	}
 
@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function parse_sitemap( string $url ) {
-		$this->parse_sitemap->parse_sitemap( $url );
+		$this->fetch_sitemap->parse_sitemap( $url );
 	}
 
 	/**

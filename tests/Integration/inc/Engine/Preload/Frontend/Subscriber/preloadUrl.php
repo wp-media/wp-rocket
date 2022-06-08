@@ -65,7 +65,7 @@ class Test_PreloadUrl extends AdminTestCase
 		}
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['url'] . '/',
@@ -74,7 +74,7 @@ class Test_PreloadUrl extends AdminTestCase
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
 		} else {
 			$message = $config['process_generate']['response'];
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['url'] . '/',
@@ -90,7 +90,7 @@ class Test_PreloadUrl extends AdminTestCase
 		}
 
 		if ( ! empty( $config['process_mobile_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['url'] . '/',
@@ -99,7 +99,7 @@ class Test_PreloadUrl extends AdminTestCase
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
 		} else {
 			$message = $config['process_mobile_generate']['response'];
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['url'] . '/',

@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Filesystem_Direct;
 
 class PreloadUrl {
@@ -64,7 +63,7 @@ class PreloadUrl {
 			return;
 		}
 
-		wp_remote_get(
+		wp_safe_remote_get(
 			user_trailingslashit( $url ),
 			[
 				'blocking' => false,
@@ -72,7 +71,7 @@ class PreloadUrl {
 			]
 			);
 		if ( $this->options->get( 'cache_mobile', false ) ) {
-			wp_remote_get(
+			wp_safe_remote_get(
 				user_trailingslashit( $url ),
 				[
 					'blocking'   => false,
@@ -88,7 +87,7 @@ class PreloadUrl {
 	 *
 	 * @return string
 	 */
-	public function get_mobile_user_agent_prefix() {
+	protected function get_mobile_user_agent_prefix() {
 		$prefix = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 		/**
@@ -129,7 +128,7 @@ class PreloadUrl {
 		static $https;
 
 		if ( ! isset( $https ) ) {
-			$https = is_ssl() && get_rocket_option( 'cache_ssl' ) ? '-https' : '';
+			$https = is_ssl() && $this->options->get( 'cache_ssl' ) ? '-https' : '';
 		}
 
 		$url = get_rocket_parse_url( $url );
@@ -145,8 +144,7 @@ class PreloadUrl {
 			$url['query'] = '#' . $url['query'] . '/';
 		}
 
-		$mobile          = '';
-		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
+		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $https . '.html';
 
 		return $this->filesystem->exists( $file_cache_path );
 	}

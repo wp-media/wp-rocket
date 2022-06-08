@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Preload\Cron;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -52,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_preload_clean_rows_time_event' => 'remove_old_rows',
-			'rocket_load_preload_url'              => 'load_preload_url',
+			'rocket_preload_process_pending'       => 'process_pending_urls',
 			'cron_schedules'                       => 'add_interval',
 			'init'                                 => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
@@ -68,16 +67,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
 
-		if (
-			! $this->settings->is_enabled()
-			&&
-			wp_next_scheduled( 'rocket_preload_clean_rows_time_event' )
-		) {
-			wp_clear_scheduled_hook( 'rocket_preload_clean_rows_time_event' );
-
-			return;
-		}
-
 		if ( wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
 			return;
 		}
@@ -90,7 +79,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function load_preload_url() {
+	public function process_pending_urls() {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
@@ -136,9 +125,9 @@ class Subscriber implements Subscriber_Interface {
 		if (
 			! $this->settings->is_enabled()
 			&&
-			wp_next_scheduled( 'rocket_load_preload_url' )
+			wp_next_scheduled( 'rocket_preload_process_pending' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_load_preload_url' );
+			wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
 
 			return;
 		}
@@ -147,11 +136,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_load_preload_url' ) ) {
+		if ( wp_next_scheduled( 'rocket_preload_process_pending' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_load_preload_url', 'rocket_load_preload_url' );
+		wp_schedule_event( time(), 'rocket_preload_process_pending', 'rocket_preload_process_pending' );
 	}
 
 	/**

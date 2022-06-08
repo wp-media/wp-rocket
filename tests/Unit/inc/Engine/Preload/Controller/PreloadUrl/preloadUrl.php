@@ -33,7 +33,7 @@ class Test_PreloadUrl extends TestCase
 		$this->queue = \Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->controller = \Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]', [$this->options,
-			$this->queue, $this->query, $this->file_system]);
+			$this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Test_PreloadUrl extends TestCase
 		}
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 
-		Functions\expect('wp_remote_get')->with($config['url'] . '/', $config['request']['config']);
+		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request']['config']);
 	}
 
 	protected function configureMobileRequest($config) {
@@ -65,6 +65,6 @@ class Test_PreloadUrl extends TestCase
 			return;
 		}
 		$this->controller->expects()->get_mobile_user_agent_prefix()->andReturn($config['user_agent']);
-		Functions\expect('wp_remote_get')->with($config['url'] . '/', $config['request_mobile']['config']);
+		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request_mobile']['config']);
 	}
 }

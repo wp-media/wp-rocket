@@ -32,44 +32,18 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
-		$this->settings->expects()->is_enabled()->andReturn($config['is_enabled']);
 		$this->configureCheckNextSchedule($config);
-		$this->configureClearSchedule($config);
-		$this->configureNextSchedule($config);
 		$this->configureScheduleEvent($config);
 		$this->subscriber->schedule_clean_not_commonly_used_rows();
 	}
 
 	protected function configureCheckNextSchedule($config) {
-		if($config['is_enabled'] ) {
-			return;
-		}
 
 		Functions\expect('wp_next_scheduled')->with('rocket_load_preload_url')->andReturn($config['has_next_schedule']);
 	}
 
-	protected function configureClearSchedule($config) {
-		if($config['is_enabled'] || ! $config['has_next_schedule']) {
-			return;
-		}
-
-		Functions\expect('wp_clear_scheduled_hook')->with('rocket_preload_clean_rows_time_event');
-	}
-
-	protected function configureNextSchedule($config) {
-		if(! $config['is_enabled'] && $config['has_next_schedule']) {
-			return;
-		}
-
-		Functions\expect('wp_next_scheduled')->with('rocket_preload_clean_rows_time_event')->andReturn($config['next_success']);
-	}
-
 	protected function configureScheduleEvent($config) {
-		if(! $config['is_enabled'] && $config['has_next_schedule']) {
-			return;
-		}
-
-		if($config['next_success']) {
+		if($config['has_next_schedule']) {
 			return;
 		}
 

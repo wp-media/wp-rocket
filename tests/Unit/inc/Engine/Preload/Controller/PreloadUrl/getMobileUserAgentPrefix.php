@@ -18,6 +18,7 @@ use Brain\Monkey\Filters;
  */
 class Test_getMobileUserAgentPrefix extends TestCase
 {
+
 	protected $queue;
 	protected $query;
 	protected $file_system;
@@ -39,6 +40,7 @@ class Test_getMobileUserAgentPrefix extends TestCase
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 		Filters\expectApplied('rocket_mobile_preload_user_agent_prefix')->with($config['prefix'])->andReturn($config['filter']);
-		$this->assertSame($expected, $this->controller->get_mobile_user_agent_prefix());
+		$method = $this->get_reflective_method('get_mobile_user_agent_prefix',  PreloadUrl::class);
+		$this->assertSame($expected, $method->invokeArgs($this->controller,[]));
 	}
 }

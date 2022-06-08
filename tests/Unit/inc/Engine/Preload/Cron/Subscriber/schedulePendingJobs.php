@@ -46,7 +46,7 @@ class Test_SchedulePendingJobs extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_next_scheduled')->with('rocket_load_preload_url')->andReturn($config['has_next_schedule']);
+		Functions\expect('wp_next_scheduled')->with('rocket_preload_process_pending')->andReturn($config['has_next_schedule']);
 	}
 
 	protected function configureClearSchedule($config) {
@@ -54,7 +54,7 @@ class Test_SchedulePendingJobs extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_clear_scheduled_hook')->with('rocket_load_preload_url');
+		Functions\expect('wp_clear_scheduled_hook')->with('rocket_preload_process_pending');
 	}
 
 	protected function configureNextSchedule($config) {
@@ -62,7 +62,7 @@ class Test_SchedulePendingJobs extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_next_scheduled')->with('rocket_load_preload_url')->andReturn($config['next_success']);
+		Functions\expect('wp_next_scheduled')->with('rocket_preload_process_pending')->andReturn($config['next_success']);
 	}
 
 	protected function configureScheduleEvent($config) {
@@ -79,6 +79,6 @@ class Test_SchedulePendingJobs extends TestCase
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
 			return $date >= $old_time  && $date <= time();
-		}), 'rocket_load_preload_url', 'rocket_load_preload_url');
+		}), 'rocket_preload_process_pending', 'rocket_preload_process_pending');
 	}
 }
