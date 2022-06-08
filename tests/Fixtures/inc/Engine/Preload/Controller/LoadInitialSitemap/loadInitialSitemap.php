@@ -6,7 +6,7 @@ return [
 			'filter_sitemaps' => [
 				'url'
 			],
-			'wp_sitemap' => false,
+			'wp_sitemap' => 'sitemap',
 		],
 		'expected' => [
 			'transient' => true,

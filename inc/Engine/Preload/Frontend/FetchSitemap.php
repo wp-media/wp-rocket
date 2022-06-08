@@ -4,9 +4,8 @@ namespace WP_Rocket\Engine\Preload\Frontend;
 
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 
-class ParseSitemap {
+class FetchSitemap {
 
 	/**
 	 * Parse controller.
@@ -47,7 +46,7 @@ class ParseSitemap {
 	 * @param string $url url from the sitemap.
 	 */
 	public function parse_sitemap( string $url ) {
-		$response = wp_remote_get( $url );
+		$response = wp_safe_remote_get( $url );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return;
@@ -55,15 +54,21 @@ class ParseSitemap {
 
 		$data = wp_remote_retrieve_body( $response );
 
+		if ( ! $data ) {
+			return;
+		}
+
 		$this->sitemap_parser->set_content( $data );
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			$this->query->create_or_update(
+			if ( $this->query->create_or_nothing(
 				[
 					'url' => $link,
 				]
-				);
+				) ) {
+				$this->queue->add_job_preload_job_preload_url_async( $link );
+			}
 		}
 
 		$children = $this->sitemap_parser->get_children();

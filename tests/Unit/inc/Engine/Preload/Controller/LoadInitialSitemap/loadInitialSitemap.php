@@ -7,6 +7,8 @@ use Mockery;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Sitemaps_Index;
+
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
  * @group  Preload
@@ -30,6 +32,9 @@ class Test_LoadInitialSitemap extends TestCase {
 		foreach ($config['filter_sitemaps'] as $sitemap) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
 		}
+		if(count($config['filter_sitemaps']) > 0) {
+			$this->queue->expects()->add_job_preload_job_check_finished_async();
+		}
 		if(key_exists('transient', $expected)) {
 			Functions\expect('set_transient')->with('wpr_preload_running', true);
 		}
@@ -50,6 +55,7 @@ class Test_LoadInitialSitemap extends TestCase {
 		Functions\expect('wp_sitemaps_get_server')->with()->andReturn($sitemap);
 		if($config['wp_sitemap']) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($config['wp_sitemap']);
+			$this->queue->expects()->add_job_preload_job_check_finished_async();
 		}
 	}
 }
