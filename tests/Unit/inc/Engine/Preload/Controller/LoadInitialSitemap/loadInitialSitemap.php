@@ -32,6 +32,7 @@ class Test_LoadInitialSitemap extends TestCase {
 		Filters\expectApplied('rocket_sitemap_preload_list')->with($config['sitemaps'])->andReturn($config['filter_sitemaps']);
 		foreach ($config['filter_sitemaps'] as $sitemap) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
+			$this->queue->expects()->add_job_preload_job_check_finished_async();
 		}
 		if(key_exists('transient', $expected)) {
 			Functions\expect('set_transient')->with('wpr_preload_running', true);
@@ -53,6 +54,7 @@ class Test_LoadInitialSitemap extends TestCase {
 		Functions\expect('wp_sitemaps_get_server')->with()->andReturn($sitemap);
 		if($config['wp_sitemap']) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($config['wp_sitemap']);
+			$this->queue->expects()->add_job_preload_job_check_finished_async();
 		}
 	}
 }

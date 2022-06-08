@@ -81,20 +81,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'preload_caches_query' ) )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->share( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
-			->addArgument( $preload_settings )
-			->addTag( 'common_subscriber' );
-
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );
-
-		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
-			->addArgument( $options );
-		$preload_settings = $this->getContainer()->get( 'preload_settings' );
-
-		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 
 		$this->getContainer()->add( 'preload_clean_controller', 'WP_Rocket\Engine\Preload\Controller\ClearCache' )
 			->addArgument( $cache_query );

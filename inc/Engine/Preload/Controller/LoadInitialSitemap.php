@@ -45,7 +45,6 @@ class LoadInitialSitemap {
 		}
 
 		$this->add_task_to_queue( [ $sitemap ] );
-		$this->queue->add_job_preload_job_check_finished_async();
 	}
 
 	/**
@@ -59,6 +58,7 @@ class LoadInitialSitemap {
 		foreach ( $sitemaps as $sitemap ) {
 			$this->queue->add_job_preload_job_parse_sitemap_async( $sitemap );
 		}
+		$this->queue->add_job_preload_job_check_finished_async();
 	}
 
 	/**
