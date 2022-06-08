@@ -33,7 +33,7 @@ return [
 				'interval' => 10,
 				'display'  => 'test',
 			],
-			'rocket_load_preload_url' => [
+			'rocket_preload_process_pending' => [
 				'interval' => 60,
 				'display'  => 'WP Rocket Preload pending jobs',
 			]

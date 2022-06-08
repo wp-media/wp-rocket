@@ -107,7 +107,7 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		$interval = apply_filters( 'rocket_preload_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-		$schedules['rocket_load_preload_url'] = [
+		$schedules['rocket_preload_process_pending'] = [
 			'interval' => $interval,
 			'display'  => esc_html__( 'WP Rocket Preload pending jobs', 'rocket' ),
 		];
