@@ -50,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jetpack',
 	];
 
 	/**
@@ -175,6 +176,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
+			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 	}
 }

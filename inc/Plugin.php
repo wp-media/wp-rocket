@@ -294,6 +294,7 @@ class Plugin {
 			'convertplug',
 			'unlimited_elements',
 			'inline_related_posts',
+			'jetpack',
 		];
 
 		$host_type = HostResolver::get_host_service();

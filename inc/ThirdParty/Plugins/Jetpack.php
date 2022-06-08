@@ -38,14 +38,14 @@ class Jetpack implements Subscriber_Interface {
 			return $events;
 		}
 
-		if ( self::is_module_active( 'sitemaps' ) && function_exists( 'jetpack_sitemap_uri' ) ) {
+		if ( \Jetpack::is_module_active( 'sitemaps' ) && function_exists( 'jetpack_sitemap_uri' ) ) {
 			$events['rocket_first_install_options']   = 'add_jetpack_sitemap_option';
 			$events['rocket_inputs_sanitize']         = 'jetpack_sitemap_option_sanitize';
-			$events['rocket_sitemap_preload_list']    = 'rocket_add_jetpack_sitemap';
+			$events['rocket_sitemap_preload_list']    = 'add_jetpack_sitemap';
 			$events['rocket_sitemap_preload_options'] = 'sitemap_preload_jetpack_option';
 		}
 
-		if ( self::is_module_active( 'widgets' ) ) {
+		if ( \Jetpack::is_module_active( 'widgets' ) ) {
 			$events['rocket_cache_mandatory_cookies'] = 'add_jetpack_cookie_law_mandatory_cookie';
 			$events['rocket_htaccess_mod_rewrite']    = [ 'return_false', 76 ];
 			$events['admin_init']                     = 'activate_jetpack_cookie_law';
