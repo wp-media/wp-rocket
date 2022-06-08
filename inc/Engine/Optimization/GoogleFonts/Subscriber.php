@@ -54,7 +54,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'wp_resource_hints' => [ 'preconnect', 10, 2 ],
-			'rocket_buffer'     => [ 'process', 18 ],
+			'rocket_buffer'     => [ 'process', 1001 ],
 		];
 	}
 
