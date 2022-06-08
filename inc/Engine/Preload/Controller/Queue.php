@@ -66,23 +66,7 @@ class Queue extends AbstractASQueue {
 	}
 
 	/**
-	 * Add Async job with DB row ID.
-	 *
-	 * @param string $sitemap_url DB row ID.
-	 *
-	 * @return string
-	 */
-	public function add_job_preload_job_preload_url_async( string $sitemap_url ) {
-		return $this->add_async(
-			'rocket_preload_job_preload_url',
-			[
-				$sitemap_url,
-			]
-		);
-	}
-  
-   /**
-   * Add Async preload url job with url.
+	 * Add Async preload url job with url.
 	 *
 	 * @param string $url url to preload.
 	 *

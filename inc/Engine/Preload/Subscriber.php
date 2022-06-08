@@ -17,13 +17,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $controller;
 
 	/**
-	 * Controller to load initial tasks.
-	 *
-	 * @var LoadInitialSitemap
-	 */
-	protected $controller;
-
-	/**
 	 * Cache query instance
 	 *
 	 * @var Cache
@@ -53,7 +46,7 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
-	 /**
+	/**
 	 * Load first tasks from preload when preload option is enabled.
 	 *
 	 * @param array $old_value old configuration values.
