@@ -20,11 +20,18 @@ class Test_ParseSitemap extends AdminTestCase {
 	{
 		parent::set_up_before_class();
 		self::installFresh();
-
+		$container             = apply_filters( 'rocket_container', null );
+		$cache_table   = $container->get( 'preload_caches_table' );
+		$cache_table->install();
 	}
 
 	public static function tear_down_after_class()
 	{
+		$container             = apply_filters( 'rocket_container', null );
+		$cache_table   = $container->get( 'preload_caches_table' );
+		if ( $cache_table->exists() ) {
+			$cache_table->uninstall();
+		}
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
@@ -33,7 +40,6 @@ class Test_ParseSitemap extends AdminTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-
 		$this->configureRequest($config);
 
 		do_action('rocket_preload_job_parse_sitemap', $config['sitemap_url']);
@@ -43,7 +49,8 @@ class Test_ParseSitemap extends AdminTestCase {
 		}
 
 		foreach ($expected['links'] as $link) {
-			$this->assertEquals($expected['children_exists'], self::cacheFound(['url' => $link]));
+			$exists = $expected['links_exists'] ? "" :"n't";
+			$this->assertEquals($expected['links_exists'], self::cacheFound(['url' => $link]), "Link {$link} should$exists exist");
 		}
 	}
 
@@ -53,7 +60,7 @@ class Test_ParseSitemap extends AdminTestCase {
 		}
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['sitemap_url']
@@ -61,7 +68,7 @@ class Test_ParseSitemap extends AdminTestCase {
 				->andReturn( new WP_Error( 'error', 'error_data' ) );
 		} else {
 			$message = $config['process_generate']['response'];
-			Functions\expect( 'wp_remote_get' )
+			Functions\expect( 'wp_safe_remote_get' )
 				->once()
 				->with(
 					$config['sitemap_url']

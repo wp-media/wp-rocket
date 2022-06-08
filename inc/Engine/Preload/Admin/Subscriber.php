@@ -60,7 +60,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices' => [ 'maybe_display_preload_notice' ],
-			'init'          => [ 'schedule_preload_pending_jobs_cron' ],
+			'init'          => [ 'maybe_init_preload_queue' ],
 		];
 	}
 
@@ -78,29 +78,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function schedule_preload_pending_jobs_cron() {
+	public function maybe_init_preload_queue() {
 		if ( ! $this->settings->is_enabled() ) {
-			if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
-				return;
-			}
-
-			$this->logger->debug( 'PRELOAD: Cancel pending jobs cron job because of disabling PRELOAD option.' );
-
-			$this->queue->cancel_pending_jobs_cron();
 			return;
 		}
 
 		$this->queue_runner->init();
 
-		/**
-		 * Filters the cron interval.
-		 *
-		 * @param int $interval Interval in seconds.
-		 */
-		$interval = apply_filters( 'rocket_preload_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-		$this->logger->debug( "PRELOAD: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-		$this->queue->schedule_pending_jobs_cron( $interval );
 	}
 }

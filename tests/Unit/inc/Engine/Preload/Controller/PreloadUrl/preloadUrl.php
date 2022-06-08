@@ -54,8 +54,6 @@ class Test_PreloadUrl extends TestCase
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 
 		Functions\expect('wp_remote_get')->with($config['url'] . '/', $config['request']['config']);
-
-		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
 	}
 
 	protected function configureMobileRequest($config) {

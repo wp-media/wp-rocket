@@ -12,10 +12,10 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::schedule_preload_pending_jobs_cron
+ * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::maybe_init_preload_queue
  * @group  Preload
  */
-class Test_SchedulePreloadPendingJobsCron extends TestCase
+class Test_MaybeInitPreloadQueue extends TestCase
 {
 	protected $settings;
 	protected $subscriber;
@@ -39,20 +39,7 @@ class Test_SchedulePreloadPendingJobsCron extends TestCase
 	public function testShouldDoAsExpected($config) {
 		$this->settings->expects()->is_enabled()->andReturn($config['is_enable']);
 		$this->configureEnable($config);
-		$this->configureHasPending($config);
-		$this->subscriber->schedule_preload_pending_jobs_cron();
-	}
-
-	protected function configureHasPending($config) {
-		if($config['is_enable']) {
-			return;
-		}
-		$this->queue->expects()->is_pending_jobs_cron_scheduled()->andReturn($config['is_pending']);
-		if(! $config['is_pending']) {
-			return;
-		}
-		$this->logger->expects()->debug('PRELOAD: Cancel pending jobs cron job because of disabling PRELOAD option.');
-		$this->queue->expects()->cancel_pending_jobs_cron();
+		$this->subscriber->maybe_init_preload_queue();
 	}
 
 	protected function configureEnable($config) {
@@ -60,9 +47,5 @@ class Test_SchedulePreloadPendingJobsCron extends TestCase
 			return;
 		}
 		$this->queueRunner->expects()->init();
-		$this->logger->expects()->debug("PRELOAD: Schedule pending jobs Cron job with interval {$config['interval']} seconds.");
-		Functions\expect('rocket_get_constant')->with( 'MINUTE_IN_SECONDS', 60 )->andReturn($config['interval']);
-		Filters\expectApplied('rocket_preload_pending_jobs_cron_interval')->with($config['interval'])->with($config['interval_filter']);
-		$this->queue->expects()->schedule_pending_jobs_cron($config['interval_filter']);
 	}
 }
