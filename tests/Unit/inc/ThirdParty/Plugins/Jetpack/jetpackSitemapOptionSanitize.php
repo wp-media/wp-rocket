@@ -7,6 +7,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\Jetpack::sitemap_preload_jetpack_option
+ * @group Jetpack
+ * @group ThirdParty
+ */
 class Test_JetpackSitemapOptionSanitize extends TestCase
 {
 	protected $option;

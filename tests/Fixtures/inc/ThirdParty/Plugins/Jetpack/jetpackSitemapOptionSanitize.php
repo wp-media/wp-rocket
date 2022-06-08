@@ -1,17 +1,19 @@
 <?php
 return [
-	'testShouldConvert' => [
+	'testShouldConvertToOne' => [
 		'config' => [
-			'jetpack_xml_sitemap' => [
-				'',
-				'test'
-			]
+			'jetpack_xml_sitemap' => 'test'
 		],
 		'expected' => [
-			'jetpack_xml_sitemap' => [
-				0,
-				1
-			]
+			'jetpack_xml_sitemap' => 1
+		]
+	],
+	'testShouldConvertToZero' => [
+		'config' => [
+			'jetpack_xml_sitemap' => ''
+		],
+		'expected' => [
+			'jetpack_xml_sitemap' => 0
 		]
 	]
 ];

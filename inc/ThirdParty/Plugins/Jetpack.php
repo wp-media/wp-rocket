@@ -6,45 +6,49 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Jetpack implements Subscriber_Interface
-{
+class Jetpack implements Subscriber_Interface {
+
 	use ReturnTypesTrait;
 
 	/**
+	 * Option instance.
+	 *
 	 * @var Options_Data
 	 */
 	protected $option;
 
 	/**
-	 * @param Options_Data $option
+	 * Instantiate class.
+	 *
+	 * @param Options_Data $option Option instance.
 	 */
-	public function __construct(Options_Data $option)
-	{
+	public function __construct( Options_Data $option ) {
 		$this->option = $option;
 	}
 
-
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Subscribed events.
+	 */
+	public static function get_subscribed_events() {
 		$events = [
-			'deactivate_jetpack/jetpack.php' => [ 'remove_jetpack_cookie_law_mandatory_cookie', 11 ]
+			'deactivate_jetpack/jetpack.php' => [ 'remove_jetpack_cookie_law_mandatory_cookie', 11 ],
 		];
 
-		if( ! class_exists( 'Jetpack' ) ) {
+		if ( ! class_exists( 'Jetpack' ) ) {
 			return $events;
 		}
 
-		if( Jetpack::is_module_active( 'sitemaps' ) && function_exists( 'jetpack_sitemap_uri' ) ) {
-			$events['rocket_first_install_options'] = 'add_jetpack_sitemap_option';
-			$events['rocket_inputs_sanitize'] = 'jetpack_sitemap_option_sanitize';
-			$events['rocket_sitemap_preload_list'] = 'rocket_add_jetpack_sitemap';
+		if ( self::is_module_active( 'sitemaps' ) && function_exists( 'jetpack_sitemap_uri' ) ) {
+			$events['rocket_first_install_options']   = 'add_jetpack_sitemap_option';
+			$events['rocket_inputs_sanitize']         = 'jetpack_sitemap_option_sanitize';
+			$events['rocket_sitemap_preload_list']    = 'rocket_add_jetpack_sitemap';
 			$events['rocket_sitemap_preload_options'] = 'sitemap_preload_jetpack_option';
 		}
 
-		if( Jetpack::is_module_active( 'widgets' ) ) {
+		if ( self::is_module_active( 'widgets' ) ) {
 			$events['rocket_cache_mandatory_cookies'] = 'add_jetpack_cookie_law_mandatory_cookie';
-			$events['rocket_htaccess_mod_rewrite'] = [ 'return_false', 76 ];
-			$events['admin_init'] = 'activate_jetpack_cookie_law';
+			$events['rocket_htaccess_mod_rewrite']    = [ 'return_false', 76 ];
+			$events['admin_init']                     = 'activate_jetpack_cookie_law';
 		}
 
 		return $events;
@@ -54,7 +58,7 @@ class Jetpack implements Subscriber_Interface
 	/**
 	 * Remove cookies if Jetpack gets deactivated.
 	 */
-	function remove_jetpack_cookie_law_mandatory_cookie() {
+	public function remove_jetpack_cookie_law_mandatory_cookie() {
 		remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 76 );
 		remove_filter( 'rocket_cache_mandatory_cookies', '_rocket_add_eu_cookie_law_mandatory_cookie' );
 
@@ -137,7 +141,7 @@ class Jetpack implements Subscriber_Interface
 	 *
 	 * @param array $cookies List of mandatory cookies.
 	 */
-	function add_jetpack_cookie_law_mandatory_cookie( $cookies ) {
+	public function add_jetpack_cookie_law_mandatory_cookie( $cookies ) {
 		$cookies['jetpack-eu-cookie-law'] = 'eucookielaw';
 
 		return $cookies;
@@ -150,7 +154,7 @@ class Jetpack implements Subscriber_Interface
 	 *  - The widget is active.
 	 *  - the rocket_jetpack_eu_cookie_widget option is empty or not set.
 	 */
-	function activate_jetpack_cookie_law() {
+	public function activate_jetpack_cookie_law() {
 		$rocket_jp_eu_cookie_widget = $this->option->get( 'rocket_jetpack_eu_cookie_widget' );
 
 		if (
@@ -158,7 +162,7 @@ class Jetpack implements Subscriber_Interface
 			&& empty( $rocket_jp_eu_cookie_widget )
 		) {
 			add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 76 );
-			add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
+			add_filter( 'rocket_cache_mandatory_cookies',  [ __CLASS__, 'add_jetpack_cookie_law_mandatory_cookie' ] );
 
 			// Update the WP Rocket rules on the .htaccess file.
 			flush_rocket_htaccess();

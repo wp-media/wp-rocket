@@ -7,6 +7,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\Jetpack::add_jetpack_cookie_law_mandatory_cookie
+ * @group Jetpack
+ * @group ThirdParty
+ */
 class Test_AddJetpackCookieLawMandatoryCookie extends TestCase
 {
 	protected $option;

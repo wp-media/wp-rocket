@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Fixtures\inc\ThirdParty\Plugins\Jetpack;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Jetpack;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -9,6 +9,11 @@ use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\Jetpack::remove_jetpack_cookie_law_mandatory_cookie
+ * @group Jetpack
+ * @group ThirdParty
+ */
 class Test_RemoveJetpackCookieLawMandatoryCookie extends TestCase
 {
 	protected $option;
