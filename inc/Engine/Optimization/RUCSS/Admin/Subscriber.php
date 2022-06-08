@@ -104,6 +104,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_deactivation'                     => 'cancel_queues',
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
+			'rocket_before_rollback'                  => 'cancel_queues',
 		];
 	}
 
