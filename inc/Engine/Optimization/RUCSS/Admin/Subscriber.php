@@ -203,7 +203,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function delete_used_css_rows() {
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
-			$this->used_css->remove_all_completed_rows();
+			$this->database->remove_all_completed_rows();
 		} else {
 			$this->database->truncate_used_css_table();
 		}
