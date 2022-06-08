@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem::write_used_css
  *
- * @group FRUCSS
+ * @group RUCSS
  */
 class test_WriteUsedCss extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Controller/Filesystem/writeUsedCss.php';
