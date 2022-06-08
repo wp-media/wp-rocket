@@ -767,7 +767,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_used_css( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.11.3', '>=' ) ) {
+		if ( version_compare( $old_version, '3.11.4', '>=' ) ) {
 			return;
 		}
 

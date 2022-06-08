@@ -432,7 +432,7 @@ class UsedCSS {
 		 *
 		 * @since 3.9.0.2
 		 *
-		 * @param string $usedcss Used CSS content.
+		 * @param string $used_css Used CSS content.
 		 */
 		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
