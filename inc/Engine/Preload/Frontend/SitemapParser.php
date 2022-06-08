@@ -64,7 +64,11 @@ class SitemapParser {
 		$sitemap_children = count( $this->xml->sitemap );
 
 		for ( $i = 0; $i < $sitemap_children; $i++ ) {
-			$children = (string) $this->xml->sitemap[ $i ]->loc;
+			$url = (string) $this->xml->sitemap[ $i ]->loc;
+			if ( ! $url ) {
+				continue;
+			}
+			$children [] = $url;
 		}
 
 		return $children;

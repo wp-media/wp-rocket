@@ -20,7 +20,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'preload_subscriber',
 		'fonts_preload_subscriber',
+		'preload_front_subscriber',
+		'preload_queue',
+		'sitemap_parser',
+		'parse_sitemap_controller',
+		'load_initial_sitemap_controller',
+		'preload_admin_subscriber',
 		'preload_caches_table',
 		'preload_caches_query',
 		'preload_admin_subscriber',
@@ -35,13 +42,48 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		// Subscribers.
+		$options = $this->getContainer()->get( 'options' );
+
+		$this->getContainer()->add( 'preload_settings', 'WP_Rocket\Engine\Preload\Admin\Settings' )
+			->addArgument( $options );
+		$preload_settings = $this->getContainer()->get( 'preload_settings' );
 
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\Cache' );
 		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
 		$this->getContainer()->get( 'preload_caches_table' );
 
-		// Subscribers.
-		$options = $this->getContainer()->get( 'options' );
+		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
+		$queue = $this->getContainer()->get( 'preload_queue' );
+		$this->getContainer()->add( 'sitemap_parser', 'WP_Rocket\Engine\Preload\Frontend\SitemapParser' );
+		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
+		$this->getContainer()->add( 'parse_sitemap_controller', 'WP_Rocket\Engine\Preload\Frontend\FetchSitemap' )
+			->addArgument( $sitemap_parser )
+			->addArgument( $queue )
+			->addArgument( $cache_query );
+
+		$this->getContainer()->add( 'check_finished_controller', 'WP_Rocket\Engine\Preload\Controller\CheckFinished' )
+			->addArgument( $preload_settings )
+			->addArgument( $cache_query )
+			->addArgument( $queue );
+
+		$check_finished_controller = $this->getContainer()->get( 'check_finished_controller' );
+
+		$parse_sitemap_controller = $this->getContainer()->get( 'parse_sitemap_controller' );
+		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
+			->addArgument( $queue );
+		$this->getContainer()->share( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
+			->addArgument( $parse_sitemap_controller )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
+			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->getContainer()->get( 'preload_caches_query' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->share( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
+			->addArgument( $preload_settings )
+			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )

@@ -7,23 +7,23 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * Sitemap parser controller.
+	 * Controller parsing the sitemap.
 	 *
-	 * @var ParseSitemap
+	 * @var FetchSitemap
 	 */
 	protected $parse_sitemap;
 
 	/**
-	 * Initialise the Subscriber.
+	 * Creates an instance of the class.
 	 *
-	 * @param ParseSitemap $parse_sitemap Sitemap parser controller.
+	 * @param FetchSitemap $parse_sitemap controller parsing the sitemap.
 	 */
-	public function __construct( ParseSitemap $parse_sitemap ) {
+	public function __construct( FetchSitemap $parse_sitemap ) {
 		$this->parse_sitemap = $parse_sitemap;
 	}
 
 	/**
-	 * Return an array of events that this subscriber wants to listen to.
+	 * Return an array of events that this subscriber listens to.
 	 *
 	 * @return array
 	 */
@@ -34,10 +34,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Parse a sitemap.
+	 * Parse the sitemap.
 	 *
-	 * @param string $url url from the sitemap.
-	 *
+	 * @param string $url url to parse.
 	 * @return void
 	 */
 	public function parse_sitemap( string $url ) {

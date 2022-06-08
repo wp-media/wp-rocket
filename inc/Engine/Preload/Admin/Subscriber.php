@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Preload\Admin;
 use stdClass;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
+
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -17,7 +18,7 @@ class Subscriber implements Subscriber_Interface {
 	protected $options;
 
 	/**
-	 * Preload settings.
+	 * Settings instance
 	 *
 	 * @var Settings
 	 */
@@ -59,7 +60,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Display a notice while preload is active.
+	 * Maybe display the preload notice.
 	 *
 	 * @return void
 	 */
@@ -109,4 +110,5 @@ class Subscriber implements Subscriber_Interface {
 	public function clean_urls( array $urls ) {
 		$this->controller->partial_clean( $urls );
 	}
+
 }

@@ -273,6 +273,8 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
+			'preload_subscriber',
+			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',

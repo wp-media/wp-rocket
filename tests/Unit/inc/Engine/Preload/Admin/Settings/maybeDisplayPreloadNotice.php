@@ -24,7 +24,7 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\when('__')->returnArg(1);
+		$this->stubTranslationFunctions();
 		Functions\expect('get_current_screen')->with()->andReturn($config['screen']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['has_right']);
 		$this->configureEnabled($config);
@@ -37,7 +37,7 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		if(! key_exists('enabled', $config)) {
 			return;
 		}
-		$this->options->expects()->get('sitemap_preload', 0)->andReturn($config['enabled']);
+		$this->options->expects()->get('manual_preload', 0)->andReturn($config['enabled']);
 	}
 
 	protected function configureTransient($config) {

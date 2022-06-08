@@ -1,14 +1,18 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\LoadInitialSitemap;
+
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Sitemaps_Index;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::load_initial_sitemap
- * @group Preload
+ * @group  Preload
  */
 class Test_LoadInitialSitemap extends TestCase {
 	protected $queue;

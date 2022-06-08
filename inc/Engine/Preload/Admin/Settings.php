@@ -7,23 +7,23 @@ use WP_Rocket\Admin\Options_Data;
 class Settings {
 
 	/**
-	 * Options instance.
+	 * Instance of options handler.
 	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
 	/**
-	 * Initialise Settings.
+	 * Instantiate the class
 	 *
-	 * @param Options_Data $options Options instance.
+	 * @param Options_Data $options Instance of options handler.
 	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
 
 	/**
-	 * Display a notice if the preload is running.
+	 * Maybe display the preload notice.
 	 *
 	 * @return void
 	 */
@@ -31,14 +31,13 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-		$transient = get_transient( 'rocket_rucss_processing' );
 
-		if ( false === $transient ) {
+		if ( false === get_transient( 'wpr_preload_running' ) ) {
 			return;
 		}
 
 		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = number of seconds.
+		  // translators: %1$s = plugin name.
 			__( '%1$s: Please wait. The preload service is processing your pages.', 'rocket' ),
 			'<strong>WP Rocket</strong>'
 		);
@@ -53,9 +52,7 @@ class Settings {
 	}
 
 	/**
-	 * Checks if we can display the RUCSS notices.
-	 *
-	 * @since 3.11
+	 * Checks if we can display the Preload notices.
 	 *
 	 * @return bool
 	 */
@@ -74,21 +71,15 @@ class Settings {
 			return false;
 		}
 
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
-		return true;
+		return $this->is_enabled();
 	}
 
 	/**
-	 * Determines if Remove Unused CSS option is enabled.
-	 *
-	 * @since 3.9
+	 * Determines if Preload option is enabled.
 	 *
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
-		return (bool) $this->options->get( 'sitemap_preload', 0 );
+		return (bool) $this->options->get( 'manual_preload', 0 );
 	}
 }
