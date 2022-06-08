@@ -52,8 +52,6 @@ class LoadInitialSitemap {
 		foreach ( $urls as $url ) {
 			$this->queue->add_job_preload_job_preload_url_async( $url );
 		}
-
-		$this->queue->add_job_preload_job_check_finished_async();
 	}
 
 	/**
@@ -67,6 +65,7 @@ class LoadInitialSitemap {
 		foreach ( $sitemaps as $sitemap ) {
 			$this->queue->add_job_preload_job_parse_sitemap_async( $sitemap );
 		}
+		$this->queue->add_job_preload_job_check_finished_async();
 	}
 
 	/**
