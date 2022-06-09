@@ -110,11 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$check_finished_controller = $this->getContainer()->get( 'check_finished_controller' );
 
-		$this->getContainer()->share( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
-			->addArgument( $preload_settings )
-			->addArgument( $queue )
-			->addArgument( $preload_queue_runner )
-			->addArgument( new Logger() );
+
 
 		$this->getContainer()->share( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $fetch_sitemap_controller )
@@ -146,6 +142,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $preload_settings )
 			->addArgument( $clean_controller )
+			->addArgument( $queue )
+			->addArgument( $preload_queue_runner )
+			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 	}
 }
