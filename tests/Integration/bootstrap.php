@@ -158,6 +158,15 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/RankMathSEO/fixtures.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
+			if(! defined('AIOSEOP_VERSION')) {
+				define('AIOSEOP_VERSION', true);
+			}
+			if(! defined('AIOSEO_VERSION')) {
+				define('AIOSEO_VERSION', true);
+			}
+		}
+
 		if ( BootstrapManager::isGroup( 'Jetpack' ) ) {
 			// Load AMP plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/jetpack/jetpack.php';
