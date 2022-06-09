@@ -158,6 +158,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/RankMathSEO/fixtures.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'SEOPress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
 			if(! defined('AIOSEOP_VERSION')) {
 				define('AIOSEOP_VERSION', true);

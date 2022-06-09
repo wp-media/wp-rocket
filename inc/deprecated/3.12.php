@@ -477,3 +477,22 @@ function rocket_add_all_in_one_seo_sitemap( $sitemaps ) {
 
 	return $sitemaps;
 }
+
+/**
+ * Add SEOPress sitemap URL to the sitemaps to preload
+ *
+ * @since 3.3.6
+ * @author Benjamin Denis
+ * @source ./yoast-seo.php (Remy Perona)
+ *
+ * @param array $sitemaps Sitemaps to preload.
+ * @return array Updated Sitemaps to preload
+ */
+function rocket_add_seopress_sitemap( $sitemaps ) {
+	_deprecated_function( __FUNCTION__, '3.12' );
+	if ( get_rocket_option( 'seopress_xml_sitemap', false ) ) {
+		$sitemaps[] = get_home_url() . '/sitemaps.xml';
+	}
+
+	return $sitemaps;
+}

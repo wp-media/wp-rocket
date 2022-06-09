@@ -297,6 +297,7 @@ class Plugin {
 			'jetpack',
 			'rank_math_seo',
 			'all_in_one_seo_pack',
+			'seopress',
 		];
 
 		$host_type = HostResolver::get_host_service();
