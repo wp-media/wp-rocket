@@ -277,6 +277,7 @@ class Plugin {
 			'preload_front_subscriber',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'preload_cron_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',

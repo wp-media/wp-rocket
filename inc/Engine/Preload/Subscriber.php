@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
+
 	/**
 	 * Controller to load initial tasks.
 	 *
@@ -21,6 +22,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @var Cache
 	 */
 	private $query;
+
 
 	/**
 	 * Creates an instance of the class.

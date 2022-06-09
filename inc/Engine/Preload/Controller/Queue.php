@@ -14,42 +14,6 @@ class Queue extends AbstractASQueue {
 	protected $group = 'rocket-preload';
 
 	/**
-	 * Pending jobs cron hook.
-	 *
-	 * @var string
-	 */
-	private $pending_job_cron = 'rocket_preload_pending_job_cron';
-
-	/**
-	 * Check if pending jobs cron is scheduled.
-	 *
-	 * @return bool
-	 */
-	public function is_pending_jobs_cron_scheduled() {
-		return $this->is_scheduled( $this->pending_job_cron );
-	}
-
-	/**
-	 * Cancel pending jobs cron.
-	 *
-	 * @return void
-	 */
-	public function cancel_pending_jobs_cron() {
-		$this->cancel_all( $this->pending_job_cron );
-	}
-
-	/**
-	 * Schedule pending jobs cron.
-	 *
-	 * @param int $interval Cron interval in seconds.
-	 *
-	 * @return string
-	 */
-	public function schedule_pending_jobs_cron( int $interval ) {
-		return $this->schedule_recurring( time(), $interval, $this->pending_job_cron );
-	}
-
-	/**
 	 * Add Async parse sitemap job with url.
 	 *
 	 * @param string $sitemap_url sitemap url.
@@ -80,6 +44,7 @@ class Queue extends AbstractASQueue {
 			]
 		);
 	}
+
 
 	/**
 	 * Add a job that check if the preload is finished.

@@ -24,6 +24,7 @@ require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Date.php'
 require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Compare.php';
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/Resources.php';
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
+
 require_once dirname( __FILE__ ) . '/inc/Engine/Preload/Database/Tables/Cache.php';
 $rocket_rucss_resources_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources();
 $rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();

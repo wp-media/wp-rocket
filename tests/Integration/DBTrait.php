@@ -9,6 +9,13 @@ trait DBTrait {
 		return $resource_query->query( $resource );
 	}
 
+	public static function cacheFound( array $cache): bool {
+		$container = apply_filters( 'rocket_container', null );
+		$resource_query = $container->get( 'preload_caches_query' );
+
+		return count($resource_query->query( $cache )) > 0;
+	}
+
 	public static function truncateUsedCssTable() {
 		$container             = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -17,11 +24,10 @@ trait DBTrait {
 		}
 	}
 
-	public static function cacheFound( array $cache): bool {
+	public static function addCache( array $resource ) {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'preload_caches_query' );
-
-		return count($resource_query->query( $cache )) > 0;
+		$cache_query = $container->get( 'preload_caches_query' );
+		return $cache_query->create_or_update( $resource );
 	}
 
 	public static function installFresh() {
@@ -34,6 +40,9 @@ trait DBTrait {
 
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
+
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+		$preload_cache_table->install();
 	}
 
 	public static function uninstallAll() {
@@ -47,6 +56,11 @@ trait DBTrait {
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
+		}
+
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+		if ( $preload_cache_table->exists() ) {
+			$preload_cache_table->uninstall();
 		}
 	}
 

@@ -31,6 +31,7 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
+
 		if ( false === get_transient( 'wpr_preload_running' ) ) {
 			return;
 		}

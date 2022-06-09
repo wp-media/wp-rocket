@@ -45,7 +45,18 @@ class LoadInitialSitemap {
 		}
 
 		$this->add_task_to_queue( [ $sitemap ] );
-		$this->queue->add_job_preload_job_check_finished_async();
+
+		/**
+		 * Filter custom preload URL.
+		 *
+		 * @param array Array of custom preload URL
+		 */
+		$urls = apply_filters( 'rocket_preload_load_custom_urls', [] );
+		$urls = array_filter( $urls );
+
+		foreach ( $urls as $url ) {
+			$this->queue->add_job_preload_job_preload_url_async( $url );
+		}
 	}
 
 	/**
@@ -59,6 +70,7 @@ class LoadInitialSitemap {
 		foreach ( $sitemaps as $sitemap ) {
 			$this->queue->add_job_preload_job_parse_sitemap_async( $sitemap );
 		}
+		$this->queue->add_job_preload_job_check_finished_async();
 	}
 
 	/**
@@ -74,5 +86,14 @@ class LoadInitialSitemap {
 		}
 
 		return $sitemaps->index->get_index_url();
+	}
+
+	/**
+	 * Cancel the preloading.
+	 *
+	 * @return void
+	 */
+	public function cancel_preload() {
+		$this->queue->cancel_pending_jobs_cron();
 	}
 }
