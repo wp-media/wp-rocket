@@ -51,10 +51,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                          => [ 'maybe_display_preload_notice' ],
-			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_term'                => [ 'clean_partial_cache', 10, 3 ],
-			'rocket_after_clean_terms'               => 'clean_urls',
+			'admin_notices'             => [ 'maybe_display_preload_notice' ],
+			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
+			'rocket_after_clean_terms'  => 'clean_urls',
 			'after_rocket_clean_domain' => 'clean_full_cache',
 		];
 	}
