@@ -48,11 +48,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	protected $queue_runner;
 
-   /**
-	* Logger instance.
-	*
-	* @var Logger
-	*/
+	/**
+	 * Logger instance.
+	 *
+	 * @var Logger
+	 */
 	protected $logger;
 
 	/**
