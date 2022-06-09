@@ -168,6 +168,11 @@ class Purge {
 		foreach ( $urls as $url ) {
 			$this->purge_url( $url );
 		}
+		/**
+		 * Action to preload urls after cleaning cache.
+		 *
+		 * @param array urls to preload.
+		 */
 		do_action( 'rocket_after_clean_terms', $urls );
 	}
 
