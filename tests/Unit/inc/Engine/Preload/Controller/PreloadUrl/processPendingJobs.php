@@ -27,9 +27,9 @@ class Test_processPendingJobs extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->options = \Mockery::mock(Options_Data::class);
+		$this->options = Mockery::mock(Options_Data::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->queue = \Mockery::mock(Queue::class);
+		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->controller = new PreloadUrl($this->options, $this->queue, $this->query, $this->file_system);
 	}
