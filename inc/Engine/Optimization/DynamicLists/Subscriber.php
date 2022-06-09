@@ -29,16 +29,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'                   => 'register_rest_route',
-			'rocket_localize_admin_script'    => [ 'add_dynamic_lists_script', 11 ],
-			'init'                            => 'schedule_lists_update',
-			'rocket_update_dynamic_lists'     => 'update_lists',
-			'rocket_deactivation'             => 'clear_schedule_lists_update',
-			'rocket_settings_tools_content'   => 'display_update_lists_section',
-			'rocket_cache_ignored_parameters' => 'add_cache_ignored_parameters',
+			'rest_api_init'                      => 'register_rest_route',
+			'rocket_localize_admin_script'       => [ 'add_dynamic_lists_script', 11 ],
+			'init'                               => 'schedule_lists_update',
+			'rocket_update_dynamic_lists'        => 'update_lists',
+			'rocket_deactivation'                => 'clear_schedule_lists_update',
+			'rocket_settings_tools_content'      => 'display_update_lists_section',
+			'rocket_cache_ignored_parameters'    => 'add_cache_ignored_parameters',
 			'rocket_minify_excluded_external_js' => 'add_minify_excluded_external_js',
-			'rocket_move_after_combine_js' => 'add_move_after_combine_js',
-			'rocket_excluded_inline_js_content' => 'add_combine_js_excluded_inline',
+			'rocket_move_after_combine_js'       => 'add_move_after_combine_js',
+			'rocket_excluded_inline_js_content'  => 'add_combine_js_excluded_inline',
 		];
 	}
 
