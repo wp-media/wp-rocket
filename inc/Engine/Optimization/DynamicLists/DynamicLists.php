@@ -153,4 +153,37 @@ class DynamicLists extends Abstract_Render {
 
 		return isset( $lists->cache_ignored_parameters ) ? array_flip( $lists->cache_ignored_parameters ) : [];
 	}
+
+	/**
+	 * Get the JS minify excluded external paths
+	 *
+	 * @return array
+	 */
+	public function get_js_minify_excluded_external(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_minify_external ) ? $lists->js_minify_external : [];
+	}
+
+	/**
+	 * Get the patterns to move after the combine JS file
+	 *
+	 * @return array
+	 */
+	public function get_js_move_after_combine(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_move_after_combine ) ? $lists->js_move_after_combine : [];
+	}
+
+	/**
+	 * Get the inline JS excluded from combine JS
+	 *
+	 * @return array
+	 */
+	public function get_combine_js_excluded_inline(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
+	}
 }

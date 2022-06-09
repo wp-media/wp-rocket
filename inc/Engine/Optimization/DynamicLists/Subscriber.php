@@ -35,7 +35,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_update_dynamic_lists'     => 'update_lists',
 			'rocket_deactivation'             => 'clear_schedule_lists_update',
 			'rocket_settings_tools_content'   => 'display_update_lists_section',
-			'rocket_cache_ignored_parameters' => 'get_cache_ignored_parameters',
+			'rocket_cache_ignored_parameters' => 'add_cache_ignored_parameters',
+			'rocket_minify_excluded_external_js' => 'add_minify_excluded_external_js',
+			'rocket_move_after_combine_js' => 'add_move_after_combine_js',
+			'rocket_excluded_inline_js_content' => 'add_combine_js_excluded_inline',
 		];
 	}
 
@@ -96,11 +99,62 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Get the cached ignored parameters
+	 * Add the cached ignored parameters to the array
+	 *
+	 * @param string $params Array of ignored parameters.
 	 *
 	 * @return array
 	 */
-	public function get_cache_ignored_parameters(): array {
-		return $this->dynamic_lists->get_cache_ignored_parameters();
+	public function add_cache_ignored_parameters( $params = [] ): array {
+		if ( ! is_array( $params ) ) {
+			$params = (array) $params;
+		}
+
+		return array_merge( $params, $this->dynamic_lists->get_cache_ignored_parameters() );
+	}
+
+	/**
+	 * Add the excluded external JS patterns to the array
+	 *
+	 * @param string $excluded Array of excluded patterns.
+	 *
+	 * @return array
+	 */
+	public function add_minify_excluded_external_js( $excluded = [] ): array {
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
+
+		return array_merge( $excluded, $this->dynamic_lists->get_js_minify_excluded_external() );
+	}
+
+	/**
+	 * Add the JS patterns to move after the combine JS file to the array
+	 *
+	 * @param string $excluded Array of patterns to move.
+	 *
+	 * @return array
+	 */
+	public function add_move_after_combine_js( $excluded = [] ): array {
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
+
+		return array_merge( $excluded, $this->dynamic_lists->get_js_move_after_combine() );
+	}
+
+	/**
+	 * Add the excluded inline JS patterns to the array
+	 *
+	 * @param string $excluded Array of excluded patterns.
+	 *
+	 * @return array
+	 */
+	public function add_combine_js_excluded_inline( $excluded = [] ): array {
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
+
+		return array_merge( $excluded, $this->dynamic_lists->get_combine_js_excluded_inline() );
 	}
 }
