@@ -46,6 +46,11 @@ class Test_CleanUrls extends AdminTestCase
 		foreach ($config['data'] as $cache) {
 			self::addCache($cache);
 		}
+		/**
+		 * Action to preload urls after cleaning cache.
+		 *
+		 * @param array urls to preload.
+		 */
 		do_action('rocket_after_clean_terms', $config['urls']);
 
 		foreach ($expected['data'] as $cache) {
