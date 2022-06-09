@@ -32,6 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_caches_table',
 		'preload_caches_query',
 		'preload_admin_subscriber',
+		'preload_clean_controller',
 		'preload_subscriber',
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
@@ -109,12 +110,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$check_finished_controller = $this->getContainer()->get( 'check_finished_controller' );
 
-		$this->getContainer()->share( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
-			->addArgument( $preload_settings )
-			->addArgument( $queue )
-			->addArgument( $preload_queue_runner )
-			->addArgument( new Logger() );
-
 		$this->getContainer()->share( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $fetch_sitemap_controller )
 			->addArgument( $preload_url_controller )
@@ -134,6 +129,20 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->add( 'preload_clean_controller', 'WP_Rocket\Engine\Preload\Controller\ClearCache' )
+			->addArgument( $cache_query );
+
+		$clean_controller = $this->getContainer()->get( 'preload_clean_controller' );
+
+		$this->getContainer()->add( 'preload_admin_subscriber', 'WP_Rocket\Engine\Preload\Admin\Subscriber' )
+			->addArgument( $options )
+			->addArgument( $preload_settings )
+			->addArgument( $clean_controller )
+			->addArgument( $queue )
+			->addArgument( $preload_queue_runner )
+			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 	}
 }

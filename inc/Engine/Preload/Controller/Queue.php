@@ -2,12 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
-use ActionScheduler_Store;
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
 class Queue extends AbstractASQueue {
+
 	/**
-	 * Queue group.
+	 * Group from the queue.
 	 *
 	 * @var string
 	 */
