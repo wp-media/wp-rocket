@@ -46,7 +46,7 @@ class Test_CleanUrls extends AdminTestCase
 		foreach ($config['data'] as $cache) {
 			self::addCache($cache);
 		}
-		do_action('after_rocket_clean_terms', $config['urls']);
+		do_action('rocket_after_clean_terms', $config['urls']);
 
 		foreach ($expected['data'] as $cache) {
 			$this->assertTrue(self::cacheFound($cache));
