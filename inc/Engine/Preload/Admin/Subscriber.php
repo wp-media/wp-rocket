@@ -6,7 +6,10 @@ use stdClass;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 
+use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -18,7 +21,7 @@ class Subscriber implements Subscriber_Interface {
 	protected $options;
 
 	/**
-	 * Settings instance
+	 * Settings instance.
 	 *
 	 * @var Settings
 	 */
@@ -32,16 +35,43 @@ class Subscriber implements Subscriber_Interface {
 	protected $controller;
 
 	/**
-	 * Instantiate Subscriber.
+	 * Preload queue.
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param Settings     $settings Preload settings.
-	 * @param ClearCache   $clear_cache Clear cache controller.
+	 * @var Queue
 	 */
-	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache ) {
-		$this->options    = $options;
-		$this->settings   = $settings;
-		$this->controller = $clear_cache;
+	protected $queue;
+
+	/**
+	 * Preload queue runner.
+	 *
+	 * @var PreloadQueueRunner
+	 */
+	protected $queue_runner;
+
+   /**
+	* Logger instance.
+	*
+	* @var Logger
+	*/
+	protected $logger;
+
+	/**
+	 * Creates an instance of the class.
+	 *
+	 * @param Options_Data       $options Options instance.
+	 * @param Settings           $settings Settings instance.
+	 * @param ClearCache         $clear_cache Clear cache controller.
+	 * @param Queue              $queue preload queue.
+	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
+	 * @param Logger             $logger logger instance.
+	 */
+	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, PreloadQueueRunner $preload_queue_runner, Logger $logger ) {
+		$this->options      = $options;
+		$this->settings     = $settings;
+		$this->controller   = $clear_cache;
+		$this->queue        = $queue;
+		$this->queue_runner = $preload_queue_runner;
+		$this->logger       = $logger;
 	}
 
 	/**
@@ -56,6 +86,7 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
 			'rocket_after_clean_terms'  => 'clean_urls',
 			'after_rocket_clean_domain' => 'clean_full_cache',
+			'init'                      => [ 'maybe_init_preload_queue' ],
 		];
 	}
 
@@ -111,4 +142,17 @@ class Subscriber implements Subscriber_Interface {
 		$this->controller->partial_clean( $urls );
 	}
 
+	/**
+	 * Set the preload queue runner.
+	 *
+	 * @return void
+	 */
+	public function maybe_init_preload_queue() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$this->queue_runner->init();
+
+	}
 }

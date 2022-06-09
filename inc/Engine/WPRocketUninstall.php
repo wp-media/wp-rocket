@@ -2,6 +2,7 @@
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
+
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 
 /**
@@ -255,6 +256,7 @@ class WPRocketUninstall {
 	 */
 	private function delete_preload_table() {
 		// If the table exist, then drop the table.
+
 		if ( $this->rocket_cache->exists() ) {
 			$this->rocket_cache->uninstall();
 		}

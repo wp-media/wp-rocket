@@ -1,5 +1,7 @@
 <?php
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Admin\Settings;
 
+use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -7,7 +9,7 @@ use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Admin\Settings::maybe_display_preload_notice
- * @group Preload
+ * @group  Preload
  */
 class Test_MaybeDisplayPreloadNotice extends TestCase {
 	protected $settings;
@@ -18,13 +20,13 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->settings = new Settings($this->options);
+		$this->stubTranslationFunctions();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->stubTranslationFunctions();
 		Functions\expect('get_current_screen')->with()->andReturn($config['screen']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['has_right']);
 		$this->configureEnabled($config);

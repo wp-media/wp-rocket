@@ -34,6 +34,9 @@ class Test_LoadInitialSitemap extends TestCase {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
 			$this->queue->expects()->add_job_preload_job_check_finished_async();
 		}
+		if(count($config['filter_sitemaps']) > 0) {
+			$this->queue->expects()->add_job_preload_job_check_finished_async();
+		}
 		if(key_exists('transient', $expected)) {
 			Functions\expect('set_transient')->with('wpr_preload_running', true);
 		}

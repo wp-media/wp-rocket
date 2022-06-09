@@ -23,6 +23,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $query;
 
+
 	/**
 	 * Creates an instance of the class.
 	 *

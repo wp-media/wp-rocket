@@ -9,10 +9,11 @@ trait DBTrait {
 		return $resource_query->query( $resource );
 	}
 
-	public static function addCache( array $resource ) {
+	public static function cacheFound( array $cache): bool {
 		$container = apply_filters( 'rocket_container', null );
-		$cache_query = $container->get( 'preload_caches_query' );
-		return $cache_query->create_or_update( $resource );
+		$resource_query = $container->get( 'preload_caches_query' );
+
+		return count($resource_query->query( $cache )) > 0;
 	}
 
 	public static function truncateUsedCssTable() {
@@ -23,11 +24,10 @@ trait DBTrait {
 		}
 	}
 
-	public static function cacheFound( array $cache): bool {
+	public static function addCache( array $resource ) {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'preload_caches_query' );
-
-		return count($resource_query->query( $cache )) > 0;
+		$cache_query = $container->get( 'preload_caches_query' );
+		return $cache_query->create_or_update( $resource );
 	}
 
 	public static function installFresh() {
