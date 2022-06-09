@@ -51,7 +51,7 @@ class Test_AddWpCronSchedule extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
-		Functions\when('__')->returnArg();
+		$this->stubTranslationFunctions();
 		$this->queueRunner->add_wp_cron_schedule($config);
 		$this->assertSame($expected, $this->queueRunner->add_wp_cron_schedule($config));
 	}

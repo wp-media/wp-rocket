@@ -28,11 +28,11 @@ class Test_PreloadUrl extends TestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->options = \Mockery::mock(Options_Data::class);
+		$this->options = Mockery::mock(Options_Data::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->queue = \Mockery::mock(Queue::class);
+		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->controller = \Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]', [$this->options,
+		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]', [$this->options,
 			$this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
 

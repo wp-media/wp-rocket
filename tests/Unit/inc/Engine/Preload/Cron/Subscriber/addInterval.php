@@ -33,8 +33,7 @@ class Test_AddInterval extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
-		Functions\when('rocket_get_constant')->returnArg(2);
-		Functions\when('esc_html__')->returnArg(1);
+		$this->stubTranslationFunctions();
 		$this->settings->expects()->is_enabled()->andReturn($config['is_enabled']);
 
 		$this->assertSame($expected, $this->subscriber->add_interval($config['schedules']));
