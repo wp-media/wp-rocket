@@ -295,6 +295,7 @@ class Plugin {
 			'unlimited_elements',
 			'inline_related_posts',
 			'jetpack',
+			'rank_math_seo',
 		];
 
 		$host_type = HostResolver::get_host_service();

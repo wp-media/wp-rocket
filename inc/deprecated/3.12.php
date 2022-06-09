@@ -416,3 +416,20 @@ function rocket_remove_jetpack_cookie_law_mandatory_cookie()
 	// Delete our option.
 	delete_option('rocket_jetpack_eu_cookie_widget');
 }
+
+/**
+ * Add SEO sitemap URL to the sitemaps to preload
+ *
+ * @since 3.2.3
+ *
+ * @param array $sitemaps Sitemaps to preload.
+ * @return array Updated Sitemaps to preload
+ */
+function rank_math_rocket_sitemap( $sitemaps ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	_deprecated_function( __FUNCTION__, '3.12' );
+	if ( get_rocket_option( 'rank_math_xml_sitemap', false ) ) {
+		$sitemaps[] = \RankMath\Sitemap\Router::get_base_url( 'sitemap_index.xml' );
+	}
+
+	return $sitemaps;
+}

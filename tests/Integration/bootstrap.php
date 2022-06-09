@@ -153,6 +153,11 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
+			define('RANK_MATH_FILE', '1');
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/RankMathSEO/fixtures.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'Jetpack' ) ) {
 			// Load AMP plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/jetpack/jetpack.php';
