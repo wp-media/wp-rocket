@@ -113,6 +113,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'preload_front_subscriber', 'WP_Rocket\Engine\Preload\Frontend\Subscriber' )
 			->addArgument( $fetch_sitemap_controller )
 			->addArgument( $preload_url_controller )
+			->addArgument( $check_finished_controller )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\Subscriber' )
