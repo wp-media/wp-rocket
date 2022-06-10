@@ -48,6 +48,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pwa',
 		'flatsome',
 		'minimalist_blogger',
+		'convertplug',
+		'unlimited_elements',
+		'inline_related_posts',
 	];
 
 	/**
@@ -167,6 +170,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
+			->addTag( 'common_subscriber' );
+    $this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
 			->addTag( 'common_subscriber' );
 	}
 }

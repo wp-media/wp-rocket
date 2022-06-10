@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'minify_admin_subscriber',
 		];
 	}
 
@@ -272,6 +273,7 @@ class Plugin {
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
 			'rucss_frontend_subscriber',
+			'rucss_cron_subscriber',
 			'divi',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
@@ -293,6 +295,10 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'minimalist_blogger',
+			'convertplug',
+			'cache_config',
+			'unlimited_elements',
+			'inline_related_posts',
 		];
 
 		$host_type = HostResolver::get_host_service();
