@@ -164,35 +164,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Displays the button to open the subscription modal
-	 *
-	 * @since  3.5
-	 *
-	 * @return void
-	 */
-	public function display_manage_subscription() {
-		if ( $this->is_white_label_account() ) {
-			return;
-		}
-
-		if ( ! rocket_is_live_site() ) {
-			return;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		if ( 'running' !== $subscription_data['subscription_status'] ) {
-			return;
-		}
-
-		?>
-		<p class="wpr-rocketcdn-subscription">
-			<button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button>
-		</p>
-		<?php
-	}
-
-	/**
 	 * Purges the CDN cache and store the response in a transient.
 	 *
 	 * @since  3.5
