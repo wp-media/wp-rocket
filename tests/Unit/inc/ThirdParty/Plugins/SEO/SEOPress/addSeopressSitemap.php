@@ -8,6 +8,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\SEO\SEOPress::add_seopress_sitemap
+ *
+ * @group  SEOPress
+ * @group  ThirdParty
+ */
 class Test_AddSeopressSitemap extends TestCase
 {
 	protected $option;

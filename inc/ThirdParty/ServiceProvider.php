@@ -54,6 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rank_math_seo',
 		'all_in_one_seo_pack',
 		'seopress',
+		'the_seo_framework',
 	];
 
 	/**
@@ -194,6 +195,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'seopress', 'WP_Rocket\ThirdParty\Plugins\SEO\SEOPress' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'the_seo_framework', 'WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 	}
