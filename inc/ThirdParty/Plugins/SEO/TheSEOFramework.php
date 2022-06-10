@@ -55,12 +55,12 @@ class TheSEOFramework implements Subscriber_Interface {
 		];
 	}
 
-	 /**
-	  * Adds TSF sitemap URLs to preload.
-	  *
-	  * @param array $sitemaps Sitemaps to preload.
-	  * @return array Updated Sitemaps to preload
-	  */
+	/**
+	 * Adds TSF sitemap URLs to preload.
+	 *
+	 * @param array $sitemaps Sitemaps to preload.
+	 * @return array Updated Sitemaps to preload
+	 */
 	public function add_tsf_sitemap_to_preload( $sitemaps ) {
 
 		if ( $this->option->get( 'tsf_xml_sitemap', false ) ) {
