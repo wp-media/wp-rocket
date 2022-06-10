@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'admin_cache_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
+		'cache_config',
 	];
 
 	/**
@@ -58,6 +59,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', 'WP_Rocket\Engine\Cache\PurgeExpired\Subscriber' )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->add( 'cache_config', 'WP_Rocket\Engine\Cache\Config\Subscriber' )
 			->addTag( 'common_subscriber' );
 	}
 }

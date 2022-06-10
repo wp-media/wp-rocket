@@ -297,6 +297,7 @@ class Plugin {
 			'flatsome',
 			'convertplug',
 			'dynamic_lists_subscriber',
+			'cache_config',
 			'unlimited_elements',
 			'inline_related_posts',
 		];
