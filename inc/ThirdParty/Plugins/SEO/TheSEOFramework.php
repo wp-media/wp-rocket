@@ -28,6 +28,9 @@ class TheSEOFramework implements Subscriber_Interface {
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
+		if ( ! function_exists( 'the_seo_framework' ) ) {
+			return [];
+		}
 		$tsf = the_seo_framework();
 
 		// Either TSF < 3.1, or the plugin's silenced (soft-disabled) via a drop-in.
