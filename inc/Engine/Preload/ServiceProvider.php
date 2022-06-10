@@ -84,7 +84,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$preload_url_controller   = $this->getContainer()->get( 'preload_url_controller' );
 
 		$this->getContainer()->add( 'load_initial_sitemap_controller', 'WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap' )
-			->addArgument( $queue );
+			->addArgument( $queue )
+			->addArgument( $cache_query );
 
 		$this->getContainer()->share(
 			'preload_queue_runner',

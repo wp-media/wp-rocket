@@ -321,4 +321,25 @@ class Cache extends Query {
 		);
 		return 0 !== $pending_count;
 	}
+
+	/**
+	 * Revert in-progress urls.
+	 *
+	 * @return void
+	 */
+	public function revert_in_progress() {
+		$in_progress_list = $this->query(
+			[
+				'status' => 'in-progress',
+			]
+		);
+		foreach ( $in_progress_list as $in_progress ) {
+			$this->update_item(
+				$in_progress->id,
+				[
+					'status' => 'pending',
+				]
+				);
+		}
+	}
 }

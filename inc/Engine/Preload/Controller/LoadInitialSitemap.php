@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+
 /**
  * Controller to load initial sitemap tasks.
  */
@@ -15,12 +17,21 @@ class LoadInitialSitemap {
 	protected $queue;
 
 	/**
+	 * DB query.
+	 *
+	 * @var Cache
+	 */
+	protected $query;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Queue $queue Queue group.
+	 * @param Cache $query DB query.
 	 */
-	public function __construct( Queue $queue ) {
+	public function __construct( Queue $queue, $query ) {
 		$this->queue = $queue;
+		$this->query = $query;
 	}
 
 	/**
@@ -94,6 +105,7 @@ class LoadInitialSitemap {
 	 * @return void
 	 */
 	public function cancel_preload() {
-		$this->queue->cancel_pending_jobs_cron();
+		$this->queue->cancel_pending_jobs();
+		$this->query->revert_in_progress();
 	}
 }
