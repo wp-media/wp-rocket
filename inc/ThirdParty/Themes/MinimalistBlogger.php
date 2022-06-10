@@ -17,7 +17,7 @@ class MinimalistBlogger extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_theme() ) {
+		if ( ! self::is_current_theme() ) {
 			return [];
 		}
 
