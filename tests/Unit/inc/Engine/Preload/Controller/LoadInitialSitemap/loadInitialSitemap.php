@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Sitemaps_Index;
 
@@ -16,13 +17,15 @@ use WP_Sitemaps_Index;
  */
 class Test_LoadInitialSitemap extends TestCase {
 	protected $queue;
+	protected $query;
 	protected $controller;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->queue = Mockery::mock(Queue::class);
-		$this->controller = new LoadInitialSitemap($this->queue);
+		$this->query = $this->createMock(Cache::class);
+		$this->controller = new LoadInitialSitemap($this->queue, $this->query);
 	}
 
 	/**

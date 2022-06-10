@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
+use ActionScheduler_Store;
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
 class Queue extends AbstractASQueue {
@@ -52,7 +53,7 @@ class Queue extends AbstractASQueue {
 	 * @return string
 	 */
 	public function add_job_preload_job_check_finished_async() {
-		return $this->add_async( 'rocket_preload_job_check_finished', [] );
+		return $this->schedule_single( time() + MINUTE_IN_SECONDS, 'rocket_preload_job_check_finished', [ time() ] );
 	}
 
 	/**
@@ -78,4 +79,14 @@ class Queue extends AbstractASQueue {
 
 		return count( $parse_sitemap ) > 0 || count( $preload_url ) > 0;
 	}
+
+	/**
+	 * Cancel pending jobs.
+	 *
+	 * @return void
+	 */
+	public function cancel_pending_jobs() {
+		$this->cancel_all( '' );
+	}
+
 }

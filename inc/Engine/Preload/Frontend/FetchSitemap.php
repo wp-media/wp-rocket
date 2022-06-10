@@ -62,13 +62,11 @@ class FetchSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			if ( $this->query->create_or_nothing(
+			$this->query->create_or_nothing(
 				[
 					'url' => $link,
 				]
-				) ) {
-				$this->queue->add_job_preload_job_preload_url_async( $link );
-			}
+				);
 		}
 
 		$children = $this->sitemap_parser->get_children();

@@ -59,8 +59,6 @@ class Test_ParseSitemap extends TestCase {
 			$this->query->expects(self::any())->method('create_or_nothing')->withConsecutive(...$config['jobs'])
 				->willReturn(true);
 
-			$this->queue->expects()->add_job_preload_job_preload_url_async($link);
-
 		}
 
 		foreach ($config['children'] as $child) {
