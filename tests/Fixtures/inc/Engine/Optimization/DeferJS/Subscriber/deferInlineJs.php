@@ -88,6 +88,20 @@ $expected = <<<HTML
 HTML
 ;
 
+$exclusions_list = (object) [
+	'defer_js_inline_exclusions' => [
+		'DOMContentLoaded',
+		'document.write',
+		'window.lazyLoadOptions',
+		'N.N2_',
+		'rev_slider_wrapper',
+		'FB3D_CLIENT_LOCALE',
+		'ewww_webp_supported',
+		'anr_captcha_field_div',
+		'renderInvisibleReCaptcha',
+	],
+];
+
 return [
 	'testShouldReturnOriginalWhenConstantSet' => [
 		'config' => [
@@ -97,6 +111,7 @@ return [
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -109,6 +124,7 @@ return [
 				'defer_all_js'      => 0,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -121,6 +137,7 @@ return [
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -135,6 +152,7 @@ return [
 					'/wp-includes/js/jquery/jquery.js',
 				],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => $html,
 		'expected' => $html,
@@ -147,6 +165,7 @@ return [
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => $html,
 		'expected' => $expected,
@@ -161,6 +180,7 @@ return [
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -188,6 +208,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -216,6 +237,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -240,6 +262,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -264,6 +287,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -288,6 +312,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
@@ -308,6 +333,7 @@ HTML
 				'defer_all_js'      => 1,
 				'exclude_defer_js'  => [],
 			],
+			'exclusions'          => $exclusions_list,
 		],
 		'html'     => <<<HTML
 	<script type="text/javascript">var first_string = jQuery('#first_selector');</script>
