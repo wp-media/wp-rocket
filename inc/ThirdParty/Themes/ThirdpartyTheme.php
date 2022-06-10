@@ -17,7 +17,7 @@ abstract class ThirdpartyTheme implements \WP_Rocket\Event_Management\Subscriber
 	 * @param WP_Theme $theme current theme.
 	 * @return bool
 	 */
-	protected static function is_theme( $theme = null ) {
+	protected static function is_current_theme( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 
 		return ( str_contains( static::$theme_name, $theme->get_template() ) );
