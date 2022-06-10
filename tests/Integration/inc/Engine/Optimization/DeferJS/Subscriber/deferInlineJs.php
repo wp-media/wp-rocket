@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
  *
- * @group  DeferJS
+ * @group  DeferJSInline
  */
 class Test_DeferInlineJs extends TestCase {
 	use ContentTrait;
