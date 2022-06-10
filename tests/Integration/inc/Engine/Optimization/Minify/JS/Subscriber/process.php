@@ -28,6 +28,8 @@ class Test_Process extends TestCase {
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
+		remove_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );
+		remove_filter( 'rocket_minify_excluded_external_js', [ $this, 'set_excluded_external'] );
 
 		$this->unsetSettings();
 	}
@@ -38,6 +40,8 @@ class Test_Process extends TestCase {
 	public function testShouldMinifyJS( $original, $expected, $settings ) {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
+		add_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );
+		add_filter( 'rocket_minify_excluded_external_js', [ $this, 'set_excluded_external'] );
 
 		$this->defer_all_js = $settings['defer_all_js'];
 
@@ -65,5 +69,17 @@ class Test_Process extends TestCase {
 
 	public function return_defer_all_js() {
 		return $this->defer_all_js;
+	}
+
+	public function set_excluded_inline() {
+		return [
+			'nonce',
+		];
+	}
+
+	public function set_excluded_external() {
+		return [
+			'cse.google.com/cse.js',
+		];
 	}
 }
