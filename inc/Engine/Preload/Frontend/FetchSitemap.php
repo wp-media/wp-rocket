@@ -62,11 +62,13 @@ class FetchSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			$this->query->create_or_nothing(
-				[
-					'url' => $link,
-				]
+			if ( ! $this->check_excluded( $link ) ) {
+				$this->query->create_or_nothing(
+					[
+						'url' => $link,
+					]
 				);
+			}
 		}
 
 		$children = $this->sitemap_parser->get_children();
@@ -74,5 +76,16 @@ class FetchSitemap {
 		foreach ( $children as $child ) {
 			$this->queue->add_job_preload_job_parse_sitemap_async( $child );
 		}
+	}
+
+	/**
+	 * Check if the url is excluded.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	protected function check_excluded( string $url ) {
+		$excluded = get_rocket_cache_reject_uri();
+		return (bool) preg_match( "/$excluded/", $url );
 	}
 }

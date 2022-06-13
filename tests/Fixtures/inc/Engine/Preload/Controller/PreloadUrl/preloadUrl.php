@@ -4,22 +4,6 @@ return [
 		'config' => [
 			'url' => 'url',
 			'cache_exists' => true,
-			'is_excluded' => false,
-			'cache_mobile' => false,
-			'user_agent' => 'user_agent',
-			'request' => [
-				'config' => [
-					'blocking' => false,
-					'timeout'  => 0.01,
-				]
-			],
-		]
-	],
-	'excludedShouldDoNothing' => [
-		'config' => [
-			'url' => 'url',
-			'cache_exists' => false,
-			'is_excluded' => true,
 			'cache_mobile' => false,
 			'user_agent' => 'user_agent',
 			'request' => [
@@ -35,7 +19,6 @@ return [
 			'url' => 'url',
 			'cache_exists' => false,
 			'cache_mobile' => false,
-			'is_excluded' => false,
 			'user_agent' => 'user_agent',
 			'request' => [
 				'config' => [
@@ -49,7 +32,6 @@ return [
 		'config' => [
 			'url' => 'url',
 			'cache_exists' => false,
-			'is_excluded' => false,
 			'cache_mobile' => true,
 			'user_agent' => 'user_agent',
 			'request' => [

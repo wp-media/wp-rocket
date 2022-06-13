@@ -32,7 +32,7 @@ class Test_PreloadUrl extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached,check_excluded]',
+		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]',
 			[$this->options,
 			$this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
@@ -42,21 +42,13 @@ class Test_PreloadUrl extends TestCase
 	 */
 	public function testShouldDoAsExpected($config) {
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
-		$this->configureExcluded($config);
 		$this->configureRequest($config);
 		$this->configureMobileRequest($config);
 		$this->controller->preload_url($config['url']);
 	}
 
-	protected function configureExcluded($config) {
-		if($config['cache_exists']) {
-			return;
-		}
-		$this->controller->expects()->check_excluded($config['url'])->andReturn($config['is_excluded']);
-	}
-
 	protected function configureRequest($config) {
-		if($config['cache_exists'] || $config['is_excluded']) {
+		if($config['cache_exists']) {
 			return;
 		}
 		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
@@ -65,7 +57,7 @@ class Test_PreloadUrl extends TestCase
 	}
 
 	protected function configureMobileRequest($config) {
-		if($config['cache_exists'] || $config['is_excluded']) {
+		if($config['cache_exists']) {
 			return;
 		}
 
