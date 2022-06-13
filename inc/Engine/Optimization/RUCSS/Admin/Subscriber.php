@@ -83,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -698,5 +699,16 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 		return null;
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		$this->used_css->notice_write_permissions();
 	}
 }
