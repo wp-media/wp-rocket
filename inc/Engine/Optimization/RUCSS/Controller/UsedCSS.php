@@ -573,9 +573,18 @@ class UsedCSS {
 
 		$hash = md5( $css );
 
-		$this->used_css_query->make_status_completed( $id, $hash );
-		$this->filesystem->write_used_css( $hash, $css );
+		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
+			return;
+		}
 
+		$this->used_css_query->make_status_completed( $id, $hash );
+
+		/**
+		 * Fires after successfully saving the used CSS for an URL
+		 *
+		 * @param string $url URL used to generated the used CSS.
+		 * @param array  $job_details Result of the request to get the job status from SaaS.
+		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
 
 	}
@@ -806,5 +815,36 @@ class UsedCSS {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		if ( $this->filesystem->is_writable_folder() ) {
+			return;
+		}
+
+		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
