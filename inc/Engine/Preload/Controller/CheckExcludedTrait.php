@@ -11,7 +11,7 @@ trait CheckExcludedTrait {
 	 * @return bool
 	 */
 	protected function check_excluded( string $url ) {
-		$excluded = get_rocket_cache_reject_uri();
+		$excluded = str_replace( '/', '\/', get_rocket_cache_reject_uri() );
 		return (bool) preg_match( "/$excluded/", $url );
 	}
 }
