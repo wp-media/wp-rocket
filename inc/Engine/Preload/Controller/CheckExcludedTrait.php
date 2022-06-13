@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
-trait CheckExcludedTrait
-{
+trait CheckExcludedTrait {
+
 	/**
 	 * Check if the url is excluded.
 	 *
