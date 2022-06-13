@@ -34,15 +34,6 @@ class Jetpack implements Subscriber_Interface {
 			'deactivate_jetpack/jetpack.php' => [ 'remove_jetpack_cookie_law_mandatory_cookie', 11 ],
 		];
 
-		var_dump(
-			[
-				'jetback_installed' => class_exists( 'Jetpack' ),
-				'sitemap_module' => \Jetpack::is_module_active( 'sitemaps' ),
-				'jetpack_sitemap_uri' => function_exists( 'jetpack_sitemap_uri' ),
-				'jetpack_widgets' => \Jetpack::is_module_active( 'widgets' ),
-			]
-		);
-
 		if ( ! class_exists( 'Jetpack' ) ) {
 			return $events;
 		}
