@@ -83,7 +83,7 @@ class Filesystem {
 	/**
 	 * Deletes the used CSS files for the corresponding hash
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @param string $hash md5 hash string.
 	 *
@@ -98,7 +98,7 @@ class Filesystem {
 	/**
 	 * Deletes all the used CSS files
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @return void
 	 */
@@ -117,9 +117,20 @@ class Filesystem {
 	}
 
 	/**
+	 * Checks if the used CSS storage folder is writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return bool
+	 */
+	public function is_writable_folder() {
+		return $this->filesystem->is_writable( $this->path );
+	}
+
+	/**
 	 * Converts hash to path with filtered number of levels
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @param string $hash md5 hash string.
 	 *
@@ -129,7 +140,7 @@ class Filesystem {
 		/**
 		 * Filters the number of sub-folders level to create for used CSS storage
 		 *
-		 * @since 3.11.3
+		 * @since 3.11.4
 		 *
 		 * @param int $levels Number of levels.
 		 */
