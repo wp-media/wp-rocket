@@ -233,14 +233,14 @@ function rocket_get_ignored_parameters() {
 /**
  * Get all uri we don't cache.
  *
- * @param bool $force Force the static uris to be reverted to null.
- * @param bool $show_safe_content show sensitive uris.
- * @return string A pipe separated list of rejected uri.
- * @since 2.0
- *
  * @since 3.3.2 Exclude embedded URLs
  * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API.
  * @since 2.4.1 Auto-exclude WordPress REST API.
+ * @since 2.0
+ *
+ * @param bool $force Force the static uris to be reverted to null.
+ * @param bool $show_safe_content show sensitive uris.
+ * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
@@ -288,6 +288,7 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 	 * @since 2.1
 	 *
 	 * @param array $uris List of rejected uri
+	 * @param bool $show_safe_content show sensitive uris.
 	*/
 	$uris = apply_filters( 'rocket_cache_reject_uri', $uris, $show_safe_content );
 	$uris = array_filter( $uris );

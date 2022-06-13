@@ -193,8 +193,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$excluded = array_filter( $excluded );
 
-		$login_url = wp_login_url(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-		// .NonPrefixedHooknameFound
+		$login_url = wp_login_url(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$login_uri = str_replace( home_url(), '', $login_url );
 
 		$excluded = array_filter(
