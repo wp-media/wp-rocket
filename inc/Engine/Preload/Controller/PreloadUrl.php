@@ -58,7 +58,7 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		if ( $this->is_already_cached( $url ) ) {
+		if ( $this->is_already_cached( $url ) || $this->check_excluded( $url ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
@@ -147,5 +147,16 @@ class PreloadUrl {
 		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $https . '.html';
 
 		return $this->filesystem->exists( $file_cache_path );
+	}
+
+	/**
+	 * Check if the url is excluded.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	protected function check_excluded( string $url ) {
+		$excluded = get_rocket_cache_reject_uri();
+		return (bool) preg_match( "/$excluded/", $url );
 	}
 }
