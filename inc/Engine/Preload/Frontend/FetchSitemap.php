@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Frontend;
 
+use WP_Rocket\Engine\Preload\Controller\CheckExcludedTrait;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class FetchSitemap {
+	use CheckExcludedTrait;
 
 	/**
 	 * Parse controller.
@@ -76,16 +78,5 @@ class FetchSitemap {
 		foreach ( $children as $child ) {
 			$this->queue->add_job_preload_job_parse_sitemap_async( $child );
 		}
-	}
-
-	/**
-	 * Check if the url is excluded.
-	 *
-	 * @param string $url url to check.
-	 * @return bool
-	 */
-	protected function check_excluded( string $url ) {
-		$excluded = get_rocket_cache_reject_uri();
-		return (bool) preg_match( "/$excluded/", $url );
 	}
 }

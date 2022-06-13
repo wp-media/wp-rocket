@@ -139,6 +139,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_urls( array $urls ) {
+
 		$this->controller->partial_clean( $urls );
 	}
 
