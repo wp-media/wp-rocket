@@ -263,21 +263,15 @@ class UsedCSS extends Query {
 	 *
 	 * @param string $hash Hash.
 	 *
-	 * @return int|false
+	 * @return int
 	 */
-	public function count_rows_by_hash( string $hash ) {
-		$query = $this->query(
+	public function count_rows_by_hash( string $hash ): int {
+		return $this->query(
 			[
 				'hash'  => $hash,
 				'count' => true,
 			]
 		);
-
-		if ( empty( $query ) ) {
-			return false;
-		}
-
-		return $query;
 	}
 
 	/**
