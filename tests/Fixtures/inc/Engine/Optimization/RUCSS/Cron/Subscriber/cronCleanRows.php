@@ -26,16 +26,9 @@ $used_css = [
 
 return [
 	'test_data' => [
-		'shouldNotDeleteOnUpdateDueToMissingSettings' => [
-			'input' => [
-				'remove_unused_css' => false,
-				'used_css'          => $used_css,
-			]
-		],
 		'shouldDeleteOnUpdate' => [
 			'input' => [
-				'remove_unused_css'=> true,
-				'used_css'         => $used_css,
+				'used_css' => $used_css,
 			]
 		],
 	],
