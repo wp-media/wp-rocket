@@ -275,7 +275,6 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
-			'polyone',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'support_subscriber',

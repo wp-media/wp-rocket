@@ -38,7 +38,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
-		'polygone',
 		'mod_pagespeed',
 		'adthrive',
 		'autoptimize',
@@ -88,9 +87,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'polyone', 'WP_Rocket\ThirdParty\Themes\Polygone' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
