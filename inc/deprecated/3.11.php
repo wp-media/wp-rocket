@@ -90,3 +90,112 @@ function rocket_sitemap_preload_yoast_seo_option( $options ) {
 
 	return $options;
 }
+
+/**
+ * Clear Kinsta cache when clearing WP Rocket cache
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_clean_kinsta_cache() {
+	global $kinsta_cache;
+	_deprecated_function( __FUNCTION__ . '()', '3.11.1' );
+
+	if ( ! empty( $kinsta_cache->kinsta_cache_purge ) ) {
+		$kinsta_cache->kinsta_cache_purge->purge_complete_caches();
+	}
+}
+
+/**
+ * Partially clear Kinsta cache when partially clearing WP Rocket cache
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @param object $post Post object.
+ * @return void
+ */
+function rocket_clean_kinsta_post_cache( $post ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.11.1' );
+	global $kinsta_cache;
+	$kinsta_cache->kinsta_cache_purge->initiate_purge( $post->ID, 'post' );
+}
+
+
+/**
+ * Clears Kinsta cache for the homepage URL when using "Purge this URL" from the admin bar on the front end
+ *
+ * @since 3.0.4
+ * @author Remy Perona
+ *
+ * @param string $root WP Rocket root cache path.
+ * @param string $lang Current language.
+ * @return void
+ */
+function rocket_clean_kinsta_cache_home( $root = '', $lang = '' ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.11.1' );
+	$url = get_rocket_i18n_home_url( $lang );
+	$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
+
+	wp_remote_get(
+		$url,
+		[
+			'blocking' => false,
+			'timeout'  => 0.01,
+		]
+	);
+}
+
+/**
+ * Clears Kinsta cache for a specific URL when using "Purge this URL" from the admin bar on the front end
+ *
+ * @since 3.0.4
+ * @author Remy Perona
+ *
+ * @param string $url URL to purge.
+ * @return void
+ */
+function rocket_clean_kinsta_cache_url( $url ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.11.1' );
+	$url = trailingslashit( $url ) . 'kinsta-clear-cache/';
+
+	wp_remote_get(
+		$url,
+		[
+			'blocking' => false,
+			'timeout'  => 0.01,
+		]
+	);
+}
+
+/**
+ * Remove WP Rocket functions on WP core action hooks to prevent triggering a double cache clear.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_remove_partial_purge_hooks() {
+	_deprecated_function( __FUNCTION__ . '()', '3.11.1' );
+	// WP core action hooks rocket_clean_post() gets hooked into.
+	$clean_post_hooks = [
+		// Disables the refreshing of partial cache when content is edited.
+		'wp_trash_post',
+		'delete_post',
+		'clean_post_cache',
+		'wp_update_comment_count',
+	];
+
+	// Remove rocket_clean_post() from core action hooks.
+	array_map(
+		function( $hook ) {
+			remove_action( $hook, 'rocket_clean_post' );
+		},
+		$clean_post_hooks
+	);
+
+	remove_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
+}

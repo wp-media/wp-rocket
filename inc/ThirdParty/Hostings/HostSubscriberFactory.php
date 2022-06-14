@@ -43,6 +43,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new LiteSpeed();
 			case 'godaddy':
 				return new Godaddy();
+			case 'kinsta':
+				return new Kinsta();
 			default:
 				return new NullSubscriber();
 		}
