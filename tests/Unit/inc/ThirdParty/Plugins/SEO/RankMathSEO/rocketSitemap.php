@@ -1,13 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\RankMathSEO;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\SEO\RankMathSEO;
 
 use Mockery;
 use RankMath\Sitemap\Router;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Plugins\RankMathSEO;
+use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
+ *
+ * @group  AllInOneSEOPack
+ * @group  ThirdParty
+ */
 class Test_RocketSitemap extends TestCase
 {
 	protected $option;

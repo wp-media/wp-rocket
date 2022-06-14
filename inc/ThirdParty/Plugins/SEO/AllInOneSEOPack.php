@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty\Plugins;
+namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -52,9 +52,6 @@ class AllInOneSEOPack implements Subscriber_Interface {
 
 		$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
 		$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
-		if ( ! $aioseo_v3 && ! $aioseo_v4 ) {
-			return $sitemaps;
-		}
 
 		$sitemap_enabled = false;
 		if ( $aioseo_v3 && ! $aioseo_v4 ) {

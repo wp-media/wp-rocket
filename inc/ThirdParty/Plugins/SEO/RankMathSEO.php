@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty\Plugins;
+namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use RankMath\Helper;
 use RankMath\Sitemap\Router;

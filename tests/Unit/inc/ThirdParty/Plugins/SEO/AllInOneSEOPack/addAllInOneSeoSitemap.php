@@ -1,14 +1,20 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\AllInOneSEOPack;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\ThirdParty\Plugins\AllInOneSEOPack;
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
+ *
+ * @group  AllInOneSEOPack
+ * @group  ThirdParty
+ */
 class Test_AddAllInOneSeoSitemap extends TestCase
 {
 	protected $option;

@@ -186,11 +186,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\RankMathSEO' )
+			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'all_in_one_seo_pack', 'WP_Rocket\ThirdParty\Plugins\AllInOneSEOPack' )
+			->share( 'all_in_one_seo_pack', 'WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()

@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\RankMathSEO;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\RankMathSEO;
 
 use RankMath\Sitemap\Router;
 use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\RankMathSEO::rocket_sitemap
+ * @covers \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
  *
  * @group  RankMathSEO
  * @group  ThirdParty

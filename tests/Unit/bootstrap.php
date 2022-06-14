@@ -39,7 +39,7 @@ function load_original_files_before_mocking() {
 		'/WPDieException.php',
 		'/Kinsta_Cache.php',
 		'/WP_Rewrite.php',
-		'/inc/ThirdParty/Plugins/RankMathSEO/fixtures.php',
+		'/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php',
 		'/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php',
 	];
 	foreach ( $fixtures as $file ) {

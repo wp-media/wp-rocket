@@ -155,7 +155,7 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
 			define('RANK_MATH_FILE', '1');
-			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/RankMathSEO/fixtures.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'SEOPress' ) ) {

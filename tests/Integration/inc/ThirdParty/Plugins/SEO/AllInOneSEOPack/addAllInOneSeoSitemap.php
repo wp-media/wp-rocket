@@ -1,13 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\AllInOneSEOPack;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers  \WP_Rocket\ThirdParty\Plugins\AllInOneSEOPack::add_all_in_one_seo_sitemap
+ * @covers  \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
  * @group   AllInOneSeoPack
  */
 class Test_AddAllInOneSeoSitemap extends TestCase
