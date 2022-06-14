@@ -82,7 +82,6 @@ class Subscriber implements Subscriber_Interface {
 			'init'                                   => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'initialize_rucss_queue_runner' ],
-				[ 'register_filters' ],
 			],
 			'rocket_rucss_clean_rows_time_event'     => 'cron_clean_rows',
 			'admin_post_rocket_clear_usedcss'        => 'truncate_used_css_handler',
@@ -127,14 +126,12 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay', 1 );
-
-		if ( $delete_delay <= 0 ) {
+		if ( ! $this->is_rucss_deletion_activated() ) {
 			return;
 		}
 
-		$this->database->delete_old_used_css( $delete_delay );
-		$this->database->delete_old_resources( $delete_delay );
+		$this->database->delete_old_used_css();
+		$this->database->delete_old_resources();
 	}
 
 	/**
@@ -261,9 +258,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$deletion_activated = $this->is_rucss_deletion_activated();
-
-		if ( ! $deletion_activated ) {
+		if ( ! $this->is_rucss_deletion_activated() ) {
 			return;
 		}
 
@@ -290,9 +285,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$deletion_activated = $this->is_rucss_deletion_activated();
-
-		if ( ! $deletion_activated ) {
+		if ( ! $this->is_rucss_deletion_activated() ) {
 			return;
 		}
 
@@ -317,9 +310,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$deletion_activated = $this->is_rucss_deletion_activated();
-
-		if ( ! $deletion_activated ) {
+		if ( ! $this->is_rucss_deletion_activated() ) {
 			return;
 		}
 
@@ -799,28 +790,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Call the filter to check if the deletion from RUCSS is activated.
 	 *
-	 * @return mixed|null
+	 * @return bool
 	 */
 	protected function is_rucss_deletion_activated() {
+		/**
+		 * Disable RUCSS deletion
+		 *
+		 * @param bool RUCSS deletion enabled
+		 */
 		return apply_filters( 'rocket_rucss_deletion_activated', true );
-	}
-
-	/**
-	 * Register filters from RUCSS.
-	 *
-	 * @return void
-	 */
-	public function register_filters() {
-		add_filter( 'rocket_rucss_deletion_activated', '__return_true' );
-		add_filter( 'rocket_rucss_css_delete_delay', [ $this, 'set_delete_delay' ] );
-	}
-
-	/**
-	 * Returns default value from Delete Delay.
-	 *
-	 * @return int
-	 */
-	public function set_delete_delay() {
-		return 1;
 	}
 }

@@ -62,12 +62,22 @@ class Database {
 	/**
 	 * Delete old used css based on last accessed date.
 	 *
-	 * @param int $delete_delay number of months before deleting.
-	 *
 	 * @return void
 	 */
-	public function delete_old_used_css( $delete_delay = 1 ) {
+	public function delete_old_used_css() {
 		if ( $this->rucss_usedcss_table->exists() ) {
+
+			/**
+			 * Change RUCSS deletion delay
+			 *
+			 * @param int RUCSS deletion delay in months
+			 */
+			$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay', 1 );
+
+			if ( $delete_delay <= 0 ) {
+				return;
+			}
+
 			$this->rucss_usedcss_table->delete_old_used_css( $delete_delay );
 		}
 	}
@@ -75,13 +85,11 @@ class Database {
 	/**
 	 * Delete old used css based on last accessed date.
 	 *
-	 * @param int $delete_delay number of months before deleting.
-	 *
 	 * @return void
 	 */
-	public function delete_old_resources( $delete_delay = 1 ) {
+	public function delete_old_resources() {
 		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->delete_old_items( $delete_delay );
+			$this->rucss_resources_table->delete_old_items();
 		}
 	}
 
