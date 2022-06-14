@@ -1,6 +1,5 @@
 <?php
 
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 /**
@@ -108,13 +107,6 @@ class WPRocketUninstall {
 	];
 
 	/**
-	 * Instance of RUCSS resources table.
-	 *
-	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources
-	 */
-	private $rucss_resources_table;
-
-	/**
 	 * Instance of RUCSS used_css table.
 	 *
 	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS
@@ -126,14 +118,12 @@ class WPRocketUninstall {
 	 *
 	 * @param string    $cache_path            Path to the cache folder.
 	 * @param string    $config_path           Path to the config folder.
-	 * @param Resources $rucss_resources_table RUCSS resources table.
 	 * @param UsedCSS   $rucss_usedcss_table   RUCSS used_css table.
 	 */
-	public function __construct( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table ) {
-		$this->cache_path            = trailingslashit( $cache_path );
-		$this->config_path           = $config_path;
-		$this->rucss_resources_table = $rucss_resources_table;
-		$this->rucss_usedcss_table   = $rucss_usedcss_table;
+	public function __construct( $cache_path, $config_path, $rucss_usedcss_table ) {
+		$this->cache_path          = trailingslashit( $cache_path );
+		$this->config_path         = $config_path;
+		$this->rucss_usedcss_table = $rucss_usedcss_table;
 	}
 
 	/**
@@ -178,9 +168,6 @@ class WPRocketUninstall {
 	 * Drop RUCSS tables for current active site.
 	 */
 	private function drop_rucss_current_site_tables() {
-		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->uninstall();
-		}
 		if ( $this->rucss_usedcss_table->exists() ) {
 			$this->rucss_usedcss_table->uninstall();
 		}
