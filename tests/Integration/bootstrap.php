@@ -88,7 +88,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'USMap' ) ) {
-			define('WDMAP_VERSION', '123');
+			define('USMAP_VERSION', '123');
 		}
 
 		if ( BootstrapManager::isGroup( 'SpinUpWP' ) ) {

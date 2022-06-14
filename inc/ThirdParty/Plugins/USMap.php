@@ -14,7 +14,7 @@ class USMap implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [];
-		if ( defined( 'WDMAP_VERSION' ) ) {
+		if ( defined( 'USMAP_VERSION' ) ) {
 			$events['rocket_delay_js_exclusions'] = 'exclude_from_delay_js';
 		}
 
