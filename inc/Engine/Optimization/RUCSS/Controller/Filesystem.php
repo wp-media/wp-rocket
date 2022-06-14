@@ -128,7 +128,6 @@ class Filesystem {
 			rocket_mkdir_p( $this->path );
 		}
 
-
 		return $this->filesystem->is_writable( $this->path );
 	}
 
