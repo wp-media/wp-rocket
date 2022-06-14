@@ -286,7 +286,7 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	public function delete_used_css( string $url ): bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
+		$used_css_arr = $this->used_css_query->get_rows_by_url( $url );
 
 		if ( empty( $used_css_arr ) ) {
 			return false;
@@ -642,7 +642,7 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function clear_url_usedcss( string $url ) {
-		$this->used_css_query->delete_by_url( $url );
+		$this->delete_used_css( $url );
 
 		/**
 		 * Fires after clearing usedcss for specific url.
