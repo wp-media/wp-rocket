@@ -81,4 +81,18 @@ class Database {
 
 		return $this->rucss_usedcss_table->remove_all_completed_rows();
 	}
+
+	/**
+	 * Remove the resources table & version stored in options table
+	 *
+	 * @since 3.12
+	 *
+	 * @return void
+	 */
+	public function drop_resources_table() {
+		global $wpdb;
+
+		$wpdb->query( "DROP TABLE {$wpdb->prefix}wpr_rucss_resources" );
+		delete_option( 'wpr_rucss_resources_version' );
+	}
 }
