@@ -35,13 +35,10 @@ class Polygone implements Subscriber_Interface {
 	/**
 	 * Checks if the current theme (or parent) is Polygone
 	 *
-	 * @since 3.6.3
-	 *
 	 * @param WP_Theme $theme Instance of the theme.
 	 */
 	private static function is_polygone( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
-		var_dump($theme);
 		return ( 'Polygone' === $theme->get( 'Name' ) || 'polygone' === $theme->get_template() );
 	}
 }
