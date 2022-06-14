@@ -2,6 +2,7 @@
 return [
 	'shouldNoParseOnRequestFailure' => [
 		'config' => [
+			'is_excluded' => false,
 			'url' => 'http://example.com',
 			'response' => 'response',
 			'status' => 400,
@@ -12,6 +13,7 @@ return [
 	],
 	'shouldParseOnRequestSucceed' => [
 		'config' => [
+			'is_excluded' => false,
 			'url' => 'http://example.com',
 			'response' => 'response',
 			'request_succeed' => true,
@@ -29,6 +31,25 @@ return [
 					['url' => 'url2',]
 				]
 			],
+			'children' => [
+				'children1',
+				'children2',
+			]
+		],
+	],
+	'shouldNotAddOnExcluded' => [
+		'config' => [
+			'is_excluded' => true,
+			'url' => 'http://example.com',
+			'response' => 'response',
+			'request_succeed' => true,
+			'status' => 200,
+			'content' => '<xml/>',
+			'links' => [
+				'url1',
+				'url2',
+			],
+			'jobs' => [],
 			'children' => [
 				'children1',
 				'children2',

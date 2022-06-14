@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Frontend;
 
+use WP_Rocket\Engine\Preload\Controller\CheckExcludedTrait;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class FetchSitemap {
+	use CheckExcludedTrait;
 
 	/**
 	 * Parse controller.
@@ -62,11 +64,13 @@ class FetchSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			$this->query->create_or_nothing(
-				[
-					'url' => $link,
-				]
+			if ( ! $this->is_excluded( $link ) ) {
+				$this->query->create_or_nothing(
+					[
+						'url' => $link,
+					]
 				);
+			}
 		}
 
 		$children = $this->sitemap_parser->get_children();

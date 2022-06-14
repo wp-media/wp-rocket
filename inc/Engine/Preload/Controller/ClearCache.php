@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class ClearCache {
-
+	use CheckExcludedTrait;
 	/**
 	 * DB query.
 	 *
@@ -30,12 +30,14 @@ class ClearCache {
 	 */
 	public function partial_clean( array $urls ) {
 		foreach ( $urls as $url ) {
-			$this->query->create_or_update(
-				[
-					'url'    => $url,
-					'status' => 'pending',
-				]
+			if ( ! $this->is_excluded( $url ) ) {
+				$this->query->create_or_update(
+					[
+						'url'    => $url,
+						'status' => 'pending',
+					]
 				);
+			}
 		}
 	}
 

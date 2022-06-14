@@ -32,7 +32,8 @@ class Test_PreloadUrl extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]', [$this->options,
+		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]',
+			[$this->options,
 			$this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
 
@@ -45,7 +46,6 @@ class Test_PreloadUrl extends TestCase
 		$this->configureMobileRequest($config);
 		$this->controller->preload_url($config['url']);
 	}
-
 
 	protected function configureRequest($config) {
 		if($config['cache_exists']) {
