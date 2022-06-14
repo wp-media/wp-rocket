@@ -7,7 +7,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
@@ -23,13 +22,6 @@ class UsedCSS {
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
-
-	/**
-	 * Resources Query instance.
-	 *
-	 * @var ResourcesQuery
-	 */
-	private $resources_query;
 
 	/**
 	 * Plugin options instance.
@@ -89,20 +81,17 @@ class UsedCSS {
 	 *
 	 * @param Options_Data   $options         Options instance.
 	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
-	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api             APIClient instance.
 	 * @param QueueInterface $queue           Queue instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
-		ResourcesQuery $resources_query,
 		APIClient $api,
 		QueueInterface $queue
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
-		$this->resources_query = $resources_query;
 		$this->api             = $api;
 		$this->queue           = $queue;
 	}
