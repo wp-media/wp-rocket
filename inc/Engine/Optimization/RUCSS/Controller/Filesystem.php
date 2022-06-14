@@ -124,6 +124,11 @@ class Filesystem {
 	 * @return bool
 	 */
 	public function is_writable_folder() {
+		if ( ! $this->filesystem->exists( $this->path ) ) {
+			rocket_mkdir_p( $this->path );
+		}
+
+
 		return $this->filesystem->is_writable( $this->path );
 	}
 
