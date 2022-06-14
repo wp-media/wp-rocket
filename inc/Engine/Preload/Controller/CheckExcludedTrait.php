@@ -10,7 +10,7 @@ trait CheckExcludedTrait {
 	 * @param string $url url to check.
 	 * @return bool
 	 */
-	protected function check_excluded( string $url ) {
+	protected function is_excluded( string $url ) {
 		$excluded = str_replace( '/', '\/', get_rocket_cache_reject_uri() );
 		return (bool) preg_match( "/$excluded/", $url );
 	}

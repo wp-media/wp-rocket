@@ -30,7 +30,7 @@ class ClearCache {
 	 */
 	public function partial_clean( array $urls ) {
 		foreach ( $urls as $url ) {
-			if ( ! $this->check_excluded( $url ) ) {
+			if ( ! $this->is_excluded( $url ) ) {
 				$this->query->create_or_update(
 					[
 						'url'    => $url,

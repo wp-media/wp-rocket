@@ -20,7 +20,8 @@ class Test_PartialClean extends TestCase
 	{
 		parent::setUp();
 		$this->query = $this->createMock(Cache::class);
-		$this->controller = Mockery::mock(ClearCache::class . '[check_excluded]', [$this->query])->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock(ClearCache::class . '[is_excluded]', [$this->query])
+			->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -29,7 +30,7 @@ class Test_PartialClean extends TestCase
 	public function testShouldDoAsExpected($config, $expected) {
 
 		foreach ($config['urls'] as $url) {
-			$this->controller->expects()->check_excluded($url)->andReturn($config['is_excluded']);
+			$this->controller->expects()->is_excluded($url)->andReturn($config['is_excluded']);
 		}
 		if(! $config['is_excluded']) {
 			$this->query->expects(self::atLeastOnce())->method('create_or_update')->withConsecutive(...$expected['urls']);

@@ -24,7 +24,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser = Mockery::mock(SitemapParser::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->controller = Mockery::mock(FetchSitemap::class . '[check_excluded]', [$this->sitemap_parser, $this->queue, $this->query])->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock(FetchSitemap::class . '[is_excluded]', [$this->sitemap_parser, $this->queue, $this->query])->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser->expects()->get_children()->andReturn($config['children']);
 
 		foreach ($config['links'] as $index => $link) {
-			$this->controller->expects()->check_excluded($link)->andReturn($config['is_excluded']);
+			$this->controller->expects()->is_excluded($link)->andReturn($config['is_excluded']);
 			if(! $config['is_excluded']) {
 				$this->query->expects(self::any())->method('create_or_nothing')->withConsecutive(...$config['jobs'])
 					->willReturn(true);
