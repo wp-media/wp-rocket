@@ -92,4 +92,17 @@ class Database {
 		}
 		return $this->rucss_usedcss_table->get_old_used_css();
 	}
+
+	/**
+	 * Remove all completed rows.
+	 *
+	 * @return bool|int
+	 */
+	public function remove_all_completed_rows() {
+		if ( ! $this->rucss_usedcss_table->exists() ) {
+			return false;
+		}
+
+		return $this->rucss_usedcss_table->remove_all_completed_rows();
+	}
 }
