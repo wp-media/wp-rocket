@@ -116,9 +116,9 @@ class WPRocketUninstall {
 	/**
 	 * Constructor.
 	 *
-	 * @param string    $cache_path            Path to the cache folder.
-	 * @param string    $config_path           Path to the config folder.
-	 * @param UsedCSS   $rucss_usedcss_table   RUCSS used_css table.
+	 * @param string  $cache_path            Path to the cache folder.
+	 * @param string  $config_path           Path to the config folder.
+	 * @param UsedCSS $rucss_usedcss_table   RUCSS used_css table.
 	 */
 	public function __construct( $cache_path, $config_path, $rucss_usedcss_table ) {
 		$this->cache_path          = trailingslashit( $cache_path );

@@ -24,7 +24,7 @@ require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Date.php'
 require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Compare.php';
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
 
-$rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
+$rocket_rucss_usedcss_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
 
 $rocket_uninstall = new WPRocketUninstall( WP_ROCKET_CACHE_ROOT_PATH, WP_ROCKET_CONFIG_PATH, $rocket_rucss_usedcss_table );
 $rocket_uninstall->uninstall();

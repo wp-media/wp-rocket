@@ -90,10 +90,10 @@ class UsedCSS {
 		APIClient $api,
 		QueueInterface $queue
 	) {
-		$this->options         = $options;
-		$this->used_css_query  = $used_css_query;
-		$this->api             = $api;
-		$this->queue           = $queue;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->api            = $api;
+		$this->queue          = $queue;
 	}
 
 	/**

@@ -92,7 +92,7 @@ class Database {
 	public function drop_resources_table() {
 		global $wpdb;
 
-		$wpdb->query( "DROP TABLE {$wpdb->prefix}wpr_rucss_resources" );
+		$wpdb->query( "DROP TABLE {$wpdb->prefix}wpr_rucss_resources" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		delete_option( 'wpr_rucss_resources_version' );
 	}
 }
