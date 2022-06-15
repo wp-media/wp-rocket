@@ -314,7 +314,7 @@ class UsedCSS {
 	/**
 	 * Deletes all the used CSS files
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @return void
 	 */
@@ -566,16 +566,20 @@ class UsedCSS {
 			return;
 		}
 
-		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
-		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
-
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
 		$hash = md5( $css );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
+			Logger::error( 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url );
+
+			$this->used_css_query->make_status_failed( $id );
+
 			return;
 		}
+
+		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
+		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$this->used_css_query->make_status_completed( $id, $hash );
 
