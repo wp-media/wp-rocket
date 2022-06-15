@@ -672,9 +672,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Deletes the used CSS on update to 3.11.4 for new storage method
+	 * Deletes the used CSS on update to 3.11.3 for new storage method
 	 *
-	 * @since 3.11.4
+	 * @since 3.11.3
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
@@ -686,7 +686,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->database->remove_all_completed_rows();
+		$this->database->truncate_used_css_table();
 	}
 
 	/**
