@@ -56,7 +56,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public static function get_subscribed_events() {
 		return [
 			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
-			'rocket_after_cdn_sections'           => 'display_manage_subscription',
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
