@@ -90,7 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'polyone', 'WP_Rocket\ThirdParty\Themes\Polygone' )
+			->share( 'polygone', 'WP_Rocket\ThirdParty\Themes\Polygone' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
