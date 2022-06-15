@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Jevelin;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Jevelin;

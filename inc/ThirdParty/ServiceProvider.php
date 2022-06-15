@@ -50,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jevelin',
 	];
 
 	/**
@@ -172,7 +173,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'jevelin', 'WP_Rocket\ThirdParty\Themes\Jevelin' )
-      ->addTag( 'common_subscriber' );
+		->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
 			->addTag( 'common_subscriber' );

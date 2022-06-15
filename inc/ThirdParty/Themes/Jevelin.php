@@ -10,6 +10,9 @@ class Jevelin implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		if ( ! self::is_jevelin() ) {
+			return [];
+		}
 		return [
 			'rocket_rucss_inline_content_exclusions' => 'preserve_patterns',
 		];
@@ -25,9 +28,6 @@ class Jevelin implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function preserve_patterns( $patterns ): array {
-		if ( ! self::is_jevelin() ) {
-			return $patterns;
-		}
 
 		$patterns[] = '#heading-';
 
