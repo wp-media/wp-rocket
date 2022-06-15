@@ -207,6 +207,10 @@ class Elementor implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function skip_admin_bar_cache_purge_option( bool $should_skip, $post ): bool {
+		if ( null === $post ) {
+			return $should_skip;
+		}
+
 		if ( 'elementor_library' === $post->post_type ) {
 			return true;
 		}
