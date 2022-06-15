@@ -29,10 +29,7 @@ class Test_AddJetpackSitemap extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->option->expects()->get('jetpack_xml_sitemap', false)->andReturn($config['is_enabled']);
-		if($config['is_enabled']) {
-			Functions\expect('jetpack_sitemap_uri')->andReturn($config['jetpack_sitemap']);
-		}
+		Functions\expect('jetpack_sitemap_uri')->andReturn($config['jetpack_sitemap']);
 		$this->assertSame($expected, $this->subscriber->add_jetpack_sitemap($config['sitemaps']));
 	}
 }

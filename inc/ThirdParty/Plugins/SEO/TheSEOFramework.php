@@ -63,24 +63,22 @@ class TheSEOFramework implements Subscriber_Interface {
 	 */
 	public function add_tsf_sitemap_to_preload( $sitemaps ) {
 
-		if ( $this->option->get( 'tsf_xml_sitemap', false ) ) {
-			// The autoloader in TSF doesn't check for file_exists(). So, use version compare instead to prevent fatal errors.
-			if ( version_compare( rocket_get_constant( 'THE_SEO_FRAMEWORK_VERSION', false ), '4.0', '>=' ) ) {
-				// TSF 4.0+. Expect the class to exist indefinitely.
-				$sitemap_bridge = Sitemap::get_instance();
+		// The autoloader in TSF doesn't check for file_exists(). So, use version compare instead to prevent fatal errors.
+		if ( version_compare( rocket_get_constant( 'THE_SEO_FRAMEWORK_VERSION', false ), '4.0', '>=' ) ) {
+			// TSF 4.0+. Expect the class to exist indefinitely.
+			$sitemap_bridge = Sitemap::get_instance();
 
-				foreach ( $sitemap_bridge->get_sitemap_endpoint_list() as $id => $data ) {
-					// When the sitemap is good enough for a robots display, we determine it as valid for precaching.
-					// Non-robots display types are among the stylesheet endpoint, or the Yoast SEO-compatible endpoint.
-					// In other words, this enables support for ALL current and future public sitemap endpoints.
-					if ( ! empty( $data['robots'] ) ) {
-						$sitemaps[] = $sitemap_bridge->get_expected_sitemap_endpoint_url( $id );
-					}
+			foreach ( $sitemap_bridge->get_sitemap_endpoint_list() as $id => $data ) {
+				// When the sitemap is good enough for a robots display, we determine it as valid for precaching.
+				// Non-robots display types are among the stylesheet endpoint, or the Yoast SEO-compatible endpoint.
+				// In other words, this enables support for ALL current and future public sitemap endpoints.
+				if ( ! empty( $data['robots'] ) ) {
+					$sitemaps[] = $sitemap_bridge->get_expected_sitemap_endpoint_url( $id );
 				}
-			} else {
-				// Deprecated. TSF <4.0.
-				$sitemaps[] = the_seo_framework()->get_sitemap_xml_url();
 			}
+		} else {
+			// Deprecated. TSF <4.0.
+			$sitemaps[] = the_seo_framework()->get_sitemap_xml_url();
 		}
 
 		return $sitemaps;

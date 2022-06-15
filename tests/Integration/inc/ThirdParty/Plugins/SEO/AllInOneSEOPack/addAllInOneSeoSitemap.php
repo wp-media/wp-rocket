@@ -14,14 +14,11 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 {
 	use FilterTrait;
 
-	protected $all_in_one_seo_xml_sitemap;
-
 	protected $aioseop_options;
 
 	public function setUp(): void
 	{
 		parent::setUp();
-		add_filter('pre_get_rocket_option_all_in_one_seo_xml_sitemap', [$this, 'all_in_one_seo_xml_sitemap']);
 		add_filter('pre_option_aioseop_options', [$this, 'aioseop_options']);
 		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_all_in_one_seo_sitemap');
 	}
@@ -37,7 +34,6 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->all_in_one_seo_xml_sitemap = $config['is_enabled'];
 		$this->aioseop_options = $config['options'];
 		if($config['version'] === 4) {
 			$this->aioseo = (object) [
@@ -52,10 +48,6 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 			Functions\when('aioseo')->justReturn($this->aioseo);
 		}
 		$this->assertSame($expected, apply_filters('rocket_sitemap_preload_list', $config['sitemaps']));
-	}
-
-	public function all_in_one_seo_xml_sitemap() {
-		return $this->all_in_one_seo_xml_sitemap;
 	}
 
 	public function aioseop_options() {

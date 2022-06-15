@@ -42,9 +42,7 @@ class SEOPress implements Subscriber_Interface {
 	 * @return array Updated Sitemaps to preload
 	 */
 	public function add_seopress_sitemap( $sitemaps ) {
-		if ( $this->option->get( 'seopress_xml_sitemap', false ) ) {
-			$sitemaps[] = get_home_url() . '/sitemaps.xml';
-		}
+		$sitemaps[] = get_home_url() . '/sitemaps.xml';
 
 		return $sitemaps;
 	}

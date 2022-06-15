@@ -31,16 +31,11 @@ class Test_AddSeopressSitemap extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->option->expects()->get('seopress_xml_sitemap', false)->andReturn($config['is_enabled']);
 		$this->configureAddSitemap($config);
 		$this->assertSame($expected, $this->subscriber->add_seopress_sitemap($config['sitemaps']));
 	}
 
 	protected function configureAddSitemap($config) {
-		if(! $config['is_enabled']) {
-			return;
-		}
-
 		Functions\expect('get_home_url')->andReturn($config['home_url']);
 	}
 }

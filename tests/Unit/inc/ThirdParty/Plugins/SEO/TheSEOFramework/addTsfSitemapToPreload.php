@@ -32,7 +32,6 @@ class Test_AddTsfSitemapToPreload extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->option->expects()->get('tsf_xml_sitemap', false)->andReturn($config['is_tsf_active']);
 		$this->configureCheckVersion($config);
 		$this->configureInferior4($config);
 		$this->configure4($config);
@@ -40,21 +39,18 @@ class Test_AddTsfSitemapToPreload extends TestCase
 	}
 
 	protected function configureCheckVersion($config) {
-		if(! $config['is_tsf_active']) {
-			return;
-		}
 		Functions\when('rocket_get_constant')->justReturn($config['version']);
 	}
 
 	protected function configureInferior4($config) {
-		if(! $config['is_tsf_active'] || $config['version'] == '4.0') {
+		if($config['version'] == '4.0') {
 			return;
 		}
 		Sitemap::$sitemap = $config['sitemap'];
 	}
 
 	protected function configure4($config) {
-		if(! $config['is_tsf_active'] || $config['version'] != '4.0') {
+		if($config['version'] != '4.0') {
 			return;
 		}
 		Sitemap::$endpoints = $config['endpoints'];

@@ -43,7 +43,6 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->option->expects()->get('all_in_one_seo_xml_sitemap', false)->andReturn($config['is_enabled']);
 		$this->configureCheckVersion($config);
 		$this->configureCheckOption($config);
 		$this->configureCreateSitemap($config);
@@ -51,10 +50,6 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 	}
 
 	protected function configureCheckVersion($config) {
-		if(! $config['is_enabled']) {
-			return;
-		}
-
 		if($config['version'] == 4) {
 
 			$this->aioseo = (object) [

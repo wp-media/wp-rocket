@@ -31,7 +31,6 @@ class Test_RocketSitemap extends TestCase
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		Router::$sitemap = $config['sitemap'];
-		$this->option->expects()->get('rank_math_xml_sitemap', false)->andReturn($config['is_disabled']);
 		$this->assertSame($expected, $this->subscriber->rocket_sitemap($config['sitemaps']));
 	}
 }

@@ -46,9 +46,8 @@ class RankMathSEO implements Subscriber_Interface {
 	 * @return array Updated Sitemaps to preload
 	 */
 	public function rocket_sitemap( $sitemaps ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-		if ( $this->option->get( 'rank_math_xml_sitemap', false ) ) {
-			$sitemaps[] = Router::get_base_url( 'sitemap_index.xml' );
-		}
+
+		$sitemaps[] = Router::get_base_url( 'sitemap_index.xml' );
 
 		return $sitemaps;
 	}

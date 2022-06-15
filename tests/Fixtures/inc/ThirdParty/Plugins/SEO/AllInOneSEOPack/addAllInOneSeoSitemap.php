@@ -1,26 +1,7 @@
 <?php
 return [
-	'disabledShouldReturnSame' => [
-		'config' => [
-			'is_enabled' => false,
-			'aioseo_enabled' => false,
-			'version' => 0,
-			'options' => [
-				'modules' => [
-					'aiosp_feature_manager_options' => [
-						'aiosp_feature_manager_enable_sitemap' => false
-					]
-				]
-			],
-			'home_url' => 'http://localhost',
-			'sitemap' => 'sitemap',
-			'sitemaps' => []
-		],
-		'expected' => []
-	],
 	'version3WithSitemapDisabledShouldReturnSame' => [
 		'config' => [
-			'is_enabled' => true,
 			'aioseo_enabled' => false,
 			'version' => 3,
 			'options' => [
@@ -38,7 +19,6 @@ return [
 	],
 	'version3WithSitemapEnabledShouldAddSitemap' => [
 		'config' => [
-			'is_enabled' => true,
 			'aioseo_enabled' => true,
 			'version' => 3,
 			'options' => [
@@ -59,7 +39,6 @@ return [
 	],
 	'version4WithSitemapDisabledShouldReturnSame' => [
 		'config' => [
-			'is_enabled' => true,
 			'aioseo_enabled' => false,
 			'version' => 4,
 			'options' => [
@@ -77,7 +56,6 @@ return [
 	],
 	'version4WithSitemapEnabledShouldAddSitemap' => [
 		'config' => [
-			'is_enabled' => true,
 			'aioseo_enabled' => true,
 			'version' => 4,
 			'options' => [

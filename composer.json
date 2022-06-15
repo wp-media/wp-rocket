@@ -147,7 +147,7 @@
 	    "test-integration-kinsta": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Kinsta",
 	    "test-integration-convertplug": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group ConvertPlug",
 	    "test-integration-jetpack": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Jetpack",
-	    "test-integration-Rank-math-seo": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group RankMathSEO",
+	    "test-integration-rank-math-seo": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group RankMathSEO",
 	    "test-integration-all-in-seo-pack": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AllInOneSeoPack",
 	    "test-integration-seopress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group SEOPress",
 	    "test-integration-the-seo-framework": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group TheSEOFramework",
@@ -181,7 +181,7 @@
 		    "@test-integration-kinsta",
 		    "@test-integration-convertplug",
 		    "@test-integration-jetpack",
-		    "@test-integration-Rank-math-seo",
+		    "@test-integration-rank-math-seo",
 		    "@test-integration-all-in-seo-pack",
 		    "@test-integration-seopress"
 		],

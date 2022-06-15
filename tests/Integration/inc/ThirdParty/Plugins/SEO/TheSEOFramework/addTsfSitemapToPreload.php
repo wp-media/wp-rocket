@@ -22,7 +22,6 @@ class Test_AddTsfSitemapToPreload extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		add_filter('pre_get_rocket_option_tsf_xml_sitemap', [$this, 'is_disabled']);
 		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_tsf_sitemap_to_preload');
 	}
 
@@ -37,7 +36,6 @@ class Test_AddTsfSitemapToPreload extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$this->is_disabled = $config['is_tsf_active'];
 		Functions\when('rocket_get_constant')->justReturn($config['version']);
 		Sitemap::$endpoints = $config['endpoints'];
 		Sitemap::$url = $config['url'];
@@ -45,7 +43,4 @@ class Test_AddTsfSitemapToPreload extends TestCase
 		$this->assertSame($expected, apply_filters('rocket_sitemap_preload_list', $config['sitemaps']));
 	}
 
-	public function is_disabled() {
-		return $this->is_disabled;
-	}
 }

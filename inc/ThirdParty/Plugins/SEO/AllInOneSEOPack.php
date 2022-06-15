@@ -46,9 +46,6 @@ class AllInOneSEOPack implements Subscriber_Interface {
 	 * @return Array Updated array of sitemaps to preload
 	 */
 	public function add_all_in_one_seo_sitemap( $sitemaps ) {
-		if ( ! $this->option->get( 'all_in_one_seo_xml_sitemap', false ) ) {
-			return $sitemaps;
-		}
 
 		$aioseo_v3 = defined( 'AIOSEOP_VERSION' );
 		$aioseo_v4 = defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' );
