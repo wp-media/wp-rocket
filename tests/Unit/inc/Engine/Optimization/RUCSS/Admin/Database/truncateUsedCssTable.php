@@ -23,7 +23,7 @@ class Test_TruncateUsedCssTable extends TestCase{
 			return;
 		}
 
-		$this->usedCSS = $this->getMockBuilder('WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS')
+		$this->usedCSS = $this->getMockBuilder( UsedCSS::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$this->database  = new Database( $this->usedCSS );
