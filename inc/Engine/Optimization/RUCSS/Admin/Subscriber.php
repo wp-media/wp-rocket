@@ -792,14 +792,13 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	protected function is_rucss_deletion_activated()
-	{
+	protected function is_rucss_deletion_activated() {
 		/**
 		 * Disable RUCSS deletion
 		 *
 		 * @param bool RUCSS deletion enabled
 		 */
-		return apply_filters('rocket_rucss_deletion_activated', true);
+		return apply_filters( 'rocket_rucss_deletion_activated', true );
 	}
 
 	/**

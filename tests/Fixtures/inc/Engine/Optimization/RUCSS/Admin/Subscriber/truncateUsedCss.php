@@ -31,7 +31,7 @@ return [
 			'items'             => $items,
 			'is_disabled' => true,
 			'delete_used_css_row' => true,
-			'used_css_count' => 10,
+			'used_css_count' => 0,
 		],
 	],
 	'shouldNoTruncateOnHookDisabled' =>  [

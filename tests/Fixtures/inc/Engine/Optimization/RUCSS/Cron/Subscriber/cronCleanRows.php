@@ -68,7 +68,7 @@ return [
 		],
 		'shouldNotDeleteOnDisabled' => [
 			'input' => [
-				'remove_unused_css' => true,
+				'remove_unused_css' => false,
 				'used_css'               => $used_css,
 				'resources'         => $resources,
 				'has_delay' => true,

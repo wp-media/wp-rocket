@@ -59,9 +59,9 @@ class Test_TruncateUsedCss extends TestCase {
 
 		$this->usedCSS->expects()->get_not_completed_count()->andReturn($config['used_css_count']);
 		if(0 < $config['used_css_count']) {
-			$this->usedCSS->expects()->remove_all_completed_rows();
+			$this->database->expects()->remove_all_completed_rows();
 		} else {
-			$this->usedCSS->expects()->truncate_used_css_table();
+			$this->database->expects()->truncate_used_css_table();
 		}
 
 		Functions\expect('do_action')->with('rocket_after_clean_used_css');

@@ -115,7 +115,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->used_css->is_enabled() ) {
 			return;
 		}
-
+var_dump('ok');
 		$this->database->delete_old_used_css();
 		$this->database->delete_old_resources();
 	}
