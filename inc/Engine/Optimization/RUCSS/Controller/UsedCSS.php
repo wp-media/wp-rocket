@@ -334,18 +334,41 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 
+		$html = $this->remove_external_styles_from_html( $clean_html, $html );
+
+		return $this->remove_internal_styles_from_html( $clean_html, $html );
+	}
+
+	/**
+	 * Remove external styles from the page's HTML.
+	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
+	 * @param string $html Actual page's HTML.
+	 *
+	 * @return string
+	 */
+	private function remove_external_styles_from_html( string $clean_html, string $html ) {
 		$link_styles = $this->find(
 			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
 
-		$inline_styles = $this->find(
-			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
-			$clean_html
-		);
-
 		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
+		$external_exclusions = (array) array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			/**
+			 * Filters the array of external exclusions.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param array $inline_atts_exclusions Array of patterns used to match against the external style tag.
+			 */
+			(array) apply_filters( 'rocket_rucss_external_exclusions', $this->external_exclusions )
+		);
 
 		foreach ( $link_styles as $style ) {
 			if (
@@ -358,8 +381,30 @@ class UsedCSS {
 			) {
 				continue;
 			}
+
+			if ( ! empty( $external_exclusions ) && $this->find( implode( '|', $external_exclusions ), $style[0] ) ) {
+				continue;
+			}
+
 			$html = str_replace( $style[0], '', $html );
 		}
+
+		return (string) $html;
+	}
+
+	/**
+	 * Remove internal styles from the page's HTML.
+	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
+	 * @param string $html Actual page's HTML.
+	 *
+	 * @return string
+	 */
+	private function remove_internal_styles_from_html( string $clean_html, string $html ) {
+		$inline_styles = $this->find(
+			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
+			$clean_html
+		);
 
 		$inline_atts_exclusions = (array) array_map(
 			function ( $item ) {
@@ -398,7 +443,22 @@ class UsedCSS {
 				continue;
 			}
 
+			/**
+			 * Filters the status of preserving inline style tags.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param bool $preserve_status Status of preserve.
+			 * @param array $style Full match style tag.
+			 */
+			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', false, $style ) ) {
+				$html = str_replace( $style['content'], '', $html );
+
+				continue;
+			}
+
 			$html = str_replace( $style[0], '', $html );
+
 		}
 
 		return $html;
@@ -474,7 +534,16 @@ class UsedCSS {
 	 * @return bool
 	 */
 	private function is_home( string $url ): bool {
-		return untrailingslashit( $url ) === untrailingslashit( home_url() );
+		/**
+		 * Filters the home url.
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param string  $home_url home url.
+		 * @param string  $url url of current page.
+		 */
+		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
+		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
 
 	/**
