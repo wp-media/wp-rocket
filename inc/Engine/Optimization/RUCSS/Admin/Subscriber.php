@@ -650,7 +650,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cancel_queues() {
+		// Will unhook check for dispatching an async request without RUCSS process running.
 		\ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
+
+		// Will unhook check for dispatching an async request when RUCSS process is already running.
+		RUCSSQueueRunner::instance()->unhook_dispatch_async_request();
 
 		$this->queue->cancel_pending_jobs_cron();
 
