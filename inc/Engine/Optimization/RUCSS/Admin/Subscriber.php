@@ -85,6 +85,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -100,6 +101,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
+				[ 'delete_used_css', 16, 2 ],
 				[ 'cancel_pending_jobs_as', 16, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
@@ -322,6 +324,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function delete_used_css_rows() {
+		$this->used_css->delete_all_used_css();
+
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->database->remove_all_completed_rows();
 		} else {
@@ -802,6 +806,24 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Deletes the used CSS on update to 3.11.4 for new storage method
+	 *
+	 * @since 3.11.4
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function delete_used_css( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.4', '>=' ) ) {
+			return;
+		}
+
+		$this->database->truncate_used_css_table();
+	}
+
+	/**
 	 * Disable RUCSS on wrong license.
 	 *
 	 * @return bool
@@ -811,5 +833,16 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 		return null;
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		$this->used_css->notice_write_permissions();
 	}
 }

@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -51,6 +50,13 @@ class UsedCSS {
 	 * @var QueueInterface
 	 */
 	private $queue;
+
+	/**
+	 * Filesystem instance
+	 *
+	 * @var Filesystem
+	 */
+	private $filesystem;
 
 	/**
 	 * External exclusions list, can be urls or attributes.
@@ -99,19 +105,22 @@ class UsedCSS {
 	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api             APIClient instance.
 	 * @param QueueInterface $queue           Queue instance.
+	 * @param Filesystem     $filesystem      Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
 		APIClient $api,
-		QueueInterface $queue
+		QueueInterface $queue,
+		Filesystem $filesystem
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
 		$this->api             = $api;
 		$this->queue           = $queue;
+		$this->filesystem      = $filesystem;
 	}
 
 	/**
@@ -255,13 +264,21 @@ class UsedCSS {
 			return $html;
 		}
 
-		if ( 'completed' !== $used_css->status || empty( $used_css->css ) ) {
+		if ( 'completed' !== $used_css->status || empty( $used_css->hash ) ) {
+			return $html;
+		}
+
+		$used_css_content = $this->filesystem->get_used_css( $used_css->hash );
+
+		if ( empty( $used_css_content ) ) {
+			$this->used_css_query->delete_by_url( $url );
+
 			return $html;
 		}
 
 		$html = $this->remove_used_css_from_html( $html );
-		$html = $this->add_used_css_to_html( $html, $used_css );
-		$html = $this->add_used_fonts_preload( $html, $used_css->css );
+		$html = $this->add_used_css_to_html( $html, $used_css_content );
+		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
@@ -276,7 +293,7 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	public function delete_used_css( string $url ): bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
+		$used_css_arr = $this->used_css_query->get_rows_by_url( $url );
 
 		if ( empty( $used_css_arr ) ) {
 			return false;
@@ -290,9 +307,26 @@ class UsedCSS {
 			}
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+
+			$count = $this->used_css_query->count_rows_by_hash( $used_css->hash );
+
+			if ( 0 === $count ) {
+				$this->filesystem->delete_used_css( $used_css->hash );
+			}
 		}
 
 		return $deleted;
+	}
+
+	/**
+	 * Deletes all the used CSS files
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function delete_all_used_css() {
+		$this->filesystem->delete_all_used_css();
 	}
 
 	/**
@@ -440,12 +474,12 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html     HTML content.
-	 * @param UsedCSS_Row $used_css Used CSS DB row.
+	 * @param string $html     HTML content.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function add_used_css_to_html( string $html, UsedCSS_Row $used_css ): string {
+	private function add_used_css_to_html( string $html, string $used_css ): string {
 		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
@@ -463,25 +497,26 @@ class UsedCSS {
 	/**
 	 * Return Markup for used_css into the page.
 	 *
-	 * @param UsedCSS_Row $used_css Used CSS DB Row.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string
 	 */
-	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
+	private function get_used_css_markup( string $used_css ): string {
 		/**
-		 * Filters Used CSS content before saving into DB.
+		 * Filters Used CSS content before output.
 		 *
 		 * @since 3.9.0.2
 		 *
-		 * @param string $usedcss Used CSS.
+		 * @param string $used_css Used CSS content.
 		 */
-		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
-		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css_contents = $this->handle_charsets( $css, false );
+		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
+		$used_css = $this->handle_charsets( $used_css, false );
+
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
-			$used_css_contents
+			$used_css
 		);
 	}
 
@@ -607,13 +642,29 @@ class UsedCSS {
 			return;
 		}
 
+		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
+
+		$hash = md5( $css );
+
+		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
+			Logger::error( 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url );
+
+			$this->used_css_query->make_status_failed( $id );
+
+			return;
+		}
+
 		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
-		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
+		$this->used_css_query->make_status_completed( $id, $hash );
 
-		$this->used_css_query->make_status_completed( $id, $css );
-
+		/**
+		 * Fires after successfully saving the used CSS for an URL
+		 *
+		 * @param string $url URL used to generated the used CSS.
+		 * @param array  $job_details Result of the request to get the job status from SaaS.
+		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
 
 	}
@@ -671,7 +722,7 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function clear_url_usedcss( string $url ) {
-		$this->used_css_query->delete_by_url( $url );
+		$this->delete_used_css( $url );
 
 		/**
 		 * Fires after clearing usedcss for specific url.
@@ -844,5 +895,36 @@ class UsedCSS {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		if ( $this->filesystem->is_writable_folder() ) {
+			return;
+		}
+
+		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }

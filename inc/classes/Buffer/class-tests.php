@@ -1123,6 +1123,17 @@ class Tests {
 		return http_build_query( $this->get_query_params() );
 	}
 
+	/**
+	 * Get the original query string
+	 *
+	 * @since  3.11.4
+	 *
+	 * @return string
+	 */
+	public function get_original_query_string() {
+		return http_build_query( $this->get_get() );
+	}
+
 	/** ----------------------------------------------------------------------------------------- */
 	/** PROPERTY GETTERS ======================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
