@@ -706,7 +706,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Prepare query string.
-		$query_string = $this->tests->get_query_string();
+		$query_string = $this->tests->get_original_query_string();
 		$query_string = empty( $query_string ) ? '' : '?' . $query_string;
 		$protocol     = $this->tests->is_ssl() ? 'https://' : 'http://';
 
