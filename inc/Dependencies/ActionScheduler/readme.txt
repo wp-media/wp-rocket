@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 5.7
-Stable tag: 3.4.0
+Stable tag: 3.4.2
 License: GPLv3
 Requires PHP: 5.6
 
@@ -46,6 +46,14 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.4.2 - 2022-06-08 =
+* Fix - Change the include for better linting.
+* Fix - update: Added Action scheduler completed action hook.
+
+= 3.4.1 - 2022-05-24 =
+* Fix - Change the include for better linting.
+* Fix - Fix the documented return type.
 
 = 3.4.0 - 2021-10-29 =
 * Enhancement - Number of items per page can now be set for the Scheduled Actions view (props @ovidiul). #771

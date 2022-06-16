@@ -38,7 +38,7 @@ class Test_CronCleanRows extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input ){
+	public function testShouldDoExpected( $input ) {
 		$container              = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
 		$rucss_resources_query = $container->get( 'rucss_resources_query' );
@@ -92,6 +92,8 @@ class Test_CronCleanRows extends TestCase {
 
 	public function set_rucss_option() {
 		return $this->input['remove_unused_css'] ?? false;
+		$this->assertCount( $count_remain_used_css, $resultUsedCssAfterClean );
+		$this->assertCount( $count_remain_resources, $resultResourcesAfterClean );
 	}
 
 	public function set_rucss_delay() {
