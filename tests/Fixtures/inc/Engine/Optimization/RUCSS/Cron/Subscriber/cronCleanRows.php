@@ -49,13 +49,6 @@ $resources = [
 
 return [
 	'test_data' => [
-		'shouldNotDeleteOnUpdateDueToMissingSettings' => [
-			'input' => [
-				'remove_unused_css'      => false,
-				'used_css'               => $used_css,
-				'resources'              => $resources,
-			]
-		],
 		'shouldDeleteOnUpdate' => [
 			'input' => [
 				'remove_unused_css' => true,
