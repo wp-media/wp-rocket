@@ -424,7 +424,7 @@ class UsedCSS {
 			 * @param bool $preserve_status Status of preserve.
 			 * @param array $style Full match style tag.
 			 */
-			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', false, $style ) ) {
+			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', true, $style ) ) {
 				$html = str_replace( $style['content'], '', $html );
 
 				continue;
