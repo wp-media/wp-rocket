@@ -650,6 +650,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cancel_queues() {
+		\ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
+
 		$this->queue->cancel_pending_jobs_cron();
 
 		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
