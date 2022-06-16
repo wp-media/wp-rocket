@@ -59,6 +59,13 @@ class UsedCSS {
 	private $filesystem;
 
 	/**
+	 * External exclusions list, can be urls or attributes.
+	 *
+	 * @var array
+	 */
+	private $external_exclusions = [];
+
+	/**
 	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
