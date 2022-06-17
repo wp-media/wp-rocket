@@ -298,6 +298,11 @@ class Plugin {
 			'convertplug',
 			'unlimited_elements',
 			'inline_related_posts',
+			'jetpack',
+			'rank_math_seo',
+			'all_in_one_seo_pack',
+			'seopress',
+			'the_seo_framework',
 		];
 
 		$host_type = HostResolver::get_host_service();

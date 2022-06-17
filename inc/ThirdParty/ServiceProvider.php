@@ -50,6 +50,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jetpack',
+		'rank_math_seo',
+		'all_in_one_seo_pack',
+		'seopress',
+		'the_seo_framework',
 	];
 
 	/**
@@ -175,6 +180,26 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'all_in_one_seo_pack', 'WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'seopress', 'WP_Rocket\ThirdParty\Plugins\SEO\SEOPress' )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'the_seo_framework', 'WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework' )
+			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 	}
 }

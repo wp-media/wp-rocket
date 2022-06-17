@@ -42,6 +42,8 @@ function load_original_files_before_mocking() {
 		'/Action_Scheduler/ActionScheduler_Abstract_QueueRunner.php',
 		'/Kinsta_Cache.php',
 		'/WP_Rewrite.php',
+		'/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php',
+		'/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php',
 	];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;
