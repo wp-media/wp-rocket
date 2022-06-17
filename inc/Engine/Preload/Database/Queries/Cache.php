@@ -355,7 +355,7 @@ class Cache extends Query {
 			return false;
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" );
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		error_log(json_encode( $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" )));
 	}
 }
