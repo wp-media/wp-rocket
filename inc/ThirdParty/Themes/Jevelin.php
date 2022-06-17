@@ -29,44 +29,47 @@ class Jevelin implements Subscriber_Interface {
 	 */
 	public function preserve_patterns( $patterns ): array {
 
-		$patterns[] = '#heading-';
-		$patterns[] = '#button-';
-		$patterns[] = '#image-points-';
-		$patterns[] = '#image-comparison-';
-		$patterns[] = '#partners-';
-		$patterns[] = '#icon-';
-		$patterns[] = '#text-block-';
-		$patterns[] = '#instagram-feed-';
-		$patterns[] = '#woocommerce-products-';
-		$patterns[] = '#tabs-';
-		$patterns[] = '#icon-group-';
-		$patterns[] = '#alert-';
-		$patterns[] = '#divider-';
-		$patterns[] = '#image-gallery-';
-		$patterns[] = '#portfolio-fancy-';
-		$patterns[] = '#counter-';
-		$patterns[] = '#text-group-';
-		$patterns[] = '#piechart-';
-		$patterns[] = '#single-image-';
-		$patterns[] = '#progress-';
-		$patterns[] = '#countdown-';
-		$patterns[] = '#testimonials-';
-		$patterns[] = '#portfolio-';
-		$patterns[] = '#event-';
-		$patterns[] = '.vc_column_';
-		$patterns[] = '.vc_row_';
-		$patterns[] = '.sh-empty-space-';
-		$patterns[] = '.sh-element-titlebar-title-';
-		$patterns[] = '.sh-footer-builder-widgets-';
-		$patterns[] = '.sh-image-gallery-simple-';
-		$patterns[] = '.header-navigation-';
-		$patterns[] = '.sh-google-maps-';
-		$patterns[] = '.sh-element-titlebar-breadcrumbs-';
-		$patterns[] = '.sh-header-builder-';
-		$patterns[] = '.sh-text-group-';
-		$patterns[] = '.sh-footer-builder-title-';
-
-		return $patterns;
+		return array_merge(
+			$patterns,
+			[
+				'#heading-',
+				'#button-',
+				'#image-points-',
+				'#image-comparison-',
+				'#partners-',
+				'#icon-',
+				'#text-block-',
+				'#instagram-feed-',
+				'#woocommerce-products-',
+				'#tabs-',
+				'#icon-group-',
+				'#alert-',
+				'#divider-',
+				'#image-gallery-',
+				'#portfolio-fancy-',
+				'#counter-',
+				'#text-group-',
+				'#piechart-',
+				'#single-image-',
+				'#progress-',
+				'#countdown-',
+				'#testimonials-',
+				'#portfolio-',
+				'#event-',
+				'.vc_column_',
+				'.vc_row_',
+				'.sh-empty-space-',
+				'.sh-element-titlebar-title-',
+				'.sh-footer-builder-widgets-',
+				'.sh-image-gallery-simple-',
+				'.header-navigation-',
+				'.sh-google-maps-',
+				'.sh-element-titlebar-breadcrumbs-',
+				'.sh-header-builder-',
+				'.sh-text-group-',
+				'.sh-footer-builder-title-',
+			]
+			);
 	}
 
 	/**
