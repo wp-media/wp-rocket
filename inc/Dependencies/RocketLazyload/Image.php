@@ -445,12 +445,11 @@ class Image {
 	 * @return string
 	 */
 	private function replaceImage( $image, $use_native = true ) {
-
-		if ( $this->has_native_lazyload_attr( $image[0] ) ) {
-			return $image[0];
-		}
-
 		if ( $use_native ) {
+			if ( preg_match( '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i', $image[0] ) ) {
+				return $image[0];
+			}
+
 			$image_lazyload = str_replace( '<img', '<img loading="lazy"', $image[0] );
 		} else {
 			$width  = 0;
@@ -480,16 +479,6 @@ class Image {
 
 		return $image_lazyload;
 	}
-
-	/**
-     * Checks if an image has native lazyload attributes.
-     *
-     * @param string $element Image element.
-     * @return boolean
-     */
-    private function has_native_lazyload_attr( $element ): bool {
-        return ( preg_match( '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i', $element ) ) ? true : false;
-    }
 
 	/**
 	 * Returns the HTML tag wrapped inside noscript tags
