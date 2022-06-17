@@ -50,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'wpml',
 	];
 
 	/**
@@ -175,6 +176,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wpml', 'WP_Rocket\ThirdParty\Plugins\I18n\WPML' )
 			->addTag( 'common_subscriber' );
 	}
 }
