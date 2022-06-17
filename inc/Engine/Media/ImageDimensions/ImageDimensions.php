@@ -493,7 +493,7 @@ class ImageDimensions {
 	 * @return array|false
 	 */
 	private function svg_getimagesize( string $filename ) {
-		$svgfile = simplexml_load_file( rawurlencode( $filename ) );
+		$svgfile = simplexml_load_file( rawurlencode( $filename ), 'SimpleXMLElement', LIBXML_NOERROR | LIBXML_NOWARNING );
 
 		if ( ! $svgfile ) {
 			return false;
