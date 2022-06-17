@@ -344,9 +344,9 @@ class Cache extends Query {
 	}
 
 	/**
-	 * Pass all rows to pending.
+	 * Set all rows to pending.
 	 */
-	public function pass_all_to_pending() {
+	public function set_all_to_pending() {
 		// Get the database interface.
 		$db = $this->get_db();
 
