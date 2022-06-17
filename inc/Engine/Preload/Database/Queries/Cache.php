@@ -342,4 +342,20 @@ class Cache extends Query {
 				);
 		}
 	}
+
+	/**
+	 * Pass all rows to pending.
+	 */
+	public function pass_all_to_pending() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" );
+	}
 }
