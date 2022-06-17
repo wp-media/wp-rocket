@@ -47,6 +47,6 @@ class ClearCache {
 	 * @return void
 	 */
 	public function full_clean() {
-		$this->query->pass_all_to_pending();
+		$this->query->set_all_to_pending();
 	}
 }
