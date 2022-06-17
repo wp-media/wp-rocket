@@ -77,7 +77,7 @@ class Filesystem {
 			return false;
 		}
 
-		return $this->filesystem->put_contents( $file, $css );
+		return $this->filesystem->put_contents( $file, $css, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
