@@ -103,7 +103,7 @@ class Assets {
 		$script .= '
 		},
 		{
-			elements_selector: "' . esc_attr( $args['elements']['background_image'] ) . '",
+			elements_selector: ".rocket-lazyload",
                 data_src: "lazy-src",
                 data_srcset: "lazy-srcset",
                 data_sizes: "lazy-sizes",
