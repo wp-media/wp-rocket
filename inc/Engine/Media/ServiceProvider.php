@@ -57,7 +57,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'lazyload_image' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_iframe' ) )
 			->addTag( 'lazyload_subscriber' );
-		$this->getContainer()->share( 'lazyload_admin_subscriber', AdminSubscriberAlias::class )
+		$this->getContainer()->share( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class )
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'emojis_subscriber', EmojisSubscriber::class )
 			->addArgument( $options )
