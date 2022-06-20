@@ -6,7 +6,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WPMedia\Cloudflare\APIClient;
 use WPMedia\Cloudflare\Cloudflare;
-use WPMedia\Cloudflare\Subscriber as SubscriberAlias;
+use WPMedia\Cloudflare\Subscriber as CloudflareSubscriber;
 
 /**
  * Service provider for WP Rocket addons.
