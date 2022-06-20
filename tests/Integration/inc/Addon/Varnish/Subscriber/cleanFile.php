@@ -51,7 +51,7 @@ class Test_CleanFile extends TestCase {
 			->never();
 		}
 
-		do_action( 'before_rocket_clean_file', 'http://example.org/about/' );
+		do_action( $config['hook'], $config['arg'] );
 	}
 
 	public function set_option() {

@@ -200,15 +200,15 @@ class UsedCSS extends Query {
 	 * Complete a job.
 	 *
 	 * @param int    $id DB row ID.
-	 * @param string $css Used CSS.
+	 * @param string $hash Hash.
 	 *
 	 * @return bool
 	 */
-	public function make_status_completed( int $id, string $css = '' ) {
+	public function make_status_completed( int $id, string $hash = '' ) {
 		return $this->update_item(
 			$id,
 			[
-				'css'    => $css,
+				'hash'   => $hash,
 				'status' => 'completed',
 			]
 		);
@@ -256,6 +256,22 @@ class UsedCSS extends Query {
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Get number of rows with the same hash value.
+	 *
+	 * @param string $hash Hash.
+	 *
+	 * @return int
+	 */
+	public function count_rows_by_hash( string $hash ): int {
+		return $this->query(
+			[
+				'hash'  => $hash,
+				'count' => true,
+			]
+		);
 	}
 
 	/**
@@ -308,26 +324,6 @@ class UsedCSS extends Query {
 				'status__in' => [ 'pending', 'in-progress' ],
 			]
 		);
-	}
-
-	/**
-	 * Remove all completed rows one by one.
-	 *
-	 * @return void
-	 */
-	public function remove_all_completed_rows() {
-		$rows = $this->query(
-			[
-				'status__in' => [ 'failed', 'completed' ],
-				'fields'     => [
-					'id',
-				],
-			]
-		);
-
-		foreach ( $rows as $row ) {
-			$this->delete_item( $row->id );
-		}
 	}
 
 }

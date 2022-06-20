@@ -328,7 +328,7 @@ class Tests {
 			return false;
 		}
 
-		if ( http_response_code() !== 200 ) {
+		if ( $this->get_http_response_code() !== 200 ) {
 			// Only cache 200.
 			$this->set_error( 'Page is not a 200 HTTP response and cannot be cached.' );
 			return false;
@@ -352,12 +352,16 @@ class Tests {
 			return false;
 		}
 
+		if ( $this->has_test( 'is_html' ) ) {
+			if ( $this->is_feed_uri() || defined( 'REST_REQUEST' ) ) {
+				unset( $this->tests['is_html'] );
+			}
+		}
+
 		if (
 			$this->has_test( 'is_html' )
 			&&
 			! $this->is_html( $buffer )
-			&&
-			! defined( 'REST_REQUEST' )
 		) {
 			// Don't process if there isn't a closing </html>.
 			$this->set_error( 'No closing </html> was found.' );
@@ -367,6 +371,15 @@ class Tests {
 		$this->last_error = [];
 
 		return true;
+	}
+
+	/**
+	 * Return http response to prevent a bug while testing.
+	 *
+	 * @return bool|int
+	 */
+	public function get_http_response_code() {
+		return http_response_code();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -442,6 +455,17 @@ class Tests {
 		$is_rejected = $extension && isset( $extensions[ $extension ] );
 
 		return self::memoize( __FUNCTION__, [], $is_rejected );
+	}
+
+	/**
+	 * Tell if the current url is a feed.
+	 *
+	 * @return bool
+	 */
+	public function is_feed_uri() {
+		global $wp_rewrite;
+		$feed_uri = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
+		return (bool) preg_match( '#^(' . $feed_uri . ')$#i', $this->get_clean_request_uri() );
 	}
 
 	/**
@@ -577,7 +601,7 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		$can = ! preg_match( '#^(' . $uri_pattern . ')$#i', $this->get_clean_request_uri() );
+		$can = ! preg_match( '#^(' . $uri_pattern . ')$#i', $this->get_request_uri_base() );
 
 		return self::memoize( __FUNCTION__, [], $can );
 	}
@@ -1097,6 +1121,17 @@ class Tests {
 	 */
 	public function get_query_string() {
 		return http_build_query( $this->get_query_params() );
+	}
+
+	/**
+	 * Get the original query string
+	 *
+	 * @since  3.11.4
+	 *
+	 * @return string
+	 */
+	public function get_original_query_string() {
+		return http_build_query( $this->get_get() );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
