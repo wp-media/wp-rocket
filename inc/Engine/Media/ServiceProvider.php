@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Media\Emojis\EmojisSubscriber;
 use WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber as ImageDimensionsAdminSubscriber;
 use WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions;
 use WP_Rocket\Engine\Media\ImageDimensions\Subscriber as ImageDimensionsSubscriber;
-use WP_Rocket\Engine\Media\Lazyload\AdminSubscriber as AdminSubscriberAlias;
+use WP_Rocket\Engine\Media\Lazyload\AdminSubscriber as LazyloadAdminSubscriber;
 use WP_Rocket\Engine\Media\Lazyload\Subscriber;
 
 /**
