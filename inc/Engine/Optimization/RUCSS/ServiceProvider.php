@@ -2,6 +2,19 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS as UsedCSSController;
+use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources as ResourcesTable;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
+use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
 
 /**
  * Service provider for the WP Rocket RUCSS
@@ -40,25 +53,25 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'rucss_settings', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings' )
+		$this->getContainer()->add( 'rucss_settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) );
 		// Instantiate the RUCSS Resources Table class.
-		$this->getContainer()->add( 'rucss_resources_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources' );
-		$this->getContainer()->add( 'rucss_usedcss_table', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS' );
-		$this->getContainer()->add( 'rucss_resources_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery' );
-		$this->getContainer()->add( 'rucss_database', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Database' )
+		$this->getContainer()->add( 'rucss_resources_table', ResourcesTable::class );
+		$this->getContainer()->add( 'rucss_usedcss_table', UsedCSSTable::class );
+		$this->getContainer()->add( 'rucss_resources_query', ResourcesQuery::class );
+		$this->getContainer()->add( 'rucss_database', Database::class )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_table' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
-		$this->getContainer()->add( 'rucss_used_css_query', 'WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS' );
-		$this->getContainer()->add( 'rucss_frontend_api_client', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient' )
+		$this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
+		$this->getContainer()->add( 'rucss_frontend_api_client', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'rucss_queue', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue' );
-		$this->getContainer()->add( 'rucss_filesystem', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem' )
+		$this->getContainer()->add( 'rucss_queue', Queue::class );
+		$this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
-		$this->getContainer()->add( 'rucss_used_css_controller', 'WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS' )
+		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
@@ -66,14 +79,14 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
 
-		$this->getContainer()->share( 'rucss_admin_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber' )
+		$this->getContainer()->share( 'rucss_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
-		$this->getContainer()->share( 'rucss_frontend_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber' )
+		$this->getContainer()->share( 'rucss_frontend_subscriber', FrontendSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) );
-		$this->getContainer()->share( 'rucss_cron_subscriber', 'WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber' )
+		$this->getContainer()->share( 'rucss_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) );
 	}
