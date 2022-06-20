@@ -171,8 +171,6 @@ class Subscriber implements Subscriber_Interface {
 			if ( ! $this->is_native_images() ) {
 				$inline_args['elements']['image'] = 'img[data-lazy-src]';
 			}
-
-			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
 		if ( (bool) $this->options->get( 'lazyload_iframes', 0 ) ) {
