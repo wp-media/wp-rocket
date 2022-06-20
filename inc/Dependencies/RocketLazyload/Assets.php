@@ -70,7 +70,7 @@ class Assets {
 
 		$args['options'] = array_intersect_key( $args['options'], $allowed_options );
 
-		$script .= 'window.lazyLoadOptions = {
+		$script .= 'window.lazyLoadOptions = [{
                 elements_selector: "' . esc_attr( implode( ',', $args['elements'] ) ) . '",
                 data_src: "lazy-src",
                 data_srcset: "lazy-srcset",
@@ -100,7 +100,28 @@ class Assets {
 			$script = rtrim( $script, ',' );
 		}
 
-		$script .= '};';
+		$script .= '
+		},
+		{
+			elements_selector: "' . esc_attr( $args['elements']['background_image'] ) . '",
+                data_src: "lazy-src",
+                data_srcset: "lazy-srcset",
+                data_sizes: "lazy-sizes",
+                class_loading: "lazyloading",
+                class_loaded: "lazyloaded",
+                threshold: ' . esc_attr( $args['threshold'] ) . ',
+                callback_loaded: function(element) {
+                    if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+                        if (element.classList.contains("lazyloaded") ) {
+                            if (typeof window.jQuery != "undefined") {
+                                if (jQuery.fn.fitVids) {
+                                    jQuery(element).parent().fitVids();
+                                }
+                            }
+                        }
+                    }
+                }
+		}];';
 
 		$script .= '
         window.addEventListener(\'LazyLoad::Initialized\', function (e) {
