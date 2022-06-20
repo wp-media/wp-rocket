@@ -27,9 +27,7 @@ class Test_FullClean extends TestCase
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 
-		$this->query->expects(self::once())->method('query')->with([])->willReturn($config['urls']);
-
-		$this->query->expects(self::atLeastOnce())->method('create_or_update')->withConsecutive(...$expected['urls']);
+		$this->query->expects(self::once())->method('set_all_to_pending');
 
 		$this->controller->full_clean();
 	}
