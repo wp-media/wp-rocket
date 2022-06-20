@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
-use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BaconServiceProvider;
+use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
 use WP_Rocket\Engine\Admin\Settings\ServiceProvider as SettingsServiceProvider;
