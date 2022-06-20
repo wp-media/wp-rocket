@@ -129,7 +129,7 @@ class Plugin {
 
 		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
 		$this->container->addServiceProvider( SupportServiceProvider::class );
-		$this->container->addServiceProvider( BaconServiceProvider::class );
+		$this->container->addServiceProvider( BeaconServiceProvider::class );
 		$this->container->addServiceProvider( RocketCDNServiceProvider::class );
 		$this->container->addServiceProvider( CacheServiceProvider::class );
 		$this->container->addServiceProvider( CriticalPathServiceProvider::class );
