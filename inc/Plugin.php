@@ -19,7 +19,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider as RocketCDNServiceProvider;
 use WP_Rocket\Engine\CDN\ServiceProvider as CDNServiceProvider;
 use WP_Rocket\Engine\CriticalPath\ServiceProvider as CriticalPathServiceProvider;
 use WP_Rocket\Engine\HealthCheck\ServiceProvider as HealthCheckServiceProvider;
-use WP_Rocket\Engine\Heartbeat\ServiceProvider as ServiceProviderAlias;
+use WP_Rocket\Engine\Heartbeat\ServiceProvider as HeartbeatServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
