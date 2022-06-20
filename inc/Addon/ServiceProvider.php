@@ -66,7 +66,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cloudflare_api' ) );
-		$this->getContainer()->share( 'cloudflare_subscriber', SubscriberAlias::class )
+		$this->getContainer()->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
