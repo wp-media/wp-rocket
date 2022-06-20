@@ -36,7 +36,7 @@ class Jetpack implements Subscriber_Interface {
 			return $events;
 		}
 
-		if ( \Jetpack::is_module_active( 'sitemaps' ) && function_exists( 'jetpack_sitemap_uri' ) ) {
+		if ( \Jetpack::is_module_active( 'sitemaps' ) ) {
 			$events['rocket_sitemap_preload_list'] = 'add_jetpack_sitemap';
 		}
 
@@ -50,6 +50,10 @@ class Jetpack implements Subscriber_Interface {
 	 * @return Array Updated Array of sitemaps to preload
 	 */
 	public function add_jetpack_sitemap( $sitemaps ) {
+		if ( ! function_exists( 'jetpack_sitemap_uri' ) ) {
+			return $sitemaps;
+		}
+
 		$sitemaps['jetpack'] = jetpack_sitemap_uri();
 
 		return $sitemaps;
