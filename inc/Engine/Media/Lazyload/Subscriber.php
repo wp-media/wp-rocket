@@ -124,7 +124,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function add_inline_script() {
-		$inline_script = $this->assets->getInlineLazyloadScript( $this->set_inline_script_args() );
+		$inline_script  = $this->assets->getInlineLazyloadScript( $this->set_inline_script_args() );
+		$inline_script .= $this->assets->getInlineLazyloadScript( $this->set_inline_script_args_bg() );
 
 		if ( ! rocket_get_constant( 'SCRIPT_DEBUG' ) ) {
 			$inline_script = $this->minify_script( $inline_script );
@@ -186,6 +187,33 @@ class Subscriber implements Subscriber_Interface {
 		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
 		return (array) apply_filters( 'rocket_lazyload_script_args', $inline_args );
+	}
+
+	/**
+	 * Sets the arguments array for the inline lazyload script for background images
+	 *
+	 * @return array
+	 */
+	private function set_inline_script_args_bg() {
+		/**
+		 * Filters the threshold at which lazyload is triggered
+		 *
+		 * @since 1.2
+		 *
+		 * @param int $threshold Threshold value.
+		 */
+		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
+
+		$inline_args = [
+			'threshold' => $threshold,
+		];
+
+		if ( $this->options->get( 'lazyload', 0 ) ) {
+
+			$inline_args['elements']['background_image'] = '.rocket-lazyload';
+		}
+
+		return $inline_args;
 	}
 
 	/**
