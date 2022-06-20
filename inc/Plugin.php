@@ -262,7 +262,7 @@ class Plugin {
 		$this->container->addServiceProvider( PluginServiceProvider::class );
 		$this->container->addServiceProvider( DelayJSServiceProvider::class );
 		$this->container->addServiceProvider( RUCSSServiceProvider::class );
-		$this->container->addServiceProvider( ServiceProviderAlias::class );
+		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
 
 		$common_subscribers = [
 			'cdn_subscriber',
