@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\License;
 
@@ -39,8 +40,14 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_dashboard_license_info'       => 'display_upgrade_section',
 			'rocket_settings_page_footer'         => 'display_upgrade_popin',
-			'rocket_menu_title'                   => 'add_notification_bubble',
-			'admin_footer-settings_page_wprocket' => 'dismiss_notification_bubble',
+			'rocket_menu_title'                   => [
+				[ 'add_notification_bubble' ],
+				[ 'add_notification_bubble_expired' ],
+			],
+			'admin_footer-settings_page_wprocket' => [
+				[ 'dismiss_notification_bubble' ],
+				[ 'set_dashboard_seen_transient' ],
+			],
 			'rocket_before_dashboard_content'     => [
 				[ 'display_promo_banner' ],
 				[ 'display_renewal_soon_banner', 11 ],
@@ -50,6 +57,10 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
 			'wp_rocket_upgrade'                   => [ 'clean_user_transient', 15, 2 ],
+			'rocket_before_add_field_to_settings' => [
+				[ 'maybe_disable_all_ocd', 11 ],
+				[ 'add_license_expire_warning' ],
+			],
 		];
 	}
 
@@ -183,5 +194,47 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function dismiss_renewal_banner() {
 		$this->renewal->dismiss_renewal_expired_banner();
+	}
+
+	/**
+	 * Add license expiring warning to OCD label
+	 *
+	 * @param array $args Setting field arguments.
+	 *
+	 * @return array
+	 */
+	public function add_license_expire_warning( $args ): array {
+		return $this->renewal->add_license_expire_warning( $args );
+	}
+
+	/**
+	 * Adds the notification bubble to WP Rocket menu item when expired
+	 *
+	 * @param string $menu_title Menu title.
+	 *
+	 * @return string
+	 */
+	public function add_notification_bubble_expired( $menu_title ) {
+		return $this->renewal->add_expired_bubble( $menu_title );
+	}
+
+	/**
+	 * Sets the dashboard seen transient to hide the expired bubble
+	 *
+	 * @return void
+	 */
+	public function set_dashboard_seen_transient() {
+		$this->renewal->set_dashboard_seen_transient();
+	}
+
+	/**
+	 * Disable optimize CSS delivery setting
+	 *
+	 * @param array $args Array of setting field arguments.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_all_ocd( $args ) {
+		return $this->renewal->maybe_disable_all_ocd( $args );
 	}
 }

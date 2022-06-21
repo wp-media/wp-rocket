@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\License;
 
@@ -85,7 +86,36 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		echo $this->generate( 'renewal-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$expiration    = $this->user->get_license_expiration();
+		$expired_since = time() - $expiration;
+		$disabled_in   = date_i18n( get_option('date_format'), $expiration + 15 * DAY_IN_SECONDS );
+
+		if ( get_rocket_option( 'optimize_css_delivery' ) ) {
+			if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+				echo $this->generate(
+					'renewal-expired-banner-ocd',
+					[
+						'renewal_url'   => $this->user->get_renewal_url(),
+						'renewal_price' => number_format_i18n( $this->get_discount_price(), 2 ),
+						'disabled_date' => $disabled_in,
+					]
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			} elseif ( 180 * DAY_IN_SECONDS > $expired_since ) {
+				echo $this->generate(
+					'renewal-expired-banner-ocd-disabled',
+					[
+						'renewal_url'   => $this->user->get_renewal_url(),
+						'renewal_price' => number_format_i18n( $this->get_discount_price(), 2 ),
+					]
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+		} elseif (
+			! get_rocket_option( 'optimize_css_delivery' )
+			||
+			( get_rocket_option( 'optimize_css_delivery' ) && 180 * DAY_IN_SECONDS < $expired_since )
+		) {
+			echo $this->generate( 'renewal-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
 	}
 
 	/**
@@ -309,5 +339,164 @@ class Renewal extends Abstract_Render {
 		$data['seconds'] = $format[3];
 
 		return $data;
+	}
+
+	/**
+	 * Add license expiring warning to OCD label
+	 *
+	 * @param array $args Setting field arguments.
+	 *
+	 * @return array
+	 */
+	public function add_license_expire_warning( $args ): array {
+		if ( 'optimize_css_delivery' !== $args['id'] ) {
+			return $args;
+		}
+
+		if ( $this->user->is_auto_renew() ) {
+			return $args;
+		}
+
+		if ( ! $this->user->is_license_expired() ) {
+			return $args;
+		}
+
+		$whitelabel    = rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false );
+		$expired_since = time() - $this->user->get_license_expiration();
+		$message       = ' <span class="wpr-icon-important wpr-checkbox-warning">';
+
+		if (
+			! $whitelabel
+			&&
+			15 * DAY_IN_SECONDS > $expired_since
+		) {
+			$message .= sprintf(
+				__( 'You need a valid license to continue using this feature. %1$sRenew now%2$s before losing access.', 'rocket' ),
+				'<a href="' . esc_url( $this->user->get_renewal_url() ) . '" target="_blank">',
+				'</a>'
+			);
+		} elseif (
+			! $whitelabel
+			&&
+			15 * DAY_IN_SECONDS < $expired_since
+		) {
+			$message .= sprintf(
+				__( 'You need an active license to enable this option. %1$sRenew now%2$s.', 'rocket' ),
+				'<a href="' . esc_url( $this->user->get_renewal_url() ) . '" target="_blank">',
+				'</a>'
+			);
+		} elseif (
+			$whitelabel
+			&&
+			15 * DAY_IN_SECONDS < $expired_since
+		) {
+			$message .= sprintf(
+				__( 'You need an active license to enable this option. %1$sMore info%2$s.', 'rocket' ),
+				'<a href="" target="_blank">',
+				'</a>'
+			);
+		}
+
+		$message .= '</span>';
+
+		$args['label'] = $args['label'] . $message;
+
+		return $args;
+	}
+
+	/**
+	 * Adds the notification bubble to WP Rocket menu item when expired
+	 *
+	 * @param string $menu_title Menu title.
+	 *
+	 * @return string
+	 */
+	public function add_expired_bubble( $menu_title ): string {
+		if ( $this->user->is_auto_renew() ) {
+			return $menu_title;
+		}
+
+		if ( ! $this->user->is_license_expired() ) {
+			return $menu_title;
+		}
+
+		if ( ! get_rocket_option( 'optimize_css_delivery' ) ) {
+			return $menu_title;
+		}
+
+		if ( false !== get_transient( 'wpr_dashboard_seen_' . get_current_user_id() ) ) {
+			return $menu_title;
+		}
+
+		return $menu_title . ' <span class="awaiting-mod">!</span>';
+	}
+
+	/**
+	 * Sets the dashboard seen transient to hide the expired bubble
+	 *
+	 * @return void
+	 */
+	public function set_dashboard_seen_transient() {
+		if ( $this->user->is_auto_renew() ) {
+			return;
+		}
+
+		if ( ! $this->user->is_license_expired() ) {
+			return;
+		}
+
+		if ( ! get_rocket_option( 'optimize_css_delivery' ) ) {
+			return;
+		}
+
+		$expired_since = time() - $this->user->get_license_expiration();
+		$current_user  = get_current_user_id();
+
+		if ( false !== get_transient( "wpr_dashboard_{$current_user}" ) ) {
+			return;
+		}
+
+		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+			set_transient( "wpr_dashboard_seen_{$current_user}" , 1, 15 * DAY_IN_SECONDS );
+		} elseif ( 15 * DAY_IN_SECONDS < $expired_since ) {
+			set_transient( "wpr_dashboard_seen_{$current_user}" , 1, YEAR_IN_SECONDS );
+		}
+	}
+
+	/**
+	 * Disable optimize CSS delivery setting
+	 *
+	 * @param array $args Array of setting field arguments.
+	 *
+	 * @return array
+	 */
+	public function maybe_disable_all_ocd( $args ) {
+		if ( 'optimize_css_delivery' !== $args['id'] ) {
+			return $args;
+		}
+
+		if ( $this->user->is_auto_renew() ) {
+			return $args;
+		}
+
+		if ( ! $this->user->is_license_expired() ) {
+			return $args;
+		}
+
+		$expired_since = time() - $this->user->get_license_expiration();
+
+		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+			return $args;
+		}
+
+		$args['value'] = 0;
+
+		if ( ! in_array( 'wpr-isDisabled', $args['container_class'], true ) ) {
+			$args['container_class'][] = 'wpr-isDisabled';
+		}
+
+		$args['input_attr']['disabled'] = 1;
+
+		return $args;
 	}
 }
