@@ -59,7 +59,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 
 	// Add Post Type archive.
 	$post_type = $post->post_type;
-	if ( 'post' !== $post_type ) {
+	if ( 'post' !== $post_type && 'product' !== $post_type ) {
 		$post_type_archive = get_post_type_archive_link( $post_type );
 		if ( $post_type_archive ) {
 			// Rename the caching filename for SSL URLs.
