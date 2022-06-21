@@ -365,6 +365,10 @@ class UsedCSS {
 
 		$external_exclusions = (array) array_map(
 			function ( $item ) {
+				if ( ! is_string( $item ) ) {
+					return $item;
+				}
+
 				return preg_quote( $item, '/' );
 			},
 			/**
@@ -415,6 +419,10 @@ class UsedCSS {
 
 		$inline_atts_exclusions = (array) array_map(
 			function ( $item ) {
+				if ( ! is_string( $item ) ) {
+					return $item;
+				}
+
 				return preg_quote( $item, '/' );
 			},
 			/**
@@ -429,6 +437,10 @@ class UsedCSS {
 
 		$inline_content_exclusions = (array) array_map(
 			function ( $item ) {
+				if ( ! is_string( $item ) ) {
+					return $item;
+				}
+
 				return preg_quote( $item, '/' );
 			},
 			/**
