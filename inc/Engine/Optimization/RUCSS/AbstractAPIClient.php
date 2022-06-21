@@ -46,7 +46,7 @@ abstract class AbstractAPIClient {
 	 *
 	 * @var Options_Data
 	 */
-	private $options;
+	protected $options;
 
 	/**
 	 * Instantiate the class.

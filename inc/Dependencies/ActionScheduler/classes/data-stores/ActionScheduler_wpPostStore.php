@@ -987,6 +987,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( is_wp_error( $result ) ) {
 			throw new RuntimeException( $result->get_error_message() );
 		}
+
+		/**
+		 * Fires after a scheduled action has been completed.
+		 *
+		 * @since 3.4.2
+		 *
+		 * @param int $action_id Action ID.
+		 */
+		do_action( 'action_scheduler_completed_action', $action_id );
 	}
 
 	/**

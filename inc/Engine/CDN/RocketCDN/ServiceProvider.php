@@ -53,6 +53,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// RocketCDN Notices Subscriber.
 		$this->getContainer()->share( 'rocketcdn_notices_subscriber', 'WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber' )
 			->addArgument( $this->getContainer()->get( 'rocketcdn_api_client' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( __DIR__ . '/views' )
 			->addTag( 'admin_subscriber' );
 		// RocketCDN settings page subscriber.

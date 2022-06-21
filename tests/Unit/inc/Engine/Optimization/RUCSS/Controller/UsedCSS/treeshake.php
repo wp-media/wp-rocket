@@ -2,6 +2,7 @@
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -10,6 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
@@ -22,21 +24,27 @@ class Test_Treeshake extends TestCase {
 	protected $api;
 	protected $queue;
 	protected $usedCss;
+	protected $filesystem;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
-		// fix a bug from mockery with __isset function
-		$this->markTestIncomplete();// Todo: When mockery will be updated reactivate the test
-		$this->usedCssQuery = Mockery::mock(UsedCSS_Query::class);
-		$this->resourcesQuery = Mockery::mock(ResourcesQuery::class);
+		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
+		$this->resourcesQuery = $this->createMock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
-		$this->usedCss = Mockery::mock(UsedCSS::class . '[is_allowed,update_last_accessed]', [$this->options, $this->usedCssQuery,
+		$this->filesystem = Mockery::mock( Filesystem::class );
+		$this->usedCss = Mockery::mock(
+			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			[
+				$this->options, $this->usedCssQuery,
 				$this->resourcesQuery,
-			$this->api,
-			$this->queue]);
+				$this->api,
+				$this->queue,
+				$this->filesystem
+			]
+		);
 	}
 
 	protected function tearDown(): void
@@ -108,16 +116,20 @@ class Test_Treeshake extends TestCase {
 			->andReturn( $config['home_url'] );
 
 		if($config['get_existing_used_css']['used_css']) {
-			$usedCssRow = Mockery::mock(UsedCSS_Row::class);
-			$usedCssRow->status = $config['get_existing_used_css']['used_css']->status;
-			$usedCssRow->css = $config['get_existing_used_css']['used_css']->css;
-			$usedCssRow->id = $config['get_existing_used_css']['used_css']->id;
+			$usedCssRow = new UsedCSS_Row($config['get_existing_used_css']['used_css']);
 		} else {
 			$usedCssRow = null;
 		}
 
-		$this->usedCssQuery->expects()->get_row($config['home_url'], $config['is_mobile']['is_mobile'])->andReturn($usedCssRow);
+		$this->usedCssQuery->expects(self::once())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
+		if ( ! empty( $config['get_existing_used_css']['used_css']->hash ) ) {
+			$this->filesystem->shouldReceive( 'get_used_css' )
+				->atMost()
+				->once()
+				->with( $config['get_existing_used_css']['used_css']->hash )
+				->andReturn( $config['get_existing_used_css']['used_css']->css );
+		}
 	}
 
 	protected function configureCreateNewJob($config) {
@@ -135,8 +147,7 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->usedCssQuery->expects()->create_new_job($config['home_url'], $config['create_new_job']['response']['contents']['jobId'],
-			$config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
+		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
 	}
 
 	protected function configValidUsedCss($config) {
@@ -150,6 +161,6 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->usedCssQuery->expects()->update_last_accessed($config['get_existing_used_css']['used_css']->id);
+		$this->usedCssQuery->expects(self::once())->method('update_last_accessed')->with($config['get_existing_used_css']['used_css']->id);
 	}
 }

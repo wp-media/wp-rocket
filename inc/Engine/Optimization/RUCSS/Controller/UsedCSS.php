@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -53,7 +52,21 @@ class UsedCSS {
 	private $queue;
 
 	/**
-	 * IInline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
+	 * Filesystem instance
+	 *
+	 * @var Filesystem
+	 */
+	private $filesystem;
+
+	/**
+	 * External exclusions list, can be urls or attributes.
+	 *
+	 * @var array
+	 */
+	private $external_exclusions = [];
+
+	/**
+	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
@@ -77,6 +90,11 @@ class UsedCSS {
 		'.wp-container-',
 		'.wp-elements-',
 		'#wpv-expandable-',
+		'#ultib3-',
+		'.uvc-wrap-',
+		'.jet-listing-dynamic-post-',
+		'.vcex_',
+		'.wprm-advanced-list-',
 	];
 
 	/**
@@ -87,19 +105,22 @@ class UsedCSS {
 	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api             APIClient instance.
 	 * @param QueueInterface $queue           Queue instance.
+	 * @param Filesystem     $filesystem      Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
 		ResourcesQuery $resources_query,
 		APIClient $api,
-		QueueInterface $queue
+		QueueInterface $queue,
+		Filesystem $filesystem
 	) {
 		$this->options         = $options;
 		$this->used_css_query  = $used_css_query;
 		$this->resources_query = $resources_query;
 		$this->api             = $api;
 		$this->queue           = $queue;
+		$this->filesystem      = $filesystem;
 	}
 
 	/**
@@ -116,7 +137,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -137,16 +158,14 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize? used inside the CRON so post object isn't there.
+	 * Check if RUCSS option is enabled.
+	 *
+	 * Used inside the CRON so post object isn't there.
 	 *
 	 * @return bool
 	 */
-	private function can_optimize() {
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return false;
-		}
-
-		return true;
+	public function is_enabled() {
+		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
@@ -159,7 +178,7 @@ class UsedCSS {
 			return false;
 		}
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -245,14 +264,22 @@ class UsedCSS {
 			return $html;
 		}
 
-		if ( 'completed' !== $used_css->status || empty( $used_css->css ) ) {
+		if ( 'completed' !== $used_css->status || empty( $used_css->hash ) ) {
+			return $html;
+		}
+
+		$used_css_content = $this->filesystem->get_used_css( $used_css->hash );
+
+		if ( empty( $used_css_content ) ) {
+			$this->used_css_query->delete_by_url( $url );
+
 			return $html;
 		}
 
 		$html = $this->remove_used_css_from_html( $html );
-		$html = $this->add_used_css_to_html( $html, $used_css );
-		$html = $this->add_used_fonts_preload( $html, $used_css->css );
-
+		$html = $this->add_used_css_to_html( $html, $used_css_content );
+		$html = $this->add_used_fonts_preload( $html, $used_css_content );
+		$html = $this->remove_google_font_preconnect( $html );
 		$this->used_css_query->update_last_accessed( (int) $used_css->id );
 
 		return $html;
@@ -266,7 +293,7 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	public function delete_used_css( string $url ): bool {
-		$used_css_arr = $this->used_css_query->query( [ 'url' => $url ] );
+		$used_css_arr = $this->used_css_query->get_rows_by_url( $url );
 
 		if ( empty( $used_css_arr ) ) {
 			return false;
@@ -280,9 +307,26 @@ class UsedCSS {
 			}
 
 			$deleted = $deleted && $this->used_css_query->delete_item( $used_css->id );
+
+			$count = $this->used_css_query->count_rows_by_hash( $used_css->hash );
+
+			if ( 0 === $count ) {
+				$this->filesystem->delete_used_css( $used_css->hash );
+			}
 		}
 
 		return $deleted;
+	}
+
+	/**
+	 * Deletes all the used CSS files
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function delete_all_used_css() {
+		$this->filesystem->delete_all_used_css();
 	}
 
 	/**
@@ -297,27 +341,77 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 
+		$html = $this->remove_external_styles_from_html( $clean_html, $html );
+
+		return $this->remove_internal_styles_from_html( $clean_html, $html );
+	}
+
+	/**
+	 * Remove external styles from the page's HTML.
+	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
+	 * @param string $html Actual page's HTML.
+	 *
+	 * @return string
+	 */
+	private function remove_external_styles_from_html( string $clean_html, string $html ) {
 		$link_styles = $this->find(
-			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
 			$clean_html,
 			'Uis'
 		);
 
-		$inline_styles = $this->find(
-			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
-			$clean_html
+		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
+
+		$external_exclusions = (array) array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			/**
+			 * Filters the array of external exclusions.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param array $inline_atts_exclusions Array of patterns used to match against the external style tag.
+			 */
+			(array) apply_filters( 'rocket_rucss_external_exclusions', $this->external_exclusions )
 		);
 
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]stylesheet[\'"]/is', $style[0] )
+
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
 				||
-				strstr( $style['url'], '//fonts.googleapis.com/css' )
+				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
 				continue;
 			}
+
+			if ( ! empty( $external_exclusions ) && $this->find( implode( '|', $external_exclusions ), $style[0] ) ) {
+				continue;
+			}
+
 			$html = str_replace( $style[0], '', $html );
 		}
+
+		return (string) $html;
+	}
+
+	/**
+	 * Remove internal styles from the page's HTML.
+	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
+	 * @param string $html Actual page's HTML.
+	 *
+	 * @return string
+	 */
+	private function remove_internal_styles_from_html( string $clean_html, string $html ) {
+		$inline_styles = $this->find(
+			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
+			$clean_html
+		);
 
 		$inline_atts_exclusions = (array) array_map(
 			function ( $item ) {
@@ -356,7 +450,22 @@ class UsedCSS {
 				continue;
 			}
 
+			/**
+			 * Filters the status of preserving inline style tags.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param bool $preserve_status Status of preserve.
+			 * @param array $style Full match style tag.
+			 */
+			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', true, $style ) ) {
+				$html = str_replace( $style['content'], '', $html );
+
+				continue;
+			}
+
 			$html = str_replace( $style[0], '', $html );
+
 		}
 
 		return $html;
@@ -365,12 +474,12 @@ class UsedCSS {
 	/**
 	 * Alter HTML string and add the used CSS style in <head> tag,
 	 *
-	 * @param string      $html     HTML content.
-	 * @param UsedCSS_Row $used_css Used CSS DB row.
+	 * @param string $html     HTML content.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function add_used_css_to_html( string $html, UsedCSS_Row $used_css ): string {
+	private function add_used_css_to_html( string $html, string $used_css ): string {
 		$replace = preg_replace(
 			'#</title>#iU',
 			'</title>' . $this->get_used_css_markup( $used_css ),
@@ -388,25 +497,26 @@ class UsedCSS {
 	/**
 	 * Return Markup for used_css into the page.
 	 *
-	 * @param UsedCSS_Row $used_css Used CSS DB Row.
+	 * @param string $used_css Used CSS content.
 	 *
 	 * @return string
 	 */
-	private function get_used_css_markup( UsedCSS_Row $used_css ): string {
+	private function get_used_css_markup( string $used_css ): string {
 		/**
-		 * Filters Used CSS content before saving into DB.
+		 * Filters Used CSS content before output.
 		 *
 		 * @since 3.9.0.2
 		 *
-		 * @param string $usedcss Used CSS.
+		 * @param string $used_css Used CSS content.
 		 */
-		$css = apply_filters( 'rocket_usedcss_content', $used_css->css );
+		$used_css = apply_filters( 'rocket_usedcss_content', $used_css );
 
-		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css_contents = $this->handle_charsets( $css, false );
+		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
+		$used_css = $this->handle_charsets( $used_css, false );
+
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
-			$used_css_contents
+			$used_css
 		);
 	}
 
@@ -431,19 +541,28 @@ class UsedCSS {
 	 * @return bool
 	 */
 	private function is_home( string $url ): bool {
-		return untrailingslashit( $url ) === untrailingslashit( home_url() );
+		/**
+		 * Filters the home url.
+		 *
+		 * @since 3.11.4
+		 *
+		 * @param string  $home_url home url.
+		 * @param string  $url url of current page.
+		 */
+		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
+		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
 
 	/**
-	 * Process pending jobs inside CRON iteration.
+	 * Process pending jobs inside cron iteration.
 	 *
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside CRON.' );
+		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
-		if ( ! $this->can_optimize() ) {
-			Logger::debug( 'RUCSS: Stop processing CRON iteration because option is disabled.' );
+		if ( ! $this->is_enabled() ) {
+			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
@@ -523,13 +642,29 @@ class UsedCSS {
 			return;
 		}
 
+		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
+
+		$hash = md5( $css );
+
+		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
+			Logger::error( 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url );
+
+			$this->used_css_query->make_status_failed( $id );
+
+			return;
+		}
+
 		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
 		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
-		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
+		$this->used_css_query->make_status_completed( $id, $hash );
 
-		$this->used_css_query->make_status_completed( $id, $css );
-
+		/**
+		 * Fires after successfully saving the used CSS for an URL
+		 *
+		 * @param string $url URL used to generated the used CSS.
+		 * @param array  $job_details Result of the request to get the job status from SaaS.
+		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
 
 	}
@@ -587,7 +722,7 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function clear_url_usedcss( string $url ) {
-		$this->used_css_query->delete_by_url( $url );
+		$this->delete_used_css( $url );
 
 		/**
 		 * Fires after clearing usedcss for specific url.
@@ -597,15 +732,6 @@ class UsedCSS {
 		 * @param string $url Current page URL.
 		 */
 		do_action( 'rocket_rucss_after_clearing_usedcss', $url );
-	}
-
-	/**
-	 * Remove all completed rows one by one.
-	 *
-	 * @return void
-	 */
-	public function remove_all_completed_rows() {
-		$this->used_css_query->remove_all_completed_rows();
 	}
 
 	/**
@@ -654,6 +780,15 @@ class UsedCSS {
 
 			$font_url = $this->extract_first_font( $font_face['content'] );
 
+			/**
+			 * Filters font URL with CDN hostname
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param type  $url url to be rewritten.
+			 */
+			$font_url = apply_filters( 'rocket_font_url', $font_url );
+
 			if ( empty( $font_url ) ) {
 				continue;
 			}
@@ -679,6 +814,31 @@ class UsedCSS {
 		}
 
 		return $replace;
+	}
+
+	/**
+	 * Remove preconnect tag for google api.
+	 *
+	 * @param string $html html content.
+	 * @return string
+	 */
+	protected function remove_google_font_preconnect( string $html ): string {
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+		$links      = $this->find(
+			'<link\s+([^>]+[\s"\'])?rel\s*=\s*[\'"]((preconnect)|(dns-prefetch))[\'"]([^>]+)?\/?>',
+			$clean_html,
+			'Uis'
+		);
+
+		foreach ( $links as $link ) {
+			if ( preg_match( '/href=[\'"](https:)?\/\/fonts.googleapis.com\/?[\'"]/', $link[0] ) ) {
+				$html = str_replace( $link[0], '', $html );
+			}
+		}
+
+		return $html;
 	}
 
 	/**
@@ -735,5 +895,36 @@ class UsedCSS {
 		}
 
 		return $links;
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
+		if ( $this->filesystem->is_writable_folder() ) {
+			return;
+		}
+
+		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			]
+		);
 	}
 }
