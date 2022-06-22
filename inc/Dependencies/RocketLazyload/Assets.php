@@ -100,16 +100,19 @@ class Assets {
 		}
 
 		$script .= '
-		},
-		{
-			elements_selector: "'.esc_attr( $args['background_image'] ).'",
-			data_src: "lazy-src",
-			data_srcset: "lazy-srcset",
-			data_sizes: "lazy-sizes",
-			class_loading: "lazyloading",
-			class_loaded: "lazyloaded",
-			threshold: ' . esc_attr( $args['threshold'] ) . ',
-		}];';
+		},';
+
+		if ( isset( $args['elements']['background_image'] ) ) {
+			$script .= '{
+				elements_selector: "'.esc_attr( $args['elements']['background_image'] ).'",
+				data_src: "lazy-src",
+				data_srcset: "lazy-srcset",
+				data_sizes: "lazy-sizes",
+				class_loading: "lazyloading",
+				class_loaded: "lazyloaded",
+				threshold: ' . esc_attr( $args['threshold'] ) . ',
+			}];';
+		}
 
 		$script .= '
         window.addEventListener(\'LazyLoad::Initialized\', function (e) {
