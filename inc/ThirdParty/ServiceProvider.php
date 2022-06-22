@@ -47,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'themify_woocommerce_product_filter',
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
@@ -167,6 +168,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'themify_woocommerce_product_filter', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\ThemifyWooCommerceProductFilter' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )

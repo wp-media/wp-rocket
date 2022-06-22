@@ -294,6 +294,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'themify_woocommerce_product_filter',
 			'convertplug',
 			'cache_config',
 			'unlimited_elements',
