@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_localize_admin_script'        => 'add_localize_script_data',
 			'wp_rocket_upgrade'                   => [ 'clean_user_transient', 15, 2 ],
 			'rocket_before_add_field_to_settings' => [
-				[ 'maybe_disable_all_ocd', 11 ],
+				[ 'maybe_disable_ocd', 11 ],
 				[ 'add_license_expire_warning' ],
 			],
 		];
@@ -234,7 +234,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function maybe_disable_all_ocd( $args ) {
-		return $this->renewal->maybe_disable_all_ocd( $args );
+	public function maybe_disable_ocd( $args ) {
+		return $this->renewal->maybe_disable_ocd( $args );
 	}
 }
