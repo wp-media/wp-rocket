@@ -551,7 +551,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return bool
 	 */
 	public function disable_post_type_archive( $enable, $post ) {
-		if ( $post->post_type === 'product' ) {
+		if ( 'product' === $post->post_type ) {
 			return false;
 		}
 
