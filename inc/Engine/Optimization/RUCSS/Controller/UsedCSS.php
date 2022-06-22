@@ -930,7 +930,7 @@ class UsedCSS {
 		$items_array = array_filter( $items, 'is_string' );
 
 		return array_map(
-			function ( $item ) {
+			static function ( $item ) {
 				return preg_quote( $item, '/' );
 			},
 			$items_array
