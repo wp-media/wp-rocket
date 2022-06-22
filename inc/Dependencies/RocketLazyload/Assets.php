@@ -69,7 +69,7 @@ class Assets {
 		$script = '';
 
 		$args['options'] = array_intersect_key( $args['options'], $allowed_options );
-echo implode( ',', $args['elements'] );
+		
 		$script .= 'window.lazyLoadOptions = [{
                 elements_selector: "' . esc_attr( implode( ',', $args['elements'] ) ) . '",
                 data_src: "lazy-src",
