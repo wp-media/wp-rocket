@@ -294,6 +294,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'us_map_subscriber',
 			'convertplug',
 			'cache_config',
 			'unlimited_elements',

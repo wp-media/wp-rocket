@@ -47,6 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'us_map_subscriber',
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
@@ -168,6 +169,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'flatsome', 'WP_Rocket\ThirdParty\Themes\Flatsome' )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'us_map_subscriber', 'WP_Rocket\ThirdParty\Plugins\USMap' )
+		->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
