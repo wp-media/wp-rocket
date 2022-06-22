@@ -31,7 +31,7 @@ class DisplayAddExpiredBubble extends TestCase {
 				$this->pricing,
 				$this->user,
 				$this->options,
-				'views',
+				'views'
 		);
 	}
 
