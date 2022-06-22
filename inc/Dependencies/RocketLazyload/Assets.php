@@ -69,7 +69,6 @@ class Assets {
 		$script = '';
 
 		$args['options'] = array_intersect_key( $args['options'], $allowed_options );
-		
 		$script .= 'window.lazyLoadOptions = [{
                 elements_selector: "' . esc_attr( implode( ',', $args['elements'] ) ) . '",
                 data_src: "lazy-src",
@@ -103,7 +102,7 @@ class Assets {
 		$script .= '
 		},
 		{
-			elements_selector: "'.$args['elements']['background_image'].'",
+			elements_selector: "'.esc_attr( $args['background_image'] ).'",
 			data_src: "lazy-src",
 			data_srcset: "lazy-srcset",
 			data_sizes: "lazy-sizes",
