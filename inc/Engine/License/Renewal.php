@@ -105,7 +105,7 @@ class Renewal extends Abstract_Render {
 			$renewal_price = number_format_i18n( $this->get_discount_price(), 2 );
 
 			if ( 15 * DAY_IN_SECONDS > $expired_since ) {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd',
 					[
@@ -114,8 +114,9 @@ class Renewal extends Abstract_Render {
 						'disabled_date' => date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS ),
 					]
 				);
+				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 			} elseif ( 180 * DAY_IN_SECONDS > $expired_since ) {
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd-disabled',
 					[
@@ -123,6 +124,7 @@ class Renewal extends Abstract_Render {
 						'renewal_price' => $renewal_price,
 					]
 				);
+				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		} elseif (
 			! $ocd_enabled
