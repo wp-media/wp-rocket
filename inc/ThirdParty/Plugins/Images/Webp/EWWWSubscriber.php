@@ -1,18 +1,13 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
+
+namespace WP_Rocket\ThirdParty\Plugins\Images\Webp;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-/**
- * Subscriber for the WebP support with EWWW.
- *
- * @since  3.4
- * @author Grégory Viguier
- */
-class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
-	use Webp_Common;
+class EWWWSubscriber implements Subscriber_Interface {
 
+	use WebpCommon;
 	/**
 	 * Options_Data instance.
 	 *
@@ -45,12 +40,14 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Subscribed events for EWWW module.
+	 *
+	 * @since  3.11.1
+	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_webp_plugins' => 'register',
-			'wp_rocket_loaded'    => 'load_hooks',
+			'wp_rocket_loaded' => 'load_hooks',
 		];
 	}
 
@@ -86,14 +83,6 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return;
 		}
 
-		/**
-		 * Since Rocket already updates the config file after updating its options, there is no need to do it again if the CDN or zone options change.
-		 * Sadly, we can’t monitor EWWW options accurately to update our config file.
-		 */
-
-		add_filter( 'rocket_cdn_cnames',       [ $this, 'maybe_remove_images_cnames' ], 1000, 2 );
-		add_filter( 'rocket_allow_cdn_images', [ $this, 'maybe_remove_images_from_cdn_dropdown' ] );
-
 		$option_names = [
 			'ewww_image_optimizer_exactdn',
 			'ewww_image_optimizer_webp_for_cdn',
@@ -110,94 +99,6 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 				add_filter( 'delete_option_' . $option_name, [ $this, 'trigger_webp_change' ] );
 			}
 		}
-	}
-
-	/**
-	 * Remove CDN hosts for images if EWWW uses ExactDN.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  array $hosts List of CDN URLs.
-	 * @param  array $zones List of zones. Default is [ 'all' ].
-	 * @return array
-	 */
-	public function maybe_remove_images_cnames( $hosts, $zones ) {
-		if ( ! $hosts ) {
-			return $hosts;
-		}
-		if ( ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
-			return $hosts;
-		}
-		// EWWW uses ExactDN: WPR CDN should be disabled for images.
-		if ( ! in_array( 'images', $zones, true ) ) {
-			// Not asking for images.
-			return $hosts;
-		}
-		if ( ! array_diff( $zones, [ 'all', 'images' ] ) ) {
-			// This is clearly for images: return an empty list of hosts.
-			return [];
-		}
-
-		// We also want other things, like js and css: let's only remove the hosts for 'images'.
-		$cdn_urls = $this->options->get( 'cdn_cnames', [] );
-
-		if ( ! $cdn_urls ) {
-			return $hosts;
-		}
-
-		// Separate image hosts from the other ones.
-		$image_hosts = [];
-		$other_hosts = [];
-		$cdn_zones   = $this->options->get( 'cdn_zone', [] );
-
-		foreach ( $cdn_urls as $k => $urls ) {
-			if ( ! in_array( $cdn_zones[ $k ], $zones, true ) ) {
-				continue;
-			}
-
-			$urls = explode( ',', $urls );
-			$urls = array_map( 'trim', $urls );
-
-			if ( 'images' === $cdn_zones[ $k ] ) {
-				foreach ( $urls as $url ) {
-					$image_hosts[] = $url;
-				}
-			} else {
-				foreach ( $urls as $url ) {
-					$other_hosts[] = $url;
-				}
-			}
-		}
-
-		// Make sure the image hosts are not also used for other things (duplicate).
-		$image_hosts = array_diff( $image_hosts, $other_hosts );
-
-		// Then remove the remaining from the final list.
-		return array_diff( $hosts, $image_hosts );
-	}
-
-	/**
-	 * Maybe remove the images option from the CDN dropdown.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  bool $allow true to add the option, false otherwise.
-	 * @return bool
-	 */
-	public function maybe_remove_images_from_cdn_dropdown( $allow ) {
-		if ( ! $allow ) {
-			return $allow;
-		}
-		if ( ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
-			return $allow;
-		}
-
-		// EWWW uses ExactDN: WPR CDN should be disabled for images.
-		return false;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */

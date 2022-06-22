@@ -45,8 +45,7 @@ class CDNOptionsManager {
 	 */
 	public function enable( $cdn_url ) {
 		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames', [ $cdn_url ] );
-		$this->options->set( 'cdn_zone', [ 'all' ] );
+		$this->options->set( 'cdn_cnames', $cdn_url );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
@@ -63,8 +62,7 @@ class CDNOptionsManager {
 	 */
 	public function disable() {
 		$this->options->set( 'cdn', 0 );
-		$this->options->set( 'cdn_cnames', [] );
-		$this->options->set( 'cdn_zone', [] );
+		$this->options->set( 'cdn_cnames', '' );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
@@ -79,6 +77,6 @@ class CDNOptionsManager {
 	 * @return array
 	 */
 	public function get_cdn_cnames() {
-		return $this->options->get( 'cdn_cnames', [] );
+		return $this->options->get( 'cdn_cnames', '' );
 	}
 }
