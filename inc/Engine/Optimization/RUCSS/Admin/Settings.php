@@ -181,7 +181,7 @@ class Settings {
 	 * @return void
 	 */
 	public function display_processing_notice() {
-		if ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_PATH ) ) {
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) ) ) {
 			return;
 		}
 
@@ -227,7 +227,7 @@ class Settings {
 	 * @return void
 	 */
 	public function display_success_notice() {
-		if ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_PATH ) ) {
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) ) ) {
 			return;
 		}
 
