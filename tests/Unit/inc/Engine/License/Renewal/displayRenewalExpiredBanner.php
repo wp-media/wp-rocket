@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\Renewal;
@@ -18,17 +19,20 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;
+	private $options;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
 		$this->user    = Mockery::mock( User::class );
+		$this->options =Mockery::mock( Options_Data::class );
 		$this->renewal = Mockery::mock(
 			Renewal::class . '[generate]',
 			[
 				$this->pricing,
 				$this->user,
+				$this->options,
 				'views',
 			]
 		);
@@ -45,6 +49,10 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['user']['licence_expiration'] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'optimize_css_delivery', 0 )
+			->andReturn( 0 );
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\expect( 'get_transient' )
