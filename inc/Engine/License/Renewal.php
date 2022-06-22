@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 
@@ -23,17 +24,26 @@ class Renewal extends Abstract_Render {
 	private $user;
 
 	/**
+	 * Options_Data instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param Pricing $pricing       Pricing instance.
-	 * @param User    $user          User instance.
-	 * @param string  $template_path Path to the views.
+	 * @param Pricing      $pricing       Pricing instance.
+	 * @param User         $user          User instance.
+	 * @param Options_Data $options       Options_Data instance.
+	 * @param string       $template_path Path to the views.
 	 */
-	public function __construct( Pricing $pricing, User $user, $template_path ) {
+	public function __construct( Pricing $pricing, User $user, Options_Data $options, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->pricing = $pricing;
 		$this->user    = $user;
+		$this->options = $options;
 	}
 
 	/**
@@ -88,31 +98,36 @@ class Renewal extends Abstract_Render {
 
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = time() - $expiration;
-		$disabled_in   = date_i18n( get_option('date_format'), $expiration + 15 * DAY_IN_SECONDS );
+		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
 
-		if ( get_rocket_option( 'optimize_css_delivery' ) ) {
+		if ( $ocd_enabled ) {
+			$renewal_url   = $this->user->get_renewal_url();
+			$renewal_price = number_format_i18n( $this->get_discount_price(), 2 );
+
 			if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd',
 					[
-						'renewal_url'   => $this->user->get_renewal_url(),
-						'renewal_price' => number_format_i18n( $this->get_discount_price(), 2 ),
-						'disabled_date' => $disabled_in,
+						'renewal_url'   => $renewal_url,
+						'renewal_price' => $renewal_price,
+						'disabled_date' => date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS ),
 					]
-				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
 			} elseif ( 180 * DAY_IN_SECONDS > $expired_since ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd-disabled',
 					[
-						'renewal_url'   => $this->user->get_renewal_url(),
-						'renewal_price' => number_format_i18n( $this->get_discount_price(), 2 ),
+						'renewal_url'   => $renewal_url,
+						'renewal_price' => $renewal_price,
 					]
-				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
 			}
 		} elseif (
-			! get_rocket_option( 'optimize_css_delivery' )
+			! $ocd_enabled
 			||
-			( get_rocket_option( 'optimize_css_delivery' ) && 180 * DAY_IN_SECONDS < $expired_since )
+			( $ocd_enabled && 180 * DAY_IN_SECONDS < $expired_since )
 		) {
 			echo $this->generate( 'renewal-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
@@ -371,6 +386,7 @@ class Renewal extends Abstract_Render {
 			15 * DAY_IN_SECONDS > $expired_since
 		) {
 			$message .= sprintf(
+				// translators: %1$s = <a>, %2$s = </a>.
 				__( 'You need a valid license to continue using this feature. %1$sRenew now%2$s before losing access.', 'rocket' ),
 				'<a href="' . esc_url( $this->user->get_renewal_url() ) . '" target="_blank">',
 				'</a>'
@@ -381,6 +397,7 @@ class Renewal extends Abstract_Render {
 			15 * DAY_IN_SECONDS < $expired_since
 		) {
 			$message .= sprintf(
+				// translators: %1$s = <a>, %2$s = </a>.
 				__( 'You need an active license to enable this option. %1$sRenew now%2$s.', 'rocket' ),
 				'<a href="' . esc_url( $this->user->get_renewal_url() ) . '" target="_blank">',
 				'</a>'
@@ -391,6 +408,7 @@ class Renewal extends Abstract_Render {
 			15 * DAY_IN_SECONDS < $expired_since
 		) {
 			$message .= sprintf(
+				// translators: %1$s = <a>, %2$s = </a>.
 				__( 'You need an active license to enable this option. %1$sMore info%2$s.', 'rocket' ),
 				'<a href="" target="_blank">',
 				'</a>'
@@ -420,7 +438,7 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
-		if ( ! get_rocket_option( 'optimize_css_delivery' ) ) {
+		if ( ! $this->options->get( 'optimize_css_delivery', 0 ) ) {
 			return $menu_title;
 		}
 
@@ -445,7 +463,7 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		if ( ! get_rocket_option( 'optimize_css_delivery' ) ) {
+		if ( ! $this->options->get( 'optimize_css_delivery', 0 ) ) {
 			return;
 		}
 
@@ -457,9 +475,9 @@ class Renewal extends Abstract_Render {
 		}
 
 		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
-			set_transient( "wpr_dashboard_seen_{$current_user}" , 1, 15 * DAY_IN_SECONDS );
+			set_transient( "wpr_dashboard_seen_{$current_user}", 1, 15 * DAY_IN_SECONDS );
 		} elseif ( 15 * DAY_IN_SECONDS < $expired_since ) {
-			set_transient( "wpr_dashboard_seen_{$current_user}" , 1, YEAR_IN_SECONDS );
+			set_transient( "wpr_dashboard_seen_{$current_user}", 1, YEAR_IN_SECONDS );
 		}
 	}
 
@@ -470,7 +488,7 @@ class Renewal extends Abstract_Render {
 	 *
 	 * @return array
 	 */
-	public function maybe_disable_all_ocd( $args ) {
+	public function maybe_disable_ocd( $args ) {
 		if ( 'optimize_css_delivery' !== $args['id'] ) {
 			return $args;
 		}
