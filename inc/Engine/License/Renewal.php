@@ -383,6 +383,12 @@ class Renewal extends Abstract_Render {
 		$message       = ' <span class="wpr-icon-important wpr-checkbox-warning">';
 
 		if (
+			$whitelabel
+			&&
+			15 * DAY_IN_SECONDS > $expired_since
+		) {
+			return $args;
+		} elseif (
 			! $whitelabel
 			&&
 			15 * DAY_IN_SECONDS > $expired_since
@@ -469,12 +475,13 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$expired_since = time() - $this->user->get_license_expiration();
-		$current_user  = get_current_user_id();
+		$current_user = get_current_user_id();
 
 		if ( false !== get_transient( "wpr_dashboard_{$current_user}" ) ) {
 			return;
 		}
+
+		$expired_since = time() - $this->user->get_license_expiration();
 
 		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
 			set_transient( "wpr_dashboard_seen_{$current_user}", 1, 15 * DAY_IN_SECONDS );
