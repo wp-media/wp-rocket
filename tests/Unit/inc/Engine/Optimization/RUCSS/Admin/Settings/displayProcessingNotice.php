@@ -7,14 +7,16 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_processing_notice
  *
  * @group  RUCSS
  */
-class Test_DisplayProcessingNotice extends TestCase {
+class Test_DisplayProcessingNotice extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Settings/displayProcessingNotice.php';
+
 	private $options;
 	private $settings;
 
@@ -28,9 +30,10 @@ class Test_DisplayProcessingNotice extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+		
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
 
@@ -47,6 +50,7 @@ class Test_DisplayProcessingNotice extends TestCase {
 			Functions\expect( 'rocket_notice_html' )->never();
 		}
 
+		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) ) );
 
 		$this->settings->display_processing_notice();
 	}
