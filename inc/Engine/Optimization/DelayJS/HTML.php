@@ -55,6 +55,7 @@ class HTML {
 		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
 		'ewww_webp_supported', // EWWW WebP inline scripts.
 		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
+		'__tcfapi', // Consent management platforms implementing the legal framework developed by IAB Europe to comply with GDPR.
 		'/perfmatters/js/lazyload.min.js',
 		'lazyLoadInstance',
 		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
