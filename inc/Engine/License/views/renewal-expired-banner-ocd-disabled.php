@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 				'<strong>',
 				'</strong>',
 				'20%',
-				$data['renewal_price']
+				esc_html( $data['renewal_price'] )
 			);
 			?>
 		</p>

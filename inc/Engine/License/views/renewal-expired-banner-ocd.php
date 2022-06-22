@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 				esc_html__( 'They will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
 				'<strong>',
 				'</strong>',
-				$data['disabled_date']
+				esc_html( $data['disabled_date'] )
 			);
 			?>
 		</p>
@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || exit;
 				'<strong>',
 				'</strong>',
 				'20%',
-				$data['renewal_price']
+				esc_html( $data['renewal_price'] )
 			);
 			?>
 		</p>
