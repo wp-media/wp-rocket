@@ -68,7 +68,7 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 			Functions\expect( 'rocket_notice_html' )->never();
 		}
 
-		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) ) );
+		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
 
 		$this->settings->display_success_notice();
 	}
