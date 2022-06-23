@@ -14,10 +14,6 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 }
 
-if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
-}
-
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/presslabs.php';
 }
@@ -29,7 +25,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pressidium.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/meta-slider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/soliloquy.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/i18n/wpml.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/i18n/polylang.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-currencyswitcher.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-prices-by-country.php';

@@ -84,8 +84,9 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'failed',
-					'id' => 'id',
+					'id' => 1,
 					'css' => '',
 				]
 			],
@@ -104,9 +105,10 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => '',
-					'id' => 'id',
+					'id' => 1,
 				]
 			],
 		],
@@ -123,9 +125,10 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => 'h1{color:red;}',
-					'id' => 'id',
+					'id' => 1,
 				]
 			],
 			'apply_used_css' => [
@@ -134,5 +137,29 @@ return [
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
 		],
 		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred.php'),
-	]
+	],
+	'expectedFilteredHTMlWhenNoPreconnectGoogleAPI' => [
+		'config' => [
+			'is_allowed' => true,
+			'home_url' => 'http://example.com',
+			'is_mobile' => [
+				'has_mobile_cache' => true,
+				'is_caching_mobile_files' => true,
+				'is_mobile' => true,
+			],
+			'get_existing_used_css' => [
+				'used_css' => (object) [
+					'hash' => '1234',
+					'status' => 'completed',
+					'css' => 'h1{color:red;}',
+					'id' => 1,
+				]
+			],
+			'apply_used_css' => [
+				'test'
+			],
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/google_fonts.php'),
+		],
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred.php'),
+	],
 ];

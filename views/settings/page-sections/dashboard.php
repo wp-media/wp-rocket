@@ -80,7 +80,14 @@ defined( 'ABSPATH' ) || exit;
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
 							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span><br>
+						</span>
+						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
+							<span>
+								<?php esc_html_e( 'with', 'rocket' ); ?> 
+								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
+							</span>
+						<?php endif; ?>
+						<br>
 						<?php
 						/**
 						 * Fires when displaying the license information

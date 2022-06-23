@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\ENgine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
@@ -306,12 +306,18 @@ class Settings {
 	/**
 	 * Checks if we can display the RUCSS notices
 	 *
+	 * @param bool $check_enabled check if RUCSS is enabled.
+	 *
 	 * @since 3.11
 	 *
 	 * @return bool
 	 */
-	private function can_display_notice(): bool {
+	private function can_display_notice( $check_enabled = true ): bool {
 		$screen = get_current_screen();
+
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) ) {
+			return false;
+		}
 
 		if (
 			isset( $screen->id )
@@ -325,7 +331,7 @@ class Settings {
 			return false;
 		}
 
-		if ( ! $this->is_enabled() ) {
+		if ( $check_enabled && ! $this->is_enabled() ) {
 			return false;
 		}
 
@@ -467,5 +473,40 @@ class Settings {
 		}
 
 		update_option( 'wp_rocket_settings', $options );
+	}
+
+	/**
+	 * Display a notification on wrong license.
+	 *
+	 * @return void
+	 */
+	public function display_wrong_license_notice() {
+		if ( ! $this->can_display_notice( false ) ) {
+			return;
+		}
+
+		$main_message = __( "We couldn't generate the used CSS because you're using a nulled version of WP Rocket. You need an active license to use the Remove Unused CSS feature and further improve your website's performance.", 'rocket' );
+		$cta_message  = sprintf(
+			// translators: %1$s = promo percentage.
+			__( 'Click here to get a WP Rocket single license at %1$s off!', 'rocket' ),
+			'10%%'
+		);
+
+		$message = sprintf(
+		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
+			"%1\$s: <p>$main_message</p>%2\$s$cta_message%3\$s",
+			'<strong>WP Rocket</strong>',
+			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" class="button button-primary" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+				'id'          => 'rocket-notice-rucss-wrong-licence',
+			]
+		);
 	}
 }
