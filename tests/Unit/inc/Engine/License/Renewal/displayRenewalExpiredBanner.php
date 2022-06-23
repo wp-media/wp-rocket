@@ -52,7 +52,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'optimize_css_delivery', 0 )
-			->andReturn( 0 );
+			->andReturn( $config['ocd'] );
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\expect( 'get_transient' )
@@ -75,11 +75,45 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			$this->user->shouldReceive( 'get_creation_date' )
 				->andReturn( $config['user']['creation_date'] );
 
+			Functions\when( 'number_format_i18n' )->returnArg();
+
+			$this->pricing->shouldReceive( 'get_renewals_data' )
+				->andReturn( $config['pricing']['renewals'] );
+
+			$this->pricing->shouldReceive( 'get_single_websites_count' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['single']->websites );
+
+			$this->pricing->shouldReceive( 'get_plus_websites_count' )
+				->atMost()
+				->twice()
+				->andReturn( $config['pricing']['plus']->websites );
+
+			$this->pricing->shouldReceive( 'get_single_pricing' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['single'] );
+
+			$this->pricing->shouldReceive( 'get_plus_pricing' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['plus'] );
+
+			$this->pricing->shouldReceive( 'get_infinite_pricing' )
+				->atMost()
+				->once()
+				->andReturn( $config['pricing']['infinite'] );
+
+			Functions\when( 'date_i18n' )->justReturn( date( 'Ymd', strtotime( 'now + 8 days' ) ) );
+
+			Functions\when( 'get_option' )->justReturn( 'Ymd' );
+
 			$this->renewal->shouldReceive( 'generate' )
 				->once()
 				->with(
-					'renewal-expired-banner',
-					$expected
+					$expected['template'],
+					$expected['data']
 				)
 				->andReturn( '' );
 
