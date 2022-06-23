@@ -7,21 +7,13 @@ use ActionScheduler_Compatibility;
 use WP_Rocket\Logger\Logger;
 
 class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
-	/**
-	 * Cron hook name.
-	 */
-	const WP_CRON_HOOK = 'action_scheduler_run_queue_preload';
+
 	/**
 	 * Current runner instance.
 	 *
 	 * @var PreloadQueueRunner Instance.
 	 */
 	private static $runner = null;
-
-	/**
-	 * Cron schedule interval.
-	 */
-	const WP_CRON_SCHEDULE = 'every_minute';
 
 	/**
 	 * Queue group.
@@ -121,24 +113,7 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return void
 	 */
 	public function init() {
-		apply_filters( 'cron_schedules', [ $this, 'add_wp_cron_schedule' ] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
-
-		if ( $next_timestamp ) {
-			wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
-		}
-
-		$cron_params = [ 'WP Cron' ];
-
-		$next_schedule = wp_next_scheduled( self::WP_CRON_HOOK, $cron_params );
-
-		if ( ! $next_schedule ) {
-			$schedule = apply_filters( 'rocket_action_scheduler_run_schedule', [ self::WP_CRON_SCHEDULE ] );
-			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_params );
-		}
-		add_action( self::WP_CRON_HOOK, [ $this, 'run' ] );
 		add_action( 'shutdown', [ $this, 'maybe_dispatch_async_request' ] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-
 	}
 
 	/**
@@ -207,25 +182,5 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			wp_cache_flush();
 		}
-	}
-
-	/**
-	 * Add the cron schedule.
-	 *
-	 * @param array $schedules Array of current schedules.
-	 *
-	 * @return array
-	 */
-	public function add_wp_cron_schedule( $schedules ) {
-		if ( isset( $schedules['every_minute'] ) ) {
-			return $schedules;
-		}
-
-		$schedules['every_minute'] = [
-			'interval' => 60, // in seconds.
-			'display'  => __( 'Every minute', 'rocket' ),
-		];
-
-		return $schedules;
 	}
 }
