@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group License
  */
-class DisplayAddExpiredBubble extends TestCase {
+class Test_AddExpiredBubble extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;

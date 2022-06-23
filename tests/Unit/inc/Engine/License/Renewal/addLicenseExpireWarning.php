@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group License
  */
-class DisplayAddLicenseExpireWarning extends TestCase {
+class Test_AddLicenseExpireWarning extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;
