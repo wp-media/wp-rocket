@@ -31,7 +31,7 @@ class Test_SetDashboardSeenTransient extends TestCase {
 				$this->pricing,
 				$this->user,
 				$this->options,
-				'views',
+				'views'
 		);
 	}
 
