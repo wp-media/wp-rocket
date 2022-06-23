@@ -235,7 +235,7 @@ class HTML {
 		}
 
 		// Checks if script has unnecessary white space and treat as included js script.
-		if ( empty( trim( $matches['content'] ) ) ) {
+		if ( empty( trim( $matches['content'] ) ) || preg_match( '/^\/\/.*|\/*[\s\S]*?\*\//', trim( $matches['content'] ) ) ) {
 			$delay_js = str_ireplace( ' src=', ' data-rocket-src=', $delay_js );
 		}
 
