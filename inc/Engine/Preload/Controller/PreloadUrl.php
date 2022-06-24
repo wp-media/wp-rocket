@@ -62,7 +62,6 @@ class PreloadUrl {
 			$this->query->make_status_complete( $url );
 			return;
 		}
-
 		wp_safe_remote_get(
 			user_trailingslashit( $url ),
 			[

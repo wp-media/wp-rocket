@@ -3,17 +3,17 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 
 use WP_Error;
-use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\ASTrait;
-use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
  * @group  Preload
  */
-class Test_ParseSitemap extends AdminTestCase {
+class Test_ParseSitemap extends TestCase {
 
-	use ASTrait;
+	use ASTrait, DBTrait;
 
 	protected $config;
 
@@ -21,18 +21,10 @@ class Test_ParseSitemap extends AdminTestCase {
 	{
 		parent::set_up_before_class();
 		self::installFresh();
-		$container             = apply_filters( 'rocket_container', null );
-		$cache_table   = $container->get( 'preload_caches_table' );
-		$cache_table->install();
 	}
 
 	public static function tear_down_after_class()
 	{
-		$container             = apply_filters( 'rocket_container', null );
-		$cache_table   = $container->get( 'preload_caches_table' );
-		if ( $cache_table->exists() ) {
-			$cache_table->uninstall();
-		}
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}

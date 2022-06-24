@@ -35,12 +35,11 @@ class Cache extends Table {
 	protected function set_schema() {
 		$this->schema = "
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			url              varchar(2000)       NOT NULL default '',
+			url              varchar(255)       NOT NULL default '' UNIQUE,
 			status           varchar(255)        NOT NULL default '',
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
-			KEY url (url(150)),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed)";
 	}

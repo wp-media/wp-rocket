@@ -59,10 +59,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$wp_file_system = $this->getContainer()->get( 'wp_direct_filesystem' );
 
 		$this->getContainer()->add( 'preload_caches_table', 'WP_Rocket\Engine\Preload\Database\Tables\Cache' );
-		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' );
+		$this->getContainer()->add( 'preload_caches_query', 'WP_Rocket\Engine\Preload\Database\Queries\Cache' )
+			->addArgument( new Logger() );
 		$this->getContainer()->get( 'preload_caches_table' );
 
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+
 		$this->getContainer()->add( 'preload_queue', 'WP_Rocket\Engine\Preload\Controller\Queue' );
 		$queue = $this->getContainer()->get( 'preload_queue' );
 

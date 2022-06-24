@@ -2,12 +2,19 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
 class Cache extends Query {
 
+	/**
+	 * Logger instance.
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
 
 	/**
 	 * Name of the database table to query.
@@ -67,6 +74,45 @@ class Cache extends Query {
 	protected $item_shape = CacheRow::class;
 
 	/**
+	 * Instantiate query.
+	 *
+	 * @param Logger       $logger logger instance.
+	 *
+	 * @param string|array $query {
+	 *     Optional. Array or query string of item query parameters.
+	 *     Default empty.
+	 *
+	 *     @type string       $fields            Site fields to return. Accepts 'ids' (returns an array of item IDs)
+	 *                                           or empty (returns an array of complete item objects). Default empty.
+	 *                                           To do a date query against a field, append the field name with _query
+	 *     @type bool         $count             Whether to return a item count (true) or array of item objects.
+	 *                                           Default false.
+	 *     @type int          $number            Limit number of items to retrieve. Use 0 for no limit.
+	 *                                           Default 100.
+	 *     @type int          $offset            Number of items to offset the query. Used to build LIMIT clause.
+	 *                                           Default 0.
+	 *     @type bool         $no_found_rows     Whether to disable the `SQL_CALC_FOUND_ROWS` query.
+	 *                                           Default true.
+	 *     @type string|array $orderby           Accepts false, an empty array, or 'none' to disable `ORDER BY` clause.
+	 *                                           Default 'id'.
+	 *     @type string       $item              How to item retrieved items. Accepts 'ASC', 'DESC'.
+	 *                                           Default 'DESC'.
+	 *     @type string       $search            Search term(s) to retrieve matching items for.
+	 *                                           Default empty.
+	 *     @type array        $search_columns    Array of column names to be searched.
+	 *                                           Default empty array.
+	 *     @type bool         $update_item_cache Whether to prime the cache for found items.
+	 *                                           Default false.
+	 *     @type bool         $update_meta_cache Whether to prime the meta cache for found items.
+	 *                                           Default false.
+	 * }
+	 */
+	public function __construct( Logger $logger, $query = [] ) {
+		parent::__construct( $query );
+		$this->logger = $logger;
+	}
+
+	/**
 	 * Create new resource row or update its contents if not created before.
 	 *
 	 * @since 3.9
@@ -96,6 +142,8 @@ class Cache extends Query {
 			if ( $resource_id ) {
 				return $resource_id;
 			}
+
+			$this->logger->error( "Cannot insert {$resource['url']} into {$this->table_name}" );
 
 			return false;
 		}
@@ -149,6 +197,8 @@ class Cache extends Query {
 		if ( $resource_id ) {
 			return $resource_id;
 		}
+
+		$this->logger->error( "Cannot insert {$resource['url']} into {$this->table_name}" );
 
 		return false;
 	}

@@ -34,6 +34,7 @@ class Cache extends Schema {
 			'cache_key'  => true,
 			'searchable' => true,
 			'sortable'   => false,
+			'unique'     => true,
 		],
 
 		// STATUS    column.
