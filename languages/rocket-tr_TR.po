@@ -659,7 +659,7 @@ msgid ""
 msgstr ""
 "CSS teslimini en iyi hale getirmek, web sitenizde işleme engelleyici CSS’yi "
 "ortadan kaldırır. Sadece bir yöntem seçilebilir. En iyi performans için "
-"Kullanılmayan CSS’yi kaldırmanız önerilir."
+"Kullanılmayan CSS’yi Kaldır önerilir."
 
 #: inc/Engine/Admin/Settings/Page.php:702
 #, php-format
