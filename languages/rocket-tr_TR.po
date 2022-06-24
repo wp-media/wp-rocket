@@ -597,7 +597,7 @@ msgid ""
 "For compatibility and best results, this option is disabled when Remove "
 "unused CSS is enabled."
 msgstr ""
-"Uyumluluk ve en iyi sonuçlar için Kullanılmayan CSS’yi kaldır "
+"Uyumluluk ve en iyi sonuçlar için Kullanılmayan CSS’yi Kaldır "
 "etkinleştirildiğinde, bu seçenek etkisizleştirilir."
 
 #: inc/Engine/Admin/Settings/Page.php:665
@@ -648,7 +648,7 @@ msgid ""
 msgstr ""
 "CSS teslimini en iyi hale getirmek, web sitenizde işleme engelleyici CSS’yi "
 "ortadan kaldırır. Sadece bir yöntem seçilebilir. En iyi performans için "
-"Kullanılmayan CSS’yi kaldırmanız önerilir, ancak sadece aktif lisansa sahip "
+"Kullanılmayan CSS’yi Kaldır önerilir, ancak sadece aktif lisansa sahip "
 "kullanıcılarla sınırlıdır."
 
 #: inc/Engine/Admin/Settings/Page.php:692
