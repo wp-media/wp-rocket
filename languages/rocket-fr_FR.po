@@ -3891,7 +3891,7 @@ msgstr ""
 #: views/deactivation-intent/form.php:44
 #, php-format
 msgid "Yes, apply \"%1$sSafe Mode%2$s\""
-msgstr "Oui, appliquer le \"%1$sMode sécurisé%2$s\""
+msgstr "Oui, appliquer la %1$sConfiguration sans conflit%2$s"
 
 #: views/deactivation-intent/form.php:52
 msgid "No, deactivate and snooze this message for"
