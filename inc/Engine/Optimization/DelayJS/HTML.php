@@ -234,8 +234,8 @@ class HTML {
 			}
 		}
 
-		// Checks if script has unnecessary white space and treat as included js script.
-		if ( empty( trim( $matches['content'] ) ) || preg_match( '/^\/\/.*|\/*[\s\S]*?\*\//', trim( $matches['content'] ) ) ) {
+		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
+		if ( stripos( $matches['attr'], 'src=' ) !== false ) {
 			$delay_js = str_ireplace( ' src=', ' data-rocket-src=', $delay_js );
 		}
 
