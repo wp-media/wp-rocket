@@ -3877,9 +3877,10 @@ msgid ""
 "quickly disable LazyLoad, File Optimization, and CDN options. Then check to "
 "see if your issue is resolved."
 msgstr ""
-"Notre conseil ? Au lieu de désactiver WP Rocket, utilisez notre %1$sMode "
-"Sécurisé%2$s pour désactiver rapidement les options LazyLoad, Optimisation "
-"des Fichiers et CDN. Vérifiez ensuite si votre problème est résolu."
+"Notre conseil ? Au lieu de désactiver WP Rocket, utilisez notre "
+"%1$sConfiguration sans conflit%2$s pour désactiver rapidement les options "
+"LazyLoad, Optimisation des Fichiers et CDN. Vérifiez ensuite si votre "
+"problème est résolu."
 
 #: views/deactivation-intent/form.php:35
 msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
