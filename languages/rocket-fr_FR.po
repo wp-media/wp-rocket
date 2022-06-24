@@ -3884,7 +3884,9 @@ msgstr ""
 
 #: views/deactivation-intent/form.php:35
 msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
-msgstr "Voulez-vous utiliser notre Mode Sécurisé pour dépanner WP Rocket ?"
+msgstr ""
+"Voulez-vous utiliser notre Configuration sans conflit pour dépanner WP "
+"Rocket ?"
 
 #: views/deactivation-intent/form.php:44
 #, php-format
