@@ -194,6 +194,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -243,7 +247,7 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
-	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
+	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="text/javascript" async="async" data-noptimize="1" data-cfasync="false" src="//scripts.mediavine.com/tags/test.js"></script>
@@ -419,6 +423,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -452,8 +460,8 @@ window.wsf_form_json_config = {};
 
 $delay_html = '<html>
 <head>
-	<script type="rocketlazyloadscript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
-	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
+	<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+	<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
@@ -468,7 +476,7 @@ $delay_html = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
-	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
+	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="text/javascript" async="async" data-noptimize="1" data-cfasync="false" src="//scripts.mediavine.com/tags/test.js"></script>
@@ -542,7 +550,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>
 <script type="rocketlazyloadscript">var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};</script>
 <script src="http://example.org/wp-includes/js/comment-reply.min.js?ver=5.7" id="comment-reply-js"></script>
-<script type="rocketlazyloadscript" data-rocket-type="module" src="http://example.org/wp-content/plugins/module/test.js"></script>
+<script type="rocketlazyloadscript" data-rocket-type="module" data-rocket-src="http://example.org/wp-content/plugins/module/test.js"></script>
 <script id="astra-theme-js-js-extra">var astra = {"break_point:"921","isRtl:""};</script>
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -644,6 +652,10 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
