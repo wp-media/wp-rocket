@@ -12,9 +12,12 @@ class Xstore implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [
-			'rocket_rucss_inline_content_exclusions' => 'exclude_inline_content',
-		];
+
+		if ( ! self::is_current_theme() ) {
+			return [];
+		}
+
+		return [ 'rocket_rucss_inline_content_exclusions' => 'exclude_inline_content' ];
 	}
 
 	/**
@@ -25,9 +28,6 @@ class Xstore implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_inline_content( $patterns ): array {
-		if ( ! self::is_current_theme() ) {
-			return $patterns;
-		}
 
 		$patterns[] = '.slider-';
 		$patterns[] = '.slider-item-';
