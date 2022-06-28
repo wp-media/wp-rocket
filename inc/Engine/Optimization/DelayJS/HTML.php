@@ -234,11 +234,6 @@ class HTML {
 			}
 		}
 
-		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
-		if ( stripos( $matches['attr'], 'src=' ) !== false ) {
-			$delay_js = str_ireplace( ' src=', ' data-rocket-src=', $delay_js );
-		}
-
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
 
