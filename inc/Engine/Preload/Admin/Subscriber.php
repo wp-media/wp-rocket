@@ -86,6 +86,9 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
 			'rocket_after_clean_terms'  => 'clean_urls',
 			'after_rocket_clean_domain' => 'clean_full_cache',
+			'wp_trash_post'             => 'delete_post_preload_cache',
+			'delete_post'               => 'delete_post_preload_cache',
+			'pre_delete_term'           => 'delete_term_preload_cache',
 			'init'                      => [ 'maybe_init_preload_queue' ],
 		];
 	}
@@ -155,5 +158,45 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->queue_runner->init();
 
+	}
+
+	/**
+	 * Delete URL from a post from the preload.
+	 *
+	 * @param int $post_id ID from the post.
+	 * @return void
+	 */
+	public function delete_post_preload_cache( $post_id ) {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$url = get_permalink( $post_id );
+
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->controller->delete_url( $url );
+	}
+
+	/**
+	 * Delete URL from a term from the preload.
+	 *
+	 * @param int $term_id ID from the term.
+	 * @return void
+	 */
+	public function delete_term_preload_cache( $term_id ) {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->controller->delete_url( $url );
 	}
 }

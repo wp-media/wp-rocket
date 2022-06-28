@@ -49,4 +49,14 @@ class ClearCache {
 	public function full_clean() {
 		$this->query->set_all_to_pending();
 	}
+
+	/**
+	 * Delete a URL from the preload.
+	 *
+	 * @param string $url URL to delete.
+	 * @return void
+	 */
+	public function delete_url( string $url ) {
+		$this->query->delete_by_url( $url );
+	}
 }

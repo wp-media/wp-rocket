@@ -47,6 +47,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
+			'set_404'                         => 'delete_url_on_not_found',
 		];
 	}
 
@@ -112,5 +113,16 @@ class Subscriber implements Subscriber_Interface {
 				'status' => 'completed',
 			]
 		);
+	}
+
+	/**
+	 * Delete url from the Preload when a 404 is risen.
+	 *
+	 * @return void
+	 */
+	public function delete_url_on_not_found() {
+		global $wp;
+		$url = home_url( $wp->request );
+		$this->query->delete_by_url( $url );
 	}
 }
