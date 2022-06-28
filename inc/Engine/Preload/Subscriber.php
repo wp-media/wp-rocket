@@ -45,7 +45,6 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . WP_ROCKET_SLUG => [
 				[ 'maybe_load_initial_sitemap', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
-				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
 			'set_404'                         => 'delete_url_on_not_found',
