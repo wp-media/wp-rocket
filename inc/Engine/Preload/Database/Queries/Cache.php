@@ -106,10 +106,9 @@ class Cache extends Query {
 		$this->update_item(
 			$db_row->id,
 			[
-				'url'           => untrailingslashit( $resource['url'] ),
-				'status'        => $resource['status'],
-				'modified'      => current_time( 'mysql', true ),
-				'last_accessed' => current_time( 'mysql', true ),
+				'url'      => untrailingslashit( $resource['url'] ),
+				'status'   => $resource['status'],
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 
@@ -341,6 +340,22 @@ class Cache extends Query {
 				]
 				);
 		}
+	}
+
+	/**
+	 * Revert old in-progress rows
+	 */
+	public function revert_old_in_progress() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 day" );
 	}
 
 	/**

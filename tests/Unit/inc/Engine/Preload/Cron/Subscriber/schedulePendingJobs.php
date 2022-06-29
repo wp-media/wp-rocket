@@ -1,16 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Fixtures\inc\Engine\Preload\Cron\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
 use Mockery;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
+/**
+ * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_pending_jobs
+ *
+ * @group Cron
+ * @group Preload
+ */
 class Test_SchedulePendingJobs extends TestCase
 {
 	protected $subscriber;
