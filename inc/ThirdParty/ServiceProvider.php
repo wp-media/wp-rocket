@@ -48,7 +48,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'pwa',
 		'flatsome',
 		'convertplug',
+		'unlimited_elements',
 		'inline_related_posts',
+		'wpml',
 	];
 
 	/**
@@ -170,7 +172,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'unlimited_elements', 'WP_Rocket\ThirdParty\Plugins\UnlimitedElements' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'inline_related_posts', 'WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'wpml', 'WP_Rocket\ThirdParty\Plugins\I18n\WPML' )
 			->addTag( 'common_subscriber' );
 	}
 }

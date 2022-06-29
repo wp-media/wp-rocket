@@ -56,13 +56,16 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		return [
-			'wp_rocket_loaded'                    => 'remove_widget_callback',
-			'rocket_exclude_css'                  => 'exclude_post_css',
-			'elementor/core/files/clear_cache'    => 'clear_cache',
-			'update_option__elementor_global_css' => 'clear_cache',
-			'delete_option__elementor_global_css' => 'clear_cache',
-			'rocket_buffer'                       => [ 'add_fix_animation_script', 28 ],
-			'rocket_exclude_js'                   => 'exclude_js',
+			'wp_rocket_loaded'                         => 'remove_widget_callback',
+			'rocket_exclude_css'                       => 'exclude_post_css',
+			'elementor/core/files/clear_cache'         => 'clear_cache',
+			'update_option__elementor_global_css'      => 'clear_cache',
+			'delete_option__elementor_global_css'      => 'clear_cache',
+			'rocket_buffer'                            => [ 'add_fix_animation_script', 28 ],
+			'rocket_exclude_js'                        => 'exclude_js',
+			'rocket_skip_post_row_actions'             => [ 'remove_rocket_row_action', 1, 2 ],
+			'rocket_metabox_options_post_types'        => 'remove_rocket_metabox_option',
+			'rocket_skip_admin_bar_cache_purge_option' => [ 'skip_admin_bar_cache_purge_option', 1, 2 ],
 		];
 	}
 
@@ -165,5 +168,53 @@ class Elementor implements Subscriber_Interface {
 		$excluded_files[] = '/wp-includes/js/dist/hooks(.min)?.js';
 
 		return $excluded_files;
+	}
+
+	/**
+	 * Remove rocket metabox option from post.
+	 *
+	 * @param array $cpts Custom post type.
+	 * @return array
+	 */
+	public function remove_rocket_metabox_option( array $cpts ): array {
+		if ( isset( $cpts['elementor_library'] ) ) {
+			unset( $cpts['elementor_library'] );
+		}
+
+		return $cpts;
+	}
+
+	/**
+	 * Remove rocket option from row actions.
+	 *
+	 * @param boolean $default Filter default value.
+	 * @param mixed   $post Post object.
+	 * @return boolean
+	 */
+	public function remove_rocket_row_action( bool $default, $post ): bool {
+		if ( 'elementor_library' === $post->post_type ) {
+			return true;
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Remove cache or purge option from elementor template post.
+	 *
+	 * @param boolean $should_skip Should skip rocket option to admin bar.
+	 * @param mixed   $post Post object.
+	 * @return boolean
+	 */
+	public function skip_admin_bar_cache_purge_option( bool $should_skip, $post ): bool {
+		if ( null === $post ) {
+			return $should_skip;
+		}
+
+		if ( 'elementor_library' === $post->post_type ) {
+			return true;
+		}
+
+		return $should_skip;
 	}
 }

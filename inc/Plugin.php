@@ -179,6 +179,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'minify_admin_subscriber',
 		];
 	}
 
@@ -294,7 +295,10 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'cache_config',
+			'unlimited_elements',
 			'inline_related_posts',
+			'wpml',
 		];
 
 		$host_type = HostResolver::get_host_service();
