@@ -28,32 +28,4 @@ return [
 			]
 		]
 	],
-	'preloadDisabledShouldDoNothing' => [
-		'config' => [
-			'manual_preload' => false,
-			'data' => [
-				[
-					'url' => 'https://example.org/url',
-					'status' => 'completed',
-				],
-				[
-					'url' => 'https://example.org',
-					'status' => 'completed',
-				],
-			]
-		],
-		'expected' => [
-			'exists' => true,
-			'data' => [
-				[
-					'url' => 'https://example.org/url',
-					'status' => 'completed',
-				],
-				[
-					'url' => 'https://example.org',
-					'status' => 'completed',
-				],
-			]
-		]
-	]
 ];

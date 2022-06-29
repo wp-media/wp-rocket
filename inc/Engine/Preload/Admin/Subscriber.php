@@ -108,10 +108,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_full_cache() {
-		if ( ! $this->options->get( 'manual_preload' ) ) {
-			return;
-		}
-
 		$this->controller->full_clean();
 	}
 
@@ -124,10 +120,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_partial_cache( $object, array $urls, $lang ) {
-		if ( ! $this->options->get( 'manual_preload' ) ) {
-			return;
-		}
-
 		// Add Homepage URL to $purge_urls for preload.
 		$urls[] = get_rocket_i18n_home_url( $lang );
 
