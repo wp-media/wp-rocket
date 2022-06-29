@@ -95,6 +95,7 @@ class UsedCSS {
 		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
+		'#apbct__email_id__wp_wpforms',
 	];
 
 	/**
