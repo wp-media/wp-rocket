@@ -23,11 +23,8 @@ class Test_GetPendingJobs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnPending($config, $expected) {
-		$this->query->expects(self::atLeastOnce())->method('query')->withConsecutive([[
-			'count'  => true,
-			'status' => 'in-progress',
-		]], [[
-			'number'         => ( $config['total'] - $config['in_progress'] ),
+		$this->query->expects(self::atLeastOnce())->method('query')->with([
+			'number'         => $config['total'],
 			'status'         => 'pending',
 			'fields'         => [
 				'id',
@@ -38,7 +35,7 @@ class Test_GetPendingJobs extends TestCase {
 			],
 			'orderby'        => 'modified',
 			'order'          => 'asc',
-		]])->willReturnOnConsecutiveCalls($config['in_progress'], $config['results']);
+		])->willReturn($config['results']);
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}
 

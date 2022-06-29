@@ -7,8 +7,7 @@ $cache = new CacheRow((object)[]);
 return [
 	'shouldReturnElements' => [
 		'config' => [
-			'total' => 10,
-			'in_progress' => 9,
+			'total' => 1,
 			'results' => [
 				$cache,
 			]
@@ -17,12 +16,4 @@ return [
 			$cache
 		]
 	],
-	'inProgressShouldSubtract' => [
-		'config' => [
-			'total' => 10,
-			'in_progress' => 10,
-			'results' => []
-		],
-		'expected' => []
-	]
 ];
