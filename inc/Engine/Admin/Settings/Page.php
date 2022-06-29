@@ -1166,7 +1166,6 @@ class Page {
 					'section'           => 'preload_section',
 					'page'              => 'preload',
 					'default'           => 1,
-					'container_class'   => [],
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'dns_prefetch'   => [
