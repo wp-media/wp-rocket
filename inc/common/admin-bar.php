@@ -139,33 +139,43 @@ function rocket_admin_bar( $wp_admin_bar ) {
 				);
 			}
 
-			if ( is_admin() ) {
-				/**
-				 * Purge a post.
-				 */
-				if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			/**
+			 * Filters the rocket clear post admin bar menu.
+			 *
+			 * @since 3.11.4
+			 *
+			 * @param bool  $should_skip Should skip adding clear post to rocket option in admin bar.
+			 * @param type  $post Post object.
+			 */
+			if ( ! apply_filters( 'rocket_skip_admin_bar_cache_purge_option', false, $post ) ) {
+				if ( is_admin() ) {
+					/**
+					 * Purge a post.
+					 */
+					if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+						$wp_admin_bar->add_menu(
+							[
+								'parent' => 'wp-rocket',
+								'id'     => 'purge-post',
+								'title'  => __( 'Clear this post', 'rocket' ),
+								'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=post-' . $post->ID . $referer ), $action . '_post-' . $post->ID ),
+							]
+						);
+
+					}
+				} else {
+					/**
+					 * Purge this URL (frontend).
+					 */
 					$wp_admin_bar->add_menu(
 						[
 							'parent' => 'wp-rocket',
-							'id'     => 'purge-post',
-							'title'  => __( 'Clear this post', 'rocket' ),
-							'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=post-' . $post->ID . $referer ), $action . '_post-' . $post->ID ),
+							'id'     => 'purge-url',
+							'title'  => __( 'Purge this URL', 'rocket' ),
+							'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=url' . $referer ), $action . '_url' ),
 						]
 					);
-
 				}
-			} else {
-				/**
-				 * Purge this URL (frontend).
-				 */
-				$wp_admin_bar->add_menu(
-					[
-						'parent' => 'wp-rocket',
-						'id'     => 'purge-url',
-						'title'  => __( 'Purge this URL', 'rocket' ),
-						'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=url' . $referer ), $action . '_url' ),
-					]
-				);
 			}
 		}
 	}

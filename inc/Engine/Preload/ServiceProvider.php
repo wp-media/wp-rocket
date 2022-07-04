@@ -38,31 +38,31 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'full_preload_process', 'WP_Rocket\Engine\Preload\FullProcess' );
-		$this->getContainer()->add( 'partial_preload_process', 'WP_Rocket\Engine\Preload\PartialProcess' );
+		$this->getContainer()->add( 'full_preload_process', FullProcess::class );
+		$this->getContainer()->add( 'partial_preload_process', PartialProcess::class );
 
 		$full_preload_process = $this->getContainer()->get( 'full_preload_process' );
-		$this->getContainer()->add( 'homepage_preload', 'WP_Rocket\Engine\Preload\Homepage' )
+		$this->getContainer()->add( 'homepage_preload', Homepage::class )
 			->addArgument( $full_preload_process );
-		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Engine\Preload\Sitemap' )
+		$this->getContainer()->add( 'sitemap_preload', Sitemap::class )
 			->addArgument( $full_preload_process );
 
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Engine\Preload\PreloadSubscriber' )
+		$this->getContainer()->share( 'preload_subscriber', PreloadSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Engine\Preload\SitemapPreloadSubscriber' )
+		$this->getContainer()->share( 'sitemap_preload_subscriber', SitemapPreloadSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'sitemap_preload' ) )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Engine\Preload\PartialPreloadSubscriber' )
+		$this->getContainer()->share( 'partial_preload_subscriber', PartialPreloadSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'partial_preload_process' ) )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'fonts_preload_subscriber', 'WP_Rocket\Engine\Preload\Fonts' )
+		$this->getContainer()->share( 'fonts_preload_subscriber', Fonts::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );

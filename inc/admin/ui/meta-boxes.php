@@ -31,6 +31,8 @@ function rocket_cache_options_meta_boxes() {
 		);
 		unset( $cpts['attachment'] );
 
+		$cpts = apply_filters( 'rocket_metabox_options_post_types', $cpts );
+
 		foreach ( $cpts as $cpt => $cpt_object ) {
 			$label = $cpt_object->labels->singular_name;
 			add_meta_box( 'rocket_post_exclude', sprintf( __( 'WP Rocket Options', 'rocket' ), $label ), 'rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
