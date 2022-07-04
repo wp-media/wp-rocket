@@ -84,12 +84,22 @@ class Cache extends Abstract_Buffer {
 		// Path to WP index processing file and remove index.php from path.
 		$php_self = str_replace( 'index.php', '', $this->config->get_server_input( 'PHP_SELF' ) );
 
-		// Remove $php_self result from $request_uri.
-		$compare = str_replace( $php_self, '', $request_uri );
+		// Chunk path.
+		$path = explode( '/', $php_self );
 
-		// If string left from $compare is empty or is '/' then current page is home.
-		if ( '/' !== $php_self && '' !== $compare && '/' !== $compare ) {
+		// If home is TLD.
+		if ( '' === $path[ count( $path ) - 2 ] ) {
 			$this->maybe_redirect_with_trailing_slash();
+		}
+		// If home is in subdir.
+		else {
+			// Remove $php_self result from $request_uri.
+			$compare = str_replace( $php_self, '', $request_uri );
+
+			// If string left from $compare is empty or is '/' then current page is home.
+			if ( '/' !== $php_self && '' !== $compare && '/' !== $compare ) {
+				$this->maybe_redirect_with_trailing_slash();
+			}
 		}
 
 		/**
