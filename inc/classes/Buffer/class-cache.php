@@ -88,7 +88,7 @@ class Cache extends Abstract_Buffer {
 		$compare = str_replace( $php_self, '', $request_uri );
 
 		// If string left from $compare is empty or is '/' then current page is home.
-		if ( '' !== $compare && '/' !== $compare ) {
+		if ( '/' !== $php_self && '' !== $compare && '/' !== $compare ) {
 			$this->maybe_redirect_with_trailing_slash();
 		}
 
