@@ -518,7 +518,11 @@ class Renewal extends Abstract_Render {
 
 		$args['value'] = 0;
 
-		if ( ! in_array( 'wpr-isDisabled', $args['container_class'], true ) ) {
+		if (
+			isset( $args['container_class'] )
+			&&
+			! in_array( 'wpr-isDisabled', $args['container_class'], true )
+		) {
 			$args['container_class'][] = 'wpr-isDisabled';
 		}
 
