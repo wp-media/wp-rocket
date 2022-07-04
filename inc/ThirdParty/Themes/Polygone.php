@@ -17,7 +17,7 @@ class Polygone implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_rucss_safelist' => 'add_rucss_content_excluded',
+			'rocket_rucss_inline_content_exclusions' => 'add_rucss_content_excluded',
 		];
 	}
 
