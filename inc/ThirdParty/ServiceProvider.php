@@ -35,7 +35,7 @@ use WP_Rocket\ThirdParty\Themes\Avada;
 use WP_Rocket\ThirdParty\Themes\Bridge;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
-use \WP_Rocket\ThirdParty\Themes\Polygone:
+use \WP_Rocket\ThirdParty\Themes\Polygone;
 
 /**
  * Service provider for WP Rocket third party compatibility
