@@ -39,6 +39,6 @@ class Polygone implements Subscriber_Interface {
 	 */
 	private static function is_polygone( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
-		return ( 'polygone' === strtolower($theme->get( 'Name' )) || 'polygone' === $theme->get_template() );
+		return ( 'polygone' === strtolower( $theme->get( 'Name' ) ) || 'polygone' === $theme->get_template() );
 	}
 }
