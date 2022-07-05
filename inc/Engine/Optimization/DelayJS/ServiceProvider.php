@@ -2,6 +2,8 @@
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber as AdminSubscriber;
 
 /**
  * Service provider for the WP Rocket Delay JS
@@ -32,13 +34,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' );
-		$this->getContainer()->share( 'delay_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber' )
+		$this->getContainer()->add( 'delay_js_settings', Settings::class );
+		$this->getContainer()->share( 'delay_js_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
+		$this->getContainer()->add( 'delay_js_html', HTML::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
+		$this->getContainer()->share( 'delay_js_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'options' ) )

@@ -84,6 +84,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'failed',
 					'id' => 1,
 					'css' => '',
@@ -104,6 +105,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => '',
 					'id' => 1,
@@ -123,6 +125,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => 'h1{color:red;}',
 					'id' => 1,
@@ -146,6 +149,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => 'h1{color:red;}',
 					'id' => 1,

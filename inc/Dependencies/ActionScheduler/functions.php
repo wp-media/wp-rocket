@@ -98,7 +98,7 @@ function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
  * @param array $args Args that would have been passed to the job.
  * @param string $group The group the job is assigned to.
  *
- * @return string|null The scheduled action ID if a scheduled action was found, or null if no matching action found.
+ * @return int|null The scheduled action ID if a scheduled action was found, or null if no matching action found.
  */
 function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	if ( ! ActionScheduler::is_initialized( __FUNCTION__ ) ) {
@@ -116,8 +116,22 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	}
 
 	$action_id = ActionScheduler::store()->query_action( $params );
+
 	if ( $action_id ) {
-		ActionScheduler::store()->cancel_action( $action_id );
+		try {
+			ActionScheduler::store()->cancel_action( $action_id );
+		} catch ( Exception $exception ) {
+			ActionScheduler::logger()->log(
+				$action_id,
+				sprintf(
+					/* translators: %s is the name of the hook to be cancelled. */
+					__( 'Caught exception while cancelling action: %s', 'action-scheduler' ),
+					esc_attr( $hook )
+				)
+			);
+
+			$action_id = null;
+		}
 	}
 
 	return $action_id;
@@ -313,7 +327,7 @@ function as_get_datetime_object( $date_string = null, $timezone = 'UTC' ) {
 	} elseif ( is_numeric( $date_string ) ) {
 		$date = new ActionScheduler_DateTime( '@' . $date_string, new DateTimeZone( $timezone ) );
 	} else {
-		$date = new ActionScheduler_DateTime( $date_string, new DateTimeZone( $timezone ) );
+		$date = new ActionScheduler_DateTime( null === $date_string ? 'now' : $date_string, new DateTimeZone( $timezone ) );
 	}
 	return $date;
 }

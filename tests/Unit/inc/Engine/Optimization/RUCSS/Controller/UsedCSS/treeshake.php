@@ -2,6 +2,7 @@
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -25,6 +26,7 @@ class Test_Treeshake extends TestCase {
 	protected $queue;
 	protected $usedCss;
 	protected $data_manager;
+	protected $filesystem;
 
 	protected function setUp(): void
 	{
@@ -35,11 +37,18 @@ class Test_Treeshake extends TestCase {
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->data_manager = Mockery::mock( DataManager::class );
-		$this->usedCss = Mockery::mock(UsedCSS::class . '[is_allowed,update_last_accessed]', [$this->options, $this->usedCssQuery,
+		$this->filesystem = Mockery::mock( Filesystem::class );
+		$this->usedCss = Mockery::mock(
+			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			[
+				$this->options, $this->usedCssQuery,
 				$this->resourcesQuery,
-			$this->api,
-			$this->queue,
-			$this->data_manager]);
+				$this->api,
+				$this->queue,
+				$this->data_manager,
+				$this->filesystem
+			]
+		);
 	}
 
 	protected function tearDown(): void
@@ -127,6 +136,13 @@ class Test_Treeshake extends TestCase {
 
 		$this->usedCssQuery->expects(self::once())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
+		if ( ! empty( $config['get_existing_used_css']['used_css']->hash ) ) {
+			$this->filesystem->shouldReceive( 'get_used_css' )
+				->atMost()
+				->once()
+				->with( $config['get_existing_used_css']['used_css']->hash )
+				->andReturn( $config['get_existing_used_css']['used_css']->css );
+		}
 	}
 
 	protected function configureCreateNewJob($config) {

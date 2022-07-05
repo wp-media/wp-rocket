@@ -48,6 +48,17 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// Hash column.
+		[
+			'name'       => 'hash',
+			'type'       => 'varchar',
+			'length'     => '32',
+			'default'    => '',
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// RETRIES column.
 		[
 			'name'       => 'retries',
