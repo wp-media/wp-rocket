@@ -481,7 +481,7 @@ class Renewal extends Abstract_Render {
 
 		$current_user = get_current_user_id();
 
-		if ( false !== get_transient( "wpr_dashboard_{$current_user}" ) ) {
+		if ( false !== get_transient( "wpr_dashboard_seen_{$current_user}" ) ) {
 			return;
 		}
 
