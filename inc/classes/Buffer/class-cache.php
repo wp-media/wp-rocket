@@ -97,7 +97,7 @@ class Cache extends Abstract_Buffer {
 			$compare = str_replace( $php_self, '', $request_uri );
 
 			// If string left from $compare is empty or is '/' then current page is home.
-			if ( '/' !== $php_self && '' !== $compare && '/' !== $compare ) {
+			if ( '' !== $compare && '/' !== $compare ) {
 				$this->maybe_redirect_with_trailing_slash();
 			}
 		}
@@ -701,8 +701,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_redirect_with_trailing_slash() {
 
-
-		if(rocket_get_constant('MULTISITE', false) && ! rocket_get_constant('SUBDOMAIN_INSTALL',  true) ) {
+		if ( defined( 'MULTISITE' ) && true === MULTISITE ) {
 			return;
 		}
 
