@@ -681,6 +681,10 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_allow_wp_redirect(): bool {
 
+		if(rocket_get_constant('MULTISITE', false) && ! rocket_get_constant('SUBDOMAIN_INSTALL',  true) ) {
+			return true;
+		}
+
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 
 		// Last character of permalink.
