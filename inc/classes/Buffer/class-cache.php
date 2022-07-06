@@ -681,7 +681,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_allow_wp_redirect(): bool {
 
-		if(rocket_get_constant('MULTISITE', false) && ! rocket_get_constant('SUBDOMAIN_INSTALL',  true) ) {
+		if ( rocket_get_constant( 'MULTISITE', false ) && ! rocket_get_constant( 'SUBDOMAIN_INSTALL',  true ) ) {
 			return true;
 		}
 
@@ -707,8 +707,7 @@ class Cache extends Abstract_Buffer {
 		}
 		$php_self = str_replace( 'index.php', '', $this->config->get_server_input( 'PHP_SELF' ) );
 
-
-		if($php_self === $request_uri) {
+		if ( $php_self === $request_uri ) {
 			return true;
 		}
 
