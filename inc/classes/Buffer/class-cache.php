@@ -681,7 +681,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_allow_wp_redirect(): bool {
 
-		if ( true === MULTISITE && false === SUBDOMAIN_INSTALL ) {
+		if ( defined( 'MULTISITE' ) && defined( 'SUBDOMAIN_INSTALL' ) && true === MULTISITE && false === SUBDOMAIN_INSTALL ) {
 			return true;
 		}
 
