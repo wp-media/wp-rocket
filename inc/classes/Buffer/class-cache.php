@@ -80,7 +80,7 @@ class Cache extends Abstract_Buffer {
 
 		// Full request uri path.
 		$request_uri = $this->config->get_server_input( 'REQUEST_URI' );
-
+		$request_uri = strtok($request_uri, '?') [0];
 		// Path to WP index processing file and remove index.php from path.
 		$php_self = str_replace( 'index.php', '', $this->config->get_server_input( 'PHP_SELF' ) );
 
