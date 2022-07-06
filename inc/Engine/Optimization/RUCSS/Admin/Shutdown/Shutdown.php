@@ -74,6 +74,11 @@ class Shutdown extends Abstract_Render {
 		$timezone      = new DateTimeZone( 'UTC' );
 		$shutdown_date = new DateTime( $this->shutdown_date, $timezone );
 
+		if ( ! $this->user->is_license_expired() ) {
+			echo $this->generate( 'after-not-expired' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
 		if ( $this->is_expired( $shutdown_date ) ) {
 			$this->display_after_shutdown_rucss_banner();
 			return;
@@ -120,6 +125,10 @@ class Shutdown extends Abstract_Render {
 	 * @throws Exception When date is invalid.
 	 */
 	public function get_shutdown_details( array $details ) {
+		if ( ! $this->user->is_license_expired() ) {
+			return $details;
+		}
+
 		if ( ! $this->is_expired() ) {
 			return $details;
 		}
