@@ -59,6 +59,12 @@ defined( 'ABSPATH' ) || exit;
 			<?php endif; ?>
 		</div>
 
+		<?php if ( ! empty( $option['helper'] ) ) : ?>
+		<div class="wpr-field-description wpr-field-description-helper wpr-icon-important">
+			<?php echo $option['helper']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+		</div>
+		<?php endif; ?>
+
 		<?php
 		do_action(
 			'rocket_after_settings_radio_options',
