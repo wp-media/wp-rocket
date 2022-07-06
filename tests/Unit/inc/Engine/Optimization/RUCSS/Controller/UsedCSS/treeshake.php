@@ -83,9 +83,11 @@ class Test_Treeshake extends TestCase {
 		$this->configApplyUsedCss($config);
 
 		$dynamic_lists = [];
-		if( isset( $config['dynamic_lists'] ) ){
+
+		if ( isset( $config['dynamic_lists'] ) ) {
 			$dynamic_lists = (object) $config['dynamic_lists'];
 		}
+
 		$this->data_manager->shouldReceive( 'get_lists' )
 			->atMost()
 			->once()

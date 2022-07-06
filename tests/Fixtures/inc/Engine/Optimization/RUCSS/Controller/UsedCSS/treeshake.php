@@ -136,7 +136,7 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred.php'),
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
 	],
 	'expectedFilteredHTMlWhenNoPreconnectGoogleAPI' => [
 		'config' => [
@@ -160,7 +160,7 @@ return [
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/google_fonts.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred.php'),
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered.php'),
 	],
 	'expectedFilteredHTMlWhenNoEmptyUsedCSSExcludeAttr' => [
 		'config' => [
@@ -173,6 +173,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => 'h1{color:red;}',
 					'id' => 1,
@@ -181,10 +182,15 @@ return [
 			'apply_used_css' => [
 				'test'
 			],
-			'dynamic_lists'=>['inline_atts_exclusions'=>['rocket-lazyload-inline-css'],'inline_content_exclusions'=>[]],
+			'dynamic_lists'=> [
+				'inline_atts_exclusions' => [
+					'rocket-lazyload-inline-css'
+				],
+				'inline_content_exclusions' => [],
+			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_attr.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred_exclude_attr.php'),
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_attr.php'),
 	],
 	'expectedFilteredHTMlWhenNoEmptyUsedCSSExcludeContent' => [
 		'config' => [
@@ -197,6 +203,7 @@ return [
 			],
 			'get_existing_used_css' => [
 				'used_css' => (object) [
+					'hash' => '1234',
 					'status' => 'completed',
 					'css' => 'h1{color:red;}',
 					'id' => 1,
@@ -205,9 +212,14 @@ return [
 			'apply_used_css' => [
 				'test'
 			],
-			'dynamic_lists'=>['inline_atts_exclusions'=>[],'inline_content_exclusions'=>['#wpv-expandable-']],
+			'dynamic_lists' => [
+				'inline_atts_exclusions' => [],
+				'inline_content_exclusions' => [
+					'#wpv-expandable-'
+				]
+			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_content.php'),
 		],
-		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtred_exclude_content.php'),
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_content.php'),
 	],
 ];
