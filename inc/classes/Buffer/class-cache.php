@@ -681,7 +681,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_allow_wp_redirect(): bool {
 
-		if ( rocket_get_constant( 'MULTISITE', false ) && ! rocket_get_constant( 'SUBDOMAIN_INSTALL',  true ) ) {
+		if ( true === MULTISITE && false === SUBDOMAIN_INSTALL ) {
 			return true;
 		}
 
