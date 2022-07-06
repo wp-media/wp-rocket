@@ -4,7 +4,7 @@ namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Polygone implements Subscriber_Interface {
+class Polygon implements Subscriber_Interface {
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -12,7 +12,7 @@ class Polygone implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_polygone() ) {
+		if ( ! self::is_polygon() ) {
 			return [];
 		}
 
@@ -37,8 +37,8 @@ class Polygone implements Subscriber_Interface {
 	 *
 	 * @param WP_Theme $theme Instance of the theme.
 	 */
-	private static function is_polygone( $theme = null ) {
+	private static function is_polygon( $theme = null ) {
 		$theme = $theme instanceof WP_Theme ? $theme : wp_get_theme();
-		return ( 'polygone' === strtolower( $theme->get( 'Name' ) ) || 'polygone' === $theme->get_template() );
+		return ( 'polygon' === strtolower( $theme->get( 'Name' ) ) || 'polygon' === $theme->get_template() );
 	}
 }
