@@ -701,6 +701,11 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_redirect_with_trailing_slash() {
 
+
+		if(rocket_get_constant('MULTISITE', false) && ! rocket_get_constant('SUBDOMAIN_INSTALL',  true) ) {
+			return;
+		}
+
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 		$host                = $this->config->get_host();
 		$protocol            = $this->tests->is_ssl() ? 'https://' : 'http://';
