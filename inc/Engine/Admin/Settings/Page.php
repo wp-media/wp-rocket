@@ -720,30 +720,10 @@ class Page {
 						'remove_unused_css' => [
 							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'warning'     => ! empty( $rucss_shutdown_warning ) ? $rucss_shutdown_warning : [
-								'title'        => __( 'We’re still working on it!', 'rocket' ),
-								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
-								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
-							],
-							'sub_fields'  => [
-								'remove_unused_css_safelist' =>
-								[
-									'type'              => 'textarea',
-									'label'             => __( 'CSS safelist', 'rocket' ),
-									'description'       => __( 'Specify CSS filenames, IDs or classes that should not be removed (one per line).', 'rocket' ),
-									'placeholder'       => "/wp-content/plugins/some-plugin/(.*).css\n.css-class\n#css_id\ntag",
-									'default'           => [],
-									'value'             => [],
-									'sanitize_callback' => 'sanitize_textarea',
-									'parent'            => '',
-									'section'           => 'css',
-									'page'              => 'file_optimization',
-									'input_attr'        => [
-										'disabled' => get_rocket_option( 'remove_unused_css' ) ? 0 : 1,
-									],
-								],
-							],
+							'description' => '',
+							'warning'     => ! empty( $rucss_shutdown_warning ) ? $rucss_shutdown_warning : '',
+							'helper' => __( 'The Remove Unused CSS option is not available in this version. Update to the latest available version to activate it. ', 'rocket' ),
+							'sub_fields'  => [],
 						],
 						'async_css'         => [
 							'label'       => __( 'Load CSS asynchronously', 'rocket' ),
