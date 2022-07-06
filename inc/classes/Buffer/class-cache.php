@@ -698,6 +698,11 @@ class Cache extends Abstract_Buffer {
 		// Check also if request_uri has a trailing slash and update var. else set char to empty.
 		$request_uri_last_char = '/' === $request_uri_last_char ? '/' : '';
 
+		// In cases where we have the home with a slash.
+		if ( '' === $permalink_last_char ) {
+			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
+		}
+
 		// Return false if permalink structure and url do not match.
 		if ( $permalink_last_char !== $request_uri_last_char ) {
 			return false;
