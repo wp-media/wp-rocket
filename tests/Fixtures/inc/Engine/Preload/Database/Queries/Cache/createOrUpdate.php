@@ -44,7 +44,6 @@ return [
 				'url' => 'http://example.com',
 				'status' => 'pending',
 				'modified' => '838:59:59.000001',
-				'last_accessed' => '838:59:59.000001'
 			],
 			'id' => 10,
 			'time' => '838:59:59.000001',

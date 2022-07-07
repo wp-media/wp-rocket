@@ -150,15 +150,20 @@ class Cache extends Query {
 
 		$db_row = array_pop( $rows );
 
+		$data = [
+			'url'      => untrailingslashit( $resource['url'] ),
+			'status'   => $resource['status'],
+			'modified' => current_time( 'mysql', true ),
+		];
+
+		if ( key_exists( 'last_accessed', $resource ) && (bool) $resource['last_accessed'] ) {
+			$data['last_accessed'] = current_time( 'mysql', true );
+		}
+
 		// Update this row with the new content.
 		$this->update_item(
 			$db_row->id,
-			[
-				'url'           => untrailingslashit( $resource['url'] ),
-				'status'        => $resource['status'],
-				'modified'      => current_time( 'mysql', true ),
-				'last_accessed' => current_time( 'mysql', true ),
-			]
+			$data
 		);
 
 		return $db_row->id;
@@ -287,20 +292,10 @@ class Cache extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $total ) {
-		$inprogress_count = $this->query(
-			[
-				'count'  => true,
-				'status' => 'in-progress',
-			]
-		);
-
-		if ( $inprogress_count >= $total ) {
-			return [];
-		}
 
 		return $this->query(
 			[
-				'number'         => ( $total - $inprogress_count ),
+				'number'         => $total,
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -391,6 +386,22 @@ class Cache extends Query {
 				]
 				);
 		}
+	}
+
+	/**
+	 * Revert old in-progress rows
+	 */
+	public function revert_old_in_progress() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 day)" );
 	}
 
 	/**

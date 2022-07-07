@@ -11,12 +11,12 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::add_interval
+ * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::add_revert_old_in_progress_interval
  *
  * @group Cron
  * @group Preload
  */
-class Test_AddInterval extends TestCase
+class Test_AddRevertOldInProgressInterval extends TestCase
 {
 	protected $subscriber;
 	protected $query;
@@ -39,14 +39,13 @@ class Test_AddInterval extends TestCase
 	public function testShouldDoAsExpected($config, $expected) {
 		$this->stubTranslationFunctions();
 		$this->settings->expects()->is_enabled()->andReturn($config['is_enabled']);
-
-		$this->assertSame($expected, $this->subscriber->add_interval($config['schedules']));
+		$this->assertSame($expected, $this->subscriber->add_revert_old_in_progress_interval($config['schedules']));
 	}
 
 	public function configureInterval($config) {
 		if(! $config['is_enabled'] ) {
 			return;
 		}
-		Filters\expectApplied('rocket_preload_pending_jobs_cron_interval')->with()->andReturn($config['filtered_interval']);
+		Filters\expectApplied('rocket_preload_revert_old_in_progress_rows_cron_interval')->with()->andReturn($config['filtered_interval']);
 	}
 }

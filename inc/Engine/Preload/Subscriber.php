@@ -109,8 +109,9 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->query->create_or_update(
 			[
-				'url'    => $url,
-				'status' => 'completed',
+				'url'           => $url,
+				'status'        => 'completed',
+				'last_accessed' => true,
 			]
 		);
 	}
