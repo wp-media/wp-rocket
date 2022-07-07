@@ -13,7 +13,7 @@ class Flatsome implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		if ( ! self::is_flatsome() ) {
-			return $patterns;
+			return [];
 		}
 
 		return [ 'rocket_rucss_inline_content_exclusions' => 'preserve_patterns' ];
