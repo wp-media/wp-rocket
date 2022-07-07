@@ -3,3 +3,6 @@
 /tests/env/local/
 composer.lock
 vfs:/
+/test-results/
+/playwright-report/
+/playwright/.cache/
