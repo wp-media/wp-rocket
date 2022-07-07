@@ -81,7 +81,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'             => [ 'maybe_display_preload_notice' ],
+			'admin_notices'             => [
+				'maybe_display_preload_notice',
+				'maybe_display_as_missed_tables_notice',
+			],
 			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
 			'rocket_after_clean_terms'  => 'clean_urls',
@@ -190,5 +193,43 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->controller->delete_url( $url );
+	}
+
+	public function maybe_display_as_missed_tables_notice() {
+		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
+			return;
+		}
+
+		if ( $this->is_valid_as_tables() ) {
+			return;
+		}
+
+		$this->settings->maybe_display_as_missed_tables_notice();
+	}
+
+
+	/**
+	 * Checks if Action scheduler tables are there or not.
+	 *
+	 * @since 3.11.0.3
+	 *
+	 * @return bool
+	 */
+	private function is_valid_as_tables() {
+		$cached_count = get_transient( 'rocket_preload_as_tables_count' );
+		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
+			return 4 === (int) $cached_count;
+		}
+
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$found_as_tables = $wpdb->get_col(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
+		);
+
+		set_transient( 'rocket_preload_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
+
+		return 4 === count( $found_as_tables );
 	}
 }
