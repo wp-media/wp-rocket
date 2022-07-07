@@ -103,6 +103,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 
+		$this->getContainer()->add( 'preload_activation', Activation::class )
+			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $options );
+
 		$this->getContainer()->share(
 			'preload_queue_runner',
 			static function() {
@@ -136,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'preload_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $cache_query )
+			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )
@@ -162,5 +167,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_queue_runner )
 			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
+
 	}
 }

@@ -23,6 +23,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $query;
 
+	protected $activation;
 
 	/**
 	 * Creates an instance of the class.
@@ -30,9 +31,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @param LoadInitialSitemap $controller controller creating the initial task.
 	 * @param Cache              $query Cache query instance.
 	 */
-	public function __construct( LoadInitialSitemap $controller, $query ) {
+	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation ) {
 		$this->controller = $controller;
 		$this->query      = $query;
+		$this->activation = $activation;
 	}
 
 	/**
@@ -47,7 +49,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
-			'set_404'                         => 'delete_url_on_not_found',
+			'rocket_activation'               => 'on_activation',
 		];
 	}
 
@@ -125,5 +127,9 @@ class Subscriber implements Subscriber_Interface {
 		global $wp;
 		$url = home_url( $wp->request );
 		$this->query->delete_by_url( $url );
+	}
+
+	public function on_activation() {
+		$this->activation->activate();
 	}
 }
