@@ -154,6 +154,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( ! $this->filesystem->is_writable_folder() ) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -450,7 +454,14 @@ class UsedCSS {
 			 * @param array $style Full match style tag.
 			 */
 			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', true, $style ) ) {
-				$html = str_replace( $style['content'], '', $html );
+				$content = trim( $style['content'] );
+
+				if ( empty( $content ) ) {
+					continue;
+				}
+
+				$empty_tag = str_replace( $style['content'], '', $style[0] );
+				$html      = str_replace( $style[0], $empty_tag, $html );
 
 				continue;
 			}

@@ -7,6 +7,34 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
+use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
+use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
+use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
+use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
+use WP_Rocket\Engine\Admin\Settings\ServiceProvider as SettingsServiceProvider;
+use WP_Rocket\Engine\Cache\ServiceProvider as CacheServiceProvider;
+use WP_Rocket\Engine\Capabilities\ServiceProvider as CapabilitiesServiceProvider;
+use WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider as RocketCDNServiceProvider;
+use WP_Rocket\Engine\CDN\ServiceProvider as CDNServiceProvider;
+use WP_Rocket\Engine\CriticalPath\ServiceProvider as CriticalPathServiceProvider;
+use WP_Rocket\Engine\HealthCheck\ServiceProvider as HealthCheckServiceProvider;
+use WP_Rocket\Engine\Heartbeat\ServiceProvider as HeartbeatServiceProvider;
+use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
+use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
+use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
+use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
+use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
+use WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider as RUCSSServiceProvider;
+use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider;
+use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
+use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
+use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
+use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
+use WP_Rocket\ServiceProvider\Common_Subscribers;
+use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
+use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
+use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 
 /**
  * Plugin Manager.
@@ -96,18 +124,18 @@ class Plugin {
 
 		$this->options_api = new Options( 'wp_rocket_' );
 		$this->container->add( 'options_api', $this->options_api );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
+		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
 
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Database\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Support\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Beacon\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\RocketCDN\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Cache\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\CriticalPath\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\HealthCheck\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Media\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider' );
+		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
+		$this->container->addServiceProvider( SupportServiceProvider::class );
+		$this->container->addServiceProvider( BeaconServiceProvider::class );
+		$this->container->addServiceProvider( RocketCDNServiceProvider::class );
+		$this->container->addServiceProvider( CacheServiceProvider::class );
+		$this->container->addServiceProvider( CriticalPathServiceProvider::class );
+		$this->container->addServiceProvider( HealthCheckServiceProvider::class );
+		$this->container->addServiceProvider( MediaServiceProvider::class );
+		$this->container->addServiceProvider( DeferJSServiceProvider::class );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -157,10 +185,10 @@ class Plugin {
 				'capability' => 'rocket_manage_options',
 			]
 		);
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\License\ServiceProvider' );
+		$this->container->addServiceProvider( SettingsServiceProvider::class );
+		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
+		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
+		$this->container->addServiceProvider( LicenseServiceProvider::class );
 
 		return [
 			'beacon',
@@ -191,7 +219,7 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function init_valid_key_subscribers() {
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\ServiceProvider' );
+		$this->container->addServiceProvider( OptimizationServiceProvider::class );
 
 		$subscribers = [
 			'buffer_subscriber',
@@ -222,19 +250,19 @@ class Plugin {
 	 * @return array array of common subscribers.
 	 */
 	private function init_common_subscribers() {
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Capabilities\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Addon\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Addon\Varnish\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Preload\Links\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\CDN\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
-		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Plugin\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
+		$this->container->addServiceProvider( CapabilitiesServiceProvider::class );
+		$this->container->addServiceProvider( AddonServiceProvider::class );
+		$this->container->addServiceProvider( VarnishServiceProvider::class );
+		$this->container->addServiceProvider( PreloadServiceProvider::class );
+		$this->container->addServiceProvider( PreloadLinksServiceProvider::class );
+		$this->container->addServiceProvider( CDNServiceProvider::class );
+		$this->container->addServiceProvider( Common_Subscribers::class );
+		$this->container->addServiceProvider( ThirdPartyServiceProvider::class );
+		$this->container->addServiceProvider( HostingsServiceProvider::class );
+		$this->container->addServiceProvider( PluginServiceProvider::class );
+		$this->container->addServiceProvider( DelayJSServiceProvider::class );
+		$this->container->addServiceProvider( RUCSSServiceProvider::class );
+		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -295,7 +323,6 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
-			'cache_config',
 			'unlimited_elements',
 			'inline_related_posts',
 			'wpml',
