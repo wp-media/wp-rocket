@@ -510,8 +510,17 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Add style & inline script for rollback modal
+	 *
+	 * @since 3.11.5
+	 *
+	 * @return void
+	 */
 	public function add_modal_script() {
-
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
 
 		wp_enqueue_style( 'wpr-modal', rocket_get_constant( 'WP_ROCKET_ASSETS_CSS_URL' ) . 'wpr-modal.css', null, rocket_get_constant( 'WP_ROCKET_VERSION' ) );
 
@@ -523,16 +532,26 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Add rollback warning modal to settings page
+	 *
+	 * @since 3.11.5
+	 *
+	 * @return void
+	 */
 	public function add_rollback_warning_modal() {
-
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
 
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' );
 ?>
 		<div class="wpr-modal" id="wpr-rollback-modal" aria-hidden="true">
 			<div class="wpr-modal-overlay" tabindex="-1" data-micromodal-close>
-				<div class="wpr-modal-container" role="dialog" aria-modal="true" aria-labelledby="wpr-rollback-modal-title" >
-					<header class="wpr-modal-header">
-						<h2 class="wpr-modal-title" id="wpr-rollback-modal-title"><?php esc_html_e( 'You are about to lose access to an important feature', 'rocket' ); ?></h2>
+				<div class="wpr-modal-container wpr-modal-container-rollback" role="dialog" aria-modal="true" aria-labelledby="wpr-rollback-modal-title">
+					<header class="wpr-modal-header wpr-modal-header-rollback">
+						<img src="<?php echo esc_attr( WP_ROCKET_ASSETS_IMG_URL . 'warning.svg' ); ?>" alt="" />
+						<h2 class="wpr-modal-title wpr-modal-title-rollback" id="wpr-rollback-modal-title"><?php esc_html_e( 'You are about to lose access to an important feature', 'rocket' ); ?></h2>
 					</header>
 					<div>
 						<p>
@@ -545,10 +564,18 @@ class Settings {
 							);
 							?>
 						</p>
-						<p><?php esc_html_e( 'If you are encountering any issue related to this feature, you can simply disable the option, or contact support for help.', 'rocket' ); ?></p>
-						<div class="wpr-modal-footer">
-							<button aria-label="Close modal" class="wpr-modal-button wpr-modal-cancel" data-micromodal-close><?php esc_html_e( 'Cancel', 'rocket' ); ?></button>
-							<a href="<?php echo esc_url( $url ); ?>" class="wpr-modal-button wpr-modal-confirm"><?php esc_html_e( 'Confirm rollback', 'rocket' ); ?></a>
+						<p>
+							<?php
+							printf(
+								esc_html__( 'If you are encountering any issue related to this feature, you can simply disable the option, or %1$scontact support for help%2$s.', 'rocket' ),
+								'<a href="' . esc_url( rocket_get_external_url( 'support' ) ) . '">',
+								'</a>'
+							);
+							?>
+						</p>
+						<div class="wpr-modal-footer wpr-modal-footer-rollback">
+							<button aria-label="Close modal" class="wpr-modal-button-rollback wpr-modal-cancel-rollback" data-micromodal-close><?php esc_html_e( 'Cancel', 'rocket' ); ?></button>
+							<a href="<?php echo esc_url( $url ); ?>" class="wpr-modal-button-rollback wpr-modal-confirm-rollback"><?php esc_html_e( 'Confirm rollback', 'rocket' ); ?> &rarr;</a>
 						</div>
 					</div>
 				</div>
