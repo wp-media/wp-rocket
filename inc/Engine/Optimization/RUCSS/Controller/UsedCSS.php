@@ -154,6 +154,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( ! $this->filesystem->is_writable_folder() ) {
+			return false;
+		}
+
 		return true;
 	}
 
