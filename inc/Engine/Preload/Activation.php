@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Preload;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
+use WP_Rocket\Engine\Preload\Controller\Queue;
 
 class Activation implements ActivationInterface {
 
@@ -23,15 +24,18 @@ class Activation implements ActivationInterface {
 	 */
 	protected $options;
 
+	protected $queue;
+
 	/**
 	 * Instantiate class.
 	 *
 	 * @param LoadInitialSitemap $controller Controller to load initial tasks.
 	 * @param Options_Data       $options Options.
 	 */
-	public function __construct( LoadInitialSitemap $controller, Options_Data $options ) {
+	public function __construct( LoadInitialSitemap $controller, Options_Data $options, Queue $queue ) {
 		$this->controller = $controller;
 		$this->options    = $options;
+		$this->queue      = $queue;
 	}
 
 	/**
@@ -42,5 +46,26 @@ class Activation implements ActivationInterface {
 			return;
 		}
 		$this->controller->load_initial_sitemap();
+	}
+
+	/**
+	 * Disable cron and jobs on update.
+	 *
+	 * @param string $new_version new version from the plugin.
+	 * @param string $old_version old version from the plugin.
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.12.0', '>=' ) ) {
+			return;
+		}
+
+		$this->queue->cancel_pending_jobs();
+
+		if ( ! wp_next_scheduled( 'rocket_preload_process_pending' ) ) {
+			return;
+		}
+
+		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
 	}
 }

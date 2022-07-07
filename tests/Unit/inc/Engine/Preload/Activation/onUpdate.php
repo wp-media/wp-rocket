@@ -8,14 +8,10 @@ use WP_Rocket\Engine\Preload\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
 
-/**
- * @covers \WP_Rocket\Engine\Preload\Activation::activate
- * @group  Preload
- */
-class Test_Activate extends TestCase
+class Test_OnUpdate extends TestCase
 {
-
 	protected $activation;
 	protected $controller;
 	protected $options;
@@ -34,10 +30,27 @@ class Test_Activate extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
-		if($config['is_enabled']) {
-			$this->controller->expects()->load_initial_sitemap();
+
+		$this->configureCancelJobs($config);
+		$this->configureCancelCron($config);
+		$this->activation->on_update($config['new_version'], $config['old_version']);
+	}
+
+	public function configureCancelJobs($config) {
+		if($config['old_version'] !== '3.11.0') {
+			$this->queue->expects()->cancel_pending_jobs()->never();
+			return;
 		}
-		$this->options->expects()->get('manual_preload', false)->andReturns($config['is_enabled']);
-		$this->activation->activate();
+
+		$this->queue->expects()->cancel_pending_jobs();
+
+		Functions\expect('wp_next_scheduled')->with('rocket_preload_process_pending')->andReturn($config['cron_present']);
+	}
+
+	public function configureCancelCron($config) {
+		if($config['old_version'] !== '3.11.0'|| ! $config['cron_present']) {
+			return;
+		}
+		Functions\expect('wp_clear_scheduled_hook')->with('rocket_preload_process_pending');
 	}
 }

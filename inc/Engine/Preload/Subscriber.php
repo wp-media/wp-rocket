@@ -23,6 +23,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $query;
 
+	/**
+	 * Activation manager.
+	 *
+	 * @var Activation
+	 */
 	protected $activation;
 
 	/**
@@ -30,6 +35,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param LoadInitialSitemap $controller controller creating the initial task.
 	 * @param Cache              $query Cache query instance.
+	 * @param Activation         $activation Activation manager.
 	 */
 	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation ) {
 		$this->controller = $controller;
@@ -50,6 +56,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
 			'rocket_activation'               => 'on_activation',
+			'wp_rocket_upgrade'               => [ 'on_update', 16, 2 ],
 		];
 	}
 
@@ -129,7 +136,23 @@ class Subscriber implements Subscriber_Interface {
 		$this->query->delete_by_url( $url );
 	}
 
+	/**
+	 * Launch preload on activation.
+	 *
+	 * @return void
+	 */
 	public function on_activation() {
 		$this->activation->activate();
+	}
+
+	/**
+	 * Disable cron and jobs on update.
+	 *
+	 * @param string $new_version new version from the plugin.
+	 * @param string $old_version old version from the plugin.
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		$this->activation->on_update( $new_version, $old_version );
 	}
 }
