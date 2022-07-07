@@ -108,6 +108,8 @@ class Subscriber implements Subscriber_Interface {
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
+			'admin_print_styles-settings_page_wprocket' => [ 'add_modal_script', 11 ],
+			'admin_footer-settings_page_wprocket'     => 'add_rollback_warning_modal',
 		];
 	}
 
@@ -718,5 +720,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function notice_write_permissions() {
 		$this->used_css->notice_write_permissions();
+	}
+
+	public function add_modal_script() {
+		$this->settings->add_modal_script();
+	}
+
+	public function add_rollback_warning_modal() {
+		$this->settings->add_rollback_warning_modal();
 	}
 }

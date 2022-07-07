@@ -509,4 +509,51 @@ class Settings {
 			]
 		);
 	}
+
+	public function add_modal_script() {
+
+
+		wp_enqueue_style( 'wpr-modal', rocket_get_constant( 'WP_ROCKET_ASSETS_CSS_URL' ) . 'wpr-modal.css', null, rocket_get_constant( 'WP_ROCKET_VERSION' ) );
+
+		wp_add_inline_script(
+			'micromodal',
+			'window.addEventListener("DOMContentLoaded", (event) => {
+			document.getElementById("wpr-rollback").addEventListener("click", (event) => {event.preventDefault();});MicroModal.init();
+		  });'
+		);
+	}
+
+	public function add_rollback_warning_modal() {
+
+
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' );
+?>
+		<div class="wpr-modal" id="wpr-rollback-modal" aria-hidden="true">
+			<div class="wpr-modal-overlay" tabindex="-1" data-micromodal-close>
+				<div class="wpr-modal-container" role="dialog" aria-modal="true" aria-labelledby="wpr-rollback-modal-title" >
+					<header class="wpr-modal-header">
+						<h2 class="wpr-modal-title" id="wpr-rollback-modal-title"><?php esc_html_e( 'You are about to lose access to an important feature', 'rocket' ); ?></h2>
+					</header>
+					<div>
+						<p>
+							<?php
+							printf(
+								// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+								esc_html__( 'Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature will not be available any longer in your file optimization tab.', 'rocket' ),
+								'<strong>',
+								'</strong>'
+							);
+							?>
+						</p>
+						<p><?php esc_html_e( 'If you are encountering any issue related to this feature, you can simply disable the option, or contact support for help.', 'rocket' ); ?></p>
+						<div class="wpr-modal-footer">
+							<button aria-label="Close modal" class="wpr-modal-button wpr-modal-cancel" data-micromodal-close><?php esc_html_e( 'Cancel', 'rocket' ); ?></button>
+							<a href="<?php echo esc_url( $url ); ?>" class="wpr-modal-button wpr-modal-confirm"><?php esc_html_e( 'Confirm rollback', 'rocket' ); ?></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php
+	}
 }
