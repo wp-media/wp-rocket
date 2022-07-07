@@ -5,6 +5,7 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use ActionScheduler_Compatibility;
 use ActionScheduler_Lock;
+use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
@@ -113,7 +114,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				return new PreloadQueueRunner(
 					null,
 					null,
-					null,
+					new Cleaner(null, 20, 'rocket-preload'),
 					null,
 					new ActionScheduler_Compatibility(),
 					new Logger(),
