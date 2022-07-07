@@ -545,7 +545,7 @@ class Settings {
 		}
 
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' );
-?>
+		?>
 		<div class="wpr-modal" id="wpr-rollback-modal" aria-hidden="true">
 			<div class="wpr-modal-overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-modal-container wpr-modal-container-rollback" role="dialog" aria-modal="true" aria-labelledby="wpr-rollback-modal-title">
@@ -567,6 +567,7 @@ class Settings {
 						<p>
 							<?php
 							printf(
+								// translators: %1$s = opening link tag, %2$s = closing link tag.
 								esc_html__( 'If you are encountering any issue related to this feature, you can simply disable the option, or %1$scontact support for help%2$s.', 'rocket' ),
 								'<a href="' . esc_url( rocket_get_external_url( 'support' ) ) . '">',
 								'</a>'
@@ -581,6 +582,6 @@ class Settings {
 				</div>
 			</div>
 		</div>
-	<?php
+		<?php
 	}
 }
