@@ -67,7 +67,16 @@ function rocket_post_row_actions( $actions, $post ) {
 		return $actions;
 	}
 
-	if ( apply_filters( 'rocket_skip_post_row_actions', false, $post ) ) {
+	$cpts = get_post_types(
+		[
+			'public' => true,
+		],
+		'objects'
+	);
+
+	$cpts = apply_filters( 'rocket_skip_post_row_actions', $cpts );
+
+	if ( ! isset( $cpts[ $post->post_type ] ) ) {
 		return $actions;
 	}
 
