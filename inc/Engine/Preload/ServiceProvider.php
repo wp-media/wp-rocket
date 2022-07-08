@@ -7,6 +7,7 @@ use ActionScheduler_Compatibility;
 use ActionScheduler_Lock;
 use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Preload\Controller\CheckFinished;
@@ -52,6 +53,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
 		'fonts_preload_subscriber',
+		'preload_activation',
 	];
 
 	/**

@@ -1,8 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Activation;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Engine\Preload\Activation;
 
 /**
  * Service Provider for the activation process.
@@ -42,7 +44,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 */
 	public function register() {
 		$filesystem = rocket_direct_filesystem();
-
 		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
 			->addArgument( $filesystem );

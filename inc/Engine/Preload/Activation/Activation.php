@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Preload;
+namespace WP_Rocket\Engine\Preload\Activation;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Activation\ActivationInterface;
@@ -72,6 +72,14 @@ class Activation implements ActivationInterface {
 			return;
 		}
 
+		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
+	}
+
+	/**
+	 * Launch preload on deactivation.
+	 */
+	public function deactivation() {
+		wp_clear_scheduled_hook( 'rocket_preload_clean_rows_time_event' );
 		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
 	}
 }

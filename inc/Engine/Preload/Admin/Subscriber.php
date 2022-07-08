@@ -111,6 +111,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_full_cache() {
+		set_transient( 'wpr_preload_running', true );
+		$this->queue->add_job_preload_job_check_finished_async();
 		$this->controller->full_clean();
 	}
 

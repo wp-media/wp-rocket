@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
+use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -55,7 +56,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
-			'rocket_activation'               => 'on_activation',
+			'rocket_deactivation'               => 'on_deactivation',
 			'wp_rocket_upgrade'               => [ 'on_update', 16, 2 ],
 		];
 	}
@@ -137,15 +138,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Launch preload on activation.
-	 *
-	 * @return void
-	 */
-	public function on_activation() {
-		$this->activation->activate();
-	}
-
-	/**
 	 * Disable cron and jobs on update.
 	 *
 	 * @param string $new_version new version from the plugin.
@@ -154,5 +146,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_update( $new_version, $old_version ) {
 		$this->activation->on_update( $new_version, $old_version );
+	}
+
+	/**
+	 * Launch preload on deactivation.
+	 *
+	 * @return void
+	 */
+	public function on_deactivation() {
+		$this->activation->deactivation();
 	}
 }
