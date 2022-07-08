@@ -117,7 +117,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				return new PreloadQueueRunner(
 					null,
 					null,
-					new Cleaner(null, 20, 'rocket-preload'),
+					new Cleaner( null, 20, 'rocket-preload' ),
 					null,
 					new ActionScheduler_Compatibility(),
 					new Logger(),

@@ -8,8 +8,8 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Logger\Logger;
 
-class ServiceProvider extends AbstractServiceProvider
-{
+class ServiceProvider extends AbstractServiceProvider {
+
 	/**
 	 * The provides array is a way to let the container
 	 * know that a service is provided by this service

@@ -125,7 +125,7 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		if ( is_admin() && ! $this->locker->is_locked( 'async-request-runner' ) ) {
 			// Only start an async queue at most once every 60 seconds.
 			$this->locker->set( 'async-request-runner' );
-			if(! $this->async_request) {
+			if ( ! $this->async_request ) {
 				return;
 			}
 			$this->async_request->maybe_dispatch();

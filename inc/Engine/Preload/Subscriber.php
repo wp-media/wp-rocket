@@ -56,7 +56,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
-			'rocket_deactivation'               => 'on_deactivation',
+			'rocket_deactivation'             => 'on_deactivation',
 			'wp_rocket_upgrade'               => [ 'on_update', 16, 2 ],
 		];
 	}

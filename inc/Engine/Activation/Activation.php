@@ -46,7 +46,7 @@ class Activation {
 
 		$event_manager = new Event_Manager();
 
-		$event_manager->add_subscriber($container->get('preload_activation_subscriber'));
+		$event_manager->add_subscriber( $container->get( 'preload_activation_subscriber' ) );
 
 		if ( ! empty( $host_type ) ) {
 			array_unshift( self::$activators, $host_type );
