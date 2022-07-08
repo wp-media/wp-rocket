@@ -24,13 +24,19 @@ class Activation implements ActivationInterface {
 	 */
 	protected $options;
 
+	/**
+	 * Preload queue.
+	 *
+	 * @var Queue
+	 */
 	protected $queue;
 
 	/**
 	 * Instantiate class.
 	 *
 	 * @param LoadInitialSitemap $controller Controller to load initial tasks.
-	 * @param Options_Data       $options Options.
+	 * @param Options_Data $options Options.
+	 * @param Queue $queue Preload queue.
 	 */
 	public function __construct( LoadInitialSitemap $controller, Options_Data $options, Queue $queue ) {
 		$this->controller = $controller;
