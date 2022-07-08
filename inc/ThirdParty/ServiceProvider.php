@@ -125,7 +125,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'polygone', Polygon::class )
+			->share( 'polygon', Polygon::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', Avada::class )
