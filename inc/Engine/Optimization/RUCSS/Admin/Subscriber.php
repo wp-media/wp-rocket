@@ -80,11 +80,11 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
-				[ 'notice_write_permissions' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -125,10 +125,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		global $wpdb;
-
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->prepare( 'SHOW TABLES FROM ' . DB_NAME . ' WHERE Tables_in_' . DB_NAME . ' LIKE %s AND Tables_in_' . DB_NAME . ' NOT REGEXP \'[0-9]+$\'', '%actionscheduler%' )
 		);
 
 		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
