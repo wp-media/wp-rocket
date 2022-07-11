@@ -419,4 +419,21 @@ class Cache extends Query {
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" );
 	}
+
+	/**
+	 * Check if the page is preloaded.
+	 *
+	 * @param string $url url from the page to check.
+	 * @return bool
+	 */
+	public function is_preloaded( string $url ): bool {
+		$pending_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'pending',
+				'url'    => untrailingslashit( $url ),
+			]
+		);
+		return 0 !== $pending_count;
+	}
 }

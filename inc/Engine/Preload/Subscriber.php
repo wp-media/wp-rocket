@@ -117,6 +117,10 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
+		if ( $this->query->is_preloaded( $url ) ) {
+			do_action( 'rocket_preload_completed', $url );
+		}
+
 		$this->query->create_or_update(
 			[
 				'url'           => $url,
