@@ -2,6 +2,7 @@
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -10,6 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
@@ -22,6 +24,7 @@ class Test_Treeshake extends TestCase {
 	protected $api;
 	protected $queue;
 	protected $usedCss;
+	protected $filesystem;
 
 	protected function setUp(): void
 	{
@@ -31,10 +34,17 @@ class Test_Treeshake extends TestCase {
 		$this->resourcesQuery = $this->createMock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
-		$this->usedCss = Mockery::mock(UsedCSS::class . '[is_allowed,update_last_accessed]', [$this->options, $this->usedCssQuery,
+		$this->filesystem = Mockery::mock( Filesystem::class );
+		$this->usedCss = Mockery::mock(
+			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			[
+				$this->options, $this->usedCssQuery,
 				$this->resourcesQuery,
-			$this->api,
-			$this->queue]);
+				$this->api,
+				$this->queue,
+				$this->filesystem
+			]
+		);
 	}
 
 	protected function tearDown(): void
@@ -113,6 +123,13 @@ class Test_Treeshake extends TestCase {
 
 		$this->usedCssQuery->expects(self::once())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
+		if ( ! empty( $config['get_existing_used_css']['used_css']->hash ) ) {
+			$this->filesystem->shouldReceive( 'get_used_css' )
+				->atMost()
+				->once()
+				->with( $config['get_existing_used_css']['used_css']->hash )
+				->andReturn( $config['get_existing_used_css']['used_css']->css );
+		}
 	}
 
 	protected function configureCreateNewJob($config) {

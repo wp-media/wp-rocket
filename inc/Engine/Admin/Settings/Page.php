@@ -244,9 +244,10 @@ class Page {
 	public function customer_data() {
 		$user = $this->user_client->get_user_data();
 		$data = [
-			'license_type'       => __( 'Unavailable', 'rocket' ),
-			'license_expiration' => __( 'Unavailable', 'rocket' ),
-			'license_class'      => 'wpr-isInvalid',
+			'license_type'        => __( 'Unavailable', 'rocket' ),
+			'license_expiration'  => __( 'Unavailable', 'rocket' ),
+			'license_class'       => 'wpr-isInvalid',
+			'is_from_one_dot_com' => false,
 		];
 
 		if (
