@@ -18,6 +18,13 @@ function rocket_post_submitbox_start() {
 			'objects'
 		);
 
+		/**
+		 * Filters the post type on submitbox.
+		 *
+		 * @since 3.11.6
+		 *
+		 * @param array $cpts Post Types.
+		 */
 		$cpts = apply_filters( 'rocket_submitbox_options_post_types', $cpts );
 
 		if ( isset( $cpts[ $post->post_type ] ) ) {

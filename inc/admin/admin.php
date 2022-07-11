@@ -74,6 +74,13 @@ function rocket_post_row_actions( $actions, $post ) {
 		'objects'
 	);
 
+	/**
+	 * Filters the post type on row actions.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @param array $cpts Post Types.
+	 */
 	$cpts = apply_filters( 'rocket_skip_post_row_actions', $cpts );
 
 	if ( ! isset( $cpts[ $post->post_type ] ) ) {
