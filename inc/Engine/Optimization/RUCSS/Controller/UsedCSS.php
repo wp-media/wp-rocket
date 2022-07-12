@@ -154,6 +154,10 @@ class UsedCSS {
 			return false;
 		}
 
+		if ( ! $this->filesystem->is_writable_folder() ) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -363,16 +367,13 @@ class UsedCSS {
 
 		$preserve_google_font = apply_filters( 'rocket_rucss_preserve_google_font', false );
 
-		$external_exclusions = (array) array_map(
-			function ( $item ) {
-				return preg_quote( $item, '/' );
-			},
+		$external_exclusions = $this->validate_array_and_quote(
 			/**
 			 * Filters the array of external exclusions.
 			 *
 			 * @since 3.11.4
 			 *
-			 * @param array $inline_atts_exclusions Array of patterns used to match against the external style tag.
+			 * @param array $external_exclusions Array of patterns used to match against the external style tag.
 			 */
 			(array) apply_filters( 'rocket_rucss_external_exclusions', $this->external_exclusions )
 		);
@@ -413,10 +414,7 @@ class UsedCSS {
 			$clean_html
 		);
 
-		$inline_atts_exclusions = (array) array_map(
-			function ( $item ) {
-				return preg_quote( $item, '/' );
-			},
+		$inline_atts_exclusions = $this->validate_array_and_quote(
 			/**
 			 * Filters the array of inline CSS attributes patterns to preserve
 			 *
@@ -427,10 +425,7 @@ class UsedCSS {
 			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
 		);
 
-		$inline_content_exclusions = (array) array_map(
-			function ( $item ) {
-				return preg_quote( $item, '/' );
-			},
+		$inline_content_exclusions = $this->validate_array_and_quote(
 			/**
 			 * Filters the array of inline CSS content patterns to preserve
 			 *
@@ -458,8 +453,15 @@ class UsedCSS {
 			 * @param bool $preserve_status Status of preserve.
 			 * @param array $style Full match style tag.
 			 */
-			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', false, $style ) ) {
-				$html = str_replace( $style['content'], '', $html );
+			if ( apply_filters( 'rocket_rucss_preserve_inline_style_tags', true, $style ) ) {
+				$content = trim( $style['content'] );
+
+				if ( empty( $content ) ) {
+					continue;
+				}
+
+				$empty_tag = str_replace( $style['content'], '', $style[0] );
+				$html      = str_replace( $style[0], $empty_tag, $html );
 
 				continue;
 			}
@@ -927,4 +929,23 @@ class UsedCSS {
 			]
 		);
 	}
+
+	/**
+	 * Validate the items in array to be strings only and preg_quote them.
+	 *
+	 * @param array $items Array to be validated and quoted.
+	 *
+	 * @return array|string[]
+	 */
+	private function validate_array_and_quote( array $items ) {
+		$items_array = array_filter( $items, 'is_string' );
+
+		return array_map(
+			static function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			$items_array
+		);
+	}
+
 }

@@ -315,6 +315,10 @@ class Settings {
 	private function can_display_notice( $check_enabled = true ): bool {
 		$screen = get_current_screen();
 
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) ) {
+			return false;
+		}
+
 		if (
 			isset( $screen->id )
 			&&
