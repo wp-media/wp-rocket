@@ -85,6 +85,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_error_notice' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -430,6 +431,22 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->settings->display_wrong_license_notice();
 	}
+
+	/**
+	 * Display error notice when connection to SAAS fails
+	 *
+	 * @return void
+	 */
+	public function display_error_notice() {
+		$transient = get_transient('wp_rocket_rucss_errors_count');
+
+		if ( ! $transient ) {
+			return;
+		}
+
+		$this->settings->display_error_notice();
+	}
+
 
 	/**
 	 * Display admin notice when detecting any missed Action scheduler tables.

@@ -509,4 +509,35 @@ class Settings {
 			]
 		);
 	}
+
+	/**
+	 * Display an error notice when the connection to the server fails
+	 *
+	 * @return void
+	 */
+	public function display_error_notice() {
+		if ( ! $this->can_display_notice( false ) ) {
+			return;
+		}
+
+		$main_message = __( "It seems a security plugin or the server's firewall prevents WP Rocket from accessing the Remove Unused CSS generator. The following IP address 135.125.83.227 should be allowlisted:", 'rocket' );
+
+		$reason_1_message = __( 'in the security plugin, if you are using one', 'rocket' );
+		$reason_2_message = __( "the server's firewall - your host can help you with this", 'rocket' );
+
+		$message = sprintf(
+		// translators: %1$s = plugin name
+			"%1\$s: <p>$main_message</p><ul><li>$reason_1_message</li><li>$reason_2_message</li></ul>",
+			'<strong>WP Rocket</strong>',
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+				'id'          => 'rocket-notice-rucss-error-http',
+			]
+		);
+	}
 }
