@@ -9,18 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
     
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 14.x
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '14.x'
 
     - name: Build
       run: |
