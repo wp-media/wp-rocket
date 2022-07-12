@@ -91,7 +91,7 @@ class UsedCSS extends Table {
 		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
 
 		if ( $delete_interval <= 0 ) {
-			return;
+			return false;
 		}
 
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
