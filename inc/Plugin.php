@@ -324,6 +324,7 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
+			'jevelin',
 			'unlimited_elements',
 			'inline_related_posts',
 			'wpml',

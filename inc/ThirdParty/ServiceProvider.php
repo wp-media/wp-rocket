@@ -35,7 +35,8 @@ use WP_Rocket\ThirdParty\Themes\Avada;
 use WP_Rocket\ThirdParty\Themes\Bridge;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
-use \WP_Rocket\ThirdParty\Themes\Polygon;
+use WP_Rocket\ThirdParty\Themes\Polygon;
+use WP_Rocket\ThirdParty\Themes\Jevelin;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -85,6 +86,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jevelin',
 		'wpml',
 	];
 
@@ -209,7 +211,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'convertplug', ConvertPlug::class )
 			->addTag( 'common_subscriber' );
-
+		$this->getContainer()
+			->share( 'jevelin', Jevelin::class )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'unlimited_elements', UnlimitedElements::class )
 			->addTag( 'common_subscriber' );
