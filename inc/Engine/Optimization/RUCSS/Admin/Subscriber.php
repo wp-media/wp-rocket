@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
-use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Admin_Bar;
-use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -109,111 +107,6 @@ class Subscriber implements Subscriber_Interface {
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 		];
-	}
-
-	/**
-	 * Cron callback for deleting old rows in both table databases.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function cron_clean_rows() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		if ( ! $this->is_rucss_deletion_activated() ) {
-			return;
-		}
-
-		$this->database->delete_old_used_css();
-		$this->database->delete_old_resources();
-	}
-
-	/**
-	 * Schedules cron for used CSS.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function schedule_clean_not_commonly_used_rows() {
-		if (
-			! $this->settings->is_enabled()
-			&&
-			wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' )
-		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
-
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		if ( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
-			return;
-		}
-
-		wp_schedule_event( time(), 'weekly', 'rocket_rucss_clean_rows_time_event' );
-	}
-
-	/**
-	 * Schedule the cron job for RUCSS pending jobs.
-	 *
-	 * @since 3.11
-	 *
-	 * @return void
-	 */
-	public function schedule_rucss_pending_jobs_cron() {
-		if ( ! did_action( 'init' ) ) {
-			return;
-		}
-
-		try {
-			if ( ! $this->settings->is_enabled() ) {
-				if ( ! $this->queue->is_pending_jobs_cron_scheduled() ) {
-					return;
-				}
-
-				Logger::debug( 'RUCSS: Cancel pending jobs cron job because of disabling RUCSS option.' );
-
-				$this->queue->cancel_pending_jobs_cron();
-				return;
-			}
-
-			/**
-			 * Filters the cron interval.
-			 *
-			 * @since 3.11
-			 *
-			 * @param int $interval Interval in seconds.
-			 */
-			$interval = apply_filters( 'rocket_rucss_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
-
-			Logger::debug( "RUCSS: Schedule pending jobs Cron job with interval {$interval} seconds." );
-
-			$this->queue->schedule_pending_jobs_cron( $interval );
-		} catch ( \RuntimeException $exception ) {
-			delete_transient( 'rocket_rucss_as_tables_count' );
-
-			Logger::error( 'RUCSS: Action scheduler ERROR: ' . $exception->getMessage() );
-		}
-	}
-
-	/**
-	 * Initialize the queue runner for our RUCSS.
-	 *
-	 * @return void
-	 */
-	public function initialize_rucss_queue_runner() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		RUCSSQueueRunner::instance()->init();
 	}
 
 	/**
