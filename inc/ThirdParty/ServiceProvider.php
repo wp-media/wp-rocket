@@ -143,10 +143,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'common_subscriber' );
-		
 		$this->getContainer()
 			->share( 'xstore', Xstore::class )
-			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )
