@@ -81,7 +81,7 @@ gulp.task('watch', function () {
 });
 
 // gulp.task('default', gulp.parallel('watch', 'sass:watch'));
-gulp.task('default', gulp.parallel('build', 'sass_all'));
+gulp.task('default', gulp.series('sass_all'));
 
 /**
  * Compiles a standalone script file.
