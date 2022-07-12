@@ -36,8 +36,7 @@ jobs:
 
     - name: Commit and push changes
       if: ${{ steps.add.outcome == 'success' }}
-      uses: ad-m/github-push-action@master
       uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Compile assets
-          commit_user_name: WP-media GitHub Actions Bot
+      with:
+        commit_message: Compile assets
+        commit_user_name: WP-media GitHub Actions Bot
