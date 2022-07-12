@@ -26,4 +26,4 @@ jobs:
         npm ci
         npm audit fix
         npx browserslist@latest --update-db
-        gulp
+        gulp run:build

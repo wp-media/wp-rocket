@@ -54,9 +54,9 @@ function compile(watch) {
                 .pipe(sourcemaps.init({loadMaps: false}))
                 .pipe(sourcemaps.write('./'))
                 .pipe(gulp.dest('assets/js'))
-				// .on('end', function() {
-				// 	if( isSuccess )console.log('Yay success!');
-				// })
+				.on('end', function() {
+					if( isSuccess )console.log('Yay success!');
+				})
     }
 
     if (watch) {
