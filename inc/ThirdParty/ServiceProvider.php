@@ -2,6 +2,42 @@
 namespace WP_Rocket\ThirdParty;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
+use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
+use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
+use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
+use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
+use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
+use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
+use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
+use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
+use WP_Rocket\ThirdParty\Plugins\PWA;
+use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
+use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
+use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
+use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
+use WP_Rocket\ThirdParty\Plugins\Smush;
+use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
+use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
+use WP_Rocket\ThirdParty\Themes\Avada;
+use WP_Rocket\ThirdParty\Themes\Bridge;
+use WP_Rocket\ThirdParty\Themes\Divi;
+use WP_Rocket\ThirdParty\Themes\Flatsome;
+use WP_Rocket\ThirdParty\Themes\Polygon;
+use WP_Rocket\ThirdParty\Themes\Jevelin;
+use WP_Rocket\ThirdParty\Themes\Xstore;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -38,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
+		'polygon',
 		'mod_pagespeed',
 		'adthrive',
 		'autoptimize',
@@ -50,6 +87,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jevelin',
 		'wpml',
 		'xstore',
 	];
@@ -65,124 +103,132 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()
-			->share( 'mobile_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::class )
+			->share( 'mobile_subscriber', Mobile_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'elementor_subscriber', Plugins\PageBuilder\Elementor::class )
+			->share( 'elementor_subscriber', Elementor::class )
 			->addArgument( $options )
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'woocommerce_subscriber', Plugins\Ecommerce\WooCommerceSubscriber::class )
+			->share( 'woocommerce_subscriber', WooCommerceSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'syntaxhighlighter_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber::class )
+			->share( 'syntaxhighlighter_subscriber', SyntaxHighlighter_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'bridge_subscriber', Themes\Bridge::class )
+			->share( 'bridge_subscriber', Bridge::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'divi', Themes\Divi::class )
+			->share( 'divi', Divi::class )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'avada_subscriber', Themes\Avada::class )
+			->share( 'polygon', Polygon::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'avada_subscriber', Avada::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'ngg_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber::class )
+			->share( 'ngg_subscriber', NGG_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'smush_subscriber', Plugins\Smush::class )
+			->share( 'smush_subscriber', Smush::class )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'common_subscriber' );
+		
 		$this->getContainer()
-			->share( 'imagify_webp_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::class )
+			->share( 'xstore', Xstore::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'shortpixel_webp_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber::class )
+			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'ewww_webp_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::class )
+			->share( 'shortpixel_webp_subscriber', ShortPixel_Subscriber::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'optimus_webp_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber::class )
+			->share( 'ewww_webp_subscriber', EWWW_Subscriber::class )
+			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'bigcommerce_subscriber', \WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber::class )
+			->share( 'optimus_webp_subscriber', Optimus_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'beaverbuilder_subscriber', Plugins\PageBuilder\BeaverBuilder::class )
+			->share( 'bigcommerce_subscriber', BigCommerce_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'amp_subscriber', Plugins\Optimization\AMP::class )
+			->share( 'beaverbuilder_subscriber', BeaverBuilder::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'amp_subscriber', AMP::class )
 			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'simple_custom_css', Plugins\SimpleCustomCss::class )
+			->share( 'simple_custom_css', SimpleCustomCss::class )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'pdfembedder', Plugins\PDFEmbedder::class )
+			->share( 'pdfembedder', PDFEmbedder::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'mod_pagespeed', Plugins\ModPagespeed::class )
+			->share( 'mod_pagespeed', ModPagespeed::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'adthrive', Plugins\Ads\Adthrive::class )
+			->share( 'adthrive', Adthrive::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'autoptimize', Plugins\Optimization\Autoptimize::class )
+			->share( 'autoptimize', Autoptimize::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'wp-meteor', Plugins\Optimization\WPMeteor::class )
+			->share( 'wp-meteor', WPMeteor::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'revolution_slider_subscriber', Plugins\RevolutionSlider::class )
+			->share( 'revolution_slider_subscriber', RevolutionSlider::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'wordfence_subscriber', Plugins\Security\WordFenceCompatibility::class )
+			->share( 'wordfence_subscriber', WordFenceCompatibility::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'ezoic', Plugins\Optimization\Ezoic::class )
+			->share( 'ezoic', Ezoic::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'thirstyaffiliates', Plugins\ThirstyAffiliates::class )
+			->share( 'thirstyaffiliates', ThirstyAffiliates::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'pwa', Plugins\PWA::class )
+			->share( 'pwa', PWA::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'yoast_seo', Plugins\SEO\Yoast::class )
+			->share( 'yoast_seo', Yoast::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'flatsome', Themes\Flatsome::class )
+			->share( 'flatsome', Flatsome::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'convertplug', Plugins\ConvertPlug::class )
+			->share( 'convertplug', ConvertPlug::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'unlimited_elements', Plugins\UnlimitedElements::class )
+			->share( 'jevelin', Jevelin::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'inline_related_posts', Plugins\InlineRelatedPosts::class )
+			->share( 'unlimited_elements', UnlimitedElements::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'wpml', Plugins\I18n\WPML::class )
+			->share( 'inline_related_posts', InlineRelatedPosts::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'xstore', Themes\Xstore::class )
+			->share( 'wpml', WPML::class )
 			->addTag( 'common_subscriber' );
 	}
 }
