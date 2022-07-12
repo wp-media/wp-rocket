@@ -37,6 +37,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
 use WP_Rocket\ThirdParty\Themes\Polygon;
 use WP_Rocket\ThirdParty\Themes\Jevelin;
+use WP_Rocket\ThirdParty\Themes\Xstore;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -88,6 +89,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'inline_related_posts',
 		'jevelin',
 		'wpml',
+		'xstore',
 	];
 
 	/**
@@ -140,6 +142,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'smush_subscriber', Smush::class )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'xstore', Xstore::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )

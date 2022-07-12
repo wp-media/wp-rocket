@@ -328,6 +328,7 @@ class Plugin {
 			'unlimited_elements',
 			'inline_related_posts',
 			'wpml',
+			'xstore',
 		];
 
 		$host_type = HostResolver::get_host_service();
