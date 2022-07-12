@@ -24,8 +24,6 @@ jobs:
     - name: Build
       run: |
         npm ci
-        npm audit fix
-        npx browserslist@latest --update-db
         gulp run:build
 
     - name: Add files
