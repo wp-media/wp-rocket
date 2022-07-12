@@ -2,9 +2,9 @@ name: Generate assets
 
 on:
   push:
-    branches: [ "enhancement/4357-automate-css-and-js-files-generation-on-deployment" ]
+    branches: [ 'enhancement/4357-automate-css-and-js-files-generation-on-deployment' ]
   pull_request:
-    branches: [ "enhancement/4357-automate-css-and-js-files-generation-on-deployment" ]
+    branches: [ 'enhancement/4357-automate-css-and-js-files-generation-on-deployment' ]
 
 jobs:
   build:
@@ -28,25 +28,16 @@ jobs:
         npx browserslist@latest --update-db
         gulp run:build
 
-    - name: setup git config
-      run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-
-    - name: Commit files
-      id: commit
+    - name: Add files
+      id: add
       run: |
         git add --all
-        if [-z "$(git status --porcelain)"]; then
-           echo "::set-output name=push::false"
-        else
-           git commit -m 'Compile assets' -a
-           echo "::set-output name=push::true"
-        fi
       shell: bash
 
-    - name: Push changes
-      if: steps.commit.outputs.push == 'true'
+    - name: Commit and push changes
+      if: ${{ steps.add.outcome == 'success' }}
       uses: ad-m/github-push-action@master
-      with:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
+      uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Compile assets
+          commit_user_name: WP-media GitHub Actions Bot
