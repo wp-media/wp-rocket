@@ -72,11 +72,9 @@ class UsedCSS extends Table {
 	/**
 	 * Delete all used_css which were not accessed in the last month.
 	 *
-	 * @param int $delete_delay number of months before deleting.
-	 *
 	 * @return bool|int
 	 */
-	public function delete_old_used_css( $delete_delay = 1 ) {
+	public function delete_old_used_css() {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -85,8 +83,19 @@ class UsedCSS extends Table {
 			return false;
 		}
 
+		/**
+		 * Filters the old RUCSS deletion interval
+		 *
+		 * @param int $delete_interval Old RUCSS deletion interval in months
+		 */
+		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return;
+		}
+
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_delay month)";
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;

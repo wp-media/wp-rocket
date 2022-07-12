@@ -66,20 +66,10 @@ class Database {
 	 */
 	public function delete_old_used_css() {
 		if ( $this->rucss_usedcss_table->exists() ) {
-
-			/**
-			 * Change RUCSS deletion delay
-			 *
-			 * @param int RUCSS deletion delay in months
-			 */
-			$delete_delay = apply_filters( 'rocket_rucss_css_delete_delay', 1 );
-
-			if ( $delete_delay <= 0 ) {
-				return;
-			}
-
-			$this->rucss_usedcss_table->delete_old_used_css( $delete_delay );
+			return;
 		}
+
+		$this->rucss_usedcss_table->delete_old_used_css();
 	}
 
 	/**
