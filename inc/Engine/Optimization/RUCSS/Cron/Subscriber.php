@@ -102,10 +102,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_rows() {
-		if ( ! $this->used_css->is_enabled() ) {
-			return;
-		}
-
 		$this->database->delete_old_used_css();
 		$this->database->delete_old_resources();
 	}
