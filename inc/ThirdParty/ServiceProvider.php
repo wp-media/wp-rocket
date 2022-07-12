@@ -35,6 +35,7 @@ use WP_Rocket\ThirdParty\Themes\Avada;
 use WP_Rocket\ThirdParty\Themes\Bridge;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
+use \WP_Rocket\ThirdParty\Themes\Polygon;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -71,6 +72,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
+		'polygon',
 		'mod_pagespeed',
 		'adthrive',
 		'autoptimize',
@@ -121,6 +123,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'polygon', Polygon::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'avada_subscriber', Avada::class )
