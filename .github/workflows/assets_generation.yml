@@ -27,3 +27,26 @@ jobs:
         npm audit fix
         npx browserslist@latest --update-db
         gulp run:build
+
+    - name: setup git config
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit files
+      id: commit
+      run: |
+        git add --all
+        if [-z "$(git status --porcelain)"]; then
+           echo "::set-output name=push::false"
+        else
+           git commit -m 'Compile assets' -a
+           echo "::set-output name=push::true"
+        fi
+      shell: bash
+
+    - name: Push changes
+      if: steps.commit.outputs.push == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
