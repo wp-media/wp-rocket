@@ -74,7 +74,7 @@ function watch() {
 };
 
 gulp.task('build', function () {
-    return compile();
+    return compile(false);
 });
 gulp.task('watch', function () {
     return watch();
