@@ -65,7 +65,7 @@ class Database {
 	 * @return void
 	 */
 	public function delete_old_used_css() {
-		if ( $this->rucss_usedcss_table->exists() ) {
+		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return;
 		}
 
