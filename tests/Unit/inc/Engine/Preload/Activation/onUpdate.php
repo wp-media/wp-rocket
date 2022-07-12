@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Activation;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Preload\Activation;
+use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Tests\Unit\TestCase;

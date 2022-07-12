@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -32,16 +33,23 @@ class Subscriber implements Subscriber_Interface {
 	protected $activation;
 
 	/**
+	 * @var WP_Rocket_Mobile_Detect
+	 */
+	protected $mobile_detect;
+
+	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param LoadInitialSitemap $controller controller creating the initial task.
-	 * @param Cache              $query Cache query instance.
-	 * @param Activation         $activation Activation manager.
+	 * @param Cache $query Cache query instance.
+	 * @param Activation $activation Activation manager.
+	 * @param WP_Rocket_Mobile_Detect $mobile_detect
 	 */
-	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation ) {
+	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect) {
 		$this->controller = $controller;
 		$this->query      = $query;
 		$this->activation = $activation;
+		$this->mobile_detect = $mobile_detect;
 	}
 
 	/**
@@ -118,7 +126,8 @@ class Subscriber implements Subscriber_Interface {
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		if ( $this->query->is_preloaded( $url ) ) {
-			do_action( 'rocket_preload_completed', $url );
+			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
 		$this->query->create_or_update(

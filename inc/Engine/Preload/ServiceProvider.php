@@ -22,6 +22,7 @@ use WP_Rocket\Engine\Preload\Frontend\FetchSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket_Mobile_Detect;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -66,6 +67,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
+
+		$this->getContainer()->add('preload_mobile_detect', WP_Rocket_Mobile_Detect::class);
 
 		$this->getContainer()->add( 'preload_settings', Settings::class )
 			->addArgument( $options );
@@ -145,6 +148,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $cache_query )
 			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
+			->addArgument( $this->getContainer()->get( 'preload_mobile_detect' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )
