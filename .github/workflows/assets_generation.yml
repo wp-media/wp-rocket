@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
     
     steps:
     - uses: actions/checkout@v3
@@ -20,5 +23,7 @@ jobs:
 
     - name: Build
       run: |
-        npm install
+        npm ci
+        npm audit fix
+        npx browserslist@latest --update-db
         gulp
