@@ -30,3 +30,4 @@ $(document).ready(function(){
         }
     }
 });
+console.log('testing the bundle');
