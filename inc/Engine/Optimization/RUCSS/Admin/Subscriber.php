@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Admin_Bar;
@@ -79,11 +80,11 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
+				[ 'notice_write_permissions' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
-				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -106,6 +107,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_deactivation'                     => 'cancel_queues',
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
+			'rocket_before_rollback'                  => 'cancel_queues',
 		];
 	}
 
@@ -666,6 +668,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cancel_queues() {
+		// Will unhook check for dispatching an async request without RUCSS process running.
+		\ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
+
+		// Will unhook check for dispatching an async request when RUCSS process is already running.
+		RUCSSQueueRunner::instance()->unhook_dispatch_async_request();
+
 		$this->queue->cancel_pending_jobs_cron();
 
 		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {

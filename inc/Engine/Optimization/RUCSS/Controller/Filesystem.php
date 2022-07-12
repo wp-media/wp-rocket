@@ -33,6 +33,17 @@ class Filesystem {
 	}
 
 	/**
+	 * Get the file path for the used CSS file.
+	 *
+	 * @param string $hash Hash of the file contents.
+	 *
+	 * @return string Path for the used CSS file.
+	 */
+	private function get_usedcss_full_path( string $hash ) {
+		return $this->path . $this->hash_to_path( $hash ) . '.css' . ( function_exists( 'gzdecode' ) ? '.gz' : '' );
+	}
+
+	/**
 	 * Gets the used CSS content corresponding to the provided hash
 	 *
 	 * @param string $hash Hash of the corresponding used CSS.
@@ -40,13 +51,14 @@ class Filesystem {
 	 * @return string
 	 */
 	public function get_used_css( string $hash ): string {
-		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
+		$file = $this->get_usedcss_full_path( $hash );
 
 		if ( ! $this->filesystem->exists( $file ) ) {
 			return '';
 		}
 
-		$css = gzdecode( $this->filesystem->get_contents( $file ) );
+		$file_contents = $this->filesystem->get_contents( $file );
+		$css           = function_exists( 'gzdecode' ) ? gzdecode( $file_contents ) : $file_contents;
 
 		if ( ! $css ) {
 			return '';
@@ -64,20 +76,20 @@ class Filesystem {
 	 * @return bool
 	 */
 	public function write_used_css( string $hash, string $used_css ): bool {
-		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
+		$file = $this->get_usedcss_full_path( $hash );
 
 		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
 			return false;
 		}
 
 		// This filter is documented in inc/classes/Buffer/class-cache.php.
-		$css = gzencode( $used_css, apply_filters( 'rocket_gzencode_level_compression', 6 ) );
+		$css = function_exists( 'gzencode' ) ? gzencode( $used_css, apply_filters( 'rocket_gzencode_level_compression', 6 ) ) : $used_css;
 
 		if ( ! $css ) {
 			return false;
 		}
 
-		return $this->filesystem->put_contents( $file, $css );
+		return $this->filesystem->put_contents( $file, $css, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
@@ -90,7 +102,7 @@ class Filesystem {
 	 * @return bool
 	 */
 	public function delete_used_css( string $hash ): bool {
-		$file = $this->path . $this->hash_to_path( $hash ) . '.css.gz';
+		$file = $this->get_usedcss_full_path( $hash );
 
 		return $this->filesystem->delete( $file, false, 'f' );
 	}

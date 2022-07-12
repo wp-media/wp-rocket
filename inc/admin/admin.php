@@ -213,6 +213,11 @@ function rocket_rollback() {
 		wp_nonce_ays( '' );
 	}
 
+	/**
+	 * Fires before doing the rollback
+	 */
+	do_action( 'rocket_before_rollback' );
+
 	$plugin_transient = get_site_transient( 'update_plugins' );
 	$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
 	$plugin           = $plugin_folder . '/' . basename( WP_ROCKET_FILE );

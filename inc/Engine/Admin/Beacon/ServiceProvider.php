@@ -29,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'beacon', 'WP_Rocket\Engine\Admin\Beacon\Beacon' )
+		$this->getContainer()->share( 'beacon', Beacon::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
 			->addArgument( $this->getContainer()->get( 'support_data' ) )
