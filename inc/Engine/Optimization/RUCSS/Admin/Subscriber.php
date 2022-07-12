@@ -112,7 +112,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-
 	 * Checks if Action scheduler tables are there or not.
 	 *
 	 * @since 3.11.0.3
@@ -151,7 +150,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_rucss_deletion_activated() ) {
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -178,7 +177,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_rucss_deletion_activated() ) {
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -203,7 +202,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_rucss_deletion_activated() ) {
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -693,17 +692,17 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Call the filter to check if the deletion from RUCSS is activated.
+	 * Checks if the RUCSS deletion is enabled.
 	 *
 	 * @return bool
 	 */
-	protected function is_rucss_deletion_activated() {
+	protected function is_deletion_enabled(): bool {
 		/**
-		 * Disable RUCSS deletion
+		 * Filters the enable RUCSS deletion value
 		 *
-		 * @param bool RUCSS deletion enabled
+		 * @param bool $delete_rucss True to enable deletion, false otherwise.
 		 */
-		return apply_filters( 'rocket_rucss_deletion_activated', true );
+		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 
 	/**
