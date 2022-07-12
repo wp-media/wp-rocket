@@ -82,6 +82,27 @@ gulp.task('watch', function () {
 
 gulp.task('default', gulp.parallel('watch', 'sass:watch'));
 
+// Bundle script without watching.
+const bundleJsWithoutWatch = () => {
+    var bundle = browserify({
+        entries: './src/js/global/app.js',
+        debug: true
+      }).transform(babel);
+
+    return bundle.bundle()
+                .pipe(source('wpr-admin.js'))
+                .pipe(buffer())
+                .pipe(uglify())
+                .pipe(sourcemaps.init({loadMaps: false}))
+                .pipe(sourcemaps.write('./'))
+                .pipe(gulp.dest('assets/js'))
+}
+
+exports.bundleJsWithoutWatch = bundleJsWithoutWatch;
+
+// Run build without watching: watching keeps git actions stuck on 'build'
+gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, 'sass_all'));
+
 /**
  * Compiles a standalone script file.
  *
