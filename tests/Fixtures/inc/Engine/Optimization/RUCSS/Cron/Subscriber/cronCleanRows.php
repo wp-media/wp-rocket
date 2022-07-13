@@ -63,7 +63,7 @@ return [
 			'input' => [
 				'remove_unused_css' => false,
 				'used_css'               => $used_css,
-				'resources'         => $resources,
+				'resources'         => [],
 				'has_delay' => true,
 				'delay' => 0
 			]
