@@ -11,6 +11,7 @@ return [
 				'message' => 'message',
 				'body' => 'body',
 			],
+			'errors_count' => 1,
 			'request_uri' => 'https://api.example.comrucss-job',
 			'args' => [
 				'body' => [
@@ -49,6 +50,7 @@ return [
 				'message' => 'message',
 				'body' => 'body',
 			],
+			'errors_count' => 1,
 			'request_uri' => 'https://api.example.comrucss-job',
 			'args' => [
 				'body' => [
@@ -122,6 +124,7 @@ return [
 				'message' => 'message',
 				'body' => 'body',
 			],
+			'errors_count' => 1,
 			'request_uri' => 'https://api.example.comrucss-job',
 			'args' => [
 				'body' => [

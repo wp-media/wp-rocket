@@ -516,7 +516,7 @@ class Settings {
 	 * @return void
 	 */
 	public function display_error_notice() {
-		if ( ! $this->can_display_notice( false ) ) {
+		if ( ! $this->can_display_notice() ) {
 			return;
 		}
 
