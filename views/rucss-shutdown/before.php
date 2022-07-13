@@ -38,9 +38,4 @@
 			<?php esc_html_e( 'Renew now', 'rocket' ); ?>
 		</a>
 	</div>
-	<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal">
-		<span class="screen-reader-text">
-			<?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?>
-		</span>
-	</button>
 </div>
