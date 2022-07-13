@@ -739,7 +739,7 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-					'warning'           => [],
+					'warning'           => $rucss_shutdown_warning,
 					'helper' => __( 'The Remove Unused CSS option is not available in this version. Update to the latest available version to activate it. ', 'rocket' ),
 				],
 				'remove_unused_css_safelist' => [
