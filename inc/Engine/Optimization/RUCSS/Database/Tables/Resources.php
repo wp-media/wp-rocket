@@ -64,7 +64,6 @@ class Resources extends Table {
 
 	/**
 	 * Delete all resources which were not accessed in the last month.
-	 * *
 	 *
 	 * @return bool|int
 	 */

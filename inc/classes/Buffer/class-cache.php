@@ -78,7 +78,6 @@ class Cache extends Abstract_Buffer {
 			return;
 		}
 
-		$this->maybe_redirect_with_trailing_slash();
 		/**
 		 * Serve the cache file if it exists.
 		 */
@@ -669,52 +668,5 @@ class Cache extends Abstract_Buffer {
 	 */
 	protected function reset_lowercase( $matches ) {
 		return strtolower( $matches[0] );
-	}
-
-	/**
-	 * Redirect based on permalink structure
-	 *
-	 * @return void
-	 */
-	private function maybe_redirect_with_trailing_slash() {
-		$permalink_structure = $this->config->get_config( 'permalink_structure' );
-		$host                = $this->config->get_host();
-
-		// Last character of permalink.
-		$permalink_last_char = substr( $permalink_structure, -1 );
-
-		// Request uri without protocol & TLD.
-		$request_uri = $this->tests->get_request_uri_base();
-
-		// Last character of request uri.
-		$request_uri_last_char = substr( $request_uri, -1 );
-
-		// Check if permalink forces a trailing slash and update var. else set char to empty.
-		$permalink_last_char = '/' === $permalink_last_char ? '/' : '';
-
-		// Check also if request_uri has a trailing slash and update var. else set char to empty.
-		$request_uri_last_char = '/' === $request_uri_last_char ? '/' : '';
-
-		// check if permalink is withouth trailing slash url is home.
-		if ( '' === $permalink_last_char ) {
-			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
-		}
-
-		// Bail out if permalink structure and url are the same.
-		if ( $permalink_last_char === $request_uri_last_char ) {
-			return;
-		}
-
-		// Prepare query string.
-		$query_string = $this->tests->get_original_query_string();
-		$query_string = empty( $query_string ) ? '' : '?' . $query_string;
-		$protocol     = $this->tests->is_ssl() ? 'https://' : 'http://';
-
-		// // Construct redirect url.
-		$url = $protocol . $host . rtrim( $request_uri, '/' ) . $permalink_last_char . $query_string;
-
-		// Respect Permalink Structure and Force Redirect.
-		header( 'Location: ' . $url );
-		exit;
 	}
 }

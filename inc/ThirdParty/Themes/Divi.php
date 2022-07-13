@@ -63,7 +63,8 @@ class Divi implements Subscriber_Interface {
 
 		$events['rocket_exclude_css'] = 'exclude_css_from_combine';
 
-		$events['wp'] = 'disable_dynamic_css_on_rucss';
+		$events['wp']                = 'disable_dynamic_css_on_rucss';
+		$events['after_setup_theme'] = 'remove_assets_generated';
 
 		return $events;
 	}
@@ -212,5 +213,14 @@ class Divi implements Subscriber_Interface {
 		}
 		add_filter( 'et_use_dynamic_css', '__return_false' );
 
+	}
+
+	/**
+	 * Remove dynamic late assets action.
+	 *
+	 * @return void
+	 */
+	public function remove_assets_generated() {
+		remove_all_actions( 'et_dynamic_late_assets_generated' );
 	}
 }
