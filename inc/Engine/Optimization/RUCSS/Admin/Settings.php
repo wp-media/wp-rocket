@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 class Settings {
 	/**
@@ -23,14 +24,21 @@ class Settings {
 	private $beacon;
 
 	/**
+	 * @var UsedCSS
+	 */
+	private $used_css;
+
+	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param Beacon       $beacon  Beacon instance.
+	 * @param Beacon $beacon Beacon instance.
+	 * @param UsedCSS $used_css Used CSS table.
 	 */
-	public function __construct( Options_Data $options, Beacon $beacon ) {
+	public function __construct( Options_Data $options, Beacon $beacon, UsedCSS $used_css ) {
 		$this->options = $options;
 		$this->beacon  = $beacon;
+		$this->used_css = $used_css;
 	}
 
 	/**
@@ -59,6 +67,7 @@ class Settings {
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
+
 		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
@@ -498,6 +507,38 @@ class Settings {
 			'<strong>WP Rocket</strong>',
 			'<a href="https://wp-rocket.me/?add-to-cart=191&coupon_code=iamnotapirate10" class="button button-primary" rel="noopener noreferrer" target="_blank">',
 			'</a>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+				'id'          => 'rocket-notice-rucss-wrong-licence',
+			]
+		);
+	}
+
+	/**
+	 * Display a notice on table missing.
+	 *
+	 * @return void
+	 */
+	public function display_no_table_notice() {
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+
+		if($this->used_css->exists()) {
+			return;
+		}
+
+		$main_message = __( "We detected missing database table related tothe Remove Unused CSS feature.", 'rocket' );
+
+		$message = sprintf(
+		// translators: %1$s = plugin name.
+			"%1\$s: <p>$main_message</p>",
+			'<strong>WP Rocket</strong>'
 		);
 
 		rocket_notice_html(
