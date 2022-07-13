@@ -438,7 +438,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_error_notice() {
-		$transient = get_transient('wp_rocket_rucss_errors_count');
+		$transient = get_transient( 'wp_rocket_rucss_errors_count' );
 
 		if ( ! $transient ) {
 			return;

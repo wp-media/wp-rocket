@@ -19,6 +19,7 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 
 	private $options;
 	private $settings;
+	protected $config;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -33,7 +34,7 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		
+
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
 
