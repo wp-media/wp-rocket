@@ -42,6 +42,7 @@ class Test_TruncateUsedCss extends TestCase {
 			->andReturn( $config['remove_unused_css'] );
 		$this->configureHook($config);
 		$this->configureDeleteUsedCssRow($config);
+
 		$this->subscriber->truncate_used_css();
 	}
 
@@ -56,6 +57,7 @@ class Test_TruncateUsedCss extends TestCase {
 		if(! array_key_exists('delete_used_css_row', $config)) {
 			return;
 		}
+		$this->usedCSS->expects()->delete_all_used_css();
 
 		$this->usedCSS->expects()->get_not_completed_count()->andReturn($config['used_css_count']);
 		if(0 < $config['used_css_count']) {
