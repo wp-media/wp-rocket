@@ -431,7 +431,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @since 2.4
 	 */
-	public function rocket_rollback() {
+	public function rollback() {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_rollback' ) ) {
 			wp_nonce_ays( '' );
 		}
