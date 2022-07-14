@@ -82,7 +82,7 @@
 }
 
 .wpr-modal-footer-rollback {
-	justify-content: space-around;
+	justify-content: space-evenly;
 }
 
 .wpr-modal-button-rollback {
@@ -106,3 +106,15 @@
 	.wpr-modal-confirm-rollback:focus {
 		color: #fff;
 	}
+
+@media (max-width:660px) {
+	.wpr-modal-container {
+		margin:0 16px;
+	}
+}
+
+@media (max-width:660px) {
+	.wpr-modal-button-rollback {
+		padding: 16px 24px;
+	}
+}
