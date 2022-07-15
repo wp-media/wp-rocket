@@ -528,7 +528,7 @@ class Settings {
 		$message = sprintf(
 		// translators: %1$s = plugin name
 			"%1\$s: <p>$main_message</p><ul><li>$reason_1_message</li><li>$reason_2_message</li></ul>",
-			'<strong>WP Rocket</strong>',
+			'<strong>WP Rocket</strong>'
 		);
 
 		rocket_notice_html(
