@@ -97,14 +97,14 @@ class Renewal extends Abstract_Render {
 		}
 
 		$expiration    = $this->user->get_license_expiration();
-		$expired_since = time() - $expiration;
+		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
 
 		if ( $ocd_enabled ) {
 			$renewal_url   = $this->user->get_renewal_url();
 			$renewal_price = number_format_i18n( $this->get_discount_price(), 2 );
 
-			if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+			if ( 15 > $expired_since ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd',
@@ -115,7 +115,7 @@ class Renewal extends Abstract_Render {
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-			} elseif ( 180 * DAY_IN_SECONDS > $expired_since ) {
+			} elseif ( 180 > $expired_since ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd-disabled',
@@ -129,7 +129,7 @@ class Renewal extends Abstract_Render {
 		} elseif (
 			! $ocd_enabled
 			||
-			( $ocd_enabled && 180 * DAY_IN_SECONDS < $expired_since )
+			( $ocd_enabled && 180 < $expired_since )
 		) {
 			echo $this->generate( 'renewal-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
@@ -379,19 +379,19 @@ class Renewal extends Abstract_Render {
 		}
 
 		$whitelabel    = rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false );
-		$expired_since = time() - $this->user->get_license_expiration();
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 		$message       = ' <span class="wpr-icon-important wpr-checkbox-warning">';
 
 		if (
 			$whitelabel
 			&&
-			15 * DAY_IN_SECONDS > $expired_since
+			15 > $expired_since
 		) {
 			return $args;
 		} elseif (
 			! $whitelabel
 			&&
-			15 * DAY_IN_SECONDS > $expired_since
+			15 > $expired_since
 		) {
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
@@ -402,7 +402,7 @@ class Renewal extends Abstract_Render {
 		} elseif (
 			! $whitelabel
 			&&
-			15 * DAY_IN_SECONDS < $expired_since
+			15 < $expired_since
 		) {
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
@@ -413,7 +413,7 @@ class Renewal extends Abstract_Render {
 		} elseif (
 			$whitelabel
 			&&
-			15 * DAY_IN_SECONDS < $expired_since
+			15 < $expired_since
 		) {
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
@@ -485,11 +485,11 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$expired_since = time() - $this->user->get_license_expiration();
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 
-		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+		if ( 15 > $expired_since ) {
 			set_transient( "wpr_dashboard_seen_{$current_user}", 1, 15 * DAY_IN_SECONDS );
-		} elseif ( 15 * DAY_IN_SECONDS < $expired_since ) {
+		} elseif ( 15 < $expired_since ) {
 			set_transient( "wpr_dashboard_seen_{$current_user}", 1, YEAR_IN_SECONDS );
 		}
 	}
@@ -514,9 +514,9 @@ class Renewal extends Abstract_Render {
 			return $args;
 		}
 
-		$expired_since = time() - $this->user->get_license_expiration();
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / 15;
 
-		if ( 15 * DAY_IN_SECONDS > $expired_since ) {
+		if ( 15 > $expired_since ) {
 			return $args;
 		}
 
