@@ -514,7 +514,7 @@ class Renewal extends Abstract_Render {
 			return $args;
 		}
 
-		$expired_since = ( time() - $this->user->get_license_expiration() ) / 15;
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 
 		if ( 15 > $expired_since ) {
 			return $args;
