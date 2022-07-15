@@ -241,7 +241,7 @@ class APIClient {
 	 *
 	 * @param array $rule Firewall rule.
 	 *
-	 * @return array
+	 * @return object
 	 */
 	public function add_firewall_rule( array $rule ) {
 		return $this->post( "zones/{$this->zone_id}/firewall/rules", (array) $rule );
@@ -252,9 +252,9 @@ class APIClient {
 	 *
 	 * @since 3.11.6
 	 *
-	 * @return array
+	 * @return object
 	 */
-	public function get_firewall_rules():array {
+	public function get_firewall_rules() {
 		return $this->get( "zones/{$this->zone_id}/firewall/rules" );
 	}
 
