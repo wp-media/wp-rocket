@@ -1,8 +1,8 @@
 <?php
 /**
- * Renewal expired banner.
+ * Renewal expired banner with OCD disabled.
  *
- * @since 3.7.5
+ * @since 3.11.5
  */
 
 defined( 'ABSPATH' ) || exit;
