@@ -478,4 +478,86 @@ class Cloudflare {
 
 		return $cf_ips;
 	}
+
+	/**
+	 * Returns a list of RUCSS SaaS ip.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @return array
+	 */
+	protected function get_rucss_saas_ips():array {
+
+		$ips = [
+			'141.94.254.72',
+			'141.94.252.17',
+			'51.178.134.82',
+			'135.125.180.130',
+			'141.95.202.69',
+			'15.235.11.139',
+			'15.235.14.231',
+			'15.235.50.215',
+			'15.235.50.217',
+		];
+
+		/**
+		 * Filters RUCSS SaaS ip list.
+		 *
+		 * @since 3.11.6
+		 *
+		 * @param array $ips Array of ips.
+		 */
+		return apply_filters( 'rocket_rucss_saas_ips', $ips );
+	}
+
+	/**
+	 * Add new firewall rule.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @return mixed void|bool false if any error connection to Cloudflare or false response from api.
+	 */
+	public function add_new_rule() {
+
+		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			return $this->cloudflare_api_error;
+		}
+
+		try {
+			$ips       = [];
+			$new_rules = [];
+
+			// Get all firewall rules.
+			$rules = $this->api->get_firewall_rules()->result;
+
+			// Loop and extract ips from rules expression.
+			if ( ! empty( $rules ) ) {
+				foreach ( $rules as $rule ) {
+					$ips[] = str_replace( '(ip.src eq ', '', str_replace( ')', '', $rule->filter->expression ) );
+				}
+			}
+
+			// Loop through RUCSS SaaS list of ips.
+			foreach ( $this->get_rucss_saas_ips() as $ip ) {
+				// Check if ip is already added to rule.
+				if ( ! in_array( $ip, $ips, true ) ) {
+					$new_rules[] = [
+						'action' => 'allow',
+						'filter' => [
+							'expression'  => '(ip.src eq ' . $ip . ')',
+							'description' => 'Allow RUCSS SaaS API',
+						],
+					];
+				}
+			}
+
+			// Check if new rules is not empty and add new rules.
+			if ( ! empty( $new_rules ) ) {
+				$this->api->add_firewall_rule( $new_rules );
+			}
+		}
+		catch ( Exception $e ) {
+			return false;
+		}
+	}
 }
