@@ -235,6 +235,30 @@ class APIClient {
 	}
 
 	/**
+	 * Add new firewall rule.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @param array $rule Firewall rule.
+	 *
+	 * @return array
+	 */
+	public function add_firewall_rule( array $rule ) {
+		return $this->post( "zones/{$this->zone_id}/firewall/rules", (array) $rule );
+	}
+
+	/**
+	 * Gets all the saved firewall rules.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @return array
+	 */
+	public function get_firewall_rules():array {
+		return $this->get( "zones/{$this->zone_id}/firewall/rules" );
+	}
+
+	/**
 	 * API call method for sending requests using GET.
 	 *
 	 * @since 1.0
@@ -274,6 +298,20 @@ class APIClient {
 	 */
 	protected function patch( $path, array $data = [] ) {
 		return $this->request( $path, $data, 'patch' );
+	}
+
+	/**
+	 * API call method for sending requests using POST.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @param string $path Path of the endpoint.
+	 * @param array  $data Data to be sent along with the request.
+	 *
+	 * @return stdClass Cloudflare response packet.
+	 */
+	protected function post( $path, array $data = [] ) {
+		return $this->request( $path, $data, 'post' );
 	}
 
 	/**
