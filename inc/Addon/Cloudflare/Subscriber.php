@@ -64,7 +64,10 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
-			'init'                                      => [ 'set_real_ip', 1 ],
+			'init'                                      => [
+				[ 'set_real_ip', 1 ],
+				'allow_list_rucss_saas_ip',
+			],
 			'update_option_' . $slug                    => [ 'save_cloudflare_options', 10, 2 ],
 			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'admin_notices'                             => [
@@ -604,5 +607,21 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Allow list RUCSS SaaS ips.
+	 *
+	 * @since 3.11.6
+	 *
+	 * @return void
+	 */
+	public function allow_list_rucss_saas_ip() {
+		// Do transient check.
+		if ( ! get_transient( 'cloudflare_allowlist_rucss_sass_api' ) ) {
+			$this->cloudflare->add_new_rule();
+			// Create transient.
+			set_transient( 'cloudflare_allowlist_rucss_sass_api', '', 2 * WEEK_IN_SECONDS );
+		}
 	}
 }
