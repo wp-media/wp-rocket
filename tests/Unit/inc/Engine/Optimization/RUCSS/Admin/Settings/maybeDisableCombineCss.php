@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -14,11 +15,15 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  RUCSS
  */
 class Test_MaybeDisableCombineCss extends TestCase {
+	private $used_css;
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$settings = new Settings( Mockery::mock( Options_Data::class ), Mockery::mock( Beacon::class ) );
+		$this->used_css = Mockery::mock(UsedCSS::class);
+
+		$settings = new Settings( Mockery::mock( Options_Data::class ), Mockery::mock( Beacon::class ), $this->used_css );
 
 		$this->assertSame(
 			$expected,

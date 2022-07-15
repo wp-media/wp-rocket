@@ -24,6 +24,8 @@ class Settings {
 	private $beacon;
 
 	/**
+	 * Used CSS table.
+	 *
 	 * @var UsedCSS
 	 */
 	private $used_css;
@@ -32,12 +34,12 @@ class Settings {
 	 * Creates an instance of the class.
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param Beacon $beacon Beacon instance.
-	 * @param UsedCSS $used_css Used CSS table.
+	 * @param Beacon       $beacon Beacon instance.
+	 * @param UsedCSS      $used_css Used CSS table.
 	 */
 	public function __construct( Options_Data $options, Beacon $beacon, UsedCSS $used_css ) {
-		$this->options = $options;
-		$this->beacon  = $beacon;
+		$this->options  = $options;
+		$this->beacon   = $beacon;
 		$this->used_css = $used_css;
 	}
 
@@ -528,12 +530,11 @@ class Settings {
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-
-		if($this->used_css->exists()) {
+		if ( $this->used_css->exists() ) {
 			return;
 		}
 
-		$main_message = __( "We detected missing database table related tothe Remove Unused CSS feature.", 'rocket' );
+		$main_message = __( 'We detected missing database table related tothe Remove Unused CSS feature.', 'rocket' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name.
