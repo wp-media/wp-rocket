@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\ENgine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
@@ -314,6 +314,10 @@ class Settings {
 	 */
 	private function can_display_notice( $check_enabled = true ): bool {
 		$screen = get_current_screen();
+
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) ) {
+			return false;
+		}
 
 		if (
 			isset( $screen->id )

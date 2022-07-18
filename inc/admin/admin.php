@@ -67,10 +67,15 @@ function rocket_post_row_actions( $actions, $post ) {
 		return $actions;
 	}
 
+	if ( apply_filters( 'rocket_skip_post_row_actions', false, $post ) ) {
+		return $actions;
+	}
+
 	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
+
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -207,6 +212,11 @@ function rocket_rollback() {
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_rollback' ) ) {
 		wp_nonce_ays( '' );
 	}
+
+	/**
+	 * Fires before doing the rollback
+	 */
+	do_action( 'rocket_before_rollback' );
 
 	$plugin_transient = get_site_transient( 'update_plugins' );
 	$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
