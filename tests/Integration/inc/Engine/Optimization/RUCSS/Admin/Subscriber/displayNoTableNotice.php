@@ -17,14 +17,11 @@ class Test_DisplayNoTableNotice extends AdminTestCase
 {
 
 	protected $rucss;
-	protected $used_css;
 
 	public function set_up()
 	{
 		parent::set_up();
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
-		$container = apply_filters( 'rocket_container', null );
-		$this->used_css = $container->get( 'rucss_usedcss_table' );
 		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
 	}
 
@@ -32,9 +29,7 @@ class Test_DisplayNoTableNotice extends AdminTestCase
 	{
 		$this->removeRoleCap( 'administrator', 'rocket_manage_options' );
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
-		if ( $this->used_css->exists() ) {
-			$this->used_css->uninstall();
-		}
+
 		parent::tear_down();
 	}
 
@@ -51,10 +46,6 @@ class Test_DisplayNoTableNotice extends AdminTestCase
 		$this->setCurrentUser('administrator');
 		set_current_screen( 'settings_page_wprocket' );
 		Functions\when('rocket_direct_filesystem')->justReturn($filesystem_mock);
-
-		if($config['table_exists']) {
-			$this->used_css->install();
-		}
 
 		ob_start();
 		do_action('admin_notices');

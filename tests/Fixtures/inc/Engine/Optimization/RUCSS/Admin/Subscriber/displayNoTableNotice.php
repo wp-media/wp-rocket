@@ -14,7 +14,6 @@ Notice;
 return [
 	'tableExistsShouldDisplayNotice' => [
 		'config' => [
-			'table_exists' => true,
 			'remove_unused_css' => true
 		],
 		'expected' => [
@@ -22,19 +21,8 @@ return [
 			'content' => $content
 		]
 	],
-	'tableNotExistsShouldDoNothing' => [
-		'config' => [
-			'table_exists' => false,
-			'remove_unused_css' => true
-		],
-		'expected' => [
-			'contains' => false,
-			'content' => $content
-		]
-	],
 	'disableShouldDoNothing' => [
 		'config' => [
-			'table_exists' => true,
 			'remove_unused_css' => false
 		],
 		'expected' => [
