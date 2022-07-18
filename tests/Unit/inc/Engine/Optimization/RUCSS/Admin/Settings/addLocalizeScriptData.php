@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -22,7 +23,7 @@ class Test_AddLocalizeScriptData extends TestCase {
 		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
-		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ) );
+		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ), $this->createMock(UsedCSS::class) );
 	}
 
 	/**
