@@ -51,7 +51,6 @@ class Test_DisplayErrorNotice extends AdminTestCase {
 		ob_start();
 		do_action('admin_notices');
 		$actual = ob_get_clean();
-		//echo $actual;
 		if($expected['contains']) {
 			$this->assertStringContainsString(
 				$this->format_the_html( $expected['content'] ),

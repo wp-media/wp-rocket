@@ -526,7 +526,7 @@ class Settings {
 		$reason_2_message = __( "the server's firewall - your host can help you with this", 'rocket' );
 
 		$message = sprintf(
-		// translators: %1$s = plugin name
+		// translators: %1$s = plugin name.
 			"%1\$s: <p>$main_message</p><ul><li>$reason_1_message</li><li>$reason_2_message</li></ul>",
 			'<strong>WP Rocket</strong>'
 		);
