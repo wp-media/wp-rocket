@@ -21,7 +21,7 @@ class Test_AddOptions extends TestCase{
 	 */
 	public function testShouldDoExpected( $input, $expected ){
 		$options  = isset( $input['options'] )  ? $input['options']  : [];
-		$this->used_css = Mockery::mock(UsedCSS::class);
+		$this->used_css = $this->createMock(UsedCSS::class);
 		$settings = new Settings( Mockery::mock( Options_Data::class ), Mockery::mock( Beacon::class ), $this->used_css );
 
 		$this->assertSame(

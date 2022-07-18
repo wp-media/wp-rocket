@@ -24,7 +24,7 @@ class Test_AddLocalizeScriptData extends TestCase {
 		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
-		$this->used_css = Mockery::mock(UsedCSS::class);
+		$this->used_css = $this->createMock(UsedCSS::class);
 		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ), $this->used_css );
 	}
 
