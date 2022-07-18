@@ -35,10 +35,10 @@ class Test_DisplayErrorNotice extends AdminTestCase {
 	public function testShouldReturnAsExpected($config, $expected) {
 		$this->config = $config;
 		$filesystem_mock = Mockery::mock(WP_Filesystem_Direct::class);
-		$filesystem_mock->expects()->is_writable(Mockery::any())->zeroOrMoreTimes()->andReturn(true);
-		$filesystem_mock->expects()->is_readable(Mockery::any())->zeroOrMoreTimes()->andReturn(true);
-		$filesystem_mock->expects()->exists(Mockery::any())->zeroOrMoreTimes()->andReturn(true);
-		$filesystem_mock->expects()->is_dir(Mockery::any())->zeroOrMoreTimes()->andReturn(true);
+		$filesystem_mock->shouldReceive('is_writable')->zeroOrMoreTimes()->andReturn(true);
+		$filesystem_mock->shouldReceive('is_readable')->zeroOrMoreTimes()->andReturn(true);
+		$filesystem_mock->shouldReceive('exists')->zeroOrMoreTimes()->andReturn(true);
+		$filesystem_mock->shouldReceive('is_dir')->zeroOrMoreTimes()->andReturn(true);
 		Functions\when('rocket_direct_filesystem')->justReturn($filesystem_mock);
 
 		$this->setCurrentUser('administrator');
