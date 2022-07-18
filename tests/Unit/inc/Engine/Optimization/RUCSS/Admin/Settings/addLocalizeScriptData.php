@@ -18,12 +18,14 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_AddLocalizeScriptData extends TestCase {
 	private $options;
 	private $settings;
+	private $used_css;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
-		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ), $this->createMock(UsedCSS::class) );
+		$this->used_css = Mockery::mock(UsedCSS::class);
+		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ), $this->used_css );
 	}
 
 	/**
