@@ -141,7 +141,6 @@ class Config {
 			'cache_mandatory_cookies'   => '',
 			'cache_dynamic_cookies'     => [],
 			'url_no_dots'               => 0,
-			'permalink_structure'       => '',
 		];
 
 		foreach ( $config as $entry_name => $entry_value ) {
