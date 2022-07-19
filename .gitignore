@@ -3,3 +3,7 @@
 /tests/env/local/
 composer.lock
 vfs:/
+/assets/css/wpr-admin-rtl.min.css
+/assets/css/wpr-admin.min.css
+/assets/js/wpr-admin.min.js
+/assets/js/wpr-admin.js.min.map
