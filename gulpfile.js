@@ -155,11 +155,11 @@ gulp.task('default', gulp.parallel('watch', 'sass:watch', 'bundle:unminify'));
 
 /** Tasks for deployment */
 const build_sass_admin = () => {
-	return compile_sass_admin('wpr-admin.css', true);
+	return compile_sass_admin('wpr-admin.min.css', true);
 	
 }
 const build_sass_rtl = () => {
-	return compile_sass_rtl('wpr-admin-rtl.css', true);
+	return compile_sass_rtl('wpr-admin-rtl.min.css', true);
 }
 
 gulp.task('run:build:sass', gulp.parallel(build_sass_admin, build_sass_rtl));
@@ -177,6 +177,7 @@ const bundleJsWithoutWatch = () => {
                 .pipe(uglify())
                 .pipe(sourcemaps.init({loadMaps: false}))
                 .pipe(sourcemaps.write('./'))
+				.pipe( rename( { suffix: '.min' } ) )
                 .pipe(gulp.dest('assets/js'))
 }
 
