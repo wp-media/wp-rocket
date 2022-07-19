@@ -19,7 +19,7 @@ class Subscriber implements Subscriber_Interface {
 	protected $controller;
 
 	/**
-	 * Cache query instance
+	 * Cache query instance.
 	 *
 	 * @var Cache
 	 */
@@ -33,6 +33,8 @@ class Subscriber implements Subscriber_Interface {
 	protected $activation;
 
 	/**
+	 * Mobile detector instance.
+	 *
 	 * @var WP_Rocket_Mobile_Detect
 	 */
 	protected $mobile_detect;
@@ -40,15 +42,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param LoadInitialSitemap $controller controller creating the initial task.
-	 * @param Cache $query Cache query instance.
-	 * @param Activation $activation Activation manager.
-	 * @param WP_Rocket_Mobile_Detect $mobile_detect
+	 * @param LoadInitialSitemap      $controller controller creating the initial task.
+	 * @param Cache                   $query Cache query instance.
+	 * @param Activation              $activation Activation manager.
+	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile detector instance.
 	 */
-	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect) {
-		$this->controller = $controller;
-		$this->query      = $query;
-		$this->activation = $activation;
+	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect ) {
+		$this->controller    = $controller;
+		$this->query         = $query;
+		$this->activation    = $activation;
 		$this->mobile_detect = $mobile_detect;
 	}
 

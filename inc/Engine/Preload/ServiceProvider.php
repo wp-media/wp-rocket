@@ -68,7 +68,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->add('preload_mobile_detect', WP_Rocket_Mobile_Detect::class);
+		$this->getContainer()->add( 'preload_mobile_detect', WP_Rocket_Mobile_Detect::class );
 
 		$this->getContainer()->add( 'preload_settings', Settings::class )
 			->addArgument( $options );

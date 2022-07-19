@@ -197,6 +197,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->controller->delete_url( $url );
 	}
 
+	/**
+	 * Display a notice when Action Scheduler tables are missing.
+	 *
+	 * @return void
+	 */
 	public function maybe_display_as_missed_tables_notice() {
 		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
 			return;
