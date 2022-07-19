@@ -8,9 +8,13 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0.0
  */
 function rocket_add_admin_css_js() {
-	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin.css', null, WP_ROCKET_VERSION );
+	$admin_style     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'wpr-admin.css' : 'wpr-admin.min.css';
+	$admin_rtl_style = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'wpr-admin-rtl.css' : 'wpr-admin-rtl.min.css';
+	$admin_script    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'wpr-admin.js' : 'wpr-admin.min.js';
+
+	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . $admin_style, null, WP_ROCKET_VERSION );
 	wp_enqueue_script( 'micromodal', WP_ROCKET_ASSETS_JS_URL . 'micromodal.min.js', null, '0.4.10', true );
-	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', [ 'micromodal' ], WP_ROCKET_VERSION, true );
+	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . $admin_script, [ 'micromodal' ], WP_ROCKET_VERSION, true );
 
 	wp_localize_script(
 		'wpr-admin',
@@ -32,7 +36,7 @@ function rocket_add_admin_css_js() {
 	);
 
 	if ( is_rtl() ) {
-		wp_enqueue_style( 'wpr-admin-rtl', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-rtl.css', null, WP_ROCKET_VERSION );
+		wp_enqueue_style( 'wpr-admin-rtl', WP_ROCKET_ASSETS_CSS_URL . $admin_rtl_style, null, WP_ROCKET_VERSION );
 	}
 
 }
