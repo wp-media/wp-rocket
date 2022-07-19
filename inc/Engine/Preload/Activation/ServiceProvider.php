@@ -48,10 +48,10 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
-			->addArgument( $options )
 			->addArgument( $queue );
 
 		$this->getContainer()->add( 'preload_activation_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'preload_activation' ) );
+			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
+			->addArgument( $options );
 	}
 }

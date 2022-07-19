@@ -17,12 +17,7 @@ class Activation implements ActivationInterface {
 	 */
 	protected $controller;
 
-	/**
-	 * Options.
-	 *
-	 * @var Options_Data
-	 */
-	protected $options;
+
 
 	/**
 	 * Preload queue.
@@ -35,12 +30,10 @@ class Activation implements ActivationInterface {
 	 * Instantiate class.
 	 *
 	 * @param LoadInitialSitemap $controller Controller to load initial tasks.
-	 * @param Options_Data       $options Options.
 	 * @param Queue              $queue Preload queue.
 	 */
-	public function __construct( LoadInitialSitemap $controller, Options_Data $options, Queue $queue ) {
+	public function __construct( LoadInitialSitemap $controller, Queue $queue ) {
 		$this->controller = $controller;
-		$this->options    = $options;
 		$this->queue      = $queue;
 	}
 
@@ -48,9 +41,6 @@ class Activation implements ActivationInterface {
 	 * Launch preload on activation.
 	 */
 	public function activate() {
-		if ( ! $this->options->get( 'manual_preload', false ) ) {
-			return;
-		}
 		$this->controller->load_initial_sitemap();
 	}
 
