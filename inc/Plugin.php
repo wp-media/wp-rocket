@@ -160,7 +160,6 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\Settings\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Admin\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\AdminServiceProvider' );
-		$this->container->addServiceProvider( 'WP_Rocket\Engine\License\ServiceProvider' );
 
 		return [
 			'beacon',
@@ -175,7 +174,6 @@ class Plugin {
 			'minify_css_admin_subscriber',
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
-			'license_subscriber',
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
@@ -235,8 +233,10 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider' );
 		$this->container->addServiceProvider( 'WP_Rocket\Engine\Heartbeat\ServiceProvider' );
+		$this->container->addServiceProvider( 'WP_Rocket\Engine\License\ServiceProvider' );
 
 		$common_subscribers = [
+			'license_subscriber',
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
