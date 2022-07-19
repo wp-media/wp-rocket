@@ -740,7 +740,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'warning'           => $rucss_shutdown_warning,
-					'helper' => __( 'The Remove Unused CSS option is not available in this version. Update to the latest available version to activate it. ', 'rocket' ),
+					'helper' => empty( $rucss_shutdown_warning ) ? __( 'The Remove Unused CSS option is not available in this version. Update to the latest available version to activate it. ', 'rocket' ) : '',
 				],
 				'remove_unused_css_safelist' => [
 					'type'              => 'textarea',
