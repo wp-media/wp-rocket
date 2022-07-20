@@ -30,7 +30,7 @@ return [
 		'config' => [
 			'screen' => 'settings_page_wprocket',
 			'has_right' => true,
-			'load_transient' => true,
+			'load_transient' => false,
 			'enabled' => true,
 			'transient' => false,
 		],
