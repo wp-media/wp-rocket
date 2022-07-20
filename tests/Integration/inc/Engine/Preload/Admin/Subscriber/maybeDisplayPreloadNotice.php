@@ -30,6 +30,7 @@ class Test_MaybeDisplayPreloadNotice extends AdminTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
+		delete_transient('wpr_preload_running');
 		$this->sitemap_preload = $config['activated'];
 		if ( $config['cap'] ) {
 			$this->setRoleCap( 'administrator', 'rocket_manage_options' );

@@ -23,6 +23,7 @@ return [
 		'config' => [
 			'activated' => true,
 			'cap' => true,
+			'transient' => false,
 			'screen' => 'front',
 		],
 		'expected' => [
@@ -46,6 +47,7 @@ return [
 		'config' => [
 			'activated' => true,
 			'cap' => true,
+			'transient' => false,
 			'screen' => 'settings_page_wprocket',
 		],
 		'expected' => [
