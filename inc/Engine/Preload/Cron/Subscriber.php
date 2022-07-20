@@ -76,7 +76,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'weekly', 'rocket_preload_clean_rows_time_event' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'weekly', 'rocket_preload_clean_rows_time_event' );
 	}
 
 	/**
