@@ -63,6 +63,20 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @param \ActionScheduler_Lock|null                     $locker Lock action scheduler.
 	 */
 	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, \ActionScheduler_QueueCleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null, ActionScheduler_Compatibility $compatibility = null, Logger $logger = null, \ActionScheduler_Lock $locker = null ) {
+		if ( is_null( $cleaner ) ) {
+			/**
+			 * Filters the clean batch size.
+			 *
+			 * @since 3.11.0.5
+			 *
+			 * @param int $batch_size Batch size.
+			 *
+			 * @return int
+			 */
+			$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $this->group );
+			$cleaner    = new Cleaner( $store, $batch_size, $this->group );
+		}
+
 		parent::__construct( $store, $monitor, $cleaner );
 		$this->async_request = $async_request;
 		$this->compatibility = $compatibility;
