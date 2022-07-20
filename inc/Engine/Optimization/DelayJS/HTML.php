@@ -87,6 +87,19 @@ class HTML {
 	];
 
 	/**
+	 * Allowed type attributes.
+	 *
+	 * @var array Array of allowed type attributes.
+	 */
+	private $allowed_type_attr = [
+		'text/javascript',
+		'module',
+		'application/javascript',
+		'application/ecmascript',
+		'text/jscript',
+	];
+
+	/**
 	 * Creates an instance of HTML.
 	 *
 	 * @since  3.7
@@ -218,11 +231,12 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
+			preg_match( '/type\s*=\s*(?:\'|")\s*(?<value>[^\"]*)\s*(?:\'|")/i', $matches['attr'], $type );
 
 			if (
 				strpos( $matches['attr'], 'type=' ) !== false
 				&&
-				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
+				! in_array( $type['value'], $this->allowed_type_attr, true )
 			) {
 				return $matches[0];
 			}
