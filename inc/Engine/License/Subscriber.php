@@ -61,8 +61,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_disable_ocd', 11 ],
 				[ 'add_license_expire_warning' ],
 			],
-			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_option',
-			'pre_get_rocket_option_async_css'         => 'maybe_disable_option',
+			'pre_get_rocket_option_remove_unused_css' => [ 'maybe_disable_option', PHP_INT_MAX ],
+			'pre_get_rocket_option_async_css'         => [ 'maybe_disable_option', PHP_INT_MAX ],
 		];
 	}
 
