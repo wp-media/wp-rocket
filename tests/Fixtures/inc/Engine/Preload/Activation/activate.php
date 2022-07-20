@@ -1,13 +1,7 @@
 <?php
 return [
-	'activateShouldLaunchSitemapFetching' => [
+	'shouldLaunchSitemapFetching' => [
 		'config' => [
-			'is_enabled' => true,
 		],
 	],
-	'disactivateShouldDoNothing' => [
-		'config' => [
-			'is_enabled' => false,
-		],
-	]
 ];

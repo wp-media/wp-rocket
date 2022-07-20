@@ -53,10 +53,10 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 			return;
 		}
 
-		$old_time = time();
+		$old_time = time() + MINUTE_IN_SECONDS;
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
-			return $date >= $old_time  && $date <= time();
+			return $date >= $old_time  && $date <= time() + MINUTE_IN_SECONDS;
 		}), 'weekly', 'rocket_preload_clean_rows_time_event');
 	}
 }

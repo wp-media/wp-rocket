@@ -14,16 +14,14 @@ class Test_OnUpdate extends TestCase
 {
 	protected $activation;
 	protected $controller;
-	protected $options;
 	protected $queue;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->controller = Mockery::mock(LoadInitialSitemap::class);
-		$this->options = Mockery::mock(Options_Data::class);
 		$this->queue = Mockery::mock(Queue::class);
-		$this->activation = new Activation($this->controller, $this->options, $this->queue);
+		$this->activation = new Activation($this->controller, $this->queue);
 	}
 
 	/**
