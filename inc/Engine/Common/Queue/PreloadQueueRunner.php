@@ -9,6 +9,16 @@ use WP_Rocket\Logger\Logger;
 class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/**
+	 * Cron hook name.
+	 */
+	const WP_CRON_HOOK = 'action_scheduler_run_queue_preload';
+
+	/**
+	 * Cron schedule interval.
+	 */
+	const WP_CRON_SCHEDULE = 'every_minute';
+
+	/**
 	 * Current runner instance.
 	 *
 	 * @var PreloadQueueRunner Instance.
@@ -127,6 +137,23 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return void
 	 */
 	public function init() {
+		// phpcs:ignore WordPress.WP.CronInterval.CronSchedulesInterval
+		add_filter( 'cron_schedules', [ self::instance(), 'add_wp_cron_schedule' ] );
+
+		// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param.
+		$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
+		if ( $next_timestamp ) {
+			wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
+		}
+
+		$cron_context = [ 'WP Cron' ];
+
+		if ( ! wp_next_scheduled( self::WP_CRON_HOOK, $cron_context ) ) {
+			$schedule = apply_filters( 'rocket_action_scheduler_run_schedule', self::WP_CRON_SCHEDULE );
+			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
+		}
+
+		add_action( self::WP_CRON_HOOK, [ self::instance(), 'run' ] );
 		add_action( 'shutdown', [ $this, 'maybe_dispatch_async_request' ] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
