@@ -51,15 +51,20 @@ class Test_DisplayNoTableNotice extends AdminTestCase
 		do_action('admin_notices');
 		$result = ob_get_clean();
 
+		$container = apply_filters('rocket_container', null);
+
+		$table = $container->get('rucss_usedcss_table');
+
+		$content = str_replace('wpr_table', $table->get_name(), $expected['content']);
 
 		if($expected['contains']) {
 			$this->assertStringContainsString(
-				$this->format_the_html( $expected['content'] ),
+				$this->format_the_html( $content ),
 				$this->format_the_html( $result )
 			);
 		} else {
 			$this->assertStringNotContainsString(
-				$this->format_the_html( $expected['content'] ),
+				$this->format_the_html( $content ),
 				$this->format_the_html( $result )
 			);
 		}

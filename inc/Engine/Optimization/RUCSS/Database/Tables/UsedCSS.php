@@ -190,4 +190,12 @@ class UsedCSS extends Table {
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 
+	/**
+	 * Returns name from table.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->apply_prefix( $this->table_name );
+	}
 }

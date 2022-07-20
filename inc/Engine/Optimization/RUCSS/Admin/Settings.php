@@ -535,12 +535,14 @@ class Settings {
 			return;
 		}
 
-		$main_message = __( 'We detected missing database table related to the Remove Unused CSS feature.', 'rocket' );
+		// translators: %2$s = table name.
+		$main_message = __( 'WP Rocket could not create the %2$s in the database which is/are necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
 
 		$message = sprintf(
-		// translators: %1$s = plugin name.
+		// translators: %1$s = plugin name, %2$s = table name.
 			"%1\$s: <p>$main_message</p>",
-			'<strong>WP Rocket</strong>'
+			'<strong>WP Rocket</strong>',
+			$this->used_css->get_name()
 		);
 
 		rocket_notice_html(
