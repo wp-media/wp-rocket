@@ -12,7 +12,7 @@ use WP_Rocket\Traits\Updater_Api_Tools;
  *
  * @since  3.3.6
  */
-class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
+class Updater_Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use Updater_Api_Tools;
 
 	/**
