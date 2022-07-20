@@ -39,7 +39,7 @@ class Test_GetHostResolver extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
 			case 'onecom':
-				$this->constants['ONECOM_DOMAIN_NAME'] = true;
+				$_SERVER['ONECOM_DOMAIN_NAME'] = true;
 				break;
 			default:
 				break;
