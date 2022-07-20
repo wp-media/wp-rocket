@@ -91,12 +91,24 @@ class HTML {
 	 *
 	 * @var array Array of allowed type attributes.
 	 */
-	private $allowed_type_attr = [
+	private $allowed_types = [
 		'text/javascript',
 		'module',
 		'application/javascript',
 		'application/ecmascript',
+		'application/x-ecmascript',
+		'application/x-javascript',
+		'text/ecmascript',
+		'text/javascript1.0',
+		'text/javascript1.1',
+		'text/javascript1.2',
+		'text/javascript1.3',
+		'text/javascript1.4',
+		'text/javascript1.5',
 		'text/jscript',
+		'text/livescript',
+		'text/x-ecmascript',
+		'text/x-javascript',
 	];
 
 	/**
@@ -236,7 +248,7 @@ class HTML {
 			if (
 				strpos( $matches['attr'], 'type=' ) !== false
 				&&
-				! in_array( $type['value'], $this->allowed_type_attr, true )
+				! in_array( $type['value'], $this->allowed_types, true )
 			) {
 				return $matches[0];
 			}
