@@ -28,8 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addon\Varnish\Varnish' );
-		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Addon\Varnish\Subscriber' )
+		$this->getContainer()->add( 'varnish', Varnish::class );
+		$this->getContainer()->share( 'varnish_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'varnish' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'common_subscriber' );

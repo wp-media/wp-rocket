@@ -30,8 +30,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Engine\Capabilities\Subscriber' )
+		$this->getContainer()->add( 'capabilities_manager', Manager::class );
+		$this->getContainer()->share( 'capabilities_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) )
 			->addTag( 'common_subscriber' );
 	}

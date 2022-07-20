@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'WPS_Hide_Login' ) || defined( 'WPS_HIDE_LOGIN_VERSION' ) ) :
 	add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
-	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page', 2, 2 );
 endif;
 
 /**
@@ -16,9 +16,14 @@ endif;
  * @since 2.6
  *
  * @param array $urls An array of URLs to exclude from cache.
+ * @param bool  $show_safe_content show sensitive uris.
  * @return array Updated array of URLs
  */
-function rocket_exlude_wps_hide_login_page( $urls ) {
+function rocket_exlude_wps_hide_login_page( $urls, $show_safe_content = true ) {
+	if ( ! $show_safe_content ) {
+		return $urls;
+	}
+
 	if ( class_exists( 'WPS_Hide_Login' ) ) {
 		$wps_hide_login = new WPS_Hide_Login();
 		$urls[]         = rocket_clean_exclude_file( $wps_hide_login->new_login_url() );
@@ -35,7 +40,7 @@ function rocket_exlude_wps_hide_login_page( $urls ) {
  * @since 2.11
  */
 function rocket_activate_wps_hide_login() {
-	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page', 2, 2 );
 
 	// Update .htaccess file rules.
 	flush_rocket_htaccess();

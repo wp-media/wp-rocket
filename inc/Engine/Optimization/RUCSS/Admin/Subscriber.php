@@ -80,11 +80,11 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
+				[ 'notice_write_permissions' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
-				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
