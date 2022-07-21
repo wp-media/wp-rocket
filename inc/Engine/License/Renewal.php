@@ -536,14 +536,16 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
-	 * Disables the RUCSS & Async CSS options if license is expired
+	 * Disables the RUCSS & Async CSS options if license is expired since more than 15 days
 	 *
 	 * @param mixed $value Current option value.
 	 *
 	 * @return mixed
 	 */
 	public function maybe_disable_option( $value ) {
-		if ( ! $this->user->is_license_expired() ) {
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
+
+		if ( 15 > $expired_since ) {
 			return $value;
 		}
 
