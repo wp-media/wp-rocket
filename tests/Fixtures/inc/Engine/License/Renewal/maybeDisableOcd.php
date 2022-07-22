@@ -3,26 +3,6 @@
 return [
 	'shouldReturnSameWhenNotOCD' => [
 		'config' => [
-			'auto_renew' => false,
-			'expired' => false,
-			'expire_date' => strtotime( 'now + 7 days' ),
-		],
-		'args' => [
-			'id' => 'optimize_css_delivery',
-			'value' => 1,
-			'container_class' => [],
-			'input_attr' => [],
-		],
-		'expected' => [
-			'id' => 'optimize_css_delivery',
-			'value' => 1,
-			'container_class' => [],
-			'input_attr' => [],
-		],
-	],
-	'shouldReturnSameWhenAutoRenew' => [
-		'config' => [
-			'auto_renew' => true,
 			'expired' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
 		],
@@ -41,7 +21,6 @@ return [
 	],
 	'shouldReturnSameWhenLicenseNotExpired' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
 		],
@@ -60,7 +39,6 @@ return [
 	],
 	'shouldReturnSameWhenExpiredRecently' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'expire_date' => strtotime( 'now - 7 days' ),
 		],
@@ -79,7 +57,6 @@ return [
 	],
 	'shouldReturnDisabledWhenExpiredLonger' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'expire_date' => strtotime( 'now - 20 days' ),
 		],

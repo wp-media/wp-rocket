@@ -1,19 +1,8 @@
 <?php
 
 return [
-	'shouldDoNothingWhenAutoRenew' => [
-		'config' => [
-			'auto_renew' => true,
-			'expired' => false,
-			'ocd' => true,
-			'transient' => false,
-			'expire_date' => strtotime( 'now - 20 days' ),
-		],
-		'expected' => false,
-	],
 	'shouldDoNothingWhenNotExpired' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => false,
 			'ocd' => true,
 			'transient' => false,
@@ -23,7 +12,6 @@ return [
 	],
 	'shouldDoNothingWhenOCDDisabled' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'ocd' => false,
 			'transient' => false,
@@ -33,7 +21,6 @@ return [
 	],
 	'shouldDoNothingWhenTransientSet' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'ocd' => true,
 			'transient' => 1,
@@ -43,7 +30,6 @@ return [
 	],
 	'shouldSetTransient' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'ocd' => true,
 			'transient' => false,

@@ -39,9 +39,6 @@ class Test_AddExpiredBubble extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $title, $expected ) {
-		$this->user->shouldReceive( 'is_auto_renew' )
-			->andReturn( $config['auto_renew'] );
-
 		$this->user->shouldReceive( 'is_license_expired' )
 			->andReturn( $config['expired'] );
 

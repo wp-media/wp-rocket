@@ -3,7 +3,6 @@
 return [
 	'shouldReturnSameWhenNotOCD' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => false,
 			'white_label' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
@@ -16,28 +15,10 @@ return [
 		'expected' => [
 			'id' => 'minify_css',
 			'label' => 'Minify CSS',
-		],
-	],
-	'shouldReturnSameWhenAutoRenew' => [
-		'config' => [
-			'auto_renew' => true,
-			'expired' => false,
-			'white_label' => false,
-			'expire_date' => strtotime( 'now + 7 days' ),
-			'renewal_url' => '',
-		],
-		'args' => [
-			'id' => 'optimize_css_delivery',
-			'label' => 'Optimize CSS Delivery',
-		],
-		'expected' => [
-			'id' => 'optimize_css_delivery',
-			'label' => 'Optimize CSS Delivery',
 		],
 	],
 	'shouldReturnSameWhenLicenseNotExpired' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => false,
 			'white_label' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
@@ -54,7 +35,6 @@ return [
 	],
 	'shouldReturnSameWhenWLAndExpiredRecently' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'white_label' => true,
 			'expire_date' => strtotime( 'now + 7 days' ),
@@ -71,7 +51,6 @@ return [
 	],
 	'shouldReturnWarningWhenExpiredRecently' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'white_label' => false,
 			'expire_date' => strtotime( 'now - 7 days' ),
@@ -88,7 +67,6 @@ return [
 	],
 	'shouldReturnWarningWhenExpiredLonger' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'white_label' => false,
 			'expire_date' => strtotime( 'now - 20 days' ),
@@ -105,7 +83,6 @@ return [
 	],
 	'shouldReturnWarningWhenWLAndExpiredLonger' => [
 		'config' => [
-			'auto_renew' => false,
 			'expired' => true,
 			'white_label' => true,
 			'expire_date' => strtotime( 'now - 20 days' ),

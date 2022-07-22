@@ -5,7 +5,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now + 7 days' ),
 				'renewal_url' => '',
 			] ) ),
@@ -19,33 +18,12 @@ return [
 			'id' => 'minify_css',
 			'label' => 'Minify CSS',
 			'value' => 0,
-		],
-	],
-	'shouldReturnSameWhenAutoRenew' => [
-		'config' => [
-			'white_label' => false,
-			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => true,
-				'licence_expiration' => strtotime( 'now + 7 days' ),
-				'renewal_url' => '',
-			] ) ),
-		],
-		'args' => [
-			'id' => 'optimize_css_delivery',
-			'label' => 'Optimize CSS Delivery',
-			'value' => 1,
-		],
-		'expected' => [
-			'id' => 'optimize_css_delivery',
-			'label' => 'Optimize CSS Delivery',
-			'value' => 1,
 		],
 	],
 	'shouldReturnSameWhenLicenseNotExpired' => [
 		'config' => [
 			'white_label' => false,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now + 7 days' ),
 				'renewal_url' => '',
 			] ) ),
@@ -65,7 +43,6 @@ return [
 		'config' => [
 			'white_label' => true,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
 			] ) ),
@@ -85,7 +62,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
 			] ) ),
@@ -105,7 +81,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 				'renewal_url' => '',
 			] ) ),
@@ -125,7 +100,6 @@ return [
 		'config' => [
 			'white_label' => true,
 			'transient' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 				'renewal_url' => '',
 			] ) ),

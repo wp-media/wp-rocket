@@ -43,9 +43,6 @@ class Test_AddLicenseExpireWarning extends TestCase {
 	public function testShouldReturnExpected( $config, $args, $expected ) {
 		$this->white_label = $config['white_label'];
 
-		$this->user->shouldReceive( 'is_auto_renew' )
-			->andReturn( $config['auto_renew'] );
-
 		$this->user->shouldReceive( 'is_license_expired' )
 			->andReturn( $config['expired'] );
 

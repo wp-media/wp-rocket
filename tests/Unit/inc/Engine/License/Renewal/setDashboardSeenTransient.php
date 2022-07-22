@@ -39,9 +39,6 @@ class Test_SetDashboardSeenTransient extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'is_auto_renew' )
-			->andReturn( $config['auto_renew'] );
-
 		$this->user->shouldReceive( 'is_license_expired' )
 			->andReturn( $config['expired'] );
 

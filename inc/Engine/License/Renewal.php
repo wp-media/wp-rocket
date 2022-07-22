@@ -370,10 +370,6 @@ class Renewal extends Abstract_Render {
 			return $args;
 		}
 
-		if ( $this->user->is_auto_renew() ) {
-			return $args;
-		}
-
 		if ( ! $this->user->is_license_expired() ) {
 			return $args;
 		}
@@ -442,10 +438,6 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
-		if ( $this->user->is_auto_renew() ) {
-			return $menu_title;
-		}
-
 		if ( ! $this->user->is_license_expired() ) {
 			return $menu_title;
 		}
@@ -467,10 +459,6 @@ class Renewal extends Abstract_Render {
 	 * @return void
 	 */
 	public function set_dashboard_seen_transient() {
-		if ( $this->user->is_auto_renew() ) {
-			return;
-		}
-
 		if ( ! $this->user->is_license_expired() ) {
 			return;
 		}
@@ -503,10 +491,6 @@ class Renewal extends Abstract_Render {
 	 */
 	public function maybe_disable_ocd( $args ) {
 		if ( 'optimize_css_delivery' !== $args['id'] ) {
-			return $args;
-		}
-
-		if ( $this->user->is_auto_renew() ) {
 			return $args;
 		}
 

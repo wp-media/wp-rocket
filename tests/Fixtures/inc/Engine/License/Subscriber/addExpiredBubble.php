@@ -5,20 +5,6 @@ return [
 		'config' => [
 			'white_label' => true,
 			'user' => json_decode( json_encode( [
-				'has_auto_renew' => true,
-				'licence_expiration' => strtotime( 'now + 20 days' ),
-			] ) ),
-			'ocd' => 1,
-			'transient' => false,
-		],
-		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket'
-	],
-	'shouldReturnSameWhenAutoRenew' => [
-		'config' => [
-			'white_label' => false,
-			'user' => json_decode( json_encode( [
-				'has_auto_renew' => true,
 				'licence_expiration' => strtotime( 'now + 20 days' ),
 			] ) ),
 			'ocd' => 1,
@@ -31,7 +17,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'user' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now + 20 days' ),
 			] ) ),
 			'ocd' => 1,
@@ -44,7 +29,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'user' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 			] ) ),
 			'ocd' => 0,
@@ -57,7 +41,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'user' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 			] ) ),
 			'ocd' => 1,
@@ -70,7 +53,6 @@ return [
 		'config' => [
 			'white_label' => false,
 			'user' => json_decode( json_encode( [
-				'has_auto_renew' => false,
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 			] ) ),
 			'ocd' => 1,

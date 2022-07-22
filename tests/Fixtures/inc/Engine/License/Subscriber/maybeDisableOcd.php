@@ -3,25 +3,6 @@
 return [
 	'shouldReturnSameWhenNotOCD' => [
 		'config' => json_decode( json_encode( [
-			'has_auto_renew' => false,
-			'licence_expiration' => strtotime( 'now + 7 days' ),
-		] ) ),
-		'args' => [
-			'id' => 'optimize_css_delivery',
-			'value' => 1,
-			'container_class' => [],
-			'input_attr' => [],
-		],
-		'expected' => [
-			'id' => 'optimize_css_delivery',
-			'value' => 1,
-			'container_class' => [],
-			'input_attr' => [],
-		],
-	],
-	'shouldReturnSameWhenAutoRenew' => [
-		'config' => json_decode( json_encode( [
-			'has_auto_renew' => true,
 			'licence_expiration' => strtotime( 'now + 7 days' ),
 		] ) ),
 		'args' => [
@@ -39,7 +20,6 @@ return [
 	],
 	'shouldReturnSameWhenLicenseNotExpired' => [
 		'config' => json_decode( json_encode( [
-			'has_auto_renew' => false,
 			'licence_expiration' => strtotime( 'now + 7 days' ),
 		] ) ),
 		'args' => [
@@ -57,7 +37,6 @@ return [
 	],
 	'shouldReturnSameWhenExpiredRecently' => [
 		'config' => json_decode( json_encode( [
-			'has_auto_renew' => false,
 			'licence_expiration' => strtotime( 'now - 7 days' ),
 		] ) ),
 		'args' => [
@@ -75,7 +54,6 @@ return [
 	],
 	'shouldReturnDisabledWhenExpiredLonger' => [
 		'config' => json_decode( json_encode( [
-			'has_auto_renew' => false,
 			'licence_expiration' => strtotime( 'now - 20 days' ),
 		] ) ),
 		'args' => [
