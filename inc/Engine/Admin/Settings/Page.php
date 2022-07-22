@@ -1120,7 +1120,7 @@ class Page {
 					'title'       => __( 'Preload Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
+					'description' => __( 'When you enable preloading WP Rocket will automatically detect your sitemaps and save all URLs to the database. The plugin will make sure that your cache is always preloaded.', 'rocket' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'sitemap_preload' ),
 						'url' => $bot_beacon['url'],
