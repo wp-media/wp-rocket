@@ -62,23 +62,54 @@ class PreloadUrl {
 			$this->query->make_status_complete( $url );
 			return;
 		}
-		wp_safe_remote_get(
-			user_trailingslashit( $url ),
+
+		$requests = [
 			[
-				'blocking' => false,
-				'timeout'  => 0.01,
-			]
-			);
+				'url'       => $url,
+				'is_mobile' => false,
+			],
+
+		];
+
 		if ( $this->options->get( 'cache_mobile', false ) ) {
-			wp_safe_remote_get(
-				user_trailingslashit( $url ),
-				[
-					'blocking'   => false,
-					'timeout'    => 0.01,
+			$requests[] = [
+				'url'       => $url,
+				'headers'   => [
 					'user-agent' => $this->get_mobile_user_agent_prefix(),
-				]
-				);
+				],
+				'is_mobile' => true,
+			];
 		}
+
+		/**
+		 * Filters to modify requests done to preload an url.
+		 *
+		 * @param array $requests Requests that will be done.
+		 */
+		$requests = apply_filters( 'rocket_preload_before_preload_url', $requests );
+
+		$requests = array_filter( $requests );
+
+		foreach ( $requests as $request ) {
+			if ( key_exists( 'url', $request ) && is_string( $request['url'] ) ) {
+
+				$headers = key_exists( 'headers', $request ) && is_array( $request['headers'] ) ? $request['headers'] : [];
+
+				$headers = array_merge(
+					$headers,
+					[
+						'blocking' => false,
+						'timeout'  => 0.01,
+					]
+					);
+
+				wp_safe_remote_get(
+					user_trailingslashit( $request['url'] ),
+					$headers
+				);
+			}
+		}
+
 	}
 
 	/**

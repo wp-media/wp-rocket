@@ -9,9 +9,9 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
