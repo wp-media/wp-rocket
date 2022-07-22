@@ -42,13 +42,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $queue;
 
 	/**
-	 * Preload queue runner.
-	 *
-	 * @var PreloadQueueRunner
-	 */
-	protected $queue_runner;
-
-	/**
 	 * Logger instance.
 	 *
 	 * @var Logger
@@ -58,20 +51,18 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data       $options Options instance.
-	 * @param Settings           $settings Settings instance.
-	 * @param ClearCache         $clear_cache Clear cache controller.
-	 * @param Queue              $queue preload queue.
-	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
-	 * @param Logger             $logger logger instance.
+	 * @param Options_Data $options Options instance.
+	 * @param Settings     $settings Settings instance.
+	 * @param ClearCache   $clear_cache Clear cache controller.
+	 * @param Queue        $queue preload queue.
+	 * @param Logger       $logger logger instance.
 	 */
-	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, PreloadQueueRunner $preload_queue_runner, Logger $logger ) {
-		$this->options      = $options;
-		$this->settings     = $settings;
-		$this->controller   = $clear_cache;
-		$this->queue        = $queue;
-		$this->queue_runner = $preload_queue_runner;
-		$this->logger       = $logger;
+	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, Logger $logger ) {
+		$this->options    = $options;
+		$this->settings   = $settings;
+		$this->controller = $clear_cache;
+		$this->queue      = $queue;
+		$this->logger     = $logger;
 	}
 
 	/**
@@ -92,7 +83,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_trash_post'             => 'delete_post_preload_cache',
 			'delete_post'               => 'delete_post_preload_cache',
 			'pre_delete_term'           => 'delete_term_preload_cache',
-			'init'                      => [ 'maybe_init_preload_queue' ],
 		];
 	}
 
@@ -141,20 +131,6 @@ class Subscriber implements Subscriber_Interface {
 	public function clean_urls( array $urls ) {
 
 		$this->controller->partial_clean( $urls );
-	}
-
-	/**
-	 * Set the preload queue runner.
-	 *
-	 * @return void
-	 */
-	public function maybe_init_preload_queue() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		$this->queue_runner->init();
-
 	}
 
 	/**

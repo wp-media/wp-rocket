@@ -1,41 +1,40 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Admin\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
-use WP_Rocket\Engine\Preload\Admin\Subscriber;
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
+use WP_Rocket\Engine\Preload\Cron\Subscriber;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::maybe_init_preload_queue
+ * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::maybe_init_preload_queue
  * @group  Preload
  */
 class Test_MaybeInitPreloadQueue extends TestCase
 {
-	protected $settings;
 	protected $subscriber;
-	protected $queue;
-	protected $queueRunner;
-	protected $logger;
-	protected $option;
+	protected $query;
+	protected $settings;
 	protected $controller;
+	protected $queue_runner;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
+		$this->query = $this->createMock(Cache::class);
 		$this->settings = Mockery::mock(Settings::class);
-		$this->queue = Mockery::mock(Queue::class);
-		$this->queueRunner = Mockery::mock(PreloadQueueRunner::class);
-		$this->logger = Mockery::mock(Logger::class);
-		$this->option = Mockery::mock(Options_Data::class);
-		$this->controller = Mockery::mock(ClearCache::class);
-		$this->subscriber = new Subscriber($this->option, $this->settings, $this->controller, $this->queue, $this->queueRunner, $this->logger);
+		$this->controller = Mockery::mock(PreloadUrl::class);
+		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
+
+		$this->subscriber = new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
 	}
 
 	/**
@@ -51,6 +50,6 @@ class Test_MaybeInitPreloadQueue extends TestCase
 		if(! $config['is_enable']) {
 			return;
 		}
-		$this->queueRunner->expects()->init();
+		$this->queue_runner->expects()->init();
 	}
 }

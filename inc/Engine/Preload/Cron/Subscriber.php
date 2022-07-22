@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Cron;
 
+use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -31,16 +33,25 @@ class Subscriber implements Subscriber_Interface {
 	protected $preload_controller;
 
 	/**
+	 * Preload queue runner.
+	 *
+	 * @var PreloadQueueRunner
+	 */
+	protected $queue_runner;
+
+	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Settings   $settings Preload settings.
-	 * @param Cache      $query Db query.
-	 * @param PreloadUrl $preload_controller Preload url controller.
+	 * @param Settings           $settings Preload settings.
+	 * @param Cache              $query Db query.
+	 * @param PreloadUrl         $preload_controller Preload url controller.
+	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
 	 */
-	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller ) {
+	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, PreloadQueueRunner $preload_queue_runner ) {
 		$this->settings           = $settings;
 		$this->query              = $query;
 		$this->preload_controller = $preload_controller;
+		$this->queue_runner       = $preload_queue_runner;
 	}
 
 	/**
@@ -61,6 +72,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'schedule_revert_old_in_progress_rows' ],
+				[ 'maybe_init_preload_queue' ],
 			],
 		];
 	}
@@ -220,5 +232,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function revert_old_in_progress_rows() {
 		$this->query->revert_old_in_progress();
+	}
+
+	/**
+	 * Set the preload queue runner.
+	 *
+	 * @return void
+	 */
+	public function maybe_init_preload_queue() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$this->queue_runner->init();
+
 	}
 }
