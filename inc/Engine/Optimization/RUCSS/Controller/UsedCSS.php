@@ -95,6 +95,7 @@ class UsedCSS {
 		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
+		'.jnews_', // For JNews theme.
 	];
 
 	/**
