@@ -2330,7 +2330,7 @@ msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: "
 "you’ll only pay %1$s%4$s%2$s!"
 msgstr ""
-"Lisansınızı 1 yıllığına yenileyin ve hemen %1$s%3$s indirim%2$s alın: sadece"
+"Lisansınızı 1 yıllığına yenileyin ve hemen %1$s%3$s İNDİRİM%2$s alın: sadece"
 " %1$s%4$s%2$s ödeyeceksiniz!"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:40
