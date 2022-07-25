@@ -94,7 +94,7 @@ return [
 		],
 		'expected' => [
 			'id' => 'optimize_css_delivery',
-			'label' => 'Optimize CSS Delivery <span class="wpr-icon-important wpr-checkbox-warning">You need an active license to enable this option. <a href="" target="_blank">More info</a>.</span>',
+			'label' => 'Optimize CSS Delivery <span class="wpr-icon-important wpr-checkbox-warning">You need an active license to enable this option. <a href="https://docs.wp-rocket.me/article/1711-what-happens-if-my-license-expires?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">More info</a>.</span>',
 		],
 	],
 ];
