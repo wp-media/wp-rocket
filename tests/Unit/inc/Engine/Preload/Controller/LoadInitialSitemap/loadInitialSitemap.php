@@ -33,6 +33,7 @@ class Test_LoadInitialSitemap extends TestCase {
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 		Filters\expectApplied('rocket_sitemap_preload_list')->with($config['sitemaps'])->andReturn($config['filter_sitemaps']);
+		$this->queue->expects()->add_job_preload_job_preload_url_async($config['home_url']);
 		foreach ($config['filter_sitemaps'] as $sitemap) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
 		}
@@ -44,7 +45,6 @@ class Test_LoadInitialSitemap extends TestCase {
 		}
 
 		Functions\when('home_url')->justReturn($config['home_url']);
-		$this->queue->expects()->add_job_preload_job_preload_url_async($config['home_url']);
 		$this->configureWordPressSitemap($config);
 		$this->controller->load_initial_sitemap();
 	}

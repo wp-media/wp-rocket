@@ -65,8 +65,9 @@ class PreloadUrl {
 		wp_safe_remote_get(
 			user_trailingslashit( $url ),
 			[
-				'blocking' => false,
-				'timeout'  => 0.01,
+				'blocking'   => false,
+				'timeout'    => 0.01,
+				'user-agent' => 'WP Rocket/Preload',
 			]
 			);
 		if ( $this->options->get( 'cache_mobile', false ) ) {
