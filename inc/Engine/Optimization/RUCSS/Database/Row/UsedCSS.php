@@ -20,7 +20,7 @@ class UsedCSS extends Row {
 		$this->id             = (int) $this->id;
 		$this->url            = (string) $this->url;
 		$this->css            = (string) $this->css;
-		$this->unprocessedcss = json_decode( $this->unprocessedcss, true );
+		$this->unprocessedcss = json_decode( null === $this->unprocessedcss ? '' : $this->unprocessedcss, true );
 		$this->retries        = (int) $this->retries;
 		$this->is_mobile      = (bool) $this->is_mobile;
 		$this->modified       = false === $this->modified ? 0 : strtotime( $this->modified );
