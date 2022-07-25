@@ -414,7 +414,7 @@ class Renewal extends Abstract_Render {
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
 				__( 'You need an active license to enable this option. %1$sMore info%2$s.', 'rocket' ),
-				'<a href="" target="_blank">',
+				'<a href="https://docs.wp-rocket.me/article/1711-what-happens-if-my-license-expires?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
 				'</a>'
 			);
 		}
