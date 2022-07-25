@@ -10,50 +10,46 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::add_localize_script_data
+ * @covers \WP_Rocket\Engine\License\Renewal::maybe_disable_ocd
  *
  * @group License
  */
-class AddLocalizeScriptData extends TestCase {
+class Test_MaybeDisableOcd extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;
+	private $options;
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 
 		$this->pricing = Mockery::mock( Pricing::class );
 		$this->user    = Mockery::mock( User::class );
-		$this->renewal =  new Renewal(
-			$this->pricing,
-			$this->user,
-			Mockery::mock( Options_Data::class ),
-			'views'
+		$this->options =Mockery::mock( Options_Data::class );
+		$this->renewal = new Renewal(
+				$this->pricing,
+				$this->user,
+				$this->options,
+				'views'
 		);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $config, $data, $expected ) {
-		$this->user->shouldReceive( 'is_auto_renew' )
-			->atMost()
-			->once()
-			->andReturn( $config['auto_renew'] );
-
+	public function testShouldReturnExpected( $config, $args, $expected ) {
 		$this->user->shouldReceive( 'is_license_expired' )
-			->atMost()
-			->once()
-			->andReturn( $config['license_expired'] );
+			->andReturn( $config['expired'] );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
-			->atMost()
-			->twice()
-			->andReturn( $config['licence_expiration'] );
+			->andReturn( $config['expire_date'] );
 
 		$this->assertSame(
 			$expected,
-			$this->renewal->add_localize_script_data( $data )
+			$this->renewal->maybe_disable_ocd( $args )
 		);
 	}
 }

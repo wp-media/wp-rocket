@@ -15,6 +15,33 @@
     padding: $space;
 }
 
+.rocket-renewal-expired-banner {
+    background: $brightSun;
+    margin-top: 2 * $space;
+    padding: 3 * $space;
+    position: relative;
+}
+
+.rocket-renewal-expired-banner-container {
+	display: flex;
+    justify-content: space-around;
+
+	@include respond-to('xs') {
+        flex-flow: column;
+    }
+
+    & > div {
+        display: flex;
+        flex-flow: column;
+
+        @include respond-to('xs') {
+            width: 100%;
+        }
+
+        width: 50%;
+    }
+}
+
 .rocket-renew-message {
     margin: 0 2 * $space;
 
