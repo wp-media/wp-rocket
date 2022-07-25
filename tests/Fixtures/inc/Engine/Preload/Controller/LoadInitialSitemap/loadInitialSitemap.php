@@ -6,6 +6,7 @@ return [
 			'filter_sitemaps' => [
 				'url'
 			],
+			'home_url' => 'home_url',
 			'wp_sitemap' => 'sitemap',
 		],
 		'expected' => [
@@ -16,6 +17,7 @@ return [
 		'config' => [
 			'sitemaps' => [],
 			'filter_sitemaps' => [],
+			'home_url' => 'home_url',
 			'wp_sitemap' => 'url',
 		],
 		'expected' => [
@@ -26,6 +28,7 @@ return [
 		'config' => [
 			'sitemaps' => [],
 			'filter_sitemaps' => [],
+			'home_url' => 'home_url',
 			'wp_sitemap' => false,
 		],
 		'expected' => [

@@ -63,6 +63,7 @@ class LoadInitialSitemap {
 		 * @param array Array of custom preload URL
 		 */
 		$urls = apply_filters( 'rocket_preload_load_custom_urls', [] );
+		$urls []= home_url();
 		$urls = array_filter( $urls );
 
 		foreach ( $urls as $url ) {

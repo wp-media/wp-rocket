@@ -42,6 +42,9 @@ class Test_LoadInitialSitemap extends TestCase {
 		if(key_exists('transient', $expected)) {
 			Functions\expect('set_transient')->with('wpr_preload_running', true);
 		}
+
+		Functions\when('home_url')->justReturn($config['home_url']);
+		$this->queue->expects()->add_job_preload_job_preload_url_async($config['home_url']);
 		$this->configureWordPressSitemap($config);
 		$this->controller->load_initial_sitemap();
 	}
