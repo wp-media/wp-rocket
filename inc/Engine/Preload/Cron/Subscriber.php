@@ -88,7 +88,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'weekly', 'rocket_preload_clean_rows_time_event' );
+		wp_schedule_event( time() + 10 * MINUTE_IN_SECONDS, 'weekly', 'rocket_preload_clean_rows_time_event' );
 	}
 
 	/**
@@ -185,7 +185,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_preload_process_pending', 'rocket_preload_process_pending' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_preload_process_pending', 'rocket_preload_process_pending' );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
 	}
 
 	/**

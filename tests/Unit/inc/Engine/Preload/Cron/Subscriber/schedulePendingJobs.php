@@ -83,10 +83,10 @@ class Test_SchedulePendingJobs extends TestCase
 			return;
 		}
 
-		$old_time = time();
+		$old_time = time() + MINUTE_IN_SECONDS;
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
-			return $date >= $old_time  && $date <= time();
+			return $date >= $old_time  && $date <= time() + MINUTE_IN_SECONDS;
 		}), 'rocket_preload_process_pending', 'rocket_preload_process_pending');
 	}
 }

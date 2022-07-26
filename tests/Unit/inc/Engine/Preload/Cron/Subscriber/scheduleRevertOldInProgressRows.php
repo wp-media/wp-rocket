@@ -83,10 +83,10 @@ class Test_ScheduleRevertOldInProgressRows extends TestCase
 			return;
 		}
 
-		$old_time = time();
+		$old_time = time() + MINUTE_IN_SECONDS;
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
-			return $date >= $old_time  && $date <= time();
+			return $date >= $old_time  && $date <= time() + MINUTE_IN_SECONDS;
 		}), 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows');
 	}
 }

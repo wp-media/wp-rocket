@@ -67,7 +67,12 @@ class PreloadUrl {
 			[
 				'url'       => $url,
 				'is_mobile' => false,
-			],
+        'headers' => [
+        	'blocking'   => false,
+				  'timeout'    => 0.01,
+				  'user-agent' => 'WP Rocket/Preload',
+        ]
+ 			],
 
 		];
 

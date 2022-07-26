@@ -116,10 +116,15 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share(
 			'preload_queue_runner',
 			static function() {
+
+				$group = 'rocket-preload';
+
+				$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $group );
+
 				return new PreloadQueueRunner(
 					null,
 					null,
-					new Cleaner( null, 20, 'rocket-preload' ),
+					new Cleaner( null, $batch_size, $group ),
 					null,
 					new ActionScheduler_Compatibility(),
 					new Logger(),
