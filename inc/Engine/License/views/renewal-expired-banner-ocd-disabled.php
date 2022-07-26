@@ -1,21 +1,23 @@
 <?php
 /**
- * Renewal expired banner.
+ * Renewal expired banner with OCD disabled.
  *
- * @since 3.7.5
+ * @since 3.11.5
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
-	<h3 class="rocket-expired-title"><?php esc_html_e( 'Your WP Rocket license is expired!', 'rocket' ); ?></h3>
+	<h3 class="rocket-expired-title"><?php esc_html_e( 'The Optimize CSS Delivery feature is disabled.', 'rocket' ); ?></h3>
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
-			<?php
+			<?php esc_html_e( 'You can no longer use the Remove Unused CSS or Load CSS asynchronously options.', 'rocket' ); ?>
+				<br>
+				<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( '%1$sYour website could be much faster%2$s if it could take advantage of our new features and enhancements. 🚀', 'rocket' ),
+					esc_html__( 'You need an %1$sactive license%2$s to keep optimizing your CSS delivery, which addresses a PageSpeed Insights recommendation and improves your page performance.', 'rocket' ),
 					'<strong>',
 					'</strong>'
 				);
@@ -24,10 +26,12 @@ defined( 'ABSPATH' ) || exit;
 			<p>
 			<?php
 				printf(
-					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( 'Renew your license to have access to the %1$slatest version of WP Rocket%2$s and to the wonderful %1$sassistance of our Support Team%2$s.', 'rocket' ),
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
+					esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you’ll only pay %1$s%4$s%2$s!', 'rocket' ),
 					'<strong>',
-					'</strong>'
+					'</strong>',
+					'20%',
+					esc_html( $data['renewal_price'] )
 				);
 				?>
 			</p>
