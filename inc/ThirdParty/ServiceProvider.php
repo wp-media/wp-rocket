@@ -232,6 +232,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'cloudflare', Cloudflare::class )
+			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 	}
 }
