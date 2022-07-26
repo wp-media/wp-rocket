@@ -62,7 +62,7 @@ class Cloudflare implements Subscriber_Interface {
 			[
 				'status'         => 'warning',
 				'dismissible'    => '',
-				'message'        => __( 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS functionality', 'rocket' ),
+				'message'        => __( 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features', 'rocket' ),
 				'id'             => 'cloudflare_server_push_notice',
 				'dismiss_button' => $notice_name,
 			]
