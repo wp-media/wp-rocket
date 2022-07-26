@@ -2,6 +2,7 @@
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Compatibility class for cloudflare.
@@ -9,6 +10,22 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.11.6
  */
 class Cloudflare implements Subscriber_Interface {
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Call class instance.
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -39,6 +56,26 @@ class Cloudflare implements Subscriber_Interface {
 	}
 
 	/**
+	 * Should display pushing mode if RUCSS or Combine CSS is active.
+	 *
+	 * @return boolean
+	 */
+	private function maybe_combined_or_rucss_enabled() {
+
+		// If RUCSS is enabled.
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return true;
+		}
+
+		// If Combine CSS is enabled.
+		if ( (bool) $this->options->get( 'minify_css', 0 ) && (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Display notice for server pushing mode.
 	 *
 	 * @since  3.11.6
@@ -47,7 +84,7 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public function display_server_pushing_mode_notice() {
 
-		if ( ! defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) ) {
+		if ( ! defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) && ! $this->maybe_combined_or_rucss_enabled() ) {
 			return;
 		}
 
