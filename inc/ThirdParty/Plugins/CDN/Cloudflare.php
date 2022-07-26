@@ -56,19 +56,24 @@ class Cloudflare implements Subscriber_Interface {
 	}
 
 	/**
-	 * Should display pushing mode if RUCSS or Combine CSS is active.
+	 * Should display pushing mode if RUCSS or Combine CSS is enabled.
 	 *
 	 * @return boolean
 	 */
-	private function maybe_combined_or_rucss_enabled() {
+	private function should_display_pushing_mode_notice() {
 
 		// If RUCSS is enabled.
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) &&
+			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) &&
+			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE ) {
 			return true;
 		}
 
 		// If Combine CSS is enabled.
-		if ( (bool) $this->options->get( 'minify_css', 0 ) && (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+		if ( (bool) $this->options->get( 'minify_css', 0 ) &&
+			(bool) $this->options->get( 'minify_concatenate_css', 0 ) &&
+			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) &&
+			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE ) {
 			return true;
 		}
 
@@ -84,7 +89,7 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public function display_server_pushing_mode_notice() {
 
-		if ( ! defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) && ! $this->maybe_combined_or_rucss_enabled() ) {
+		if ( ! should_display_pushing_mode_notice() ) {
 			return;
 		}
 
