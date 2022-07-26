@@ -51,7 +51,7 @@ class Cloudflare implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	protected function is_cloudflare_active() {
+	protected static function is_cloudflare_active() {
 		return rocket_is_cloudflare() || defined( 'CLOUDFLARE_PLUGIN_DIR' );
 	}
 
