@@ -63,6 +63,7 @@ class Cloudflare implements Subscriber_Interface {
 	private function should_display_pushing_mode_notice() {
 		$screen = get_current_screen();
 
+		// If current screen is wprocket settings.
 		if (
 			isset( $screen->id )
 			&&
@@ -71,6 +72,7 @@ class Cloudflare implements Subscriber_Interface {
 			return false;
 		}
 
+		// if current user has require cap.
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return false;
 		}
