@@ -61,19 +61,39 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function should_display_pushing_mode_notice() {
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return false;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return false;
+		}
 
 		// If RUCSS is enabled.
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) &&
-			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) &&
-			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE ) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 )
+			&&
+			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
+			&&
+			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE
+		) {
 			return true;
 		}
 
 		// If Combine CSS is enabled.
-		if ( (bool) $this->options->get( 'minify_css', 0 ) &&
-			(bool) $this->options->get( 'minify_concatenate_css', 0 ) &&
-			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) &&
-			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE ) {
+		if ( (bool) $this->options->get( 'minify_css', 0 )
+			&&
+			(bool) $this->options->get( 'minify_concatenate_css', 0 )
+			&&
+			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
+			&&
+			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE
+		) {
 			return true;
 		}
 
