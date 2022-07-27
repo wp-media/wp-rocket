@@ -80,9 +80,7 @@ class Cloudflare implements Subscriber_Interface {
 		// If RUCSS is enabled.
 		if ( (bool) $this->options->get( 'remove_unused_css', 0 )
 			&&
-			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
-			&&
-			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE
+			rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
 		) {
 			return true;
 		}
@@ -90,9 +88,7 @@ class Cloudflare implements Subscriber_Interface {
 		// If Combine CSS is enabled.
 		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 )
 			&&
-			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
-			&&
-			CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE
+			rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
 		) {
 			return true;
 		}
