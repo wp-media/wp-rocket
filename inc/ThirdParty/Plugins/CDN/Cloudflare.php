@@ -88,9 +88,7 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		// If Combine CSS is enabled.
-		if ( (bool) $this->options->get( 'minify_css', 0 )
-			&&
-			(bool) $this->options->get( 'minify_concatenate_css', 0 )
+		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 )
 			&&
 			defined( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
 			&&
