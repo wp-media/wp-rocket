@@ -89,7 +89,7 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public function display_server_pushing_mode_notice() {
 
-		if ( ! should_display_pushing_mode_notice() ) {
+		if ( ! $this->should_display_pushing_mode_notice() ) {
 			return;
 		}
 
