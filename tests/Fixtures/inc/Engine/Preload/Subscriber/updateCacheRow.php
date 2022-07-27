@@ -5,7 +5,7 @@ return [
 			'links' => [
 				[
 					'url' => 'http://example.org',
-					'status' => 'pending',
+					'status' => 'in-progress',
 				],
 			],
 			'is_preloaded' => true,
@@ -25,7 +25,7 @@ return [
 			'links' => [
 				[
 					'url' => 'http://example.org',
-					'status' => 'pending',
+					'status' => 'in-progress',
 				],
 			],
 			'is_preloaded' => false,

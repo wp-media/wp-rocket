@@ -10,6 +10,7 @@ return [
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
+				'user-agent' => 'WP Rocket/Preload',
 			],
 			'config_mobile' => [
 				'blocking' => false,
@@ -56,6 +57,7 @@ return [
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
+				'user-agent' => 'WP Rocket/Preload',
 			],
 			'config_mobile' => [
 				'blocking' => false,

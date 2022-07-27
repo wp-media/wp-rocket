@@ -58,7 +58,10 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		if ( $this->is_already_cached( $url ) ) {
+
+		$is_mobile = $this->options->get( 'cache_mobile', false );
+
+		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
@@ -67,16 +70,16 @@ class PreloadUrl {
 			[
 				'url'       => $url,
 				'is_mobile' => false,
-        'headers' => [
-        	'blocking'   => false,
-				  'timeout'    => 0.01,
-				  'user-agent' => 'WP Rocket/Preload',
-        ]
- 			],
+				'headers'   => [
+					'blocking'   => false,
+					'timeout'    => 0.01,
+					'user-agent' => 'WP Rocket/Preload',
+				],
+			],
 
 		];
 
-		if ( $this->options->get( 'cache_mobile', false ) ) {
+		if ( $is_mobile ) {
 			$requests[] = [
 				'url'       => $url,
 				'headers'   => [
@@ -157,9 +160,11 @@ class PreloadUrl {
 	 * Check if the cache file for $item already exists.
 	 *
 	 * @param  string $url The URL to preload.
+	 * @param  bool   $is_mobile is mobile text.
+	 *
 	 * @return bool
 	 */
-	public function is_already_cached( string $url ) {
+	public function is_already_cached( string $url, bool $is_mobile = false ) {
 		static $https;
 
 		if ( ! isset( $https ) ) {
@@ -179,7 +184,9 @@ class PreloadUrl {
 			$url['query'] = '#' . $url['query'] . '/';
 		}
 
-		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $https . '.html';
+		$mobile = $is_mobile ? '-mobile' : '';
+
+		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
 		return $this->filesystem->exists( $file_cache_path );
 	}

@@ -41,6 +41,7 @@ class Test_PreloadUrl extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
+		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
 		$this->configureRequest($config);
 		$this->configureMobileRequest($config);
@@ -51,7 +52,6 @@ class Test_PreloadUrl extends TestCase
 		if($config['cache_exists']) {
 			return;
 		}
-		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 
 		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request']['config']);
 	}

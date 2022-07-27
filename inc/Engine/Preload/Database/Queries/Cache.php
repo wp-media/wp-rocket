@@ -430,6 +430,23 @@ class Cache extends Query {
 		$pending_count = $this->query(
 			[
 				'count'  => true,
+				'status' => 'in-progress',
+				'url'    => untrailingslashit( $url ),
+			]
+		);
+		return 0 !== $pending_count;
+	}
+
+	/**
+	 * Check if the page is preloaded.
+	 *
+	 * @param string $url url from the page to check.
+	 * @return bool
+	 */
+	public function is_pending( string $url ): bool {
+		$pending_count = $this->query(
+			[
+				'count'  => true,
 				'status' => 'pending',
 				'url'    => untrailingslashit( $url ),
 			]

@@ -28,7 +28,7 @@ class Test_IsPreloaded extends TestCase
 		$this->query->expects(self::once())->method('query')->with([
 			'url' => $config['url'],
 			'count'  => true,
-			'status' => 'pending',
+			'status' => 'in-progress',
 			])->willReturn($config['result']);
 		$this->assertSame($expected, $this->query->is_preloaded($config['url']));
 	}

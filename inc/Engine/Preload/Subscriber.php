@@ -132,6 +132,10 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
+		if ( $this->query->is_pending( $url ) ) {
+			return;
+		}
+
 		$this->query->create_or_update(
 			[
 				'url'           => $url,
