@@ -91,7 +91,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'jevelin',
 		'wpml',
 		'xstore',
-		'cloudflare',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -233,6 +233,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'cloudflare', Cloudflare::class )
 			->addArgument( $options )
-			->addTag( 'common_subscriber' );
+			->addTag( 'cloudflare_plugin_subscriber' );
 	}
 }
