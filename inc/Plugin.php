@@ -330,7 +330,7 @@ class Plugin {
 			'inline_related_posts',
 			'wpml',
 			'xstore',
-			'cloudflare',
+			'cloudflare_plugin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

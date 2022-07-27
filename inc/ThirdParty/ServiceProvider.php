@@ -231,8 +231,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'wpml', WPML::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'cloudflare', Cloudflare::class )
+			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
 			->addArgument( $options )
-			->addTag( 'cloudflare_plugin_subscriber' );
+			->addTag( 'common_subscriber' );
 	}
 }
