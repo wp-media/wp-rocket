@@ -65,8 +65,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_process_pending'             => 'process_pending_urls',
 			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
 			'cron_schedules'                             => [
-				'add_interval',
-				'add_revert_old_in_progress_interval',
+				[ 'add_interval' ],
+				[ 'add_revert_old_in_progress_interval' ],
 			],
 			'init'                                       => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
@@ -194,7 +194,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_revert_old_in_progress_rows() {
-
 		if (
 			! $this->settings->is_enabled()
 			&&
