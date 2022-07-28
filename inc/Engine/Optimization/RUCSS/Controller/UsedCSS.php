@@ -919,7 +919,7 @@ class UsedCSS {
 			return;
 		}
 
-		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', false ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', false ) ), '/' ) );
+		$message = rocket_notice_writing_permissions( trim( str_replace( rocket_get_constant( 'ABSPATH', '' ), '', rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH', '' ) ), '/' ) );
 
 		rocket_notice_html(
 			[
