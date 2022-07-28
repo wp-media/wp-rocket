@@ -72,24 +72,18 @@ class Cloudflare implements Subscriber_Interface {
 			return false;
 		}
 
-		// if current user has require cap.
+		// if current user has required capapabilities.
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return false;
 		}
 
 		// If RUCSS is enabled.
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 )
-			&&
-			rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
-		) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return true;
 		}
 
 		// If Combine CSS is enabled.
-		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 )
-			&&
-			rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' )
-		) {
+		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
 			return true;
 		}
 
@@ -104,6 +98,10 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_server_pushing_mode_notice() {
+
+		if ( ! rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) ) {
+			return;
+		}
 
 		if ( ! $this->should_display_pushing_mode_notice() ) {
 			return;
