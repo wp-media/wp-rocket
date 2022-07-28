@@ -35,59 +35,9 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_cloudflare_active() ) {
-			return [];
-		}
-
 		return [
 			'admin_notices' => 'display_server_pushing_mode_notice',
 		];
-	}
-
-	/**
-	 * Check if cloudflare is active.
-	 *
-	 * @since  3.11.6
-	 *
-	 * @return boolean
-	 */
-	protected static function is_cloudflare_active() {
-		return rocket_is_cloudflare() || defined( 'CLOUDFLARE_PLUGIN_DIR' );
-	}
-
-	/**
-	 * Should display pushing mode if RUCSS or Combine CSS is enabled.
-	 *
-	 * @return boolean
-	 */
-	private function should_display_pushing_mode_notice() {
-		$screen = get_current_screen();
-
-		// If current screen is wprocket settings.
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return false;
-		}
-
-		// if current user has required capapabilities.
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return false;
-		}
-
-		// If RUCSS is enabled.
-		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
-			return true;
-		}
-
-		// If Combine CSS is enabled.
-		if ( (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -99,11 +49,32 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public function display_server_pushing_mode_notice() {
 
+		if ( ! rocket_is_cloudflare() && ! rocket_get_constant( 'CLOUDFLARE_PLUGIN_DIR' ) ) {
+			return;
+		}
+
 		if ( ! rocket_get_constant( 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) ) {
 			return;
 		}
 
-		if ( ! $this->should_display_pushing_mode_notice() ) {
+		$screen = get_current_screen();
+
+		// If current screen is wprocket settings.
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return;
+		}
+
+		// if current user has required capapabilities.
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		// If RUCSS is enabled.
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) && ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
 			return;
 		}
 

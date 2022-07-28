@@ -35,6 +35,7 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
         Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
         Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
         Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
+        Functions\when( 'rocket_is_cloudflare' )->justReturn( true );
         Functions\when( 'get_current_user_id' )->justReturn( 1 );
         Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
 

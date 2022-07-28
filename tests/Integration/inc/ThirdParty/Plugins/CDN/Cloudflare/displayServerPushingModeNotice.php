@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
+use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -41,6 +42,8 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 
+        Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
+
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;
         }else{
@@ -52,25 +55,20 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 
 		$this->rucss = $config['remove_unused_css'];
         $this->combine_css = $config['minify_concatenate_css'];
-        Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
+
+        add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
+        add_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
+
         update_user_meta( $user_id, 'rocket_boxes', $config['boxes'] );
 
 		ob_start();
 		do_action('admin_notices');
 		$result = ob_get_clean();
 
-        if ( true === $expected['return'] ) {
-            $this->assertStringContainsString(
-                $this->format_the_html( $expected['html'] ),
-                $this->format_the_html( $result )
-            );
-        }
-        else{
-            $this->assertStringNotContainsString(
-                $this->format_the_html( $expected['html'] ),
-                $this->format_the_html( $result )
-            );
-        }
+        $this->assertStringContainsString(
+            $this->format_the_html( $expected['html'] ),
+            $this->format_the_html( $result )
+        );
 	}
 
 	public function rucss() {

@@ -14,7 +14,7 @@ return [
         ],
         'expected' => [
             'return' => false,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => '',
         ],
     ],
     'shouldDisplayNothingWhenNoCapability' => [
@@ -30,7 +30,7 @@ return [
         ],
         'expected' => [
             'return' => false,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => '',
         ],
     ],
     'shouldDisplayNothingWhenDisabled' => [
@@ -46,7 +46,7 @@ return [
         ],
         'expected' => [
             'return' => false,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => '',
         ],
     ],
     'shouldDisplayNothingWithServerPushDisabled' => [
@@ -62,7 +62,7 @@ return [
         ],
         'expected' => [
             'return' => false,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => '',
         ],
     ],
     'shouldDisplayNothingWhenNoticeDismissed' => [
@@ -80,7 +80,7 @@ return [
         ],
         'expected' => [
             'return' => false,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => '',
         ],
     ],
     'shouldDisplayNotice' => [
