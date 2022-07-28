@@ -401,7 +401,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 day)" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
