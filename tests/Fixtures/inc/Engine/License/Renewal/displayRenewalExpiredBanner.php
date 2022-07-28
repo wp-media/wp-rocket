@@ -84,7 +84,8 @@ return [
 		'expected' => [
 			'template' => 'renewal-expired-banner',
 			'data' => [
-				'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'renewal_price' => '39.2',
 			],
 		],
 	],

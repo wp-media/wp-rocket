@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( '%1$sYour website could be much faster%2$s if it could take advantage of our new features and enhancements. 🚀', 'rocket' ),
+					esc_html__( 'You could make your website so much faster if you had access to our %1$snew features and enhancements%2$s. 🚀', 'rocket' ),
 					'<strong>',
 					'</strong>'
 				);
@@ -24,10 +24,12 @@ defined( 'ABSPATH' ) || exit;
 			<p>
 			<?php
 				printf(
-					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( 'Renew your license to have access to the %1$slatest version of WP Rocket%2$s and to the wonderful %1$sassistance of our Support Team%2$s.', 'rocket' ),
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
+					esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you’ll only pay %1$s%4$s%2$s!', 'rocket' ),
 					'<strong>',
-					'</strong>'
+					'</strong>',
+					'20%',
+					esc_html( $data['renewal_price'] )
 				);
 				?>
 			</p>

@@ -37,10 +37,10 @@ return [
 			<div class="rocket-expired-message">
 
 				<p>
-				<strong>Your website could be much faster</strong> if it could take advantage of our new features and enhancements. 🚀
+				You could make your website so much faster if you had access to our <strong>new features and enhancements</strong>. 🚀
 				</p>
 				<p>
-				Renew your license to have access to the <strong>latest version of WP Rocket</strong> and to the wonderful <strong>assistance of our Support Team</strong>.
+				Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you’ll only pay <strong>49.00</strong>!
 				</p>
 			</div>
 			<div class="rocket-expired-cta-container">
