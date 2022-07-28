@@ -59,8 +59,7 @@ class PreloadUrl {
 	 */
 	public function preload_url( string $url ) {
 
-		$is_mobile = $this->options->get( 'cache_mobile', false );
-
+		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
 		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
 			return;

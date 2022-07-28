@@ -33,13 +33,13 @@ class Test_PreloadUrl extends AdminTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		add_filter('pre_get_rocket_option_cache_mobile', [$this, 'mobile_cache']);
+		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 	}
 
 	public function tearDown(): void
 	{
 		parent::tearDown();
-		remove_filter('pre_get_rocket_option_cache_mobile', [$this, 'mobile_cache']);
+		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 	}
 
 	/**
