@@ -7,11 +7,15 @@ return [
                 'id' => 'dashboard',
             ],
             'capability'        => true,
-            'remove_unused_css' => 1,
-            'minify_concatenate_css' => 1,
+            'remove_unused_css' => true,
+            'minify_concatenate_css' => true,
             'server_push' => true,
+            'boxes' => []
         ],
-        'expected' => false,
+        'expected' => [
+            'return' => false,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
     ],
     'shouldDisplayNothingWhenNoCapability' => [
         'config' => [
@@ -19,11 +23,15 @@ return [
                 'id' => 'settings_page_wprocket',
             ],
             'capability'        => false,
-            'remove_unused_css' => 1,
-            'minify_concatenate_css' => 1,
+            'remove_unused_css' => true,
+            'minify_concatenate_css' => true,
             'server_push' => true,
+            'boxes' => []
         ],
-        'expected' => false,
+        'expected' => [
+            'return' => false,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
     ],
     'shouldDisplayNothingWhenDisabled' => [
         'config' => [
@@ -31,11 +39,15 @@ return [
                 'id' => 'settings_page_wprocket',
             ],
             'capability'        => true,
-            'remove_unused_css' => 0,
-            'minify_concatenate_css' => 0,
+            'remove_unused_css' => false,
+            'minify_concatenate_css' => false,
             'server_push' => false,
+            'boxes' => []
         ],
-        'expected' => false,
+        'expected' => [
+            'return' => false,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
     ],
     'shouldDisplayNothingWithServerPushDisabled' => [
         'config' => [
@@ -43,10 +55,48 @@ return [
                 'id' => 'settings_page_wprocket',
             ],
             'capability'        => true,
-            'remove_unused_css' => 1,
-            'minify_concatenate_css' => 1,
+            'remove_unused_css' => true,
+            'minify_concatenate_css' => true,
             'server_push' => false,
+            'boxes' => []
         ],
-        'expected' => false,
+        'expected' => [
+            'return' => false,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
+    ],
+    'shouldDisplayNothingWhenNoticeDismissed' => [
+        'config' => [
+            'current_screen'    => (object) [
+                'id' => 'settings_page_wprocket',
+            ],
+            'capability'        => true,
+            'remove_unused_css' => true,
+            'minify_concatenate_css' => true,
+            'server_push' => false,
+            'boxes' => [
+                'cloudflare_server_push',
+            ]
+        ],
+        'expected' => [
+            'return' => false,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
+    ],
+    'shouldDisplayNotice' => [
+        'config' => [
+            'current_screen'    => (object) [
+                'id' => 'settings_page_wprocket',
+            ],
+            'capability'        => true,
+            'remove_unused_css' => true,
+            'minify_concatenate_css' => true,
+            'server_push' => true,
+            'boxes' => []
+        ],
+        'expected' => [
+            'return' => true,
+            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+        ],
     ],
 ];
