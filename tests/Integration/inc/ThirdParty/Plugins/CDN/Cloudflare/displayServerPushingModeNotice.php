@@ -43,6 +43,7 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	public function testShouldDoAsExpected($config, $expected) {
 
         Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
+        Functions\expect( 'rocket_notice_writing_permissions' )->with( '' )->andReturn( '' );
 
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;
@@ -60,8 +61,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
         add_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
 
         update_user_meta( $user_id, 'rocket_boxes', $config['boxes'] );
-
-        Functions\expect( 'rocket_notice_writing_permissions' )->never();
 
 		ob_start();
 		do_action('admin_notices');
