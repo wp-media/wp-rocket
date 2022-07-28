@@ -61,6 +61,8 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 
         update_user_meta( $user_id, 'rocket_boxes', $config['boxes'] );
 
+        Functions\expect( 'rocket_notice_writing_permissions' )->never();
+
 		ob_start();
 		do_action('admin_notices');
 		$result = ob_get_clean();

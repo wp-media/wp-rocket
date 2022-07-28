@@ -31,13 +31,15 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
      * @dataProvider configTestData
      */
     public function testShouldReturnExpected( $config, $expected ) {
-        
-        Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
-        Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
-        Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
-        Functions\when( 'rocket_is_cloudflare' )->justReturn( true );
-        Functions\when( 'get_current_user_id' )->justReturn( 1 );
-        Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
+
+        Functions\stubs([
+            'get_current_screen'   => $config['current_screen'],
+            'current_user_can'    => $config['capability'],
+            'rocket_get_constant' => $config['server_push'],
+            'rocket_is_cloudflare' => true,
+            'get_current_user_id' => 1,
+            'get_user_meta' => $config['boxes'],
+        ]);
 
         $this->options->shouldReceive( 'get' )
             ->with( 'remove_unused_css', false )
