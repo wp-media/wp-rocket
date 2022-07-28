@@ -130,7 +130,7 @@ class Renewal extends Abstract_Render {
 			||
 			( $ocd_enabled && 180 < $expired_since )
 		) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $this->generate(
 				'renewal-expired-banner',
 				[
@@ -138,6 +138,7 @@ class Renewal extends Abstract_Render {
 					'renewal_price' => $renewal_price,
 				]
 			);
+			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
