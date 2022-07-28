@@ -43,7 +43,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	public function testShouldDoAsExpected($config, $expected) {
 
         Functions\when( 'rocket_get_constant' )->justReturn( $config['server_push'] );
-        Functions\expect( 'rocket_notice_writing_permissions' )->with( '' )->andReturn( '' );
 
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;
