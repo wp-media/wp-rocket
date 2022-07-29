@@ -2392,8 +2392,8 @@ msgid ""
 "You could make your website so much faster if you had access to our %1$snew "
 "features and enhancements%2$s. 🚀"
 msgstr ""
-"Poderia tornar o seu site muito mais rápido se tivesse acesso às %1$snossas "
-"novas funcionalidades e melhorias%2$s. 🚀"
+"Pode tornar o seu site muito mais rápido se tiver acesso às %1$snossas novas"
+" funcionalidades e melhorias%2$s. 🚀"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
