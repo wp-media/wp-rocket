@@ -85,11 +85,17 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
+		$message = sprintf(
+			// translators: %1$s = plugin name.
+			__( '%1$s: Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features', 'rocket' ),
+			'<strong>WP Rocket</strong>'
+		);
+
 		rocket_notice_html(
 			[
 				'status'         => 'warning',
 				'dismissible'    => '',
-				'message'        => __( 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features', 'rocket' ),
+				'message'        => $message,
 				'id'             => 'cloudflare_server_push_notice',
 				'dismiss_button' => $notice_name,
 			]
