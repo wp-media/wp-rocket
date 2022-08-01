@@ -535,13 +535,12 @@ class Renewal extends Abstract_Render {
 		}
 
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
-		$ocd           = $this->options->get( 'optimize_css_delivery', 0 );
 
 		if (
 			(
 				15 > $expired_since
 				&&
-				$ocd
+				$this->options->get( 'optimize_css_delivery', 0 )
 			)
 			||
 			(
