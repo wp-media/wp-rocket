@@ -687,10 +687,6 @@ class UsedCSS {
 			return;
 		}
 
-		if ( is_admin() ) {
-			return;
-		}
-
 		if ( ! $this->can_optimize_url() ) {
 			return;
 		}
