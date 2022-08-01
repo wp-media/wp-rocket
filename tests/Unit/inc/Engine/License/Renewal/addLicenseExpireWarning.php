@@ -46,11 +46,18 @@ class Test_AddLicenseExpireWarning extends TestCase {
 		$this->user->shouldReceive( 'is_license_expired' )
 			->andReturn( $config['expired'] );
 
+		$this->user->shouldReceive( 'is_auto_renew' )
+			->andReturn( $config['auto_renew'] );
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['expire_date'] );
 
 		$this->user->shouldReceive( 'get_renewal_url' )
 			->andReturn( $config['renewal_url'] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'optimize_css_delivery', 0 )
+			->andReturn( $config['ocd'] );
 
 		$this->assertSame(
 			$expected,

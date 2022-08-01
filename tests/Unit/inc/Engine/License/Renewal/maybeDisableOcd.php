@@ -47,6 +47,13 @@ class Test_MaybeDisableOcd extends TestCase {
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['expire_date'] );
 
+		$this->user->shouldReceive( 'is_auto_renew' )
+			->andReturn( $config['auto_renew'] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'optimize_css_delivery', 0 )
+			->andReturn( $config['ocd'] );
+
 		$this->assertSame(
 			$expected,
 			$this->renewal->maybe_disable_ocd( $args )
