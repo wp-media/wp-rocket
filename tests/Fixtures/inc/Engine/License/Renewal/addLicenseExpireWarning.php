@@ -127,6 +127,24 @@ return [
 			'label' => 'Optimize CSS Delivery <span class="wpr-icon-important wpr-checkbox-warning">You need an active license to enable this option. <a href="" target="_blank">Renew now</a>.</span>',
 		],
 	],
+	'shouldReturnWarningWhenWLAndOCDDisabled' => [
+		'config' => [
+			'expired' => true,
+			'white_label' => true,
+			'expire_date' => strtotime( 'now - 7 days' ),
+			'renewal_url' => '',
+			'auto_renew' => false,
+			'ocd' => false,
+		],
+		'args' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery',
+		],
+		'expected' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery <span class="wpr-icon-important wpr-checkbox-warning">You need an active license to enable this option. <a href="https://docs.wp-rocket.me/article/1711-what-happens-if-my-license-expires?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">More info</a>.</span>',
+		],
+	],
 	'shouldReturnWarningWhenWLAndExpiredLonger' => [
 		'config' => [
 			'expired' => true,

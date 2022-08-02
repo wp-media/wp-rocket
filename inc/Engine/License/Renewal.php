@@ -397,6 +397,8 @@ class Renewal extends Abstract_Render {
 				$whitelabel
 				&&
 				15 > $expired_since
+				&&
+				$ocd
 			)
 			||
 			(
@@ -443,9 +445,19 @@ class Renewal extends Abstract_Render {
 				'</a>'
 			);
 		} elseif (
-			$whitelabel
-			&&
-			15 < $expired_since
+			(
+				$whitelabel
+				&&
+				15 < $expired_since
+			)
+			||
+			(
+				$whitelabel
+				&&
+				15 > $expired_since
+				&&
+				! $ocd
+			)
 		) {
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
@@ -547,11 +559,7 @@ class Renewal extends Abstract_Render {
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 
 		if (
-			(
-				15 > $expired_since
-				&&
-				$this->options->get( 'optimize_css_delivery', 0 )
-			)
+			15 > $expired_since
 			||
 			(
 				$this->user->is_auto_renew()
