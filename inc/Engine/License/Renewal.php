@@ -408,6 +408,16 @@ class Renewal extends Abstract_Render {
 				&&
 				4 > $expired_since
 			)
+			||
+			(
+				$whitelabel
+				&&
+				$this->user->is_auto_renew()
+				&&
+				4 > $expired_since
+				&&
+				! $ocd
+			)
 		) {
 			return $args;
 		} elseif (

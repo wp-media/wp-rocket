@@ -55,6 +55,24 @@ return [
 			'label' => 'Optimize CSS Delivery',
 		],
 	],
+	'shouldReturnSameWhenWLAndExpiredRecentlyAndAutoRenewAndOCDDisabled' => [
+		'config' => [
+			'expired' => true,
+			'white_label' => true,
+			'expire_date' => strtotime( 'now - 3 days' ),
+			'renewal_url' => '',
+			'auto_renew' => true,
+			'ocd' => false,
+		],
+		'args' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery',
+		],
+		'expected' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery',
+		],
+	],
 	'shouldReturnSameWhenAutoRenewAndExpiredLessThan4Days' => [
 		'config' => [
 			'expired' => true,

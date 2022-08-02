@@ -7,7 +7,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now + 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
@@ -28,7 +28,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now + 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
@@ -49,9 +49,30 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 3 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => true,
+				'has_auto_renew' => true,
 			] ) ),
 			'ocd' => true,
+		],
+		'args' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery',
+			'value' => 1,
+		],
+		'expected' => [
+			'id' => 'optimize_css_delivery',
+			'label' => 'Optimize CSS Delivery',
+			'value' => 1,
+		],
+	],
+	'shouldReturnSameWhenWLAndExpiredRecentlyAndAutoRenewAndOCDDisabled' => [
+		'config' => [
+			'white_label' => true,
+			'transient' => json_decode( json_encode( [
+				'licence_expiration' => strtotime( 'now - 3 days' ),
+				'renewal_url' => '',
+				'has_auto_renew' => true,
+			] ) ),
+			'ocd' => false,
 		],
 		'args' => [
 			'id' => 'optimize_css_delivery',
@@ -70,7 +91,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
@@ -91,7 +112,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
@@ -112,7 +133,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
@@ -133,7 +154,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => false,
 		],
@@ -154,7 +175,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 7 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => false,
 		],
@@ -175,7 +196,7 @@ return [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 20 days' ),
 				'renewal_url' => '',
-				'is_auto_renew' => false,
+				'has_auto_renew' => false,
 			] ) ),
 			'ocd' => true,
 		],
