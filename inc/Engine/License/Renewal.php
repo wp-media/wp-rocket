@@ -478,6 +478,16 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
+
+		if (
+			$this->user->is_auto_renew()
+			&&
+			4 > $expired_since
+		) {
+			return $menu_title;
+		}
+
 		if ( ! $this->options->get( 'optimize_css_delivery', 0 ) ) {
 			return $menu_title;
 		}
