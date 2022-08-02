@@ -679,6 +679,8 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		global $post, $pagenow;
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
@@ -694,7 +696,11 @@ class UsedCSS {
 		$referer = '';
 		$action  = 'rocket_clear_usedcss_url';
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+		if ( is_admin() ) {
+			if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$referer = '&_wp_http_referer=' . rawurlencode( get_permalink( $post ) );
+			}
+		} elseif ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
 		}
