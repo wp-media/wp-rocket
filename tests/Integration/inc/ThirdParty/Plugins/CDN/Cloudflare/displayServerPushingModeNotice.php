@@ -41,12 +41,9 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
-		
-		Functions\when( 'rocket_get_constant' )->alias(function($value) use($config) {
-			if ( $value == 'CLOUDFLARE_PLUGIN_DIR' || $value == 'CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE' ) {
-				return $config['server_push'];
-			}
-		});
+
+		$this->constants['CLOUDFLARE_PLUGIN_DIR'] = true;
+        $this->constants['CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE'] = $config['server_push'];
 
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;

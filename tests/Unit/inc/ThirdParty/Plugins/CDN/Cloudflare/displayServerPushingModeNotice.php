@@ -32,10 +32,12 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
      */
     public function testShouldReturnExpected( $config, $expected ) {
 
+        $this->constants['CLOUDFLARE_PLUGIN_DIR'] = true;
+        $this->constants['CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE'] = $config['server_push'];
+
         Functions\stubs([
             'get_current_screen'   => $config['current_screen'],
             'current_user_can'    => $config['capability'],
-            'rocket_get_constant' => $config['server_push'],
             'rocket_is_cloudflare' => true,
             'get_current_user_id' => 1,
             'get_user_meta' => $config['boxes'],
