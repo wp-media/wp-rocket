@@ -79,6 +79,7 @@ class UsedCSS {
 		'woodmart_shortcodes-custom-css',
 		'rs-plugin-settings-inline-css', // For revolution slider, it saves settings for each slider.
 		'divi-style-inline-inline-css',
+		'n2-ss-', // For Smart Slider 3 dynamic selectors.
 	];
 
 	/**
@@ -95,6 +96,8 @@ class UsedCSS {
 		'.jet-listing-dynamic-post-',
 		'.vcex_',
 		'.wprm-advanced-list-',
+		'.adsslot_', // For Advanced Ads plugin ads.
+		'.jnews_', // For JNews theme.
 	];
 
 	/**
@@ -151,6 +154,10 @@ class UsedCSS {
 
 		// Bailout if user is logged in.
 		if ( is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( ! $this->filesystem->is_writable_folder() ) {
 			return false;
 		}
 

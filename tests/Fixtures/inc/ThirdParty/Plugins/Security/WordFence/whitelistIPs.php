@@ -3,7 +3,7 @@
 return [
 	'shouldWhitelist' => [
 		'expected' => [
-			'135.125.83.227',
+			'141.94.254.72',
 		],
 	],
 ];
