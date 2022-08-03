@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-07-25 10:36-0400\n"
+"POT-Creation-Date: 2022-07-28 14:01-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Fabio Fava <go@fabiofava.com>, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/wp-media/teams/18133/pt_BR/)\n"
@@ -2236,7 +2236,7 @@ msgstr "Pré-Carregar"
 msgid "Critical Path CSS Generation Process"
 msgstr "Processo de geração do CSS do caminho crítico"
 
-#: inc/Engine/License/Renewal.php:394
+#: inc/Engine/License/Renewal.php:401
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -2245,14 +2245,14 @@ msgstr ""
 "Você precisa de uma licença válida para continuar usando este recurso. "
 "%1$sRenove agora%2$s antes de perder o acesso."
 
-#: inc/Engine/License/Renewal.php:405
+#: inc/Engine/License/Renewal.php:412
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 "Você precisa de uma licença ativa para ativar esta opção. %1$sRenove "
 "agora%2$s."
 
-#: inc/Engine/License/Renewal.php:416
+#: inc/Engine/License/Renewal.php:423
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -2313,7 +2313,7 @@ msgstr "Atualize agora"
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:43
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:53
-#: inc/Engine/License/views/renewal-expired-banner.php:39
+#: inc/Engine/License/views/renewal-expired-banner.php:41
 #: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "Descartar essa notificação"
@@ -2343,6 +2343,7 @@ msgstr ""
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:30
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:40
+#: inc/Engine/License/views/renewal-expired-banner.php:28
 #, php-format
 msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: "
@@ -2353,7 +2354,7 @@ msgstr ""
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:40
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:50
-#: inc/Engine/License/views/renewal-expired-banner.php:36
+#: inc/Engine/License/views/renewal-expired-banner.php:38
 #: inc/Engine/License/views/renewal-soon-banner.php:46
 msgid "Renew now"
 msgstr "Renove agora"
@@ -2392,20 +2393,11 @@ msgstr "A sua licença do WP Rocket está expirada!"
 #: inc/Engine/License/views/renewal-expired-banner.php:18
 #, php-format
 msgid ""
-"%1$sYour website could be much faster%2$s if it could take advantage of our "
-"new features and enhancements. 🚀"
+"You could make your website so much faster if you had access to our %1$snew "
+"features and enhancements%2$s. 🚀"
 msgstr ""
-"%1$sSeu website pode ser muito mais rápido%2$s se você puder tirar vantagem "
-"dos nossos novos recursos e melhorias. 🚀"
-
-#: inc/Engine/License/views/renewal-expired-banner.php:28
-#, php-format
-msgid ""
-"Renew your license to have access to the %1$slatest version of WP Rocket%2$s"
-" and to the wonderful %1$sassistance of our Support Team%2$s."
-msgstr ""
-"Renove a sua licença para ter acesso à %1$sversão mais recente do WP "
-"Rocket%2$s e à incrível %1$sassistência da nossa Equipe de Suporte%2$s."
+"Você poderia tornar o seu site muito mais rápido se tivesse acesso aos "
+"nossos %1$snovos recursos e melhorias%2$s.🚀"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
