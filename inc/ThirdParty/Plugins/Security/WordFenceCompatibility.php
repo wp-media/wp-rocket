@@ -3,6 +3,7 @@ namespace WP_Rocket\ThirdParty\Plugins\Security;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use wordfence;
+use wfConfig;
 
 /**
  * Compatibility file for WordFence plugin
@@ -15,6 +16,13 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * Whitelisted_IPS.
 	 */
 	const WHITELISTED_IPS = [ '141.94.254.72' ];
+
+	/**
+	 * Old Whitelisted IP.
+	 *
+	 * @var string
+	 */
+	private $old_rucss_ip = '135.125.83.227';
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -34,6 +42,33 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	}
 
 	/**
+	 * Removes old ip from whitelist.
+	 *
+	 * @return void
+	 */
+	private function pop_old_ip() {
+		// Get all whitelists.
+		$whitelists = wfConfig::get( 'whitelisted', '' );
+
+		// Convert to array.
+		$whitelist_array = explode( ',', $whites );
+
+		// Get old ip index.
+		$old_ip_index = array_search( $this->old_rucss_ip, $whitelist_array, true );
+
+		// Check if old ip is still whitelisted.
+		if ( ! isset( $whitelist_array[ $old_ip_index ] ) ) {
+			return;
+		}
+
+		// Remove old ip from whitelist.
+		unset( $whitelist_array[ $old_ip_index ] );
+
+		// Update whitelist.
+		wfConfig::set( 'whitelisted', implode( ',', $whitelist_array ) );
+	}
+
+	/**
 	 * Whitelist wp-rocket ips in wordfence firewall
 	 *
 	 * @since 3.10
@@ -41,6 +76,10 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function whitelist_wordfence_firewall_ips() {
+
+		// Pop old rucss ip.
+		$this->pop_old_ip();
+
 		/**
 		 * Rocket wordfence whitelisted ips filter which adds IPs to wordfence whitelist.
 		 *
