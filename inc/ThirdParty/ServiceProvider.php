@@ -35,6 +35,9 @@ use WP_Rocket\ThirdParty\Themes\Avada;
 use WP_Rocket\ThirdParty\Themes\Bridge;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
+use WP_Rocket\ThirdParty\Themes\Polygon;
+use WP_Rocket\ThirdParty\Themes\Jevelin;
+use WP_Rocket\ThirdParty\Themes\Xstore;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -71,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'simple_custom_css',
 		'pdfembedder',
 		'divi',
+		'polygon',
 		'mod_pagespeed',
 		'adthrive',
 		'autoptimize',
@@ -83,7 +87,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
+		'jevelin',
 		'wpml',
+		'xstore',
 	];
 
 	/**
@@ -123,6 +129,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'polygon', Polygon::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'avada_subscriber', Avada::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
@@ -133,6 +142,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'smush_subscriber', Smush::class )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'xstore', Xstore::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )
@@ -204,7 +216,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'convertplug', ConvertPlug::class )
 			->addTag( 'common_subscriber' );
-
+		$this->getContainer()
+			->share( 'jevelin', Jevelin::class )
+			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'unlimited_elements', UnlimitedElements::class )
 			->addTag( 'common_subscriber' );
