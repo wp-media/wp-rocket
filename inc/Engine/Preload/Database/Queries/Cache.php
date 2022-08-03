@@ -453,4 +453,23 @@ class Cache extends Query {
 		);
 		return 0 !== $pending_count;
 	}
+
+	/**
+	 * Remove all entries from the table.
+	 *
+	 * @return false|void
+	 */
+	public function remove_all() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$db->query( "DELETE FROM `$prefixed_table_name` WHERE 1 = 1" );
+	}
 }

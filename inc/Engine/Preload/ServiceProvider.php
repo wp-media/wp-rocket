@@ -111,7 +111,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
-			->addArgument( $queue );
+			->addArgument( $queue )
+			->addArgument( $cache_query );
 
 		$this->getContainer()->share(
 			'preload_queue_runner',
