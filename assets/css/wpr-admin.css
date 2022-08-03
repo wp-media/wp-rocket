@@ -1185,6 +1185,33 @@ div.wpr-upgrade-websites {
   padding: 8px;
 }
 
+.rocket-renewal-expired-banner {
+  background: #FFD147;
+  margin-top: 16px;
+  padding: 24px;
+  position: relative;
+}
+
+.rocket-renewal-expired-banner-container {
+  display: flex;
+  justify-content: space-around;
+}
+@media (max-width: 783px) {
+  .rocket-renewal-expired-banner-container {
+    flex-flow: column;
+  }
+}
+.rocket-renewal-expired-banner-container > div {
+  display: flex;
+  flex-flow: column;
+  width: 50%;
+}
+@media (max-width: 783px) {
+  .rocket-renewal-expired-banner-container > div {
+    width: 100%;
+  }
+}
+
 .rocket-renew-message {
   margin: 0 16px;
 }
@@ -2417,6 +2444,15 @@ div.wpr-tutorial-item {
 
 .wpr-checkbox [type=checkbox]:focus + label:before {
   border: 2px dotted #444444;
+}
+
+.wpr-checkbox-warning {
+  color: #D33F49;
+  margin-left: 16px;
+}
+
+.wpr-checkbox-warning::before {
+  margin-right: 8px;
 }
 
 /*-----------------------------------------------*\
