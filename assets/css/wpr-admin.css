@@ -2209,6 +2209,12 @@ div.wpr-upgrade-websites {
   line-height: 1;
   color: #F56640;
 }
+@media (max-width: 783px) {
+  .wpr-tools-label:before {
+    display: block;
+    position: initial;
+  }
+}
 .wpr-tools-col {
   flex: 1 1 auto;
 }
@@ -2216,6 +2222,13 @@ div.wpr-upgrade-websites {
   padding-left: 72px;
   padding-right: 24px;
   min-width: 340px;
+}
+@media (max-width: 783px) {
+  .wpr-tools-col:first-child {
+    padding-left: 0;
+    padding-right: 0;
+    min-width: auto;
+  }
 }
 .wpr-tools-col:last-child {
   text-align: right;
