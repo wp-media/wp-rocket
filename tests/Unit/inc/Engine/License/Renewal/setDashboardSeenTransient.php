@@ -11,25 +11,27 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::dismiss_renewal_expired_banner
+ * @covers \WP_Rocket\Engine\License\Renewal::set_dashboard_seen_transient
  *
  * @group License
  */
-class DismissRenewalExpiredBanner extends TestCase {
+class Test_SetDashboardSeenTransient extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;
+	private $options;
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
 		$this->user    = Mockery::mock( User::class );
-		$this->renewal =  new Renewal(
-			$this->pricing,
-			$this->user,
-			Mockery::mock( Options_Data::class ),
-			'views'
+		$this->options =Mockery::mock( Options_Data::class );
+		$this->renewal = new Renewal(
+				$this->pricing,
+				$this->user,
+				$this->options,
+				'views'
 		);
 	}
 
@@ -37,28 +39,26 @@ class DismissRenewalExpiredBanner extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		Functions\when( 'check_ajax_referer' )->justReturn( true );
+		$this->user->shouldReceive( 'is_license_expired' )
+			->andReturn( $config['expired'] );
 
-		Functions\when( 'current_user_can' )->justReturn( $config['cap'] );
+		$this->options->shouldReceive( 'get' )
+			->with( 'optimize_css_delivery', 0 )
+			->andReturn( $config['ocd'] );
 
+		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
-		Functions\expect( 'get_transient' )
-			->atMost()
-			->once()
-			->with( 'rocket_renewal_banner_1' )
-			->andReturn( $config['transient'] );
+
+		$this->user->shouldReceive( 'get_license_expiration' )
+			->andReturn( $config['expire_date'] );
 
 		if ( $expected ) {
 			Functions\expect( 'set_transient' )
-				->once()
-				->with( 'rocket_renewal_banner_1', 1, MONTH_IN_SECONDS );
-
-			Functions\expect( 'wp_send_json_success' )->once();
+				->once();
 		} else {
 			Functions\expect( 'set_transient' )->never();
-			Functions\expect( 'wp_send_json_success' )->never();
 		}
 
-		$this->renewal->dismiss_renewal_expired_banner();
+		$this->renewal->set_dashboard_seen_transient();
 	}
 }

@@ -1,23 +1,35 @@
 <?php
 /**
- * Renewal expired banner.
+ * Renewal expired banner with OCD.
  *
- * @since 3.7.5
+ * @since 3.11.5
  */
 
 defined( 'ABSPATH' ) || exit;
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
-	<h3 class="rocket-expired-title"><?php esc_html_e( 'Your WP Rocket license is expired!', 'rocket' ); ?></h3>
+	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features', 'rocket' ); ?></h3>
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
 			<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( 'You could make your website so much faster if you had access to our %1$snew features and enhancements%2$s. 🚀', 'rocket' ),
+					esc_html__( 'You need an %1$sactive license to continue optimizing your CSS delivery%2$s.', 'rocket' ),
 					'<strong>',
 					'</strong>'
+				);
+				?>
+				<br>
+				<?php esc_html_e( 'The Remove Unused CSS and Load CSS asynchronously features are great options to address the PageSpeed Insights recommendations and improve your website performance.', 'rocket' ); ?>
+				<br>
+				<?php
+				printf(
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
+					esc_html__( 'They will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					esc_html( $data['disabled_date'] )
 				);
 				?>
 			</p>
