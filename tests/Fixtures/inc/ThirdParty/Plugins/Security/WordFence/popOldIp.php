@@ -4,7 +4,7 @@ return [
     'shouldBailOutIfOldIpNotFound' =>[
         'old_value' => '',
         'values'   => '141.94.254.72',
-		'expected' => ''
+		'expected' => '141.94.254.72'
     ],
 	'shouldPopOldIp' => [
         'old_value' => '135.125.83.227',
