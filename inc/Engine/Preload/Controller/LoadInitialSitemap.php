@@ -49,6 +49,11 @@ class LoadInitialSitemap {
 		$urls    = array_filter( $urls );
 
 		foreach ( $urls as $url ) {
+			$this->query->create_or_nothing(
+				[
+					'url' => $url,
+				]
+			);
 			$this->queue->add_job_preload_job_preload_url_async( $url );
 		}
 
