@@ -44,9 +44,16 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	/**
 	 * Removes old ip from whitelist.
 	 *
+	 * @param string $old_rucss_ip Old RUCSS IP.
 	 * @return void
 	 */
-	private function pop_old_ip() {
+	public function pop_old_ip( string $old_rucss_ip ) {
+
+		// Bail out if old RUCSS ip is empty.
+		if ( '' === $old_rucss_ip ) {
+			return;
+		}
+
 		// Get all whitelists.
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
@@ -54,7 +61,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		$whitelist_array = explode( ',', $whitelists );
 
 		// Get old ip index.
-		$old_ip_index = array_search( $this->old_rucss_ip, $whitelist_array, true );
+		$old_ip_index = array_search( $old_rucss_ip, $whitelist_array, true );
 
 		// Check if old ip is still whitelisted.
 		if ( ! isset( $whitelist_array[ $old_ip_index ] ) ) {
@@ -78,7 +85,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	public function whitelist_wordfence_firewall_ips() {
 
 		// Pop old rucss ip.
-		$this->pop_old_ip();
+		$this->pop_old_ip( $this->old_rucss_ip );
 
 		/**
 		 * Rocket wordfence whitelisted ips filter which adds IPs to wordfence whitelist.
