@@ -42,5 +42,5 @@ jobs:
         if: ${{ steps.saveDynamicLists.outcome == 'success' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: update dynamic lits
+          commit_message: update dynamic lists
           commit_user_name: WP-media GitHub Actions Bot
