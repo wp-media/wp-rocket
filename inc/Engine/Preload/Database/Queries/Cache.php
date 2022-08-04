@@ -265,7 +265,7 @@ class Cache extends Query {
 			return [];
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
 		$rows_affected       = $db->get_results( $query );
 
