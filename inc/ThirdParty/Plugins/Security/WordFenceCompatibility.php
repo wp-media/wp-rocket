@@ -51,7 +51,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
 		// Convert to array.
-		$whitelist_array = explode( ',', $whites );
+		$whitelist_array = explode( ',', $whitelists );
 
 		// Get old ip index.
 		$old_ip_index = array_search( $this->old_rucss_ip, $whitelist_array, true );
