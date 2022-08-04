@@ -49,11 +49,6 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 */
 	public function pop_old_ip( string $old_rucss_ip ) {
 
-		// Bail out if old RUCSS ip is empty.
-		if ( '' === $old_rucss_ip ) {
-			return;
-		}
-
 		// Get all whitelists.
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
@@ -62,6 +57,10 @@ class WordFenceCompatibility implements Subscriber_Interface {
 
 		// Get old ip index.
 		$old_ip_index = array_search( $old_rucss_ip, $whitelist_array, true );
+
+		if ( false === $old_ip_index ) {
+			return;
+		}
 
 		// Check if old ip is still whitelisted.
 		if ( ! isset( $whitelist_array[ $old_ip_index ] ) ) {
