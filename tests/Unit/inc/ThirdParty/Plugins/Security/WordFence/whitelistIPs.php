@@ -18,6 +18,8 @@ class Test_WordFenceWhitelistIPs extends TestCase {
 	public function setUp() : void {
 		parent::setup();
 		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
+		
 		wordfence::$white_listed_ips =[];
 		$this->WordFenceCompatibility        = new WordFenceCompatibility();
 	}
