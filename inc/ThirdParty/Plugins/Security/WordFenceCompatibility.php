@@ -62,11 +62,6 @@ class WordFenceCompatibility implements Subscriber_Interface {
 			return;
 		}
 
-		// Check if old ip is still whitelisted.
-		if ( ! isset( $whitelist_array[ $old_ip_index ] ) ) {
-			return;
-		}
-
 		// Remove old ip from whitelist.
 		unset( $whitelist_array[ $old_ip_index ] );
 
