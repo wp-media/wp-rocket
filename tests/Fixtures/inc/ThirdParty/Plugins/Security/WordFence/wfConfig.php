@@ -5,18 +5,16 @@
 if ( ! class_exists( 'wfconfig' ) ) {
 	class wfConfig {
 
-		public static $get_list     = [
+		public static $whitelisted     = [
             'whitelisted' => ''
         ];
-
-        public static $white_listed = [];
         
 		public static function get( $key, $default = '' ) {
-			return self::$get_list[$key];
+			return self::$whitelisted[$key];
 		}
 
         public static function set( $key, $value ) {
-			self::$white_listed[$key] = $value;
+			self::$whitelisted[$key] = trim($value);
 		}
 	}
 }
