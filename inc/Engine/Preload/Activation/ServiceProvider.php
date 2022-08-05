@@ -6,6 +6,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Logger\Logger;
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -36,6 +37,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
+
+		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
+		$this->getContainer()->get( 'preload_caches_table' );
+
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
 			->addArgument( new Logger() );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
