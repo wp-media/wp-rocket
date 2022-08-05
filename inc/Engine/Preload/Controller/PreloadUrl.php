@@ -105,8 +105,9 @@ class PreloadUrl {
 				$headers = array_merge(
 					$headers,
 					[
-						'blocking' => false,
-						'timeout'  => 0.01,
+						'blocking'  => false,
+						'timeout'   => 0.01,
+						'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 					]
 					);
 
