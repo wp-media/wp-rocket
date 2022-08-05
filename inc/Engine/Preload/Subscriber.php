@@ -67,6 +67,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocket_after_process_buffer'     => 'update_cache_row',
 			'rocket_deactivation'             => 'on_deactivation',
+			'permalink_structure_changed'     => 'on_permalink_changed',
 			'wp_rocket_upgrade'               => [ 'on_update', 16, 2 ],
 		];
 	}
@@ -124,7 +125,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_cache_row() {
 		global $wp;
-
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		if ( $this->query->is_preloaded( $url ) ) {
@@ -154,6 +154,16 @@ class Subscriber implements Subscriber_Interface {
 		global $wp;
 		$url = home_url( $wp->request );
 		$this->query->delete_by_url( $url );
+	}
+
+	/**
+	 * Reload on permalink changed.
+	 *
+	 * @return void
+	 */
+	public function on_permalink_changed() {
+		$this->query->remove_all();
+		$this->controller->load_initial_sitemap();
 	}
 
 	/**
