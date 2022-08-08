@@ -155,6 +155,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_subscriber', Subscriber::class )
+			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $cache_query )
 			->addArgument( $this->getContainer()->get( 'preload_activation' ) )

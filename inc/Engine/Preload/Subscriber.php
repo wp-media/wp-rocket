@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
@@ -10,6 +11,13 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
 
 	/**
 	 * Controller to load initial tasks.
@@ -42,12 +50,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
+	 * @param Options_Data            $options Options instance.
 	 * @param LoadInitialSitemap      $controller controller creating the initial task.
 	 * @param Cache                   $query Cache query instance.
 	 * @param Activation              $activation Activation manager.
 	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile detector instance.
 	 */
-	public function __construct( LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect ) {
+	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect ) {
+		$this->options       = $options;
 		$this->controller    = $controller;
 		$this->query         = $query;
 		$this->activation    = $activation;
@@ -132,7 +142,7 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( $this->query->is_pending( $url ) ) {
+		if ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) {
 			return;
 		}
 
