@@ -51,6 +51,9 @@ class Activation implements ActivationInterface {
 	 * Launch preload on activation.
 	 */
 	public function activate() {
+
+		do_action('admin_init');
+
 		$this->controller->load_initial_sitemap();
 	}
 
