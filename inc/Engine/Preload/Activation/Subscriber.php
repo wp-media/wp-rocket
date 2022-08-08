@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_activation'       => 'activate',
+			'rocket_activation'       => [ 'activate', 15 ],
 			'wp_rocket_first_install' => 'first_install',
 		];
 	}

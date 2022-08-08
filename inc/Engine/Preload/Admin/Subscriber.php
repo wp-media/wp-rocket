@@ -72,17 +72,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'             => [
+			'admin_notices'                       => [
 				'maybe_display_preload_notice',
 				'maybe_display_as_missed_tables_notice',
 			],
-			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
-			'rocket_after_clean_terms'  => 'clean_urls',
-			'after_rocket_clean_domain' => 'clean_full_cache',
-			'wp_trash_post'             => 'delete_post_preload_cache',
-			'delete_post'               => 'delete_post_preload_cache',
-			'pre_delete_term'           => 'delete_term_preload_cache',
+			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
+			'rocket_after_clean_terms'            => 'clean_urls',
+			'after_rocket_clean_domain'           => 'clean_full_cache',
+			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
+			'rocket_rucss_complete_job_status'    => 'clean_url',
+			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
+			'wp_trash_post'                       => 'delete_post_preload_cache',
+			'delete_post'                         => 'delete_post_preload_cache',
+			'pre_delete_term'                     => 'delete_term_preload_cache',
 		];
 	}
 
@@ -131,6 +134,17 @@ class Subscriber implements Subscriber_Interface {
 	public function clean_urls( array $urls ) {
 
 		$this->controller->partial_clean( $urls );
+	}
+
+	/**
+	 * Clean the url.
+	 *
+	 * @param string $url url.
+	 * @return void
+	 */
+	public function clean_url( string $url ) {
+
+		$this->controller->partial_clean( [ $url ] );
 	}
 
 	/**
@@ -190,6 +204,49 @@ class Subscriber implements Subscriber_Interface {
 		$this->settings->maybe_display_as_missed_tables_notice();
 	}
 
+	/**
+	 * Pushes URLs to preload to the queue after cache directories are purged.
+	 *
+	 * @since  3.4
+	 *
+	 * @param array $deleted {
+	 *     An array of arrays, described like: {.
+	 *         @type string $home_url  The home URL.
+	 *         @type string $home_path Path to home.
+	 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
+	 *         @type array  $files     A list of paths of files that have been deleted.
+	 *     }
+	 * }
+	 */
+	public function preload_after_automatic_cache_purge( $deleted ) {
+		if ( ! $deleted || ! $this->options->get( 'manual_preload' ) ) {
+			return;
+		}
+
+		foreach ( $deleted as $data ) {
+			if ( $data['logged_in'] ) {
+				// Logged in user: no need to preload those since we would need the corresponding cookies.
+				continue;
+			}
+			foreach ( $data['files'] as $file_path ) {
+				if ( strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				} else {
+					$file_path         = untrailingslashit( $file_path );
+					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path         .= '/';
+						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
+					}
+				}
+
+				$this->controller->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
+			}
+		}
+	}
 
 	/**
 	 * Checks if Action scheduler tables are there or not.
