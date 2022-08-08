@@ -5,6 +5,8 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\NullSubscriber;
 use WP_Rocket\ThirdParty\SubscriberFactoryInterface;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Host Subscriber Factory
@@ -45,6 +47,9 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Godaddy();
 			case 'kinsta':
 				return new Kinsta();
+			case 'onecom':
+				$options = new Options( 'wp_rocket_' );
+				return new OneCom( $options,  new Options_Data( $options->get( 'settings', [] ) ) );
 			default:
 				return new NullSubscriber();
 		}
