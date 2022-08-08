@@ -33,13 +33,13 @@ class LoadInitialSitemap {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Queue $queue Queue group.
-	 * @param Cache $query DB query.
+	 * @param Queue         $queue Queue group.
+	 * @param Cache         $query DB query.
 	 * @param CrawlHomepage $crawl_homepage Homepage crawler.
 	 */
 	public function __construct( Queue $queue, $query, CrawlHomepage $crawl_homepage ) {
-		$this->queue = $queue;
-		$this->query = $query;
+		$this->queue          = $queue;
+		$this->query          = $query;
 		$this->crawl_homepage = $crawl_homepage;
 	}
 
@@ -95,10 +95,10 @@ class LoadInitialSitemap {
 	protected function add_homepage_urls() {
 		$urls = $this->crawl_homepage->crawl();
 
-		if(! $urls) {
+		if ( ! $urls ) {
 			return;
 		}
-		foreach ($urls as $url) {
+		foreach ( $urls as $url ) {
 			$this->query->create_or_nothing(
 				[
 					'url' => $url,

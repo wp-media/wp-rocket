@@ -2,8 +2,13 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
-class CrawlHomepage
-{
+class CrawlHomepage {
+
+	/**
+	 * Crawl the homepage.
+	 *
+	 * @return array|false
+	 */
 	public function crawl() {
 		$user_agent = 'WP Rocket/Preload';
 
