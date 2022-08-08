@@ -10,7 +10,8 @@ return [
 				'config' => [
 					'blocking' => false,
 					'timeout'  => 0.01,
-					'user-agent' => 'WP Rocket/Preload'
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
 				]
 			],
 		]
@@ -25,7 +26,8 @@ return [
 				'config' => [
 					'blocking' => false,
 					'timeout'  => 0.01,
-					'user-agent' => 'WP Rocket/Preload'
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
 				]
 			],
 		]
@@ -40,14 +42,16 @@ return [
 				'config' => [
 					'blocking' => false,
 					'timeout'  => 0.01,
-					'user-agent' => 'WP Rocket/Preload'
+					'user-agent' => 'WP Rocket/Preload',
+					'sslverify' => false,
 				]
 			],
 			'request_mobile' => [
 				'config' => [
 					'blocking' => false,
 					'timeout'  => 0.01,
-					'user-agent' => 'user_agent'
+					'user-agent' => 'user_agent',
+					'sslverify' => false,
 				]
 			],
 		]

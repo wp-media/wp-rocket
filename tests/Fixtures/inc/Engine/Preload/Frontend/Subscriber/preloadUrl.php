@@ -33,20 +33,6 @@ return [
 			'status' => 'pending',
 		]
 	],
-	'preloadNoMobileShouldPreloadOnlyOnce' => [
-		'config' => [
-			'existing_job' => [
-				'url' => 'url',
-				'status' => 'pending',
-			],
-			'url' => 'url',
-			'mobile_cache' => false,
-		],
-		'expected' => [
-			'url' => 'url',
-			'status' => 'pending',
-		]
-	],
 	'preloadWithSuccessShouldContinue' => [
 		'config' => [
 			'existing_job' => [

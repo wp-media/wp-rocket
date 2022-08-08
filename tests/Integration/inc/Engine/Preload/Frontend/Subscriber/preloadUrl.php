@@ -17,6 +17,8 @@ class Test_PreloadUrl extends AdminTestCase
 
 	protected $mobile_cache;
 
+	protected $config;
+
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
@@ -34,11 +36,13 @@ class Test_PreloadUrl extends AdminTestCase
 	{
 		parent::setUp();
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
+		add_filter('pre_http_request', [$this, 'request']);
 	}
 
 	public function tearDown(): void
 	{
 		parent::tearDown();
+		remove_filter('pre_http_request', [$this, 'request']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 	}
 
@@ -47,66 +51,16 @@ class Test_PreloadUrl extends AdminTestCase
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 
+		$this->config = $config;
+
 		$this->mobile_cache = $config['mobile_cache'];
 
 
 		self::addCache($config['existing_job']);
-		$this->configureRequest($config);
-		$this->configureMobileRequest($config);
 
 		do_action('rocket_preload_job_preload_url', $config['url']);
 
 		$this->assertTrue(self::cacheFound($expected));
-	}
-
-	protected function configureRequest($config) {
-		if ( ! isset( $config['process_generate'] ) ) {
-			return;
-		}
-
-		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					user_trailingslashit($config['url']),
-					$config['config']
-				)
-				->andReturn( new WP_Error( 'error', 'error_data' ) );
-		} else {
-			$message = $config['process_generate']['response'];
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					user_trailingslashit($config['url']),
-					$config['config']
-				)
-				->andReturn( [ 'body' => $message, 'response' => ['code' => 200 ]] );
-		}
-	}
-
-	protected function configureMobileRequest($config) {
-		if ( ! isset( $config['process_mobile_generate'] ) ) {
-			return;
-		}
-
-		if ( ! empty( $config['process_mobile_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					user_trailingslashit($config['url']),
-					$config['config_mobile']
-				)
-				->andReturn( new WP_Error( 'error', 'error_data' ) );
-		} else {
-			$message = $config['process_mobile_generate']['response'];
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with(
-					user_trailingslashit($config['url']),
-					$config['config_mobile']
-				)
-				->andReturn( [ 'body' => $message, 'response' => ['code' => 200 ]] );
-		}
 	}
 
 	public function providerTestData() {
@@ -115,5 +69,14 @@ class Test_PreloadUrl extends AdminTestCase
 
 	public function mobile_cache() {
 		return $this->mobile_cache;
+	}
+
+	public function request() {
+		if ( ! empty( $this->config['process_generate']['is_wp_error'] ) ) {
+			return new WP_Error( 'error', 'error_data' );
+		} else {
+			$message = $this->config['process_generate']['response'];
+			return [ 'body' => $message, 'response' => ['code' => 200 ]];
+		}
 	}
 }
