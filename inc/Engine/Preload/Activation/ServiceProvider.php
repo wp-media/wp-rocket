@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
@@ -45,11 +46,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( new Logger() );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 
+		$this->getContainer()->add( 'homepage_crawler', CrawlHomepage::class );
+		$crawl_homepage = $this->getContainer()->get( 'homepage_crawler' );
+
 		$this->getContainer()->add( 'preload_queue', Queue::class );
 		$queue = $this->getContainer()->get( 'preload_queue' );
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $crawl_homepage );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )

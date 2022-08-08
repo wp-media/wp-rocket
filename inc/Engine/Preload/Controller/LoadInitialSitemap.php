@@ -24,14 +24,23 @@ class LoadInitialSitemap {
 	protected $query;
 
 	/**
+	 * Homepage crawler.
+	 *
+	 * @var CrawlHomepage
+	 */
+	protected $crawl_homepage;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Queue $queue Queue group.
 	 * @param Cache $query DB query.
+	 * @param CrawlHomepage $crawl_homepage Homepage crawler.
 	 */
-	public function __construct( Queue $queue, $query ) {
+	public function __construct( Queue $queue, $query, CrawlHomepage $crawl_homepage ) {
 		$this->queue = $queue;
 		$this->query = $query;
+		$this->crawl_homepage = $crawl_homepage;
 	}
 
 	/**
@@ -71,10 +80,31 @@ class LoadInitialSitemap {
 		$sitemap = $this->load_wordpress_sitemap();
 
 		if ( ! $sitemap ) {
+			$this->add_homepage_urls();
 			return;
 		}
 
 		$this->add_task_to_queue( [ $sitemap ] );
+	}
+
+	/**
+	 * Add homepage urls to the preload.
+	 *
+	 * @return void
+	 */
+	protected function add_homepage_urls() {
+		$urls = $this->crawl_homepage->crawl();
+
+		if(! $urls) {
+			return;
+		}
+		foreach ($urls as $url) {
+			$this->query->create_or_nothing(
+				[
+					'url' => $url,
+				]
+			);
+		}
 	}
 
 	/**

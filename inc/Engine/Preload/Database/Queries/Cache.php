@@ -122,10 +122,12 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
+		$url = strtok( untrailingslashit( $resource['url'] ), '?' );
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => $url,
 			]
 		);
 
@@ -133,7 +135,7 @@ class Cache extends Query {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
 				[
-					'url'           => untrailingslashit( $resource['url'] ),
+					'url'           => $url,
 					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -151,7 +153,7 @@ class Cache extends Query {
 		$db_row = array_pop( $rows );
 
 		$data = [
-			'url'      => untrailingslashit( $resource['url'] ),
+			'url'      => $url,
 			'status'   => $resource['status'],
 			'modified' => current_time( 'mysql', true ),
 		];
@@ -190,10 +192,12 @@ class Cache extends Query {
 			return false;
 		}
 
+		$url = strtok( $resource['url'], '?' );
+
 		// Create this new row in DB.
 		$resource_id = $this->add_item(
 			[
-				'url'           => untrailingslashit( $resource['url'] ),
+				'url'           => untrailingslashit( $url ),
 				'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 				'last_accessed' => current_time( 'mysql', true ),
 			]
@@ -216,6 +220,9 @@ class Cache extends Query {
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url ) {
+
+		$url = strtok( $url, '?' );
+
 		$query = $this->query(
 			[
 				'url' => untrailingslashit( $url ),

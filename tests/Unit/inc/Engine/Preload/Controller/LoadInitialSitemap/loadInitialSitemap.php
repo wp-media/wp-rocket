@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\LoadInitialSitemap;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
@@ -18,6 +19,7 @@ use WP_Sitemaps_Index;
 class Test_LoadInitialSitemap extends TestCase {
 	protected $queue;
 	protected $query;
+	protected $crawler;
 	protected $controller;
 
 	protected function setUp(): void
@@ -25,7 +27,8 @@ class Test_LoadInitialSitemap extends TestCase {
 		parent::setUp();
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->controller = new LoadInitialSitemap($this->queue, $this->query);
+		$this->crawler = Mockery::mock(CrawlHomepage::class);
+		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler);
 	}
 
 	/**
@@ -33,6 +36,7 @@ class Test_LoadInitialSitemap extends TestCase {
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 		Filters\expectApplied('rocket_sitemap_preload_list')->with($config['sitemaps'])->andReturn($config['filter_sitemaps']);
+		Filters\expectApplied('rocket_preload_load_custom_urls')->with([])->andReturn([]);
 		$this->queue->expects()->add_job_preload_job_preload_url_async($config['home_url']);
 		foreach ($config['filter_sitemaps'] as $sitemap) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
@@ -52,6 +56,9 @@ class Test_LoadInitialSitemap extends TestCase {
 	protected function configureWordPressSitemap($config) {
 		if(count($config['filter_sitemaps']) > 0) {
 			return ;
+			$this->query->expects(self::once())->method('create_or_nothing')->with([
+				'url' => $config['home_url']
+			]);
 		}
 
 		$mock = Mockery::mock(WP_Sitemaps_Index::class);
@@ -63,6 +70,12 @@ class Test_LoadInitialSitemap extends TestCase {
 		if($config['wp_sitemap']) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($config['wp_sitemap']);
 			$this->queue->expects()->add_job_preload_job_check_finished_async();
+			$this->query->expects(self::once())->method('create_or_nothing')->with([
+				'url' => $config['home_url']
+			]);
+		} else {
+			$this->crawler->expects()->crawl()->andReturn($config['crawl_urls']);
+			$this->query->expects(self::atLeast(1))->method('create_or_nothing')->withConsecutive(...$config['add_crawl_urls']);
 		}
 	}
 }

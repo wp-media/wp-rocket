@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Preload\Controller\CheckFinished;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
+use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -88,6 +89,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_queue', Queue::class );
 		$queue = $this->getContainer()->get( 'preload_queue' );
 
+		$this->getContainer()->add( 'homepage_crawler', CrawlHomepage::class );
+		$crawl_homepage = $this->getContainer()->get( 'homepage_crawler' );
+
 		$this->getContainer()->add( 'sitemap_parser', SitemapParser::class );
 		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
 
@@ -107,7 +111,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $crawl_homepage );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
