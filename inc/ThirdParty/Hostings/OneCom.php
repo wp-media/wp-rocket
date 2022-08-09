@@ -5,6 +5,7 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with One.com hosting.
@@ -12,6 +13,7 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.12.1
  */
 class OneCom implements Subscriber_Interface {
+	use ReturnTypesTrait;
 
 	/**
 	 * WP Options API instance
@@ -61,9 +63,13 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'init'                             => 'maybe_enable_cdn_option',
-			'rocket_cdn_reject_files'          => 'exclude_from_cdn',
-			'rocket_disable_cdn_option_change' => 'is_oc_cdn_enabled',
+			'init'                                    => 'maybe_enable_cdn_option',
+			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
+			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
+			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
+			'do_rocket_varnish_http_purge'            => 'maybe_purge_varnish',
+			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
+			'rocket_display_input_varnish_auto_purge' => 'maybe_purge_varnish',
 		];
 	}
 
@@ -124,6 +130,23 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
+	 * Disable CDN option change.
+	 *
+	 * @param array $settings CDN field settings data.
+	 * @return array
+	 */
+	public function disable_cdn_change( array $settings ): array {
+		if ( ! $this->is_oc_cdn_enabled() ) {
+			return $settings;
+		}
+
+		$settings['cdn']['container_class'][]      = 'wpr-isDisabled';
+		$settings['cdn']['input_attr']['disabled'] = 1;
+
+		return $settings;
+	}
+
+	/**
 	 * Disable/Enable CNAME field.
 	 *
 	 * @param boolean $disable_field Disable & grey out field.
@@ -136,6 +159,37 @@ class OneCom implements Subscriber_Interface {
 		}
 
 		return $disable_field;
+	}
+
+	/**
+	 * Purge varnish cache.
+	 *
+	 * @return boolean
+	 */
+	public function maybe_purge_varnish(): bool {
+		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
+	}
+
+	/**
+	 * Set varnish addon title
+	 *
+	 * @param array $settings Varnish settings field data.
+	 * @return array
+	 */
+	public function maybe_set_varnish_addon_title( array $settings ): array {
+
+		// Bail out if varnish is disabled.
+		if ( ! $this->maybe_purge_varnish() ) {
+			return $settings;
+		}
+
+		$settings['varnish_auto_purge']['title'] = sprintf(
+			// Translators: %s = Hosting name.
+				__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
+				'One.com'
+			);
+
+		return $settings;
 	}
 
 	/**
