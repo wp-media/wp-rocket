@@ -51,7 +51,7 @@ class Activation implements ActivationInterface {
 	 * Launch preload on activation.
 	 */
 	public function activate() {
-		do_action( 'admin_init' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		do_action( 'rocket_preload_activation' );
 		$this->controller->load_initial_sitemap();
 	}
 
