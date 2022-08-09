@@ -1618,6 +1618,14 @@ class Page {
 			) . '<br>';
 		}
 
+		/**
+		 * Filters the fields to be disabled for the CDN section.
+		 *
+		 * @since  3.12.1
+		 *
+		 * @param bool $alter Input should be altered.
+		 */
+		$rocket_disable_input_alt = apply_filters( 'rocket_disable_cdn_option_change', false );
 		$this->settings->add_settings_fields(
 			/**
 			 * Filters the fields for the CDN section.
@@ -1638,6 +1646,12 @@ class Page {
 						'page'              => 'page_cdn',
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_checkbox',
+						'container_class'   => [
+							$rocket_disable_input_alt ? 'wpr-isDisabled' : '',
+						],
+						'input_attr'        => [
+							'disabled' => $rocket_disable_input_alt ? 1 : 0,
+						],
 					],
 					'cdn_cnames'       => [
 						'type'        => 'cnames',
