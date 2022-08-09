@@ -100,17 +100,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                            => [ 'convert_to_webp', 16 ],
-			'rocket_cache_webp_setting_field'          => [
+			'rocket_buffer'                     => [ 'convert_to_webp', 16 ],
+			'rocket_cache_webp_setting_field'   => [
 				[ 'maybe_disable_setting_field' ],
 				[ 'webp_section_description' ],
 			],
-			'rocket_disable_webp_cache'                => 'maybe_disable_webp_cache',
-			'rocket_third_party_webp_change'           => 'sync_webp_cache_with_third_party_plugins',
-			'rocket_homepage_preload_url_request_args' => 'add_accept_header',
-			'rocket_preload_after_purge_cache_request_args' => 'add_accept_header',
-			'rocket_preload_url_request_args'          => 'add_accept_header',
-			'rocket_partial_preload_url_request_args'  => 'add_accept_header',
+			'rocket_disable_webp_cache'         => 'maybe_disable_webp_cache',
+			'rocket_third_party_webp_change'    => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_preload_before_preload_url' => 'add_accept_header',
 		];
 	}
 
@@ -426,18 +423,22 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @since 3.4
 	 * @author Remy Perona
 	 *
-	 * @param array $args Arguments for the request.
+	 * @param array $requests Requests to make.
 	 * @return array
 	 */
-	public function add_accept_header( $args ) {
+	public function add_accept_header( $requests ) {
 		if ( ! $this->options_data->get( 'cache_webp' ) ) {
-			return $args;
+			return $requests;
 		}
 
-		$args['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-		$args['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-
-		return $args;
+		return array_map(
+			function ( $request ) {
+				$request['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				$request['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				return $request;
+			},
+			$requests
+			);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */

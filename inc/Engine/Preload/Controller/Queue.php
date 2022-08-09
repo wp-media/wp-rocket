@@ -54,7 +54,7 @@ class Queue extends AbstractASQueue {
 	 */
 	public function add_job_preload_job_check_finished_async() {
 
-		if($this->job_preload_job_check_finished_async_exists()) {
+		if ( $this->job_preload_job_check_finished_async_exists() ) {
 			return '';
 		}
 
@@ -63,6 +63,7 @@ class Queue extends AbstractASQueue {
 
 	/**
 	 * Check if a task job_preload_job_check_finished_async_exists already exists.
+	 *
 	 * @return bool
 	 */
 	public function job_preload_job_check_finished_async_exists() {
