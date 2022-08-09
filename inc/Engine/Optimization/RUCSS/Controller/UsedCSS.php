@@ -90,6 +90,7 @@ class UsedCSS {
 		'.wprm-advanced-list-',
 		'.adsslot_', // For Advanced Ads plugin ads.
 		'.jnews_', // For JNews theme.
+		'.cp-info-bar.content-', // For Convert Plus plugin.
 	];
 
 	/**
