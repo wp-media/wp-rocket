@@ -141,7 +141,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$schedules['rocket_rucss_pending_jobs'] = [
 			'interval' => $interval,
-			'display'  => esc_html__( 'WP Rocket RUCSS pending jobs', 'rocket' ),
+			'display'  => esc_html__( 'WP Rocket Remove Unused CSS pending jobs', 'rocket' ),
 		];
 
 		return $schedules;

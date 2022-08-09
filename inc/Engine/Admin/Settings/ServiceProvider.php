@@ -33,19 +33,18 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-
-		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
+		$this->getContainer()->add( 'settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
+		$this->getContainer()->add( 'settings_render', Render::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
-		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
+		$this->getContainer()->add( 'settings_page', Page::class )
 			->addArgument( $this->getContainer()->get( 'settings_page_config' ) )
 			->addArgument( $this->getContainer()->get( 'settings' ) )
 			->addArgument( $this->getContainer()->get( 'settings_render' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->addArgument( $this->getContainer()->get( 'user_client' ) );
-		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
+		$this->getContainer()->share( 'settings_page_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'settings_page' ) )
 			->addTag( 'admin_subscriber' );
 	}
