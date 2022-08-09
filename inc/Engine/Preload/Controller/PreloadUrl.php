@@ -97,7 +97,7 @@ class PreloadUrl {
 		$requests = array_filter( $requests );
 
 		foreach ( $requests as $request ) {
-			if ( isset($request['url'] ) && is_string( $request['url'] ) ) {
+			if ( isset( $request['url'] ) && is_string( $request['url'] ) ) {
 
 				$headers = isset( $request['headers'] ) && is_array( $request['headers'] ) ? $request['headers'] : [];
 
@@ -121,7 +121,7 @@ class PreloadUrl {
 				 * @param array $headers Request arguments.
 				 */
 				$headers = apply_filters(
-					"rocket_preload_url_request_args",
+					'rocket_preload_url_request_args',
 					$headers
 				);
 
