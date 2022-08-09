@@ -147,21 +147,6 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable/Enable CNAME field.
-	 *
-	 * @param boolean $disable_field Disable & grey out field.
-	 * @param string  $field_value CNAME field value.
-	 * @return boolean
-	 */
-	public function maybe_grey_out_cname_field( bool $disable_field, string $field_value ): bool {
-		if ( false !== strpos( $field_value, 'usercontent.one' ) ) {
-			return true;
-		}
-
-		return $disable_field;
-	}
-
-	/**
 	 * Purge varnish cache.
 	 *
 	 * @return boolean
