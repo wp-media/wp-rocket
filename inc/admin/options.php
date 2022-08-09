@@ -246,9 +246,10 @@ add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'roc
  * Clear the main option before it is used later.
  *
  * @param array $newvalue An array of previous options values.
+ * @param array $oldvalue An array of previous options values.
  * @return array
  */
-function rocket_pre_main_option_clear( $newvalue ) {
+function rocket_pre_main_option_clear( $newvalue, $oldvalue ) {
 	foreach ( array_keys( $newvalue ) as $label ) {
 		if ( is_numeric( $newvalue[ $label ] ) ) {
 			if ( ctype_digit( $newvalue[ $label ] ) ) {
@@ -260,13 +261,13 @@ function rocket_pre_main_option_clear( $newvalue ) {
 	}
 
 	if ( ! key_exists( 'cache_webp', array_keys( $newvalue ) ) ) {
-		$newvalue['cache_webp'] = 0;
+		$newvalue['cache_webp'] = key_exists('cache_webp', $oldvalue) ? $oldvalue['cache_webp'] : 0;
 	}
 
 	return $newvalue;
 }
 
-add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option_clear', PHP_INT_MAX );
+add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option_clear', PHP_INT_MAX, 2 );
 
 /**
  * Auto-activate the SSL cache if the website URL is updated with https protocol
