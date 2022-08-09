@@ -3,15 +3,10 @@
 namespace WP_Rocket\Tests\Integration;
 
 trait DBTrait {
-	public static function resourceFound( array $resource ) : bool {
-		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_resources_query' );
-		return $resource_query->query( $resource );
-	}
-
 	public static function truncateUsedCssTable() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
 		if ( $rucss_usedcss_table->exists() ){
 			$rucss_usedcss_table->truncate();
 		}
@@ -22,34 +17,23 @@ trait DBTrait {
 
 		self::uninstallAll();
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		$rucss_resources_table->install();
-
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
 	}
 
 	public static function uninstallAll() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		if ( $rucss_resources_table->exists() ) {
-			$rucss_resources_table->uninstall();
-		}
-
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
 	}
 
 	public static function removeDBHooks() {
-		$container             = apply_filters( 'rocket_container', null );
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_resources_table ), 'maybe_upgrade', 10);
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_resources_table ), 'switch_blog', 10);
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);
 	}
