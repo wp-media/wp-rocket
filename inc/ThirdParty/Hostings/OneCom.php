@@ -69,7 +69,7 @@ class OneCom implements Subscriber_Interface {
 			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
 			'do_rocket_varnish_http_purge'            => 'maybe_purge_varnish',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
-			'rocket_display_input_varnish_auto_purge' => 'maybe_purge_varnish',
+			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 		];
 	}
 
@@ -79,7 +79,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_oc_cdn_enabled(): bool {
-		return (bool) get_option( 'oc_cdn_enabled', 0 );
+		return rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
 	}
 
 	/**
@@ -166,8 +166,8 @@ class OneCom implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	public function maybe_purge_varnish(): bool {
-		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
+	public function should_display_varnish_auto_purge_input(): bool {
+		return $this->is_varnish_active() ? false : true;
 	}
 
 	/**
@@ -179,7 +179,7 @@ class OneCom implements Subscriber_Interface {
 	public function maybe_set_varnish_addon_title( array $settings ): array {
 
 		// Bail out if varnish is disabled.
-		if ( ! $this->maybe_purge_varnish() ) {
+		if ( ! $this->is_varnish_active() ) {
 			return $settings;
 		}
 
@@ -190,6 +190,15 @@ class OneCom implements Subscriber_Interface {
 			);
 
 		return $settings;
+	}
+
+	/**
+	 * Check if varnish option is enabled.
+	 *
+	 * @return boolean
+	 */
+	private function is_varnish_active() {
+		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
 	}
 
 	/**
