@@ -129,7 +129,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 
 			$root_url = trailingslashit( $home_url );
 
-			if ( '/' === substr( $root_url, -1 ) && 0 <= count( $page ) && '/' === $page[0] ) {
+			if ( '/' === substr( $root_url, -1 ) && 0 <= strlen( $page ) && '/' === $page[0] ) {
 				$page = substr( $page, 1 );
 			}
 
