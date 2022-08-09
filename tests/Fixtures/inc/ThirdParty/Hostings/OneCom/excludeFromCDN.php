@@ -4,19 +4,17 @@ return [
 	'testShouldBailOutWithDisabledOneDotComCDN' => [
 		'config'      => [
             'oc_cdn_enabled' => false,
-            'excluded' => [
-                '/wp-content/plugins/some-plugins/(.*).css',
-            ],
+            'excluded' => [],
         ],
-		'excluded' => '/wp-includes/(.*)',
+		'expected' => [],
 	],
 	'testShouldExcludeFromCDN' => [
 		'config'      => [
             'oc_cdn_enabled' => true,
-            'excluded' => [
-                '/wp-content/plugins/some-plugins/(.*).css',
-            ],
+            'excluded' => [],
         ],
-		'excluded' => '/wp-includes/(.*)',
+		'expected' => [
+            '/wp-includes/(.*)'
+        ],
 	],
 ];
