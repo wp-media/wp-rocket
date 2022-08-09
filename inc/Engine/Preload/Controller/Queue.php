@@ -53,7 +53,28 @@ class Queue extends AbstractASQueue {
 	 * @return string
 	 */
 	public function add_job_preload_job_check_finished_async() {
+
+		if($this->job_preload_job_check_finished_async_exists()) {
+			return '';
+		}
+
 		return $this->schedule_single( time() + MINUTE_IN_SECONDS, 'rocket_preload_job_check_finished', [ time() ] );
+	}
+
+	/**
+	 * Check if a task job_preload_job_check_finished_async_exists already exists.
+	 * @return bool
+	 */
+	public function job_preload_job_check_finished_async_exists() {
+		$row_found = $this->search(
+			[
+				'hook'   => 'rocket_preload_job_check_finished',
+				'status' => ActionScheduler_Store::STATUS_PENDING,
+			],
+			'ids'
+		);
+
+		return count( $row_found ) > 0;
 	}
 
 	/**
