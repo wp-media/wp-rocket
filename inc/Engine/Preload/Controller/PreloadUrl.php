@@ -75,7 +75,6 @@ class PreloadUrl {
 					'user-agent' => 'WP Rocket/Preload',
 				],
 			],
-
 		];
 
 		if ( $is_mobile ) {
@@ -98,9 +97,9 @@ class PreloadUrl {
 		$requests = array_filter( $requests );
 
 		foreach ( $requests as $request ) {
-			if ( key_exists( 'url', $request ) && is_string( $request['url'] ) ) {
+			if ( isset($request['url'] ) && is_string( $request['url'] ) ) {
 
-				$headers = key_exists( 'headers', $request ) && is_array( $request['headers'] ) ? $request['headers'] : [];
+				$headers = isset( $request['headers'] ) && is_array( $request['headers'] ) ? $request['headers'] : [];
 
 				$headers = array_merge(
 					$headers,
@@ -115,6 +114,16 @@ class PreloadUrl {
 						'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 					]
 					);
+
+				/**
+				 * Filters the arguments for the preload request.
+				 *
+				 * @param array $headers Request arguments.
+				 */
+				$headers = apply_filters(
+					"rocket_preload_url_request_args",
+					$headers
+				);
 
 				wp_safe_remote_get(
 					user_trailingslashit( $request['url'] ),
