@@ -261,7 +261,7 @@ function rocket_pre_main_option_clear( $newvalue, $oldvalue ) {
 	}
 
 	if ( ! key_exists( 'cache_webp', $newvalue ) ) {
-		$newvalue['cache_webp'] = key_exists( 'cache_webp', $oldvalue ) ? $oldvalue['cache_webp'] : 0;
+		$newvalue['cache_webp'] = is_array( $oldvalue ) && key_exists( 'cache_webp', $oldvalue ) ? $oldvalue['cache_webp'] : 0;
 	}
 
 	return $newvalue;
