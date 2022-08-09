@@ -34,6 +34,7 @@ class Avada implements Subscriber_Interface {
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 			'init'                                 => 'disable_compilers',
+			'rocket_exclude_delay_js'              => 'maybe_exclude_jquery_delay_js',
 		];
 	}
 
@@ -142,6 +143,23 @@ class Avada implements Subscriber_Interface {
 		return $exclusions;
 	}
 
+	/**
+	 * Excludes Jquery from delay JS execution when Avada LazyLoad is enabled
+	 *
+	 * @since 3.11.5
+	 *
+	 * @param array $exclusions Array of exclusion patterns.
+	 *
+	 * @return array
+	 */
+	public function maybe_exclude_jquery_delay_js( $exclusions ): array {
+		$avada_options = get_option( 'fusion_options' );
+		if ( ! empty( $avada_options['lazy_load'] && 'avada' !== $avada_options['lazy_load'] ) ) {
+			return $exclusions;
+		}
+		$exclusions[] = '/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js';
+		return $exclusions;
+	}
 	/**
 	 * Disable CSS and JS combine file from Avada.
 	 */
