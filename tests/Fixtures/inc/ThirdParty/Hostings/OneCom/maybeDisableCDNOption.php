@@ -1,0 +1,50 @@
+<?php
+
+return [
+    'testShouldBailOutWithOneDotComCDNEnabled' => [
+        'config' => [
+            'cdn' => 1,
+            'oc_cdn_enabled' => true,
+            'options' => [
+                'cdn' => 1,
+                'cdn_cnames' => [
+                    'usercontent.one/wp/www.example.com',
+                ],
+                'cdn_zones' => [
+                    'all',
+                ],
+            ],
+        ],
+        'expected' => [
+            'cdn_cname' => 'usercontent.one/wp/www.example.com',
+        ],
+    ],
+    'testShouldBailOutWithCDNDisabled' => [
+        'config' => [
+            'cdn' => 0,
+            'oc_cdn_enabled' => false,
+            'options' => [
+                'cdn' => 0,
+                'cdn_cnames' => [],
+                'cdn_zones' => [],
+            ],
+        ],
+        'expected' => [
+            'cdn_cname' => 'usercontent.one/wp/www.example.com',
+        ],
+    ],
+    'testShouldDisableCDNWithOptions' => [
+        'config' => [
+            'cdn' => 1,
+            'oc_cdn_enabled' => false,
+            'options' => [
+                'cdn' => 0,
+                'cdn_cnames' => [],
+                'cdn_zones' => [],
+            ],
+        ],
+        'expected' => [
+            'cdn_cname' => 'usercontent.one/wp/www.example.com',
+        ],
+    ],
+];
