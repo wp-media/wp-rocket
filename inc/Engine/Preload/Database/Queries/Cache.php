@@ -424,7 +424,10 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" );
+
+		$condition = apply_filters('rocket_preload_all_to_pending_condition', ' WHERE 1 = 1');
+
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'$condition" );
 	}
 
 	/**
