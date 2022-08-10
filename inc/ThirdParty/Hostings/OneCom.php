@@ -5,7 +5,6 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with One.com hosting.
@@ -13,7 +12,6 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  * @since 3.12.1
  */
 class OneCom implements Subscriber_Interface {
-	use ReturnTypesTrait;
 
 	/**
 	 * WP Options API instance
@@ -44,6 +42,13 @@ class OneCom implements Subscriber_Interface {
 	private $cdn_zones = [];
 
 	/**
+	 * CDN option.
+	 *
+	 * @var boolean
+	 */
+	private $cdn = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options      $options_api WP Options API instance.
@@ -63,11 +68,14 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'init'                                    => 'maybe_enable_cdn_option',
+			'init'                                    => [
+				[ 'maybe_enable_cdn_option' ],
+				[ 'maybe_disable_cdn_option' ],
+			],
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
 			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
 			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
-			'do_rocket_varnish_http_purge'            => 'maybe_purge_varnish',
+			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 		];
@@ -89,27 +97,55 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public function maybe_enable_cdn_option() {
 
-		$cdn_url = $this->build_cname();
-
 		if ( ! $this->is_oc_cdn_enabled() ) {
-			$this->maybe_disable_cdn_option( $cdn_url );
-			return;
-		}
-
-		if ( '' === $cdn_url ) {
 			return;
 		}
 
 		$this->get_cdn_options();
 
-		if ( in_array( $cdn_url, $this->cdn_cnames, true ) ) {
+		$cdn_url = $this->build_cname();
+
+		if ( $this->cdn ) {
 			return;
 		}
 
-		$this->cdn_cnames[] = $cdn_url;
-		$this->cdn_zones[]  = 'all';
+		$this->cdn_cnames = [ $cdn_url ];
+		$this->cdn_zones  = [ 'all' ];
 
 		$this->update_cdn_options( 1, $this->cdn_cnames, $this->cdn_zones );
+
+		rocket_clean_domain();
+	}
+
+	/**
+	 * Disable cdn option.
+	 *
+	 * @return void
+	 */
+	public function maybe_disable_cdn_option() {
+
+		if ( $this->is_oc_cdn_enabled() ) {
+			return;
+		}
+
+		$this->get_cdn_options();
+
+		if ( ! $this->cdn ) {
+			return;
+		}
+
+		$cdn_url = $this->build_cname();
+
+		// Remove CDN CNAME.
+		$cname_index_key = array_search( $cdn_url, $this->cdn_cnames, true );
+		unset( $this->cdn_cnames[ $cname_index_key ] );
+
+		// Remove CDN Zone.
+		unset( $this->cdn_zones[ $cname_index_key ] );
+
+		$this->update_cdn_options( 0, $this->cdn_cnames, $this->cdn_zones );
+
+		rocket_clean_domain();
 	}
 
 	/**
@@ -182,32 +218,26 @@ class OneCom implements Subscriber_Interface {
 	 *
 	 * @return boolean
 	 */
-	private function is_varnish_active() {
+	public function is_varnish_active() {
 		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
 	}
 
 	/**
-	 * Disable cdn option.
+	 * Build CDN CNAME.
 	 *
-	 * @param string $cdn_url CDN URL.
-	 * @return void
+	 * @return string
 	 */
-	private function maybe_disable_cdn_option( string $cdn_url ) {
-
-		$this->get_cdn_options();
-
-		if ( ! in_array( $cdn_url, $this->cdn_cnames, true ) ) {
-			return;
+	public function build_cname(): string {
+		if ( ! isset( $_SERVER['ONECOM_DOMAIN_NAME'] ) && ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			return '';
 		}
 
-		// Remove CDN CNAME.
-		$cname_index_key = array_search( $cdn_url, $this->cdn_cnames, true );
-		unset( $this->cdn_cnames[ $cname_index_key ] );
+		$domain_name = $_SERVER['ONECOM_DOMAIN_NAME']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$http_host   = $_SERVER['HTTP_HOST']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 
-		// Remove CDN Zone.
-		unset( $this->cdn_zones[ $cname_index_key ] );
+		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 
-		$this->update_cdn_options( 0, $this->cdn_cnames, $this->cdn_zones );
+		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
 	}
 
 	/**
@@ -218,6 +248,7 @@ class OneCom implements Subscriber_Interface {
 	private function get_cdn_options() {
 		$this->cdn_cnames = $this->options->get( 'cdn_cnames', [] );
 		$this->cdn_zones  = $this->options->get( 'cdn_zone', [] );
+		$this->cdn        = (bool) $this->options->get( 'cdn', 0 );
 	}
 
 	/**
@@ -234,25 +265,5 @@ class OneCom implements Subscriber_Interface {
 		$this->options->set( 'cdn_zone', $cdn_zones );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
-
-		rocket_clean_domain();
-	}
-
-	/**
-	 * Build CDN CNAME.
-	 *
-	 * @return string
-	 */
-	private function build_cname(): string {
-		if ( ! isset( $_SERVER['ONECOM_DOMAIN_NAME'] ) && ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			return '';
-		}
-
-		$domain_name = sanitize_text_field( wp_unslash( $_SERVER['ONECOM_DOMAIN_NAME'] ) );
-		$http_host   = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
-
-		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
-
-		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
 	}
 }
