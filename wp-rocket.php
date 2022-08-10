@@ -4,8 +4,8 @@
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
  * Version: 3.11.5
- * Requires at least: 5.5
- * Requires PHP: 7.1
+ * Requires at least: 5.6
+ * Requires PHP: 7.2
  * Code Name: Iego
  * Author: WP Media
  * Author URI: https://wp-media.me
