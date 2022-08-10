@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Post;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
@@ -70,6 +71,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
 			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
+			$events['rocket_post_type_archive_enable']    = [ 'disable_post_type_archive', 10, 2 ];
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -539,5 +541,20 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$exclusions_gallery = apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions_gallery );
 
 		return array_merge( $exclusions, $exclusions_gallery );
+	}
+
+	/**
+	 * Disable post type archive on product type.
+	 *
+	 * @param boolean $enable Is post type archive enabled.
+	 * @param WP_Post $post Post to check.
+	 * @return bool
+	 */
+	public function disable_post_type_archive( $enable, $post ) {
+		if ( 'product' === $post->post_type ) {
+			return false;
+		}
+
+		return $enable;
 	}
 }

@@ -59,7 +59,16 @@ function rocket_get_purge_urls( $post_id, $post ) {
 
 	// Add Post Type archive.
 	$post_type = $post->post_type;
-	if ( 'post' !== $post_type ) {
+
+	/**
+	 * Filter to disable type archive post.
+	 *
+	 * @param boolean enable is the archive post enabled.
+	 * @param WP_Post post post to make the check.
+	 */
+	$type_archive_enable = apply_filters( 'rocket_post_type_archive_enable', true, $post );
+
+	if ( 'post' !== $post_type && $type_archive_enable ) {
 		$post_type_archive = get_post_type_archive_link( $post_type );
 		if ( $post_type_archive ) {
 			// Rename the caching filename for SSL URLs.
