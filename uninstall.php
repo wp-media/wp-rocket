@@ -25,13 +25,13 @@ require_once dirname( __FILE__ ) . '/inc/Dependencies/Database/Queries/Compare.p
 require_once dirname( __FILE__ ) . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
 
 require_once dirname( __FILE__ ) . '/inc/Engine/Preload/Database/Tables/Cache.php';
-$rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
-$rocket_cache_table           = new \WP_Rocket\Engine\Preload\Database\Tables\Cache();
-$rocket_uninstall             = new WPRocketUninstall(
+$rocket_rucss_usedcss_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
+$rocket_cache_table         = new \WP_Rocket\Engine\Preload\Database\Tables\Cache();
+$rocket_uninstall           = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
 	WP_ROCKET_CONFIG_PATH,
 	$rocket_rucss_usedcss_table,
 	$rocket_cache_table
 	);
-  
+
 $rocket_uninstall->uninstall();
