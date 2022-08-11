@@ -42,6 +42,16 @@ class CrawlHomepage {
 
 		preg_match_all( '/<a\s+(?:[^>]+?[\s"\']|)href\s*=\s*(["\'])(?<href>[^"\']+)\1/imU', $content, $urls );
 
-		return array_unique( $urls['href'] );
+
+		$home_url = home_url();
+
+		$urls = array_filter(
+			$urls['href'],
+			static function ( $url ) use ( $home_url ) {
+				return strpos( $url, $home_url ) !== false && strpos( $url, '#' ) === false;
+			}
+			);
+
+		return array_unique( $urls );
 	}
 }

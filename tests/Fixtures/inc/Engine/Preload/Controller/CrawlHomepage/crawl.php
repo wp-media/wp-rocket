@@ -5,8 +5,10 @@ $body = <<<HTML
 <head>
 </head>
 <body>
-<a href="url1">test</a>
-<a href="url2">test</a>
+<a href="home_url/url1">test</a>
+<a href="home_url/url2">test</a>
+<a href="home_url/#url4">test</a>
+<a href="url3">test</a>
 </body>
 </html>
 HTML;
@@ -29,8 +31,8 @@ return [
 			]
 		],
 		'expected' => [
-			'url1',
-			'url2',
+			'home_url/url1',
+			'home_url/url2',
 		]
 	],
 	'shouldReturnNothingOnWPError' => [
