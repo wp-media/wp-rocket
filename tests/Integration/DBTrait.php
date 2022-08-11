@@ -17,8 +17,9 @@ trait DBTrait {
 	}
 
 	public static function truncateUsedCssTable() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
 		if ( $rucss_usedcss_table->exists() ){
 			$rucss_usedcss_table->truncate();
 		}
@@ -35,9 +36,6 @@ trait DBTrait {
 
 		self::uninstallAll();
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		$rucss_resources_table->install();
-
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
 
@@ -46,14 +44,9 @@ trait DBTrait {
 	}
 
 	public static function uninstallAll() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		if ( $rucss_resources_table->exists() ) {
-			$rucss_resources_table->uninstall();
-		}
-
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
@@ -66,12 +59,9 @@ trait DBTrait {
 
 	public static function removeDBHooks() {
 		$container             = apply_filters( 'rocket_container', null );
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$preload_table         = $container->get( 'preload_caches_table' );
 
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_resources_table ), 'maybe_upgrade', 10);
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_resources_table ), 'switch_blog', 10);
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10);

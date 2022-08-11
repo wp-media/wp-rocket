@@ -79,7 +79,9 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 					// translators: %s = WP Rocket previous version.
 					'label'      => sprintf( __( 'Reinstall version %s', 'rocket' ), WP_ROCKET_LASTVERSION ),
 					'attributes' => [
-						'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--red wpr-icon-refresh',
+						'id'                      => 'wpr-rollback',
+						'class'                   => 'wpr-button wpr-button--icon wpr-button--small wpr-button--red wpr-icon-refresh',
+						'data-micromodal-trigger' => 'wpr-rollback-modal',
 					],
 				]
 			);
