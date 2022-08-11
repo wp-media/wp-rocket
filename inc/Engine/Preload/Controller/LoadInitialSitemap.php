@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Sitemaps;
 
 /**
  * Controller to load initial sitemap tasks.
@@ -128,6 +129,11 @@ class LoadInitialSitemap {
 	 * @return false|string
 	 */
 	protected function load_wordpress_sitemap() {
+
+		if ( ! WP_Sitemaps::sitemaps_enabled() ) {
+			return false;
+		}
+
 		$sitemaps = wp_sitemaps_get_server();
 
 		if ( ! $sitemaps ) {

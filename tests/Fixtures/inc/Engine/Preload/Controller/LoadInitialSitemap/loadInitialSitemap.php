@@ -16,7 +16,8 @@ return [
 				[['url' => 'home_url']],
 				[['url' => 'url1']],
 				[['url' => 'url2']],
-			]
+			],
+			'is_sitemap_activated' => true
 		],
 		'expected' => [
 			'transient' => true,
@@ -36,7 +37,8 @@ return [
 				[['url' => 'home_url']],
 				[['url' => 'url1']],
 				[['url' => 'url2']],
-			]
+			],
+			'is_sitemap_activated' => true
 		],
 		'expected' => [
 			'transient' => true,
@@ -56,7 +58,8 @@ return [
 				[['url' => 'home_url']],
 				[['url' => 'url1']],
 				[['url' => 'url2']],
-			]
+			],
+			'is_sitemap_activated' => false
 		],
 		'expected' => [
 		]

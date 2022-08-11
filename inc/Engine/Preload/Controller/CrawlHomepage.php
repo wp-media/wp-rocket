@@ -42,7 +42,6 @@ class CrawlHomepage {
 
 		preg_match_all( '/<a\s+(?:[^>]+?[\s"\']|)href\s*=\s*(["\'])(?<href>[^"\']+)\1/imU', $content, $urls );
 
-
 		$home_url = home_url();
 
 		$urls = array_filter(

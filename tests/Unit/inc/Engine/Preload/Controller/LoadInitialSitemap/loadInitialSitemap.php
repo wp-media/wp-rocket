@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Sitemaps;
 use WP_Sitemaps_Index;
 
 /**
@@ -61,13 +62,14 @@ class Test_LoadInitialSitemap extends TestCase {
 			]);
 		}
 
-		$mock = Mockery::mock(WP_Sitemaps_Index::class);
-		$mock->expects()->get_index_url()->andReturn($config['wp_sitemap']);
-		$sitemap = (object) ['index' => $mock];
+		WP_Sitemaps::$enabled = $config['is_sitemap_activated'];
 
+		if($config['is_sitemap_activated']) {
+			$mock = Mockery::mock(WP_Sitemaps_Index::class);
+			$mock->expects()->get_index_url()->andReturn($config['wp_sitemap']);
+			$sitemap = (object) ['index' => $mock];
+			Functions\expect('wp_sitemaps_get_server')->with()->andReturn($sitemap);
 
-		Functions\expect('wp_sitemaps_get_server')->with()->andReturn($sitemap);
-		if($config['wp_sitemap']) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($config['wp_sitemap']);
 			$this->queue->expects()->add_job_preload_job_check_finished_async();
 			$this->query->expects(self::once())->method('create_or_nothing')->with([
