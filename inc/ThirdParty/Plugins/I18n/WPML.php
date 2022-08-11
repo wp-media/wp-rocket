@@ -69,7 +69,7 @@ class WPML implements Subscriber_Interface {
 
 		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! $lang ) {
-			 return $condition;
+			return $condition;
 		}
 
 		$lang_url = $sitepress->language_url( $lang );
