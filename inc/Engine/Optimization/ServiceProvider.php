@@ -2,13 +2,13 @@
 namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Buffer\Config;
-use WP_Rocket\Buffer\Optimization;
+use WP_Rocket\Engine\Optimization\Buffer\Optimization;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
-use WP_Rocket\Subscriber\Optimization\Buffer_Subscriber;
+use WP_Rocket\Engine\Optimization\Buffer\Subscriber as Buffer_Subscriber;
 
 /**
  * Service provider for the WP Rocket optimizations
