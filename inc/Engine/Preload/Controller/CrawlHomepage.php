@@ -44,13 +44,23 @@ class CrawlHomepage {
 
 		$home_url = home_url();
 
+		$urls = array_map(
+			static function ( $url ) use ( $home_url ) {
+				if ( parse_url( $url, PHP_URL_HOST ) || strpos( $url, '#' ) !== false ) {
+					return $url;
+				}
+				return trailingslashit( $home_url ) . ltrim( parse_url( $url, PHP_URL_PATH ), '/' );
+			},
+			$urls['href']
+		);
+
 		$urls = array_filter(
-			$urls['href'],
+			$urls,
 			static function ( $url ) use ( $home_url ) {
 				return strpos( $url, $home_url ) !== false && strpos( $url, '#' ) === false;
 			}
 			);
 
-		return array_unique( $urls );
+		return array_values( array_unique( $urls ) );
 	}
 }

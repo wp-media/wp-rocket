@@ -5,9 +5,9 @@ $body = <<<HTML
 <head>
 </head>
 <body>
-<a href="home_url/url1">test</a>
-<a href="home_url/url2">test</a>
-<a href="home_url/#url4">test</a>
+<a href="http://example.com/url1">test</a>
+<a href="http://example.com/url2">test</a>
+<a href="http://example.com/#url4">test</a>
 <a href="url3">test</a>
 </body>
 </html>
@@ -16,7 +16,7 @@ HTML;
 return [
 	'shouldReturnUrlsOnSuccess' => [
 		'config' => [
-			'home_url' => 'home_url',
+			'home_url' => 'http://example.com',
 			'escaped_home_url' => 'escaped_home_url',
 			'request' => [
 				'response' => 'response',
@@ -31,13 +31,14 @@ return [
 			]
 		],
 		'expected' => [
-			'home_url/url1',
-			'home_url/url2',
+			'http://example.com/url1',
+			'http://example.com/url2',
+			'http://example.com/url3'
 		]
 	],
 	'shouldReturnNothingOnWPError' => [
 		'config' => [
-			'home_url' => 'home_url',
+			'home_url' => 'http://example.com',
 			'escaped_home_url' => 'escaped_home_url',
 			'request' => [
 				'response' => 'response',
@@ -55,7 +56,7 @@ return [
 	],
 	'shouldReturnNothingOnNoSuccessResponse' => [
 		'config' => [
-			'home_url' => 'home_url',
+			'home_url' => 'http://example.com',
 			'escaped_home_url' => 'escaped_home_url',
 			'request' => [
 				'response' => 'response',
