@@ -127,13 +127,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 				continue;
 			}
 
-			$root_url = trailingslashit( $home_url );
-
-			if ( '/' === substr( $root_url, -1 ) && 0 <= strlen( $page ) && '/' === $page[0] ) {
-				$page = substr( $page, 1 );
-			}
-
-			$purge_urls[] = $root_url . $page;
+			$purge_urls[] = trailingslashit( $home_url ) . ltrim( $page, '/' );
 		}
 	}
 
