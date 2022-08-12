@@ -46,7 +46,7 @@ class CrawlHomepage {
 
 		$urls = array_map(
 			static function ( $url ) use ( $home_url ) {
-				if ( parse_url( $url, PHP_URL_HOST ) || strpos( $url, '#' ) !== false ) {
+				if ( wp_parse_url( $url, PHP_URL_HOST ) || strpos( $url, '#' ) !== false ) {
 					return $url;
 				}
 				return trailingslashit( $home_url ) . ltrim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
