@@ -31,7 +31,6 @@ class Test_LoadInitialSitemap extends TestCase {
 		$this->crawler = Mockery::mock(CrawlHomepage::class);
 		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler);
 	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -61,8 +60,7 @@ class Test_LoadInitialSitemap extends TestCase {
 				'url' => $config['home_url']
 			]);
 		}
-
-		WP_Sitemaps::$enabled = $config['is_sitemap_activated'];
+		Functions\expect('get_option')->with('blog_public')->andReturn($config['is_sitemap_activated']);
 
 		if($config['is_sitemap_activated']) {
 			$mock = Mockery::mock(WP_Sitemaps_Index::class);

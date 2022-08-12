@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Sitemaps;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap::cancel_preload

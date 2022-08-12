@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Logger\Logger;
+use WP_Sitemaps;
 
 class ServiceProvider extends AbstractServiceProvider {
 

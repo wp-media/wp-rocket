@@ -129,8 +129,7 @@ class LoadInitialSitemap {
 	 * @return false|string
 	 */
 	protected function load_wordpress_sitemap() {
-
-		if ( ! WP_Sitemaps::sitemaps_enabled() ) {
+		if ( ! $this->sitemaps_enabled() ) {
 			return false;
 		}
 
@@ -151,5 +150,29 @@ class LoadInitialSitemap {
 	public function cancel_preload() {
 		$this->queue->cancel_pending_jobs();
 		$this->query->revert_in_progress();
+	}
+
+	/**
+	 * Check if sitemap is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function sitemaps_enabled() {
+		$is_enabled = (bool) get_option( 'blog_public' );
+
+		/**
+		 * Filters whether XML Sitemaps are enabled or not.
+		 *
+		 * When XML Sitemaps are disabled via this filter, rewrite rules are still
+		 * in place to ensure a 404 is returned.
+		 *
+		 * @see WP_Sitemaps::register_rewrites()
+		 *
+		 * @since 5.5.0
+		 *
+		 * @param bool $is_enabled Whether XML Sitemaps are enabled or not. Defaults
+		 * to true for public sites.
+		 */
+		return (bool) apply_filters( 'wp_sitemaps_enabled', $is_enabled );
 	}
 }
