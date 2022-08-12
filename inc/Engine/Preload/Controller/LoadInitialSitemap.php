@@ -185,6 +185,6 @@ class LoadInitialSitemap {
 		 * @param bool $is_enabled Whether XML Sitemaps are enabled or not. Defaults
 		 * to true for public sites.
 		 */
-		return (bool) apply_filters( 'wp_sitemaps_enabled', $is_enabled );
+		return (bool) apply_filters( 'wp_sitemaps_enabled', $is_enabled ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 }
