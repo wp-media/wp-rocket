@@ -122,7 +122,7 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
-		$url = strtok( untrailingslashit( $resource['url'] ), '?' );
+		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
@@ -181,6 +181,8 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
+		$url = strtok( $resource['url'], '?' );
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
@@ -191,8 +193,6 @@ class Cache extends Query {
 		if ( count( $rows ) > 0 ) {
 			return false;
 		}
-
-		$url = strtok( $resource['url'], '?' );
 
 		// Create this new row in DB.
 		$resource_id = $this->add_item(

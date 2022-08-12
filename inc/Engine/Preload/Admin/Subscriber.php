@@ -78,6 +78,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'             => 'clean_url',
 			'rocket_after_clean_terms'            => 'clean_urls',
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
