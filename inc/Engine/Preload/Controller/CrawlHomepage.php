@@ -49,7 +49,7 @@ class CrawlHomepage {
 				if ( parse_url( $url, PHP_URL_HOST ) || strpos( $url, '#' ) !== false ) {
 					return $url;
 				}
-				return trailingslashit( $home_url ) . ltrim( parse_url( $url, PHP_URL_PATH ), '/' );
+				return trailingslashit( $home_url ) . ltrim( wp_parse_url( $url, PHP_URL_PATH ), '/' );
 			},
 			$urls['href']
 		);

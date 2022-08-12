@@ -25,7 +25,9 @@ class Test_Crawl extends TestCase
 		Functions\expect('esc_url_raw')->with()->andReturn($config['escaped_home_url']);
 		Functions\expect('wp_remote_get')->with($config['escaped_home_url'])->andReturn($config['request']['response']);
 		Functions\expect('is_wp_error')->with($config['request']['response'])->andReturn($config['request']['is_error']);
-
+		Functions\when('wp_parse_url')->alias(function ($url, $component = -1) {
+			return parse_url($url, $component);
+		});
 		$this->configureCheckCode($config);
 		$this->configureRetrieveBody($config);
 
