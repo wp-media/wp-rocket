@@ -74,6 +74,12 @@ class LoadInitialSitemap {
 		 */
 		$sitemaps = apply_filters( 'rocket_sitemap_preload_list', [] );
 		if ( count( $sitemaps ) > 0 ) {
+			/**
+			 * Filter sitemaps URL that will be preloaded.
+			 *
+			 * @param array Array of sitemaps URL
+			 * @returns array
+			 */
 			$sitemaps = apply_filters( 'rocket_preload_sitemap_before_queue', $sitemaps );
 			$this->add_task_to_queue( $sitemaps );
 			return;
@@ -85,6 +91,12 @@ class LoadInitialSitemap {
 			$this->add_homepage_urls();
 			return;
 		}
+		/**
+		 * Filter sitemaps URL that will be preloaded.
+		 *
+		 * @param array Array of sitemaps URL
+		 * @returns array
+		 */
 		$sitemaps = apply_filters( 'rocket_preload_sitemap_before_queue', [ $sitemap ] );
 		$this->add_task_to_queue( $sitemaps );
 	}

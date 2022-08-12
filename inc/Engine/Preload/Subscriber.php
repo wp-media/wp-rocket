@@ -139,6 +139,13 @@ class Subscriber implements Subscriber_Interface {
 
 		if ( $this->query->is_preloaded( $url ) ) {
 			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+
+			/**
+			 * Fires when the preload from an URL is completed.
+			 *
+			 * @param string $url URL preladed.
+			 * @param string $device Device from the cache.
+			 */
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
@@ -167,7 +174,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Reload on permalink changed.
+	 * Preload on permalink changed.
 	 *
 	 * @return void
 	 */
@@ -188,7 +195,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Launch preload on deactivation.
+	 * Clear preload on deactivation.
 	 *
 	 * @return void
 	 */

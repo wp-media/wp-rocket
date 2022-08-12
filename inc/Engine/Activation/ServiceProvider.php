@@ -1,10 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Activation;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
-use WP_Rocket\Engine\Preload\Activation;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Engine\Capabilities\Manager;

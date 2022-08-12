@@ -125,6 +125,13 @@ class ServiceProvider extends AbstractServiceProvider {
 
 				$group = 'rocket-preload';
 
+				/**
+				 * Filters the clean batch size.
+				 *
+				 * @param int $batch_size Batch size.
+				 *
+				 * @return int
+				 */
 				$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $group );
 
 				return new PreloadQueueRunner(

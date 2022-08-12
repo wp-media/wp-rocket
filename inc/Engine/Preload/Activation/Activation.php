@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Engine\Preload\Activation;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -51,6 +50,9 @@ class Activation implements ActivationInterface {
 	 * Launch preload on activation.
 	 */
 	public function activate() {
+		/**
+		 * Action that fires before the preload does.
+		 */
 		do_action( 'rocket_preload_activation' );
 		$this->controller->load_initial_sitemap();
 	}
@@ -79,7 +81,7 @@ class Activation implements ActivationInterface {
 	}
 
 	/**
-	 * Launch preload on deactivation.
+	 * Clear preload on deactivation.
 	 */
 	public function deactivation() {
 		wp_clear_scheduled_hook( 'rocket_preload_clean_rows_time_event' );
