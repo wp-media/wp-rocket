@@ -69,8 +69,16 @@ class Test_MaybeDisableCDNOption extends TestCase {
 
         if ( ! $config['oc_cdn_enabled'] && $config['cdn'] === 1 ) {
 
-            $_SERVER['ONECOM_DOMAIN_NAME'] = 'example.com';
-            $_SERVER['HTTP_HOST'] = 'example.com';
+            $domain_name = $_SERVER['ONECOM_DOMAIN_NAME'] = $config['domain'];
+            $http_host = $_SERVER['HTTP_HOST'] = $config['domain'];
+
+            Functions\expect( 'wp_unslash' )
+                ->times( 4 )
+                ->andReturn( $domain_name, $http_host );
+
+            Functions\expect( 'sanitize_text_field' )
+                ->times( 4 )
+                ->andReturn( $domain_name, $http_host );
 
             $cdn_url = $this->onecom->build_cname();
 
