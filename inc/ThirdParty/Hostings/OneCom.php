@@ -232,8 +232,8 @@ class OneCom implements Subscriber_Interface {
 			return '';
 		}
 
-		$domain_name = $_SERVER['ONECOM_DOMAIN_NAME']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$http_host   = $_SERVER['HTTP_HOST']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$domain_name = sanitize_text_field( wp_unslash( $_SERVER['ONECOM_DOMAIN_NAME'] ) );
+		$http_host   = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
 
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 
