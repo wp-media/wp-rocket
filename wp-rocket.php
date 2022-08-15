@@ -4,8 +4,8 @@
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
  * Version: 3.11.5
- * Requires at least: 5.5
- * Requires PHP: 7.1
+ * Requires at least: 5.6
+ * Requires PHP: 7.2
  * Code Name: Iego
  * Author: WP Media
  * Author URI: https://wp-media.me
@@ -21,9 +21,9 @@ defined( 'ABSPATH' ) || exit;
 
 // Rocket defines.
 define( 'WP_ROCKET_VERSION',               '3.11.5' );
-define( 'WP_ROCKET_WP_VERSION',            '5.5' );
+define( 'WP_ROCKET_WP_VERSION',            '5.6' );
 define( 'WP_ROCKET_WP_VERSION_TESTED',     '5.9' );
-define( 'WP_ROCKET_PHP_VERSION',           '7.1' );
+define( 'WP_ROCKET_PHP_VERSION',           '7.2' );
 define( 'WP_ROCKET_PRIVATE_KEY',           false );
 define( 'WP_ROCKET_SLUG',                  'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN',              'https://wp-rocket.me/' );
