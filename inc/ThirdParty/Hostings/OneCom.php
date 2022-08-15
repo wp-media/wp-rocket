@@ -188,7 +188,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function should_display_varnish_auto_purge_input(): bool {
-		return $this->is_varnish_active() ? false : true;
+		return ! $this->is_varnish_active();
 	}
 
 	/**
