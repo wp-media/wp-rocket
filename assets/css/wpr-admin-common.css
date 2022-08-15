@@ -23,6 +23,3 @@
 	text-align: center;
 	z-index: 26;
 }
-.wp-core-ui select:disabled {
-	background-image: none;
-}
