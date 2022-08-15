@@ -59,7 +59,7 @@ jobs:
         working-directory: /tmp
 
       - name: Remove unmet dependencies by legacy versions
-        run: composer remove --dev --no-scripts coenjacobs/mozart
+        run: composer remove --dev --update-no-dev --no-scripts coenjacobs/mozart
         working-directory: /tmp/wp-rocket
 
       - name: Run composer
