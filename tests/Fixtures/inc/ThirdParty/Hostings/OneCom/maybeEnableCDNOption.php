@@ -3,7 +3,7 @@
 return [
     'testShouldBailOutWithOneDotComCDNDisabled' => [
         'config' => [
-            'cdn' => 0,
+            'cdn' => false,
             'oc_cdn_enabled' => false,
             'domain' => 'example.com',
             'options' => [
@@ -14,11 +14,12 @@ return [
         ],
         'expected' => [
             'cdn_cname' => 'usercontent.one/wp/www.example.com',
+            'return' => false,
         ],
     ],
     'testShouldBailOutWithCDNEnabled' => [
         'config' => [
-            'cdn' => 1,
+            'cdn' => true,
             'oc_cdn_enabled' => true,
             'domain' => 'example.com',
             'options' => [
@@ -33,11 +34,12 @@ return [
         ],
         'expected' => [
             'cdn_cname' => 'usercontent.one/wp/www.example.com',
+            'return' => true,
         ],
     ],
     'testShouldEnableCDNWithOptions' => [
         'config' => [
-            'cdn' => 0,
+            'cdn' => false,
             'oc_cdn_enabled' => true,
             'domain' => 'example.com',
             'options' => [
@@ -52,6 +54,7 @@ return [
         ],
         'expected' => [
             'cdn_cname' => 'usercontent.one/wp/www.example.com',
+            'return' => true,
         ],
     ],
 ];

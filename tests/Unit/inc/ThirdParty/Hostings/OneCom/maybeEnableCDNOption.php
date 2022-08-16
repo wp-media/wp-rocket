@@ -50,24 +50,7 @@ class Test_MaybeEnableCDNOption extends TestCase {
 			}
 		);
 
-        if ( $config['oc_cdn_enabled'] === true ) {
-            $this->options
-                ->shouldReceive( 'get' )
-                ->with( 'cdn_cnames', [] )
-                ->andReturn( $config['options']['cdn_cnames'] );
-
-            $this->options
-                ->shouldReceive( 'get' )
-                ->with( 'cdn_zone', [] )
-                ->andReturn( $config['options']['cdn_zones'] );
-
-            $this->options
-                ->shouldReceive( 'get' )
-                ->with( 'cdn', 0 )
-                ->andReturn( $config['cdn'] );
-        }
-
-        if ( $config['oc_cdn_enabled'] === true && $config['cdn'] === 0 ) {
+        if ( $config['oc_cdn_enabled'] && ! $config['cdn'] ) {
 
             $domain_name = $_SERVER['ONECOM_DOMAIN_NAME'] = $config['domain'];
             $http_host = $_SERVER['HTTP_HOST'] = $config['domain'];
@@ -111,7 +94,7 @@ class Test_MaybeEnableCDNOption extends TestCase {
             Functions\expect( 'rocket_clean_domain' )->once();
         }
 
-		$this->onecom->maybe_enable_cdn_option();
+		$this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
 	}
 
 	public function providerTestData() {
