@@ -58,27 +58,90 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		if ( $this->is_already_cached( $url ) ) {
+
+		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
+		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
-		wp_safe_remote_get(
-			user_trailingslashit( $url ),
+
+		$requests = [
 			[
-				'blocking' => false,
-				'timeout'  => 0.01,
-			]
-			);
-		if ( $this->options->get( 'cache_mobile', false ) ) {
-			wp_safe_remote_get(
-				user_trailingslashit( $url ),
-				[
+				'url'       => $url,
+				'is_mobile' => false,
+				'headers'   => [
 					'blocking'   => false,
 					'timeout'    => 0.01,
+					'user-agent' => 'WP Rocket/Preload',
+				],
+			],
+		];
+
+		if ( $is_mobile ) {
+			$requests[] = [
+				'url'       => $url,
+				'headers'   => [
 					'user-agent' => $this->get_mobile_user_agent_prefix(),
+				],
+				'is_mobile' => true,
+			];
+		}
+
+		/**
+		 * Filters to modify requests done to preload an url.
+		 *
+		 * @param array $requests Requests that will be done.
+		 */
+		$requests = apply_filters( 'rocket_preload_before_preload_url', $requests );
+
+		$requests = array_filter( $requests );
+
+		foreach ( $requests as $request ) {
+			if ( ! isset( $request['url'] ) || ! is_string( $request['url'] ) ) {
+				continue;
+			}
+
+			$headers = isset( $request['headers'] ) && is_array( $request['headers'] ) ? $request['headers'] : [];
+
+			$headers = array_merge(
+				$headers,
+				[
+					'blocking'  => false,
+					'timeout'   => 0.01,
+					/**
+					 * Filter to activate the verification of SSl.
+					 *
+					 * @param string $activate is the verification activated.
+					 */
+					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
 				);
+
+			/**
+			 * Filters the arguments for the preload request.
+			 *
+			 * @param array $headers Request arguments.
+			 */
+			$headers = apply_filters(
+				'rocket_preload_url_request_args',
+				$headers
+			);
+
+			wp_safe_remote_get(
+				user_trailingslashit( $request['url'] ),
+				$headers
+			);
+			/**
+			 * Filter the delay between each preload request.
+			 *
+			 * @param float $delay_between the defined delay.
+			 * @returns float
+			 */
+			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
+
+			usleep( $delay_between );
 		}
+
 	}
 
 	/**
@@ -111,9 +174,10 @@ class PreloadUrl {
 	public function process_pending_jobs() {
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 100 );
 		$rows  = $this->query->get_pending_jobs( $count );
-		foreach ( $rows as $row ) {
+		foreach ( $rows as $index => $row ) {
 			$this->query->make_status_inprogress( $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
+
 		}
 	}
 
@@ -121,9 +185,11 @@ class PreloadUrl {
 	 * Check if the cache file for $item already exists.
 	 *
 	 * @param  string $url The URL to preload.
+	 * @param  bool   $is_mobile is mobile text.
+	 *
 	 * @return bool
 	 */
-	public function is_already_cached( string $url ) {
+	public function is_already_cached( string $url, bool $is_mobile = false ) {
 		static $https;
 
 		if ( ! isset( $https ) ) {
@@ -143,7 +209,9 @@ class PreloadUrl {
 			$url['query'] = '#' . $url['query'] . '/';
 		}
 
-		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $https . '.html';
+		$mobile = $is_mobile ? '-mobile' : '';
+
+		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
 		return $this->filesystem->exists( $file_cache_path );
 	}

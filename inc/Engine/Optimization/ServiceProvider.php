@@ -8,7 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
-use WP_Rocket\Engine\Optimization\Buffer\Subscriber as Buffer_Subscriber;
+use WP_Rocket\Engine\Optimization\Buffer\Subscriber as BufferSubscriber;
 
 /**
  * Service provider for the WP Rocket optimizations
@@ -56,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
-		$this->getContainer()->share( 'buffer_subscriber', Buffer_Subscriber::class )
+		$this->getContainer()->share( 'buffer_subscriber', BufferSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'cache_dynamic_resource', CacheDynamicResource::class )

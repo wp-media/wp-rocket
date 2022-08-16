@@ -9,6 +9,16 @@ use WP_Rocket\Logger\Logger;
 class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/**
+	 * Cron hook name.
+	 */
+	const WP_CRON_HOOK = 'action_scheduler_run_queue_preload';
+
+	/**
+	 * Cron schedule interval.
+	 */
+	const WP_CRON_SCHEDULE = 'every_minute';
+
+	/**
 	 * Current runner instance.
 	 *
 	 * @var PreloadQueueRunner Instance.
@@ -63,6 +73,7 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @param \ActionScheduler_Lock|null                     $locker Lock action scheduler.
 	 */
 	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, \ActionScheduler_QueueCleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null, ActionScheduler_Compatibility $compatibility = null, Logger $logger = null, \ActionScheduler_Lock $locker = null ) {
+
 		parent::__construct( $store, $monitor, $cleaner );
 		$this->async_request = $async_request;
 		$this->compatibility = $compatibility;
@@ -113,6 +124,23 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return void
 	 */
 	public function init() {
+		// phpcs:ignore WordPress.WP.CronInterval.CronSchedulesInterval
+		add_filter( 'cron_schedules', [ $this, 'add_wp_cron_schedule' ] );
+
+		// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param.
+		$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
+		if ( $next_timestamp ) {
+			wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
+		}
+
+		$cron_context = [ 'WP Cron' ];
+
+		if ( ! wp_next_scheduled( self::WP_CRON_HOOK, $cron_context ) ) {
+			$schedule = apply_filters( 'rocket_action_scheduler_run_schedule', self::WP_CRON_SCHEDULE );
+			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
+		}
+
+		add_action( self::WP_CRON_HOOK, [ $this, 'run' ] );
 		add_action( 'shutdown', [ $this, 'maybe_dispatch_async_request' ] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
@@ -125,6 +153,9 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		if ( is_admin() && ! $this->locker->is_locked( 'async-request-runner' ) ) {
 			// Only start an async queue at most once every 60 seconds.
 			$this->locker->set( 'async-request-runner' );
+			if ( ! $this->async_request ) {
+				return;
+			}
 			$this->async_request->maybe_dispatch();
 		}
 	}
@@ -182,5 +213,25 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			wp_cache_flush();
 		}
+	}
+
+	/**
+	 * Add the cron schedule.
+	 *
+	 * @param array $schedules Array of current schedules.
+	 *
+	 * @return array
+	 */
+	public function add_wp_cron_schedule( $schedules ) {
+		if ( isset( $schedules['every_minute'] ) ) {
+			return $schedules;
+		}
+
+		$schedules['every_minute'] = [
+			'interval' => 60, // in seconds.
+			'display'  => __( 'Every minute', 'rocket' ),
+		];
+
+		return $schedules;
 	}
 }

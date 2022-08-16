@@ -122,10 +122,12 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
+		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => $url,
 			]
 		);
 
@@ -133,7 +135,7 @@ class Cache extends Query {
 			// Create this new row in DB.
 			$resource_id = $this->add_item(
 				[
-					'url'           => untrailingslashit( $resource['url'] ),
+					'url'           => $url,
 					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 					'last_accessed' => current_time( 'mysql', true ),
 				]
@@ -151,7 +153,7 @@ class Cache extends Query {
 		$db_row = array_pop( $rows );
 
 		$data = [
-			'url'      => untrailingslashit( $resource['url'] ),
+			'url'      => $url,
 			'status'   => $resource['status'],
 			'modified' => current_time( 'mysql', true ),
 		];
@@ -179,6 +181,8 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
+		$url = strtok( $resource['url'], '?' );
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
@@ -193,7 +197,7 @@ class Cache extends Query {
 		// Create this new row in DB.
 		$resource_id = $this->add_item(
 			[
-				'url'           => untrailingslashit( $resource['url'] ),
+				'url'           => untrailingslashit( $url ),
 				'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
 				'last_accessed' => current_time( 'mysql', true ),
 			]
@@ -216,6 +220,9 @@ class Cache extends Query {
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url ) {
+
+		$url = strtok( $url, '?' );
+
 		$query = $this->query(
 			[
 				'url' => untrailingslashit( $url ),
@@ -265,7 +272,7 @@ class Cache extends Query {
 			return [];
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
 		$rows_affected       = $db->get_results( $query );
 
@@ -401,7 +408,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 day)" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
@@ -417,6 +424,68 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'" );
+
+		/**
+		 * Filter condition for cleaning URLS in the database.
+		 *
+		 * @param string $condition condition for cleaning URLS in the database.
+		 * @returns string
+		 */
+		$condition = apply_filters( 'rocket_preload_all_to_pending_condition', ' WHERE 1 = 1' );
+
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'$condition" );
+	}
+
+	/**
+	 * Check if the page is preloaded.
+	 *
+	 * @param string $url url from the page to check.
+	 * @return bool
+	 */
+	public function is_preloaded( string $url ): bool {
+		$pending_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+				'url'    => untrailingslashit( $url ),
+			]
+		);
+		return 0 !== $pending_count;
+	}
+
+	/**
+	 * Check if the page is pending.
+	 *
+	 * @param string $url url from the page to check.
+	 * @return bool
+	 */
+	public function is_pending( string $url ): bool {
+		$pending_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'pending',
+				'url'    => untrailingslashit( $url ),
+			]
+		);
+		return 0 !== $pending_count;
+	}
+
+	/**
+	 * Remove all entries from the table.
+	 *
+	 * @return false|void
+	 */
+	public function remove_all() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$db->query( "DELETE FROM `$prefixed_table_name` WHERE 1 = 1" );
 	}
 }

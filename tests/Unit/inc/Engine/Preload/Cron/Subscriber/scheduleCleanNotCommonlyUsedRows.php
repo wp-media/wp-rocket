@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Cron\Subscriber;
 
 use Mockery;
+use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
@@ -23,6 +24,7 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 	protected $query;
 	protected $settings;
 	protected $controller;
+	protected $queue_runner;
 
 	protected function setUp(): void
 	{
@@ -30,8 +32,9 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->settings = Mockery::mock(Settings::class);
 		$this->controller = Mockery::mock(PreloadUrl::class);
+		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
 
-		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller);
+		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
 	}
 
 	/**
@@ -53,10 +56,10 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 			return;
 		}
 
-		$old_time = time();
+		$old_time = time() + 10 * MINUTE_IN_SECONDS;
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
-			return $date >= $old_time  && $date <= time();
+			return $date >= $old_time  && $date <= time() + 10 * MINUTE_IN_SECONDS;
 		}), 'weekly', 'rocket_preload_clean_rows_time_event');
 	}
 }

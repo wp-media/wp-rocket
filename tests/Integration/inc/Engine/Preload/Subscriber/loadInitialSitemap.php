@@ -15,17 +15,27 @@ class Test_LoadInitialSitemap extends AdminTestCase
 
 	protected $sitemaps;
 
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		parent::tear_down_after_class();
+		self::uninstallAll();
+	}
+
 	public function setUp(): void
 	{
 		parent::setUp();
-		self::installFresh();
 		add_filter('rocket_sitemap_preload_list', [$this, 'return_sitemaps']);
 	}
 
 	public function tearDown(): void
 	{
 		remove_filter('rocket_sitemap_preload_list', [$this, 'return_sitemaps']);
-		self::uninstallAll();
 		parent::tearDown();
 	}
 

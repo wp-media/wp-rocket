@@ -78,7 +78,7 @@ class Optimization extends Abstract_Buffer {
 		 */
 		do_action( 'rocket_before_maybe_process_buffer', $buffer );
 
-		if ( ! $this->is_html( $buffer ) ) {
+		if ( ! $this->is_feed_uri() && ! $this->is_html( $buffer ) ) {
 			return $buffer;
 		}
 
@@ -109,5 +109,16 @@ class Optimization extends Abstract_Buffer {
 		do_action( 'rocket_after_process_buffer' );
 
 		return $buffer;
+	}
+
+	/**
+	 * Tell if the current url is a feed.
+	 *
+	 * @return bool
+	 */
+	public function is_feed_uri() {
+		global $wp_rewrite, $wp;
+		$feed_uri = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
+		return (bool) preg_match( '#^(' . $feed_uri . ')$#i', '/' . $wp->request );
 	}
 }

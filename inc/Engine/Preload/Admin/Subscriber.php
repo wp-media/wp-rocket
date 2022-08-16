@@ -42,13 +42,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $queue;
 
 	/**
-	 * Preload queue runner.
-	 *
-	 * @var PreloadQueueRunner
-	 */
-	protected $queue_runner;
-
-	/**
 	 * Logger instance.
 	 *
 	 * @var Logger
@@ -58,20 +51,18 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data       $options Options instance.
-	 * @param Settings           $settings Settings instance.
-	 * @param ClearCache         $clear_cache Clear cache controller.
-	 * @param Queue              $queue preload queue.
-	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
-	 * @param Logger             $logger logger instance.
+	 * @param Options_Data $options Options instance.
+	 * @param Settings     $settings Settings instance.
+	 * @param ClearCache   $clear_cache Clear cache controller.
+	 * @param Queue        $queue preload queue.
+	 * @param Logger       $logger logger instance.
 	 */
-	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, PreloadQueueRunner $preload_queue_runner, Logger $logger ) {
-		$this->options      = $options;
-		$this->settings     = $settings;
-		$this->controller   = $clear_cache;
-		$this->queue        = $queue;
-		$this->queue_runner = $preload_queue_runner;
-		$this->logger       = $logger;
+	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, Logger $logger ) {
+		$this->options    = $options;
+		$this->settings   = $settings;
+		$this->controller = $clear_cache;
+		$this->queue      = $queue;
+		$this->logger     = $logger;
 	}
 
 	/**
@@ -81,15 +72,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'             => [ 'maybe_display_preload_notice' ],
+			'admin_notices'             => [
+				'maybe_display_preload_notice',
+				'maybe_display_as_missed_tables_notice',
+			],
 			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'   => 'clean_url',
 			'rocket_after_clean_terms'  => 'clean_urls',
 			'after_rocket_clean_domain' => 'clean_full_cache',
 			'wp_trash_post'             => 'delete_post_preload_cache',
 			'delete_post'               => 'delete_post_preload_cache',
 			'pre_delete_term'           => 'delete_term_preload_cache',
-			'init'                      => [ 'maybe_init_preload_queue' ],
 		];
 	}
 
@@ -108,6 +102,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_full_cache() {
+		set_transient( 'wpr_preload_running', true );
+		$this->queue->add_job_preload_job_check_finished_async();
 		$this->controller->full_clean();
 	}
 
@@ -139,17 +135,14 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Set the preload queue runner.
+	 * Clean the url.
 	 *
+	 * @param string $url url.
 	 * @return void
 	 */
-	public function maybe_init_preload_queue() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
+	public function clean_url( string $url ) {
 
-		$this->queue_runner->init();
-
+		$this->controller->partial_clean( [ $url ] );
 	}
 
 	/**
@@ -190,5 +183,14 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->controller->delete_url( $url );
+	}
+
+	/**
+	 * Display a notice when Action Scheduler tables are missing.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_as_missed_tables_notice() {
+		$this->settings->maybe_display_as_missed_tables_notice();
 	}
 }

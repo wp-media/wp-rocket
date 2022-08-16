@@ -5,11 +5,14 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use ActionScheduler_Compatibility;
 use ActionScheduler_Lock;
+use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Preload\Controller\CheckFinished;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
+use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -20,6 +23,7 @@ use WP_Rocket\Engine\Preload\Frontend\FetchSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket_Mobile_Detect;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -51,6 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
 		'fonts_preload_subscriber',
+		'preload_activation',
 	];
 
 	/**
@@ -63,6 +68,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
+
+		$this->getContainer()->add( 'preload_mobile_detect', WP_Rocket_Mobile_Detect::class );
 
 		$this->getContainer()->add( 'preload_settings', Settings::class )
 			->addArgument( $options );
@@ -81,6 +88,9 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_queue', Queue::class );
 		$queue = $this->getContainer()->get( 'preload_queue' );
+
+		$this->getContainer()->add( 'homepage_crawler', CrawlHomepage::class );
+		$crawl_homepage = $this->getContainer()->get( 'homepage_crawler' );
 
 		$this->getContainer()->add( 'sitemap_parser', SitemapParser::class );
 		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
@@ -101,15 +111,33 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
 			->addArgument( $queue )
+			->addArgument( $cache_query )
+			->addArgument( $crawl_homepage );
+
+		$this->getContainer()->add( 'preload_activation', Activation::class )
+			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $queue )
 			->addArgument( $cache_query );
 
 		$this->getContainer()->share(
 			'preload_queue_runner',
 			static function() {
+
+				$group = 'rocket-preload';
+
+				/**
+				 * Filters the clean batch size.
+				 *
+				 * @param int $batch_size Batch size.
+				 *
+				 * @return int
+				 */
+				$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $group );
+
 				return new PreloadQueueRunner(
 					null,
 					null,
-					null,
+					new Cleaner( null, $batch_size, $group ),
 					null,
 					new ActionScheduler_Compatibility(),
 					new Logger(),
@@ -133,15 +161,25 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $check_finished_controller )
 			->addTag( 'common_subscriber' );
 
+		$this->getContainer()->add( 'preload_clean_controller', ClearCache::class )
+			->addArgument( $cache_query );
+
+		$clean_controller = $this->getContainer()->get( 'preload_clean_controller' );
+
 		$this->getContainer()->share( 'preload_subscriber', Subscriber::class )
+			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $cache_query )
+			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
+			->addArgument( $this->getContainer()->get( 'preload_mobile_detect' ) )
+			->addArgument( $clean_controller )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )
 			->addArgument( $preload_settings )
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
+			->addArgument( $preload_queue_runner )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'fonts_preload_subscriber', Fonts::class )
@@ -149,18 +187,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->add( 'preload_clean_controller', ClearCache::class )
-			->addArgument( $cache_query );
-
-		$clean_controller = $this->getContainer()->get( 'preload_clean_controller' );
-
 		$this->getContainer()->add( 'preload_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $preload_settings )
 			->addArgument( $clean_controller )
 			->addArgument( $queue )
-			->addArgument( $preload_queue_runner )
 			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
+
 	}
 }

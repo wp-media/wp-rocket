@@ -10,6 +10,7 @@ return [
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
+				'user-agent' => 'WP Rocket/Preload',
 			],
 			'config_mobile' => [
 				'blocking' => false,
@@ -32,20 +33,6 @@ return [
 			'status' => 'pending',
 		]
 	],
-	'preloadNoMobileShouldPreloadOnlyOnce' => [
-		'config' => [
-			'existing_job' => [
-				'url' => 'url',
-				'status' => 'pending',
-			],
-			'url' => 'url',
-			'mobile_cache' => false,
-		],
-		'expected' => [
-			'url' => 'url',
-			'status' => 'pending',
-		]
-	],
 	'preloadWithSuccessShouldContinue' => [
 		'config' => [
 			'existing_job' => [
@@ -56,6 +43,7 @@ return [
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
+				'user-agent' => 'WP Rocket/Preload',
 			],
 			'config_mobile' => [
 				'blocking' => false,

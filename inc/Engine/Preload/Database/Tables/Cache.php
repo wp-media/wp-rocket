@@ -7,6 +7,16 @@ use WP_Rocket\Dependencies\Database\Table;
 class Cache extends Table {
 
 	/**
+	 * Hook into queries, admin screens, and more!
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct() {
+		parent::__construct();
+		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
+	}
+
+	/**
 	 * Table name
 	 *
 	 * @var string

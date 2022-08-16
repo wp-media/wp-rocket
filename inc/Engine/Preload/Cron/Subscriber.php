@@ -2,10 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Cron;
 
+use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -31,16 +33,25 @@ class Subscriber implements Subscriber_Interface {
 	protected $preload_controller;
 
 	/**
+	 * Preload queue runner.
+	 *
+	 * @var PreloadQueueRunner
+	 */
+	protected $queue_runner;
+
+	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Settings   $settings Preload settings.
-	 * @param Cache      $query Db query.
-	 * @param PreloadUrl $preload_controller Preload url controller.
+	 * @param Settings           $settings Preload settings.
+	 * @param Cache              $query Db query.
+	 * @param PreloadUrl         $preload_controller Preload url controller.
+	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
 	 */
-	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller ) {
+	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, PreloadQueueRunner $preload_queue_runner ) {
 		$this->settings           = $settings;
 		$this->query              = $query;
 		$this->preload_controller = $preload_controller;
+		$this->queue_runner       = $preload_queue_runner;
 	}
 
 	/**
@@ -54,13 +65,14 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_process_pending'             => 'process_pending_urls',
 			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
 			'cron_schedules'                             => [
-				'add_interval',
-				'add_revert_old_in_progress_interval',
+				[ 'add_interval' ],
+				[ 'add_revert_old_in_progress_interval' ],
 			],
 			'init'                                       => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'schedule_revert_old_in_progress_rows' ],
+				[ 'maybe_init_preload_queue' ],
 			],
 		];
 	}
@@ -76,7 +88,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'weekly', 'rocket_preload_clean_rows_time_event' );
+		wp_schedule_event( time() + 10 * MINUTE_IN_SECONDS, 'weekly', 'rocket_preload_clean_rows_time_event' );
 	}
 
 	/**
@@ -173,7 +185,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_preload_process_pending', 'rocket_preload_process_pending' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_preload_process_pending', 'rocket_preload_process_pending' );
 	}
 
 	/**
@@ -182,7 +194,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_revert_old_in_progress_rows() {
-
 		if (
 			! $this->settings->is_enabled()
 			&&
@@ -201,7 +212,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
 	}
 
 	/**
@@ -220,5 +231,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function revert_old_in_progress_rows() {
 		$this->query->revert_old_in_progress();
+	}
+
+	/**
+	 * Set the preload queue runner.
+	 *
+	 * @return void
+	 */
+	public function maybe_init_preload_queue() {
+		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		$this->queue_runner->init();
+
 	}
 }

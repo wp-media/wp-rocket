@@ -12,33 +12,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
-
-      - name: Build
-        run: |
-          npm ci
-          gulp run:build
-
-      - name: Add files
-        id: add
-        run: |
-          git add --all
-        shell: bash
-
-      - name: Commit and push changes
-        if: ${{ steps.add.outcome == 'success' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Compile assets
-          commit_user_name: WP-media GitHub Actions Bot
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.1'
+          php-version: '7.2'
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -57,6 +34,10 @@ jobs:
           unzip base.zip
           mv wp-rocket-* wp-rocket
         working-directory: /tmp
+
+      - name: Remove unmet dependencies by legacy versions
+        run: composer remove --dev --update-no-dev --no-scripts coenjacobs/mozart
+        working-directory: /tmp/wp-rocket
 
       - name: Run composer
         run: composer install --no-scripts --no-dev

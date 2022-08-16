@@ -21,6 +21,7 @@ class Test_MaybeDisplayPreloadNotice extends AdminTestCase {
 
 	public function tearDown(): void
 	{
+		delete_transient('wpr_preload_running');
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'get_sitemap_preload']);
 		parent::tearDown();
 	}
@@ -29,13 +30,14 @@ class Test_MaybeDisplayPreloadNotice extends AdminTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
+		delete_transient('wpr_preload_running');
 		$this->sitemap_preload = $config['activated'];
 		if ( $config['cap'] ) {
 			$this->setRoleCap( 'administrator', 'rocket_manage_options' );
 			$this->setCurrentUser( 'administrator' );
 		}
 		set_current_screen( $config['screen'] );
-		if(key_exists('transient', $config)) {
+		if(key_exists('transient', $config) && $config['transient']) {
 			set_transient('wpr_preload_running', true);
 		}
 		ob_start();

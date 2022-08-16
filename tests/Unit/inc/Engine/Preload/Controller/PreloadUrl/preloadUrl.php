@@ -9,9 +9,9 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::preload_url
@@ -41,6 +41,7 @@ class Test_PreloadUrl extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
+		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
 		$this->configureRequest($config);
 		$this->configureMobileRequest($config);
@@ -51,7 +52,6 @@ class Test_PreloadUrl extends TestCase
 		if($config['cache_exists']) {
 			return;
 		}
-		$this->options->expects()->get('cache_mobile', false)->andReturn($config['cache_mobile']);
 
 		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request']['config']);
 	}
