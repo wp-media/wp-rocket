@@ -5,7 +5,6 @@ return [
         'config' => [
             'cdn' => true,
             'oc_cdn_enabled' => true,
-            'domain' => 'example.com',
             'options' => [
                 'cdn' => 1,
                 'cdn_cnames' => [
@@ -25,7 +24,6 @@ return [
         'config' => [
             'cdn' => false,
             'oc_cdn_enabled' => false,
-            'domain' => 'example.com',
             'options' => [
                 'cdn' => 0,
                 'cdn_cnames' => [],
@@ -41,7 +39,6 @@ return [
         'config' => [
             'cdn' => true,
             'oc_cdn_enabled' => false,
-            'domain' => 'example.com',
             'options' => [
                 'cdn' => 0,
                 'cdn_cnames' => [],
