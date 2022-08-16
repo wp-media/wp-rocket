@@ -91,6 +91,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                   => [ 'on_update', 16, 2 ],
 			'rocket_rucss_complete_job_status'    => 'clean_url',
 			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
+			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
 		];
 	}
 
@@ -224,5 +225,49 @@ class Subscriber implements Subscriber_Interface {
 	public function clean_url( string $url ) {
 
 		$this->clear_cache->partial_clean( [ $url ] );
+	}
+
+	/**
+	 * Pushes URLs to preload to the queue after cache directories are purged.
+	 *
+	 * @since  3.4
+	 *
+	 * @param array $deleted {
+	 *     An array of arrays, described like: {.
+	 *         @type string $home_url  The home URL.
+	 *         @type string $home_path Path to home.
+	 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
+	 *         @type array  $files     A list of paths of files that have been deleted.
+	 *     }
+	 * }
+	 */
+	public function preload_after_automatic_cache_purge( $deleted ) {
+		if ( ! $deleted || ! $this->options->get( 'manual_preload' ) ) {
+			return;
+		}
+
+		foreach ( $deleted as $data ) {
+			if ( $data['logged_in'] ) {
+				// Logged in user: no need to preload those since we would need the corresponding cookies.
+				continue;
+			}
+			foreach ( $data['files'] as $file_path ) {
+				if ( strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				} else {
+					$file_path         = untrailingslashit( $file_path );
+					$data['home_path'] = untrailingslashit( $data['home_path'] );
+					$data['home_url']  = untrailingslashit( $data['home_url'] );
+					if ( '/' === substr( get_option( 'permalink_structure' ), -1 ) ) {
+						$file_path         .= '/';
+						$data['home_path'] .= '/';
+						$data['home_url']  .= '/';
+					}
+				}
+
+				$this->controller->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
+			}
+		}
 	}
 }
