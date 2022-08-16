@@ -139,7 +139,7 @@ class PreloadUrl {
 			 */
 			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 0.7 );
 
-			sleep( $delay_between );
+			usleep( $delay_between );
 		}
 
 	}
