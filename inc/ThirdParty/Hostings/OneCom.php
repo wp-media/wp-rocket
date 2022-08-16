@@ -117,8 +117,6 @@ class OneCom implements Subscriber_Interface {
 			return $cdn;
 		}
 
-		$cdn_url = $this->build_cname();
-
 		// Remove CDN CNAME & CDN Zone.
 		$this->update_cdn_options( 0, [], [] );
 
