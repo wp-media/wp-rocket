@@ -96,7 +96,7 @@ return [
         ],
         'expected' => [
             'return' => true,
-            'html' => 'Cloudflare server pushing mode can create incompatiblities with Remove Unused CSS and Combine CSS features',
+            'html' => 'Cloudflare\'s HTTP/2 Server Push is incompatible with the features of Remove Unused CSS and Combine CSS files. We strongly recommend disabling it.',
         ],
     ],
 ];
