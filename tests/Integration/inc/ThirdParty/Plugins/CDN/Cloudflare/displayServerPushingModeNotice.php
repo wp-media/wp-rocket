@@ -42,6 +42,8 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 
+		Functions\when( 'rocket_is_cloudflare' )->justReturn( true );
+
 		$this->constants['CLOUDFLARE_PLUGIN_DIR'] = true;
         $this->constants['CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE'] = $config['server_push'];
 
