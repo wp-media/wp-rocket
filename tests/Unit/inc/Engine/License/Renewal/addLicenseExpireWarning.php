@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
@@ -43,14 +44,23 @@ class Test_AddLicenseExpireWarning extends TestCase {
 	public function testShouldReturnExpected( $config, $args, $expected ) {
 		$this->white_label = $config['white_label'];
 
+		Functions\when( 'get_user_locale' )->justReturn( 'en_US' );
+
 		$this->user->shouldReceive( 'is_license_expired' )
 			->andReturn( $config['expired'] );
+
+		$this->user->shouldReceive( 'is_auto_renew' )
+			->andReturn( $config['auto_renew'] );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['expire_date'] );
 
 		$this->user->shouldReceive( 'get_renewal_url' )
 			->andReturn( $config['renewal_url'] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'optimize_css_delivery', 0 )
+			->andReturn( $config['ocd'] );
 
 		$this->assertSame(
 			$expected,

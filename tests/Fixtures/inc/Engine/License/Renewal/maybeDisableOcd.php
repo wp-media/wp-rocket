@@ -5,6 +5,8 @@ return [
 		'config' => [
 			'expired' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
+			'auto_renew' => false,
+			'ocd' => true,
 		],
 		'args' => [
 			'id' => 'optimize_css_delivery',
@@ -23,6 +25,8 @@ return [
 		'config' => [
 			'expired' => false,
 			'expire_date' => strtotime( 'now + 7 days' ),
+			'auto_renew' => false,
+			'ocd' => true,
 		],
 		'args' => [
 			'id' => 'optimize_css_delivery',
@@ -37,10 +41,52 @@ return [
 			'input_attr' => [],
 		],
 	],
-	'shouldReturnSameWhenExpiredRecently' => [
+	'shouldReturnSameWhenAutoRenewAndExpiredLessThan4Days' => [
+		'config' => [
+			'expired' => true,
+			'expire_date' => strtotime( 'now - 3 days' ),
+			'auto_renew' => true,
+			'ocd' => true,
+		],
+		'args' => [
+			'id' => 'optimize_css_delivery',
+			'value' => 1,
+			'container_class' => [],
+			'input_attr' => [],
+		],
+		'expected' => [
+			'id' => 'optimize_css_delivery',
+			'value' => 1,
+			'container_class' => [],
+			'input_attr' => [],
+		],
+	],
+	'shouldReturnSameWhenExpiredRecentlyAndOCDDisabled' => [
 		'config' => [
 			'expired' => true,
 			'expire_date' => strtotime( 'now - 7 days' ),
+			'auto_renew' => false,
+			'ocd' => true,
+		],
+		'args' => [
+			'id' => 'optimize_css_delivery',
+			'value' => 1,
+			'container_class' => [],
+			'input_attr' => [],
+		],
+		'expected' => [
+			'id' => 'optimize_css_delivery',
+			'value' => 1,
+			'container_class' => [],
+			'input_attr' => [],
+		],
+	],
+	'shouldReturnSameWhenExpiredRecentlyAndOCDDisabled' => [
+		'config' => [
+			'expired' => true,
+			'expire_date' => strtotime( 'now - 7 days' ),
+			'auto_renew' => false,
+			'ocd' => false,
 		],
 		'args' => [
 			'id' => 'optimize_css_delivery',
@@ -59,6 +105,8 @@ return [
 		'config' => [
 			'expired' => true,
 			'expire_date' => strtotime( 'now - 20 days' ),
+			'auto_renew' => false,
+			'ocd' => true,
 		],
 		'args' => [
 			'id' => 'optimize_css_delivery',
