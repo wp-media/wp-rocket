@@ -89,12 +89,11 @@ class Settings {
 			return;
 		}
 
-		$as_tools_link = menu_page_url( 'action-scheduler', false );
-		$message       = sprintf(
+		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
 			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
 			'<strong>WP Rocket</strong>',
-			'<a href="' . $as_tools_link . '">',
+			'<a href="' . menu_page_url( 'action-scheduler', false ) . '">',
 			'</a>'
 		);
 		rocket_notice_html(

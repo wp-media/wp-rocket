@@ -97,39 +97,49 @@ class PreloadUrl {
 		$requests = array_filter( $requests );
 
 		foreach ( $requests as $request ) {
-			if ( isset( $request['url'] ) && is_string( $request['url'] ) ) {
-
-				$headers = isset( $request['headers'] ) && is_array( $request['headers'] ) ? $request['headers'] : [];
-
-				$headers = array_merge(
-					$headers,
-					[
-						'blocking'  => false,
-						'timeout'   => 0.01,
-						/**
-						 * Filter to activate the verification of SSl.
-						 *
-						 * @param string $activate is the verification activated.
-						 */
-						'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-					]
-					);
-
-				/**
-				 * Filters the arguments for the preload request.
-				 *
-				 * @param array $headers Request arguments.
-				 */
-				$headers = apply_filters(
-					'rocket_preload_url_request_args',
-					$headers
-				);
-
-				wp_safe_remote_get(
-					user_trailingslashit( $request['url'] ),
-					$headers
-				);
+			if ( ! isset( $request['url'] ) || ! is_string( $request['url'] ) ) {
+				continue;
 			}
+
+			$headers = isset( $request['headers'] ) && is_array( $request['headers'] ) ? $request['headers'] : [];
+
+			$headers = array_merge(
+				$headers,
+				[
+					'blocking'  => false,
+					'timeout'   => 0.01,
+					/**
+					 * Filter to activate the verification of SSl.
+					 *
+					 * @param string $activate is the verification activated.
+					 */
+					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+				]
+				);
+
+			/**
+			 * Filters the arguments for the preload request.
+			 *
+			 * @param array $headers Request arguments.
+			 */
+			$headers = apply_filters(
+				'rocket_preload_url_request_args',
+				$headers
+			);
+
+			wp_safe_remote_get(
+				user_trailingslashit( $request['url'] ),
+				$headers
+			);
+			/**
+			 * Filter the delay between each preload request.
+			 *
+			 * @param float $delay_between the defined delay.
+			 * @returns float
+			 */
+			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 0.7 );
+
+			sleep( $delay_between );
 		}
 
 	}
@@ -164,9 +174,10 @@ class PreloadUrl {
 	public function process_pending_jobs() {
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 100 );
 		$rows  = $this->query->get_pending_jobs( $count );
-		foreach ( $rows as $row ) {
+		foreach ( $rows as $index => $row ) {
 			$this->query->make_status_inprogress( $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
+
 		}
 	}
 

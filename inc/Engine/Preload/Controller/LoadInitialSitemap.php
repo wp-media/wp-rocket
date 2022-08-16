@@ -3,7 +3,6 @@
 namespace WP_Rocket\Engine\Preload\Controller;
 
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
-use WP_Sitemaps;
 
 /**
  * Controller to load initial sitemap tasks.
