@@ -5,10 +5,10 @@ php: composer
 front: npm compile-front
 
 composer:
-	composer install
+	composer install --no-dev --no-scripts
 
 npm:
-	npm  i
+	npm i
 
 compile-front:
 	npm run build
