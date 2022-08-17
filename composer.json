@@ -24,7 +24,9 @@
 		},
 		"process-timeout": 0,
 		"allow-plugins": {
-			"composer/installers": true
+			"composer/installers": true,
+			"mnsami/composer-custom-directory-installer": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"support": {
