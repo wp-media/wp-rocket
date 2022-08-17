@@ -9,16 +9,6 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class Activation implements ActivationInterface {
 
-
-	/**
-	 * Controller to load initial tasks.
-	 *
-	 * @var LoadInitialSitemap
-	 */
-	protected $controller;
-
-
-
 	/**
 	 * Preload queue.
 	 *
@@ -36,14 +26,12 @@ class Activation implements ActivationInterface {
 	/**
 	 * Instantiate class.
 	 *
-	 * @param LoadInitialSitemap $controller Controller to load initial tasks.
-	 * @param Queue              $queue Preload queue.
-	 * @param Cache              $query DB query.
+	 * @param Queue $queue Preload queue.
+	 * @param Cache $query DB query.
 	 */
-	public function __construct( LoadInitialSitemap $controller, Queue $queue, Cache $query ) {
-		$this->controller = $controller;
-		$this->queue      = $queue;
-		$this->query      = $query;
+	public function __construct( Queue $queue, Cache $query ) {
+		$this->queue = $queue;
+		$this->query = $query;
 	}
 
 	/**
@@ -54,7 +42,7 @@ class Activation implements ActivationInterface {
 		 * Action that fires before the preload does.
 		 */
 		do_action( 'rocket_preload_activation' );
-		$this->controller->load_initial_sitemap();
+		$this->queue->add_job_preload_job_load_initial_sitemap_async();
 	}
 
 	/**

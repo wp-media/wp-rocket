@@ -115,7 +115,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $crawl_homepage );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
-			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 
@@ -159,6 +158,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $fetch_sitemap_controller )
 			->addArgument( $preload_url_controller )
 			->addArgument( $check_finished_controller )
+			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->add( 'preload_clean_controller', ClearCache::class )

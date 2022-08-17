@@ -14,6 +14,16 @@ class Queue extends AbstractASQueue {
 	 */
 	protected $group = 'rocket-preload';
 
+
+	/**
+	 * Add Async load initial sitemap job.
+	 *
+	 * @return string
+	 */
+	public function add_job_preload_job_load_initial_sitemap_async() {
+		return $this->add_async( 'rocket_preload_job_load_initial_sitemap' );
+	}
+
 	/**
 	 * Add Async parse sitemap job with url.
 	 *

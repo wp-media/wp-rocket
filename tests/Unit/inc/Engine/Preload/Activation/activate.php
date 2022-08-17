@@ -18,24 +18,22 @@ class Test_Activate extends TestCase
 {
 
 	protected $activation;
-	protected $controller;
 	protected $queue;
 	protected $query;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->controller = Mockery::mock(LoadInitialSitemap::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->activation = new Activation($this->controller, $this->queue, $this->query);
+		$this->activation = new Activation($this->queue, $this->query);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
-		$this->controller->expects()->load_initial_sitemap();
+		$this->queue->expects()->add_job_preload_job_load_initial_sitemap_async();
 
 		$this->activation->activate();
 	}
