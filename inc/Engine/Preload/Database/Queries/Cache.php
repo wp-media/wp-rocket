@@ -187,7 +187,8 @@ class Cache extends Query {
 		$rows = $this->query(
 			[
 				'url' => untrailingslashit( $resource['url'] ),
-			]
+			],
+			false
 		);
 
 		if ( count( $rows ) > 0 ) {
