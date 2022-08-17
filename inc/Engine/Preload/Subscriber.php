@@ -266,7 +266,7 @@ class Subscriber implements Subscriber_Interface {
 					}
 				}
 
-				$this->controller->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
+				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
 	}
