@@ -128,7 +128,8 @@ class Cache extends Query {
 		$rows = $this->query(
 			[
 				'url' => $url,
-			]
+			],
+			false
 		);
 
 		if ( count( $rows ) === 0 ) {
