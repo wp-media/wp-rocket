@@ -41,12 +41,20 @@ const config: PlaywrightTestConfig = {
 			reducedMotion: 'reduce',
 			strictSelectors: true,
 		},
-		actionTimeout: 10_000, // 10 seconds.
+		actionTimeout: 120000,
+    	navigationTimeout: 120000,
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'on-first-retry',
 		// Tell all tests to load signed-in state from 'storageState.json'.
 		storageState: 'tests/e2e/storageState.json',
+	},
+
+	webServer: {
+		command: 'npm run wp-env start',
+		port: 8889,
+		timeout: 120_000, // 120 seconds.
+		reuseExistingServer: true,
 	},
 
 	/* Configure projects for major browsers */

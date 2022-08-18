@@ -18,9 +18,6 @@ jobs:
     - name: Install Playwright dependencies
       run: |
           npx playwright install chromium --with-deps
-    - name: Install WordPress and start the server
-      run: |
-          npm run wp-env start
     - name: Run Playwright tests
       run: npx playwright test --config tests/e2e/playwright.config.ts
     - uses: actions/upload-artifact@v2
