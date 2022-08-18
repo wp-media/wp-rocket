@@ -76,9 +76,16 @@ class LoadInitialSitemap {
 			$this->queue->add_job_preload_job_preload_url_async( $url );
 		}
 
-		$legacy_sitemaps = $this->options->get( 'sitemaps', false );
+		$legacy_sitemaps = $this->options->get( 'sitemaps', [] );
 
-		if ( apply_filters( 'rocket_preload_use_legacy_sitemaps', true ) && $legacy_sitemaps ) {
+		/**
+		 * Filters usage of sitemaps value from the previous versions
+		 *
+		 * @since 3.12
+		 *
+		 * @param bool $use_legacy_sitemaps True to use the old option, false otherwise.
+		 */
+		if ( apply_filters( 'rocket_preload_use_legacy_sitemaps', true ) && ! empty( $legacy_sitemaps ) ) {
 			$this->add_task_to_queue( $legacy_sitemaps );
 			return;
 		}
