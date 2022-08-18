@@ -76,7 +76,7 @@ class LoadInitialSitemap {
 			$this->queue->add_job_preload_job_preload_url_async( $url );
 		}
 
-		$legacy_sitemaps = $this->options->get( 'sitemaps', [] );
+		$legacy_sitemaps = (array) $this->options->get( 'sitemaps', [] );
 
 		/**
 		 * Filters usage of sitemaps value from the previous versions
