@@ -5,7 +5,7 @@ import { devices } from '@playwright/test';
 import { WP_BASE_URL } from './wp.config';
 
 const config: PlaywrightTestConfig = {
-	globalSetup: require.resolve('./setup/global-setup'),
+	// globalSetup: require.resolve('./setup/global-setup'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
 	timeout: 5 * 60 * 1000,
@@ -47,7 +47,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure',
 		video: 'on-first-retry',
 		// Tell all tests to load signed-in state from 'storageState.json'.
-		storageState: 'tests/e2e/storageState.json',
+		// storageState: 'tests/e2e/storageState.json',
 	},
 
 	webServer: {
