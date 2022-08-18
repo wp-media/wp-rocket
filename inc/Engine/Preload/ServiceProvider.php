@@ -112,7 +112,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
 			->addArgument( $queue )
 			->addArgument( $cache_query )
-			->addArgument( $crawl_homepage );
+			->addArgument( $crawl_homepage )
+			->addArgument( $options );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $queue )

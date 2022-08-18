@@ -2055,9 +2055,8 @@ class Page {
 			 * Filters the hidden settings fields
 			 *
 			 * @since 3.5
-			 * @author Remy Perona
 			 *
-			 * @param array $hidden_settings_fields An array of hidden settings fields ID
+			 * @param array $hidden_settings_fields An array of hidden settings fields ID.
 			 */
 			apply_filters(
 				'rocket_hidden_settings_fields',
@@ -2076,6 +2075,7 @@ class Page {
 					'emoji',
 					'remove_unused_css',
 					'async_css',
+					'sitemaps',
 				]
 			)
 		);
