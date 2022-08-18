@@ -7,8 +7,8 @@ async function globalSetup(config: FullConfig) {
   const page = await browser.newPage();
   await page.goto(WP_BASE_URL + '/wp-login.php?redirect_to=http%3A%2F%2Flocalhost%3A8889%2Fwp-admin%2F&reauth=1');
   // Fill username & password.
-  await page.locator('input[name="log"]').fill(WP_USERNAME);
-  await page.locator('input[name="pwd"]').fill(WP_PASSWORD);
+  await page.locator('input[name="log"]').fill(WP_USERNAME, { timeout: 120000 });
+  await page.locator('input[name="pwd"]').fill(WP_PASSWORD, { timeout: 120000 });
   // Click login.
   await page.locator('text=Log In').click();
 
