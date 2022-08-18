@@ -6,6 +6,11 @@ test.describe('Rocket License', () => {
 
         await page.goto('/wp-admin');
         // Fill username & password.
-        
+        // await page.locator('input[name="log"]').fill(WP_USERNAME);
+        // await page.locator('input[name="pwd"]').fill(WP_PASSWORD);
+        // Click login.
+        // await page.locator('text=Log In').click();
+
+        await expect(page).toHaveTitle(/WordPress/);
     });
 });
