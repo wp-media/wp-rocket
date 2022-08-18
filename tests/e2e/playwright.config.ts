@@ -41,8 +41,6 @@ const config: PlaywrightTestConfig = {
 			reducedMotion: 'reduce',
 			strictSelectors: true,
 		},
-		actionTimeout: 120000,
-    	navigationTimeout: 120000,
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'on-first-retry',
