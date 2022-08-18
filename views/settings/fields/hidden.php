@@ -15,13 +15,13 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( is_array( $data['value'] ) ) {
-	foreach( $data['value'] as $value ) {
+	foreach ( $data['value'] as $rocket_value ) {
 		?>
-		<input type="hidden" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>[]]" value="<?php echo esc_attr( $value ); ?>">
+		<input type="hidden" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>[]]" value="<?php echo esc_attr( $rocket_value ); ?>">
 		<?php
 	}
 } else {
-?>
-<input type="hidden" id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>">
-<?php
+	?>
+	<input type="hidden" id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>">
+	<?php
 }
