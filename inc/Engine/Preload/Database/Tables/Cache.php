@@ -35,7 +35,7 @@ class Cache extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220205;
+	protected $version = 20220818;
 
 	/**
 	 * Setup the database schema
