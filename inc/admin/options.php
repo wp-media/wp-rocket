@@ -252,7 +252,7 @@ add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'roc
 function rocket_pre_main_option_clear( $newvalue, $oldvalue ) {
 	foreach ( array_keys( $newvalue ) as $label ) {
 		if ( is_numeric( $newvalue[ $label ] ) ) {
-			if ( ctype_digit( $newvalue[ $label ] ) ) {
+			if ( ctype_digit( (string) $newvalue[ $label ] ) ) {
 				$newvalue[ $label ] = (int) $newvalue[ $label ];
 			} else {
 				$newvalue[ $label ] = (float) $newvalue[ $label ];

@@ -43,7 +43,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
             );
 
             $this->assertSame(
-                0.0,
+                0,
                 $options['async_css_mobile']
             );
         } else {

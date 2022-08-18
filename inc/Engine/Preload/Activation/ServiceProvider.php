@@ -25,7 +25,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'preload_caches_query',
 		'preload_queue',
-		'load_initial_sitemap_controller',
 		'preload_activation',
 		'preload_activation_subscriber',
 	];
@@ -47,18 +46,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( new Logger() );
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 
-		$this->getContainer()->add( 'homepage_crawler', CrawlHomepage::class );
-		$crawl_homepage = $this->getContainer()->get( 'homepage_crawler' );
-
 		$this->getContainer()->add( 'preload_queue', Queue::class );
 		$queue = $this->getContainer()->get( 'preload_queue' );
-		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $crawl_homepage );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
-			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 

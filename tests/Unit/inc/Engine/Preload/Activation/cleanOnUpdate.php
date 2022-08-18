@@ -13,7 +13,6 @@ use Brain\Monkey\Functions;
 class Test_CleanOnUpdate extends TestCase
 {
 	protected $activation;
-	protected $controller;
 	protected $queue;
 	protected $query;
 
@@ -23,7 +22,7 @@ class Test_CleanOnUpdate extends TestCase
 		$this->controller = Mockery::mock(LoadInitialSitemap::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->activation = new Activation($this->controller, $this->queue, $this->query);
+		$this->activation = new Activation($this->queue, $this->query);
 	}
 
 	/**
