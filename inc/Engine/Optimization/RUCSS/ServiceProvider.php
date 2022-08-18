@@ -9,9 +9,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS as UsedCSSController;
 use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources as ResourcesTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
@@ -34,14 +32,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'rucss_settings',
-		'rucss_resources_table',
 		'rucss_database',
 		'rucss_admin_subscriber',
 		'rucss_frontend_api_client',
 		'rucss_used_css',
 		'rucss_used_css_query',
 		'rucss_frontend_subscriber',
-		'rucss_resources_query',
 		'rucss_queue',
 		'rucss_filesystem',
 		'rucss_cron_subscriber',
@@ -56,12 +52,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) );
-		// Instantiate the RUCSS Resources Table class.
-		$this->getContainer()->add( 'rucss_resources_table', ResourcesTable::class );
+
 		$this->getContainer()->add( 'rucss_usedcss_table', UsedCSSTable::class );
-		$this->getContainer()->add( 'rucss_resources_query', ResourcesQuery::class );
 		$this->getContainer()->add( 'rucss_database', Database::class )
-			->addArgument( $this->getContainer()->get( 'rucss_resources_table' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
 		$this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
@@ -74,7 +67,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_resources_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );

@@ -7,7 +7,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -22,13 +21,6 @@ class UsedCSS {
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
-
-	/**
-	 * Resources Query instance.
-	 *
-	 * @var ResourcesQuery
-	 */
-	private $resources_query;
 
 	/**
 	 * Plugin options instance.
@@ -98,6 +90,7 @@ class UsedCSS {
 		'.wprm-advanced-list-',
 		'.adsslot_', // For Advanced Ads plugin ads.
 		'.jnews_', // For JNews theme.
+		'.cp-info-bar.content-', // For Convert Plus plugin.
 	];
 
 	/**
@@ -105,7 +98,6 @@ class UsedCSS {
 	 *
 	 * @param Options_Data   $options         Options instance.
 	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
-	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api             APIClient instance.
 	 * @param QueueInterface $queue           Queue instance.
 	 * @param Filesystem     $filesystem      Filesystem instance.
@@ -113,17 +105,15 @@ class UsedCSS {
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
-		ResourcesQuery $resources_query,
 		APIClient $api,
 		QueueInterface $queue,
 		Filesystem $filesystem
 	) {
-		$this->options         = $options;
-		$this->used_css_query  = $used_css_query;
-		$this->resources_query = $resources_query;
-		$this->api             = $api;
-		$this->queue           = $queue;
-		$this->filesystem      = $filesystem;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->api            = $api;
+		$this->queue          = $queue;
+		$this->filesystem     = $filesystem;
 	}
 
 	/**
@@ -383,7 +373,6 @@ class UsedCSS {
 
 		foreach ( $link_styles as $style ) {
 			if (
-
 				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
 				&&
 				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
@@ -470,7 +459,6 @@ class UsedCSS {
 			}
 
 			$html = str_replace( $style[0], '', $html );
-
 		}
 
 		return $html;

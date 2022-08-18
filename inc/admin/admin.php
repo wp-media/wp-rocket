@@ -356,12 +356,6 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
-	if ( ! empty( $data['sitemaps'] ) && is_array( $data['sitemaps'] ) ) {
-		$data['sitemaps'] = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
-	} else {
-		$data['sitemaps'] = [];
-	}
-
 	return $data;
 }
 

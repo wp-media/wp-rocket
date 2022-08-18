@@ -53,7 +53,6 @@ function rocket_init() {
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
-	require WP_ROCKET_INC_PATH . '/API/preload.php';
 	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
@@ -69,6 +68,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.9.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.11.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.12.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 

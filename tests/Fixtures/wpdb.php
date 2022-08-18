@@ -6,6 +6,7 @@ if ( ! class_exists( 'wpdb' ) ) {
 		public $term_taxonomy = 'terms';
 		public $posts_results = [];
 		public $terms_results = [];
+		public $prefix        = 'wp_';
 
 		public function get_results( $sql ) {
 			if ( $this->is_post( $sql ) ) {
@@ -42,6 +43,10 @@ if ( ! class_exists( 'wpdb' ) ) {
 			$len    = strlen( $starting_string );
 
 			return ( substr( $string, 0, $len ) === $starting_string );
+		}
+
+		public function query( $query ) {
+			return true;
 		}
 	}
 }
