@@ -204,7 +204,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		$this->activation->on_update( $new_version, $old_version );
+		$this->activation->clean_on_update( $new_version, $old_version );
+		$this->activation->refresh_on_update( $new_version, $old_version );
 	}
 
 	/**

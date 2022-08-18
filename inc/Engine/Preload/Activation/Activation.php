@@ -64,7 +64,7 @@ class Activation implements ActivationInterface {
 	 * @param string $old_version old version from the plugin.
 	 * @return void
 	 */
-	public function on_update( $new_version, $old_version ) {
+	public function clean_on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.12.0', '>=' ) ) {
 			return;
 		}
@@ -78,6 +78,20 @@ class Activation implements ActivationInterface {
 		}
 
 		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
+	}
+
+	/**
+	 * Reload sitemap on update.
+	 *
+	 * @param string $new_version new version from the plugin.
+	 * @param string $old_version old version from the plugin.
+	 * @return void
+	 */
+	public function refresh_on_update( $new_version, $old_version ) {
+		if ( version_compare( $new_version, '3.12.0', '>=' ) ) {
+			return;
+		}
+		$this->queue->add_job_preload_job_load_initial_sitemap_async();
 	}
 
 	/**
