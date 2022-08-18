@@ -1,10 +1,12 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
+
+// Internal dependencies
+import { WP_BASE_URL } from './wp.config';
 
 const config: PlaywrightTestConfig = {
-	testDir: './specs',
+	globalSetup: require.resolve('./setup/global-setup'),
+	testDir: './src',
 	/* Maximum time one test can run for. */
 	timeout: 30 * 1000,
 	reportSlowTests: null,
@@ -27,7 +29,7 @@ const config: PlaywrightTestConfig = {
 	reporter: 'list',
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
-		baseURL: process.env.WP_BASE_URL || 'http://localhost:8889',
+		baseURL: WP_BASE_URL,
 		headless: true,
 		viewport: {
 			width: 960,
@@ -43,6 +45,8 @@ const config: PlaywrightTestConfig = {
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'on-first-retry',
+		// Tell all tests to load signed-in state from 'storageState.json'.
+		storageState: 'tests/e2e/storageState.json',
 	},
 
 	webServer: {
@@ -89,15 +93,6 @@ const config: PlaywrightTestConfig = {
 		//   },
 		// },
 	],
-
-	/* Folder for test artifacts such as screenshots, videos, traces, etc. */
-	// outputDir: 'test-results/',
-
-	/* Run your local dev server before starting the tests */
-	// webServer: {
-	//   command: 'npm run start',
-	//   port: 3000,
-	// },
 };
 
 export default config;
