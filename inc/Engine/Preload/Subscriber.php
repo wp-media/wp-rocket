@@ -205,6 +205,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_update( $new_version, $old_version ) {
 		$this->activation->clean_on_update( $new_version, $old_version );
+		if ( ! $this->options->get( 'manual_preload', false ) ) {
+			return;
+		}
 		$this->activation->refresh_on_update( $new_version, $old_version );
 	}
 
@@ -267,7 +270,7 @@ class Subscriber implements Subscriber_Interface {
 					}
 				}
 
-				$this->controller->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
+				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
 	}

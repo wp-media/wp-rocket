@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Activation;
 
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -11,7 +10,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
-class Test_OnUpdate extends TestCase
+class Test_CleanOnUpdate extends TestCase
 {
 	protected $activation;
 	protected $controller;
@@ -34,7 +33,7 @@ class Test_OnUpdate extends TestCase
 
 		$this->configureCancelJobs($config);
 		$this->configureCancelCron($config);
-		$this->activation->on_update($config['new_version'], $config['old_version']);
+		$this->activation->clean_on_update($config['new_version'], $config['old_version']);
 	}
 
 	public function configureCancelJobs($config) {
