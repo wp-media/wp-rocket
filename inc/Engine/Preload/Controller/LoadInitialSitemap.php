@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 /**
@@ -31,16 +32,25 @@ class LoadInitialSitemap {
 	protected $crawl_homepage;
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Queue         $queue Queue group.
 	 * @param Cache         $query DB query.
 	 * @param CrawlHomepage $crawl_homepage Homepage crawler.
+	 * @param Options_Data  $options Options instance.
 	 */
-	public function __construct( Queue $queue, $query, CrawlHomepage $crawl_homepage ) {
+	public function __construct( Queue $queue, $query, CrawlHomepage $crawl_homepage, Options_Data $options ) {
 		$this->queue          = $queue;
 		$this->query          = $query;
 		$this->crawl_homepage = $crawl_homepage;
+		$this->options        = $options;
 	}
 
 	/**
@@ -64,6 +74,13 @@ class LoadInitialSitemap {
 				]
 			);
 			$this->queue->add_job_preload_job_preload_url_async( $url );
+		}
+
+		$legacy_sitemaps = $this->options->get( 'sitemaps', false );
+
+		if ( apply_filters( 'rocket_preload_use_legacy_sitemaps', true ) && $legacy_sitemaps ) {
+			$this->add_task_to_queue( $legacy_sitemaps );
+			return;
 		}
 
 		/**

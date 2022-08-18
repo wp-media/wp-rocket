@@ -1,10 +1,38 @@
 <?php
 return [
+	'shouldCreateTaskForLegacyIfPresent' => [
+		'config' => [
+			'sitemaps' => [],
+			'filter_sitemaps' => [
+				'url'
+			],
+			'legacy_sitemaps' => [
+				'url'
+			],
+			'home_url' => 'home_url',
+			'wp_sitemap' => 'sitemap',
+			'crawl_urls' => [
+				'url1',
+				'url2',
+			],
+			'add_crawl_urls' => [
+				[['url' => 'home_url']],
+				[['url' => 'url1']],
+				[['url' => 'url2']],
+			],
+			'is_sitemap_activated' => true
+		],
+		'expected' => [
+			'transient' => true,
+		]
+	],
 	'shouldCreateTaskForFilterIfPresent' => [
 		'config' => [
 			'sitemaps' => [],
 			'filter_sitemaps' => [
 				'url'
+			],
+			'legacy_sitemaps' => [
 			],
 			'home_url' => 'home_url',
 			'wp_sitemap' => 'sitemap',
@@ -33,6 +61,8 @@ return [
 				'url1',
 				'url2',
 			],
+			'legacy_sitemaps' => [
+			],
 			'add_crawl_urls' => [
 				[['url' => 'home_url']],
 				[['url' => 'url1']],
@@ -53,6 +83,8 @@ return [
 			'crawl_urls' => [
 				'url1',
 				'url2',
+			],
+			'legacy_sitemaps' => [
 			],
 			'add_crawl_urls' => [
 				[['url' => 'home_url']],
