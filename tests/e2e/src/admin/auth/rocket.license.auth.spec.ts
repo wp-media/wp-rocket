@@ -5,12 +5,12 @@ test.describe('Rocket License', () => {
         // await page.goto('/wp-admin/options-general.php?page=wprocket');
 
         await page.goto('/wp-admin');
+        await expect(page).toHaveTitle(/WordPress/);
+
         // Fill username & password.
-        // await page.locator('input[name="log"]').fill(WP_USERNAME);
-        // await page.locator('input[name="pwd"]').fill(WP_PASSWORD);
+        await page.locator('#user_login').fill('admin');
+        await page.locator('#user_pass').fill('password');
         // Click login.
         // await page.locator('text=Log In').click();
-
-        await expect(page).toHaveTitle(/WordPress/);
     });
 });
