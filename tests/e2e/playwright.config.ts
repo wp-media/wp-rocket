@@ -30,7 +30,7 @@ const config: PlaywrightTestConfig = {
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		baseURL: WP_BASE_URL,
-		headless: true,
+		headless: false,
 		viewport: {
 			width: 960,
 			height: 700,
