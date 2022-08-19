@@ -15,7 +15,7 @@ class BeaverBuilder implements Subscriber_Interface {
 		}
 
 		return [
-			'fl_builder_before_save_layout' => 'purge_page',
+			'fl_builder_before_save_layout' => 'purge_cache',
 			'fl_builder_cache_cleared'      => 'purge_cache',
 		];
 	}
@@ -31,17 +31,5 @@ class BeaverBuilder implements Subscriber_Interface {
 	public function purge_cache() {
 		rocket_clean_minify();
 		rocket_clean_domain();
-	}
-
-	/**
-	 * Purge cache of a page when it is updated.
-	 *
-	 * @param int $post_id post ID.
-	 *
-	 * @return void
-	 */
-	public function purge_page( $post_id ) {
-		rocket_clean_minify();
-		rocket_clean_post( $post_id );
 	}
 }
