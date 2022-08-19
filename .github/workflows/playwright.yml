@@ -19,9 +19,7 @@ jobs:
       with:
         node-version: '14.x'
     - name: Install dependencies
-      run: |
-        npm ci
-        npm run build
+      run: npm ci
     - name: Install wp-env
       run: npm install --no-package-lock --no-save @wordpress/env@5.0.0
     - name: Install WordPress environment
