@@ -21,8 +21,7 @@ jobs:
     - name: Install wp-env
       run: npm install --no-package-lock --no-save @wordpress/env@5.0.0
     - name: Install WordPress environment
-      run: |
-        npx wp-env start
+      run: npx wp-env start
     - name: WordPress debug information
       run: |
         npx wp-env run tests-cli "wp core version"
@@ -30,8 +29,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright dependencies
-      run: |
-          npx playwright install-deps chromium
+      run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npm run test:e2e
     - uses: actions/upload-artifact@v2
