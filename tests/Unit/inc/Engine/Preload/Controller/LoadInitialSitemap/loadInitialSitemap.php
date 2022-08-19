@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\LoadInitialSitemap;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Sitemaps;
 use WP_Sitemaps_Index;
 
 /**
@@ -22,7 +22,6 @@ class Test_LoadInitialSitemap extends TestCase {
 	protected $query;
 	protected $crawler;
 	protected $controller;
-	protected $options;
 
 	protected function setUp(): void
 	{
@@ -30,8 +29,7 @@ class Test_LoadInitialSitemap extends TestCase {
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
 		$this->crawler = Mockery::mock(CrawlHomepage::class);
-		$this->options = Mockery::mock(Options_Data::class);
-		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler, $this->options);
+		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler);
 	}
 	/**
 	 * @dataProvider configTestData
@@ -40,40 +38,23 @@ class Test_LoadInitialSitemap extends TestCase {
 		Filters\expectApplied('rocket_sitemap_preload_list')->with($config['sitemaps'])->andReturn($config['filter_sitemaps']);
 		Filters\expectApplied('rocket_preload_load_custom_urls')->with([])->andReturn([]);
 		$this->queue->expects()->add_job_preload_job_preload_url_async($config['home_url']);
-		$this->options->expects()->get('sitemaps', false)->andReturn($config['legacy_sitemaps']);
-
-		foreach ($config['legacy_sitemaps'] as $sitemap) {
-			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
-		}
-		if(count($config['legacy_sitemaps']) > 0) {
-			$this->queue->expects()->add_job_preload_job_check_finished_async();
-		}
-
-		if(key_exists('transient', $expected)) {
-			Functions\expect('set_transient')->with('wpr_preload_running', true);
-		}
-
-		Functions\when('home_url')->justReturn($config['home_url']);
-		$this->configureCustomSitemap($config);
-		$this->configureWordPressSitemap($config);
-		$this->controller->load_initial_sitemap();
-	}
-
-	protected function configureCustomSitemap($config) {
-		if( count($config['legacy_sitemaps']) > 0) {
-			return;
-		}
-
 		foreach ($config['filter_sitemaps'] as $sitemap) {
 			$this->queue->expects()->add_job_preload_job_parse_sitemap_async($sitemap);
 		}
 		if(count($config['filter_sitemaps']) > 0) {
 			$this->queue->expects()->add_job_preload_job_check_finished_async();
 		}
+		if(key_exists('transient', $expected)) {
+			Functions\expect('set_transient')->with('wpr_preload_running', true);
+		}
+
+		Functions\when('home_url')->justReturn($config['home_url']);
+		$this->configureWordPressSitemap($config);
+		$this->controller->load_initial_sitemap();
 	}
 
 	protected function configureWordPressSitemap($config) {
-		if(count($config['legacy_sitemaps']) > 0 || count($config['filter_sitemaps']) > 0) {
+		if(count($config['filter_sitemaps']) > 0) {
 			return ;
 			$this->query->expects(self::once())->method('create_or_nothing')->with([
 				'url' => $config['home_url']

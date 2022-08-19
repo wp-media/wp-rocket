@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\LoadInitialSitemap;
 
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -21,7 +20,6 @@ class Test_CancelPreload extends TestCase
 	protected $query;
 	protected $controller;
 	protected $crawler;
-	protected $options;
 
 	protected function setUp(): void
 	{
@@ -29,8 +27,7 @@ class Test_CancelPreload extends TestCase
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
 		$this->crawler = Mockery::mock(CrawlHomepage::class);
-		$this->options =  Mockery::mock(Options_Data::class);
-		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler, $this->options);
+		$this->controller = new LoadInitialSitemap($this->queue, $this->query, $this->crawler);
 	}
 
 	public function testShouldDoAsExpected() {
