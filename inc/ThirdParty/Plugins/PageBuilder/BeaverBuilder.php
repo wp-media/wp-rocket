@@ -40,8 +40,8 @@ class BeaverBuilder implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function purge_page($post_id) {
+	public function purge_page( $post_id ) {
 		rocket_clean_minify();
-		rocket_clean_post($post_id);
+		rocket_clean_post( $post_id );
 	}
 }
