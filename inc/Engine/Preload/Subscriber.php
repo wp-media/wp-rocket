@@ -102,14 +102,14 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_complete_job_status'    => 'clean_url',
 			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
 			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
-			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_file'   => 'clean_url',
-			'rocket_after_clean_terms'  => 'clean_urls',
-			'after_rocket_clean_domain' => 'clean_full_cache',
-			'wp_trash_post'             => 'delete_post_preload_cache',
-			'delete_post'               => 'delete_post_preload_cache',
-			'pre_delete_term'           => 'delete_term_preload_cache',
+			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'             => 'clean_url',
+			'rocket_after_clean_terms'            => 'clean_urls',
+			'after_rocket_clean_domain'           => 'clean_full_cache',
+			'wp_trash_post'                       => 'delete_post_preload_cache',
+			'delete_post'                         => 'delete_post_preload_cache',
+			'pre_delete_term'                     => 'delete_term_preload_cache',
 		];
 	}
 
