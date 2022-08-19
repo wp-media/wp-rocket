@@ -192,8 +192,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $preload_settings )
-			->addArgument( $clean_controller )
-			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 
 	}

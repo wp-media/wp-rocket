@@ -1,12 +1,11 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::clean_partial_cache
- * @group AdminOnly
+ * @covers \WP_Rocket\Engine\Preload\Subscriber::clean_partial_cache
  */
 class Test_CleanPartialCache extends AdminTestCase
 {

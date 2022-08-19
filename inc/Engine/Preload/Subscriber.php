@@ -102,6 +102,14 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_complete_job_status'    => 'clean_url',
 			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
 			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
+			'after_rocket_clean_post'   => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'   => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'   => 'clean_url',
+			'rocket_after_clean_terms'  => 'clean_urls',
+			'after_rocket_clean_domain' => 'clean_full_cache',
+			'wp_trash_post'             => 'delete_post_preload_cache',
+			'delete_post'               => 'delete_post_preload_cache',
+			'pre_delete_term'           => 'delete_term_preload_cache',
 		];
 	}
 
@@ -250,6 +258,73 @@ class Subscriber implements Subscriber_Interface {
 		set_transient( 'wpr_preload_running', true );
 		$this->queue->add_job_preload_job_check_finished_async();
 		$this->clear_cache->full_clean();
+	}
+
+	/**
+	 * Preload after clearing some cache.
+	 *
+	 * @param stdClass $object object modified.
+	 * @param array    $urls urls cleaned.
+	 * @param string   $lang lang from the website.
+	 * @return void
+	 */
+	public function clean_partial_cache( $object, array $urls, $lang ) {
+		// Add Homepage URL to $purge_urls for preload.
+		$urls[] = get_rocket_i18n_home_url( $lang );
+
+		$urls = array_filter( $urls );
+		$this->clear_cache->partial_clean( $urls );
+	}
+
+	/**
+	 * Clean the list of urls.
+	 *
+	 * @param array $urls urls.
+	 * @return void
+	 */
+	public function clean_urls( array $urls ) {
+
+		$this->clear_cache->partial_clean( $urls );
+	}
+
+	/**
+	 * Delete URL from a post from the preload.
+	 *
+	 * @param int $post_id ID from the post.
+	 * @return void
+	 */
+	public function delete_post_preload_cache( $post_id ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+
+		$url = get_permalink( $post_id );
+
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->clear_cache->delete_url( $url );
+	}
+
+	/**
+	 * Delete URL from a term from the preload.
+	 *
+	 * @param int $term_id ID from the term.
+	 * @return void
+	 */
+	public function delete_term_preload_cache( $term_id ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( false === $url ) {
+			return;
+		}
+
+		$this->clear_cache->delete_url( $url );
 	}
 
 	/**
