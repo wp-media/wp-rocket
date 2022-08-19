@@ -18,12 +18,16 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14.x'
-    - name: Install dependencies
-      run: npm ci
     - name: Install wp-env
       run: npm install --no-package-lock --no-save @wordpress/env@5.0.0
     - name: Install WordPress environment
-      run: npm run wp-env start
+      run: npx wp-env start
+    - name: WordPress debug information
+      run: |
+        npx wp-env run tests-cli "wp core version"
+        npx wp-env run tests-cli "wp --info"
+    - name: Install dependencies
+      run: npm ci
     - name: Install Playwright dependencies
       run: npx playwright install --with-deps
     - name: Run Playwright tests
