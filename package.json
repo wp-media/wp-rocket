@@ -6,8 +6,7 @@
   "scripts": {
     "build": "webpack --progress --colors --watch --mode=development",
     "prod": "webpack --progress --colors -p --config webpack.config.js --mode=production",
-    "test:e2e:playwright": "playwright test --config tests/e2e/playwright.config.ts",
-    "wp-env": "wp-env"
+    "test:e2e": "playwright test --config tests/e2e/playwright.config.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,7 +23,6 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "@playwright/test": "^1.25.0",
-    "@wordpress/env": "^5.0.0",
     "babel-loader": "^8.2.3",
     "babel-preset-env": "^1.7.0",
     "babelify": "^10.0.0",

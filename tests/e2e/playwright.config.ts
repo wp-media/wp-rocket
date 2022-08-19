@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: 1,
+	retries: 0,
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -49,12 +49,12 @@ const config: PlaywrightTestConfig = {
 		// storageState: 'tests/e2e/storageState.json',
 	},
 
-	webServer: {
-		command: 'npm run wp-env start',
-		url: 'http://localhost:8888/',
-		timeout: 120_000, // 120 seconds.
-		reuseExistingServer: true,
-	},
+	// webServer: {
+	// 	command: 'npm run wp-env start',
+	// 	url: 'http://localhost:8888/',
+	// 	timeout: 120_000, // 120 seconds.
+	// 	reuseExistingServer: true,
+	// },
 
 	/* Configure projects for major browsers */
 	projects: [
