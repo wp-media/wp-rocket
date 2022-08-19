@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
+use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
@@ -56,6 +57,13 @@ class Subscriber implements Subscriber_Interface {
 	protected $mobile_detect;
 
 	/**
+	 * Preload queue.
+	 *
+	 * @var Queue
+	 */
+	protected $queue;
+
+	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param Options_Data            $options Options instance.
@@ -64,14 +72,16 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Activation              $activation Activation manager.
 	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile detector instance.
 	 * @param ClearCache              $clear_cache Clear cache controller.
+	 * @param Queue                   $queue Preload queue.
 	 */
-	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect, ClearCache $clear_cache ) {
+	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect, ClearCache $clear_cache, Queue $queue ) {
 		$this->options       = $options;
 		$this->controller    = $controller;
 		$this->query         = $query;
 		$this->activation    = $activation;
 		$this->mobile_detect = $mobile_detect;
 		$this->clear_cache   = $clear_cache;
+		$this->queue         = $queue;
 	}
 
 	/**
@@ -229,6 +239,17 @@ class Subscriber implements Subscriber_Interface {
 	public function clean_url( string $url ) {
 
 		$this->clear_cache->partial_clean( [ $url ] );
+	}
+
+	/**
+	 * Preload after clearing full cache.
+	 *
+	 * @return void
+	 */
+	public function clean_full_cache() {
+		set_transient( 'wpr_preload_running', true );
+		$this->queue->add_job_preload_job_check_finished_async();
+		$this->clear_cache->full_clean();
 	}
 
 	/**

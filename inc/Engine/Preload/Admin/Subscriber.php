@@ -6,8 +6,6 @@ use stdClass;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
-use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
@@ -35,13 +33,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $controller;
 
 	/**
-	 * Preload queue.
-	 *
-	 * @var Queue
-	 */
-	protected $queue;
-
-	/**
 	 * Logger instance.
 	 *
 	 * @var Logger
@@ -54,14 +45,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Options_Data $options Options instance.
 	 * @param Settings     $settings Settings instance.
 	 * @param ClearCache   $clear_cache Clear cache controller.
-	 * @param Queue        $queue preload queue.
 	 * @param Logger       $logger logger instance.
 	 */
-	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Queue $queue, Logger $logger ) {
+	public function __construct( Options_Data $options, Settings $settings, ClearCache $clear_cache, Logger $logger ) {
 		$this->options    = $options;
 		$this->settings   = $settings;
 		$this->controller = $clear_cache;
-		$this->queue      = $queue;
 		$this->logger     = $logger;
 	}
 
@@ -94,17 +83,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_preload_notice() {
 		$this->settings->maybe_display_preload_notice();
-	}
-
-	/**
-	 * Preload after clearing full cache.
-	 *
-	 * @return void
-	 */
-	public function clean_full_cache() {
-		set_transient( 'wpr_preload_running', true );
-		$this->queue->add_job_preload_job_check_finished_async();
-		$this->controller->full_clean();
 	}
 
 	/**
