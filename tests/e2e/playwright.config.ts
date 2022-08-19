@@ -5,7 +5,7 @@ import { devices } from '@playwright/test';
 import { WP_BASE_URL } from './wp.config';
 
 const config: PlaywrightTestConfig = {
-	// globalSetup: require.resolve('./setup/global-setup'),
+	globalSetup: require.resolve('./setup/global-setup'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
 	timeout: 30000,
@@ -30,7 +30,7 @@ const config: PlaywrightTestConfig = {
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		baseURL: WP_BASE_URL,
-		headless: true,
+		headless: false,
 		viewport: {
 			width: 960,
 			height: 700,
@@ -45,7 +45,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure',
 		video: 'on-first-retry',
 		// Tell all tests to load signed-in state from 'storageState.json'.
-		// storageState: 'tests/e2e/storageState.json',
+		storageState: 'tests/e2e/storageState.json',
 	},
 
 	// webServer: {
