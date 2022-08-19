@@ -8,8 +8,8 @@ const config: PlaywrightTestConfig = {
 	// globalSetup: require.resolve('./setup/global-setup'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
-	timeout: 90000,
-	globalTimeout: 900000,
+	timeout: 30000,
+	globalTimeout: 30000,
 	reportSlowTests: null,
 	expect: {
 		/**

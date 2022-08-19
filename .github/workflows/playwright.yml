@@ -8,11 +8,21 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - phpVersion: '7.4'
+            wpCoreVersion: 'latest'
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '14.x'
+    - name: Update wp-env.json file
+      env:
+        PHP_VERSION: ${{ matrix.phpVersion }}
+        WP_CORE_VERSION: ${{ matrix.wpCoreVersion }}
+      run: node ./.github/scripts/build-wp-env.js
     - name: Install wp-env
       run: npm install --no-package-lock --no-save @wordpress/env@5.0.0
     - name: Install WordPress environment
@@ -26,7 +36,7 @@ jobs:
       run: npm ci
     - name: Install Playwright dependencies
       run: |
-          npx playwright install chromium --with-deps
+          npx playwright install-deps chromium
     - name: Run Playwright tests
       run: npx playwright test --config tests/e2e/playwright.config.ts
     - uses: actions/upload-artifact@v2
@@ -34,4 +44,4 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
+        retention-days: 14

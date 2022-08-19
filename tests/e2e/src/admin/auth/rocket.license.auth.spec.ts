@@ -6,8 +6,6 @@ test.describe('Rocket License', () => {
 
         await page.goto('/wp-admin');
 
-        await page.waitForSelector( 'text=Log In' );
-
         // Fill username & password.
         await page.fill( 'input[name="log"]', WP_USERNAME );
 	    await page.fill( 'input[name="pwd"]', WP_PASSWORD );
