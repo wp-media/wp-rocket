@@ -18,11 +18,6 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '14.x'
-    - name: Update wp-env.json file
-      env:
-        PHP_VERSION: ${{ matrix.phpVersion }}
-        WP_CORE_VERSION: ${{ matrix.wpCoreVersion }}
-      run: node ./.github/scripts/build-wp-env.js
     - name: Install wp-env
       run: npm install --no-package-lock --no-save @wordpress/env@5.0.0
     - name: Install WordPress environment
@@ -38,7 +33,7 @@ jobs:
       run: |
           npx playwright install-deps chromium
     - name: Run Playwright tests
-      run: npx playwright test --config tests/e2e/playwright.config.ts
+      run: npm run test:e2e
     - uses: actions/upload-artifact@v2
       if: always()
       with:
