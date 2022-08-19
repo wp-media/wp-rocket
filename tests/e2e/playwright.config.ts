@@ -8,7 +8,8 @@ const config: PlaywrightTestConfig = {
 	// globalSetup: require.resolve('./setup/global-setup'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
-	timeout: 5 * 60 * 1000,
+	timeout: 90000,
+	globalTimeout: 900000,
 	reportSlowTests: null,
 	expect: {
 		/**
@@ -22,7 +23,7 @@ const config: PlaywrightTestConfig = {
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: process.env.CI ? 2 : 0,
+	retries: 1,
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -50,7 +51,7 @@ const config: PlaywrightTestConfig = {
 
 	webServer: {
 		command: 'npm run wp-env start',
-		url: WP_BASE_URL + '/',
+		url: 'http://localhost:8888/',
 		timeout: 120_000, // 120 seconds.
 		reuseExistingServer: true,
 	},
