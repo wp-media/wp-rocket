@@ -173,6 +173,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
 			->addArgument( $this->getContainer()->get( 'preload_mobile_detect' ) )
 			->addArgument( $clean_controller )
+			->addArgument( $queue )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )
@@ -190,9 +191,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'preload_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $preload_settings )
-			->addArgument( $clean_controller )
-			->addArgument( $queue )
-			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 
 	}
