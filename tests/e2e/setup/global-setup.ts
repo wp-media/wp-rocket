@@ -5,7 +5,7 @@ import { WP_BASE_URL, WP_USERNAME, WP_PASSWORD } from './../wp.config';
 async function globalSetup(config: FullConfig) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
-  await page.goto(WP_BASE_URL + '/wp-admin');
+  await page.goto(WP_BASE_URL + '/wp-login.php');
   // Fill username & password.
   await page.locator('input[name="log"]').fill(WP_USERNAME);
   await page.locator('input[name="pwd"]').fill(WP_PASSWORD);

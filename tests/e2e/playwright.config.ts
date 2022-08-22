@@ -48,12 +48,12 @@ const config: PlaywrightTestConfig = {
 		storageState: 'tests/e2e/storageState.json',
 	},
 
-	// webServer: {
-	// 	command: 'npm run wp-env start',
-	// 	url: 'http://localhost:8888/',
-	// 	timeout: 120_000, // 120 seconds.
-	// 	reuseExistingServer: true,
-	// },
+	webServer: {
+		command: 'npm run wp-env start',
+		url: 'http://localhost:8888/',
+		timeout: 120_000, // 120 seconds.
+		reuseExistingServer: true,
+	},
 
 	/* Configure projects for major browsers */
 	projects: [
