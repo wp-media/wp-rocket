@@ -344,10 +344,10 @@ class Query extends Base {
 	 * @param string|array $query Array or URL query string of parameters.
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
-	public function query( $query = array() ) {
+	public function query( $query = array(), bool $use_cache = true ) {
 		$this->parse_query( $query );
 
-		return $this->get_items();
+		return $this->get_items( $use_cache );
 	}
 
 	/** Private Setters *******************************************************/
@@ -842,7 +842,7 @@ class Query extends Base {
 	 *
 	 * @return array|int List of items, or number of items when 'count' is passed as a query var.
 	 */
-	private function get_items() {
+	private function get_items( bool $use_cache = true ) {
 
 		/**
 		 * Fires before object items are retrieved.
@@ -863,7 +863,7 @@ class Query extends Base {
 
 		// Check the cache
 		$cache_key   = $this->get_cache_key();
-		$cache_value = $this->cache_get( $cache_key, $this->cache_group );
+		$cache_value = $use_cache ? $this->cache_get( $cache_key, $this->cache_group ) : false;
 
 		// No cache value
 		if ( false === $cache_value ) {
@@ -872,14 +872,16 @@ class Query extends Base {
 			// Set the number of found items
 			$this->set_found_items( $item_ids );
 
-			// Format the cached value
-			$cache_value = array(
-				'item_ids'    => $item_ids,
-				'found_items' => intval( $this->found_items ),
-			);
+			if ( $use_cache ) {
+				// Format the cached value
+				$cache_value = array(
+					'item_ids'    => $item_ids,
+					'found_items' => intval( $this->found_items ),
+				);
 
-			// Add value to the cache
-			$this->cache_add( $cache_key, $cache_value, $this->cache_group );
+				// Add value to the cache
+				$this->cache_add( $cache_key, $cache_value, $this->cache_group );
+			}
 
 		// Value exists in cache
 		} else {

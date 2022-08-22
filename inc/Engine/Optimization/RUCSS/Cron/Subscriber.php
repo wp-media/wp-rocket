@@ -103,7 +103,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function cron_clean_rows() {
 		$this->database->delete_old_used_css();
-		$this->database->delete_old_resources();
 	}
 
 	/**
