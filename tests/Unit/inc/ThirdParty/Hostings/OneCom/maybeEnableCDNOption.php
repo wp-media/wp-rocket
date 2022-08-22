@@ -11,20 +11,12 @@ use Brain\Monkey\Functions;
  * @group ThirdParty
  */
 class Test_MaybeEnableCDNOption extends TestCase {
-    private $onecom, $options_api, $option;
+    private $onecom;
 
 	public function setUp() : void {
 		parent::setUp();
 
         $this->onecom = new OneCom();
-	}
-
-    public function tear_down() {
-		parent::tear_down();
-
-		// Reset after each test.
-		unset( $_SERVER['ONECOM_DOMAIN_NAME'] );
-		unset( $_SERVER['HTTP_HOST'] );
 	}
 
 	/**
@@ -44,39 +36,7 @@ class Test_MaybeEnableCDNOption extends TestCase {
 			}
 		);
 
-        if ( $config['oc_cdn_enabled'] && ! $config['cdn'] ) {
-
-            $domain_name = $_SERVER['ONECOM_DOMAIN_NAME'] = $config['domain'];
-            $http_host = $_SERVER['HTTP_HOST'] = $config['domain'];
-
-            Functions\expect( 'wp_unslash' )
-                ->times( 4 )
-                ->andReturn( $domain_name, $http_host );
-
-            Functions\expect( 'sanitize_text_field' )
-                ->times( 4 )
-                ->andReturn( $domain_name, $http_host );
-
-            $cdn_url = $this->onecom->build_cname();
-            $this->assertSame( $expected['cdn_cname'], $cdn_url );
-
-
-            Functions\expect( 'update_rocket_option' )
-                ->with( 'cdn', $config['options']['cdn'] )
-                ->andReturn( true );
-
-            Functions\expect( 'update_rocket_option' )
-                ->with( 'cdn_cnames', $config['options']['cdn_cnames'] )
-                ->andReturn( true );
-
-            Functions\expect( 'update_rocket_option' )
-                ->with( 'cdn_zone', $config['options']['cdn_zones'] )
-                ->andReturn( true );
-
-            Functions\expect( 'rocket_clean_domain' )->once();
-        }
-
-		$this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
+        $this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
 	}
 
 	public function providerTestData() {

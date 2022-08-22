@@ -20,10 +20,9 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'get_rocket_option_cdn'                   => [
-				[ 'maybe_enable_cdn_option' ],
-				[ 'maybe_disable_cdn_option' ],
-			],
+			'pre_get_rocket_option_cdn'               => 'maybe_enable_cdn_option',
+			'pre_get_rocket_option_cdn_cnames'        => 'maybe_update_cdn_cname',
+			'pre_get_rocket_option_cdn_zones'         => 'maybe_update_cdn_zone',
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
 			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
 			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
@@ -45,55 +44,31 @@ class OneCom implements Subscriber_Interface {
 	/**
 	 * Enable CDN option.
 	 *
-	 * @param bool $cdn CDN Option.
-	 *
-	 * @return boolean
+	 * @param string|null $cdn CDN Option.
+	 * @return bool|null
 	 */
-	public function maybe_enable_cdn_option( bool $cdn ): bool {
-
-		if ( ! $this->is_oc_cdn_enabled() ) {
-			return $cdn;
-		}
-
-		$cdn_url = $this->build_cname();
-
-		if ( $cdn ) {
-			return $cdn;
-		}
-
-		$cdn_cnames = [ $cdn_url ];
-		$cdn_zones  = [ 'all' ];
-
-		$this->update_cdn_options( 1, $cdn_cnames, $cdn_zones );
-
-		rocket_clean_domain();
-
-		return true;
+	public function maybe_enable_cdn_option( ?string $cdn ) {
+		return $this->is_oc_cdn_enabled() ? true : $cdn;
 	}
 
 	/**
-	 * Disable cdn option.
+	 * Update CNAME
 	 *
-	 * @param bool $cdn CDN Option.
-	 *
-	 * @return boolean
+	 * @param string|null $cname CDN CNAME.
+	 * @return array|null
 	 */
-	public function maybe_disable_cdn_option( bool $cdn ): bool {
+	public function maybe_update_cdn_cname( ?string $cname ) {
+		return $this->is_oc_cdn_enabled() ? [ $this->build_cname() ] : $cname;
+	}
 
-		if ( $this->is_oc_cdn_enabled() ) {
-			return $cdn;
-		}
-
-		if ( ! $cdn ) {
-			return $cdn;
-		}
-
-		// Remove CDN CNAME & CDN Zone.
-		$this->update_cdn_options( 0, [], [] );
-
-		rocket_clean_domain();
-
-		return false;
+	/**
+	 * Update CDN Zones.
+	 *
+	 * @param string|null $zone CDN ZONES.
+	 * @return array|null
+	 */
+	public function maybe_update_cdn_zone( ?string $zone ) {
+		return $this->is_oc_cdn_enabled() ? [ 'all' ] : $zone;
 	}
 
 	/**
@@ -186,19 +161,5 @@ class OneCom implements Subscriber_Interface {
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
-	}
-
-	/**
-	 * Update CDN options.
-	 *
-	 * @param integer $enable_cdn Enable/Disable CDN option.
-	 * @param array   $cdn_cnames CDN CNAMES.
-	 * @param array   $cdn_zones CDN Zones.
-	 * @return void
-	 */
-	private function update_cdn_options( int $enable_cdn, array $cdn_cnames, array $cdn_zones ) {
-		update_rocket_option( 'cdn', $enable_cdn );
-		update_rocket_option( 'cdn_cnames', $cdn_cnames );
-		update_rocket_option( 'cdn_zone', $cdn_zones );
 	}
 }
