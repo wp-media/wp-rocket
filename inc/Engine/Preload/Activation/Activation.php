@@ -89,5 +89,6 @@ class Activation implements ActivationInterface {
 		wp_clear_scheduled_hook( 'rocket_preload_clean_rows_time_event' );
 		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
 		wp_clear_scheduled_hook( 'rocket_preload_revert_old_in_progress_rows' );
+		wp_clear_scheduled_hook( 'action_scheduler_run_queue_preload', [ 'WP Cron' ] );
 	}
 }
