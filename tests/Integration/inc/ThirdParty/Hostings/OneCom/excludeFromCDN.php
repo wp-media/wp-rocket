@@ -1,12 +1,9 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\OneCom;
 
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Hostings\OneCom;
 use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
-use Mockery;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::exclude_from_cdn
@@ -19,10 +16,7 @@ class Test_ExcludeFromCDN extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
         
-        $this->onecom = new OneCom( 
-            Mockery::mock( Options::class ), 
-            Mockery::mock( Options_Data::class ) 
-        );
+        $this->onecom = new OneCom();
 	}
 
 	/**

@@ -3,9 +3,6 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with One.com hosting.
@@ -13,32 +10,6 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  * @since 3.12.1
  */
 class OneCom implements Subscriber_Interface {
-	use ReturnTypesTrait;
-
-	/**
-	 * WP Options API instance
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
-	 * WP Rocket Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Constructor
-	 *
-	 * @param Options      $options_api WP Options API instance.
-	 * @param Options_Data $options     WP Rocket Options instance.
-	 */
-	public function __construct( Options $options_api, Options_Data $options ) {
-		$this->options_api = $options_api;
-		$this->options     = $options;
-	}
 
 	/**
 	 * Array of events this subscriber wants to listen to.
@@ -226,10 +197,8 @@ class OneCom implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function update_cdn_options( int $enable_cdn, array $cdn_cnames, array $cdn_zones ) {
-		$this->options->set( 'cdn', $enable_cdn );
-		$this->options->set( 'cdn_cnames', $cdn_cnames );
-		$this->options->set( 'cdn_zone', $cdn_zones );
-
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		update_rocket_option( 'cdn', $enable_cdn );
+		update_rocket_option( 'cdn_cnames', $cdn_cnames );
+		update_rocket_option( 'cdn_zone', $cdn_zones );
 	}
 }
