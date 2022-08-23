@@ -495,7 +495,7 @@ function rocket_handle_settings_import() {
 		) {
 			$settings['async_css'] = 0;
 		}
-		if ( $settings['cache_webp'] && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+		if ( ! empty( $settings['cache_webp'] ) && apply_filters( 'rocket_disable_webp_cache', false ) ) {
 			$settings['cache_webp'] = 0;
 		}
 
