@@ -1,14 +1,13 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Admin\Subscriber::clean_full_cache
- * @group AdminOnly
+ * @covers \WP_Rocket\Engine\Preload\Subscriber::clean_urls
  */
-class Test_CleanFullCache extends AdminTestCase
+class Test_CleanUrls extends AdminTestCase
 {
 	protected $manual_preload;
 
@@ -46,10 +45,11 @@ class Test_CleanFullCache extends AdminTestCase
 		foreach ($config['data'] as $cache) {
 			self::addCache($cache);
 		}
-		do_action('after_rocket_clean_domain', 'whatever','whatever', []);
+
+		do_action('rocket_after_clean_terms', $config['urls']);
 
 		foreach ($expected['data'] as $cache) {
-			$this->assertSame($expected['exists'], self::cacheFound($cache));
+			$this->assertTrue(self::cacheFound($cache));
 		}
 	}
 

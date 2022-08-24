@@ -459,12 +459,12 @@ function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConve
  * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	$rocket_secret_key = get_rocket_option( 'secret_key' );
+	$rocket_secret_key = (string) get_rocket_option( 'secret_key', '' );
 	if ( ! $rocket_secret_key ) {
 		return false;
 	}
 
-	$valid_details = 8 === strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
+	$valid_details = 8 === strlen( (string) get_rocket_option( 'consumer_key', '' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email', '' ) ) );
 
 	if ( ! $valid_details ) {
 		set_transient(
