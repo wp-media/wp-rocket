@@ -29,14 +29,14 @@ class Test_RefreshOnUpdate extends TestCase
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected($config) {
+	public function testShouldDoAsExpected($config, $result) {
 
-		$this->configureReloadSitemap($config);
+		$this->configureReloadSitemap($result);
 		$this->activation->refresh_on_update($config['new_version'], $config['old_version']);
 	}
 
-	public function configureReloadSitemap($config) {
-		if($config['new_version'] !== '3.11.0') {
+	public function configureReloadSitemap($should_preload) {
+		if( ! $should_preload ) {
 			$this->queue->expects()->add_job_preload_job_load_initial_sitemap_async()->never();
 			return;
 		}
