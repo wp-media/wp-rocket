@@ -17,7 +17,7 @@ export class pageUtils {
         await this.page.locator('text=Log In').click();
     }
 
-    visitPage = async ( page_url ) => {
+    visitPage = async ( page_url: String ) => {
         await this.page.goto(WP_BASE_URL + '/' + page_url);
     }
 }
