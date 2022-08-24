@@ -76,7 +76,7 @@ class Activation implements ActivationInterface {
 	 * @return void
 	 */
 	public function refresh_on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.12.0.2', '>=' ) ) {
+		if ( version_compare( $old_version, '3.12.0.2', '>' ) ) {
 			return;
 		}
 		$this->queue->add_job_preload_job_load_initial_sitemap_async();
