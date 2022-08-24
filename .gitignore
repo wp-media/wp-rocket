@@ -6,3 +6,4 @@ vfs:/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+.wp-env.json
