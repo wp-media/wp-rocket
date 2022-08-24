@@ -12,7 +12,7 @@ test.describe('Rocket License', () => {
         };
 
         try {
-            await page.waitForSelector( validate_btn )
+            await page.waitForSelector( validate_btn, { timeout: 5000 } )
             await expect( locator.validate ).toBeVisible();
             // Validate license
             await locator.validate.click();
