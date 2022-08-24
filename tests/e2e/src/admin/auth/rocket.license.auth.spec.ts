@@ -4,12 +4,21 @@ test.describe('Rocket License', () => {
     test( 'should validate rocket license', async ( { page } ) => {
         await page.goto( '/wp-admin/options-general.php?page=wprocket' );
 
-        await page.waitForSelector( 'text=Validate License' )
+        const validate_btn = 'text=Validate License';
 
-        const locator = page.locator( 'text=Validate License' );
-        await expect( locator ).toBeVisible();
+        const locator = {
+            'validate': page.locator( validate_btn ),
+            'has_license': page.locator( 'span:has-text("License")' )
+        };
 
-        // Validate license
-        await locator.click();
+        try {
+            await page.waitForSelector( validate_btn )
+            await expect( locator.validate ).toBeVisible();
+            // Validate license
+            await locator.validate.click();
+            
+        } catch (err) {
+            await expect(locator.has_license).toBeVisible();
+        }
     });
 });
