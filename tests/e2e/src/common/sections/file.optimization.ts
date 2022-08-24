@@ -2,13 +2,13 @@ import type { Page } from '@playwright/test';
 
 export class fileOptimization {
 	readonly page: Page;
-    readonly wpr_page: String;
     readonly locators;
 
     constructor( page: Page ){
         this.page = page;
-        this.wpr_page = 'wp-admin/options-general.php?page=wprocket#file_optimization';
+        
         this.locators = {
+            'section': this.page.locator('#wpr-nav-file_optimization'),
             'minify_css': {
                 'enable': this.page.locator('label[for=minify_css]'),
                 'activate': this.page.locator('text=Activate minify CSS')
@@ -35,7 +35,7 @@ export class fileOptimization {
     }
 
     visit = async () => {
-        await this.page.goto( '/' + this.wpr_page );
+        await this.locators.section.click();
     }
 
     enableMinifiyCss = async () => {
