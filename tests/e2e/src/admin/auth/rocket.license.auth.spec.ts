@@ -1,7 +1,15 @@
 import { test, expect } from '@playwright/test';
-import { WP_USERNAME, WP_PASSWORD } from '../../../wp.config';
+
 test.describe('Rocket License', () => {
-    test('should authenticate rocket license', async ({ page }) => {
-        await page.goto('/wp-admin/options-general.php?page=wprocket');
+    test( 'should validate rocket license', async ( { page } ) => {
+        await page.goto( '/wp-admin/options-general.php?page=wprocket' );
+
+        await page.waitForSelector( 'text=Validate License' )
+
+        const locator = page.locator( 'text=Validate License' );
+        await expect( locator ).toBeVisible();
+
+        // Validate license
+        await locator.click();
     });
 });
