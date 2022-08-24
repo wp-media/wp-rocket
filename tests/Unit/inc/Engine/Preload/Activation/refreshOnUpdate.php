@@ -36,7 +36,7 @@ class Test_RefreshOnUpdate extends TestCase
 	}
 
 	public function configureReloadSitemap($config) {
-		if($config['new_version'] !== '3.11.0') {
+		if($config['old_version'] === '3.11.0') {
 			$this->queue->expects()->add_job_preload_job_load_initial_sitemap_async()->never();
 			return;
 		}
