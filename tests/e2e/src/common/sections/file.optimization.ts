@@ -10,25 +10,31 @@ export class fileOptimization {
 
         this.selectors = {
             'minify_css': {
+                'checkbox': '#minify_css',
                 'enable': 'label[for=minify_css]',
                 'activate': 'text=Activate minify CSS'
             },
             'combine_css': {
+                'checkbox': '#minify_concatenate_css',
                 'enable': 'label[for=minify_concatenate_css]',
                 'activate': 'text=Activate combine CSS'
             },
             'minify_js': {
+                'checkbox': '#minify_js',
                 'enable': 'label[for=minify_js]',
                 'activate': 'text=Activate minify JavaScript'
             },
             'combine_js': {
+                'checkbox': '#minify_concatenate_js',
                 'enable': 'label[for=minify_concatenate_js]',
                 'activate': 'text=Activate combine JavaScript'
             },
             'defer_js': {
+                'checkbox': '#defer_all_js',
                 'enable': 'label[for=defer_all_js]',
             },
             'delay_js': {
+                'checkbox': '#delay_js',
                 'enable': 'label[for=delay_js]',
             }
         };
@@ -60,26 +66,38 @@ export class fileOptimization {
         }
     }
 
+    /**
+     * Visit section.
+     */
     visit = async () => {
         await this.locators.section.click();
     }
 
+    /**
+     * Enable Minify css option.
+     */
     enableMinifiyCss = async () => {
         await this.locators.minify_css.enable.click();
-
-        try{
-            await this.page.waitForSelector( this.selectors.minify_css.activate, { timeout: 5000 } );
-            await this.locators.minify_css.activate.click();
-        } catch(error) {
-            console.log('Minify CSS is already enabled - Unchecked this option');
-            return false;
-        }
-        
+        await this.locators.minify_css.activate.click();
     }
 
+    /**
+     * Toggle minify css option.
+     */
+    toggleMinifyCss = async () => {
+        if(await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
+            await this.locators.minify_css.enable.click();
+            return;
+        }
+
+        await this.enableMinifiyCss();
+    }
+
+    /**
+     * Enable combine css option.
+     */
     enableCombineCss = async () => {
-        // Bail out when combine css option is unchecked.
-        if(!this.enableMinifiyCss()){
+        if(!await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
             return;
         }
 
@@ -87,34 +105,49 @@ export class fileOptimization {
         await this.locators.combine_css.activate.click();
     }
 
+
+    /**
+     * Enable minify js option.
+     */
     enableMinifyJs = async () => {
         await this.locators.minify_js.enable.click();
-
-        try{
-            await this.page.waitForSelector( this.selectors.minify_js.activate, { timeout: 5000 } );
-            await this.locators.minify_js.activate.click();
-        } catch(error) {
-            console.log('Minify JS is already enabled - Unchecked this option');
-            return false;
-        }
-        
+        await this.locators.minify_js.activate.click();
     }
 
-    enableCombineJs = async () => {
+    /**
+     * Toggle minify js option.
+     */
+    toggleMinifyJs = async () => {
+        if(await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
+            await this.locators.minify_js.enable.click();
+            return;
+        }
 
-        // Bail out when minify js option is unchecked.
-        if(!this.enableMinifyJs()){
+        await this.enableMinifyJs();
+    }
+
+    /**
+     * Enable combine js option.
+     */
+    enableCombineJs = async () => {
+        if(!await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
             return;
         }
         
         await this.locators.combine_js.enable.click();
-        await this.locators.combine_js.activate.click(); 
+        await this.locators.combine_js.activate.click();
     }
 
+    /**
+     * Toggle defer js option.
+     */
     enableDeferJs = async () => {
         await this.locators.defer_js.enable.click();
     }
 
+    /**
+     * Toggle delay js option.
+     */
     enableDelayJs = async () => {
         await this.locators.delay_js.enable.click();
     }
