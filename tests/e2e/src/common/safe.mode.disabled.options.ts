@@ -5,8 +5,9 @@ import { Page } from '@playwright/test';
  */
 import { fileOptimization } from '../common/sections/file.optimization';
 import { media as Media } from './sections/media';
+import { cdn as CDN } from './sections/cdn';
 
-export const enableSafeModeDisabledOptions = async ( page: Page ) => {
+export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
 
     /**
      * File Optimization section
@@ -41,6 +42,18 @@ export const enableSafeModeDisabledOptions = async ( page: Page ) => {
     await media.enableLazyLoadyoutube();
     // Enable Image Dimension.
     await media.enableImageDimension();
+
+    /**
+     * CDN Section
+     */
+     const cdn = new CDN( page );
+     await cdn.visit();
+ 
+     // Enable CDN.
+     await cdn.enableCDN();
+
+     // save settings
+     await page.locator('#wpr-options-submit').click();
 }
 
 
