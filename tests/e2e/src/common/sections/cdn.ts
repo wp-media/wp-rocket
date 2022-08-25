@@ -28,7 +28,7 @@ export class cdn {
      * 
      * @returns bool
      */
-     checAnyEnabledOption = async () => {
+     checkAnyEnabledOption = async () => {
         if (await this.page.isChecked('#cdn')) {
             return true;
         }
