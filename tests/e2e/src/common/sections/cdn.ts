@@ -16,7 +16,23 @@ export class cdn {
         await this.locators.section.click();
     }
 
-    enableCDN = async () => {
+    /**
+     * Toggle CDN option. 
+     */
+    toggleCDN = async () => {
         await this.locators.cdn.click();
+    }
+
+    /**
+     * Return default: false when no option in section is enabled
+     * 
+     * @returns bool
+     */
+     checAnyEnabledOption = async () => {
+        if (await this.page.isChecked('#cdn')) {
+            return true;
+        }
+
+        return false;
     }
 }
