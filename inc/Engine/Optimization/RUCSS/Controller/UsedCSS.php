@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -23,13 +22,6 @@ class UsedCSS {
 	 * @var UsedCSS_Query
 	 */
 	private $used_css_query;
-
-	/**
-	 * Resources Query instance.
-	 *
-	 * @var ResourcesQuery
-	 */
-	private $resources_query;
 
 	/**
 	 * Plugin options instance.
@@ -91,7 +83,6 @@ class UsedCSS {
 	 *
 	 * @param Options_Data   $options Options instance.
 	 * @param UsedCSS_Query  $used_css_query Usedcss Query instance.
-	 * @param ResourcesQuery $resources_query Resources Query instance.
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
@@ -100,19 +91,17 @@ class UsedCSS {
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
-		ResourcesQuery $resources_query,
 		APIClient $api,
 		QueueInterface $queue,
 		DataManager $data_manager,
 		Filesystem $filesystem
 	) {
-		$this->options         = $options;
-		$this->used_css_query  = $used_css_query;
-		$this->resources_query = $resources_query;
-		$this->api             = $api;
-		$this->queue           = $queue;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->api            = $api;
+		$this->queue          = $queue;
 		$this->data_manager    = $data_manager;
-		$this->filesystem      = $filesystem;
+		$this->filesystem     = $filesystem;
 	}
 
 	/**
@@ -143,6 +132,10 @@ class UsedCSS {
 
 		// Bailout if user is logged in.
 		if ( is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( ! $this->filesystem->is_writable_folder() ) {
 			return false;
 		}
 
@@ -369,7 +362,6 @@ class UsedCSS {
 
 		foreach ( $link_styles as $style ) {
 			if (
-
 				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
 				&&
 				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
@@ -456,7 +448,6 @@ class UsedCSS {
 			}
 
 			$html = str_replace( $style[0], '', $html );
-
 		}
 
 		return $html;
@@ -517,7 +508,11 @@ class UsedCSS {
 	 * @return boolean
 	 */
 	private function is_mobile(): bool {
-		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 ) && wp_is_mobile();
+		return $this->options->get( 'cache_mobile', 0 )
+			&&
+			$this->options->get( 'do_caching_mobile_files', 0 )
+			&&
+			wp_is_mobile();
 	}
 
 	/**

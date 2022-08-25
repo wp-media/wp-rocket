@@ -4,7 +4,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\ResourcesQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
@@ -21,7 +20,6 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 class Test_Treeshake extends TestCase {
 	protected $options;
 	protected $usedCssQuery;
-	protected $resourcesQuery;
 	protected $api;
 	protected $queue;
 	protected $usedCss;
@@ -33,7 +31,6 @@ class Test_Treeshake extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
-		$this->resourcesQuery = $this->createMock(ResourcesQuery::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->data_manager = Mockery::mock( DataManager::class );
@@ -42,7 +39,6 @@ class Test_Treeshake extends TestCase {
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
 				$this->options, $this->usedCssQuery,
-				$this->resourcesQuery,
 				$this->api,
 				$this->queue,
 				$this->data_manager,
