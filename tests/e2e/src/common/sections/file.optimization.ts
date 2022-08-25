@@ -85,7 +85,7 @@ export class fileOptimization {
      * Toggle minify css option.
      */
     toggleMinifyCss = async () => {
-        if(await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
+        if (await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
             await this.locators.minify_css.enable.click();
             return;
         }
@@ -97,7 +97,7 @@ export class fileOptimization {
      * Enable combine css option.
      */
     enableCombineCss = async () => {
-        if(!await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
+        if (!await this.page.isEnabled(this.selectors.combine_css.checkbox)) {
             return;
         }
 
@@ -118,12 +118,12 @@ export class fileOptimization {
      * Toggle minify js option.
      */
     toggleMinifyJs = async () => {
-        if(await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
+        if (await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
             await this.locators.minify_js.enable.click();
             return;
         }
 
-        if(await this.page.isChecked(this.selectors.delay_js.checkbox)) {
+        if (await this.page.isChecked(this.selectors.delay_js.checkbox)) {
             return;
         }
 
@@ -134,7 +134,7 @@ export class fileOptimization {
      * Enable combine js option.
      */
     enableCombineJs = async () => {
-        if(!await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
+        if (!await this.page.isEnabled(this.selectors.combine_js.checkbox)) {
             return;
         }
         
@@ -145,14 +145,43 @@ export class fileOptimization {
     /**
      * Toggle defer js option.
      */
-    enableDeferJs = async () => {
+    toggleDeferJs = async () => {
         await this.locators.defer_js.enable.click();
     }
 
     /**
      * Toggle delay js option.
      */
-    enableDelayJs = async () => {
+    toggleDelayJs = async () => {
         await this.locators.delay_js.enable.click();
+    }
+
+    /**
+     * Return default: false when no option in section is enabled
+     * 
+     * @returns bool
+     */
+    checkAnyEnabledOption = async () => {
+        if (await this.page.isChecked(this.selectors.minify_css.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.combine_css.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.minify_js.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.defer_js.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.delay_js.checkbox)) {
+            return true;
+        }
+
+        return false;
     }
 }
