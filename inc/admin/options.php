@@ -26,8 +26,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'cache_mobile'                => true,
 		'purge_cron_interval'         => true,
 		'purge_cron_unit'             => true,
-		'sitemap_preload'             => true,
-		'sitemaps'                    => true,
 		'database_revisions'          => true,
 		'database_auto_drafts'        => true,
 		'database_trashed_posts'      => true,
@@ -84,6 +82,8 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
+	ksort( $oldvalue_diff );
+	ksort( $value_diff );
 
 	// If it's different, clean the domain.
 	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
@@ -192,7 +192,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Regenerate the minify key if JS files have been modified.
-	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] !== $oldvalue['minify_js'] )
+	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
 		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
@@ -238,6 +239,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	return $newvalue;
 }
+
 add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_pre_main_option', 10, 2 );
 
 /**
