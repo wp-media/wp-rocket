@@ -28,24 +28,48 @@ export class media {
         await this.locators.section.click();
     }
 
+    /**
+     * Toggle lazyload option.
+     */
     toggleLazyLoad = async () => {
         await this.locators.lazyload.click();
     }
 
+    /**
+     * Toggle lazyload iframes option.
+     */
     toggleLazyLoadIframes = async () => {
         await this.locators.lazyload_iframes.click();
     }
 
-    enableLazyLoadyoutube = async () => {
+    /**
+     * Toggle replace youtube preview option.
+     */
+    toggleLazyLoadyoutube = async () => {
         if (! await this.page.isChecked('#lazyload_iframes')) {
             return;
         }
         
         await this.locators.lazyload_youtube.click();
-        
     }
 
+    /**
+     * Toggle image dimension option.
+     */
     toggleImageDimension = async () => {
         await this.locators.image_dimensions.click();
+    }
+
+    /**
+     * Return default: false when no option in section is enabled
+     * 
+     * @returns bool
+     */
+     checkAnyEnabledOption = async () => {
+        if (await this.page.isChecked('#cdn')) {
+            return true;
+        }
+
+        return false;
     }
 }
