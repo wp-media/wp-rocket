@@ -35,13 +35,13 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
     await media.visit();
 
     // Enable Lazy Load.
-    await media.enableLazyLoad();
+    await media.toggleLazyLoad();
     // Enable Lazy Load for Iframes.
-    await media.enableLazyLoadIframes();
+    await media.toggleLazyLoadIframes();
     // Enable Lazy Load for Iframe Youtube.
     await media.enableLazyLoadyoutube();
     // Enable Image Dimension.
-    await media.enableImageDimension();
+    await media.toggleImageDimension();
 
     /**
      * CDN Section
@@ -50,7 +50,7 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
      await cdn.visit();
  
      // Enable CDN.
-     await cdn.enableCDN();
+     await cdn.toggleCDN();
 
      // save settings
      await page.locator('#wpr-options-submit').click();
