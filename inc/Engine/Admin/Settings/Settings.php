@@ -341,22 +341,6 @@ class Settings {
 		// Options: Activate bot preload.
 		$input['manual_preload'] = ! empty( $input['manual_preload'] ) ? 1 : 0;
 
-		// Option: activate sitemap preload.
-		$input['sitemap_preload'] = ! empty( $input['sitemap_preload'] ) ? 1 : 0;
-
-		// Option : XML sitemaps URLs.
-		if ( ! empty( $input['sitemaps'] ) ) {
-			if ( ! is_array( $input['sitemaps'] ) ) {
-				$input['sitemaps'] = explode( "\n", $input['sitemaps'] );
-			}
-			$input['sitemaps'] = array_map( 'trim', $input['sitemaps'] );
-			$input['sitemaps'] = array_map( 'rocket_sanitize_xml', $input['sitemaps'] );
-			$input['sitemaps'] = array_filter( $input['sitemaps'] );
-			$input['sitemaps'] = array_unique( $input['sitemaps'] );
-		} else {
-			$input['sitemaps'] = [];
-		}
-
 		// Option : fonts to preload.
 		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
 

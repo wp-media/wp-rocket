@@ -17,7 +17,6 @@ class Test_SanitizeCallback extends AdminTestCase {
 
 	public function set_up() {
 		DBTrait::removeDBHooks();
-
 		parent::set_up();
 	}
 

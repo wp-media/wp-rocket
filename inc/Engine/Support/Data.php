@@ -36,7 +36,6 @@ class Data {
 		'minify_concatenate_js'   => 'Combine JS',
 		'minify_google_fonts'     => 'Combine Google Fonts',
 		'manual_preload'          => 'Preload',
-		'sitemap_preload'         => 'Sitemap Preload',
 		'preload_links'           => 'Preload Links',
 		'cdn'                     => 'CDN Enabled',
 		'do_cloudflare'           => 'Cloudflare Enabled',
