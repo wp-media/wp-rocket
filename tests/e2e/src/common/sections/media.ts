@@ -1,18 +1,27 @@
-import type { Locator, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 export class media {
 	readonly page: Page;
+    readonly selectors;
     readonly locators;
 
     constructor( page: Page ){
         this.page = page;
+
+        this.selectors = {
+            'lazyload': 'label[for=lazyload]',
+            'lazyload_iframes': 'label[for=lazyload_iframes]',
+            'lazyload_youtube': 'label[for=lazyload_youtube]',
+            'image_dimensions': 'label[for=image_dimensions]'
+        };
+
         this.locators = {
             'section': this.page.locator('#wpr-nav-media'),
-            'lazyload': this.page.locator('label[for=lazyload]'),
-            'lazyload_iframes': this.page.locator('label[for=lazyload_iframes]'),
-            'lazyload_youtube': this.page.locator('label[for=lazyload_youtube]'),
-            'image_dimensions': this.page.locator('label[for=image_dimensions]')
-        }
+            'lazyload': this.page.locator(this.selectors.lazyload),
+            'lazyload_iframes': this.page.locator(this.selectors.lazyload_iframes),
+            'lazyload_youtube': this.page.locator(this.selectors.lazyload_youtube),
+            'image_dimensions': this.page.locator(this.selectors.image_dimensions)
+        };
     }
 
     visit = async () => {
@@ -28,7 +37,12 @@ export class media {
     }
 
     enableLazyLoadyoutube = async () => {
+        if (! await this.page.isChecked('#lazyload_iframes')) {
+            return;
+        }
+        
         await this.locators.lazyload_youtube.click();
+        
     }
 
     enableImageDimension = async () => {
