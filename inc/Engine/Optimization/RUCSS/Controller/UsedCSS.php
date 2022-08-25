@@ -100,7 +100,7 @@ class UsedCSS {
 		$this->used_css_query = $used_css_query;
 		$this->api            = $api;
 		$this->queue          = $queue;
-		$this->data_manager    = $data_manager;
+		$this->data_manager   = $data_manager;
 		$this->filesystem     = $filesystem;
 	}
 
