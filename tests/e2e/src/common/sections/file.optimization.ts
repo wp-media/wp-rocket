@@ -123,6 +123,10 @@ export class fileOptimization {
             return;
         }
 
+        if(await this.page.isChecked(this.selectors.delay_js.checkbox)) {
+            return;
+        }
+
         await this.enableMinifyJs();
     }
 
