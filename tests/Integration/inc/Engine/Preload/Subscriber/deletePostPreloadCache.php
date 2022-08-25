@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\FilterTrait;
  * @covers \WP_Rocket\Engine\Preload\Subscriber::delete_url_on_not_found
  * @group  Preload
  */
-class Test_DeletePostPreloadCache extends AdminTestCase
+class Test_DeleteUrlOnNotFound extends AdminTestCase
 {
 	use FilterTrait;
 
