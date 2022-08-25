@@ -40,22 +40,46 @@ export class fileOptimization {
 
     enableMinifiyCss = async () => {
         await this.locators.minify_css.enable.click();
-        await this.locators.minify_css.activate.click();
+
+        try{
+            await this.locators.minify_css.activate.click();
+        } catch(error) {
+            return false;
+        }
+        
     }
 
     enableCombineCss = async () => {
         await this.locators.combine_css.enable.click();
-        await this.locators.combine_css.activate.click();
+
+        try{
+            await this.locators.combine_css.activate.click();
+        } catch(error) {
+            return false
+        }
+        
     }
 
     enableMinifyJs = async () => {
         await this.locators.minify_js.enable.click();
-        await this.locators.minify_js.activate.click();
+
+        try{
+            await this.locators.minify_js.activate.click();
+        } catch(error) {
+            return false;
+        }
+        
     }
 
     enableCombineJs = async () => {
         await this.locators.combine_js.enable.click();
-        await this.locators.combine_js.activate.click();
+
+        try {
+            await this.locators.combine_js.activate.click(); 
+        } catch (error) {
+            return false
+        }
+        
     }
 
     enableDeferJs = async () => {
