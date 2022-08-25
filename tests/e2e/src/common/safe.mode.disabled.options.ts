@@ -16,11 +16,11 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
     await fileOpt.visit();
 
     // Enable Minify Css.
-    await fileOpt.enableMinifiyCss();
+    await fileOpt.toggleMinifyCss();
     // Enable Combine Css.
     await fileOpt.enableCombineCss();
     // Enable Minify Js.
-    await fileOpt.enableMinifyJs();
+    await fileOpt.toggleMinifyJs();
     // Enable Combine Js.
     await fileOpt.enableCombineJs();
     // Enable Defer Js.
