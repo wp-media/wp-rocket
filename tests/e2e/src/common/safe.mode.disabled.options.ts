@@ -24,9 +24,9 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
     // Enable Combine Js.
     await fileOpt.enableCombineJs();
     // Enable Defer Js.
-    await fileOpt.enableDeferJs();
+    await fileOpt.toggleDeferJs();
     // Enable Delay Js.
-    await fileOpt.enableDelayJs();
+    await fileOpt.toggleDelayJs();
 
     /**
      * Media section.
@@ -39,7 +39,7 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
     // Enable Lazy Load for Iframes.
     await media.toggleLazyLoadIframes();
     // Enable Lazy Load for Iframe Youtube.
-    await media.enableLazyLoadyoutube();
+    await media.toggleLazyLoadyoutube();
     // Enable Image Dimension.
     await media.toggleImageDimension();
 
