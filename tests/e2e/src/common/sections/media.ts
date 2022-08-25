@@ -28,11 +28,11 @@ export class media {
         await this.locators.section.click();
     }
 
-    enableLazyLoad = async () => {
+    toggleLazyLoad = async () => {
         await this.locators.lazyload.click();
     }
 
-    enableLazyLoadIframes = async () => {
+    toggleLazyLoadIframes = async () => {
         await this.locators.lazyload_iframes.click();
     }
 
@@ -45,7 +45,7 @@ export class media {
         
     }
 
-    enableImageDimension = async () => {
+    toggleImageDimension = async () => {
         await this.locators.image_dimensions.click();
     }
 }
