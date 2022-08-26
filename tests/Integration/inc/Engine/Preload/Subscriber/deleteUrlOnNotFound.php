@@ -11,8 +11,6 @@ use WP_Rocket\Tests\Integration\FilterTrait;
  */
 class Test_DeleteUrlOnNotFound extends AdminTestCase
 {
-	use FilterTrait;
-
 	protected $manual_preload;
 
 	public static function set_up_before_class()
@@ -31,12 +29,10 @@ class Test_DeleteUrlOnNotFound extends AdminTestCase
 	{
 		parent::setUp();
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
-		$this->unregisterAllCallbacksExcept('pre_handle_404', 'delete_url_on_not_found');
 	}
 
 	public function tear_down()
 	{
-		$this->restoreWpFilter('pre_handle_404');
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		parent::tear_down();
 	}
@@ -50,7 +46,7 @@ class Test_DeleteUrlOnNotFound extends AdminTestCase
 			self::addCache($cache);
 		}
 
-		do_action('pre_handle_404', $config['url']);
+		do_action('set_404', $config['url']);
 
 		foreach ($expected['data'] as $cache) {
 			$this->assertTrue(self::cacheFound($cache));
