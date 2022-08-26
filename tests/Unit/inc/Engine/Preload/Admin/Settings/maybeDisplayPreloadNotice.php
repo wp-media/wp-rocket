@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Admin\Settings;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Admin\Settings;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
@@ -14,12 +15,14 @@ use Brain\Monkey\Functions;
 class Test_MaybeDisplayPreloadNotice extends TestCase {
 	protected $settings;
 	protected $options;
+	protected $table;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
-		$this->settings = new Settings($this->options);
+		$this->table = $this->createMock(Cache::class);
+		$this->settings = new Settings($this->options, $this->table);
 		$this->stubTranslationFunctions();
 	}
 

@@ -159,6 +159,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_url_controller )
 			->addArgument( $check_finished_controller )
 			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->getContainer()->get( 'preload_caches_table' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->add( 'preload_clean_controller', ClearCache::class )

@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Preload\Admin;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 
 class Settings {
 
@@ -14,12 +16,21 @@ class Settings {
 	protected $options;
 
 	/**
+	 * Cache table.
+	 *
+	 * @var Cache
+	 */
+	protected $table;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Instance of options handler.
+	 * @param Table $table Cache table.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, Table $table ) {
 		$this->options = $options;
+		$this->table = $table;
 	}
 
 	/**
@@ -47,6 +58,31 @@ class Settings {
 				'status'  => 'info',
 				'message' => $message,
 				'id'      => 'rocket-notice-preload-processing',
+			]
+		);
+	}
+
+	/**
+	 * Maybe display an error when the preload table is missing.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_preload_table_error() {
+		if ( ! $this->can_display_notice() || $this->table->exists() ) {
+			return;
+		}
+
+		$message = sprintf(
+		// translators: %1$s = plugin name.
+			__( '%1$s: The preload table couldn\'t be created`', 'rocket' ),
+			'<strong>WP Rocket</strong>'
+		);
+
+		rocket_notice_html(
+			[
+				'status'  => 'info',
+				'message' => $message,
+				'id'      => 'rocket-error-preload-table',
 			]
 		);
 	}
