@@ -42,6 +42,7 @@ class Test_OnPermalinkChanged extends TestCase
 
 	public function testShouldDoAsExpected() {
 		$this->controller->expects()->load_initial_sitemap();
+		$this->table->expects(self::once())->method('exists')->willReturn(true);
 		$this->query->expects(self::once())->method('remove_all');
 		$this->subscriber->on_permalink_changed();
 	}

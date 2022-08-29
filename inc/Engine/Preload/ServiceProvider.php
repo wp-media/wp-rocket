@@ -69,20 +69,21 @@ class ServiceProvider extends AbstractServiceProvider {
 		// Subscribers.
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
+		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
+			->addArgument( new Logger() );
+		$cache_table = $this->getContainer()->get( 'preload_caches_table' );
+
 		$this->getContainer()->add( 'preload_mobile_detect', WP_Rocket_Mobile_Detect::class );
 
 		$this->getContainer()->add( 'preload_settings', Settings::class )
 			->addArgument( $options );
+
 		$preload_settings = $this->getContainer()->get( 'preload_settings' );
 
 		$this->getContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
 			->addArgument( [] );
 		$wp_file_system = $this->getContainer()->get( 'wp_direct_filesystem' );
-
-		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
-		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
-			->addArgument( new Logger() );
-		$this->getContainer()->get( 'preload_caches_table' );
 
 		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
 
@@ -175,6 +176,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'preload_mobile_detect' ) )
 			->addArgument( $clean_controller )
 			->addArgument( $queue )
+			->addArgument( $cache_table )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )

@@ -74,14 +74,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param LoadInitialSitemap $controller controller creating the initial task.
-	 * @param Cache $query Cache query instance.
-	 * @param Activation $activation Activation manager.
+	 * @param Options_Data            $options Options instance.
+	 * @param LoadInitialSitemap      $controller controller creating the initial task.
+	 * @param Cache                   $query Cache query instance.
+	 * @param Activation              $activation Activation manager.
 	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile detector instance.
-	 * @param ClearCache $clear_cache Clear cache controller.
-	 * @param Queue $queue Preload queue.
-	 * @param CacheTable $table Cache table.
+	 * @param ClearCache              $clear_cache Clear cache controller.
+	 * @param Queue                   $queue Preload queue.
+	 * @param CacheTable              $table Cache table.
 	 */
 	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect, ClearCache $clear_cache, Queue $queue, CacheTable $table ) {
 		$this->options       = $options;
@@ -91,7 +91,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->mobile_detect = $mobile_detect;
 		$this->clear_cache   = $clear_cache;
 		$this->queue         = $queue;
-		$this->table = $table;
+		$this->table         = $table;
 	}
 
 	/**
@@ -132,7 +132,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_load_initial_sitemap( $old_value, $value ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -160,7 +160,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_cancel_preload( $old_value, $value ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -187,7 +187,7 @@ class Subscriber implements Subscriber_Interface {
 	public function update_cache_row() {
 		global $wp;
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -226,7 +226,7 @@ class Subscriber implements Subscriber_Interface {
 	public function delete_url_on_not_found() {
 		global $wp;
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -241,7 +241,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_permalink_changed() {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -281,7 +281,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_url( string $url ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -295,7 +295,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_full_cache() {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -314,7 +314,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_partial_cache( $object, array $urls, $lang ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -333,7 +333,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_urls( array $urls ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -348,7 +348,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_post_preload_cache( $post_id ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -376,7 +376,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
@@ -405,7 +405,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function preload_after_automatic_cache_purge( $deleted ) {
 
-		if(! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 
