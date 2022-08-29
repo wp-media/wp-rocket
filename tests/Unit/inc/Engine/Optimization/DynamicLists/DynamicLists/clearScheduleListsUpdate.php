@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -16,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_ClearScheduleListsUpdate extends TestCase {
 	public function testShouldDoExpect() {
-		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ), '' );
+		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ), Mockery::mock( User::class ), '' );
 
 		Functions\expect( 'wp_clear_scheduled_hook' )
 			->with( 'rocket_update_dynamic_lists' )

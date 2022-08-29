@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\License\API\User;
 
 class DynamicLists extends Abstract_Render {
 	/**
@@ -20,6 +21,13 @@ class DynamicLists extends Abstract_Render {
 	 */
 	private $data_manager;
 
+	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -27,13 +35,15 @@ class DynamicLists extends Abstract_Render {
 	 *
 	 * @param APIClient   $api APIClient instance.
 	 * @param DataManager $data_manager DataManager instance.
+	 * @param User        $user User instance.
 	 * @param string      $template_path Path to views.
 	 */
-	public function __construct( APIClient $api, DataManager $data_manager, $template_path ) {
+	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api          = $api;
 		$this->data_manager = $data_manager;
+		$this->user         = $user;
 	}
 
 	/**
@@ -76,6 +86,14 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function update_lists_from_remote() {
+		if ( $this->user->is_license_expired() ) {
+			return [
+				'success' => false,
+				'data'    => '',
+				'message' => __( 'You need an active license to get the latest version of the lists from our server.', 'rocket' ),
+			];
+		}
+
 		$result = $this->api->get_exclusions_list( $this->data_manager->get_lists_hash() );
 
 		if (
