@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-08-29 14:33-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2022\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -2408,10 +2408,9 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"En hızlı sonuçlar için %1$sSite Haritası Ön Yüklemesi%2$s’nin "
-"etkinleştirilmesini öneririz."
+"En hızlı sonuçlar için %1$sÖnyükleme%2$s’nin etkinleştirilmesini öneririz."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
@@ -2448,44 +2447,12 @@ msgstr ""
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr "Önemli bir özelliğe erişiminizi kaybetmek üzeresiniz"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
-#, php-format
-msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature "
-"will not be available any longer in your file optimization tab."
-msgstr ""
-"WP Rocket 3.10.10.1’e geri dönerseniz, %1$sKullanılmayan CSS’yi Kaldır%2$s "
-"özelliği artık dosya iyileştirme sekmenizde mevcut olmayacaktır."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-"Eğer bu özellikle ilgili herhangi bir sorunla karşılaşırsanız, seçeneği "
-"basitçe etkisizleştirebilir veya %1$syardım için destek ile iletişime "
-"geçebilirsiniz%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr "İptal"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr "Geri almayı onayla"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: Kullanılan CSS seçeneği etkinleştirilmedi!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Kullanılan CSS önbelleği temizlendi!"
@@ -2527,8 +2494,14 @@ msgstr ""
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
-msgstr "%1$s: Lütfen bekleyin. Önyükleme hizmeti sayfalarınızı işliyor."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: Önyükleme hizmeti artık etkin. İlk önyüklemeden sonra, tüm "
+"sayfalarınızı her temizlendiklerinde önbelleğe almaya devam edecek. Başka "
+"bir işlem yapılmasına gerek yoktur."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:129
 msgid "WP Rocket Preload pending jobs"
@@ -3772,6 +3745,10 @@ msgstr "30 gün"
 msgid "Forever"
 msgstr "Sürekli"
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr "İptal"
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "Onayla"
@@ -4091,11 +4068,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "%s sürümünü yeniden yükle"
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Hata ayıklama kipi"
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Hata ayıklama günlük dosyası oluşturun."
 
