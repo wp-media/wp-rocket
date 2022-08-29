@@ -14,7 +14,7 @@ if ( ! class_exists( 'wfconfig' ) ) {
 		}
 
         public static function set( $key, $value ) {
-			self::$whitelisted[$key] = trim($value);
+			self::$whitelisted[$key] = $value;
 		}
 	}
 }
