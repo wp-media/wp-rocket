@@ -39,12 +39,14 @@ class Test_restUpdateResponse extends TestCase {
 
 		$data_manager
 			->shouldReceive( 'get_lists_hash' )
+			->atMost()
 			->once()
 			->andReturn( $hash );
 
 		$dynamic_lists_api
 			->shouldReceive( 'get_exclusions_list' )
 			->with( $hash )
+			->atMost()
 			->once()
 			->andReturn( $exclusions_list_result );
 
