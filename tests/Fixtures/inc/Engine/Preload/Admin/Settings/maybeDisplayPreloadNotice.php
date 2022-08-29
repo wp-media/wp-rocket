@@ -8,7 +8,7 @@ return [
 		'expected' => [
 			'notice' => [
 				'status'  => 'info',
-				'message' => '<strong>WP Rocket</strong>: Please wait. The preload service is processing your pages.',
+				'message' => '<strong>WP Rocket</strong>: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.',
 				'id'      => 'rocket-notice-preload-processing',
 			]
 		]
@@ -21,7 +21,7 @@ return [
 		'expected' => [
 			'notice' => [
 				'status'  => 'info',
-				'message' => '<strong>WP Rocket</strong>: Please wait. The preload service is processing your pages.',
+				'message' => '<strong>WP Rocket</strong>: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.',
 				'id'      => 'rocket-notice-preload-processing',
 			]
 		]
@@ -37,7 +37,7 @@ return [
 		'expected' => [
 			'notice' => [
 				'status'  => 'info',
-				'message' => '<strong>WP Rocket</strong>: Please wait. The preload service is processing your pages.',
+				'message' => '<strong>WP Rocket</strong>: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.',
 				'id'      => 'rocket-notice-preload-processing',
 			]
 		]
@@ -54,7 +54,7 @@ return [
 		'expected' => [
 			'notice' => [
 				'status'  => 'info',
-				'message' => '<strong>WP Rocket</strong>: Please wait. The preload service is processing your pages.',
+				'message' => '<strong>WP Rocket</strong>: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.',
 				'id'      => 'rocket-notice-preload-processing',
 			]
 		]
