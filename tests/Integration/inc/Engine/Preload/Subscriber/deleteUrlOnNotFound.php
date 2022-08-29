@@ -25,9 +25,9 @@ class Test_DeleteUrlOnNotFound extends AdminTestCase
 		parent::tear_down_after_class();
 	}
 
-	public function setUp(): void
+	public function set_up()
 	{
-		parent::setUp();
+		parent::set_up();
 		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 	}
 
