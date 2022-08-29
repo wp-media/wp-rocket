@@ -92,7 +92,7 @@ class Database {
 	public function drop_resources_table(): bool {
 		global $wpdb;
 
-		$result = $wpdb->query( "DROP TABLE {$wpdb->prefix}wpr_rucss_resources" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$result = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wpr_rucss_resources" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 
 		if ( false === $result ) {
 			return false;
