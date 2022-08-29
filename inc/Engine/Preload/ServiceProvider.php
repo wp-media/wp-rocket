@@ -184,6 +184,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
 			->addArgument( $preload_queue_runner )
+			->addArgument( $cache_table )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'fonts_preload_subscriber', Fonts::class )
