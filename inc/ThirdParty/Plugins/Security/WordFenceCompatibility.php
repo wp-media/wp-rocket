@@ -37,7 +37,8 @@ class WordFenceCompatibility implements Subscriber_Interface {
 		}
 
 		return [
-			'init' => [ 'whitelist_wordfence_firewall_ips', 11 ],
+			'init'                => [ 'whitelist_wordfence_firewall_ips', 11 ],
+			'rocket_deactivation' => 'pop_ip_from_whitelist',
 		];
 	}
 
@@ -49,24 +50,57 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 */
 	public function pop_old_ip( string $old_rucss_ip ) {
 
+		$whitelist = $this->can_pop_ip( $old_rucss_ip );
+
+		if ( ! $whitelist ) {
+			return;
+		}
+
+		// Update whitelist.
+		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
+	}
+
+	/**
+	 * Remove ip from whitelist.
+	 *
+	 * @return void
+	 */
+	public function pop_ip_from_whitelist() {
+
+		$whitelist = $this->can_pop_ip( self::WHITELISTED_IPS[0] );
+
+		if ( ! $whitelist ) {
+			return;
+		}
+
+		// Update whitelist.
+		wfConfig::set( 'whitelisted', implode( ',', $whitelist ) );
+	}
+
+	/**
+	 * Check if ip can be removed.
+	 *
+	 * @param string $ip IP.
+	 * @return array
+	 */
+	private function can_pop_ip( string $ip ) {
 		// Get all whitelists.
 		$whitelists = wfConfig::get( 'whitelisted', '' );
 
 		// Convert to array.
 		$whitelist_array = explode( ',', $whitelists );
 
-		// Get old ip index.
-		$old_ip_index = array_search( $old_rucss_ip, $whitelist_array, true );
+		// Get ip index.
+		$ip = array_search( $ip, $whitelist_array, true );
 
-		if ( false === $old_ip_index ) {
-			return;
+		if ( false === $ip ) {
+			return false;
 		}
 
-		// Remove old ip from whitelist.
-		unset( $whitelist_array[ $old_ip_index ] );
+		// Remove ip from whitelist.
+		unset( $whitelist_array[ $ip ] );
 
-		// Update whitelist.
-		wfConfig::set( 'whitelisted', implode( ',', $whitelist_array ) );
+		return $whitelist_array;
 	}
 
 	/**
@@ -77,7 +111,6 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function whitelist_wordfence_firewall_ips() {
-
 		// Pop old rucss ip.
 		$this->pop_old_ip( $this->old_rucss_ip );
 
