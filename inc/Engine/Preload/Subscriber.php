@@ -105,9 +105,9 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_file'             => 'clean_url',
+			'set_404'                             => 'delete_url_on_not_found',
 			'rocket_after_clean_terms'            => 'clean_urls',
 			'after_rocket_clean_domain'           => 'clean_full_cache',
-			'wp_trash_post'                       => 'delete_post_preload_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 		];
