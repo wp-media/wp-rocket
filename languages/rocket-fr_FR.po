@@ -2567,7 +2567,7 @@ msgstr "Tâches en attente de l'option Préchargement de WP Rocket"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:157
 msgid "WP Rocket Preload revert stuck in-progress jobs"
-msgstr "Tâches bloquées de l'option Préchargement de WP Rocket"
+msgstr "Relance des tâches bloquées de l'option Préchargement de WP Rocket"
 
 #: inc/ThirdParty/Hostings/Cloudways.php:82
 #, php-format
