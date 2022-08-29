@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-08-29 14:33-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2043,7 +2043,7 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
@@ -2072,39 +2072,12 @@ msgstr ""
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
-#, php-format
-msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature will "
-"not be available any longer in your file optimization tab."
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
@@ -2142,7 +2115,10 @@ msgstr ""
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action is "
+"needed."
 msgstr ""
 
 #: inc/Engine/Preload/Cron/Subscriber.php:129
@@ -3203,6 +3179,10 @@ msgstr ""
 msgid "Forever"
 msgstr ""
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr ""
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr ""
@@ -3498,11 +3478,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr ""
 
