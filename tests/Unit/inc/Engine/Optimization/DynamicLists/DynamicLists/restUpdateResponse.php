@@ -25,12 +25,17 @@ class Test_restUpdateResponse extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $exclusions_list_result, $expected ) {
+	public function testShouldReturnExpected( $expired, $exclusions_list_result, $expected ) {
 		$dynamic_lists_api = Mockery::mock( APIClient::class );
 		$data_manager = Mockery::mock( DataManager::class );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, Mockery::mock( User::class ), '' );
+		$user = Mockery::mock( User::class );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, $user, '' );
 
 		$hash = '';
+
+		$user->shouldReceive( 'is_license_expired' )
+			->once()
+			->andReturn( $expired );
 
 		$data_manager
 			->shouldReceive( 'get_lists_hash' )

@@ -12,7 +12,20 @@ return [
 		]
 	],*/
 	'test_data' => [
+		'testShouldReturnExpiredLicense' => [
+			'expired' => true,
+			'exclusions_list_result' => [
+				'code' => 206,
+				'body' => $data
+			],
+			'expected' => [
+				'success' => false,
+				'data'    => '',
+				'message' => 'You need an active license to get the latest version of the lists from our server.'
+			],
+		],
 		'testShouldReturnListsAreUpToDate'            => [
+			'expired' => false,
 			'exclusions_list_result' => [
 				'code' => 206,
 				'body' => $data
@@ -24,6 +37,7 @@ return [
 			],
 		],
 		'testShouldReturnListsAreSuccessfullyUpdated' => [
+			'expired' => false,
 			'exclusions_list_result' => [
 				'not_saved' => false,
 				'code' => 200,
@@ -36,6 +50,7 @@ return [
 			],
 		],
 		'testShouldReturnCouldNotGetLists'            => [
+			'expired' => false,
 			'exclusions_list_result' => [
 				'code' => 500,
 			],
@@ -46,6 +61,7 @@ return [
 			],
 		],
 		'testShouldReturnCouldNotUpdateLists'         => [
+			'expired' => false,
 			'exclusions_list_result' => [
 				'not_saved' => true,
 				'code'      => 200,
