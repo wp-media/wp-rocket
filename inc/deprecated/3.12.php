@@ -609,6 +609,12 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) { // phpcs:igno
 		return false;
 	}
 
+	$cache_table = $container->get( 'preload_caches_table' );
+
+	if( ! $cache_table->exists() ) {
+		return false;
+	}
+
 	$controller = $container->get( 'preload_clean_controller' );
 
 	$controller->partial_clean( $urls );
@@ -633,6 +639,12 @@ function run_rocket_sitemap_preload() { // phpcs:ignore WordPress.NamingConventi
 	$container = apply_filters( 'rocket_container', null );
 
 	if ( ! $container ) {
+		return;
+	}
+
+	$cache_table = $container->get( 'preload_caches_table' );
+
+	if( ! $cache_table->exists() ) {
 		return;
 	}
 
