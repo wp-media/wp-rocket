@@ -39,6 +39,8 @@ class Subscriber implements Subscriber_Interface {
 	protected $initial_sitemap;
 
 	/**
+	 * Cache table.
+	 *
 	 * @var Cache
 	 */
 	protected $table;
@@ -50,15 +52,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @param PreloadUrl         $preload_controller controller preloading urls.
 	 * @param CheckFinished      $check_finished controller checking if the preload is finished.
 	 * @param LoadInitialSitemap $initial_sitemap Controller loading the initial sitemap.
-	 * @param Cache $table cache table.
+	 * @param Cache              $table cache table.
 	 */
-	public function __construct( FetchSitemap $fetch_sitemap, PreloadUrl $preload_controller, CheckFinished
-	$check_finished, LoadInitialSitemap $initial_sitemap, Cache $table ) {
+	public function __construct( FetchSitemap $fetch_sitemap, PreloadUrl $preload_controller, CheckFinished $check_finished, LoadInitialSitemap $initial_sitemap, Cache $table ) {
 		$this->fetch_sitemap      = $fetch_sitemap;
 		$this->preload_controller = $preload_controller;
 		$this->check_finished     = $check_finished;
 		$this->initial_sitemap    = $initial_sitemap;
-		$this->table = $table;
+		$this->table              = $table;
 	}
 
 	/**
@@ -82,7 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function parse_sitemap( string $url ) {
-		if( ! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 		$this->fetch_sitemap->parse_sitemap( $url );
@@ -95,7 +96,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-		if( ! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 		$this->preload_controller->preload_url( $url );
@@ -107,7 +108,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function check_finished() {
-		if( ! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 		$this->check_finished->check_finished();
@@ -119,7 +120,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function load_initial_sitemap() {
-		if( ! $this->table->exists()) {
+		if ( ! $this->table->exists() ) {
 			return;
 		}
 		$this->initial_sitemap->load_initial_sitemap();

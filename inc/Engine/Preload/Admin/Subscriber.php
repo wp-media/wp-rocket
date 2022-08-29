@@ -46,7 +46,6 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices' => [
 				'maybe_display_preload_notice',
 				'maybe_display_as_missed_tables_notice',
-				'maybe_display_preload_table_error',
 			],
 		];
 	}
@@ -67,14 +66,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_as_missed_tables_notice() {
 		$this->settings->maybe_display_as_missed_tables_notice();
-	}
-
-	/**
-	 * Maybe display an error when the preload table is missing.
-	 *
-	 * @return void
-	 */
-	public function maybe_display_preload_table_error() {
-		$this->settings->maybe_display_preload_table_error();
 	}
 }
