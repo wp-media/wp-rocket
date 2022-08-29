@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Cron\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Tests\Unit\TestCase;
 use Mockery;
 use Brain\Monkey\Functions;
@@ -24,6 +25,7 @@ class Test_ScheduleRevertOldInProgressRows extends TestCase
 	protected $settings;
 	protected $controller;
 	protected $queue_runner;
+	protected $table;
 
 	protected function setUp(): void
 	{
@@ -32,8 +34,9 @@ class Test_ScheduleRevertOldInProgressRows extends TestCase
 		$this->settings = Mockery::mock(Settings::class);
 		$this->controller = Mockery::mock(PreloadUrl::class);
 		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
+		$this->table = $this->createMock(CacheTable::class);
 
-		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
+		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner, $this->table);
 	}
 
 	/**

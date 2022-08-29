@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
@@ -40,18 +41,27 @@ class Subscriber implements Subscriber_Interface {
 	protected $queue_runner;
 
 	/**
+	 * Cache table.
+	 *
+	 * @var CacheTable
+	 */
+	protected $table;
+
+	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param Settings           $settings Preload settings.
 	 * @param Cache              $query Db query.
 	 * @param PreloadUrl         $preload_controller Preload url controller.
 	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
+	 * @param CacheTable         $table Cache table.
 	 */
-	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, PreloadQueueRunner $preload_queue_runner ) {
+	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, PreloadQueueRunner $preload_queue_runner, CacheTable $table ) {
 		$this->settings           = $settings;
 		$this->query              = $query;
 		$this->preload_controller = $preload_controller;
 		$this->queue_runner       = $preload_queue_runner;
+		$this->table              = $table;
 	}
 
 	/**
@@ -97,7 +107,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function process_pending_urls() {
-		if ( ! $this->settings->is_enabled() ) {
+		if ( ! $this->settings->is_enabled() || ! $this->table->exists() ) {
 			return;
 		}
 
@@ -221,6 +231,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_old_rows() {
+		if ( ! $this->table->exists() ) {
+			return;
+		}
 		$this->query->remove_all_not_accessed_rows();
 	}
 
@@ -230,6 +243,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function revert_old_in_progress_rows() {
+		if ( ! $this->table->exists() ) {
+			return;
+		}
 		$this->query->revert_old_in_progress();
 	}
 
