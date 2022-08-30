@@ -31,7 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$api_url = wp_parse_url( WP_ROCKET_WEB_INFO );
 
-		$this->getContainer()->share( 'plugin_updater_common_subscriber', 'WP_Rocket\Engine\Plugin\UpdaterApiCommonSubscriber' )
+		$this->getContainer()->share( 'plugin_updater_common_subscriber', UpdaterApiCommonSubscriber::class )
 			->addArgument(
 				[
 					'api_host'           => $api_url['host'],
@@ -43,7 +43,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_information_subscriber', 'WP_Rocket\Engine\Plugin\InformationSubscriber' )
+		$this->getContainer()->share( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
 				[
 					'plugin_file' => WP_ROCKET_FILE,
@@ -51,7 +51,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_updater_subscriber', 'WP_Rocket\Engine\Plugin\UpdaterSubscriber' )
+		$this->getContainer()->share( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument(
 				[
 					'plugin_file'    => WP_ROCKET_FILE,

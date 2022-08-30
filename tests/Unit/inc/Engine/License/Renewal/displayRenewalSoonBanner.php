@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\Renewal;
@@ -29,6 +30,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 			[
 				$this->pricing,
 				$this->user,
+				Mockery::mock( Options_Data::class ),
 				'views',
 			]
 		);
@@ -42,12 +44,12 @@ class DisplayRenewalSoonBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['user']['licence_expired'] );
-		
+
 		$this->user->shouldReceive( 'is_auto_renew' )
 			->atMost()
 			->once()
 			->andReturn( $config['user']['auto_renew'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['user']['licence_expiration'] );
 
@@ -61,10 +63,10 @@ class DisplayRenewalSoonBanner extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['user']['renewal_url'] );
-			
+
 			$this->user->shouldReceive( 'get_creation_date' )
 				->andReturn( $config['user']['creation_date'] );
-			
+
 			$this->pricing->shouldReceive( 'get_renewals_data' )
 				->andReturn( $config['pricing']['renewals'] );
 
@@ -77,7 +79,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 				->atMost()
 				->twice()
 				->andReturn( $config['pricing']['plus']->websites );
-			
+
 			$this->pricing->shouldReceive( 'get_single_pricing' )
 				->atMost()
 				->once()
