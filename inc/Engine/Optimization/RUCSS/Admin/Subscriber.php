@@ -126,7 +126,7 @@ class Subscriber implements Subscriber_Interface {
 
 		global $wpdb;
 
-		$exp = "'^" . $wpdb->prefix . "actionscheduler_[^0-9]+$'";
+		$exp = "'^" . $wpdb->prefix . "actionscheduler_(logs|actions|groups|claims)+$'";
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$found_as_tables = $wpdb->get_col(
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
