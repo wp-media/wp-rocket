@@ -193,18 +193,6 @@ class Config {
 
 		$host = $this->get_host();
 
-		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
-			$config_file_path = self::$config_dir_path . $host . '.php';
-			return self::memoize(
-				__FUNCTION__,
-				[],
-				[
-					'success' => true,
-					'path'    => $config_file_path,
-				]
-			);
-		}
-
 		$path = str_replace( '\\', '/', strtok( $this->get_server_input( 'REQUEST_URI', '' ), '?' ) );
 		$path = preg_replace( '|(?<=.)/+|', '/', $path );
 		$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
@@ -237,6 +225,18 @@ class Config {
 			}
 
 			$dir .= $p . '.';
+		}
+
+		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
+			$config_file_path = self::$config_dir_path . $host . '.php';
+			return self::memoize(
+				__FUNCTION__,
+				[],
+				[
+					'success' => true,
+					'path'    => $config_file_path,
+				]
+			);
 		}
 
 		return self::memoize(

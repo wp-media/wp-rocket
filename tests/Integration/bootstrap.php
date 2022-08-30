@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use Automattic\Jetpack\Modules;
 use WC_Install;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
@@ -151,6 +152,42 @@ tests_add_filter(
 			define( 'WORDFENCE_VERSION', '1' );
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
 		}
+
+		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
+			define('RANK_MATH_FILE', '1');
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'SEOPress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'TheSEOFramework' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
+			if(! defined('AIOSEOP_VERSION')) {
+				define('AIOSEOP_VERSION', true);
+			}
+			if(! defined('AIOSEO_VERSION')) {
+				define('AIOSEO_VERSION', true);
+			}
+		}
+
+		if ( BootstrapManager::isGroup( 'Jetpack' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/jetpack/jetpack.php';
+			update_option(
+				'jetpack_active_modules',
+				[
+					'sitemaps',
+					'widgets',
+				]
+			);
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Jetpack/functions.php';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
@@ -161,6 +198,7 @@ tests_add_filter(
 tests_add_filter(
 	'setup_theme',
 	function() {
+
 		if ( ! BootstrapManager::isGroup( 'WithWoo' ) ) {
 			return;
 		}

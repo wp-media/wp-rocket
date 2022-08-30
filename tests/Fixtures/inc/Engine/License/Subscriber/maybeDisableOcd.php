@@ -85,7 +85,7 @@ return [
 			'input_attr' => [],
 		],
 	],
-	'shouldReturnDisabledWhenExpiredRecentlyAndOCDDisabled' => [
+	'shouldReturnSameWhenExpiredRecentlyAndOCDDisabled' => [
 		'config' => [
 			'transient' => json_decode( json_encode( [
 				'licence_expiration' => strtotime( 'now - 7 days' ),
@@ -101,13 +101,9 @@ return [
 		],
 		'expected' => [
 			'id' => 'optimize_css_delivery',
-			'value' => 0,
-			'container_class' => [
-				'wpr-isDisabled'
-			],
-			'input_attr' => [
-				'disabled' => 1,
-			],
+			'value' => 1,
+			'container_class' => [],
+			'input_attr' => [],
 		],
 	],
 	'shouldReturnDisabledWhenExpiredLonger' => [

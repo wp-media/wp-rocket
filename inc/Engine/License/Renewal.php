@@ -397,6 +397,8 @@ class Renewal extends Abstract_Render {
 				$whitelabel
 				&&
 				15 > $expired_since
+				&&
+				$ocd
 			)
 			||
 			(
@@ -405,6 +407,16 @@ class Renewal extends Abstract_Render {
 				$this->user->is_auto_renew()
 				&&
 				4 > $expired_since
+			)
+			||
+			(
+				$whitelabel
+				&&
+				$this->user->is_auto_renew()
+				&&
+				4 > $expired_since
+				&&
+				! $ocd
 			)
 		) {
 			return $args;
@@ -443,14 +455,31 @@ class Renewal extends Abstract_Render {
 				'</a>'
 			);
 		} elseif (
-			$whitelabel
-			&&
-			15 < $expired_since
+			(
+				$whitelabel
+				&&
+				15 < $expired_since
+			)
+			||
+			(
+				$whitelabel
+				&&
+				15 > $expired_since
+				&&
+				! $ocd
+			)
 		) {
+			$doc    = 'https://docs.wp-rocket.me/article/1711-what-happens-if-my-license-expires';
+			$locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
+
+			if ( 'fr' === $locale ) {
+				$doc = 'https://fr.docs.wp-rocket.me/article/1712-que-se-passe-t-il-si-ma-licence-expire';
+			}
+
 			$message .= sprintf(
 				// translators: %1$s = <a>, %2$s = </a>.
 				__( 'You need an active license to enable this option. %1$sMore info%2$s.', 'rocket' ),
-				'<a href="https://docs.wp-rocket.me/article/1711-what-happens-if-my-license-expires?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
+				'<a href="' . $doc . '?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
 				'</a>'
 			);
 		}
@@ -475,6 +504,16 @@ class Renewal extends Abstract_Render {
 		}
 
 		if ( ! $this->user->is_license_expired() ) {
+			return $menu_title;
+		}
+
+		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
+
+		if (
+			$this->user->is_auto_renew()
+			&&
+			4 > $expired_since
+		) {
 			return $menu_title;
 		}
 
@@ -537,11 +576,7 @@ class Renewal extends Abstract_Render {
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 
 		if (
-			(
-				15 > $expired_since
-				&&
-				$this->options->get( 'optimize_css_delivery', 0 )
-			)
+			15 > $expired_since
 			||
 			(
 				$this->user->is_auto_renew()
