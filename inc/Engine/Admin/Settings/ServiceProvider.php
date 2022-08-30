@@ -33,7 +33,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-
 		$this->getContainer()->add( 'settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'settings_render', Render::class )

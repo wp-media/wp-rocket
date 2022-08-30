@@ -185,10 +185,10 @@ class Plugin {
 				'capability' => 'rocket_manage_options',
 			]
 		);
+
 		$this->container->addServiceProvider( SettingsServiceProvider::class );
 		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
 		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
-		$this->container->addServiceProvider( LicenseServiceProvider::class );
 
 		return [
 			'beacon',
@@ -203,10 +203,10 @@ class Plugin {
 			'minify_css_admin_subscriber',
 			'admin_cache_subscriber',
 			'google_fonts_admin_subscriber',
-			'license_subscriber',
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
+			'preload_admin_subscriber',
 			'minify_admin_subscriber',
 		];
 	}
@@ -263,15 +263,14 @@ class Plugin {
 		$this->container->addServiceProvider( DelayJSServiceProvider::class );
 		$this->container->addServiceProvider( RUCSSServiceProvider::class );
 		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
+		$this->container->addServiceProvider( LicenseServiceProvider::class );
 
 		$common_subscribers = [
+			'license_subscriber',
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'expired_cache_purge_subscriber',
-			'preload_subscriber',
-			'sitemap_preload_subscriber',
-			'partial_preload_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
@@ -303,8 +302,12 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
+			'preload_subscriber',
+			'preload_front_subscriber',
+			'polygon',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
+			'preload_cron_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
@@ -323,10 +326,16 @@ class Plugin {
 			'yoast_seo',
 			'flatsome',
 			'convertplug',
-			'cache_config',
+			'jevelin',
 			'unlimited_elements',
 			'inline_related_posts',
+			'jetpack',
+			'rank_math_seo',
+			'all_in_one_seo_pack',
+			'seopress',
+			'the_seo_framework',
 			'wpml',
+			'xstore',
 		];
 
 		$host_type = HostResolver::get_host_service();
