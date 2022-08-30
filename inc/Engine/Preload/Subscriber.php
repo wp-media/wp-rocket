@@ -166,6 +166,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_cache_row() {
 		global $wp;
+
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		if ( $this->query->is_preloaded( $url ) ) {
