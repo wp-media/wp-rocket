@@ -44,8 +44,8 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices' => [
-				'maybe_display_preload_notice',
-				'maybe_display_as_missed_tables_notice',
+				[ 'maybe_display_preload_notice' ],
+				[ 'maybe_display_as_missed_tables_notice' ],
 			],
 		];
 	}

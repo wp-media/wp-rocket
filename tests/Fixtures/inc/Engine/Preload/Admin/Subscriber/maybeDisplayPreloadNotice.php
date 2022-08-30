@@ -2,7 +2,7 @@
 
 $html = <<<HTML
 	<div class="notice notice-info is-dismissible" id="rocket-notice-preload-processing">
-		<p><strong>WP Rocket</strong>: Please wait. The preload service is processing your pages.</p>
+		<p><strong>WP Rocket</strong>: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.</p>
 	</div>
 HTML;
 
