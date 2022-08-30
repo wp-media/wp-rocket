@@ -125,10 +125,12 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		global $wpdb;
+
+		$exp = "'^" . $wpdb->prefix . "actionscheduler_[^0-9]+$'";
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$found_as_tables = $wpdb->get_col(
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare( 'SHOW TABLES FROM ' . DB_NAME . ' WHERE Tables_in_' . DB_NAME . ' LIKE %s AND Tables_in_' . DB_NAME . ' NOT REGEXP \'[0-9]+$\'', '%actionscheduler%' )
+			$wpdb->prepare( 'SHOW TABLES FROM ' . DB_NAME . ' WHERE Tables_in_' . DB_NAME . ' LIKE %s AND Tables_in_' . DB_NAME . ' REGEXP ' . $exp, '%actionscheduler%' )
 		);
 
 		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
