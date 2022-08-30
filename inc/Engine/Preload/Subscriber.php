@@ -300,7 +300,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = get_permalink( $post_id );
 
-		if ( false === $url ) {
+		if ( empty( $url ) ) {
 			return;
 		}
 
@@ -320,7 +320,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = get_term_link( (int) $term_id );
 
-		if ( false === $url ) {
+		if ( empty( $url ) ) {
 			return;
 		}
 
