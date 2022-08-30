@@ -243,7 +243,7 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
-			preg_match( '/type\s*=\s*(?:\'|")\s*(?<value>[^\"]*)\s*(?:\'|")/i', $matches['attr'], $type );
+			preg_match( '/type\s*=\s*(?:\'|")\s*(?<value>[^\"]*)\s*(?:\'|")/iU', $matches['attr'], $type );
 
 			if (
 				strpos( $matches['attr'], 'type=' ) !== false
