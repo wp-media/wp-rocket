@@ -888,8 +888,8 @@ class UsedCSS {
 	 */
 	private function set_inline_exclusions_lists() {
 		$wpr_dynamic_lists               = $this->data_manager->get_lists();
-		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->inline_atts_exclusions ) ? $wpr_dynamic_lists->inline_atts_exclusions : [];
-		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->inline_content_exclusions ) ? $wpr_dynamic_lists->inline_content_exclusions : [];
+		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->rucss_inline_atts_exclusions ) ? $wpr_dynamic_lists->rucss_inline_atts_exclusions : [];
+		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->rucss_inline_content_exclusions ) ? $wpr_dynamic_lists->rucss_inline_content_exclusions : [];
 
 	}
 

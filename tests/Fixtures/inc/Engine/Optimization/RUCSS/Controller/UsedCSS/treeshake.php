@@ -183,10 +183,10 @@ return [
 				'test'
 			],
 			'dynamic_lists'=> [
-				'inline_atts_exclusions' => [
+				'rucss_inline_atts_exclusions' => [
 					'rocket-lazyload-inline-css'
 				],
-				'inline_content_exclusions' => [],
+				'rucss_inline_content_exclusions' => [],
 			],
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_attr.php'),
 		],
@@ -213,8 +213,8 @@ return [
 				'test'
 			],
 			'dynamic_lists' => [
-				'inline_atts_exclusions' => [],
-				'inline_content_exclusions' => [
+				'rucss_inline_atts_exclusions' => [],
+				'rucss_inline_content_exclusions' => [
 					'#wpv-expandable-'
 				]
 			],
