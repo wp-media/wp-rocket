@@ -1,5 +1,15 @@
 <?php
 
+$user = json_decode( json_encode( [
+		'licence_expiration' => strtotime( 'now + 20 days' ),
+		'has_auto_renew' => false,
+	] ) );
+
+$user_expired = json_decode( json_encode( [
+		'licence_expiration' => strtotime( 'now - 20 days' ),
+		'has_auto_renew' => false,
+	] ) );
+
 $data_one = json_encode( [
 	'rucss_inline_content_exclusions' => [
 		'.wp-container-',
@@ -23,7 +33,21 @@ return [
 		],
 	],
 	'test_data' => [
+		'shouldReturnLicenseExpired' => [
+			'user' => $user_expired,
+			'api_response' => [
+				'response' => [
+					'code' => 206,
+				],
+				'body' => $data_one
+			],
+			'expected' => [
+				'data' => $data_one,
+				'transient' => false,
+			],
+		],
 		'shouldReturnListsAreUpToDate'            => [
+			'user' => $user,
 			'api_response' => [
 				'response' => [
 					'code' => 206,
@@ -36,6 +60,7 @@ return [
 			],
 		],
 		'shouldReturnListsAreSuccessfullyUpdated' => [
+			'user' => $user,
 			'api_response' => [
 				'response' => [
 					'code' => 200,
@@ -48,6 +73,7 @@ return [
 			],
 		],
 		'shouldReturnCouldNotGetLists'            => [
+			'user' => $user,
 			'api_response' => [
 				'response' => [
 					'code' => 500,
