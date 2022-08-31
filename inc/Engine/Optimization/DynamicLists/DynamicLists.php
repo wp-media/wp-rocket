@@ -86,6 +86,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function update_lists_from_remote() {
+		var_dump($this->user);
 		if ( $this->user->is_license_expired() ) {
 			return [
 				'success' => false,
