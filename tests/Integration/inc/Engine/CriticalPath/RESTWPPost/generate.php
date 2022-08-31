@@ -25,7 +25,7 @@ class Test_Generate extends RESTVfsTestCase {
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
-
+  
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	private static $post_id;
 

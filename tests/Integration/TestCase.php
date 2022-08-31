@@ -40,7 +40,6 @@ abstract class TestCase extends BaseTestCase {
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-
 		CapTrait::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
