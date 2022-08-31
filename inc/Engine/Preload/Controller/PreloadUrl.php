@@ -172,7 +172,7 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 100 );
+		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
 		$rows  = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $index => $row ) {
 			$this->query->make_status_inprogress( $row->id );

@@ -12,6 +12,7 @@ abstract class TestCase extends BaseTestCase {
 	use SettingsTrait;
 	use StubTrait;
 	use FilterTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
@@ -20,6 +21,8 @@ abstract class TestCase extends BaseTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
+
+		self::installFresh();
 
 		CapTrait::hasAdminCapBeforeClass();
 
@@ -36,6 +39,8 @@ abstract class TestCase extends BaseTestCase {
 
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
+
+		self::uninstallAll();
 
 		CapTrait::resetAdminCap();
 
