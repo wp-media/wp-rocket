@@ -31,12 +31,11 @@ class Test_CronCleanRows extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input ) {
-		$container              = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
-		$rucss_resources_query = $container->get( 'rucss_resources_query' );
-		$current_date          = current_time( 'mysql', true );
-		$old_date              = strtotime( $current_date. ' - 32 days' );
+	public function testShouldDoExpected( $input ){
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$current_date        = current_time( 'mysql', true );
+		$old_date            = strtotime( $current_date. ' - 32 days' );
 
 		$this->input = $input;
 		$this->set_permalink_structure( "/%postname%/" );
@@ -52,27 +51,12 @@ class Test_CronCleanRows extends TestCase {
 		$result_used_css = $rucss_usedcss_query->query();
 		$this->assertCount( count( $input['used_css'] ), $result_used_css );
 
-
-		$count_remain_resources = 0;
-		foreach ( $input['resources'] as $resource ) {
-			if ( $old_date <  strtotime( $resource['last_accessed']) ) {
-				$count_remain_resources ++;
-			}
-			$rucss_resources_query->add_item( $resource );
-		}
-
-		$result_resources = $rucss_resources_query->query();
-		$this->assertCount( count( $input['resources'] ), $result_resources );
-
 		do_action( 'rocket_rucss_clean_rows_time_event' );
 
-		$rucss_usedcss_query       = $container->get( 'rucss_used_css_query' );
-		$rucss_resources_query     = $container->get( 'rucss_resources_query' );
-		$resultUsedCssAfterClean   = $rucss_usedcss_query->query();
-		$resultResourcesAfterClean = $rucss_resources_query->query();
+		$rucss_usedcss_query     = $container->get( 'rucss_used_css_query' );
+		$resultUsedCssAfterClean = $rucss_usedcss_query->query();
 
 
 		$this->assertCount( $count_remain_used_css, $resultUsedCssAfterClean );
-		$this->assertCount( $count_remain_resources, $resultResourcesAfterClean );
 	}
 }

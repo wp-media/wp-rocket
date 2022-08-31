@@ -2,13 +2,13 @@
 namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Buffer\Config;
-use WP_Rocket\Buffer\Optimization;
+use WP_Rocket\Engine\Optimization\Buffer\Optimization;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
-use WP_Rocket\Subscriber\Optimization\Buffer_Subscriber;
+use WP_Rocket\Engine\Optimization\Buffer\Subscriber as BufferSubscriber;
 
 /**
  * Service provider for the WP Rocket optimizations
@@ -56,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
-		$this->getContainer()->share( 'buffer_subscriber', Buffer_Subscriber::class )
+		$this->getContainer()->share( 'buffer_subscriber', BufferSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'cache_dynamic_resource', CacheDynamicResource::class )

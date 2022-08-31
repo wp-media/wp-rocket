@@ -14,7 +14,7 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	/**
 	 * Whitelisted_IPS.
 	 */
-	const WHITELISTED_IPS = [ '135.125.83.227' ];
+	const WHITELISTED_IPS = [ '141.94.254.72' ];
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
