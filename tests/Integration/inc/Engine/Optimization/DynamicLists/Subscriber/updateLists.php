@@ -32,8 +32,6 @@ class Test_UpdateLists extends FilesystemTestCase {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
 		remove_filter( 'pre_http_request', [ $this, 'api_response' ] );
-		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
-		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 		delete_transient( 'wpr_dynamic_lists' );
 
 		parent::tear_down();
