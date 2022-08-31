@@ -128,10 +128,11 @@ class Settings {
 		}
 
 		global $wpdb;
-
+		$exp = "'^" . $wpdb->prefix . "actionscheduler_+(logs|actions|groups|claims)$'";
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->prepare( 'SHOW TABLES FROM ' . DB_NAME . ' WHERE Tables_in_' . DB_NAME . ' LIKE %s AND Tables_in_' . DB_NAME . ' REGEXP ' . $exp, '%actionscheduler%' )
 		);
 
 		set_transient( 'rocket_preload_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
