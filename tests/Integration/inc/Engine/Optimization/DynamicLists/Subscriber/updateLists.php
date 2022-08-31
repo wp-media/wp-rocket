@@ -29,8 +29,6 @@ class Test_UpdateLists extends FilesystemTestCase {
 
 		add_filter( 'pre_http_request', [ $this, 'api_response' ] );
 
-		var_dump( 'ROCKET_EMAIL ENV' );
-		var_dump(getenv( 'ROCKET_EMAIL' ));
 		do_action( 'rocket_update_dynamic_lists' );
 
 		$this->assertSame(
