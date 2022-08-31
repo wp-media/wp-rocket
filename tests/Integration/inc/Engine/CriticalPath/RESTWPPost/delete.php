@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
@@ -14,6 +15,8 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  * @group  vfs
  */
 class Test_Delete extends RESTVfsTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
 
 	protected static $use_settings_trait = true;
@@ -27,6 +30,8 @@ class Test_Delete extends RESTVfsTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
+		self::installFresh();
+
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );
 	}
@@ -36,6 +41,8 @@ class Test_Delete extends RESTVfsTestCase {
 		if ( ! static::$had_cap ) {
 			$admin->remove_cap( 'rocket_regenerate_critical_css' );
 		}
+		self::uninstallAll();
+
 		parent::tear_down_after_class();
 	}
 
