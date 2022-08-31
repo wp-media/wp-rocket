@@ -1,7 +1,7 @@
 <?php
 
 $data_one = json_encode( [
-	'inline_content_exclusions' => [
+	'rucss_inline_content_exclusions' => [
 		'.wp-container-',
 		'.wp-elements-',
 	],
