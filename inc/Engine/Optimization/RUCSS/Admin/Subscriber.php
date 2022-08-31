@@ -82,7 +82,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
-				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
 				[ 'notice_write_permissions' ],
 			],
@@ -110,33 +109,6 @@ class Subscriber implements Subscriber_Interface {
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
 		];
-	}
-
-	/**
-	 * Checks if Action scheduler tables are there or not.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return bool
-	 */
-	private function is_valid_as_tables() {
-		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
-		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
-			return 4 === (int) $cached_count;
-		}
-
-		global $wpdb;
-
-		$exp = "'^" . $wpdb->prefix . "actionscheduler_(logs|actions|groups|claims)+$'";
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$found_as_tables = $wpdb->get_col(
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare( 'SHOW TABLES FROM ' . DB_NAME . ' WHERE Tables_in_' . DB_NAME . ' LIKE %s AND Tables_in_' . DB_NAME . ' REGEXP ' . $exp, '%actionscheduler%' )
-		);
-
-		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
-		return 4 === count( $found_as_tables );
 	}
 
 	/**
@@ -432,25 +404,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->settings->display_wrong_license_notice();
-	}
-
-	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$this->settings->display_as_missed_tables_notice();
 	}
 
 	/**
