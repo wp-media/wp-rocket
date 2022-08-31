@@ -255,4 +255,8 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 		return $schedules;
 	}
 
+	public function get_allowed_concurrent_batches() {
+		return 2;
+	}
+
 }
