@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\AMP;
 
 use AMP_Theme_Support;
 use AMP_Options_Manager;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
@@ -11,9 +12,11 @@ use AMP_Options_Manager;
  * @group WithAmp
  */
 class Test_DisableOptionsOnAmp extends TestCase {
+
 	protected $path_to_test_data = 'disableOptionsOnAmpIntegration.php';
 	private static $user_id      = 0;
 	private static $post_id;
+
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'role' => 'editor' ] );
