@@ -63,8 +63,6 @@ class Test_GetUserData extends TestCase {
 	}
 
 	public function set_consumer_email() {
-		var_dump('ROCKET_EMAIL');
-		var_dump(self::getApiCredential( 'ROCKET_EMAIL' ));
 		return self::getApiCredential( 'ROCKET_EMAIL' );
 	}
 
