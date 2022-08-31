@@ -192,15 +192,6 @@ tests_add_filter(
 	}
 );
 
-tests_add_filter(
-	'init',
-	function() {
-		$container             = apply_filters( 'rocket_container', null );
-		$preload_cache_table = $container->get( 'preload_caches_table' );
-		$preload_cache_table->install();
-	}
-);
-
 // install WC.
 tests_add_filter(
 	'setup_theme',
