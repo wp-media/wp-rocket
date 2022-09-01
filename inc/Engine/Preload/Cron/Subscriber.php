@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Cron;
 
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
@@ -52,7 +52,10 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_preload_clean_rows_time_event'       => 'remove_old_rows',
-			'rocket_preload_process_pending'             => 'process_pending_urls',
+			'rocket_preload_process_pending'             => [
+				[ 'process_pending_urls' ],
+				[ 'clean_preload_jobs' ],
+			],
 			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
 			'cron_schedules'                             => [
 				[ 'add_interval' ],
@@ -91,6 +94,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->preload_controller->process_pending_jobs();
+	}
+
+	/**
+	 * Clean Action Scheduler jobs for preload.
+	 *
+	 * @return void
+	 */
+	public function clean_preload_jobs() {
+		$clean_batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, 'rocket-preload' );
+		$cleaner          = new Cleaner( null, $clean_batch_size, 'rocket-preload' );
+		$cleaner->clean();
 	}
 
 	/**
