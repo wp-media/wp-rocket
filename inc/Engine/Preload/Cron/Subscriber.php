@@ -62,7 +62,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'schedule_revert_old_in_progress_rows' ],
-				[ 'maybe_init_preload_queue' ],
 			],
 		];
 	}
