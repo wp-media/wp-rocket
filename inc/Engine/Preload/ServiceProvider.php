@@ -3,10 +3,6 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Filesystem_Direct;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use ActionScheduler_Compatibility;
-use ActionScheduler_Lock;
-use WP_Rocket\Engine\Common\Queue\Cleaner;
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
@@ -118,35 +114,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 
-		$this->getContainer()->share(
-			'preload_queue_runner',
-			static function() {
-
-				$group = 'rocket-preload';
-
-				/**
-				 * Filters the clean batch size.
-				 *
-				 * @param int $batch_size Batch size.
-				 *
-				 * @return int
-				 */
-				$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 500, $group );
-
-				return new PreloadQueueRunner(
-					null,
-					null,
-					new Cleaner( null, $batch_size, $group ),
-					null,
-					new ActionScheduler_Compatibility(),
-					new Logger(),
-					ActionScheduler_Lock::instance()
-				);
-			}
-		);
-
-		$preload_queue_runner = $this->getContainer()->get( 'preload_queue_runner' );
-
 		$this->getContainer()->add( 'check_finished_controller', CheckFinished::class )
 			->addArgument( $preload_settings )
 			->addArgument( $cache_query )
@@ -180,7 +147,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $preload_settings )
 			->addArgument( $cache_query )
 			->addArgument( $preload_url_controller )
-			->addArgument( $preload_queue_runner )
 			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->share( 'fonts_preload_subscriber', Fonts::class )

@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use Automattic\Jetpack\Modules;
 use WC_Install;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
@@ -192,7 +191,6 @@ tests_add_filter(
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
 );
-
 
 // install WC.
 tests_add_filter(
