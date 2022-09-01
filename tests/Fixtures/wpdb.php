@@ -7,6 +7,7 @@ if ( ! class_exists( 'wpdb' ) ) {
 		public $posts_results = [];
 		public $terms_results = [];
 		public $prefix        = 'wp_';
+		public $as_table_rows = [];
 
 		public function get_results( $sql ) {
 			if ( $this->is_post( $sql ) ) {
@@ -47,6 +48,18 @@ if ( ! class_exists( 'wpdb' ) ) {
 
 		public function query( $query ) {
 			return true;
+		}
+
+		public function get_col() {
+			return $this->as_table_rows;
+		}
+
+		public function prepare( $sql ) {
+			return true;
+		}
+
+		public function setTableRows( $rows ) {
+			$this->as_table_rows = $rows;
 		}
 	}
 }
