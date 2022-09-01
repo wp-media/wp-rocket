@@ -235,6 +235,11 @@ class PreloadQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		return $schedules;
 	}
 
+	/**
+	 * Get the number of concurrent batches a runner allows.
+	 *
+	 * @return int
+	 */
 	public function get_allowed_concurrent_batches() {
 		return 1;
 	}
