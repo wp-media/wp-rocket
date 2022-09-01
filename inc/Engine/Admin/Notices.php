@@ -9,7 +9,11 @@ class Notices {
 	 *
 	 * @return void
 	 */
-	public function display_incorrect_table_notice_as() {
+	public function maybe_display_as_missed_tables_notice() {
+
+		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
+			return;
+		}
 
 		// Bail out if tables are correct.
 		if ( $this->is_valid_as_table() ) {
@@ -40,10 +44,6 @@ class Notices {
 	 * @return boolean
 	 */
 	private function is_valid_as_table() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
 		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
 		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
 			return 4 === (int) $cached_count;

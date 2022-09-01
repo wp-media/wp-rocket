@@ -40,7 +40,7 @@ class NoticesSubscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function display_incorrect_table_notice_as() {
-		$this->notices->display_incorrect_table_notice_as();
+	public function maybe_display_as_missed_tables_notice() {
+		$this->notices->maybe_display_as_missed_tables_notice();
 	}
 }
