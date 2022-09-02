@@ -6,6 +6,7 @@ return [
 			'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'is_auto_renew' => false,
 			] ) ),
 			'transient' => false,
 		],
@@ -16,6 +17,7 @@ return [
 			'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'last year' ),
+				'is_auto_renew' => false,
 			] ) ),
 			'transient' => true,
 		],
@@ -28,6 +30,7 @@ return [
 				'licence_expiration' => strtotime( 'last year' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 				'date_created'      => strtotime( 'last year' ),
+				'is_auto_renew' => false,
 			] ) ),
 			'transient' => false,
 		],
@@ -37,10 +40,10 @@ return [
 			<div class="rocket-expired-message">
 
 				<p>
-				<strong>Your website could be much faster</strong> if it could take advantage of our new features and enhancements. 🚀
+				You could make your website so much faster if you had access to our <strong>new features and enhancements</strong>. 🚀
 				</p>
 				<p>
-				Renew your license to have access to the <strong>latest version of WP Rocket</strong> and to the wonderful <strong>assistance of our Support Team</strong>.
+				Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you’ll only pay <strong>39.20</strong>!
 				</p>
 			</div>
 			<div class="rocket-expired-cta-container">

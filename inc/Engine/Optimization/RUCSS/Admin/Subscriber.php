@@ -95,13 +95,13 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
 				[ 'delete_used_css', 16, 2 ],
 				[ 'cancel_pending_jobs_as', 16, 2 ],
+				[ 'drop_resources_table', 18, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
 			'rocket_deactivation'                     => 'cancel_queues',
@@ -482,17 +482,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adjust Action Scheduler to have two concurrent batches on the same time.
-	 *
-	 * @param int $num Number of concurrent batches.
-	 *
-	 * @return int
-	 */
-	public function adjust_as_concurrent_batches( int $num = 1 ) {
-		return ( 2 < $num ) ? $num : 2;
-	}
-
-	/**
 	 * Add clear UsedCSS adminbar item.
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
@@ -707,6 +696,24 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 		return null;
+	}
+
+	/**
+	 * Remove the resources table & version stored in options table on update to 3.12
+	 *
+	 * @since 3.12
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function drop_resources_table( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.12', '>=' ) ) {
+			return;
+		}
+
+		$this->database->drop_resources_table();
 	}
 
 	/**
