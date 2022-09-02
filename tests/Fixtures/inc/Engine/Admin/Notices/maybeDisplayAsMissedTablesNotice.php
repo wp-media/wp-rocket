@@ -9,7 +9,10 @@ return [
             'transient'         => 4,
             'is_admin' => true,
         ],
-        'expected' => false,
+        'expected' => [
+            'notice' => false,
+            'html' => '',
+        ],
     ],
     'shouldDisplayNothingWhenNotAdmin' => [
         'config' => [
@@ -19,7 +22,10 @@ return [
             'transient' => 4,
             'is_admin' => false,
         ],
-        'expected' => false,
+        'expected' => [
+            'notice' => false,
+            'html' => '',
+        ],
     ],
     'shouldDisplayNothingWhenASTablesAreCorrect' => [
         'config' => [
@@ -35,7 +41,10 @@ return [
                 'wp_actionscheduler_logs',
             ],
         ],
-        'expected' => false,
+        'expected' => [
+            'notice' => false,
+            'html' => '',
+        ],
     ],
     'shouldDisplayNoticeWhenASTablesAreMissing' => [
         'config' => [
@@ -52,9 +61,12 @@ return [
             'as_tool_link' => 'example.com/wp-admin/tools.php?page=action-scheduler',
         ],
         'expected' => [
-            'status'  => 'error',
-            'message' => '<strong>WP Rocket</strong>: We detected missing database table related to Action Scheduler. Please visit the following <a href="example.com/wp-admin/tools.php?page=action-scheduler">URL</a> to recreate it, as it is needed for WP Rocket to work correctly.',
-            'id'      => 'rocket-notice-as-missed-tables',
+            'notice' => [
+                'status'  => 'error',
+                'message' => '<strong>WP Rocket</strong>: We detected missing database table related to Action Scheduler. Please visit the following <a href="example.com/wp-admin/tools.php?page=action-scheduler">URL</a> to recreate it, as it is needed for WP Rocket to work correctly.',
+                'id'      => 'rocket-notice-as-missed-tables',
+            ],
+            'html' => '<strong>WP Rocket</strong>: We detected missing database table related to Action Scheduler',
         ],
     ],
 ];
