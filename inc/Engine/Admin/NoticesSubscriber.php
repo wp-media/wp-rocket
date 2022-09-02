@@ -29,7 +29,7 @@ class NoticesSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => 'display_incorrect_table_notice_as',
+			'admin_notices' => 'maybe_display_as_missed_tables_notice',
 		];
 	}
 

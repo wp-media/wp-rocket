@@ -59,7 +59,6 @@ class Notices {
 		);
 
 		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
 		return 4 === count( $found_as_tables );
 	}
 }
