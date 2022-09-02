@@ -20,7 +20,6 @@ class Test_AutoPurgeByUrl extends TestCase {
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
 
-		Functions\expect( 'get_rocket_i18n_home_url' )->never();
 
 		do_action( 'after_rocket_clean_post', self::$post, [], 'en' );
 	}
@@ -36,7 +35,6 @@ class Test_AutoPurgeByUrl extends TestCase {
 		$this->assertTrue( current_user_can( 'rocket_purge_cloudflare_cache' ) );
 
 		// Why? Because our test site doesn't have page rules.
-		Functions\expect( 'get_rocket_i18n_home_url' )->never();
 
 		do_action( 'after_rocket_clean_post', self::$post, [], 'en' );
 	}

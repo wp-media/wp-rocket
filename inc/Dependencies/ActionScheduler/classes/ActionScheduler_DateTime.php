@@ -24,6 +24,7 @@ class ActionScheduler_DateTime extends DateTime {
 	 *
 	 * @return int
 	 */
+	#[\ReturnTypeWillChange]
 	public function getTimestamp() {
 		return method_exists( 'DateTime', 'getTimestamp' ) ? parent::getTimestamp() : $this->format( 'U' );
 	}
@@ -45,6 +46,7 @@ class ActionScheduler_DateTime extends DateTime {
 	 * @return int
 	 * @link http://php.net/manual/en/datetime.getoffset.php
 	 */
+	#[\ReturnTypeWillChange]
 	public function getOffset() {
 		return $this->utcOffset ? $this->utcOffset : parent::getOffset();
 	}
@@ -57,6 +59,7 @@ class ActionScheduler_DateTime extends DateTime {
 	 * @return static
 	 * @link http://php.net/manual/en/datetime.settimezone.php
 	 */
+	#[\ReturnTypeWillChange]
 	public function setTimezone( $timezone ) {
 		$this->utcOffset = 0;
 		parent::setTimezone( $timezone );

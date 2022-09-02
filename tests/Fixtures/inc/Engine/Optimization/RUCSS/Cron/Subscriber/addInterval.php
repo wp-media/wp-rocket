@@ -15,7 +15,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 60,
-			'display'  => 'WP Rocket RUCSS pending jobs',
+			'display'  => 'WP Rocket Remove Unused CSS pending jobs',
 		],
 	],
 	'shouldAddFilteredIntervalWhenRUCSSEnabledAndFilter' => [
@@ -25,7 +25,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 120,
-			'display'  => 'WP Rocket RUCSS pending jobs',
+			'display'  => 'WP Rocket Remove Unused CSS pending jobs',
 		],
 	],
 ];

@@ -77,3 +77,11 @@
 .wpr-checkbox [type="checkbox"]:focus + label:before {
     border: 2px dotted $cGreyDark1;
 }
+
+.wpr-checkbox-warning {
+	color: $cRed;
+	margin-left: $space * 2;
+}
+	.wpr-checkbox-warning::before {
+		margin-right: $space;
+	}

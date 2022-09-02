@@ -22,7 +22,8 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     }
 
     public function tear_down() {
-        parent::tear_down();
+
+		parent::tear_down();
 
         add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
     }

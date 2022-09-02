@@ -7,14 +7,16 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_success_notice
  *
  * @group  RUCSS
  */
-class Test_DisplaySuccessNotice extends TestCase {
+class Test_DisplaySuccessNotice extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Settings/displaySuccessNotice.php';
+
 	private $options;
 	private $beacon;
 	private $settings;
@@ -31,7 +33,7 @@ class Test_DisplaySuccessNotice extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
@@ -66,6 +68,7 @@ class Test_DisplaySuccessNotice extends TestCase {
 			Functions\expect( 'rocket_notice_html' )->never();
 		}
 
+		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
 
 		$this->settings->display_success_notice();
 	}
