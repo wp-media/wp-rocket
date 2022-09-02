@@ -2511,9 +2511,9 @@ msgid ""
 " is needed."
 msgstr ""
 "%1$s: O serviço de pré-carregamento está agora activo. Após o pré-"
-"carregamento inicial, continuará a criar cache de todas as suas páginas "
-"sempre que as respectivas caches forem limpas. Não é necessária qualquer "
-"outra acção."
+"carregamento inicial, continuará a ser criada a cache de todas as suas "
+"páginas, sempre que as respectivas caches forem limpas. Não é necessária "
+"qualquer outra acção."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:129
 msgid "WP Rocket Preload pending jobs"
