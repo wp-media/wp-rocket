@@ -91,6 +91,7 @@ class UsedCSS {
 		'.adsslot_', // For Advanced Ads plugin ads.
 		'.jnews_', // For JNews theme.
 		'.cp-info-bar.content-', // For Convert Plus plugin.
+		'#thb-', // For Revolution theme.
 	];
 
 	/**
