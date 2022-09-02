@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\admin\ui\notices;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -10,7 +10,7 @@ use wpdb;
 /**
  * @covers \WP_Rocket\Engine\Admin\Notices::maybe_display_as_missed_tables_notice
  *
- * @group admin
+ * @group AdminOnly
  * @group notices
  */
 class Test_MaybeDisplayAsMissedTables extends TestCase {
@@ -64,7 +64,7 @@ class Test_MaybeDisplayAsMissedTables extends TestCase {
             ->andReturn( $config['as_tool_link'] );
 
             Functions\expect( 'rocket_notice_html' )
-				->with( $expected );
+				->with( $expected['notice'] );
         }
         else{
             Functions\expect( 'rocket_notice_html' )->never();
