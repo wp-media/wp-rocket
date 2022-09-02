@@ -336,6 +336,7 @@ class Plugin {
 			'the_seo_framework',
 			'wpml',
 			'xstore',
+			'cloudflare_plugin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
