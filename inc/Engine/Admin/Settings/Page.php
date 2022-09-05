@@ -720,13 +720,13 @@ class Page {
 					'sanitize_callback'       => 'sanitize_checkbox',
 					'options'                 => [
 						'remove_unused_css' => [
-							'label'       => __( 'Remove Unused CSS (Beta)', 'rocket' ),
+							'label'       => __( 'Remove Unused CSS', 'rocket' ),
 							'disabled'    => $invalid_license ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'warning'     => $invalid_license ? [] : [
-								'title'        => __( 'We’re still working on it!', 'rocket' ),
-								'description'  => __( 'This is a beta feature. We’re providing you early access but some changes might be added later on. If you notice any errors on your website, simply deactivate the feature.', 'rocket' ),
+								'title'        => __( 'This could break things!', 'rocket' ),
+								'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
 							],
 							'sub_fields'  => $invalid_license ? [] : [
@@ -1120,7 +1120,7 @@ class Page {
 					'title'       => __( 'Preload Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
+					'description' => __( 'When you enable preloading WP Rocket will automatically detect your sitemaps and save all URLs to the database. The plugin will make sure that your cache is always preloaded.', 'rocket' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'sitemap_preload' ),
 						'url' => $bot_beacon['url'],
@@ -1167,53 +1167,9 @@ class Page {
 					'section'           => 'preload_section',
 					'page'              => 'preload',
 					'default'           => 1,
-					'container_class'   => [
-						'wpr-isParent',
-					],
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-			]
-		);
-
-		// Add this separately to be able to filter it easily.
-		$this->settings->add_settings_fields(
-			apply_filters(
-				'rocket_sitemap_preload_options',
-				[
-					'sitemap_preload' => [
-						'type'              => 'checkbox',
-						'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
-						'container_class'   => [
-							'wpr-isParent',
-							'wpr-field--children',
-						],
-						'parent'            => 'manual_preload',
-						'section'           => 'preload_section',
-						'page'              => 'preload',
-						'default'           => 0,
-						'sanitize_callback' => 'sanitize_checkbox',
-					],
-				]
-			)
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'sitemaps'      => [
-					'type'              => 'textarea',
-					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
-					'placeholder'       => 'http://example.com/sitemap.xml',
-					'parent'            => 'sitemap_preload',
-					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'dns_prefetch'  => [
+				'dns_prefetch'   => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
@@ -1223,7 +1179,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_fonts' => [
+				'preload_fonts'  => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
@@ -1234,7 +1190,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_links' => [
+				'preload_links'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable link preloading', 'rocket' ),
 					'section'           => 'preload_links_section',
@@ -2115,7 +2071,6 @@ class Page {
 					'minify_js_key',
 					'version',
 					'cloudflare_old_settings',
-					'sitemap_preload_url_crawl',
 					'cache_ssl',
 					'minify_google_fonts',
 					'emoji',
