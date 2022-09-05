@@ -63,6 +63,12 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  * @return array Updated array of row action links
  */
 function rocket_post_row_actions( $actions, $post ) {
+
+	// Return default row actions if post is draft.
+	if ( 'draft' === get_post_status() ) {
+		return $actions;
+	}
+
 	if ( ! current_user_can( 'rocket_purge_posts' ) ) {
 		return $actions;
 	}

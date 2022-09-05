@@ -8,6 +8,12 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  */
 function rocket_post_submitbox_start() {
+
+	// Bail out if post is a draft.
+	if ( 'draft' === get_post_status() ) {
+		return;
+	}
+
 	if ( current_user_can( 'rocket_purge_posts' ) ) {
 		global $post;
 
@@ -41,6 +47,12 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
  * @since 2.5
  */
 function rocket_cache_options_meta_boxes() {
+
+	// Bail out if post is a draft.
+	if ( 'draft' === get_post_status() ) {
+		return;
+	}
+
 	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
 			[
