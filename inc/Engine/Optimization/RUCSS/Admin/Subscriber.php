@@ -149,10 +149,8 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
+		error_log($this->is_deletion_enabled() ? 'RUCSS enabled' : "RUCSS disabled");
 
-		if ( ! $this->is_deletion_enabled() ) {
-			return;
-		}
 
 		$url = get_permalink( $post_id );
 
@@ -692,20 +690,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if the RUCSS deletion is enabled.
-	 *
-	 * @return bool
-	 */
-	protected function is_deletion_enabled(): bool {
-		/**
-		 * Filters the enable RUCSS deletion value
-		 *
-		 * @param bool $delete_rucss True to enable deletion, false otherwise.
-		 */
-		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
-	}
-
-	/**
 	 * Deletes the used CSS on update to 3.11.4 for new storage method
 	 *
 	 * @since 3.11.4
@@ -744,5 +728,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function notice_write_permissions() {
 		$this->used_css->notice_write_permissions();
+	}
+
+	/**
+	 * Checks if the RUCSS deletion is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_deletion_enabled(): bool {
+		/**
+		 * Filters the enable RUCSS deletion value
+		 *
+		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 }
