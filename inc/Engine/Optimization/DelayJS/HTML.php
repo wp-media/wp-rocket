@@ -243,19 +243,38 @@ class HTML {
 		$delay_js        = $matches[0];
 
 		if ( ! empty( $matches['attr'] ) ) {
+
+			// Match type attribute.
+			$type_exp = '/type\s*=\s*(["\'])(.*?)\1/i';
+
+			// Match type attribute values.
 			preg_match( '/type\s*=\s*(?:\'|")\s*(?<value>[^\"]*)\s*(?:\'|")/iU', $matches['attr'], $type );
 
+			// Rebuild attributes and markup with empty type attribute value.
+			if ( preg_match( $type_exp, $matches['attr'] ) && '' === $type['value'] ) {
+				$matches['attr'] = preg_replace( $type_exp, '', $matches['attr'], 1 );
+				$matches[0]      = preg_replace( '/\s\s+/', ' ', preg_replace( $type_exp, '', $matches[0], 1 ) );
+				$delay_js        = $matches[0];
+			}
+
+			// Check and remove dissociate type attribute.
+			if ( ! preg_match( $type_exp, $matches['attr'] ) && (bool) preg_match_all( '/type([^\w\W]|\s)|type$/i', $matches['attr'] ) ) {
+				$altered_attr = preg_replace( '/type([^\w\W]|\s)|type$/i', '', $matches['attr'] );
+
+				$delay_js = preg_replace( '/\s\s+/', ' ', preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $altered_attr, $matches[0], 1 ) );
+			}
+
 			if (
-				strpos( $matches['attr'], 'type=' ) !== false
+				preg_match( $type_exp, $matches['attr'] )
 				&&
-				! in_array( $type['value'], $this->allowed_types, true )
+				( ! in_array( $type['value'], $this->allowed_types, true ) && '' !== $type['value'] ) // Allow if type is in allowed list and type is empty.
 			) {
 				return $matches[0];
 			}
 
-			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
+			$delay_attr = preg_replace( $type_exp, 'data-rocket-$0', $matches['attr'], 1 );
 
-			if ( null !== $delay_attr ) {
+			if ( $matches['attr'] !== $delay_attr ) {
 				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
 			}
 		}
