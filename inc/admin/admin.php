@@ -83,7 +83,7 @@ function rocket_post_row_actions( $actions, $post ) {
 	/**
 	 * Filters the post type on row actions.
 	 *
-	 * @since 3.11.6
+	 * @since 3.11.4
 	 *
 	 * @param array $cpts Post Types.
 	 */

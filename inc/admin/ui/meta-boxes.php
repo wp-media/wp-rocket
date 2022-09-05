@@ -27,7 +27,7 @@ function rocket_post_submitbox_start() {
 		/**
 		 * Filters the post type on submitbox.
 		 *
-		 * @since 3.11.6
+		 * @since 3.12.1
 		 *
 		 * @param array $cpts Post Types.
 		 */
