@@ -197,6 +197,14 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 crossorigin="anonymous">
 </script>
+<script type="text/javascript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type="text/javascript"></script>
+<script type = "" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type = ""></script>
+<script type="" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type ></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -224,6 +232,12 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+</script>
+<script id="print-helloworld" type="application/jscript">
+	console.log("Hello world application/jscript!");
+</script>
+<script id="print-helloworld" type="text/javascript">
+	console.log("Hello world application/jscript!");
 </script>
 </body>
 </html>';
@@ -425,6 +439,14 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 crossorigin="anonymous">
 </script>
+<script type="text/javascript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type="text/javascript"></script>
+<script type = "" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type = ""></script>
+<script type="" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type ></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -452,6 +474,12 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+</script>
+<script id="print-helloworld" type="application/jscript">
+	console.log("Hello world application/jscript!");
+</script>
+<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
+	console.log("Hello world application/jscript!");
 </script>
 </body>
 </html>';
@@ -653,6 +681,14 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 crossorigin="anonymous">
 </script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" data-rocket-type="text/javascript"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" ></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" ></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" ></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -680,6 +716,12 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+</script>
+<script id="print-helloworld" type="application/jscript">
+	console.log("Hello world application/jscript!");
+</script>
+<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
+	console.log("Hello world application/jscript!");
 </script>
 </body>
 </html>';
