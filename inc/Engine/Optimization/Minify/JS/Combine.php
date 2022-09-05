@@ -719,6 +719,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			'e.setAttribute(\'unselectable\',on);',
 			'try{Typekit.load',
 			'iMapsData',
+			'var wpforms_user_journey',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
