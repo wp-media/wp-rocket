@@ -51,6 +51,12 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'manual_preload'              => true,
 	];
 
+	if ( $value['remove_unused_css'] || $value['async_css'] ) {
+		$removed['optimize_css_delivery'] = true;
+		$removed['remove_unused_css']     = true;
+		$removed['async_css']             = true;
+	}
+
 	// Create 2 arrays to compare.
 	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
 	$value_diff    = array_diff_key( $value, $removed );
