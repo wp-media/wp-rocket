@@ -149,8 +149,6 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $this->settings->is_enabled() ) {
 			return;
 		}
-		error_log($this->is_deletion_enabled() ? 'RUCSS enabled' : "RUCSS disabled");
-
 
 		$url = get_permalink( $post_id );
 
