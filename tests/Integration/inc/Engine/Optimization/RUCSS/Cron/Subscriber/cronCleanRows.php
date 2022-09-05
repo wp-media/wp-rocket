@@ -68,10 +68,8 @@ class Test_CronCleanRows extends TestCase {
 
 		if ( $this->input['remove_unused_css'] && $this->input['delay'] ) {
 			$this->assertCount( $count_remain_used_css,$resultUsedCssAfterClean );
-			$this->assertCount( $count_remain_resources, $resultResourcesAfterClean );
 		} else {
 			$this->assertCount( count( $input['used_css'] ), $resultUsedCssAfterClean );
-			$this->assertCount( count( $input['resources'] ), $resultResourcesAfterClean );
 		}
 	}
 

@@ -34,7 +34,6 @@ return [
 			'input' => [
 				'remove_unused_css' => true,
 				'used_css'          => $used_css,
-				'resources'         => $resources,
 				'has_delay' => true,
 				'delay' => 1,
 				'deletion_activated' => true,
