@@ -119,7 +119,8 @@ class AdminSubscriber implements Subscriber_Interface {
 			&&
 			array_key_exists( $setting, $new )
 			&&
-			$old[ $setting ] !== $new[ $setting ]
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			$old[ $setting ] != $new[ $setting ]
 		);
 	}
 }

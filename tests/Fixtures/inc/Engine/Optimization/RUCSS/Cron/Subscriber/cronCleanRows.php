@@ -28,32 +28,12 @@ $used_css = [
 	],
 ];
 
-$resources = [
-	[
-		'url'           => 'http://example.org/wp-content/themes/theme-name/style.css',
-		'content'       => '.theme-name{color:red;}',
-		'type'          => 'css',
-		'media'         => 'all',
-		'modified'      => $old_date,
-		'last_accessed' => $old_date,
-	],
-	[
-		'url'           => 'http://example.org/css/style.css',
-		'content'       => '.first{color:green;}',
-		'type'          => 'css',
-		'media'         => 'all',
-		'modified'      => $current_date,
-		'last_accessed' => $current_date,
-	]
-];
-
 return [
 	'test_data' => [
 		'shouldDeleteOnUpdate' => [
 			'input' => [
 				'remove_unused_css' => true,
 				'used_css'          => $used_css,
-				'resources'         => $resources,
 				'has_delay' => true,
 				'delay' => 1,
 				'deletion_activated' => true,

@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\common;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
@@ -12,6 +13,8 @@ use Brain\Monkey\Functions;
  * @group  Purge
  */
 class Test_RocketGetPurgeUrls extends FilesystemTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/common/rocketGetPurgeUrls.php';
 
 	private $site_options = [
@@ -22,6 +25,18 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	private $posts_map   = [];
 	private $authors_map = [];
 	private $post_data   = [];
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
+	}
 
 	public function set_up() {
 		$this->set_permalink_structure( "/%postname%/" );

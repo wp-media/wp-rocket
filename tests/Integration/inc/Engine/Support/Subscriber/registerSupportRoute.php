@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
@@ -14,6 +15,7 @@ use WP_Rocket\Tests\StubTrait;
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	use ApiTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
@@ -22,8 +24,15 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
+		self::installFresh();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
@@ -78,7 +87,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
