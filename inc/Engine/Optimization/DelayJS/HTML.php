@@ -250,7 +250,7 @@ class HTML {
 			// Match type attribute values.
 			preg_match( '/type\s*=\s*(?:\'|")\s*(?<value>[^\"]*)\s*(?:\'|")/iU', $matches['attr'], $type );
 
-			// Rebuild attributes and markup with empty type attribute value.
+			// Rebuild attributes and markup for markup having empty type attribute value.
 			if ( preg_match( $type_exp, $matches['attr'] ) && '' === $type['value'] ) {
 				$matches['attr'] = preg_replace( $type_exp, '', $matches['attr'], 1 );
 				$matches[0]      = preg_replace( '/\s\s+/', ' ', preg_replace( $type_exp, '', $matches[0], 1 ) );
