@@ -544,7 +544,7 @@ class Settings {
 		}
 
 		// translators: %2$s = table name.
-		$main_message = __( 'Could not create the %2$s in the database which is/are necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
+		$main_message = __( 'Could not create the %2$s in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = table name.
@@ -555,7 +555,7 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'status'      => 'info',
+				'status'      => 'error',
 				'dismissible' => '',
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-missing-table',
