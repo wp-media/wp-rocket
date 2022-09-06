@@ -535,10 +535,10 @@ class Settings {
 	 * @return void
 	 */
 	public function display_no_table_notice() {
+
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-
 		if ( $this->used_css->exists() ) {
 			return;
 		}
