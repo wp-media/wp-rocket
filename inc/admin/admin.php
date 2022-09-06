@@ -64,8 +64,10 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  */
 function rocket_post_row_actions( $actions, $post ) {
 
-	// Return default row actions if post is draft.
-	if ( 'draft' === get_post_status() ) {
+	$post_status = get_post_status();
+
+	// Return default row actions if post status is draft or trash.
+	if ( 'draft' === $post_status || 'trash' === $post_status ) {
 		return $actions;
 	}
 
