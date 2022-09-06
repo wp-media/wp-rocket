@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-08-29 14:33-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2022\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -2438,10 +2438,10 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"Nous vous suggérons d'activer le %1$sPréchargement des Sitemaps%2$s pour "
-"obtenir des résultats plus rapides."
+"Nous vous suggérons d'activer le %1$sPréchargement%2$s pour obtenir des "
+"résultats plus rapides."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
@@ -2478,44 +2478,12 @@ msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 "Cliquez ici pour obtenir une licence Single de WP Rocket à moins %1$s !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr "Vous êtes sur le point de perdre l'accès à une option importante."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
-#, php-format
-msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature "
-"will not be available any longer in your file optimization tab."
-msgstr ""
-"Si vous restaurez vers WP Rocket 3.10.10.1, l'option %1$sSupprimer les "
-"ressources CSS inutilisées%2$s ne sera plus disponible dans l'onglet "
-"d'Optimisation des fichiers."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-"Si vous rencontrez un problème lié à cette option, vous pouvez simplement la"
-" désactiver ou %1$scontacter le support pour obtenir de l'aide%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr "Annuler"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr "Confirmer la restauration"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: L'option du CSS utilisé n'est pas activée !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Cache du CSS utilisé vidée !"
@@ -2558,8 +2526,14 @@ msgstr "%1$sRetour à WP Rocket%2$s ou %3$sà la page des Plugins%2$s"
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
-msgstr "%1$s: Veuillez patienter. Le préchargement traite vos pages."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: Le Préchargement est maintenant actif. Après le préchargement initial,"
+" il continuera à mettre en cache toutes vos pages chaque fois qu'elles "
+"seront purgées. Aucune autre action n'est nécessaire."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:129
 msgid "WP Rocket Preload pending jobs"
@@ -3828,6 +3802,10 @@ msgstr "30 jours"
 msgid "Forever"
 msgstr "toujours"
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr "Annuler"
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "Confirmer"
@@ -4147,11 +4125,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "Réinstaller la version %s"
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Debug mode"
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Créez un fichier log de debug."
 
