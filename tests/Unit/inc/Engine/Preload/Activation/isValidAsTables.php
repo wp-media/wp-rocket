@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Activation::maybe_create_as_tables
+ * @covers \WP_Rocket\Engine\Preload\Activation::is_valid_as_tables
  * @group  Preload
  */
 class Test_IsValidAsTables extends TestCase
@@ -51,6 +51,6 @@ class Test_IsValidAsTables extends TestCase
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->wpdb->setTableRows( $config['found_as_tables'] );
 
-		$this->assertSame( $expected, $this->activation->maybe_recreate_as_tables() );
+		$this->assertSame( $expected, $this->activation->is_valid_as_tables() );
 	}
 }
