@@ -43,6 +43,8 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
 
+		$this->used_css->expects(self::atMost(1))->method('exists')->willReturn($config['exists']);
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'remove_unused_css', 0 )
 			->andReturn( $config['remove_unused_css'] );
