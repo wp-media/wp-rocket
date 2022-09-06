@@ -51,7 +51,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'rucss_resources_table', ResourcesTable::class );
 
-    $this->getContainer()->add( 'rucss_settings', Settings::class )
+		$this->getContainer()->add( 'rucss_settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) );
 
