@@ -540,7 +540,7 @@ class Settings {
 		rocket_notice_html(
 			[
 				'status'      => 'notice',
-				'dismissible' => 'hidden',
+				'dismiss_button' => true,
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-error-http',
 			]
