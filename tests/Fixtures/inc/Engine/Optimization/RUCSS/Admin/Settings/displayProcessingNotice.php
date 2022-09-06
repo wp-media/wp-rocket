@@ -76,5 +76,17 @@ return [
 			],
 			'expected' => true,
 		],
+		'shouldShowNoNoticeWhenNoTable' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => time() + 3600,
+				'exists'         => false,
+			],
+			'expected' => false,
+		],
 	],
 ];

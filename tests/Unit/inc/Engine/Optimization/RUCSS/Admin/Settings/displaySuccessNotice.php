@@ -49,19 +49,7 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 			->with( 'remove_unused_css', 0 )
 			->andReturn( $config['remove_unused_css'] );
 
-		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'manual_preload', 0 )
-			->andReturn( $config['manual_preload'] );
-
-		$this->beacon->shouldReceive( 'get_suggest' )
-			->andReturn(
-				[
-					'id' => 123,
-					'url' => 'http://example.org',
-				]
-			);
+		$this->configureDisplayNotice($config);
 
 		if ( $expected ) {
 			Functions\expect( 'rocket_notice_html' )
@@ -75,5 +63,26 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
 
 		$this->settings->display_success_notice();
+	}
+
+	public function configureDisplayNotice($config) {
+
+		if( ! $config['exists'] ) {
+			return;
+		}
+
+		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'manual_preload', 0 )
+			->andReturn( $config['manual_preload'] );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->andReturn(
+				[
+					'id' => 123,
+					'url' => 'http://example.org',
+				]
+			);
 	}
 }

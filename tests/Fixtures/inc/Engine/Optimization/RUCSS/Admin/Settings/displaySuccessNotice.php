@@ -102,5 +102,19 @@ return [
 				'dismiss_button_class' => 'button-primary',
 			],
 		],
+		'shouldDoNothingWhenNoTable' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'boxes'             => [],
+				'remove_unused_css' => 1,
+				'manual_preload'    => 0,
+				'transient'         => false,
+				'exists'         => false,
+			],
+			'expected' => false,
+		],
 	],
 ];

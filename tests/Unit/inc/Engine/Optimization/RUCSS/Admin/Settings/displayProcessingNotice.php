@@ -43,8 +43,9 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 		$this->table->expects(self::atMost(1))->method('exists')->willReturn($config['exists']);
 
 		$this->options->shouldReceive( 'get' )
-			->with( 'remove_unused_css', 0 )
-			->andReturn( $config['remove_unused_css'] );
+				->with( 'remove_unused_css', 0 )
+				->andReturn( $config['remove_unused_css'] );
+
 
 		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
 
