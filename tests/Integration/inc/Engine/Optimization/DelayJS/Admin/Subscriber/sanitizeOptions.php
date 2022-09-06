@@ -17,6 +17,7 @@ class Test_SanitizeOptions extends TestCase {
         $container = apply_filters( 'rocket_container', null );
 
         self::$admin_settings = $container->get( 'settings' );
+		parent::set_up_before_class();
     }
 
 	public function set_up() {
