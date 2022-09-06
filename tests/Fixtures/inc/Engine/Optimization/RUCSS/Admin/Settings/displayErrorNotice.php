@@ -11,6 +11,7 @@ return [
 				],
 				'has_rights' => true,
 				'is_enabled' => true,
+				'boxes'             => [],
 			],
 			'expected' => ''
 		],
@@ -22,6 +23,7 @@ return [
 				],
 				'has_rights' => false,
 				'is_enabled' => true,
+				'boxes'             => [],
 			],
 			'expected' => ''
 		],
@@ -33,6 +35,7 @@ return [
 				],
 				'has_rights' => true,
 				'is_enabled' => true,
+				'boxes'             => [],
 			],
 			'expected' => ''
 		],
@@ -44,6 +47,7 @@ return [
 				],
 				'has_rights' => true,
 				'is_enabled' => false,
+				'boxes'             => [],
 			],
 			'expected' => ''
 		]

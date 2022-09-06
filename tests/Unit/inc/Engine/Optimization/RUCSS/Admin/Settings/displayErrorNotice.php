@@ -33,6 +33,9 @@ class Test_DisplayErrorNotice extends FilesystemTestCase
 	public function testShouldReturnAsExpected($config, $expected) {
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'current_user_can' )->justReturn( $config['has_rights'] );
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
+
 		$this->options->shouldReceive('get')->with('remove_unused_css', 0)->andReturn($config['has_rights'])
 			->zeroOrMoreTimes();
 		Functions\when('rocket_notice_html')->justEcho();
