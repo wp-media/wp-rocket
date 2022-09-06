@@ -150,6 +150,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_deletion_enabled() ) {
+			return;
+		}
+
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
