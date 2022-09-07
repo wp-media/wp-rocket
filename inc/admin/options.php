@@ -56,7 +56,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$removed['optimize_css_delivery'] = true;
 		$removed['remove_unused_css']     = true;
 		$removed['async_css']             = true;
-		$removed['async_css_mobile']             = true;
+		$removed['async_css_mobile']      = true;
 	}
 
 	// Create 2 arrays to compare.

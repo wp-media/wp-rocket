@@ -220,7 +220,6 @@ class Settings {
 
 		$input['preload_links'] = ! empty( $input['preload_links'] ) ? 1 : 0;
 
-
 		$input['cache_mobile']            = ! empty( $input['cache_mobile'] ) ? 1 : 0;
 		$input['do_caching_mobile_files'] = ! empty( $input['do_caching_mobile_files'] ) ? 1 : 0;
 
