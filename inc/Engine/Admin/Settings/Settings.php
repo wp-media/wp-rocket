@@ -216,6 +216,8 @@ class Settings {
 
 		$input['cache_webp'] = ! empty( $input['cache_webp'] ) ? 1 : 0;
 
+		$input['async_css_mobile'] = ! empty( $input['async_css_mobile'] ) ? 1 : 0;
+
 		$input['license'] = isset( $input['license'] ) ? (string) $input['license'] : (string) $this->options->get( 'license' );
 
 		$input['preload_links'] = ! empty( $input['preload_links'] ) ? 1 : 0;
