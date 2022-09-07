@@ -290,7 +290,9 @@ class Cache extends Query {
 		$rows = $this->get_old_cache();
 
 		foreach ( $rows as $row ) {
-			$this->delete_item( $row->id );
+			if ( ! is_bool( $row ) ) {
+				$this->delete_item( $row->id );
+			}
 		}
 	}
 
