@@ -196,6 +196,10 @@ class Settings {
 			return;
 		}
 
+		if ( ! $this->used_css->exists() ) {
+			return;
+		}
+
 		$transient = get_transient( 'rocket_rucss_processing' );
 
 		if ( false === $transient ) {
@@ -238,6 +242,10 @@ class Settings {
 			return;
 		}
 
+		if ( ! $this->used_css->exists() ) {
+			return;
+		}
+
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 		if ( in_array( 'rucss_success_notice', (array) $boxes, true ) ) {
@@ -262,7 +270,7 @@ class Settings {
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We suggest enabling %1$sSitemap Preload%2$s for the fastest results.', 'rocket' ),
+				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
 				'<a href="#preload">',
 				'</a>'
 			);
@@ -527,20 +535,20 @@ class Settings {
 	 * @return void
 	 */
 	public function display_no_table_notice() {
+
 		if ( ! $this->can_display_notice() ) {
 			return;
 		}
-
 		if ( $this->used_css->exists() ) {
 			return;
 		}
 
 		// translators: %2$s = table name.
-		$main_message = __( 'WP Rocket could not create the %2$s in the database which is/are necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
+		$main_message = __( 'Could not create the %2$s in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = table name.
-			"%1\$s: <p>$main_message</p>",
+			"%1\$s: $main_message",
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name()
 		);

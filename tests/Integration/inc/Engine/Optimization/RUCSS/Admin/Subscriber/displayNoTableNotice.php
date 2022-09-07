@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::display_no_table_notice
@@ -16,7 +17,15 @@ use Brain\Monkey\Functions;
 class Test_DisplayNoTableNotice extends AdminTestCase
 {
 
+	use DBTrait;
+
 	protected $rucss;
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::uninstallAll();
+	}
 
 	public function set_up()
 	{
