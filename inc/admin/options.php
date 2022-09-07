@@ -1,6 +1,4 @@
 <?php
-use WP_Rocket\Logger\Logger;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -55,9 +53,9 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		||
 		( array_key_exists( 'async_css', $value ) && $value['async_css'] )
 	) {
-		$removed['optimize_css_delivery'] = true;
-		$removed['remove_unused_css']     = true;
-		$removed['async_css']             = true;
+		$removed['optimize_css_delivery']      = true;
+		$removed['remove_unused_css']          = true;
+		$removed['async_css']                  = true;
 	}
 
 	// Create 2 arrays to compare.
@@ -93,7 +91,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 	ksort( $oldvalue_diff );
 	ksort( $value_diff );
-
 	// If it's different, clean the domain.
 	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
 		// Purge all cache files.
