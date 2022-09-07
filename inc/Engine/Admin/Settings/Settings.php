@@ -216,8 +216,6 @@ class Settings {
 
 		$input['cache_webp'] = ! empty( $input['cache_webp'] ) ? 1 : 0;
 
-		$input['async_css_mobile'] = ! empty( $input['async_css_mobile'] ) ? 1 : 0;
-
 		$input['license'] = isset( $input['license'] ) ? (string) $input['license'] : (string) $this->options->get( 'license' );
 
 		$input['preload_links'] = ! empty( $input['preload_links'] ) ? 1 : 0;
@@ -246,6 +244,10 @@ class Settings {
 		// If iframes lazyload is not checked, uncheck youtube thumbnail option too.
 		if ( 0 === $input['lazyload_iframes'] ) {
 			$input['lazyload_youtube'] = 0;
+		}
+
+		if ( isset( $input['async_css_mobile'] ) ) {
+			$input['async_css_mobile'] = ! empty( $input['async_css_mobile'] ) ? 1 : 0;
 		}
 
 		// Option : Purge interval.
