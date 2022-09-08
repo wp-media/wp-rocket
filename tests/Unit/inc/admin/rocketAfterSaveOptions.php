@@ -40,6 +40,9 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	 */
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
 		$this->expected = $expected;
+		if ( is_array( $this->config['settings']) && is_array($settings) ) {
+			Functions\expect( 'get_option' )->once()->with('wp_rocket_first_optimize_css_delivery_activation');
+		}
 		$this->rocket_clean_domain();
 		$this->rocket_clean_minify();
 		$this->flush_rocket_htaccess();
