@@ -68,12 +68,12 @@ function rocket_after_save_options( $oldvalue, $value ) {
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
-	     ||
-	     ( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
-	     ||
-	     ( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
-	     ||
-	     ( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
+		||
+		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+		||
+		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
+		||
+		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
 	) {
 		rocket_clean_minify( 'js' );
 	}
@@ -181,7 +181,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 		$container                 = apply_filters( 'rocket_container', [] );
 		$invalid_exclusions_beacon = $container->get( 'beacon' )->get_suggest( 'invalid_exclusions' );
-		$error_message             .= sprintf(
+		$error_message            .= sprintf(
 			'<a href="%1$s" data-beacon-article="%2$s" rel="noopener noreferrer" target="_blank">%3$s</a>',
 			$invalid_exclusions_beacon['url'],
 			$invalid_exclusions_beacon['id'],
@@ -208,8 +208,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Regenerate the minify key if JS files have been modified.
 	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
-	     || ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-	     || ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
+		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
@@ -226,16 +226,21 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	if ( false === get_option( 'wp_rocket_first_remove_unused_css_activation' )
-	     && (
-	     ( ( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['async_css'] ) && ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] ) )
-	     )
+		&&
+		(
+			( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['async_css'] )
+			&& ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] )
+		)
 	) {
 		update_option( 'wp_rocket_first_remove_unused_css_activation', 1, false );
 	}
 
 	if ( ( false === get_option( 'wp_rocket_first_async_css_activation' ) )
-	     &&
-	     ( ( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['remove_unused_css'] ) && array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css'] )
+		&&
+		(
+			( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['remove_unused_css'] )
+			&& array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css']
+		)
 	) {
 		update_option( 'wp_rocket_first_async_css_activation', 1, false );
 	}
