@@ -688,41 +688,28 @@ class Cache extends Abstract_Buffer {
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 
 		// Last character of permalink.
-		$permalink_last_char = substr( $permalink_structure, -1 );
+		$permalink_last_char = '/' !== substr( $permalink_structure, -1 ) ? '' : '/';
 
-		// Request uri without protocol & TLD.
+		// Request uri without protocol & domain name.
 		$request_uri = $this->tests->get_request_uri_base();
 
 		// Last character of request uri.
-		$request_uri_last_char = substr( $request_uri, -1 );
-
-		// Check if permalink forces a trailing slash and update var. else set char to empty.
-		$permalink_last_char = '/' === $permalink_last_char ? '/' : '';
-
-		// Check also if request_uri has a trailing slash and update var. else set char to empty.
-		$request_uri_last_char = '/' === $request_uri_last_char ? '/' : '';
+		$request_uri_last_char = '/' !== substr( $request_uri, -1 ) ? '' : '/';
 
 		$php_self = str_replace( 'index.php', '', $this->config->get_server_input( 'PHP_SELF' ) );
 
 		// In cases where we have the home with a trailng slash (visible or invisible)
 		// and permalink is without trailing slash.
 		if ( '' === $permalink_last_char ) {
-			// Check for TLD installation.
-			if ( '/' === $request_uri ) {
-				$request_uri_last_char = '';
-			}
+			// Check for root installation.
+			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
 
 			// Check for subdir installation.
-			if ( $php_self === $request_uri ) {
+			if ( '/' !== $request_uri && $php_self === $request_uri ) {
 				$request_uri_last_char = '';
 			}
 		}
 
-		// Return false if permalink structure and url do not match.
-		if ( $permalink_last_char !== $request_uri_last_char ) {
-			return false;
-		}
-
-		return true;
+		return $permalink_last_char === $request_uri_last_char;
 	}
 }
