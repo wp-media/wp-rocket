@@ -49,9 +49,9 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'manual_preload'              => true,
 	];
 
-	if ( ( array_key_exists( 'remove_unused_css', $value ) && $value['remove_unused_css'] )
+	if ( ( ! array_key_exists( 'optimize_css_delivery', $oldvalue ) && ( array_key_exists( 'remove_unused_css', $value ) && $value['remove_unused_css'] ) )
 		||
-		( array_key_exists( 'async_css', $value ) && $value['async_css'] )
+		( ! array_key_exists( 'optimize_css_delivery', $oldvalue ) && array_key_exists( 'async_css', $value ) && $value['async_css'] )
 	) {
 		$removed['optimize_css_delivery'] = true;
 		$removed['remove_unused_css']     = true;
