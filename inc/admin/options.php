@@ -49,13 +49,11 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'manual_preload'              => true,
 	];
 
-	if ( ( ! array_key_exists( 'optimize_css_delivery', $oldvalue ) && ( array_key_exists( 'remove_unused_css', $value ) && $value['remove_unused_css'] ) )
-		||
-		( ! array_key_exists( 'optimize_css_delivery', $oldvalue ) && array_key_exists( 'async_css', $value ) && $value['async_css'] )
-	) {
+	if ( array_key_exists( 'first_optimize_css_delivery_activation', $value ) && $value['first_optimize_css_delivery_activation'] ) {
 		$removed['optimize_css_delivery'] = true;
 		$removed['remove_unused_css']     = true;
 		$removed['async_css']             = true;
+		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 0 );
 	}
 
 	// Create 2 arrays to compare.
@@ -118,6 +116,7 @@ add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_
  * @return array Updated submitted options values.
  */
 function rocket_pre_main_option( $newvalue, $oldvalue ) {
+
 	$rocket_settings_errors = [];
 
 	// Make sure that fields that allow users to enter patterns are well formatted.
@@ -217,6 +216,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['async_css']             = 0;
 	}
 
+	if ( ! get_option( 'first_optimize_css_delivery_activation', 0 )
+		&& (
+		( ! isset( $oldvalue['optimize_css_delivery'] ) && ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] ) )
+		||
+		( ! isset( $oldvalue['optimize_css_delivery'] ) && array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css'] )
+		)
+	) {
+		update_option( 'wpr_rocket_first_optimize_css_delivery_activation', 1 );
+	}
 	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
