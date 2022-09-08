@@ -64,10 +64,7 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  */
 function rocket_post_row_actions( $actions, $post ) {
 
-	$post_status = get_post_status();
-
-	// Return default row actions if post status is draft or trash.
-	if ( 'draft' === $post_status || 'trash' === $post_status ) {
+	if ( ! rocket_can_display_options() ) {
 		return $actions;
 	}
 
@@ -529,3 +526,31 @@ function rocket_handle_settings_import() {
 	}
 }
 add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );
+
+/**
+ * Check if WPR options should be displayed.
+ *
+ * @return bool
+ */
+function rocket_can_display_options() {
+
+	$disallowed_post_status = [
+		'draft',
+		'trash',
+		'private',
+		'future',
+		'pending',
+	];
+
+	$post_status = get_post_status();
+
+	if ( in_array( $post_status, $disallowed_post_status, true ) ) {
+		return false;
+	}
+
+	if ( 'add' === get_current_screen()->action ) {
+		return false;
+	}
+
+	return true;
+}

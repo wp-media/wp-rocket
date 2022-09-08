@@ -9,10 +9,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_post_submitbox_start() {
 
-	$post_status = get_post_status();
-
-	// Bail out if post status is a draft or trash.
-	if ( 'draft' === $post_status || 'trash' === $post_status ) {
+	if ( ! rocket_can_display_options() ) {
 		return;
 	}
 
@@ -50,10 +47,7 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
  */
 function rocket_cache_options_meta_boxes() {
 
-	$post_status = get_post_status();
-
-	// Bail out if post status is a draft or trash.
-	if ( 'draft' === $post_status || 'trash' === $post_status ) {
+	if ( ! rocket_can_display_options() ) {
 		return;
 	}
 
