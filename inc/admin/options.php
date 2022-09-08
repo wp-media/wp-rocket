@@ -49,11 +49,12 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'manual_preload'              => true,
 	];
 
-	if ( array_key_exists( 'first_optimize_css_delivery_activation', $value ) && $value['first_optimize_css_delivery_activation'] ) {
+	if ( 1 === get_option( 'wp_rocket_first_optimize_css_delivery_activation' ) ) {
+		\WP_Rocket\Logger\Logger::debug('optimize is active');
 		$removed['optimize_css_delivery'] = true;
 		$removed['remove_unused_css']     = true;
 		$removed['async_css']             = true;
-		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 0 );
+		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 0 ,false);
 	}
 
 	// Create 2 arrays to compare.
@@ -91,6 +92,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	ksort( $value_diff );
 	// If it's different, clean the domain.
 	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
+		\WP_Rocket\Logger\Logger::debug('clear cache');
 		// Purge all cache files.
 		rocket_clean_domain();
 
@@ -216,14 +218,14 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['async_css']             = 0;
 	}
 
-	if ( ! get_option( 'first_optimize_css_delivery_activation', 0 )
+	if ( false === get_option( 'wp_rocket_first_optimize_css_delivery_activation' )
 		&& (
 		( ! isset( $oldvalue['optimize_css_delivery'] ) && ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] ) )
 		||
 		( ! isset( $oldvalue['optimize_css_delivery'] ) && array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css'] )
 		)
 	) {
-		update_option( 'wpr_rocket_first_optimize_css_delivery_activation', 1 );
+		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 1 ,false);
 	}
 	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
