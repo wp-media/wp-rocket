@@ -49,25 +49,31 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'manual_preload'              => true,
 	];
 
-	if ( 1 === get_option( 'wp_rocket_first_optimize_css_delivery_activation' ) ) {
+	if ( 1 === get_option( 'wp_rocket_first_remove_unused_css_activation' ) ) {
 		$removed['optimize_css_delivery'] = true;
 		$removed['remove_unused_css']     = true;
 		$removed['async_css']             = true;
-		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 0, false );
+		update_option( 'wp_rocket_first_remove_unused_css_activation', 0, false );
 	}
 
+	if ( 1 === get_option( 'wp_rocket_first_async_css_activation' ) ) {
+		$removed['optimize_css_delivery'] = true;
+		$removed['remove_unused_css']     = true;
+		$removed['async_css']             = true;
+		update_option( 'wp_rocket_first_async_css_activation', 0, false );
+	}
 	// Create 2 arrays to compare.
 	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
 	$value_diff    = array_diff_key( $value, $removed );
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
-		||
-		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
-		||
-		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
-		||
-		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
+	     ||
+	     ( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+	     ||
+	     ( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
+	     ||
+	     ( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
 	) {
 		rocket_clean_minify( 'js' );
 	}
@@ -104,6 +110,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		do_action( 'rocket_options_changed', $value );
 	}
 }
+
 add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
 
 /**
@@ -113,6 +120,7 @@ add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_
  *
  * @param array $newvalue An array of submitted options values.
  * @param array $oldvalue An array of previous options values.
+ *
  * @return array Updated submitted options values.
  */
 function rocket_pre_main_option( $newvalue, $oldvalue ) {
@@ -147,10 +155,11 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		// Validate.
 		$newvalue[ $pattern_field ] = array_filter(
 			$newvalue[ $pattern_field ],
-			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+			function ( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
 					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
+
 					return false;
 				}
 
@@ -172,7 +181,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 		$container                 = apply_filters( 'rocket_container', [] );
 		$invalid_exclusions_beacon = $container->get( 'beacon' )->get_suggest( 'invalid_exclusions' );
-		$error_message            .= sprintf(
+		$error_message             .= sprintf(
 			'<a href="%1$s" data-beacon-article="%2$s" rel="noopener noreferrer" target="_blank">%3$s</a>',
 			$invalid_exclusions_beacon['url'],
 			$invalid_exclusions_beacon['id'],
@@ -199,8 +208,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Regenerate the minify key if JS files have been modified.
 	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
-		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+	     || ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
+	     || ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
@@ -216,14 +225,19 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['async_css']             = 0;
 	}
 
-	if ( false === get_option( 'wp_rocket_first_optimize_css_delivery_activation' )
-		&& (
-		( ! isset( $oldvalue['optimize_css_delivery'] ) && ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] ) )
-		||
-		( ! isset( $oldvalue['optimize_css_delivery'] ) && array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css'] )
-		)
+	if ( false === get_option( 'wp_rocket_first_remove_unused_css_activation' )
+	     && (
+	     ( ( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['async_css'] ) && ( array_key_exists( 'remove_unused_css', $newvalue ) && $newvalue['remove_unused_css'] ) )
+	     )
 	) {
-		update_option( 'wp_rocket_first_optimize_css_delivery_activation', 1, false );
+		update_option( 'wp_rocket_first_remove_unused_css_activation', 1, false );
+	}
+
+	if ( ( false === get_option( 'wp_rocket_first_async_css_activation' ) )
+	     &&
+	     ( ( ! isset( $oldvalue['optimize_css_delivery'] ) || $oldvalue['remove_unused_css'] ) && array_key_exists( 'async_css', $newvalue ) && $newvalue['async_css'] )
+	) {
+		update_option( 'wp_rocket_first_async_css_activation', 1, false );
 	}
 	if ( ! rocket_get_constant( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
@@ -262,7 +276,7 @@ add_filter( 'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'roc
  * @since 2.7
  *
  * @param array $old_value An array of previous options values.
- * @param array $value     An array of submitted options values.
+ * @param array $value An array of submitted options values.
  */
 function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
 	if ( $old_value === $value || get_rocket_option( 'cache_ssl' ) ) {
@@ -273,4 +287,5 @@ function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
 
 	update_rocket_option( 'cache_ssl', 'https' === $scheme ? 1 : 0 );
 }
+
 add_action( 'update_option_home', 'rocket_update_ssl_option_after_save_home_url', 10, 2 );
