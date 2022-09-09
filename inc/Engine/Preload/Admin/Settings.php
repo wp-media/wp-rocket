@@ -40,7 +40,7 @@ class Settings {
 
 		$message = sprintf(
 			// translators: %1$s = plugin name.
-			__( '%1$s: Please wait. The preload service is processing your pages.', 'rocket' ),
+			__( '%1$s: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.', 'rocket' ),
 			'<strong>WP Rocket</strong>'
 		);
 
@@ -114,30 +114,5 @@ class Settings {
 	 */
 	public function is_enabled() : bool {
 		return (bool) $this->options->get( 'manual_preload', 0 );
-	}
-
-	/**
-	 * Checks if Action scheduler tables are there or not.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return bool
-	 */
-	private function is_valid_as_tables() {
-		$cached_count = get_transient( 'rocket_preload_as_tables_count' );
-		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
-			return 4 === (int) $cached_count;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
-		);
-
-		set_transient( 'rocket_preload_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
-		return 4 === count( $found_as_tables );
 	}
 }

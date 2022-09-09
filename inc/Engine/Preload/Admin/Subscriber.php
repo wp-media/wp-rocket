@@ -44,8 +44,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices' => [
-				'maybe_display_preload_notice',
-				'maybe_display_as_missed_tables_notice',
+				[ 'maybe_display_preload_notice' ],
 			],
 		];
 	}
@@ -57,14 +56,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_preload_notice() {
 		$this->settings->maybe_display_preload_notice();
-	}
-
-	/**
-	 * Display a notice when Action Scheduler tables are missing.
-	 *
-	 * @return void
-	 */
-	public function maybe_display_as_missed_tables_notice() {
-		$this->settings->maybe_display_as_missed_tables_notice();
 	}
 }

@@ -208,6 +208,7 @@ class Plugin {
 			'lazyload_admin_subscriber',
 			'preload_admin_subscriber',
 			'minify_admin_subscriber',
+			'notices_admin_subscriber',
 		];
 	}
 
@@ -336,6 +337,7 @@ class Plugin {
 			'the_seo_framework',
 			'wpml',
 			'xstore',
+			'cloudflare_plugin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

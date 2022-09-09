@@ -2,13 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Cron;
 
-use WP_Rocket\Engine\Common\Queue\PreloadQueueRunner;
+use WP_Rocket\Engine\Common\Queue\Cleaner;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Logger\Logger;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -34,13 +33,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $preload_controller;
 
 	/**
-	 * Preload queue runner.
-	 *
-	 * @var PreloadQueueRunner
-	 */
-	protected $queue_runner;
-
-	/**
 	 * Cache table.
 	 *
 	 * @var CacheTable
@@ -53,14 +45,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Settings           $settings Preload settings.
 	 * @param Cache              $query Db query.
 	 * @param PreloadUrl         $preload_controller Preload url controller.
-	 * @param PreloadQueueRunner $preload_queue_runner preload queue runner.
 	 * @param CacheTable         $table Cache table.
 	 */
-	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, PreloadQueueRunner $preload_queue_runner, CacheTable $table ) {
+	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, CacheTable $table ) {
 		$this->settings           = $settings;
 		$this->query              = $query;
 		$this->preload_controller = $preload_controller;
-		$this->queue_runner       = $preload_queue_runner;
 		$this->table              = $table;
 	}
 
@@ -72,7 +62,10 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_preload_clean_rows_time_event'       => 'remove_old_rows',
-			'rocket_preload_process_pending'             => 'process_pending_urls',
+			'rocket_preload_process_pending'             => [
+				[ 'process_pending_urls' ],
+				[ 'clean_preload_jobs' ],
+			],
 			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
 			'cron_schedules'                             => [
 				[ 'add_interval' ],
@@ -82,7 +75,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'schedule_revert_old_in_progress_rows' ],
-				[ 'maybe_init_preload_queue' ],
 			],
 		];
 	}
@@ -112,6 +104,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->preload_controller->process_pending_jobs();
+	}
+
+	/**
+	 * Clean Action Scheduler jobs for preload.
+	 *
+	 * @return void
+	 */
+	public function clean_preload_jobs() {
+		$clean_batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, 'rocket-preload' );
+		$cleaner          = new Cleaner( null, $clean_batch_size, 'rocket-preload' );
+		$cleaner->clean();
 	}
 
 	/**
@@ -247,19 +250,5 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->query->revert_old_in_progress();
-	}
-
-	/**
-	 * Set the preload queue runner.
-	 *
-	 * @return void
-	 */
-	public function maybe_init_preload_queue() {
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		$this->queue_runner->init();
-
 	}
 }
