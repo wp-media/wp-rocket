@@ -42,10 +42,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Settings           $settings Preload settings.
-	 * @param Cache              $query Db query.
-	 * @param PreloadUrl         $preload_controller Preload url controller.
-	 * @param CacheTable         $table Cache table.
+	 * @param Settings   $settings Preload settings.
+	 * @param Cache      $query Db query.
+	 * @param PreloadUrl $preload_controller Preload url controller.
+	 * @param CacheTable $table Cache table.
 	 */
 	public function __construct( Settings $settings, Cache $query, PreloadUrl $preload_controller, CacheTable $table ) {
 		$this->settings           = $settings;

@@ -25,7 +25,6 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 	protected $query;
 	protected $settings;
 	protected $controller;
-	protected $queue_runner;
 	protected $table;
 
 	protected function setUp(): void
@@ -34,10 +33,9 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->settings = Mockery::mock(Settings::class);
 		$this->controller = Mockery::mock(PreloadUrl::class);
-		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
 		$this->table = $this->createMock(CacheTable::class);
 
-		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner, $this->table);
+		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->table);
 	}
 
 	/**
