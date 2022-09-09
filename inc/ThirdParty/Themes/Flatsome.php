@@ -12,9 +12,11 @@ class Flatsome implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [
-			'rocket_rucss_inline_content_exclusions' => 'preserve_patterns',
-		];
+		if ( ! self::is_flatsome() ) {
+			return [];
+		}
+
+		return [ 'rocket_rucss_inline_content_exclusions' => 'preserve_patterns' ];
 	}
 
 	/**
@@ -27,9 +29,6 @@ class Flatsome implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function preserve_patterns( $patterns ): array {
-		if ( ! self::is_flatsome() ) {
-			return $patterns;
-		}
 
 		$preserve = [
 			'#section_',

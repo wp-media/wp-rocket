@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Admin_Bar;
@@ -81,8 +82,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
-				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -93,43 +94,20 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
+				[ 'delete_used_css', 16, 2 ],
 				[ 'cancel_pending_jobs_as', 16, 2 ],
+				[ 'drop_resources_table', 18, 2 ],
 			],
 			'wp_ajax_rocket_spawn_cron'               => 'spawn_cron',
 			'rocket_deactivation'                     => 'cancel_queues',
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
+			'rocket_before_rollback'                  => 'cancel_queues',
 		];
-	}
-
-	/**
-	 * Checks if Action scheduler tables are there or not.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return bool
-	 */
-	private function is_valid_as_tables() {
-		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
-		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
-			return 4 === (int) $cached_count;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
-		);
-
-		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
-		return 4 === count( $found_as_tables );
 	}
 
 	/**
@@ -202,6 +180,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function delete_used_css_rows() {
+		$this->used_css->delete_all_used_css();
+
 		if ( 0 < $this->used_css->get_not_completed_count() ) {
 			$this->database->remove_all_completed_rows();
 		} else {
@@ -426,25 +406,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$this->settings->display_as_missed_tables_notice();
-	}
-
-	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -473,17 +434,6 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Adjust Action Scheduler to have two concurrent batches on the same time.
-	 *
-	 * @param int $num Number of concurrent batches.
-	 *
-	 * @return int
-	 */
-	public function adjust_as_concurrent_batches( int $num = 1 ) {
-		return ( 2 < $num ) ? $num : 2;
 	}
 
 	/**
@@ -649,6 +599,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cancel_queues() {
+		// Will unhook check for dispatching an async request without RUCSS process running.
+		\ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
+
+		// Will unhook check for dispatching an async request when RUCSS process is already running.
+		RUCSSQueueRunner::instance()->unhook_dispatch_async_request();
+
 		$this->queue->cancel_pending_jobs_cron();
 
 		if ( ! wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) ) {
@@ -668,6 +624,24 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Deletes the used CSS on update to 3.11.3 for new storage method
+	 *
+	 * @since 3.11.3
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function delete_used_css( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.11.4', '>=' ) ) {
+			return;
+		}
+
+		$this->database->truncate_used_css_table();
+	}
+
+	/**
 	 * Disable RUCSS on wrong license.
 	 *
 	 * @return bool
@@ -677,5 +651,34 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 		return null;
+	}
+
+	/**
+	 * Remove the resources table & version stored in options table on update to 3.12
+	 *
+	 * @since 3.12
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function drop_resources_table( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.12', '>=' ) ) {
+			return;
+		}
+
+		$this->database->drop_resources_table();
+	}
+
+	/**
+	 * Displays a notice if the used CSS folder is not writable
+	 *
+	 * @since 3.11.4
+	 *
+	 * @return void
+	 */
+	public function notice_write_permissions() {
+		$this->used_css->notice_write_permissions();
 	}
 }

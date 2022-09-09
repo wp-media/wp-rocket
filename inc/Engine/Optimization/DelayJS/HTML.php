@@ -66,6 +66,7 @@ class HTML {
 		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
 		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
 		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
+		'wpcp_css_disable_selection', // WP Content Copy Protection & No Right Click.
 		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
 		'statcounter.com/counter/counter.js', // StatsCounter.
 		'var sc_project', // Statscounter.
@@ -83,6 +84,8 @@ class HTML {
 		'/photonic/include/js/front-end/nomodule/photonic-baguettebox.min.js', // Photonic plugin.
 		'/photonic/include/ext/baguettebox/baguettebox.min.js', // Photonic plugin.
 		'window.wsf_form_json_config', // WSF Form plugin.
+		'et_link_options_data', // Divi link variable.
+		'FuseboxPlayerAPIKey', // FuseBox player.
 	];
 
 	/**

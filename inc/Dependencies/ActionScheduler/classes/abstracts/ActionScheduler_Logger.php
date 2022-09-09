@@ -109,7 +109,7 @@ abstract class ActionScheduler_Logger {
 
 	public function log_timed_out_action( $action_id, $timeout ) {
 		/* translators: %s: amount of time */
-		$this->log( $action_id, sprintf( __( 'action timed out after %s seconds', 'action-scheduler' ), $timeout ) );
+		$this->log( $action_id, sprintf( __( 'action marked as failed after %s seconds. Unknown error occurred. Check server, PHP and database error logs to diagnose cause.', 'action-scheduler' ), $timeout ) );
 	}
 
 	public function log_unexpected_shutdown( $action_id, $error ) {

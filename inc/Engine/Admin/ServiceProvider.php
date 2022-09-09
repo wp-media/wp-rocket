@@ -2,6 +2,9 @@
 namespace WP_Rocket\Engine\Admin;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
+use WP_Rocket\Engine\Admin\Deactivation\Subscriber;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
 
 /**
  * Service Provider for admin subscribers.
@@ -23,6 +26,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'deactivation_intent',
 		'deactivation_intent_subscriber',
 		'hummingbird_subscriber',
+		'notices',
+		'notices_admin_subscriber',
 	];
 
 	/**
@@ -33,16 +38,19 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->add( 'deactivation_intent', 'WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent' )
+		$this->getContainer()->add( 'deactivation_intent', DeactivationIntent::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options );
-		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Engine\Admin\Deactivation\Subscriber' )
+		$this->getContainer()->share( 'deactivation_intent_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'deactivation_intent' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->share( 'hummingbird_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird' )
+		$this->getContainer()->share( 'hummingbird_subscriber', Hummingbird::class )
 			->addArgument( $options )
 			->addTag( 'admin_subscriber' );
-
+		$this->getContainer()->add( 'notices', Notices::class );
+		$this->getContainer()->share( 'notices_admin_subscriber', NoticesSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'notices' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }
