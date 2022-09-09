@@ -56,17 +56,18 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		return [
-			'wp_rocket_loaded'                         => 'remove_widget_callback',
-			'rocket_exclude_css'                       => 'exclude_post_css',
-			'elementor/core/files/clear_cache'         => 'clear_cache',
-			'update_option__elementor_global_css'      => 'clear_cache',
-			'delete_option__elementor_global_css'      => 'clear_cache',
-			'rocket_buffer'                            => [ 'add_fix_animation_script', 28 ],
-			'rocket_exclude_js'                        => 'exclude_js',
-			'rocket_skip_post_row_actions'             => 'remove_rocket_option',
-			'rocket_metabox_options_post_types'        => 'remove_rocket_option',
-			'rocket_skip_admin_bar_cache_purge_option' => [ 'skip_admin_bar_cache_purge_option', 1, 2 ],
-			'rocket_submitbox_options_post_types'      => 'remove_rocket_option',
+			'wp_rocket_loaded'                            => 'remove_widget_callback',
+			'rocket_exclude_css'                          => 'exclude_post_css',
+			'elementor/core/files/clear_cache'            => 'clear_cache',
+			'update_option__elementor_global_css'         => 'clear_cache',
+			'delete_option__elementor_global_css'         => 'clear_cache',
+			'rocket_buffer'                               => [ 'add_fix_animation_script', 28 ],
+			'rocket_exclude_js'                           => 'exclude_js',
+			'rocket_skip_post_row_actions'                => 'remove_rocket_option',
+			'rocket_metabox_options_post_types'           => 'remove_rocket_option',
+			'rocket_skip_admin_bar_cache_purge_option'    => [ 'skip_admin_bar_option', 1, 2 ],
+			'rocket_submitbox_options_post_types'         => 'remove_rocket_option',
+			'rocket_skip_admin_bar_clear_used_css_option' => [ 'skip_admin_bar_option', 1, 2 ],
 		];
 	}
 
@@ -192,7 +193,7 @@ class Elementor implements Subscriber_Interface {
 	 * @param mixed   $post Post object.
 	 * @return boolean
 	 */
-	public function skip_admin_bar_cache_purge_option( bool $should_skip, $post ): bool {
+	public function skip_admin_bar_option( bool $should_skip, $post ): bool {
 		if ( null === $post ) {
 			return $should_skip;
 		}
