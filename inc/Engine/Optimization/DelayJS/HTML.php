@@ -84,6 +84,8 @@ class HTML {
 		'/photonic/include/js/front-end/nomodule/photonic-baguettebox.min.js', // Photonic plugin.
 		'/photonic/include/ext/baguettebox/baguettebox.min.js', // Photonic plugin.
 		'window.wsf_form_json_config', // WSF Form plugin.
+		'et_link_options_data', // Divi link variable.
+		'FuseboxPlayerAPIKey', // FuseBox player.
 	];
 
 	/**

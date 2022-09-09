@@ -121,7 +121,7 @@ function get_rocket_ipv6_full($ip) {
     // Extract out the main IP pieces
     $ip_pieces = explode("::", $left_piece, 2);
     $main_ip_piece = $ip_pieces[0];
-    $last_ip_piece = null;
+    $last_ip_piece = "";
     if (count($ip_pieces) > 1) $last_ip_piece = $ip_pieces[1];
 
     // Pad out the shorthand entries.

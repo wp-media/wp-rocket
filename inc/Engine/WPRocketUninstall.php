@@ -1,7 +1,8 @@
 <?php
 
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
+
+use WP_Rocket\Engine\Preload\Database\Tables\Cache;
 
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
@@ -62,6 +63,9 @@ class WPRocketUninstall {
 		'rocket_database_optimization_process_complete',
 		'wp_rocket_no_licence',
 		'rocket_hide_deactivation_form',
+		'wpr_preload_running',
+		'rocket_preload_as_tables_count',
+		'wpr_dynamic_lists',
 	];
 
 	/**
@@ -108,13 +112,6 @@ class WPRocketUninstall {
 	];
 
 	/**
-	 * Instance of RUCSS resources table.
-	 *
-	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources
-	 */
-	private $rucss_resources_table;
-
-	/**
 	 * Instance of RUCSS used_css table.
 	 *
 	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS
@@ -122,18 +119,25 @@ class WPRocketUninstall {
 	private $rucss_usedcss_table;
 
 	/**
+	 * Instance of Preload rocket_cache table.
+	 *
+	 * @var Cache
+	 */
+	private $rocket_cache;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param string    $cache_path            Path to the cache folder.
-	 * @param string    $config_path           Path to the config folder.
-	 * @param Resources $rucss_resources_table RUCSS resources table.
-	 * @param UsedCSS   $rucss_usedcss_table   RUCSS used_css table.
+	 * @param string  $cache_path            Path to the cache folder.
+	 * @param string  $config_path           Path to the config folder.
+	 * @param UsedCSS $rucss_usedcss_table   RUCSS used_css table.
+	 * @param Cache   $rocket_cache   Preload rocket_cache table.
 	 */
-	public function __construct( $cache_path, $config_path, $rucss_resources_table, $rucss_usedcss_table ) {
-		$this->cache_path            = trailingslashit( $cache_path );
-		$this->config_path           = $config_path;
-		$this->rucss_resources_table = $rucss_resources_table;
-		$this->rucss_usedcss_table   = $rucss_usedcss_table;
+	public function __construct( $cache_path, $config_path, $rucss_usedcss_table, $rocket_cache ) {
+		$this->cache_path          = trailingslashit( $cache_path );
+		$this->config_path         = $config_path;
+		$this->rucss_usedcss_table = $rucss_usedcss_table;
+		$this->rocket_cache        = $rocket_cache;
 	}
 
 	/**
@@ -149,6 +153,7 @@ class WPRocketUninstall {
 		$this->delete_cache_files();
 		$this->delete_config_files();
 		$this->drop_rucss_database_tables();
+		$this->delete_preload_table();
 	}
 
 	/**
@@ -178,9 +183,6 @@ class WPRocketUninstall {
 	 * Drop RUCSS tables for current active site.
 	 */
 	private function drop_rucss_current_site_tables() {
-		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->uninstall();
-		}
 		if ( $this->rucss_usedcss_table->exists() ) {
 			$this->rucss_usedcss_table->uninstall();
 		}
@@ -237,6 +239,32 @@ class WPRocketUninstall {
 	 */
 	private function delete_config_files() {
 		$this->delete( $this->config_path );
+	}
+
+	/**
+	 * Drop preload tables.
+	 */
+	private function delete_preload_table() {
+		// If the table exist, then drop the table.
+
+		if ( $this->rocket_cache->exists() ) {
+			$this->rocket_cache->uninstall();
+		}
+
+		if ( ! is_multisite() ) {
+			return;
+		}
+
+		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
+			switch_to_blog( $site_id );
+
+			if ( $this->rocket_cache->exists() ) {
+				$this->rocket_cache->uninstall();
+			}
+
+			restore_current_blog();
+		}
+
 	}
 
 	/**

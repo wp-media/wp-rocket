@@ -4,8 +4,9 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Common\Queue;
 
 use WP_Rocket\Logger\Logger;
+use ActionScheduler_Abstract_QueueRunner;
 
-class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
+class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/**
 	 * Cron hook name.
@@ -253,6 +254,15 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 		];
 
 		return $schedules;
+	}
+
+	/**
+	 * Get the number of concurrent batches a runner allows.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_concurrent_batches() {
+		return 2;
 	}
 
 }
