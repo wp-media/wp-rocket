@@ -539,7 +539,7 @@ function rocket_thank_you_license() {
 			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
 			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
 			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
+			'<a href="https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
 			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
 			'</a>'
 		);
@@ -840,3 +840,4 @@ function rocket_notice_writing_permissions( $file ) {
 
 	return $message;
 }
+
