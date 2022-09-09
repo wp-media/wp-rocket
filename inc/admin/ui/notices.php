@@ -840,3 +840,4 @@ function rocket_notice_writing_permissions( $file ) {
 
 	return $message;
 }
+

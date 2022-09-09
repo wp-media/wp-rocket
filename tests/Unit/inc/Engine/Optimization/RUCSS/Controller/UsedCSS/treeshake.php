@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
@@ -22,6 +23,7 @@ class Test_Treeshake extends TestCase {
 	protected $api;
 	protected $queue;
 	protected $usedCss;
+	protected $data_manager;
 	protected $filesystem;
 
 	protected function setUp(): void
@@ -31,6 +33,7 @@ class Test_Treeshake extends TestCase {
 		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
 		$this->api = Mockery::mock(APIClient::class);
 		$this->queue = Mockery::mock(QueueInterface::class);
+		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem = Mockery::mock( Filesystem::class );
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
@@ -38,6 +41,7 @@ class Test_Treeshake extends TestCase {
 				$this->options, $this->usedCssQuery,
 				$this->api,
 				$this->queue,
+				$this->data_manager,
 				$this->filesystem
 			]
 		);
@@ -73,6 +77,17 @@ class Test_Treeshake extends TestCase {
 		$this->configValidUsedCss($config);
 
 		$this->configApplyUsedCss($config);
+
+		$dynamic_lists = [];
+
+		if ( isset( $config['dynamic_lists'] ) ) {
+			$dynamic_lists = (object) $config['dynamic_lists'];
+		}
+
+		$this->data_manager->shouldReceive( 'get_lists' )
+			->atMost()
+			->once()
+			->andReturn( $dynamic_lists );
 
 		$this->assertEquals($this->format_the_html($expected), $this->format_the_html($this->usedCss->treeshake($config['html'])));
 	}
