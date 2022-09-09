@@ -9,7 +9,7 @@ class MinimalistBlogger extends ThirdpartyTheme {
 	 *
 	 * @var string
 	 */
-	protected static $theme_name = 'minimalist-blogger';
+	protected static $theme_name = 'minimalistblogger';
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
