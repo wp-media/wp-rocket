@@ -80,11 +80,10 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
-				[ 'notice_write_permissions' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
-				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -95,7 +94,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
@@ -109,31 +107,6 @@ class Subscriber implements Subscriber_Interface {
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
 		];
-	}
-
-	/**
-	 * Checks if Action scheduler tables are there or not.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return bool
-	 */
-	private function is_valid_as_tables() {
-		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
-		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
-			return 4 === (int) $cached_count;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
-		);
-
-		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
-		return 4 === count( $found_as_tables );
 	}
 
 	/**
@@ -432,25 +405,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$this->settings->display_as_missed_tables_notice();
-	}
-
-	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -479,17 +433,6 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Adjust Action Scheduler to have two concurrent batches on the same time.
-	 *
-	 * @param int $num Number of concurrent batches.
-	 *
-	 * @return int
-	 */
-	public function adjust_as_concurrent_batches( int $num = 1 ) {
-		return ( 2 < $num ) ? $num : 2;
 	}
 
 	/**
