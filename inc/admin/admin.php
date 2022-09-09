@@ -526,31 +526,3 @@ function rocket_handle_settings_import() {
 	}
 }
 add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );
-
-/**
- * Check if WPR options should be displayed.
- *
- * @return bool
- */
-function rocket_can_display_options() {
-
-	$disallowed_post_status = [
-		'draft',
-		'trash',
-		'private',
-		'future',
-		'pending',
-	];
-
-	$post_status = get_post_status();
-
-	if ( in_array( $post_status, $disallowed_post_status, true ) ) {
-		return false;
-	}
-
-	if ( 'add' === get_current_screen()->action ) {
-		return false;
-	}
-
-	return true;
-}

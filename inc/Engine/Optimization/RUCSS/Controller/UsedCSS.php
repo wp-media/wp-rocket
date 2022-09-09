@@ -686,6 +686,10 @@ class UsedCSS {
 			return;
 		}
 
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
 		$referer = '';
 		$action  = 'rocket_clear_usedcss_url';
 
