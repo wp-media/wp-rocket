@@ -2,6 +2,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\MinimalistBlogger;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 
 /**
  * @covers \WP_Rocket\ThirdParty\MinimalistBlogger::exclude_jquery_from_delay_js
@@ -54,9 +55,10 @@ class Test_excludeJqueryFromDelayJs extends TestCase
 	 */
 	public function testShouldReturnExpected($config, $expected)
 	{
+		$minimalist_blogger = new MinimalistBlogger();
 		$this->assertSame(
 			$expected,
-			apply_filters('rocket_delay_js_exclusions', $config['excluded'])
+			$minimalist_blogger->exclude_jquery_from_delay_js($config['excluded'])
 		);
 	}
 }

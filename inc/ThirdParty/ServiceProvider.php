@@ -249,6 +249,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
