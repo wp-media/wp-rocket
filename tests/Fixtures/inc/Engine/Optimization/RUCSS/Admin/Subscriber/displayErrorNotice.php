@@ -1,7 +1,7 @@
 <?php
 
 $content = <<<Notice
-<div class="notice notice-notice is-dismissible" id="rocket-notice-rucss-error-http">
+<div class="notice notice-error is-dismissible" id="rocket-notice-rucss-error-http">
 <p>
 <strong>
 WP Rocket</strong>
