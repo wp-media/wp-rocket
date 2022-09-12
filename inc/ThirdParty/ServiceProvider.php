@@ -85,6 +85,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'minimalist_blogger',
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
@@ -242,6 +243,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )
