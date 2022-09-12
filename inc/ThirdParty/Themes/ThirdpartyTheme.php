@@ -3,7 +3,7 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Theme;
-
+use WP_Rocket\Event_Management\Subscriber_Interface;
 abstract class ThirdpartyTheme implements Subscriber_Interface {
 	/**
 	 * Name from the theme.
