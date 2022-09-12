@@ -266,6 +266,9 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.amcharts.com',
 			'umami',
 			'cdn.popt.in/pixel.js',
+			'm2d.m2.ai',
+			'pubguru.net',
+			'trustindex.io',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
