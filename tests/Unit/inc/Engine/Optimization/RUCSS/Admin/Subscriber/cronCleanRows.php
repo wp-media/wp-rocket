@@ -1,23 +1,21 @@
 <?php
-declare(strict_types=1);
-
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
-use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
-use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
+ * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::cron_clean_rows
  *
  * @group  RUCSS
  */
-class Test_DeleteTermUsedCss extends TestCase {
+class Test_CronCleanRows extends \WP_Rocket\Tests\Unit\TestCase {
+
 	private $settings;
 	private $database;
 	private $usedCSS;
@@ -35,37 +33,28 @@ class Test_DeleteTermUsedCss extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $config ) {
+	public function testShouldReturnAsExpected($config) {
 		$this->settings
-				->shouldReceive( 'is_enabled' )
-				->once()
-				->andReturn( $config['remove_unused_css'] );
-
-		Functions\when( 'get_term_link' )
-			->justReturn( $config['url'] );
-
+			->shouldReceive( 'is_enabled' )
+			->once()
+			->andReturn( $config['remove_unused_css'] );
 		$this->configureHook($config);
-		$this->configureDeletion($config);
-
-		$this->subscriber->delete_term_used_css( $config['term_id'] );
+		$this->configureDeleteTables($config);
+		$this->subscriber->cron_clean_rows();
 	}
 
 	protected function configureHook($config) {
-		if(! array_key_exists('is_disabled', $config)) {
+		if(! array_key_exists('has_delay', $config)) {
 			return;
 		}
-		Functions\expect('apply_filters')->with( 'rocket_rucss_deletion_activated' )->andReturn($config['is_disabled']);
+		Functions\expect('apply_filters')->with( 'rocket_rucss_css_delete_delay', 1 )->andReturn($config['delay']);
 	}
 
-	protected function configureDeletion($config) {
+	protected function configureDeleteTables($config) {
 		if(! array_key_exists('deletion_activated', $config)) {
 			return;
 		}
-		Functions\expect( 'is_wp_error' )
-			->andReturn( $config['wp_error'] );
-		$this->usedCSS->shouldReceive( 'delete_used_css' )
-			->atMost()
-			->once()
-			->with( rtrim( $config['url'], '/' ) );
+		$this->database->expects()->delete_old_used_css($config['delay']);
+		$this->database->expects()->delete_old_resources($config['delay']);
 	}
 }
