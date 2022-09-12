@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-29 14:33-0400\n"
+"POT-Creation-Date: 2022-09-12 09:06-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -265,6 +265,16 @@ msgstr ""
 #: inc/Engine/Admin/Database/Subscriber.php:235
 #, php-format
 msgid "%1$d %2$s optimized."
+msgstr ""
+
+#: inc/Engine/Admin/Notices.php:26
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
+#: inc/Engine/Preload/Admin/Settings.php:94
+#, php-format
+msgid ""
+"%1$s: We detected missing database table related to Action Scheduler. Please "
+"visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to "
+"work correctly."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:191
@@ -1508,7 +1518,7 @@ msgstr ""
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
 #, php-format
 msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited bandwith%2$s"
+"High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s"
 msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
@@ -1602,8 +1612,7 @@ msgstr ""
 msgid "WP_CACHE is set to false"
 msgstr ""
 
-#: inc/Engine/Common/Queue/PreloadQueueRunner.php:232
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:252
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
 msgstr ""
 
@@ -2022,6 +2031,28 @@ msgid ""
 "pay the price difference between your current and new licenses)."
 msgstr ""
 
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:93
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:106
+msgid "Could not get updated lists from server."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:114
+msgid "Lists are up to date."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:122
+msgid "Could not update lists."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:129
+msgid "Lists are successfully updated."
+msgstr ""
+
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
@@ -2051,15 +2082,6 @@ msgstr ""
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
-#, php-format
-msgid ""
-"%1$s: We detected missing database table related to Action Scheduler. Please "
-"visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to "
-"work correctly."
-msgstr ""
-
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of WP "
@@ -2072,21 +2094,21 @@ msgstr ""
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:285
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:704
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:144
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr ""
 
@@ -2121,11 +2143,11 @@ msgid ""
 "needed."
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:129
+#: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:157
+#: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
 msgstr ""
 
@@ -2143,6 +2165,13 @@ msgid ""
 "which will prevent your Kinsta installation and WP Rocket from working "
 "correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s "
 "account to resolve this issue."
+msgstr ""
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#, php-format
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
@@ -3185,6 +3214,15 @@ msgstr ""
 
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:14
+#: views/settings/dynamic-lists-update.php:15
+msgid "Update Inclusion and Exclusion Lists"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:20
+msgid "Update lists"
 msgstr ""
 
 #: views/settings/enable-google-fonts.php:13
