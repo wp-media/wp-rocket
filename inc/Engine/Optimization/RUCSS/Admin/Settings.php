@@ -539,10 +539,10 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'status'      => 'notice',
+				'status'         => 'notice',
 				'dismiss_button' => true,
-				'message'     => $message,
-				'id'          => 'rocket-notice-rucss-error-http',
+				'message'        => $message,
+				'id'             => 'rocket-notice-rucss-error-http',
 			]
 		);
 	}
