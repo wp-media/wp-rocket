@@ -300,11 +300,21 @@ class Cache extends Query {
 	 * @param int $total total of jobs to fetch.
 	 * @return array
 	 */
-	public function get_pending_jobs( int $total ) {
+	public function get_pending_jobs( int $total = 45 ) {
+		$inprogress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+			]
+		);
+
+		if ( $inprogress_count >= $total ) {
+			return [];
+		}
 
 		return $this->query(
 			[
-				'number'         => $total,
+				'number'         => ( $total - $inprogress_count ),
 				'status'         => 'pending',
 				'fields'         => [
 					'id',

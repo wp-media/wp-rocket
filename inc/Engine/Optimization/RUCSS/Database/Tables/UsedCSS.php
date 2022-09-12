@@ -91,8 +91,19 @@ class UsedCSS extends Table {
 			return false;
 		}
 
+		/**
+		 * Filters the old RUCSS deletion interval
+		 *
+		 * @param int $delete_interval Old RUCSS deletion interval in months
+		 */
+		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return false;
+		}
+
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;

@@ -25,6 +25,7 @@ use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
 use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
+use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider as RUCSSServiceProvider;
 use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider;
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
@@ -264,6 +265,7 @@ class Plugin {
 		$this->container->addServiceProvider( DelayJSServiceProvider::class );
 		$this->container->addServiceProvider( RUCSSServiceProvider::class );
 		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
+		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
 
 		$common_subscribers = [
@@ -326,7 +328,9 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'minimalist_blogger',
 			'convertplug',
+			'dynamic_lists_subscriber',
 			'jevelin',
 			'unlimited_elements',
 			'inline_related_posts',
