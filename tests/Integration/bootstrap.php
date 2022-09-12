@@ -150,6 +150,7 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
 			define( 'WORDFENCE_VERSION', '1' );
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
