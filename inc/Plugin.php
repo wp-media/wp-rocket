@@ -328,6 +328,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'minimalist_blogger',
 			'convertplug',
 			'dynamic_lists_subscriber',
 			'jevelin',
