@@ -254,7 +254,9 @@ class Cache extends Query {
 
 		$deleted = true;
 		foreach ( $items as $item ) {
-			$deleted = $deleted && $this->delete_item( $item->id );
+			if ( ! is_bool( $item ) ) {
+				$deleted = $deleted && $this->delete_item( $item->id );
+			}
 		}
 
 		return $deleted;
