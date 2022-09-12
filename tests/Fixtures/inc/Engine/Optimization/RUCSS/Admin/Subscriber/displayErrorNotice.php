@@ -8,13 +8,13 @@ WP Rocket</strong>
 : It seems a security plugin or the server's firewall prevents WP Rocket from accessing the Remove Unused CSS generator. The following IP address 135.125.83.227 should be allowlisted:
 <ul>
 <li>
-in the security plugin, if you are using one</li>
+In the security plugin, if you are using one</li>
 <li>
-the server's firewall - your host can help you with this</li>
+In the server's firewall - your host can help you with this</li>
 </ul>
 </p>
 <p>
-<a class="rocket-dismiss "
+<a class="rocket-dismiss
 Notice;
 
 
