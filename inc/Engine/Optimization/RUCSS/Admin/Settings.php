@@ -251,7 +251,7 @@ class Settings {
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We suggest enabling %1Preload%2$s for the fastest results.', 'rocket' ),
+				__( 'We suggest enabling %1sPreload%2$s for the fastest results.', 'rocket' ),
 				'<a href="#preload">',
 				'</a>'
 			);
