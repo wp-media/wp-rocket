@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-29 14:33-0400\n"
+"POT-Creation-Date: 2022-09-12 09:06-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2022\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -300,6 +300,19 @@ msgstr ""
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s iyi hale getirildi."
+
+#: inc/Engine/Admin/Notices.php:26
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
+#: inc/Engine/Preload/Admin/Settings.php:94
+#, php-format
+msgid ""
+"%1$s: We detected missing database table related to Action Scheduler. Please"
+" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
+"Rocket to work correctly."
+msgstr ""
+"%1$s: Eylem Zamanlayıcı ile ilgili eksik veritabanı tablosu tespit ettik. WP"
+" Rocket’in doğru olarak çalışması için gerekli olduğundan, bunu yeniden "
+"oluşturmak için lütfen aşağıdaki %2$sURL%3$s’yi ziyaret edin."
 
 #: inc/Engine/Admin/Settings/Page.php:191
 msgid "Save Changes"
@@ -1787,7 +1800,7 @@ msgstr "Şunlar sayesinde web sitenizi hızlandırın:"
 #, php-format
 msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
+"bandwidth%2$s"
 msgstr ""
 "%1$sSınırsız bant genişliği%2$s ile yüksek performanslı İçerik Dağıtım Ağı "
 "(CDN)"
@@ -1896,8 +1909,7 @@ msgstr "WP_CACHE ayarlı değil"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE, false olarak ayarlı"
 
-#: inc/Engine/Common/Queue/PreloadQueueRunner.php:232
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:252
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
 msgstr "Her dakika"
 
@@ -2383,6 +2395,30 @@ msgstr ""
 "kullanabilirsiniz (sadece şu anki ve yeni lisanslarınız arasındaki fiyat "
 "farkını ödeyeceksiniz)."
 
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:93
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+"Listelerin en son sürümünü sunucumuzdan almak için aktif bir lisansa "
+"ihtiyacınız var."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:106
+msgid "Could not get updated lists from server."
+msgstr "Sunucudan güncellenmiş listeler alınamadı."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:114
+msgid "Lists are up to date."
+msgstr "Listeler güncel."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:122
+msgid "Could not update lists."
+msgstr "Listeler güncellenemedi."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:129
+msgid "Lists are successfully updated."
+msgstr "Listeler başarılı olarak güncellendi."
+
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
@@ -2419,18 +2455,6 @@ msgstr ""
 "İşlem hakkında daha fazla bilgi edinmek için %1$sbelgelerimizi%2$s gözden "
 "geçirin."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
-#, php-format
-msgid ""
-"%1$s: We detected missing database table related to Action Scheduler. Please"
-" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
-"Rocket to work correctly."
-msgstr ""
-"%1$s: Eylem Zamanlayıcı ile ilgili eksik veritabanı tablosu tespit ettik. WP"
-" Rocket’in doğru olarak çalışması için gerekli olduğundan, bunu yeniden "
-"oluşturmak için lütfen aşağıdaki %2$sURL%3$s’yi ziyaret edin."
-
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
@@ -2447,21 +2471,21 @@ msgstr ""
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:285
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: Kullanılan CSS seçeneği etkinleştirilmedi!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Kullanılan CSS önbelleği temizlendi!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:704
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr "Bu URL’nin Kullanılan CSS’sini Temizle"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:144
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "WP Rocket Kullanılmayan CSS’yi Kaldır bekleyen işleri"
 
@@ -2503,11 +2527,11 @@ msgstr ""
 "sayfalarınızı her temizlendiklerinde önbelleğe almaya devam edecek. Başka "
 "bir işlem yapılmasına gerek yoktur."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:129
+#: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
 msgstr "WP Rocket Önyükleme bekleyen işleri"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:157
+#: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
 msgstr "WP Rocket Önyükleme, takılı kalmış devam eden işleri geri alır"
 
@@ -2532,6 +2556,16 @@ msgstr ""
 "çalışmasını önleyecek, Önbellek temizlemeyi yöneten çekirdek Kinsta "
 "dosyalarının eksik olduğu görülüyor. Lütfen bu sorunu çözmek için  "
 "%1$sMyKinsta%2$s hesabınız aracılığıyla Kinsta desteği ile temasa geçin."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#, php-format
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
+msgstr ""
+"%1$s: Cloudflare’in HTTP/2 Sunucu Yollaması, Kullanılmayan CSS’yi Kaldır ve "
+"CSS Dosyalarını Birleştir’in özellikleriyle uyumlu değil. "
+"Etkisizleştirmenizi şiddetle öneririz."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -3752,6 +3786,15 @@ msgstr "İptal"
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "Onayla"
+
+#: views/settings/dynamic-lists-update.php:14
+#: views/settings/dynamic-lists-update.php:15
+msgid "Update Inclusion and Exclusion Lists"
+msgstr "Dahil Etme ve Hariç Tutma Listelerini Güncelle"
+
+#: views/settings/dynamic-lists-update.php:20
+msgid "Update lists"
+msgstr "Listeleri güncelle"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
