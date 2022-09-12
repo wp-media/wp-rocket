@@ -24,7 +24,7 @@ class HTML_Formatter extends HtmlFormatter {
 	 * @param  array $record A record to format.
 	 * @return mixed         The formatted record.
 	 */
-	public function format( array $record ) {
+	public function format( array $record ): string {
 		$output  = $this->addTitle( $record['level_name'], $record['level'] );
 		$output .= '<table cellspacing="1" width="100%" class="monolog-output">';
 

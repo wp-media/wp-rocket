@@ -3,17 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 class Database {
-	/**
-	 * Instance of RUCSS resources table.
-	 *
-	 * @var Resources
-	 */
-	private $rucss_resources_table;
-
 	/**
 	 * Instance of RUCSS used_css table.
 	 *
@@ -24,12 +16,10 @@ class Database {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Resources $rucss_resources_table RUCSS Resources Database Table.
-	 * @param UsedCSS   $rucss_usedcss_table   RUCSS UsedCSS Database Table.
+	 * @param UsedCSS $rucss_usedcss_table   RUCSS UsedCSS Database Table.
 	 */
-	public function __construct( Resources $rucss_resources_table, UsedCSS $rucss_usedcss_table ) {
-		$this->rucss_resources_table = $rucss_resources_table;
-		$this->rucss_usedcss_table   = $rucss_usedcss_table;
+	public function __construct( UsedCSS $rucss_usedcss_table ) {
+		$this->rucss_usedcss_table = $rucss_usedcss_table;
 	}
 
 	/**
@@ -39,9 +29,6 @@ class Database {
 	 */
 	public function drop_rucss_database_tables() {
 		// If the table exist, then drop the table.
-		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->uninstall();
-		}
 		if ( $this->rucss_usedcss_table->exists() ) {
 			$this->rucss_usedcss_table->uninstall();
 		}
@@ -65,20 +52,11 @@ class Database {
 	 * @return void
 	 */
 	public function delete_old_used_css() {
-		if ( $this->rucss_usedcss_table->exists() ) {
-			$this->rucss_usedcss_table->delete_old_used_css();
+		if ( ! $this->rucss_usedcss_table->exists() ) {
+			return;
 		}
-	}
 
-	/**
-	 * Delete old used css based on last accessed date.
-	 *
-	 * @return void
-	 */
-	public function delete_old_resources() {
-		if ( $this->rucss_resources_table->exists() ) {
-			$this->rucss_resources_table->delete_old_items();
-		}
+		$this->rucss_usedcss_table->delete_old_used_css();
 	}
 
 	/**
@@ -104,5 +82,24 @@ class Database {
 		}
 
 		return $this->rucss_usedcss_table->remove_all_completed_rows();
+	}
+
+	/**
+	 * Remove the resources table & version stored in options table
+	 *
+	 * @since 3.12
+	 *
+	 * @return bool
+	 */
+	public function drop_resources_table(): bool {
+		global $wpdb;
+
+		$result = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wpr_rucss_resources" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
+
+		if ( false === $result ) {
+			return false;
+		}
+
+		return delete_option( 'wpr_rucss_resources_version' );
 	}
 }
