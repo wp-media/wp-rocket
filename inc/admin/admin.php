@@ -356,12 +356,6 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
-	if ( ! empty( $data['sitemaps'] ) && is_array( $data['sitemaps'] ) ) {
-		$data['sitemaps'] = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
-	} else {
-		$data['sitemaps'] = [];
-	}
-
 	return $data;
 }
 
@@ -501,7 +495,7 @@ function rocket_handle_settings_import() {
 		) {
 			$settings['async_css'] = 0;
 		}
-		if ( $settings['cache_webp'] && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+		if ( ! empty( $settings['cache_webp'] ) && apply_filters( 'rocket_disable_webp_cache', false ) ) {
 			$settings['cache_webp'] = 0;
 		}
 

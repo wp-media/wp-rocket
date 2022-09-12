@@ -11,10 +11,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '7.2'
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -33,6 +34,10 @@ jobs:
           unzip base.zip
           mv wp-rocket-* wp-rocket
         working-directory: /tmp
+
+      - name: Remove unmet dependencies by legacy versions
+        run: composer remove --dev --update-no-dev --no-scripts coenjacobs/mozart
+        working-directory: /tmp/wp-rocket
 
       - name: Run composer
         run: composer install --no-scripts --no-dev

@@ -102,8 +102,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_clean_rows() {
+		if ( ! $this->is_deletion_enabled() ) {
+			return;
+		}
+
 		$this->database->delete_old_used_css();
-		$this->database->delete_old_resources();
 	}
 
 	/**
@@ -175,5 +178,19 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'rocket_rucss_pending_jobs', 'rocket_rucss_pending_jobs' );
+	}
+
+	/**
+	 * Checks if the RUCSS deletion is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_deletion_enabled(): bool {
+		/**
+		 * Filters the enable RUCSS deletion value
+		 *
+		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 }
