@@ -52,6 +52,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			],
 			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
+			'rocket_after_save_dynamic_lists'     => 'purge_cache',
 		];
 	}
 
@@ -153,5 +154,14 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 		Logger::debug( 'RUCSS: Purge the cache for url: ' . $url );
 
 		$this->purge->purge_url( $url );
+	}
+
+	/**
+	 * Clean the whole cache
+	 *
+	 * @return void
+	 */
+	public function purge_cache() {
+		rocket_clean_domain();
 	}
 }

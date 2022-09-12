@@ -86,6 +86,7 @@ class Deactivation {
 		// Delete transients.
 		delete_transient( 'rocket_check_licence_30' );
 		delete_transient( 'rocket_check_licence_1' );
+		delete_transient( 'rocket_rucss_as_tables_count' );
 		delete_site_transient( 'update_wprocket_response' );
 		delete_site_transient( 'wp_rocket_update_data' );
 

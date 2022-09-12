@@ -166,6 +166,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function update_cache_row() {
 		global $wp;
+
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		if ( $this->query->is_preloaded( $url ) ) {
@@ -180,7 +185,7 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -300,7 +305,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = get_permalink( $post_id );
 
-		if ( false === $url ) {
+		if ( empty( $url ) ) {
 			return;
 		}
 
@@ -320,7 +325,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = get_term_link( (int) $term_id );
 
-		if ( false === $url ) {
+		if ( empty( $url ) ) {
 			return;
 		}
 
