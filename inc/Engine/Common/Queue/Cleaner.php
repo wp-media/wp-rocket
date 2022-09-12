@@ -63,7 +63,6 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 			\ActionScheduler_Store::STATUS_COMPLETE,
 			\ActionScheduler_Store::STATUS_CANCELED,
 		];
-
 		foreach ( $statuses_to_purge as $status ) {
 			$actions_to_delete = $this->store->query_actions(
 				[
