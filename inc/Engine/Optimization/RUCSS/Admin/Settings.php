@@ -251,7 +251,7 @@ class Settings {
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We suggest enabling %1sPreload%2$s for the fastest results.', 'rocket' ),
+				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
 				'<a href="#preload">',
 				'</a>'
 			);
@@ -539,10 +539,12 @@ class Settings {
 
 		rocket_notice_html(
 			[
-				'status'         => 'error',
-				'dismiss_button' => true,
-				'message'        => $message,
-				'id'             => 'rocket-notice-rucss-error-http',
+				'status'               => 'error',
+				'message'              => $message,
+				'dismissible'          => '',
+				'id'                   => 'rocket-notice-rucss-error-http',
+				'dismiss_button'       => 'rucss_error_notice',
+				'dismiss_button_class' => 'button-primary',
 			]
 		);
 	}

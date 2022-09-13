@@ -1,7 +1,7 @@
 <?php
 
 $content = <<<Notice
-<div class="notice notice-error is-dismissible" id="rocket-notice-rucss-error-http">
+<div class="notice notice-error " id="rocket-notice-rucss-error-http">
 <p>
 <strong>
 WP Rocket</strong>
@@ -14,7 +14,7 @@ In the server's firewall - your host can help you with this</li>
 </ul>
 </p>
 <p>
-<a class="rocket-dismiss
+<a class="rocket-dismiss button-primary"
 Notice;
 
 
