@@ -189,12 +189,12 @@ class Subscriber implements Subscriber_Interface {
 	public function on_deactivation() {
 		wp_clear_scheduled_hook( 'action_scheduler_run_queue_rucss', [ 'WP Cron' ] );
 	}
+
 	/**
 	 * Checks if the RUCSS deletion is enabled.
 	 *
 	 * @return bool
 	 */
-
 	protected function is_deletion_enabled(): bool {
 		/**
 		 * Filters the enable RUCSS deletion value
