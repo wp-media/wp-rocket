@@ -341,6 +341,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'cache_config',
 		];
 
 		$host_type = HostResolver::get_host_service();

@@ -29,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'admin_cache_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
+		'cache_config',
 	];
 
 	/**
@@ -60,6 +61,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->add( 'cache_config', Config\Subscriber::class )
 			->addTag( 'common_subscriber' );
 	}
 }
