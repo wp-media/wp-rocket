@@ -377,6 +377,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'exclude_css'                => [
+				'en' => [
+					'id'  => '',
+					'url' => 'https://docs.wp-rocket.me/article/1131-resolving-issues-with-css-minify-combine?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'defer_js'                   => [
 				'en' => [
 					'id'  => '5d52138d2c7d3a68825e8faa',
