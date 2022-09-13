@@ -100,7 +100,25 @@ class Renewal extends Abstract_Render {
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
 		$renewal_url   = $this->user->get_renewal_url();
-		$renewal_price = number_format_i18n( $this->get_discount_price(), 2 );
+
+		$message = sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
+			esc_html__( 'Renew your license for 1 year now at %1$s%3$s%2$s.', 'rocket' ),
+			'<strong>',
+			'</strong>',
+			esc_html( number_format_i18n( $this->get_discount_price() ) )
+		);
+
+		if ( $this->is_grandfather() ) {
+			$message = sprintf(
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
+				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you’ll only pay %1$s%4$s%2$s!', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				esc_html( $this->get_discount_percent() . '%' ),
+				esc_html( number_format_i18n( $this->get_discount_price() ) )
+			);
+		}
 
 		if (
 			$this->user->is_auto_renew()
@@ -117,7 +135,7 @@ class Renewal extends Abstract_Render {
 					'renewal-expired-banner-ocd',
 					[
 						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'message'       => $message,
 						'disabled_date' => date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS ),
 					]
 				);
@@ -127,8 +145,8 @@ class Renewal extends Abstract_Render {
 				echo $this->generate(
 					'renewal-expired-banner-ocd-disabled',
 					[
-						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'renewal_url' => $renewal_url,
+						'message'     => $message,
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -137,8 +155,8 @@ class Renewal extends Abstract_Render {
 				echo $this->generate(
 					'renewal-expired-banner',
 					[
-						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'renewal_url' => $renewal_url,
+						'message'     => $message,
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -148,8 +166,8 @@ class Renewal extends Abstract_Render {
 			echo $this->generate(
 				'renewal-expired-banner',
 				[
-					'renewal_url'   => $renewal_url,
-					'renewal_price' => $renewal_price,
+					'renewal_url' => $renewal_url,
+					'message'     => $message,
 				]
 			);
 			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -164,10 +182,28 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
+		$message = sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
+			esc_html__( 'Renew before it is too late, you will pay %1$s%3$s%2$s.', 'rocket' ),
+			'<strong>',
+			'</strong>',
+			esc_html( '$' . number_format_i18n( $this->get_discount_price(), 2 ) )
+		);
+
+		if ( $this->is_grandfather() ) {
+			$message = sprintf(
+				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
+				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
+				'<strong>',
+				esc_html( $this->get_discount_percent() . '%' ),
+				'</strong>',
+				esc_html( '$' . number_format_i18n( $this->get_discount_price(), 2 ) )
+			);
+		}
+
 		return [
-			'discount_percent' => $this->get_discount_percent(),
-			'discount_price'   => number_format_i18n( $this->get_discount_price(), 2 ),
-			'renewal_url'      => $this->user->get_renewal_url(),
+			'message'     => $message,
+			'renewal_url' => $this->user->get_renewal_url(),
 		];
 	}
 
@@ -258,6 +294,17 @@ class Renewal extends Abstract_Render {
 		}
 
 		return isset( $renewals['discount_percent']->not_grandfather ) ? $renewals['discount_percent']->not_grandfather : 0;
+	}
+
+	/**
+	 * Is user grandfathered
+	 *
+	 * @return bool
+	 */
+	private function is_grandfather(): bool {
+		$renewals = $this->get_user_renewal_status();
+
+		return $renewals['is_grandfather'];
 	}
 
 	/**
