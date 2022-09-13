@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\admin;
+namespace WP_Rocket\Tests\Integration\Inc\admin;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\DBTrait;
