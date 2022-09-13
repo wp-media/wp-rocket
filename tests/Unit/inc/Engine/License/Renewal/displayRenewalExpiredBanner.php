@@ -36,6 +36,9 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				'views',
 			]
 		);
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 	}
 
 	/**
