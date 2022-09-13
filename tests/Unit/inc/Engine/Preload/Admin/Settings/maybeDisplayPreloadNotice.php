@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Admin\Settings;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Admin\Settings;
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
@@ -19,7 +20,7 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
-		$this->settings = new Settings($this->options);
+		$this->settings = new Settings($this->options, Mockery::mock(PreloadUrl::class));
 		$this->stubTranslationFunctions();
 	}
 
