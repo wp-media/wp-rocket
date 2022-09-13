@@ -543,14 +543,15 @@ class Settings {
 			return;
 		}
 
-		// translators: %2$s = table name.
-		$main_message = __( 'Could not create the %2$s in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to our support.', 'rocket' );
+		// translators: %2$s = table name, %3$s = support url.
+		$main_message = __( 'Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="%3$s">our support</a>.', 'rocket' );
 
 		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = table name.
+		// translators: %1$s = plugin name, %2$s = table name, %3$s = support url.
 			"%1\$s: $main_message",
 			'<strong>WP Rocket</strong>',
-			$this->used_css->get_name()
+			$this->used_css->get_name(),
+			$this->get_support_url()
 		);
 
 		rocket_notice_html(
@@ -559,6 +560,21 @@ class Settings {
 				'dismissible' => '',
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-missing-table',
+			]
+		);
+	}
+
+	/**
+	 * Get support URL.
+	 *
+	 * @return string
+	 */
+	protected function get_support_url() {
+		return rocket_get_external_url(
+			'support',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
 			]
 		);
 	}

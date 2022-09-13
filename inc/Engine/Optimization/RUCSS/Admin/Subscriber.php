@@ -702,8 +702,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_no_table_notice() {
 		$this->settings->display_no_table_notice();
-   }
+	}
 
+	/**
 	 * Checks if the RUCSS deletion is enabled.
 	 *
 	 * @return bool
