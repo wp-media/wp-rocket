@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 				);
 				?>
 			</p>
-			<p><?php echo $data['message']; ?></p>
+			<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		</div>
 		<div class="rocket-expired-cta-container">
 			<a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>
