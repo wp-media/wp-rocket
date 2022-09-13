@@ -43,6 +43,14 @@ class UsedCSS extends Table {
 	];
 
 	/**
+	 * Instantiate class.
+	 */
+	public function __construct() {
+		parent::__construct();
+		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
+	}
+
+	/**
 	 * Setup the database schema
 	 *
 	 * @return void
@@ -201,4 +209,25 @@ class UsedCSS extends Table {
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 
+	/**
+	 * Returns name from table.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->apply_prefix( $this->table_name );
+	}
+
+	/**
+	 * Trigger recreation of cache table if not exist.
+	 *
+	 * @return void
+	 */
+	public function maybe_trigger_recreate_table() {
+		if ( $this->exists() ) {
+			return;
+		}
+
+		delete_option( $this->db_version_key );
+	}
 }
