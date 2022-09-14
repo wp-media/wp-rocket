@@ -510,6 +510,12 @@ class Cache extends Query {
 		$db->query( "DELETE FROM `$prefixed_table_name` WHERE 1 = 1" );
 	}
 
+	/**
+	 * Check if the url is rejected.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
 	protected function is_rejected( string $url ) {
 		$extensions = [
 			'php' => 1,
