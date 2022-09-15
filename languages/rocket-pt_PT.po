@@ -2585,8 +2585,8 @@ msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
-"%1$s: Cloudflare's HTTP/2 Server Push é incompatível com as funcionalidades "
-"de Remover CSS não utilizado e de Combinar ficheiros de CSS. Recomendamos "
+"%1$s: HTTP/2 Server Push do Cloudflare é incompatível com as funcionalidades"
+" de Remover CSS não utilizado e de Combinar ficheiros de CSS. Recomendamos "
 "vivamente a sua desactivação."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
