@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-field-description">
 			<?php
 			printf(
+				// translators: %1$s = opening link tag, %2$s = closing link tag.
 				esc_html__( 'Compatibility lists are downloaded automatically every week. Click the button if you want to update them manually. %1$sMore info%2$s', 'rocket' ),
 				'<a href="' . esc_url( $data['beacon']['url'] ) . '" data-beacon-article="' . esc_attr( $data['beacon']['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'

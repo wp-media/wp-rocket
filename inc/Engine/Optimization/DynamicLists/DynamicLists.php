@@ -45,6 +45,7 @@ class DynamicLists extends Abstract_Render {
 	 * @param DataManager $data_manager DataManager instance.
 	 * @param User        $user User instance.
 	 * @param string      $template_path Path to views.
+	 * @param Beacon      $beacon        Beacon instance.
 	 */
 	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path, Beacon $beacon ) {
 		parent::__construct( $template_path );
