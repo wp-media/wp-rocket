@@ -24,7 +24,7 @@ trait CheckExcludedTrait {
 	protected function is_excluded_by_filter( string $url ) {
 		$regexes = apply_filters( 'rocket_preload_exclude_urls', [] );
 
-		if(! $regexes ) {
+		if ( ! $regexes ) {
 			return false;
 		}
 
