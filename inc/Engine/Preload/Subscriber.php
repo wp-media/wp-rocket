@@ -113,6 +113,7 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
+			'rocket_preload_exclude_urls'         => 'add_preload_excluded_uri',
 		];
 	}
 
@@ -377,5 +378,20 @@ class Subscriber implements Subscriber_Interface {
 				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
+	}
+
+	/**
+	 * Add the excluded uri from the preload to the filter.
+	 *
+	 * @param array $regexes regexes containing excluded uris.
+	 * @return array|false
+	 */
+	public function add_preload_excluded_uri(array $regexes) {
+		$preload_excluded_uri = $this->options->get('preload_excluded_uri', false);
+		if( ! $preload_excluded_uri ) {
+			return false;
+		}
+
+		return array_merge($regexes, $preload_excluded_uri);
 	}
 }
