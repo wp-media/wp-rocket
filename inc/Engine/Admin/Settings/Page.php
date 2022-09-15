@@ -1161,7 +1161,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'sitemaps'      => [
+				'sitemaps' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
 					'container_class'   => [
@@ -1175,12 +1175,12 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-		]
+			]
 		);
 
 		$this->settings->add_settings_fields(
 			[
-				'manual_preload' => [
+				'manual_preload'       => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate Preloading', 'rocket' ),
 					'section'           => 'preload_section',
@@ -1188,7 +1188,7 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'preload_excluded_uri'      => [
+				'preload_excluded_uri' => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
 					'container_class'   => [
@@ -1202,7 +1202,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'dns_prefetch'   => [
+				'dns_prefetch'         => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
@@ -1212,7 +1212,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_fonts'  => [
+				'preload_fonts'        => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
@@ -1223,7 +1223,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_links'  => [
+				'preload_links'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable link preloading', 'rocket' ),
 					'section'           => 'preload_links_section',
