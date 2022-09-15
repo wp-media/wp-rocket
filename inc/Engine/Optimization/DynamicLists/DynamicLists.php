@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\User;
 
 class DynamicLists extends Abstract_Render {
@@ -28,6 +29,13 @@ class DynamicLists extends Abstract_Render {
 	 */
 	private $user;
 
+	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -38,12 +46,13 @@ class DynamicLists extends Abstract_Render {
 	 * @param User        $user User instance.
 	 * @param string      $template_path Path to views.
 	 */
-	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path ) {
+	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path, Beacon $beacon ) {
 		parent::__construct( $template_path );
 
 		$this->api          = $api;
 		$this->data_manager = $data_manager;
 		$this->user         = $user;
+		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -158,6 +167,10 @@ class DynamicLists extends Abstract_Render {
 			return;
 		}
 
-		echo $this->generate( 'settings/dynamic-lists-update' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$data = [
+			'beacon' => $this->beacon->get_suggest( 'dynamic_lists' ),
+		];
+
+		echo $this->generate( 'settings/dynamic-lists-update', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
