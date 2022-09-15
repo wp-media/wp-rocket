@@ -388,9 +388,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_preload_excluded_uri( array $regexes ) {
 		$preload_excluded_uri = $this->options->get( 'preload_excluded_uri', false );
+
 		if ( ! $preload_excluded_uri ) {
 			return false;
 		}
+
+		$preload_excluded_uri = explode("\n", $preload_excluded_uri);
 
 		return array_merge( $regexes, $preload_excluded_uri );
 	}
