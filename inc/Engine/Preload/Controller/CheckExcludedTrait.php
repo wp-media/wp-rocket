@@ -22,7 +22,7 @@ trait CheckExcludedTrait {
 	 * @return bool
 	 */
 	protected function is_excluded_by_filter( string $url ) {
-		$regexes = apply_filters( 'rocket_preload_exclude_urls', [], $url );
+		$regexes = apply_filters( 'rocket_preload_exclude_urls', [] );
 		foreach ($regexes as $regex) {
 			if(preg_match('/' . $regex . '/', $url)) {
 				return true;
