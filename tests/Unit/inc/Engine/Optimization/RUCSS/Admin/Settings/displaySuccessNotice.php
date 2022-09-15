@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
@@ -20,13 +21,14 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 	private $options;
 	private $beacon;
 	private $settings;
-
+	private $used_css;
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->beacon =  Mockery::mock( Beacon::class );
-		$this->settings = new Settings( $this->options, $this->beacon );
+		$this->used_css = $this->createMock(UsedCSS::class);
+		$this->settings = new Settings( $this->options, $this->beacon, $this->used_css );
 
 		$this->stubTranslationFunctions();
 		$this->stubEscapeFunctions();
@@ -41,9 +43,33 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
 
+		$this->used_css->expects(self::atMost(1))->method('exists')->willReturn($config['exists']);
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'remove_unused_css', 0 )
 			->andReturn( $config['remove_unused_css'] );
+
+		$this->configureDisplayNotice($config);
+
+		if ( $expected ) {
+			Functions\expect( 'rocket_notice_html' )
+				->with(
+					$expected
+				);
+		} else {
+			Functions\expect( 'rocket_notice_html' )->never();
+		}
+
+		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
+
+		$this->settings->display_success_notice();
+	}
+
+	public function configureDisplayNotice($config) {
+
+		if( ! $config['exists'] ) {
+			return;
+		}
 
 		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
 
@@ -58,18 +84,5 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 					'url' => 'http://example.org',
 				]
 			);
-
-		if ( $expected ) {
-			Functions\expect( 'rocket_notice_html' )
-				->with(
-					$expected
-				);
-		} else {
-			Functions\expect( 'rocket_notice_html' )->never();
-		}
-
-		$this->assertTrue( $this->filesystem->is_writable( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) ) );
-
-		$this->settings->display_success_notice();
 	}
 }
