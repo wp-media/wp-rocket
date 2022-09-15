@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-09-12 09:06-0400\n"
+"POT-Creation-Date: 2022-09-15 15:41-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -268,8 +268,7 @@ msgid "%1$d %2$s optimized."
 msgstr ""
 
 #: inc/Engine/Admin/Notices.php:26
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:310
 #, php-format
 msgid ""
 "%1$s: We detected missing database table related to Action Scheduler. Please "
@@ -2031,75 +2030,83 @@ msgid ""
 "pay the price difference between your current and new licenses)."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:93
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:103
 msgid ""
 "You need an active license to get the latest version of the lists from our "
 "server."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:106
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
 msgid "Could not get updated lists from server."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:114
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
 msgid "Lists are up to date."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:122
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:132
 msgid "Could not update lists."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:129
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
 msgid "Lists are successfully updated."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:204
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:219
 #, php-format
 msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your "
 "pages."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:245
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
 msgid ""
 "%1$s: The Used CSS of your homepage has been processed. WP Rocket will continue "
 "to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:273
 #, php-format
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:507
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of WP "
 "Rocket. You need an active license to use the Remove Unused CSS feature and "
 "further improve your website's performance."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:491
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:510
 #, php-format
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:285
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:547
+#, php-format
+msgid ""
+"Could not create the %2$s table in the database which is necessary for the "
+"Remove Unused CSS feature to work. Please reach out to <a href=\"%3$s\">our "
+"support</a>."
+msgstr ""
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
@@ -3217,11 +3224,17 @@ msgid "Confirm"
 msgstr ""
 
 #: views/settings/dynamic-lists-update.php:14
-#: views/settings/dynamic-lists-update.php:15
 msgid "Update Inclusion and Exclusion Lists"
 msgstr ""
 
-#: views/settings/dynamic-lists-update.php:20
+#: views/settings/dynamic-lists-update.php:19
+#, php-format
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the button if "
+"you want to update them manually. %1$sMore info%2$s"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
 msgstr ""
 
