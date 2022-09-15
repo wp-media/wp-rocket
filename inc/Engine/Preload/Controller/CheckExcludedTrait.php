@@ -21,7 +21,7 @@ trait CheckExcludedTrait {
 	 * @param string $url url to check.
 	 * @return bool
 	 */
-	protected function is_excluded_by_filter( string $url ) {
+	protected function is_excluded_by_filter( string $url ): bool {
 		$regexes = apply_filters( 'rocket_preload_exclude_urls', [] );
 
 		if ( ! $regexes ) {
