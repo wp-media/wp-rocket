@@ -38,6 +38,7 @@ use WP_Rocket\ThirdParty\Themes\Flatsome;
 use WP_Rocket\ThirdParty\Themes\Polygon;
 use WP_Rocket\ThirdParty\Themes\Jevelin;
 use WP_Rocket\ThirdParty\Themes\Xstore;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -84,6 +85,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ezoic',
 		'pwa',
 		'flatsome',
+		'minimalist_blogger',
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
@@ -95,6 +97,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'jevelin',
 		'wpml',
 		'xstore',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -234,8 +237,18 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'wpml', WPML::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
+			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
 			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )

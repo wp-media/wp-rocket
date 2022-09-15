@@ -355,7 +355,7 @@ class Image {
 	 */
 	public function isExcluded( $string, $excluded_values ) {
 		if ( ! is_array( $excluded_values ) ) {
-			(array) $excluded_values;
+			$excluded_values = (array) $excluded_values;
 		}
 
 		if ( empty( $excluded_values ) ) {
@@ -445,12 +445,19 @@ class Image {
 	 * @return string
 	 */
 	private function replaceImage( $image, $use_native = true ) {
+		if ( empty( $image ) ) {
+			return '';
+		}
+
+		$native_pattern = '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i';
+		$image_lazyload = $image[0];
+
 		if ( $use_native ) {
-			if ( preg_match( '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i', $image[0] ) ) {
+			if ( preg_match( $native_pattern, $image[0] ) ) {
 				return $image[0];
 			}
 
-			$image_lazyload = str_replace( '<img', '<img loading="lazy"', $image[0] );
+			$image_lazyload = str_replace( '<img', '<img loading="lazy"', $image_lazyload );
 		} else {
 			$width  = 0;
 			$height = 0;
@@ -465,7 +472,11 @@ class Image {
 
 			$placeholder_atts = preg_replace( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', ' src="' . $this->getPlaceholder( $width, $height ) . '"', $image['atts'] );
 
-			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image[0] );
+			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image_lazyload );
+
+			if ( preg_match( $native_pattern, $image_lazyload ) ) {
+				$image_lazyload = preg_replace( $native_pattern, '', $image_lazyload );
+			}
 		}
 
 		/**

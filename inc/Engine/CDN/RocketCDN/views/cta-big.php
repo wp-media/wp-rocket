@@ -39,7 +39,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">
 					<?php
 					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					printf( esc_html__( 'High performance Content Delivery Network (CDN) with %1$sunlimited bandwith%2$s', 'rocket' ), '<strong>', '</strong>' );
+					printf( esc_html__( 'High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s', 'rocket' ), '<strong>', '</strong>' );
 					?>
 				</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">

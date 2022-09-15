@@ -254,7 +254,9 @@ class Cache extends Query {
 
 		$deleted = true;
 		foreach ( $items as $item ) {
-			$deleted = $deleted && $this->delete_item( $item->id );
+			if ( ! is_bool( $item ) ) {
+				$deleted = $deleted && $this->delete_item( $item->id );
+			}
 		}
 
 		return $deleted;
@@ -290,7 +292,9 @@ class Cache extends Query {
 		$rows = $this->get_old_cache();
 
 		foreach ( $rows as $row ) {
-			$this->delete_item( $row->id );
+			if ( ! is_bool( $row ) ) {
+				$this->delete_item( $row->id );
+			}
 		}
 	}
 
@@ -300,11 +304,21 @@ class Cache extends Query {
 	 * @param int $total total of jobs to fetch.
 	 * @return array
 	 */
-	public function get_pending_jobs( int $total ) {
+	public function get_pending_jobs( int $total = 45 ) {
+		$inprogress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+			]
+		);
+
+		if ( $inprogress_count >= $total ) {
+			return [];
+		}
 
 		return $this->query(
 			[
-				'number'         => $total,
+				'number'         => ( $total - $inprogress_count ),
 				'status'         => 'pending',
 				'fields'         => [
 					'id',

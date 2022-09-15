@@ -43,6 +43,14 @@ class UsedCSS extends Table {
 	];
 
 	/**
+	 * Instantiate class.
+	 */
+	public function __construct() {
+		parent::__construct();
+		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
+	}
+
+	/**
 	 * Setup the database schema
 	 *
 	 * @return void
@@ -83,8 +91,19 @@ class UsedCSS extends Table {
 			return false;
 		}
 
+		/**
+		 * Filters the old RUCSS deletion interval
+		 *
+		 * @param int $delete_interval Old RUCSS deletion interval in months
+		 */
+		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return false;
+		}
+
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;
@@ -190,4 +209,25 @@ class UsedCSS extends Table {
 		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
 	}
 
+	/**
+	 * Returns name from table.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->apply_prefix( $this->table_name );
+	}
+
+	/**
+	 * Trigger recreation of cache table if not exist.
+	 *
+	 * @return void
+	 */
+	public function maybe_trigger_recreate_table() {
+		if ( $this->exists() ) {
+			return;
+		}
+
+		delete_option( $this->db_version_key );
+	}
 }
