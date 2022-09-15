@@ -21,7 +21,12 @@ trait CheckExcludedTrait {
 	 * @param string $url url to check.
 	 * @return bool
 	 */
-	protected function is_excluded_by_filter( string $url ): bool {
+	protected function is_excluded_by_filter( string $url ) {
+		/**
+		 * Regex to exclude URI from preload.
+		 *
+		 * @param string[] regexes to check
+		 */
 		$regexes = apply_filters( 'rocket_preload_exclude_urls', [] );
 
 		if ( empty( $regexes ) ) {

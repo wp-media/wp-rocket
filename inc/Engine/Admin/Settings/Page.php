@@ -1161,25 +1161,6 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'sitemaps' => [
-					'type'              => 'textarea',
-					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
-					'placeholder'       => 'http://example.com/sitemap.xml',
-					'parent'            => 'sitemap_preload',
-					'section'           => 'preload_section',
-					'page'              => 'preload',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
 				'manual_preload'       => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate Preloading', 'rocket' ),
@@ -1190,7 +1171,7 @@ class Page {
 				],
 				'preload_excluded_uri' => [
 					'type'              => 'textarea',
-					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
+					'label'             => __( 'Exclude URI', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
