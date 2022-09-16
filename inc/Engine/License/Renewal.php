@@ -106,7 +106,7 @@ class Renewal extends Abstract_Render {
 			esc_html__( 'Renew your license for 1 year now at %1$s%3$s%2$s.', 'rocket' ),
 			'<strong>',
 			'</strong>',
-			esc_html( number_format_i18n( $this->get_discount_price() ) )
+			esc_html( number_format_i18n( $this->get_discount_price(), 2 ) )
 		);
 
 		if ( $this->is_grandfather() ) {
@@ -116,7 +116,7 @@ class Renewal extends Abstract_Render {
 				'<strong>',
 				'</strong>',
 				esc_html( $this->get_discount_percent() . '%' ),
-				esc_html( number_format_i18n( $this->get_discount_price() ) )
+				esc_html( number_format_i18n( $this->get_discount_price(), 2 ) )
 			);
 		}
 
