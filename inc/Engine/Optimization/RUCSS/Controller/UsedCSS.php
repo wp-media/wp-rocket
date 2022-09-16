@@ -87,7 +87,7 @@ class UsedCSS {
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
-	 * @param Filesystem     $filesystem      Filesystem instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
