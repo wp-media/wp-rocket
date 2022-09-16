@@ -393,8 +393,6 @@ class Subscriber implements Subscriber_Interface {
 			return $regexes;
 		}
 
-		$preload_excluded_uri = explode( "\n", $preload_excluded_uri );
-
 		return array_merge( $regexes, $preload_excluded_uri );
 	}
 }
