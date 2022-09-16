@@ -30,8 +30,8 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 	 */
 	public function maybe_recreate_as_tables() {
 		if ( $this->is_valid_as_tables() ) {
-			   return;
-			}
+			return;
+		}
 
 		$store_schema  = new ActionScheduler_StoreSchema();
 		$logger_schema = new ActionScheduler_LoggerSchema();
@@ -42,8 +42,8 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 	/**
 	 * Maybe recreate tables on prelod or RUCSS activation
 	 *
-	 * @param mixed $old_value
-	 * @param mixed $value
+	 * @param mixed $old_value The old option value.
+	 * @param mixed $value The new option value.
 	 *
 	 * @return void
 	 */
