@@ -66,30 +66,6 @@ class UsedCSS {
 	private $external_exclusions = [];
 
 	/**
-	 * DataManager instance
-	 *
-	 * @var DataManager
-	 */
-	private $data_manager;
-
-	/**
-<<<<<<< HEAD
-=======
-	 * Filesystem instance
-	 *
-	 * @var Filesystem
-	 */
-	private $filesystem;
-
-	/**
-	 * External exclusions list, can be urls or attributes.
-	 *
-	 * @var array
-	 */
-	private $external_exclusions = [];
-
-	/**
->>>>>>> develop
 	 * Inline CSS attributes exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
@@ -102,6 +78,7 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
+
 	/**
 	 * Instantiate the class.
 	 *
