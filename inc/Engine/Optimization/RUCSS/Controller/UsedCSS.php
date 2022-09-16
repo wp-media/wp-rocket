@@ -497,8 +497,6 @@ class UsedCSS {
 		$used_css = str_replace( '\\', '\\\\', $used_css );// Guard the backslashes before passing the content to preg_replace.
 		$used_css = $this->handle_charsets( $used_css, false );
 
-		$css               = str_replace( '\\', '\\\\', $css );// Guard the backslashes before passing the content to preg_replace.
-		$used_css_contents = $this->handle_charsets( $css, false );
 		return sprintf(
 			'<style id="wpr-usedcss">%s</style>',
 			$used_css
