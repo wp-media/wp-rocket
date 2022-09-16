@@ -331,6 +331,7 @@ class Plugin {
 			'minimalist_blogger',
 			'convertplug',
 			'dynamic_lists_subscriber',
+			'jevelin',
 			'unlimited_elements',
 			'inline_related_posts',
 			'jetpack',
