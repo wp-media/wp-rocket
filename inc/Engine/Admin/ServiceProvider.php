@@ -26,8 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'deactivation_intent',
 		'deactivation_intent_subscriber',
 		'hummingbird_subscriber',
-		'notices',
-		'notices_admin_subscriber',
 	];
 
 	/**
@@ -47,10 +45,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'hummingbird_subscriber', Hummingbird::class )
 			->addArgument( $options )
-			->addTag( 'admin_subscriber' );
-		$this->getContainer()->add( 'notices', Notices::class );
-		$this->getContainer()->share( 'notices_admin_subscriber', NoticesSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'notices' ) )
 			->addTag( 'admin_subscriber' );
 	}
 }
