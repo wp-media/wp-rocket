@@ -11,10 +11,26 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_UpdateLists extends FilesystemTestCase {
 	private $api_response;
-
+	private $original_user;
+	private static $user;
 	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php';
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		$container  = apply_filters( 'rocket_container', null );
+		self::$user = $container->get( 'user' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
+	}
+
 	public function tear_down() {
+		$this->set_reflective_property( $this->original_user, 'user', self::$user );
+
 		remove_filter( 'pre_http_request', [ $this, 'api_response' ] );
 		delete_transient( 'wpr_dynamic_lists' );
 
@@ -24,8 +40,10 @@ class Test_UpdateLists extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldDoExpected( $api_response, $expected ) {
+	public function testShouldDoExpected( $user, $api_response, $expected ) {
 		$this->api_response = $api_response;
+
+		$this->set_reflective_property( $user, 'user', self::$user );
 
 		add_filter( 'pre_http_request', [ $this, 'api_response' ] );
 

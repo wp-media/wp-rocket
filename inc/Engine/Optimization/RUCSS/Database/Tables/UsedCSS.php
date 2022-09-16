@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220204;
+	protected $version = 20220513;
 
 
 	/**
@@ -39,7 +39,16 @@ class UsedCSS extends Table {
 	protected $upgrades = [
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
+		20220513 => 'add_hash_column',
 	];
+
+	/**
+	 * Instantiate class.
+	 */
+	public function __construct() {
+		parent::__construct();
+		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
+	}
 
 	/**
 	 * Setup the database schema
@@ -51,6 +60,7 @@ class UsedCSS extends Table {
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
+			hash             varchar(32)                  default '',
 			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
@@ -63,7 +73,8 @@ class UsedCSS extends Table {
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
-			INDEX `queue_name_index` (`queue_name`)";
+			INDEX `queue_name_index` (`queue_name`),
+			KEY hash (hash)";
 	}
 
 	/**
@@ -80,8 +91,19 @@ class UsedCSS extends Table {
 			return false;
 		}
 
+		/**
+		 * Filters the old RUCSS deletion interval
+		 *
+		 * @param int $delete_interval Old RUCSS deletion interval in months
+		 */
+		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
+
+		if ( $delete_interval <= 0 ) {
+			return false;
+		}
+
 		$prefixed_table_name = $this->apply_prefix( $this->table_name );
-		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "DELETE FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
 		return $rows_affected;
@@ -152,4 +174,60 @@ class UsedCSS extends Table {
 		return $this->is_success( $index_added );
 	}
 
+	/**
+	 * Add hash column and index
+	 *
+	 * @return bool
+	 */
+	protected function add_hash_column() {
+		$hash_column_exists = $this->column_exists( 'hash' );
+
+		$created = true;
+
+		if ( ! $hash_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN hash VARCHAR(32) NULL default '' AFTER css, ADD KEY hash (hash) " );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Remove all completed rows.
+	 *
+	 * @return bool|int
+	 */
+	public function remove_all_completed_rows() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
+	}
+
+	/**
+	 * Returns name from table.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->apply_prefix( $this->table_name );
+	}
+
+	/**
+	 * Trigger recreation of cache table if not exist.
+	 *
+	 * @return void
+	 */
+	public function maybe_trigger_recreate_table() {
+		if ( $this->exists() ) {
+			return;
+		}
+
+		delete_option( $this->db_version_key );
+	}
 }

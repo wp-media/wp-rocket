@@ -4,9 +4,11 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\DynamicLists
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -24,21 +26,28 @@ class Test_restUpdateResponse extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $exclusions_list_result, $expected ) {
+	public function testShouldReturnExpected( $expired, $exclusions_list_result, $expected ) {
 		$dynamic_lists_api = Mockery::mock( APIClient::class );
 		$data_manager = Mockery::mock( DataManager::class );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, '' );
+		$user = Mockery::mock( User::class );
+		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, $user, '', Mockery::mock( Beacon::class ) );
 
 		$hash = '';
 
+		$user->shouldReceive( 'is_license_expired' )
+			->once()
+			->andReturn( $expired );
+
 		$data_manager
 			->shouldReceive( 'get_lists_hash' )
+			->atMost()
 			->once()
 			->andReturn( $hash );
 
 		$dynamic_lists_api
 			->shouldReceive( 'get_exclusions_list' )
 			->with( $hash )
+			->atMost()
 			->once()
 			->andReturn( $exclusions_list_result );
 

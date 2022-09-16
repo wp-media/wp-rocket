@@ -4,9 +4,11 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -19,7 +21,7 @@ class Test_ScheduleListsUpdate extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $scheduled ) {
-		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ), '' );
+		$dynamic_lists = new DynamicLists( Mockery::mock( APIClient::class ), Mockery::mock( DataManager::class ), Mockery::mock( User::class ), '', Mockery::mock( Beacon::class ) );
 
 		Functions\expect( 'wp_next_scheduled' )
 			->once()
