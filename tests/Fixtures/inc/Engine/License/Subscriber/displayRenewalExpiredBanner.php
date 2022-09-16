@@ -40,7 +40,7 @@ return [
 			<div class="rocket-expired-message">
 
 				<p>
-				You could make your website so much faster if you had access to our <strong>new features and enhancements</strong>. 🚀
+				Your website could be much faster if it could take advantage of our <strong>new features and enhancements</strong>. 🚀
 				</p>
 				<p>
 				Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you’ll only pay <strong>39</strong>!
