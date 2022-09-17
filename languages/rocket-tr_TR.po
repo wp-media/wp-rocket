@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-09-12 09:06-0400\n"
+"POT-Creation-Date: 2022-09-15 15:41-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2022\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -302,8 +302,7 @@ msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s iyi hale getirildi."
 
 #: inc/Engine/Admin/Notices.php:26
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:310
 #, php-format
 msgid ""
 "%1$s: We detected missing database table related to Action Scheduler. Please"
@@ -2395,7 +2394,7 @@ msgstr ""
 "kullanabilirsiniz (sadece şu anki ve yeni lisanslarınız arasındaki fiyat "
 "farkını ödeyeceksiniz)."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:93
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:103
 msgid ""
 "You need an active license to get the latest version of the lists from our "
 "server."
@@ -2403,28 +2402,28 @@ msgstr ""
 "Listelerin en son sürümünü sunucumuzdan almak için aktif bir lisansa "
 "ihtiyacınız var."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:106
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
 msgid "Could not get updated lists from server."
 msgstr "Sunucudan güncellenmiş listeler alınamadı."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:114
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
 msgid "Lists are up to date."
 msgstr "Listeler güncel."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:122
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:132
 msgid "Could not update lists."
 msgstr "Listeler güncellenemedi."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:129
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
 msgid "Lists are successfully updated."
 msgstr "Listeler başarılı olarak güncellendi."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
 msgstr "Kullanılan CSS’yi Temizle"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:204
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:219
 #, php-format
 msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
@@ -2433,7 +2432,7 @@ msgstr ""
 "%1$s: Lütfen %2$s saniye bekleyin. Kullanılmayan CSS’yi Kaldır hizmeti "
 "sayfalarınızı işliyor."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:245
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
 msgid ""
 "%1$s: The Used CSS of your homepage has been processed. WP Rocket will "
@@ -2442,20 +2441,20 @@ msgstr ""
 "%1$s: Ana sayfanızın Kullanılan CSS’si işlendi. WP Rocket, her %3$s saniyede"
 " %2$s URL’ye kadar Kullanılan CSS oluşturmaya devam edecek."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:273
 #, php-format
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 "En hızlı sonuçlar için %1$sÖnyükleme%2$s’nin etkinleştirilmesini öneririz."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "İşlem hakkında daha fazla bilgi edinmek için %1$sbelgelerimizi%2$s gözden "
 "geçirin."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:507
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -2466,17 +2465,28 @@ msgstr ""
 "sitenizin performansını daha da iyileştirmek için aktif bir lisansa "
 "ihtiyacınız var."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:491
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:510
 #, php-format
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:285
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:547
+#, php-format
+msgid ""
+"Could not create the %2$s table in the database which is necessary for the "
+"Remove Unused CSS feature to work. Please reach out to <a href=\"%3$s\">our "
+"support</a>."
+msgstr ""
+"Kullanılmayan CSS'yi Kaldır özelliğinin çalışması için gerekli olan %2$s "
+"tablosu veritabanında oluşturulamadı. Lütfen <a href=\"%3$s\">destek "
+"birimimize</a> ulaşın."
+
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: Kullanılan CSS seçeneği etkinleştirilmedi!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Kullanılan CSS önbelleği temizlendi!"
@@ -3788,11 +3798,19 @@ msgid "Confirm"
 msgstr "Onayla"
 
 #: views/settings/dynamic-lists-update.php:14
-#: views/settings/dynamic-lists-update.php:15
 msgid "Update Inclusion and Exclusion Lists"
 msgstr "Dahil Etme ve Hariç Tutma Listelerini Güncelle"
 
-#: views/settings/dynamic-lists-update.php:20
+#: views/settings/dynamic-lists-update.php:19
+#, php-format
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the "
+"button if you want to update them manually. %1$sMore info%2$s"
+msgstr ""
+"Uyumluluk listeleri her hafta otomatik olarak indirilir. Bunları el ile "
+"güncellemek istiyorsanız düğmeye tıklayın. %1$sDaha fazla bilgi%2$s"
+
+#: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
 msgstr "Listeleri güncelle"
 
