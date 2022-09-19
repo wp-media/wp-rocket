@@ -39,7 +39,7 @@ class Test_GetPendingJobs extends TestCase {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'modified',
+				'orderby'        => 'id',
 				'order'          => 'asc',
 			])->willReturn($config['results']);
 		}
