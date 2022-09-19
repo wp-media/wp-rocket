@@ -27,12 +27,13 @@ trait CheckExcludedTrait {
 		 *
 		 * @param string[] regexes to check
 		 */
-		$regexes = apply_filters( 'rocket_preload_exclude_urls', [] );
+		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [] );
 
 		if ( empty( $regexes ) ) {
 			return false;
 		}
-
+		
+		$regexes = array_filter( $items, 'is_string' );
 		foreach ( $regexes as $regex ) {
 			if ( preg_match( '/' . $regex . '/', $url ) ) {
 				return true;
