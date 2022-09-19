@@ -26,30 +26,32 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 	/**
 	 * Maybe recreate Action Scheduler tables if they are missing
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function maybe_recreate_as_tables() {
+	public function maybe_recreate_as_tables(): bool {
 		if ( $this->is_valid_as_tables() ) {
-			return;
+			return false;
 		}
 
 		$store_schema  = new ActionScheduler_StoreSchema();
 		$logger_schema = new ActionScheduler_LoggerSchema();
 		$store_schema->register_tables( true );
 		$logger_schema->register_tables( true );
+
+		return true;
 	}
 
 	/**
-	 * Maybe recreate tables on prelod or RUCSS activation
+	 * Maybe recreate tables on preload or RUCSS activation
 	 *
 	 * @param mixed $old_value The old option value.
 	 * @param mixed $value The new option value.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function check_on_update_options( $old_value, $value ) {
+	public function check_on_update_options( $old_value, $value ): bool {
 		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'], $old_value['manual_preload'], $value['manual_preload'] ) ) {
-			return;
+			return false;
 		}
 
 		if (
@@ -57,7 +59,7 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 			&&
 			$old_value['manual_preload'] === $value['manual_preload']
 		) {
-			return;
+			return false;
 		}
 
 		if (
@@ -65,10 +67,26 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 			&&
 			0 === (int) $value['manual_preload']
 		) {
-			return;
+			return false;
 		}
 
-		$this->maybe_recreate_as_tables();
+		if (
+			(
+				$old_value['remove_unused_css'] !== $value['remove_unused_css']
+				&&
+				1 !== (int) $value['remove_unused_css']
+			)
+			||
+			(
+				$old_value['manual_preload'] !== $value['manual_preload']
+				&&
+				1 !== (int) $value['manual_preload']
+			)
+		) {
+			return false;
+		}
+
+		return $this->maybe_recreate_as_tables();
 	}
 
 	/**
