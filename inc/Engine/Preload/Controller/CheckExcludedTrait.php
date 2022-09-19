@@ -35,6 +35,8 @@ trait CheckExcludedTrait {
 
 		$regexes = array_filter( $regexes, 'is_string' );
 		foreach ( $regexes as $regex ) {
+			$regex = str_replace( '/', '\/', $regex );
+
 			if ( preg_match( '/' . $regex . '/', $url ) ) {
 				return true;
 			}
