@@ -83,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
@@ -123,6 +124,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_deletion_enabled() ) {
+			return;
+		}
+
 		$url = get_permalink( $post_id );
 
 		if ( false === $url ) {
@@ -146,6 +151,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_deletion_enabled() ) {
+			return;
+		}
+
 		$url = get_term_link( (int) $term_id );
 
 		if ( is_wp_error( $url ) ) {
@@ -164,6 +173,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function truncate_used_css() {
 		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -623,9 +636,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Deletes the used CSS on update to 3.11.3 for new storage method
+	 * Deletes the used CSS on update to 3.11.4 for new storage method
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
@@ -661,5 +674,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function notice_write_permissions() {
 		$this->used_css->notice_write_permissions();
+	}
+
+	/**
+	 * Display a notice on table missing.
+	 *
+	 * @return void
+	 */
+	public function display_no_table_notice() {
+		$this->settings->display_no_table_notice();
+	}
+
+	/**
+	 * Checks if the RUCSS deletion is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_deletion_enabled(): bool {
+		/**
+		 * Filters the enable RUCSS deletion value
+		 *
+		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 }

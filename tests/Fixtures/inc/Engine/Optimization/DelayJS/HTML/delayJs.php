@@ -232,6 +232,7 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+var FuseboxPlayerAPIKey = "";
 </script>
 <script id="print-helloworld" type="application/jscript">
 	console.log("Hello world application/jscript!");
@@ -474,6 +475,7 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+var FuseboxPlayerAPIKey = "";
 </script>
 <script id="print-helloworld" type="application/jscript">
 	console.log("Hello world application/jscript!");
@@ -716,6 +718,7 @@ if ( window.addEventListener ) {
 </script>
 <script>
 window.wsf_form_json_config = {};
+var FuseboxPlayerAPIKey = "";
 </script>
 <script id="print-helloworld" type="application/jscript">
 	console.log("Hello world application/jscript!");
