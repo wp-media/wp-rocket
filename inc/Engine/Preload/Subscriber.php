@@ -114,8 +114,8 @@ class Subscriber implements Subscriber_Interface {
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_exclude_urls'         => [
-				['add_preload_excluded_uri'],
-				['add_cache_reject_uri'],
+				[ 'add_preload_excluded_uri' ],
+				[ 'add_cache_reject_uri' ],
 			],
 		];
 	}
