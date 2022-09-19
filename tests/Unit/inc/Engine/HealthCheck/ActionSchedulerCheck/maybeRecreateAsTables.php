@@ -2,15 +2,16 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\HealthCheck\ActionSchedulerCheck;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck;
 use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::is_valid_as_tables
+ * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::maybe_recreate_as_tables
  * @group  HealthCheck
  */
-class Test_IsValidAsTables extends TestCase {
+class Test_MaybeRecreateAsTables extends TestCase {
 	private $as_check;
 	private $wpdb;
 
@@ -18,6 +19,8 @@ class Test_IsValidAsTables extends TestCase {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/HealthCheck/ActionSchedulerCheck/ActionScheduler_StoreSchema.php';
+        require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/HealthCheck/ActionSchedulerCheck/ActionScheduler_LoggerSchema.php';
 	}
 
 	protected function setUp(): void {
@@ -38,8 +41,11 @@ class Test_IsValidAsTables extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
+		Functions\when( 'get_transient' )->justReturn( false );
+		Functions\expect( 'set_transient' )->once();
+
 		$this->wpdb->setTableRows( $config['found_as_tables'] );
 
-		$this->assertSame( $expected, $this->as_check->is_valid_as_tables() );
+		$this->assertSame( $expected, $this->as_check->maybe_recreate_as_tables() );
 	}
 }
