@@ -73,7 +73,7 @@ class UsedCSS extends Table {
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
-			INDEX `queue_name_index` (`queue_name`(191)),
+			INDEX `status_index` (`status`(191)),
 			KEY hash (hash)";
 	}
 
