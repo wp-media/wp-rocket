@@ -22,6 +22,7 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'actionscheduler_check',
 	];
 
 	/**
