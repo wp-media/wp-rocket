@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'hummingbird_subscriber',
 		'notices',
 		'notices_admin_subscriber',
+		'actionscheduler_admin_subscriber',
 	];
 
 	/**
@@ -52,5 +53,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'notices_admin_subscriber', NoticesSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'notices' ) )
 			->addTag( 'admin_subscriber' );
+		$this->getContainer()->share( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
 	}
 }
