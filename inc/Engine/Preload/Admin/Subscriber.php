@@ -70,6 +70,8 @@ class Subscriber implements Subscriber_Interface {
 	public function sanitize_options( $input ) : array {
 		if ( empty( $input['preload_excluded_uri'] ) ) {
 			$input['preload_excluded_uri'] = [];
+
+			return $input;
 		}
 
 		$input['preload_excluded_uri'] = rocket_sanitize_textarea_field( 'preload_excluded_uri', $input['preload_excluded_uri'] );
