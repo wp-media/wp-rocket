@@ -45,8 +45,6 @@ class Activation {
 
 		$event_manager = new Event_Manager();
 
-		$event_manager->add_subscriber( $container->get( 'preload_activation_subscriber' ) );
-
 		if ( ! empty( $host_type ) ) {
 			array_unshift( self::$activators, $host_type );
 		}
@@ -54,6 +52,8 @@ class Activation {
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );
 		}
+
+		$event_manager->add_subscriber( $container->get( 'preload_activation_subscriber' ) );
 
 		// Last constants.
 		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
