@@ -6,8 +6,9 @@ namespace WP_Rocket\Engine\HealthCheck;
 use ActionScheduler_StoreSchema;
 use ActionScheduler_LoggerSchema;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Activation\ActivationInterface;
 
-class ActionSchedulerCheck implements Subscriber_Interface {
+class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface {
 	/**
 	 * Array of events this subscribers listens to
 	 *
@@ -17,10 +18,18 @@ class ActionSchedulerCheck implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_activation'      => 'maybe_recreate_as_tables',
 			'update_option_' . $slug => [ 'check_on_update_options', 10, 2 ],
 			'wp_rocket_update'       => 'maybe_recreate_as_tables',
 		];
+	}
+
+	/**
+	 * Actions to perform on plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'maybe_recreate_as_tables' ] );
 	}
 
 	/**
