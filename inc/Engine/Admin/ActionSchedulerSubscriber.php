@@ -21,7 +21,14 @@ class ActionSchedulerSubscriber implements Subscriber_Interface {
 		];
 	}
 
-	public function hide_pastdue_status_filter( $extra_actions ) {
+	/**
+	 * Hide past-due from status filter in Action Scheduler tools page.
+	 *
+	 * @param array $extra_actions Array with format action_count_identifier => action count.
+	 *
+	 * @return array
+	 */
+	public function hide_pastdue_status_filter( array $extra_actions ) {
 		if ( ! isset( $extra_actions['past-due'] ) ) {
 			return $extra_actions;
 		}
