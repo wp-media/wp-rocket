@@ -28,7 +28,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'actionscheduler_check'
+		'actionscheduler_check',
 	];
 
 	/**
