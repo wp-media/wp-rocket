@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220513;
+	protected $version = 20220920;
 
 
 	/**
@@ -40,6 +40,7 @@ class UsedCSS extends Table {
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
 		20220513 => 'add_hash_column',
+		20220920 => 'make_status_column_index_instead_queue_name',
 	];
 
 	/**
@@ -189,6 +190,26 @@ class UsedCSS extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Make status column as index.
+	 *
+	 * @return bool
+	 */
+	protected function make_status_column_index_instead_queue_name() {
+		$queuename_column_exists = $this->column_exists( 'status' );
+		if ( ! $queuename_column_exists ) {
+			return $this->is_success( false );
+		}
+
+		if ( $this->index_exists( 'status_index' ) ) {
+			return $this->is_success( true );
+		}
+
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `status_index` (`status`) " );
+
+		return $this->is_success( $index_added );
 	}
 
 	/**
