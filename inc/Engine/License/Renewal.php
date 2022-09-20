@@ -109,7 +109,11 @@ class Renewal extends Abstract_Render {
 			esc_html( number_format_i18n( $this->get_discount_price(), 2 ) )
 		);
 
-		if ( $this->is_grandfather() ) {
+		if (
+			$this->is_grandfather()
+			&&
+			$expired_since < 15
+		) {
 			$message = sprintf(
 				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
 				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you’ll only pay %1$s%4$s%2$s!', 'rocket' ),
