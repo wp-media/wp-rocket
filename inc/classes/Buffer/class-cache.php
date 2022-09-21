@@ -332,7 +332,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Save the cache file.
-		if ( rocket_put_content( $temp_filepath, $content ) ) {
+		if ( ! rocket_put_content( $temp_filepath, $content ) ) {
 			return;
 		}
 
