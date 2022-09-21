@@ -171,4 +171,20 @@ $(document).ready(function(){
 			}
         );
     } );
+	$( '#wpr-update-exclusion-list' ).on( 'click', function( e ) {
+		e.preventDefault();
+		$('#wpr-update-exclusion-msg').html('');
+		$.ajax({
+			url: rocket_ajax_data.rest_url,
+			beforeSend: function ( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
+			},
+			method: "PUT",
+			success: function(response) {
+				$('#wpr-update-exclusion-msg').html(response.message);
+				if ( response.success ) {
+				}
+			}
+		});
+	} );
 });

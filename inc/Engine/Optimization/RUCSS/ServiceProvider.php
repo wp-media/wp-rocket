@@ -49,12 +49,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'rucss_settings', Settings::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
 
 		$this->getContainer()->add( 'rucss_usedcss_table', UsedCSSTable::class );
 		$this->getContainer()->add( 'rucss_database', Database::class )
+			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
+
+		$this->getContainer()->add( 'rucss_settings', Settings::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
 		$this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
@@ -69,6 +71,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
 
 		$this->getContainer()->share( 'rucss_admin_subscriber', AdminSubscriber::class )

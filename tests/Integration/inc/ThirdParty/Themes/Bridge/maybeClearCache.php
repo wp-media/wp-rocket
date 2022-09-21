@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Bridge;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -11,16 +12,21 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  ThirdParty
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
+	use DBTrait;
+
 	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
 	private static $container;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
+		self::installFresh();
 
 		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
 	public static function tear_down_after_class() {
+		self::uninstallAll();
+
 		parent::tear_down_after_class();
 
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'bridge_subscriber' ) );
