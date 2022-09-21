@@ -2,11 +2,10 @@
 
 namespace WP_Rocket\Engine\Preload\Activation;
 
-use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
-class Activation implements ActivationInterface {
+class Activation {
 
 	/**
 	 * Preload queue.
