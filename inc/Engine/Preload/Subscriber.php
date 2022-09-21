@@ -110,6 +110,7 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
+			'rocket_preload_format_url'           => 'format_preload_url',
 		];
 	}
 
@@ -374,5 +375,16 @@ class Subscriber implements Subscriber_Interface {
 				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
+	}
+
+	/**
+	 * Remove index from url.
+	 *
+	 * @param string $url url to reformat.
+	 *
+	 * @return string
+	 */
+	public function format_preload_url( string $url ) {
+		return preg_replace( '/(index\.html$)|(index\.html_gzip$)/', '', $url );
 	}
 }
