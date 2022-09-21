@@ -346,7 +346,7 @@ class Cache extends Abstract_Buffer {
 			 */
 			$compression_level = apply_filters( 'rocket_gzencode_level_compression', 6 );
 
-			if ( rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) ) ) {
+			if ( ! rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) ) ) {
 				return;
 			}
 
