@@ -210,6 +210,7 @@ class Plugin {
 			'preload_admin_subscriber',
 			'minify_admin_subscriber',
 			'action_scheduler_check',
+			'actionscheduler_admin_subscriber',
 		];
 	}
 
