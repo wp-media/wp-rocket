@@ -207,6 +207,12 @@ class UsedCSS extends Table {
 			return $this->is_success( true );
 		}
 
+		if ( $this->index_exists( 'queue_name_index' ) ) {
+			if(! $this->get_db()->query( "ALTER TABLE {$this->table_name} DELETE INDEX `queue_name_index` (`status`) " ) ) {
+				return $this->is_success( false );
+			}
+		}
+
 		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `status_index` (`status`) " );
 
 		return $this->is_success( $index_added );
