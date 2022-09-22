@@ -71,7 +71,7 @@ function rocket_get_purge_urls( $post_id, $post ) {
 			$post_type_archive = trailingslashit( $post_type_archive );
 			$purge_urls[]      = $post_type_archive . $filename . '.html';
 			$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
-			$purge_urls[]      = $post_type_archive . $filename . $GLOBALS['wp_rewrite']->pagination_base;
+			$purge_urls[]      = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
 		}
 	}
 
