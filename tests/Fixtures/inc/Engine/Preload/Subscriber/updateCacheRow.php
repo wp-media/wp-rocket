@@ -1,6 +1,6 @@
 <?php
 return [
-	'testCallActionWhenPreloaded' => [
+	'testNoCallActionWhenPreloaded' => [
 		'config' => [
 			'links' => [
 				[
@@ -20,13 +20,9 @@ return [
 			]
 		]
 	],
-	'testNoCallActionWhenNotPreloaded' => [
+	'testCallActionWhenNotPreloaded' => [
 		'config' => [
 			'links' => [
-				[
-					'url' => 'http://example.org',
-					'status' => 'in-progress',
-				],
 			],
 			'is_preloaded' => false,
 		],

@@ -30,9 +30,11 @@ class Test_UpdateCacheRow extends AdminTestCase
 			self::addCache($link);
 		}
 
+
+
 		do_action('rocket_after_process_buffer');
 
-		if($config['is_preloaded']) {
+		if(! $config['is_preloaded']) {
 			$this->assertGreaterThan( 0, did_action('rocket_preload_completed') );
 		}
 
