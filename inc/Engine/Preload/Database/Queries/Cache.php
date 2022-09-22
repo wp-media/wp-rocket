@@ -516,7 +516,7 @@ class Cache extends Query {
 	 * @param string $url url to check.
 	 * @return bool
 	 */
-	protected function is_rejected( string $url ) {
+	protected function is_rejected( string $url ): bool {
 		$extensions = [
 			'php' => 1,
 			'xml' => 1,
