@@ -29,7 +29,7 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return void
 	 */
 	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'maybe_recreate_as_tables' ] );
+		$this->maybe_recreate_as_tables();
 	}
 
 	/**

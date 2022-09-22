@@ -22,7 +22,8 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'actionscheduler_check',
+		'action_scheduler_check',
+		'preload_activation_subscriber',
 	];
 
 	/**
@@ -37,6 +38,7 @@ class Activation {
 		$options_api = new Options( 'wp_rocket_' );
 		$container->add( 'options_api', $options_api );
 		$container->addServiceProvider( \WP_Rocket\ServiceProvider\Options::class );
+		$container->addServiceProvider( \WP_Rocket\Engine\HealthCheck\ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
 		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
@@ -52,8 +54,6 @@ class Activation {
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );
 		}
-
-		$event_manager->add_subscriber( $container->get( 'preload_activation_subscriber' ) );
 
 		// Last constants.
 		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
