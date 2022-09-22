@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Activation;
 
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
@@ -17,6 +18,7 @@ class Test_Activate extends TestCase {
     protected $activation;
     protected $queue;
     protected $query;
+	private $options;
 
     public static function setUpBeforeClass(): void {
         parent::setUpBeforeClass();
@@ -28,8 +30,9 @@ class Test_Activate extends TestCase {
         parent::setUp();
 
         $this->queue = Mockery::mock( Queue::class );
-        $this->query = $this->createMock( Cache::class );
-        $this->activation = new Activation( $this->queue, $this->query );
+	    $this->query = $this->createMock( Cache::class );
+	    $this->options = $this->createMock( Options_Data::class );
+        $this->activation = new Activation( $this->queue, $this->queue, $this->options );
 
         $GLOBALS['wpdb'] = new wpdb();
     }
