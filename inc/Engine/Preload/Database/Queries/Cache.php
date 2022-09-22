@@ -521,6 +521,7 @@ class Cache extends Query {
 			'php' => 1,
 			'xml' => 1,
 			'xsl' => 1,
+			'kml' => 1,
 		];
 
 		$extension = pathinfo( $url, PATHINFO_EXTENSION );
