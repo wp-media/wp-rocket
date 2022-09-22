@@ -28,7 +28,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
-		'actionscheduler_check',
+		'action_scheduler_check',
 	];
 
 	/**
@@ -54,6 +54,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$this->getContainer()->add( 'capabilities_manager', Manager::class );
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );
-		$this->getContainer()->add( 'actionscheduler_check', ActionSchedulerCheck::class );
+		$this->getContainer()->add( 'action_scheduler_check', ActionSchedulerCheck::class );
 	}
 }

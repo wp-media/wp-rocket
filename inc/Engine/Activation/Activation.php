@@ -38,14 +38,11 @@ class Activation {
 		$options_api = new Options( 'wp_rocket_' );
 		$container->add( 'options_api', $options_api );
 		$container->addServiceProvider( \WP_Rocket\ServiceProvider\Options::class );
-		$container->addServiceProvider( \WP_Rocket\Engine\HealthCheck\ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
 		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
 
 		$host_type = HostResolver::get_host_service();
-
-		$event_manager = new Event_Manager();
 
 		if ( ! empty( $host_type ) ) {
 			array_unshift( self::$activators, $host_type );

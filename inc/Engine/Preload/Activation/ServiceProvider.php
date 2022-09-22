@@ -51,10 +51,10 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $options );
 
 		$this->getContainer()->add( 'preload_activation_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
-			->addArgument( $options );
+			->addArgument( $this->getContainer()->get( 'preload_activation' ) );
 	}
 }
