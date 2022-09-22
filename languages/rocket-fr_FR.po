@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-09-12 09:06-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2022\n"
 "Language-Team: French (France) (https://www.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -299,6 +299,19 @@ msgstr ""
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s optimisé(s)."
+
+#: inc/Engine/Admin/Notices.php:26
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
+#: inc/Engine/Preload/Admin/Settings.php:94
+#, php-format
+msgid ""
+"%1$s: We detected missing database table related to Action Scheduler. Please"
+" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
+"Rocket to work correctly."
+msgstr ""
+"%1$s: Nous avons détecté une table de base de données manquante liée à "
+"Action Scheduler. Veuillez consulter cette %2$sURL%3$s pour la recréer, car "
+"elle est nécessaire au bon fonctionnement de WP Rocket."
 
 #: inc/Engine/Admin/Settings/Page.php:191
 msgid "Save Changes"
@@ -1804,7 +1817,7 @@ msgstr "Accélérez votre site web grâce à :"
 #, php-format
 msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
+"bandwidth%2$s"
 msgstr ""
 "CDN (Content Delivery Network) de haute performance à %1$sbande passante "
 "illimitée%2$s"
@@ -1911,8 +1924,7 @@ msgstr "WP_CACHE n’est pas définie"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE est réglée sur false"
 
-#: inc/Engine/Common/Queue/PreloadQueueRunner.php:232
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:252
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
 msgstr "Chaque minute"
 
@@ -2412,6 +2424,30 @@ msgstr ""
 "mettant à niveau votre licence (vous ne paierez que la différence de prix "
 "entre votre licence actuelle et la nouvelle)."
 
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:93
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+"Vous devez avoir une licence active pour obtenir la dernière version des "
+"listes de notre serveur."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:106
+msgid "Could not get updated lists from server."
+msgstr "Impossible d'obtenir les listes mises à jour depuis le serveur."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:114
+msgid "Lists are up to date."
+msgstr "Les listes sont à jour."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:122
+msgid "Could not update lists."
+msgstr "Impossible de mettre à jour les listes."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:129
+msgid "Lists are successfully updated."
+msgstr "Les listes ont été mises à jour avec succès."
+
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
@@ -2438,28 +2474,16 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"Nous vous suggérons d'activer le %1$sPréchargement des Sitemaps%2$s pour "
-"obtenir des résultats plus rapides."
+"Nous vous suggérons d'activer le %1$sPréchargement%2$s pour obtenir des "
+"résultats plus rapides."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "Pour en savoir plus sur le processus, consultez notre %1$sdocumentation%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
-#, php-format
-msgid ""
-"%1$s: We detected missing database table related to Action Scheduler. Please"
-" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
-"Rocket to work correctly."
-msgstr ""
-"%1$s: Nous avons détecté une table de base de données manquante liée à "
-"Action Scheduler. Veuillez consulter cette %2$sURL%3$s pour la recréer, car "
-"elle est nécessaire au bon fonctionnement de WP Rocket."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
 msgid ""
@@ -2478,53 +2502,21 @@ msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 "Cliquez ici pour obtenir une licence Single de WP Rocket à moins %1$s !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr "Vous êtes sur le point de perdre l'accès à une option importante."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
-#, php-format
-msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature "
-"will not be available any longer in your file optimization tab."
-msgstr ""
-"Si vous restaurez vers WP Rocket 3.10.10.1, l'option %1$sSupprimer les "
-"ressources CSS inutilisées%2$s ne sera plus disponible dans l'onglet "
-"d'Optimisation des fichiers."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-"Si vous rencontrez un problème lié à cette option, vous pouvez simplement la"
-" désactiver ou %1$scontacter le support pour obtenir de l'aide%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr "Annuler"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr "Confirmer la restauration"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:285
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: L'option du CSS utilisé n'est pas activée !"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Cache du CSS utilisé vidée !"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:704
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr "Nettoyer le CSS utilisé pour cet URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:144
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr ""
 "Tâches en attente de l’option Supprimer les ressources CSS inutilisées de WP"
@@ -2558,14 +2550,20 @@ msgstr "%1$sRetour à WP Rocket%2$s ou %3$sà la page des Plugins%2$s"
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
-msgstr "%1$s: Veuillez patienter. Le préchargement traite vos pages."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: Le Préchargement est maintenant actif. Après le préchargement initial,"
+" il continuera à mettre en cache toutes vos pages chaque fois qu'elles "
+"seront purgées. Aucune autre action n'est nécessaire."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:129
+#: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
 msgstr "Tâches en attente de l'option Préchargement de WP Rocket"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:157
+#: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
 msgstr "Relance des tâches bloquées de l'option Préchargement de WP Rocket"
 
@@ -2591,6 +2589,16 @@ msgstr ""
 "et WP Rocket de fonctionner correctement. Veuillez contacter l'assistance "
 "Kinsta par le biais de votre compte %1$sMyKinsta%2$s pour résoudre ce "
 "problème."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#, php-format
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
+msgstr ""
+"%1$s: Le Server Push HTTP/2 de Cloudflare est incompatible avec les options "
+"Supprimer les ressources CSS inutilisées et Combiner les fichier CSS. Nous "
+"vous recommandons vivement de la désactiver."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -3828,9 +3836,22 @@ msgstr "30 jours"
 msgid "Forever"
 msgstr "toujours"
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr "Annuler"
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "Confirmer"
+
+#: views/settings/dynamic-lists-update.php:14
+#: views/settings/dynamic-lists-update.php:15
+msgid "Update Inclusion and Exclusion Lists"
+msgstr "Mise à jour des listes d'inclusion et d'exclusion"
+
+#: views/settings/dynamic-lists-update.php:20
+msgid "Update lists"
+msgstr "Mettre à jour les listes"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
@@ -4147,11 +4168,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "Réinstaller la version %s"
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Debug mode"
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Créez un fichier log de debug."
 

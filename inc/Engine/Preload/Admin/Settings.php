@@ -75,37 +75,6 @@ class Settings {
 	}
 
 	/**
-	 * Display missing as table notice if they are not present.
-	 *
-	 * @return void
-	 */
-	public function maybe_display_as_missed_tables_notice() {
-
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
-			'<strong>WP Rocket</strong>',
-			'<a href="' . menu_page_url( 'action-scheduler', false ) . '">',
-			'</a>'
-		);
-		rocket_notice_html(
-			[
-				'status'  => 'error',
-				'message' => $message,
-				'id'      => 'rocket-notice-as-missed-tables',
-			]
-		);
-	}
-
-	/**
 	 * Determines if Preload option is enabled.
 	 *
 	 * @return boolean
