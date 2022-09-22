@@ -385,6 +385,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function format_preload_url( string $url ) {
-		return preg_replace( '/(index\.html$)|(index\.html_gzip$)/', '', $url );
+		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
 	}
 }
