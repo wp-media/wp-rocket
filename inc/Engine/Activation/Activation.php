@@ -23,7 +23,7 @@ class Activation {
 		'capabilities_manager',
 		'wp_cache',
 		'action_scheduler_check',
-		'preload_activation_subscriber',
+		'preload_activation',
 	];
 
 	/**
