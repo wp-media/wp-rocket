@@ -173,7 +173,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
-		if ( $this->query->is_preloaded( $url ) ) {
+		if ( ! $this->query->is_preloaded( $url ) ) {
 			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
 			/**
