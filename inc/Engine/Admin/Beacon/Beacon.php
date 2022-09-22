@@ -379,8 +379,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'exclude_css'                => [
 				'en' => [
-					'id'  => '',
+					'id'  => '5bf339b12c7d3a31944e2111',
 					'url' => 'https://docs.wp-rocket.me/article/1131-resolving-issues-with-css-minify-combine?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5bf3bece04286304a71c6d35',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1132-resoudre-problemes-minification-combinaison-css?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'defer_js'                   => [
