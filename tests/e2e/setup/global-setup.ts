@@ -3,7 +3,7 @@ import { chromium, FullConfig } from '@playwright/test';
 
 import { pageUtils } from '../utils/page.utils';
 
-export async function globalSetup(config: FullConfig) {
+async function globalSetup(config: FullConfig) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
