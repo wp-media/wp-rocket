@@ -10,13 +10,6 @@ const config: PlaywrightTestConfig = {
 	/* Maximum time one test can run for. */
 	timeout: 30000,
 	reportSlowTests: null,
-	expect: {
-		/**
-		 * Maximum time expect() should wait for the condition to be met.
-		 * For example in `await expect(locator).toHaveText();`
-		 */
-		timeout: 5000
-	},
 	/* Run tests in files in parallel */
 	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -30,7 +23,7 @@ const config: PlaywrightTestConfig = {
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		baseURL: WP_BASE_URL,
-		headless: false,
+		headless: true,
 		viewport: {
 			width: 960,
 			height: 700,
