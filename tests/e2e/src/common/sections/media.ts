@@ -9,18 +9,31 @@ export class media {
         this.page = page;
 
         this.selectors = {
-            'lazyload': 'label[for=lazyload]',
-            'lazyload_iframes': 'label[for=lazyload_iframes]',
-            'lazyload_youtube': 'label[for=lazyload_youtube]',
-            'image_dimensions': 'label[for=image_dimensions]'
+            'section': '#wpr-nav-media',
+            'lazyload': {
+                'checkbox': '#lazyload',
+                'enable': 'label[for=lazyload]',
+            },
+            'lazyload_iframes': {
+                'checkbox': '#lazyload_iframes',
+                'enable': 'label[for=lazyload_iframes]'
+            },
+            'lazyload_youtube': {
+                'checkbox': '#lazyload_youtube',
+                'enable': 'label[for=lazyload_youtube]',
+            },
+            'image_dimensions': {
+                'checkbox': '#image_dimensions',
+                'enable': 'label[for=image_dimensions]'
+            }
         };
 
         this.locators = {
-            'section': this.page.locator('#wpr-nav-media'),
-            'lazyload': this.page.locator(this.selectors.lazyload),
-            'lazyload_iframes': this.page.locator(this.selectors.lazyload_iframes),
-            'lazyload_youtube': this.page.locator(this.selectors.lazyload_youtube),
-            'image_dimensions': this.page.locator(this.selectors.image_dimensions)
+            'section': this.page.locator(this.selectors.section),
+            'lazyload': this.page.locator(this.selectors.lazyload.enable),
+            'lazyload_iframes': this.page.locator(this.selectors.lazyload_iframes.enable),
+            'lazyload_youtube': this.page.locator(this.selectors.lazyload_youtube.enable),
+            'image_dimensions': this.page.locator(this.selectors.image_dimensions.enable)
         };
     }
 
@@ -46,7 +59,7 @@ export class media {
      * Toggle replace youtube preview option.
      */
     toggleLazyLoadyoutube = async () => {
-        if (! await this.page.isChecked('#lazyload_iframes')) {
+        if (! await this.page.isChecked(this.selectors.lazyload_iframes.checkbox)) {
             return;
         }
         
@@ -66,7 +79,15 @@ export class media {
      * @returns bool
      */
      checkAnyEnabledOption = async () => {
-        if (await this.page.isChecked('#cdn')) {
+        if (await this.page.isChecked(this.selectors.lazyload.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.lazyload_iframes.checkbox)) {
+            return true;
+        }
+
+        if (await this.page.isChecked(this.selectors.lazyload_youtube.checkbox)) {
             return true;
         }
 
