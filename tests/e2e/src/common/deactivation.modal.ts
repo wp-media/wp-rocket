@@ -17,7 +17,7 @@ export const deactivationModal = async ( page: Page ) => {
       'safe_mode': page.locator( '#safe_mode' ),
   };
 
-  await page_utils.visitPage( 'wp-admin' );
+  await page_utils.visit_page( 'wp-admin' );
 
   await page.waitForSelector( plugin_menu )
   // Expect plugins link to be in view.
