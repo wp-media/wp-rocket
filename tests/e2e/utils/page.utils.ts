@@ -20,8 +20,4 @@ export class pageUtils {
     visit_page = async ( page_url: String ) => {
         await this.page.goto(WP_BASE_URL + '/' + page_url);
     }
-
-    setup = async () => {
-        
-    }
 }
