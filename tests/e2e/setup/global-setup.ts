@@ -9,9 +9,9 @@ async function globalSetup(config: FullConfig) {
 
   const page_utils = new pageUtils( page );
 
-  await page_utils.visitPage('wp-login.php');
+  await page_utils.visit_page('wp-login.php');
 
-  await page_utils.wpAdminLogin();
+  await page_utils.wp_admin_login();
 
   // Save signed-in state to 'storageState.json'.
   await page.context().storageState({ path: 'tests/e2e/storageState.json' });

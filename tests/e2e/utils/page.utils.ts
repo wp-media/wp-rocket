@@ -8,7 +8,7 @@ export class pageUtils {
         this.page = page;
     }
 
-    wpAdminLogin = async () => {
+    wp_admin_login = async () => {
         // Fill username & password.
         await this.page.locator('input[name="log"]').fill(WP_USERNAME);
         await this.page.locator('input[name="pwd"]').fill(WP_PASSWORD);
@@ -17,7 +17,11 @@ export class pageUtils {
         await this.page.locator('text=Log In').click();
     }
 
-    visitPage = async ( page_url: String ) => {
+    visit_page = async ( page_url: String ) => {
         await this.page.goto(WP_BASE_URL + '/' + page_url);
+    }
+
+    setup = async () => {
+        
     }
 }
