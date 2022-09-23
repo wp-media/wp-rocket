@@ -6,6 +6,7 @@ import { Page } from '@playwright/test';
 import { fileOptimization } from '../common/sections/file.optimization';
 import { media as Media } from './sections/media';
 import { cdn as CDN } from './sections/cdn';
+import { save_settings } from '../../utils/helpers';
 
 export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
 
@@ -53,7 +54,7 @@ export const toggleSafeModeDisabledOptions = async ( page: Page ) => {
      await cdn.toggleCDN();
 
      // save settings
-     await page.locator('#wpr-options-submit').click();
+     await save_settings(page);
 }
 
 
