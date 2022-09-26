@@ -17,7 +17,7 @@ class Test_AutoPurge extends TestCase {
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
 
-		Functions\expect( 'is_wp_error' )->never();
+		Functions\expect( 'is_wp_error' )->zeroOrMoreTimes();
 
 		do_action( 'after_rocket_clean_domain' );
 	}
@@ -32,10 +32,10 @@ class Test_AutoPurge extends TestCase {
 
 		Functions\expect( 'is_wp_error' )
 			->ordered()
-			->once()
+			->zeroOrMoreTimes()
 			->with( null )
 			->andAlsoExpectIt()
-			->once()
+			->zeroOrMoreTimes()
 			->with( 0 );
 
 		do_action( 'after_rocket_clean_domain' );
