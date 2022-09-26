@@ -108,17 +108,20 @@ class UsedCSS extends Query {
 	 *
 	 * @param int $id DB row ID.
 	 * @param int $retries Current number of retries.
+	 * @param mixed $new_job_id new job id to set if timeout.
 	 *
 	 * @return bool
 	 */
-	public function increment_retries( $id, $retries = 0 ) {
-		return $this->update_item(
-			$id,
-			[
-				'retries' => $retries + 1,
-				'status'  => 'pending',
-			]
-		);
+	public function increment_retries( $id, $retries = 0 ,$new_job_id = false) {
+		$update_data = [
+			'retries' => $retries + 1,
+			'status'  => 'pending',
+		];
+
+		if( $new_job_id ){
+			$update_data['job_id'] = $new_job_id;
+		}
+		return $this->update_item( $id, $update_data );
 	}
 
 	/**
@@ -184,14 +187,16 @@ class UsedCSS extends Query {
 	 * Change the status to be failed.
 	 *
 	 * @param int $id DB row ID.
+	 * @param string $error_message error message.
 	 *
 	 * @return bool
 	 */
-	public function make_status_failed( int $id ) {
+	public function make_status_failed( int $id , string $error_message ) {
 		return $this->update_item(
 			$id,
 			[
 				'status' => 'failed',
+				'error_message' => $error_message,
 			]
 		);
 	}

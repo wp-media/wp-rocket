@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220513;
+	protected $version = 20220926;
 
 
 	/**
@@ -40,6 +40,7 @@ class UsedCSS extends Table {
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
 		20220513 => 'add_hash_column',
+		20220926 => 'add_error_message_column',
 	];
 
 	/**
@@ -61,6 +62,7 @@ class UsedCSS extends Table {
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
 			hash             varchar(32)                  default '',
+			error_message    longtext                NULL default NULL,
 			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
@@ -229,5 +231,22 @@ class UsedCSS extends Table {
 		}
 
 		delete_option( $this->db_version_key );
+	}
+
+	/**
+	 * Add error_message column and index
+	 *
+	 * @return bool
+	 */
+	protected function add_error_message_column() {
+		$error_message_column_exists = $this->column_exists( 'error_message' );
+
+		$created = true;
+
+		if ( ! $error_message_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN error_message longtext NULL default NULL AFTER hash" );
+		}
+
+		return $this->is_success( $created );
 	}
 }
