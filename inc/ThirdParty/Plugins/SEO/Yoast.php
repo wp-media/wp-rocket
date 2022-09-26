@@ -44,6 +44,10 @@ class Yoast implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_sitemap( $sitemaps ): array {
+		if ( ! is_array( $sitemaps ) ) {
+			$sitemaps = (array) $sitemaps;
+		}
+
 		if ( ! $this->is_sitemap_enabled() ) {
 			return $sitemaps;
 		}
