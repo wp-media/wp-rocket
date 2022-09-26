@@ -9,7 +9,7 @@ return [
                 'wp_actionscheduler_logs',
             ],
 		],
-		'expected' => true,
+		'expected' => false,
 	],
 	'shouldRecreateASTable' => [
 		'config' => [
@@ -19,6 +19,6 @@ return [
                 'wp_actionscheduler_logs',
             ],
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 ];
