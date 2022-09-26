@@ -44,7 +44,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	public function schedule_single( $timestamp, $hook, $args = [] ) {
 		try {
 			return as_schedule_single_action( $timestamp, $hook, $args, $this->group );
-		} catch( Exception $exception ) {
+		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), 'Action Scheduler Queue' );
 
 			return 0;
@@ -93,7 +93,7 @@ abstract class AbstractASQueue implements QueueInterface {
 
 		try {
 			return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
-		} catch( Exception $exception ) {
+		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), 'Action Scheduler Queue' );
 
 			return 0;
@@ -115,7 +115,7 @@ abstract class AbstractASQueue implements QueueInterface {
 
 		try {
 			return as_has_scheduled_action( $hook, $args, $this->group );
-		} catch( Exception $exception ) {
+		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), 'Action Scheduler Queue' );
 
 			return false;
@@ -209,7 +209,7 @@ abstract class AbstractASQueue implements QueueInterface {
 			}
 
 			return null;
-		} catch( Exception $exception ) {
+		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), 'Action Scheduler Queue' );
 
 			return null;
