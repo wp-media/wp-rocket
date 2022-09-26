@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-08-29 14:33-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2022\n"
 "Language-Team: Persian (Iran) (https://www.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -2351,10 +2351,8 @@ msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
-msgstr ""
-"پیشنهاد می کنیم%1$sپیش بارگذاری نقشه سایت را%2$s برای سریعتر به نتیجه رسیدن "
-"فعال کنید."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
+msgstr "ما پیشنهاد می کنیم %1$sپیش بارگذاری%2$s برای نتایج سریعتر فعال کنید."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
@@ -2388,43 +2386,12 @@ msgstr ""
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "برای دریافت لایسنس %1$sتخفیفی اینجا کلیک کنید!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr "شما در شرف از دست دادن دسترسی به یک ویژگی مهم هستید"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
-#, php-format
-msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature "
-"will not be available any longer in your file optimization tab."
-msgstr ""
-"بازگشت به نسخه 3.10.10.1،%1$sحذف Unused CSS%2$sاین ویژگی دیگر در برگه بهینه "
-"سازی فایل شما در دسترس نخواهد بود."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-"اگر با مشکلی در رابطه با این ویژگی مواجه شدید، به سادگی می توانید این گزینه "
-"را غیرفعال کنید،یا%1$sتماس با پشتیبانی%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr "انصراف"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr "بازگشت به عقب را تأیید کنید"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:300
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: قابلیت CSSهای استفاده شده فعال نیست!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:321
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: کش CSS استفاده شده پاک شد!"
@@ -2465,8 +2432,14 @@ msgstr "%1$sبازگشت به موشک وردپرس%2$sیا %3$s رفتن به �
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
-msgstr "%1$s:لطفا صبر کنید. سرویس پیش بارگذاری صفحات شما را پردازش می کند."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s:سرویس پیش بارگذاری اکنون فعال است. پس از پیش بارگذاری، هر زمان که تمام "
+"صفحات شما پاک شوند، به کش کردن آن ها ادامه می دهد. هیچ اقدام دیگری لازم "
+"نیست."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:129
 msgid "WP Rocket Preload pending jobs"
@@ -3665,6 +3638,10 @@ msgstr "30 روز"
 msgid "Forever"
 msgstr "همیشگی"
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr "انصراف"
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "تایید"
@@ -3978,11 +3955,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "نصب دوباره نسخه %s"
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "حالت اشکال زدایی"
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "یک فایل گزارش اشکال زدایی ایجاد کنید."
 
