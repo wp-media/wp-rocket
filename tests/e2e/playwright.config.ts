@@ -45,6 +45,7 @@ const config: PlaywrightTestConfig = {
 		command: 'npm run wp-env start',
 		url: 'http://localhost:8888/',
 		reuseExistingServer: true,
+		timeout: 120 * 1000,
 	},
 
 	/* Configure projects for major browsers */
