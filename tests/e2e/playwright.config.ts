@@ -8,7 +8,8 @@ const config: PlaywrightTestConfig = {
 	globalSetup: require.resolve('./setup/global-setup'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
-	timeout: 30000,
+	timeout: 90000,
+	globalTimeout: 900000,
 	reportSlowTests: null,
 	/* Run tests in files in parallel */
 	fullyParallel: true,
@@ -41,12 +42,12 @@ const config: PlaywrightTestConfig = {
 		storageState: 'tests/e2e/storageState.json',
 	},
 
-	webServer: {
-		command: 'npm run wp-env start',
-		url: 'http://localhost:8888/',
-		reuseExistingServer: true,
-		timeout: 120 * 1000,
-	},
+	// webServer: {
+	// 	command: 'npm run wp-env start',
+	// 	url: 'http://localhost:8888/',
+	// 	reuseExistingServer: true,
+	// 	timeout: 120 * 1000,
+	// },
 
 	/* Configure projects for major browsers */
 	projects: [
