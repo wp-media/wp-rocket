@@ -205,39 +205,10 @@ class UsedCSS {
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
-			// Send the request to add this url into the queue and get the jobId and queueName.
-
-			/**
-			 * Filters the RUCSS safelist
-			 *
-			 * @since 3.11
-			 *
-			 * @param array $safelist Array of safelist values.
-			 */
-			$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
-
-			$config = [
-				'treeshake'      => 1,
-				'rucss_safelist' => $safelist,
-				'is_mobile'      => $is_mobile,
-				'is_home'        => $this->is_home( $url ),
-			];
-
-			$add_to_queue_response = $this->api->add_to_queue( $url, $config );
-			if ( 200 !== $add_to_queue_response['code'] ) {
-				Logger::error(
-					'Error when contacting the RUCSS API.',
-					[
-						'rucss error',
-						'url'     => $url,
-						'code'    => $add_to_queue_response['code'],
-						'message' => $add_to_queue_response['message'],
-					]
-				);
-
+			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
+			if ( false === $add_to_queue_response ){
 				return $html;
 			}
-
 			// We got jobid and queue name so save them into the DB and change status to be pending.
 			$this->used_css_query->create_new_job(
 				$url,
@@ -245,7 +216,6 @@ class UsedCSS {
 				$add_to_queue_response['contents']['queueName'],
 				$is_mobile
 			);
-
 			return $html;
 		}
 
@@ -270,6 +240,47 @@ class UsedCSS {
 		return $html;
 	}
 
+	/**
+	 * Send the request to add url into the queue.
+	 *
+	 * @param string $url page URL.
+	 * @param bool $is_mobile page is for mobile.
+	 *
+	 * @return array|bool An array of response data, or false.
+	 */
+	public function add_url_to_the_queue( string $url , bool $is_mobile ) {
+		/**
+		 * Filters the RUCSS safelist
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $safelist Array of safelist values.
+		 */
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+
+		$config = [
+			'treeshake'      => 1,
+			'rucss_safelist' => $safelist,
+			'is_mobile'      => $is_mobile,
+			'is_home'        => $this->is_home( $url ),
+		];
+
+		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+		if ( 200 !== $add_to_queue_response['code'] ) {
+			Logger::error(
+				'Error when contacting the RUCSS API.',
+				[
+					'rucss error',
+					'url'     => $url,
+					'code'    => $add_to_queue_response['code'],
+					'message' => $add_to_queue_response['message'],
+				]
+			);
+
+			return false;
+		}
+		return $add_to_queue_response;
+	}
 	/**
 	 * Delete used css based on URL.
 	 *
@@ -588,7 +599,7 @@ class UsedCSS {
 	 */
 	public function check_job_status( int $id ) {
 		Logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
-
+		$new_job_id = false;
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
 			Logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
@@ -612,13 +623,20 @@ class UsedCSS {
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
 
-				$this->used_css_query->make_status_failed( $id );
+				$this->used_css_query->make_status_failed( $id , $job_details['message'] );
 
 				return;
 			}
 
-			// Increment the retries number with 1 and Change status to pending again.
-			$this->used_css_query->increment_retries( $id, $row_details->retries );
+			// on timeout errors with code 504 create new job.
+			if ( 504 === $job_details['code'] ){
+				$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
+				if ( false !== $add_to_queue_response ){
+					$new_job_id = $add_to_queue_response['contents']['jobId'];
+				}
+			}
+			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
+			$this->used_css_query->increment_retries( $id, $row_details->retries, $new_job_id );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
@@ -630,9 +648,9 @@ class UsedCSS {
 		$hash = md5( $css );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
-			Logger::error( 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url );
-
-			$this->used_css_query->make_status_failed( $id );
+			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
+			Logger::error( $message );
+			$this->used_css_query->make_status_failed( $id , $message );
 
 			return;
 		}
