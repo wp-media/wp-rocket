@@ -206,7 +206,7 @@ class UsedCSS {
 
 		if ( empty( $used_css ) ) {
 			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
-			if ( false === $add_to_queue_response ){
+			if ( false === $add_to_queue_response ) {
 				return $html;
 			}
 			// We got jobid and queue name so save them into the DB and change status to be pending.
@@ -244,11 +244,11 @@ class UsedCSS {
 	 * Send the request to add url into the queue.
 	 *
 	 * @param string $url page URL.
-	 * @param bool $is_mobile page is for mobile.
+	 * @param bool   $is_mobile page is for mobile.
 	 *
 	 * @return array|bool An array of response data, or false.
 	 */
-	public function add_url_to_the_queue( string $url , bool $is_mobile ) {
+	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
 		/**
 		 * Filters the RUCSS safelist
 		 *
@@ -599,7 +599,7 @@ class UsedCSS {
 	 */
 	public function check_job_status( int $id ) {
 		Logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
-		$new_job_id = false;
+		$new_job_id  = false;
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
 			Logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
@@ -623,15 +623,15 @@ class UsedCSS {
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
 
-				$this->used_css_query->make_status_failed( $id , $job_details['message'] );
+				$this->used_css_query->make_status_failed( $id, $job_details['message'] );
 
 				return;
 			}
 
 			// on timeout errors with code 504 create new job.
-			if ( 504 === $job_details['code'] ){
+			if ( 504 === $job_details['code'] ) {
 				$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
-				if ( false !== $add_to_queue_response ){
+				if ( false !== $add_to_queue_response ) {
 					$new_job_id = $add_to_queue_response['contents']['jobId'];
 				}
 			}
@@ -650,7 +650,7 @@ class UsedCSS {
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
 			Logger::error( $message );
-			$this->used_css_query->make_status_failed( $id , $message );
+			$this->used_css_query->make_status_failed( $id, $message );
 
 			return;
 		}
