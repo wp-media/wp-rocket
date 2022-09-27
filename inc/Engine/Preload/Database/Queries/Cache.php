@@ -155,10 +155,10 @@ class Cache extends Query {
 		$db_row = array_pop( $rows );
 
 		$data = [
-			'url'      => $url,
-			'status'   => key_exists('status', $resource) ? $resource['status'] : $db_row->status,
-			'is_locked'     => key_exists( 'is_locked', $resource ) ? $resource['is_locked'] : $db_row->is_locked,
-			'modified' => current_time( 'mysql', true ),
+			'url'       => $url,
+			'status'    => key_exists( 'status', $resource ) ? $resource['status'] : $db_row->status,
+			'is_locked' => key_exists( 'is_locked', $resource ) ? $resource['is_locked'] : $db_row->is_locked,
+			'modified'  => current_time( 'mysql', true ),
 		];
 
 		if ( key_exists( 'last_accessed', $resource ) && (bool) $resource['last_accessed'] ) {

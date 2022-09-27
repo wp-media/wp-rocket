@@ -90,7 +90,7 @@ class Cache extends Table {
 		$created = true;
 
 		if ( ! $hash_column_exists ) {
-			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN hash tinyint(1) NOT NULL default 0 AFTER last_accessed" );
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN is_locked tinyint(1) NOT NULL default 0 AFTER last_accessed" );
 		}
 
 		return $this->is_success( $created );
