@@ -558,21 +558,58 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
+		if ( false !== get_transient( 'wpr_dashboard_seen_' . get_current_user_id() ) ) {
+			return $menu_title;
+		}
+
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
+		$auto_renew    = $this->user->is_auto_renew();
+		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
 
 		if (
-			$this->user->is_auto_renew()
+			$ocd_enabled
+			&&
+			$auto_renew
 			&&
 			4 > $expired_since
 		) {
 			return $menu_title;
 		}
 
-		if ( ! $this->options->get( 'optimize_css_delivery', 0 ) ) {
+		if (
+			! $auto_renew
+			&&
+			$ocd_enabled
+			&&
+			4 < $expired_since
+			&&
+			15 > $expired_since
+		) {
 			return $menu_title;
 		}
 
-		if ( false !== get_transient( 'wpr_dashboard_seen_' . get_current_user_id() ) ) {
+		if (
+			! $auto_renew
+			&&
+			! $ocd_enabled
+			&&
+			4 < $expired_since
+
+		) {
+			return $menu_title;
+		}
+
+		if (
+			$auto_renew
+			&&
+			! $ocd_enabled
+			&&
+			(
+				4 > $expired_since
+				||
+				15 < $expired_since
+			)
+		) {
 			return $menu_title;
 		}
 
