@@ -10,8 +10,9 @@ export class pageUtils {
 
     wp_admin_login = async () => {
         // Fill username & password.
-        await this.page.locator('input[name="log"]').fill(WP_USERNAME);
-        await this.page.locator('input[name="pwd"]').fill(WP_PASSWORD);
+        await this.page.locator('#user_login').waitFor({ state: "attached" });
+        await this.page.locator('#user_login').fill(WP_USERNAME);
+        await this.page.locator('#user_pass').fill(WP_PASSWORD);
 
         // Click login.
         await this.page.locator('text=Log In').click();
