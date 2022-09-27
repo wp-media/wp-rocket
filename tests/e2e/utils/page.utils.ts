@@ -12,6 +12,7 @@ export class pageUtils {
         // Fill username & password.
         await this.page.locator('#user_login').waitFor({ state: "attached" });
         await this.page.locator('#user_login').fill(WP_USERNAME);
+        await this.page.locator('#user_pass').waitFor({ state: "attached" });
         await this.page.locator('#user_pass').fill(WP_PASSWORD);
 
         // Click login.
