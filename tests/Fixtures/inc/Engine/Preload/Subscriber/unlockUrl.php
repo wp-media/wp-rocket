@@ -28,7 +28,7 @@ return [
 			'data' => [
 				[
 					'url' => 'http://example.org',
-					'is_locked' => true
+					'is_locked' => false
 				]
 			]
 		]

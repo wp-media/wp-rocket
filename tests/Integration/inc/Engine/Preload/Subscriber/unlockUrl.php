@@ -29,7 +29,7 @@ class Test_UnlockUrl extends AdminTestCase
 		do_action('rocket_preload_unlock_url', $config['url']);
 
 		foreach ($expected['data'] as $cache) {
-			$this->assertFalse(self::cacheFound($cache));
+			$this->assertTrue(self::cacheFound($cache));
 		}
 	}
 }
