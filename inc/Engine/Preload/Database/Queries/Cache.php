@@ -138,6 +138,7 @@ class Cache extends Query {
 				[
 					'url'           => $url,
 					'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
+					'is_locked'     => key_exists( 'is_locked', $resource ) ? $resource['is_locked'] : false,
 					'last_accessed' => current_time( 'mysql', true ),
 				]
 			);
@@ -155,7 +156,8 @@ class Cache extends Query {
 
 		$data = [
 			'url'      => $url,
-			'status'   => $resource['status'],
+			'status'   => key_exists('status', $resource) ? $resource['status'] : $db_row->status,
+			'is_locked'     => key_exists( 'is_locked', $resource ) ? $resource['is_locked'] : $db_row->is_locked,
 			'modified' => current_time( 'mysql', true ),
 		];
 
@@ -201,6 +203,7 @@ class Cache extends Query {
 			[
 				'url'           => untrailingslashit( $url ),
 				'status'        => key_exists( 'status', $resource ) ? $resource['status'] : 'pending',
+				'is_locked'     => key_exists( 'is_locked', $resource ) ? $resource['is_locked'] : false,
 				'last_accessed' => current_time( 'mysql', true ),
 			]
 		);
