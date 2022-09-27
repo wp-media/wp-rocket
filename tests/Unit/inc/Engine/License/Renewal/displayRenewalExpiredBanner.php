@@ -5,8 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\Pricing;
-use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\{Pricing, User};
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -111,7 +110,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
-			Functions\when( 'date_i18n' )->justReturn( date( 'Ymd', strtotime( 'now + 8 days' ) ) );
+			Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
 
 			Functions\when( 'get_option' )->justReturn( 'Ymd' );
 
