@@ -109,7 +109,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_clean_terms'            => 'clean_urls',
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
-			'pre_delete_term'                     => 'delete_term_preload_cache',
+			'rocket_preload_lock_url'             => 'lock_url',
+			'rocket_preload_unlock_url'           => 'unlock_url',
 		];
 	}
 
@@ -374,5 +375,27 @@ class Subscriber implements Subscriber_Interface {
 				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
+	}
+
+	/**
+	 * Lock a URL.
+	 *
+	 * @param string $url URL to lock.
+	 *
+	 * @return void
+	 */
+	public function lock_url( string $url ) {
+		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock a URL.
+	 *
+	 * @param string $url URL to unlock.
+	 *
+	 * @return void
+	 */
+	public function unlock_url( string $url ) {
+		$this->query->unlock( $url );
 	}
 }

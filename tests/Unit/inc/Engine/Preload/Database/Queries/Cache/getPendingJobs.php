@@ -26,6 +26,7 @@ class Test_GetPendingJobs extends TestCase {
 		$this->query->expects($this->at(0))->method('query')->with( [
 			'count'  => true,
 			'status' => 'in-progress',
+			'is_locked' => false,
 		] )->willReturn( $config['in-progress'] );
 
 		if ( $config['total'] > $config['in-progress'] ) {
