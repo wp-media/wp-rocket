@@ -17,6 +17,9 @@ jobs:
       run: npm ci
     - name: Install Playwright dependencies
       run: npx playwright install firefox --with-deps
+    - name: Install WordPress and start the server
+      run: |
+          npm run wp-env start
     - name: Run Playwright tests
       run: DEBUG=pw:api npm run test:e2e
     - uses: actions/upload-artifact@v2
