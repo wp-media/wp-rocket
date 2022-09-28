@@ -42,7 +42,7 @@ const config: PlaywrightTestConfig = {
 	},
 	webServer: {
 		command: 'npm run wp-env start',
-		port: 8888,
+		port: 8889,
 		timeout: 120_000, // 120 seconds.
 		reuseExistingServer: true,
 	},
