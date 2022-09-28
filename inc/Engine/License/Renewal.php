@@ -587,18 +587,6 @@ class Renewal extends Abstract_Render {
 		if (
 			! $auto_renew
 			&&
-			$ocd_enabled
-			&&
-			4 < $expired_since
-			&&
-			15 > $expired_since
-		) {
-			return $menu_title;
-		}
-
-		if (
-			! $auto_renew
-			&&
 			! $ocd_enabled
 			&&
 			4 < $expired_since

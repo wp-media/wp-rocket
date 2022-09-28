@@ -34,17 +34,6 @@ return [
 		'title' => 'WP Rocket',
 		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
 	],
-	'shouldReturnSameWhenOCDEnabledAndExpiredSinceMoreThan4DaysAndLessThan15days' => [
-		'config' => [
-			'expired' => true,
-			'auto_renew' => false,
-			'expire_date' => strtotime( 'now - 10 days' ),
-			'ocd' => 1,
-			'transient' => false,
-		],
-		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket'
-	],
 	'shouldReturnUpdatedTitleWhenOCDEnabledAndExpiredSinceMoreThan15Days' => [
 		'config' => [
 			'expired' => true,

@@ -54,19 +54,6 @@ return [
 		'title' => 'WP Rocket',
 		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
 	],
-	'shouldReturnSameWhenOCDEnabledAndExpiredSinceMoreThan4DaysAndLessThan15days' => [
-		'config' => [
-			'white_label' => false,
-			'user' => json_decode( json_encode( [
-				'licence_expiration' => strtotime( 'now - 10 days' ),
-				'has_auto_renew' => false,
-			] ) ),
-			'ocd' => 1,
-			'transient' => false,
-		],
-		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket'
-	],
 	'shouldReturnUpdatedTitleWhenOCDEnabledAndExpiredSinceMoreThan15Days' => [
 		'config' => [
 			'white_label' => false,
