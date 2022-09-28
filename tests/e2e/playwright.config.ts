@@ -11,14 +11,12 @@ const config: PlaywrightTestConfig = {
 	timeout: 90000,
 	globalTimeout: 900000,
 	reportSlowTests: null,
-	/* Run tests in files in parallel */
-	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: 0,
+	retries: process.env.CI ? 2 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: 1,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: 'list',
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -40,14 +38,21 @@ const config: PlaywrightTestConfig = {
 		video: 'on-first-retry',
 		// Tell all tests to load signed-in state from 'storageState.json'.
 		storageState: 'tests/e2e/storageState.json',
+		actionTimeout: 10_000, // 10 seconds.
+	},
+	webServer: {
+		command: 'npm run wp-env start',
+		port: 8888,
+		timeout: 120_000, // 120 seconds.
+		reuseExistingServer: true,
 	},
 
 	/* Configure projects for major browsers */
 	projects: [
 		{
-			name: 'firefox',
+			name: 'chrome',
 			use: {
-				...devices['Desktop Firefox'],
+				...devices['Desktop Chrome'],
 			},
 		},
 

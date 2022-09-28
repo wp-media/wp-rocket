@@ -1,10 +1,10 @@
 // global-setup.ts
-import { firefox } from '@playwright/test';
+import { chromium } from '@playwright/test';
 
 import { pageUtils } from '../utils/page.utils';
 
 async function globalSetup() {
-  const browser = await firefox.launch();
+  const browser = await chromium.launch();
   const page = await browser.newPage();
 
   const page_utils = new pageUtils( page );

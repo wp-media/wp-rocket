@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright dependencies
-      run: npx playwright install firefox --with-deps
+      run: npx playwright install chromium --with-deps
     - name: Install WordPress and start the server
       run: |
           npm run wp-env start
