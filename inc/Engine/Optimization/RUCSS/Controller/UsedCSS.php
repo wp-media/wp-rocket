@@ -667,7 +667,6 @@ class UsedCSS {
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-
 	}
 
 	/**
