@@ -177,7 +177,7 @@ class PreloadUrl {
 		$rows  = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $index => $row ) {
 
-			if( $this->is_excluded_by_filter( $row->url ) ) {
+			if ( $this->is_excluded_by_filter( $row->url ) ) {
 				$this->query->delete_by_url( $row->url );
 				continue;
 			}
