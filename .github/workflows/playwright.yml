@@ -19,7 +19,8 @@ jobs:
       run: npx playwright install chromium --with-deps
     - name: Install WordPress and start the server
       run: |
-          npm run wp-env start
+          npm run wp-env destroy
+          npm run wp-env start --debug
     - run: mkdir artifacts
     - name: Run Playwright tests
       run: DEBUG=pw:api npm run test:e2e
