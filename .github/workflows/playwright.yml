@@ -29,7 +29,7 @@ jobs:
           npm run wp-env start
     - run: mkdir artifacts
     - name: Run Playwright tests
-      run: DEBUG=pw:api npm run test:e2e
+      run: npm run test:e2e
     - uses: actions/upload-artifact@v2
       if: always()
       with:
