@@ -20,7 +20,7 @@ const config: PlaywrightTestConfig = {
 	workers: 1,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: 'list',
-	outputDir: path.join( process.cwd(), 'artifacts/test-results' ),
+	outputDir: path.join( process.cwd(), 'artifacts' ),
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		baseURL: WP_BASE_URL,
