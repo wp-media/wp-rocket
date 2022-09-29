@@ -20,6 +20,7 @@ jobs:
     - name: Install WordPress and start the server
       run: |
           npm run wp-env start
+          sudo chown 33:33 -R ~/wp-env/
     - run: mkdir artifacts
     - name: Run Playwright tests
       run: DEBUG=pw:api npm run test:e2e
