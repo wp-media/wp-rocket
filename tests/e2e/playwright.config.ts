@@ -35,7 +35,7 @@ const config: PlaywrightTestConfig = {
 		},
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
-		video: 'on',
+		video: 'retain-on-failure',
 		// Tell all tests to load signed-in state from 'storageState.json'.
 		storageState: 'tests/e2e/storageState.json',
 		actionTimeout: 10_000, // 10 seconds.
