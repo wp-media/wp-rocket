@@ -19,6 +19,7 @@ test.describe( 'Preload', () => {
             'expected': 'The preload service is now active'
         };
 
+        await on_activation(data);
         await when_preload_enabled(page, data);
         await when_clear_cache_and_preload_admin_bar(page, data);
         await when_clear_cache_and_preload_settings(page, data);
@@ -30,8 +31,17 @@ test.describe( 'Preload', () => {
     });
 });
 
+const on_activation = async (data) => {
+    await expect(data.locator).toContainText(data.expected);
+}
+
 const when_preload_enabled = async (page, data) => {
     await data.preload.visit();
+    // Disable preload
+    await data.preload.togglePreload();
+    await save_settings(page);
+
+    // Re-enable
     await data.preload.togglePreload();
     await save_settings(page);
 
