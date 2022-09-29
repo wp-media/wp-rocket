@@ -10,9 +10,6 @@ async function globalSetup() {
   const page_utils = new pageUtils( page );
 
   await page_utils.visit_page('wp-admin');
-
-  await page.screenshot({ path: 'artifacts/wp-admin.png', fullPage: true });
-
   await page_utils.wp_admin_login();
 
   // Save signed-in state to 'storageState.json'.
