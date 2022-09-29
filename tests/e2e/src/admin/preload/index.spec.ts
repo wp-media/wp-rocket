@@ -23,11 +23,6 @@ test.describe( 'Preload', () => {
         await when_preload_enabled(page, data);
         await when_clear_cache_and_preload_admin_bar(page, data);
         await when_clear_cache_and_preload_settings(page, data);
-
-        // Revert
-        await data.preload.visit();
-        await data.preload.togglePreload();
-        await page.locator('#wpr-options-submit').click();
     });
 });
 
