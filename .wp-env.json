@@ -1,9 +1,7 @@
 {
   "core": null,
+    "plugins": ["."],
     "config": {
       "WP_DEBUG_DISPLAY": true
-    },
-    "mappings": {
-      "wp-content/plugins/wp-rocket": "./wp-content/plugins/wp-rocket"
     }
 }
