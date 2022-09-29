@@ -43,6 +43,6 @@ class Xstore implements Subscriber_Interface {
 	private static function is_current_theme( $theme = null ) {
 		$theme = $theme instanceof \WP_Theme ? $theme : wp_get_theme();
 
-		return 'xstore' === strtolower( $theme->get( 'Name' ) ) || 'xstore' === strtolower( $theme->get_template() );
+		return 'xstore' === strtolower( $theme->get( 'Name' ) ) || 'xstore' === strtolower( $theme->get_template() ?? '' );
 	}
 }

@@ -82,6 +82,6 @@ class Jevelin implements Subscriber_Interface {
 	private static function is_jevelin( $theme = null ) {
 		$theme = $theme instanceof \WP_Theme ? $theme : wp_get_theme();
 
-		return 'jevelin' === strtolower( $theme->get( 'Name' ) ) || 'jevelin' === strtolower( $theme->get_template() );
+		return 'jevelin' === strtolower( $theme->get( 'Name' ) ) || 'jevelin' === strtolower( $theme->get_template() ?? '' );
 	}
 }
