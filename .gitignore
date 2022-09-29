@@ -4,7 +4,7 @@
 composer.lock
 vfs:/
 /test-results/
-/playwright-report/
+/artifacts
 /playwright/.cache/
 .wp-env.json
 /tests/Integration/.phpunit.result.cache

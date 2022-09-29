@@ -1,3 +1,4 @@
+import path from 'path';
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
 
@@ -19,6 +20,7 @@ const config: PlaywrightTestConfig = {
 	workers: 1,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: 'list',
+	outputDir: path.join( process.cwd(), 'artifacts/test-results' ),
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		baseURL: WP_BASE_URL,
@@ -35,7 +37,7 @@ const config: PlaywrightTestConfig = {
 		},
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
-		video: 'on-first-retry',
+		video: 'on',
 		// Tell all tests to load signed-in state from 'storageState.json'.
 		storageState: 'tests/e2e/storageState.json',
 		actionTimeout: 10_000, // 10 seconds.
