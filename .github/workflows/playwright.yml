@@ -19,6 +19,11 @@ jobs:
       run: composer install --prefer-dist --no-interaction --no-scripts
     - name: Install Playwright dependencies
       run: npx playwright install chromium --with-deps
+    - name: Update wp-env config
+      env:
+        WP_ROCKET_KEY: ${{ secrets.ROCKET_EMAIL }}
+        WP_ROCKET_EMAIL: ${{ secrets.ROCKET_KEY }}
+      run: node ./.github/scripts/build-wp-env.js
     - name: Install WordPress and start the server
       run: |
           npm run wp-env start
