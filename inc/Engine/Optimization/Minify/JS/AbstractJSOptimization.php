@@ -269,6 +269,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'm2d.m2.ai',
 			'pubguru.net',
 			'trustindex.io',
+			'cdnjs.cloudflare.com/ajax/libs/prism/',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
