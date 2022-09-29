@@ -6,7 +6,6 @@ vfs:/
 /test-results/
 /artifacts
 /playwright/.cache/
-.wp-env.json
 /tests/Integration/.phpunit.result.cache
 /tests/Unit/.phpunit.result.cache
 
