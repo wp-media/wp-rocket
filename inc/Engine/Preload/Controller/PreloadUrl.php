@@ -228,6 +228,12 @@ class PreloadUrl {
 		return $this->filesystem->exists( $file_cache_path );
 	}
 
+	/**
+	 * Check if the url has query params.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
 	public function has_cached_query_string( string $url ) {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 		$queries = $this->convert_query_to_array( $queries );

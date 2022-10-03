@@ -180,8 +180,8 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param array $is_allowed Are query strings allowed.
 		 */
-		if ( isset( $_GET ) && apply_filters( 'rocket_preload_query_string', false ) ) {
-			$params = $_GET;
+		if ( isset( $_GET ) && apply_filters( 'rocket_preload_query_string', false ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
 		$url = home_url( add_query_arg( $params, $wp->request ) );
