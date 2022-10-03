@@ -122,7 +122,6 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
-		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
 
 		/**
 		 * Format the url.
@@ -130,7 +129,9 @@ class Cache extends Query {
 		 * @param string $url url to format.
 		 * @return string
 		 */
-		$url = apply_filters( 'rocket_preload_format_url', $url );
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = untrailingslashit( strtok( $url, '?' ) );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
@@ -190,7 +191,6 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
-		$url = strtok( $resource['url'], '?' );
 
 		/**
 		 * Format the url.
@@ -198,7 +198,9 @@ class Cache extends Query {
 		 * @param string $url url to format.
 		 * @return string
 		 */
-		$url = apply_filters( 'rocket_preload_format_url', $url );
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = strtok( $url, '?' );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
