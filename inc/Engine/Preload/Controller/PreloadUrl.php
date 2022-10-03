@@ -61,11 +61,16 @@ class PreloadUrl {
 	 */
 	public function preload_url( string $url ) {
 
-		if (apply_filters('rocket_preload_query_string', false) && ! $this->has_cached_query_string( $url ) ) {
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
+		if ( apply_filters( 'rocket_preload_query_string', false ) && ! $this->has_cached_query_string( $url ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
-		$url = $this->format_url( $url );
+		$url       = $this->format_url( $url );
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
 		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
@@ -225,10 +230,9 @@ class PreloadUrl {
 
 	public function has_cached_query_string( string $url ) {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
-		$queries = $this->convert_query_to_array($queries);
+		$queries = $this->convert_query_to_array( $queries );
 
-		return count( array_intersect( array_keys( $queries ), get_rocket_cache_query_string() ) ) > 0 || count
-			($queries)
+		return count( array_intersect( array_keys( $queries ), get_rocket_cache_query_string() ) ) > 0 || count( $queries )
 		=== 0;
 	}
 

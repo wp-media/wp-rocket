@@ -175,6 +175,11 @@ class Subscriber implements Subscriber_Interface {
 
 		$params = [];
 
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( isset( $_GET ) && apply_filters( 'rocket_preload_query_string', false ) ) {
 			$params = $_GET;
 		}
@@ -195,6 +200,11 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( ( ! apply_filters( 'rocket_preload_query_string', false ) && isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}

@@ -125,6 +125,11 @@ class Cache extends Query {
 	 */
 	public function create_or_update( array $resource ) {
 		$url = $resource['url'];
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
 			$url = $this->format_url( $url );
 		} else {
@@ -193,6 +198,11 @@ class Cache extends Query {
 	public function create_or_nothing( array $resource ) {
 
 		$url = $resource['url'];
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
 			$url = $this->format_url( $url );
 		} else {
@@ -239,6 +249,11 @@ class Cache extends Query {
 	 */
 	public function get_rows_by_url( string $url ) {
 
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
 			$url = $this->format_url( $url );
 		} else {
@@ -376,6 +391,11 @@ class Cache extends Query {
 	 */
 	public function make_status_complete( string $url ) {
 
+		/**
+		 * Filters to allow query string in preload.
+		 *
+		 * @param array $is_allowed Are query strings allowed.
+		 */
 		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
 			$url = $this->format_url( $url );
 		} else {
