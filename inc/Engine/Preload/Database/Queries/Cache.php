@@ -187,7 +187,7 @@ class Cache extends Query {
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => untrailingslashit( $url ),
 			],
 			false
 		);
