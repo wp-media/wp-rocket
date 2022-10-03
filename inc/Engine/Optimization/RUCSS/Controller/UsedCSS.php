@@ -237,7 +237,11 @@ class UsedCSS {
 
 				return $html;
 			}
-
+			/**
+			 * Lock preload URL.
+			 *
+			 * @param string $url URL to lock
+			 */
 			do_action( 'rocket_preload_lock_url', $url );
 
 			// We got jobid and queue name so save them into the DB and change status to be pending.
@@ -613,6 +617,11 @@ class UsedCSS {
 			// Failure, check the retries number.
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
+				/**
+				 * Unlock preload URL.
+				 *
+				 * @param string $url URL to unlock
+				 */
 				do_action( 'rocket_preload_unlock_url', $row_details->url );
 				$this->used_css_query->make_status_failed( $id );
 
@@ -626,6 +635,11 @@ class UsedCSS {
 
 			return;
 		}
+		/**
+		 * Unlock preload URL.
+		 *
+		 * @param string $url URL to unlock
+		 */
 		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );

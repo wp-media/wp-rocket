@@ -109,6 +109,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_clean_terms'            => 'clean_urls',
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
+			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_lock_url'             => 'lock_url',
 			'rocket_preload_unlock_url'           => 'unlock_url',
 		];
