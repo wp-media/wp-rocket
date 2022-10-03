@@ -2,12 +2,14 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Preload\FormatUrlTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
 class Cache extends Query {
+	use FormatUrlTrait;
 
 	/**
 	 * Logger instance.
@@ -122,7 +124,14 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
-		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
+		$url = $resource['url'];
+		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
+			$url = $this->format_url( $url );
+		} else {
+			$url = strtok( $url, '?' );
+		}
+
+		$url = untrailingslashit( $url );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
@@ -182,12 +191,19 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
-		$url = strtok( $resource['url'], '?' );
 
-		// check the database if those resources added before.
+		$url = $resource['url'];
+		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
+			$url = $this->format_url( $url );
+		} else {
+			$url = strtok( $url, '?' );
+		}
+		$url = untrailingslashit( $url );
+
+			// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => $url,
 			],
 			false
 		);
@@ -223,7 +239,11 @@ class Cache extends Query {
 	 */
 	public function get_rows_by_url( string $url ) {
 
-		$url = strtok( $url, '?' );
+		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
+			$url = $this->format_url( $url );
+		} else {
+			$url = strtok( $url, '?' );
+		}
 
 		$query = $this->query(
 			[
@@ -355,6 +375,13 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function make_status_complete( string $url ) {
+
+		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
+			$url = $this->format_url( $url );
+		} else {
+			$url = strtok( $url, '?' );
+		}
+
 		$tasks = $this->query(
 			[
 				'url' => $url,

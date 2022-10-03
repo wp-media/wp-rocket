@@ -32,24 +32,50 @@ class Test_PreloadUrl extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached]',
-			[$this->options,
-			$this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock(PreloadUrl::class . '[get_mobile_user_agent_prefix,is_already_cached,format_url,]',
+			[$this->options, $this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config) {
-		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
-		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+		Filters\expectApplied('rocket_preload_query_string')->andReturn($config['query_activated']);
+		Functions\expect('get_rocket_cache_query_string')->andReturn($config['cached_queries']);
+		$this->isNoCached($config);
+		$this->configureAlreadyCached($config);
 		$this->configureRequest($config);
 		$this->configureMobileRequest($config);
 		$this->controller->preload_url($config['url']);
 	}
 
+	protected function isNoCached($config) {
+		if($config['is_cached']) {
+			return;
+		}
+
+		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
+	}
+
+	protected function configureAlreadyCached($config) {
+
+		if(! $config['is_cached']) {
+			return;
+		}
+		$this->controller->expects()->format_url($config['url'])->andReturn($config['url']);
+		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
+		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
+	}
+
 	protected function configureRequest($config) {
 		if($config['cache_exists']) {
+			return;
+		}
+
+		if(! $config['is_cached']) {
 			return;
 		}
 
@@ -58,6 +84,10 @@ class Test_PreloadUrl extends TestCase
 
 	protected function configureMobileRequest($config) {
 		if($config['cache_exists']) {
+			return;
+		}
+
+		if(! $config['is_cached']) {
 			return;
 		}
 

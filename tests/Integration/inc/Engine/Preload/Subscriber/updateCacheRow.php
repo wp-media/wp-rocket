@@ -10,6 +10,8 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_UpdateCacheRow extends AdminTestCase
 {
+	protected $config;
+
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
@@ -22,13 +24,29 @@ class Test_UpdateCacheRow extends AdminTestCase
 		self::uninstallAll();
 	}
 
+	public function set_up()
+	{
+		parent::set_up();
+		add_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+	}
+
+	public function tear_down()
+	{
+		remove_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+		unset($GLOBALS['_GET']);
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
+		$this->config = $config;
 		foreach ($config['links'] as $link) {
 			self::addCache($link);
 		}
+
+		$_GET = $config['params'];
 
 		do_action('rocket_after_process_buffer');
 
@@ -43,5 +61,9 @@ class Test_UpdateCacheRow extends AdminTestCase
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'updateCacheRow' );
+	}
+
+	public function query_enabled() {
+		return $this->config['query_enabled'];
 	}
 }

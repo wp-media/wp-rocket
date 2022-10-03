@@ -14,6 +14,8 @@ use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
 
+	use FormatUrlTrait;
+
 	/**
 	 * Options instance.
 	 *
@@ -171,7 +173,15 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$url = home_url( add_query_arg( [], $wp->request ) );
+		$params = [];
+
+		if ( isset( $_GET ) && apply_filters( 'rocket_preload_query_string', false ) ) {
+			$params = $_GET;
+		}
+
+		$url = home_url( add_query_arg( $params, $wp->request ) );
+
+		$url = $this->format_url( $url );
 
 		if ( $this->query->is_preloaded( $url ) ) {
 			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
@@ -179,13 +189,13 @@ class Subscriber implements Subscriber_Interface {
 			/**
 			 * Fires when the preload from an URL is completed.
 			 *
-			 * @param string $url URL preladed.
+			 * @param string $url URL preloaded.
 			 * @param string $device Device from the cache.
 			 */
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( ( isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! apply_filters( 'rocket_preload_query_string', false ) && isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 

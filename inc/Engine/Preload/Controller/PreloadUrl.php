@@ -5,8 +5,10 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Preload\FormatUrlTrait;
 
 class PreloadUrl {
+	use FormatUrlTrait;
 
 	/**
 	 * Preload queue.
@@ -59,6 +61,11 @@ class PreloadUrl {
 	 */
 	public function preload_url( string $url ) {
 
+		if (apply_filters('rocket_preload_query_string', false) && ! $this->has_cached_query_string( $url ) ) {
+			$this->query->make_status_complete( $url );
+			return;
+		}
+		$url = $this->format_url( $url );
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
 		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
 			$this->query->make_status_complete( $url );
@@ -215,4 +222,14 @@ class PreloadUrl {
 
 		return $this->filesystem->exists( $file_cache_path );
 	}
+
+	public function has_cached_query_string( string $url ) {
+		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+		$queries = $this->convert_query_to_array($queries);
+
+		return count( array_intersect( array_keys( $queries ), get_rocket_cache_query_string() ) ) > 0 || count
+			($queries)
+		=== 0;
+	}
+
 }
