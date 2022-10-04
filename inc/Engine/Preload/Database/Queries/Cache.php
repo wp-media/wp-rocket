@@ -321,7 +321,7 @@ class Cache extends Query {
 		/**
 		 * Filter order for preloading pending urls.
 		 *
-		 * @param string $orderby order for preloading pending urls.
+		 * @param bool $orderby order for preloading pending urls.
 		 *
 		 * @returns bool
 		 */
