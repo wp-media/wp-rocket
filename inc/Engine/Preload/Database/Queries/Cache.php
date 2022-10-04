@@ -316,6 +316,15 @@ class Cache extends Query {
 			return [];
 		}
 
+		/**
+		 * Filter order for preloading pending urls.
+		 *
+		 * @param string $orderby order for preloading pending urls.
+		 *
+		 * @returns string
+		 */
+		$orderby = apply_filters( 'rocket_preload_order', 'modified' );
+
 		return $this->query(
 			[
 				'number'         => ( $total - $inprogress_count ),
@@ -327,7 +336,7 @@ class Cache extends Query {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'id',
+				'orderby'        => $orderby,
 				'order'          => 'asc',
 			]
 		);
