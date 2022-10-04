@@ -3,6 +3,7 @@
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_pending_jobs
@@ -39,9 +40,11 @@ class Test_GetPendingJobs extends TestCase {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'id',
+				'orderby'        => 'modified',
 				'order'          => 'asc',
 			])->willReturn($config['results']);
+
+			$this->assertFalse( Filters\applied( 'rocket_preload_order' ) > 0 );
 		}
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
