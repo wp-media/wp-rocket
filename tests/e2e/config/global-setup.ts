@@ -13,7 +13,7 @@ async function globalSetup() {
   await page_utils.wp_admin_login();
 
   // Save signed-in state to 'storageState.json'.
-  await page.context().storageState({ path: 'tests/e2e/storageState.json' });
+  await page.context().storageState({ path: 'tests/e2e/config/storageState.json' });
   await browser.close();
 }
 

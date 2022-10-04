@@ -3,7 +3,7 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
 
 // Internal dependencies
-import { WP_BASE_URL } from './wp.config';
+import { WP_BASE_URL } from './config/wp.config';
 
 const config: PlaywrightTestConfig = {
 	globalSetup: require.resolve('./setup/global-setup'),
@@ -37,7 +37,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',
 		// Tell all tests to load signed-in state from 'storageState.json'.
-		storageState: 'tests/e2e/storageState.json',
+		storageState: 'tests/e2e/config/storageState.json',
 		actionTimeout: 10_000, // 10 seconds.
 	},
 
