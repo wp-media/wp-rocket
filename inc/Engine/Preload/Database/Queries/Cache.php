@@ -316,14 +316,18 @@ class Cache extends Query {
 			return [];
 		}
 
+		$orderby = 'modified';
+
 		/**
 		 * Filter order for preloading pending urls.
 		 *
 		 * @param string $orderby order for preloading pending urls.
 		 *
-		 * @returns string
+		 * @returns bool
 		 */
-		$orderby = apply_filters( 'rocket_preload_order', 'modified' );
+		if ( apply_filters( 'rocket_preload_order', false ) ) {
+			$orderby = 'id';
+		}
 
 		return $this->query(
 			[
