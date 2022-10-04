@@ -3,7 +3,7 @@ import { expect, Page } from '@playwright/test';
 /**
  * Local deps.
  */
-import { WP_BASE_URL } from '../../wp.config';
+import { WP_BASE_URL } from '../../config/wp.config';
 import { pageUtils } from '../../utils/page.utils';
 
 export const deactivationModal = async ( page: Page ) => {

@@ -6,7 +6,8 @@ import { devices } from '@playwright/test';
 import { WP_BASE_URL } from './config/wp.config';
 
 const config: PlaywrightTestConfig = {
-	globalSetup: require.resolve('./setup/global-setup'),
+	globalSetup: require.resolve('./config/global-setup'),
+	globalTeardown: require.resolve('./config/global-teardown'),
 	testDir: './src',
 	/* Maximum time one test can run for. */
 	timeout: 90000,

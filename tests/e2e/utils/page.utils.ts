@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { WP_BASE_URL, WP_USERNAME, WP_PASSWORD } from '../wp.config';
+import { WP_BASE_URL, WP_USERNAME, WP_PASSWORD } from '../config/wp.config';
 
 export class pageUtils {
 	readonly page: Page;
