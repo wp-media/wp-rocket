@@ -40,11 +40,9 @@ class Test_GetPendingJobs extends TestCase {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'modified',
+				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
 				'order'          => 'asc',
 			])->willReturn($config['results']);
-
-			$this->assertFalse( Filters\applied( 'rocket_preload_order' ) > 0 );
 		}
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
