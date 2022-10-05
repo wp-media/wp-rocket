@@ -3,9 +3,19 @@ import { WP_BASE_URL, WP_USERNAME, WP_PASSWORD } from '../config/wp.config';
 
 export class pageUtils {
 	readonly page: Page;
+	readonly selectors;
+	readonly locators;
 
     constructor( page: Page ){
         this.page = page;
+
+        this.selectors = {
+            'plugins': '#menu-plugins',
+        };
+
+        this.locators = {
+            'plugin': page.locator( this.selectors.plugins )
+        };
     }
 
     wp_admin_login = async () => {
@@ -20,5 +30,9 @@ export class pageUtils {
 
     visit_page = async ( page_url: String ) => {
         await this.page.goto(WP_BASE_URL + '/' + page_url);
+    }
+
+    goto_plugin = async () => {
+        await this.locators.plugin.click();
     }
 }
