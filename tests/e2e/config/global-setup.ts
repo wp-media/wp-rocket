@@ -1,6 +1,9 @@
 // global-setup.ts
 import { chromium } from '@playwright/test';
 
+/**
+ * Local deps.
+ */
 import { pageUtils } from '../utils/page.utils';
 
 async function globalSetup() {
