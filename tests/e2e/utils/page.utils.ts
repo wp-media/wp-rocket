@@ -33,7 +33,7 @@ export class pageUtils {
     }
 
     goto_plugin = async () => {
-        await this.locators.plugin.click();
+        await this.page.goto(WP_BASE_URL + '/wp-admin/plugins.php');
     }
 
     goto_wpr = async () => {
