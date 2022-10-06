@@ -30,13 +30,7 @@ test.describe('WPR Deactivation', () => {
         // check deactivation notification
         await expect(page.locator('text=Plugin deactivated.')).toBeVisible();
 
-        // check wp-rocket-config does not exist
-        const allowed_status = [404];
-
-        page.on('response', async (response) => {
-            expect(allowed_status).toContain(response.status());
-        });
-
-        await page.goto('/wp-content/wp-rocket-config/localhost.php');
+        const response = await page.goto('/wp-content/wp-rocket-config/localhost.php');
+        expect(response.status()).toEqual(404);
     });
 });
