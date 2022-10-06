@@ -35,4 +35,8 @@ export class pageUtils {
     goto_plugin = async () => {
         await this.locators.plugin.click();
     }
+
+    goto_wpr = async () => {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/options-general.php?page=wprocket#dashboard');
+    }
 }
