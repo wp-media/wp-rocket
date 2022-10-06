@@ -41,6 +41,12 @@ const config: PlaywrightTestConfig = {
 		storageState: 'tests/e2e/config/storageState.json',
 		actionTimeout: 10_000, // 10 seconds.
 	},
+	webServer: {
+        command: 'npm run wp-env start',
+        port: 8888,
+        timeout: 120 * 1000,
+        reuseExistingServer: !process.env.CI,
+    },
 
 	/* Configure projects for major browsers */
 	projects: [
