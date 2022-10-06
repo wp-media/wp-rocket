@@ -8,7 +8,6 @@ import { pageUtils } from '../../utils/page.utils';
 test.describe('WPR Deactivation', () => {
     test('should deactivate WP Rocket successfully', async ( { page } ) => {
     
-        // force deactivation
         const page_utils = new pageUtils( page );
  
         await page_utils.visit_page('wp-admin');
