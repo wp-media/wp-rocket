@@ -1,9 +1,28 @@
 <?php
 return [
+	'phpShouldReturnFalse' => [
+		'config' => [
+			'rejected' => true,
+			'resource' => [
+				'url' => 'http://example.com/test.php',
+				'status' => 'pending',
+			],
+			'save' => [
+				'url' => 'http://example.com',
+				'status' => 'pending',
+				'last_accessed' => '838:59:59.000000'
+			],
+			'id' => 10,
+			'time' => '838:59:59.000000',
+			'rows' => [],
+		],
+		'expected' => false
+	],
 	'notExistingShouldCreate' => [
 		'config' => [
 			'filter_query' => false,
 			'formatted_url' => 'http://example.com',
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -27,6 +46,7 @@ return [
 		'config' => [
 			'filter_query' => false,
 			'formatted_url' => 'http://example.com',
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -50,6 +70,7 @@ return [
 		'config' => [
 			'filter_query' => false,
 			'formatted_url' => 'http://example.com',
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',

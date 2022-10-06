@@ -660,6 +660,8 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		global $post;
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
@@ -673,6 +675,22 @@ class UsedCSS {
 		}
 
 		if ( ! $this->can_optimize_url() ) {
+			return;
+		}
+
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
+		/**
+		 * Filters the rocket `clear used css of this url` option on admin bar menu.
+		 *
+		 * @since 3.12.1
+		 *
+		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
+		 * @param type  $post Post object.
+		 */
+		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
 			return;
 		}
 
