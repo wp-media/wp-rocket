@@ -2,8 +2,13 @@
 return [
 	'phpShouldReturnFalse' => [
 		'config' => [
+			'filter_query' => false,
 			'rejected' => true,
 			'resource' => [
+				'url' => 'http://example.com/test.php',
+				'status' => 'pending',
+			],
+			'query' => [
 				'url' => 'http://example.com/test.php',
 				'status' => 'pending',
 			],
@@ -100,6 +105,7 @@ return [
 	'paramsAndFilterDisabledShouldAddWithout' => [
 		'config' => [
 			'filter_query' => false,
+			'rejected' => false,
 			'formatted_url' => 'http://example.com?tes=tes',
 			'query' => [
 				'url' => 'http://example.com',
@@ -130,6 +136,7 @@ return [
 	'paramsAndFilterEnabledShouldAddWithParams' => [
 		'config' => [
 			'filter_query' => true,
+			'rejected' => false,
 			'formatted_url' => 'http://example.com?tes=tes',
 			'resource' => [
 				'url' => 'http://example.com?tes=tes',

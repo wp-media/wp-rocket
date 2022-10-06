@@ -43,14 +43,9 @@ class Test_CreateOrNothing extends TestCase {
 
 		Functions\when('current_time')->justReturn($config['time']);
 
-    $this->query->expects(self::once())->method('query')->with([
-			'url' => $config['query']['url'],
-		])->willReturn($config['rows']);
-
-
 		if(! $config['rejected']) {
 			$this->query->expects(self::once())->method('query')->with([
-				'url' => $config['resource']['url'],
+				'url' => $config['query']['url'],
 			])->willReturn($config['rows']);
 
 			$this->configureCreate($config);

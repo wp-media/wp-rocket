@@ -205,9 +205,6 @@ class Cache extends Query {
 		if ( $this->is_rejected( $url ) ) {
 			return false;
 		}
-
-		$url = strtok( $url, '?' );
-
 		/**
 		 * Filters to allow query string in preload.
 		 *
