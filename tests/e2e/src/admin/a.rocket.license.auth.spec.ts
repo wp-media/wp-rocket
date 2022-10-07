@@ -1,8 +1,16 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * Local deps.
+ */
+ import { pageUtils } from '../../utils/page.utils';
+
 test.describe('Rocket License', () => {
     test( 'should validate license if customer is key is correct', async ( { page } ) => {
-        await page.goto( '/wp-admin/options-general.php?page=wprocket' );
+
+        // Goto WPR settings.
+        const page_utils = new pageUtils(page);
+        await page_utils.goto_wpr();
 
         const validate_btn = 'text=Validate License';
 
