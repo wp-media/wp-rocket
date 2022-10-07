@@ -78,6 +78,7 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
+
 	/**
 	 * Instantiate the class.
 	 *
@@ -86,7 +87,7 @@ class UsedCSS {
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
-	 * @param Filesystem     $filesystem      Filesystem instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -509,10 +510,8 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-			&&
-			wp_is_mobile();
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
 	}
 
 	/**
