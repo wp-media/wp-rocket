@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-09-15 15:41-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2022\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -300,6 +300,18 @@ msgstr ""
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s iyi hale getirildi."
+
+#: inc/Engine/Admin/Notices.php:26
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:310
+#, php-format
+msgid ""
+"%1$s: We detected missing database table related to Action Scheduler. Please"
+" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
+"Rocket to work correctly."
+msgstr ""
+"%1$s: Eylem Zamanlayıcı ile ilgili eksik veritabanı tablosu tespit ettik. WP"
+" Rocket’in doğru olarak çalışması için gerekli olduğundan, bunu yeniden "
+"oluşturmak için lütfen aşağıdaki %2$sURL%3$s’yi ziyaret edin."
 
 #: inc/Engine/Admin/Settings/Page.php:191
 msgid "Save Changes"
@@ -1787,7 +1799,7 @@ msgstr "Şunlar sayesinde web sitenizi hızlandırın:"
 #, php-format
 msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
-"bandwith%2$s"
+"bandwidth%2$s"
 msgstr ""
 "%1$sSınırsız bant genişliği%2$s ile yüksek performanslı İçerik Dağıtım Ağı "
 "(CDN)"
@@ -1896,8 +1908,7 @@ msgstr "WP_CACHE ayarlı değil"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE, false olarak ayarlı"
 
-#: inc/Engine/Common/Queue/PreloadQueueRunner.php:232
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:252
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
 msgstr "Her dakika"
 
@@ -2383,12 +2394,36 @@ msgstr ""
 "kullanabilirsiniz (sadece şu anki ve yeni lisanslarınız arasındaki fiyat "
 "farkını ödeyeceksiniz)."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:103
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+"Listelerin en son sürümünü sunucumuzdan almak için aktif bir lisansa "
+"ihtiyacınız var."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
+msgid "Could not get updated lists from server."
+msgstr "Sunucudan güncellenmiş listeler alınamadı."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
+msgid "Lists are up to date."
+msgstr "Listeler güncel."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:132
+msgid "Could not update lists."
+msgstr "Listeler güncellenemedi."
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Lists are successfully updated."
+msgstr "Listeler başarılı olarak güncellendi."
+
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
 msgstr "Kullanılan CSS’yi Temizle"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:204
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:219
 #, php-format
 msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
@@ -2397,7 +2432,7 @@ msgstr ""
 "%1$s: Lütfen %2$s saniye bekleyin. Kullanılmayan CSS’yi Kaldır hizmeti "
 "sayfalarınızı işliyor."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:245
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
 msgid ""
 "%1$s: The Used CSS of your homepage has been processed. WP Rocket will "
@@ -2406,33 +2441,20 @@ msgstr ""
 "%1$s: Ana sayfanızın Kullanılan CSS’si işlendi. WP Rocket, her %3$s saniyede"
 " %2$s URL’ye kadar Kullanılan CSS oluşturmaya devam edecek."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:273
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"En hızlı sonuçlar için %1$sSite Haritası Ön Yüklemesi%2$s’nin "
-"etkinleştirilmesini öneririz."
+"En hızlı sonuçlar için %1$sÖnyükleme%2$s’nin etkinleştirilmesini öneririz."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "İşlem hakkında daha fazla bilgi edinmek için %1$sbelgelerimizi%2$s gözden "
 "geçirin."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
-#, php-format
-msgid ""
-"%1$s: We detected missing database table related to Action Scheduler. Please"
-" visit the following %2$sURL%3$s to recreate it, as it is needed for WP "
-"Rocket to work correctly."
-msgstr ""
-"%1$s: Eylem Zamanlayıcı ile ilgili eksik veritabanı tablosu tespit ettik. WP"
-" Rocket’in doğru olarak çalışması için gerekli olduğundan, bunu yeniden "
-"oluşturmak için lütfen aşağıdaki %2$sURL%3$s’yi ziyaret edin."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:507
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -2443,58 +2465,37 @@ msgstr ""
 "sitenizin performansını daha da iyileştirmek için aktif bir lisansa "
 "ihtiyacınız var."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:491
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:510
 #, php-format
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr "Önemli bir özelliğe erişiminizi kaybetmek üzeresiniz"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:547
 #, php-format
 msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature "
-"will not be available any longer in your file optimization tab."
+"Could not create the %2$s table in the database which is necessary for the "
+"Remove Unused CSS feature to work. Please reach out to <a href=\"%3$s\">our "
+"support</a>."
 msgstr ""
-"WP Rocket 3.10.10.1’e geri dönerseniz, %1$sKullanılmayan CSS’yi Kaldır%2$s "
-"özelliği artık dosya iyileştirme sekmenizde mevcut olmayacaktır."
+"Kullanılmayan CSS'yi Kaldır özelliğinin çalışması için gerekli olan %2$s "
+"tablosu veritabanında oluşturulamadı. Lütfen <a href=\"%3$s\">destek "
+"birimimize</a> ulaşın."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-"Eğer bu özellikle ilgili herhangi bir sorunla karşılaşırsanız, seçeneği "
-"basitçe etkisizleştirebilir veya %1$syardım için destek ile iletişime "
-"geçebilirsiniz%2$s."
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr "İptal"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr "Geri almayı onayla"
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: Kullanılan CSS seçeneği etkinleştirilmedi!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Kullanılan CSS önbelleği temizlendi!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:704
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr "Bu URL’nin Kullanılan CSS’sini Temizle"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:144
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "WP Rocket Kullanılmayan CSS’yi Kaldır bekleyen işleri"
 
@@ -2527,14 +2528,20 @@ msgstr ""
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
-msgstr "%1$s: Lütfen bekleyin. Önyükleme hizmeti sayfalarınızı işliyor."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action"
+" is needed."
+msgstr ""
+"%1$s: Önyükleme hizmeti artık etkin. İlk önyüklemeden sonra, tüm "
+"sayfalarınızı her temizlendiklerinde önbelleğe almaya devam edecek. Başka "
+"bir işlem yapılmasına gerek yoktur."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:129
+#: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
 msgstr "WP Rocket Önyükleme bekleyen işleri"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:157
+#: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
 msgstr "WP Rocket Önyükleme, takılı kalmış devam eden işleri geri alır"
 
@@ -2559,6 +2566,16 @@ msgstr ""
 "çalışmasını önleyecek, Önbellek temizlemeyi yöneten çekirdek Kinsta "
 "dosyalarının eksik olduğu görülüyor. Lütfen bu sorunu çözmek için  "
 "%1$sMyKinsta%2$s hesabınız aracılığıyla Kinsta desteği ile temasa geçin."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#, php-format
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
+msgstr ""
+"%1$s: Cloudflare’in HTTP/2 Sunucu Yollaması, Kullanılmayan CSS’yi Kaldır ve "
+"CSS Dosyalarını Birleştir’in özellikleriyle uyumlu değil. "
+"Etkisizleştirmenizi şiddetle öneririz."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -3772,9 +3789,30 @@ msgstr "30 gün"
 msgid "Forever"
 msgstr "Sürekli"
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr "İptal"
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
 msgstr "Onayla"
+
+#: views/settings/dynamic-lists-update.php:14
+msgid "Update Inclusion and Exclusion Lists"
+msgstr "Dahil Etme ve Hariç Tutma Listelerini Güncelle"
+
+#: views/settings/dynamic-lists-update.php:19
+#, php-format
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the "
+"button if you want to update them manually. %1$sMore info%2$s"
+msgstr ""
+"Uyumluluk listeleri her hafta otomatik olarak indirilir. Bunları el ile "
+"güncellemek istiyorsanız düğmeye tıklayın. %1$sDaha fazla bilgi%2$s"
+
+#: views/settings/dynamic-lists-update.php:29
+msgid "Update lists"
+msgstr "Listeleri güncelle"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
@@ -4091,11 +4129,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr "%s sürümünü yeniden yükle"
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr "Hata ayıklama kipi"
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr "Hata ayıklama günlük dosyası oluşturun."
 

@@ -133,6 +133,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		rocket_renew_box( 'preload_notice' );
+
 		$this->controller->load_initial_sitemap();
 	}
 
