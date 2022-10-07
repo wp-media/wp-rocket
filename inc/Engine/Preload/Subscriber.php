@@ -116,6 +116,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_exclude_urls'         => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri' ],
+				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 		];
 	}
