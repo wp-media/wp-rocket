@@ -213,7 +213,7 @@ class UsedCSS extends Table {
 			}
 		}
 
-		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `status_index` (`status`) " );
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `status_index` (`status`(191)) " );
 
 		return $this->is_success( $index_added );
 	}
