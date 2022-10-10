@@ -8,8 +8,8 @@ use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DynamicLists::clear_schedule_lists_update

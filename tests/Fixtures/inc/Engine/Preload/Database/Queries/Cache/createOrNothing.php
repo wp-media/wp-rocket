@@ -1,7 +1,26 @@
 <?php
 return [
+	'phpShouldReturnFalse' => [
+		'config' => [
+			'rejected' => true,
+			'resource' => [
+				'url' => 'http://example.com/test.php',
+				'status' => 'pending',
+			],
+			'save' => [
+				'url' => 'http://example.com',
+				'status' => 'pending',
+				'last_accessed' => '838:59:59.000000'
+			],
+			'id' => 10,
+			'time' => '838:59:59.000000',
+			'rows' => [],
+		],
+		'expected' => false
+	],
 	'notExistingShouldCreate' => [
 		'config' => [
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -20,6 +39,7 @@ return [
 	],
 	'notExistingAndErrorShouldCreateAndReturnFalse' => [
 		'config' => [
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -38,6 +58,7 @@ return [
 	],
 	'existingShouldDoNothing' => [
 		'config' => [
+			'rejected' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
