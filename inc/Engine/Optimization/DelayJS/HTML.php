@@ -4,17 +4,22 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 
 class HTML {
-
 	/**
 	 * Plugin options instance.
-	 *
-	 * @since  3.7
 	 *
 	 * @var Options_Data
 	 */
 	protected $options;
+
+	/**
+	 * DataManager instance
+	 *
+	 * @var DataManager
+	 */
+	private $data_manager;
 
 	/**
 	 * Array of excluded patterns from delay JS
@@ -23,80 +28,17 @@ class HTML {
 	 *
 	 * @var array
 	 */
-	protected $excluded = [
-		'nowprocket',
-		'/wp-includes/js/wp-embed.min.js',
-		'lazyLoadOptions',
-		'lazyLoadThumb',
-		'wp-rocket/assets/js/lazyload/(.*)',
-		'et_core_page_resource_fallback',
-		'window.\$us === undefined',
-		'js-extra',
-		'fusionNavIsCollapsed',
-		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
-		'eio_lazy_vars',
-		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
-		'document\.body\.classList\.remove\("no-js"\)',
-		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
-		'et_animation_data',
-		'wpforms_settings',
-		'var nfForms',
-		'//stats.wp.com', // Jetpack Stats.
-		'_stq.push', // Jetpack Stats.
-		'fluent_form_ff_form_instance_', // Fluent Forms.
-		'cpLoadCSS', // Convert Pro.
-		'ninja_column_', // Ninja Tables.
-		'var rbs_gallery_', // Robo Gallery.
-		'var lepopup_', // Green Popup.
-		'var billing_additional_field', // Woo Autocomplete Nish.
-		'var gtm4wp',
-		'var dataLayer_content',
-		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
-		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
-		'ewww_webp_supported', // EWWW WebP inline scripts.
-		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
-		'/perfmatters/js/lazyload.min.js',
-		'lazyLoadInstance',
-		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
-		'initCubePortfolio', // Cube Portfolio show images.
-		'simpli.fi', // simpli.fi Advertising Platform scripts.
-		'gforms_recaptcha_', // Gravity Forms recaptcha.
-		'/jetpack-boost/vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack Boost plugin lazyload.
-		'jetpack-lazy-images-js-enabled',  // Jetpack Boost plugin lazyload.
-		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
-		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
-		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
-		'wpcp_css_disable_selection', // WP Content Copy Protection & No Right Click.
-		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
-		'statcounter.com/counter/counter.js', // StatsCounter.
-		'var sc_project', // Statscounter.
-		'/jetpack/jetpack_vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack plugin lazyload.
-		'/themify-builder/themify/js/modules/fallback(\.min)?.js',
-		'handlePixMessage',
-		'var corner_video',
-		'cdn.pixfuture.com/hb_v2.js',
-		'cdn.pixfuture.com/pbix.js',
-		'served-by.pixfuture.com/www/delivery/ads.js',
-		'served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js',
-		'serv-vdo.pixfuture.com/vpaid/ads.js',
-		'wprRemoveCPCSS',
-		'window.jdgmSettings', // Judge.me plugin.
-		'/photonic/include/js/front-end/nomodule/photonic-baguettebox.min.js', // Photonic plugin.
-		'/photonic/include/ext/baguettebox/baguettebox.min.js', // Photonic plugin.
-		'window.wsf_form_json_config', // WSF Form plugin.
-		'et_link_options_data', // Divi link variable.
-		'FuseboxPlayerAPIKey', // FuseBox player.
-	];
+	protected $excluded = [];
 
 	/**
 	 * Creates an instance of HTML.
 	 *
-	 * @since  3.7
-	 *
 	 * @param Options_Data $options Plugin options instance.
+	 * @param DataManager  $data_manager DataManager instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, DataManager $data_manager ) {
+		$this->options      = $options;
+		$this->data_manager = $data_manager;
 	}
 
 	/**
@@ -113,6 +55,8 @@ class HTML {
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
+
+		$this->set_exclusions();
 
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
 
@@ -288,5 +232,16 @@ class HTML {
 		}
 
 		return $replaced_html;
+	}
+
+	/**
+	 * Get exclusions
+	 *
+	 * @return void
+	 */
+	private function set_exclusions() {
+		$lists = $this->data_manager->get_lists();
+
+		$this->excluded = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
 	}
 }
