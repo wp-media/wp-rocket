@@ -200,12 +200,12 @@ class Cache extends Query {
 			return false;
 		}
 
-     /**
-		 * Format the url.
-		 *
-		 * @param string $url url to format.
-		 * @return string
-		 */
+		/**
+			* Format the url.
+			*
+			* @param string $url url to format.
+			* @return string
+			*/
 		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
 
 		$url = strtok( $url, '?' );
