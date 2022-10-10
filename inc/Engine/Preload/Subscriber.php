@@ -207,7 +207,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param array $is_allowed Are query strings allowed.
 		 */
-		if ( ( ! apply_filters( 'rocket_preload_query_string', false ) && isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! apply_filters( 'rocket_preload_query_string', false ) && ! empty( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 

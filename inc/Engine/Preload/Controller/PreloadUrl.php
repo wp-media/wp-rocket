@@ -238,8 +238,13 @@ class PreloadUrl {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 		$queries = $this->convert_query_to_array( $queries );
 
-		return count( array_intersect( array_keys( $queries ), get_rocket_cache_query_string() ) ) > 0 || count( $queries )
-		=== 0;
+		$cache_query_string = get_rocket_cache_query_string();
+
+		if ( ! $cache_query_string ) {
+			return count( $queries ) === 0;
+		}
+
+		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
 	}
 
 }
