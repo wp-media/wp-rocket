@@ -133,6 +133,10 @@ class Cache extends Query {
 
 		$url = untrailingslashit( strtok( $url, '?' ) );
 
+		if ( $this->is_rejected( $resource['url'] ) ) {
+			return false;
+		}
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
@@ -192,7 +196,11 @@ class Cache extends Query {
 	 */
 	public function create_or_nothing( array $resource ) {
 
-		/**
+		if ( $this->is_rejected( $resource['url'] ) ) {
+			return false;
+		}
+
+     /**
 		 * Format the url.
 		 *
 		 * @param string $url url to format.
@@ -205,7 +213,7 @@ class Cache extends Query {
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => untrailingslashit( $url ),
 			],
 			false
 		);
@@ -521,5 +529,24 @@ class Cache extends Query {
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
 		$db->query( "DELETE FROM `$prefixed_table_name` WHERE 1 = 1" );
+	}
+
+	/**
+	 * Check if the url is rejected.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	protected function is_rejected( string $url ): bool {
+		$extensions = [
+			'php' => 1,
+			'xml' => 1,
+			'xsl' => 1,
+			'kml' => 1,
+		];
+
+		$extension = pathinfo( $url, PATHINFO_EXTENSION );
+
+		return $extension && isset( $extensions[ $extension ] );
 	}
 }

@@ -98,9 +98,6 @@ class Renewal extends Abstract_Render {
 
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
-		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
-		$renewal_url   = $this->user->get_renewal_url();
-		$renewal_price = number_format_i18n( $this->get_discount_price(), 2 );
 
 		if (
 			$this->user->is_auto_renew()
@@ -110,6 +107,33 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
+		$renewal_url = $this->user->get_renewal_url();
+		$price       = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+
+		$message = sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
+			esc_html__( 'Renew your license for 1 year now at %1$s%3$s%2$s.', 'rocket' ),
+			'<strong>',
+			'</strong>',
+			$price
+		);
+
+		if (
+			$this->is_grandfather()
+			&&
+			$expired_since < 15
+		) {
+			$message = sprintf(
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
+				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you will only pay %1$s%4$s%2$s!', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				esc_html( $this->get_discount_percent() . '%' ),
+				$price
+			);
+		}
+
 		if ( $ocd_enabled ) {
 			if ( 15 > $expired_since ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -117,28 +141,28 @@ class Renewal extends Abstract_Render {
 					'renewal-expired-banner-ocd',
 					[
 						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'message'       => $message,
 						'disabled_date' => date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS ),
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-			} elseif ( 180 > $expired_since ) {
+			} elseif ( 90 > $expired_since ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner-ocd-disabled',
 					[
-						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'renewal_url' => $renewal_url,
+						'message'     => $message,
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-			} elseif ( 180 < $expired_since ) {
+			} elseif ( 90 < $expired_since ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $this->generate(
 					'renewal-expired-banner',
 					[
-						'renewal_url'   => $renewal_url,
-						'renewal_price' => $renewal_price,
+						'renewal_url' => $renewal_url,
+						'message'     => $message,
 					]
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -148,8 +172,8 @@ class Renewal extends Abstract_Render {
 			echo $this->generate(
 				'renewal-expired-banner',
 				[
-					'renewal_url'   => $renewal_url,
-					'renewal_price' => $renewal_price,
+					'renewal_url' => $renewal_url,
+					'message'     => $message,
 				]
 			);
 			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -164,10 +188,30 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
+		$price = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+
+		$message = sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
+			esc_html__( 'Renew before it is too late, you will pay %1$s%3$s%2$s.', 'rocket' ),
+			'<strong>',
+			'</strong>',
+			$price
+		);
+
+		if ( $this->is_grandfather() ) {
+			$message = sprintf(
+				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
+				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
+				'<strong>',
+				esc_html( $this->get_discount_percent() . '%' ),
+				'</strong>',
+				$price
+			);
+		}
+
 		return [
-			'discount_percent' => $this->get_discount_percent(),
-			'discount_price'   => number_format_i18n( $this->get_discount_price(), 2 ),
-			'renewal_url'      => $this->user->get_renewal_url(),
+			'message'     => $message,
+			'renewal_url' => $this->user->get_renewal_url(),
 		];
 	}
 
@@ -261,13 +305,24 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the discount price corresponding to the current user status
+	 * Is user grandfathered
+	 *
+	 * @return bool
+	 */
+	private function is_grandfather(): bool {
+		$renewals = $this->get_user_renewal_status();
+
+		return $renewals['is_grandfather'];
+	}
+
+	/**
+	 * Gets the price corresponding to the current user status
 	 *
 	 * @since 3.7.5
 	 *
 	 * @return int
 	 */
-	private function get_discount_price() {
+	private function get_price() {
 		$renewals = $this->get_user_renewal_status();
 
 		if ( false === $renewals ) {
@@ -276,7 +331,11 @@ class Renewal extends Abstract_Render {
 
 		$license = $this->get_license_pricing_data();
 
-		if ( $renewals['is_grandfather'] ) {
+		if (
+			$renewals['is_grandfather']
+			&&
+			! $renewals['is_expired']
+		) {
 			return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
 		}
 
@@ -507,21 +566,46 @@ class Renewal extends Abstract_Render {
 			return $menu_title;
 		}
 
+		if ( false !== get_transient( 'wpr_dashboard_seen_' . get_current_user_id() ) ) {
+			return $menu_title;
+		}
+
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
+		$auto_renew    = $this->user->is_auto_renew();
+		$ocd_enabled   = $this->options->get( 'optimize_css_delivery', 0 );
 
 		if (
-			$this->user->is_auto_renew()
+			$ocd_enabled
+			&&
+			$auto_renew
 			&&
 			4 > $expired_since
 		) {
 			return $menu_title;
 		}
 
-		if ( ! $this->options->get( 'optimize_css_delivery', 0 ) ) {
+		if (
+			! $auto_renew
+			&&
+			! $ocd_enabled
+			&&
+			4 < $expired_since
+
+		) {
 			return $menu_title;
 		}
 
-		if ( false !== get_transient( 'wpr_dashboard_seen_' . get_current_user_id() ) ) {
+		if (
+			$auto_renew
+			&&
+			! $ocd_enabled
+			&&
+			(
+				4 > $expired_since
+				||
+				15 < $expired_since
+			)
+		) {
 			return $menu_title;
 		}
 

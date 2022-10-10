@@ -29,6 +29,8 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 	public function testShouldReturnAsExpected($config, $expected) {
 		Functions\expect('get_current_screen')->with()->andReturn($config['screen']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['has_right']);
+		Functions\expect( 'rocket_dismiss_box' )->with( 'preload_notice' )->andReturnNull();
+		$this->configureRocketBoxes( $config );
 		$this->configureEnabled($config);
 		$this->configureTransient($config);
 		$this->configureNotice($config, $expected);
@@ -48,6 +50,15 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 		}
 
 		Functions\expect('get_transient')->with('rocket_preload_processing')->andReturn($config['transient']);
+	}
+
+	protected function configureRocketBoxes( $config ) {
+		if(! key_exists('rocket_boxes', $config)) {
+			return;
+		}
+
+		Functions\expect('get_current_user_id')->andReturn( 1 );
+		Functions\when('get_user_meta')->justReturn( $config['rocket_boxes'] );
 	}
 
 	protected function configureNotice($config, $expected) {
