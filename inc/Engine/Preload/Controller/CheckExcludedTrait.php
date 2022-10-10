@@ -39,9 +39,8 @@ trait CheckExcludedTrait {
 			if ( ! is_string( $regex ) ) {
 				continue;
 			}
-			$regex = str_replace( '/', '\/', $regex );
 
-			if ( preg_match( '/' . $regex . '/', $url ) ) {
+			if ( preg_match( "/$regex/", $url ) ) {
 				return true;
 			}
 		}
