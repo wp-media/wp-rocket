@@ -66,7 +66,7 @@ class PreloadUrl {
 		 *
 		 * @param array $is_allowed Are query strings allowed.
 		 */
-		if ( apply_filters( 'rocket_preload_query_string', false ) && ! $this->has_cached_query_string( $url ) ) {
+		if ( ! $this->has_cached_query_string( $url ) && apply_filters( 'rocket_preload_query_string', false ) ) {
 			$this->query->make_status_complete( $url );
 			return;
 		}
