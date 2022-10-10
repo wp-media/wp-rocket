@@ -550,10 +550,10 @@ class Cache extends Query {
 				'is_locked' => false,
 			]
 			);
-   }
-   
-   /**
-   * Check if the url is rejected.
+	}
+
+	/**
+	 * Check if the url is rejected.
 	 *
 	 * @param string $url url to check.
 	 * @return bool
