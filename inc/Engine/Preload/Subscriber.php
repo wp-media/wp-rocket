@@ -115,7 +115,6 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_exclude_urls'         => [
 				[ 'add_preload_excluded_uri' ],
-				[ 'add_cache_reject_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 		];
@@ -397,22 +396,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_preload_excluded_uri( $regexes ): array {
 		$preload_excluded_uri = $this->options->get( 'preload_excluded_uri', [] );
-
-		if ( empty( $preload_excluded_uri ) ) {
-			return $regexes;
-		}
-
-		return array_merge( $regexes, $preload_excluded_uri );
-	}
-
-	/**
-	 * Add never cache urls.
-	 *
-	 * @param array $regexes regexes containing excluded uris.
-	 * @return array
-	 */
-	public function add_cache_reject_uri( $regexes ): array {
-		$preload_excluded_uri = $this->options->get( 'cache_reject_uri', [] );
 
 		if ( empty( $preload_excluded_uri ) ) {
 			return $regexes;
