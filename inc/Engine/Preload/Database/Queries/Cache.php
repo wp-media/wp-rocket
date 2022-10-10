@@ -220,7 +220,7 @@ class Cache extends Query {
 			// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' =>  $url,
+				'url' => $url,
 			],
 			false
 		);
