@@ -395,7 +395,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array|false
 	 */
 	public function add_preload_excluded_uri( $regexes ): array {
-		$preload_excluded_uri = $this->options->get( 'preload_excluded_uri', [] );
+		$preload_excluded_uri = (array) $this->options->get( 'preload_excluded_uri', [] );
 
 		if ( empty( $preload_excluded_uri ) ) {
 			return $regexes;
