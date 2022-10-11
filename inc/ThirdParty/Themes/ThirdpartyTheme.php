@@ -23,6 +23,10 @@ abstract class ThirdpartyTheme implements Subscriber_Interface {
 		$theme    = $theme instanceof WP_Theme ? $theme : wp_get_theme();
 		$template = $theme->get_template() ?? '';
 
-		return str_contains( static::$theme_name, $template );
+		if ( empty( $template ) ) {
+			return false;
+		}
+
+		return str_contains( strtolower( static::$theme_name ), strtolower( $template ) );
 	}
 }
