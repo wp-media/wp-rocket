@@ -29,7 +29,6 @@ class Test_CronCleanRows extends TestCase {
 	}
 
 	public function tear_down() : void {
-		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_rucss_delete_interval', [ $this, 'set_rucss_delay' ] );
 
 		parent::tear_down();
@@ -45,7 +44,7 @@ class Test_CronCleanRows extends TestCase {
 		$old_date            = strtotime( $current_date. ' - 32 days' );
 
 		$this->input = $input;
-		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+
 		add_filter( 'rocket_rucss_delete_interval', [ $this, 'set_rucss_delay' ] );
 		$this->set_permalink_structure( "/%postname%/" );
 
@@ -71,11 +70,6 @@ class Test_CronCleanRows extends TestCase {
 		} else {
 			$this->assertCount( count( $input['used_css'] ), $resultUsedCssAfterClean );
 		}
-	}
-
-	public function set_rucss_option() {
-		return $this->input['remove_unused_css'] ?? false;
-		$this->assertCount( $count_remain_used_css, $resultUsedCssAfterClean );
 	}
 
 	public function set_rucss_delay() {
