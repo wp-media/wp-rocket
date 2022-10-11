@@ -60,20 +60,25 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
-
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( ! $this->has_cached_query_string( $url ) && apply_filters( 'rocket_preload_query_string', false ) ) {
+		if (
+			! $this->has_cached_query_string( $url )
+			&&
+			$this->can_preload_query_strings()
+		) {
 			$this->query->make_status_complete( $url );
+
 			return;
 		}
+
 		$url       = $this->format_url( $url );
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
-		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
+
+		if (
+			$this->is_already_cached( $url )
+			&& ( ! $is_mobile || $this->is_already_cached( $url, true ) )
+		) {
 			$this->query->make_status_complete( $url );
+
 			return;
 		}
 
@@ -153,7 +158,6 @@ class PreloadUrl {
 
 			usleep( $delay_between );
 		}
-
 	}
 
 	/**
