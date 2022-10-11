@@ -2,6 +2,11 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 class Jevelin extends ThirdpartyTheme {
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
 	protected static $theme_name = 'jevelin';
 
 	/**

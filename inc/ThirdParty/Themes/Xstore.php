@@ -5,6 +5,13 @@ namespace WP_Rocket\ThirdParty\Themes;
 
 class Xstore extends ThirdpartyTheme {
 	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'xstore';
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array

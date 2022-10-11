@@ -4,6 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\ThirdParty\Themes;
 
 class Flatsome extends ThirdpartyTheme {
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
 	protected static $theme_name = 'flatsome';
 
 	/**
