@@ -343,6 +343,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'rocket_lazy_load',
 		];
 
 		$host_type = HostResolver::get_host_service();
