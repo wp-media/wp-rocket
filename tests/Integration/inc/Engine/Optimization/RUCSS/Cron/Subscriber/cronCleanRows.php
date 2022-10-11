@@ -65,7 +65,7 @@ class Test_CronCleanRows extends TestCase {
 		$resultUsedCssAfterClean = $rucss_usedcss_query->query();
 
 
-		if ( $this->input['remove_unused_css'] && $this->input['delay'] ) {
+		if ( $this->input['delay'] ) {
 			$this->assertCount( $count_remain_used_css,$resultUsedCssAfterClean );
 		} else {
 			$this->assertCount( count( $input['used_css'] ), $resultUsedCssAfterClean );
