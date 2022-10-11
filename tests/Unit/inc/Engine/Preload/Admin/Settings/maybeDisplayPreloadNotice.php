@@ -29,8 +29,8 @@ class Test_MaybeDisplayPreloadNotice extends TestCase {
 	public function testShouldReturnAsExpected( $config, $expected ) {
 		Functions\when('get_current_screen')->justReturn( $config['screen'] );
 		Functions\when('current_user_can')->justReturn( $config['has_right'] );
-		Functions\expect( 'rocket_dismiss_box' )->with( 'preload_notice' )->andReturnNull();
-		$this->configureRocketBoxes( $config );
+		Functions\expect( 'rocket_dismiss_box' )->with( 'preload_notice' )->once();
+
 		$this->options->allows()->get('manual_preload', 0)->andReturns($config['enabled']);
 		Functions\when('get_transient')->justReturn($config['transient']);
 
