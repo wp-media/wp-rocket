@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
 trait FormatUrlTrait {
-
 	/**
 	 * Format URL.
 	 *
@@ -11,12 +11,14 @@ trait FormatUrlTrait {
 	 *
 	 * @return string
 	 */
-	public function format_url( string $url ) {
+	public function format_url( string $url ): string {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 		$queries = $this->convert_query_to_array( $queries );
 
 		ksort( $queries );
+
 		$url = strtok( $url, '?' );
+
 		return add_query_arg( $queries, $url );
 	}
 
@@ -24,11 +26,11 @@ trait FormatUrlTrait {
 	 * Convert query string to an array with keys and values.
 	 *
 	 * @param string $query query string.
+	 *
 	 * @return array|mixed
 	 */
-	protected function convert_query_to_array( string $query ) {
-
-		if ( ! $query ) {
+	protected function convert_query_to_array( string $query = '' ) {
+		if ( empty( $query ) ) {
 			return [];
 		}
 
@@ -48,5 +50,19 @@ trait FormatUrlTrait {
 			},
 			[]
 			);
+	}
+
+	/**
+	 * Can URLs with query strings be preloaded
+	 *
+	 * @return bool
+	 */
+	public function can_preload_query_strings(): bool {
+		/**
+		 * Filter to allow query string in preload.
+		 *
+		 * @param bool $is_allowed True to allow, false otherwise.
+		 */
+		return apply_filters( 'rocket_preload_query_string', false );
 	}
 }

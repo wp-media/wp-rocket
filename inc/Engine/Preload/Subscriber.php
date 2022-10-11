@@ -5,15 +5,12 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
-use WP_Rocket\Engine\Preload\Controller\ClearCache;
-use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
-use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Controller\{ClearCache, LoadInitialSitemap, Queue};
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
-
 	use FormatUrlTrait;
 
 	/**
@@ -177,12 +174,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$params = [];
 
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( isset( $_GET ) && apply_filters( 'rocket_preload_query_string', false ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
@@ -202,12 +194,7 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( ( ! apply_filters( 'rocket_preload_query_string', false ) && ! empty( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 

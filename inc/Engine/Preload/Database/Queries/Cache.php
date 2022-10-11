@@ -125,17 +125,7 @@ class Cache extends Query {
 	 */
 	public function create_or_update( array $resource ) {
 		$url = $resource['url'];
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
-			$url = $this->format_url( $url );
-		} else {
-			$url = strtok( $url, '?' );
-		}
-
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
 		$url = untrailingslashit( $url );
 
 		if ( $this->is_rejected( $resource['url'] ) ) {
@@ -205,19 +195,11 @@ class Cache extends Query {
 		if ( $this->is_rejected( $url ) ) {
 			return false;
 		}
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
-			$url = $this->format_url( $url );
-		} else {
-			$url = strtok( $url, '?' );
-		}
+
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
 		$url = untrailingslashit( $url );
 
-			// check the database if those resources added before.
+		// check the database if those resources have been added before.
 		$rows = $this->query(
 			[
 				'url' => $url,
@@ -255,17 +237,7 @@ class Cache extends Query {
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url ) {
-
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
-			$url = $this->format_url( $url );
-		} else {
-			$url = strtok( $url, '?' );
-		}
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
 
 		$query = $this->query(
 			[
@@ -397,17 +369,7 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function make_status_complete( string $url ) {
-
-		/**
-		 * Filters to allow query string in preload.
-		 *
-		 * @param array $is_allowed Are query strings allowed.
-		 */
-		if ( apply_filters( 'rocket_preload_query_string', false ) ) {
-			$url = $this->format_url( $url );
-		} else {
-			$url = strtok( $url, '?' );
-		}
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
 
 		$tasks = $this->query(
 			[
