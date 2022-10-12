@@ -90,6 +90,9 @@ class Deactivation {
 		delete_site_transient( 'update_wprocket_response' );
 		delete_site_transient( 'wp_rocket_update_data' );
 
+		// Delete user metadata.
+		delete_user_meta( get_current_user_id(), 'rocket_boxes' );
+
 		// Unschedule WP Cron events.
 		wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 

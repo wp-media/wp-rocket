@@ -559,6 +559,7 @@ class Page {
 		$files_beacon               = $this->beacon->get_suggest( 'file_optimization' );
 		$inline_js_beacon           = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon          = $this->beacon->get_suggest( 'exclude_js' );
+		$exclude_css_beacon         = $this->beacon->get_suggest( 'exclude_css' );
 		$delay_js_beacon            = $this->beacon->get_suggest( 'delay_js' );
 		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
@@ -672,7 +673,7 @@ class Page {
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_css_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_css_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],

@@ -28,6 +28,7 @@ class Test_DelayJs extends TestCase {
 		unset( $GLOBALS['wp'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
+		delete_transient( 'wpr_dynamic_lists' );
 
 		if ( isset( $this->post->ID ) ) {
             delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
@@ -53,6 +54,8 @@ class Test_DelayJs extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_delay_js'         , [ $this, 'set_delay_js' ] );
 		add_filter( 'pre_get_rocket_option_delay_js_exclusions' , [ $this, 'set_delay_js_exclusions' ] );
+
+		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
