@@ -39,4 +39,47 @@ export class pageUtils {
     goto_wpr = async () => {
         await this.page.goto(WP_BASE_URL + '/wp-admin/options-general.php?page=wprocket#dashboard');
     }
+
+    goto_new_post = async () => {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/post-new.php');
+    }
+
+    add_post_title = async (title: string, is_gutenberg = true) => {
+        if (!is_gutenberg) {
+            await this.page.locator('#title').fill(title);
+            return;
+        }
+
+        await this.page.locator('[aria-label="Add title"]').fill(title);
+    }
+
+    save_draft = async (is_gutenberg = true) => {
+        if (!is_gutenberg) {
+            await this.page.locator('#save-post').click();
+            return;
+        }
+
+        await this.page.locator('[aria-label="Save draft"]').click();
+    }
+
+    close_gutenberg_dialog = async () => {
+        await this.page.locator('[aria-label="Close dialog"]').click();
+    }
+
+    draft_posts = async () => {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/edit.php?post_status=draft&post_type=post');
+    }
+
+    post_preview = async () => {
+        await this.page.locator('button:has-text("Preview")').click();
+        await this.page.locator('text=Preview in new tab').click();
+    }
+
+    wpr_dropdown = async () => {
+        await this.page.locator('#wp-admin-bar-wp-rocket').hover();
+    }
+
+    activate_plugin = async (plugin_slug: string) => {
+        await this.page.locator('#activate-' + plugin_slug).click();
+    }
 }
