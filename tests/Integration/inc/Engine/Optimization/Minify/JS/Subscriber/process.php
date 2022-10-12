@@ -28,6 +28,9 @@ class Test_Process extends TestCase {
 		remove_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'return_defer_all_js' ] );
+		remove_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );
+		remove_filter( 'rocket_minify_excluded_external_js', [ $this, 'set_excluded_external'] );
+		delete_transient( 'wpr_dynamic_lists' );
 
 		$this->unsetSettings();
 	}
@@ -38,6 +41,46 @@ class Test_Process extends TestCase {
 	public function testShouldMinifyJS( $original, $expected, $settings ) {
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
+		add_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );
+		add_filter( 'rocket_minify_excluded_external_js', [ $this, 'set_excluded_external'] );
+
+		set_transient( 'wpr_dynamic_lists', (object) [
+			'defer_js_external_exclusions' => [
+				'gist.github.com',
+				'content.jwplatform.com',
+				'js.hsforms.net',
+				'www.uplaunch.com',
+				'google.com/recaptcha',
+				'widget.reviews.co.uk',
+				'verify.authorize.net/anetseal',
+				'lib/admin/assets/lib/webfont/webfont.min.js',
+				'app.mailerlite.com',
+				'widget.reviews.io',
+				'simplybook.(.*)/v2/widget/widget.js',
+				'/wp-includes/js/dist/i18n.min.js',
+				'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
+				'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
+				'/wp-content/plugins/ewww-image-optimizer/includes/check-webp(.min)?.js',
+				'static.mailerlite.com/data/(.*).js',
+				'cdn.voxpow.com/static/libs/v1/(.*).js',
+				'cdn.voxpow.com/media/trackers/js/(.*).js',
+				'use.typekit.net',
+				'www.idxhome.com',
+				'/wp-includes/js/dist/vendor/lodash(.min)?.js',
+				'/wp-includes/js/dist/api-fetch(.min)?.js',
+				'/wp-includes/js/dist/i18n(.min)?.js',
+				'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
+				'/wp-includes/js/dist/url(.min)?.js',
+				'/wp-includes/js/dist/hooks(.min)?.js',
+				'www.paypal.com/sdk/js',
+				'js-eu1.hsforms.net',
+				'yanovis.Voucher.js',
+				'/carousel-upsells-and-related-product-for-woocommerce/assets/js/glide.min.js',
+				'use.typekit.com',
+				'/artale/modules/kirki/assets/webfont.js',
+				'/api/scripts/lb_cs.js',
+			],
+		], HOUR_IN_SECONDS );
 
 		$this->defer_all_js = $settings['defer_all_js'];
 
@@ -65,5 +108,17 @@ class Test_Process extends TestCase {
 
 	public function return_defer_all_js() {
 		return $this->defer_all_js;
+	}
+
+	public function set_excluded_inline() {
+		return [
+			'nonce',
+		];
+	}
+
+	public function set_excluded_external( $excluded ) {
+		return array_merge( $excluded, [
+			'cse.google.com/cse.js',
+		] );
 	}
 }

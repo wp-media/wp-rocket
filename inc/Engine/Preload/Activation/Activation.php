@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Activation;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Activation\ActivationInterface;
@@ -23,20 +24,42 @@ class Activation implements ActivationInterface {
 	protected $query;
 
 	/**
+	 * Options.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
 	 * Instantiate class.
 	 *
-	 * @param Queue $queue Preload queue.
-	 * @param Cache $query DB query.
+	 * @param Queue        $queue Preload queue.
+	 * @param Cache        $query DB query.
+	 * @param Options_Data $options Options.
 	 */
-	public function __construct( Queue $queue, Cache $query ) {
-		$this->queue = $queue;
-		$this->query = $query;
+	public function __construct( Queue $queue, Cache $query, Options_Data $options ) {
+		$this->queue   = $queue;
+		$this->query   = $query;
+		$this->options = $options;
 	}
 
 	/**
 	 * Launch preload on activation.
 	 */
 	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'preload_activation' ], 15 );
+	}
+
+	/**
+	 * Run actions on activation.
+	 *
+	 * @return void
+	 */
+	public function preload_activation() {
+		if ( ! $this->options->get( 'manual_preload', true ) ) {
+			return;
+		}
+
 		/**
 		 * Action that fires before the preload does.
 		 */
