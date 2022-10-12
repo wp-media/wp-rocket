@@ -7,9 +7,8 @@ use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Divi::maybe_disable_youtube_preview
- * @uses   ::is_divi
  *
- * @group  ThirdParty
+ * @group ThirdParty
  */
 class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 	use DBTrait;
@@ -43,11 +42,11 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 	 */
 	public function testSetsCorrectOptions( $config, $expected ) {
 
-		if ( ! $config['is-child'] ) {
-			$this->set_theme( $config['stylesheet'], $config['theme-name'] );
+		if ( ! $config['template'] ) {
+			$this->set_theme( $config['stylesheet'], $config['stylesheet'] );
 		} else {
-			$this->set_theme( $config['is-child'], $config['parent-name'] )
-				->set_child_theme( $config['stylesheet'], $config['theme-name'], $config['is-child'] );
+			$this->set_theme( $config['template'], $config['stylesheet'] )
+				->set_child_theme( $config['stylesheet'], $config['stylesheet'], $config['template'] );
 		}
 
 		$options     = self::$container->get( 'options' );
@@ -59,7 +58,7 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 
 		switch_theme( $config['stylesheet'] );
 
-		$divi->maybe_disable_youtube_preview( $config['theme-name'], $this->theme );
+		$divi->maybe_disable_youtube_preview( $config['stylesheet'], $this->theme );
 
 		$this->assertSame( $expected['settings'], $options_api->get( 'settings' ) );
 	}
