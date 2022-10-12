@@ -30,6 +30,9 @@ test.describe('Rocket License', () => {
             
         } catch (err) {
             await expect(locator.has_license).toBeVisible();
+
+            // Should display preload trigger message on first activation.
+            await expect(page.locator('#rocket-notice-preload-processing')).toContainText('The preload service is now active');
         }
     });
 });
