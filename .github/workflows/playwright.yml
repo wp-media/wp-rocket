@@ -25,7 +25,7 @@ jobs:
         WP_ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
         WP_ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
       run: node ./.github/scripts/build-wp-env.js
-    - name: Install WordPress and start the server and install dependent plugins
+    - name: Install WordPress - Start the server and install dependent plugins
       run: |
           npm run wp-env start
           sudo chown 33:33 -R ~/wp-env/
