@@ -54,13 +54,14 @@ test.describe('Miscellaneous', () => {
 });
 
 const shouldNotDisplayClearCacheOptionInDraftPostList = async (page, page_utils, is_gutenberg = true) => {
-    // Add post title
-    await page_utils.add_post_title('Draft Post', is_gutenberg);
-
-    // Save the post as a draft.
-    await page_utils.save_draft(is_gutenberg);
 
     if (is_gutenberg) {
+        // Add post title
+        await page_utils.add_post_title('Draft Post', is_gutenberg);
+
+        // Save the post as a draft.
+        await page_utils.save_draft(is_gutenberg);
+
         await page.waitForSelector( '[aria-label="Dismiss this notice"]', { timeout: 15000 } );   
     }
 
