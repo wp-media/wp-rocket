@@ -40,7 +40,7 @@ trait CheckExcludedTrait {
 				continue;
 			}
 
-			if ( preg_match( "/$regex/", $url ) ) {
+			if ( preg_match( "@$regex@", $url ) ) {
 				return true;
 			}
 		}
