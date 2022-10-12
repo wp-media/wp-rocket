@@ -16,6 +16,7 @@ test.describe( 'Preload', () => {
         const data = {
             'preload': new preload(page),
             'dashboard': new dashboard(page),
+            'page_utils': new pageUtils(page),
             'locator': page.locator('#rocket-notice-preload-processing'),
             'expected': 'The preload service is now active'
         };
@@ -77,7 +78,7 @@ const when_preload_enabled = async (page, data) => {
 }
 
 const when_clear_cache_and_preload_admin_bar = async (page, data) => {
-    await page.locator('#wp-admin-bar-wp-rocket').hover();
+    await data.page_utils.wpr_dropdown();
     await page.locator('#wp-admin-bar-purge-all a').click();
     await expect(data.locator).toContainText(data.expected);
 }
