@@ -240,6 +240,11 @@ class PreloadUrl {
 	 */
 	public function has_cached_query_string( string $url ) {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+
+		if ( empty( $queries ) ) {
+			return false;
+		}
+
 		$queries = $this->convert_query_to_array( $queries );
 
 		$cache_query_string = get_rocket_cache_query_string();
