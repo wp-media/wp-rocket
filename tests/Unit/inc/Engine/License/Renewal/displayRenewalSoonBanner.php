@@ -34,6 +34,9 @@ class DisplayRenewalSoonBanner extends TestCase {
 				'views',
 			]
 		);
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 	}
 
 	/**
@@ -55,8 +58,6 @@ class DisplayRenewalSoonBanner extends TestCase {
 
 		if ( ! is_null( $expected ) ) {
 			$this->user->shouldReceive( 'get_license_type' )
-				->atMost()
-				->once()
 				->andReturn( $config['user']['licence_account'] );
 
 			$this->user->shouldReceive( 'get_renewal_url' )
@@ -71,28 +72,18 @@ class DisplayRenewalSoonBanner extends TestCase {
 				->andReturn( $config['pricing']['renewals'] );
 
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['single']->websites );
 
 			$this->pricing->shouldReceive( 'get_plus_websites_count' )
-				->atMost()
-				->twice()
 				->andReturn( $config['pricing']['plus']->websites );
 
 			$this->pricing->shouldReceive( 'get_single_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['single'] );
 
 			$this->pricing->shouldReceive( 'get_plus_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['plus'] );
 
 			$this->pricing->shouldReceive( 'get_infinite_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
 			Functions\when( 'number_format_i18n' )->returnArg();

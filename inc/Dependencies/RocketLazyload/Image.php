@@ -355,7 +355,7 @@ class Image {
 	 */
 	public function isExcluded( $string, $excluded_values ) {
 		if ( ! is_array( $excluded_values ) ) {
-			(array) $excluded_values;
+			$excluded_values = (array) $excluded_values;
 		}
 
 		if ( empty( $excluded_values ) ) {

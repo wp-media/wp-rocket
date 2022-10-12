@@ -40,7 +40,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			}
 
 			add_action( 'admin_menu', array( $this, 'register_menu' ) );
-
+			add_action( 'admin_notices', array( $this, 'maybe_check_pastdue_actions' ) );
 			add_action( 'current_screen', array( $this, 'add_help_tabs' ) );
 		}
 	}
@@ -108,6 +108,96 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 		}
 
 		return $this->list_table;
+	}
+
+	/**
+	 * Action: admin_notices
+	 *
+	 * Maybe check past-due actions, and print notice.
+	 *
+	 * @uses $this->check_pastdue_actions()
+	 */
+	public function maybe_check_pastdue_actions() {
+
+		# Filter to prevent checking actions (ex: inappropriate user).
+		if ( ! apply_filters( 'action_scheduler_check_pastdue_actions', current_user_can( 'manage_options' ) ) ) {
+			return;
+		}
+
+		# Get last check transient.
+		$last_check = get_transient( 'action_scheduler_last_pastdue_actions_check' );
+
+		# If transient exists, we're within interval, so bail.
+		if ( ! empty( $last_check ) ) {
+			return;
+		}
+
+		# Perform the check.
+		$this->check_pastdue_actions();
+	}
+
+	/**
+	 * Check past-due actions, and print notice.
+	 *
+	 * @todo update $link_url to "Past-due" filter when released (see issue #510, PR #511)
+	 */
+	protected function check_pastdue_actions() {
+
+		# Set thresholds.
+		$threshold_seconds = ( int ) apply_filters( 'action_scheduler_pastdue_actions_seconds', DAY_IN_SECONDS );
+		$threshhold_min    = ( int ) apply_filters( 'action_scheduler_pastdue_actions_min', 1 );
+
+		# Allow third-parties to preempt the default check logic.
+		$check = apply_filters( 'action_scheduler_pastdue_actions_check_pre', null );
+
+		# Scheduled actions query arguments.
+		$query_args = array(
+			'date'     => as_get_datetime_object( time() - $threshold_seconds ),
+			'status'   => ActionScheduler_Store::STATUS_PENDING,
+			'per_page' => $threshhold_min,
+		);
+
+		# If no third-party preempted, run default check.
+		if ( is_null( $check ) ) {
+			$store = ActionScheduler_Store::instance();
+			$num_pastdue_actions = ( int ) $store->query_actions( $query_args, 'count' );
+
+			# Check if past-due actions count is greater than or equal to threshold.
+			$check = ( $num_pastdue_actions >= $threshhold_min );
+			$check = ( bool ) apply_filters( 'action_scheduler_pastdue_actions_check', $check, $num_pastdue_actions, $threshold_seconds, $threshhold_min );
+		}
+
+		# If check failed, set transient and abort.
+		if ( ! boolval( $check ) ) {
+			$interval = apply_filters( 'action_scheduler_pastdue_actions_check_interval', round( $threshold_seconds / 4 ), $threshold_seconds );
+			set_transient( 'action_scheduler_last_pastdue_actions_check', time(), $interval );
+
+			return;
+		}
+
+		$actions_url = add_query_arg( array(
+			'page'   => 'action-scheduler',
+			'status' => 'past-due',
+			'order'  => 'asc',
+		), admin_url( 'tools.php' ) );
+
+		# Print notice.
+		echo '<div class="notice notice-warning"><p>';
+		printf(
+			_n(
+				// translators: 1) is the number of affected actions, 2) is a link to an admin screen.
+				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due action</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
+				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due actions</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
+				$num_pastdue_actions,
+				'action-scheduler'
+			),
+			$num_pastdue_actions,
+			esc_attr( esc_url( $actions_url ) )
+		);
+		echo '</p></div>';
+
+		# Facilitate third-parties to evaluate and print notices.
+		do_action( 'action_scheduler_pastdue_actions_extra_notices', $query_args );
 	}
 
 	/**

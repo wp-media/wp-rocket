@@ -35,7 +35,7 @@ class AllInOneSEOPack implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_sitemap_preload_list' => 'add_all_in_one_seo_sitemap',
+			'rocket_sitemap_preload_list' => [ 'add_all_in_one_seo_sitemap', 15 ],
 		];
 	}
 

@@ -26,6 +26,7 @@ class Test_DeferJs extends TestCase {
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
+		delete_transient( 'wpr_dynamic_lists' );
 
 		parent::tear_down();
 	}
@@ -49,6 +50,8 @@ class Test_DeferJs extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		add_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
+
+		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 
 		if ( $config['post_meta'] ) {
 			add_post_meta( 100, '_rocket_exclude_defer_all_js', 1, true );
