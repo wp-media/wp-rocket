@@ -649,6 +649,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1314-optimiser-les-google-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'dynamic_lists'              => [
+				'en' => [
+					'id'  => '63234712b0f178684ee3b04a',
+					'url' => 'https://docs.wp-rocket.me/article/1716-dynamic-exclusions-and-inclusions/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6323604341e1a47267b8d0e3',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1717-inclusions-et-exclusions-dynamiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'image_dimensions'           => [
 				'en' => [
 					'id'  => '5fc70216de1bfa158fb54737',

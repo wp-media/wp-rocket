@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-08-16 15:13-0400\n"
+"POT-Creation-Date: 2022-09-15 15:41-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -265,6 +265,15 @@ msgstr ""
 #: inc/Engine/Admin/Database/Subscriber.php:235
 #, php-format
 msgid "%1$d %2$s optimized."
+msgstr ""
+
+#: inc/Engine/Admin/Notices.php:26
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:310
+#, php-format
+msgid ""
+"%1$s: We detected missing database table related to Action Scheduler. Please "
+"visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to "
+"work correctly."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:191
@@ -1508,7 +1517,7 @@ msgstr ""
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
 #, php-format
 msgid ""
-"High performance Content Delivery Network (CDN) with %1$sunlimited bandwith%2$s"
+"High performance Content Delivery Network (CDN) with %1$sunlimited bandwidth%2$s"
 msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
@@ -1602,8 +1611,7 @@ msgstr ""
 msgid "WP_CACHE is set to false"
 msgstr ""
 
-#: inc/Engine/Common/Queue/PreloadQueueRunner.php:232
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:252
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
 msgstr ""
 
@@ -2022,98 +2030,92 @@ msgid ""
 "pay the price difference between your current and new licenses)."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:120
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:103
+msgid ""
+"You need an active license to get the latest version of the lists from our "
+"server."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
+msgid "Could not get updated lists from server."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
+msgid "Lists are up to date."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:132
+msgid "Could not update lists."
+msgstr ""
+
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
+msgid "Lists are successfully updated."
+msgstr ""
+
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:204
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:219
 #, php-format
 msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your "
 "pages."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:245
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
 msgid ""
 "%1$s: The Used CSS of your homepage has been processed. WP Rocket will continue "
 "to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:254
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:273
 #, php-format
-msgid "We suggest enabling %1$sSitemap Preload%2$s for the fastest results."
+msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:291
-#: inc/Engine/Preload/Admin/Settings.php:94
-#, php-format
-msgid ""
-"%1$s: We detected missing database table related to Action Scheduler. Please "
-"visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to "
-"work correctly."
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:488
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:507
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of WP "
 "Rocket. You need an active license to use the Remove Unused CSS feature and "
 "further improve your website's performance."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:491
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:510
 #, php-format
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:554
-msgid "You are about to lose access to an important feature"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:561
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:547
 #, php-format
 msgid ""
-"Rolling back to WP Rocket 3.10.10.1, the %1$sRemove Unused CSS%2$s feature will "
-"not be available any longer in your file optimization tab."
+"Could not create the %2$s table in the database which is necessary for the "
+"Remove Unused CSS feature to work. Please reach out to <a href=\"%3$s\">our "
+"support</a>."
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:571
-#, php-format
-msgid ""
-"If you are encountering any issue related to this feature, you can simply "
-"disable the option, or %1$scontact support for help%2$s."
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:578
-#: views/deactivation-intent/form.php:63
-msgid "Cancel"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:579
-msgid "Confirm rollback"
-msgstr ""
-
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:302
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:323
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:704
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:144
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr ""
 
@@ -2142,14 +2144,17 @@ msgstr ""
 
 #: inc/Engine/Preload/Admin/Settings.php:41
 #, php-format
-msgid "%1$s: Please wait. The preload service is processing your pages."
+msgid ""
+"%1$s: The preload service is now active. After the initial preload it will "
+"continue to cache all your pages whenever they are purged. No further action is "
+"needed."
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:129
+#: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:157
+#: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
 msgstr ""
 
@@ -2167,6 +2172,13 @@ msgid ""
 "which will prevent your Kinsta installation and WP Rocket from working "
 "correctly. Please get in touch with Kinsta support through your %1$sMyKinsta%2$s "
 "account to resolve this issue."
+msgstr ""
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#, php-format
+msgid ""
+"%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
+"Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
@@ -3203,8 +3215,27 @@ msgstr ""
 msgid "Forever"
 msgstr ""
 
+#: views/deactivation-intent/form.php:63
+msgid "Cancel"
+msgstr ""
+
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:14
+msgid "Update Inclusion and Exclusion Lists"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:19
+#, php-format
+msgid ""
+"Compatibility lists are downloaded automatically every week. Click the button if "
+"you want to update them manually. %1$sMore info%2$s"
+msgstr ""
+
+#: views/settings/dynamic-lists-update.php:29
+msgid "Update lists"
 msgstr ""
 
 #: views/settings/enable-google-fonts.php:13
@@ -3498,11 +3529,11 @@ msgstr ""
 msgid "Reinstall version %s"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:108
+#: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
 msgstr ""
 
-#: views/settings/page-sections/tools.php:113
+#: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
 msgstr ""
 

@@ -38,7 +38,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) );
+			->addArgument( $this->getContainer()->get( 'template_path' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) );
+
 		$this->getContainer()->share( 'dynamic_lists_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 	}

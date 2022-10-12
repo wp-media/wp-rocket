@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\User;
 
 class DynamicLists extends Abstract_Render {
@@ -28,6 +29,13 @@ class DynamicLists extends Abstract_Render {
 	 */
 	private $user;
 
+	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -37,13 +45,15 @@ class DynamicLists extends Abstract_Render {
 	 * @param DataManager $data_manager DataManager instance.
 	 * @param User        $user User instance.
 	 * @param string      $template_path Path to views.
+	 * @param Beacon      $beacon        Beacon instance.
 	 */
-	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path ) {
+	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path, Beacon $beacon ) {
 		parent::__construct( $template_path );
 
 		$this->api          = $api;
 		$this->data_manager = $data_manager;
 		$this->user         = $user;
+		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -158,6 +168,54 @@ class DynamicLists extends Abstract_Render {
 			return;
 		}
 
-		echo $this->generate( 'settings/dynamic-lists-update' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$data = [
+			'beacon' => $this->beacon->get_suggest( 'dynamic_lists' ),
+		];
+
+		echo $this->generate( 'settings/dynamic-lists-update', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Get the cached ignored parameters
+	 *
+	 * @return array
+	 */
+	public function get_cache_ignored_parameters(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->cache_ignored_parameters ) ? array_flip( $lists->cache_ignored_parameters ) : [];
+	}
+
+	/**
+	 * Get the JS minify excluded external paths
+	 *
+	 * @return array
+	 */
+	public function get_js_minify_excluded_external(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_minify_external ) ? $lists->js_minify_external : [];
+	}
+
+	/**
+	 * Get the patterns to move after the combine JS file
+	 *
+	 * @return array
+	 */
+	public function get_js_move_after_combine(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_move_after_combine ) ? $lists->js_move_after_combine : [];
+	}
+
+	/**
+	 * Get the inline JS excluded from combine JS
+	 *
+	 * @return array
+	 */
+	public function get_combine_js_excluded_inline(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
 	}
 }

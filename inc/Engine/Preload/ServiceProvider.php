@@ -112,7 +112,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
+			->addArgument( $cache_query )
+			->addArgument( $options );
 
 		$this->getContainer()->add( 'check_finished_controller', CheckFinished::class )
 			->addArgument( $preload_settings )

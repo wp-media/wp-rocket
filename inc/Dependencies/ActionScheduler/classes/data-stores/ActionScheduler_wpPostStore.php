@@ -452,7 +452,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Query for action count or list of action IDs.
 	 *
-	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 * @since 3.3.0 $query['status'] accepts array of statuses instead of a single status.
 	 *
 	 * @see ActionScheduler_Store::query_actions for $query arg usage.
 	 *
