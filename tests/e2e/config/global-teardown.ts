@@ -3,6 +3,7 @@ async function globalTeardown() {
   // Stop dev server
   const {execSync} = require('child_process');
   execSync('npm run wp-env clean all');
+  execSync('npm run wp-env stop');
 
   // Delete 'storageState.json'.
   const fs = require('fs');
