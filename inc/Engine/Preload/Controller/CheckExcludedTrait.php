@@ -35,6 +35,7 @@ trait CheckExcludedTrait {
 		}
 
 		$regexes = array_unique( $regexes );
+		$url     = user_trailingslashit( $url );
 
 		foreach ( $regexes as $regex ) {
 			if ( ! is_string( $regex ) ) {
