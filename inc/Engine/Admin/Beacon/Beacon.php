@@ -370,11 +370,19 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '5b4879100428630abc0c0713',
 					'url' => 'https://docs.wp-rocket.me/article/1104-excluding-inline-js-from-combine/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1109-exclure-les-js-inline-de-la-combinaison?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'exclude_js'                 => [
 				'en' => [
 					'id'  => '54b9509de4b07997ea3f27c7',
 					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => 'https://fr.docs.wp-rocket.me/article/243-exclure-js-externe-minification?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'exclude_css'                => [
@@ -401,6 +409,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5f359695042863444aa04e26',
 					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1626-reporter-l-execution-du-javascript?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'delay_js_exclusions'        => [
