@@ -11,9 +11,9 @@ trait CheckExcludedTrait {
 	 * @return array
 	 */
 	public function add_cache_reject_uri_to_excluded( array $regexes ) {
-		$exclusions = explode( '|', get_rocket_cache_reject_uri() );
+		$regexes[] = str_replace( '/', '\/', get_rocket_cache_reject_uri() );
 
-		return array_merge( $regexes, $exclusions );
+		return $regexes;
 	}
 
 	/**
@@ -34,7 +34,7 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
-		$regexes = array_flip( array_flip( $regexes ) );
+		$regexes = array_unique( $regexes );
 
 		foreach ( $regexes as $regex ) {
 			if ( ! is_string( $regex ) ) {
