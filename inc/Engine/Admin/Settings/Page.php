@@ -1179,6 +1179,7 @@ class Page {
 					'container_class'   => [
 						'wpr-field--children',
 					],
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Specify URLs to be excluded from the preload feature (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclusions['url'] ) . '" data-beacon-article="' . esc_attr( $exclusions['id'] ) . '" target="_blank">', '</a>' ),
 					'placeholder'       => '/author/(.*)',
 					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
