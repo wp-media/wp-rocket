@@ -1113,6 +1113,7 @@ class Page {
 		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
 		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 		$preload_links = $this->beacon->get_suggest( 'preload_links' );
+		$exclusions    = $this->beacon->get_suggest( 'preload_exclusions' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1168,15 +1169,19 @@ class Page {
 					'page'              => 'preload',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						'wpr-isParent',
+					],
 				],
 				'preload_excluded_uri' => [
 					'type'              => 'textarea',
-					'label'             => __( 'Exclude URI', 'rocket' ),
+					'label'             => __( 'Exclude URLs', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
-					'description'       => __( 'Exclude URI from preload', 'rocket' ),
-					'placeholder'       => 'http://example.com',
+					'description'       => sprintf( __( 'Specify URLs to be excluded from the preload feature (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclusions['url'] ) . '" data-beacon-article="' . esc_attr( $exclusions['id'] ) . '" target="_blank">', '</a>' ),
+					'placeholder'       => '/author/(.*)',
+					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
 					'parent'            => 'manual_preload',
 					'section'           => 'preload_section',
 					'page'              => 'preload',
