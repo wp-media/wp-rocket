@@ -11,7 +11,7 @@ trait CheckExcludedTrait {
 	 * @return array
 	 */
 	public function add_cache_reject_uri_to_excluded( array $regexes ) {
-		$regexes[] = str_replace( '/', '\/', get_rocket_cache_reject_uri() );
+		$regexes[] = get_rocket_cache_reject_uri();
 
 		return $regexes;
 	}
