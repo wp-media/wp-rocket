@@ -220,6 +220,13 @@ class PreloadUrl {
 
 		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
-		return $this->filesystem->exists( $file_cache_path );
+		if ( ! $this->options->get( 'cache_webp', false ) ) {
+			return $this->filesystem->exists( $file_cache_path );
+		}
+
+		$webp_path    = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '-webp.html';
+		$no_webp_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . '.no-webp';
+
+		return $this->filesystem->exists( $webp_path ) || ( $this->filesystem->exists( $no_webp_path ) && $this->filesystem->exists( $file_cache_path ) );
 	}
 }
