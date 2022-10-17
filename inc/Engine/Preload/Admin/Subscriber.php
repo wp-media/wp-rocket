@@ -43,9 +43,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => [
+			'admin_notices'               => [
 				[ 'maybe_display_preload_notice' ],
 			],
+			'rocket_options_changed'      => 'preload_homepage',
+			'switch_theme'                => 'preload_homepage',
+			'rocket_after_clean_used_css' => 'preload_homepage',
 		];
 	}
 
@@ -56,5 +59,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_preload_notice() {
 		$this->settings->maybe_display_preload_notice();
+	}
+
+	/**
+	 * Preload the homepage after changing the settings
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->settings->preload_homepage();
 	}
 }
