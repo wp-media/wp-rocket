@@ -106,8 +106,8 @@ class UsedCSS extends Query {
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
-	 * @param int   $id DB row ID.
-	 * @param int   $retries Current number of retries.
+	 * @param int $id DB row ID.
+	 * @param int $retries Current number of retries.
 	 *
 	 * @return bool
 	 */
@@ -122,12 +122,12 @@ class UsedCSS extends Query {
 	/**
 	 * Update Job ID.
 	 *
-	 * @param int   $id DB row ID.
-	 * @param int   new_job_id new ob id.
+	 * @param int $id DB row ID.
+	 * @param int $new_job_id new job id.
 	 *
 	 * @return bool
 	 */
-	public function update_job_id( $id, $new_job_id = 0 ) {
+	public function update_job_id( $id, $new_job_id ) {
 		$update_data['job_id'] = $new_job_id;
 		return $this->update_item( $id, $update_data );
 	}

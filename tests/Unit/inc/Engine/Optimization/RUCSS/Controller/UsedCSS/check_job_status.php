@@ -113,7 +113,7 @@ class Test_CheckJobStatus extends TestCase {
 			}
 
 			// on timeout errors with code 504 create new job.
-			if ( 504 === $job_details['code'] ) {
+			if ( 408 === $job_details['code'] ) {
 				$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn([]);
 				$this->api->expects()->add_to_queue( $row_details->url, [
 					          'treeshake'      => 1,
@@ -122,16 +122,16 @@ class Test_CheckJobStatus extends TestCase {
 					          'is_home'        => $row_details->is_home,
 				          ])
 				          ->andReturn($add_to_queue_response);
-				/*$this->usedCss->expects()
-				              ->add_url_to_the_queue( $row_details->url, $row_details->is_mobile )
-				              ->andReturn( $add_to_queue_response );*/
 				if ( false !== $add_to_queue_response ) {
 					$new_job_id = $add_to_queue_response['contents']['jobId'];
+					$this->usedCssQuery->expects( self::once() )
+					                   ->method( 'update_job_id' )
+					                   ->with( $config['job_id'], $new_job_id );
 				}
 			}
 			$this->usedCssQuery->expects( self::once() )
 			                   ->method( 'increment_retries' )
-			                   ->with( $config['job_id'], $row_details->retries, $new_job_id );
+			                   ->with( $config['job_id'], $row_details->retries );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
 			return;

@@ -628,7 +628,7 @@ class UsedCSS {
 			}
 
 			// on timeout errors with code 408 create new job.
-			switch( $job_details['code'] ){
+			switch ( $job_details['code'] ) {
 				case 408:
 					$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
 					if ( false !== $add_to_queue_response ) {
