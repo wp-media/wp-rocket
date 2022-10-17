@@ -10,7 +10,7 @@ trait CheckExcludedTrait {
 	 * @param array $regexes regexes used to exclude urls.
 	 * @return array
 	 */
-	public function add_cache_reject_uri_to_excluded( array $regexes ) {
+	public function add_cache_reject_uri_to_excluded( array $regexes ): array {
 		$regexes[] = get_rocket_cache_reject_uri();
 
 		return $regexes;
@@ -41,6 +41,8 @@ trait CheckExcludedTrait {
 			if ( ! is_string( $regex ) ) {
 				continue;
 			}
+
+			$regex = user_trailingslashit( $regex );
 
 			if ( preg_match( "@$regex@", $url ) ) {
 				return true;
