@@ -74,7 +74,7 @@ return [
 				'retries'    => 1,
 			],
 			'job_details'           => [
-				'code'     => 504,
+				'code'     => 408,
 				'message' => 'timeout'
 			],
 			'add_to_queue_response' => [

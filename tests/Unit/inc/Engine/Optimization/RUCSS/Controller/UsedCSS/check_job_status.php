@@ -112,7 +112,7 @@ class Test_CheckJobStatus extends TestCase {
 				return;
 			}
 
-			// on timeout errors with code 504 create new job.
+			// on timeout errors with code 408 create new job.
 			if ( 408 === $job_details['code'] ) {
 				$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn([]);
 				$this->api->expects()->add_to_queue( $row_details->url, [
@@ -177,10 +177,5 @@ class Test_CheckJobStatus extends TestCase {
 		$this->api->expects()
 		          ->add_to_queue($url,$create_new_job_config)
 		          ->andReturn($add_to_queue_response);
-/*		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response']){
-			return;
-		}
-
-		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );*/
 	}
 }
