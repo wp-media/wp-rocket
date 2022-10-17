@@ -244,7 +244,6 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		}
 	}
 
-	$uris = array_map( 'user_trailingslashit', $uris );
 	$uris = implode( '|', $uris );
 
 	if ( '' !== $home_root ) {
