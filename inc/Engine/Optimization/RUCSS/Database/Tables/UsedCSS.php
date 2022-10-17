@@ -270,7 +270,7 @@ class UsedCSS extends Table {
 		$created = true;
 
 		if ( ! $error_message_column_exists ) {
-			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN error_message longtext NULL default NULL AFTER hash" );
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN error_message longtext NULL default NULL AFTER hash" );
 		}
 
 		return $this->is_success( $created );

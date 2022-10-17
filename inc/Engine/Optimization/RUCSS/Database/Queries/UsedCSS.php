@@ -108,19 +108,27 @@ class UsedCSS extends Query {
 	 *
 	 * @param int   $id DB row ID.
 	 * @param int   $retries Current number of retries.
-	 * @param mixed $new_job_id new job id to set if timeout.
 	 *
 	 * @return bool
 	 */
-	public function increment_retries( $id, $retries = 0, $new_job_id = false ) {
+	public function increment_retries( $id, $retries = 0 ) {
 		$update_data = [
 			'retries' => $retries + 1,
 			'status'  => 'pending',
 		];
+		return $this->update_item( $id, $update_data );
+	}
 
-		if ( $new_job_id ) {
-			$update_data['job_id'] = $new_job_id;
-		}
+	/**
+	 * Update Job ID.
+	 *
+	 * @param int   $id DB row ID.
+	 * @param int   new_job_id new ob id.
+	 *
+	 * @return bool
+	 */
+	public function update_job_id( $id, $new_job_id = 0 ) {
+		$update_data['job_id'] = $new_job_id;
 		return $this->update_item( $id, $update_data );
 	}
 
