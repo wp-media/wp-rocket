@@ -23,18 +23,7 @@ defined( 'ABSPATH' ) || exit;
 				);
 				?>
 			</p>
-			<p>
-			<?php
-				printf(
-					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage, %4$s = price.
-					esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you’ll only pay %1$s%4$s%2$s!', 'rocket' ),
-					'<strong>',
-					'</strong>',
-					'20%',
-					esc_html( $data['renewal_price'] )
-				);
-				?>
-			</p>
+			<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		</div>
 		<div class="rocket-expired-cta-container">
 			<a href="<?php echo esc_url( $data['renewal_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Renew now', 'rocket' ); ?></a>

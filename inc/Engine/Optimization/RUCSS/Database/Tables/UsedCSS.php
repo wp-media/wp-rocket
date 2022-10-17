@@ -30,7 +30,6 @@ class UsedCSS extends Table {
 	 */
 	protected $version = 20220926;
 
-
 	/**
 	 * Key => value array of versions => methods.
 	 *
@@ -40,6 +39,7 @@ class UsedCSS extends Table {
 		20220121 => 'add_async_rucss_columns',
 		20220131 => 'make_status_column_index',
 		20220513 => 'add_hash_column',
+		20220920 => 'make_status_column_index_instead_queue_name',
 		20220926 => 'add_error_message_column',
 	];
 
@@ -75,7 +75,7 @@ class UsedCSS extends Table {
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
-			INDEX `queue_name_index` (`queue_name`),
+			INDEX `status_index` (`status`(191)),
 			KEY hash (hash)";
 	}
 
@@ -191,6 +191,32 @@ class UsedCSS extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Make status column as index.
+	 *
+	 * @return bool
+	 */
+	protected function make_status_column_index_instead_queue_name() {
+		$queuename_column_exists = $this->column_exists( 'status' );
+		if ( ! $queuename_column_exists ) {
+			return $this->is_success( false );
+		}
+
+		if ( $this->index_exists( 'status_index' ) ) {
+			return $this->is_success( true );
+		}
+
+		if ( $this->index_exists( 'queue_name_index' ) ) {
+			if ( ! $this->get_db()->query( "ALTER TABLE {$this->table_name} DROP INDEX `queue_name_index`" ) ) {
+				return $this->is_success( false );
+			}
+		}
+
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `status_index` (`status`(191)) " );
+
+		return $this->is_success( $index_added );
 	}
 
 	/**

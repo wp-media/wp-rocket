@@ -5,6 +5,7 @@ return [
 			'is_excluded' => false,
 			'url' => 'http://example.com',
 			'response' => 'response',
+			'request_succeed' => false,
 			'status' => 400,
 			'content' => '',
 			'links' => [],

@@ -44,6 +44,9 @@ class Test_Optimize extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyJS( $original, $expected, $cdn_hosts, $cdn_url, $site_url, $external_url, $has_integrity = false, $valid_integrity = true ) {
+		Filters\expectApplied( 'rocket_minify_excluded_external_js' )
+			->andReturn( ['cse.google.com/cse.js'] );
+
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->zeroOrMoreTimes()
 			->with( [], [ 'all', 'css_and_js', 'js' ] )

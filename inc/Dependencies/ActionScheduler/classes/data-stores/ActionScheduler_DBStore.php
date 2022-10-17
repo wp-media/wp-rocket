@@ -37,21 +37,47 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Save an action.
+	 * Save an action, checks if this is a unique action before actually saving.
+	 *
+	 * @param ActionScheduler_Action $action         Action object.
+	 * @param \DateTime              $scheduled_date Optional schedule date. Default null.
+	 *
+	 * @return int                  Action ID.
+	 * @throws RuntimeException     Throws exception when saving the action fails.
+	 */
+	public function save_unique_action( ActionScheduler_Action $action, \DateTime $scheduled_date = null ) {
+		return $this->save_action_to_db( $action, $scheduled_date, true );
+	}
+
+	/**
+	 * Save an action. Can save duplicate action as well, prefer using `save_unique_action` instead.
 	 *
 	 * @param ActionScheduler_Action $action Action object.
-	 * @param DateTime              $date Optional schedule date. Default null.
+	 * @param \DateTime              $scheduled_date Optional schedule date. Default null.
 	 *
 	 * @return int Action ID.
 	 * @throws RuntimeException     Throws exception when saving the action fails.
 	 */
-	public function save_action( ActionScheduler_Action $action, \DateTime $date = null ) {
-		try {
+	public function save_action( ActionScheduler_Action $action, \DateTime $scheduled_date = null ) {
+		return $this->save_action_to_db( $action, $scheduled_date, false );
+	}
 
+	/**
+	 * Save an action.
+	 *
+	 * @param ActionScheduler_Action $action Action object.
+	 * @param ?DateTime              $date Optional schedule date. Default null.
+	 * @param bool                   $unique Whether the action should be unique.
+	 *
+	 * @return int Action ID.
+	 * @throws RuntimeException     Throws exception when saving the action fails.
+	 */
+	private function save_action_to_db( ActionScheduler_Action $action, DateTime $date = null, $unique = false ) {
+		global $wpdb;
+
+		try {
 			$this->validate_action( $action );
 
-			/** @var \wpdb $wpdb */
-			global $wpdb;
 			$data = array(
 				'hook'                 => $action->get_hook(),
 				'status'               => ( $action->is_finished() ? self::STATUS_COMPLETE : self::STATUS_PENDING ),
@@ -60,6 +86,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 				'schedule'             => serialize( $action->get_schedule() ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 				'group_id'             => $this->get_group_id( $action->get_group() ),
 			);
+
 			$args = wp_json_encode( $action->get_args() );
 			if ( strlen( $args ) <= static::$max_index_length ) {
 				$data['args'] = $args;
@@ -68,13 +95,18 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 				$data['extended_args'] = $args;
 			}
 
-			$table_name = ! empty( $wpdb->actionscheduler_actions ) ? $wpdb->actionscheduler_actions : $wpdb->prefix . 'actionscheduler_actions';
-			$wpdb->insert( $table_name, $data );
+			$insert_sql = $this->build_insert_sql( $data, $unique );
+
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $insert_sql should be already prepared.
+			$wpdb->query( $insert_sql );
 			$action_id = $wpdb->insert_id;
 
 			if ( is_wp_error( $action_id ) ) {
 				throw new \RuntimeException( $action_id->get_error_message() );
 			} elseif ( empty( $action_id ) ) {
+				if ( $unique ) {
+					return 0;
+				}
 				throw new \RuntimeException( $wpdb->last_error ? $wpdb->last_error : __( 'Database error.', 'action-scheduler' ) );
 			}
 
@@ -85,6 +117,103 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			/* translators: %s: error message */
 			throw new \RuntimeException( sprintf( __( 'Error saving action: %s', 'action-scheduler' ), $e->getMessage() ), 0 );
 		}
+	}
+
+	/**
+	 * Helper function to build insert query.
+	 *
+	 * @param array $data Row data for action.
+	 * @param bool  $unique Whether the action should be unique.
+	 *
+	 * @return string Insert query.
+	 */
+	private function build_insert_sql( array $data, $unique ) {
+		global $wpdb;
+		$columns      = array_keys( $data );
+		$values       = array_values( $data );
+		$placeholders = array_map( array( $this, 'get_placeholder_for_column' ), $columns );
+
+		$table_name = ! empty( $wpdb->actionscheduler_actions ) ? $wpdb->actionscheduler_actions : $wpdb->prefix . 'actionscheduler_actions';
+
+		$column_sql      = '`' . implode( '`, `', $columns ) . '`';
+		$placeholder_sql = implode( ', ', $placeholders );
+		$where_clause    = $this->build_where_clause_for_insert( $data, $table_name, $unique );
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $column_sql and $where_clause are already prepared. $placeholder_sql is hardcoded.
+		$insert_query    = $wpdb->prepare(
+			"
+INSERT INTO $table_name ( $column_sql )
+SELECT $placeholder_sql FROM DUAL
+WHERE ( $where_clause ) IS NULL",
+			$values
+		);
+		// phpcs:enable
+
+		return $insert_query;
+	}
+
+	/**
+	 * Helper method to build where clause for action insert statement.
+	 *
+	 * @param array  $data Row data for action.
+	 * @param string $table_name Action table name.
+	 * @param bool   $unique Where action should be unique.
+	 *
+	 * @return string Where clause to be used with insert.
+	 */
+	private function build_where_clause_for_insert( $data, $table_name, $unique ) {
+		global $wpdb;
+
+		if ( ! $unique ) {
+			return 'SELECT NULL FROM DUAL';
+		}
+
+		$pending_statuses            = array(
+			ActionScheduler_Store::STATUS_PENDING,
+			ActionScheduler_Store::STATUS_RUNNING,
+		);
+		$pending_status_placeholders = implode( ', ', array_fill( 0, count( $pending_statuses ), '%s' ) );
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $pending_status_placeholders is hardcoded.
+		$where_clause = $wpdb->prepare(
+			"
+SELECT action_id FROM $table_name
+WHERE status IN ( $pending_status_placeholders )
+AND hook = %s
+AND `group_id` = %d
+",
+			array_merge(
+				$pending_statuses,
+				array(
+					$data['hook'],
+					$data['group_id'],
+				)
+			)
+		);
+		// phpcs:enable
+
+		return "$where_clause" . ' LIMIT 1';
+	}
+
+	/**
+	 * Helper method to get $wpdb->prepare placeholder for a given column name.
+	 *
+	 * @param string $column_name Name of column in actions table.
+	 *
+	 * @return string Placeholder to use for given column.
+	 */
+	private function get_placeholder_for_column( $column_name ) {
+		$string_columns = array(
+			'hook',
+			'status',
+			'scheduled_date_gmt',
+			'scheduled_date_local',
+			'args',
+			'schedule',
+			'last_attempt_gmt',
+			'last_attempt_local',
+			'extended_args',
+		);
+
+		return in_array( $column_name, $string_columns ) ? '%s' : '%d';
 	}
 
 	/**
@@ -232,7 +361,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
-	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 * @since 3.3.0 $query['status'] accepts array of statuses instead of a single status.
 	 *
 	 * @param array  $query Filtering options.
 	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count.
@@ -384,7 +513,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Query for action count or list of action IDs.
 	 *
-	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 * @since 3.3.0 $query['status'] accepts array of statuses instead of a single status.
 	 *
 	 * @see ActionScheduler_Store::query_actions for $query arg usage.
 	 *
@@ -670,7 +799,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		/**
 		 * Sets the order-by clause used in the action claim query.
 		 *
-		 * @since x.x.x
+		 * @since 3.4.0
 		 *
 		 * @param string $order_by_sql
 		 */
