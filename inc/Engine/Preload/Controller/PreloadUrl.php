@@ -267,7 +267,6 @@ class PreloadUrl {
 			return count( $queries ) === 0;
 		}
 
-
 		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
 	}
 

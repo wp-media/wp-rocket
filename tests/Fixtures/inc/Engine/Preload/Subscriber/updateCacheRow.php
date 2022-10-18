@@ -66,7 +66,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org/?test=1',
-      'exists' => true,
+      		'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -86,15 +86,19 @@ return [
 					'url' => 'http://example.org/?test=1',
 					'status' => 'in-progress',
 				],
+			],
+			],
         'expected' => [
 			'url' => 'http://example.org/?test=1',
-      exists' => false,
+			'exists' => false,
 			'links' => [
 				[
 					'url' => 'http://example.org/?test=1',
 					'status' => 'completed',
 				],
 			],
+		],
+	],
 	'excludedShouldDelete' => [
 		'config' => [
 			'regexes' => [
@@ -110,7 +114,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org/?test=1',
-      exists' => false,
+			'exists' => false,
 			'links' => [
 				[
 					'url' => 'http://example.org/?test=1',
