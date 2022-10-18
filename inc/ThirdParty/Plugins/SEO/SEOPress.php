@@ -31,7 +31,7 @@ class SEOPress implements Subscriber_Interface {
 			return [];
 		}
 		return [
-			'rocket_sitemap_preload_list' => 'add_seopress_sitemap',
+			'rocket_sitemap_preload_list' => [ 'add_seopress_sitemap', 15 ],
 		];
 	}
 

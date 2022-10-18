@@ -64,7 +64,7 @@ class FetchSitemap {
 		$links = $this->sitemap_parser->get_links();
 
 		foreach ( $links as $link ) {
-			if ( ! $this->is_excluded( $link ) ) {
+			if ( ! $this->is_excluded_by_filter( $link ) ) {
 				$this->query->create_or_nothing(
 					[
 						'url' => $link,

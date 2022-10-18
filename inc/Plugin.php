@@ -209,7 +209,8 @@ class Plugin {
 			'lazyload_admin_subscriber',
 			'preload_admin_subscriber',
 			'minify_admin_subscriber',
-			'notices_admin_subscriber',
+			'action_scheduler_check',
+			'actionscheduler_admin_subscriber',
 		];
 	}
 
@@ -342,6 +343,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'rocket_lazy_load',
 		];
 
 		$host_type = HostResolver::get_host_service();
