@@ -559,6 +559,7 @@ class Page {
 		$files_beacon               = $this->beacon->get_suggest( 'file_optimization' );
 		$inline_js_beacon           = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon          = $this->beacon->get_suggest( 'exclude_js' );
+		$exclude_css_beacon         = $this->beacon->get_suggest( 'exclude_css' );
 		$delay_js_beacon            = $this->beacon->get_suggest( 'delay_js' );
 		$delay_js_exclusions_beacon = $this->beacon->get_suggest( 'delay_js_exclusions' );
 		$exclude_defer_js           = $this->beacon->get_suggest( 'exclude_defer_js' );
@@ -672,7 +673,7 @@ class Page {
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_css_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_css_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -1113,6 +1114,7 @@ class Page {
 		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
 		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 		$preload_links = $this->beacon->get_suggest( 'preload_links' );
+		$exclusions    = $this->beacon->get_suggest( 'preload_exclusions' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1161,15 +1163,34 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'manual_preload' => [
+				'manual_preload'       => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate Preloading', 'rocket' ),
 					'section'           => 'preload_section',
 					'page'              => 'preload',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						'wpr-isParent',
+					],
 				],
-				'dns_prefetch'   => [
+				'preload_excluded_uri' => [
+					'type'              => 'textarea',
+					'label'             => __( 'Exclude URLs', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Specify URLs to be excluded from the preload feature (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclusions['url'] ) . '" data-beacon-article="' . esc_attr( $exclusions['id'] ) . '" target="_blank">', '</a>' ),
+					'placeholder'       => '/author/(.*)',
+					'helper'            => 'Use (.*) wildcards to address multiple URLs under a given path.',
+					'parent'            => 'manual_preload',
+					'section'           => 'preload_section',
+					'page'              => 'preload',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'dns_prefetch'         => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
@@ -1179,7 +1200,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_fonts'  => [
+				'preload_fonts'        => [
 					'type'              => 'textarea',
 					'label'             => __( 'Fonts to preload', 'rocket' ),
 					'description'       => __( 'Specify urls of the font files to be preloaded (one per line). Fonts must be hosted on your own domain, or the domain you have specified on the CDN tab.', 'rocket' ),
@@ -1190,7 +1211,7 @@ class Page {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'preload_links'  => [
+				'preload_links'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable link preloading', 'rocket' ),
 					'section'           => 'preload_links_section',

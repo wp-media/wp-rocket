@@ -20,7 +20,7 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 	{
 		parent::setUp();
 		add_filter('pre_option_aioseop_options', [$this, 'aioseop_options']);
-		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_all_in_one_seo_sitemap');
+		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_all_in_one_seo_sitemap', 15);
 	}
 
 	public function tearDown(): void
