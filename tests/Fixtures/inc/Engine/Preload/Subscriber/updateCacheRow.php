@@ -53,6 +53,7 @@ return [
 	'testQueryParamShouldDoNothingWhenFilterDisabled' => [
 		'config' => [
 			'query_enabled' => false,
+			'regexes' => [],
 			'params' => [
 				'test' => 1
 			],
@@ -78,6 +79,7 @@ return [
 	'testQueryParamShouldAdaptWhenFilterEnabled' => [
 		'config' => [
 			'query_enabled' => true,
+			'regexes' => [],
 			'params' => [
 				'test' => 1
 			],
@@ -87,10 +89,11 @@ return [
 					'status' => 'in-progress',
 				],
 			],
-			],
+			'is_preloaded' => false,
+		],
         'expected' => [
 			'url' => 'http://example.org/?test=1',
-			'exists' => false,
+			'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org/?test=1',
@@ -101,8 +104,12 @@ return [
 	],
 	'excludedShouldDelete' => [
 		'config' => [
+			'query_enabled' => true,
 			'regexes' => [
 				'(.*)example.org(.*)'
+			],
+			'params' => [
+				'test' => 1
 			],
 			'links' => [
 				[
