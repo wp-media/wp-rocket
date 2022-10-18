@@ -57,7 +57,7 @@ class Test_PreloadUrl extends TestCase
 			return;
 		}
 
-		$this->query->expects(self::once())->method('make_status_complete')->with($config['url']);
+		$this->query->expects(self::once())->method('delete_by_url')->with($config['url']);
 	}
 
 	protected function configureAlreadyCached($config) {

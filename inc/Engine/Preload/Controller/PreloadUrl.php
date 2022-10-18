@@ -66,7 +66,7 @@ class PreloadUrl {
 			&&
 			$this->can_preload_query_strings()
 		) {
-			$this->query->make_status_complete( $url );
+			$this->query->delete_by_url( $url );
 
 			return;
 		}
