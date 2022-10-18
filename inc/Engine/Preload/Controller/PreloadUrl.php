@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
 
 class PreloadUrl {
+	use CheckExcludedTrait;
 
 	/**
 	 * Preload queue.
@@ -175,6 +176,12 @@ class PreloadUrl {
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
 		$rows  = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $index => $row ) {
+
+			if ( $this->is_excluded_by_filter( $row->url ) ) {
+				$this->query->delete_by_url( $row->url );
+				continue;
+			}
+
 			$this->query->make_status_inprogress( $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 
