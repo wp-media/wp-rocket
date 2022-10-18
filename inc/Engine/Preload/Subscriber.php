@@ -400,9 +400,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function format_preload_url( string $url ) {
 		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
-  }
-  
-  /**
+	}
+
+	/**
 	 * Add the excluded uri from the preload to the filter.
 	 *
 	 * @param array $regexes regexes containing excluded uris.
