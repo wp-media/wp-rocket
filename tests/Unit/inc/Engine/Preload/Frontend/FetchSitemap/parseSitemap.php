@@ -23,7 +23,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser = Mockery::mock( SitemapParser::class );
 		$this->queue = Mockery::mock( Queue::class );
 		$this->query = $this->createMock( Cache::class );
-		$this->controller = Mockery::mock( FetchSitemap::class . '[is_excluded]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock( FetchSitemap::class . '[is_excluded_by_filter]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Test_ParseSitemap extends TestCase {
 			->andReturn( $config['children'] );
 
 		foreach ( $config['links'] as $index => $link ) {
-			$this->controller->expects()->is_excluded( $link )
+			$this->controller->expects()->is_excluded_by_filter( $link )
 				->once()
 				->andReturn( $config['is_excluded'] );
 

@@ -30,7 +30,7 @@ class Yoast implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_sitemap_preload_list' => 'add_sitemap',
+			'rocket_sitemap_preload_list' => [ 'add_sitemap', 15 ],
 		];
 	}
 
@@ -44,6 +44,10 @@ class Yoast implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_sitemap( $sitemaps ): array {
+		if ( ! is_array( $sitemaps ) ) {
+			$sitemaps = (array) $sitemaps;
+		}
+
 		if ( ! $this->is_sitemap_enabled() ) {
 			return $sitemaps;
 		}

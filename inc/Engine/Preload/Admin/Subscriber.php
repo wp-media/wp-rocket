@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Preload\Controller\ClearCache;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -43,9 +44,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => [
+			'admin_notices'               => [
 				[ 'maybe_display_preload_notice' ],
 			],
+			'rocket_options_changed'      => 'preload_homepage',
+			'switch_theme'                => 'preload_homepage',
+			'rocket_after_clean_used_css' => 'preload_homepage',
+			'rocket_input_sanitize'       => 'sanitize_options',
 		];
 	}
 
@@ -56,5 +61,33 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_preload_notice() {
 		$this->settings->maybe_display_preload_notice();
+	}
+
+	/**
+	 * Preload the homepage after changing the settings
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->settings->preload_homepage();
+	}
+
+	/**
+	 * Sanitizes Preload Excluded URI option when saving the settings
+	 *
+	 * @param array $input Array of values submitted from the form.
+	 *
+	 * @return array
+	 */
+	public function sanitize_options( $input ) : array {
+		if ( empty( $input['preload_excluded_uri'] ) ) {
+			$input['preload_excluded_uri'] = [];
+
+			return $input;
+		}
+
+		$input['preload_excluded_uri'] = rocket_sanitize_textarea_field( 'preload_excluded_uri', $input['preload_excluded_uri'] );
+
+		return $input;
 	}
 }

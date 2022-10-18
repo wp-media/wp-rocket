@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Admin;
 
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Admin\Options_Data;
 
 class Settings {
@@ -14,12 +15,21 @@ class Settings {
 	protected $options;
 
 	/**
+	 * PreloadUrl instance
+	 *
+	 * @var PreloadUrl
+	 */
+	private $preload_url;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Instance of options handler.
+	 * @param PreloadUrl   $preload_url PreloadUrl instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, PreloadUrl $preload_url ) {
+		$this->options     = $options;
+		$this->preload_url = $preload_url;
 	}
 
 	/**
@@ -89,5 +99,14 @@ class Settings {
 	 */
 	public function is_enabled() : bool {
 		return (bool) $this->options->get( 'manual_preload', 0 );
+	}
+
+	/**
+	 * Preload the homepage
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->preload_url->preload_url( home_url() );
 	}
 }

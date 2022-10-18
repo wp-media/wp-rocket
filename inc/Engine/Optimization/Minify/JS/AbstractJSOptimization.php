@@ -54,6 +54,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/three.min.js';
 		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/3d-flip-book.min.js';
 		$excluded_files[] = '/google-site-kit/dist/assets/js/(.*)\.js';
+		$excluded_files[] = '/wp-live-chat-support/public/js/callus(.*)\.js';
 
 		/**
 		 * Filter JS files to exclude from minification/concatenation.

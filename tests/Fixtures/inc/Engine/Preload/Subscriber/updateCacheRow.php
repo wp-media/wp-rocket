@@ -5,6 +5,7 @@ return [
 			'query_enabled' => false,
 			'params' => [
 			],
+			'regexes' => [],
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -15,6 +16,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org',
+			'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -28,6 +30,7 @@ return [
 			'query_enabled' => false,
 			'params' => [
 			],
+			'regexes' => [],
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -38,6 +41,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org',
+			'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -62,6 +66,7 @@ return [
 		],
 		'expected' => [
 			'url' => 'http://example.org/?test=1',
+      'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -81,11 +86,31 @@ return [
 					'url' => 'http://example.org/?test=1',
 					'status' => 'in-progress',
 				],
+        'expected' => [
+			'url' => 'http://example.org/?test=1',
+      exists' => false,
+			'links' => [
+				[
+					'url' => 'http://example.org/?test=1',
+					'status' => 'completed',
+				],
+			],
+	'excludedShouldDelete' => [
+		'config' => [
+			'regexes' => [
+				'(.*)example.org(.*)'
+			],
+			'links' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'in-progress',
+				],
 			],
 			'is_preloaded' => false,
 		],
 		'expected' => [
 			'url' => 'http://example.org/?test=1',
+      exists' => false,
 			'links' => [
 				[
 					'url' => 'http://example.org/?test=1',
