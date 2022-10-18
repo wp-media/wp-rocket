@@ -242,7 +242,7 @@ class PreloadUrl {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 
 		if ( empty( $queries ) ) {
-			return false;
+			return true;
 		}
 
 		$queries = $this->convert_query_to_array( $queries );
@@ -252,6 +252,7 @@ class PreloadUrl {
 		if ( ! $cache_query_string ) {
 			return count( $queries ) === 0;
 		}
+
 
 		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
 	}
