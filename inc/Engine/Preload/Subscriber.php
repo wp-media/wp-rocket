@@ -414,8 +414,8 @@ class Subscriber implements Subscriber_Interface {
 		$this->query->unlock( $url );
 	}
 
-  /**
-   * Add the excluded uri from the preload to the filter.
+	/**
+	 * Add the excluded uri from the preload to the filter.
 	 *
 	 * @param array $regexes regexes containing excluded uris.
 	 * @return array|false
