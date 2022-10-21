@@ -31,13 +31,6 @@ use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
-use WP_Rocket\ThirdParty\Themes\Avada;
-use WP_Rocket\ThirdParty\Themes\Bridge;
-use WP_Rocket\ThirdParty\Themes\Divi;
-use WP_Rocket\ThirdParty\Themes\Flatsome;
-use WP_Rocket\ThirdParty\Themes\Polygon;
-use WP_Rocket\ThirdParty\Themes\Jevelin;
-use WP_Rocket\ThirdParty\Themes\Xstore;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
@@ -61,8 +54,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'woocommerce_subscriber',
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
-		'bridge_subscriber',
-		'avada_subscriber',
 		'ngg_subscriber',
 		'smush_subscriber',
 		'imagify_webp_subscriber',
@@ -74,8 +65,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'amp_subscriber',
 		'simple_custom_css',
 		'pdfembedder',
-		'divi',
-		'polygon',
 		'mod_pagespeed',
 		'adthrive',
 		'autoptimize',
@@ -84,8 +73,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wordfence_subscriber',
 		'ezoic',
 		'pwa',
-		'flatsome',
-		'minimalist_blogger',
 		'convertplug',
 		'unlimited_elements',
 		'inline_related_posts',
@@ -94,9 +81,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'all_in_one_seo_pack',
 		'seopress',
 		'the_seo_framework',
-		'jevelin',
 		'wpml',
-		'xstore',
 		'cloudflare_plugin_subscriber',
 	];
 
@@ -127,32 +112,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'syntaxhighlighter_subscriber', SyntaxHighlighter_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'bridge_subscriber', Bridge::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'divi', Divi::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'polygon', Polygon::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'avada_subscriber', Avada::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
 			->share( 'ngg_subscriber', NGG_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'smush_subscriber', Smush::class )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'xstore', Xstore::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )
@@ -219,13 +184,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'flatsome', Flatsome::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
 			->share( 'convertplug', ConvertPlug::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'jevelin', Jevelin::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'unlimited_elements', UnlimitedElements::class )
@@ -243,9 +202,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
 			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'minimalist_blogger', 'WP_Rocket\ThirdParty\Themes\MinimalistBlogger' )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
