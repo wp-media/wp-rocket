@@ -20,7 +20,7 @@ const config: PlaywrightTestConfig = {
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [
 		['list'],
-		['html', { outputFolder: path.join( process.cwd(), 'artifacts' ) }]
+		['html', { outputFolder: path.join( process.cwd(), 'reports' ) }]
 	],
 	outputDir: path.join( process.cwd(), 'artifacts' ),
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
