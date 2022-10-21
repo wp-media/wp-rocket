@@ -8,7 +8,7 @@ import { dashboard } from '../../common/sections/dashboard';
 import { save_settings } from '../../../utils/helpers';
 import { pageUtils } from '../../../utils/page.utils';
 
-test.describe( 'Preload', () => {
+const Preload = () => {
     test('Should display preload trigger msg', async ( { page } ) => {
 
         await page.goto('/wp-admin/options-general.php?page=wprocket#dashboard');
@@ -57,7 +57,7 @@ test.describe( 'Preload', () => {
         // Assert that clear cache option is on WPR Dashboard.
         await expect(page.locator('.wpr-field a:has-text("Clear cache")')).toBeVisible();
     });
-});
+}
 
 const when_preload_enabled = async (page, data) => {
     await data.preload.visit();
@@ -84,3 +84,5 @@ const when_clear_cache_and_preload_settings = async (page, data) => {
 
     await expect(data.locator).toContainText(data.expected);
 }
+
+export default Preload;
