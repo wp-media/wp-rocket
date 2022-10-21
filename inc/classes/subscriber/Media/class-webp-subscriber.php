@@ -107,7 +107,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			],
 			'rocket_disable_webp_cache'       => 'maybe_disable_webp_cache',
 			'rocket_third_party_webp_change'  => 'sync_webp_cache_with_third_party_plugins',
-			'rocket_preload_url_request_args' => 'add_accept_header',
+			'rocket_preload_before_preload_url' => 'add_accept_header',
 		];
 	}
 
@@ -420,17 +420,21 @@ class Webp_Subscriber implements Subscriber_Interface {
 	/**
 	 * Add WebP to the HTTP_ACCEPT headers on preload request when the WebP option is active
 	 *
-	 * @param array $headers Headers from the requests to make.
+	 * @param array $requests Requests to make.
 	 * @return array
 	 */
-	public function add_accept_header( $headers ) {
+	public function add_accept_header( $requests ) {
+
+
 		if ( ! $this->options_data->get( 'cache_webp' ) ) {
-			return $headers;
+			return $requests;
 		}
 
-		$headers['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-		$headers['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-		return $headers;
+		return array_map(function ($request) {
+			$request['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+			$request['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+			return $request;
+		}, $requests);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
