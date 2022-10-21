@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test';
 import { pageUtils } from '../../../utils/page.utils';
 import { fileOptimization } from '../../common/sections/file.optimization';
 
-test.describe('Defer JS', () => {
+const deferJs = () => {
     test('Should display the Defer JS UI', async ( { page } ) => {
 
         const page_utils = new pageUtils( page );
@@ -35,5 +35,6 @@ test.describe('Defer JS', () => {
         // Assert that deferjs exclusion textarea is no longer visible.
         await expect(page.locator(txtarea)).not.toBeVisible();
     });
-    
-});
+}
+
+export default deferJs;

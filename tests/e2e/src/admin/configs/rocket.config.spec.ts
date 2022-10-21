@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-const allowed_status = [301, 200];
-
-test.describe('Rocket Config File', () => {
+const configFile = () => {
+    let allowed_status = [301, 200];
+    
     test('should have config file', async ({ page }) => {
 
         page.on('response', async (response) => {
@@ -11,4 +11,7 @@ test.describe('Rocket Config File', () => {
 
         await page.goto('/wp-content/wp-rocket-config/localhost.php');
     });
-});
+}
+
+
+export default configFile;

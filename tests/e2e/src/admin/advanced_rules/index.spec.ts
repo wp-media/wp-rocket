@@ -7,7 +7,7 @@ import { advancedRules } from '../../common/sections/advanced.rules';
 import { pageUtils } from '../../../utils/page.utils';
 import { save_settings } from '../../../utils/helpers';
 
-test.describe('Advanced Rules', () => {
+const AdvancedRules = () => {
     test('Should display notice if the global exclusion pattern is used in never cache URLs field', async ( { page } ) => {
         const page_utils = new pageUtils(page);
         const advanced_rules = new advancedRules(page);
@@ -32,9 +32,11 @@ test.describe('Advanced Rules', () => {
         // Assert that notice was displayed after adding multiple lines.
         displayExpectedNotice(page);
     });
-});
+}
 
 const displayExpectedNotice = (page) => {
     let string = 'Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved';
     expect(page.locator('#setting-error-reject_uri_global_exclusion p')).toContainText(string);
 }
+
+export default AdvancedRules;

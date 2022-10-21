@@ -5,8 +5,10 @@ import { test } from '@playwright/test';
  */
 import { deactivationModal } from '../common/deactivation.modal';
 
-test.describe('WPR Deactivation Modal', () => {
+const DeactivationModal = () => {
     test('should pop up deactivation modal', async ( { page } ) => {
         await deactivationModal( page );
     });
-});
+}
+
+export default DeactivationModal;

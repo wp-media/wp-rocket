@@ -7,7 +7,7 @@ import { pageUtils } from '../../../utils/page.utils';
 import { save_settings } from '../../../utils/helpers';
 import { fileOptimization } from '../../common/sections/file.optimization';
 
-test.describe('Delay JS', () => {
+const delayJs = () => {
     test('Should not activate DelayJS automatically and not exclude any patterns for the new installs', async ( { page } ) => {
 
         const page_utils = new pageUtils( page );
@@ -93,7 +93,7 @@ test.describe('Delay JS', () => {
         const exclusions = await page.inputValue('#delay_js_exclusions');
         expect(exclusions).toBe(config.expected);
     });
-});
+}
 
 /**
  * Add default exclusions.
@@ -168,3 +168,5 @@ const checkForNoExclusion = async (page, fileOpt) => {
     const exclusions = await page.inputValue('#delay_js_exclusions');
     expect(exclusions).toBe('');
 }
+
+export default delayJs;

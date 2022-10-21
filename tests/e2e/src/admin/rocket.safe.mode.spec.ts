@@ -7,7 +7,7 @@ import { toggleSafeModeDisabledOptions } from '../common/safe.mode.disabled.opti
 import { deactivationModal } from '../common/deactivation.modal';
 import { checkDisabledOptions } from '../common/safe.mode.disabled.options.check';
 
-test.describe( 'Safe Mode', () => {
+const safeMode = () => {
     test('should disable specific options on safe mode', async ( { page } ) => {
 
         await page.goto('/wp-admin/options-general.php?page=wprocket#dashboard');
@@ -30,4 +30,6 @@ test.describe( 'Safe Mode', () => {
         const check_options = await checkDisabledOptions(page);
         expect(check_options).toBeFalsy();
     });
-});
+}
+
+export default safeMode;

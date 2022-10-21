@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
  */
 import { pageUtils } from '../../utils/page.utils';
 
-test.describe('Miscellaneous', () => {
+const miscellaneous = () => {
     test('Should not display clear cache option for non public post', async ( { page } ) => {
 
         const page_utils = new pageUtils( page );
@@ -50,8 +50,7 @@ test.describe('Miscellaneous', () => {
 
         await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page, false);
     });
-    
-});
+}
 
 const shouldNotDisplayClearCacheOptionInDraftPostList = async (page, page_utils, is_gutenberg = true) => {
 
@@ -99,3 +98,5 @@ const shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview = async (page
     // Assert that `Purge this URL` option is not visible.
     expect(page1.locator('text=Purge this URL')).not.toBeVisible();
 }
+
+export default miscellaneous;
