@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
  */
 import { pageUtils } from '../../utils/page.utils';
 
-test.describe('WPR Deactivation', () => {
+const deactivation = () => {
     test('should deactivate WP Rocket successfully', async ( { page } ) => {
     
         const page_utils = new pageUtils( page );
@@ -33,4 +33,6 @@ test.describe('WPR Deactivation', () => {
         const response = await page.goto('/wp-content/wp-rocket-config/localhost.php');
         expect(response.status()).toEqual(404);
     });
-});
+}
+
+export default deactivation;

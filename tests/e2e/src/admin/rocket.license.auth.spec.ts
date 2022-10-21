@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
  */
  import { pageUtils } from '../../utils/page.utils';
 
-test.describe('Rocket License', () => {
+const rocketLicense = () => {
     let page;
     
     test.beforeAll(async ({ browser }) => {
@@ -48,4 +48,6 @@ test.describe('Rocket License', () => {
     test( 'Should display preload trigger message on first activation', async () => {
         await expect(page.locator('#rocket-notice-preload-processing')).toContainText('The preload service is now active');
     });
-});
+}
+
+export default rocketLicense;
