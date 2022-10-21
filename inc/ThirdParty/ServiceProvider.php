@@ -32,6 +32,13 @@ use WP_Rocket\ThirdParty\Plugins\Smush;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\Jetpack;
+use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
+use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
+use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
+use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
+use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
+use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -83,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'the_seo_framework',
 		'wpml',
 		'cloudflare_plugin_subscriber',
+		'rocket_lazy_load',
 	];
 
 	/**
@@ -200,27 +208,30 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'jetpack', 'WP_Rocket\ThirdParty\Plugins\Jetpack' )
+			->share( 'jetpack', Jetpack::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'convertplug', 'WP_Rocket\ThirdParty\Plugins\ConvertPlug' )
+			->share( 'convertplug', ConvertPlug::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'rank_math_seo', 'WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO' )
+			->share( 'rank_math_seo', RankMathSEO::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'all_in_one_seo_pack', 'WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack' )
+			->share( 'all_in_one_seo_pack', AllInOneSEOPack::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'seopress', 'WP_Rocket\ThirdParty\Plugins\SEO\SEOPress' )
+			->share( 'seopress', SEOPress::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'the_seo_framework', 'WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework' )
+			->share( 'the_seo_framework', TheSEOFramework::class )
 			->addArgument( $options )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'rocket_lazy_load', RocketLazyLoad::class )
 			->addTag( 'common_subscriber' );
 	}
 }

@@ -188,6 +188,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Jetpack/functions.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'RocketLazyLoad' ) ) {
+			define( 'ROCKET_LL_VERSION', '2.3.6' );
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

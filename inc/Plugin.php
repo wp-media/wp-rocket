@@ -346,6 +346,7 @@ class Plugin {
 			'xstore',
 			'cloudflare_plugin_subscriber',
 			'uncode',
+			'rocket_lazy_load',
 		];
 
 		$host_type = HostResolver::get_host_service();
