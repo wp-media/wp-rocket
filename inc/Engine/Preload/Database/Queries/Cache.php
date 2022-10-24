@@ -322,7 +322,7 @@ class Cache extends Query {
 				'count'     => true,
 				'status'    => 'in-progress',
 				'is_locked' => false,
-			]
+			], false
 		);
 
 		if ( $inprogress_count >= $total ) {
@@ -353,6 +353,7 @@ class Cache extends Query {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
+				'is_locked' => false,
 				'orderby'        => $orderby,
 				'order'          => 'asc',
 			]
