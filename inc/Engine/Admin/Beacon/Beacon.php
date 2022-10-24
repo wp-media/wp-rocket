@@ -442,9 +442,13 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'webp'                       => [
+				'fr' => [
+					'id'  => '5d7b495e04286364bc8f12ef',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1286-compatibilite-webp?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 				'en' => [
 					'id'  => '5d72919704286364bc8ed49d',
-					'url' => 'https://docs.wp-rocket.me/article/1282-webp',
+					'url' => 'https://docs.wp-rocket.me/article/1282-webp?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload_section'           => [
@@ -505,8 +509,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '568f8291c69791436155caea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/176-compatibilite-extensions-e-commerce/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '569431189033603f7da2fc13',
+					'url' => 'https://fr.docs.wp-rocket.me/article/198-ecommerce?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cache_query_strings'        => [
@@ -698,6 +702,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'exclude_lazyload'           => [
+				'fr' => [
+					'id'  => '56967952c69791436155e60a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/235-desactivez-le-lazyload-sur-des-images-specifiques?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 				'en' => [
 					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',
