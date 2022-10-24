@@ -20,7 +20,4 @@ class Test_VarnishIP extends TestCase {
 		);
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'varnishIP' );
-	}
 }
