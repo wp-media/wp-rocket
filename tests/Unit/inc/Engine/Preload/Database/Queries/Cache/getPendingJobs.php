@@ -43,6 +43,7 @@ class Test_GetPendingJobs extends TestCase {
 				],
 				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
 				'order'          => 'asc',
+				'is_locked' => false
 			])->willReturn($config['results']);
 		}
 
