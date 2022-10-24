@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_VarnishIP extends TestCase {
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnWPXCloudVarnishIP( $varnish_ip, $expected ) {
 		$this->assertSame(
