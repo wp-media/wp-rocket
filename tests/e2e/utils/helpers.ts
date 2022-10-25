@@ -47,3 +47,17 @@ export const read_file = async (file) => {
 export const write_to_file = async (file: String, data: String) => {
     await fs.writeFile(await get_dir(file), data);
 }
+
+/**
+ * 
+ * @param file Path to file.
+ * @returns bool.
+ */
+export const file_exist = async (file: String) => {
+    try {
+        await fs.access(await get_dir(file));
+        return true;
+    } catch {
+        return false;
+    }
+}
