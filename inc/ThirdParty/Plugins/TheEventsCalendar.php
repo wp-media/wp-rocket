@@ -30,7 +30,15 @@ class TheEventsCalendar implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_from_preload_calendars( $excluded ) {
-		$excluded[] = '/calendar/20(.*)';
+
+		if ( ! function_exists( 'tribe_get_option' ) ) {
+			return $excluded;
+		}
+
+		$uri = tribe_get_option( 'singleEventSlug', 'event' );
+
+		$excluded[] = "/$uri/20(.*)";
+
 		return $excluded;
 	}
 }

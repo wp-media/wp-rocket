@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\TheEventsCalendar;
 
 use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\TheEventsCalendar::exclude_from_preload_calendars
@@ -30,6 +31,9 @@ class Test_ExcludeFromPreloadCalendars extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
-		$this->assertSame($expected, apply_filters('rocket_preload_exclude_urls', $config));
+		if($config['exists']) {
+			Functions\expect('tribe_get_option')->andReturn($config['slug']);
+		}
+		$this->assertSame($expected, apply_filters('rocket_preload_exclude_urls', $config['params']));
 	}
 }

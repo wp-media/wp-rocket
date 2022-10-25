@@ -1,7 +1,19 @@
 <?php
 return [
+	'testDoesnTExistsShouldReturnSame' => [
+		'config' => [
+			'params' => [],
+			'exists' => false,
+			'slug' => 'calendar'
+		],
+		'expected' => [],
+	],
 	'testShouldReturnAsExpected' => [
-		'config' => [],
+		'config' => [
+			'params' => [],
+			'exists' => true,
+			'slug' => 'calendar'
+		],
 		'expected' => ['/calendar/20(.*)'],
 	]
 ];
