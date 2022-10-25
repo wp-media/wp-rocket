@@ -14,6 +14,7 @@ import delayJs from './admin/file_optimization/delayjs.spec';
 import AdvancedRules from './admin/advanced_rules/index.spec';
 
 import deactivation from './admin/rocket.deactivation.spec';
+import wpCache from './admin/wp.cache.constant.spec';
 
 // List tests.
 test.describe('Rocket License', rocketLicense);
@@ -27,3 +28,4 @@ test.describe('Delay JS', delayJs);
 test.describe('Advanced Rules', AdvancedRules);
 
 test.describe('WPR Deactivation', deactivation);
+test.describe('WP Cache Constant', wpCache);
