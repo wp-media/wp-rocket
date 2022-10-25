@@ -343,6 +343,7 @@ class Plugin {
 			'xstore',
 			'cloudflare_plugin_subscriber',
 			'rocket_lazy_load',
+			'the_events_calendar',
 		];
 
 		$host_type = HostResolver::get_host_service();
