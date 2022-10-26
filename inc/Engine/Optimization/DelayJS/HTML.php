@@ -31,7 +31,6 @@ class HTML {
 	 * @var array
 	 */
 	protected $excluded = [];
-	protected $scripts  = [];
 
 	/**
 	 * Creates an instance of HTML.
