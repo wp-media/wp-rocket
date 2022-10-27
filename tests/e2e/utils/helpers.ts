@@ -1,7 +1,19 @@
 import os from 'os';
 import fs from 'fs/promises';
 
-let home_dir = os.homedir();
+let home_dir: String, install_path: String;
+home_dir = os.homedir();
+
+switch(os.platform()) { 
+    case 'linux': { 
+       install_path = 'wp-env';
+       break; 
+    } 
+    default: { 
+       install_path = '.wp-env'; 
+       break; 
+    } 
+} 
 
 /**
  * 
@@ -26,8 +38,8 @@ export const save_settings = async ( page ) => {
  * @returns String Absolute path to give file from OS.
  */
 const get_dir = async (file: String) => {
-    let dir = (await fs.readdir(home_dir + '/.wp-env', { withFileTypes: true })).filter(dirent => dirent.isDirectory())[0].name;
-    return home_dir + '/.wp-env/' + dir + '/WordPress/' + file;
+    let dir = (await fs.readdir(home_dir + '/' + install_path, { withFileTypes: true })).filter(dirent => dirent.isDirectory())[0].name;
+    return home_dir + '/' + install_path + '/' + dir + '/WordPress/' + file;
 }
 
 /**
