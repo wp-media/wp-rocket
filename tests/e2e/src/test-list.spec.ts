@@ -3,9 +3,9 @@ import { test } from '@playwright/test';
 /**
  * Local deps.
  */
-import Preload from './admin/preload/index.spec';
 import rocketLicense from './admin/rocket.license.auth.spec';
 import configFile from './admin/configs/rocket.config.spec';
+import Preload from './admin/preload/index.spec';
 import miscellaneous from './admin/miscellaneous.spec';
 import DeactivationModal from './admin/rocket.deactivation.modal.spec';
 import safeMode from './admin/rocket.safe.mode.spec';
@@ -16,7 +16,7 @@ import AdvancedRules from './admin/advanced_rules/index.spec';
 import deactivation from './admin/rocket.deactivation.spec';
 import wpCache from './admin/wp.cache.constant.spec';
 
-// List tests.
+// Test list.
 test.describe('Rocket License', rocketLicense);
 test.describe('Rocket Config File', configFile);
 test.describe('Preload', Preload);
