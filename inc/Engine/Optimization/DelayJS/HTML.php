@@ -70,6 +70,10 @@ class HTML {
 		$this->excluded = (array) apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
+				if ( ! is_string( $value ) ) {
+					$value = (string) $value;
+				}
+
 				return str_replace(
 					[ '+', '?ver', '#' ],
 					[ '\+', '\?ver', '\#' ],
