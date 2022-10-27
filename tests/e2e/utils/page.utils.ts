@@ -20,12 +20,13 @@ export class pageUtils {
 
     wp_admin_login = async () => {
         // Fill username & password.
-        await this.page.waitForSelector( 'text=Log In' );
-        await this.page.locator('#user_login').fill(WP_USERNAME);
-        await this.page.locator('#user_pass').fill(WP_PASSWORD);
+        await this.page.click('#user_login');
+        await this.page.fill('#user_login', WP_USERNAME);
+        await this.page.click('#user_pass');
+        await this.page.fill('#user_pass', WP_PASSWORD);
 
         // Click login.
-        await this.page.locator('text=Log In').click();
+        await this.page.click('#wp-submit');
     }
 
     visit_page = async ( page_url: String ) => {
