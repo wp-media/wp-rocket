@@ -1,9 +1,13 @@
 async function globalTeardown() {
+  let command: String;
+
+  command = 'npm run wp-env run cli wp db reset -- --yes\n';
+  command += 'npm run wp-env run cli wp core install -- --url=localhost:8888 --title=wp-rocket --admin_user=admin --admin_password=password --admin_email=admin@test.com\n';
+  command += 'npm run wp-env stop';
     
-  // Stop dev server
+  // Run teardown commands.
   const {execSync} = require('child_process');
-  execSync('npm run wp-env clean all');
-  execSync('npm run wp-env stop');
+  execSync(command);
 
   // Delete 'storageState.json'.
   const fs = require('fs');
