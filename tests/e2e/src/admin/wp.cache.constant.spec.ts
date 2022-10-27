@@ -37,14 +37,14 @@ const wpCache = async () => {
         await write_to_file('wp-config.php', file_content);
         
         // Activate WPR
-        activateWPR(page, page_utils)
+        await activateWPR(page, page_utils)
     });
 }
 
 const activateWPR = async (page, page_utils) => {
     // Activate WPR
     await page_utils.goto_plugin();
-    await page.locator('#activate-wp-rocket').click();
+    await page.click('#activate-wp-rocket');
 
     // Assert that WPR config file is created.
     expect(await file_exist('wp-content/wp-rocket-config/localhost.php')).toBeTruthy();
