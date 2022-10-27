@@ -61,3 +61,16 @@ export const file_exist = async (file: String) => {
         return false;
     }
 }
+
+/**
+ * 
+ * @returns bool.
+ */
+export const is_rocket_active = async () => {
+    try {
+        await fs.access(await get_dir('wp-content/wp-rocket-config/localhost.php'));
+        return true;
+    } catch {
+        return false;
+    }
+}
