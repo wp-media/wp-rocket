@@ -4,6 +4,7 @@ import { test, expect } from '@playwright/test';
  * Local deps.
  */
  import { pageUtils } from '../../utils/page.utils';
+ import { is_rocket_active } from '../../utils/helpers';
 
 const rocketLicense = () => {
     let page;
@@ -11,9 +12,16 @@ const rocketLicense = () => {
     test.beforeAll(async ({ browser }) => {
         const context = await browser.newContext();
         page = await context.newPage();
+        const page_utils = new pageUtils(page);
+
+        // Activate WPR if not active.
+        await page_utils.goto_plugin();
+        
+        if (await page.locator('#activate-wp-rocket').isVisible()) {
+            await page_utils.activate_plugin('wp-rocket');
+        }
 
         // Goto WPR settings.
-        const page_utils = new pageUtils(page);
         await page_utils.goto_wpr();
     });
 
