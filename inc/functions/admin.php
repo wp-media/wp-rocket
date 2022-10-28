@@ -453,3 +453,29 @@ function rocket_settings_import_redirect( $message, $status ) {
 	wp_safe_redirect( esc_url_raw( $goback ) );
 	die();
 }
+
+/**
+ * Check if WPR options should be displayed.
+ *
+ * @return bool
+ */
+function rocket_can_display_options() {
+	$disallowed_post_status = [
+		'draft',
+		'trash',
+		'private',
+		'future',
+		'pending',
+	];
+
+	$post_status = get_post_status();
+	if ( in_array( $post_status, $disallowed_post_status, true ) ) {
+		return false;
+	}
+
+	if ( function_exists( 'get_current_screen' ) && is_object( get_current_screen() ) && 'add' === get_current_screen()->action ) {
+		return false;
+	}
+
+	return true;
+}

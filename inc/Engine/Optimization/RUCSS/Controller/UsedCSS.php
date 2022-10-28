@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
@@ -44,6 +45,13 @@ class UsedCSS {
 	private $queue;
 
 	/**
+	 * DataManager instance
+	 *
+	 * @var DataManager
+	 */
+	private $data_manager;
+
+	/**
 	 * Filesystem instance
 	 *
 	 * @var Filesystem
@@ -62,57 +70,38 @@ class UsedCSS {
 	 *
 	 * @var string[]
 	 */
-	private $inline_atts_exclusions = [
-		'rocket-lazyload-inline-css',
-		'divi-style-parent-inline-inline-css',
-		'gsf-custom-css',
-		'extra-style-inline-inline-css',
-		'woodmart-inline-css-inline-css',
-		'woodmart_shortcodes-custom-css',
-		'rs-plugin-settings-inline-css', // For revolution slider, it saves settings for each slider.
-		'divi-style-inline-inline-css',
-		'n2-ss-', // For Smart Slider 3 dynamic selectors.
-	];
+	private $inline_atts_exclusions = [];
 
 	/**
 	 * Inline CSS content exclusions patterns to be preserved on the page after treeshaking.
 	 *
 	 * @var string[]
 	 */
-	private $inline_content_exclusions = [
-		'.wp-container-',
-		'.wp-elements-',
-		'#wpv-expandable-',
-		'#ultib3-',
-		'.uvc-wrap-',
-		'.jet-listing-dynamic-post-',
-		'.vcex_',
-		'.wprm-advanced-list-',
-		'.adsslot_', // For Advanced Ads plugin ads.
-		'.jnews_', // For JNews theme.
-		'.cp-info-bar.content-', // For Convert Plus plugin.
-	];
+	private $inline_content_exclusions = [];
 
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data   $options         Options instance.
-	 * @param UsedCSS_Query  $used_css_query  Usedcss Query instance.
-	 * @param APIClient      $api             APIClient instance.
-	 * @param QueueInterface $queue           Queue instance.
-	 * @param Filesystem     $filesystem      Filesystem instance.
+	 * @param Options_Data   $options Options instance.
+	 * @param UsedCSS_Query  $used_css_query Usedcss Query instance.
+	 * @param APIClient      $api APIClient instance.
+	 * @param QueueInterface $queue Queue instance.
+	 * @param DataManager    $data_manager DataManager instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
 		UsedCSS_Query $used_css_query,
 		APIClient $api,
 		QueueInterface $queue,
+		DataManager $data_manager,
 		Filesystem $filesystem
 	) {
 		$this->options        = $options;
 		$this->used_css_query = $used_css_query;
 		$this->api            = $api;
 		$this->queue          = $queue;
+		$this->data_manager   = $data_manager;
 		$this->filesystem     = $filesystem;
 	}
 
@@ -337,6 +326,7 @@ class UsedCSS {
 		$clean_html = $this->hide_comments( $html );
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
+		$this->set_inline_exclusions_lists();
 
 		$html = $this->remove_external_styles_from_html( $clean_html, $html );
 
@@ -414,7 +404,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS attributes.
 			 */
-			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
 		);
 
 		$inline_content_exclusions = $this->validate_array_and_quote(
@@ -425,7 +415,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS content.
 			 */
-			apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
@@ -520,10 +510,8 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-			&&
-			wp_is_mobile();
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
 	}
 
 	/**
@@ -630,6 +618,7 @@ class UsedCSS {
 
 			// Increment the retries number with 1 and Change status to pending again.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
+
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
@@ -670,6 +659,8 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		global $post;
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
@@ -683,6 +674,22 @@ class UsedCSS {
 		}
 
 		if ( ! $this->can_optimize_url() ) {
+			return;
+		}
+
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
+		/**
+		 * Filters the rocket `clear used css of this url` option on admin bar menu.
+		 *
+		 * @since 3.12.1
+		 *
+		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
+		 * @param type  $post Post object.
+		 */
+		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
 			return;
 		}
 
@@ -813,6 +820,7 @@ class UsedCSS {
 	 * Remove preconnect tag for google api.
 	 *
 	 * @param string $html html content.
+	 *
 	 * @return string
 	 */
 	protected function remove_google_font_preconnect( string $html ): string {
@@ -891,6 +899,18 @@ class UsedCSS {
 	}
 
 	/**
+	 * Set Rucss inline attr exclusions
+	 *
+	 *  @return void
+	 */
+	private function set_inline_exclusions_lists() {
+		$wpr_dynamic_lists               = $this->data_manager->get_lists();
+		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->rucss_inline_atts_exclusions ) ? $wpr_dynamic_lists->rucss_inline_atts_exclusions : [];
+		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->rucss_inline_content_exclusions ) ? $wpr_dynamic_lists->rucss_inline_content_exclusions : [];
+
+	}
+
+	/**
 	 * Displays a notice if the used CSS folder is not writable
 	 *
 	 * @since 3.11.4
@@ -938,5 +958,4 @@ class UsedCSS {
 			$items_array
 		);
 	}
-
 }

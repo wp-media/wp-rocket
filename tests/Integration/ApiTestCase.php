@@ -6,6 +6,19 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 
 abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	protected static $api_credentials_config_file = 'rocketcdn.php';
+	use DBTrait;
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
