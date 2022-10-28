@@ -436,7 +436,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_url_usedcss() {
-		check_admin_referer( 'rocket_clear_usedcss' );
+		check_admin_referer( 'rocket_clear_usedcss_url' );
 
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			wp_nonce_ays( '' );
