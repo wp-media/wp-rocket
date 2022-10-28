@@ -5,25 +5,21 @@ namespace WP_Rocket\Tests\Integration;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 
 abstract class ApiTestCase extends WPMediaRESTfulTestCase {
-	protected static $api_credentials_config_file = 'rocketcdn.php';
 	use DBTrait;
 
-	public static function set_up_before_class()
-	{
+	protected static $api_credentials_config_file = 'rocketcdn.php';
+
+	public static function set_up_before_class() {
 		parent::set_up_before_class();
+
 		self::installFresh();
+		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public static function tear_down_after_class()
 	{
 		self::uninstallAll();
 		parent::tear_down_after_class();
-	}
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public function set_up() {
