@@ -71,6 +71,9 @@ class Image {
 				continue;
 			}
 
+			if ( preg_match( '#data:image#is', $url['url'], $img ) ) {
+				continue;
+			}
 			$url['url'] = esc_url(
 				trim(
 					wp_strip_all_tags(

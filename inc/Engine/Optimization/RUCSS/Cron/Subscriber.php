@@ -45,6 +45,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_job_check_status'      => 'check_job_status',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
+			'rocket_deactivation'                => 'on_deactivation',
 			'init'                               => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
@@ -178,6 +179,15 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'rocket_rucss_pending_jobs', 'rocket_rucss_pending_jobs' );
+	}
+
+	/**
+	 * Clear schedule of RUCSS CRONs on deactivation.
+	 *
+	 * @return void
+	 */
+	public function on_deactivation() {
+		wp_clear_scheduled_hook( 'action_scheduler_run_queue_rucss', [ 'WP Cron' ] );
 	}
 
 	/**
