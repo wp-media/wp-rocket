@@ -71,6 +71,9 @@ class Image {
 				continue;
 			}
 
+			if ( preg_match( '#data:image#is', $url['url'], $img ) ) {
+				continue;
+			}
 			$url['url'] = esc_url(
 				trim(
 					wp_strip_all_tags(
@@ -355,7 +358,7 @@ class Image {
 	 */
 	public function isExcluded( $string, $excluded_values ) {
 		if ( ! is_array( $excluded_values ) ) {
-			(array) $excluded_values;
+			$excluded_values = (array) $excluded_values;
 		}
 
 		if ( empty( $excluded_values ) ) {

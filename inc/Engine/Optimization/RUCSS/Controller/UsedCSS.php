@@ -78,6 +78,7 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
+
 	/**
 	 * Instantiate the class.
 	 *
@@ -86,7 +87,7 @@ class UsedCSS {
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
-	 * @param Filesystem     $filesystem      Filesystem instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -403,7 +404,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS attributes.
 			 */
-			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
 		);
 
 		$inline_content_exclusions = $this->validate_array_and_quote(
@@ -414,7 +415,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS content.
 			 */
-			apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
@@ -509,10 +510,8 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-			&&
-			wp_is_mobile();
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
 	}
 
 	/**
@@ -660,6 +659,8 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		global $post;
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
@@ -673,6 +674,22 @@ class UsedCSS {
 		}
 
 		if ( ! $this->can_optimize_url() ) {
+			return;
+		}
+
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
+		/**
+		 * Filters the rocket `clear used css of this url` option on admin bar menu.
+		 *
+		 * @since 3.12.1
+		 *
+		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
+		 * @param type  $post Post object.
+		 */
+		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
 			return;
 		}
 

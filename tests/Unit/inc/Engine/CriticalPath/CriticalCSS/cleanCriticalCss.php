@@ -5,8 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSS;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CriticalPath\CriticalCSS;
-use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
+use WP_Rocket\Engine\CriticalPath\{CriticalCSS, CriticalCSSGeneration};
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
@@ -17,17 +16,17 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_CleanCriticalCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
-		Functions\expect( 'home_url' )->with( '/' )->andReturn( 'http://example.org/' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDeleteFilesFromRootFolder( $config, $deleted_files, $available_folders ) {
-		Functions\expect( 'get_current_blog_id' )->andReturn( $config['blog_id'] );
+		Functions\when( 'get_current_blog_id' )->justReturn( $config['blog_id'] );
 
 		$critical_css_path = "vfs://public/wp-content/cache/critical-css/{$config['blog_id']}/";
 

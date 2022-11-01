@@ -35,7 +35,7 @@ class RankMathSEO implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_sitemap_preload_list' => 'rocket_sitemap',
+			'rocket_sitemap_preload_list' => [ 'rocket_sitemap', 15 ],
 		];
 	}
 

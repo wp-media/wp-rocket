@@ -166,7 +166,7 @@ class Purge {
 	public function purge_post_terms_urls( WP_Post $post ) {
 		$urls = $this->get_post_terms_urls( $post );
 		foreach ( $urls as $url ) {
-			$this->purge_url( $url );
+			$this->purge_url( $url, true );
 		}
 		/**
 		 * Action to preload urls after cleaning cache.
