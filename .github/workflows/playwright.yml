@@ -33,7 +33,7 @@ jobs:
     - run: mkdir artifacts
     - name: Run tests
       run: |
-          sudo chown -R 33:33 ~/wp-env/
+          sudo chown -R 1001:121 ~/wp-env/
           npm run test:e2e
     - uses: actions/upload-artifact@v2
       if: always()
