@@ -15,6 +15,8 @@ switch(os.platform()) {
     } 
 } 
 
+console.log(os.userInfo());
+
 /**
  * 
  * @param err Error message.
