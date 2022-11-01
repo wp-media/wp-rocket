@@ -32,7 +32,9 @@ jobs:
           npm run wp-env run cli wp plugin install classic-editor
     - run: mkdir artifacts
     - name: Run tests
-      run: npm run test:e2e
+      run: |
+          sudo chown 33:33 -R ~/wp-env/
+          npm run test:e2e
     - uses: actions/upload-artifact@v2
       if: always()
       with:
