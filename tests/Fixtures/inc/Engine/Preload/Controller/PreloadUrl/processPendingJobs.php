@@ -16,13 +16,26 @@ $row2 = new CacheRow([
 	'status' => 'pending',
 ]);
 
+$row3 = new CacheRow([
+	'id' => 13,
+	'is_mobile' => false,
+	'url' => 'http://example3',
+	'status' => 'pending',
+]);
+
 return [
 	'shouldPassJobsInPending' => [
 		'config' => [
+			'excluded' => [
+			false,
+			false,
+			true,
+			],
 			'rows' => 101,
 			'jobs' => [
 				$row1,
 				$row2,
+				$row3
 			]
 		],
 		'expected' => [
@@ -33,7 +46,9 @@ return [
 			'job_urls' => [
 				'http://example1',
 				'http://example2',
-			]
+			],
+			'job_deleted' =>
+				['http://example3'],
 		]
 	],
 ];
