@@ -81,6 +81,12 @@ export class pageUtils {
     }
 
     toggle_plugin_activation = async (plugin_slug: string, activate = true) => {
-        await this.page.locator(activate ? '#activate-' : '#deactivate-' + plugin_slug).click();
+        var action = activate ? '#activate-' : '#deactivate-';
+        await this.page.locator(action + plugin_slug).click();
+
+        if (!activate) {
+            // Force deactivation - No .Htaccess file.
+            await this.page.locator('a:has-text("Force deactivation")').click();
+        }
     }
 }
