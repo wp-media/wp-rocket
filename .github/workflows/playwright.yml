@@ -28,7 +28,7 @@ jobs:
     - name: Install WordPress - Start the server and install dependent plugins
       run: |
           npm run wp-env start
-          sudo chmod ugo+rwx ~/wp-env/
+          sudo chown -R 33:33 ~/wp-env/
           npm run wp-env run cli wp plugin install classic-editor
     - run: mkdir artifacts
     - name: Run tests
