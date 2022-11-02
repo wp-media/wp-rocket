@@ -18,7 +18,7 @@ const rocketLicense = () => {
         await page_utils.goto_plugin();
         
         if (await page.locator('#activate-wp-rocket').isVisible()) {
-            await page_utils.activate_plugin('wp-rocket');
+            await page_utils.toggle_plugin_activation('wp-rocket');
         }
 
         // Goto WPR settings.

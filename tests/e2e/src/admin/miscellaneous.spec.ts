@@ -34,7 +34,7 @@ const miscellaneous = () => {
         await page_utils.goto_plugin();
 
         // Activate classic editor
-        await page_utils.activate_plugin('classic-editor');
+        await page_utils.toggle_plugin_activation('classic-editor');
         await expect(page.locator('text=Plugin activated.')).toBeVisible();
 
 
