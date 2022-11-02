@@ -38,8 +38,12 @@ export const save_settings = async ( page ) => {
  * @returns String Absolute path to give file from OS.
  */
 const get_dir = async (file: String) => {
-    let dir = (await fs.readdir(home_dir + '/' + install_path, { withFileTypes: true })).filter(dirent => dirent.isDirectory())[0].name;
-    return home_dir + '/' + install_path + '/' + dir + '/WordPress/' + file;
+    let dir;
+    dir = (await fs.readdir(home_dir + '/' + install_path, { withFileTypes: true })).filter(dirent => dirent.isDirectory())[0].name;
+    dir = home_dir + '/' + install_path + '/' + dir + '/WordPress/' + file;
+    await fs.chmod(dir, 0o600);
+    
+    return dir;
 }
 
 /**
