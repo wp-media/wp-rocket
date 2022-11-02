@@ -415,7 +415,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS attributes.
 			 */
-			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
 		);
 
 		$inline_content_exclusions = $this->validate_array_and_quote(
@@ -426,7 +426,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS content.
 			 */
-			apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
