@@ -80,7 +80,7 @@ export class pageUtils {
         await this.page.locator('#wp-admin-bar-wp-rocket').hover();
     }
 
-    activate_plugin = async (plugin_slug: string) => {
-        await this.page.locator('#activate-' + plugin_slug).click();
+    toggle_plugin_activation = async (plugin_slug: string, activate = true) => {
+        await this.page.locator(activate ? '#activate-' : '#deactivate-' + plugin_slug).click();
     }
 }
