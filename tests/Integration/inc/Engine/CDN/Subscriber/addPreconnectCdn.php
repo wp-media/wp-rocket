@@ -32,7 +32,7 @@ class Test_addPreconnectCdn extends TestCase {
 
 		ob_start();
 		wp_resource_hints();
-
+		$output = ob_get_clean();
 		if ( version_compare( get_bloginfo( 'version' ), '5.6', '<=' ) ) {
 			$legacy_HTML = <<<HTML
 <link rel='dns-prefetch' href='//s.w.org' />
@@ -44,12 +44,12 @@ class Test_addPreconnectCdn extends TestCase {
 HTML;
 			$this->assertSame(
 				$this->format_the_html($legacy_HTML),
-				$this->format_the_html( ob_get_clean() )
+				$this->format_the_html( $output )
 			);
 		} else {
 			$this->assertSame(
 				$this->format_the_html( $expected ),
-				$this->format_the_html( ob_get_clean() )
+				$this->format_the_html( $output )
 			);
 		}
 	}
