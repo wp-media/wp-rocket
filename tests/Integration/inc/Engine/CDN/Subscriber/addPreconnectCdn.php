@@ -33,7 +33,7 @@ class Test_addPreconnectCdn extends TestCase {
 		ob_start();
 		wp_resource_hints();
 		$output = ob_get_clean();
-		if ( version_compare( get_bloginfo( 'version' ), '5.6', '<=' ) ) {
+		if ( substr( get_bloginfo( 'version' ), 0, 3 ) === '5.6') {
 			$legacy_HTML = <<<HTML
 <link rel='dns-prefetch' href='//s.w.org' />
 <link href='//123456.rocketcdn.me' rel='preconnect' />
