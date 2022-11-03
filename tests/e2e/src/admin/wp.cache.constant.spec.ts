@@ -20,7 +20,9 @@ const wpCache = async () => {
     });
 
     test.afterAll(async ({ browser }) => {
-        await write_to_file('wp-config.php', wp_config);
+        wp_config = await read_file('wp-config.php');
+        file_content = wp_config.replace('?>\n<?php', '');
+        await write_to_file('wp-config.php', file_content);
 
         browser.close;
     });
