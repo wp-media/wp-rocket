@@ -12,6 +12,7 @@ return [
 			'https://another.cdn.com/with/a/path',
 		],
 		'expected-html' => <<<HTML
+<link rel='dns-prefetch' href='//s.w.org' />
 <link href='//123456.rocketcdn.me' rel='preconnect' />
 <link href='https://my-cdn.cdnservice.com' rel='preconnect' />
 <link href='http://cdn.example.com' rel='preconnect' />
