@@ -24,34 +24,22 @@ class Test_addPreconnectCdn extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldAddPreconnectCdn( $cnames, $expected ) {
+	public function testShouldAddPreconnectCdn($cnames, $expected) {
 		$this->cnames = $cnames;
 
-		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
 		add_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
 
 		ob_start();
 		wp_resource_hints();
-		$output = ob_get_clean();
+		$expected_str = $expected['new'];
 		if ( substr( get_bloginfo( 'version' ), 0, 3 ) === '5.6') {
-			$legacy_HTML = <<<HTML
-<link rel='dns-prefetch' href='//s.w.org' />
-<link href='//123456.rocketcdn.me' rel='preconnect' />
-<link href='https://my-cdn.cdnservice.com' rel='preconnect' />
-<link href='http://cdn.example.com' rel='preconnect' />
-<link href='//8901.wicked-fast-cdn.com' rel='preconnect' />
-<link href='https://another.cdn.com' rel='preconnect' />
-HTML;
-			$this->assertSame(
-				$this->format_the_html($legacy_HTML),
-				$this->format_the_html( $output )
-			);
-		} else {
-			$this->assertSame(
-				$this->format_the_html( $expected ),
-				$this->format_the_html( $output )
-			);
+			$expected_str = $expected['legacy'];
 		}
+		$this->assertSame(
+			$this->format_the_html($expected_str),
+			$this->format_the_html(ob_get_clean())
+		);
 	}
 
 	public function providerTestData() {
