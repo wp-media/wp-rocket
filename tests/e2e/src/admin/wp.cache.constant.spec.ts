@@ -16,24 +16,20 @@ const wpCache = async () => {
         page = await context.newPage();
 
         page_utils = new pageUtils(page);
-        wp_config = await read_file('wp-config.php');
     });
 
     test.afterAll(async ({ browser }) => {
-        wp_config = await read_file('wp-config.php');
-        file_content = wp_config.replace('?>\n<?php', '');
-        await write_to_file('wp-config.php', file_content);
-
         browser.close;
     });
 
     
-    test('Should add WP_CACHE in wp-config.php single time while having multiple active php tags ', async () => {
+    test('Should add WP_CACHE in wp-config.php single time while having multiple active php tags', async () => {
     
         /**
          * WPR already deactivated.
          * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
          */
+        wp_config = await read_file('wp-config.php');
         reg = /define\(\s(\')WP_CACHE\1.*\s\).+Rocket/im;
         file_content = wp_config.replace(reg, '');
 
@@ -46,6 +42,40 @@ const wpCache = async () => {
 
         // Deactivate WPR
         await deactivateWPR(page, page_utils);
+
+        // Revert wp-config file to original state
+        wp_config = await read_file('wp-config.php');
+        file_content = wp_config.replace('?>\n<?php', '');
+        await write_to_file('wp-config.php', file_content);
+    });
+
+    test('Should add WP_CACHE in wp-config .php single time while having active and commented php tags', async () => {
+        /**
+         * PRECONDITIONS
+         * 
+         * WPR deactivated
+         * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
+         * Add in wp-config.php instead of 1st PHP tag:
+         * //<?php
+         * // echo 'test <?php';
+         */
+        wp_config = await read_file('wp-config.php');
+        reg = /define\(\s(\')WP_CACHE\1.*\s\).+Rocket/im;
+        file_content = wp_config.replace(reg, '');
+
+        file_content = file_content.replace('<?php', '<?php\n//<?php\n// echo \'test <?php\'');
+        await write_to_file('wp-config.php', file_content);
+
+        // Plugin activated successfully
+        await activateWPR(page_utils);
+
+        // Deactivate WPR
+        await deactivateWPR(page, page_utils);
+
+        // Revert wp-config file to original state
+        wp_config = await read_file('wp-config.php');
+        file_content = wp_config.replace('//<?php\n// echo \'test <?php\'', '');
+        await write_to_file('wp-config.php', file_content);
     });
 }
 
@@ -53,6 +83,7 @@ const activateWPR = async (page_utils) => {
 
     // Activate WPR
     await page_utils.goto_plugin();
+    await page.waitForSelector('#activate-wp-rocket');
     await page_utils.toggle_plugin_activation('wp-rocket');
 
     // Assert that WPR config file is created.
