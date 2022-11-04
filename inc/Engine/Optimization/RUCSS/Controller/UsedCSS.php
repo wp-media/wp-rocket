@@ -728,9 +728,9 @@ class UsedCSS {
 		$wp_admin_bar->add_menu(
 			[
 				'parent' => 'wp-rocket',
-				'id'     => 'remove-usedcss-url',
+				'id'     => 'clear-usedcss-url',
 				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
+				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			]
 		);
 	}
