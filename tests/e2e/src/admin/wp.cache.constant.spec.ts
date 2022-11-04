@@ -6,14 +6,15 @@ import { test, expect, Page } from '@playwright/test';
 import { read_file, write_to_file, file_exist } from '../../utils/helpers';
 import { pageUtils } from '../../utils/page.utils';
 
-let page: Page,
-page_utils: Object,
-wp_config: String,
-file_content: String,
-reg: RegExp,
-debug_log_content: String,
-config_file_exist: Boolean,
-advanced_cache: String
+let page: Page;
+let page_utils: pageUtils;
+let wp_config:string = '';
+let file_content:string = '';
+let reg: RegExp;
+let debug_log_content:string = '';
+let config_file_exist:boolean = false;
+let advanced_cache:string = '';
+let theme:string = '';
 
 const debug_log = 'wp-content/debug.log';
 
@@ -72,13 +73,13 @@ const wpCache = async () => {
     });
 
     test('Should add/update WP_CACHE in wp-config while having single php tag', async () => {
-         /**
-         * PRECONDITIONS
-         * 
-         * WPR deactivated
-         * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
-         * no other PHP tag mentioned in wp-config
-         */
+        /**
+        * PRECONDITIONS
+        * 
+        * WPR deactivated
+        * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
+        * no other PHP tag mentioned in wp-config
+        */
         await editWpConfig(false, false);
 
         // Plugin activated successfully
@@ -86,6 +87,40 @@ const wpCache = async () => {
 
         // Deactivate WPR
         await deactivateWPR(page, page_utils);
+    });
+
+    test('Should not display warning in site health for those hosts where we set wp-cache to false', async () => {
+        /**
+         * PRECONDITIONS
+         * 
+         * Add this filter in functions.php of the active theme add_filter( 'rocket_set_wp_cache_constant', '__return_false' );
+         * WPR is installed
+         */
+        theme = await read_file('wp-content/themes/twentytwentytwo/functions.php');
+        theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )';
+        await write_to_file('wp-content/themes/twentytwentytwo/functions.php', theme);
+
+        // Activate WPR
+        await page_utils.goto_plugin();
+        await page.waitForSelector('#activate-wp-rocket');
+        await page_utils.toggle_plugin_activation('wp-rocket');
+
+        // WP_cache in wp-config.php is false
+        wp_config = await read_file('wp-config.php');
+        reg = /define\(\s(\')WP_CACHE\1+\,\sfalse.*\s\).+Rocket/mg;
+        expect((wp_config.match(reg) || []).length).toBe(1); 
+
+        // Go to site health
+        await page_utils.goto_site_health();
+        
+        // no error related to wp_cache set to false
+        await expect(page.locator('span:has-text("WP_CACHE is set to false")')).not.toBeVisible();
+
+        // Revert theme functions.php.
+        theme = await read_file('wp-content/themes/twentytwentytwo/functions.php');
+        theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )';
+        theme = theme.replace('add_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )', '');
+        await write_to_file('wp-content/themes/twentytwentytwo/functions.php', theme);
     });
 }
 
