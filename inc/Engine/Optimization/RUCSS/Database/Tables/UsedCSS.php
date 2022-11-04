@@ -79,6 +79,7 @@ class UsedCSS extends Table {
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191)),
+			INDEX `error_code_index` (`error_code`(191)),
 			KEY hash (hash)";
 	}
 
