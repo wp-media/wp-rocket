@@ -622,7 +622,7 @@ class UsedCSS {
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
 
-				$this->used_css_query->make_status_failed( $id, $job_details['message'] );
+				$this->used_css_query->make_status_failed( $id, strval( $job_details['code'] ), $job_details['message'] );
 
 				return;
 			}
@@ -653,7 +653,7 @@ class UsedCSS {
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
 			Logger::error( $message );
-			$this->used_css_query->make_status_failed( $id, $message );
+			$this->used_css_query->make_status_failed( $id, '', $message );
 
 			return;
 		}

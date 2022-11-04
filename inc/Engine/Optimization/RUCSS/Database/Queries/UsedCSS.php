@@ -195,15 +195,17 @@ class UsedCSS extends Query {
 	 * Change the status to be failed.
 	 *
 	 * @param int    $id DB row ID.
+	 * @param string $error_code error code.
 	 * @param string $error_message error message.
 	 *
 	 * @return bool
 	 */
-	public function make_status_failed( int $id, string $error_message ) {
+	public function make_status_failed( int $id, string $error_code, string $error_message ) {
 		return $this->update_item(
 			$id,
 			[
 				'status'        => 'failed',
+				'error_code'    => $error_code,
 				'error_message' => $error_message,
 			]
 		);

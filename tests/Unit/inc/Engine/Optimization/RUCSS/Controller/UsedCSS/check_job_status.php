@@ -106,22 +106,23 @@ class Test_CheckJobStatus extends TestCase {
 
 				$this->usedCssQuery->expects( self::once() )
 				                   ->method( 'make_status_failed' )
-				                   ->with( $config['job_id'], $job_details['message'] );
+				                   ->with( $config['job_id'], $job_details['code'], $job_details['message'] );
 
 				$this->usedCss->check_job_status( $config['job_id'] );
+
 				return;
 			}
 
 			// on timeout errors with code 408 create new job.
 			if ( 408 === $job_details['code'] ) {
-				$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn([]);
+				$this->options->expects()->get( 'remove_unused_css_safelist', [] )->andReturn( [] );
 				$this->api->expects()->add_to_queue( $row_details->url, [
-					          'treeshake'      => 1,
-					          'rucss_safelist' => [],
-					          'is_mobile'      => $row_details->is_mobile,
-					          'is_home'        => $row_details->is_home,
-				          ])
-				          ->andReturn($add_to_queue_response);
+					'treeshake'      => 1,
+					'rucss_safelist' => [],
+					'is_mobile'      => $row_details->is_mobile,
+					'is_home'        => $row_details->is_home,
+				] )
+				          ->andReturn( $add_to_queue_response );
 				if ( false !== $add_to_queue_response ) {
 					$new_job_id = $add_to_queue_response['contents']['jobId'];
 					$this->usedCssQuery->expects( self::once() )
@@ -134,6 +135,7 @@ class Test_CheckJobStatus extends TestCase {
 			                   ->with( $config['job_id'], $row_details->retries );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
+
 			return;
 		}
 
@@ -148,9 +150,10 @@ class Test_CheckJobStatus extends TestCase {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
 			$this->usedCssQuery->expects( self::once() )
 			                   ->method( 'make_status_failed' )
-			                   ->with( $config['job_id'], $message );
+			                   ->with( $config['job_id'], '', $message );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
+
 			return;
 		} else {
 			$this->usedCssQuery->expects( self::once() )
@@ -163,11 +166,11 @@ class Test_CheckJobStatus extends TestCase {
 		$this->usedCss->check_job_status( $config['job_id'] );
 	}
 
-	protected function configureCreateNewJob($url , $is_mobile , $add_to_queue_response ) {
+	protected function configureCreateNewJob( $url, $is_mobile, $add_to_queue_response ) {
 
-		$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn([]);
+		$this->options->expects()->get( 'remove_unused_css_safelist', [] )->andReturn( [] );
 
-		Filters\expectApplied('rocket_rucss_safelist')->with([])->andReturn([]);
+		Filters\expectApplied( 'rocket_rucss_safelist' )->with( [] )->andReturn( [] );
 		$create_new_job_config = [
 			'treeshake'      => 1,
 			'rucss_safelist' => [],
@@ -175,7 +178,7 @@ class Test_CheckJobStatus extends TestCase {
 			'is_home'        => $url,
 		];
 		$this->api->expects()
-		          ->add_to_queue($url,$create_new_job_config)
-		          ->andReturn($add_to_queue_response);
+		          ->add_to_queue( $url, $create_new_job_config )
+		          ->andReturn( $add_to_queue_response );
 	}
 }

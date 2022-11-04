@@ -41,6 +41,7 @@ class UsedCSS extends Table {
 		20220513 => 'add_hash_column',
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20220926 => 'add_error_message_column',
+		20221104 => 'add_error_code_column',
 	];
 
 	/**
@@ -62,6 +63,7 @@ class UsedCSS extends Table {
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
 			hash             varchar(32)                  default '',
+			error_code       varchar(32)                NULL default NULL,
 			error_message    longtext                NULL default NULL,
 			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
@@ -271,6 +273,23 @@ class UsedCSS extends Table {
 
 		if ( ! $error_message_column_exists ) {
 			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN error_message longtext NULL default NULL AFTER hash" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Add error_code column and index
+	 *
+	 * @return bool
+	 */
+	protected function add_error_code_column() {
+		$error_code_column_exists = $this->column_exists( 'error_code' );
+
+		$created = true;
+
+		if ( ! $error_code_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN error_code VARCHAR(32) NULL default NULL AFTER hash" );
 		}
 
 		return $this->is_success( $created );
