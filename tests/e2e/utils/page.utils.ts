@@ -89,4 +89,8 @@ export class pageUtils {
             await this.page.locator('a:has-text("Force deactivation")').click();
         }
     }
+
+    goto_themes = async () => {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/themes.php');
+    }
 }
