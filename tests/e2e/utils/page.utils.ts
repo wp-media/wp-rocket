@@ -93,4 +93,8 @@ export class pageUtils {
     goto_themes = async () => {
         await this.page.goto(WP_BASE_URL + '/wp-admin/themes.php');
     }
+
+    goto_site_health = async () => {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/site-health.php');
+    }
 }
