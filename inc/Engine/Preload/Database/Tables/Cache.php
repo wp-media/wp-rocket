@@ -14,6 +14,7 @@ class Cache extends Table {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
+		add_action( 'admin_init',  [ $this, 'maybe_trigger_recreate_table' ], 9 );
 	}
 
 	/**
@@ -53,5 +54,18 @@ class Cache extends Table {
 			KEY url (url(191)),
 			KEY modified (modified),
 			KEY last_accessed (last_accessed)";
+	}
+
+	/**
+	 * Trigger recreation of cache table if not exist.
+	 *
+	 * @return void
+	 */
+	public function maybe_trigger_recreate_table() {
+		if ( $this->exists() ) {
+			return;
+		}
+
+		delete_option( $this->db_version_key );
 	}
 }

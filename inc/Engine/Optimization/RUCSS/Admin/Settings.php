@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 class Settings {
 	/**
@@ -23,14 +24,23 @@ class Settings {
 	private $beacon;
 
 	/**
+	 * Used CSS table.
+	 *
+	 * @var UsedCSS
+	 */
+	private $used_css;
+
+	/**
 	 * Creates an instance of the class.
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param Beacon       $beacon  Beacon instance.
+	 * @param Beacon       $beacon Beacon instance.
+	 * @param UsedCSS      $used_css Used CSS table.
 	 */
-	public function __construct( Options_Data $options, Beacon $beacon ) {
-		$this->options = $options;
-		$this->beacon  = $beacon;
+	public function __construct( Options_Data $options, Beacon $beacon, UsedCSS $used_css ) {
+		$this->options  = $options;
+		$this->beacon   = $beacon;
+		$this->used_css = $used_css;
 	}
 
 	/**
@@ -59,6 +69,7 @@ class Settings {
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
+
 		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
 
@@ -185,6 +196,10 @@ class Settings {
 			return;
 		}
 
+		if ( ! $this->used_css->exists() ) {
+			return;
+		}
+
 		$transient = get_transient( 'rocket_rucss_processing' );
 
 		if ( false === $transient ) {
@@ -227,6 +242,10 @@ class Settings {
 			return;
 		}
 
+		if ( ! $this->used_css->exists() ) {
+			return;
+		}
+
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 		if ( in_array( 'rucss_success_notice', (array) $boxes, true ) ) {
@@ -251,7 +270,7 @@ class Settings {
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
 			$message .= ' ' . sprintf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'We suggest enabling %1$sSitemap Preload%2$s for the fastest results.', 'rocket' ),
+				__( 'We suggest enabling %1$sPreload%2$s for the fastest results.', 'rocket' ),
 				'<a href="#preload">',
 				'</a>'
 			);
@@ -273,32 +292,6 @@ class Settings {
 				'id'                   => 'rocket-notice-rucss-success',
 				'dismiss_button'       => 'rucss_success_notice',
 				'dismiss_button_class' => 'button-primary',
-			]
-		);
-	}
-
-	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		$as_tools_link = menu_page_url( 'action-scheduler', false );
-		$message       = sprintf(
-		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
-			'<strong>WP Rocket</strong>',
-			'<a href="' . $as_tools_link . '">',
-			'</a>'
-		);
-
-		rocket_notice_html(
-			[
-				'status'  => 'error',
-				'message' => $message,
-				'id'      => 'rocket-notice-as-missed-tables',
 			]
 		);
 	}
@@ -506,6 +499,56 @@ class Settings {
 				'dismissible' => '',
 				'message'     => $message,
 				'id'          => 'rocket-notice-rucss-wrong-licence',
+			]
+		);
+	}
+
+	/**
+	 * Display a notice on table missing.
+	 *
+	 * @return void
+	 */
+	public function display_no_table_notice() {
+
+		if ( ! $this->can_display_notice() ) {
+			return;
+		}
+		if ( $this->used_css->exists() ) {
+			return;
+		}
+
+		// translators: %2$s = table name, %3$s = support url.
+		$main_message = __( 'Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="%3$s">our support</a>.', 'rocket' );
+
+		$message = sprintf(
+		// translators: %1$s = plugin name, %2$s = table name, %3$s = support url.
+			"%1\$s: $main_message",
+			'<strong>WP Rocket</strong>',
+			$this->used_css->get_name(),
+			$this->get_support_url()
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+				'id'          => 'rocket-notice-rucss-missing-table',
+			]
+		);
+	}
+
+	/**
+	 * Get support URL.
+	 *
+	 * @return string
+	 */
+	protected function get_support_url() {
+		return rocket_get_external_url(
+			'support',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
 			]
 		);
 	}

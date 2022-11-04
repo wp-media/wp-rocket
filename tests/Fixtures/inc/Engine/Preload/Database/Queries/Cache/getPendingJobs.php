@@ -5,9 +5,10 @@ use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 $cache = new CacheRow((object)[]);
 
 return [
-	'shouldReturnElements' => [
+	'shouldReturnPendingRowsWhenInProgressLessThanTotal' => [
 		'config' => [
-			'total' => 1,
+			'total' => 45,
+			'in-progress' => 1,
 			'results' => [
 				$cache,
 			]
@@ -15,5 +16,25 @@ return [
 		'expected' => [
 			$cache
 		]
+	],
+	'shouldReturnEmptyPendingRowsWhenInProgressEqualsTotal' => [
+		'config' => [
+			'total' => 45,
+			'in-progress' => 45,
+			'results' => [
+				$cache,
+			],
+		],
+		'expected' => [],
+	],
+	'shouldReturnEmptyPendingRowsWhenInProgressMoreThanTotal' => [
+		'config' => [
+			'total' => 45,
+			'in-progress' => 45,
+			'results' => [
+				$cache,
+			],
+		],
+		'expected' => [],
 	],
 ];

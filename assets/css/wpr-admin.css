@@ -2246,6 +2246,9 @@ div.wpr-upgrade-websites {
   font-style: normal;
   color: #666666;
 }
+.wpr-tools #wpr-update-exclusion-msg {
+  min-height: 20px;
+}
 
 /*-----------------------------------------------*\
 

@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Buffer;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Handle page cache.
  *
@@ -332,7 +330,10 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Save the cache file.
-		rocket_put_content( $temp_filepath, $content );
+		if ( ! rocket_put_content( $temp_filepath, $content ) ) {
+			return;
+		}
+
 		rocket_direct_filesystem()->move( $temp_filepath, $cache_filepath, true );
 
 		if ( function_exists( 'gzencode' ) ) {
@@ -343,7 +344,10 @@ class Cache extends Abstract_Buffer {
 			 */
 			$compression_level = apply_filters( 'rocket_gzencode_level_compression', 6 );
 
-			rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) );
+			if ( ! rocket_put_content( $temp_gzip_filepath, gzencode( $content, $compression_level ) ) ) {
+				return;
+			}
+
 			rocket_direct_filesystem()->move( $temp_gzip_filepath, $gzip_filepath, true );
 		}
 	}
@@ -533,7 +537,7 @@ class Cache extends Abstract_Buffer {
 
 			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
 			$user_key = reset( $user_key );
-			$user_key = $user_key . '-' . $this->config->get_config( 'secret_cache_key' );
+			$user_key = $this->sanitize_key( $user_key . '-' . $this->config->get_config( 'secret_cache_key' ) );
 
 			// Get cache folder of host name.
 			return $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
@@ -668,5 +672,19 @@ class Cache extends Abstract_Buffer {
 	 */
 	protected function reset_lowercase( $matches ) {
 		return strtolower( $matches[0] );
+	}
+
+	/**
+	 * Sanitizes a string key.
+	 *
+	 * @param string $key String key.
+	 *
+	 * @return string
+	 */
+	private function sanitize_key( string $key ): string {
+		$sanitized_key = '';
+		$sanitized_key = strtolower( $key );
+
+		return preg_replace( '/[^a-z0-9_\-]/', '', $sanitized_key );
 	}
 }

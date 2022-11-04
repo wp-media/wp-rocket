@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Activation;
 
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -16,6 +17,7 @@ class Test_RefreshOnUpdate extends TestCase
 	protected $controller;
 	protected $queue;
 	protected $query;
+	private $options;
 
 	protected function setUp(): void
 	{
@@ -23,20 +25,21 @@ class Test_RefreshOnUpdate extends TestCase
 		$this->controller = Mockery::mock(LoadInitialSitemap::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->activation = new Activation($this->queue, $this->query);
+		$this->options = $this->createMock( Options_Data::class );
+		$this->activation = new Activation($this->queue, $this->query, $this->options);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected($config) {
+	public function testShouldDoAsExpected($config, $result) {
 
-		$this->configureReloadSitemap($config);
+		$this->configureReloadSitemap($result);
 		$this->activation->refresh_on_update($config['new_version'], $config['old_version']);
 	}
 
-	public function configureReloadSitemap($config) {
-		if($config['new_version'] !== '3.11.0') {
+	public function configureReloadSitemap($should_preload) {
+		if( ! $should_preload ) {
 			$this->queue->expects()->add_job_preload_job_load_initial_sitemap_async()->never();
 			return;
 		}

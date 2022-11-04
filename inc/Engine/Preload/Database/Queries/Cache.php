@@ -124,6 +124,10 @@ class Cache extends Query {
 	public function create_or_update( array $resource ) {
 		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
 
+		if ( $this->is_rejected( $resource['url'] ) ) {
+			return false;
+		}
+
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
@@ -182,12 +186,17 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
+
+		if ( $this->is_rejected( $resource['url'] ) ) {
+			return false;
+		}
+
 		$url = strtok( $resource['url'], '?' );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $resource['url'] ),
+				'url' => untrailingslashit( $url ),
 			],
 			false
 		);
@@ -254,7 +263,9 @@ class Cache extends Query {
 
 		$deleted = true;
 		foreach ( $items as $item ) {
-			$deleted = $deleted && $this->delete_item( $item->id );
+			if ( ! is_bool( $item ) ) {
+				$deleted = $deleted && $this->delete_item( $item->id );
+			}
 		}
 
 		return $deleted;
@@ -290,7 +301,9 @@ class Cache extends Query {
 		$rows = $this->get_old_cache();
 
 		foreach ( $rows as $row ) {
-			$this->delete_item( $row->id );
+			if ( ! is_bool( $row ) ) {
+				$this->delete_item( $row->id );
+			}
 		}
 	}
 
@@ -300,11 +313,34 @@ class Cache extends Query {
 	 * @param int $total total of jobs to fetch.
 	 * @return array
 	 */
-	public function get_pending_jobs( int $total ) {
+	public function get_pending_jobs( int $total = 45 ) {
+		$inprogress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => 'in-progress',
+			]
+		);
+
+		if ( $inprogress_count >= $total ) {
+			return [];
+		}
+
+		$orderby = 'modified';
+
+		/**
+		 * Filter order for preloading pending urls.
+		 *
+		 * @param bool $orderby order for preloading pending urls.
+		 *
+		 * @returns bool
+		 */
+		if ( apply_filters( 'rocket_preload_order', false ) ) {
+			$orderby = 'id';
+		}
 
 		return $this->query(
 			[
-				'number'         => $total,
+				'number'         => ( $total - $inprogress_count ),
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -313,7 +349,7 @@ class Cache extends Query {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'modified',
+				'orderby'        => $orderby,
 				'order'          => 'asc',
 			]
 		);
@@ -489,5 +525,24 @@ class Cache extends Query {
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
 		$db->query( "DELETE FROM `$prefixed_table_name` WHERE 1 = 1" );
+	}
+
+	/**
+	 * Check if the url is rejected.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	protected function is_rejected( string $url ): bool {
+		$extensions = [
+			'php' => 1,
+			'xml' => 1,
+			'xsl' => 1,
+			'kml' => 1,
+		];
+
+		$extension = pathinfo( $url, PATHINFO_EXTENSION );
+
+		return $extension && isset( $extensions[ $extension ] );
 	}
 }

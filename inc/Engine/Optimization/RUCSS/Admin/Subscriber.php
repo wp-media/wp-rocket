@@ -80,11 +80,11 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
-				[ 'notice_write_permissions' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
-				[ 'display_as_missed_tables_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_no_table_notice' ],
+				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
 				[ 'add_clean_used_css_menu_item' ],
@@ -95,7 +95,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'action_scheduler_queue_runner_concurrent_batches' => 'adjust_as_concurrent_batches',
 			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
@@ -113,31 +112,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if Action scheduler tables are there or not.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return bool
-	 */
-	private function is_valid_as_tables() {
-		$cached_count = get_transient( 'rocket_rucss_as_tables_count' );
-		if ( false !== $cached_count && ! is_admin() ) { // Stop caching in admin UI.
-			return 4 === (int) $cached_count;
-		}
-
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$found_as_tables = $wpdb->get_col(
-			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'actionscheduler%' )
-		);
-
-		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
-
-		return 4 === count( $found_as_tables );
-	}
-
-	/**
 	 * Delete used_css on Update Post or Delete post.
 	 *
 	 * @since 3.9
@@ -148,6 +122,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_used_css_on_update_or_delete( $post_id ) {
 		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -174,6 +152,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_deletion_enabled() ) {
+			return;
+		}
+
 		$url = get_term_link( (int) $term_id );
 
 		if ( is_wp_error( $url ) ) {
@@ -192,6 +174,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function truncate_used_css() {
 		if ( ! $this->settings->is_enabled() ) {
+			return;
+		}
+
+		if ( ! $this->is_deletion_enabled() ) {
 			return;
 		}
 
@@ -433,25 +419,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$this->settings->display_as_missed_tables_notice();
-	}
-
-	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -469,6 +436,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_url_usedcss() {
+		check_admin_referer( 'rocket_clear_usedcss_url' );
+
+		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
+			wp_nonce_ays( '' );
+		}
+
 		$url = wp_get_referer();
 
 		if ( 0 !== strpos( $url, 'http' ) ) {
@@ -480,17 +453,6 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Adjust Action Scheduler to have two concurrent batches on the same time.
-	 *
-	 * @param int $num Number of concurrent batches.
-	 *
-	 * @return int
-	 */
-	public function adjust_as_concurrent_batches( int $num = 1 ) {
-		return ( 2 < $num ) ? $num : 2;
 	}
 
 	/**
@@ -681,9 +643,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Deletes the used CSS on update to 3.11.3 for new storage method
+	 * Deletes the used CSS on update to 3.11.4 for new storage method
 	 *
-	 * @since 3.11.3
+	 * @since 3.11.4
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
@@ -737,5 +699,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function notice_write_permissions() {
 		$this->used_css->notice_write_permissions();
+	}
+
+	/**
+	 * Display a notice on table missing.
+	 *
+	 * @return void
+	 */
+	public function display_no_table_notice() {
+		$this->settings->display_no_table_notice();
+	}
+
+	/**
+	 * Checks if the RUCSS deletion is enabled.
+	 *
+	 * @return bool
+	 */
+	protected function is_deletion_enabled(): bool {
+		/**
+		 * Filters the enable RUCSS deletion value
+		 *
+		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 }

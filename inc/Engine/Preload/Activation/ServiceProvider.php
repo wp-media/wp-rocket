@@ -3,13 +3,10 @@
 namespace WP_Rocket\Engine\Preload\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
-use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Logger\Logger;
-use WP_Sitemaps;
 
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -26,7 +23,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_caches_query',
 		'preload_queue',
 		'preload_activation',
-		'preload_activation_subscriber',
 	];
 
 	/**
@@ -51,10 +47,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
 			->addArgument( $queue )
-			->addArgument( $cache_query );
-
-		$this->getContainer()->add( 'preload_activation_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
+			->addArgument( $cache_query )
 			->addArgument( $options );
 	}
 }
