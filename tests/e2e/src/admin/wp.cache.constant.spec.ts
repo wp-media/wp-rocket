@@ -6,7 +6,15 @@ import { test, expect, Page } from '@playwright/test';
 import { read_file, write_to_file, file_exist } from '../../utils/helpers';
 import { pageUtils } from '../../utils/page.utils';
 
-let page: Page, page_utils: Object, wp_config: String, file_content: String, reg: RegExp, debug_log_content: String;
+let page: Page,
+page_utils: Object,
+wp_config: String,
+file_content: String,
+reg: RegExp,
+debug_log_content: String,
+config_file_exist: Boolean,
+advanced_cache: String
+
 const debug_log = 'wp-content/debug.log';
 
 const wpCache = async () => {
@@ -29,13 +37,7 @@ const wpCache = async () => {
          * WPR already deactivated.
          * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
          */
-        wp_config = await read_file('wp-config.php');
-        reg = /define\(\s(\')WP_CACHE\1.*\s\).+Rocket/im;
-        file_content = wp_config.replace(reg, '');
-
-        // Add multiple php tag.
-        file_content = file_content.replace('<?php', '<?php\n?>\n<?php');
-        await write_to_file('wp-config.php', file_content);
+        await editWpConfig('<?php', '<?php\n?>\n<?php');
         
         // Activate WPR
         await activateWPR(page_utils)
@@ -44,9 +46,7 @@ const wpCache = async () => {
         await deactivateWPR(page, page_utils);
 
         // Revert wp-config file to original state
-        wp_config = await read_file('wp-config.php');
-        file_content = wp_config.replace('?>\n<?php', '');
-        await write_to_file('wp-config.php', file_content);
+        await editWpConfig('?>\n<?php', '', true);
     });
 
     test('Should add WP_CACHE in wp-config .php single time while having active and commented php tags', async () => {
@@ -59,12 +59,7 @@ const wpCache = async () => {
          * //<?php
          * // echo 'test <?php';
          */
-        wp_config = await read_file('wp-config.php');
-        reg = /define\(\s(\')WP_CACHE\1.*\s\).+Rocket/im;
-        file_content = wp_config.replace(reg, '');
-
-        file_content = file_content.replace('<?php', '<?php\n//<?php\n// echo \'test <?php\'');
-        await write_to_file('wp-config.php', file_content);
+        await editWpConfig('<?php', '<?php\n//<?php\n// echo \'test <?php\';');
 
         // Plugin activated successfully
         await activateWPR(page_utils);
@@ -73,10 +68,41 @@ const wpCache = async () => {
         await deactivateWPR(page, page_utils);
 
         // Revert wp-config file to original state
-        wp_config = await read_file('wp-config.php');
-        file_content = wp_config.replace('//<?php\n// echo \'test <?php\'', '');
-        await write_to_file('wp-config.php', file_content);
+        await editWpConfig('//<?php\n// echo \'test <?php\';', '', true);
     });
+
+    test('Should add/update WP_CACHE in wp-config while having single php tag', async () => {
+         /**
+         * PRECONDITIONS
+         * 
+         * WPR deactivated
+         * Remove the define( 'WP_CACHE', true ); // Added by WP Rocket line from the wp-config.php
+         * no other PHP tag mentioned in wp-config
+         */
+        await editWpConfig(false, false);
+
+        // Plugin activated successfully
+        await activateWPR(page_utils);
+
+        // Deactivate WPR
+        await deactivateWPR(page, page_utils);
+    });
+}
+
+const editWpConfig = async (needle, replacement, revert = false) => {
+    wp_config = await read_file('wp-config.php');
+
+    if (!revert) {
+        reg = /define\(\s(\')WP_CACHE\1.*\s\).+Rocket/im;
+        wp_config = wp_config.replace(reg, '');   
+    }
+
+    if (!needle && !replacement) {
+        return;
+    }
+
+    wp_config = wp_config.replace(needle, replacement);
+    await write_to_file('wp-config.php', wp_config);
 }
 
 const activateWPR = async (page_utils) => {
@@ -87,10 +113,13 @@ const activateWPR = async (page_utils) => {
     await page_utils.toggle_plugin_activation('wp-rocket');
 
     // Assert that WPR config file is created.
-    expect(await file_exist('wp-content/wp-rocket-config/localhost.php')).toBeTruthy();
+    await page.waitForSelector('#deactivate-wp-rocket');
+    config_file_exist = await file_exist('wp-content/wp-rocket-config/localhost.php')
+    expect(config_file_exist).toBeTruthy();
 
     // Asserts that WP Rocket writes to wp-content/advanced-cache.php.
-    expect(await read_file('wp-content/advanced-cache.php')).not.toBe('');
+    advanced_cache = await read_file('wp-content/advanced-cache.php')
+    expect(advanced_cache).not.toBe('');
     
     // WP Rocket write WP_CACHE=true to wp-config.php once
     wp_config = await read_file('wp-config.php');
@@ -113,16 +142,20 @@ const deactivateWPR = async (page, page_utils) => {
 
     // Deactivate WPR
     await page_utils.goto_plugin();
+    await page.waitForSelector('#deactivate-wp-rocket');
     await page_utils.toggle_plugin_activation('wp-rocket', false);
 
     // check deactivation notification
     await expect(page.locator('text=Plugin deactivated.')).toBeVisible();
 
     // domain.php file under wp-content/wp-rocket-config/ removed.
-    expect(await file_exist('wp-content/wp-rocket-config/localhost.php')).toBeFalsy();
+    await page.waitForSelector('#activate-wp-rocket');
+    config_file_exist = await file_exist('wp-content/wp-rocket-config/localhost.php');
+    expect(config_file_exist).toBeFalsy();
 
     // wp-content/advanced-cache.php cleared
-    expect(await read_file('wp-content/advanced-cache.php')).toBe('');
+    advanced_cache = await read_file('wp-content/advanced-cache.php');
+    expect(advanced_cache).toBe('');
 
     // WP Rocket write WP_CACHE=false to wp-config.php once
     wp_config = await read_file('wp-config.php');
