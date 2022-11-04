@@ -41,7 +41,8 @@ class UsedCSS extends Table {
 		20220513 => 'add_hash_column',
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20220926 => 'add_error_message_column',
-		20221104 => 'add_error_code_column',
+		20221103 => 'add_error_code_column',
+		20221104 => 'make_error_code_column_index',
 	];
 
 	/**
@@ -293,5 +294,24 @@ class UsedCSS extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Make status column as index.
+	 *
+	 * @return bool
+	 */
+	protected function make_error_code_column_index() {
+		$error_code_column_exists = $this->column_exists( 'error_code' );
+		if ( ! $error_code_column_exists ) {
+			return $this->is_success( false );
+		}
+
+		if ( $this->index_exists( 'error_code_index' ) ) {
+			return $this->is_success( true );
+		}
+
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `error_code_index` (`error_code`) " );
+		return $this->is_success( $index_added );
 	}
 }
