@@ -14,7 +14,7 @@ const miscellaneous = () => {
         await page_utils.goto_new_post();
 
         // Assert that clear cache option is not displayed.
-        expect(page.locator('#purge-action a:has-text("Clear cache")')).not.toBeVisible();
+        await expect(page.locator('#purge-action a:has-text("Clear cache")')).not.toBeVisible();
 
         // Close Gutenberg tour.
         await page_utils.close_gutenberg_dialog();
@@ -42,7 +42,7 @@ const miscellaneous = () => {
         await page_utils.goto_new_post();
 
         // Assert that clear cache option is not displayed.
-        expect(page.locator('#purge-action a:has-text("Clear cache")')).not.toBeVisible();
+        await expect(page.locator('#purge-action a:has-text("Clear cache")')).not.toBeVisible();
 
         await shouldNotDisplayClearCacheOptionInDraftPostList(page, page_utils, false);
 
@@ -71,7 +71,7 @@ const shouldNotDisplayClearCacheOptionInDraftPostList = async (page, page_utils,
     await page.locator('.iedit').hover();
 
     // Assert that `Clear this cache` option is not visible.
-    expect(page.locator('.rocket_purge:has-text("Clear this cache")')).not.toBeVisible();
+    await expect(page.locator('.rocket_purge:has-text("Clear this cache")')).not.toBeVisible();
 }
 
 const shouldNotDisplayWPROptionInDraftPostDetails = async (page) => {
@@ -79,7 +79,7 @@ const shouldNotDisplayWPROptionInDraftPostDetails = async (page) => {
     await page.locator('.iedit strong a').click();
 
     // Assert that WPR option is not visible.
-    expect(page.locator('#rocket_post_exclude')).not.toBeVisible();
+    await expect(page.locator('#rocket_post_exclude')).not.toBeVisible();
 }
 
 const shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview = async (page, is_gutenberg = true) => {
@@ -96,7 +96,7 @@ const shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview = async (page
     await page1.locator('#wp-admin-bar-wp-rocket').hover();
 
     // Assert that `Purge this URL` option is not visible.
-    expect(page1.locator('text=Purge this URL')).not.toBeVisible();
+    await expect(page1.locator('text=Purge this URL')).not.toBeVisible();
 }
 
 export default miscellaneous;
