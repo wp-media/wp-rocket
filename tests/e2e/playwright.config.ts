@@ -45,7 +45,7 @@ const config: PlaywrightTestConfig = {
 		actionTimeout: 10_000, // 10 seconds.
 	},
 	webServer: {
-        command: 'npm run wp-env start\nnpm run wp-env run cli wp plugin install classic-editor',
+        command: 'npm run wp-env start\nnpm run wp-env run cli wp theme activate twentytwentytwo\nnpm run wp-env run cli wp plugin install classic-editor',
         port: 8888,
         timeout: 120 * 1000,
         reuseExistingServer: true,
