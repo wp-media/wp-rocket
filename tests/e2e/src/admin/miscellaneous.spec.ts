@@ -23,6 +23,11 @@ const miscellaneous = () => {
 
         await shouldNotDisplayWPROptionInDraftPostDetails(page);
 
+        // Close Gutenberg tour.
+        if (await page.locator('[aria-label="Close dialog"]').isVisible()) {
+            await page_utils.close_gutenberg_dialog();   
+        }
+
         await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page);
     });
 
