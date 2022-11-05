@@ -25,10 +25,11 @@ jobs:
         WP_ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
         WP_ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
       run: node ./.github/scripts/build-wp-env.js
-    - name: Install WordPress - Start the server and install dependent plugins
+    - name: Install WordPress - Start the server and install dependent plugins and themes
       run: |
           npm run wp-env start
           sudo chmod -R 0777 ~/wp-env/
+          npm run wp-env run cli wp theme activate twentytwentytwo
           npm run wp-env run cli wp plugin install classic-editor
     - run: mkdir artifacts
     - name: Run tests
