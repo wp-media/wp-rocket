@@ -108,7 +108,7 @@ const wpCache = async () => {
         // WP_cache in wp-config.php is false
         wp_config = await read_file('wp-config.php');
         reg = /define\(\s(\')WP_CACHE\1+\,\sfalse.*\s\).+Rocket/mg;
-        expect((wp_config.match(reg) || []).length).toBe(1); 
+        expect((wp_config.match(reg)).length).toBe(1); 
 
         // Go to site health
         await page_utils.goto_site_health();
@@ -118,7 +118,6 @@ const wpCache = async () => {
 
         // Revert theme functions.php.
         theme = await read_file('wp-content/themes/twentytwentytwo/functions.php');
-        theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )';
         theme = theme.replace('add_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' );', '');
         await write_to_file('wp-content/themes/twentytwentytwo/functions.php', theme);
     });
@@ -159,7 +158,7 @@ const activateWPR = async (page_utils) => {
     // WP Rocket write WP_CACHE=true to wp-config.php once
     wp_config = await read_file('wp-config.php');
     reg = /define\(\s(\')WP_CACHE\1+\,\strue.*\s\).+Rocket/mg;
-    expect((wp_config.match(reg) || []).length).toBe(1); 
+    expect(wp_config.match(reg).length).toBe(1); 
 
     // Check the /wp-content/wp-debug.log file
     if (await file_exist(debug_log)) {
@@ -195,7 +194,7 @@ const deactivateWPR = async (page, page_utils) => {
     // WP Rocket write WP_CACHE=false to wp-config.php once
     wp_config = await read_file('wp-config.php');
     reg = /define\(\s(\')WP_CACHE\1+\,\sfalse.*\s\).+Rocket/mg;
-    expect((wp_config.match(reg) || []).length).toBe(1); 
+    expect(wp_config.match(reg).length).toBe(1); 
 }
 
 export default wpCache;
