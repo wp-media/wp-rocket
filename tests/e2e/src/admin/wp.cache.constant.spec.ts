@@ -97,7 +97,7 @@ const wpCache = async () => {
          * WPR is installed
          */
         theme = await read_file('wp-content/themes/twentytwentytwo/functions.php');
-        theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )';
+        theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' );';
         await write_to_file('wp-content/themes/twentytwentytwo/functions.php', theme);
 
         // Activate WPR
@@ -119,7 +119,7 @@ const wpCache = async () => {
         // Revert theme functions.php.
         theme = await read_file('wp-content/themes/twentytwentytwo/functions.php');
         theme += '\nadd_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )';
-        theme = theme.replace('add_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' )', '');
+        theme = theme.replace('add_filter( \'rocket_set_wp_cache_constant\', \'__return_false\' );', '');
         await write_to_file('wp-content/themes/twentytwentytwo/functions.php', theme);
     });
 }
