@@ -262,7 +262,7 @@ class UsedCSS extends Table {
 	}
 
 	/**
-	 * Add error_message column and index
+	 * Add error columns
 	 *
 	 * @return bool
 	 */
@@ -275,7 +275,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return bool
 	 */
-	protected function add_error_message_column() {
+	private function add_error_message_column() {
 		$error_message_column_exists = $this->column_exists( 'error_message' );
 
 		$created = true;
@@ -292,7 +292,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return bool
 	 */
-	protected function add_error_code_column() {
+	private function add_error_code_column() {
 		$error_code_column_exists = $this->column_exists( 'error_code' );
 
 		$created = true;
@@ -309,7 +309,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return bool
 	 */
-	protected function make_error_code_column_index() {
+	private function make_error_code_column_index() {
 		$error_code_column_exists = $this->column_exists( 'error_code' );
 		if ( ! $error_code_column_exists ) {
 			return $this->is_success( false );
