@@ -47,6 +47,7 @@ class Test_GetPendingJobs extends TestCase {
 			])->willReturn($config['results']);
 		}
 
+
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}
 
