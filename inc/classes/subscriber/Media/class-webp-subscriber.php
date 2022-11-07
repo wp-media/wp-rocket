@@ -431,8 +431,8 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		return array_map(
 			function ( $request ) {
-				$request['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-				$request['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				$request['headers']['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				$request['headers']['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
 				return $request;
 			},
 			$requests
