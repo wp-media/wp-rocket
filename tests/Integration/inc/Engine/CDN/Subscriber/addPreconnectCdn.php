@@ -32,9 +32,12 @@ class Test_addPreconnectCdn extends TestCase {
 
 		ob_start();
 		wp_resource_hints();
-
+		$expected_str = $expected['new'];
+		if ( substr( get_bloginfo( 'version' ), 0, 3 ) === '5.6') {
+			$expected_str = $expected['legacy'];
+		}
 		$this->assertSame(
-			$this->format_the_html($expected),
+			$this->format_the_html($expected_str),
 			$this->format_the_html(ob_get_clean())
 		);
 	}
