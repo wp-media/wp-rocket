@@ -22,7 +22,7 @@ class OneCom implements Subscriber_Interface {
 		return [
 			'pre_get_rocket_option_cdn'               => 'maybe_enable_cdn_option',
 			'pre_get_rocket_option_cdn_cnames'        => 'maybe_update_cdn_cname',
-			'pre_get_rocket_option_cdn_zones'         => 'maybe_update_cdn_zone',
+			'pre_get_rocket_option_cdn_zone'          => 'maybe_update_cdn_zone',
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
 			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
 			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
