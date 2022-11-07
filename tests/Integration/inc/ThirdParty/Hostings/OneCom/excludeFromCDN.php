@@ -1,23 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\OneCom;
 
-use WP_Rocket\ThirdParty\Hostings\OneCom;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::exclude_from_cdn
  * @group OneCom
- * @group ThirdParty
  */
 class Test_ExcludeFromCDN extends TestCase {
-    private $onecom;
-
-	public function setUp() : void {
-		parent::setUp();
-        
-        $this->onecom = new OneCom();
-	}
 
 	/**
 	 * @dataProvider providerTestData
@@ -38,7 +29,7 @@ class Test_ExcludeFromCDN extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->onecom->exclude_from_cdn( $config['excluded'] )
+			apply_filters( 'rocket_cdn_reject_files', $config['excluded'] )
 		);
 	}
 

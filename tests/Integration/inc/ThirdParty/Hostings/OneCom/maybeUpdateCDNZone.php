@@ -1,14 +1,14 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\OneCom;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\OneCom;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_change
+ * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option
  * @group OneCom
  */
-class Test_DisableCDNChange extends TestCase {
+class Test_MaybeUpdateCDNZone extends TestCase {
 
 	/**
 	 * @dataProvider providerTestData
@@ -27,12 +27,13 @@ class Test_DisableCDNChange extends TestCase {
 			}
 		);
 
-		$this->assertSame(
-			$expected['field_settings'], apply_filters( 'rocket_cdn_settings_fields', $config['field_settings' ]));
+        $this->assertSame( 
+            $expected['return'], 
+            apply_filters( 'pre_get_rocket_option_cdn_zone', $config['zone'] ) 
+        );
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'disableCDNChange' );
+		return $this->getTestData( __DIR__, 'maybeUpdateCDNZone' );
 	}
 }
-

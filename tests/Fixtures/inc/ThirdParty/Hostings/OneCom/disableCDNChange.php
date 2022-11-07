@@ -8,7 +8,7 @@ return [
                 'cdn' => [
                     'type'              => 'checkbox',
                     'label'             => 'Some text',
-                    'helper'            => true,
+                    'helper'            => '',
                     'section'           => 'cdn_section',
                     'page'              => 'page_cdn',
                     'default'           => 0,
@@ -21,7 +21,7 @@ return [
                 'cdn' => [
                     'type'              => 'checkbox',
                     'label'             => 'Some text',
-                    'helper'            => true,
+                    'helper'            => '',
                     'section'           => 'cdn_section',
                     'page'              => 'page_cdn',
                     'default'           => 0,
@@ -37,7 +37,7 @@ return [
                 'cdn' => [
                     'type'              => 'checkbox',
                     'label'             => 'Some text',
-                    'helper'            => true,
+                    'helper'            => '',
                     'section'           => 'cdn_section',
                     'page'              => 'page_cdn',
                     'default'           => 0,
@@ -50,7 +50,7 @@ return [
                 'cdn' => [
                     'type'              => 'checkbox',
                     'label'             => 'Some text',
-                    'helper'            => true,
+                    'helper'            => '',
                     'section'           => 'cdn_section',
                     'page'              => 'page_cdn',
                     'default'           => 0,

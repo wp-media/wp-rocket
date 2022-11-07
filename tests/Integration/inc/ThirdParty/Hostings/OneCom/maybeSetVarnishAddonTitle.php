@@ -1,25 +1,14 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\OneCom;
 
-use WP_Rocket\ThirdParty\Hostings\OneCom;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_set_varnish_addon_title
  * @group OneCom
- * @group ThirdParty
  */
 class Test_MaybeSetVarnishAddonTitle extends TestCase {
-    private $onecom;
-
-	public function setUp() : void {
-		parent::setUp();
-        
-        $this->onecom = new OneCom();
-
-        Functions\stubTranslationFunctions();
-	}
 
 	/**
 	 * @dataProvider providerTestData
@@ -38,9 +27,10 @@ class Test_MaybeSetVarnishAddonTitle extends TestCase {
 			}
 		);
 
-        $settings = $this->onecom->maybe_set_varnish_addon_title( $config['varnish_field_settings'] );
-
-		$this->assertSame( $expected['title'], $settings['varnish_auto_purge']['title'] );
+		$this->assertSame(
+			$expected['title'], 
+			apply_filters( 'rocket_varnish_field_settings', $config['varnish_field_settings'] )['varnish_auto_purge']['title'] 
+		);
 	}
 
 	public function providerTestData() {
