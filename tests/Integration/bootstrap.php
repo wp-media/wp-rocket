@@ -137,6 +137,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'WPXCloud' ) ) {
+			$_SERVER[ 'HTTP_WPXCLOUD'] = true;
+		}
+
 		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
 			$_SERVER[ 'X-LSCACHE'] = 'on';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/HeaderCollector.php';

@@ -5,8 +5,10 @@ namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class HTML {
+	use RegexTrait;
 	/**
 	 * Plugin options instance.
 	 *
@@ -67,9 +69,13 @@ class HTML {
 		 *
 		 * @param array $excluded Array of excluded patterns.
 		 */
-		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = (array) apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
+				if ( ! is_string( $value ) ) {
+					$value = (string) $value;
+				}
+
 				return str_replace(
 					[ '+', '?ver', '#' ],
 					[ '\+', '\?ver', '\#' ],
@@ -127,20 +133,21 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
-		$replaced_html = preg_replace_callback(
-			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
-			[
-				$this,
-				'replace_scripts',
-			],
-			$html
+		$clean_html           = $this->hide_xmp_tags( $html );
+		$script_regex_pattern = '<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>';
+		$scripts              = $this->find(
+			$script_regex_pattern,
+			$clean_html,
+			'ims'
 		);
-
-		if ( empty( $replaced_html ) ) {
-			return $html;
+		foreach ( $scripts as $script ) {
+			$lazy_script = $this->replace_scripts( $script );
+			if ( $lazy_script ) {
+				$search = '#' . preg_quote( $script[0], '#' ) . '#ims';
+				$html   = preg_replace( $search, $lazy_script, $html, 1 );
+			}
 		}
-
-		return $replaced_html;
+		return $html;
 	}
 
 	/**
@@ -154,6 +161,7 @@ class HTML {
 	 * @return string
 	 */
 	public function replace_scripts( $matches ): string {
+
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
 				return $matches[0];

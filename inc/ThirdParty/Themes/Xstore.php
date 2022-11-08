@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
+class Xstore extends ThirdpartyTheme {
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'xstore';
 
-class Xstore implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -33,16 +38,5 @@ class Xstore implements Subscriber_Interface {
 		$patterns[] = '.slider-item-';
 
 		return $patterns;
-	}
-
-	/**
-	 * Checks if the current theme is Xstore
-	 *
-	 * @param WP_Theme $theme Instance of the theme.
-	 */
-	private static function is_current_theme( $theme = null ) {
-		$theme = $theme instanceof \WP_Theme ? $theme : wp_get_theme();
-
-		return 'xstore' === strtolower( $theme->get( 'Name' ) ) || 'xstore' === strtolower( $theme->get_template() );
 	}
 }
