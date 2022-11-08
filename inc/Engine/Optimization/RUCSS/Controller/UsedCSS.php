@@ -211,13 +211,13 @@ class UsedCSS {
 				return $html;
 			}
 
-       /**
-			 * Lock preload URL.
-			 *
-			 * @param string $url URL to lock
-			 */
+			/**
+				  * Lock preload URL.
+				  *
+				  * @param string $url URL to lock
+				  */
 			do_action( 'rocket_preload_lock_url', $url );
-      
+
 			// We got jobid and queue name so save them into the DB and change status to be pending.
 			$this->used_css_query->create_new_job(
 				$url,
