@@ -425,7 +425,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public function add_accept_header( $requests ) {
 
-		if ( ! $this->options_data->get( 'cache_webp' ) ) {
+		if ( ! is_array( $requests ) || ! $this->options_data->get( 'cache_webp' ) ) {
 			return $requests;
 		}
 
