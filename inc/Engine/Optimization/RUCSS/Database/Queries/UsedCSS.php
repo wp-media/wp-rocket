@@ -112,13 +112,24 @@ class UsedCSS extends Query {
 	 * @return bool
 	 */
 	public function increment_retries( $id, $retries = 0 ) {
-		return $this->update_item(
-			$id,
-			[
-				'retries' => $retries + 1,
-				'status'  => 'pending',
-			]
-		);
+		$update_data = [
+			'retries' => $retries + 1,
+			'status'  => 'pending',
+		];
+		return $this->update_item( $id, $update_data );
+	}
+
+	/**
+	 * Update Job ID.
+	 *
+	 * @param int $id DB row ID.
+	 * @param int $new_job_id new job id.
+	 *
+	 * @return bool
+	 */
+	public function update_job_id( $id, $new_job_id ) {
+		$update_data['job_id'] = $new_job_id;
+		return $this->update_item( $id, $update_data );
 	}
 
 	/**
@@ -183,15 +194,19 @@ class UsedCSS extends Query {
 	/**
 	 * Change the status to be failed.
 	 *
-	 * @param int $id DB row ID.
+	 * @param int    $id DB row ID.
+	 * @param string $error_code error code.
+	 * @param string $error_message error message.
 	 *
 	 * @return bool
 	 */
-	public function make_status_failed( int $id ) {
+	public function make_status_failed( int $id, string $error_code, string $error_message ) {
 		return $this->update_item(
 			$id,
 			[
-				'status' => 'failed',
+				'status'        => 'failed',
+				'error_code'    => $error_code,
+				'error_message' => $error_message,
 			]
 		);
 	}
