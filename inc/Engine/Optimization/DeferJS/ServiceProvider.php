@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'defer_js', DeferJS::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) );
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) );
 		$this->getContainer()->share( 'defer_js_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'defer_js' ) )
 			->addTag( 'admin_subscriber' );
