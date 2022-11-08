@@ -35,7 +35,7 @@ class TheEventsCalendar implements Subscriber_Interface {
 			return $excluded;
 		}
 
-		$uri = tribe_get_option( 'singleEventSlug', 'event' );
+		$uri = tribe_get_option( 'eventsSlug', 'event' );
 
 		$excluded[] = "/$uri/20(.*)";
 
