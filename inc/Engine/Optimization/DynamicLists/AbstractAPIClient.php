@@ -49,6 +49,11 @@ abstract class AbstractAPIClient {
 		$this->options = $options;
 	}
 
+	/**
+	 * Specify API endpoint path.
+	 *
+	 * @return string
+	 */
 	abstract protected function get_api_path();
 
 	/**
@@ -82,7 +87,6 @@ abstract class AbstractAPIClient {
 	/**
 	 * Handle the request.
 	 *
-	 * @param string $request_path request path.
 	 * @param array  $args Passed arguments.
 	 *
 	 * @return bool
