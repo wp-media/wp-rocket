@@ -139,6 +139,13 @@ class DynamicLists extends Abstract_Render {
 					'message' => __( 'Could not update lists.', 'rocket' ),
 				];
 			default:
+				/**
+				 * Fires after saving all dynamic lists files.
+				 *
+				 * @since 3.12.1
+				 */
+				do_action( 'rocket_after_save_dynamic_lists' );
+
 				return [
 					'success' => true,
 					'data'    => $result['body'],
@@ -188,7 +195,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_cache_ignored_parameters(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->cache_ignored_parameters ) ? array_flip( $lists->cache_ignored_parameters ) : [];
 	}
@@ -199,7 +206,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_js_minify_excluded_external(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_minify_external ) ? $lists->js_minify_external : [];
 	}
@@ -210,7 +217,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_js_move_after_combine(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_move_after_combine ) ? $lists->js_move_after_combine : [];
 	}
@@ -221,7 +228,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_combine_js_excluded_inline(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
 	}

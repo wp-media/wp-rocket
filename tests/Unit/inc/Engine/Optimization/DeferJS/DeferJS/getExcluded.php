@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DeferJS\DeferJS;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**

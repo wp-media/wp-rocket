@@ -45,14 +45,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		     ->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$providers = [
-			(object) [
-				'api_client'   => $this->getContainer()->get( 'dynamic_lists_defaultlists_api_client' ),
-				'data_manager' => $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ),
-			],
-			(object) [
-				'api_client'   => $this->getContainer()->get( 'dynamic_lists_delayjslists_api_client' ),
-				'data_manager' => $this->getContainer()->get( 'dynamic_lists_delayjslists_data_manager' ),
-			],
+			'defaultlists' =>
+				(object) [
+					'api_client'   => $this->getContainer()->get( 'dynamic_lists_defaultlists_api_client' ),
+					'data_manager' => $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ),
+				],
+			'delayjslists' =>
+				(object) [
+					'api_client'   => $this->getContainer()->get( 'dynamic_lists_delayjslists_api_client' ),
+					'data_manager' => $this->getContainer()->get( 'dynamic_lists_delayjslists_data_manager' ),
+				],
 		];
 
 		$this->getContainer()->add( 'dynamic_lists', DynamicLists::class )

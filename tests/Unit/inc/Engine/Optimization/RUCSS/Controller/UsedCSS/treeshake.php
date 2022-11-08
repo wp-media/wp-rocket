@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake

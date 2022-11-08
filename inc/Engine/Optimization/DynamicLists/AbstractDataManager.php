@@ -76,13 +76,6 @@ abstract class AbstractDataManager {
 
 		$this->set_lists_cache( $lists );
 
-		/**
-		 * Fires after saving the dynamic lists file
-		 *
-		 * @since 3.12.1
-		 */
-		do_action( 'rocket_after_save_dynamic_lists' );
-
 		return $result;
 	}
 
