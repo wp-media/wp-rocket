@@ -109,12 +109,12 @@ class DynamicLists extends Abstract_Render {
 				continue;
 			}
 
-			if ( 200 !== $result['code'] ){
+			if ( 200 !== $result['code'] ) {
 				$code = $result['code'];
 				continue;
 			}
 
-			if( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
+			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
 				$code = 'NOT_SAVED';
 			}
 		}

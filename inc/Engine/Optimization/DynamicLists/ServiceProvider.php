@@ -42,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_data_manager', DelayJSListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_api_client', DelayJSListsAPIClient::class )
-		     ->addArgument( $this->getContainer()->get( 'options' ) );
+			 ->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$providers = [
 			'defaultlists' =>

@@ -24,8 +24,18 @@ abstract class AbstractDataManager {
 		$this->filesystem = is_null( $filesystem ) ? rocket_direct_filesystem() : $filesystem;
 	}
 
+	/**
+	 * Get cache transient name.
+	 *
+	 * @return string
+	 */
 	abstract protected function get_cache_transient_name();
 
+	/**
+	 * Get lists json filename.
+	 *
+	 * @return string
+	 */
 	abstract protected function get_json_filename();
 
 	/**

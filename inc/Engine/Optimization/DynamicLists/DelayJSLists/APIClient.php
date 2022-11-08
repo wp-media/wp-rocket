@@ -7,6 +7,11 @@ use WP_Rocket\Engine\Optimization\DynamicLists\AbstractAPIClient;
 
 class APIClient extends AbstractAPIClient {
 
+	/**
+	 * Specify API endpoint path.
+	 *
+	 * @return string
+	 */
 	protected function get_api_path() {
 		return 'delay-js-exclusions/list';
 	}
