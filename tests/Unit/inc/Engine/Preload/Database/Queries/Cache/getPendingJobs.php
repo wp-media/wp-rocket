@@ -24,19 +24,29 @@ class Test_GetPendingJobs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnPending($config, $expected) {
+		$this->query->expects($this->at(0))->method('query')->with( [
+			'count'  => true,
+			'status' => 'in-progress',
+			'is_locked' => false,
+		] )->willReturn( $config['in-progress'] );
 
-		$this->query->expects($this->any())
-             ->method('query')
-			 ->with($this->anything())
-             ->will($this->returnCallback(
-				function($arg) use ($config) {
-					if( array_key_exists( 'count', $arg ) ) {
-						return $config['in-progress'];
-					}
+		if ( $config['total'] > $config['in-progress'] ) {
+			$this->query->expects($this->at(1))->method('query')->with([
+				'number'         => $config['total'] - $config['in-progress'],
+				'status'         => 'pending',
+				'fields'         => [
+					'id',
+					'url',
+				],
+				'job_id__not_in' => [
+					'not_in' => '',
+				],
+				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
+				'order'          => 'asc',
+				'is_locked' => false
+			])->willReturn($config['results']);
+		}
 
-					return $config['results'];
-				}
-			 ));
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}
