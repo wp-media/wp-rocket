@@ -402,10 +402,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function format_preload_url( string $url ) {
 		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
-  }
-  
-   /**
-   * Lock a URL.
+	}
+
+	/**
+	 * Lock a URL.
 	 *
 	 * @param string $url URL to lock.
 	 *
