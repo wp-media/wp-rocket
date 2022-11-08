@@ -473,7 +473,7 @@ function rocket_can_display_options() {
 		return false;
 	}
 
-	if ( function_exists( 'get_current_screen' ) && 'add' === get_current_screen()->action ) {
+	if ( function_exists( 'get_current_screen' ) && is_object( get_current_screen() ) && 'add' === get_current_screen()->action ) {
 		return false;
 	}
 

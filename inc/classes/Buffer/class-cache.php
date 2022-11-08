@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Buffer;
 
-defined( 'ABSPATH' ) || exit;
-
 /**
  * Handle page cache.
  *
@@ -539,7 +537,7 @@ class Cache extends Abstract_Buffer {
 
 			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
 			$user_key = reset( $user_key );
-			$user_key = $user_key . '-' . $this->config->get_config( 'secret_cache_key' );
+			$user_key = $this->sanitize_key( $user_key . '-' . $this->config->get_config( 'secret_cache_key' ) );
 
 			// Get cache folder of host name.
 			return $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
@@ -674,5 +672,19 @@ class Cache extends Abstract_Buffer {
 	 */
 	protected function reset_lowercase( $matches ) {
 		return strtolower( $matches[0] );
+	}
+
+	/**
+	 * Sanitizes a string key.
+	 *
+	 * @param string $key String key.
+	 *
+	 * @return string
+	 */
+	private function sanitize_key( string $key ): string {
+		$sanitized_key = '';
+		$sanitized_key = strtolower( $key );
+
+		return preg_replace( '/[^a-z0-9_\-]/', '', $sanitized_key );
 	}
 }

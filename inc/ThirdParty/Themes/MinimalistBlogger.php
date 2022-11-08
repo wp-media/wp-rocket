@@ -3,9 +3,8 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 class MinimalistBlogger extends ThirdpartyTheme {
-
 	/**
-	 * Name from the theme.
+	 * Theme name
 	 *
 	 * @var string
 	 */
