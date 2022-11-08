@@ -114,6 +114,8 @@ class Subscriber implements Subscriber_Interface {
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_format_url'           => 'format_preload_url',
+			'rocket_preload_lock_url'             => 'lock_url',
+			'rocket_preload_unlock_url'           => 'unlock_url',
 			'rocket_preload_exclude_urls'         => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
@@ -400,6 +402,28 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function format_preload_url( string $url ) {
 		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
+  }
+  
+   /**
+   * Lock a URL.
+	 *
+	 * @param string $url URL to lock.
+	 *
+	 * @return void
+	 */
+	public function lock_url( string $url ) {
+		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock a URL.
+	 *
+	 * @param string $url URL to unlock.
+	 *
+	 * @return void
+	 */
+	public function unlock_url( string $url ) {
+		$this->query->unlock( $url );
 	}
 
 	/**

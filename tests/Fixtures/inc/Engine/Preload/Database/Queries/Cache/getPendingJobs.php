@@ -8,7 +8,6 @@ return [
 	'shouldReturnPendingRowsWhenInProgressLessThanTotal' => [
 		'config' => [
 			'total' => 45,
-			'pending' => 1,
 			'in-progress' => 1,
 			'results' => [
 				$cache,
@@ -21,7 +20,6 @@ return [
 	'shouldReturnEmptyPendingRowsWhenInProgressEqualsTotal' => [
 		'config' => [
 			'total' => 45,
-			'pending' => 100,
 			'in-progress' => 45,
 			'results' => [
 				$cache,
@@ -32,7 +30,6 @@ return [
 	'shouldReturnEmptyPendingRowsWhenInProgressMoreThanTotal' => [
 		'config' => [
 			'total' => 45,
-			'pending' => 100,
 			'in-progress' => 45,
 			'results' => [
 				$cache,
