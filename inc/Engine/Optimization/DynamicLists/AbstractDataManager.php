@@ -13,6 +13,11 @@ abstract class AbstractDataManager {
 	 */
 	private $filesystem;
 
+	/**
+	 * Cache ttl.
+	 *
+	 * @var int
+	 */
 	protected $cache_duration = WEEK_IN_SECONDS;
 
 	/**

@@ -87,7 +87,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * Handle the request.
 	 *
-	 * @param array  $args Passed arguments.
+	 * @param array $args Passed arguments.
 	 *
 	 * @return bool
 	 */
