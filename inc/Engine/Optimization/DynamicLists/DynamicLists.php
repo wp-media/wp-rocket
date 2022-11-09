@@ -148,7 +148,7 @@ class DynamicLists extends Abstract_Render {
 
 				return [
 					'success' => true,
-					'data'    => $result['body'],
+					'data'    => '',
 					'message' => __( 'Lists are successfully updated.', 'rocket' ),
 				];
 		}
