@@ -10,7 +10,7 @@ use WP_Rocket\Traits\Config_Updater;
  *
  * @since 3.3.7
  */
-class BigCommercer implements Event_Manager_Aware_Subscriber_Interface {
+class BigCommerce implements Event_Manager_Aware_Subscriber_Interface {
 	use Config_Updater;
 
 	/**
