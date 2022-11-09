@@ -176,7 +176,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
-		return $param === $this->options->get( 'consumer_email' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_email' );
 	}
 
 	/**
@@ -189,6 +189,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
-		return $param === $this->options->get( 'consumer_key' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
 	}
 }

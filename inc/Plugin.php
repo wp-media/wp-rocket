@@ -36,6 +36,7 @@ use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
+use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -268,6 +269,7 @@ class Plugin {
 		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
 		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
+		$this->container->addServiceProvider( ThemesServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -287,7 +289,6 @@ class Plugin {
 			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
-			'cache_dir_size_check',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
@@ -343,6 +344,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'uncode',
 			'rocket_lazy_load',
 		];
 

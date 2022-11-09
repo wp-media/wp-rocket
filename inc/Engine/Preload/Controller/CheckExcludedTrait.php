@@ -44,7 +44,7 @@ trait CheckExcludedTrait {
 
 			$regex = user_trailingslashit( $regex );
 
-			if ( preg_match( "@$regex@", $url ) ) {
+			if ( preg_match( "@$regex$@m", $url ) ) {
 				return true;
 			}
 		}

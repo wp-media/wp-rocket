@@ -77,6 +77,10 @@ class Savvii implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
+			return;
+		}
+
 		// Clear all caching files.
 		rocket_clean_domain();
 

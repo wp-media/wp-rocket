@@ -16,7 +16,13 @@ class Test_Enable extends ApiTestCase {
 	 * Test should update the option settings when the "enable" endpoint is requested.
 	 */
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
-		$this->requestEnableEndpoint();
+		$body_params = [
+			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'url'   => 'https://rocketcdn.me',
+		];
+
+		$this->requestEnableEndpoint( $body_params );
 
 		$expected_subset = [
 			'cdn'        => 1,
@@ -36,11 +42,17 @@ class Test_Enable extends ApiTestCase {
 	 * Test should delete the transient when the "enable" endpoint is requested.
 	 */
 	public function testShouldDeleteTransientWhenEndpointRequestt() {
+		$body_params = [
+			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'url'   => 'https://rocketcdn.me',
+		];
+
 		// Set up the transient.
 		set_transient( 'rocketcdn_status', 'some value', WEEK_IN_SECONDS );
 
 		// Request the "disable" endpoint.
-		$this->requestEnableEndpoint();
+		$this->requestEnableEndpoint( $body_params );
 
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
 	}
@@ -49,6 +61,12 @@ class Test_Enable extends ApiTestCase {
 	 * Test should return success packet when the "enable" endpoint is requested.
 	 */
 	public function testShouldReturnSuccessWhenEndpointRequest() {
+		$body_params = [
+			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'url'   => 'https://rocketcdn.me',
+		];
+
 		$expected = [
 			'code'    => 'success',
 			'message' => __( 'RocketCDN enabled', 'rocket' ),
@@ -57,6 +75,6 @@ class Test_Enable extends ApiTestCase {
 			],
 		];
 
-		$this->assertSame( $expected, $this->requestEnableEndpoint() );
+		$this->assertSame( $expected, $this->requestEnableEndpoint( $body_params ) );
 	}
 }
