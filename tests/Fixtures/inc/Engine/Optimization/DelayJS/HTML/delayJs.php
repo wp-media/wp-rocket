@@ -223,6 +223,7 @@ if ( window.addEventListener ) {
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
 </script>
+<xmp><script>alert("test")</script></xmp>
 </body>
 </html>';
 
@@ -449,6 +450,7 @@ if ( window.addEventListener ) {
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
 </script>
+<xmp><script>alert("test")</script></xmp>
 </body>
 </html>';
 
@@ -675,6 +677,7 @@ if ( window.addEventListener ) {
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
 </script>
+<xmp><script>alert("test")</script></xmp>
 </body>
 </html>';
 

@@ -28,8 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220920;
-
+	protected $version = 20220926;
 
 	/**
 	 * Key => value array of versions => methods.
@@ -41,6 +40,7 @@ class UsedCSS extends Table {
 		20220131 => 'make_status_column_index',
 		20220513 => 'add_hash_column',
 		20220920 => 'make_status_column_index_instead_queue_name',
+		20221104 => 'add_error_columns',
 	];
 
 	/**
@@ -62,6 +62,8 @@ class UsedCSS extends Table {
 			url              varchar(2000)       NOT NULL default '',
 			css              longtext                     default NULL,
 			hash             varchar(32)                  default '',
+			error_code       varchar(32)             NULL default NULL,
+			error_message    longtext                NULL default NULL,
 			unprocessedcss   longtext                NULL,
 			retries          tinyint(1)          NOT NULL default 1,
 			is_mobile        tinyint(1)          NOT NULL default 0,
@@ -75,6 +77,7 @@ class UsedCSS extends Table {
 			KEY modified (modified),
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191)),
+			INDEX `error_code_index` (`error_code`(32)),
 			KEY hash (hash)";
 	}
 
@@ -256,5 +259,67 @@ class UsedCSS extends Table {
 		}
 
 		delete_option( $this->db_version_key );
+	}
+
+	/**
+	 * Add error columns
+	 *
+	 * @return bool
+	 */
+	protected function add_error_columns() {
+		return $this->add_error_message_column() && $this->add_error_code_column() && $this->make_error_code_column_index();
+	}
+
+	/**
+	 * Add error_message column and index
+	 *
+	 * @return bool
+	 */
+	private function add_error_message_column() {
+		$error_message_column_exists = $this->column_exists( 'error_message' );
+
+		$created = true;
+
+		if ( ! $error_message_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN error_message longtext NULL default NULL AFTER hash" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Add error_code column and index
+	 *
+	 * @return bool
+	 */
+	private function add_error_code_column() {
+		$error_code_column_exists = $this->column_exists( 'error_code' );
+
+		$created = true;
+
+		if ( ! $error_code_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN error_code VARCHAR(32) NULL default NULL AFTER hash" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Make status column as index.
+	 *
+	 * @return bool
+	 */
+	private function make_error_code_column_index() {
+		$error_code_column_exists = $this->column_exists( 'error_code' );
+		if ( ! $error_code_column_exists ) {
+			return $this->is_success( false );
+		}
+
+		if ( $this->index_exists( 'error_code_index' ) ) {
+			return $this->is_success( true );
+		}
+
+		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `error_code_index` (`error_code`) " );
+		return $this->is_success( $index_added );
 	}
 }
