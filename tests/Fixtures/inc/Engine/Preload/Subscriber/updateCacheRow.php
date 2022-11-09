@@ -59,14 +59,14 @@ return [
 			],
 			'links' => [
 				[
-					'url' => 'http://example.org/?test=1',
+					'url' => 'http://example.org?test=1',
 					'status' => 'in-progress',
 				],
 			],
 			'is_preloaded' => false,
 		],
 		'expected' => [
-			'url' => 'http://example.org/?test=1',
+			'url' => 'http://example.org?test=1',
       		'exists' => true,
 			'links' => [
 				[
@@ -85,18 +85,18 @@ return [
 			],
 			'links' => [
 				[
-					'url' => 'http://example.org/?test=1',
+					'url' => 'http://example.org?test=1',
 					'status' => 'in-progress',
 				],
 			],
 			'is_preloaded' => false,
 		],
         'expected' => [
-			'url' => 'http://example.org/?test=1',
+			'url' => 'http://example.org?test=1',
 			'exists' => true,
 			'links' => [
 				[
-					'url' => 'http://example.org/?test=1',
+					'url' => 'http://example.org?test=1',
 					'status' => 'completed',
 				],
 			],
@@ -120,11 +120,11 @@ return [
 			'is_preloaded' => false,
 		],
 		'expected' => [
-			'url' => 'http://example.org/?test=1',
+			'url' => 'http://example.org?test=1',
 			'exists' => false,
 			'links' => [
 				[
-					'url' => 'http://example.org/?test=1',
+					'url' => 'http://example.org?test=1',
 					'status' => 'completed',
 				],
 			]
