@@ -50,4 +50,25 @@ trait CheckExcludedTrait {
 		}
 		return false;
 	}
+
+	/**
+	 * Indicate if we need to exclude the url.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	protected function is_url_excluded( string $url ): bool {
+		$queries          = wp_parse_url( $url, PHP_URL_QUERY );
+		$queries          = explode( '&', $queries );
+		$queries          = array_map(
+			function ( $query ) {
+				$query = explode( '=', $query );
+				return array_shift( $query );
+			},
+			$queries
+		);
+		$excluded_queries = rocket_get_ignored_parameters();
+
+		return count( array_intersect( $queries, array_keys( $excluded_queries ) ) ) > 0 || $this->is_excluded_by_filter( $url );
+	}
 }

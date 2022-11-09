@@ -187,6 +187,12 @@ class Subscriber implements Subscriber_Interface {
 			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
+		$excluded_params = rocket_get_ignored_parameters();
+
+		if ( count( array_intersect( array_keys( $params ), array_keys( $excluded_params ) ) ) > 0 ) {
+			return;
+		}
+
 		$url = home_url( add_query_arg( $params, $wp->request ) );
 
 		$url = $this->format_url( $url );

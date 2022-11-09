@@ -19,6 +19,8 @@ trait FormatUrlTrait {
 
 		$url = strtok( $url, '?' );
 
+		$url = untrailingslashit( $url );
+
 		return add_query_arg( $queries, $url );
 	}
 
@@ -63,6 +65,6 @@ trait FormatUrlTrait {
 		 *
 		 * @param bool $is_allowed True to allow, false otherwise.
 		 */
-		return apply_filters( 'rocket_preload_query_string', false );
+		return (bool) apply_filters( 'rocket_preload_query_string', false );
 	}
 }
