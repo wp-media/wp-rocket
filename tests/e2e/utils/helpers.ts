@@ -32,6 +32,8 @@ export const save_settings = async ( page ) => {
     await page.locator('#wpr-options-submit').click();
 }
 
+export const sleep = (ms:number) => new Promise(r => setTimeout(r, ms));
+
 /**
  * 
  * @param file String File name.
@@ -61,6 +63,7 @@ export const read_file = async (file) => {
  */
 export const write_to_file = async (file: String, data: String) => {
     await fs.writeFile(await get_dir(file), data);
+    await sleep(1000);
 }
 
 /**
