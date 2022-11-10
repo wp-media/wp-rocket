@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\DataManager;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
