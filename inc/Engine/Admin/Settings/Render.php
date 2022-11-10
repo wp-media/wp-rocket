@@ -309,6 +309,15 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the multiselect field template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function categorized_multiselect( $args ) {
+		echo $this->generate( 'fields/categorized_multiselect', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Displays the select field template.
 	 *
 	 * @since 3.0
