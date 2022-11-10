@@ -121,6 +121,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			return parse_url( $url, $component );
 		} );
 
+		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
+
 		$this->purge->purge_post_terms_urls( $post_mocked );
 
 		$this->checkEntriesDeleted( $expected );

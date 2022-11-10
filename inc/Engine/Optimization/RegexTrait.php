@@ -83,4 +83,22 @@ trait RegexTrait {
 
 		return $replace;
 	}
+
+	/**
+	 * Hides <xmp> tags from the HTML to be parsed for optimization
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function hide_xmp_tags( $html ) {
+		$replace = preg_replace( '/<xmp(.*)<\/xmp>/mis', '', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
 }
