@@ -23,12 +23,7 @@ const miscellaneous = () => {
 
         await shouldNotDisplayWPROptionInDraftPostDetails(page);
 
-        // Close Gutenberg tour.
-        if (await page.locator('[aria-label="Close dialog"]').isVisible()) {
-            await page_utils.close_gutenberg_dialog();   
-        }
-
-        await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page);
+        await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page, page_utils);
     });
 
     test('Should not display clear cache option for non public post on classic editor', async ( { page } ) => {
@@ -53,7 +48,7 @@ const miscellaneous = () => {
 
         await shouldNotDisplayWPROptionInDraftPostDetails(page);
 
-        await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page, false);
+        await shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview(page, page_utils, false);
     });
 }
 
@@ -62,6 +57,8 @@ const shouldNotDisplayClearCacheOptionInDraftPostList = async (page, page_utils,
     if (is_gutenberg) {
         // Add post title
         await page_utils.add_post_title('Draft Post', is_gutenberg);
+
+        await page_utils.close_gutenberg_dialog();
 
         // Save the post as a draft.
         await page_utils.save_draft(is_gutenberg);
@@ -87,7 +84,9 @@ const shouldNotDisplayWPROptionInDraftPostDetails = async (page) => {
     await expect(page.locator('#rocket_post_exclude')).not.toBeVisible();
 }
 
-const shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview = async (page, is_gutenberg = true) => {
+const shouldNotDisplayPurgeCacheOptionInAdminBarOnDraftPostPreview = async (page, page_utils, is_gutenberg = true) => {
+    await page_utils.close_gutenberg_dialog();
+
     // Preview draft post
     if (is_gutenberg) {
         await page.locator('button:has-text("Preview")').click();
