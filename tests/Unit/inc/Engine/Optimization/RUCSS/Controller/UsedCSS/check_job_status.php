@@ -12,6 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
+use Brain\Monkey\Actions;
 
 
 /**
@@ -50,7 +51,6 @@ class Test_CheckJobStatus extends TestCase {
 	}
 
 	protected function tearDown(): void {
-		error_reporting( E_ALL );
 		parent::tearDown();
 	}
 
@@ -95,6 +95,8 @@ class Test_CheckJobStatus extends TestCase {
 		$this->api->expects()
 		          ->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $row_details->is_home )
 		          ->andReturn( $job_details );
+
+
 		if (
 			200 !== $job_details['code']
 			||
@@ -103,7 +105,7 @@ class Test_CheckJobStatus extends TestCase {
 			! isset( $job_details['contents']['shakedCSS'] )
 		) {
 			if ( $row_details->retries >= 3 ) {
-
+				Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']['url']);
 				$this->usedCssQuery->expects( self::once() )
 				                   ->method( 'make_status_failed' )
 				                   ->with( $config['job_id'], $job_details['code'], $job_details['message'] );
@@ -137,6 +139,8 @@ class Test_CheckJobStatus extends TestCase {
 			$this->usedCss->check_job_status( $config['job_id'] );
 
 			return;
+		}  else {
+			Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']['url']);
 		}
 
 
@@ -160,8 +164,7 @@ class Test_CheckJobStatus extends TestCase {
 			                   ->method( 'make_status_completed' )
 			                   ->with( $config['job_id'], $hash );
 
-			Functions\expect( 'do_action' )
-				->with( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
+			Actions\expectDone('rocket_rucss_complete_job_status')->with( $row_details->url, $job_details );
 		}
 		$this->usedCss->check_job_status( $config['job_id'] );
 	}
