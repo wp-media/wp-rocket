@@ -64,6 +64,9 @@ export class pageUtils {
     }
 
     close_gutenberg_dialog = async () => {
+        if (! await this.page.locator('[aria-label="Close dialog"]').isVisible()) {
+            return;
+        }
         await this.page.locator('[aria-label="Close dialog"]').click();
     }
 
