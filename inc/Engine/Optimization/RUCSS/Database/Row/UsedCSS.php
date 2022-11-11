@@ -21,6 +21,8 @@ class UsedCSS extends Row {
 		$this->url           = (string) $this->url;
 		$this->css           = (string) $this->css;
 		$this->hash          = (string) $this->hash;
+		$this->error_code    = (string) $this->error_code;
+		$this->error_message = (string) $this->error_message;
 		$this->retries       = (int) $this->retries;
 		$this->is_mobile     = (bool) $this->is_mobile;
 		$this->job_id        = (string) $this->job_id;

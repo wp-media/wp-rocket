@@ -27,6 +27,7 @@ class Test_GetPendingJobs extends TestCase {
 		$this->query->expects($this->at(0))->method('query')->with( [
 			'count'  => true,
 			'status' => 'in-progress',
+			'is_locked' => false,
 		] )->willReturn( $config['in-progress'] );
 
 		if ( $config['total'] > $config['in-progress'] ) {
@@ -42,8 +43,10 @@ class Test_GetPendingJobs extends TestCase {
 				],
 				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
 				'order'          => 'asc',
+				'is_locked' => false
 			])->willReturn($config['results']);
 		}
+
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}
