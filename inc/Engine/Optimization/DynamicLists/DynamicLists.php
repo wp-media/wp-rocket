@@ -6,21 +6,18 @@ namespace WP_Rocket\Engine\Optimization\DynamicLists;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\User;
+use WP_REST_Response;
+use WP_Error;
 
 class DynamicLists extends Abstract_Render {
-	/**
-	 * APIClient instance
-	 *
-	 * @var APIClient
-	 */
-	private $api;
 
 	/**
-	 * DataManager instance
+	 * Providers array.
+	 * Array of objects with keys: api_client and data_manager.
 	 *
-	 * @var DataManager
+	 * @var array
 	 */
-	private $data_manager;
+	private $providers;
 
 	/**
 	 * User instance
@@ -41,19 +38,17 @@ class DynamicLists extends Abstract_Render {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param APIClient   $api APIClient instance.
-	 * @param DataManager $data_manager DataManager instance.
-	 * @param User        $user User instance.
-	 * @param string      $template_path Path to views.
-	 * @param Beacon      $beacon        Beacon instance.
+	 * @param array  $providers Lists providers.
+	 * @param User   $user User instance.
+	 * @param string $template_path Path to views.
+	 * @param Beacon $beacon        Beacon instance.
 	 */
-	public function __construct( APIClient $api, DataManager $data_manager, User $user, $template_path, Beacon $beacon ) {
+	public function __construct( array $providers, User $user, $template_path, Beacon $beacon ) {
 		parent::__construct( $template_path );
 
-		$this->api          = $api;
-		$this->data_manager = $data_manager;
-		$this->user         = $user;
-		$this->beacon       = $beacon;
+		$this->providers = $providers;
+		$this->user      = $user;
+		$this->beacon    = $beacon;
 	}
 
 	/**
@@ -104,40 +99,59 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		$result = $this->api->get_exclusions_list( $this->data_manager->get_lists_hash() );
+		$code = 200;
 
-		if (
-			( 200 !== $result['code'] && 206 !== $result['code'] )
-			|| empty( $result['body'] )
-		) {
-			return [
-				'success' => false,
-				'data'    => '',
-				'message' => __( 'Could not get updated lists from server.', 'rocket' ),
-			];
+		foreach ( $this->providers as $provider ) {
+			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
+
+			if ( empty( $result['code'] ) || empty( $result['body'] ) ) {
+				$code = 0;
+				continue;
+			}
+
+			if ( 200 !== $result['code'] ) {
+				$code = $result['code'];
+				continue;
+			}
+
+			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
+				$code = 'NOT_SAVED';
+			}
 		}
 
-		if ( 206 === $result['code'] ) {
-			return [
-				'success' => true,
-				'data'    => '',
-				'message' => __( 'Lists are up to date.', 'rocket' ),
-			];
-		}
+		switch ( $code ) {
+			case 0:
+				return [
+					'success' => false,
+					'data'    => '',
+					'message' => __( 'Could not get updated lists from server.', 'rocket' ),
+				];
+			case 206:
+				return [
+					'success' => true,
+					'data'    => '',
+					'message' => __( 'Lists are up to date.', 'rocket' ),
+				];
+			case 'NOT_SAVED':
+				return [
+					'success' => false,
+					'data'    => '',
+					'message' => __( 'Could not update lists.', 'rocket' ),
+				];
+			default:
+				/**
+				 * Fires after saving all dynamic lists files.
+				 *
+				 * @since 3.12.1
+				 */
+				do_action( 'rocket_after_save_dynamic_lists' );
 
-		if ( ! $this->data_manager->save_dynamic_lists( $result['body'] ) ) {
-			return [
-				'success' => false,
-				'data'    => '',
-				'message' => __( 'Could not update lists.', 'rocket' ),
-			];
+				return [
+					'success' => true,
+					'data'    => '',
+					'message' => __( 'Lists are successfully updated.', 'rocket' ),
+				];
 		}
-
-		return [
-			'success' => true,
-			'data'    => $result['body'],
-			'message' => __( 'Lists are successfully updated.', 'rocket' ),
-		];
 	}
 
 	/**
@@ -181,7 +195,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_cache_ignored_parameters(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->cache_ignored_parameters ) ? array_flip( $lists->cache_ignored_parameters ) : [];
 	}
@@ -192,7 +206,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_js_minify_excluded_external(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_minify_external ) ? $lists->js_minify_external : [];
 	}
@@ -203,7 +217,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_js_move_after_combine(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_move_after_combine ) ? $lists->js_move_after_combine : [];
 	}
@@ -214,7 +228,7 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_combine_js_excluded_inline(): array {
-		$lists = $this->data_manager->get_lists();
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
 	}
