@@ -17,7 +17,7 @@ class CacheRow extends Row {
 		$this->id            = (int) $this->id;
 		$this->url           = (string) $this->url;
 		$this->status        = (string) $this->status;
-		$this->modified      = false === $this->modified ? 0 : strtotime( $this->modified );
-		$this->last_accessed = false === $this->last_accessed ? 0 : strtotime( $this->last_accessed );
+		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
+		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( $this->last_accessed );
 	}
 }
