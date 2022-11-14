@@ -38,19 +38,19 @@ class DIContainer implements ArrayAccess {
 		unset( $this->container[ $key ] );
 	}
 
-	public function offsetExists( $key ) {
+	public function offsetExists( $key ): bool {
 		return $this->has( $key );
 	}
 
-	public function offsetGet( $key ) {
+	public function offsetGet( $key ): mixed {
 		return $this->get( $key );
 	}
 
-	public function offsetSet( $key, $concrete ) {
+	public function offsetSet( $key, $concrete ): void {
 		$this->add( $key, $concrete );
 	}
 
-	public function offsetUnset( $key ) {
+	public function offsetUnset( $key ): void {
 		return $this->remove( $key );
 	}
 
