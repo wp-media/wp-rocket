@@ -346,6 +346,7 @@ class Plugin {
 			'cloudflare_plugin_subscriber',
 			'uncode',
 			'rocket_lazy_load',
+			'cache_config',
 		];
 
 		$host_type = HostResolver::get_host_service();
