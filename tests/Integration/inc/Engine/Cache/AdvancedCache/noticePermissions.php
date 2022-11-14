@@ -18,6 +18,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  AdvancedCache
  */
 class Test_NoticePermissions extends FilesystemTestCase {
+	use CapTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
 	private static $user_id;
