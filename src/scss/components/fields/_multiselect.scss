@@ -1,0 +1,16 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Multiple select field
+
+\*-----------------------------------------------*/
+
+$border-color: #c5c9d2;
+$bg-color: #fff;
+.wpr-multiple-select {
+ .wpr-list {
+   border: 3px solid $border-color;
+   background-color: $bg-color;
+ }
+}
