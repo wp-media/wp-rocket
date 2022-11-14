@@ -51,7 +51,7 @@ class DIContainer implements ArrayAccess {
 	}
 
 	public function offsetUnset( $key ): void {
-		return $this->remove( $key );
+		$this->remove( $key );
 	}
 
 	/********************************************************
