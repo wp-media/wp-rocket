@@ -74,7 +74,7 @@ class Test_MissedCron extends TestCase {
 
 	protected function configUser( $config ) {
 		if ( $config['cap'] ) {
-			CapTrait::setAdminCap();
+			self::setAdminCap();
 			$role = 'administrator';
 		} else {
 			$role = 'editor';

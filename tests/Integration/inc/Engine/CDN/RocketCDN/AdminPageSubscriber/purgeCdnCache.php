@@ -21,14 +21,14 @@ class Test_PurgeCdnCache extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
-		CapTrait::setAdminCap();
+		self::hasAdminCapBeforeClass();
+		self::setAdminCap();
 	}
 
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 	}
 
 	public function set_up() {

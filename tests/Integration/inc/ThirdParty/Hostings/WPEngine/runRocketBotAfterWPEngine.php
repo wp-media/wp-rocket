@@ -26,8 +26,8 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
-		CapTrait::setAdminCap();
+		self::hasAdminCapBeforeClass();
+		self::setAdminCap();
 
 		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'admin_cache_subscriber' );
@@ -37,7 +37,7 @@ class Test_RunRocketAfterWPEngine extends AdminTestCase {
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 	}
 
 	public function set_up() {

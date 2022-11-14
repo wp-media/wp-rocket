@@ -24,7 +24,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );

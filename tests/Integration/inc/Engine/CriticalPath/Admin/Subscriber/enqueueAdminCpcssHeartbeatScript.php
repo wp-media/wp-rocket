@@ -23,7 +23,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
