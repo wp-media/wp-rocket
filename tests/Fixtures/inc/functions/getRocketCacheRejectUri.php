@@ -27,13 +27,14 @@ return [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed/',
+		'expected' => '/(.+/)?feed/?.+/?/|/(?:.+/)?embed/',
 	],
 	[
 		'config' => [
@@ -42,6 +43,7 @@ return [
 					'/members/(.*)',
 				],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -49,20 +51,21 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*)',
+		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*)',
 	],
 	[
 		'config' => [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/)',
+		'expected' => '/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/)',
 	],
 	[
 		'config' => [
@@ -71,6 +74,7 @@ return [
 					'/members/(.*)',
 				],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -78,20 +82,21 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
+		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*))',
 	],
 	[
 		'config' => [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/)',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/)',
 	],
 	[
 		'config' => [
@@ -100,6 +105,7 @@ return [
 					'/subfolder/members/(.*)',
 				],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -107,7 +113,7 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
 	],
 	[
 		'config' => [
@@ -116,6 +122,7 @@ return [
 					'/members/(.*)',
 				],
 			],
+			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -123,6 +130,6 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*))',
 	],
 ];
