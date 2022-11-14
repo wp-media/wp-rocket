@@ -235,6 +235,15 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		return '';
 	}
 
+	// Get permalink structure.
+	$trailing_slash = '/' === substr( get_option( 'permalink_structure' ), -1 ) ? '/' : '';
+	$uris           = array_map(
+		function ( $uri ) use ( $trailing_slash ) {
+			return rtrim( $uri, '/' ) . $trailing_slash;
+		},
+		$uris
+		);
+
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {
 			if ( preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
