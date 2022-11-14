@@ -29,6 +29,7 @@ use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 use WP_Rocket\ThirdParty\Plugins\Smush;
+use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
@@ -91,6 +92,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wpml',
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
+		'the_events_calendar',
 	];
 
 	/**
@@ -232,6 +234,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rocket_lazy_load', RocketLazyLoad::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'the_events_calendar', TheEventsCalendar::class )
 			->addTag( 'common_subscriber' );
 	}
 }
