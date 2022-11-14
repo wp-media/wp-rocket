@@ -38,6 +38,8 @@ class Test_MaybeAddDelayJsExclusion extends TestCase {
 			return $plugins;
 		}
 
+		$plugins = [];
+
 		$plugins[] = 'adthrive-ads/adthrive-ads.php';
 
 		return $plugins;
