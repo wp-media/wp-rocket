@@ -95,6 +95,10 @@ class PreloadUrl {
 		 */
 		$requests = apply_filters( 'rocket_preload_before_preload_url', $requests );
 
+		if ( ! is_array( $requests ) ) {
+			return;
+		}
+
 		$requests = array_filter( $requests );
 
 		foreach ( $requests as $request ) {
@@ -127,6 +131,10 @@ class PreloadUrl {
 				'rocket_preload_url_request_args',
 				$headers
 			);
+
+			if ( ! is_array( $headers ) ) {
+				return;
+			}
 
 			wp_safe_remote_get(
 				user_trailingslashit( $request['url'] ),
