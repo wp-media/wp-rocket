@@ -53,7 +53,7 @@ return [
 			] ) ),
 			'pricing' => $pricing,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenLicenseAutoRenew' => [
 		'config'   => [
@@ -64,7 +64,7 @@ return [
 			] ) ),
 			'pricing' => $pricing,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenLicenseNotExpireSoon' => [
 		'config'   => [
@@ -75,7 +75,7 @@ return [
 			] ) ),
 			'pricing' => $pricing,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [

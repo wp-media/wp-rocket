@@ -10,7 +10,7 @@ return [
 			] ) ),
 			'transient' => false,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
@@ -21,7 +21,7 @@ return [
 			] ) ),
 			'transient' => true,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldDisplayBannerWhenLicenseExpired' => [
 		'config'   => [
