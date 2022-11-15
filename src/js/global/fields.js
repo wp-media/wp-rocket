@@ -259,4 +259,12 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
+	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
+	});
+
+	$(".wpr-multiple-select .wpr-checkbox").click(function (e) {
+		const checkbox = $(e.target).closest('input[type="checkbox"]');
+		checkbox.attr('checked', checkbox.attr('checked'));
+	});
 });

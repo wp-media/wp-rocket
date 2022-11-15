@@ -12,5 +12,55 @@ $bg-color: #fff;
  .wpr-list {
    border: 3px solid $border-color;
    background-color: $bg-color;
+   border-radius: 5px;
+   padding: 10px;
+   margin: 8px 0;
+   .wpr-list-header {
+	 display: flex;
+	 justify-content: space-between;
+	 padding-bottom: 5px;
+	 margin-bottom: 10px;
+	 .wpr-list-header-arrow {
+		width: 15px;
+	   cursor: pointer;
+	 }
+
+	 h3 {
+	   font-weight: 500;
+	   color: $cBlack;
+	   @include font-size(14,21);
+	 }
+   }
+   .wpr-list-body {
+	 display: none;
+	 li {
+	   padding-left: 30px;
+	   .wpr-checkbox {
+		 img {
+		   width: 15px;
+		 }
+	   }
+	 }
+
+	 textarea {
+	   width: 100%;
+	   border: none;
+	 }
+   }
+
+   &.open {
+	 .wpr-list-body {
+	 display: block;
+
+
+   	}
+	 .wpr-list-header {
+	   border-bottom: 1px solid $border-color;
+	 }
+	 .wpr-list-header-arrow {
+	   transform: rotate(180deg);
+	 }
+   }
+
  }
 }

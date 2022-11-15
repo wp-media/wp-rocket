@@ -2808,3 +2808,14 @@ div.wpr-tutorial-item {
 .wpr-multiple-close:hover + span, .wpr-multiple-close:focus + span {
   color: #D33F49;
 }
+
+/*-----------------------------------------------*\
+
+    Multiple select field
+
+\*-----------------------------------------------*/
+.wpr-multiple-select .wpr-list {
+  border: 3px solid #c5c9d2;
+  background-color: #fff;
+  border-radius: 5px;
+}
