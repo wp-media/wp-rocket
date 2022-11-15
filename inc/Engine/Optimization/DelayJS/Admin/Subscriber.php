@@ -34,6 +34,8 @@ class Subscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
 			'rocket_input_sanitize'                => [ 'sanitize_options', 13, 2 ],
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
+			'rocket_hidden_settings_fields'        => 'add_exclusions_hidden_field',
+			'rocket_after_save_dynamic_lists'      => 'refresh_exclusions_option',
 		];
 	}
 
@@ -88,5 +90,26 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_combine_js( $value, $old_value ): array {
 		return $this->settings->maybe_disable_combine_js( $value, $old_value );
+	}
+
+	/**
+	 * Add exclusions hidden field.
+	 *
+	 * @param array $fields Hidden fields.
+	 *
+	 * @return array
+	 */
+	public function add_exclusions_hidden_field( array $fields ) {
+		$fields[] = 'delay_js_exclusion_selected_exclusions';
+		return $fields;
+	}
+
+	/**
+	 * Refresh exclusions option when the dynamic list is updated weekly or manually.
+	 *
+	 * @return void
+	 */
+	public function refresh_exclusions_option() {
+		$this->settings->refresh_exclusions_option();
 	}
 }

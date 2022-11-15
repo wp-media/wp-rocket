@@ -33,6 +33,9 @@ class DynamicLists extends Abstract_Render {
 	 */
 	private $beacon;
 
+	/**
+	 * Route Rest API namespace.
+	 */
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -231,5 +234,46 @@ class DynamicLists extends Abstract_Render {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
+	}
+
+	/**
+	 * Get list of exclusions from the API list.
+	 *
+	 * @param string $item_id Item ID to get exclusions for (plugin slug, theme slug, script ID).
+	 *
+	 * @return array
+	 */
+	public function get_delayjs_exclusions_by_id( string $item_id ) {
+		$list = $this->providers['delayjslists']->data_manager->get_lists();
+		if ( ! empty( $list['scripts'][ $item_id ] ) ) {
+			return $list['scripts'][ $item_id ]['exclusions'];
+		}
+
+		if ( ! empty( $list['plugins'][ $item_id ] ) ) {
+			return $list['plugins'][ $item_id ]['exclusions'];
+		}
+
+		if ( ! empty( $list['themes'][ $item_id ] ) ) {
+			return $list['themes'][ $item_id ]['exclusions'];
+		}
+
+		return [];
+	}
+
+	/**
+	 * Get all exclusions (merged together) for a list of item IDs.
+	 *
+	 * @param array $items List of items.
+	 *
+	 * @return array
+	 */
+	public function get_delayjs_items_exclusions( array $items ) {
+		$exclusions = [];
+
+		foreach ( $items as $item ) {
+			array_merge( $exclusions, $this->get_delayjs_exclusions_by_id( $item ) );
+		}
+
+		return $exclusions;
 	}
 }
