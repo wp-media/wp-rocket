@@ -101,4 +101,39 @@ trait RegexTrait {
 
 		return $replace;
 	}
+
+	/**
+	 * Convert <script> in <xmp> to <open_script>
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function replace_scripts_in_xmp_tags( $html ) {
+		$replace = preg_replace( '~script(?!.*<xmp>)(?=.*</xmp.*>)~s', 'open_script', $html );
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Restore <open_script> in <xmp> to <script>
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function restore_scripts_in_xmp_tags( $html ) {
+		$replace = preg_replace( '~open_script(?!.*<xmp>)(?=.*</xmp.*>)~s', 'script', $html );
+
+		if ( null === $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
 }
