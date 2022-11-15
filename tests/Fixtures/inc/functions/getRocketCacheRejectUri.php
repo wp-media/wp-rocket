@@ -27,7 +27,6 @@ return [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -43,7 +42,6 @@ return [
 					'/members/(.*)',
 				],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -51,14 +49,13 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*)',
+		'expected' => '/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/',
 	],
 	[
 		'config' => [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -74,7 +71,6 @@ return [
 					'/members/(.*)',
 				],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -82,14 +78,13 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*))',
+		'expected' => '/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
 	],
 	[
 		'config' => [
 			'options'                        => [
 				'cache_reject_uri' => [],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -105,7 +100,6 @@ return [
 					'/subfolder/members/(.*)',
 				],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%/',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -122,7 +116,6 @@ return [
 					'/members/(.*)',
 				],
 			],
-			'permalink_structure'			 => 'http://localhost:10003/%postname%',
 			'home_dirname'                   => '/subfolder/',
 			'filter_rocket_cache_reject_uri' => [
 				'/(.+/)?feed/?.+/?',
@@ -130,6 +123,6 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed|/members/(.*))',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
 	],
 ];

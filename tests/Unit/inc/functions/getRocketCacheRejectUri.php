@@ -35,14 +35,6 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 			->once()
 			->andReturn( (array) $config['filter_rocket_cache_reject_uri'] );
 
-		if ( ! empty( $config['filter_rocket_cache_reject_uri'] ) ) {
-			Functions\expect( 'get_option' )
-			->once()
-			->with( 'permalink_structure' )
-			->andReturn( $config['permalink_structure'] );
-		}
-		
-
 		$this->assertSame(
 			$expected,
 			get_rocket_cache_reject_uri( true )
