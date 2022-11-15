@@ -29,7 +29,7 @@ function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPr
  * @since 2.7
  *
  * @param  string $key    The option name.
- * @param  string $value  The value of the option.
+ * @param  mixed  $value  The value of the option.
  * @return void
  */
 function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
