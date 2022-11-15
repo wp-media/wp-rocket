@@ -72,6 +72,9 @@ jobs:
       run: composer remove --dev --no-scripts coenjacobs/mozart
 
     - name: Require PHPUnit 7.5 for WP compatibility
+      run: composer require --dev --no-scripts mockery/mockery "^1.3" -W
+
+    - name: Require PHPUnit 7.5 for WP compatibility
       run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
 
     - name: Install dependencies
