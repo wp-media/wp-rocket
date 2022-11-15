@@ -235,11 +235,9 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		return '';
 	}
 
-	// Get permalink structure.
-	$trailing_slash = '/' === substr( get_option( 'permalink_structure' ), -1 ) ? '/' : '';
-	$uris           = array_map(
-		function ( $uri ) use ( $trailing_slash ) {
-			return rtrim( $uri, '/' ) . $trailing_slash;
+	$uris = array_map(
+		function ( $uri ) {
+			return user_trailingslashit( $uri );
 		},
 		$uris
 		);
