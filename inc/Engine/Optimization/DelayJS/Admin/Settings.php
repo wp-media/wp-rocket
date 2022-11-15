@@ -5,14 +5,25 @@ namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 
 class Settings {
+
 	/**
-	 * Options data instance
+	 * Dynamic lists instance.
 	 *
-	 * @var Options_Data
+	 * @var DynamicLists
 	 */
-	private $options;
+	private $dynamic_lists;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param DynamicLists $dynamic_lists DynamicLists instance.
+	 */
+	public function __construct( DynamicLists $dynamic_lists ) {
+		$this->dynamic_lists = $dynamic_lists;
+	}
 
 	/**
 	 * Add the delay JS options to the WP Rocket options array
@@ -27,8 +38,10 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']            = 0;
-		$options['delay_js_exclusions'] = [];
+		$options['delay_js']                               = 0;
+		$options['delay_js_exclusion_selected']            = [];
+		$options['delay_js_exclusion_selected_exclusions'] = [];
+		$options['delay_js_exclusions']                    = [];
 
 		return $options;
 	}
@@ -76,6 +89,14 @@ class Settings {
 	public function sanitize_options( $input, $settings ) : array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
+
+		if ( empty( $input['delay_js_exclusion_selected'] ) ) {
+			$input['delay_js_exclusion_selected']            = [];
+			$input['delay_js_exclusion_selected_exclusions'] = [];
+		} else {
+			$input['delay_js_exclusion_selected']            = (array) $input['delay_js_exclusion_selected'];
+			$input['delay_js_exclusion_selected_exclusions'] = $this->dynamic_lists->get_delayjs_items_exclusions( $input['delay_js_exclusion_selected'] );
+		}
 
 		return $input;
 	}
@@ -191,6 +212,23 @@ class Settings {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Refresh exclusions option based on selected items option.
+	 *
+	 * @return void
+	 */
+	public function refresh_exclusions_option() {
+		$current_selected_exclusions = get_rocket_option( 'delay_js_exclusion_selected', [] );
+
+		if ( empty( $current_selected_exclusions ) ) {
+			update_rocket_option( 'delay_js_exclusion_selected_exclusions', [] );
+
+			return;
+		}
+
+		update_rocket_option( 'delay_js_exclusion_selected_exclusions', $this->dynamic_lists->get_delayjs_items_exclusions( (array) $current_selected_exclusions ) );
 	}
 
 }
