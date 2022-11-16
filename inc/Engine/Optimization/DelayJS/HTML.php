@@ -146,8 +146,7 @@ class HTML {
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
-		$replaced_html = $this->restore_xmp_tags( $replaced_html );
-		return $replaced_html;
+		return $this->restore_xmp_tags( $replaced_html );
 	}
 
 	/**

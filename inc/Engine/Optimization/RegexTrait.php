@@ -119,7 +119,7 @@ trait RegexTrait {
 	 * @return string
 	 */
 	protected function replace_xmp( $match ) {
-		$key                       = sprintf( '<!-- %s -->', uniqid('WPR_XMP_') );
+		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_XMP_' ) );
 		$this->xmp_replace[ $key ] = $match[0];
 		return $key;
 	}
