@@ -263,8 +263,63 @@ $(document).ready(function(){
 		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
 	});
 
+	$('.wpr-multiple-select .wpr-checkbox').click(function (e) {
+
+		const checkbox = $(e.currentTarget).find('input');
+
+		const is_checked = checkbox.attr('checked') !== undefined;
+
+		checkbox.attr('checked', is_checked ? null : 'checked' );
+
+		const sub_checkboxes = $(checkbox).closest('.wpr-list').find('.wpr-list-body input[type="checkbox"]');
+
+		if(checkbox.hasClass('wpr-main-checkbox')) {
+			$.map(sub_checkboxes, checkbox => {
+				$(checkbox).attr('checked', is_checked ? null : 'checked' );
+			});
+			return;
+		}
+		const main_checkbox = $(checkbox).closest('.wpr-list').find('.wpr-main-checkbox');
+
+		if( is_checked) {
+
+			const sub_checked =  $.map(sub_checkboxes, checkbox => {
+				if($(checkbox).attr('checked') === undefined) {
+					return ;
+				}
+				return checkbox;
+			});
+
+			if(sub_checked.length  !== 0) {
+				return;
+			}
+
+			main_checkbox.attr('checked', null );
+			return;
+		}
+
+		main_checkbox.attr('checked', 'checked' );
+	});
+
 	$(".wpr-multiple-select .wpr-checkbox").click(function (e) {
-		const checkbox = $(e.target).closest('input[type="checkbox"]');
-		checkbox.attr('checked', checkbox.attr('checked'));
+		const id = $(".wpr-multiple-select").attr('id');
+		const checkboxes = $('#' + id + ' .wpr-list-body input[type="checkbox"]');
+
+		const names = $.map(checkboxes, checkbox => {
+			 if ( ! $(checkbox).attr('checked') ) {
+				 return ;
+			 }
+			 return $(checkbox).attr('name');
+		});
+
+		const values = $.map(checkboxes, checkbox => {
+			if ( ! $(checkbox).attr('checked') ) {
+				return ;
+			}
+			return $(checkbox).val();
+		});
+
+		$($('input[name="' + id + '_selected"]')[0]).val(JSON.stringify(names));
+		$($('input[name="' + id + '_selected_exclusions"]')[0]).val(JSON.stringify(values));
 	});
 });

@@ -16,10 +16,27 @@ $bg-color: #fff;
    padding: 10px;
    margin: 8px 0;
    .wpr-list-header {
+
+	 .wpr-multiple-select-exclude_js_ads:before {
+	   font-family: "wpr-icomoon";
+	   content: '\e9b7';
+	   padding-right: 8px;
+	 }
+
+	 .wpr-multiple-select-exclude_js_plugins:before {
+	   font-family: "wpr-icomoon";
+	   content: '\e991';
+	   padding-right: 8px;
+	 }
+
+	 .wpr-multiple-select-exclude_js_themes:before {
+	   font-family: "wpr-icomoon";
+	   content: '\e927';
+	   padding-right: 8px;
+	 }
+
 	 display: flex;
 	 justify-content: space-between;
-	 padding-bottom: 5px;
-	 margin-bottom: 10px;
 	 .wpr-list-header-arrow {
 		width: 15px;
 	   cursor: pointer;
@@ -56,6 +73,8 @@ $bg-color: #fff;
    	}
 	 .wpr-list-header {
 	   border-bottom: 1px solid $border-color;
+	   margin-bottom: 10px;
+	   padding-bottom: 5px;
 	 }
 	 .wpr-list-header-arrow {
 	   transform: rotate(180deg);
