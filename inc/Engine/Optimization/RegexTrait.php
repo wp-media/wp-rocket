@@ -6,6 +6,12 @@ namespace WP_Rocket\Engine\Optimization;
 trait RegexTrait {
 
 	/**
+	 * Array of replaced xmp tags
+	 *
+	 * @var array
+	 */
+	private $xmp_replace = [];
+	/**
 	 * Finds nodes matching the pattern in the HTML.
 	 *
 	 * @param string $pattern Pattern to match.
@@ -85,55 +91,52 @@ trait RegexTrait {
 	}
 
 	/**
-	 * Hides <xmp> tags from the HTML to be parsed for optimization
-	 *
-	 * @since 3.1.4
-	 *
-	 * @param string $html HTML content.
-	 * @return string
-	 */
-	protected function hide_xmp_tags( $html ) {
-		$replace = preg_replace( '/<xmp(.*)<\/xmp>/mis', '', $html );
-
-		if ( null === $replace ) {
-			return $html;
-		}
-
-		return $replace;
-	}
-
-	/**
-	 * Convert <script> in <xmp> to <open_script>
+	 * Replace <xmp> tags in the HTML with comment
 	 *
 	 * @since 3.12.3
 	 *
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	protected function replace_scripts_in_xmp_tags( $html ) {
-		$replace = preg_replace( '~script(?!.*<xmp>)(?=.*</xmp.*>)~s', 'open_script', $html );
-		if ( null === $replace ) {
+	protected function replace_xmp_tags( $html ) {
+		$this->xmp_replace = [];
+		$regex             = '#<xmp.*>.*</xmp>#Uis';
+		$replaced_html     = preg_replace_callback( $regex, [ $this, 'replace_xmp' ], $html );
+
+		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
 
-		return $replace;
+		return $replaced_html;
 	}
 
 	/**
-	 * Restore <open_script> in <xmp> to <script>
+	 * Replace xmp with comment
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param array $match xmp tag.
+	 * @return string
+	 */
+	protected function replace_xmp( $match ) {
+		$key                       = sprintf( '<!-- WPR_XMP_%s -->', uniqid() );
+		$this->xmp_replace[ $key ] = $match[0];
+		return $key;
+	}
+
+	/**
+	 * Restore <xmp> tags
 	 *
 	 * @since 3.12.3
 	 *
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	protected function restore_scripts_in_xmp_tags( $html ) {
-		$replace = preg_replace( '~open_script(?!.*<xmp>)(?=.*</xmp.*>)~s', 'script', $html );
-
-		if ( null === $replace ) {
+	protected function restore_xmp_tags( $html ) {
+		if ( empty( $this->xmp_replace ) ) {
 			return $html;
 		}
 
-		return $replace;
+		return str_replace( array_keys( $this->xmp_replace ), array_values( $this->xmp_replace ), $html );
 	}
 }

@@ -133,7 +133,7 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
-		$result = $this->replace_scripts_in_xmp_tags( $html );
+		$result = $this->replace_xmp_tags( $html );
 
 		$replaced_html = preg_replace_callback(
 			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
@@ -146,7 +146,7 @@ class HTML {
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
-		$replaced_html = $this->restore_scripts_in_xmp_tags( $replaced_html );
+		$replaced_html = $this->restore_xmp_tags( $replaced_html );
 		return $replaced_html;
 	}
 
@@ -189,6 +189,7 @@ class HTML {
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
+
 
 	/**
 	 * Move meta charset to head if not found to the top of page content.
