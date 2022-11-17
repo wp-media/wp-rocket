@@ -699,7 +699,7 @@ class Settings {
 
 				$cname_parts = get_rocket_parse_url( rocket_add_url_protocol( $cname ) );
 
-				if( false === filter_var( $cname_parts['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+				if ( false === filter_var( $cname_parts['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
 					return false;
 				}
 
