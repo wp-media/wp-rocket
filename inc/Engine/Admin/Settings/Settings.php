@@ -693,7 +693,7 @@ class Settings {
 	private function sanitize_cdn_cnames( array $cnames ) {
 		$cnames = array_map(
 			function( $cname ) {
-				return filter_var( $cname, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME );
+				return filter_var( $cname, FILTER_VALIDATE_DOMAIN );
 			},
 			$cnames
 		);
