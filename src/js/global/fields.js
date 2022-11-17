@@ -319,7 +319,7 @@ $(document).ready(function(){
 			return $(checkbox).val();
 		});
 
-		$($('input[name="' + id + '_selected"]')[0]).val(JSON.stringify(names));
-		$($('input[name="' + id + '_selected_exclusions"]')[0]).val(JSON.stringify(values));
+		$($('input[name="wp_rocket_settings[' + id + '_selected]"]')[0]).val(JSON.stringify(names));
+		$($('input[name="wp_rocket_settings[' + id + '_selected_exclusions]"]')[0]).val(JSON.stringify(values));
 	});
 });

@@ -6,11 +6,11 @@
 
 \*-----------------------------------------------*/
 
-$border-color: #c5c9d2;
+$border-color: #c2cad4;
 $bg-color: #fff;
 .wpr-multiple-select {
  .wpr-list {
-   border: 3px solid $border-color;
+   border: 2px solid $border-color;
    background-color: $bg-color;
    border-radius: 5px;
    padding: 10px;
@@ -40,6 +40,7 @@ $bg-color: #fff;
 	 .wpr-list-header-arrow {
 		width: 15px;
 	   cursor: pointer;
+	   display: flex;
 	 }
 
 	 h3 {
@@ -69,7 +70,13 @@ $bg-color: #fff;
 	 .wpr-list-body {
 	 display: block;
 
+	   .wpr-checkbox label {
+		 color: $cGreyDark3;
+	   }
 
+	   .wpr-checkbox input[checked="checked"] + label {
+		 color: $cGreyDark4;
+	   }
    	}
 	 .wpr-list-header {
 	   border-bottom: 1px solid $border-color;

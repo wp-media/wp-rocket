@@ -86,6 +86,8 @@ class Page {
 	private $user_client;
 
 	/**
+	 * Delay JS data manager.
+	 *
 	 * @var DataManager
 	 */
 	protected $data_manager;
@@ -101,7 +103,7 @@ class Page {
 	 * @param Beacon           $beacon      Beacon instance.
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
-	 * @param DataManager       $data_manager User client instance.
+	 * @param DataManager      $data_manager User client instance.
 	 */
 	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, DataManager $data_manager ) {
 		$args = array_merge(
@@ -113,14 +115,14 @@ class Page {
 			$args
 		);
 
-		$this->slug        = $args['slug'];
-		$this->title       = $args['title'];
-		$this->capability  = $args['capability'];
-		$this->settings    = $settings;
-		$this->render      = $render;
-		$this->beacon      = $beacon;
-		$this->optimize    = $optimize;
-		$this->user_client = $user_client;
+		$this->slug         = $args['slug'];
+		$this->title        = $args['title'];
+		$this->capability   = $args['capability'];
+		$this->settings     = $settings;
+		$this->render       = $render;
+		$this->beacon       = $beacon;
+		$this->optimize     = $optimize;
+		$this->user_client  = $user_client;
 		$this->data_manager = $data_manager;
 	}
 
@@ -848,7 +850,7 @@ class Page {
 					],
 				],
 				'exclude_js'                   => [
-					'type'              => 'categorized_multiselect',
+					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
@@ -863,74 +865,6 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
-					'items' 			=> [
-						"scripts" => [
-							[
-								"title" => "google ads",
-								"condition" => null,
-								"exclusions" => [
-									"ads.js"
-								],
-								"type" => "script",
-								"is_default" => 0,
-								"created_at" => 1664982452
-							],
-							[
-								"title" => "Avada ads",
-								"condition" => null,
-								"exclusions" => [
-									"avda-ads.js"
-								],
-								"type" => "script",
-								"is_default" => 0,
-								"created_at" => 1664981259
-							]
-						],
-						"themes" => [
-							"avada/main.css" => [
-								"title" => "Avada theme",
-								"condition" => "avada/main.css",
-								"exclusions" => [
-									"#slider"
-								],
-								"type" => "theme",
-								"is_default" => 0,
-								"created_at" => 1664981189
-							],
-							"test/app.css" => [
-								"title" => "test theme",
-								"condition" => "test/app.css",
-								"exclusions" => [
-									"#example"
-								],
-								"type" => "theme",
-								"is_default" => 0,
-								"created_at" => 1664981603
-							]
-						],
-						"plugins" => [
-							"mytest2/app.js" => [
-								"title" => "test2 plugin",
-								"condition" => "mytest2/app.js",
-								"exclusions" => [
-									"#tst2"
-								],
-								"type" => "plugin",
-								"is_default" => 0,
-								"created_at" => 1664981151
-							],
-							"plugins/t1.js" => [
-								"title" => "test plugin",
-								"condition" => "plugins/t1.js",
-								"exclusions" => [
-									".test"
-								],
-								"type" => "plugin",
-								"is_default" => 0,
-								"created_at" => 1664981112
-							]
-						]
-					]
 				],
 				'defer_all_js'                 => [
 					'container_class'   => [
@@ -978,7 +912,7 @@ class Page {
 					]
 				),
 				'delay_js_exclusions'          => [
-					'type'              => 'textarea',
+					'type'              => 'categorized_multiselect',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
@@ -993,6 +927,7 @@ class Page {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'items'             => $this->data_manager->get_lists(),
 				],
 			]
 		);

@@ -38,10 +38,10 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']                               = 0;
-		$options['delay_js_exclusion_selected']            = [];
-		$options['delay_js_exclusion_selected_exclusions'] = [];
-		$options['delay_js_exclusions']                    = [];
+		$options['delay_js']                                = 0;
+		$options['delay_js_exclusions_selected']            = '';
+		$options['delay_js_exclusions_selected_exclusions'] = '';
+		$options['delay_js_exclusions']                     = '';
 
 		return $options;
 	}
@@ -63,7 +63,7 @@ class Settings {
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
-		$options['delay_js_exclusions'] = [];
+		$options['delay_js_exclusions'] = '';
 
 		if (
 			isset( $options['delay_js'] )
@@ -88,14 +88,11 @@ class Settings {
 	 */
 	public function sanitize_options( $input, $settings ) : array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
+		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : '';
 
-		if ( empty( $input['delay_js_exclusion_selected'] ) ) {
-			$input['delay_js_exclusion_selected']            = [];
-			$input['delay_js_exclusion_selected_exclusions'] = [];
-		} else {
-			$input['delay_js_exclusion_selected']            = (array) $input['delay_js_exclusion_selected'];
-			$input['delay_js_exclusion_selected_exclusions'] = $this->dynamic_lists->get_delayjs_items_exclusions( $input['delay_js_exclusion_selected'] );
+		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
+			$input['delay_js_exclusions_selected']            = '';
+			$input['delay_js_exclusions_selected_exclusions'] = '';
 		}
 
 		return $input;
@@ -220,15 +217,15 @@ class Settings {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$current_selected_exclusions = get_rocket_option( 'delay_js_exclusion_selected', [] );
+		$current_selected_exclusions_selected_exclusion = get_rocket_option( 'delay_js_exclusions_selected_exclusions', '' );
 
-		if ( empty( $current_selected_exclusions ) ) {
-			update_rocket_option( 'delay_js_exclusion_selected_exclusions', [] );
+		if ( empty( $current_selected_exclusions_selected_exclusion ) ) {
+			update_rocket_option( 'delay_js_exclusions_selected_exclusions', '' );
 
 			return;
 		}
 
-		update_rocket_option( 'delay_js_exclusion_selected_exclusions', $this->dynamic_lists->get_delayjs_items_exclusions( (array) $current_selected_exclusions ) );
+		update_rocket_option( 'delay_js_exclusions_selected_exclusions', $current_selected_exclusions_selected_exclusion );
 	}
 
 }
