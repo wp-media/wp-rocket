@@ -693,10 +693,22 @@ class Settings {
 	private function sanitize_cdn_cnames( array $cnames ) {
 		$cnames = array_map(
 			function( $cname ) {
-				return filter_var( $cname, FILTER_VALIDATE_DOMAIN );
+				if ( empty( $cname ) ) {
+					return false;
+				}
+
+				$cname_parts = get_rocket_parse_url( rocket_add_url_protocol( $cname ) );
+
+				if( false === filter_var( $cname_parts['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+					return false;
+				}
+
+				return $cname_parts['scheme'] . '://' . $cname_parts['host'];
 			},
 			$cnames
 		);
+
+		error_log(var_export(compact('cnames'), true));
 
 		return array_unique( array_filter( $cnames ) );
 	}
