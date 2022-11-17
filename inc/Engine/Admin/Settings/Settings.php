@@ -703,7 +703,7 @@ class Settings {
 					return false;
 				}
 
-				return $cname_parts['scheme'] . '://' . $cname_parts['host'];
+				return $cname_parts['scheme'] . '://' . $cname_parts['host'] . $cname_parts['path'];
 			},
 			$cnames
 		);
