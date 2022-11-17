@@ -693,6 +693,8 @@ class Settings {
 	private function sanitize_cdn_cnames( array $cnames ) {
 		$cnames = array_map(
 			function( $cname ) {
+				$cname = trim( $cname );
+
 				if ( empty( $cname ) ) {
 					return false;
 				}
