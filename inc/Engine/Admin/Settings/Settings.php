@@ -708,8 +708,6 @@ class Settings {
 			$cnames
 		);
 
-		error_log(var_export(compact('cnames'), true));
-
 		return array_unique( array_filter( $cnames ) );
 	}
 }
