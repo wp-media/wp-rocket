@@ -1,10 +1,8 @@
 <?php
 namespace WP_Rocket\Views\Settings\Fields\CategorizedMultiselect;
 
-/**
+use stdClass;/**
  * Select field template.
- *
- * @since 3.10
  *
  * @param array $data {
  *     Radio buttons  arguments.
@@ -23,17 +21,18 @@ namespace WP_Rocket\Views\Settings\Fields\CategorizedMultiselect;
  *          @type array  $sub_fields fields to show when option is selected.
  *     }
  * }
+ *@since 3.10
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$wp_rocket_items = key_exists( 'items', $data ) ? $data['items'] : [];
+$wp_rocket_items = key_exists( 'items', $data ) ? $data['items'] : new stdClass();
 
-$wp_rocket_scripts = key_exists( 'scripts', $wp_rocket_items ) ? $wp_rocket_items['scripts'] : [];
+$wp_rocket_scripts = property_exists( $wp_rocket_items, 'scripts' ) ? $wp_rocket_items->scripts : new stdClass();
 
-$wp_rocket_themes = key_exists( 'themes', $wp_rocket_items ) ? $wp_rocket_items['themes'] : [];
+$wp_rocket_themes = property_exists( $wp_rocket_items, 'themes' ) ? $wp_rocket_items->themes : new stdClass();
 
-$wp_rocket_plugins = key_exists( 'plugins', $wp_rocket_items ) ? $wp_rocket_items['plugins'] : [];
+$wp_rocket_plugins = property_exists( $wp_rocket_items, 'plugins' ) ? $wp_rocket_items->plugins : new stdClass();
 
 $wp_rocket_textarea = get_rocket_option( esc_attr( $data['id'] ) );
 if ( is_array( $wp_rocket_textarea ) ) {
@@ -49,12 +48,12 @@ $wp_rocket_state = $wp_rocket_state ?: [];
 /**
  * Fetch the icon.
  *
- * @param array $item item from the list.
+ * @param stdClass $item item from the list.
  * @return string
  */
-function fetch_icon( array $item ) {
-	if ( key_exists( 'icon_url', $item ) ) {
-		return esc_url( $item['icon_url'] );
+function fetch_icon( stdClass $item ) {
+	if ( property_exists( $item, 'icon_url' ) ) {
+		return esc_url( $item->icon_url );
 	}
 	return esc_url( WP_ROCKET_ASSETS_IMG_URL . 'default-icon.png' );
 }
@@ -62,28 +61,21 @@ function fetch_icon( array $item ) {
 /**
  * Render an item from the list.
  *
- * @param array $item item to render.
+ * @param stdClass $item item to render.
  *
- * @param array $state current state from the list.
+ * @param array    $state current state from the list.
  *
  * @return void
  */
-function render_list_item( array $item, array $state ) {
-
+function render_list_item( stdClass $item, array $state ) {
 	?>
 	<li>
 		<div class="wpr-checkbox">
-			<input type="checkbox" name="
-			<?php
-				echo esc_attr( $item['title'] );
-			?>
-" value='
-			<?php
-			echo esc_attr( wp_json_encode( $item['exclusions'] ) );
-			?>
-' <?php echo in_array( $item['title'], $state, true ) ? ' checked="checked"' : ''; ?> />
+			<input type="checkbox" name="<?php echo esc_attr( $item->title ); ?>"
+				value='<?php echo esc_attr( wp_json_encode( $item->exclusions ) ); ?>'
+				<?php echo in_array( $item->title, $state, true ) ? ' checked="checked"' : ''; ?> />
 			<label> <img src="<?php echo esc_url( fetch_icon( $item ) ); ?>"/>
-			<?php echo esc_attr( $item['title'] ); ?>
+			<?php echo esc_attr( $item->title ); ?>
 			</label>
 		</div>
 	</li>
@@ -93,17 +85,22 @@ function render_list_item( array $item, array $state ) {
 /**
  * Render the list.
  *
- * @param string $title title from the list.
- * @param string $input_name name from the input.
- * @param array  $list list to render.
- * @param array  $state current state.
- * @param bool   $open is the list open.
+ * @param string   $title title from the list.
+ * @param string   $input_name name from the input.
+ * @param stdClass $list list to render.
+ * @param array    $state current state.
+ * @param bool     $open is the list open.
  * @return void
  */
-function render_list( string $title, string $input_name, array $list, array $state, bool $open = false ) {
+function render_list( string $title, string $input_name, stdClass $list, array $state, bool $open = false ) {
 	$has_selected = false;
+
+	if ( count( (array) $list ) === 0 ) {
+		return;
+	}
+
 	foreach ( $list as $item ) {
-		if ( in_array( $item['title'], $state, true ) ) {
+		if ( in_array( $item->title, $state, true ) ) {
 			$has_selected = true;
 		}
 	}
@@ -193,7 +190,7 @@ function render_list( string $title, string $input_name, array $list, array $sta
 			">
 			<?php
 			echo esc_textarea(
-					$textarea
+					$wp_rocket_textarea
 				);
 			?>
 					</textarea>
