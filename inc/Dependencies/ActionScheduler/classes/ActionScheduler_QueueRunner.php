@@ -173,15 +173,34 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
-	 * Running large batches can eat up memory, as WP adds data to its object cache.
+	 * Flush the cache if possible (intended for use after a batch of actions has been processed).
 	 *
-	 * If using a persistent object store, this has the side effect of flushing that
-	 * as well, so this is disabled by default. To enable:
-	 *
-	 * add_filter( 'action_scheduler_queue_runner_flush_cache', '__return_true' );
+	 * This is useful because running large batches can eat up memory and because invalid data can accrue in the
+	 * runtime cache, which may lead to unexpected results.
 	 */
 	protected function clear_caches() {
-		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {
+		/*
+		 * Calling wp_cache_flush_runtime() lets us clear the runtime cache without invalidating the external object
+		 * cache, so we will always prefer this when it is available (but it was only introduced in WordPress 6.0).
+		 */
+		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
+			wp_cache_flush_runtime();
+		} elseif (
+			! wp_using_ext_object_cache()
+			/**
+			 * When an external object cache is in use, and when wp_cache_flush_runtime() is not available, then
+			 * normally the cache will not be flushed after processing a batch of actions (to avoid a performance
+			 * penalty for other processes).
+			 *
+			 * This filter makes it possible to override this behavior and always flush the cache, even if an external
+			 * object cache is in use.
+			 *
+			 * @since 1.0
+			 *
+			 * @param bool $flush_cache If the cache should be flushed.
+			 */
+			|| apply_filters( 'action_scheduler_queue_runner_flush_cache', false )
+		) {
 			wp_cache_flush();
 		}
 	}

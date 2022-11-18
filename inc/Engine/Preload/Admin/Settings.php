@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Admin;
 
+use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Admin\Options_Data;
 
 class Settings {
@@ -14,12 +15,21 @@ class Settings {
 	protected $options;
 
 	/**
+	 * PreloadUrl instance
+	 *
+	 * @var PreloadUrl
+	 */
+	private $preload_url;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Instance of options handler.
+	 * @param PreloadUrl   $preload_url PreloadUrl instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, PreloadUrl $preload_url ) {
+		$this->options     = $options;
+		$this->preload_url = $preload_url;
 	}
 
 	/**
@@ -36,11 +46,19 @@ class Settings {
 			return;
 		}
 
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( 'preload_notice', (array) $boxes, true ) ) {
+			return;
+		}
+
 		$message = sprintf(
 			// translators: %1$s = plugin name.
 			__( '%1$s: The preload service is now active. After the initial preload it will continue to cache all your pages whenever they are purged. No further action is needed.', 'rocket' ),
 			'<strong>WP Rocket</strong>'
 		);
+
+		rocket_dismiss_box( 'preload_notice' );
 
 		rocket_notice_html(
 			[
@@ -75,42 +93,20 @@ class Settings {
 	}
 
 	/**
-	 * Display missing as table notice if they are not present.
-	 *
-	 * @return void
-	 */
-	public function maybe_display_as_missed_tables_notice() {
-
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$message = sprintf(
-		// translators: %1$s = plugin name, %2$s = opening anchor tag, %3$s = closing anchor tag.
-			__( '%1$s: We detected missing database table related to Action Scheduler. Please visit the following %2$sURL%3$s to recreate it, as it is needed for WP Rocket to work correctly.', 'rocket' ),
-			'<strong>WP Rocket</strong>',
-			'<a href="' . menu_page_url( 'action-scheduler', false ) . '">',
-			'</a>'
-		);
-		rocket_notice_html(
-			[
-				'status'  => 'error',
-				'message' => $message,
-				'id'      => 'rocket-notice-as-missed-tables',
-			]
-		);
-	}
-
-	/**
 	 * Determines if Preload option is enabled.
 	 *
 	 * @return boolean
 	 */
 	public function is_enabled() : bool {
 		return (bool) $this->options->get( 'manual_preload', 0 );
+	}
+
+	/**
+	 * Preload the homepage
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->preload_url->preload_url( home_url() );
 	}
 }

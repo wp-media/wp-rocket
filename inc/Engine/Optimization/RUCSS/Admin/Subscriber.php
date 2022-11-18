@@ -83,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
 			],
 			'rocket_admin_bar_items'                  => [
@@ -435,6 +436,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_url_usedcss() {
+		check_admin_referer( 'rocket_clear_usedcss_url' );
+
+		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
+			wp_nonce_ays( '' );
+		}
+
 		$url = wp_get_referer();
 
 		if ( 0 !== strpos( $url, 'http' ) ) {
@@ -692,6 +699,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function notice_write_permissions() {
 		$this->used_css->notice_write_permissions();
+	}
+
+	/**
+	 * Display a notice on table missing.
+	 *
+	 * @return void
+	 */
+	public function display_no_table_notice() {
+		$this->settings->display_no_table_notice();
 	}
 
 	/**

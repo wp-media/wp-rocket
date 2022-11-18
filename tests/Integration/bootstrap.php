@@ -78,6 +78,10 @@ tests_add_filter(
 			define( 'CP_VERSION', '1.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
+			define( 'TRIBE_EVENTS_FILE', true );
+		}
+
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
 			define( 'WP_ADMIN', true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
@@ -133,6 +137,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'WPXCloud' ) ) {
+			$_SERVER[ 'HTTP_WPXCLOUD'] = true;
+		}
+
 		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
 			$_SERVER[ 'X-LSCACHE'] = 'on';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/HeaderCollector.php';
@@ -150,6 +158,7 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
 			define( 'WORDFENCE_VERSION', '1' );
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
@@ -185,6 +194,10 @@ tests_add_filter(
 				]
 			);
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Jetpack/functions.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RocketLazyLoad' ) ) {
+			define( 'ROCKET_LL_VERSION', '2.3.6' );
 		}
 
 		// Load the plugin.

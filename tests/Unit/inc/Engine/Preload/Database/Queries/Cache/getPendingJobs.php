@@ -3,6 +3,7 @@
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_pending_jobs
@@ -26,6 +27,7 @@ class Test_GetPendingJobs extends TestCase {
 		$this->query->expects($this->at(0))->method('query')->with( [
 			'count'  => true,
 			'status' => 'in-progress',
+			'is_locked' => false,
 		] )->willReturn( $config['in-progress'] );
 
 		if ( $config['total'] > $config['in-progress'] ) {
@@ -39,10 +41,12 @@ class Test_GetPendingJobs extends TestCase {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
-				'orderby'        => 'modified',
+				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
 				'order'          => 'asc',
+				'is_locked' => false
 			])->willReturn($config['results']);
 		}
+
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}

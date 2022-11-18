@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
+use WP_Rocket\Engine\Preload\Controller\CheckExcludedTrait;
 use WP_Rocket\Engine\Preload\Controller\ClearCache;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -13,6 +14,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
+
+	use CheckExcludedTrait;
 
 	/**
 	 * Options instance.
@@ -110,6 +113,12 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_domain'           => 'clean_full_cache',
 			'delete_post'                         => 'delete_post_preload_cache',
 			'pre_delete_term'                     => 'delete_term_preload_cache',
+			'rocket_preload_lock_url'             => 'lock_url',
+			'rocket_preload_unlock_url'           => 'unlock_url',
+			'rocket_preload_exclude_urls'         => [
+				[ 'add_preload_excluded_uri' ],
+				[ 'add_cache_reject_uri_to_excluded' ],
+			],
 		];
 	}
 
@@ -132,6 +141,8 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $value['manual_preload'] ) {
 			return;
 		}
+
+		rocket_renew_box( 'preload_notice' );
 
 		$this->controller->load_initial_sitemap();
 	}
@@ -185,7 +196,12 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( ( isset( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		if ( $this->is_excluded_by_filter( $url ) ) {
+			$this->query->delete_by_url( $url );
 			return;
 		}
 
@@ -374,5 +390,43 @@ class Subscriber implements Subscriber_Interface {
 				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
+	}
+
+	/**
+	 * Lock a URL.
+	 *
+	 * @param string $url URL to lock.
+	 *
+	 * @return void
+	 */
+	public function lock_url( string $url ) {
+		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock a URL.
+	 *
+	 * @param string $url URL to unlock.
+	 *
+	 * @return void
+	 */
+	public function unlock_url( string $url ) {
+		$this->query->unlock( $url );
+	}
+
+	/**
+	 * Add the excluded uri from the preload to the filter.
+	 *
+	 * @param array $regexes regexes containing excluded uris.
+	 * @return array|false
+	 */
+	public function add_preload_excluded_uri( $regexes ): array {
+		$preload_excluded_uri = (array) $this->options->get( 'preload_excluded_uri', [] );
+
+		if ( empty( $preload_excluded_uri ) ) {
+			return $regexes;
+		}
+
+		return array_merge( $regexes, $preload_excluded_uri );
 	}
 }
