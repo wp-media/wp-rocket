@@ -61,19 +61,21 @@ function fetch_icon( stdClass $item ) {
 /**
  * Render an item from the list.
  *
+ * @param string   $id id from the item to render.
+ *
  * @param stdClass $item item to render.
  *
  * @param array    $state current state from the list.
  *
  * @return void
  */
-function render_list_item( stdClass $item, array $state ) {
+function render_list_item( string $id, stdClass $item, array $state ) {
 	?>
 	<li>
 		<div class="wpr-checkbox">
-			<input type="checkbox" name="<?php echo esc_attr( $item->title ); ?>"
+			<input type="checkbox" name="<?php echo esc_attr( $id ); ?>"
 				value='<?php echo esc_attr( wp_json_encode( $item->exclusions ) ); ?>'
-				<?php echo in_array( $item->title, $state, true ) ? ' checked="checked"' : ''; ?> />
+				<?php echo in_array( $id, $state, true ) ? ' checked="checked"' : ''; ?> />
 			<label> <img src="<?php echo esc_url( fetch_icon( $item ) ); ?>"/>
 			<?php echo esc_attr( $item->title ); ?>
 			</label>
@@ -99,8 +101,8 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 		return;
 	}
 
-	foreach ( $list as $item ) {
-		if ( in_array( $item->title, $state, true ) ) {
+	foreach ( $list as $id => $item ) {
+		if ( in_array( $id, $state, true ) ) {
 			$has_selected = true;
 		}
 	}
@@ -128,8 +130,8 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 			<div class="wpr-list-body">
 				<ul>
 					<?php
-					foreach ( $list as $item ) :
-						render_list_item( $item, $state );
+					foreach ( $list as $id => $item ) :
+						render_list_item( $id, $item, $state );
 					endforeach;
 					?>
 				</ul>
