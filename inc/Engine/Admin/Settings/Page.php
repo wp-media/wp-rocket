@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
@@ -85,6 +86,13 @@ class Page {
 	private $user_client;
 
 	/**
+	 * Delay JS data manager.
+	 *
+	 * @var DataManager
+	 */
+	protected $data_manager;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -95,8 +103,9 @@ class Page {
 	 * @param Beacon           $beacon      Beacon instance.
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
+	 * @param DataManager      $data_manager User client instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, DataManager $data_manager ) {
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -106,14 +115,15 @@ class Page {
 			$args
 		);
 
-		$this->slug        = $args['slug'];
-		$this->title       = $args['title'];
-		$this->capability  = $args['capability'];
-		$this->settings    = $settings;
-		$this->render      = $render;
-		$this->beacon      = $beacon;
-		$this->optimize    = $optimize;
-		$this->user_client = $user_client;
+		$this->slug         = $args['slug'];
+		$this->title        = $args['title'];
+		$this->capability   = $args['capability'];
+		$this->settings     = $settings;
+		$this->render       = $render;
+		$this->beacon       = $beacon;
+		$this->optimize     = $optimize;
+		$this->user_client  = $user_client;
+		$this->data_manager = $data_manager;
 	}
 
 	/**
@@ -822,7 +832,7 @@ class Page {
 					],
 				],
 				'exclude_inline_js'            => [
-					'type'              => 'categorized_multiselect',
+					'type'              => 'textarea',
 					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Specify patterns of inline JavaScript to be excluded from concatenation (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $inline_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $inline_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
@@ -902,7 +912,7 @@ class Page {
 					]
 				),
 				'delay_js_exclusions'          => [
-					'type'              => 'textarea',
+					'type'              => 'categorized_multiselect',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
@@ -917,6 +927,7 @@ class Page {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'items'             => $this->data_manager->get_lists(),
 				],
 			]
 		);

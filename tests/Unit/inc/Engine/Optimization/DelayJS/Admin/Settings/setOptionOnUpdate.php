@@ -4,8 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Settings;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -18,7 +18,7 @@ class Test_SetOptionOnUpdate extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $options, $old_version, $valid_version, $expected ) {
-		$settings = new Settings( Mockery::mock( Options_Data::class) );
+		$settings = new Settings( Mockery::mock( DynamicLists::class) );
 
 		if ( $valid_version ) {
 			$this->stubWpParseUrl();

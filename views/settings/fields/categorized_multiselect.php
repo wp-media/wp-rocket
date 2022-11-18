@@ -1,77 +1,204 @@
 <?php
-/**
-* Select field template.
-*
-* @since 3.10
-*
-* @param array $data {
-*     Radio buttons  arguments.
-*
-*     @type string $id              Field identifier.
-*     @type string $label           Field label.
-*     @type string $container_class Field container class.
-*     @type string $value           Field value.
-*     @type string $description     Field description.
-*     @type array $items            Exclusion list.
-*     @type array  $options {
-*          Option options.
-*
-*          @type string $description Option value.
-*          @type string $label Option label.
-*          @type array  $sub_fields fields to show when option is selected.
-*     }
-* }
-*/
+namespace WP_Rocket\Views\Settings\Fields\CategorizedMultiselect;
+
+use stdClass;/**
+ * Select field template.
+ *
+ * @param array $data {
+ *     Radio buttons  arguments.
+ *
+ *     @type string $id              Field identifier.
+ *     @type string $label           Field label.
+ *     @type string $container_class Field container class.
+ *     @type string $value           Field value.
+ *     @type string $description     Field description.
+ *     @type array $items            Exclusion list.
+ *     @type array  $options {
+ *          Option options.
+ *
+ *          @type string $description Option value.
+ *          @type string $label Option label.
+ *          @type array  $sub_fields fields to show when option is selected.
+ *     }
+ * }
+ *@since 3.10
+ */
 
 defined( 'ABSPATH' ) || exit;
 
-?>
-<div id = '<?php echo esc_attr( $data['id'] ); ?>' class="wpr-field wpr-radio-buttons <?php echo esc_attr( $data['container_class'] ); ?>" data-default="<?php echo ( ! empty( $data['default'] ) ? 'wpr-radio-' . esc_attr( $data['default'] ) : '' ); ?>" <?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
-	<div class="wpr-radio-buttons-container">
-		<?php foreach ( $data['options'] as $value => $option ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
-			<button id ="wpr-radio-<?php echo esc_attr( $value ); ?>" class="wpr-button wpr-button--gray <?php echo ( $value === $data['value'] ? 'radio-active' : '' ); ?> <?php echo ( ! empty( $option['warning'] ) ? 'has-warning' : '' ); ?>"
-					data-value="<?php echo esc_attr( $value ); ?>"
-				<?php echo ( ! empty( $option['disabled'] ) ? 'disabled=' . esc_attr( $option['disabled'] ) : '' ); ?>
-			>
-				<?php echo esc_html( $option['label'] ); ?>
-			</button>
-		<?php endforeach; ?>
-	</div>
-	<?php foreach ( $data['options'] as $value => $option ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
-		<?php if ( ! empty( $option['warning'] ) ) : ?>
-			<div class="wpr-fieldWarning wpr-radio-warning" data-parent="wpr-radio-<?php echo esc_attr( $value ); ?>">
-				<div class="wpr-fieldWarning-title wpr-icon-important">
-					<?php echo esc_html( $option['warning']['title'] ); ?>
-				</div>
-				<?php if ( isset( $option['warning']['description'] ) ) : ?>
-					<div class="wpr-fieldWarning-description">
-						<?php echo $option['warning']['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-					</div>
-				<?php endif; ?>
-				<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $option['warning']['button_label'] ); ?></button>
-			</div>
-		<?php endif; ?>
+$wp_rocket_items = key_exists( 'items', $data ) ? $data['items'] : new stdClass();
 
-		<div class="wpr-extra-fields-container wpr-field--children no-space <?php echo ( $value === $data['value'] ? 'wpr-isOpen' : '' ); ?>" data-parent="wpr-radio-<?php echo esc_attr( $value ); ?>">
+$wp_rocket_scripts = property_exists( $wp_rocket_items, 'scripts' ) ? $wp_rocket_items->scripts : new stdClass();
 
-			<div class="wpr-field-description">
-				<?php if ( ! empty( $option['description'] ) ) : ?>
-					<div class="wpr-field-description ">
-						<?php echo $option['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
-					</div>
-				<?php endif; ?>
-			</div>
+$wp_rocket_themes = property_exists( $wp_rocket_items, 'themes' ) ? $wp_rocket_items->themes : new stdClass();
 
-			<?php
-			do_action(
-				'rocket_after_settings_radio_options',
-				[
-					'option_id'  => $value,
-					'sub_fields' => $option['sub_fields'],
-				]
-			);
-			?>
+$wp_rocket_plugins = property_exists( $wp_rocket_items, 'plugins' ) ? $wp_rocket_items->plugins : new stdClass();
 
+$wp_rocket_textarea = get_rocket_option( esc_attr( $data['id'] ) );
+if ( is_array( $wp_rocket_textarea ) ) {
+	$wp_rocket_textarea = implode( "\n", $wp_rocket_textarea );
+}
+
+$wp_rocket_select            = get_rocket_option( esc_attr( $data['id'] ) . '_selected' );
+$wp_rocket_select_exclusions = get_rocket_option( esc_attr( $data['id'] ) . '_selected_exclusions' );
+$wp_rocket_state             = json_decode( $wp_rocket_select );
+
+$wp_rocket_state = $wp_rocket_state ?: [];
+
+/**
+ * Fetch the icon.
+ *
+ * @param stdClass $item item from the list.
+ * @return string
+ */
+function fetch_icon( stdClass $item ) {
+	if ( property_exists( $item, 'icon_url' ) ) {
+		return esc_url( $item->icon_url );
+	}
+	return esc_url( WP_ROCKET_ASSETS_IMG_URL . 'default-icon.png' );
+}
+
+/**
+ * Render an item from the list.
+ *
+ * @param string   $id id from the item to render.
+ *
+ * @param stdClass $item item to render.
+ *
+ * @param array    $state current state from the list.
+ *
+ * @return void
+ */
+function render_list_item( string $id, stdClass $item, array $state ) {
+	?>
+	<li>
+		<div class="wpr-checkbox">
+			<input type="checkbox" name="<?php echo esc_attr( $id ); ?>"
+				value='<?php echo esc_attr( wp_json_encode( $item->exclusions ) ); ?>'
+				<?php echo in_array( $id, $state, true ) ? ' checked="checked"' : ''; ?> />
+			<label> <img src="<?php echo esc_url( fetch_icon( $item ) ); ?>"/>
+			<?php echo esc_attr( $item->title ); ?>
+			</label>
 		</div>
-	<?php endforeach; ?>
+	</li>
+	<?php
+}
+
+/**
+ * Render the list.
+ *
+ * @param string   $title title from the list.
+ * @param string   $input_name name from the input.
+ * @param stdClass $list list to render.
+ * @param array    $state current state.
+ * @param bool     $open is the list open.
+ * @return void
+ */
+function render_list( string $title, string $input_name, stdClass $list, array $state, bool $open = false ) {
+	$has_selected = false;
+
+	if ( count( (array) $list ) === 0 ) {
+		return;
+	}
+
+	foreach ( $list as $id => $item ) {
+		if ( in_array( $id, $state, true ) ) {
+			$has_selected = true;
+		}
+	}
+	?>
+		<div class="wpr-list<?php echo $open ? ' open' : ''; ?>">
+			<div class="wpr-list-header">
+				<div class="wpr-checkbox">
+					<input class="wpr-main-checkbox" type="checkbox" id="<?php echo esc_attr( $input_name ); ?>" name="<?php echo esc_attr( $input_name ); ?>"
+											<?php
+											echo $has_selected ? ' checked="checked"'
+											: '';
+											?>
+							/>
+
+					<label><span class="wpr-multiple-select-<?php echo esc_attr( $input_name ); ?>">
+							<?php
+								echo esc_attr( $title );
+							?>
+					</span></label>
+				</div>
+				<div class="wpr-list-header-arrow">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
+				</div>
+			</div>
+			<div class="wpr-list-body">
+				<ul>
+					<?php
+					foreach ( $list as $id => $item ) :
+						render_list_item( $id, $item, $state );
+					endforeach;
+					?>
+				</ul>
+			</div>
+		</div>
+	<?php
+}
+
+?>
+
+<div id = '<?php echo esc_attr( $data['id'] ); ?>' class="wpr-field wpr-multiple-select <?php echo esc_attr( $data['container_class'] ); ?>" data-default="<?php echo ( ! empty( $data['default'] ) ? 'wpr-radio-' . esc_attr( $data['default'] ) : '' ); ?>" <?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
+
+	<h2><?php echo esc_html( __( 'Excluded JavaScript Files', 'rocket' ) ); ?></h2>
+	<p>
+	<?php
+	echo esc_html( __( 'Add JavaScript files to be excluded from delaying execution by selected them / or by add in “My scripts”.', 'rocket' ) );
+	?>
+	</p>
+
+	<?php
+	render_list(
+		esc_html( __( 'Analytics & Ads', 'rocket' ) ),
+		esc_attr( $data['id'] ) . '_ads',
+		$wp_rocket_scripts,
+		$wp_rocket_state,
+		true
+		);
+	?>
+
+	<?php
+	render_list(
+		esc_html( __( 'Plugins', 'rocket' ) ),
+		esc_attr( $data['id'] ) . '_plugins',
+		$wp_rocket_themes,
+		$wp_rocket_state
+	);
+	?>
+
+	<?php
+	render_list(
+		esc_html( __( 'Themes', 'rocket' ) ),
+		esc_attr( $data['id'] ) . '_themes',
+		$wp_rocket_plugins,
+		$wp_rocket_state
+	);
+	?>
+
+	<p><?php echo esc_html( __( 'Specify URLS or keywords in “My scripts”, which are not in the above categories.', 'rocket' ) ); ?></p>
+	<div class="wpr-list open">
+		<div class="wpr-list-header">
+			<h3><?php echo esc_html( __( 'My scripts', 'rocket' ) ); ?></h3>
+		</div>
+		<div class="wpr-list-body wpr-textarea">
+			<textarea name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" placeholder="
+				<?php
+				echo esc_html( __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ) );
+				?>
+			">
+			<?php
+			echo esc_textarea(
+					$wp_rocket_textarea
+				);
+			?>
+					</textarea>
+		</div>
+	</div>
+
+	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected]" type="hidden" value='<?php echo esc_attr( $wp_rocket_select ); ?>'/>
+	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected_exclusions]" type="hidden" value='<?php echo esc_attr( $wp_rocket_select_exclusions ); ?>'/>
 </div>

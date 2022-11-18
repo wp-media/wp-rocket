@@ -436,6 +436,10 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_nonce_ays( '' );
+		}
+
 		/**
 		 * Fires before doing the rollback
 		 */

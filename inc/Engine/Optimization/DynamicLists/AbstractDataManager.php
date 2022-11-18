@@ -3,13 +3,23 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
-class DataManager {
+use WP_Filesystem_Direct;
+use StdClass;
+
+abstract class AbstractDataManager {
 	/**
 	 * Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
 	 */
 	private $filesystem;
+
+	/**
+	 * Cache ttl.
+	 *
+	 * @var int
+	 */
+	protected $cache_duration = WEEK_IN_SECONDS;
 
 	/**
 	 * Instantiate the class
@@ -21,12 +31,26 @@ class DataManager {
 	}
 
 	/**
+	 * Get cache transient name.
+	 *
+	 * @return string
+	 */
+	abstract protected function get_cache_transient_name();
+
+	/**
+	 * Get lists json filename.
+	 *
+	 * @return string
+	 */
+	abstract protected function get_json_filename();
+
+	/**
 	 * Gets the lists content
 	 *
 	 * @return object
 	 */
 	public function get_lists() {
-		$transient = get_transient( 'wpr_dynamic_lists' );
+		$transient = get_transient( $this->get_cache_transient_name() );
 
 		if ( false !== $transient ) {
 			return $transient;
@@ -37,7 +61,7 @@ class DataManager {
 		$lists = json_decode( $json );
 
 		if ( empty( $lists ) ) {
-			return '';
+			return new StdClass();
 		}
 
 		$this->set_lists_cache( $lists );
@@ -68,13 +92,6 @@ class DataManager {
 
 		$this->set_lists_cache( $lists );
 
-		/**
-		 * Fires after saving the dynamic lists file
-		 *
-		 * @since 3.12.1
-		 */
-		do_action( 'rocket_after_save_dynamic_lists' );
-
 		return $result;
 	}
 
@@ -84,7 +101,7 @@ class DataManager {
 	 * @return string
 	 */
 	private function get_json_filepath(): string {
-		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ) . 'dynamic-lists.json';
+		return rocket_get_constant( 'WP_ROCKET_CONFIG_PATH', '' ) . $this->get_json_filename() . '.json';
 	}
 
 	/**
@@ -104,7 +121,7 @@ class DataManager {
 			return $content;
 		}
 
-		$fallback_filepath = rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'dynamic-lists.json';
+		$fallback_filepath = rocket_get_constant( 'WP_ROCKET_PATH', '' ) . $this->get_json_filename() . '.json';
 
 		if ( $this->filesystem->exists( $fallback_filepath ) ) {
 			$content = $this->filesystem->get_contents( $fallback_filepath );
@@ -138,6 +155,6 @@ class DataManager {
 	 * @return void
 	 */
 	private function set_lists_cache( $content ) {
-		set_transient( 'wpr_dynamic_lists', $content, WEEK_IN_SECONDS );
+		set_transient( $this->get_cache_transient_name(), $content, $this->cache_duration );
 	}
 }
