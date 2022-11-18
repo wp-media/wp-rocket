@@ -12,6 +12,8 @@ return [
 		'expected' => [
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
+    		'delay_js_exclusions_selected' => '',
+    		'delay_js_exclusions_selected_exclusions' => '',
 		],
 	],
 	'testShouldSetCorrectValueIfDifferentType' => [
@@ -19,6 +21,8 @@ return [
 			'input'           => [
 				'delay_js'            => true,
 				'delay_js_exclusions' => "wp-content/themes/twentytwenty/script.js\n<script>\nGoogleAnalytics\ngtm\nwp-includes/.*.js",
+				'delay_js_exclusions_selected' => '',
+    			'delay_js_exclusions_selected_exclusions' => ''
 			],
 			'sanitized_input' => [
 				'delay_js'            => 1,
@@ -28,6 +32,8 @@ return [
 					'gtm',
 					'wp-includes/(.*).js',
 				],
+				'delay_js_exclusions_selected' => '',
+				'delay_js_exclusions_selected_exclusions' => ''
 			],
 		],
 		'expected' => [
@@ -38,6 +44,8 @@ return [
 				'gtm',
 				'wp-includes/(.*).js',
 			],
+			'delay_js_exclusions_selected' => '',
+			'delay_js_exclusions_selected_exclusions' => ''
 		],
 	],
 	'testShouldPreserveValueIfCorrectType' => [
@@ -51,6 +59,8 @@ return [
 					'gtm',
 					'wp-includes/.*.js'
 				],
+				'delay_js_exclusions_selected' => '',
+				'delay_js_exclusions_selected_exclusions' => ''
 			],
 			'sanitized_input' => [
 				'delay_js'            => 1,
@@ -60,6 +70,8 @@ return [
 					'gtm',
 					'wp-includes/(.*).js',
 				],
+				'delay_js_exclusions_selected' => '',
+				'delay_js_exclusions_selected_exclusions' => ''
 			],
 		],
 		'expected' => [
@@ -70,6 +82,8 @@ return [
 				'gtm',
 				'wp-includes/(.*).js',
 			],
+			'delay_js_exclusions_selected' => '',
+			'delay_js_exclusions_selected_exclusions' => ''
 		],
 	],
 ];

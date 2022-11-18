@@ -41,7 +41,7 @@ class Settings {
 		$options['delay_js']                                = 0;
 		$options['delay_js_exclusions_selected']            = '';
 		$options['delay_js_exclusions_selected_exclusions'] = '';
-		$options['delay_js_exclusions']                     = '';
+		$options['delay_js_exclusions']                     = [];
 
 		return $options;
 	}
@@ -63,7 +63,7 @@ class Settings {
 
 		$options = get_option( 'wp_rocket_settings', [] );
 
-		$options['delay_js_exclusions'] = '';
+		$options['delay_js_exclusions'] = [];
 
 		if (
 			isset( $options['delay_js'] )
@@ -88,7 +88,7 @@ class Settings {
 	 */
 	public function sanitize_options( $input, $settings ) : array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : '';
+		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
 		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
 			$input['delay_js_exclusions_selected']            = '';

@@ -4,9 +4,9 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Settings;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -22,7 +22,8 @@ class Test_SanitizeOptions extends TestCase {
 		Functions\when( 'rocket_sanitize_textarea_field' )->justReturn( $config['sanitized_input']['delay_js_exclusions'] );
 
 		$admin_settings = Mockery::mock( AdminSettings::class );
-		$settings = new Settings( Mockery::mock( Options_Data::class) );
+		$settings = new Settings( Mockery::mock( DynamicLists::class )
+		);
 
 		$admin_settings->shouldReceive( 'sanitize_checkbox' )
 			->atMost()
