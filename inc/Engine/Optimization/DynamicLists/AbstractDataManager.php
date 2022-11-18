@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Filesystem_Direct;
+use StdClass;
 
 abstract class AbstractDataManager {
 	/**
@@ -46,7 +47,7 @@ abstract class AbstractDataManager {
 	/**
 	 * Gets the lists content
 	 *
-	 * @return object|string
+	 * @return object
 	 */
 	public function get_lists() {
 		$transient = get_transient( $this->get_cache_transient_name() );
@@ -60,7 +61,7 @@ abstract class AbstractDataManager {
 		$lists = json_decode( $json );
 
 		if ( empty( $lists ) ) {
-			return '';
+			return new StdClass();
 		}
 
 		$this->set_lists_cache( $lists );
