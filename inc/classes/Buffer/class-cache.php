@@ -78,7 +78,7 @@ class Cache extends Abstract_Buffer {
 			return;
 		}
 
-		if ( ! $this->maybe_allow_wp_redirect() ) {
+		if ( $this->maybe_allow_wp_redirect() ) {
 			return;
 		}
 
@@ -706,6 +706,6 @@ class Cache extends Abstract_Buffer {
 			}
 		}
 
-		return $permalink_last_char === $request_uri_last_char;
+		return ! $permalink_last_char === $request_uri_last_char;
 	}
 }
