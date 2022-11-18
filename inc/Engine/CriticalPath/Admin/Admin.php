@@ -49,7 +49,7 @@ class Admin {
 			||
 			! current_user_can( 'rocket_regenerate_critical_css' )
 		) {
-			wp_send_json_error( [ 'status' => 'error'] );
+			wp_send_json_error();
 
 			return;
 		}
