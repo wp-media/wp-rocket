@@ -59,6 +59,11 @@ trait CheckExcludedTrait {
 	 */
 	protected function is_url_excluded( string $url ): bool {
 		$queries          = wp_parse_url( $url, PHP_URL_QUERY );
+
+		if( ! $queries ) {
+			return false;
+		}
+
 		$queries          = explode( '&', $queries );
 		$queries          = array_map(
 			function ( $query ) {
