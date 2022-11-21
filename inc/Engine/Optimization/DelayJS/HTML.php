@@ -133,21 +133,20 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
-		$clean_html           = $this->hide_xmp_tags( $html );
-		$script_regex_pattern = '<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>';
-		$scripts              = $this->find(
-			$script_regex_pattern,
-			$clean_html,
-			'ims'
+		$result = $this->replace_xmp_tags( $html );
+
+		$replaced_html = preg_replace_callback(
+			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
+			[
+				$this,
+				'replace_scripts',
+			],
+			$result
 		);
-		foreach ( $scripts as $script ) {
-			$lazy_script = $this->replace_scripts( $script );
-			if ( $lazy_script ) {
-				$search = '#' . preg_quote( $script[0], '#' ) . '#ims';
-				$html   = preg_replace( $search, $lazy_script, $html, 1 );
-			}
+		if ( empty( $replaced_html ) ) {
+			return $html;
 		}
-		return $html;
+		return $this->restore_xmp_tags( $replaced_html );
 	}
 
 	/**
@@ -161,7 +160,6 @@ class HTML {
 	 * @return string
 	 */
 	public function replace_scripts( $matches ): string {
-
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
 				return $matches[0];
@@ -190,6 +188,7 @@ class HTML {
 
 		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
 	}
+
 
 	/**
 	 * Move meta charset to head if not found to the top of page content.
