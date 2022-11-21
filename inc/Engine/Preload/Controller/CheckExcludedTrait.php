@@ -58,9 +58,9 @@ trait CheckExcludedTrait {
 	 * @return bool
 	 */
 	protected function is_url_excluded( string $url ): bool {
-		$queries          = wp_parse_url( $url, PHP_URL_QUERY );
+		$queries = wp_parse_url( $url, PHP_URL_QUERY );
 
-		if( ! $queries ) {
+		if ( ! $queries ) {
 			return false;
 		}
 
