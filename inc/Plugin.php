@@ -346,6 +346,7 @@ class Plugin {
 			'cloudflare_plugin_subscriber',
 			'uncode',
 			'rocket_lazy_load',
+			'cache_config',
 			'the_events_calendar',
 		];
 
