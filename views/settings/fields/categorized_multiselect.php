@@ -189,13 +189,7 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 				<?php
 				echo esc_html( __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ) );
 				?>
-			">
-			<?php
-			echo esc_textarea(
-					$wp_rocket_textarea
-				);
-			?>
-					</textarea>
+			"><?php echo esc_textarea( $wp_rocket_textarea ); ?></textarea>
 		</div>
 	</div>
 
