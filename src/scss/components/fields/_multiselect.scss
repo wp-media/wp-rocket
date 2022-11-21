@@ -41,6 +41,7 @@ $bg-color: #fff;
 		width: 15px;
 	   cursor: pointer;
 	   display: flex;
+	   transform: rotate(180deg);
 	 }
 
 	 h3 {
@@ -84,7 +85,7 @@ $bg-color: #fff;
 	   padding-bottom: 5px;
 	 }
 	 .wpr-list-header-arrow {
-	   transform: rotate(180deg);
+	   transform: rotate(0deg);
 	 }
    }
 

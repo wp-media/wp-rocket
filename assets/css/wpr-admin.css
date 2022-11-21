@@ -2815,7 +2815,7 @@ div.wpr-tutorial-item {
 
 \*-----------------------------------------------*/
 .wpr-multiple-select .wpr-list {
-  border: 3px solid #c5c9d2;
+  border: 2px solid #c2cad4;
   background-color: #fff;
   border-radius: 5px;
   padding: 10px;
@@ -2844,6 +2844,7 @@ div.wpr-tutorial-item {
   width: 15px;
   cursor: pointer;
   display: flex;
+  transform: rotate(180deg);
 }
 .wpr-multiple-select .wpr-list .wpr-list-header h3 {
   font-weight: 500;
@@ -2867,17 +2868,17 @@ div.wpr-tutorial-item {
 .wpr-multiple-select .wpr-list.open .wpr-list-body {
   display: block;
 }
-.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-color label {
+.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-checkbox label {
   color: #72777C;
 }
-.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-color input[checked=checked] + label {
+.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-checkbox input[checked=checked] + label {
   color: #121116;
 }
 .wpr-multiple-select .wpr-list.open .wpr-list-header {
-  border-bottom: 1px solid #c5c9d2;
+  border-bottom: 1px solid #c2cad4;
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
 .wpr-multiple-select .wpr-list.open .wpr-list-header-arrow {
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
