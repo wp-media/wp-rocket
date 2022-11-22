@@ -54,11 +54,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'init'                => 'schedule_event',
-			'rocket_deactivation' => 'unschedule_event',
-			static::EVENT_NAME    => 'purge_expired_files',
-			'cron_schedules'      => 'custom_cron_schedule',
-			'wp_rocket_upgrade'   => [ 'update_lifespan_option_on_update', 13, 2 ],
+			'init'                                   => 'schedule_event',
+			'rocket_deactivation'                    => 'unschedule_event',
+			static::EVENT_NAME                       => 'purge_expired_files',
+			'cron_schedules'                         => 'custom_cron_schedule',
+			'wp_rocket_upgrade'                      => [ 'update_lifespan_option_on_update', 13, 2 ],
+			'rocket_after_automatic_cache_purge_dir' => 'run_upgrade_routine',
 		];
 	}
 
@@ -180,5 +181,14 @@ class Subscriber implements Subscriber_Interface {
 			$this->options->get( 'purge_cron_interval' ),
 			$this->options->get( 'purge_cron_unit' )
 		);
+	}
+
+	/**
+	 * With automatic cache purge we need to run the upgrade routine.
+	 *
+	 * @return void
+	 */
+	public function run_upgrade_routine() {
+		rocket_upgrader();
 	}
 }
