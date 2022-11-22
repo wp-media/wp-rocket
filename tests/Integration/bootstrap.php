@@ -78,6 +78,10 @@ tests_add_filter(
 			define( 'CP_VERSION', '1.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
+			define( 'TRIBE_EVENTS_FILE', true );
+		}
+
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
 			define( 'WP_ADMIN', true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
