@@ -14,7 +14,7 @@ class Cache extends Table {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
-		add_action( 'wp_rocket_upgrade', [ $this, 'maybe_upgrade' ] );
+		add_action( 'init', [ $this, 'maybe_upgrade' ] );
 		add_action( 'admin_init',  [ $this, 'maybe_trigger_recreate_table' ], 9 );
 	}
 
