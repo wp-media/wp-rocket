@@ -262,4 +262,3 @@ function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
 	update_rocket_option( 'cache_ssl', 'https' === $scheme ? 1 : 0 );
 }
 add_action( 'update_option_home', 'rocket_update_ssl_option_after_save_home_url', 10, 2 );
-
