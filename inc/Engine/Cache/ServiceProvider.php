@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
  * Service Provider for cache subscribers
@@ -32,6 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
 		'preload_caches_query',
+		'cache_config',
 	];
 
 	/**
@@ -68,6 +70,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'expired_cache_purge_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()->add( 'cache_config', ConfigSubscriber::class )
 			->addTag( 'common_subscriber' );
 	}
 }
