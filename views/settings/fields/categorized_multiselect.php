@@ -52,7 +52,7 @@ $wp_rocket_state = $wp_rocket_state ?: [];
  * @return string
  */
 function fetch_icon( stdClass $item ) {
-	if ( property_exists( $item, 'icon_url' ) && $item->icon_url !== '' ) {
+	if ( property_exists( $item, 'icon_url' ) && ! empty( $item->icon_url ) ) {
 		return esc_url( $item->icon_url );
 	}
 	return esc_url( WP_ROCKET_ASSETS_IMG_URL . 'default-icon.png' );
