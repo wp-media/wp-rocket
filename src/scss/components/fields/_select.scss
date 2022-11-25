@@ -27,6 +27,10 @@
             border-color: $cGreyDark1;
             box-shadow: none;
         }
+
+        &:disabled {
+            background-image: none;
+        } 
     }
 
     label{
