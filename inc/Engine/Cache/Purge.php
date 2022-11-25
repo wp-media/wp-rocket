@@ -264,7 +264,7 @@ class Purge {
 	 * @param array $value An array of submitted values for the settings.
 	 * @return void
 	 */
-	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
+	public function purge_cache_reject_uri_partially( $old_value, $value ): void {
 		// Bail out if setting is not array.
 		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
 			return;

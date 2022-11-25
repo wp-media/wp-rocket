@@ -37,7 +37,7 @@ $settings_with_pattern_in_cache_reject_uri_changed = $settings;
 unset($settings['cache_reject_uri']);
 
 return [
-    'vfs_dir'   => 'wp-content/',
+    'vfs_dir'   => 'wp-content/cache/wp-rocket/',
 
     'settings'  => $settings,
 
@@ -86,8 +86,8 @@ return [
                 'old_value' => $settings_with_cache_reject_uri,
                 'value' => $settings_with_pattern_in_cache_reject_uri_changed,
                 'db_url_result' => [
-                    'https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius',
-                    'https://example.org/2022/11/15/dolorem-sed-consequatur-et-in-accusantium',
+                    ['https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius'],
+                    ['https://example.org/2022/11/15/dolorem-sed-consequatur-et-in-accusantium'],
                 ],
                 'urls' => [
                     'https://example.org/hello-world/',

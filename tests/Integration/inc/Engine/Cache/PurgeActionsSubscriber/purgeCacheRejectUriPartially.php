@@ -1,29 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\admin;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_reload_cache_reject_uri
- *
- * @group admin
- * @group Options
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_cache_reject_uri_partially
  */
-class Test_RocketReloadCacheRejectUri extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/admin/rocketReloadCacheRejectUri.php';
+class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
+    protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeCacheRejectUriPartially.php';
 
     public function set_up() {
-        require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
         
-        remove_action( 'update_option_wp_rocket_settings', 'rocket_reload_cache_reject_uri' );
-
 		parent::set_up();
 
 		$this->set_permalink_structure( '/%postname%/' );
-
-        add_action( 'update_option_wp_rocket_settings', 'rocket_reload_cache_reject_uri', 10, 2 );
 	}
 
     /**
@@ -42,7 +34,7 @@ class Test_RocketReloadCacheRejectUri extends FilesystemTestCase {
 
             $this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
-            update_option( 'wp_rocket_settings', $config['value'] );
+            do_action('update_option_' . WP_ROCKET_SLUG , $config['old_value'], $config['value']);
 
             $this->checkEntriesDeleted( $expected['cleaned'] );
             $this->checkShouldNotDeleteEntries();

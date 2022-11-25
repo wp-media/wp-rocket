@@ -17,8 +17,9 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->purge = new Purge( $this->filesystem, Mockery::mock( Cache::class ) );
+		
+		$query = $this->createPartialMock(Cache::class, ['query']);
+		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
 	protected function tearDown(): void {

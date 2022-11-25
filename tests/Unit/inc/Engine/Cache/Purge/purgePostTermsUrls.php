@@ -22,7 +22,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->purge = new Purge( $this->filesystem, Mockery::mock( Cache::class ) );
+		$query = $this->createPartialMock(Cache::class, ['query']);
+		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
 	public function tearDown(): void {

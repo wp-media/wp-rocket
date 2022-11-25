@@ -1,33 +1,31 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\admin;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use wpdb;
+use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Logger\Logger;
 
 /**
- * @covers ::rocket_reload_cache_reject_uri
- *
- * @group admin
- * @group Options
+ * @covers \WP_Rocket\Engine\Cache\Purge::purge_cache_reject_uri_partially
+ * 
+ * @group  purge_actions
  */
-class Test_RocketReloadCacheRejectUri extends FilesystemTestCase {
-    protected $path_to_test_data = '/inc/admin/rocketReloadCacheRejectUri.php';
-    private $wpdb;
+class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
+    protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeCacheRejectUriPartially.php';
+
+    private $purge, $query;
 
     protected function setUp(): void {
 		parent::setUp();
 
-        require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/options.php';
-        require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
-
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+        $this->query = $this->createPartialMock(Cache::class, ['query','get_urls_by_regex']);
+		$this->purge = new Purge( $this->filesystem, $this->query );
 	}
 
     protected function tearDown(): void {
-		unset( $GLOBALS['wpdb'] );
-
 		parent::tearDown();
 	}
 
@@ -40,8 +38,10 @@ class Test_RocketReloadCacheRejectUri extends FilesystemTestCase {
             Functions\expect( 'rocket_clean_files' )->never();
         }
         else {
-            if ( isset( $config['db_url_result'] ) ) {
-                $this->wpdb->setTableRows( $config['db_url_result'] );
+            if ( isset( $config['db_url_result'] ) ) {  
+                $this->query->expects(self::atLeastOnce())
+                ->method('get_urls_by_regex')
+                ->willReturn($config['db_url_result']);
             }
 
             foreach ( $config['value']['cache_reject_uri'] as $path ) {
@@ -59,6 +59,6 @@ class Test_RocketReloadCacheRejectUri extends FilesystemTestCase {
             ->andReturnNull();
         }
 
-        rocket_reload_cache_reject_uri( $config['old_value'], $config['value'] );
+        $this->purge->purge_cache_reject_uri_partially( $config['old_value'], $config['value'] );
     }
 }
