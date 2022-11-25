@@ -9,6 +9,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
@@ -21,7 +22,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->purge = new Purge( $this->filesystem );
+		$this->purge = new Purge( $this->filesystem, Mockery::mock( Cache::class ) );
 	}
 
 	public function tearDown(): void {
