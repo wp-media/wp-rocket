@@ -16,6 +16,8 @@ import AdvancedRules from './admin/advanced_rules/index.spec';
 import deactivation from './admin/rocket.deactivation.spec';
 import wpCache from './admin/wp.cache.constant.spec';
 
+import upgradeBanner from './admin/pricing_api/upgrade.from.plugin.spec'
+
 // Test list.
 test.describe('Rocket License', rocketLicense);
 test.describe('Rocket Config File', configFile);
@@ -29,3 +31,5 @@ test.describe('Advanced Rules', AdvancedRules);
 
 test.describe('WPR Deactivation', deactivation);
 test.describe('WP Cache Constant', wpCache);
+
+test.describe('Upgrade banner', upgradeBanner);
