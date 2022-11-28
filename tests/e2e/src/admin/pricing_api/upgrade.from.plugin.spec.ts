@@ -3,12 +3,15 @@ import { expect, test } from '@playwright/test';
 /**
  * Local deps.
  */
-//import { banner } from '../../common/sections/banner';
+import { banner } from '../../common/sections/banner';
 import { pageUtils } from '../../../utils/page.utils';
+
 
 
 const upgradeBanner = () => {
     let page;
+    let bannerObj;
+  
     test.beforeAll(async ({ browser }) => {
         const context = await browser.newContext();
         page = await context.newPage();
@@ -23,6 +26,8 @@ const upgradeBanner = () => {
 
         // Goto WPR settings.
         await page_utils.goto_wpr();
+
+        bannerObj = new banner(page);
     });
 
      test.afterAll(async ({ browser }) => {
@@ -35,28 +40,27 @@ const upgradeBanner = () => {
 
     });
 
-    // test('Should display upgrade banner discount to single license', async () => {
+    test('Should display upgrade banner discount to single license', async () => {
 
-    //     const bannerObj = new banner(page);
+        // Assert that banner displayed with valid discount
+        await expect(bannerObj.locators.promo_dicount).toContainText(bannerObj.txt.sl_discount_percent);
 
-    // // Assert that banner displayed with valid discount
-    // const  txt = await page.locator('//*[@id="rocket-promo-banner"]/div[1]/h3/span').textContent();
-    //  console.log("discounttttttttttttttttttt is "+txt);
-
-    //  await  displayExpectedBanner(page, bannerObj.txt.sl_discount_percent, bannerObj.locators.promo_dicount);
-
-    // });
+    });
 
 
-    // test('Should display upgrade banner title to single license', async () => {
+    test('Should display upgrade banner title to single license', async () => {
 
-    //     const dash_board = new dashboard(page);
+        // Assert that banner displayed with valid msg title
+       await expect(page.locator('text=' + bannerObj.txt.promo_title)).toBeVisible();
 
-    // // Assert that banner displayed with valid msg
+    });
 
-    //   await  displayExpectedBanner(page, bannerObj.txt.promo_title, bannerObj.locators.promo_title);
+    test('Should display upgrade banner message to single license', async () => {
 
-    // });
+        // Assert that banner displayed with valid msg title
+       await expect(page.locator('text=' + bannerObj.txt.sl_upgrade_txt)).toBeVisible();
+
+    });
 }
 
 const displayExpectedBanner = (page, txt, locator) => {
