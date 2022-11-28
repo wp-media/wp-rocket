@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
+use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
  * Service Provider for cache subscribers
@@ -62,7 +63,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->add( 'cache_config', Config\Subscriber::class )
+		$this->getContainer()->add( 'cache_config', ConfigSubscriber::class )
 			->addTag( 'common_subscriber' );
 	}
 }

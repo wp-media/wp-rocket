@@ -146,4 +146,13 @@ if ( isset( $nginx_helper ) ) :
 		do_action( 'rt_nginx_helper_purge_all' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_nginx_helper_cache' );
+
+	/**
+	 * Clean the NGINX cache after the Used CSS has been generated.
+	 *
+	 * @since 3.12.3
+	 */
+	add_action( 'rocket_rucss_after_clearing_usedcss', 'rocket_clean_nginx_cache_url' );
+	add_action( 'rocket_rucss_complete_job_status', 'rocket_clean_nginx_helper_cache' );
+
 endif;

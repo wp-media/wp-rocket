@@ -133,6 +133,11 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
+
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
 		$result = $this->replace_xmp_tags( $html );
 
 		$replaced_html = preg_replace_callback(

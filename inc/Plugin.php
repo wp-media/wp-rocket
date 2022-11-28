@@ -347,6 +347,7 @@ class Plugin {
 			'cache_config',
 			'uncode',
 			'rocket_lazy_load',
+			'cache_config',
 			'the_events_calendar',
 		];
 

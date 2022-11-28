@@ -49,6 +49,7 @@ class UsedCSS extends Table {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
+		add_action( 'init',  [ $this, 'maybe_upgrade' ] );
 	}
 
 	/**
