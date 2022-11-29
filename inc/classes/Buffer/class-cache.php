@@ -678,7 +678,8 @@ class Cache extends Abstract_Buffer {
 		return strtolower( $matches[0] );
 	}
 
-	/** Sanitizes a string key.
+	/**
+	 * Sanitizes a string key.
 	 *
 	 * @param string $key String key.
 	 *
