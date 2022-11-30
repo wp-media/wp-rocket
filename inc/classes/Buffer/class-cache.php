@@ -724,6 +724,6 @@ class Cache extends Abstract_Buffer {
 			}
 		}
 
-		return ! $permalink_last_char === $request_uri_last_char;
+		return $permalink_last_char !== $request_uri_last_char;
 	}
 }
