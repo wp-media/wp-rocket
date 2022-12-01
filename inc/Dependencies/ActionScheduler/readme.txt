@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 6.0
-Stable tag: 3.5.2
+Stable tag: 3.5.3
 License: GPLv3
 Requires PHP: 5.6
 
@@ -46,6 +46,9 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.5.3 - 2022-11-09 =
+* Query actions with partial match.
 
 = 3.5.2 - 2022-09-16 =
 * Fix - erroneous 3.5.1 release.

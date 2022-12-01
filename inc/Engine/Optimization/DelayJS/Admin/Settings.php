@@ -17,6 +17,8 @@ class Settings {
 	private $dynamic_lists;
 
 	/**
+	 * Options instance.
+	 *
 	 * @var Options_Data
 	 */
 	protected $option;
@@ -25,10 +27,11 @@ class Settings {
 	 * Constructor.
 	 *
 	 * @param DynamicLists $dynamic_lists DynamicLists instance.
+	 * @param Options_Data $option Options instance.
 	 */
 	public function __construct( DynamicLists $dynamic_lists, Options_Data $option ) {
 		$this->dynamic_lists = $dynamic_lists;
-		$this->option = $option;
+		$this->option        = $option;
 	}
 
 	/**
@@ -97,8 +100,17 @@ class Settings {
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
 		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
-			$input['delay_js_exclusions_selected']            = [];
+			$input['delay_js_exclusions_selected'] = [];
+		} else {
+			$input['delay_js_exclusions_selected'] = json_decode( $input['delay_js_exclusions_selected'] );
+
+		}
+
+		if ( empty( $input['delay_js_exclusions_selected_exclusions'] ) ) {
 			$input['delay_js_exclusions_selected_exclusions'] = [];
+		} else {
+			$input['delay_js_exclusions_selected_exclusions'] = json_decode( $input['delay_js_exclusions_selected_exclusions'] );
+
 		}
 
 		return $input;
@@ -224,7 +236,6 @@ class Settings {
 	 */
 	public function refresh_exclusions_option() {
 		$current_selected_exclusions_selected_exclusion = get_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
-
 		if ( empty( $current_selected_exclusions_selected_exclusion ) ) {
 			update_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
 
