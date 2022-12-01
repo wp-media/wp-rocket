@@ -13,6 +13,13 @@ use stdClass;/**
  *     @type string $value           Field value.
  *     @type string $description     Field description.
  *     @type array $items            Exclusion list.
+ *     @type array $items            Exclusion list.
+ *     @type array $wp_rocket_scripts Script exclusion list.
+ *     @type array $wp_rocket_themes Theme exclusion list.
+ *     @type array $wp_rocket_plugins Plugin exclusion list.
+ *     @type array $wp_rocket_textarea Textarea exclusion list.
+ *     @type array $wp_rocket_select_exclusions Selected exclusion list values.
+ *     @type array $wp_rocket_state Currently exclusion list.
  *     @type array  $options {
  *          Option options.
  *
@@ -25,25 +32,6 @@ use stdClass;/**
  */
 
 defined( 'ABSPATH' ) || exit;
-
-$wp_rocket_items = key_exists( 'items', $data ) ? $data['items'] : new stdClass();
-
-$wp_rocket_scripts = property_exists( $wp_rocket_items, 'scripts' ) ? $wp_rocket_items->scripts : new stdClass();
-
-$wp_rocket_themes = property_exists( $wp_rocket_items, 'themes' ) ? $wp_rocket_items->themes : new stdClass();
-
-$wp_rocket_plugins = property_exists( $wp_rocket_items, 'plugins' ) ? $wp_rocket_items->plugins : new stdClass();
-
-$wp_rocket_textarea = get_rocket_option( esc_attr( $data['id'] ) );
-if ( is_array( $wp_rocket_textarea ) ) {
-	$wp_rocket_textarea = implode( "\n", $wp_rocket_textarea );
-}
-
-$wp_rocket_select            = get_rocket_option( esc_attr( $data['id'] ) . '_selected' );
-$wp_rocket_select_exclusions = get_rocket_option( esc_attr( $data['id'] ) . '_selected_exclusions' );
-$wp_rocket_state             = json_decode( $wp_rocket_select );
-
-$wp_rocket_state = $wp_rocket_state ?: [];
 
 /**
  * Fetch the icon.
@@ -155,8 +143,8 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 	render_list(
 		esc_html( __( 'Analytics & Ads', 'rocket' ) ),
 		esc_attr( $data['id'] ) . '_ads',
-		$wp_rocket_scripts,
-		$wp_rocket_state,
+		$data['wp_rocket_scripts'],
+		$data['wp_rocket_state'],
 		true
 		);
 	?>
@@ -165,8 +153,8 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 	render_list(
 		esc_html( __( 'Plugins', 'rocket' ) ),
 		esc_attr( $data['id'] ) . '_plugins',
-		$wp_rocket_themes,
-		$wp_rocket_state
+		$data['wp_rocket_themes'],
+		$data['wp_rocket_state']
 	);
 	?>
 
@@ -174,8 +162,8 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 	render_list(
 		esc_html( __( 'Themes', 'rocket' ) ),
 		esc_attr( $data['id'] ) . '_themes',
-		$wp_rocket_plugins,
-		$wp_rocket_state
+		$data['wp_rocket_plugins'],
+		$data['wp_rocket_state']
 	);
 	?>
 
@@ -189,10 +177,10 @@ function render_list( string $title, string $input_name, stdClass $list, array $
 				<?php
 				echo esc_html( __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ) );
 				?>
-			"><?php echo esc_textarea( $wp_rocket_textarea ); ?></textarea>
+			"><?php echo esc_textarea( $data['wp_rocket_textarea'] ); ?></textarea>
 		</div>
 	</div>
 
-	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected]" type="hidden" value='<?php echo esc_attr( $wp_rocket_select ); ?>'/>
-	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected_exclusions]" type="hidden" value='<?php echo esc_attr( $wp_rocket_select_exclusions ); ?>'/>
+	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected]" type="hidden" value='<?php echo esc_attr( wp_json_encode( $data['wp_rocket_state'] ) ); ?>'/>
+	<input name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>_selected_exclusions]" type="hidden" value='<?php echo esc_attr( wp_json_encode( $data['wp_rocket_select_exclusions'] ) ); ?>'/>
 </div>
