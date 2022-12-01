@@ -31,12 +31,14 @@ class ConfigSubscriber implements Subscriber_Interface {
 			return $patterns;
 		}
 
-		return array_map(
-		function ( $uri ) {
-			return user_trailingslashit( $uri );
-		},
-		$patterns
-		);
+		$patterns = array_map(
+			function ( $uri ) {
+				return user_trailingslashit( $uri );
+			},
+			$patterns
+			);
+
+		return $patterns;
 	}
 
 	/**
