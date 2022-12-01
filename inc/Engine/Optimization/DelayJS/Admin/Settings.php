@@ -17,12 +17,18 @@ class Settings {
 	private $dynamic_lists;
 
 	/**
+	 * @var Options_Data
+	 */
+	protected $option;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param DynamicLists $dynamic_lists DynamicLists instance.
 	 */
-	public function __construct( DynamicLists $dynamic_lists ) {
+	public function __construct( DynamicLists $dynamic_lists, Options_Data $option ) {
 		$this->dynamic_lists = $dynamic_lists;
+		$this->option = $option;
 	}
 
 	/**
@@ -39,8 +45,8 @@ class Settings {
 		$options = (array) $options;
 
 		$options['delay_js']                                = 0;
-		$options['delay_js_exclusions_selected']            = '';
-		$options['delay_js_exclusions_selected_exclusions'] = '';
+		$options['delay_js_exclusions_selected']            = [];
+		$options['delay_js_exclusions_selected_exclusions'] = [];
 		$options['delay_js_exclusions']                     = [];
 
 		return $options;
@@ -61,7 +67,7 @@ class Settings {
 			return;
 		}
 
-		$options = get_option( 'wp_rocket_settings', [] );
+		$options = $this->option->get( 'wp_rocket_settings', [] );
 
 		$options['delay_js_exclusions'] = [];
 
@@ -91,8 +97,8 @@ class Settings {
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
 		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
-			$input['delay_js_exclusions_selected']            = '';
-			$input['delay_js_exclusions_selected_exclusions'] = '';
+			$input['delay_js_exclusions_selected']            = [];
+			$input['delay_js_exclusions_selected_exclusions'] = [];
 		}
 
 		return $input;
@@ -217,10 +223,10 @@ class Settings {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$current_selected_exclusions_selected_exclusion = get_rocket_option( 'delay_js_exclusions_selected_exclusions', '' );
+		$current_selected_exclusions_selected_exclusion = get_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
 
 		if ( empty( $current_selected_exclusions_selected_exclusion ) ) {
-			update_rocket_option( 'delay_js_exclusions_selected_exclusions', '' );
+			update_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
 
 			return;
 		}

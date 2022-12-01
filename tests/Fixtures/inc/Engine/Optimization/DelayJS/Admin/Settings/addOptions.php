@@ -7,8 +7,8 @@ return [
 		],
 		'expected' => [
 			'delay_js'            => 0,
-			'delay_js_exclusions_selected' => '',
-			'delay_js_exclusions_selected_exclusions' => '',
+			'delay_js_exclusions_selected' => [],
+			'delay_js_exclusions_selected_exclusions' => [],
 			'delay_js_exclusions' => [],
 		]
 	],
@@ -19,8 +19,8 @@ return [
 		'expected' => [
 			'test_option',
 			'delay_js'            => 0,
-			'delay_js_exclusions_selected' => '',
-			'delay_js_exclusions_selected_exclusions' => '',
+			'delay_js_exclusions_selected' => [],
+			'delay_js_exclusions_selected_exclusions' => [],
 			'delay_js_exclusions' => [],
 		]
 	],
@@ -36,8 +36,8 @@ return [
 		'expected' => [
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
-			'delay_js_exclusions_selected' => '',
-			'delay_js_exclusions_selected_exclusions' => ''
+			'delay_js_exclusions_selected' => [],
+			'delay_js_exclusions_selected_exclusions' => []
 		]
 	],
 	'shouldNotOverrideOtherOptions' => [
@@ -54,8 +54,8 @@ return [
 			'test_option'         => 1,
 			'delay_js'            => 0,
 			'delay_js_exclusions' => [],
-			'delay_js_exclusions_selected' => '',
-			'delay_js_exclusions_selected_exclusions' => ''
+			'delay_js_exclusions_selected' => [],
+			'delay_js_exclusions_selected_exclusions' => []
 		]
 	],
 ];
