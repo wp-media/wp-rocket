@@ -157,7 +157,7 @@ class HTML {
 	 */
 	private function parse( $html ): string {
 		$replaced_html = preg_replace_callback(
-			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
+			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
 			[
 				$this,
 				'replace_scripts',
@@ -206,12 +206,14 @@ class HTML {
 		}
 
 		$matches['attr'] = preg_replace( $type_regex, 'data-rocket-type=$1$2$1', $matches['attr'] );
+		// To remove type attribute without any value.
+		$matches['attr'] = preg_replace( '/(\s+type\s+)|(^type\s+)|(\s+type$)/i', '', $matches['attr'] );
 
 		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
 		$src_regex = '/src\s*=\s*(["\'])(.*)\1/i';
 		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
 
-		return '<script type="rocketlazyloadscript" ' . $matches['attr'] . '>' . $matches['content'] . '</script>';
+		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
 
 	/**
