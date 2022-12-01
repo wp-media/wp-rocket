@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.3.0
  *
  * @param string $option  The option name.
- * @param bool   $default (default: false) The default value of option.
+ * @param mixed  $default (default: false) The default value of option.
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -234,6 +234,13 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 	if ( ! $uris ) {
 		return '';
 	}
+
+	$uris = array_map(
+		function ( $uri ) {
+			return user_trailingslashit( $uri );
+		},
+		$uris
+		);
 
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {

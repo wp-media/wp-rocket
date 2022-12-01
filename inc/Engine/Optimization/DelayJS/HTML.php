@@ -5,8 +5,10 @@ namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class HTML {
+	use RegexTrait;
 	/**
 	 * Plugin options instance.
 	 *
@@ -156,20 +158,25 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
+
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
+		$result = $this->replace_xmp_tags( $html );
+
 		$replaced_html = preg_replace_callback(
 			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
 			[
 				$this,
 				'replace_scripts',
 			],
-			$html
+			$result
 		);
-
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
-
-		return $replaced_html;
+		return $this->restore_xmp_tags( $replaced_html );
 	}
 
 	/**
@@ -215,6 +222,7 @@ class HTML {
 
 		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
+
 
 	/**
 	 * Move meta charset to head if not found to the top of page content.
