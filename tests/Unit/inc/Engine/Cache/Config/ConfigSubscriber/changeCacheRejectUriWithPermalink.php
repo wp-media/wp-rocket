@@ -21,12 +21,12 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $settings, $expected ) {
-		if ( isset( $settings['permalink'] ) ) {
-			$maybe_trailing_slash = $settings['permalink']['trailing_slash'] ? '/' : '';
+	public function testShouldReturnExpected( $config, $expected ) {
+		if ( isset( $config['permalink'] ) ) {
+			$maybe_trailing_slash = $config['permalink']['trailing_slash'] ? '/' : '';
 			$return_values = [
-				$settings['new_value']['cache_reject_uri'][0] . $maybe_trailing_slash,
-				$settings['new_value']['cache_reject_uri'][1] . $maybe_trailing_slash,
+				$config['value']['cache_reject_uri'][0] . $maybe_trailing_slash,
+				$config['value']['cache_reject_uri'][1] . $maybe_trailing_slash,
 			];
 
 			Functions\expect('user_trailingslashit')
@@ -36,7 +36,7 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 
 		$this->assertSame( 
 			$expected,
-			$this->config_subscriber->change_cache_reject_uri_with_permalink( $settings['new_value'], $settings['old_value'] ) 
+			$this->config_subscriber->change_cache_reject_uri_with_permalink( $config['value'], $config['old_value'] ) 
 		);
 	}
 }
