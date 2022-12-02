@@ -52,6 +52,7 @@ class HTML {
 		'text/javascript1.4',
 		'text/javascript1.5',
 		'text/jscript',
+		'application/jscript',
 		'text/livescript',
 		'text/x-ecmascript',
 		'text/x-javascript',

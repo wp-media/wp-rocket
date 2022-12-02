@@ -491,7 +491,7 @@ if ( window.addEventListener ) {
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
 </script>
-<script id="print-helloworld" type="application/jscript">
+<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="application/jscript">
 	console.log("Hello world application/jscript!");
 </script>
 <script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
@@ -738,7 +738,7 @@ if ( window.addEventListener ) {
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
 </script>
-<script id="print-helloworld" type="application/jscript">
+<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="application/jscript">
 	console.log("Hello world application/jscript!");
 </script>
 <script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
