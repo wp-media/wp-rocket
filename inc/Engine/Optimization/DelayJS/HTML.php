@@ -218,7 +218,7 @@ class HTML {
 		$matches['attr'] = preg_replace( '/(\s+type\s+)|(^type\s+)|(\s+type$)/i', '', $matches['attr'] );
 
 		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
-		$src_regex = '/src\s*=\s*(["\'])(.*)\1/i';
+		$src_regex       = '/src\s*=\s*(["\'])(.*)\1/i';
 		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
 
 		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
