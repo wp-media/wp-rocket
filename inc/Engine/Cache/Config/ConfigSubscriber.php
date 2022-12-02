@@ -15,8 +15,8 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'permalink_structure_changed'        => 'regenerate_config_file',
-			'get_rocket_option_cache_reject_uri' => 'match_pattern_with_permalink_structure',
+			'permalink_structure_changed'         => 'regenerate_config_file',
+			'pre_update_option_' . WP_ROCKET_SLUG => [ 'change_cache_reject_uri_with_permalink', 10, 2 ],
 		];
 	}
 
@@ -47,6 +47,25 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function regenerate_config_file() {
+		$cache_reject_uri = $this->match_pattern_with_permalink_structure( get_rocket_option( 'cache_reject_uri', [] ) );
+		update_rocket_option( 'cache_reject_uri', $cache_reject_uri );
+
 		rocket_generate_config_file();
+	}
+
+	/**
+	 * Modify cache_reject_uri values.
+	 *
+	 * @param array $value New values.
+	 * @param array $old_value Old values.
+	 * @return array
+	 */
+	public function change_cache_reject_uri_with_permalink( array $value, array $old_value ): array {
+		if ( $old_value['cache_reject_uri'] === $value['cache_reject_uri'] ) {
+			return $value;
+		}
+
+		$value['cache_reject_uri'] = $this->match_pattern_with_permalink_structure( $value['cache_reject_uri'] );
+		return $value;
 	}
 }
