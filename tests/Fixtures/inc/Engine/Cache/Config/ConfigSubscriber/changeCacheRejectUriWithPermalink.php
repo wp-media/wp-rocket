@@ -1,16 +1,6 @@
 <?php
 $oldValue = [
-    'cache_mobile'        => true,
-    'purge_cron_interval' => true,
-    'purge_cron_unit'     => true,
-    'minify_css'          => false,
-    'exclude_css'         => '',
-    'minify_js'           => false,
-    'exclude_js'          => '',
-    'analytics_enabled'   => '',
-    'cdn'                 => false,
-    'cdn_cnames'          => false,
-    'cache_reject_uri'    => []
+    'cache_reject_uri'    => [],
 ];
 
 $oldValue['cache_reject_uri'] = [
@@ -32,16 +22,16 @@ $oldValue['cache_reject_uri'] = [];
 
 return [
     'testShouldReturnEmptyArrayWhenCacheRejectUriValueIsEmpty' => [
-        'settings' => [
+        'config' => [
             'old_value' => $oldValue,
-            'new_value' => $oldValue,
+            'value' => $oldValue,
         ],
         'expected' => $oldValue,
     ],
     'testShouldMatchCacheRejectUriPatternsWithPermalinkStructureHavingTrailingSlash' => [
-        'settings' => [
+        'config' => [
             'old_value' => $oldValue,
-            'new_value' => $newValue,
+            'value' => $newValue,
             'permalink' => [
                 'trailing_slash' => true,
                 'structure' => '/%postname%/',
@@ -50,9 +40,9 @@ return [
         'expected' => $newValueWithTrailingSlahsInCacheRejectUriPatterns,
     ],
     'testShouldMatchCacheRejecturiPatternsWithPermalinkStructureHavingNoTrailingSlash' => [
-        'settings' => [
+        'config' => [
             'old_value' => $oldValue,
-            'new_value' => $newValue,
+            'value' => $newValue,
             'permalink' => [
                 'trailing_slash' => false,
                 'structure' => '/%postname%',
