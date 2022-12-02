@@ -220,11 +220,7 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$site_name = get_rocket_parse_url( get_home_url() );
-	$site_name = $site_name['host'] . $site_name['path'];
-	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	$gz        = 'gz' . strrev( 'etalfed' );
-	$options   = wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ); // do not use get_rocket_option() here.
+	list( $filename, $options ) = rocket_export_options();
 	nocache_headers();
 	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -235,6 +231,18 @@ function rocket_do_options_export() {
 	exit();
 }
 add_action( 'admin_post_rocket_export', 'rocket_do_options_export' );
+
+/**
+ * Export settings into JSON.
+ *
+ * @return array
+ */
+function rocket_export_options() {
+	$site_name = get_rocket_parse_url( get_home_url() );
+	$site_name = $site_name['host'] . $site_name['path'];
+	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+	return [$filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT )]; // do not use get_rocket_option() here.
+}
 
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );

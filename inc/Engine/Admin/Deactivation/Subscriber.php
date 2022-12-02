@@ -77,6 +77,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$mode = isset( $_POST['mode'] ) ? sanitize_key( $_POST['mode'] ) : '';
+		$export_settings = isset( $_POST['export_settings'] ) ? true : false;
+
+		if( $export_settings ) {
+			list( $filename, $options ) = rocket_export_options();
+		}
 
 		if ( 'safe_mode' === $mode ) {
 				$this->deactivation->activate_safe_mode();
@@ -86,6 +91,17 @@ class Subscriber implements Subscriber_Interface {
 			$this->deactivation->deactivate_and_snooze( $snooze );
 
 			$referer = add_query_arg( 'deactivate', '1', $referer );
+		}
+
+		if ( $export_settings ) {
+			nocache_headers();
+			@header( 'Content-Type: application/json' );
+			@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+			@header( 'Content-Transfer-Encoding: binary' );
+			@header( 'Content-Length: ' . strlen( $options ) );
+			@header( 'Connection: close' );
+			echo $options;
+			exit();
 		}
 
 		wp_safe_redirect( $referer );

@@ -47,6 +47,10 @@ defined( 'ABSPATH' ) || exit;
 								);
 								?>
 							</label>
+							<input type="checkbox" id="export_settings" name="export_settings" checked="checked" />
+							<label for="export_settings">
+								<?php esc_html_e( 'and export WP Rocket settings', 'rocket' ); ?>
+							</label>
 						</li>
 						<li>
 							<input type="radio" id="deactivate" value="deactivate" name="mode" /><label for="deactivate"><?php esc_html_e( 'No, deactivate and snooze this message for', 'rocket' ); ?></label>
