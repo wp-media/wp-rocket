@@ -1,5 +1,15 @@
 <?php
 $oldValue = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
     'cache_reject_uri'    => [],
 ];
 

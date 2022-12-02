@@ -12,7 +12,8 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		if ( isset( $settings['permalink'] ) ) {
+        
+		if ( isset( $config['permalink'] ) ) {
             $this->set_permalink_structure( $config['permalink']['structure'] );
 		}
 
