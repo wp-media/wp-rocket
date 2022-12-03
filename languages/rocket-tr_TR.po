@@ -3804,7 +3804,7 @@ msgstr "Onayla"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr "Dahil Etme ve HariÃ§ Tutma Listelerini GÃ¼ncelle"
+msgstr "Dahil Etme ve HariÃ§ Tutma Listelerini gÃ¼ncelleyin"
 
 #: views/settings/dynamic-lists-update.php:19
 #, php-format
