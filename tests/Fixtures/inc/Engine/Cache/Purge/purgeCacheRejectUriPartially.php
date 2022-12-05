@@ -60,13 +60,6 @@ return [
 	],
 
     'test_data' => [
-        'testShouldBailOutIfSettingNotArray' => [
-            'config' => [
-                'old_value' => '',
-                'value' => [],
-            ],
-            'expected' => [],
-        ],
         'testShouldBailOutIfCacheRejectUriNotInSettings' => [
             'config' => [
                 'old_value' => $settings,
@@ -86,8 +79,14 @@ return [
                 'old_value' => $settings_with_cache_reject_uri,
                 'value' => $settings_with_pattern_in_cache_reject_uri_changed,
                 'db_url_result' => [
-                    ['https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius'],
-                    ['https://example.org/2022/11/15/dolorem-sed-consequatur-et-in-accusantium'],
+                    (object) [
+                       'url' => 'https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius',
+                       'status' => 'completed',
+                    ],
+                    (object) [
+                       'url' => 'https://example.org/2022/11/15/dolorem-sed-consequatur-et-in-accusantium',
+                       'status' => 'completed',
+                    ],
                 ],
                 'urls' => [
                     'https://example.org/hello-world/',

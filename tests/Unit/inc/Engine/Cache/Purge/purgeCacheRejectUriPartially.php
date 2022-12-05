@@ -21,7 +21,7 @@ class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
     protected function setUp(): void {
 		parent::setUp();
 
-        $this->query = $this->createPartialMock(Cache::class, ['query','get_urls_by_regex']);
+        $this->query = $this->createPartialMock(Cache::class, ['query']);
 		$this->purge = new Purge( $this->filesystem, $this->query );
 	}
 
@@ -40,7 +40,7 @@ class Test_PurgeCacheRejectUriPartially extends FilesystemTestCase {
         else {
             if ( isset( $config['db_url_result'] ) ) {  
                 $this->query->expects(self::atLeastOnce())
-                ->method('get_urls_by_regex')
+                ->method('query')
                 ->willReturn($config['db_url_result']);
             }
 
