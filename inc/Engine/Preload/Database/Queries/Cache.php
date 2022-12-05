@@ -251,22 +251,6 @@ class Cache extends Query {
 	}
 
 	/**
-	 * Get urls that match regex pattern.
-	 *
-	 * @param string $regex Regular Expression.
-	 * @return array
-	 */
-	public function get_urls_by_regex( string $regex ): array {
-		$db = $this->get_db();
-
-		$prefixed_table_name = $db->prefix . $this->table_name;
-		$query               = "SELECT `url` FROM `$prefixed_table_name` WHERE `status` = 'completed' AND `url` REGEXP '$regex'";
-		$results             = $db->get_results( $query, ARRAY_N );
-
-		return $results;
-	}
-
-	/**
 	 * Delete DB row by url.
 	 *
 	 * @param string $url Page url to be deleted.
