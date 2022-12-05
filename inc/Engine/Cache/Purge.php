@@ -264,12 +264,7 @@ class Purge {
 	 * @param array $value An array of submitted values for the settings.
 	 * @return void
 	 */
-	public function purge_cache_reject_uri_partially( $old_value, $value ): void {
-		// Bail out if setting is not array.
-		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
-			return;
-		}
-
+	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
 		// Bail out if cache_reject_uri key is not in the settings array.
 		if ( ! array_key_exists( 'cache_reject_uri', $old_value ) || ! array_key_exists( 'cache_reject_uri', $value ) ) {
 			return;
@@ -283,23 +278,30 @@ class Purge {
 			return;
 		}
 
-		$urls = [];
-
+		$urls     = [];
+		$wildcard = '(.*)';
 		foreach ( $diff as $path ) {
 			// Check if string is a path or pattern.
-			if ( ! (bool) preg_match( '#/[a-z0-9]+(?:-[a-z0-9]+)*(/|)$#', $path ) ) {
-				$results = $this->query->get_urls_by_regex( $path );
+			if ( strpos( $path, $wildcard ) !== false ) {
+				$pattern = str_replace( '(.*)', '*', $path );
+				$results = $this->query->query(
+					[
+						'search'         => $pattern,
+						'search_columns' => [ 'url' ],
+						'status'         => 'completed',
+					]
+				);
 
-				foreach ( $results as $url ) {
-					$urls[] = $url[0];
+				foreach ( $results as $result ) {
+					$urls[] = $result->url;
 				}
 
 				continue;
 			}
+
 			// Get full url of never cache path.
 			$urls[] = home_url( $path );
 		}
-
 		rocket_clean_files( array_unique( $urls ) );
 	}
 }
