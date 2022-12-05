@@ -149,7 +149,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="application/javascript">alert("application/javascript");</script>
 <script type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="application/jscript">alert("application/jscript");</script>
 <script type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -243,12 +242,6 @@ if ( window.addEventListener ) {
 <script>
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
-</script>
-<script id="print-helloworld" type="application/jscript">
-	console.log("Hello world application/jscript!");
-</script>
-<script id="print-helloworld" type="text/javascript">
-	console.log("Hello world application/jscript!");
 </script>
 <script>'.$big_js.'</script>
 <xmp><script>alert("test")</script></xmp>
@@ -396,7 +389,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -490,12 +482,6 @@ if ( window.addEventListener ) {
 <script>
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
-</script>
-<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="application/jscript">
-	console.log("Hello world application/jscript!");
-</script>
-<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
-	console.log("Hello world application/jscript!");
 </script>
 <script type="rocketlazyloadscript">'.$big_js.'</script>
 <xmp><script>alert("test")</script></xmp>
@@ -643,7 +629,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -737,12 +722,6 @@ if ( window.addEventListener ) {
 <script>
 window.wsf_form_json_config = {};
 var FuseboxPlayerAPIKey = "";
-</script>
-<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="application/jscript">
-	console.log("Hello world application/jscript!");
-</script>
-<script type="rocketlazyloadscript" id="print-helloworld" data-rocket-type="text/javascript">
-	console.log("Hello world application/jscript!");
 </script>
 <script type="rocketlazyloadscript">'.$big_js.'</script>
 <xmp><script>alert("test")</script></xmp>
