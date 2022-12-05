@@ -2,11 +2,38 @@
 namespace WP_Rocket\Engine\Cache\Config;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options;
 
 /**
  * Subscriber for the Cache Config
  */
 class ConfigSubscriber implements Subscriber_Interface {
+
+	/**
+	 * Options Data instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * Creates an instance of the Cache Config Subscriber.
+	 *
+	 * @param Options_Data $options     WP Rocket options instance.
+	 * @param Options      $options_api Options instance.
+	 */
+	public function __construct( Options_Data $options, Options $options_api ) {
+		$this->options     = $options;
+		$this->options_api = $options_api;
+	}
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -47,8 +74,10 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function regenerate_config_file() {
-		$cache_reject_uri = $this->match_pattern_with_permalink_structure( get_rocket_option( 'cache_reject_uri', [] ) );
-		update_rocket_option( 'cache_reject_uri', $cache_reject_uri );
+		$cache_reject_uri = $this->match_pattern_with_permalink_structure( $this->options->get( 'cache_reject_uri', [] ) );
+
+		$this->options->set( 'cache_reject_uri', $cache_reject_uri );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		rocket_generate_config_file();
 	}

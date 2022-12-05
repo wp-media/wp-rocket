@@ -64,6 +64,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->add( 'cache_config', ConfigSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addTag( 'common_subscriber' );
 	}
 }
