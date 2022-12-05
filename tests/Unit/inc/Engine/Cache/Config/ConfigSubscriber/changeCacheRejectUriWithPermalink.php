@@ -2,8 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Config\ConfigSubscriber;
 
+use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
@@ -15,7 +18,9 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 		
-		$this->config_subscriber = new ConfigSubscriber();
+		$options_data = Mockery::mock( Options_Data::class );
+		$options      = Mockery::mock( Options::class );
+		$this->config_subscriber = new ConfigSubscriber( $options_data, $options );
 	}
 
 	/**
