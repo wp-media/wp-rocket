@@ -4,8 +4,8 @@ namespace WP_Rocket\Engine\Admin\API;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements Subscriber_Interface
-{
+class Subscriber implements Subscriber_Interface {
+
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -13,11 +13,10 @@ class Subscriber implements Subscriber_Interface
 	 *
 	 * @return string[]
 	 */
-	public static function get_subscribed_events()
-	{
+	public static function get_subscribed_events() {
 		return [
 			'rest_api_init'         => 'register_route',
-			'admin_enqueue_scripts' => ['enqueue_url', 999],
+			'admin_enqueue_scripts' => [ 'enqueue_url', 999 ],
 		];
 	}
 
@@ -32,7 +31,7 @@ class Subscriber implements Subscriber_Interface
 			'wpr-admin-common',
 			'rocket_option_export',
 			[
-				'rest_url_option_export' => rest_url( "wp-rocket/v1/options/export/" ),
+				'rest_url_option_export' => rest_url( 'wp-rocket/v1/options/export/' ),
 			]
 		);
 	}
@@ -43,11 +42,15 @@ class Subscriber implements Subscriber_Interface
 	 * @return void
 	 */
 	public function register_route() {
-		register_rest_route(self::ROUTE_NAMESPACE, '/options/export', [
-			'methods' => 'GET',
-			'callback' => [$this, 'export_options'],
-			'permissions' => [$this, 'has_permissions']
-		] );
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			'/options/export',
+			[
+				'methods'     => 'GET',
+				'callback'    => [ $this, 'export_options' ],
+				'permissions' => [ $this, 'has_permissions' ],
+			]
+			);
 	}
 
 	/**
@@ -59,12 +62,12 @@ class Subscriber implements Subscriber_Interface
 		list( $filename, $options ) = rocket_export_options();
 
 		nocache_headers();
-		@header( 'Content-Type: application/json' );
-		@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
-		@header( 'Content-Transfer-Encoding: binary' );
-		@header( 'Content-Length: ' . strlen( $options ) );
-		@header( 'Connection: close' );
-		echo $options;
+		@header( 'Content-Type: application/json' ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( 'Content-Disposition: attachment; filename="' . $filename . '"' ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( 'Content-Transfer-Encoding: binary' ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( 'Content-Length: ' . strlen( $options ) ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@header( 'Connection: close' ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		echo $options; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit();
 	}
 

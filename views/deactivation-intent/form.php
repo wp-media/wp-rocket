@@ -33,8 +33,11 @@ defined( 'ABSPATH' ) || exit;
 					?>
 				</p>
 				<p><strong><?php esc_html_e( 'Do you want to use our Safe Mode to troubleshoot WP Rocket?', 'rocket' ); ?></strong></p>
-				<form id="wpr-deactivation-intent-form" method="post" action="<?php echo esc_attr( $data['form_action']
-				); ?>">
+				<form id="wpr-deactivation-intent-form" method="post" action="
+				<?php
+					echo esc_attr( $data['form_action'] );
+				?>
+				">
 					<ul>
 						<li>
 							<input type="radio" id="safe_mode" value="safe_mode" name="mode" checked />

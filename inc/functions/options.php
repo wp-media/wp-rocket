@@ -31,7 +31,7 @@ function rocket_export_options() {
 	$site_name = get_rocket_parse_url( get_home_url() );
 	$site_name = $site_name['host'] . $site_name['path'];
 	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	return [$filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT )]; // do not use get_rocket_option() here.
+	return [ $filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ) ]; // do not use get_rocket_option() here.
 }
 
 /**
