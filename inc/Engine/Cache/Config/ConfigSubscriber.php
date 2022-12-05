@@ -56,8 +56,8 @@ class ConfigSubscriber implements Subscriber_Interface {
 	/**
 	 * Modify cache_reject_uri values.
 	 *
-	 * @param array|mixed $value New values.
-	 * @param array|mixed $old_value Old values.
+	 * @param mixed $value The new, unserialized option value.
+	 * @param mixed $old_value The old option value.
 	 * @return array
 	 */
 	public function change_cache_reject_uri_with_permalink( $value, $old_value ): array {
