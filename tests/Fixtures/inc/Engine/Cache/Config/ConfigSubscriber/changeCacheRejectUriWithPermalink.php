@@ -26,8 +26,12 @@ $newValue['cache_reject_uri'] = array_map( function( $pattern ){
 }, $newValue['cache_reject_uri'] );
 $newValueWithTrailingSlahsInCacheRejectUriPatterns = $newValue;
 
-// Restore settings.
 $newValue = $oldValue;
+
+$oldValue['cache_reject_uri'][1] = '/';
+$newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash = $oldValue;
+
+// Restore settings.
 $oldValue['cache_reject_uri'] = [];
 
 return [
@@ -59,5 +63,16 @@ return [
             ],
         ],
         'expected' => $newValue,
+    ],
+    'testShouldNotRemoveTrailingSlashOnSingleLineInCacheRejectUriPatternsWithPermalinkHavingNoTrailingSlash' => [
+        'config' => [
+            'old_value' => $oldValue,
+            'value' => $newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash,
+            'permalink' => [
+                'trailing_slash' => false,
+                'structure' => '/%postname%',
+            ],
+        ],
+        'expected' => $newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash,
     ],
 ];
