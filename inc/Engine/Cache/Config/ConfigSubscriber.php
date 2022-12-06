@@ -60,7 +60,11 @@ class ConfigSubscriber implements Subscriber_Interface {
 
 		$patterns = array_map(
 			function ( $uri ) {
-				return '/' !== $uri ? user_trailingslashit( $uri ) : $uri;
+				if ( false !== strpos( $uri, 'index.php' ) || '/' === $uri ) {
+					return $uri;
+				}
+
+				return user_trailingslashit( $uri );
 			},
 			$patterns
 			);
