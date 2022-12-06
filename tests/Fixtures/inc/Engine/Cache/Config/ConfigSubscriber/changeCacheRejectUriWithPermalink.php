@@ -31,6 +31,18 @@ $newValue = $oldValue;
 $oldValue['cache_reject_uri'][1] = '/';
 $newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash = $oldValue;
 
+$oldValue['cache_reject_uri'] = [
+    '/hello-world',
+    '/index.php(.*)',
+];
+$newValueWithIndexInCacheRejectUriPatternsWithPermalinks = $oldValue;
+
+$oldValue['cache_reject_uri'] = [
+    '/hello-world/',
+    '/index.php(.*)',
+];
+$expectedValueWithIndexInCacheRejectUriPatternsWithPermalinksHavingTrailingSlash = $oldValue;
+
 // Restore settings.
 $oldValue['cache_reject_uri'] = [];
 
@@ -74,5 +86,16 @@ return [
             ],
         ],
         'expected' => $newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash,
+    ],
+    'testShouldNotAddTrailingSlashToPatternWithIndexInCacheRejectUriWithPermalinkHavingTrailingSlash' => [
+        'config' => [
+            'old_value' => $oldValue,
+            'value' => $newValueWithIndexInCacheRejectUriPatternsWithPermalinks,
+            'permalink' => [
+                'trailing_slash' => true,
+                'structure' => '/%postname%/',
+            ],
+        ],
+        'expected' => $expectedValueWithIndexInCacheRejectUriPatternsWithPermalinksHavingTrailingSlash,
     ],
 ];

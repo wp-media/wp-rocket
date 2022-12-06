@@ -28,16 +28,19 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$return_values = [];
-		
+
 		if ( isset( $config['permalink'] ) ) {
-			$times = 1;
+			$times = 2;
 			$maybe_trailing_slash = $config['permalink']['trailing_slash'] ? '/' : '';
 
 			$return_values[] = $config['value']['cache_reject_uri'][0] . $maybe_trailing_slash;
 
-			if ( '/' !== $config['value']['cache_reject_uri'][1] ) {
+			if ( false !== strpos( $config['value']['cache_reject_uri'][1], 'index.php' ) || '/' === $config['value']['cache_reject_uri'][1] ) {
+				unset( $return_values[1] );
+				$times = 1;
+			}
+			else{
 				$return_values[] = $config['value']['cache_reject_uri'][1] . $maybe_trailing_slash;
-				$times = 2;
 			}
 
 			Functions\expect('user_trailingslashit')
