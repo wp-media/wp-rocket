@@ -21,6 +21,8 @@ abstract class AbstractDataManager {
 	 */
 	protected $cache_duration = WEEK_IN_SECONDS;
 
+	private $list = [];
+
 	/**
 	 * Instantiate the class
 	 *
@@ -50,9 +52,14 @@ abstract class AbstractDataManager {
 	 * @return object
 	 */
 	public function get_lists() {
+		if ( ! empty( $this->list ) ) {
+			return $this->list;
+		}
+
 		$transient = get_transient( $this->get_cache_transient_name() );
 
 		if ( false !== $transient ) {
+			$this->list = $transient;
 			return $transient;
 		}
 
@@ -156,5 +163,6 @@ abstract class AbstractDataManager {
 	 */
 	private function set_lists_cache( $content ) {
 		set_transient( $this->get_cache_transient_name(), $content, $this->cache_duration );
+		$this->list = $content;
 	}
 }

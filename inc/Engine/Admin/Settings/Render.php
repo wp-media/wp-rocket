@@ -322,22 +322,13 @@ class Render extends Abstract_render {
 		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 		$args['items'] = empty( $args['items'] ) ? new stdClass() : $args['items'];
 
-		$args['wp_rocket_scripts'] = property_exists( $args['items'], 'scripts' ) ? $args['items']->scripts : new stdClass();
-
-		$args['wp_rocket_themes'] = property_exists( $args['items'], 'themes' ) ? $args['items']->themes : new stdClass();
-
-		$args['wp_rocket_plugins'] = property_exists( $args['items'], 'plugins' ) ? $args['items']->plugins : new stdClass();
-
 		$wp_rocket_textarea = get_rocket_option( esc_attr( $args['id'] ) );
 		if ( is_array( $wp_rocket_textarea ) ) {
 			$wp_rocket_textarea = implode( "\n", $wp_rocket_textarea );
 		}
 
 		$args['wp_rocket_textarea'] = $wp_rocket_textarea;
-
-		$wp_rocket_state                     = get_rocket_option( esc_attr( $args['id'] ) . '_selected' );
-		$args['wp_rocket_select_exclusions'] = get_rocket_option( esc_attr( $args['id'] ) . '_selected_exclusions' );
-		$args['wp_rocket_state']             = $wp_rocket_state ?: [];
+		$args['selected']           = get_rocket_option( esc_attr( $args['id'] ) . '_selected', [] );
 
 		echo $this->generate( 'fields/categorized_multiselect', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}

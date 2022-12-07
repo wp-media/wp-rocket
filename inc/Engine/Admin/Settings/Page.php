@@ -5,6 +5,7 @@ use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
@@ -90,7 +91,7 @@ class Page {
 	 *
 	 * @var DataManager
 	 */
-	protected $data_manager;
+	protected $dynamic_lists;
 
 	/**
 	 * Creates an instance of the Page object.
@@ -105,7 +106,7 @@ class Page {
 	 * @param UserClient       $user_client User client instance.
 	 * @param DataManager      $data_manager User client instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, DataManager $data_manager ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, DynamicLists $dynamic_lists ) {
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -115,15 +116,15 @@ class Page {
 			$args
 		);
 
-		$this->slug         = $args['slug'];
-		$this->title        = $args['title'];
-		$this->capability   = $args['capability'];
-		$this->settings     = $settings;
-		$this->render       = $render;
-		$this->beacon       = $beacon;
-		$this->optimize     = $optimize;
-		$this->user_client  = $user_client;
-		$this->data_manager = $data_manager;
+		$this->slug          = $args['slug'];
+		$this->title         = $args['title'];
+		$this->capability    = $args['capability'];
+		$this->settings      = $settings;
+		$this->render        = $render;
+		$this->beacon        = $beacon;
+		$this->optimize      = $optimize;
+		$this->user_client   = $user_client;
+		$this->dynamic_lists = $dynamic_lists;
 	}
 
 	/**
@@ -927,7 +928,7 @@ class Page {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
-					'items'             => $this->data_manager->get_lists(),
+					'items'             => $this->dynamic_lists->prepare_delayjs_ui_list(),
 				],
 			]
 		);

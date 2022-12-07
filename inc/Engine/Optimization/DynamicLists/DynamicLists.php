@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\User;
 use WP_REST_Response;
 use WP_Error;
+use stdClass;
 
 class DynamicLists extends Abstract_Render {
 
@@ -236,6 +237,26 @@ class DynamicLists extends Abstract_Render {
 		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
 	}
 
+	private function get_plugin_in_list( string $item_id ) {
+		$list = $this->providers['delayjslists']->data_manager->get_lists();
+		return ! empty( $list->plugins->$item_id ) ? (array) $list->plugins->$item_id : [];
+	}
+
+	private function get_theme_in_list( string $item_id ) {
+		$list = $this->providers['delayjslists']->data_manager->get_lists();
+		return ! empty( $list->themes->$item_id ) ? (array) $list->plugins->$item_id : [];
+	}
+
+	private function get_script_in_list( string $item_id ) {
+		$list = $this->providers['delayjslists']->data_manager->get_lists();
+		return ! empty( $list->scripts->$item_id ) ? (array) $list->plugins->$item_id : [];
+	}
+
+	private function get_scripts_from_list() {
+		$list = $this->providers['delayjslists']->data_manager->get_lists();
+		return $list->scripts ?? new StdClass;
+	}
+
 	/**
 	 * Get list of exclusions from the API list.
 	 *
@@ -245,16 +266,17 @@ class DynamicLists extends Abstract_Render {
 	 */
 	public function get_delayjs_exclusions_by_id( string $item_id ) {
 		$list = $this->providers['delayjslists']->data_manager->get_lists();
-		if ( ! empty( $list['scripts'][ $item_id ] ) ) {
-			return $list['scripts'][ $item_id ]['exclusions'];
+
+		if ( $item = $this->get_script_in_list( $item_id ) ) {
+			return $item['exclusions'];
 		}
 
-		if ( ! empty( $list['plugins'][ $item_id ] ) ) {
-			return $list['plugins'][ $item_id ]['exclusions'];
+		if ( $item = $this->get_plugin_in_list( $item_id ) ) {
+			return $item['exclusions'];
 		}
 
-		if ( ! empty( $list['themes'][ $item_id ] ) ) {
-			return $list['themes'][ $item_id ]['exclusions'];
+		if ( $item = $this->get_theme_in_list( $item_id ) ) {
+			return $item['exclusions'];
 		}
 
 		return [];
@@ -275,5 +297,85 @@ class DynamicLists extends Abstract_Render {
 		}
 
 		return $exclusions;
+	}
+
+	public function get_active_theme() {
+		$theme = wp_get_theme();
+		$parent = $theme->get_template();
+		if ( ! empty( $parent ) ) {
+			return strtolower( $parent );
+		}
+
+		return strtolower( $theme->get( 'Name' ) );
+	}
+
+	public function get_active_plugins() {
+		return (array) get_option( 'active_plugins', array() );
+	}
+
+	public function prepare_delayjs_ui_list() {
+		$full_list = [
+			'scripts' => [
+				'title' => __( 'Analytics & Ads', 'rocket' ),
+				'items' => [],
+			],
+			'plugins' => [
+				'title' => __( 'Plugins', 'rocket' ),
+				'items' => [],
+			],
+			'theme' => [
+				'title' => __( 'Themes', 'rocket' ),
+				'items' => [],
+			],
+		];
+
+		// Scripts.
+		$scripts = $this->get_scripts_from_list();
+		if ( ! empty( $scripts ) ) {
+			foreach ( $scripts as $script ) {
+				$full_list['themes']['items'][] = [
+					'id'    => $script->condition,
+					'title' => $script->title,
+					'icon'  => $this->get_icon( $script ),
+				];
+			}
+		}
+
+		foreach ( $this->get_active_plugins() as $plugin ) {
+			$plugin_in_list = $this->get_plugin_in_list( $plugin );
+			if ( empty( $plugin_in_list ) ) {
+				continue;
+			}
+
+			$full_list['plugins']['items'][] = [
+				'id' => $plugin,
+				'title' => $plugin_in_list->title,
+				'icon' => $this->get_icon( $plugin_in_list ),
+			];
+		}
+
+		$theme_in_list = $this->get_theme_in_list( $this->get_active_theme() );
+		if ( ! empty( $theme_in_list ) ) {
+			$full_list['themes']['items'][] = [
+				'id' => $plugin,
+				'title' => $theme_in_list->title,
+				'icon' => $this->get_icon( $theme_in_list ),
+			];
+		}
+
+		return $full_list;
+	}
+	/**
+	 * Fetch the icon.
+	 *
+	 * @param stdClass $item item from the list.
+	 * @return string
+	 */
+	private function get_icon( $item ) {
+		if ( empty( $item ) || empty( $item->icon_url ) ) {
+			return esc_url( rocket_get_constant( WP_ROCKET_ASSETS_IMG_URL ) . 'default-icon.png' );
+		}
+
+		return esc_url( $item->icon_url );
 	}
 }
