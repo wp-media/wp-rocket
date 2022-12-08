@@ -13,38 +13,90 @@ $oldValue = [
     'cache_reject_uri'    => [],
 ];
 
-$oldValue['cache_reject_uri'] = [
-    '/hello-world',
-    '/testing/(.*)',
+$newValue = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
+    'cache_reject_uri'    => [
+        '/hello-world',
+        '/testing/(.*)',
+    ],
 ];
 
-// Update settings.
-$newValue = $oldValue;
-
-$newValue['cache_reject_uri'] = array_map( function( $pattern ){
-    return $pattern . '/';
-}, $newValue['cache_reject_uri'] );
-$newValueWithTrailingSlahsInCacheRejectUriPatterns = $newValue;
-
-$newValue = $oldValue;
-
-$oldValue['cache_reject_uri'][1] = '/';
-$newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash = $oldValue;
-
-$oldValue['cache_reject_uri'] = [
-    '/hello-world',
-    '/index.php(.*)',
+$expectedNewValueWithTrailingSlahsInCacheRejectUriPatterns = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
+    'cache_reject_uri'    => [
+        '/hello-world/',
+        '/testing/(.*)/',
+    ],
 ];
-$newValueWithIndexInCacheRejectUriPatternsWithPermalinks = $oldValue;
 
-$oldValue['cache_reject_uri'] = [
-    '/hello-world/',
-    '/index.php(.*)',
+$newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailingSlash = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
+    'cache_reject_uri'    => [
+        '/hello-world/',
+        '/',
+    ],
 ];
-$expectedValueWithIndexInCacheRejectUriPatternsWithPermalinksHavingTrailingSlash = $oldValue;
 
-// Restore settings.
-$oldValue['cache_reject_uri'] = [];
+$newValueWithIndexInCacheRejectUriPatternsWithPermalinks = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
+    'cache_reject_uri'    => [
+        '/hello-world',
+        '/index.php(.*)',
+    ],
+];
+
+$expectedValueWithIndexInCacheRejectUriPatternsWithPermalinksHavingTrailingSlash = [
+    'cache_mobile'        => true,
+    'purge_cron_interval' => true,
+    'purge_cron_unit'     => true,
+    'minify_css'          => false,
+    'exclude_css'         => '',
+    'minify_js'           => false,
+    'exclude_js'          => '',
+    'analytics_enabled'   => '',
+    'cdn'                 => false,
+    'cdn_cnames'          => false,
+    'cache_reject_uri'    => [
+        '/hello-world/',
+        '/index.php(.*)',
+    ],
+];
 
 return [
     'testShouldReturnEmptyArrayWhenCacheRejectUriValueIsEmpty' => [
@@ -63,7 +115,7 @@ return [
                 'structure' => '/%postname%/',
             ],
         ],
-        'expected' => $newValueWithTrailingSlahsInCacheRejectUriPatterns,
+        'expected' => $expectedNewValueWithTrailingSlahsInCacheRejectUriPatterns,
     ],
     'testShouldMatchCacheRejecturiPatternsWithPermalinkStructureHavingNoTrailingSlash' => [
         'config' => [
