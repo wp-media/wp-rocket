@@ -119,7 +119,7 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 		}
 
 		if ( 'secret_cache_key' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . $value . "';\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . sanitize_key( $value ) . "';\n";
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
