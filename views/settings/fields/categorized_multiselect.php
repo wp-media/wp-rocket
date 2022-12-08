@@ -67,8 +67,8 @@ defined( 'ABSPATH' ) || exit;
 						?>
 						<li>
 							<div class="wpr-checkbox">
-								<input type="checkbox" name="<?php echo esc_attr( $data['id'] ); ?>_selected[]"
-									   value='<?php echo esc_attr( wp_json_encode( $oneitem["id"] ) ); ?>'
+								<input type="checkbox" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>][]"
+									   value='<?php echo esc_attr( $oneitem["id"] ); ?>'
 										<?php echo checked( in_array( $oneitem["id"], $data['selected'], true ) ); ?> />
 								<label>
 									<img src="<?php echo $oneitem['icon']; ?>"/>

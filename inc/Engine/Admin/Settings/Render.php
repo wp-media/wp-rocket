@@ -328,7 +328,7 @@ class Render extends Abstract_render {
 		}
 
 		$args['wp_rocket_textarea'] = $wp_rocket_textarea;
-		$args['selected']           = get_rocket_option( esc_attr( $args['id'] ) . '_selected', [] );
+		$args['selected']           = get_rocket_option( esc_attr( $args['id'] ), [] );
 
 		echo $this->generate( 'fields/categorized_multiselect', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}

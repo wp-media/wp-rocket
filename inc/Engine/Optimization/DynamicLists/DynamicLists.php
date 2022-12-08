@@ -357,7 +357,7 @@ class DynamicLists extends Abstract_Render {
 		$theme_in_list = $this->get_theme_in_list( $this->get_active_theme() );
 		if ( ! empty( $theme_in_list ) ) {
 			$full_list['themes']['items'][] = [
-				'id' => $plugin,
+				'id' => $theme_in_list['condition'],
 				'title' => $theme_in_list['title'],
 				'icon' => $this->get_icon( $theme_in_list ),
 			];

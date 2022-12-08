@@ -99,12 +99,6 @@ class Settings {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
-		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
-			$input['delay_js_exclusions_selected'] = [];
-		} else {
-			$input['delay_js_exclusions_selected'] = json_decode( $input['delay_js_exclusions_selected'] );
-		}
-
 		return $input;
 	}
 
