@@ -23,7 +23,42 @@ jQuery( document ).ready( function( $ ){
 			return true;
 		}
 
-		window.open(rocket_option_export.rest_url_option_export,'_blank');
+		e.preventDefault();
+
+		$.ajax( {
+			url: rocket_option_export.rest_url_option_export,
+			method: 'GET',
+			beforeSend: function ( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', jQuery('#wpr-deactivation-intent-form input[name="rest_auth_nonce"]').val() );
+			},
+			success: function( data, textStatus, xhr ) {
+				const disposition = xhr.getResponseHeader('content-disposition');
+
+				const filenames = disposition.match('filename="([^"]+)"');
+
+				if(! filenames.length) {
+					return;
+				}
+
+				const filename = filenames.pop();
+
+				const url = URL.createObjectURL( new Blob( [ JSON.stringify(data) ], {
+					type: "octet/stream"
+				}));
+
+				var a = document.createElement("a");
+				document.body.appendChild(a);
+				a.style = "display: none";
+				a.href = url;
+				a.download = filename;
+				a.click();
+				window.URL.revokeObjectURL(url);
+			},
+			complete: function () {
+				$( '#export_settings' ).prop('checked', false);
+				$( '#wpr-deactivation-intent-form' ).submit();
+			}
+		} );
 
 		return true;
 	});

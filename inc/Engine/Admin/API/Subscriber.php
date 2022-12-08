@@ -44,11 +44,11 @@ class Subscriber implements Subscriber_Interface {
 	public function register_route() {
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			'/options/export',
+			'options/export',
 			[
 				'methods'     => 'GET',
 				'callback'    => [ $this, 'export_options' ],
-				'permissions' => [ $this, 'has_permissions' ],
+				'permission_callback' => [ $this, 'has_permissions' ],
 			]
 			);
 	}
