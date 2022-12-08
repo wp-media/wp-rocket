@@ -235,13 +235,6 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		return '';
 	}
 
-	$uris = array_map(
-		function ( $uri ) {
-			return user_trailingslashit( $uri );
-		},
-		$uris
-		);
-
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {
 			if ( preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
