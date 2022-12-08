@@ -912,7 +912,7 @@ class Page {
 						'sanitize_callback' => 'sanitize_checkbox',
 					]
 				),
-				'delay_js_exclusions'          => [
+				'delay_js_exclusions_selected'          => [
 					'type'              => 'categorized_multiselect',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
@@ -927,8 +927,24 @@ class Page {
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
-					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
 					'items'             => $this->dynamic_lists->prepare_delayjs_ui_list(),
+				],
+				'delay_js_exclusions'          => [
+					'type'              => 'textarea',
+					'label'             => __( 'My Scripts', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
+					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
 				],
 			]
 		);

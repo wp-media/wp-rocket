@@ -244,12 +244,12 @@ class DynamicLists extends Abstract_Render {
 
 	private function get_theme_in_list( string $item_id ) {
 		$list = $this->providers['delayjslists']->data_manager->get_lists();
-		return ! empty( $list->themes->$item_id ) ? (array) $list->plugins->$item_id : [];
+		return ! empty( $list->themes->$item_id ) ? (array) $list->themes->$item_id : [];
 	}
 
 	private function get_script_in_list( string $item_id ) {
 		$list = $this->providers['delayjslists']->data_manager->get_lists();
-		return ! empty( $list->scripts->$item_id ) ? (array) $list->plugins->$item_id : [];
+		return ! empty( $list->scripts->$item_id ) ? (array) $list->scripts->$item_id : [];
 	}
 
 	private function get_scripts_from_list() {
@@ -323,7 +323,7 @@ class DynamicLists extends Abstract_Render {
 				'title' => __( 'Plugins', 'rocket' ),
 				'items' => [],
 			],
-			'theme' => [
+			'themes' => [
 				'title' => __( 'Themes', 'rocket' ),
 				'items' => [],
 			],
@@ -333,9 +333,9 @@ class DynamicLists extends Abstract_Render {
 		$scripts = $this->get_scripts_from_list();
 		if ( ! empty( $scripts ) ) {
 			foreach ( $scripts as $script ) {
-				$full_list['themes']['items'][] = [
-					'id'    => $script->condition,
-					'title' => $script->title,
+				$full_list['scripts']['items'][] = [
+					'id'    => $script['condition'],
+					'title' => $script['title'],
 					'icon'  => $this->get_icon( $script ),
 				];
 			}
@@ -349,7 +349,7 @@ class DynamicLists extends Abstract_Render {
 
 			$full_list['plugins']['items'][] = [
 				'id' => $plugin,
-				'title' => $plugin_in_list->title,
+				'title' => $plugin_in_list['title'],
 				'icon' => $this->get_icon( $plugin_in_list ),
 			];
 		}
@@ -358,7 +358,7 @@ class DynamicLists extends Abstract_Render {
 		if ( ! empty( $theme_in_list ) ) {
 			$full_list['themes']['items'][] = [
 				'id' => $plugin,
-				'title' => $theme_in_list->title,
+				'title' => $theme_in_list['title'],
 				'icon' => $this->get_icon( $theme_in_list ),
 			];
 		}
@@ -368,14 +368,14 @@ class DynamicLists extends Abstract_Render {
 	/**
 	 * Fetch the icon.
 	 *
-	 * @param stdClass $item item from the list.
+	 * @param array $item item from the list.
 	 * @return string
 	 */
 	private function get_icon( $item ) {
-		if ( empty( $item ) || empty( $item->icon_url ) ) {
-			return esc_url( rocket_get_constant( WP_ROCKET_ASSETS_IMG_URL ) . 'default-icon.png' );
+		if ( empty( $item ) || empty( $item['icon_url'] ) ) {
+			return esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'default-icon.png' );
 		}
 
-		return esc_url( $item->icon_url );
+		return esc_url( $item['icon_url'] );
 	}
 }

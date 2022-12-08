@@ -103,14 +103,6 @@ class Settings {
 			$input['delay_js_exclusions_selected'] = [];
 		} else {
 			$input['delay_js_exclusions_selected'] = json_decode( $input['delay_js_exclusions_selected'] );
-
-		}
-
-		if ( empty( $input['delay_js_exclusions_selected_exclusions'] ) ) {
-			$input['delay_js_exclusions_selected_exclusions'] = [];
-		} else {
-			$input['delay_js_exclusions_selected_exclusions'] = json_decode( $input['delay_js_exclusions_selected_exclusions'] );
-
 		}
 
 		return $input;
@@ -235,14 +227,14 @@ class Settings {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$current_selected_exclusions_selected_exclusion = get_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
-		if ( empty( $current_selected_exclusions_selected_exclusion ) ) {
-			update_rocket_option( 'delay_js_exclusions_selected_exclusions', [] );
-
+		$selected_items = $this->option->get( 'delay_js_exclusions_selected' );
+		if ( empty( $selected_items ) ) {
+			$this->option->set( 'delay_js_exclusions_selected_exclusions', [] );
 			return;
 		}
 
-		update_rocket_option( 'delay_js_exclusions_selected_exclusions', $current_selected_exclusions_selected_exclusion );
+		$selected_exclusions = $this->dynamic_lists->get_delayjs_items_exclusions( $selected_items );
+		$this->option->set( 'delay_js_exclusions_selected_exclusions', $selected_exclusions );
 	}
 
 }
