@@ -53,7 +53,7 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 * @param array $patterns user pattern.
 	 * @return array
 	 */
-	public function match_pattern_with_permalink_structure( array $patterns ): array {
+	private function match_pattern_with_permalink_structure( array $patterns ): array {
 		if ( empty( $patterns ) ) {
 			return $patterns;
 		}
