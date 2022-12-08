@@ -22,9 +22,9 @@ class WPML implements Subscriber_Interface {
 		}
 
 		$events = [
-			'rocket_rucss_is_home_url'                     => [ 'is_secondary_home', 10, 2 ],
-			'rocket_preload_all_to_pending_condition'      => 'clean_only_right_domain',
-			'rocket_preload_sitemap_before_queue'          => 'add_languages_sitemaps',
+			'rocket_rucss_is_home_url'                          => [ 'is_secondary_home', 10, 2 ],
+			'rocket_preload_all_to_pending_condition' => 'clean_only_right_domain',
+			'rocket_preload_sitemap_before_queue'     => 'add_languages_sitemaps',
 		];
 
 		return $events;
