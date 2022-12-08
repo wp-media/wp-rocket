@@ -46,8 +46,8 @@ class Subscriber implements Subscriber_Interface {
 			self::ROUTE_NAMESPACE,
 			'options/export',
 			[
-				'methods'     => 'GET',
-				'callback'    => [ $this, 'export_options' ],
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'export_options' ],
 				'permission_callback' => [ $this, 'has_permissions' ],
 			]
 			);

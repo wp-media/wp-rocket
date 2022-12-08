@@ -38,8 +38,13 @@ defined( 'ABSPATH' ) || exit;
 					echo esc_attr( $data['form_action'] );
 				?>
 				">
-					<input name="rest_auth_nonce" type="hidden" value="<?php echo esc_attr( wp_create_nonce( 'wp_rest'
-					) ) ?>" />
+					<input name="rest_auth_nonce" type="hidden" value="
+					<?php
+					echo esc_attr(
+						wp_create_nonce( 'wp_rest' )
+					);
+					?>
+					" />
 					<ul>
 						<li>
 							<input type="radio" id="safe_mode" value="safe_mode" name="mode" checked />
