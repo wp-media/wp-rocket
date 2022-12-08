@@ -59,7 +59,7 @@ $newValueWithTrailingSlashInCacheRejectUriPatternsWithPermalinksHavingNoTrailing
     'cdn'                 => false,
     'cdn_cnames'          => false,
     'cache_reject_uri'    => [
-        '/hello-world/',
+        '/hello-world',
         '/',
     ],
 ];
