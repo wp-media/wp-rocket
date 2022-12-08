@@ -42,7 +42,7 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'permalink_structure_changed'         => 'regenerate_config_file',
+			'permalink_structure_changed' => 'regenerate_config_file',
 			'pre_update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => [ 'change_cache_reject_uri_with_permalink', 10, 2 ],
 		];
 	}
