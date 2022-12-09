@@ -23,18 +23,82 @@ $settings = [
     'optimize_css_delivery' => 0,
 ];
 
-$settings['cache_reject_uri'] = [];
-$settings_with_cache_reject_uri = $settings;
-
-$settings['cache_reject_uri'] = [
-    '/hello-world/',
+$settings_with_cache_reject_uri = [
+    'defer_all_js' => 0,
+    'lazyload' => 0,
+    'lazyload_iframes' => 0,
+    'lazyload_youtube' => 0,
+    'database_revisions' => 0,
+    'database_auto_drafts' => 0,
+    'database_trashed_posts' => 0,
+    'database_spam_comments' => 0,
+    'database_trashed_comments' => 0,
+    'database_optimize_tables' => 0,
+    'schedule_automatic_cleanup' => 0,
+    'do_cloudflare' => 0,
+    'cloudflare_devmode' => 0,
+    'cloudflare_auto_settings' => 0,
+    'cloudflare_protocol_rewrite' => 0,
+    'sucury_waf_cache_sync' => 0,
+    'cdn' => 0,
+    'varnish_auto_purge' => 0,
+    'image_dimensions' => 0,
+    'optimize_css_delivery' => 0,
+    'cache_reject_uri' => [],
 ];
-$settings_with_cache_reject_uri_changed = $settings;
 
-$settings['cache_reject_uri'][] = '/2022/(.*)';
-$settings_with_pattern_in_cache_reject_uri_changed = $settings;
+$settings_with_cache_reject_uri_changed = [
+    'defer_all_js' => 0,
+    'lazyload' => 0,
+    'lazyload_iframes' => 0,
+    'lazyload_youtube' => 0,
+    'database_revisions' => 0,
+    'database_auto_drafts' => 0,
+    'database_trashed_posts' => 0,
+    'database_spam_comments' => 0,
+    'database_trashed_comments' => 0,
+    'database_optimize_tables' => 0,
+    'schedule_automatic_cleanup' => 0,
+    'do_cloudflare' => 0,
+    'cloudflare_devmode' => 0,
+    'cloudflare_auto_settings' => 0,
+    'cloudflare_protocol_rewrite' => 0,
+    'sucury_waf_cache_sync' => 0,
+    'cdn' => 0,
+    'varnish_auto_purge' => 0,
+    'image_dimensions' => 0,
+    'optimize_css_delivery' => 0,
+    'cache_reject_uri' => [
+        '/hello-world/',
+    ],
+];
 
-unset($settings['cache_reject_uri']);
+$settings_with_pattern_in_cache_reject_uri_changed = [
+    'defer_all_js' => 0,
+    'lazyload' => 0,
+    'lazyload_iframes' => 0,
+    'lazyload_youtube' => 0,
+    'database_revisions' => 0,
+    'database_auto_drafts' => 0,
+    'database_trashed_posts' => 0,
+    'database_spam_comments' => 0,
+    'database_trashed_comments' => 0,
+    'database_optimize_tables' => 0,
+    'schedule_automatic_cleanup' => 0,
+    'do_cloudflare' => 0,
+    'cloudflare_devmode' => 0,
+    'cloudflare_auto_settings' => 0,
+    'cloudflare_protocol_rewrite' => 0,
+    'sucury_waf_cache_sync' => 0,
+    'cdn' => 0,
+    'varnish_auto_purge' => 0,
+    'image_dimensions' => 0,
+    'optimize_css_delivery' => 0,
+    'cache_reject_uri' => [
+        '/hello-world/',
+        '/2022/(.*)',
+    ],
+];
 
 return [
     'vfs_dir'   => 'wp-content/cache/wp-rocket/',
