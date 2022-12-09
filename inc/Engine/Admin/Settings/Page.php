@@ -930,7 +930,7 @@ class Page {
 					'items'             => $this->dynamic_lists->prepare_delayjs_ui_list(),
 				],
 				'delay_js_exclusions'          => [
-					'type'              => 'textarea',
+					'type'              => 'custom_textarea',
 					'label'             => __( 'My Scripts', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
@@ -944,7 +944,8 @@ class Page {
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
-					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					//'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'placeholder'       => __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ),
 				],
 			]
 		);

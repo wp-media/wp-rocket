@@ -6,12 +6,10 @@
 
 \*-----------------------------------------------*/
 
-$border-color: #c2cad4;
-$bg-color: #fff;
 .wpr-multiple-select {
  .wpr-list {
-   border: 2px solid $border-color;
-   background-color: $bg-color;
+   border: 2px solid $cGreyLight4;
+   background-color: $cWhite;
    border-radius: 5px;
    padding: 10px;
    margin: 8px 0;
@@ -60,16 +58,10 @@ $bg-color: #fff;
 		 }
 	   }
 	 }
-
-	 textarea {
-	   width: 100%;
-	   border: none;
-	 }
    }
-
    &.open {
 	 .wpr-list-body {
-	 display: block;
+	   display: block;
 
 	   .wpr-checkbox label {
 		 color: $cGreyDark3;
@@ -78,9 +70,9 @@ $bg-color: #fff;
 	   .wpr-checkbox input[checked="checked"] + label {
 		 color: $cGreyDark4;
 	   }
-   	}
+	 }
 	 .wpr-list-header {
-	   border-bottom: 1px solid $border-color;
+	   border-bottom: 1px solid $cGreyLight4;
 	   margin-bottom: 10px;
 	   padding-bottom: 5px;
 	 }
