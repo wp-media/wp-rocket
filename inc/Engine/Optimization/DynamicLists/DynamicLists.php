@@ -265,8 +265,6 @@ class DynamicLists extends Abstract_Render {
 	 * @return array
 	 */
 	public function get_delayjs_exclusions_by_id( string $item_id ) {
-		$list = $this->providers['delayjslists']->data_manager->get_lists();
-
 		if ( $item = $this->get_script_in_list( $item_id ) ) {
 			return $item['exclusions'];
 		}
@@ -293,7 +291,7 @@ class DynamicLists extends Abstract_Render {
 		$exclusions = [];
 
 		foreach ( $items as $item ) {
-			array_merge( $exclusions, $this->get_delayjs_exclusions_by_id( $item ) );
+			$exclusions = array_merge( $exclusions, $this->get_delayjs_exclusions_by_id( $item ) );
 		}
 
 		return $exclusions;
