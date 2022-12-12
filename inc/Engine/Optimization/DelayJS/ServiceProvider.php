@@ -37,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'delay_js_sitelist', SiteList::class )
-		     ->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
+			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 		$this->getContainer()->add( 'delay_js_settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
