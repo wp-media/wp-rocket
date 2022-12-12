@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
-use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -23,7 +23,7 @@ class Test_SetOptionOnUpdate extends TestCase {
 	 */
 	public function testShouldDoExpected( $options, $old_version, $valid_version, $expected ) {
 		$this->option = Mockery::mock(Options_Data::class);
-		$settings = new Settings( Mockery::mock( DynamicLists::class), $this->option );
+		$settings = new Settings( Mockery::mock( SiteList::class), $this->option );
 
 		if ( $valid_version ) {
 			$this->stubWpParseUrl();

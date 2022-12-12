@@ -99,10 +99,12 @@ class Settings {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
 
-		$input['delay_js_exclusions_selected_exclusions'] =
-			empty( $input['delay_js_exclusions_selected'] )
-				? []
-				: $this->site_list->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
+		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
+			$input['delay_js_exclusions_selected']            = [];
+			$input['delay_js_exclusions_selected_exclusions'] = [];
+		} else {
+			$input['delay_js_exclusions_selected_exclusions'] = $this->site_list->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
+		}
 
 		return $input;
 	}
