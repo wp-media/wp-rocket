@@ -10,11 +10,11 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 class Settings {
 
 	/**
-	 * Dynamic lists instance.
+	 * Site List instance.
 	 *
-	 * @var DynamicLists
+	 * @var SiteList
 	 */
-	private $dynamic_lists;
+	private $site_list;
 
 	/**
 	 * Options instance.
@@ -26,12 +26,12 @@ class Settings {
 	/**
 	 * Constructor.
 	 *
-	 * @param DynamicLists $dynamic_lists DynamicLists instance.
+	 * @param SiteList     $site_list DelayJS Site List instance.
 	 * @param Options_Data $option Options instance.
 	 */
-	public function __construct( DynamicLists $dynamic_lists, Options_Data $option ) {
-		$this->dynamic_lists = $dynamic_lists;
-		$this->option        = $option;
+	public function __construct( SiteList $site_list, Options_Data $option ) {
+		$this->site_list = $site_list;
+		$this->option    = $option;
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Settings {
 		$input['delay_js_exclusions_selected_exclusions'] =
 			empty( $input['delay_js_exclusions_selected'] )
 				? []
-				: $this->dynamic_lists->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
+				: $this->site_list->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
 
 		return $input;
 	}
@@ -232,7 +232,7 @@ class Settings {
 			return;
 		}
 
-		$selected_exclusions = $this->dynamic_lists->get_delayjs_items_exclusions( $selected_items );
+		$selected_exclusions = $this->site_list->get_delayjs_items_exclusions( $selected_items );
 		$this->option->set( 'delay_js_exclusions_selected_exclusions', $selected_exclusions );
 	}
 
