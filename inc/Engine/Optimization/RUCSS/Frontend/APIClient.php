@@ -27,7 +27,7 @@ class APIClient extends AbstractAPIClient {
 			'body'    => [
 				'url'    => add_query_arg(
 					[
-						'nowprocket' => 1,
+						'nowprocket'  => 1,
 						'no_optimize' => 1
 					],
 					$url
