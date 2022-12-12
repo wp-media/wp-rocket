@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber as AdminSubscriber;
 
 /**
@@ -26,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'delay_js_admin_subscriber',
 		'delay_js_html',
 		'delay_js_subscriber',
+		'delay_js_sitelist',
 	];
 
 	/**
@@ -48,5 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'front_subscriber' );
+		$this->getContainer()->add( 'delay_js_sitelist', SiteList::class )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 	}
 }

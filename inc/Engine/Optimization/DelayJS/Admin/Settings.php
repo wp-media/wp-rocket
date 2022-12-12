@@ -103,7 +103,6 @@ class Settings {
 			empty( $input['delay_js_exclusions_selected'] )
 				? []
 				: $this->dynamic_lists->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
-		error_log(var_export($input['delay_js_exclusions_selected'], true));
 
 		return $input;
 	}

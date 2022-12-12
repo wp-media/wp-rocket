@@ -43,16 +43,19 @@ defined( 'ABSPATH' ) || exit;
 	</p>
 
 	<?php
-	foreach ( $data['items'] as $item_key => $item ) {
+	foreach ( $data['items'] as $rocket_item_key => $rocket_item ) {
+		if ( empty( $rocket_item['items'] ) ) {
+			continue;
+		}
 		?>
-		<div class="wpr-list<?php echo 'scripts' === $item_key ? ' open' : ''; ?>">
+		<div class="wpr-list<?php echo 'scripts' === $rocket_item_key ? ' open' : ''; ?>">
 			<div class="wpr-list-header">
 				<div class="wpr-checkbox">
 					<input class="wpr-main-checkbox" type="checkbox" />
 
 					<label>
 						<span class="wpr-multiple-select">
-							<?php echo esc_html( $item['title'] ); ?>
+							<?php echo esc_html( $rocket_item['title'] ); ?>
 						</span>
 					</label>
 				</div>
@@ -63,16 +66,16 @@ defined( 'ABSPATH' ) || exit;
 			<div class="wpr-list-body">
 				<ul>
 					<?php
-					foreach ( $item['items'] as $oneitem ) {
+					foreach ( $rocket_item['items'] as $rocket_oneitem ) {
 						?>
 						<li>
 							<div class="wpr-checkbox">
 								<input type="checkbox" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>][]"
-									   value='<?php echo esc_attr( $oneitem["id"] ); ?>'
-										<?php echo checked( in_array( $oneitem["id"], $data['selected'], true ) ); ?> />
+									value='<?php echo esc_attr( $rocket_oneitem['id'] ); ?>'
+									<?php echo checked( in_array( $rocket_oneitem['id'], $data['selected'], true ) ); ?> />
 								<label>
-									<img src="<?php echo $oneitem['icon']; ?>"/>
-									<?php echo esc_attr( $oneitem['title'] ); ?>
+									<img src="<?php echo esc_url( $rocket_oneitem['icon'] ); ?>"/>
+									<?php echo esc_attr( $rocket_oneitem['title'] ); ?>
 								</label>
 							</div>
 						</li>
@@ -84,5 +87,6 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 		<?php
 	}
+	unset( $rocket_item_key, $rocket_item, $rocket_oneitem );
 	?>
 </div>

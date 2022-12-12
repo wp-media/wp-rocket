@@ -21,7 +21,12 @@ abstract class AbstractDataManager {
 	 */
 	protected $cache_duration = WEEK_IN_SECONDS;
 
-	private $list = [];
+	/**
+	 * Cache the list in the object.
+	 *
+	 * @var Object
+	 */
+	private $list = null;
 
 	/**
 	 * Instantiate the class

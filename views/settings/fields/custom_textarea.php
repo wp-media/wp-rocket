@@ -26,9 +26,8 @@ defined( 'ABSPATH' ) || exit;
 		<h3><?php echo esc_html( $data['label'] ); ?></h3>
 	</div>
 	<div class="wpr-list-body">
-		<textarea name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>"><?php
-			echo esc_textarea( $data['value'] );
-			?></textarea>
+		<textarea name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>"><?php echo esc_textarea( $data['value'] ); ?>
+			</textarea>
 	</div>
 	<?php if ( ! empty( $data['helper'] ) ) : ?>
 		<div class="wpr-field-description wpr-field-description-helper">
@@ -43,6 +42,6 @@ defined( 'ABSPATH' ) || exit;
 	 *
 	 * @since 3.13
 	 */
-	do_action( "rocket_after_textarea_field_" . $data['id'] );
+	do_action( 'rocket_after_textarea_field_' . $data['id'] );
 	?>
 </div>
