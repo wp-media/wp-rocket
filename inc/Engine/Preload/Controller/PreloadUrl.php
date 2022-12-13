@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
-use WP_Rocket\Engine\Preload\FormatUrlTrait;
 
 class PreloadUrl {
 	use CheckExcludedTrait;
