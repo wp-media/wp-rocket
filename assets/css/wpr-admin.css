@@ -2627,6 +2627,9 @@ div.wpr-tutorial-item {
   border-color: #444444;
   box-shadow: none;
 }
+.wpr-select select:disabled {
+  background-image: none;
+}
 .wpr-select label {
   font-weight: bold;
   margin-left: 8px;
