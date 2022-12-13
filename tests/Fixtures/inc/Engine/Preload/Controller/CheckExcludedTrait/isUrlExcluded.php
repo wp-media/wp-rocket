@@ -4,6 +4,8 @@ return [
 		'config' => [
 			'queries' => 'test=1&a=2',
 			'url' => 'url',
+			'url_with_query' => 'url_with_query',
+			'regex_with_query' => 'regex_with_query',
 			'excluded_queries' => [
 				'b' => 1
 			],
@@ -15,6 +17,7 @@ return [
 	],
 	'testExcludedQueryShouldReturnTrue' => [
 		'config' => [
+			'url_with_query' => 'url_with_query',
 			'queries' => 'test=1&a=2',
 			'url' => 'url',
 			'excluded_queries' => [
@@ -28,6 +31,7 @@ return [
 	],
 	'testExcludedByFilterShouldReturnTrue' => [
 		'config' => [
+			'url_with_query' => 'url_with_query',
 			'queries' => 'test=1&a=2',
 			'url' => 'url',
 			'regexes' => [

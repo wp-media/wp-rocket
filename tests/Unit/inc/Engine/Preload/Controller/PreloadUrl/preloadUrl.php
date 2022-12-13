@@ -79,7 +79,7 @@ class Test_PreloadUrl extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request']['config']);
+		Functions\expect('wp_safe_remote_get')->with($config['url'], $config['request']['config']);
 	}
 
 	protected function configureMobileRequest($config) {
@@ -95,6 +95,6 @@ class Test_PreloadUrl extends TestCase
 			return;
 		}
 		$this->controller->expects()->get_mobile_user_agent_prefix()->andReturn($config['user_agent']);
-		Functions\expect('wp_safe_remote_get')->with($config['url'] . '/', $config['request_mobile']['config']);
+		Functions\expect('wp_safe_remote_get')->with($config['url'], $config['request_mobile']['config']);
 	}
 }

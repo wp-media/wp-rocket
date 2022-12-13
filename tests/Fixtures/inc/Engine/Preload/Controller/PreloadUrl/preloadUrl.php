@@ -63,9 +63,9 @@ return [
 			],
 			'request_mobile' => [
 				'config' => [
+					'user-agent' => 'user_agent',
 					'blocking' => false,
 					'timeout'  => 0.01,
-					'user-agent' => 'user_agent',
 					'sslverify' => false,
 				]
 			],
