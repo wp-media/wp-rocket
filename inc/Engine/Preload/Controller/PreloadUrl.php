@@ -8,7 +8,6 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Preload\FormatUrlTrait;
 
 class PreloadUrl {
-	use FormatUrlTrait;
 	use CheckExcludedTrait;
 
 	/**
