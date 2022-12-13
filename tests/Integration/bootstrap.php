@@ -78,6 +78,10 @@ tests_add_filter(
 			define( 'CP_VERSION', '1.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
+			define( 'TRIBE_EVENTS_FILE', true );
+		}
+
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
 			define( 'WP_ADMIN', true );
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/hummingbird-performance/wp-hummingbird.php';
@@ -194,6 +198,11 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'RocketLazyLoad' ) ) {
 			define( 'ROCKET_LL_VERSION', '2.3.6' );
+		}
+
+		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
+			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
+			$_SERVER[ 'HTTP_HOST'] = 'example.com';
 		}
 
 		// Load the plugin.
