@@ -44,6 +44,10 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 	public function testShouldTruncateTableWhenOptionIsEnabled( $input ){
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$subscriber          = $container->get( 'rucss_admin_subscriber' );
+		$event_manager       = $container->get( 'event_manager' );
+
+		$event_manager->remove_subscriber_callback( $subscriber, 'permalink_structure_changed', 'truncate_used_css' );
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
