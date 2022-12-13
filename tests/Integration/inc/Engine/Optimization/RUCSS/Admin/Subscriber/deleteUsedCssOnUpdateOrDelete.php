@@ -47,7 +47,7 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 		$subscriber          = $container->get( 'rucss_admin_subscriber' );
 		$event_manager       = $container->get( 'event_manager' );
 
-		$event_manager->remove_subscriber_callback( $subscriber, 'permalink_structure_changed', 'truncate_used_css' );
+		$event_manager->remove_callback( 'permalink_structure_changed', [ $subscriber, 'truncate_used_css' ] );
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
