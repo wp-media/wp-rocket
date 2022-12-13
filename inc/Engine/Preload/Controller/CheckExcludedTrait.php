@@ -47,7 +47,7 @@ trait CheckExcludedTrait {
 
 			$regex = $this->format_url( $regex );
 
-			$regex = str_replace('?', '\?', $regex);
+			$regex = str_replace( '?', '\?', $regex );
 
 			if ( preg_match( "@$regex@m", $url ) ) {
 				return true;
