@@ -39,7 +39,8 @@ return [
 			'save' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
-				'last_accessed' => '838:59:59.000000'
+				'last_accessed' => '838:59:59.000000',
+				'is_locked' => false,
 			],
 			'id' => 10,
 			'time' => '838:59:59.000000',
@@ -63,7 +64,8 @@ return [
 			'save' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
-				'last_accessed' => '838:59:59.000000'
+				'last_accessed' => '838:59:59.000000',
+				'is_locked' => false,
 			],
 			'id' => false,
 			'time' => '838:59:59.000000',

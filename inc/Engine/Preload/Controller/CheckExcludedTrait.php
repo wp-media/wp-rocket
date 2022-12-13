@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Preload\FormatUrlTrait;
 
 trait CheckExcludedTrait {
 	use FormatUrlTrait;
+
 	/**
 	 * Add new pattern of excluded uri.
 	 *
@@ -36,8 +37,6 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
-
-
 		$regexes = array_unique( $regexes );
 		$url     = $this->format_url( $url );
 
@@ -49,7 +48,8 @@ trait CheckExcludedTrait {
 			$regex = $this->format_url( $regex );
 
 			$regex = str_replace('?', '\?', $regex);
-			if ( preg_match( "@$regex@", $url ) ) {
+
+			if ( preg_match( "@$regex@m", $url ) ) {
 				return true;
 			}
 		}

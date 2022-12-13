@@ -14,6 +14,7 @@ class Cache extends Table {
 	public function __construct() {
 		parent::__construct();
 		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
+		add_action( 'init', [ $this, 'maybe_upgrade' ] );
 		add_action( 'admin_init',  [ $this, 'maybe_trigger_recreate_table' ], 9 );
 	}
 
@@ -36,7 +37,16 @@ class Cache extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220818;
+	protected $version = 20220927;
+
+	/**
+	 * Key => value array of versions => methods.
+	 *
+	 * @var array
+	 */
+	protected $upgrades = [
+		20220927 => 'add_is_locked_column',
+	];
 
 	/**
 	 * Setup the database schema
@@ -50,6 +60,7 @@ class Cache extends Table {
 			status           varchar(255)        NOT NULL default '',
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
+			is_locked        tinyint(1)          NOT NULL default 0,
 			PRIMARY KEY (id),
 			KEY url (url(191)),
 			KEY modified (modified),
@@ -67,5 +78,22 @@ class Cache extends Table {
 		}
 
 		delete_option( $this->db_version_key );
+	}
+
+	/**
+	 * Add is_locked column.
+	 *
+	 * @return bool
+	 */
+	public function add_is_locked_column() {
+		$hash_column_exists = $this->column_exists( 'is_locked' );
+
+		$created = true;
+
+		if ( ! $hash_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD COLUMN is_locked tinyint(1) NOT NULL default 0 AFTER last_accessed" );
+		}
+
+		return $this->is_success( $created );
 	}
 }
