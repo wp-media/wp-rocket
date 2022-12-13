@@ -27,12 +27,35 @@ trait CheckExcludedTrait {
 	 */
 	protected function is_excluded_by_filter( string $url ): bool {
 		/**
+		 * Regex to exclude URI from preload without sanitize.
+		 *
+		 * @param string[] regexes to check
+		 */
+		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls_regexes', [] );
+		/**
 		 * Regex to exclude URI from preload.
 		 *
 		 * @param string[] regexes to check
 		 */
-		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [] );
+		$regexes_urls = (array) apply_filters( 'rocket_preload_exclude_urls', [] );
 
+		if ( $this->check_regexes( $url, $regexes, false ) ) {
+			return true;
+		}
+
+		return $this->check_regexes( $url, $regexes_urls );
+	}
+
+	/**
+	 * Check if one of the regexes is matching the URL.
+	 *
+	 * @param string $url URL to test.
+	 * @param array  $regexes Regexes to try.
+	 * @param bool   $sanitize sanitize regexes.
+	 *
+	 * @return bool
+	 */
+	protected function check_regexes( string $url, array $regexes, bool $sanitize = true ): bool {
 		if ( empty( $regexes ) ) {
 			return false;
 		}
@@ -45,9 +68,10 @@ trait CheckExcludedTrait {
 				continue;
 			}
 
-			$regex = $this->format_url( $regex );
-
-			$regex = str_replace( '?', '\?', $regex );
+			if ( $sanitize ) {
+				$regex = str_replace( '?', '\?', $regex );
+				$regex = $this->format_url( $regex );
+			}
 
 			if ( preg_match( "@$regex@m", $url ) ) {
 				return true;
