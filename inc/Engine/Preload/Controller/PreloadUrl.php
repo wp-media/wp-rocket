@@ -146,7 +146,7 @@ class PreloadUrl {
 			);
 
 			wp_safe_remote_get(
-				user_trailingslashit( $request['url'] ),
+				$request['url'],
 				$headers
 			);
 			/**

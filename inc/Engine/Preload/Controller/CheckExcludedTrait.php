@@ -2,8 +2,10 @@
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
-trait CheckExcludedTrait {
+use WP_Rocket\Engine\Preload\FormatUrlTrait;
 
+trait CheckExcludedTrait {
+	use FormatUrlTrait;
 	/**
 	 * Add new pattern of excluded uri.
 	 *
@@ -34,16 +36,19 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
+
+
 		$regexes = array_unique( $regexes );
-		$url     = user_trailingslashit( $url );
+		$url     = $this->format_url( $url );
 
 		foreach ( $regexes as $regex ) {
 			if ( ! is_string( $regex ) ) {
 				continue;
 			}
 
-			$regex = user_trailingslashit( $regex );
+			$regex = $this->format_url( $regex );
 
+			$regex = str_replace('?', '\?', $regex);
 			if ( preg_match( "@$regex@", $url ) ) {
 				return true;
 			}

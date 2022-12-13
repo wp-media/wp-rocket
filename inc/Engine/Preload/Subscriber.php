@@ -175,6 +175,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function update_cache_row() {
+
 		global $wp;
 
 		if ( is_user_logged_in() ) {
@@ -182,7 +183,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$params = [];
-
+error_log(home_url( add_query_arg( $params, $wp->request ) ) . "\n", 3, WP_CONTENT_DIR . '/ert');
 		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
