@@ -152,7 +152,7 @@ class PreloadUrl {
 		}
 		$rows = $this->query->get_rows_by_url( $url );
 
-		if ( ! $rows || count( $rows ) == 0) {
+		if ( ! $rows || count( $rows ) === 0 ) {
 			return;
 		}
 
