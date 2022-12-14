@@ -33,6 +33,31 @@ class HTML {
 	protected $excluded = [];
 
 	/**
+	 * Allowed type attributes.
+	 *
+	 * @var array Array of allowed type attributes.
+	 */
+	private $allowed_types = [
+		'text/javascript',
+		'module',
+		'application/javascript',
+		'application/ecmascript',
+		'application/x-ecmascript',
+		'application/x-javascript',
+		'text/ecmascript',
+		'text/javascript1.0',
+		'text/javascript1.1',
+		'text/javascript1.2',
+		'text/javascript1.3',
+		'text/javascript1.4',
+		'text/javascript1.5',
+		'text/jscript',
+		'text/livescript',
+		'text/x-ecmascript',
+		'text/x-javascript',
+	];
+
+	/**
 	 * Creates an instance of HTML.
 	 *
 	 * @param Options_Data $options Plugin options instance.
@@ -141,7 +166,7 @@ class HTML {
 		$result = $this->replace_xmp_tags( $html );
 
 		$replaced_html = preg_replace_callback(
-			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
+			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
 			[
 				$this,
 				'replace_scripts',
@@ -171,27 +196,31 @@ class HTML {
 			}
 		}
 
-		$matches['attr'] = trim( $matches['attr'] );
-		$delay_js        = $matches[0];
-
-		if ( ! empty( $matches['attr'] ) ) {
-
-			if (
-				strpos( $matches['attr'], 'type=' ) !== false
-				&&
-				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
-			) {
-				return $matches[0];
-			}
-
-			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
-
-			if ( null !== $delay_attr ) {
-				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
-			}
+		if ( empty( $matches['attr'] ) ) {
+			return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
 		}
 
-		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
+		$type_regex = '/type\s*=\s*(["\'])(?<type>.*)\1/i';
+		preg_match( $type_regex . 'U', $matches['attr'], $type_matches );
+		if (
+			! empty( $type_matches )
+			&&
+			! empty( trim( $type_matches['type'] ) )
+			&&
+			! in_array( trim( $type_matches['type'] ), $this->allowed_types, true )
+		) {
+			return $matches[0];
+		}
+
+		$matches['attr'] = preg_replace( $type_regex, 'data-rocket-type=$1$2$1', $matches['attr'] );
+		// To remove type attribute without any value.
+		$matches['attr'] = preg_replace( '/(\s+type\s+)|(^type\s+)|(\s+type$)/i', '', $matches['attr'] );
+
+		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
+		$src_regex       = '/src\s*=\s*(["\'])(.*)\1/i';
+		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
+
+		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
 
 
