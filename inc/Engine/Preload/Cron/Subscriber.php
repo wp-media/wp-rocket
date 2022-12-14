@@ -233,6 +233,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function revert_old_in_progress_rows() {
-		$this->query->revert_old_in_progress();
+		$this->query->revert_old_failed();
 	}
 }

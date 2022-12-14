@@ -441,6 +441,8 @@ class Cache extends Query {
 
 	/**
 	 * Revert old in-progress rows
+	 *
+	 * @depecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
@@ -453,6 +455,22 @@ class Cache extends Query {
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+	}
+
+	/**
+	 * Revert old in-progress rows.
+	 */
+	public function revert_old_failed() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'failed' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
@@ -584,5 +602,57 @@ class Cache extends Query {
 		$extension = pathinfo( $url, PATHINFO_EXTENSION );
 
 		return $extension && isset( $extensions[ $extension ] );
+	}
+
+	/**
+	 * Make the status from the task to failed.
+	 *
+	 * @param int $id id from the task.
+	 * @return bool
+	 */
+	public function make_status_failed( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'status' => 'failed',
+			]
+		);
+	}
+
+	/**
+	 * Update last accessed from the row.
+	 *
+	 * @param int $id id from the row.
+	 * @return bool
+	 */
+	public function update_last_access( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
+	 * Return outdated in-progress jobs.
+	 *
+	 * @return array|int
+	 */
+	public function get_outdated_in_progress_jobs() {
+		return $this->query(
+			[
+				'status'     => 'in-progress',
+				'is_locked'  => false,
+				'date_query' => [
+					[
+						'column' => 'last_accessed',
+						'before' => '2 minute ago',
+					],
+				],
+			],
+			false
+		);
+
 	}
 }

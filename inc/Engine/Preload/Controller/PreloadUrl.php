@@ -150,7 +150,15 @@ class PreloadUrl {
 
 			usleep( $delay_between );
 		}
+		$rows = $this->query->get_rows_by_url( $url );
 
+		if ( ! $rows || count( $rows ) == 0) {
+			return;
+		}
+
+		$row = array_pop( $rows );
+
+		$this->query->update_last_access( $row->id );
 	}
 
 	/**
@@ -181,9 +189,13 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
+		$stuck_rows = $this->query->get_outdated_in_progress_jobs();
+		foreach ( $stuck_rows as $row ) {
+			$this->query->make_status_failed( $row->id );
+		}
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
 		$rows  = $this->query->get_pending_jobs( $count );
-		foreach ( $rows as $index => $row ) {
+		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
 				$this->query->delete_by_url( $row->url );
