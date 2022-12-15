@@ -332,20 +332,8 @@ class Render extends Abstract_render {
 	 * @param array $args Array of arguments to populate the template.
 	 */
 	public function categorized_multiselect( $args ) {
-		if ( is_array( $args['value'] ) ) {
-			$args['value'] = implode( "\n", $args['value'] );
-		}
-
-		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
-		$args['items'] = empty( $args['items'] ) ? new stdClass() : $args['items'];
-
-		$wp_rocket_textarea = get_rocket_option( esc_attr( $args['id'] ) );
-		if ( is_array( $wp_rocket_textarea ) ) {
-			$wp_rocket_textarea = implode( "\n", $wp_rocket_textarea );
-		}
-
-		$args['wp_rocket_textarea'] = $wp_rocket_textarea;
-		$args['selected']           = get_rocket_option( esc_attr( $args['id'] ), [] );
+		$args['items']    = empty( $args['items'] ) ? new stdClass() : $args['items'];
+		$args['selected'] = get_rocket_option( sanitize_key( $args['id'] ), [] );
 
 		echo $this->generate( 'fields/categorized_multiselect', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}

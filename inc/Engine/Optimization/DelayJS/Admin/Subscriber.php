@@ -15,12 +15,21 @@ class Subscriber implements Subscriber_Interface {
 	private $settings;
 
 	/**
+	 * Site List instance.
+	 *
+	 * @var SiteList
+	 */
+	private $site_list;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Settings $settings Settings instance.
+	 * @param SiteList $site_list DelayJS Site List instance.
 	 */
-	public function __construct( Settings $settings ) {
-		$this->settings = $settings;
+	public function __construct( Settings $settings, SiteList $site_list ) {
+		$this->settings  = $settings;
+		$this->site_list = $site_list;
 	}
 
 	/**
@@ -32,7 +41,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options'         => 'add_options',
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
-			'rocket_input_sanitize'                => [ 'sanitize_options', 13, 2 ],
+			'rocket_input_sanitize'                => [
+				[ 'sanitize_options', 13, 2 ],
+				[ 'sanitize_selected_exclusions', 14 ],
+			],
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
 			'rocket_hidden_settings_fields'        => 'add_exclusions_hidden_field',
 			'rocket_after_save_dynamic_lists'      => 'refresh_exclusions_option',
@@ -80,6 +92,19 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Sanitizes delay JS selected exclusions options when saving the settings.
+	 *
+	 * @since 3.13
+	 *
+	 * @param array $input Array of values submitted from the form.
+	 *
+	 * @return array
+	 */
+	public function sanitize_selected_exclusions( $input ) {
+		return $this->site_list->sanitize_options( $input );
+	}
+
+	/**
 	 * Disable combine JS option when delay JS is enabled
 	 *
 	 * @param array $value     The new, unserialized option value.
@@ -110,6 +135,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$this->settings->refresh_exclusions_option();
+		$this->site_list->refresh_exclusions_option();
 	}
 }

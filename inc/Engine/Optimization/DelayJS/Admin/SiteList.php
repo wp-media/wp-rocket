@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 
@@ -15,12 +17,30 @@ class SiteList {
 	protected $dynamic_lists;
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * SiteList Constructor.
 	 *
 	 * @param DynamicLists $dynamic_lists Dynamic Lists instance.
+	 * @param Options_Data $options Options instance.
+	 * @param Options      $options_api Options instance.
 	 */
-	public function __construct( DynamicLists $dynamic_lists ) {
+	public function __construct( DynamicLists $dynamic_lists, Options_Data $options, Options $options_api ) {
 		$this->dynamic_lists = $dynamic_lists;
+		$this->options       = $options;
+		$this->options_api   = $options_api;
 	}
 
 	/**
@@ -66,7 +86,7 @@ class SiteList {
 	 */
 	private function get_scripts_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
-		return $list->scripts ?? [];
+		return ! empty( $list->scripts ) ? (array) $list->scripts : [];
 	}
 
 	/**
@@ -103,6 +123,10 @@ class SiteList {
 	 * @return array
 	 */
 	public function get_delayjs_items_exclusions( array $items ) {
+		if ( empty( $items ) ) {
+			return [];
+		}
+
 		$exclusions = [];
 
 		foreach ( $items as $item ) {
@@ -159,14 +183,13 @@ class SiteList {
 
 		// Scripts.
 		$scripts = $this->get_scripts_from_list();
-		if ( ! empty( $scripts ) ) {
-			foreach ( $scripts as $script ) {
-				$full_list['scripts']['items'][] = [
-					'id'    => $script['condition'],
-					'title' => $script['title'],
-					'icon'  => $this->get_icon( $script ),
-				];
-			}
+		foreach ( $scripts as $script ) {
+			$script                          = (array) $script;
+			$full_list['scripts']['items'][] = [
+				'id'    => $script['condition'],
+				'title' => $script['title'],
+				'icon'  => $this->get_icon( $script ),
+			];
 		}
 
 		foreach ( $this->get_active_plugins() as $plugin ) {
@@ -205,5 +228,41 @@ class SiteList {
 		}
 
 		return $item['icon_url'];
+	}
+
+	/**
+	 * Sanitizes delay JS options when saving the settings
+	 *
+	 * @since 3.13
+	 *
+	 * @param array $input Array of values submitted from the form.
+	 *
+	 * @return array
+	 */
+	public function sanitize_options( $input ) : array {
+		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
+			$input['delay_js_exclusions_selected']            = [];
+			$input['delay_js_exclusions_selected_exclusions'] = [];
+		} else {
+			$input['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
+		}
+
+		return $input;
+	}
+
+	/**
+	 * Refresh exclusions option based on selected items option.
+	 *
+	 * @return void
+	 */
+	public function refresh_exclusions_option() {
+		$selected_items = $this->options->get( 'delay_js_exclusions_selected' );
+
+		$this->options->set(
+			'delay_js_exclusions_selected_exclusions',
+			$this->get_delayjs_items_exclusions( $selected_items )
+		);
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }

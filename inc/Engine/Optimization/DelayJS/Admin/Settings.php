@@ -10,28 +10,19 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 class Settings {
 
 	/**
-	 * Site List instance.
-	 *
-	 * @var SiteList
-	 */
-	private $site_list;
-
-	/**
 	 * Options instance.
 	 *
 	 * @var Options_Data
 	 */
-	protected $option;
+	protected $options;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param SiteList     $site_list DelayJS Site List instance.
-	 * @param Options_Data $option Options instance.
+	 * @param Options_Data $options Options instance.
 	 */
-	public function __construct( SiteList $site_list, Options_Data $option ) {
-		$this->site_list = $site_list;
-		$this->option    = $option;
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -70,7 +61,7 @@ class Settings {
 			return;
 		}
 
-		$options = $this->option->get( 'wp_rocket_settings', [] );
+		$options = $this->options->get( 'wp_rocket_settings', [] );
 
 		$options['delay_js_exclusions'] = [];
 
@@ -97,14 +88,12 @@ class Settings {
 	 */
 	public function sanitize_options( $input, $settings ) : array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
-
-		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
-			$input['delay_js_exclusions_selected']            = [];
-			$input['delay_js_exclusions_selected_exclusions'] = [];
-		} else {
-			$input['delay_js_exclusions_selected_exclusions'] = $this->site_list->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
-		}
+		$input['delay_js_exclusions'] =
+			! empty( $input['delay_js_exclusions'] )
+				?
+				rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] )
+				:
+				[];
 
 		return $input;
 	}
@@ -220,22 +209,6 @@ class Settings {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Refresh exclusions option based on selected items option.
-	 *
-	 * @return void
-	 */
-	public function refresh_exclusions_option() {
-		$selected_items = $this->option->get( 'delay_js_exclusions_selected' );
-		if ( empty( $selected_items ) ) {
-			$this->option->set( 'delay_js_exclusions_selected_exclusions', [] );
-			return;
-		}
-
-		$selected_exclusions = $this->site_list->get_delayjs_items_exclusions( $selected_items );
-		$this->option->set( 'delay_js_exclusions_selected_exclusions', $selected_exclusions );
 	}
 
 }
