@@ -17,7 +17,7 @@ jQuery( document ).ready( function( $ ){
 		$( '#export_settings' ).prop( 'checked', true );
 	});
 
-	$( '#wpr-deactivation-intent-form' ).submit(function () {
+	$( '#wpr-deactivation-intent-form' ).submit(function (e) {
 		const checked = $( '#export_settings' ).prop('checked');
 		if(! checked) {
 			return true;
