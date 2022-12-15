@@ -33,7 +33,7 @@ return [
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/(.+/)?feed/?.+/?/|/(?:.+/)?embed/',
+		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed/',
 	],
 	[
 		'config' => [
@@ -49,7 +49,7 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/',
+		'expected' => '/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*)',
 	],
 	[
 		'config' => [
@@ -62,7 +62,7 @@ return [
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/)',
+		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/)',
 	],
 	[
 		'config' => [
@@ -78,7 +78,7 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
+		'expected' => '/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
 	],
 	[
 		'config' => [
@@ -91,7 +91,7 @@ return [
 				'/(?:.+/)?embed/',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/)',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/)',
 	],
 	[
 		'config' => [
@@ -107,7 +107,7 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
 	],
 	[
 		'config' => [
@@ -123,6 +123,6 @@ return [
 				'/members/(.*)',
 			],
 		],
-		'expected' => '/subfolder/(/(.+/)?feed/?.+/?/|/(?:.+/)?embed/|/members/(.*)/)',
+		'expected' => '/subfolder/(/(.+/)?feed/?.+/?|/(?:.+/)?embed/|/members/(.*))',
 	],
 ];
