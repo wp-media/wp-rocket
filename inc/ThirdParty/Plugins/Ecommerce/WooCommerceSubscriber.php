@@ -106,7 +106,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 */
 	public function reformat_shop_url_for_preload( array $urls, $object ) {
 		$post_type = $object->post_type;
-		if ( 'post' !== $post_type ) {
+		if ( 'product' !== $post_type ) {
 			return $urls;
 		}
 		$post_type_archive = get_post_type_archive_link( $post_type );
