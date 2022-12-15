@@ -42,7 +42,7 @@ jQuery( document ).ready( function( $ ){
 
 				const filename = filenames.pop();
 
-				const url = URL.createObjectURL( new Blob( [ JSON.stringify(data) ], {
+				const url = URL.createObjectURL( new Blob( [ JSON.stringify(data, null, 2) ], {
 					type: "octet/stream"
 				}));
 

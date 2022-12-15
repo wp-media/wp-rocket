@@ -52,7 +52,9 @@ defined( 'ABSPATH' ) || exit;
 								<?php
 								printf(
 									// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"', 'rocket' ),
+									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"  and export WP Rocket settings %3$s(Recommended as current settings will be deleted)%4$s', 'rocket' ),
+									'<strong>',
+									'</strong>',
 									'<strong>',
 									'</strong>'
 								);
