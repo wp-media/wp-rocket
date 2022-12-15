@@ -243,9 +243,11 @@ class SiteList {
 		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
 			$input['delay_js_exclusions_selected']            = [];
 			$input['delay_js_exclusions_selected_exclusions'] = [];
-		} else {
-			$input['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
+
+			return $input;
 		}
+
+		$input['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $input['delay_js_exclusions_selected'] );
 
 		return $input;
 	}
