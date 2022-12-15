@@ -248,6 +248,15 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	/**
+	 *  URLs cache files to remove after cache files related with the post are deleted
+	 *
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param WP_Post $post       The post object
+	 * @returns array   $purge_urls URLs cache files to remove
+	 */
+	$purge_urls = (array) apply_filters('after_rocket_clean_post_urls', $purge_urls, $post );
+
+	/**
 	 * Fires after cache files related with the post are deleted
 	 *
 	 * @since 1.3.0
@@ -327,6 +336,15 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 
 	// Purge home feeds (blog & comments).
 	rocket_clean_home_feeds();
+
+	/**
+	 *  URLs cache files to remove after cache files related with the post are deleted
+	 *
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param WP_Post $post       The post object
+	 * @returns array   $purge_urls URLs cache files to remove
+	 */
+	$purge_urls = (array) apply_filters('after_rocket_clean_post_urls', $purge_urls, $post );
 
 	/**
 	 * Fires after cache files related with the post are deleted

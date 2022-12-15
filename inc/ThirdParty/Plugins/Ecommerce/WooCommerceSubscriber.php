@@ -69,6 +69,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
+			$events['after_rocket_clean_post_urls']            =  [ 'reformat_shop_url_for_preload', 10, 2 ];
+
 			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
 
 			/**
@@ -93,6 +95,45 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Reformat Shop URL to prevent error on preload.
+	 *
+	 * @param array $urls urls cleared.
+	 * @param $object post object.
+	 * @return array
+	 */
+	public function reformat_shop_url_for_preload( array $urls, $object ) {
+		$post_type = $object->post_type;
+		if ( 'post' !== $post_type ) {
+			return $urls;
+		}
+		$post_type_archive = get_post_type_archive_link( $post_type );
+		if(! $post_type_archive ) {
+			return $urls;
+		}
+
+		// Rename the caching filename for SSL URLs.
+		$filename = 'index';
+		if ( is_ssl() ) {
+			$filename .= '-https';
+		}
+
+		$post_type_archive = trailingslashit( $post_type_archive );
+		$index_url      = $post_type_archive . $filename . '.html';
+		$index_url_gzip = $post_type_archive . $filename . '.html_gzip';
+		$pagination_url = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
+
+		foreach ($urls as $index => $url) {
+			if( in_array( $url, [ $index_url, $index_url_gzip, $pagination_url ] ) ) {
+				$urls[$index] = $post_type_archive;
+			}
+		}
+
+		$urls = array_unique( $urls );
+
+		return $urls;
 	}
 
 	/**
