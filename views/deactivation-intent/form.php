@@ -52,9 +52,7 @@ defined( 'ABSPATH' ) || exit;
 								<?php
 								printf(
 									// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"  and export WP Rocket settings %3$s(Recommended as current settings will be deleted)%4$s', 'rocket' ),
-									'<strong>',
-									'</strong>',
+									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"', 'rocket' ),
 									'<strong>',
 									'</strong>'
 								);
@@ -64,7 +62,14 @@ defined( 'ABSPATH' ) || exit;
 						<li class="wpr-sub-list">
 							<input type="checkbox" id="export_settings" name="export_settings" checked="checked" />
 							<label for="export_settings">
-								<?php esc_html_e( 'and export WP Rocket settings', 'rocket' ); ?>
+								<?php
+								printf(
+										// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+										esc_html__( 'and export WP Rocket settings %2$s(Recommended as current settings will be deleted)%3$s', 'rocket' ),
+								'<strong>',
+									'</strong>'
+								);
+								?>
 							</label>
 						</li>
 						<li>
