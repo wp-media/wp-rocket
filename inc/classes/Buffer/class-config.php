@@ -206,7 +206,7 @@ class Config {
 		if ( ! empty( $path ) ) {
 			$config_file_paths = [];
 
-			// Loop through paths and store valid config paths matching the url current path.
+			// Loop through paths and store valid config file paths matching the url current path in an array.
 			foreach ( $path as $p ) {
 				static $dir;
 
