@@ -197,34 +197,33 @@ class Config {
 		$path = preg_replace( '|(?<=.)/+|', '/', $path );
 		$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
 
+		$config_file_paths = [];
+
 		foreach ( $path as $p ) {
 			static $dir;
 
 			if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_path = self::$config_dir_path . $host . '.' . $p . '.php';
-				return self::memoize(
-					__FUNCTION__,
-					[],
-					[
-						'success' => true,
-						'path'    => $config_file_path,
-					]
-				);
+				$config_file_paths[] = self::$config_dir_path . $host . '.' . $p . '.php';
 			}
 
 			if ( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_path = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
-				return self::memoize(
+				$config_file_paths[] = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
+			}
+
+			$dir .= $p . '.';
+		}
+
+		$config_file_paths = array_reverse( $config_file_paths );
+
+		foreach ( $config_file_paths as $config_path ) {
+			return self::memoize(
 					__FUNCTION__,
 					[],
 					[
 						'success' => true,
-						'path'    => $config_file_path,
+						'path'    => $config_path,
 					]
 				);
-			}
-
-			$dir .= $p . '.';
 		}
 
 		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
