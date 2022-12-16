@@ -65,7 +65,7 @@ defined( 'ABSPATH' ) || exit;
 								<?php
 								printf(
 										// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-										esc_html__( 'and export WP Rocket settings %2$s(Recommended as current settings will be deleted)%3$s', 'rocket' ),
+										esc_html__( 'and export WP Rocket settings %1$s(Recommended as current settings will be deleted)%2$s', 'rocket' ),
 								'<strong>',
 									'</strong>'
 								);
