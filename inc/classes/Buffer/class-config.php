@@ -196,34 +196,48 @@ class Config {
 		$path = str_replace( '\\', '/', strtok( $this->get_server_input( 'REQUEST_URI', '' ), '?' ) );
 		$path = preg_replace( '|(?<=.)/+|', '/', $path );
 		$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
+		// Remove empty array values.
+		$path = array_filter( $path );
 
-		$config_file_paths = [];
+		/**
+		 * If path is not empty.
+		 * i.e url with something like this `multisite/green/sample-page` after the host.
+		 */
+		if ( ! empty( $path ) ) {
+			$config_file_paths = [];
 
-		foreach ( $path as $p ) {
-			static $dir;
+			// Loop through paths and store valid config paths matching the url current path.
+			foreach ( $path as $p ) {
+				static $dir;
 
-			if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_paths[] = self::$config_dir_path . $host . '.' . $p . '.php';
+				if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
+					$config_file_paths[] = self::$config_dir_path . $host . '.' . $p . '.php';
+				}
+
+				if ( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ), $config_dir_real_path ) ) {
+					$config_file_paths[] = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
+				}
+
+				$dir .= $p . '.';
 			}
 
-			if ( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_paths[] = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
-			}
+			// Reverse array order so that subsite config file paths can come first.
+			$config_file_paths = array_reverse( $config_file_paths );
 
-			$dir .= $p . '.';
-		}
-
-		$config_file_paths = array_reverse( $config_file_paths );
-
-		foreach ( $config_file_paths as $config_path ) {
-			return self::memoize(
+			/**
+			 * Check if there was a matching config file for the url current path
+			 * and return the first
+			 */
+			if ( ! empty( $config_file_paths ) ) {
+				return self::memoize(
 					__FUNCTION__,
 					[],
 					[
 						'success' => true,
-						'path'    => $config_path,
+						'path'    => $config_file_paths[0],
 					]
 				);
+			}
 		}
 
 		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
