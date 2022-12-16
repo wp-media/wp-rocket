@@ -254,7 +254,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param WP_Post $post       The post object
 	 * @returns array   $purge_urls URLs cache files to remove
 	 */
-	$purge_urls = (array) apply_filters('after_rocket_clean_post_urls', $purge_urls, $post );
+	$purge_urls = (array) apply_filters( 'after_rocket_clean_post_urls', $purge_urls, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Fires after cache files related with the post are deleted
@@ -344,7 +344,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 * @param WP_Post $post       The post object
 	 * @returns array   $purge_urls URLs cache files to remove
 	 */
-	$purge_urls = (array) apply_filters('after_rocket_clean_post_urls', $purge_urls, $post );
+	$purge_urls = (array) apply_filters( 'after_rocket_clean_post_urls', $purge_urls, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Fires after cache files related with the post are deleted
