@@ -41,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->add( 'delay_js_settings', Settings::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
 		$this->getContainer()->share( 'delay_js_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
 			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
