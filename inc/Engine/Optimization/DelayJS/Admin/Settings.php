@@ -72,7 +72,7 @@ class Settings {
 			$options['minify_concatenate_js'] = 0;
 		}
 
-		$this->options_api->set( 'wp_rocket_settings', $options );
+		$this->options_api->set( 'settings', $options );
 	}
 
 	/**
