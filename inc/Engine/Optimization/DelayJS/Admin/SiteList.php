@@ -258,7 +258,7 @@ class SiteList {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$selected_items = $this->options->get( 'delay_js_exclusions_selected' );
+		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
 
 		$this->options->set(
 			'delay_js_exclusions_selected_exclusions',
