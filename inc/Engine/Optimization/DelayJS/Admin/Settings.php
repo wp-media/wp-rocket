@@ -18,7 +18,7 @@ class Settings {
 	/**
 	 * Constructor.
 	 *
-	 * @param Options $options Options instance.
+	 * @param Options $options_api Options instance.
 	 */
 	public function __construct( Options $options_api ) {
 		$this->options_api = $options_api;
