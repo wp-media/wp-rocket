@@ -283,7 +283,7 @@ class Purge {
 		foreach ( $diff as $path ) {
 			// Check if string is a path or pattern.
 			if ( strpos( $path, $wildcard ) !== false ) {
-				$pattern = str_replace( '(.*)', '*', $path );
+				$pattern = preg_replace( '#\(\.\*\).*#', '*', $path );
 				$results = $this->query->query(
 					[
 						'search'         => $pattern,
