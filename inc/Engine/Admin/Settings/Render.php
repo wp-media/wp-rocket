@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use stdClass;
 use WP_Rocket\Abstract_Render;
 
 defined( 'ABSPATH' ) || exit;
@@ -287,6 +288,23 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the textarea field template.
+	 *
+	 * @since 3.0
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function custom_textarea( $args ) {
+		if ( is_array( $args['value'] ) ) {
+			$args['value'] = implode( "\n", $args['value'] );
+		}
+
+		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
+
+		echo $this->generate( 'fields/custom_textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Displays the sliding checkbox field template.
 	 *
 	 * @since 3.0
@@ -306,6 +324,18 @@ class Render extends Abstract_render {
 	 */
 	public function number( $args ) {
 		echo $this->generate( 'fields/number', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays the multiselect field template.
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 */
+	public function categorized_multiselect( $args ) {
+		$args['items']    = empty( $args['items'] ) ? new stdClass() : $args['items'];
+		$args['selected'] = get_rocket_option( sanitize_key( $args['id'] ), [] );
+
+		echo $this->generate( 'fields/categorized_multiselect', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

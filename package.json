@@ -5,8 +5,8 @@
   "main": "src/js/app.js",
   "scripts": {
 	"test": "echo \"Error: no test specified\" && exit 1",
-	"build": "webpack --progress --colors --watch --mode=development",
-	"prod": "webpack --progress --colors -p --config webpack.config.js --mode=production"
+	"build": "gulp watch",
+	"prod": "gulp run:build && gulp sass_all_unmin"
   },
   "author": "",
   "license": "ISC",

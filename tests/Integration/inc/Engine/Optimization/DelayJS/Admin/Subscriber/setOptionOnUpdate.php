@@ -36,11 +36,11 @@ class Test_SetOptionOnUpdate extends TestCase{
 		$updated = get_option( 'wp_rocket_settings' );
 
 		$this->assertSame(
-			$expected['delay_js'],
-			$updated['delay_js']
+			(bool) $expected['delay_js'],
+			isset( $updated['delay_js'] ) && $updated['delay_js']
 		);
 
-		if ( $updated['delay_js'] ) {
+		if ( isset( $updated['delay_js'] ) && $updated['delay_js'] ) {
 			$this->assertSame(
 				$expected['delay_js_exclusions'],
 				$updated['delay_js_exclusions']

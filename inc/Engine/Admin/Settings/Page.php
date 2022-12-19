@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
@@ -85,6 +86,13 @@ class Page {
 	private $user_client;
 
 	/**
+	 * Delay JS Site List controller.
+	 *
+	 * @var SiteList
+	 */
+	protected $delayjs_sitelist;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -95,8 +103,9 @@ class Page {
 	 * @param Beacon           $beacon      Beacon instance.
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
+	 * @param SiteList         $delayjs_sitelist User client instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist ) {
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -106,14 +115,15 @@ class Page {
 			$args
 		);
 
-		$this->slug        = $args['slug'];
-		$this->title       = $args['title'];
-		$this->capability  = $args['capability'];
-		$this->settings    = $settings;
-		$this->render      = $render;
-		$this->beacon      = $beacon;
-		$this->optimize    = $optimize;
-		$this->user_client = $user_client;
+		$this->slug             = $args['slug'];
+		$this->title            = $args['title'];
+		$this->capability       = $args['capability'];
+		$this->settings         = $settings;
+		$this->render           = $render;
+		$this->beacon           = $beacon;
+		$this->optimize         = $optimize;
+		$this->user_client      = $user_client;
+		$this->delayjs_sitelist = $delayjs_sitelist;
 	}
 
 	/**
@@ -901,8 +911,8 @@ class Page {
 						'sanitize_callback' => 'sanitize_checkbox',
 					]
 				),
-				'delay_js_exclusions'          => [
-					'type'              => 'textarea',
+				'delay_js_exclusions_selected' => [
+					'type'              => 'categorized_multiselect',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
@@ -916,7 +926,25 @@ class Page {
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
-					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'items'             => $this->delayjs_sitelist->prepare_delayjs_ui_list(),
+				],
+				'delay_js_exclusions'          => [
+					'type'              => 'custom_textarea',
+					'label'             => __( 'My Scripts', 'rocket' ),
+					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
+					// 'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'placeholder'       => __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ),
 				],
 			]
 		);

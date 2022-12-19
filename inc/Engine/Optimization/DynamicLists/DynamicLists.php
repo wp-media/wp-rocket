@@ -33,6 +33,9 @@ class DynamicLists extends Abstract_Render {
 	 */
 	private $beacon;
 
+	/**
+	 * Route Rest API namespace.
+	 */
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 
 	/**
@@ -231,5 +234,14 @@ class DynamicLists extends Abstract_Render {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
 		return isset( $lists->js_excluded_inline ) ? $lists->js_excluded_inline : [];
+	}
+
+	/**
+	 * Get Delay JS dynamic list.
+	 *
+	 * @return array
+	 */
+	public function get_delayjs_list() {
+		return $this->providers['delayjslists']->data_manager->get_lists();
 	}
 }
