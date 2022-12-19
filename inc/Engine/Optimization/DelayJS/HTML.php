@@ -61,6 +61,7 @@ class HTML {
 		$this->set_exclusions();
 
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
 		/**
 		 * Filters the delay JS exclusions array

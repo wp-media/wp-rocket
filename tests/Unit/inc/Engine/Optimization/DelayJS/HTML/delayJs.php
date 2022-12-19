@@ -56,6 +56,12 @@ class Test_DelayJs extends TestCase {
 				->once()
 				->andReturn( $config['delay_js_exclusions'] );
 
+			$this->options->shouldReceive( 'get' )
+				->with( 'delay_js_exclusions_selected_exclusions', [] )
+				->atMost()
+				->once()
+				->andReturn( [] );
+
 			$this->data_manager->shouldReceive( 'get_lists' )
 				->atMost()
 				->once()
