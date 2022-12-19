@@ -458,7 +458,7 @@ class Cache extends Query {
 	}
 
 	/**
-	 * Revert old in-progress rows.
+	 * Revert old failed rows.
 	 */
 	public function revert_old_failed() {
 		// Get the database interface.
