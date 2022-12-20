@@ -100,4 +100,13 @@ export class pageUtils {
     goto_site_health = async () => {
         await this.page.goto(WP_BASE_URL + '/wp-admin/site-health.php');
     }
+
+    adjust_permalinks = async()=> {
+        await this.page.goto(WP_BASE_URL + '/wp-admin/options-permalink.php');
+        
+        await this.page.locator('#permalink-input-post-name').click();
+
+        await this.page.click("input[value='Save Changes']");
+
+    }
 }
