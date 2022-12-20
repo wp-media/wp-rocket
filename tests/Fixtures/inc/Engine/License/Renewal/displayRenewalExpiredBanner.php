@@ -5,8 +5,9 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 39.2,
-				'not_grandfather'=> 49,
-				'is_expired'=> 49
+				'is_grandmother'=> 49,
+				'not_grandfather'=> 59,
+				'is_expired'=> 59
 			]
 		],
 		'websites'=> 1
@@ -15,8 +16,9 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 79.2,
-				'not_grandfather'=> 99,
-				'is_expired'=> 99
+				'is_grandmother'=> 99,
+				'not_grandfather'=> 119,
+				'is_expired'=> 119
 			]
 		],
 		'websites'=> 3
@@ -25,14 +27,16 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 199.2,
-				'not_grandfather'=> 249,
-				'is_expired'=> 249
+				'is_grandmother'=> 249,
+				'not_grandfather'=> 299,
+				'is_expired'=> 299
 			]
 		],
 	] ) ),
 	'renewals' => json_decode( json_encode( [
 		'extra_days'=> 15,
 		'grandfather_date'=> 1640995200,
+		'grandmother_date'=> 1672531200,
 		'discount_percent'=> [
 			'is_grandfather' => 20,
 			'not_grandfather'=> 0,
@@ -91,7 +95,7 @@ return [
 			'template' => 'renewal-expired-banner-ocd',
 			'data' => [
 				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'message' => 'Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
 				'disabled_date' => strtotime( 'now + 5 days' ),
 			],
 		],
@@ -202,7 +206,7 @@ return [
 			'template' => 'renewal-expired-banner-ocd',
 			'data' => [
 				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'message' => 'Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
 				'disabled_date' => strtotime( 'now + 5 days' ),
 			],
 		],
@@ -296,7 +300,7 @@ return [
 			'template' => 'renewal-expired-banner',
 			'data' => [
 				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'message' => 'Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
 			],
 		],
 	],
@@ -382,7 +386,7 @@ return [
 			'template' => 'renewal-expired-banner',
 			'data' => [
 				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'message' => 'Renew your license for 1 year now and get <strong>20% OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
 			],
 		],
 	],
