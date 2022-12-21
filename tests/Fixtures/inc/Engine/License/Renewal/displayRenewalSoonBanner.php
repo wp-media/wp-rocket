@@ -191,7 +191,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>$174.3</strong>.',
+			'message' => 'Renew with a <strong>$49.8 discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
