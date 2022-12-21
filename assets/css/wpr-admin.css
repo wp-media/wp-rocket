@@ -2389,6 +2389,9 @@ div.wpr-tutorial-item {
 .wpr-rocketcdn-modal iframe {
   max-width: 100%;
 }
+.wpr-rocketcdn-modal .wpr-sub-list {
+  padding-left: 25px;
+}
 
 /*-----------------------------------------------*\
 
@@ -2626,6 +2629,9 @@ div.wpr-tutorial-item {
   outline: none;
   border-color: #444444;
   box-shadow: none;
+}
+.wpr-select select:disabled {
+  background-image: none;
 }
 .wpr-select label {
   font-weight: bold;

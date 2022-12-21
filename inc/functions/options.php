@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.3.0
  *
  * @param string $option  The option name.
- * @param bool   $default (default: false) The default value of option.
+ * @param mixed  $default (default: false) The default value of option.
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -20,6 +20,18 @@ function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPr
 	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	return $options->get( $option, $default );
+}
+
+/**
+ * Export settings into JSON.
+ *
+ * @return array
+ */
+function rocket_export_options() {
+	$site_name = get_rocket_parse_url( get_home_url() );
+	$site_name = $site_name['host'] . $site_name['path'];
+	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+	return [ $filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ) ]; // do not use get_rocket_option() here.
 }
 
 /**
