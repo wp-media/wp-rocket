@@ -143,7 +143,7 @@ class Renewal extends Abstract_Render {
 		);
 
 		if (
-			$this->is_grandfather()
+			( $this->is_grandfather() || $this->has_grandmother() )
 			&&
 			$expired_since < 15
 		) {
@@ -380,7 +380,8 @@ class Renewal extends Abstract_Render {
 			return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
 		}
 
-		if ( $renewals['is_grandmother'] ) {
+		if ( $renewals['is_grandmother'] &&
+			! $renewals['is_expired'] ) {
 			return isset( $license->prices->renewal->is_grandmother ) ? $license->prices->renewal->is_grandmother : 0;
 		}
 
