@@ -44,12 +44,12 @@ class GetPricingData extends TestCase {
 
 		if ( false === $config['transient'] ) {
 			$this->options->shouldReceive( 'get' )
-			->twice()
+			->once()
 			->with( 'consumer_key', '' )
 			->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
 
 			$this->options->shouldReceive( 'get' )
-				->twice()
+				->once()
 				->with( 'consumer_email', '' )
 				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
 

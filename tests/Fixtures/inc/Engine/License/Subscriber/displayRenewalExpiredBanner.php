@@ -76,7 +76,7 @@ return [
 		'config'   => [
 			'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
-				'licence_expiration' => strtotime( 'now - 8 days' ),
+				'licence_expiration' => strtotime( 'now - 15 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 				'date_created'      => strtotime( 'last year' ),
 				'is_auto_renew' => false,
