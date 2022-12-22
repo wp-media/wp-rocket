@@ -343,7 +343,11 @@ class Renewal extends Abstract_Render {
 	private function is_grandfather(): bool {
 		$renewals = $this->get_user_renewal_status();
 
-		return $renewals['is_grandfather'];
+		if(! is_array( $renewals ) ) {
+			return false;
+		}
+
+		return  key_exists('is_grandfather', $renewals ) && $renewals['is_grandfather'];
 	}
 	/**
 	 * Is user grandmothered
@@ -352,6 +356,10 @@ class Renewal extends Abstract_Render {
 	 */
 	private function has_grandmother(): bool {
 		$renewals = $this->get_user_renewal_status();
+
+		if(! is_array( $renewals ) ) {
+			return false;
+		}
 
 		return key_exists( 'is_grandmother', $renewals ) && $renewals['is_grandmother'];
 	}
