@@ -710,8 +710,6 @@ class Cache extends Abstract_Buffer {
 		// Last character of request uri.
 		$request_uri_last_char = '/' !== substr( $request_uri, -1 ) ? '' : '/';
 
-		$php_self = str_replace( 'index.php', '', $this->config->get_server_input( 'PHP_SELF' ) );
-
 		// In cases where we have the home with a trailng slash (visible or invisible)
 		// and permalink is without trailing slash.
 		if ( '' === $permalink_last_char ) {
