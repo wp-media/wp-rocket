@@ -718,8 +718,14 @@ class Cache extends Abstract_Buffer {
 			// Check for root installation.
 			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
 
-			// Check for subdir installation.
-			if ( '/' !== $request_uri && $php_self === $request_uri ) {
+			/**
+			 * Check for subdir installation.
+			 * Use config file name to get home request_uri.
+			 */
+			$home = str_replace( $this->config->get_host(), '', basename( $this->config->get_config_file_path()['path'] ) );
+			$home = str_replace( '.', '/', str_replace( '.php', '', $home ) );
+
+			if ( '/' !== $request_uri && rtrim( $request_uri, '/' ) === $home ) {
 				$request_uri_last_char = '';
 			}
 		}
