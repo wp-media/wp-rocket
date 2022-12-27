@@ -91,7 +91,7 @@ class PreloadUrl {
 				'url'       => $url,
 				'is_mobile' => false,
 				'headers'   => [
-				//	'blocking'   => false,
+					'blocking'   => false,
 					'timeout'    => 0.01,
 					'user-agent' => 'WP Rocket/Preload',
 				],
@@ -131,7 +131,7 @@ class PreloadUrl {
 			$headers = array_merge(
 				$headers,
 				[
-				//	'blocking'  => false,
+					'blocking'  => false,
 					'timeout'   => 0.01,
 					/**
 					 * Filter to activate the verification of SSl.
