@@ -60,11 +60,16 @@ class PreloadUrl {
 	 */
 	public function preload_url( string $url ) {
 		if (
-			! $this->has_cached_query_string( $url )
-			&&
-			$this->can_preload_query_strings()
+			(
+				! $this->has_cached_query_string( $url )
+				&&
+				$this->can_preload_query_strings()
+			) || (
+				! $this->can_preload_query_strings() &&
+				$this->has_query_string( $url )
+			)
 		) {
-			$this->query->delete_by_url( $url );
+			$this->query->delete_by_url( $url, false );
 
 			return;
 		}
@@ -86,7 +91,7 @@ class PreloadUrl {
 				'url'       => $url,
 				'is_mobile' => false,
 				'headers'   => [
-					'blocking'   => false,
+				//	'blocking'   => false,
 					'timeout'    => 0.01,
 					'user-agent' => 'WP Rocket/Preload',
 				],
@@ -126,7 +131,7 @@ class PreloadUrl {
 			$headers = array_merge(
 				$headers,
 				[
-					'blocking'  => false,
+				//	'blocking'  => false,
 					'timeout'   => 0.01,
 					/**
 					 * Filter to activate the verification of SSl.
@@ -198,9 +203,8 @@ class PreloadUrl {
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
 		$rows  = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $index => $row ) {
-
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
-				$this->query->delete_by_url( $row->url );
+				$this->query->delete_by_url( $row->url, false );
 				continue;
 			}
 
@@ -274,6 +278,12 @@ class PreloadUrl {
 		}
 
 		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
+	}
+
+	public function has_query_string( string $url ) {
+		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+
+		return ! empty( $queries );
 	}
 
 }

@@ -239,8 +239,10 @@ class Cache extends Query {
 	 *
 	 * @return array|false
 	 */
-	public function get_rows_by_url( string $url ) {
-		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+	public function get_rows_by_url( string $url, bool $format = true ) {
+		if( $format ) {
+			$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+		}
 
 		$query = $this->query(
 			[
@@ -262,8 +264,8 @@ class Cache extends Query {
 	 *
 	 * @return bool
 	 */
-	public function delete_by_url( string $url ) {
-		$items = $this->get_rows_by_url( $url );
+	public function delete_by_url( string $url, bool $format = true ) {
+		$items = $this->get_rows_by_url( $url, $format );
 
 		if ( ! $items ) {
 			return false;

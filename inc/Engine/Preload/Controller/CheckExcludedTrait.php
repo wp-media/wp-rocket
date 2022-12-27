@@ -69,8 +69,8 @@ trait CheckExcludedTrait {
 			}
 
 			if ( $sanitize ) {
-				$regex = str_replace( '?', '\?', $regex );
 				$regex = $this->format_url( $regex );
+				$regex = str_replace( '?', '\\?', $regex );
 			}
 
 			if ( preg_match( "@$regex@m", $url ) ) {
