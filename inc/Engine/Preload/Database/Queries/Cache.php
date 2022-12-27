@@ -236,11 +236,12 @@ class Cache extends Query {
 	 * Get all rows with the same url (desktop and mobile versions).
 	 *
 	 * @param string $url Page url.
+	 * @param bool   $format Format the URL.
 	 *
 	 * @return array|false
 	 */
 	public function get_rows_by_url( string $url, bool $format = true ) {
-		if( $format ) {
+		if ( $format ) {
 			$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
 		}
 
@@ -261,6 +262,7 @@ class Cache extends Query {
 	 * Delete DB row by url.
 	 *
 	 * @param string $url Page url to be deleted.
+	 * @param bool   $format Format the URL.
 	 *
 	 * @return bool
 	 */

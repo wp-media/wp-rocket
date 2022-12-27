@@ -280,6 +280,13 @@ class PreloadUrl {
 		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
 	}
 
+	/**
+	 * Check if the URL has query string.
+	 *
+	 * @param string $url URL to check.
+	 *
+	 * @return bool
+	 */
 	public function has_query_string( string $url ) {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 
