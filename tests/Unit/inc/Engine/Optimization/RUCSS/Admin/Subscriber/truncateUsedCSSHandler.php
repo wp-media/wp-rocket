@@ -128,6 +128,13 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 					90
 				);
 
+			Functions\when('home_url')->justReturn($input['home_url']);
+
+			Functions\expect('wp_remote_get')->once()->with(
+				$input['home_url'],
+				$input['home_request_configs']
+			);
+
 			Functions\expect( 'rocket_renew_box' )
 				->once()
 				->with( 'rucss_success_notice' );
