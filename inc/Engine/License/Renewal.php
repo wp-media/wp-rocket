@@ -71,14 +71,14 @@ class Renewal extends Abstract_Render {
 		$discount          = esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) );
 		$price             = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
 
-                $data['message'] = sprintf(
+				$data['message'] = sprintf(
 			// translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
 			esc_html__( 'Renew before it is too late, you will only pay %1$s%2$s%3$s!', 'rocket' ),
 				'<strong>',
 				$price,
 				'</strong>'
 			);
-			
+
 		if ( $this->get_discount_percent() ) {
 			$data['message'] = sprintf(
 			// translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s = <strong>, %5$s = price, %6$s=</strong>.
@@ -90,7 +90,7 @@ class Renewal extends Abstract_Render {
 				$price,
 				'</strong>'
 			);
-		} 
+		}
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
