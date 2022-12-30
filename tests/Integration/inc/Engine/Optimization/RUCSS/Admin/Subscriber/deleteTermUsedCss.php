@@ -30,9 +30,15 @@ class Test_DeleteTermUsedCss extends TestCase {
 		self::uninstallAll();
 	}
 
+	public function set_up() {
+		parent::set_up();
+		UsedCSS::$table_exists = true;
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_rucss_deletion_activated', [ $this, 'set_rucss_enabled' ] );
+		UsedCSS::$table_exists = false;
 
 		parent::tear_down();
 	}
@@ -43,8 +49,6 @@ class Test_DeleteTermUsedCss extends TestCase {
 	public function testShouldDoExpected( $config ) {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
-
-		UsedCSS::$table_exists = true;
 
 		$this->rucss_option = $config['remove_unused_css'];
 		if(key_exists('is_disabled', $config)) {
