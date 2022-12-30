@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -42,6 +43,8 @@ class Test_DeleteTermUsedCss extends TestCase {
 	public function testShouldDoExpected( $config ) {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+
+		UsedCSS::$table_exists = true;
 
 		$this->rucss_option = $config['remove_unused_css'];
 		if(key_exists('is_disabled', $config)) {
