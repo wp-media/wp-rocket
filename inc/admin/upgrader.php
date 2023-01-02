@@ -307,5 +307,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_config_file();
 	}
 
+	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
+		delete_transient( 'wp_rocket_pricing' );
+	}
+
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
