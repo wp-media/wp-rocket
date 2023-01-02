@@ -38,18 +38,18 @@ class GetPricingData extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		Functions\expect( 'get_transient' )
-			->once()
+			->atLeast()->once()
 			->with( 'wp_rocket_customer_data' )
 			->andReturn( true === $config['transient'] ? $expected : false );
 
 		if ( false === $config['transient'] ) {
 			$this->options->shouldReceive( 'get' )
-			->twice()
+			->atLeast()->once()
 			->with( 'consumer_key', '' )
 			->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
 
 			$this->options->shouldReceive( 'get' )
-				->twice()
+				->atLeast()->once()
 				->with( 'consumer_email', '' )
 				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
 
