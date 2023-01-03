@@ -944,7 +944,7 @@ class Page {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					// 'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
-					'placeholder'       => __( 'ex : /wp-includes/js/jquery/jquery.min.js', 'rocket' ),
+					'placeholder'       => '/wp-includes/js/jquery/jquery.min.js',
 				],
 			]
 		);
