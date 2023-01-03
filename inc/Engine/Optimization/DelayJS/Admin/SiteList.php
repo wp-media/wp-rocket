@@ -24,7 +24,7 @@ class SiteList {
 	protected $options;
 
 	/**
-	 * Options instance.
+	 * Options API instance.
 	 *
 	 * @var Options
 	 */
@@ -35,7 +35,7 @@ class SiteList {
 	 *
 	 * @param DynamicLists $dynamic_lists Dynamic Lists instance.
 	 * @param Options_Data $options Options instance.
-	 * @param Options      $options_api Options instance.
+	 * @param Options      $options_api Options API instance.
 	 */
 	public function __construct( DynamicLists $dynamic_lists, Options_Data $options, Options $options_api ) {
 		$this->dynamic_lists = $dynamic_lists;
