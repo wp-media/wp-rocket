@@ -26,7 +26,7 @@ class Polygon extends ThirdpartyTheme {
 	}
 
 	/**
-	 * Add excluded elements to rocket_rucss_safelist filter.
+	 * Add excluded elements to rocket_rucss_inline_content_exclusions filter.
 	 *
 	 * @param array $excluded excluded elements.
 	 * @return array
