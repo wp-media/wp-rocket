@@ -288,20 +288,20 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Displays the textarea field template.
+	 * Displays the user exclusions textarea field template.
 	 *
-	 * @since 3.0
+	 * @since 3.13
 	 *
 	 * @param array $args Array of arguments to populate the template.
 	 */
-	public function custom_textarea( $args ) {
+	public function user_exclusions_textarea( $args ) {
 		if ( is_array( $args['value'] ) ) {
 			$args['value'] = implode( "\n", $args['value'] );
 		}
 
 		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 
-		echo $this->generate( 'fields/custom_textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'fields/user_exclusions_textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

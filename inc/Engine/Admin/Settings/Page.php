@@ -915,7 +915,7 @@ class Page {
 					'items'             => $this->delayjs_sitelist->prepare_delayjs_ui_list(),
 				],
 				'delay_js_exclusions'          => [
-					'type'              => 'custom_textarea',
+					'type'              => 'user_exclusions_textarea',
 					'label'             => __( 'My Scripts', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
