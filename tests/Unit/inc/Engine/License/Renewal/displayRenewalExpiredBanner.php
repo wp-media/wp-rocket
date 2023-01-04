@@ -69,7 +69,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 		if ( ! is_null( $expected ) ) {
 			$this->user->shouldReceive( 'get_license_type' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['user']['licence_account'] );
 
 			$this->user->shouldReceive( 'get_renewal_url' )
@@ -87,7 +87,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['pricing']['single']->websites );
 
 			$this->pricing->shouldReceive( 'get_plus_websites_count' )
@@ -97,7 +97,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 			$this->pricing->shouldReceive( 'get_single_pricing' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['pricing']['single'] );
 
 			$this->pricing->shouldReceive( 'get_plus_pricing' )
