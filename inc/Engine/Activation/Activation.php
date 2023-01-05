@@ -134,5 +134,10 @@ class Activation {
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
+
+		/**
+		 * WP Rocket after activation hook.
+		 */
+		do_action( 'rocket_activation_after' );
 	}
 }

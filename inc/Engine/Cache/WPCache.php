@@ -28,7 +28,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function activate() {
-		add_action( 'rocket_activation', [ $this, 'update_wp_cache' ] );
+		add_action( 'rocket_activation_after', [ $this, 'update_wp_cache' ] );
 	}
 
 	/**
