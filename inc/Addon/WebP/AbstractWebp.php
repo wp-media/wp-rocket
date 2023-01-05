@@ -13,6 +13,13 @@ abstract class AbstractWebp {
 	 */
 	protected $cdn_subscriber;
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 3.12.6
+	 *
+	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
+	 */
 	public function __construct( CDNSubscriber $cdn_subscriber ) {
 		$this->cdn_subscriber = $cdn_subscriber;
 	}

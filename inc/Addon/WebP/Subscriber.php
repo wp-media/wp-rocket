@@ -55,8 +55,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber, $server = null ) {
 		parent::__construct( $cdn_subscriber );
 
-		$this->options_data   = $options_data;
-		$this->options_api    = $options_api;
+		$this->options_data = $options_data;
+		$this->options_api  = $options_api;
 
 		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
 			$server = $_SERVER;
@@ -128,7 +128,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 				// This is a srcset attribute, with probably multiple URLs.
 				$new_value = $this->srcset_to_webp( $attribute['value'], $extensions );
 			} else {
-				//A single URL attibute.
+				// A single URL attibute.
 				$new_value = $this->url_to_webp( $attribute['value'], $extensions );
 			}
 

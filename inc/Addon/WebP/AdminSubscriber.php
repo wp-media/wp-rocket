@@ -44,7 +44,7 @@ class AdminSubscriber extends AbstractWebp implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_cache_webp_setting_field'   => [
+			'rocket_cache_webp_setting_field' => [
 				[ 'maybe_disable_setting_field' ],
 				[ 'webp_section_description' ],
 			],
