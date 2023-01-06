@@ -267,4 +267,32 @@ class SiteList {
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
+
+	/**
+	 * Get default items from the list with their exclusions.
+	 *
+	 * @return array
+	 */
+	public function get_default_exclusions() {
+		$items = [];
+
+		foreach ( $this->get_active_plugins() as $plugin ) {
+			$plugin_in_list = $this->get_plugin_in_list( $plugin );
+			if ( empty( $plugin_in_list ) || ! $plugin_in_list['is_default'] ) {
+				continue;
+			}
+
+			$items[ $plugin ] = $plugin_in_list['exclusions'];
+		}
+
+		$theme_in_list = $this->get_theme_in_list( $this->get_active_theme() );
+
+		if ( empty( $theme_in_list ) || ! $theme_in_list['is_default'] ) {
+			return $items;
+		}
+
+		$items[ $theme_in_list['condition'] ] = $theme_in_list['exclusions'];
+
+		return $items;
+	}
 }

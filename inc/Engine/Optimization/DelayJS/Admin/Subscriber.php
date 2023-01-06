@@ -39,7 +39,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_first_install_options'         => 'add_options',
+			'rocket_first_install_options'         => [
+				[ 'add_options' ],
+				[ 'add_default_exclusions_options' ],
+			],
 			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
 			'rocket_input_sanitize'                => [
 				[ 'sanitize_options', 13, 2 ],
@@ -61,6 +64,31 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_options( $options ): array {
 		return $this->settings->add_options( $options );
+	}
+
+	/**
+	 * Add the delay JS  exclusions options to the WP Rocket options array
+	 * based on the default items in the list.
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 * @since 3.13
+	 */
+	public function add_default_exclusions_options( $options ): array {
+		$default_exclusions = $this->site_list->get_default_exclusions();
+
+		if ( empty( $default_exclusions ) ) {
+			$options['delay_js_exclusions_selected']            = [];
+			$options['delay_js_exclusions_selected_exclusions'] = [];
+
+			return $options;
+		}
+
+		$options['delay_js_exclusions_selected']            = array_keys( $default_exclusions );
+		$options['delay_js_exclusions_selected_exclusions'] = array_merge( ...array_values( $default_exclusions ) );
+
+		return $options;
 	}
 
 	/**

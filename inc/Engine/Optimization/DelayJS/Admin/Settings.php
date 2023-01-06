@@ -37,10 +37,8 @@ class Settings {
 	public function add_options( $options ) : array {
 		$options = (array) $options;
 
-		$options['delay_js']                                = 0;
-		$options['delay_js_exclusions_selected']            = [];
-		$options['delay_js_exclusions_selected_exclusions'] = [];
-		$options['delay_js_exclusions']                     = [];
+		$options['delay_js']            = 0;
+		$options['delay_js_exclusions'] = [];
 
 		return $options;
 	}
