@@ -36,7 +36,7 @@ $pricing = [
 	'renewals' => json_decode( json_encode( [
 		'extra_days'=> 90,
 		'grandfather_date'=> 1567296000,
-		'grandmother_date'=> 1640995200,
+		'grandmother_date'=> 1672389000,
 		'discount_percent'=> [
 			'is_grandfather' => 20,
 			'not_grandfather'=> 0,
@@ -112,7 +112,7 @@ return [
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2022-05-12' ),
 			],
 			'pricing'   => $pricing,
 		],
@@ -185,7 +185,7 @@ return [
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2022-05-12' ),
 			],
 			'pricing'   => $pricing,
 		],
