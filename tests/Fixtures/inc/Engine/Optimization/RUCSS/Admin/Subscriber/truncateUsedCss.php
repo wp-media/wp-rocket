@@ -23,6 +23,7 @@ return [
 		'input' => [
 			'items'             => $items,
 			'remove_unused_css' => false,
+			'home' => 'https://example.org',
 		],
 	],
 	'shouldTruncateUnusedCSS' => [
@@ -32,6 +33,7 @@ return [
 			'is_disabled' => true,
 			'delete_used_css_row' => true,
 			'used_css_count' => 0,
+			'home' => 'https://example.org',
 		],
 	],
 	'shouldNoTruncateOnHookDisabled' =>  [
@@ -40,6 +42,7 @@ return [
 			'items'             => $items,
 			'is_disabled' => false,
 			'used_css_count' => 10,
+			'home' => 'https://example.org',
 		]
 	]
 ];

@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Actions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
@@ -36,6 +37,7 @@ class Test_TruncateUsedCss extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config) {
+		Functions\when('home_url')->justReturn($config['home']);
 		$this->settings
 			->shouldReceive( 'is_enabled' )
 			->once()
@@ -65,12 +67,21 @@ class Test_TruncateUsedCss extends TestCase {
 		} else {
 			$this->database->expects()->truncate_used_css_table();
 		}
-
-		Functions\expect('do_action')->with('rocket_after_clean_used_css');
+		Actions\expectDone('rocket_after_clean_used_css');
 
 		Functions\expect('set_transient')->with('rocket_rucss_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
 
 		Functions\expect('rocket_renew_box')->with('rucss_success_notice');
+
+		Functions\expect('wp_safe_remote_get')->with(
+			$config['home'],
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => true,
+			]
+		);
 
 	}
 }
