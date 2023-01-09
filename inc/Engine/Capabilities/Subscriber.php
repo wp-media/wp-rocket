@@ -39,6 +39,8 @@ class Subscriber implements Subscriber_Interface {
 			"option_page_capability_{$slug}" => 'required_capability',
 			'ure_built_in_wp_caps'           => 'add_caps_to_ure',
 			'ure_capabilities_groups_tree'   => 'add_group_to_ure',
+			'members_register_cap_groups'    => 'add_cap_group_to_members',
+			'members_register_caps'          => 'add_caps_to_members',
 			'wp_rocket_upgrade'              => [ 'add_capabilities_on_upgrade', 12, 2 ],
 		];
 	}
@@ -78,6 +80,21 @@ class Subscriber implements Subscriber_Interface {
 	public function add_group_to_ure( $groups ) {
 		return $this->capabilities->add_group_to_ure( $groups );
 	}
+
+	/**
+	 * Add WP Rocket as a cap group in Members
+	 */
+	public function add_cap_group_to_members() {
+		$this->capabilities->add_cap_group_to_members();
+	}
+
+	/**
+	 * Add WP Rocket capabilities to Members
+	 */
+	public function add_caps_to_members() {
+		$this->capabilities->add_caps_to_members();
+	}
+
 
 	/**
 	 * Adds WP Rocket capabilities on plugin upgrade
