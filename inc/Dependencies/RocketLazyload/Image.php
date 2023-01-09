@@ -74,7 +74,7 @@ class Image {
 			 */
 			$regex = apply_filters( 'rocket_lazyload_bg_images_regex', 'background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?' );
 
-			if(! is_string( $regex ) ) {
+			if( @preg_match( "#$regex#is", '' ) === false ) {
 				$regex =  'background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?' ;
 			}
 
