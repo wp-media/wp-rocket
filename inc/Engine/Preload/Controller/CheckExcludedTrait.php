@@ -11,8 +11,14 @@ trait CheckExcludedTrait {
 	 * @return array
 	 */
 	public function add_cache_reject_uri_to_excluded( array $regexes ): array {
-		$regexes[] = get_rocket_cache_reject_uri();
+		$user_added_cache_reject_uri         = (array) get_rocket_option( 'cache_reject_uri', [] );
+		$altered_user_added_cache_reject_uri = implode( '$|', $user_added_cache_reject_uri );
 
+		$user_added_cache_reject_uri = implode( '|', $user_added_cache_reject_uri );
+		$cache_reject_uri            = get_rocket_cache_reject_uri();
+
+		$regexes[] = str_replace( $user_added_cache_reject_uri . '|', $altered_user_added_cache_reject_uri . '$|', $cache_reject_uri );
+		error_log( json_encode( $regexes ), 3, WP_CONTENT_DIR . '/ddddd' );
 		return $regexes;
 	}
 

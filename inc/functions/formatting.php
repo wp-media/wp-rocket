@@ -177,8 +177,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cache_purge_pages'          => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
 		'cache_reject_cookies'       => [ 'rocket_sanitize_key' ],
 		'cache_reject_ua'            => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ],                     // Pattern.
-		'cache_reject_uri'           => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards', 'rocket_match_path_end' ],   //
-		// Pattern.
+		'cache_reject_uri'           => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
 		'cache_query_strings'        => [ 'rocket_sanitize_key' ],
 		'cdn_reject_files'           => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],              // Pattern.
 		'exclude_css'                => [ 'rocket_validate_css', 'rocket_clean_wildcards' ],                    // Pattern.
@@ -229,24 +228,6 @@ function rocket_sanitize_xml( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'xml' === $ext ) ? trim( $file ) : false;
-}
-
-/**
- * Add end of string character on every filepath.
- *
- * @param string $path filepath to sanitize.
- * @return string
- */
-function rocket_match_path_end( $path ) {
-	if ( ! $path ) {
-		return '';
-	}
-
-	if ( preg_match( '#\$$#', $path ) ) {
-		return $path;
-	}
-
-	return $path . '$';
 }
 
 
