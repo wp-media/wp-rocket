@@ -21,6 +21,7 @@ class Test_AddCacheRejectUriToExcluded extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
+		Functions\expect('get_rocket_option')->with('cache_reject_uri', [])->andReturn($config['option_excluded_urls']);
 		Functions\expect('get_rocket_cache_reject_uri')->andReturn($config['excluded_urls']);
 		$this->assertSame($expected, $this->trait->add_cache_reject_uri_to_excluded($config['regexes']));
 	}
