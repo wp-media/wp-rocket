@@ -67,6 +67,11 @@ class Image {
 				continue;
 			}
 
+			/**
+			 * Regex to detect bg images inside CSS.
+			 * @param string $regex regex to detect.
+			 * @return string
+			 */
 			$regex = apply_filters( 'rocket_lazyload_bg_images_regex', 'background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?' );
 
 			if(! is_string( $regex ) ) {
