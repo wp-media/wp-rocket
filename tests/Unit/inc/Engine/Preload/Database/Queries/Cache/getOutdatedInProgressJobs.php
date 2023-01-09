@@ -26,7 +26,7 @@ class Test_GetOutdatedInProgressJobs extends TestCase
 			'date_query' => [
 				[
 					'column' => 'last_accessed',
-					'before' => '2 minute ago',
+					'before' => '3 minute ago',
 				],
 			],
 		] )->willReturn( $config['results'] );

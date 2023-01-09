@@ -640,6 +640,24 @@ class Cache extends Query {
 	 * @return array|int
 	 */
 	public function get_outdated_in_progress_jobs() {
+
+		/**
+		 * Set the delay before an in-progress row is considered as outdated.
+		 *
+		 * @param int $delay delay.
+		 * @return int
+		 */
+		$delay = (int) apply_filters(
+			'rocket_preload_outdated',
+			/**
+			 * Set the max number of rows in batches.
+			 *
+			 * @param int $count number of rows in batches.
+			 * @return int
+			 */
+			(int) ( apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) / 15 )
+		);
+
 		return $this->query(
 			[
 				'status'     => 'in-progress',
@@ -647,7 +665,7 @@ class Cache extends Query {
 				'date_query' => [
 					[
 						'column' => 'last_accessed',
-						'before' => '2 minute ago',
+						'before' => "$delay minute ago",
 					],
 				],
 			],
