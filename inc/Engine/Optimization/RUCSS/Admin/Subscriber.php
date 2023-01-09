@@ -184,6 +184,16 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->delete_used_css_rows();
 		$this->set_notice_transient();
+
+		wp_safe_remote_get(
+			home_url(),
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			]
+		);
 	}
 
 	/**
