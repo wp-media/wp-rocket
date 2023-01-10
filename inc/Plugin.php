@@ -352,6 +352,7 @@ class Plugin {
 			'the_events_calendar',
 			'admin_api_subscriber',
 			'perfmatters',
+			'rapidload',
 		];
 
 		$host_type = HostResolver::get_host_service();
