@@ -42,11 +42,10 @@ class Perfmatters implements Subscriber_Interface {
 	/**
 	 * Disable RUCSS option.
 	 *
-	 * @param integer|null $rucss RUCSS option.
-	 * @return integer|null
+	 * @return bool|null
 	 */
-	public function maybe_disable_rucss( ?int $rucss ) {
-		return $this->is_perfmatters_rucss_active() ? 0 : $rucss;
+	public function maybe_disable_rucss() {
+		return $this->is_perfmatters_rucss_active() ? false : null;
 	}
 
 	/**
