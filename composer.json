@@ -151,6 +151,8 @@
 	    "test-integration-rocket-lazy-load": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group RocketLazyLoad",
 	    "test-integration-the-events-calendar": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group TheEventsCalendar",
 	    "test-integration-wpxcloud": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WPXCloud",
+	    "test-integration-perfmatters": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Perfmatters",
+	    "test-integration-rapidload": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group RapidLoad",
 		"run-tests": [
 			"@test-unit",
 			"@test-integration",
