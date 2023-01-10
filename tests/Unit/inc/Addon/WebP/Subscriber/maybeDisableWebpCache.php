@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Addon\WebP\Subscriber::maybe_disable_webp_cache
  *
- * @group WebPValid
+ * @group WebP
  */
 class Test_MaybeDisableWebpCache extends TestCase {
 	private $subscriber;

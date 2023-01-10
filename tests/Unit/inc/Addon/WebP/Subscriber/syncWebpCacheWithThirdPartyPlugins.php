@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * @covers \WP_Rocket\Addon\WebP\Subscriber::sync_webp_cache_with_third_party_plugins
  *
- * @group WebPValid
+ * @group WebP
  */
 class Test_SyncWebpCacheWithThirdPartyPlugins extends TestCase {
 	private $subscriber;

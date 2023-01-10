@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Addon\Webp\AdminSubscriber::maybe_disable_setting_field
- * @group WebPValid
+ * @group WebP
  */
 class Test_MaybeDisableSettingField extends TestCase {
 	private $subscriber;
