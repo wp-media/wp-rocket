@@ -27,10 +27,9 @@ class RapidLoad implements Subscriber_Interface {
 	/**
 	 * Disable RUCSS option.
 	 *
-	 * @param array $status RUCSS option status.
 	 * @return array
 	 */
-	public function disable_rucss_option( array $status ): array {
+	public function disable_rucss_option(): array {
 		return [
 			'disable' => true,
 			'text'    => __( 'Removing Unused CSS is currently activated in Autoptimize\'s RapidLoad. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in Autoptimize\'s RapidLoad.', 'rocket' ),
