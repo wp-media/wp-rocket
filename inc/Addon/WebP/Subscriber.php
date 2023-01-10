@@ -165,11 +165,12 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 *
 	 * @since 3.4
 	 *
-	 * @param  bool $disable_webp_cache True to allow WebP cache (default). False otherwise.
+	 * @param  bool $disable_webp_cache True to disable WebP cache. False otherwise (default).
+	 *
 	 * @return bool
 	 */
-	public function maybe_disable_webp_cache( $disable_webp_cache ) {
-		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : (bool) $disable_webp_cache;
+	public function maybe_disable_webp_cache( $disable_webp_cache ): bool {
+		return $disable_webp_cache && ! empty( $this->get_plugins_serving_webp() ) ? true : (bool) $disable_webp_cache;
 	}
 
 	/**
@@ -178,7 +179,11 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @since 3.4
 	 */
 	public function sync_webp_cache_with_third_party_plugins() {
-		if ( $this->options_data->get( 'cache_webp', 0 ) && $this->get_plugins_serving_webp() ) {
+		if (
+			$this->options_data->get( 'cache_webp', 0 )
+			&&
+			$this->get_plugins_serving_webp()
+		) {
 			// Disable the cache webp option.
 			$this->options_data->set( 'cache_webp', 0 );
 			$this->options_api->set( 'settings', $this->options_data->get_options() );
