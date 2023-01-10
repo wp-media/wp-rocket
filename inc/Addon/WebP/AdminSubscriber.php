@@ -5,8 +5,8 @@ namespace WP_Rocket\Addon\WebP;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class AdminSubscriber extends AbstractWebp implements Subscriber_Interface {
 	/**
