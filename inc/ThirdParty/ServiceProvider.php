@@ -40,6 +40,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -93,6 +94,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
 		'the_events_calendar',
+		'perfmatters',
 	];
 
 	/**
@@ -237,6 +239,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'the_events_calendar', TheEventsCalendar::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'perfmatters', Perfmatters::class )
 			->addTag( 'common_subscriber' );
 	}
 }
