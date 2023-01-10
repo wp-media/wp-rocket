@@ -9,6 +9,7 @@ $rocket_cache_row = new CacheRow((object) [
 return [
 	'failSaveShouldReturnFalse' => [
 		'config' => [
+			'current_time' => 123415,
 			'task_id' => 10,
 			'results' => [
 				$rocket_cache_row
@@ -19,6 +20,7 @@ return [
 	],
 	'saveShouldReturnTrue' => [
 		'config' => [
+			'current_time' => 123415,
 			'task_id' => 10,
 			'results' => [
 				$rocket_cache_row
