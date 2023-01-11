@@ -371,8 +371,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status'        => 'in-progress',
-				'last_accessed' => current_time( 'mysql', true ),
+				'status'   => 'in-progress',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -399,8 +399,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$task->id,
 			[
-				'status'        => 'completed',
-				'last_accessed' => current_time( 'mysql', true ),
+				'status'   => 'completed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -435,8 +435,8 @@ class Cache extends Query {
 			$this->update_item(
 				$in_progress->id,
 				[
-					'status'        => 'pending',
-					'last_accessed' => current_time( 'mysql', true ),
+					'status'   => 'pending',
+					'modified' => current_time( 'mysql', true ),
 				]
 				);
 		}
@@ -617,8 +617,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status'        => 'failed',
-				'last_accessed' => current_time( 'mysql', true ),
+				'status'   => 'failed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -641,26 +641,10 @@ class Cache extends Query {
 	/**
 	 * Return outdated in-progress jobs.
 	 *
+	 * @param int $delay delay to delete.
 	 * @return array|int
 	 */
-	public function get_outdated_in_progress_jobs() {
-
-		/**
-		 * Set the delay before an in-progress row is considered as outdated.
-		 *
-		 * @param int $delay delay.
-		 * @return int
-		 */
-		$delay = (int) apply_filters(
-			'rocket_preload_outdated',
-			/**
-			 * Set the max number of rows in batches.
-			 *
-			 * @param int $count number of rows in batches.
-			 * @return int
-			 */
-			(int) ( apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) / 15 )
-		);
+	public function get_outdated_in_progress_jobs( int $delay = 3 ) {
 
 		return $this->query(
 			[
@@ -668,7 +652,7 @@ class Cache extends Query {
 				'is_locked'  => false,
 				'date_query' => [
 					[
-						'column' => 'last_accessed',
+						'column' => 'modified',
 						'before' => "$delay minute ago",
 					],
 				],

@@ -40,7 +40,7 @@ class Test_MakeStatusComplete extends TestCase
 
 		$this->query->expects(self::once())->method('update_item')->with($config['task_id'], [
 			'status' => 'completed',
-			'last_accessed' => $config['current_time'],
+			'modified' => $config['current_time'],
 		])->willReturn($config['update_status']);
 	}
 }

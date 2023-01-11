@@ -150,15 +150,6 @@ class PreloadUrl {
 
 			usleep( $delay_between );
 		}
-		$rows = $this->query->get_rows_by_url( $url );
-
-		if ( ! $rows || count( $rows ) === 0 ) {
-			return;
-		}
-
-		$row = array_pop( $rows );
-
-		$this->query->update_last_access( $row->id );
 	}
 
 	/**
@@ -189,12 +180,30 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		$stuck_rows = $this->query->get_outdated_in_progress_jobs();
+		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
+
+		/**
+		 * Set the delay before an in-progress row is considered as outdated.
+		 *
+		 * @param int $delay delay.
+		 * @return int
+		 */
+		$delay = (int) apply_filters(
+			'rocket_preload_outdated',
+			/**
+			 * Set the max number of rows in batches.
+			 *
+			 * @param int $count number of rows in batches.
+			 * @return int
+			 */
+			(int) ( $count / 15 )
+		);
+
+		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
 		}
-		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
-		$rows  = $this->query->get_pending_jobs( $count );
+		$rows = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {

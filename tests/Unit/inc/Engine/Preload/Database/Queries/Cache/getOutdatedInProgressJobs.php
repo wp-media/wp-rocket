@@ -25,7 +25,7 @@ class Test_GetOutdatedInProgressJobs extends TestCase
 			'is_locked'  => false,
 			'date_query' => [
 				[
-					'column' => 'last_accessed',
+					'column' => 'modified',
 					'before' => '3 minute ago',
 				],
 			],

@@ -23,7 +23,7 @@ class Test_MakeStatusFailed extends TestCase
 		Functions\expect('current_time')->andReturn($config['current_time']);
 		$this->query->expects(self::once())->method('update_item')->with($config['task_id'], [
 			'status' => 'failed',
-			'last_accessed' => $config['current_time'],
+			'modified' => $config['current_time'],
 		])->willReturn($config['update_status']);
 		$this->assertSame($expected, $this->query->make_status_failed($config['task_id']));
 	}
