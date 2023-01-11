@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\Addon\Webp\AdminSubscriber;
 
 use Mockery;
 use Brain\Monkey\Filters;
-use WP_Rocket\Addon\Webp\AdminSubscriber;
+use WP_Rocket\Addon\WebP\AdminSubscriber;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\Subscriber;
