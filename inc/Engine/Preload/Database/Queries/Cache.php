@@ -554,7 +554,7 @@ class Cache extends Query {
 	/**
 	 * Unlock all URLs.
 	 *
-	 * @return void
+	 * @return false|void
 	 */
 	public function unlock_all() {
 		// Get the database interface.
