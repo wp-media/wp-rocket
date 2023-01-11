@@ -31,7 +31,7 @@ return [
         ],
         'expected' => [
 			'disable' => true,
-			'text'    => 'Removing Unused CSS is currently activated in Perfmatters. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in Perfmatters.',
+			'text'    => 'Remove Unused CSS is currently activated in Perfmatters. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in Perfmatters.',
 		],
     ],
 ];

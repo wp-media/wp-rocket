@@ -9,7 +9,7 @@ return [
         ],
         'expected' => [
 			'disable' => true,
-			'text'    => 'Removing Unused CSS is currently activated in Autoptimize\'s RapidLoad. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in Autoptimize\'s RapidLoad.',
+			'text'    => 'Automated unused CSS removal is currently activated in RapidLoad Power-Up for Autoptimize. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in RapidLoad Power-Up for Autoptimize.',
 		],
     ],
 ];
