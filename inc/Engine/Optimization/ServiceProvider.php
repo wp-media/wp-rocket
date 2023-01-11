@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Buffer\Config;
 use WP_Rocket\Engine\Optimization\Buffer\Optimization;
 use WP_Rocket\Buffer\Tests;
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
@@ -18,28 +18,17 @@ use WP_Rocket\Engine\Optimization\Buffer\Subscriber as BufferSubscriber;
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'config',
-		'tests',
-		'buffer_optimization',
-		'buffer_subscriber',
-		'cache_dynamic_resource',
-		'ie_conditionals_subscriber',
-		'optimize_google_fonts',
-		'optimize_google_fonts_v2',
-		'combine_google_fonts_subscriber',
-		'minify_css_subscriber',
-		'minify_js_subscriber',
-	];
+	public function get_front_subscribers(): array
+	{
+		return [
+			$this->getInternal('buffer_subscriber'),
+			$this->getInternal('cache_dynamic_resource'),
+			$this->getInternal('combine_google_fonts_subscriber'),
+			$this->getInternal('minify_css_subscriber'),
+			$this->getInternal('minify_js_subscriber'),
+			$this->getInternal('ie_conditionals_subscriber'),
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -50,36 +39,36 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options    = $this->getContainer()->get( 'options' );
 		$filesystem = rocket_direct_filesystem();
 
-		$this->getContainer()->add( 'config', Config::class )
+		$this->add( 'config', Config::class )
 			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
-		$this->getContainer()->add( 'tests', Tests::class )
+		$this->add( 'tests', Tests::class )
 			->addArgument( $this->getContainer()->get( 'config' ) );
-		$this->getContainer()->add( 'buffer_optimization', Optimization::class )
+		$this->add( 'buffer_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
-		$this->getContainer()->share( 'buffer_subscriber', BufferSubscriber::class )
+		$this->share( 'buffer_subscriber', BufferSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
 			->addTag( 'front_subscriber' );
-		$this->getContainer()->share( 'cache_dynamic_resource', CacheDynamicResource::class )
+		$this->share( 'cache_dynamic_resource', CacheDynamicResource::class )
 			->addArgument( $options )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
 			->addTag( 'front_subscriber' );
-		$this->getContainer()->add( 'optimize_google_fonts', Combine::class );
-		$this->getContainer()->add( 'optimize_google_fonts_v2', CombineV2::class );
-		$this->getContainer()->share( 'combine_google_fonts_subscriber', Subscriber::class )
+		$this->add( 'optimize_google_fonts', Combine::class );
+		$this->add( 'optimize_google_fonts_v2', CombineV2::class );
+		$this->share( 'combine_google_fonts_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
 			->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
 			->addArgument( $options )
 			->addTag( 'front_subscriber' );
-		$this->getContainer()->share( 'minify_css_subscriber', Minify\CSS\Subscriber::class )
+		$this->share( 'minify_css_subscriber', Minify\CSS\Subscriber::class )
 			->addArgument( $options )
 			->addArgument( $filesystem )
 			->addTag( 'front_subscriber' );
-		$this->getContainer()->share( 'minify_js_subscriber', Minify\JS\Subscriber::class )
+		$this->share( 'minify_js_subscriber', Minify\JS\Subscriber::class )
 			->addArgument( $options )
 			->addArgument( $filesystem )
 			->addTag( 'front_subscriber' );
-		$this->getContainer()->share( 'ie_conditionals_subscriber', IEConditionalSubscriber::class )
+		$this->share( 'ie_conditionals_subscriber', IEConditionalSubscriber::class )
 			->addTag( 'front_subscriber' );
 	}
 }

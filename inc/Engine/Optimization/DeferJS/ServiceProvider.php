@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket Defer JS
@@ -10,20 +10,19 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'defer_js',
-		'defer_js_admin_subscriber',
-		'defer_js_subscriber',
-	];
+	public function get_front_subscribers(): array
+	{
+		return [
+			$this->getInternal('defer_js_subscriber')
+		];
+	}
+
+	public function get_admin_subscribers(): array
+	{
+		return [
+			$this->getInternal('defer_js_admin_subscriber'),
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -31,14 +30,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'defer_js', DeferJS::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) );
-		$this->getContainer()->share( 'defer_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'defer_js' ) )
+		$this->add( 'defer_js', DeferJS::class )
+			->addArgument( $this->getInternal( 'options' ) )
+			->addArgument( $this->getInternal( 'dynamic_lists_data_manager' ) );
+		$this->share( 'defer_js_admin_subscriber', AdminSubscriber::class )
+			->addArgument( $this->getInternal( 'defer_js' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->share( 'defer_js_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'defer_js' ) )
+		$this->share( 'defer_js_subscriber', Subscriber::class )
+			->addArgument( $this->getInternal( 'defer_js' ) )
 			->addTag( 'front_subscriber' );
 	}
 }

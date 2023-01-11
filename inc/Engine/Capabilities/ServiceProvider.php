@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Capabilities;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for capabilities
@@ -10,19 +10,12 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'capabilities_manager',
-		'capabilities_subscriber',
-	];
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->getInternal('capabilities_subscriber')
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -30,9 +23,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'capabilities_manager', Manager::class );
-		$this->getContainer()->share( 'capabilities_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) )
+		$this->add( 'capabilities_manager', Manager::class );
+		$this->share( 'capabilities_subscriber', Subscriber::class )
+			->addArgument( $this->getInternal( 'capabilities_manager' ) )
 			->addTag( 'common_subscriber' );
 	}
 }

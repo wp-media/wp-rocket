@@ -1,27 +1,22 @@
 <?php
 namespace WP_Rocket\Engine\Plugin;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket updates.
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provided array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'plugin_updater_common_subscriber',
-		'plugin_information_subscriber',
-		'plugin_updater_subscriber',
-	];
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->getInternal('plugin_updater_common_subscriber'),
+			$this->getInternal('plugin_information_subscriber'),
+			$this->getInternal('plugin_updater_subscriber'),
+			$this->getInternal('plugin_updater_subscriber'),
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -31,7 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$api_url = wp_parse_url( WP_ROCKET_WEB_INFO );
 
-		$this->getContainer()->share( 'plugin_updater_common_subscriber', UpdaterApiCommonSubscriber::class )
+		$this->share( 'plugin_updater_common_subscriber', UpdaterApiCommonSubscriber::class )
 			->addArgument(
 				[
 					'api_host'           => $api_url['host'],
@@ -43,7 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_information_subscriber', InformationSubscriber::class )
+		$this->share( 'plugin_information_subscriber', InformationSubscriber::class )
 			->addArgument(
 				[
 					'plugin_file' => WP_ROCKET_FILE,
@@ -51,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			)
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'plugin_updater_subscriber', UpdaterSubscriber::class )
+		$this->share( 'plugin_updater_subscriber', UpdaterSubscriber::class )
 			->addArgument(
 				[
 					'plugin_file'    => WP_ROCKET_FILE,

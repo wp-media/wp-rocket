@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\HealthCheck;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for health check subscribers
@@ -10,19 +10,19 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'health_check',
-		'action_scheduler_check',
-	];
+	public function get_admin_subscribers(): array
+	{
+		return [
+			$this->getInternal('health_check')
+		];
+	}
+
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->getInternal('action_scheduler_check')
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -30,10 +30,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'health_check', HealthCheck::class )
+		$this->share( 'health_check', HealthCheck::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->share( 'action_scheduler_check', ActionSchedulerCheck::class )
+		$this->share( 'action_scheduler_check', ActionSchedulerCheck::class )
 			->addTag( 'common_subscriber' );
 	}
 }

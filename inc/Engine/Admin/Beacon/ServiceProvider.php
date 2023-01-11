@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Beacon;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for Beacon
@@ -10,18 +10,12 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'beacon',
-	];
+	public function get_admin_subscribers(): array
+	{
+		return [
+			$this->getInternal('beacon')
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -29,7 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'beacon', Beacon::class )
+		$this->share( 'beacon', Beacon::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
 			->addArgument( $this->getContainer()->get( 'support_data' ) )

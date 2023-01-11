@@ -2,28 +2,19 @@
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket DynamicLists
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'dynamic_lists_data_manager',
-		'dynamic_lists_api_client',
-		'dynamic_lists',
-		'dynamic_lists_subscriber',
-	];
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->getInternal('dynamic_lists_subscriber')
+		];
+	}
 
 	/**
 	 * Registers the option array in the container
@@ -31,17 +22,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'dynamic_lists_data_manager', DataManager::class );
-		$this->getContainer()->add( 'dynamic_lists_api_client', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'dynamic_lists', DynamicLists::class )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_api_client' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) )
-			->addArgument( $this->getContainer()->get( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) );
+		$this->add( 'dynamic_lists_data_manager', DataManager::class );
+		$this->add( 'dynamic_lists_api_client', APIClient::class )
+			->addArgument( $this->getInternal( 'options' ) );
+		$this->add( 'dynamic_lists', DynamicLists::class )
+			->addArgument( $this->getInternal( 'dynamic_lists_api_client' ) )
+			->addArgument( $this->getInternal( 'dynamic_lists_data_manager' ) )
+			->addArgument( $this->getInternal( 'user' ) )
+			->addArgument( $this->getInternal( 'template_path' ) )
+			->addArgument( $this->getInternal( 'beacon' ) );
 
-		$this->getContainer()->share( 'dynamic_lists_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
+		$this->share( 'dynamic_lists_subscriber', Subscriber::class )
+			->addArgument( $this->getInternal( 'dynamic_lists' ) );
 	}
 }

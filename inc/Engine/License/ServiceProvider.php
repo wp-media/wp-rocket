@@ -2,14 +2,11 @@
 
 namespace WP_Rocket\Engine\License;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\Renewal;
-use WP_Rocket\Engine\License\Subscriber;
-use WP_Rocket\Engine\License\Upgrade;
 
 /**
  * Service Provider for the License module
@@ -17,20 +14,13 @@ use WP_Rocket\Engine\License\Upgrade;
  * @since 3.7.3
  */
 class ServiceProvider extends AbstractServiceProvider {
-	/**
-	 * Aliases the service provider provides
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'pricing_client',
-		'user_client',
-		'pricing',
-		'user',
-		'upgrade',
-		'renewal',
-		'license_subscriber',
-	];
+
+	public function get_admin_subscribers(): array
+	{
+		return [
+			$this->getInternal('license_subscriber')
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -40,25 +30,25 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$views = __DIR__ . '/views';
 
-		$this->getContainer()->add( 'pricing_client', PricingClient::class );
-		$this->getContainer()->add( 'user_client', UserClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'pricing', Pricing::class )
-			->addArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
-		$this->getContainer()->share( 'user', User::class )
-			->addArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
-		$this->getContainer()->add( 'upgrade', Upgrade::class )
-			->addArgument( $this->getContainer()->get( 'pricing' ) )
-			->addArgument( $this->getContainer()->get( 'user' ) )
+		$this->add( 'pricing_client', PricingClient::class );
+		$this->add( 'user_client', UserClient::class )
+			->addArgument( $this->getInternal( 'options' ) );
+		$this->share( 'pricing', Pricing::class )
+			->addArgument( $this->getInternal( 'pricing_client' )->get_pricing_data() );
+		$this->share( 'user', User::class )
+			->addArgument( $this->getInternal( 'user_client' )->get_user_data() );
+		$this->add( 'upgrade', Upgrade::class )
+			->addArgument( $this->getInternal( 'pricing' ) )
+			->addArgument( $this->getInternal( 'user' ) )
 			->addArgument( $views );
-		$this->getContainer()->add( 'renewal', Renewal::class )
-			->addArgument( $this->getContainer()->get( 'pricing' ) )
-			->addArgument( $this->getContainer()->get( 'user' ) )
+		$this->add( 'renewal', Renewal::class )
+			->addArgument( $this->getInternal( 'pricing' ) )
+			->addArgument( $this->getInternal( 'user' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $views );
-		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'upgrade' ) )
-			->addArgument( $this->getContainer()->get( 'renewal' ) )
+		$this->share( 'license_subscriber', Subscriber::class )
+			->addArgument( $this->getInternal( 'upgrade' ) )
+			->addArgument( $this->getInternal( 'renewal' ) )
 			->addTag( 'admin_subscriber' );
 	}
 }
