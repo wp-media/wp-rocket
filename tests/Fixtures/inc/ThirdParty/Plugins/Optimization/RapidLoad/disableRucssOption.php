@@ -1,7 +1,23 @@
 <?php
 return [
+    'shouldDoNothingWhenRapidLoadIsNotActive' => [
+        'config' => [
+            'autoptimize_uucss_settings' => [],
+            'rucss_status' => [
+                'disable' => false,
+                'text' => '',
+            ],
+        ],
+        'expected' => [
+			'disable' => false,
+			'text'    => '',
+		],
+    ],
     'shouldDisableRucssOptionWhenRapidLoadIsActive' => [
         'config' => [
+            'autoptimize_uucss_settings' => [
+                'uucss_api_key_verified' => 1,
+            ],
             'rucss_status' => [
                 'disable' => false,
                 'text' => '',
