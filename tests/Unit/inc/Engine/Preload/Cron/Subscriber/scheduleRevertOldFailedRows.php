@@ -17,7 +17,7 @@ use Brain\Monkey\Functions;
  * @group Cron
  * @group Preload
  */
-class Test_ScheduleRevertOldInProgressRows extends TestCase
+class Test_ScheduleRevertOldFailedRows extends TestCase
 {
 	protected $subscriber;
 	protected $query;
@@ -31,9 +31,8 @@ class Test_ScheduleRevertOldInProgressRows extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->settings = Mockery::mock(Settings::class);
 		$this->controller = Mockery::mock(PreloadUrl::class);
-		$this->queue_runner = Mockery::mock(PreloadQueueRunner::class);
 
-		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller, $this->queue_runner);
+		$this->subscriber =  new Subscriber($this->settings, $this->query, $this->controller);
 	}
 
 	/**
@@ -46,7 +45,7 @@ class Test_ScheduleRevertOldInProgressRows extends TestCase
 		$this->configureClearSchedule($config);
 		$this->configureNextSchedule($config);
 		$this->configureScheduleEvent($config);
-		$this->subscriber->schedule_revert_old_in_progress_rows();
+		$this->subscriber->schedule_revert_old_failed_rows();
 	}
 
 	protected function configureCheckNextSchedule($config) {

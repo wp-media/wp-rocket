@@ -56,15 +56,15 @@ class Subscriber implements Subscriber_Interface {
 				[ 'process_pending_urls' ],
 				[ 'clean_preload_jobs' ],
 			],
-			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
+			'rocket_preload_revert_old_failed_rows' => 'revert_old_failed_rows',
 			'cron_schedules'                             => [
 				[ 'add_interval' ],
-				[ 'add_revert_old_in_progress_interval' ],
+				[ 'add_revert_old_failed_interval' ],
 			],
 			'init'                                       => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
-				[ 'schedule_revert_old_in_progress_rows' ],
+				[ 'schedule_revert_old_failed_rows' ],
 			],
 		];
 	}
@@ -141,7 +141,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $schedules Cron schedules.
 	 * @return mixed
 	 */
-	public function add_revert_old_in_progress_interval( $schedules ) {
+	public function add_revert_old_failed_interval( $schedules ) {
 		if ( ! $this->settings->is_enabled() ) {
 			return $schedules;
 		}
@@ -153,11 +153,11 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_preload_revert_old_in_progress_rows_cron_interval', 12 * rocket_get_constant( 'HOUR_IN_SECONDS', 60 * 60 ) );
+		$interval = apply_filters( 'rocket_preload_revert_old_failed_rows_cron_interval', 12 * rocket_get_constant( 'HOUR_IN_SECONDS', 60 * 60 ) );
 
-		$schedules['rocket_revert_old_in_progress_rows'] = [
+		$schedules['rocket_revert_old_failed_rows'] = [
 			'interval' => $interval,
-			'display'  => esc_html__( 'WP Rocket Preload revert stuck in-progress jobs', 'rocket' ),
+			'display'  => esc_html__( 'WP Rocket Preload revert stuck failed jobs', 'rocket' ),
 		];
 
 		return $schedules;
@@ -192,17 +192,17 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Schedule revert stuck in progress row cron.
+	 * Schedule revert stuck failed row cron.
 	 *
 	 * @return void
 	 */
-	public function schedule_revert_old_in_progress_rows() {
+	public function schedule_revert_old_failed_rows() {
 		if (
 			! $this->settings->is_enabled()
 			&&
-			wp_next_scheduled( 'rocket_preload_revert_old_in_progress_rows' )
+			wp_next_scheduled( 'rocket_preload_revert_old_failed_rows' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_preload_revert_old_in_progress_rows' );
+			wp_clear_scheduled_hook( 'rocket_preload_revert_old_failed_rows' );
 
 			return;
 		}
@@ -211,11 +211,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_preload_revert_old_in_progress_rows' ) ) {
+		if ( wp_next_scheduled( 'rocket_preload_revert_old_failed_rows' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_failed_rows', 'rocket_preload_revert_old_failed_rows' );
 	}
 
 	/**
@@ -228,11 +228,11 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Remove old in-progress urls.
+	 * Remove old failed urls.
 	 *
 	 * @return void
 	 */
-	public function revert_old_in_progress_rows() {
+	public function revert_old_failed_rows() {
 		$this->query->revert_old_failed();
 	}
 }
