@@ -161,7 +161,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		do_action('rocket_preload_unlock_all_urls');
+		do_action( 'rocket_preload_unlock_all_urls' );
 	}
 
 	/**
