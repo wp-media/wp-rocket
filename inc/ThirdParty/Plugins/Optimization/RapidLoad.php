@@ -32,7 +32,7 @@ class RapidLoad implements Subscriber_Interface {
 	public function disable_rucss_option(): array {
 		return [
 			'disable' => true,
-			'text'    => __( 'Removing Unused CSS is currently activated in Autoptimize\'s RapidLoad. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in Autoptimize\'s RapidLoad.', 'rocket' ),
+			'text'    => __( 'Automated unused CSS removal is currently activated in RapidLoad Power-Up for Autoptimize. If you want to use WP Rocket\'s Remove Unused CSS feature, disable this option in RapidLoad Power-Up for Autoptimize.', 'rocket' ),
 		];
 	}
 }
