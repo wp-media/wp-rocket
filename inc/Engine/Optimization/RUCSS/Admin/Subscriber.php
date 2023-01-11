@@ -68,6 +68,7 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
+				[ 'maybe_unlock_preload', 9, 2 ],
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
@@ -137,6 +138,30 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->used_css->delete_used_css( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Maybe unlock all locked preload urls.
+	 *
+	 * @param array $old_value An array of submitted values for the settings.
+	 * @param array $value     An array of previous values for the settings.
+	 *
+	 * @return void
+	 */
+	public function maybe_unlock_preload( $old_value, $value ) {
+		if ( ! isset( $value['remove_unused_css'], $old_value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( $value['remove_unused_css'] === $old_value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $value['remove_unused_css'] ) {
+			return;
+		}
+
+		do_action('rocket_preload_unlock_all_urls');
 	}
 
 	/**

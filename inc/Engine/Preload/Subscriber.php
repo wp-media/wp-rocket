@@ -115,6 +115,7 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_lock_url'             => 'lock_url',
 			'rocket_preload_unlock_url'           => 'unlock_url',
+			'rocket_preload_unlock_all_urls'      => 'unlock_all_urls',
 			'rocket_preload_exclude_urls'         => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
@@ -401,6 +402,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function lock_url( string $url ) {
 		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock all URL.
+	 *
+	 * @return void
+	 */
+	public function unlock_all_urls() {
+		$this->query->unlock_all();
 	}
 
 	/**
