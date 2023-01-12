@@ -275,6 +275,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_advanced_cache_file();
 	}
 
+	if ( version_compare( $actual_version, '3.12.5', '<' ) ) {
+		wp_clear_scheduled_hook( 'rocket_preload_revert_old_in_progress_rows' );
+	}
+
 	if ( version_compare( $actual_version, '3.8.1', '<' ) ) {
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
 		unset( $options['dequeue_jquery_migrate'] );
