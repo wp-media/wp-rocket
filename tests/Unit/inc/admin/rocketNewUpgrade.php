@@ -40,7 +40,8 @@ class Test_RocketNewUpgrade extends TestCase {
 			->once();
 		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
 		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
-
+		Functions\expect( 'delete_transient' )
+			->once()->with( 'wp_rocket_pricing' );
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}
 }
