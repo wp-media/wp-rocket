@@ -22,24 +22,29 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
+		$this->register_service('deactivation_intent', function ($id) {
+			$this->add( $id, DeactivationIntent::class )
+				->addArgument( $this->get_external( 'template_path' ) . '/deactivation-intent' )
+				->addArgument( $this->get_external( 'options_api' ) )
+				->addArgument( $this->get_external( 'options' ) );
+		});
 
-		$this->add( 'deactivation_intent', DeactivationIntent::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options );
-		$this->share( 'deactivation_intent_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'deactivation_intent' ) )
-			->addTag( 'admin_subscriber' );
-		$this->share( 'hummingbird_subscriber', Hummingbird::class )
-			->addArgument( $options )
-			->addTag( 'admin_subscriber' );
-		$this->share( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
+		$this->register_service('deactivation_intent_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_external( 'deactivation_intent' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('hummingbird_subscriber', function ($id) {
+			$this->share( $id, Hummingbird::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('actionscheduler_admin_subscriber', function ($id) {
+			$this->share( $id, ActionSchedulerSubscriber::class );
+		});
 	}
 }

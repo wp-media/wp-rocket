@@ -17,15 +17,16 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->add( 'capabilities_manager', Manager::class );
-		$this->share( 'capabilities_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'capabilities_manager' ) )
-			->addTag( 'common_subscriber' );
+	public function declare()
+	{
+		$this->register_service('capabilities_manager', function ($id) {
+			$this->add( $id, Manager::class );
+		});
+
+		$this->register_service('capabilities_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'capabilities_manager' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

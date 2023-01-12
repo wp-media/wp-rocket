@@ -30,45 +30,74 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options    = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
 		$filesystem = rocket_direct_filesystem();
 
-		$this->add( 'config', Config::class )
-			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
-		$this->add( 'tests', Tests::class )
-			->addArgument( $this->getContainer()->get( 'config' ) );
-		$this->add( 'buffer_optimization', Optimization::class )
-			->addArgument( $this->getContainer()->get( 'tests' ) );
-		$this->share( 'buffer_subscriber', BufferSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
-			->addTag( 'front_subscriber' );
-		$this->share( 'cache_dynamic_resource', CacheDynamicResource::class )
-			->addArgument( $options )
-			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )
-			->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
-			->addTag( 'front_subscriber' );
-		$this->add( 'optimize_google_fonts', Combine::class );
-		$this->add( 'optimize_google_fonts_v2', CombineV2::class );
-		$this->share( 'combine_google_fonts_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
-			->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
-			->addArgument( $options )
-			->addTag( 'front_subscriber' );
-		$this->share( 'minify_css_subscriber', Minify\CSS\Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $filesystem )
-			->addTag( 'front_subscriber' );
-		$this->share( 'minify_js_subscriber', Minify\JS\Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $filesystem )
-			->addTag( 'front_subscriber' );
-		$this->share( 'ie_conditionals_subscriber', IEConditionalSubscriber::class )
-			->addTag( 'front_subscriber' );
+		$this->register_service('config', function ($id) {
+			$this->add( $id, Config::class )
+				->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+		});
+
+		$this->register_service('tests', function ($id) {
+			$this->add( $id, Tests::class )
+				->addArgument( $this->getContainer()->get( 'config' ) );
+		});
+
+		$this->register_service('buffer_optimization', function ($id) {
+			$this->add( $id, Optimization::class )
+				->addArgument( $this->getContainer()->get( 'tests' ) );
+		});
+
+		$this->register_service('buffer_subscriber', function ($id) {
+			$this->share( $id, BufferSubscriber::class )
+				->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('cache_dynamic_resource', function ($id) {
+			$this->share( $id, CacheDynamicResource::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )
+				->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('optimize_google_fonts', function ($id) {
+			$this->add( $id, Combine::class );
+
+		});
+
+		$this->register_service('optimize_google_fonts_v2', function ($id) {
+			$this->add( $id, CombineV2::class );
+
+		});
+
+		$this->register_service('combine_google_fonts_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
+				->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('minify_css_subscriber', function ($id) use ($filesystem) {
+			$this->share( $id, Minify\CSS\Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $filesystem )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('minify_js_subscriber', function ($id) use ($filesystem) {
+			$this->share( $id, Minify\JS\Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $filesystem )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('ie_conditionals_subscriber', function ($id) {
+			$this->share( $id, IEConditionalSubscriber::class )
+				->addTag( 'front_subscriber' );
+		});
 	}
 }

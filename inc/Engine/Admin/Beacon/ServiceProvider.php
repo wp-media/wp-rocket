@@ -17,16 +17,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->share( 'beacon', Beacon::class )
-			->addArgument( $this->get_external( 'options' ) )
-			->addArgument( $this->get_external( 'template_path' ) . '/settings' )
-			->addArgument( $this->get_external( 'support_data', SupportServiceProvider::class) )
-			->addTag( 'admin_subscriber' );
+	public function declare()
+	{
+		$this->register_service('beacon', function ($id) {
+			$this->share( $id, Beacon::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'template_path' ) . '/settings' )
+				->addArgument( $this->get_external( 'support_data', SupportServiceProvider::class) )
+				->addTag( 'admin_subscriber' );
+		});
 	}
 }

@@ -17,14 +17,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->share( 'heartbeat_subscriber', HeartbeatSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addTag( 'common_subscriber' );
+	public function declare()
+	{
+		$this->register_service('heartbeat_subscriber', function ($id) {
+			$this->share( $id, HeartbeatSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

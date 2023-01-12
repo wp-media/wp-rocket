@@ -31,70 +31,91 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
+	public function declare()
+	{
 		$filesystem        = rocket_direct_filesystem();
 		$critical_css_path = rocket_get_constant( 'WP_ROCKET_CRITICAL_CSS_PATH' );
-		$options           = $this->get_external( 'options' );
-		$beacon            = $this->get_external( 'beacon', BeaconServiceProvider::class );
-		$template_path     = $this->get_external( 'template_path' ) . '/cpcss';
 
-		$this->share( 'cpcss_api_client', APIClient::class );
-		$this->share( 'cpcss_data_manager', DataManager::class )
-			->addArgument( $critical_css_path )
-			->addArgument( $filesystem );
-		$this->share( 'cpcss_service', ProcessorService::class )
-			->addArgument( $this->get_internal( 'cpcss_data_manager' ) )
-			->addArgument( $this->get_internal( 'cpcss_api_client' ) );
+		$this->register_service('cpcss_api_client', function ($id) {
+			$this->share( $id, APIClient::class );
+		});
 
-		$processor_service = $this->get_internal( 'cpcss_service' );
+		$this->register_service('cpcss_data_manager', function ($id) use ($filesystem, $critical_css_path) {
+			$this->share( $id, DataManager::class )
+				->addArgument( $critical_css_path )
+				->addArgument( $filesystem );
+		});
+
+		$this->register_service('cpcss_service', function ($id) {
+			$this->share( $id, ProcessorService::class )
+				->addArgument( $this->get_internal( 'cpcss_data_manager' ) )
+				->addArgument( $this->get_internal( 'cpcss_api_client' ) );
+		});
 
 		// REST CPCSS START.
-		$this->share( 'rest_cpcss_wp_post', RESTWPPost::class )
-			->addArgument( $processor_service )
-			->addArgument( $options );
-		$this->share( 'rest_cpcss_subscriber', RESTCSSSubscriber::class )
-			->addArgument( $this->get_internal( 'rest_cpcss_wp_post' ) )
-			->addTag( 'common_subscriber' );
+		$this->register_service('rest_cpcss_wp_post', function ($id) {
+			$this->share( $id, RESTWPPost::class )
+				->addArgument( $this->get_internal( 'cpcss_service' ) )
+				->addArgument( $this->get_external('options') );
+		});
+
+		$this->register_service('rest_cpcss_subscriber', function ($id) {
+			$this->share( $id, RESTCSSSubscriber::class )
+				->addArgument( $this->get_internal( 'rest_cpcss_wp_post' ) )
+				->addTag( 'common_subscriber' );
+		});
+
 		// REST CPCSS END.
+		$this->register_service('critical_css_generation', function ($id) {
+			$this->add( $id, CriticalCSSGeneration::class )
+				->addArgument( $this->get_internal( 'cpcss_service' ) );
+		});
 
-		$this->add( 'critical_css_generation', CriticalCSSGeneration::class )
-			->addArgument( $processor_service );
-		$this->add( 'critical_css', CriticalCSS::class )
-			->addArgument( $this->get_internal( 'critical_css_generation' ) )
-			->addArgument( $options )
-			->addArgument( $filesystem );
+		$this->register_service('critical_css', function ($id) use ($filesystem) {
 
-		$critical_css = $this->get_internal( 'critical_css' );
+			$this->add( $id, CriticalCSS::class )
+				->addArgument( $this->get_internal( 'critical_css_generation' ) )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $filesystem );
+		});
 
-		$this->share( 'critical_css_subscriber', CriticalCSSSubscriber::class )
-			->addArgument( $critical_css )
-			->addArgument( $processor_service )
-			->addArgument( $options )
-			->addArgument( $filesystem )
-			->addTag( 'common_subscriber' );
+		$this->register_service('critical_css_subscriber', function ($id) use ($filesystem) {
+			$this->share( $id, CriticalCSSSubscriber::class )
+				->addArgument( $this->get_internal( 'critical_css' ) )
+				->addArgument( $this->get_internal( 'cpcss_service' ) )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $filesystem )
+				->addTag( 'common_subscriber' );
+		});
 
-		$this->add( 'cpcss_post',  Post::class )
-			->addArgument( $options )
-			->addArgument( $beacon )
-			->addArgument( $critical_css_path )
-			->addArgument( $template_path );
-		$this->add( 'cpcss_settings', Settings::class )
-			->addArgument( $options )
-			->addArgument( $beacon )
-			->addArgument( $critical_css )
-			->addArgument( $template_path );
-		$this->add( 'cpcss_admin', Admin::class )
-			->addArgument( $options )
-			->addArgument( $processor_service );
-		$this->share( 'critical_css_admin_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'cpcss_post' ) )
-			->addArgument( $this->get_internal( 'cpcss_settings' ) )
-			->addArgument( $this->get_internal( 'cpcss_admin' ) )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('cpcss_post', function ($id) use ($critical_css_path) {
+			$this->add( $id,  Post::class )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addArgument( $critical_css_path )
+				->addArgument( $this->get_external( 'template_path' ) . '/cpcss' );
+		});
+
+		$this->register_service('cpcss_settings', function ($id) {
+			$this->add( $id, Settings::class )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addArgument( $this->get_internal( 'critical_css' ) )
+				->addArgument( $this->get_external( 'template_path' ) . '/cpcss' );
+		});
+
+		$this->register_service('cpcss_admin', function ($id) {
+			$this->add( $id, Admin::class )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $this->get_internal( 'cpcss_service' ) );
+		});
+
+		$this->register_service('critical_css_admin_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'cpcss_post' ) )
+				->addArgument( $this->get_internal( 'cpcss_settings' ) )
+				->addArgument( $this->get_internal( 'cpcss_admin' ) )
+				->addTag( 'admin_subscriber' );
+		});
 	}
 }

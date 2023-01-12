@@ -24,20 +24,24 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->add( 'defer_js', DeferJS::class )
-			->addArgument( $this->get_internal( 'options' ) )
-			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
-		$this->share( 'defer_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->get_internal( 'defer_js' ) )
-			->addTag( 'admin_subscriber' );
-		$this->share( 'defer_js_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'defer_js' ) )
-			->addTag( 'front_subscriber' );
+	public function declare()
+	{
+		$this->register_service('defer_js', function ($id) {
+			$this->add( $id, DeferJS::class )
+				->addArgument( $this->get_internal( 'options' ) )
+				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
+		});
+
+		$this->register_service('defer_js_admin_subscriber', function ($id) {
+			$this->share( $id, AdminSubscriber::class )
+				->addArgument( $this->get_internal( 'defer_js' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('defer_js_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'defer_js' ) )
+				->addTag( 'front_subscriber' );
+		});
 	}
 }

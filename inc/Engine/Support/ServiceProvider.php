@@ -3,9 +3,6 @@
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\AbstractServiceProvider;
-use WP_Rocket\Engine\Support\Data;
-use WP_Rocket\Engine\Support\Rest;
-use WP_Rocket\Engine\Support\Subscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -16,21 +13,24 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers the services in the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
+		$this->register_service('support_data', function ($id) {
+			$this->add( $id, Data::class )
+				->addArgument( $this->get_external( 'options' ) );
+		});
 
-		$this->add( 'support_data', Data::class )
-			->addArgument( $options );
-		$this->add( 'rest_support', Rest::class )
-			->addArgument( $this->get_internal( 'support_data' ) )
-			->addArgument( $options );
-		$this->share( 'support_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'rest_support' ) )
-			->addTag( 'common_subscriber' );
+		$this->register_service('rest_support', function ($id) {
+			$this->add( $id, Rest::class )
+				->addArgument( $this->get_internal( 'support_data' ) )
+				->addArgument( $this->get_external( 'options' ) );
+		});
+
+		$this->register_service('support_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'rest_support' ) )
+				->addTag( 'common_subscriber' );
+		});
+
 	}
 }

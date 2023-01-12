@@ -26,23 +26,30 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->add( 'delay_js_settings', Settings::class );
-		$this->share( 'delay_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->get_internal( 'delay_js_settings' ) )
-			->addTag( 'admin_subscriber' );
-		$this->add( 'delay_js_html', HTML::class )
-			->addArgument( $this->get_internal( 'options' ) )
-			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
-		$this->share( 'delay_js_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'delay_js_html' ) )
-			->addArgument( rocket_direct_filesystem() )
-			->addArgument( $this->get_internal( 'options' ) )
-			->addTag( 'front_subscriber' );
+	public function declare()
+	{
+		$this->register_service('delay_js_settings', function($id) {
+			$this->add( $id, Settings::class );
+		});
+
+		$this->register_service('delay_js_admin_subscriber', function($id) {
+			$this->share( $id, AdminSubscriber::class )
+				->addArgument( $this->get_internal( 'delay_js_settings' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('delay_js_html', function($id) {
+			$this->add( $id, HTML::class )
+				->addArgument( $this->get_internal( 'options' ) )
+				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
+		});
+
+		$this->register_service('delay_js_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'delay_js_html' ) )
+				->addArgument( rocket_direct_filesystem() )
+				->addArgument( $this->get_internal( 'options' ) )
+				->addTag( 'front_subscriber' );
+		});
 	}
 }

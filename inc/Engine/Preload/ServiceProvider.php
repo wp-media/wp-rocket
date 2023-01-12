@@ -39,113 +39,128 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers the subscribers in the container
-	 *
-	 * @since 3.3
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
+		$this->register_service('preload_mobile_detect', function ($id) {
+			$this->add( $id, WP_Rocket_Mobile_Detect::class );
+		});
 
-		$this->add( 'preload_mobile_detect', WP_Rocket_Mobile_Detect::class );
+		$this->register_service('wp_direct_filesystem', function ($id) {
+			$this->add( $id, WP_Filesystem_Direct::class )
+				->addArgument( [] );
+		});
 
-		$this->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
-			->addArgument( [] );
-		$wp_file_system = $this->get_internal( 'wp_direct_filesystem' );
+		$this->register_service('preload_caches_table', function ($id) {
+			$this->add( $id, CacheTable::class );
+			$this->get_internal( 'preload_caches_table' );
+		});
 
-		$this->add( 'preload_caches_table', CacheTable::class );
-		$this->add( 'preload_caches_query', CacheQuery::class )
-			->addArgument( new Logger() );
-		$this->get_internal( 'preload_caches_table' );
+		$this->register_service('preload_caches_query', function ($id) {
+			$this->add( $id, CacheQuery::class )
+				->addArgument( new Logger() );
+		});
 
-		$cache_query = $this->get_internal( 'preload_caches_query' );
+		$this->register_service('preload_url_controller', function ($id) {
+			$this->add( $id, PreloadUrl::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'preload_queue' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_internal( 'wp_direct_filesystem' ) );
+		});
 
-		$this->add( 'preload_queue', Queue::class );
-		$queue = $this->get_internal( 'preload_queue' );
+		$this->register_service('preload_queue', function ($id) {
+			$this->add( $id, Queue::class );
+		});
 
-		$this->add( 'preload_url_controller', PreloadUrl::class )
-			->addArgument( $options )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $wp_file_system );
+		$this->register_service('homepage_crawler', function ($id) {
+			$this->add( $id, CrawlHomepage::class );
+		});
 
-		$preload_url_controller = $this->get_internal( 'preload_url_controller' );
+		$this->register_service('sitemap_parser', function ($id) {
+			$this->add( $id, SitemapParser::class );
+		});
 
-		$this->add( 'homepage_crawler', CrawlHomepage::class );
-		$crawl_homepage = $this->get_internal( 'homepage_crawler' );
+		$this->register_service('fetch_sitemap_controller', function ($id) {
+			$this->add( $id, FetchSitemap::class )
+				->addArgument( $this->get_internal( 'sitemap_parser' ) )
+				->addArgument( $this->get_internal( 'preload_queue' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) );
+		});
 
-		$this->add( 'sitemap_parser', SitemapParser::class );
-		$sitemap_parser = $this->get_internal( 'sitemap_parser' );
+		$this->register_service('load_initial_sitemap_controller', function ($id) {
+			$this->add( $id, LoadInitialSitemap::class )
+				->addArgument( $this->get_internal( 'preload_queue' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_internal( 'homepage_crawler' ) );
+		});
 
-		$this->add( 'fetch_sitemap_controller', FetchSitemap::class )
-			->addArgument( $sitemap_parser )
-			->addArgument( $queue )
-			->addArgument( $cache_query );
+		$this->register_service('preload_activation', function ($id) {
+			$this->add( $id, Activation::class )
+				->addArgument( $this->get_internal( 'preload_queue' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_external( 'options' ) );
+		});
 
-		$fetch_sitemap_controller = $this->get_internal( 'fetch_sitemap_controller' );
+		$this->register_service('preload_settings', function ($id) {
+			$this->add( $id, Settings::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'preload_url_controller' ) );
+		});
 
-		$this->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $crawl_homepage );
+		$this->register_service('check_finished_controller', function ($id) {
+			$this->add( $id, CheckFinished::class )
+				->addArgument( $this->get_internal( 'preload_settings' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_internal( 'preload_queue' ) );
+		});
 
-		$this->add( 'preload_activation', Activation::class )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $options );
+		$this->register_service('preload_front_subscriber', function ($id) {
+			$this->share( $id, FrontEndSubscriber::class )
+				->addArgument( $this->get_internal( 'fetch_sitemap_controller' ) )
+				->addArgument( $this->get_internal( 'preload_url_controller' ) )
+				->addArgument( $this->get_internal( 'check_finished_controller' ) )
+				->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
+				->addTag( 'common_subscriber' );
+		});
 
-		$this->add( 'preload_settings', Settings::class )
-			->addArgument( $options )
-			->addArgument( $preload_url_controller );
+		$this->register_service('preload_clean_controller', function ($id) {
+			$this->add( $id, ClearCache::class )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) );
+		});
 
-		$preload_settings = $this->get_internal( 'preload_settings' );
+		$this->register_service('preload_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_internal( 'preload_activation' ) )
+				->addArgument( $this->get_internal( 'preload_mobile_detect' ) )
+				->addArgument( $this->get_internal( 'preload_clean_controller' ) )
+				->addArgument( $this->get_internal( 'preload_queue' ) )
+				->addTag( 'common_subscriber' );
+		});
 
-		$this->add( 'check_finished_controller', CheckFinished::class )
-			->addArgument( $preload_settings )
-			->addArgument( $cache_query )
-			->addArgument( $queue );
+		$this->register_service('preload_cron_subscriber', function ($id) {
+			$this->share( $id, CronSubscriber::class )
+				->addArgument( $this->get_internal( 'preload_settings' ) )
+				->addArgument( $this->get_internal( 'preload_caches_query' ) )
+				->addArgument( $this->get_internal( 'preload_url_controller' ) )
+				->addTag( 'common_subscriber' );
+		});
 
-		$check_finished_controller = $this->get_internal( 'check_finished_controller' );
+		$this->register_service('fonts_preload_subscriber', function ($id) {
+			$this->share( $id, Fonts::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'cdn' ) )
+				->addTag( 'common_subscriber' );
+		});
 
-		$this->share( 'preload_front_subscriber', FrontEndSubscriber::class )
-			->addArgument( $fetch_sitemap_controller )
-			->addArgument( $preload_url_controller )
-			->addArgument( $check_finished_controller )
-			->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
-			->addTag( 'common_subscriber' );
-
-		$this->add( 'preload_clean_controller', ClearCache::class )
-			->addArgument( $cache_query );
-
-		$clean_controller = $this->get_internal( 'preload_clean_controller' );
-
-		$this->share( 'preload_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
-			->addArgument( $cache_query )
-			->addArgument( $this->get_internal( 'preload_activation' ) )
-			->addArgument( $this->get_internal( 'preload_mobile_detect' ) )
-			->addArgument( $clean_controller )
-			->addArgument( $queue )
-			->addTag( 'common_subscriber' );
-
-		$this->share( 'preload_cron_subscriber', CronSubscriber::class )
-			->addArgument( $preload_settings )
-			->addArgument( $cache_query )
-			->addArgument( $preload_url_controller )
-			->addTag( 'common_subscriber' );
-
-		$this->share( 'fonts_preload_subscriber', Fonts::class )
-			->addArgument( $options )
-			->addArgument( $this->get_internal( 'cdn' ) )
-			->addTag( 'common_subscriber' );
-
-		$this->add( 'preload_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $options )
-			->addArgument( $preload_settings )
-			->addTag( 'common_subscriber' );
+		$this->register_service('preload_admin_subscriber', function ($id) {
+			$this->add( $id, AdminSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'preload_settings' ) )
+				->addTag( 'common_subscriber' );
+		});
 
 	}
 }

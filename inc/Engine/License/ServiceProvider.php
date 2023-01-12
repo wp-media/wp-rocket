@@ -22,33 +22,49 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
+	public function declare()
+	{
 		$views = __DIR__ . '/views';
 
-		$this->add( 'pricing_client', PricingClient::class );
-		$this->add( 'user_client', UserClient::class )
-			->addArgument( $this->get_internal( 'options' ) );
-		$this->share( 'pricing', Pricing::class )
-			->addArgument( $this->get_internal( 'pricing_client' )->get_pricing_data() );
-		$this->share( 'user', User::class )
-			->addArgument( $this->get_internal( 'user_client' )->get_user_data() );
-		$this->add( 'upgrade', Upgrade::class )
-			->addArgument( $this->get_internal( 'pricing' ) )
-			->addArgument( $this->get_internal( 'user' ) )
-			->addArgument( $views );
-		$this->add( 'renewal', Renewal::class )
-			->addArgument( $this->get_internal( 'pricing' ) )
-			->addArgument( $this->get_internal( 'user' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $views );
-		$this->share( 'license_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'upgrade' ) )
-			->addArgument( $this->get_internal( 'renewal' ) )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('pricing_client', function ($id) {
+			$this->add( $id, PricingClient::class );
+		});
+
+		$this->register_service('user_client', function ($id) {
+			$this->add( $id, UserClient::class )
+				->addArgument( $this->get_internal( 'options' ) );
+		});
+
+		$this->register_service('pricing', function ($id) {
+			$this->share( $id, Pricing::class )
+				->addArgument( $this->get_internal( 'pricing_client' )->get_pricing_data() );
+		});
+
+		$this->register_service('user', function ($id) {
+			$this->share( $id, User::class )
+				->addArgument( $this->get_internal( 'user_client' )->get_user_data() );
+		});
+
+		$this->register_service('upgrade', function ($id) use ($views) {
+			$this->add( $id, Upgrade::class )
+				->addArgument( $this->get_internal( 'pricing' ) )
+				->addArgument( $this->get_internal( 'user' ) )
+				->addArgument( $views );
+		});
+
+		$this->register_service('renewal', function ($id) use ($views) {
+			$this->add( $id, Renewal::class )
+				->addArgument( $this->get_internal( 'pricing' ) )
+				->addArgument( $this->get_internal( 'user' ) )
+				->addArgument( $this->getContainer()->get( 'options' ) )
+				->addArgument( $views );
+		});
+
+		$this->register_service('license_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'upgrade' ) )
+				->addArgument( $this->get_internal( 'renewal' ) )
+				->addTag( 'admin_subscriber' );
+		});
 	}
 }

@@ -16,23 +16,29 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers the option array in the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->add( 'dynamic_lists_data_manager', DataManager::class );
-		$this->add( 'dynamic_lists_api_client', APIClient::class )
-			->addArgument( $this->get_internal( 'options' ) );
-		$this->add( 'dynamic_lists', DynamicLists::class )
-			->addArgument( $this->get_internal( 'dynamic_lists_api_client' ) )
-			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) )
-			->addArgument( $this->get_internal( 'user' ) )
-			->addArgument( $this->get_internal( 'template_path' ) )
-			->addArgument( $this->get_internal( 'beacon' ) );
+	public function declare()
+	{
+		$this->register_service('dynamic_lists_data_manager', function ($id) {
+			$this->add( $id, DataManager::class );
+		});
 
-		$this->share( 'dynamic_lists_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'dynamic_lists' ) );
+		$this->register_service('dynamic_lists_api_client', function ($id) {
+			$this->add( $id, APIClient::class )
+				->addArgument( $this->get_internal( 'options' ) );
+		});
+
+		$this->register_service('dynamic_lists', function ($id) {
+			$this->add( $id, DynamicLists::class )
+				->addArgument( $this->get_internal( 'dynamic_lists_api_client' ) )
+				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) )
+				->addArgument( $this->get_internal( 'user' ) )
+				->addArgument( $this->get_internal( 'template_path' ) )
+				->addArgument( $this->get_external( 'beacon' ) );
+		});
+
+		$this->register_service('dynamic_lists_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'dynamic_lists' ) );
+		});
 	}
 }

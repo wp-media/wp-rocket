@@ -26,41 +26,55 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->get_external( 'options' );
+	public function declare()
+	{
 		// RocketCDN API Client.
-		$this->add( 'rocketcdn_api_client', APIClient::class );
+		$this->register_service('rocketcdn_api_client', function ($id) {
+			$this->add( $id, APIClient::class );
+		});
+
 		// RocketCDN CDN options manager.
-		$this->add( 'rocketcdn_options_manager', CDNOptionsManager::class )
-			->addArgument( $this->get_external( 'options_api' ) )
-			->addArgument( $options );
+		$this->register_service('rocketcdn_options_manager', function ($id) {
+			$this->add( $id, CDNOptionsManager::class )
+				->addArgument( $this->get_external( 'options_api' ) )
+				->addArgument( $this->get_external('options') );
+		});
+
 		// RocketCDN Data manager subscriber.
-		$this->share( 'rocketcdn_data_manager_subscriber', DataManagerSubscriber::class )
-			->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
-			->addArgument( $this->get_internal( 'rocketcdn_options_manager' ) )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('rocketcdn_data_manager_subscriber', function ($id) {
+			$this->share( $id, DataManagerSubscriber::class )
+				->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
+				->addArgument( $this->get_internal( 'rocketcdn_options_manager' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
 		// RocketCDN REST API Subscriber.
-		$this->share( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
-			->addArgument( $this->get_internal( 'rocketcdn_options_manager' ) )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		// RocketCDN Notices Subscriber.
-		$this->share( 'rocketcdn_notices_subscriber', NoticesSubscriber::class )
-			->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
-			->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
-			->addArgument( __DIR__ . '/views' )
-			->addTag( 'admin_subscriber' );
-		// RocketCDN settings page subscriber.
-		$this->share( 'rocketcdn_admin_subscriber', AdminPageSubscriber::class )
-			->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
-			->addArgument( $options )
-			->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
-			->addArgument( __DIR__ . '/views' )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('rocketcdn_rest_subscriber', function ($id) {
+			$this->share( $id, RESTSubscriber::class )
+				->addArgument( $this->get_internal( 'rocketcdn_options_manager' ) )
+				->addArgument( $this->get_external('options') )
+				->addTag( 'common_subscriber' );
+		});
+
+		// RocketCDN REST API Subscriber.
+		$this->register_service('rocketcdn_notices_subscriber', function ($id) {
+			// RocketCDN Notices Subscriber.
+			$this->share( $id, NoticesSubscriber::class )
+				->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addArgument( __DIR__ . '/views' )
+				->addTag( 'admin_subscriber' );
+		});
+
+		// RocketCDN REST API Subscriber.
+		$this->register_service('rocketcdn_admin_subscriber', function ($id) {
+			// RocketCDN settings page subscriber.
+			$this->share( $id, AdminPageSubscriber::class )
+				->addArgument( $this->get_internal( 'rocketcdn_api_client' ) )
+				->addArgument( $this->get_external('options') )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addArgument( __DIR__ . '/views' )
+				->addTag( 'admin_subscriber' );
+		});
 	}
 }

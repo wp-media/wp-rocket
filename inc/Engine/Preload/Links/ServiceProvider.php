@@ -16,20 +16,20 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers the subscribers in the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
 
-		$this->share( 'preload_links_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->share( 'preload_links_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( rocket_direct_filesystem() )
-			->addTag( 'common_subscriber' );
+	public function declare()
+	{
+		$this->register_service('preload_links_admin_subscriber', function($id) {
+			$this->share( $id, AdminSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'common_subscriber' );
+		});
+
+		$this->register_service('preload_links_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( rocket_direct_filesystem() )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

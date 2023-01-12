@@ -29,39 +29,57 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
+	public function declare()
+	{
 		$filesystem = rocket_direct_filesystem();
 
-		$this->add( 'advanced_cache', AdvancedCache::class )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->addArgument( $filesystem );
-		$this->add( 'wp_cache', WPCache::class )
-			->addArgument( $filesystem );
-		$this->add( 'purge', Purge::class )
-			->addArgument( $filesystem );
-		$this->share( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->get_internal( 'purge' ) )
-			->addTag( 'common_subscriber' );
-		$this->share( 'admin_cache_subscriber', AdminSubscriber::class )
-			->addArgument( $this->get_internal( 'advanced_cache' ) )
-			->addArgument( $this->get_internal( 'wp_cache' ) )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('advanced_cache', function($id) use ($filesystem) {
+			$this->add( $id, AdvancedCache::class )
+				->addArgument( $this->get_external( 'template_path' ) . '/cache/' )
+				->addArgument( $filesystem );
+		});
 
-		$this->add( 'expired_cache_purge', PurgeExpiredCache::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-		$this->share( 'expired_cache_purge_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->get_internal( 'expired_cache_purge' ) )
-			->addTag( 'common_subscriber' );
-		$this->add( 'cache_config', ConfigSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addTag( 'common_subscriber' );
+		$this->register_service('wp_cache', function($id) use ($filesystem) {
+			$this->add( $id, WPCache::class )
+				->addArgument( $filesystem );
+		});
+
+		$this->register_service('purge', function($id) use ($filesystem) {
+			$this->add( $id, Purge::class )
+				->addArgument( $filesystem );
+		});
+
+		$this->register_service('purge_actions_subscriber', function($id) {
+			$this->share( $id, PurgeActionsSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'purge' ) )
+				->addTag( 'common_subscriber' );
+		});
+
+		$this->register_service('admin_cache_subscriber', function($id) {
+			$this->share( $id, AdminSubscriber::class )
+				->addArgument( $this->get_internal( 'advanced_cache' ) )
+				->addArgument( $this->get_internal( 'wp_cache' ) )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('expired_cache_purge', function($id) {
+			$this->add( $id, PurgeExpiredCache::class )
+				->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+		});
+
+		$this->register_service('expired_cache_purge_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'expired_cache_purge' ) )
+				->addTag( 'common_subscriber' );
+		});
+
+		$this->register_service('cache_config', function($id) {
+			$this->add( $id, ConfigSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'options_api' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

@@ -17,19 +17,18 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->get_external( 'options' );
+	public function declare()
+	{
+		$this->register_service('cdn', function($id) {
+			$this->share( $id, CDN::class )
+				->addArgument( $this->get_external( 'options' ) );
+		});
 
-		$this->share( 'cdn', CDN::class )
-			->addArgument( $options );
-		$this->share( 'cdn_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->get_internal( 'cdn' ) )
-			->addTag( 'common_subscriber' );
+		$this->register_service('cdn_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_internal( 'cdn' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

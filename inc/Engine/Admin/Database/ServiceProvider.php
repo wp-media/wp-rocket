@@ -17,20 +17,22 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers the option array in the container
-	 *
-	 * @since 3.3
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$this->add( 'db_optimization_process', OptimizationProcess::class );
-		$this->add( 'db_optimization', Optimization::class )
-			->addArgument( $this->get_internal( 'db_optimization_process' ) );
-		$this->share( 'db_optimization_subscriber', Subscriber::class )
-			->addArgument( $this->get_internal( 'db_optimization' ) )
-			->addArgument( $this->get_external( 'options' ) )
-			->addTag( 'common_subscriber' );
+	public function declare()
+	{
+		$this->register_service('db_optimization_process', function ($id) {
+			$this->add( $id, OptimizationProcess::class );
+		});
+
+		$this->register_service('db_optimization', function ($id) {
+			$this->add( $id, Optimization::class )
+				->addArgument( $this->get_internal( 'db_optimization_process' ) );
+		});
+
+		$this->register_service('db_optimization_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'db_optimization' ) )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }
