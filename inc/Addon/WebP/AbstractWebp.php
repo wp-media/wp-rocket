@@ -48,7 +48,7 @@ abstract class AbstractWebp {
 		}
 
 		foreach ( $webp_plugins as $i => $plugin ) {
-			if ( ! $plugin instanceOf Webp_Interface ) {
+			if ( ! $plugin instanceof Webp_Interface ) {
 				unset( $webp_plugins[ $i ] );
 				continue;
 			}
