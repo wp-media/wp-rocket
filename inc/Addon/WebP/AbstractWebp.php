@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Addon\WebP;
 
 use WP_Rocket\Engine\CDN\Subscriber as CDNSubscriber;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
 abstract class AbstractWebp {
 	/**
@@ -47,7 +48,7 @@ abstract class AbstractWebp {
 		}
 
 		foreach ( $webp_plugins as $i => $plugin ) {
-			if ( ! is_a( $plugin, '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' ) ) {
+			if ( ! $plugin instanceOf Webp_Interface ) {
 				unset( $webp_plugins[ $i ] );
 				continue;
 			}
