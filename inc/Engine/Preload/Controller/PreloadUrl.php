@@ -200,6 +200,7 @@ class PreloadUrl {
 		);
 
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
+
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
 		}
