@@ -53,7 +53,7 @@ class Test_ScheduleRevertOldFailedRows extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_next_scheduled')->with('rocket_preload_revert_old_in_progress_rows')->andReturn($config['has_next_schedule']);
+		Functions\expect('wp_next_scheduled')->with('rocket_preload_revert_old_failed_rows')->andReturn($config['has_next_schedule']);
 	}
 
 	protected function configureClearSchedule($config) {
@@ -61,7 +61,7 @@ class Test_ScheduleRevertOldFailedRows extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_clear_scheduled_hook')->with('rocket_preload_revert_old_in_progress_rows');
+		Functions\expect('wp_clear_scheduled_hook')->with('rocket_preload_revert_old_failed_rows');
 	}
 
 	protected function configureNextSchedule($config) {
@@ -69,7 +69,7 @@ class Test_ScheduleRevertOldFailedRows extends TestCase
 			return;
 		}
 
-		Functions\expect('wp_next_scheduled')->with('rocket_preload_revert_old_in_progress_rows')->andReturn($config['next_success']);
+		Functions\expect('wp_next_scheduled')->with('rocket_preload_revert_old_failed_rows')->andReturn($config['next_success']);
 	}
 
 	protected function configureScheduleEvent($config) {
@@ -86,6 +86,6 @@ class Test_ScheduleRevertOldFailedRows extends TestCase
 
 		Functions\expect('wp_schedule_event')->with( Mockery::on(function ($date) use ($old_time) {
 			return $date >= $old_time  && $date <= time() + MINUTE_IN_SECONDS;
-		}), 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows');
+		}), 'rocket_revert_old_failed_rows', 'rocket_preload_revert_old_failed_rows');
 	}
 }

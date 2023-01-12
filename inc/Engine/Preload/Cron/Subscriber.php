@@ -51,17 +51,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_preload_clean_rows_time_event'       => 'remove_old_rows',
-			'rocket_preload_process_pending'             => [
+			'rocket_preload_clean_rows_time_event'  => 'remove_old_rows',
+			'rocket_preload_process_pending'        => [
 				[ 'process_pending_urls' ],
 				[ 'clean_preload_jobs' ],
 			],
 			'rocket_preload_revert_old_failed_rows' => 'revert_old_failed_rows',
-			'cron_schedules'                             => [
+			'cron_schedules'                        => [
 				[ 'add_interval' ],
 				[ 'add_revert_old_failed_interval' ],
 			],
-			'init'                                       => [
+			'init'                                  => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'schedule_revert_old_failed_rows' ],
