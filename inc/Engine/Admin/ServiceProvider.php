@@ -16,9 +16,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('deactivation_intent_subscriber'),
-			$this->getInternal('hummingbird_subscriber'),
-			$this->getInternal('actionscheduler_admin_subscriber'),
+			$this->generate_container_id('deactivation_intent_subscriber'),
+			$this->generate_container_id('hummingbird_subscriber'),
+			$this->generate_container_id('actionscheduler_admin_subscriber'),
 		];
 	}
 

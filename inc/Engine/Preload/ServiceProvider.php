@@ -31,11 +31,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array
 	{
 		return [
-			$this->getInternal('preload_front_subscriber'),
-			$this->getInternal('preload_subscriber'),
-			$this->getInternal('preload_cron_subscriber'),
-			$this->getInternal('fonts_preload_subscriber'),
-			$this->getInternal('preload_admin_subscriber'),
+			$this->generate_container_id('preload_front_subscriber'),
+			$this->generate_container_id('preload_subscriber'),
+			$this->generate_container_id('preload_cron_subscriber'),
+			$this->generate_container_id('fonts_preload_subscriber'),
+			$this->generate_container_id('preload_admin_subscriber'),
 		];
 	}
 
@@ -53,17 +53,17 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
 			->addArgument( [] );
-		$wp_file_system = $this->getInternal( 'wp_direct_filesystem' );
+		$wp_file_system = $this->get_internal( 'wp_direct_filesystem' );
 
 		$this->add( 'preload_caches_table', CacheTable::class );
 		$this->add( 'preload_caches_query', CacheQuery::class )
 			->addArgument( new Logger() );
-		$this->getInternal( 'preload_caches_table' );
+		$this->get_internal( 'preload_caches_table' );
 
-		$cache_query = $this->getInternal( 'preload_caches_query' );
+		$cache_query = $this->get_internal( 'preload_caches_query' );
 
 		$this->add( 'preload_queue', Queue::class );
-		$queue = $this->getInternal( 'preload_queue' );
+		$queue = $this->get_internal( 'preload_queue' );
 
 		$this->add( 'preload_url_controller', PreloadUrl::class )
 			->addArgument( $options )
@@ -71,20 +71,20 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache_query )
 			->addArgument( $wp_file_system );
 
-		$preload_url_controller = $this->getInternal( 'preload_url_controller' );
+		$preload_url_controller = $this->get_internal( 'preload_url_controller' );
 
 		$this->add( 'homepage_crawler', CrawlHomepage::class );
-		$crawl_homepage = $this->getInternal( 'homepage_crawler' );
+		$crawl_homepage = $this->get_internal( 'homepage_crawler' );
 
 		$this->add( 'sitemap_parser', SitemapParser::class );
-		$sitemap_parser = $this->getInternal( 'sitemap_parser' );
+		$sitemap_parser = $this->get_internal( 'sitemap_parser' );
 
 		$this->add( 'fetch_sitemap_controller', FetchSitemap::class )
 			->addArgument( $sitemap_parser )
 			->addArgument( $queue )
 			->addArgument( $cache_query );
 
-		$fetch_sitemap_controller = $this->getInternal( 'fetch_sitemap_controller' );
+		$fetch_sitemap_controller = $this->get_internal( 'fetch_sitemap_controller' );
 
 		$this->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
 			->addArgument( $queue )
@@ -100,33 +100,33 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $preload_url_controller );
 
-		$preload_settings = $this->getInternal( 'preload_settings' );
+		$preload_settings = $this->get_internal( 'preload_settings' );
 
 		$this->add( 'check_finished_controller', CheckFinished::class )
 			->addArgument( $preload_settings )
 			->addArgument( $cache_query )
 			->addArgument( $queue );
 
-		$check_finished_controller = $this->getInternal( 'check_finished_controller' );
+		$check_finished_controller = $this->get_internal( 'check_finished_controller' );
 
 		$this->share( 'preload_front_subscriber', FrontEndSubscriber::class )
 			->addArgument( $fetch_sitemap_controller )
 			->addArgument( $preload_url_controller )
 			->addArgument( $check_finished_controller )
-			->addArgument( $this->getInternal( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->add( 'preload_clean_controller', ClearCache::class )
 			->addArgument( $cache_query );
 
-		$clean_controller = $this->getInternal( 'preload_clean_controller' );
+		$clean_controller = $this->get_internal( 'preload_clean_controller' );
 
 		$this->share( 'preload_subscriber', Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $this->getInternal( 'load_initial_sitemap_controller' ) )
+			->addArgument( $this->get_internal( 'load_initial_sitemap_controller' ) )
 			->addArgument( $cache_query )
-			->addArgument( $this->getInternal( 'preload_activation' ) )
-			->addArgument( $this->getInternal( 'preload_mobile_detect' ) )
+			->addArgument( $this->get_internal( 'preload_activation' ) )
+			->addArgument( $this->get_internal( 'preload_mobile_detect' ) )
 			->addArgument( $clean_controller )
 			->addArgument( $queue )
 			->addTag( 'common_subscriber' );
@@ -139,7 +139,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->share( 'fonts_preload_subscriber', Fonts::class )
 			->addArgument( $options )
-			->addArgument( $this->getInternal( 'cdn' ) )
+			->addArgument( $this->get_internal( 'cdn' ) )
 			->addTag( 'common_subscriber' );
 
 		$this->add( 'preload_admin_subscriber', AdminSubscriber::class )

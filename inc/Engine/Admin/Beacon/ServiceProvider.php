@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Admin\Beacon;
 
 use WP_Rocket\AbstractServiceProvider;
-
+use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 /**
  * Service Provider for Beacon
  *
@@ -13,7 +13,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('beacon')
+			$this->generate_container_id('beacon')
 		];
 	}
 
@@ -24,9 +24,9 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->share( 'beacon', Beacon::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' )
-			->addArgument( $this->getContainer()->get( 'support_data' ) )
+			->addArgument( $this->get_external( 'options' ) )
+			->addArgument( $this->get_external( 'template_path' ) . '/settings' )
+			->addArgument( $this->get_external( 'support_data', SupportServiceProvider::class) )
 			->addTag( 'admin_subscriber' );
 	}
 }

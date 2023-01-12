@@ -12,6 +12,9 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 */
 	protected $prefix = '';
 
+	protected $provides = [];
+
+	protected $services_to_load = [];
 
 	/**
 	 * Check if an ID is provided by the service provider.
@@ -22,9 +25,17 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 */
 	public function provides(string $id): bool
 	{
+		$this->load_provides();
 		return in_array($id, $this->provides) || in_array($id, $this->get_admin_subscribers()) || in_array($id,
 				$this->get_front_subscribers()) || in_array($id, $this->get_common_subscribers()) || in_array($id,
 				$this->get_license_subscribers());
+	}
+
+	protected function load_provides() {
+		if($this->provides) {
+			return;
+		}
+		$this->register();
 	}
 
 	/**
@@ -82,6 +93,15 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	}
 
 	/**
+	 * @param string $id
+	 * @param callable(string $id): void $method
+	 * @return void
+	 */
+	public function register_service(string $id, callable $method) {
+		$this->services_to_load[$id] = $method;
+	}
+
+	/**
 	 * Share a service to the service provider.
 	 *
 	 * @param string $id ID from the service.
@@ -106,9 +126,23 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 *
 	 * @return mixed
 	 */
-	public function getInternal(string $id)
+	public function get_internal(string $id)
 	{
 		return $this->getContainer()->get( $this->generate_container_id( $id ) );
+	}
+
+	public function get_external(string $id, string $serviceProvider = '') {
+		if (! $serviceProvider ) {
+			return $this->getContainer()->get( $id );
+		}
+
+		$instance = new $serviceProvider;
+
+		if(!$instance instanceof AbstractServiceProvider) {
+			return $this->getContainer()->get( $id );
+		}
+
+		return $this->getContainer()->get( $instance->generate_container_id( $id ) );
 	}
 
 	/**
@@ -118,20 +152,30 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 *
 	 * @return string
 	 */
-	protected function generate_container_id(string $id)
+	public function generate_container_id(string $id)
 	{
 		if ($this->prefix) {
 			return $this->prefix . $id;
 		}
 
 		$class = get_class( $this );
-		$class = dirname( $class );
-
-		$class = trim( $class, '\\' );
-		$class = str_replace( '\\', '.', $class );
-		$class = strtolower( preg_replace( ['/([a-z])\d([A-Z])/', '/[^_]([A-Z][a-z])]/'], '$1_$2', $class ) );
+		$class = $this->generate_id( $class );
 		$this->prefix = $class . '.';
-
 		return $this->prefix . $id;
 	}
+
+	public function generate_id(string $class) {
+		$class = trim( $class, '\\' );
+		$class = str_replace( '\\', '.', $class );
+		return strtolower( preg_replace( ['/([a-z])\d([A-Z])/', '/[^_]([A-Z][a-z])]/'], '$1_$2', $class ) );
+	}
+
+	public function register()
+	{
+		foreach ($this->services_to_load as $id => $loader) {
+			$loader($id);
+		}
+	}
+
+	abstract public function declare();
 }

@@ -21,12 +21,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_front_subscribers(): array
 	{
 		return [
-			$this->getInternal('buffer_subscriber'),
-			$this->getInternal('cache_dynamic_resource'),
-			$this->getInternal('combine_google_fonts_subscriber'),
-			$this->getInternal('minify_css_subscriber'),
-			$this->getInternal('minify_js_subscriber'),
-			$this->getInternal('ie_conditionals_subscriber'),
+			$this->generate_container_id('buffer_subscriber'),
+			$this->generate_container_id('cache_dynamic_resource'),
+			$this->generate_container_id('combine_google_fonts_subscriber'),
+			$this->generate_container_id('minify_css_subscriber'),
+			$this->generate_container_id('minify_js_subscriber'),
+			$this->generate_container_id('ie_conditionals_subscriber'),
 		];
 	}
 

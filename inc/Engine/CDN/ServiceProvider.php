@@ -13,7 +13,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array
 	{
 		return [
-			$this->getInternal('cdn_subscriber')
+			$this->generate_container_id('cdn_subscriber')
 		];
 	}
 
@@ -23,13 +23,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+		$options = $this->get_external( 'options' );
 
 		$this->share( 'cdn', CDN::class )
 			->addArgument( $options );
 		$this->share( 'cdn_subscriber', Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $this->getInternal( 'cdn' ) )
+			->addArgument( $this->get_internal( 'cdn' ) )
 			->addTag( 'common_subscriber' );
 	}
 }

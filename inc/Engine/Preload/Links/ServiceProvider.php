@@ -11,8 +11,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array
 	{
 		return [
-			$this->getInternal('preload_links_admin_subscriber'),
-			$this->getInternal('preload_links_subscriber'),
+			$this->generate_container_id('preload_links_admin_subscriber'),
+			$this->generate_container_id('preload_links_subscriber'),
 		];
 	}
 

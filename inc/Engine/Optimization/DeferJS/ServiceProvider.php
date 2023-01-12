@@ -13,14 +13,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_front_subscribers(): array
 	{
 		return [
-			$this->getInternal('defer_js_subscriber')
+			$this->generate_container_id('defer_js_subscriber')
 		];
 	}
 
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('defer_js_admin_subscriber'),
+			$this->generate_container_id('defer_js_admin_subscriber'),
 		];
 	}
 
@@ -31,13 +31,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->add( 'defer_js', DeferJS::class )
-			->addArgument( $this->getInternal( 'options' ) )
-			->addArgument( $this->getInternal( 'dynamic_lists_data_manager' ) );
+			->addArgument( $this->get_internal( 'options' ) )
+			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
 		$this->share( 'defer_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getInternal( 'defer_js' ) )
+			->addArgument( $this->get_internal( 'defer_js' ) )
 			->addTag( 'admin_subscriber' );
 		$this->share( 'defer_js_subscriber', Subscriber::class )
-			->addArgument( $this->getInternal( 'defer_js' ) )
+			->addArgument( $this->get_internal( 'defer_js' ) )
 			->addTag( 'front_subscriber' );
 	}
 }

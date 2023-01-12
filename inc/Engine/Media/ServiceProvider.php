@@ -22,16 +22,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('lazyload_admin_subscriber'),
-			$this->getInternal('image_dimensions_admin_subscriber'),
+			$this->generate_container_id('lazyload_admin_subscriber'),
+			$this->generate_container_id('image_dimensions_admin_subscriber'),
 		];
 	}
 
 	public function get_front_subscribers(): array
 	{
 		return [
-			$this->getInternal('emojis_subscriber'),
-			$this->getInternal('image_dimensions_subscriber'),
+			$this->generate_container_id('emojis_subscriber'),
+			$this->generate_container_id('image_dimensions_subscriber'),
 		];
 	}
 
@@ -48,9 +48,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->add( 'lazyload_iframe', Iframe::class );
 		$this->share( 'lazyload_subscriber', Subscriber::class )
 			->addArgument( $options )
-			->addArgument( $this->getInternal( 'lazyload_assets' ) )
-			->addArgument( $this->getInternal( 'lazyload_image' ) )
-			->addArgument( $this->getInternal( 'lazyload_iframe' ) )
+			->addArgument( $this->get_internal( 'lazyload_assets' ) )
+			->addArgument( $this->get_internal( 'lazyload_image' ) )
+			->addArgument( $this->get_internal( 'lazyload_iframe' ) )
 			->addTag( 'lazyload_subscriber' );
 		$this->share( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class )
 			->addTag( 'admin_subscriber' );
@@ -60,10 +60,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->add( 'image_dimensions', ImageDimensions::class )
 			->addArgument( $options );
 		$this->share( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
-			->addArgument( $this->getInternal( 'image_dimensions' ) )
+			->addArgument( $this->get_internal( 'image_dimensions' ) )
 			->addTag( 'front_subscriber' );
 		$this->share( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
-			->addArgument( $this->getInternal( 'image_dimensions' ) )
+			->addArgument( $this->get_internal( 'image_dimensions' ) )
 			->addTag( 'admin_subscriber' );
 	}
 }

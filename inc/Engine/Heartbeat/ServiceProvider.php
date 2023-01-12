@@ -13,7 +13,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array
 	{
 		return [
-			$this->getInternal('heartbeat_subscriber')
+			$this->generate_container_id('heartbeat_subscriber')
 		];
 	}
 

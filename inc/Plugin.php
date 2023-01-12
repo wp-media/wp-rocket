@@ -28,7 +28,6 @@ use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvi
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider as RUCSSServiceProvider;
-use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider;
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
 use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
 use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
@@ -38,7 +37,6 @@ use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
-
 /**
  * Plugin Manager.
  */
@@ -143,7 +141,8 @@ class Plugin {
 	 * @return void
 	 */
 	private function load_subscribers() {
-		$providers = [
+
+		$initial_providers = [
 			new AdminDatabaseServiceProvider(),
 			new SupportServiceProvider(),
 			new BeaconServiceProvider(),
@@ -153,6 +152,13 @@ class Plugin {
 			new HealthCheckServiceProvider(),
 			new MediaServiceProvider(),
 			new DeferJSServiceProvider(),
+		];
+
+		foreach ($initial_providers as $provider) {
+			$this->container->addServiceProvider( $provider );
+		}
+
+		$providers = array_merge($initial_providers, [
 			new SettingsServiceProvider(),
 			new EngineAdminServiceProvider(),
 			new OptimizationAdminServiceProvider(),
@@ -172,8 +178,7 @@ class Plugin {
 			new DynamicListsServiceProvider(),
 			new LicenseServiceProvider(),
 			new ThemesServiceProvider(),
-			new APIServiceProvider(),
-		];
+		]);
 
 		if ( is_admin() ) {
 
@@ -255,6 +260,7 @@ class Plugin {
 	 * @return void
 	 */
 	private function init_subscribers(array $providers, string $method, array $added = [] ) {
+		$this->container->get('wp_rocket.engine.support.serviceprovider.support_data');
 		/** @var AbstractServiceProvider[] $providers */
 		foreach ($providers as $provider) {
 			if(! $provider->$method() ) {
@@ -270,7 +276,6 @@ class Plugin {
 		foreach ( $subscribers as $subscriber ) {
 			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
 		}
-
 		foreach ( $added as $subscriber ) {
 			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
 		}

@@ -15,14 +15,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_front_subscribers(): array
 	{
 		return [
-			$this->getInternal('delay_js_subscriber')
+			$this->generate_container_id('delay_js_subscriber')
 		];
 	}
 
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('delay_js_admin_subscriber'),
+			$this->generate_container_id('delay_js_admin_subscriber'),
 		];
 	}
 
@@ -34,15 +34,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->add( 'delay_js_settings', Settings::class );
 		$this->share( 'delay_js_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->getInternal( 'delay_js_settings' ) )
+			->addArgument( $this->get_internal( 'delay_js_settings' ) )
 			->addTag( 'admin_subscriber' );
 		$this->add( 'delay_js_html', HTML::class )
-			->addArgument( $this->getInternal( 'options' ) )
-			->addArgument( $this->getInternal( 'dynamic_lists_data_manager' ) );
+			->addArgument( $this->get_internal( 'options' ) )
+			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
 		$this->share( 'delay_js_subscriber', Subscriber::class )
-			->addArgument( $this->getInternal( 'delay_js_html' ) )
+			->addArgument( $this->get_internal( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )
-			->addArgument( $this->getInternal( 'options' ) )
+			->addArgument( $this->get_internal( 'options' ) )
 			->addTag( 'front_subscriber' );
 	}
 }

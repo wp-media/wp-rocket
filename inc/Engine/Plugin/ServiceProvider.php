@@ -11,10 +11,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array
 	{
 		return [
-			$this->getInternal('plugin_updater_common_subscriber'),
-			$this->getInternal('plugin_information_subscriber'),
-			$this->getInternal('plugin_updater_subscriber'),
-			$this->getInternal('plugin_updater_subscriber'),
+			$this->generate_container_id('plugin_updater_common_subscriber'),
+			$this->generate_container_id('plugin_information_subscriber'),
+			$this->generate_container_id('plugin_updater_subscriber'),
+			$this->generate_container_id('plugin_updater_subscriber'),
 		];
 	}
 

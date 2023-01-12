@@ -18,7 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->getInternal('license_subscriber')
+			$this->generate_container_id('license_subscriber')
 		];
 	}
 
@@ -32,23 +32,23 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->add( 'pricing_client', PricingClient::class );
 		$this->add( 'user_client', UserClient::class )
-			->addArgument( $this->getInternal( 'options' ) );
+			->addArgument( $this->get_internal( 'options' ) );
 		$this->share( 'pricing', Pricing::class )
-			->addArgument( $this->getInternal( 'pricing_client' )->get_pricing_data() );
+			->addArgument( $this->get_internal( 'pricing_client' )->get_pricing_data() );
 		$this->share( 'user', User::class )
-			->addArgument( $this->getInternal( 'user_client' )->get_user_data() );
+			->addArgument( $this->get_internal( 'user_client' )->get_user_data() );
 		$this->add( 'upgrade', Upgrade::class )
-			->addArgument( $this->getInternal( 'pricing' ) )
-			->addArgument( $this->getInternal( 'user' ) )
+			->addArgument( $this->get_internal( 'pricing' ) )
+			->addArgument( $this->get_internal( 'user' ) )
 			->addArgument( $views );
 		$this->add( 'renewal', Renewal::class )
-			->addArgument( $this->getInternal( 'pricing' ) )
-			->addArgument( $this->getInternal( 'user' ) )
+			->addArgument( $this->get_internal( 'pricing' ) )
+			->addArgument( $this->get_internal( 'user' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $views );
 		$this->share( 'license_subscriber', Subscriber::class )
-			->addArgument( $this->getInternal( 'upgrade' ) )
-			->addArgument( $this->getInternal( 'renewal' ) )
+			->addArgument( $this->get_internal( 'upgrade' ) )
+			->addArgument( $this->get_internal( 'renewal' ) )
 			->addTag( 'admin_subscriber' );
 	}
 }
