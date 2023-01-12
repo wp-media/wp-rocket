@@ -35,35 +35,55 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
+		$this->register_service('lazyload_assets', function ($id) {
+			$this->add( $id, Assets::class );
+		});
 
-		$this->add( 'lazyload_assets', Assets::class );
-		$this->add( 'lazyload_image', Image::class );
-		$this->add( 'lazyload_iframe', Iframe::class );
-		$this->share( 'lazyload_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->get_internal( 'lazyload_assets' ) )
-			->addArgument( $this->get_internal( 'lazyload_image' ) )
-			->addArgument( $this->get_internal( 'lazyload_iframe' ) )
-			->addTag( 'lazyload_subscriber' );
-		$this->share( 'lazyload_admin_subscriber', LazyloadAdminSubscriber::class )
-			->addTag( 'admin_subscriber' );
-		$this->share( 'emojis_subscriber', EmojisSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'front_subscriber' );
-		$this->add( 'image_dimensions', ImageDimensions::class )
-			->addArgument( $options );
-		$this->share( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
-			->addArgument( $this->get_internal( 'image_dimensions' ) )
-			->addTag( 'front_subscriber' );
-		$this->share( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
-			->addArgument( $this->get_internal( 'image_dimensions' ) )
-			->addTag( 'admin_subscriber' );
+		$this->register_service('lazyload_image', function ($id) {
+			$this->add( $id, Image::class );
+		});
+
+		$this->register_service('lazyload_iframe', function ($id) {
+			$this->add( $id, Iframe::class );
+		});
+
+		$this->register_service('lazyload_subscriber', function ($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->getContainer()->get( 'options' ) )
+				->addArgument( $this->get_internal( 'lazyload_assets' ) )
+				->addArgument( $this->get_internal( 'lazyload_image' ) )
+				->addArgument( $this->get_internal( 'lazyload_iframe' ) )
+				->addTag( 'lazyload_subscriber' );
+		});
+
+		$this->register_service('lazyload_admin_subscriber', function ($id) {
+			$this->share( $id, LazyloadAdminSubscriber::class )
+				->addTag( 'admin_subscriber' );
+		});
+
+		$this->register_service('emojis_subscriber', function ($id) {
+			$this->share( $id, EmojisSubscriber::class )
+				->addArgument( $this->getContainer()->get( 'options' ) )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('image_dimensions', function ($id) {
+			$this->add( $id, ImageDimensions::class )
+				->addArgument( $this->getContainer()->get( 'options' ) );
+		});
+
+		$this->register_service('image_dimensions_subscriber', function ($id) {
+			$this->share( $id, ImageDimensionsSubscriber::class )
+				->addArgument( $this->get_internal( 'image_dimensions' ) )
+				->addTag( 'front_subscriber' );
+		});
+
+		$this->register_service('image_dimensions_admin_subscriber', function ($id) {
+			$this->share( $id, ImageDimensionsAdminSubscriber::class )
+				->addArgument( $this->get_internal( 'image_dimensions' ) )
+				->addTag( 'admin_subscriber' );
+		});
 	}
 }
