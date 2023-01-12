@@ -23,6 +23,7 @@ const safeMode = () => {
 
         // Check #safe_mode
         await page.locator('#safe_mode').check();
+        await page.locator( 'label[for=export_settings]' ).click();
         await page.locator('text=Confirm').click();
 
         await page.goto('/wp-admin/options-general.php?page=wprocket#dashboard');
