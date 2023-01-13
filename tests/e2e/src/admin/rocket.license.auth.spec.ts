@@ -4,7 +4,6 @@ import { test, expect } from '@playwright/test';
  * Local deps.
  */
  import { pageUtils } from '../../utils/page.utils';
- import { is_rocket_active } from '../../utils/helpers';
 
 const rocketLicense = () => {
     let page;
