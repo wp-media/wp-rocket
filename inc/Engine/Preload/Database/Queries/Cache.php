@@ -371,7 +371,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status' => 'in-progress',
+				'status'   => 'in-progress',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -398,7 +399,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$task->id,
 			[
-				'status' => 'completed',
+				'status'   => 'completed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -433,7 +435,8 @@ class Cache extends Query {
 			$this->update_item(
 				$in_progress->id,
 				[
-					'status' => 'pending',
+					'status'   => 'pending',
+					'modified' => current_time( 'mysql', true ),
 				]
 				);
 		}
@@ -614,7 +617,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status' => 'failed',
+				'status'   => 'failed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
