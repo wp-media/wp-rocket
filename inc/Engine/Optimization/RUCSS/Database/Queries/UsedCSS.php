@@ -425,7 +425,7 @@ class UsedCSS extends Query {
 
 		// Query statement.
 		$query    = 'SHOW TABLES LIKE %s';
-		$like     = $db->esc_like( $this->table_name );
+		$like     = $db->esc_like( $this->get_db()->{$this->table_name} );
 		$prepared = $db->prepare( $query, $like );
 		$result   = $db->get_var( $prepared );
 
