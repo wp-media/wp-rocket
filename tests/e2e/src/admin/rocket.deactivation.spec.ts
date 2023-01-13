@@ -3,7 +3,10 @@ import { test, expect } from '@playwright/test';
 /**
  * Local deps.
  */
+import { file_exist } from '../../utils/helpers';
 import { pageUtils } from '../../utils/page.utils';
+
+let config_file_exist:boolean = false;
 
 const deactivation = () => {
     test('should deactivate WP Rocket successfully', async ( { page } ) => {
@@ -24,14 +27,16 @@ const deactivation = () => {
         await locator.select_deactivate.click();
         await page.locator('text=Confirm').click();
         
-        // Force deactivation - No .Htaccess file.
-        await page.locator('a:has-text("Force deactivation")').click();
+        if (await page.locator('a:has-text("Force deactivation")').isVisible()) {
+            // Force deactivation - No .Htaccess file.
+            await page.locator('a:has-text("Force deactivation")').click();
+        }
 
         // check deactivation notification
         await expect(page.locator('text=Plugin deactivated.')).toBeVisible();
 
-        const response = await page.goto('/wp-content/wp-rocket-config/localhost.php');
-        expect(response.status()).toEqual(404);
+        config_file_exist = await file_exist('wp-content/wp-rocket-config/localhost.php');
+        expect(config_file_exist).toBeFalsy();
     });
 }
 
