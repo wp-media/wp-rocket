@@ -19,12 +19,10 @@ return [
 		'expected' => [
 			[10, [
 					'status' => 'pending',
-					'modified' => 123415,
 				]
 			],
 			[20, [
 				'status' => 'pending',
-				'modified' => 123415,
 				]
 			],
 		],
