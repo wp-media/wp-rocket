@@ -3,7 +3,7 @@ import { test, expect, Page } from '@playwright/test';
 /**
  * Local deps.
  */
-import { read_file, write_to_file, file_exist, sleep } from '../../utils/helpers';
+import { read_file, write_to_file, file_exist } from '../../utils/helpers';
 import { pageUtils } from '../../utils/page.utils';
 
 let page: Page;
