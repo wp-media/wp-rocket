@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WPMedia\Cloudflare\APIClient;
@@ -16,18 +16,12 @@ use WPMedia\Cloudflare\Subscriber as CloudflareSubscriber;
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'sucuri_subscriber',
-	];
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->generate_container_id('sucuri_subscriber'),
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -35,13 +29,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options' );
 
-		// Sucuri Addon.
-		$this->getContainer()->share( 'sucuri_subscriber', SucuriSubscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
+		parent::register();
 
+		$options = $this->get_external( 'options' );
 		// Cloudflare Addon.
 		$this->addon_cloudflare( $options );
 	}
@@ -61,15 +52,24 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->provides[] = 'cloudflare_subscriber';
 
-		$this->getContainer()->add( 'cloudflare_api', APIClient::class )
+		$this->add( 'cloudflare_api', APIClient::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
-		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
+		$this->add( 'cloudflare', Cloudflare::class )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cloudflare_api' ) );
-		$this->getContainer()->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
+			->addArgument( $this->get_internal( 'cloudflare_api' ) );
+		$this->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
+			->addArgument( $this->get_internal( 'cloudflare' ) )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->get_internal( 'options_api' ) )
 			->addTag( 'cloudflare_subscriber' );
+	}
+
+	public function declare()
+	{
+		$this->register_service('sucuri_subscriber', function ($id) {
+			$this->share( $id, SucuriSubscriber::class )
+				->addArgument( $this->get_external( 'options' ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

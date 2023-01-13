@@ -20,47 +20,70 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscribe
  * @since  3.9
  */
 class ServiceProvider extends AbstractServiceProvider {
+	public function declare()
+	{
+		$this->register_service('rucss_usedcss_table', function ($id) {
+			$this->add( $id, UsedCSSTable::class );
+		});
 
-	/**
-	 * Registers the option array in the container
-	 *
-	 * @return void
-	 */
-	public function register() {
+		$this->register_service('rucss_database', function ($id) {
+			$this->add( $id, Database::class )
+				->addArgument( $this->get_internal( 'rucss_usedcss_table' ) );
+		});
 
-		$this->add( 'rucss_usedcss_table', UsedCSSTable::class );
-		$this->add( 'rucss_database', Database::class )
-			->addArgument( $this->get_internal( 'rucss_usedcss_table' ) );
+		$this->register_service('rucss_settings', function ($id) {
+			$this->add( $id, Settings::class )
+				->addArgument( $this->get_internal( 'options' ) )
+				->addArgument( $this->get_internal( 'beacon' ) )
+				->addArgument( $this->get_internal( 'rucss_usedcss_table' ) );
+		});
 
-		$this->add( 'rucss_settings', Settings::class )
-			->addArgument( $this->get_internal( 'options' ) )
-			->addArgument( $this->get_internal( 'beacon' ) )
-			->addArgument( $this->get_internal( 'rucss_usedcss_table' ) );
+		$this->register_service('rucss_used_css_query', function ($id) {
+			$this->add( $id, UsedCSSQuery::class );
+		});
 
-		$this->add( 'rucss_used_css_query', UsedCSSQuery::class );
-		$this->add( 'rucss_frontend_api_client', APIClient::class )
-			->addArgument( $this->get_internal( 'options' ) );
-		$this->add( 'rucss_queue', Queue::class );
-		$this->add( 'rucss_filesystem', Filesystem::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
-			->addArgument( rocket_direct_filesystem() );
-		$this->add( 'rucss_used_css_controller', UsedCSSController::class )
-			->addArgument( $this->get_internal( 'options' ) )
-			->addArgument( $this->get_internal( 'rucss_used_css_query' ) )
-			->addArgument( $this->get_internal( 'rucss_frontend_api_client' ) )
-			->addArgument( $this->get_internal( 'rucss_queue' ) )
-			->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) )
-			->addArgument( $this->get_internal( 'rucss_filesystem' ) );
+		$this->register_service('rucss_frontend_api_client', function ($id) {
+			$this->add( $id, APIClient::class )
+				->addArgument( $this->get_internal( 'options' ) );
+		});
 
-		$this->share( 'rucss_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $this->get_internal( 'rucss_settings' ) )
-			->addArgument( $this->get_internal( 'rucss_database' ) )
-			->addArgument( $this->get_internal( 'rucss_used_css_controller' ) )
-			->addArgument( $this->get_internal( 'rucss_queue' ) );
-		$this->share( 'rucss_frontend_subscriber', FrontendSubscriber::class )
-			->addArgument( $this->get_internal( 'rucss_used_css_controller' ) );
-		$this->share( 'rucss_cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->get_internal( 'rucss_used_css_controller' ) )
-			->addArgument( $this->get_internal( 'rucss_database' ) );
+		$this->register_service('rucss_queue', function ($id) {
+			$this->add( $id, Queue::class );
+		});
+
+		$this->register_service('rucss_filesystem', function ($id) {
+			$this->add( $id, Filesystem::class )
+				->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
+				->addArgument( rocket_direct_filesystem() );
+		});
+
+		$this->register_service('rucss_used_css_controller', function ($id) {
+			$this->add( $id, UsedCSSController::class )
+				->addArgument( $this->get_internal( 'options' ) )
+				->addArgument( $this->get_internal( 'rucss_used_css_query' ) )
+				->addArgument( $this->get_internal( 'rucss_frontend_api_client' ) )
+				->addArgument( $this->get_internal( 'rucss_queue' ) )
+				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) )
+				->addArgument( $this->get_internal( 'rucss_filesystem' ) );
+		});
+
+		$this->register_service('rucss_admin_subscriber', function ($id) {
+			$this->share( $id, AdminSubscriber::class )
+				->addArgument( $this->get_internal( 'rucss_settings' ) )
+				->addArgument( $this->get_internal( 'rucss_database' ) )
+				->addArgument( $this->get_internal( 'rucss_used_css_controller' ) )
+				->addArgument( $this->get_internal( 'rucss_queue' ) );
+		});
+
+		$this->register_service('rucss_frontend_subscriber', function ($id) {
+			$this->share( $id, FrontendSubscriber::class )
+				->addArgument( $this->get_internal( 'rucss_used_css_controller' ) );
+		});
+
+		$this->register_service('rucss_cron_subscriber', function ($id) {
+			$this->share( $id, CronSubscriber::class )
+				->addArgument( $this->get_internal( 'rucss_used_css_controller' ) )
+				->addArgument( $this->get_internal( 'rucss_database' ) );
+		});
 	}
 }

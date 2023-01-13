@@ -2,6 +2,9 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\AbstractServiceProvider;
+use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
+use WP_Rocket\Engine\Admin\Database\ServiceProvider as DatabaseServiceProvider;
+use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 
 /**
  * Service provider for the WP Rocket settings.
@@ -35,8 +38,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'settings', Settings::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
+
 		$this->getContainer()->add( 'settings_render', Render::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+
 		$this->getContainer()->add( 'settings_page', Page::class )
 			->addArgument( $this->getContainer()->get( 'settings_page_config' ) )
 			->addArgument( $this->getContainer()->get( 'settings' ) )
@@ -44,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->addArgument( $this->getContainer()->get( 'user_client' ) );
+
 		$this->getContainer()->share( 'settings_page_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'settings_page' ) )
 			->addTag( 'admin_subscriber' );
@@ -66,9 +72,15 @@ class ServiceProvider extends AbstractServiceProvider {
 				->addArgument( $this->get_external( 'settings_page_config' ) )
 				->addArgument( $this->get_internal( 'settings' ) )
 				->addArgument( $this->get_internal( 'settings_render' ) )
-				->addArgument( $this->get_external( 'beacon' ) )
-				->addArgument( $this->get_external( 'db_optimization' ) )
-				->addArgument( $this->get_external( 'user_client' ) );
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addArgument( $this->get_external( 'db_optimization', DatabaseServiceProvider::class ) )
+				->addArgument( $this->get_external( 'user_client', LicenseServiceProvider::class ) );
+		});
+
+		$this->register_service('settings_page_subscriber', function($id) {
+			$this->share( $id, Subscriber::class )
+				->addArgument( $this->get_internal( 'settings_page' ) )
+				->addTag( 'admin_subscriber' );
 		});
 	}
 }

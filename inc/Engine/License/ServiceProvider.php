@@ -32,7 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('user_client', function ($id) {
 			$this->add( $id, UserClient::class )
-				->addArgument( $this->get_internal( 'options' ) );
+				->addArgument( $this->get_external( 'options' ) );
 		});
 
 		$this->register_service('pricing', function ($id) {
@@ -56,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			$this->add( $id, Renewal::class )
 				->addArgument( $this->get_internal( 'pricing' ) )
 				->addArgument( $this->get_internal( 'user' ) )
-				->addArgument( $this->getContainer()->get( 'options' ) )
+				->addArgument( $this->get_external( 'options' ) )
 				->addArgument( $views );
 		});
 

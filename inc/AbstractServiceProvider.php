@@ -23,19 +23,21 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 *
 	 * @return bool
 	 */
-	public function provides(string $id): bool
+	public function provides(string $alias): bool
 	{
 		$this->load_provides();
-		return in_array($id, $this->provides) || in_array($id, $this->get_admin_subscribers()) || in_array($id,
-				$this->get_front_subscribers()) || in_array($id, $this->get_common_subscribers()) || in_array($id,
+
+		return in_array($alias, $this->provides) || in_array($alias, $this->get_admin_subscribers()) || in_array($alias,
+				$this->get_front_subscribers()) || in_array($alias, $this->get_common_subscribers()) || in_array($alias,
 				$this->get_license_subscribers());
 	}
 
 	protected function load_provides() {
-		if($this->provides) {
+		if(is_array($this->provides) && count($this->provides) > 0) {
 			return;
 		}
-		$this->register();
+		$this->declare();
+
 	}
 
 	/**
@@ -79,16 +81,11 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 *
 	 * @param string $id ID from the service.
 	 * @param string $class class from the service.
-	 * @param bool $expose is the service exposed externally.
 	 *
 	 * @return mixed
 	 */
-	public function add(string $id, string $class, bool $expose = true) {
+	public function add(string $id, string $class) {
 		$internal_id = $this->generate_container_id( $id );
-
-		if( ! $this->provides( $internal_id ) && $expose ) {
-			$this->provides[] = $internal_id;
-		}
 		return $this->getContainer()->add( $internal_id, $class);
 	}
 
@@ -98,7 +95,14 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	 * @return void
 	 */
 	public function register_service(string $id, callable $method) {
-		$this->services_to_load[$id] = $method;
+		$internal_id = $this->generate_container_id( $id );
+		$this->services_to_load[] = [
+			'id' => $id,
+			'method' => $method
+		];
+		if( ! in_array($internal_id, $this->provides, true) ) {
+			$this->provides[] = $internal_id;
+		}
 	}
 
 	/**
@@ -113,9 +117,6 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 	public function share(string $id, string $class, bool $expose = true) {
 		$internal_id = $this->generate_container_id( $id );
 
-		if( ! $this->provides( $internal_id ) && $expose ) {
-			$this->provides[] = $internal_id;
-		}
 		return $this->getContainer()->share( $internal_id, $class);
 	}
 
@@ -172,8 +173,8 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 
 	public function register()
 	{
-		foreach ($this->services_to_load as $id => $loader) {
-			$loader($id);
+		foreach ($this->services_to_load as $service) {
+			$service['method']($service['id']);
 		}
 	}
 

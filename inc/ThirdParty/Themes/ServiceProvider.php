@@ -3,69 +3,60 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-
+use WP_Rocket\AbstractServiceProvider;
+use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
 class ServiceProvider extends AbstractServiceProvider {
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'avada_subscriber',
-		'bridge_subscriber',
-		'divi',
-		'flatsome',
-		'jevelin',
-		'minimalist_blogger',
-		'polygon',
-		'uncode',
-		'xstore',
+
+	protected $simple_registration_classes = [
+		Avada::class => true,
+		Bridge::class => true,
+		Flatsome::class => false,
+		Jevelin::class => false,
+		MinimalistBlogger::class => false,
+		Polygon::class => false,
+		Uncode::class => false,
+		Xstore::class => false,
 	];
 
-	/**
-	 * Registers the subscribers in the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function get_common_subscribers(): array
+	{
 
-		$this->getContainer()
-			->share( 'avada_subscriber', Avada::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'bridge_subscriber', Bridge::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'divi', Divi::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'flatsome', Flatsome::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'jevelin', Jevelin::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'minimalist_blogger', MinimalistBlogger::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'polygon', Polygon::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'uncode', Uncode::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'xstore', Xstore::class )
-			->addTag( 'common_subscriber' );
+		$simple_registration_classes_ids = array_map(function ($class) {
+			return $this->generate_id($class);
+		}, array_keys($this->simple_registration_classes));
+
+		$subscribers = array_merge($simple_registration_classes_ids, [
+			'divi',
+		]);
+
+		return array_map(function ($id) {
+			return $this->generate_container_id( $id );
+		}, $subscribers);
+	}
+
+	public function declare()
+	{
+		foreach ($this->simple_registration_classes as $simple_registration_class => $has_options) {
+			$id = $this->generate_id($simple_registration_class);
+			$this->register_service($id, function (string $id) use ($simple_registration_class, $has_options) {
+				if(! $has_options ) {
+					$this->share($id, $simple_registration_class )
+						->addTag( 'common_subscriber' );
+				}
+				$this
+					->share( $id, $simple_registration_class )
+					->addArgument( $this->get_external('options') )
+					->addTag( 'common_subscriber' );
+			});
+		}
+
+		$this->register_service('divi' , function ($id) {
+			$this
+				->share( $id, Divi::class )
+				->addArgument( $this->get_external( 'options_api' ) )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'delay_js_html', DelayJSServiceProvider::class ) )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

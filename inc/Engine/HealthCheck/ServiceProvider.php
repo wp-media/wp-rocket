@@ -24,16 +24,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-
-
-	}
-
 	public function declare()
 	{
 		$this->register_service('health_check', function ($id) {

@@ -20,7 +20,7 @@ use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket_Mobile_Detect;
-
+use WP_Rocket\Engine\CDN\ServiceProvider as CDNServiceProvider;
 /**
  * Service provider for the WP Rocket preload.
  *
@@ -41,6 +41,10 @@ class ServiceProvider extends AbstractServiceProvider {
 
 	public function declare()
 	{
+		$this->register_service('preload_queue', function ($id) {
+			$this->add( $id, Queue::class );
+		});
+
 		$this->register_service('preload_mobile_detect', function ($id) {
 			$this->add( $id, WP_Rocket_Mobile_Detect::class );
 		});
@@ -66,10 +70,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				->addArgument( $this->get_internal( 'preload_queue' ) )
 				->addArgument( $this->get_internal( 'preload_caches_query' ) )
 				->addArgument( $this->get_internal( 'wp_direct_filesystem' ) );
-		});
-
-		$this->register_service('preload_queue', function ($id) {
-			$this->add( $id, Queue::class );
 		});
 
 		$this->register_service('homepage_crawler', function ($id) {
@@ -151,7 +151,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->register_service('fonts_preload_subscriber', function ($id) {
 			$this->share( $id, Fonts::class )
 				->addArgument( $this->get_external( 'options' ) )
-				->addArgument( $this->get_internal( 'cdn' ) )
+				->addArgument( $this->get_external( 'cdn', CDNServiceProvider::class ) )
 				->addTag( 'common_subscriber' );
 		});
 

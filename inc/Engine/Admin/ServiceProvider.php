@@ -5,7 +5,7 @@ use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 use WP_Rocket\Engine\Admin\Deactivation\Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
-
+use WP_Rocket\Engine\Admin\ServiceProvider as AdminServiceProvider;
 /**
  * Service Provider for admin subscribers.
  *
@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('deactivation_intent_subscriber', function ($id) {
 			$this->share( $id, Subscriber::class )
-				->addArgument( $this->get_external( 'deactivation_intent' ) )
+				->addArgument( $this->get_external( 'deactivation_intent', AdminServiceProvider::class ) )
 				->addTag( 'admin_subscriber' );
 		});
 

@@ -368,6 +368,7 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function make_status_inprogress( int $id ) {
+		error_log('time: ' . current_time( 'mysql', true ) . "\n", 3, WP_CONTENT_DIR . '/test1234');
 		return $this->update_item(
 			$id,
 			[

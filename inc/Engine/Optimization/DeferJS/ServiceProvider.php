@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
 use WP_Rocket\AbstractServiceProvider;
-
+use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 /**
  * Service provider for the WP Rocket Defer JS
  *
@@ -28,8 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	{
 		$this->register_service('defer_js', function ($id) {
 			$this->add( $id, DeferJS::class )
-				->addArgument( $this->get_internal( 'options' ) )
-				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) );
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'dynamic_lists_data_manager', DynamicListsServiceProvider::class ) );
 		});
 
 		$this->register_service('defer_js_admin_subscriber', function ($id) {

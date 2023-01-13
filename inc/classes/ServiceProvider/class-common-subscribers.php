@@ -1,8 +1,9 @@
 <?php
 namespace WP_Rocket\ServiceProvider;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-
+use WP_Rocket\AbstractServiceProvider;
+use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
+use WP_Rocket\Engine\CDN\ServiceProvider as CDNServiceProvider;
 /**
  * Service provider for WP Rocket features common for admin and front
  *
@@ -10,35 +11,28 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  */
 class Common_Subscribers extends AbstractServiceProvider {
 
-	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
-	 */
-	protected $provides = [
-		'webp_subscriber',
-		'detect_missing_tags_subscriber',
-	];
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->generate_container_id('webp_subscriber'),
+			$this->generate_container_id('detect_missing_tags_subscriber'),
+		];
+	}
 
-	/**
-	 * Registers items with the container
-	 *
-	 * @return void
-	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function declare()
+	{
+		$this->register_service('webp_subscriber', function ($id) {
+			$this->share( $id, 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'options_api' ) )
+				->addArgument( $this->get_external( 'cdn_subscriber', CDNServiceProvider::class ) )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
+				->addTag( 'common_subscriber' );
+		});
 
-		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'detect_missing_tags_subscriber', 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' )
-			->addTag( 'common_subscriber' );
+		$this->register_service('detect_missing_tags_subscriber', function ($id) {
+			$this->share( $id, 'WP_Rocket\Subscriber\Tools\Detect_Missing_Tags_Subscriber' )
+				->addTag( 'common_subscriber' );
+		});
 	}
 }

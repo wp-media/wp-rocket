@@ -2,6 +2,8 @@
 namespace WP_Rocket\ThirdParty;
 
 use WP_Rocket\AbstractServiceProvider;
+use WP_Rocket\Engine\CDN\ServiceProvider as CDNServiceProvider;
+use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
@@ -66,7 +68,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		WordFenceCompatibility::class => false,
 		Ezoic::class => false,
 		ThirstyAffiliates::class => false,
-		PWA::class => true,
+		PWA::class => false,
 		Yoast::class => true,
 		UnlimitedElements::class => false,
 		InlineRelatedPosts::class => false,
@@ -126,14 +128,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				->share( $id, Elementor::class )
 				->addArgument( $this->get_external('options') )
 				->addArgument( rocket_direct_filesystem() )
-				->addArgument( $this->get_external( 'delay_js_html' ) )
+				->addArgument( $this->get_external( 'delay_js_html', DelayJSServiceProvider::class ) )
 				->addTag( 'common_subscriber' );
 		});
 
 		$this->register_service('woocommerce_subscriber', function ($id) {
 			$this
 				->share( $id, WooCommerceSubscriber::class )
-				->addArgument( $this->get_external( 'delay_js_html' ) )
+				->addArgument( $this->get_external( 'delay_js_html', DelayJSServiceProvider::class ) )
 				->addTag( 'common_subscriber' );
 		});
 
@@ -149,7 +151,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			$this
 				->share( $id, AMP::class )
 				->addArgument( $this->get_external( 'options' ) )
-				->addArgument( $this->get_external( 'cdn_subscriber' ) )
+				->addArgument( $this->get_external( 'cdn_subscriber', CDNServiceProvider::class ) )
 				->addTag( 'common_subscriber' );
 		});
 

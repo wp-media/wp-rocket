@@ -37,6 +37,7 @@ use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
+
 /**
  * Plugin Manager.
  */
@@ -152,13 +153,10 @@ class Plugin {
 			new HealthCheckServiceProvider(),
 			new MediaServiceProvider(),
 			new DeferJSServiceProvider(),
+			new LicenseServiceProvider(),
 		];
 
-		foreach ($initial_providers as $provider) {
-			$this->container->addServiceProvider( $provider );
-		}
-
-		$providers = array_merge($initial_providers, [
+		$providers = [
 			new SettingsServiceProvider(),
 			new EngineAdminServiceProvider(),
 			new OptimizationAdminServiceProvider(),
@@ -176,9 +174,16 @@ class Plugin {
 			new RUCSSServiceProvider(),
 			new HeartbeatServiceProvider(),
 			new DynamicListsServiceProvider(),
-			new LicenseServiceProvider(),
 			new ThemesServiceProvider(),
-		]);
+		];
+
+		$providers = $this->filter_right_providers( $providers );
+
+		$providers = array_merge($initial_providers, $providers);
+
+		foreach ($providers as $provider) {
+			$this->container->addServiceProvider( $provider );
+		}
 
 		if ( is_admin() ) {
 
@@ -194,6 +199,46 @@ class Plugin {
 		$this->init_common_subscribers( $providers );
 	}
 
+
+	public function filter_right_providers(array $providers): array {
+
+		$admin_providers = [];
+		$front_providers = [];
+		$license_providers = [];
+
+		if ( is_admin() ) {
+
+			$admin_providers = $this->filter_service_provider( $providers, 'get_admin_subscribers' );
+		} elseif ($this->is_valid_key ) {
+			$subscribers = [];
+			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
+			if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
+				$subscribers[] = 'lazyload_subscriber';
+			}
+			$license_providers = $this->filter_service_provider( $providers, 'get_license_subscribers', $subscribers );
+		}
+
+		if ( ! is_admin() ) {
+			$front_providers = $this->filter_service_provider( $providers, 'get_front_subscribers' );
+		}
+
+		$common_subscribers = [];
+
+		$host_type = HostResolver::get_host_service();
+
+		if ( ! empty( $host_type ) ) {
+			$common_subscribers[] = $host_type;
+		}
+
+		if ( $this->options->get( 'do_cloudflare', false ) ) {
+			$common_subscribers[] = 'cloudflare_subscriber';
+		}
+		$common_providers = $this->filter_service_provider( $providers, 'get_common_subscribers', $common_subscribers );
+
+		$providers = array_merge($common_providers, $admin_providers, $license_providers, $front_providers);
+
+		return array_unique($providers, SORT_REGULAR);
+	}
 
 	/**
 	 * Initializes the admin subscribers.
@@ -251,6 +296,23 @@ class Plugin {
 	}
 
 
+	public function filter_service_provider(array $providers, string $method, array $added = [] ) {
+		return array_filter($providers, function (AbstractServiceProvider $provider) use ($method, $added) {
+			$subscribers = $provider->$method();
+
+			if( $subscribers && count($subscribers) > 0 ) {
+				return $provider;
+			}
+
+			foreach ($added as $item) {
+				if( $provider->provides($item) ){
+					return $provider;
+				}
+			}
+
+			return false;
+		});
+	}
 
 	/**
 	 * Initializes the admin subscribers.
@@ -260,13 +322,12 @@ class Plugin {
 	 * @return void
 	 */
 	private function init_subscribers(array $providers, string $method, array $added = [] ) {
-		$this->container->get('wp_rocket.engine.support.serviceprovider.support_data');
 		/** @var AbstractServiceProvider[] $providers */
 		foreach ($providers as $provider) {
 			if(! $provider->$method() ) {
 				continue;
 			}
-			$this->container->addServiceProvider( $provider );
+
 			$this->add_subscribers( $provider->$method(), $added );
 		}
 	}
