@@ -88,8 +88,10 @@ export class pageUtils {
         await this.page.locator(action + plugin_slug).click();
 
         if (!activate) {
-            // Force deactivation - No .Htaccess file.
-            await this.page.locator('a:has-text("Force deactivation")').click();
+            if (await this.page.locator('a:has-text("Force deactivation")').isVisible()) {
+                // Force deactivation - No .Htaccess file.
+                await this.page.locator('a:has-text("Force deactivation")').click();
+            }
         }
     }
 
