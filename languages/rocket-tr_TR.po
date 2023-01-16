@@ -1,7 +1,7 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Romain • WP Rocket <contact@wp-rocket.me>, 2019
+# Romain â€¢ WP Rocket <contact@wp-rocket.me>, 2019
 # Muhittin Sahilli <Muhittinyasarsahilli@gmail.com>, 2021
 # BouRock, 2022
 # 
@@ -47,17 +47,17 @@ msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
 "compatibility."
 msgstr ""
-"Siteniz %s üzerinde barındırılıyor, uyumluluk için Varnish oto-temizle’yi "
-"etkinleştirdik."
+"Siteniz %s Ã¼zerinde barÄ±ndÄ±rÄ±lÄ±yor, uyumluluk iÃ§in Varnish oto-temizleâ€™yi "
+"etkinleÅŸtirdik."
 
 #: inc/Addon/Cloudflare/APIClient.php:309
 msgid "Cloudflare did not provide any reply. Please try again later."
-msgstr "Cloudflare hiçbir yanıt vermedi. Lütfen daha sonra tekrar deneyin."
+msgstr "Cloudflare hiÃ§bir yanÄ±t vermedi. LÃ¼tfen daha sonra tekrar deneyin."
 
 #: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
-msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
+msgstr "YanlÄ±ÅŸ Cloudflare e-posta adresi veya API anahtarÄ±."
 
 #: inc/Addon/Cloudflare/APIClient.php:322
 #: inc/Addon/Cloudflare/APIClient.php:335
@@ -69,7 +69,7 @@ msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
 #: inc/deprecated/3.5.php:173
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
-msgstr "İleriki rehberlik için %1$sbelgeleri%2$s okuyun."
+msgstr "Ä°leriki rehberlik iÃ§in %1$sbelgeleri%2$s okuyun."
 
 #: inc/Addon/Cloudflare/APIClient.php:324
 #: inc/Addon/Cloudflare/APIClient.php:337
@@ -88,7 +88,7 @@ msgstr ""
 
 #: inc/Addon/Cloudflare/APIClient.php:331 inc/deprecated/3.5.php:125
 msgid "Incorrect Cloudflare Zone ID."
-msgstr "Yanlış Cloudflare Bölge Kimliği."
+msgstr "YanlÄ±ÅŸ Cloudflare BÃ¶lge KimliÄŸi."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:99
 #, php-format
@@ -96,16 +96,16 @@ msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
 "for further guidance."
 msgstr ""
-"Cloudflare e-posta adresi ve/veya API anahtarı ayarlı değil. Daha fazla "
-"rehberlik için %1$sbelgeleri%2$s okuyun."
+"Cloudflare e-posta adresi ve/veya API anahtarÄ± ayarlÄ± deÄŸil. Daha fazla "
+"rehberlik iÃ§in %1$sbelgeleri%2$s okuyun."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:108 inc/deprecated/3.5.php:88
 msgid "Missing Cloudflare Zone ID."
-msgstr "Eksik Cloudflare Bölge Kimliği."
+msgstr "Eksik Cloudflare BÃ¶lge KimliÄŸi."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:140 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
-msgstr "Etki alanınız Cloudflare’de ayarlanmamış gibi görünüyor."
+msgstr "Etki alanÄ±nÄ±z Cloudflareâ€™de ayarlanmamÄ±ÅŸ gibi gÃ¶rÃ¼nÃ¼yor."
 
 #: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:587
 #, php-format
@@ -115,7 +115,7 @@ msgstr "<strong>WP Rocket:</strong> %s"
 #: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:592
 msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
 msgstr ""
-"<strong>WP Rocket:</strong> Cloudflare önbelleği başarılı olarak temizlendi."
+"<strong>WP Rocket:</strong> Cloudflare Ã¶nbelleÄŸi baÅŸarÄ±lÄ± olarak temizlendi."
 
 #: inc/Addon/Cloudflare/Subscriber.php:364
 #: inc/Addon/Cloudflare/Subscriber.php:370
@@ -135,17 +135,17 @@ msgstr "WP Rocket: "
 #: inc/Addon/Cloudflare/Subscriber.php:364
 #, php-format
 msgid "Cloudflare development mode error: %s"
-msgstr "Cloudflare geliştirme kipi hatası: %s"
+msgstr "Cloudflare geliÅŸtirme kipi hatasÄ±: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:370
 #, php-format
 msgid "Cloudflare development mode %s"
-msgstr "Cloudflare geliştirme kipi %s"
+msgstr "Cloudflare geliÅŸtirme kipi %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:390
 #, php-format
 msgid "Cloudflare cache level error: %s"
-msgstr "Cloudflare önbellek seviyesi hatası: %s"
+msgstr "Cloudflare Ã¶nbellek seviyesi hatasÄ±: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:395
 msgctxt "Cloudflare caching level"
@@ -155,91 +155,91 @@ msgstr "Standart"
 #: inc/Addon/Cloudflare/Subscriber.php:401
 #, php-format
 msgid "Cloudflare cache level set to %s"
-msgstr "Cloudflare önbellek seviyesi %s olarak ayarlandı"
+msgstr "Cloudflare Ã¶nbellek seviyesi %s olarak ayarlandÄ±"
 
 #: inc/Addon/Cloudflare/Subscriber.php:420
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr "Cloudflare küçültme hatası: %s"
+msgstr "Cloudflare kÃ¼Ã§Ã¼ltme hatasÄ±: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:426
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr "Cloudflare küçültme %s"
+msgstr "Cloudflare kÃ¼Ã§Ã¼ltme %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:445
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Cloudflare rocket yükleyici hatası: %s"
+msgstr "Cloudflare rocket yÃ¼kleyici hatasÄ±: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:451
 #, php-format
 msgid "Cloudflare rocket loader %s"
-msgstr "Cloudflare rocket yükleyici %s"
+msgstr "Cloudflare rocket yÃ¼kleyici %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:470
 #, php-format
 msgid "Cloudflare browser cache error: %s"
-msgstr "Cloudflare tarayıcı önbelleği hatası: %s"
+msgstr "Cloudflare tarayÄ±cÄ± Ã¶nbelleÄŸi hatasÄ±: %s"
 
 #: inc/Addon/Cloudflare/Subscriber.php:476
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
-msgstr "Cloudflare tarayıcı önbelleği %s saniyeye ayarlandı"
+msgstr "Cloudflare tarayÄ±cÄ± Ã¶nbelleÄŸi %s saniyeye ayarlandÄ±"
 
 #: inc/Addon/Sucuri/Subscriber.php:95
 #, php-format
 msgid "Sucuri cache purge error: %s"
-msgstr "Sucuri önbellek temizleme hatası: %s"
+msgstr "Sucuri Ã¶nbellek temizleme hatasÄ±: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:100
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
 msgstr ""
-"Sucuri önbelleği temizlenmekte. Tamamen temizlenmesinin iki dakika kadar "
-"sürebileceğini unutmayın."
+"Sucuri Ã¶nbelleÄŸi temizlenmekte. Tamamen temizlenmesinin iki dakika kadar "
+"sÃ¼rebileceÄŸini unutmayÄ±n."
 
 #: inc/Addon/Sucuri/Subscriber.php:217
 msgid "Sucuri firewall API key was not found."
-msgstr "Sucuri güvenlik duvarı API anahtarı bulunamadı."
+msgstr "Sucuri gÃ¼venlik duvarÄ± API anahtarÄ± bulunamadÄ±."
 
 #: inc/Addon/Sucuri/Subscriber.php:230
 msgid "Sucuri firewall API key is invalid."
-msgstr "Sucuri güvenlik duvarı API anahtarı geçersiz."
+msgstr "Sucuri gÃ¼venlik duvarÄ± API anahtarÄ± geÃ§ersiz."
 
 #: inc/Addon/Sucuri/Subscriber.php:285
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
-"Sucuri güvenlik duvarı API’si ile iletişime geçerken hata oldu. Hata "
+"Sucuri gÃ¼venlik duvarÄ± APIâ€™si ile iletiÅŸime geÃ§erken hata oldu. Hata "
 "iletisi: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:300
 msgid "Could not get a response from the Sucuri firewall API."
-msgstr "Sucuri güvenlik duvarı API’sinden bir yanıt alınamadı."
+msgstr "Sucuri gÃ¼venlik duvarÄ± APIâ€™sinden bir yanÄ±t alÄ±namadÄ±."
 
 #: inc/Addon/Sucuri/Subscriber.php:315
 msgid "Got an invalid response from the Sucuri firewall API."
-msgstr "Sucuri güvenlik duvarı API’sinden geçersiz bir yanıt alındı."
+msgstr "Sucuri gÃ¼venlik duvarÄ± APIâ€™sinden geÃ§ersiz bir yanÄ±t alÄ±ndÄ±."
 
 #: inc/Addon/Sucuri/Subscriber.php:329
 msgid "The Sucuri firewall API returned an unknown error."
-msgstr "Sucuri güvenlik duvarı API’si bilinmeyen bir hata döndürdü."
+msgstr "Sucuri gÃ¼venlik duvarÄ± APIâ€™si bilinmeyen bir hata dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Addon/Sucuri/Subscriber.php:333
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
 msgstr[0] ""
-"Sucuri güvenlik duvarı API’si şurada belirtilen hatayı döndürdü: %s"
+"Sucuri gÃ¼venlik duvarÄ± APIâ€™si ÅŸurada belirtilen hatayÄ± dÃ¶ndÃ¼rdÃ¼: %s"
 msgstr[1] ""
-"Sucuri güvenlik duvarı API’si şurada belirtilen hataları döndürdü: %s"
+"Sucuri gÃ¼venlik duvarÄ± APIâ€™si ÅŸurada belirtilen hatalarÄ± dÃ¶ndÃ¼rdÃ¼: %s"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
 #: inc/Engine/Admin/Settings/Page.php:1420
 msgid "Revisions"
-msgstr "Düzeltmeler"
+msgstr "DÃ¼zeltmeler"
 
 #: inc/Engine/Admin/Database/Optimization.php:31
 #: inc/Engine/Admin/Settings/Page.php:1430
@@ -249,21 +249,21 @@ msgstr "Otomatik Taslaklar"
 #: inc/Engine/Admin/Database/Optimization.php:32
 #: inc/Engine/Admin/Settings/Page.php:1440
 msgid "Trashed Posts"
-msgstr "Çöpe Atılmış Yazılar"
+msgstr "Ã‡Ã¶pe AtÄ±lmÄ±ÅŸ YazÄ±lar"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1450
 msgid "Spam Comments"
-msgstr "İstenmeyen Yorumlar"
+msgstr "Ä°stenmeyen Yorumlar"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1460
 msgid "Trashed Comments"
-msgstr "Çöpe Atılmış Yorumlar"
+msgstr "Ã‡Ã¶pe AtÄ±lmÄ±ÅŸ Yorumlar"
 
 #: inc/Engine/Admin/Database/Optimization.php:35
 msgid "Transients"
-msgstr "Geçiciler"
+msgstr "GeÃ§iciler"
 
 #: inc/Engine/Admin/Database/Optimization.php:36
 msgid "Tables"
@@ -274,27 +274,27 @@ msgstr "Tablolar"
 #: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
 #: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
 msgid "weekly"
-msgstr "haftalık"
+msgstr "haftalÄ±k"
 
 #: inc/Engine/Admin/Database/Subscriber.php:85
 msgid "monthly"
-msgstr "aylık"
+msgstr "aylÄ±k"
 
 #: inc/Engine/Admin/Database/Subscriber.php:194
 msgid "Database optimization process is running"
-msgstr "Veritabanı iyileştirme işlemi çalışıyor"
+msgstr "VeritabanÄ± iyileÅŸtirme iÅŸlemi Ã§alÄ±ÅŸÄ±yor"
 
 #: inc/Engine/Admin/Database/Subscriber.php:224
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
-msgstr "Veritabanı iyileştirme işlemi tamamlandı. Herşey zaten iyileştirildi!"
+msgstr "VeritabanÄ± iyileÅŸtirme iÅŸlemi tamamlandÄ±. HerÅŸey zaten iyileÅŸtirildi!"
 
 #: inc/Engine/Admin/Database/Subscriber.php:227
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr ""
-"Veritabanı iyileştirme işlemi tamamlandı. İyileştirilen öğelerin listesi "
-"aşağıdadır:"
+"VeritabanÄ± iyileÅŸtirme iÅŸlemi tamamlandÄ±. Ä°yileÅŸtirilen Ã¶ÄŸelerin listesi "
+"aÅŸaÄŸÄ±dadÄ±r:"
 
 #: inc/Engine/Admin/Database/Subscriber.php:235
 #, php-format
@@ -303,16 +303,16 @@ msgstr "%1$d %2$s iyi hale getirildi."
 
 #: inc/Engine/Admin/Settings/Page.php:191
 msgid "Save Changes"
-msgstr "Değişiklikleri Kaydet"
+msgstr "DeÄŸiÅŸiklikleri Kaydet"
 
 #: inc/Engine/Admin/Settings/Page.php:191
 msgid "Validate License"
-msgstr "Lisansı Doğrula"
+msgstr "LisansÄ± DoÄŸrula"
 
 #: inc/Engine/Admin/Settings/Page.php:247
 #: inc/Engine/Admin/Settings/Page.php:248
 msgid "Unavailable"
-msgstr "Mevcut değil"
+msgstr "Mevcut deÄŸil"
 
 #: inc/Engine/Admin/Settings/Page.php:342 inc/deprecated/deprecated.php:1789
 #: views/settings/page-sections/dashboard.php:80
@@ -321,7 +321,7 @@ msgstr "Lisans"
 
 #: inc/Engine/Admin/Settings/Page.php:359
 msgid "API key"
-msgstr "API anahtarı"
+msgstr "API anahtarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:374
 msgid "Email address"
@@ -333,7 +333,7 @@ msgstr "Panel"
 
 #: inc/Engine/Admin/Settings/Page.php:401
 msgid "Get help, account info"
-msgstr "Yardım alın, hesap bilgisi"
+msgstr "YardÄ±m alÄ±n, hesap bilgisi"
 
 #: inc/Engine/Admin/Settings/Page.php:410
 msgid "My Status"
@@ -341,7 +341,7 @@ msgstr "Durumum"
 
 #: inc/Engine/Admin/Settings/Page.php:420 views/settings/page.php:75
 msgid "Rocket Analytics"
-msgstr "Rocket Çözümsel"
+msgstr "Rocket Ã‡Ã¶zÃ¼msel"
 
 #: inc/Engine/Admin/Settings/Page.php:422
 #, php-format
@@ -349,36 +349,36 @@ msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
 msgstr ""
-"WP Rocket’i iyileştirmeye yardımcı olmak için geliştirme ekibiyle isimsiz "
-"verileri paylaşmayı kabul ediyorum. %1$sNe tür bilgi toplayacağız?%2$s"
+"WP Rocketâ€™i iyileÅŸtirmeye yardÄ±mcÄ± olmak iÃ§in geliÅŸtirme ekibiyle isimsiz "
+"verileri paylaÅŸmayÄ± kabul ediyorum. %1$sNe tÃ¼r bilgi toplayacaÄŸÄ±z?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:446 inc/Engine/Cache/WPCache.php:354
 msgid "Cache"
-msgstr "Önbellek"
+msgstr "Ã–nbellek"
 
 #: inc/Engine/Admin/Settings/Page.php:447
 msgid "Basic cache options"
-msgstr "Temel önbellek seçenekleri"
+msgstr "Temel Ã¶nbellek seÃ§enekleri"
 
 #: inc/Engine/Admin/Settings/Page.php:454
 msgid "Mobile Cache"
-msgstr "Mobil Önbelleği"
+msgstr "Mobil Ã–nbelleÄŸi"
 
 #: inc/Engine/Admin/Settings/Page.php:456
 msgid "Speed up your site for mobile visitors."
-msgstr "Mobil ziyaretçiler için sitenizi hızlandırın."
+msgstr "Mobil ziyaretÃ§iler iÃ§in sitenizi hÄ±zlandÄ±rÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:461
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
 msgstr ""
-"Mobil için ayrı önbellek gerektiren bir eklenti kullandığınızı saptadık ve "
-"uyumluluk için bu seçeneği otomatik olarak etkinleştirdik."
+"Mobil iÃ§in ayrÄ± Ã¶nbellek gerektiren bir eklenti kullandÄ±ÄŸÄ±nÄ±zÄ± saptadÄ±k ve "
+"uyumluluk iÃ§in bu seÃ§eneÄŸi otomatik olarak etkinleÅŸtirdik."
 
 #: inc/Engine/Admin/Settings/Page.php:465
 msgid "User Cache"
-msgstr "Kullanıcı Önbelleği"
+msgstr "KullanÄ±cÄ± Ã–nbelleÄŸi"
 
 #: inc/Engine/Admin/Settings/Page.php:468
 #, php-format
@@ -386,12 +386,12 @@ msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
 "content on your website."
 msgstr ""
-"Web sitenizde kullanıcıya özgü ya da kısıtlı içeriğe sahip olduğunuzda "
-"%1$skullanıcı önbelleği%2$s mükemmeldir."
+"Web sitenizde kullanÄ±cÄ±ya Ã¶zgÃ¼ ya da kÄ±sÄ±tlÄ± iÃ§eriÄŸe sahip olduÄŸunuzda "
+"%1$skullanÄ±cÄ± Ã¶nbelleÄŸi%2$s mÃ¼kemmeldir."
 
 #: inc/Engine/Admin/Settings/Page.php:476
 msgid "Cache Lifespan"
-msgstr "Önbellek Geçerlilik Süresi"
+msgstr "Ã–nbellek GeÃ§erlilik SÃ¼resi"
 
 #: inc/Engine/Admin/Settings/Page.php:479
 #, php-format
@@ -400,21 +400,21 @@ msgid ""
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
 "expiration."
 msgstr ""
-"Belirtilen geçerlilik süresinden eski önbellek dosyaları "
-"silinecektir.<br>Geçerlilik süresi sona erdikten sonra otomatik olarak "
-"yeniden oluşturulması için önbellek %1$sönyüklemeyi%2$s etkinleştirin."
+"Belirtilen geÃ§erlilik sÃ¼resinden eski Ã¶nbellek dosyalarÄ± "
+"silinecektir.<br>GeÃ§erlilik sÃ¼resi sona erdikten sonra otomatik olarak "
+"yeniden oluÅŸturulmasÄ± iÃ§in Ã¶nbellek %1$sÃ¶nyÃ¼klemeyi%2$s etkinleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:493
 msgid "Enable caching for logged-in WordPress users"
-msgstr "Oturum açmış WordPress kullanıcıları için önbelleklemeyi etkinleştir"
+msgstr "Oturum aÃ§mÄ±ÅŸ WordPress kullanÄ±cÄ±larÄ± iÃ§in Ã¶nbelleklemeyi etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:501
 msgid "Enable caching for mobile devices"
-msgstr "Mobil cihazlar için önbelleklemeyi etkinleştir"
+msgstr "Mobil cihazlar iÃ§in Ã¶nbelleklemeyi etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:516
 msgid "Separate cache files for mobile devices"
-msgstr "Mobil cihazlar için önbellek dosyalarını ayır"
+msgstr "Mobil cihazlar iÃ§in Ã¶nbellek dosyalarÄ±nÄ± ayÄ±r"
 
 #: inc/Engine/Admin/Settings/Page.php:518
 #, php-format
@@ -423,16 +423,16 @@ msgid ""
 "Enable this only if you have a dedicated mobile theme or plugin. %1$sMore "
 "info%2$s"
 msgstr ""
-"Çoğu modern temalar hassastır ve ayrı bir önbellek olmadan çalışmalıdır. "
-"Bunu sadece tahsis edilmiş bir mobil temanız veya eklentiniz varsa "
-"etkinleştirin. %1$sDaha fazla bilgi%2$s"
+"Ã‡oÄŸu modern temalar hassastÄ±r ve ayrÄ± bir Ã¶nbellek olmadan Ã§alÄ±ÅŸmalÄ±dÄ±r. "
+"Bunu sadece tahsis edilmiÅŸ bir mobil temanÄ±z veya eklentiniz varsa "
+"etkinleÅŸtirin. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:534
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
-"Genel önbelleğin ne kadar süre sonra temizleneceği zamanı belirtin<br>(0 = "
-"sınırsız)"
+"Genel Ã¶nbelleÄŸin ne kadar sÃ¼re sonra temizleneceÄŸi zamanÄ± belirtin<br>(0 = "
+"sÄ±nÄ±rsÄ±z)"
 
 #: inc/Engine/Admin/Settings/Page.php:536
 #, php-format
@@ -440,8 +440,8 @@ msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
 msgstr ""
-"Eğer belirli aralıklarla görünen sorunları fark ederseniz geçerlilik "
-"süresini 10 saat veya daha azına düşürün. %1$sNeden?%2$s"
+"EÄŸer belirli aralÄ±klarla gÃ¶rÃ¼nen sorunlarÄ± fark ederseniz geÃ§erlilik "
+"sÃ¼resini 10 saat veya daha azÄ±na dÃ¼ÅŸÃ¼rÃ¼n. %1$sNeden?%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:542
 #: inc/Engine/License/views/promo-banner.php:30
@@ -453,34 +453,34 @@ msgstr "Saat"
 #: inc/Engine/License/views/promo-banner.php:29
 #: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
-msgstr "Gün"
+msgstr "GÃ¼n"
 
 #: inc/Engine/Admin/Settings/Page.php:579
 msgid "File Optimization"
-msgstr "Dosyaları İyileştirme"
+msgstr "DosyalarÄ± Ä°yileÅŸtirme"
 
 #: inc/Engine/Admin/Settings/Page.php:580
 msgid "Optimize CSS & JS"
-msgstr "CSS ve JS kodlarını iyileştirin"
+msgstr "CSS ve JS kodlarÄ±nÄ± iyileÅŸtirin"
 
 #: inc/Engine/Admin/Settings/Page.php:587
 msgid "CSS Files"
-msgstr "CSS Dosyaları"
+msgstr "CSS DosyalarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:594
 #: inc/Engine/Admin/Settings/Page.php:604
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
-" you want to use %2$s’s minification, disable those options in Autoptimize."
+" you want to use %2$sâ€™s minification, disable those options in Autoptimize."
 msgstr ""
-"%1$s Küçültme şu anda <strong>Autoptimize</strong> içinde aktif edildi. Eğer"
-" %2$s’in küçültmesini kullanmak istiyorsanız, Autoptimize içindeki bu "
-"seçenekleri etkisizleştirin."
+"%1$s KÃ¼Ã§Ã¼ltme ÅŸu anda <strong>Autoptimize</strong> iÃ§inde aktif edildi. EÄŸer"
+" %2$sâ€™in kÃ¼Ã§Ã¼ltmesini kullanmak istiyorsanÄ±z, Autoptimize iÃ§indeki bu "
+"seÃ§enekleri etkisizleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:597
 msgid "JavaScript Files"
-msgstr "JavaScript Dosyaları"
+msgstr "JavaScript DosyalarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:611
 #, php-format
@@ -490,10 +490,10 @@ msgid ""
 "issues:<br><pre><code>%1$s</code></pre><br>Also, please check our "
 "%2$sdocumentation%3$s for a list of compatibility exclusions."
 msgstr ""
-"Eğer bu seçeneği etkinleştirdikten sonra sorunlarınız varsa, sorunları hızlı"
-" bir şekilde çözmek için varsayılan dışlamaları kopyalayın ve "
-"yapıştırın:<br><pre><code>%1$s</code></pre><br>Ayrıca, lütfen uyumluluk "
-"dışlamalarının bir listesi için %2$sbelgelerimizi%3$s gözden geçirin."
+"EÄŸer bu seÃ§eneÄŸi etkinleÅŸtirdikten sonra sorunlarÄ±nÄ±z varsa, sorunlarÄ± hÄ±zlÄ±"
+" bir ÅŸekilde Ã§Ã¶zmek iÃ§in varsayÄ±lan dÄ±ÅŸlamalarÄ± kopyalayÄ±n ve "
+"yapÄ±ÅŸtÄ±rÄ±n:<br><pre><code>%1$s</code></pre><br>AyrÄ±ca, lÃ¼tfen uyumluluk "
+"dÄ±ÅŸlamalarÄ±nÄ±n bir listesi iÃ§in %2$sbelgelerimizi%3$s gÃ¶zden geÃ§irin."
 
 #: inc/Engine/Admin/Settings/Page.php:618
 #, php-format
@@ -502,19 +502,19 @@ msgid ""
 "take full advantage of this option.<br>If this causes trouble, restore the "
 "default exclusions, found %1$shere%2$s"
 msgstr ""
-"Sorunları önlemek için dahili betikler varsayılan olarak hariç tutulur. Bu "
-"seçenekten tam olarak yararlanmak için bunları kaldırın.<br>Eğer bu soruna "
-"neden olursa, %1$sburada%2$s bulunan, varsayılan dışlamaları geri yükleyin"
+"SorunlarÄ± Ã¶nlemek iÃ§in dahili betikler varsayÄ±lan olarak hariÃ§ tutulur. Bu "
+"seÃ§enekten tam olarak yararlanmak iÃ§in bunlarÄ± kaldÄ±rÄ±n.<br>EÄŸer bu soruna "
+"neden olursa, %1$sburada%2$s bulunan, varsayÄ±lan dÄ±ÅŸlamalarÄ± geri yÃ¼kleyin"
 
 #: inc/Engine/Admin/Settings/Page.php:627
 msgid "Minify CSS files"
-msgstr "CSS dosyalarını küçült"
+msgstr "CSS dosyalarÄ±nÄ± kÃ¼Ã§Ã¼lt"
 
 #: inc/Engine/Admin/Settings/Page.php:628
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
-"CSS’yi küçültme, dosya boyutunu düşürmek için boşlukları ve açıklamaları "
-"kaldırır."
+"CSSâ€™yi kÃ¼Ã§Ã¼ltme, dosya boyutunu dÃ¼ÅŸÃ¼rmek iÃ§in boÅŸluklarÄ± ve aÃ§Ä±klamalarÄ± "
+"kaldÄ±rÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:641
 #: inc/Engine/Admin/Settings/Page.php:665
@@ -522,7 +522,7 @@ msgstr ""
 #: inc/Engine/Admin/Settings/Page.php:795
 #: inc/Engine/Admin/Settings/Page.php:819
 msgid "This could break things!"
-msgstr "Bu birşeyleri bozabilir!"
+msgstr "Bu birÅŸeyleri bozabilir!"
 
 #: inc/Engine/Admin/Settings/Page.php:642
 #: inc/Engine/Admin/Settings/Page.php:666
@@ -533,18 +533,18 @@ msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
 msgstr ""
-"Bu ayarı aktif ettikten sonra web sitenizde herhangi bir hata fark "
-"ederseniz, sadece tekrar devre dışı bırakın, ve siteniz normale dönecektir."
+"Bu ayarÄ± aktif ettikten sonra web sitenizde herhangi bir hata fark "
+"ederseniz, sadece tekrar devre dÄ±ÅŸÄ± bÄ±rakÄ±n, ve siteniz normale dÃ¶necektir."
 
 #: inc/Engine/Admin/Settings/Page.php:643
 msgid "Activate minify CSS"
-msgstr "CSS küçültmeyi aktif et"
+msgstr "CSS kÃ¼Ã§Ã¼ltmeyi aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:648
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
-"CSS dosyalarını birleştir <em>(Seçmek için CSS dosyalarını küçült’ü "
-"etkinleştirin)</em>"
+"CSS dosyalarÄ±nÄ± birleÅŸtir <em>(SeÃ§mek iÃ§in CSS dosyalarÄ±nÄ± kÃ¼Ã§Ã¼ltâ€™Ã¼ "
+"etkinleÅŸtirin)</em>"
 
 #: inc/Engine/Admin/Settings/Page.php:650
 #, php-format
@@ -552,8 +552,8 @@ msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
 "recommended if your site uses HTTP/2. %1$sMore info%2$s"
 msgstr ""
-"CSS dosyalarını birleştirme, tüm dosyalarınızı 1 tane içine birleştirir, "
-"HTTP isteklerini azaltır. Siteniz HTTP/2 kullanıyorsa önerilemez. %1$sDaha "
+"CSS dosyalarÄ±nÄ± birleÅŸtirme, tÃ¼m dosyalarÄ±nÄ±zÄ± 1 tane iÃ§ine birleÅŸtirir, "
+"HTTP isteklerini azaltÄ±r. Siteniz HTTP/2 kullanÄ±yorsa Ã¶nerilemez. %1$sDaha "
 "fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:651
@@ -561,24 +561,24 @@ msgid ""
 "For compatibility and best results, this option is disabled when Remove "
 "unused CSS is enabled."
 msgstr ""
-"Uyumluluk ve en iyi sonuçlar için Kullanılmayan CSS’yi Kaldır "
-"etkinleştirildiğinde, bu seçenek etkisizleştirilir."
+"Uyumluluk ve en iyi sonuÃ§lar iÃ§in KullanÄ±lmayan CSSâ€™yi KaldÄ±r "
+"etkinleÅŸtirildiÄŸinde, bu seÃ§enek etkisizleÅŸtirilir."
 
 #: inc/Engine/Admin/Settings/Page.php:667
 msgid "Activate combine CSS"
-msgstr "CSS birleştirmeyi aktif et"
+msgstr "CSS birleÅŸtirmeyi aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:672 inc/admin/options.php:123
 msgid "Excluded CSS Files"
-msgstr "Hariç Tutulan CSS Dosyaları"
+msgstr "HariÃ§ Tutulan CSS DosyalarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:673
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
 msgstr ""
-"Küçültmeden ve birleştirmeden hariç tutulacak CSS dosyalarının URL’lerini "
-"belirtin (her satıra bir tane)."
+"KÃ¼Ã§Ã¼ltmeden ve birleÅŸtirmeden hariÃ§ tutulacak CSS dosyalarÄ±nÄ±n URLâ€™lerini "
+"belirtin (her satÄ±ra bir tane)."
 
 #: inc/Engine/Admin/Settings/Page.php:674
 msgid ""
@@ -586,9 +586,9 @@ msgid ""
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
 "specific path."
 msgstr ""
-"<strong>Dahili:</strong> URL’nin etki alanı kısmı otomatik olarak "
-"sadeleştirilecektir. Belirli bir yolda bulunan tüm CSS dosyalarını hariç "
-"tutmak için (.*).css joker karakterlerini kullanın."
+"<strong>Dahili:</strong> URLâ€™nin etki alanÄ± kÄ±smÄ± otomatik olarak "
+"sadeleÅŸtirilecektir. Belirli bir yolda bulunan tÃ¼m CSS dosyalarÄ±nÄ± hariÃ§ "
+"tutmak iÃ§in (.*).css joker karakterlerini kullanÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:676
 #, php-format
@@ -596,13 +596,13 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external CSS. %1$sMore info%2$s"
 msgstr ""
-"<strong>3. Taraf:</strong> Harici CSS dosyalarını dahil etmemek için ya URL "
-"tam yolunu ya da sadece etki alanı adını kullanın. %1$sDaha fazla bilgi%2$s"
+"<strong>3. Taraf:</strong> Harici CSS dosyalarÄ±nÄ± dahil etmemek iÃ§in ya URL "
+"tam yolunu ya da sadece etki alanÄ± adÄ±nÄ± kullanÄ±n. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:689
 #: inc/Engine/Admin/Settings/Page.php:711
 msgid "Optimize CSS delivery"
-msgstr "CSS teslimini iyileştir"
+msgstr "CSS teslimini iyileÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:694
 msgid ""
@@ -610,10 +610,10 @@ msgid ""
 "one method can be selected. Remove Unused CSS is recommended for optimal "
 "performance, but limited only to the users with active license."
 msgstr ""
-"CSS teslimini en iyi hale getirmek, web sitenizde işleme engelleyici CSS’yi "
-"ortadan kaldırır. Sadece bir yöntem seçilebilir. En iyi performans için "
-"Kullanılmayan CSS’yi Kaldır önerilir, ancak sadece aktif lisansa sahip "
-"kullanıcılarla sınırlıdır."
+"CSS teslimini en iyi hale getirmek, web sitenizde iÅŸleme engelleyici CSSâ€™yi "
+"ortadan kaldÄ±rÄ±r. Sadece bir yÃ¶ntem seÃ§ilebilir. En iyi performans iÃ§in "
+"KullanÄ±lmayan CSSâ€™yi KaldÄ±r Ã¶nerilir, ancak sadece aktif lisansa sahip "
+"kullanÄ±cÄ±larla sÄ±nÄ±rlÄ±dÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:694
 msgid ""
@@ -621,9 +621,9 @@ msgid ""
 "one method can be selected. Remove Unused CSS is recommended for optimal "
 "performance."
 msgstr ""
-"CSS teslimini en iyi hale getirmek, web sitenizde işleme engelleyici CSS’yi "
-"ortadan kaldırır. Sadece bir yöntem seçilebilir. En iyi performans için "
-"Kullanılmayan CSS’yi Kaldır önerilir."
+"CSS teslimini en iyi hale getirmek, web sitenizde iÅŸleme engelleyici CSSâ€™yi "
+"ortadan kaldÄ±rÄ±r. Sadece bir yÃ¶ntem seÃ§ilebilir. En iyi performans iÃ§in "
+"KullanÄ±lmayan CSSâ€™yi KaldÄ±r Ã¶nerilir."
 
 #: inc/Engine/Admin/Settings/Page.php:704
 #, php-format
@@ -631,12 +631,12 @@ msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
 " more%2$s"
 msgstr ""
-"CSS teslimini iyileştir özellikleri yerel ortamlarda etkisizleştirilir. "
+"CSS teslimini iyileÅŸtir Ã¶zellikleri yerel ortamlarda etkisizleÅŸtirilir. "
 "%1$sDaha fazla bilgi edinin%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:724 inc/admin/ui/meta-boxes.php:106
 msgid "Remove Unused CSS"
-msgstr "Kullanılmayan CSS’yi Kaldır"
+msgstr "KullanÄ±lmayan CSSâ€™yi KaldÄ±r"
 
 #: inc/Engine/Admin/Settings/Page.php:727
 #, php-format
@@ -644,52 +644,52 @@ msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
 " Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
 msgstr ""
-"Kullanılmayan CSS’yi sayfa başına kaldırır ve sayfa boyutunu ve HTTP "
-"isteklerini azaltmaya yardımcı olur. Daha iyi performans için önerilir. "
-"İyice deneyin! %1$sDaha fazla bilgi%2$s"
+"KullanÄ±lmayan CSSâ€™yi sayfa baÅŸÄ±na kaldÄ±rÄ±r ve sayfa boyutunu ve HTTP "
+"isteklerini azaltmaya yardÄ±mcÄ± olur. Daha iyi performans iÃ§in Ã¶nerilir. "
+"Ä°yice deneyin! %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:731
 msgid "Activate Remove Unused CSS"
-msgstr "Kullanılmayan CSS’yi Kaldır’ı Aktif Et"
+msgstr "KullanÄ±lmayan CSSâ€™yi KaldÄ±râ€™Ä± Aktif Et"
 
 #: inc/Engine/Admin/Settings/Page.php:737
 msgid "CSS safelist"
-msgstr "CSS güvenli listesi"
+msgstr "CSS gÃ¼venli listesi"
 
 #: inc/Engine/Admin/Settings/Page.php:738
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
 msgstr ""
-"Kaldırılmaması gereken CSS dosya adlarını, kimliklerini veya sınıfları "
-"belirtin (her satıra bir tane)."
+"KaldÄ±rÄ±lmamasÄ± gereken CSS dosya adlarÄ±nÄ±, kimliklerini veya sÄ±nÄ±flarÄ± "
+"belirtin (her satÄ±ra bir tane)."
 
 #: inc/Engine/Admin/Settings/Page.php:753 inc/admin/ui/meta-boxes.php:109
 msgid "Load CSS asynchronously"
-msgstr "CSS’yi eşzamanlı olmadan yükle"
+msgstr "CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kle"
 
 #: inc/Engine/Admin/Settings/Page.php:756
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
-" to use WP Rocket’s load CSS asynchronously option, disable the %1$s plugin."
+" to use WP Rocketâ€™s load CSS asynchronously option, disable the %1$s plugin."
 msgstr ""
-"CSS’yi eşzamanlı olmadan yükleme, şu anda %1$s eklentisi tarafından "
-"işlenmektedir. WP Rocket’in CSS’yi eşzamanlı olmadan yükleme seçeneğini "
-"kullanmak istiyorsanız, %1$s eklentisini etkisizleştirin."
+"CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kleme, ÅŸu anda %1$s eklentisi tarafÄ±ndan "
+"iÅŸlenmektedir. WP Rocketâ€™in CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kleme seÃ§eneÄŸini "
+"kullanmak istiyorsanÄ±z, %1$s eklentisini etkisizleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:758
 #, php-format
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
 msgstr ""
-"Önemli Yol CSS’yi oluşturur ve CSS’yi eşzamanlı olmadan yükler. %1$sDaha "
+"Ã–nemli Yol CSSâ€™yi oluÅŸturur ve CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kler. %1$sDaha "
 "fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:764
 msgid "Fallback critical CSS"
-msgstr "Son çare önemli CSS"
+msgstr "Son Ã§are Ã¶nemli CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:766
 #, php-format
@@ -697,57 +697,57 @@ msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
 msgstr ""
-"Otomatik oluşturulmuş önemli yol CSS tamamlanmazsa son bir çare sağlar. "
+"Otomatik oluÅŸturulmuÅŸ Ã¶nemli yol CSS tamamlanmazsa son bir Ã§are saÄŸlar. "
 "%1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:781
 msgid "Minify JavaScript files"
-msgstr "JavaScript dosyalarını küçült"
+msgstr "JavaScript dosyalarÄ±nÄ± kÃ¼Ã§Ã¼lt"
 
 #: inc/Engine/Admin/Settings/Page.php:782
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
-"JavaScript’i küçültme, dosya boyutunu düşürmek için boşlukları ve "
-"açıklamaları kaldırır."
+"JavaScriptâ€™i kÃ¼Ã§Ã¼ltme, dosya boyutunu dÃ¼ÅŸÃ¼rmek iÃ§in boÅŸluklarÄ± ve "
+"aÃ§Ä±klamalarÄ± kaldÄ±rÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:797
 msgid "Activate minify JavaScript"
-msgstr "JavaScript küçültmeyi aktif et"
+msgstr "JavaScript kÃ¼Ã§Ã¼ltmeyi aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:802
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
-"JavaScript dosyalarını birleştir <em>(Seçmek için JavaScript dosyalarını "
-"küçült’ü etkinleştirin)</em>"
+"JavaScript dosyalarÄ±nÄ± birleÅŸtir <em>(SeÃ§mek iÃ§in JavaScript dosyalarÄ±nÄ± "
+"kÃ¼Ã§Ã¼ltâ€™Ã¼ etkinleÅŸtirin)</em>"
 
 #: inc/Engine/Admin/Settings/Page.php:804
 #, php-format
 msgid ""
-"Combine JavaScript files combines your site’s internal, 3rd party and inline"
+"Combine JavaScript files combines your siteâ€™s internal, 3rd party and inline"
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
 "%1$sMore info%2$s"
 msgstr ""
-"JavaScript dosyalarını birleştirme, sitenizin dahili, 3. taraf ve satır içi "
-"JS dosyalarını birleştirir, HTTP isteklerini azaltır. Siteniz HTTP/2 "
-"kullanıyorsa önerilmez. %1$sDaha fazla bilgi%2$s"
+"JavaScript dosyalarÄ±nÄ± birleÅŸtirme, sitenizin dahili, 3. taraf ve satÄ±r iÃ§i "
+"JS dosyalarÄ±nÄ± birleÅŸtirir, HTTP isteklerini azaltÄ±r. Siteniz HTTP/2 "
+"kullanÄ±yorsa Ã¶nerilmez. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:805
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
 msgstr ""
-"Uyumluluk ve en iyi sonuçlar için javascript’i geciktir yürütmesi "
-"etkinleştirildiğinde bu seçenek etkisizleştirilir."
+"Uyumluluk ve en iyi sonuÃ§lar iÃ§in javascriptâ€™i geciktir yÃ¼rÃ¼tmesi "
+"etkinleÅŸtirildiÄŸinde bu seÃ§enek etkisizleÅŸtirilir."
 
 #: inc/Engine/Admin/Settings/Page.php:821
 msgid "Activate combine JavaScript"
-msgstr "JavaScript birleştirmeyi aktif et"
+msgstr "JavaScript birleÅŸtirmeyi aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:826 inc/admin/options.php:124
 msgid "Excluded Inline JavaScript"
-msgstr "Hariç Tutulan Satır İçi JavaScript"
+msgstr "HariÃ§ Tutulan SatÄ±r Ä°Ã§i JavaScript"
 
 #: inc/Engine/Admin/Settings/Page.php:828
 #, php-format
@@ -755,22 +755,22 @@ msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
 msgstr ""
-"Birleştirmeden hariç tutulacak satır içi JavaScript dosyalarının örneklerini"
-" belirtin (her satıra bir tane). %1$sDaha fazla bilgi%2$s"
+"BirleÅŸtirmeden hariÃ§ tutulacak satÄ±r iÃ§i JavaScript dosyalarÄ±nÄ±n Ã¶rneklerini"
+" belirtin (her satÄ±ra bir tane). %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:844
 #: inc/Engine/Admin/Settings/Page.php:877
 #: inc/Engine/Admin/Settings/Page.php:906 inc/admin/options.php:125
 msgid "Excluded JavaScript Files"
-msgstr "Hariç Tutulan JavaScript Dosyaları"
+msgstr "HariÃ§ Tutulan JavaScript DosyalarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:845
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
 msgstr ""
-"Küçültmeden ve birleştirmeden hariç tutulacak JavaScript dosyalarının "
-"URL’lerini belirtin (her satıra bir tane)."
+"KÃ¼Ã§Ã¼ltmeden ve birleÅŸtirmeden hariÃ§ tutulacak JavaScript dosyalarÄ±nÄ±n "
+"URLâ€™lerini belirtin (her satÄ±ra bir tane)."
 
 #: inc/Engine/Admin/Settings/Page.php:846
 msgid ""
@@ -778,9 +778,9 @@ msgid ""
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
 "specific path."
 msgstr ""
-"<strong>Dahili:</strong> URL’nin etki alanı kısmı otomatik olarak "
-"sadeleştirilecektir. Belirli bir yolda bulunan tüm JS dosyalarını hariç "
-"tutmak için (.*).js joker karakterlerini kullanın."
+"<strong>Dahili:</strong> URLâ€™nin etki alanÄ± kÄ±smÄ± otomatik olarak "
+"sadeleÅŸtirilecektir. Belirli bir yolda bulunan tÃ¼m JS dosyalarÄ±nÄ± hariÃ§ "
+"tutmak iÃ§in (.*).js joker karakterlerini kullanÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:848
 #, php-format
@@ -788,12 +788,12 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr ""
-"<strong>3. Taraf:</strong> Harici JS dosyalarını dahil etmemek için ya URL "
-"tam yolunu ya da sadece etki alanı adını kullanın. %1$sDaha fazla bilgi%2$s"
+"<strong>3. Taraf:</strong> Harici JS dosyalarÄ±nÄ± dahil etmemek iÃ§in ya URL "
+"tam yolunu ya da sadece etki alanÄ± adÄ±nÄ± kullanÄ±n. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:864
 msgid "Load JavaScript deferred"
-msgstr "Ertelenmiş JavaScript yükle"
+msgstr "ErtelenmiÅŸ JavaScript yÃ¼kle"
 
 #: inc/Engine/Admin/Settings/Page.php:866
 #, php-format
@@ -801,8 +801,8 @@ msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr ""
-"Ertelenmiş JavaScript yüklemek, yükleme süresini iyileştirebilir ve "
-"sitenizdeki işleyişi engelleyen JS’yi aradan kaldırır. %1$sDaha fazla "
+"ErtelenmiÅŸ JavaScript yÃ¼klemek, yÃ¼kleme sÃ¼resini iyileÅŸtirebilir ve "
+"sitenizdeki iÅŸleyiÅŸi engelleyen JSâ€™yi aradan kaldÄ±rÄ±r. %1$sDaha fazla "
 "bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:879
@@ -811,13 +811,13 @@ msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
 msgstr ""
-"Ertelenmeden hariç tutulacak JavaScript dosyalarının URL’lerini ya da "
-"anahtar kelimelerini belirtin (her satıra bir tane). %1$sDaha fazla "
+"Ertelenmeden hariÃ§ tutulacak JavaScript dosyalarÄ±nÄ±n URLâ€™lerini ya da "
+"anahtar kelimelerini belirtin (her satÄ±ra bir tane). %1$sDaha fazla "
 "bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:895 inc/admin/ui/meta-boxes.php:111
 msgid "Delay JavaScript execution"
-msgstr "JavaScript’i Geciktir yürütmesi"
+msgstr "JavaScriptâ€™i Geciktir yÃ¼rÃ¼tmesi"
 
 #: inc/Engine/Admin/Settings/Page.php:897
 #, php-format
@@ -825,17 +825,17 @@ msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
 msgstr ""
-"JavaScript dosyalarının yüklenmesini, kullanıcı etkileşimine (örn. kaydırma,"
-" tıklama) kadar geciktirerek performansı artırır. %1$sDaha fazla bilgi%2$s"
+"JavaScript dosyalarÄ±nÄ±n yÃ¼klenmesini, kullanÄ±cÄ± etkileÅŸimine (Ã¶rn. kaydÄ±rma,"
+" tÄ±klama) kadar geciktirerek performansÄ± artÄ±rÄ±r. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:907
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
 msgstr ""
-"Yürütmeyi geciktirmenin dışında bırakılacağı satır içi veya JavaScript "
-"dosyalarını tanımlayabilecek URL’leri veya anahtar kelimeleri belirtin (her "
-"satıra bir tane)."
+"YÃ¼rÃ¼tmeyi geciktirmenin dÄ±ÅŸÄ±nda bÄ±rakÄ±lacaÄŸÄ± satÄ±r iÃ§i veya JavaScript "
+"dosyalarÄ±nÄ± tanÄ±mlayabilecek URLâ€™leri veya anahtar kelimeleri belirtin (her "
+"satÄ±ra bir tane)."
 
 #: inc/Engine/Admin/Settings/Page.php:938
 msgid "Media"
@@ -843,11 +843,11 @@ msgstr "Ortam"
 
 #: inc/Engine/Admin/Settings/Page.php:939
 msgid "LazyLoad, image dimensions"
-msgstr "LazyLoad, resim boyutları"
+msgstr "LazyLoad, resim boyutlarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:948
 msgid "Autoptimize"
-msgstr "Otoiyileştir"
+msgstr "OtoiyileÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:993
 msgid "LazyLoad"
@@ -860,23 +860,23 @@ msgid ""
 "videos will be loaded only as they enter (or about to enter) the viewport "
 "and reduces the number of HTTP requests. %1$sMore Info%2$s"
 msgstr ""
-"Resimlerin, iframe’lerin, ve görüntülerin sadece görüş alanına girmesiyle "
-"(ya da girmek üzereyken) yükleneceği gibi asıl ve farkedilir yükleme "
-"süresini iyileştirebilir ve HTTP isteklerinin sayısını azaltır. %1$sDaha "
+"Resimlerin, iframeâ€™lerin, ve gÃ¶rÃ¼ntÃ¼lerin sadece gÃ¶rÃ¼ÅŸ alanÄ±na girmesiyle "
+"(ya da girmek Ã¼zereyken) yÃ¼kleneceÄŸi gibi asÄ±l ve farkedilir yÃ¼kleme "
+"sÃ¼resini iyileÅŸtirebilir ve HTTP isteklerinin sayÄ±sÄ±nÄ± azaltÄ±r. %1$sDaha "
 "Fazla Bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1003
 #, php-format
 msgid ""
-"LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
+"LazyLoad is currently activated in %2$s. If you want to use WP Rocketâ€™s "
 "LazyLoad, disable this option in %2$s."
 msgstr ""
-"LazyLoad şu anda %2$s içinde aktif edildi. Eğer WP Rocket’in LazyLoad’ını "
-"kullanmak istiyorsanız, %2$s içindeki bu seçeneği etkisizleştirin."
+"LazyLoad ÅŸu anda %2$s iÃ§inde aktif edildi. EÄŸer WP Rocketâ€™in LazyLoadâ€™Ä±nÄ± "
+"kullanmak istiyorsanÄ±z, %2$s iÃ§indeki bu seÃ§eneÄŸi etkisizleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:1006
 msgid "Image Dimensions"
-msgstr "Resim Boyutları"
+msgstr "Resim BoyutlarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1009
 #, php-format
@@ -885,49 +885,49 @@ msgid ""
 "shifts and improve the reading experience for your visitors. %1$sMore "
 "info%2$s"
 msgstr ""
-"Resimlere eksik genişlik ve yükseklik özniteliklerini ekleyin. Düzen "
-"değişimlerini önlemeye ve ziyaretçileriniz için okuma deneyimini "
-"iyileştirmeye yardımcı olur. %1$sDaha fazla bilgi%2$s"
+"Resimlere eksik geniÅŸlik ve yÃ¼kseklik Ã¶zniteliklerini ekleyin. DÃ¼zen "
+"deÄŸiÅŸimlerini Ã¶nlemeye ve ziyaretÃ§ileriniz iÃ§in okuma deneyimini "
+"iyileÅŸtirmeye yardÄ±mcÄ± olur. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Enable for images"
-msgstr "Resimler için etkinleştir"
+msgstr "Resimler iÃ§in etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1040
 #, php-format
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
-"%1$s’s LazyLoad, disable this option in %2$s."
+"%1$sâ€™s LazyLoad, disable this option in %2$s."
 msgstr ""
-"Resimler için LazyLoad şu anda %2$s içinde aktif edildi. Eğer %1$s’in "
-"LazyLoad’ını kullanmak istiyorsanız, %2$s içindeki bu seçeneği "
-"etkisizleştirin."
+"Resimler iÃ§in LazyLoad ÅŸu anda %2$s iÃ§inde aktif edildi. EÄŸer %1$sâ€™in "
+"LazyLoadâ€™Ä±nÄ± kullanmak istiyorsanÄ±z, %2$s iÃ§indeki bu seÃ§eneÄŸi "
+"etkisizleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:1048
 msgid "Enable for iframes and videos"
-msgstr "Iframe’ler ve görüntüler için etkinleştir"
+msgstr "Iframeâ€™ler ve gÃ¶rÃ¼ntÃ¼ler iÃ§in etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1063
 msgid "Replace YouTube iframe with preview image"
-msgstr "Önizleme resmi ile YouTube iframe’ini değiştir"
+msgstr "Ã–nizleme resmi ile YouTube iframeâ€™ini deÄŸiÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1065
 #, php-format
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
-"Önizleme resmi ile değiştirilen YouTube iframe’i %2$s ile uyumlu değil."
+"Ã–nizleme resmi ile deÄŸiÅŸtirilen YouTube iframeâ€™i %2$s ile uyumlu deÄŸil."
 
 #: inc/Engine/Admin/Settings/Page.php:1065
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
 msgstr ""
-"Bir sayfada çok sayıda YouTube görüntüsüne sahipseniz bu önemli ölçüde "
-"yükleme sürenizi iyileştirebilir."
+"Bir sayfada Ã§ok sayÄ±da YouTube gÃ¶rÃ¼ntÃ¼sÃ¼ne sahipseniz bu Ã¶nemli Ã¶lÃ§Ã¼de "
+"yÃ¼kleme sÃ¼renizi iyileÅŸtirebilir."
 
 #: inc/Engine/Admin/Settings/Page.php:1080
 msgid "Excluded images or iframes"
-msgstr "Hariç tutulan resimler veya iframe’ler"
+msgstr "HariÃ§ tutulan resimler veya iframeâ€™ler"
 
 #: inc/Engine/Admin/Settings/Page.php:1082
 #, php-format
@@ -935,25 +935,25 @@ msgid ""
 "Specify keywords (e.g. image filename, CSS class, domain) from the image or "
 "iframe code to be excluded (one per line). %1$sMore info%2$s"
 msgstr ""
-"Resim veya iframe kodundan hariç tutulacak anahtar kelimeleri (örn. resim "
-"dosya adı, CSS sınıfı, etki alanı) belirtin (her satıra bir tane). %1$sDaha "
+"Resim veya iframe kodundan hariÃ§ tutulacak anahtar kelimeleri (Ã¶rn. resim "
+"dosya adÄ±, CSS sÄ±nÄ±fÄ±, etki alanÄ±) belirtin (her satÄ±ra bir tane). %1$sDaha "
 "fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1090
 msgid "Add missing image dimensions"
-msgstr "Eksik resim boyutlarını ekle"
+msgstr "Eksik resim boyutlarÄ±nÄ± ekle"
 
 #: inc/Engine/Admin/Settings/Page.php:1109 inc/deprecated/deprecated.php:1776
 msgid "Preload"
-msgstr "Önyükleme"
+msgstr "Ã–nyÃ¼kleme"
 
 #: inc/Engine/Admin/Settings/Page.php:1110
 msgid "Generate cache files, preload fonts"
-msgstr "Önbellek dosyalarını oluşturun, yazı tiplerini önyükleyin"
+msgstr "Ã–nbellek dosyalarÄ±nÄ± oluÅŸturun, yazÄ± tiplerini Ã¶nyÃ¼kleyin"
 
 #: inc/Engine/Admin/Settings/Page.php:1122
 msgid "Preload Cache"
-msgstr "Önbelleği Önyükle"
+msgstr "Ã–nbelleÄŸi Ã–nyÃ¼kle"
 
 #: inc/Engine/Admin/Settings/Page.php:1125
 msgid ""
@@ -961,13 +961,13 @@ msgid ""
 " and save all URLs to the database. The plugin will make sure that your "
 "cache is always preloaded."
 msgstr ""
-"Önceden yüklemeyi etkinleştirdiğinizde WP Rocket, site haritalarınızı "
-"otomatik olarak algılayacak ve tüm URL’leri veritabanına kaydedecek. "
-"Eklenti, önbelleğinizin her zaman önceden yüklendiğinden emin olacak."
+"Ã–nceden yÃ¼klemeyi etkinleÅŸtirdiÄŸinizde WP Rocket, site haritalarÄ±nÄ±zÄ± "
+"otomatik olarak algÄ±layacak ve tÃ¼m URLâ€™leri veritabanÄ±na kaydedecek. "
+"Eklenti, Ã¶nbelleÄŸinizin her zaman Ã¶nceden yÃ¼klendiÄŸinden emin olacak."
 
 #: inc/Engine/Admin/Settings/Page.php:1133
 msgid "Preload Links"
-msgstr "Bağlantıları Önyükle"
+msgstr "BaÄŸlantÄ±larÄ± Ã–nyÃ¼kle"
 
 #: inc/Engine/Admin/Settings/Page.php:1136
 #, php-format
@@ -975,24 +975,24 @@ msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
 msgstr ""
-"Bağlantı önyükleme, kullanıcı bağlantının üzerine geldiğinde bir sayfa "
-"indirerek algılanan yükleme süresini iyileştirir. %1$sDaha fazla bilgi%2$s"
+"BaÄŸlantÄ± Ã¶nyÃ¼kleme, kullanÄ±cÄ± baÄŸlantÄ±nÄ±n Ã¼zerine geldiÄŸinde bir sayfa "
+"indirerek algÄ±lanan yÃ¼kleme sÃ¼resini iyileÅŸtirir. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1144
 msgid "Prefetch DNS Requests"
-msgstr "DNS İsteklerini Önceden Getirme"
+msgstr "DNS Ä°steklerini Ã–nceden Getirme"
 
 #: inc/Engine/Admin/Settings/Page.php:1146
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
 msgstr ""
-"Önceden DNS getirme, harici dosyaları daha hızlı yüklemeyi sağlayabilir, "
-"özellikle de mobil ağlarda"
+"Ã–nceden DNS getirme, harici dosyalarÄ± daha hÄ±zlÄ± yÃ¼klemeyi saÄŸlayabilir, "
+"Ã¶zellikle de mobil aÄŸlarda"
 
 #: inc/Engine/Admin/Settings/Page.php:1151
 msgid "Preload Fonts"
-msgstr "Yazı Tiplerini Önyükle"
+msgstr "YazÄ± Tiplerini Ã–nyÃ¼kle"
 
 #: inc/Engine/Admin/Settings/Page.php:1154
 #, php-format
@@ -1000,16 +1000,16 @@ msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
 "%1$sMore info%2$s"
 msgstr ""
-"Tarayıcıların CSS dosyalarındaki yazı tiplerini keşfetmelerine yardımcı "
-"olarak performansı artırır. %1$sDaha fazla bilgi%2$s"
+"TarayÄ±cÄ±larÄ±n CSS dosyalarÄ±ndaki yazÄ± tiplerini keÅŸfetmelerine yardÄ±mcÄ± "
+"olarak performansÄ± artÄ±rÄ±r. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1168
 msgid "Activate Preloading"
-msgstr "Önyüklemeyi aktif et"
+msgstr "Ã–nyÃ¼klemeyi aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:1179
 msgid "Exclude URLs"
-msgstr "Hariç tutulan URL’ler"
+msgstr "HariÃ§ tutulan URLâ€™ler"
 
 #: inc/Engine/Admin/Settings/Page.php:1184
 #, php-format
@@ -1017,60 +1017,60 @@ msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
 msgstr ""
-"Önyükleme özelliğinden hariç tutulacak URL’leri belirtin (her satıra bir "
+"Ã–nyÃ¼kleme Ã¶zelliÄŸinden hariÃ§ tutulacak URLâ€™leri belirtin (her satÄ±ra bir "
 "tane). %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1195
 msgid "URLs to prefetch"
-msgstr "Önceden gertirmek için URL’ler"
+msgstr "Ã–nceden gertirmek iÃ§in URLâ€™ler"
 
 #: inc/Engine/Admin/Settings/Page.php:1196
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
 msgstr ""
-"Önceden getirilecek olan harici anamakineleri belirtin (<code>http:</code> "
-"olmadan, her satıra bir tane)"
+"Ã–nceden getirilecek olan harici anamakineleri belirtin (<code>http:</code> "
+"olmadan, her satÄ±ra bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid "Fonts to preload"
-msgstr "Önyüklenecek yazı tipleri"
+msgstr "Ã–nyÃ¼klenecek yazÄ± tipleri"
 
 #: inc/Engine/Admin/Settings/Page.php:1206
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"Önyüklenecek yazı tipi dosyalarının URL’lerini belirtin (her satıra bir "
-"tane). Yazı tipleri kendi etki alanınızda veya CDN sekmesinde belirttiğiniz "
-"etki alanında barındırılmak zorundadır."
+"Ã–nyÃ¼klenecek yazÄ± tipi dosyalarÄ±nÄ±n URLâ€™lerini belirtin (her satÄ±ra bir "
+"tane). YazÄ± tipleri kendi etki alanÄ±nÄ±zda veya CDN sekmesinde belirttiÄŸiniz "
+"etki alanÄ±nda barÄ±ndÄ±rÄ±lmak zorundadÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:1207
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
 msgstr ""
-"URL’nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br/>İzin "
-"verilen yazı tipi uzantıları: otf, ttf, svg, woff, woff2."
+"URLâ€™nin etki alanÄ± kÄ±smÄ± otomatik olarak sadeleÅŸtirilecektir.<br/>Ä°zin "
+"verilen yazÄ± tipi uzantÄ±larÄ±: otf, ttf, svg, woff, woff2."
 
 #: inc/Engine/Admin/Settings/Page.php:1216
 msgid "Enable link preloading"
-msgstr "Bağlantı önyüklemeyi etkinleştir"
+msgstr "BaÄŸlantÄ± Ã¶nyÃ¼klemeyi etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1235
 msgid "Advanced Rules"
-msgstr "Gelişmiş Kurallar"
+msgstr "GeliÅŸmiÅŸ Kurallar"
 
 #: inc/Engine/Admin/Settings/Page.php:1236
 msgid "Fine-tune cache rules"
-msgstr "Önbellek kurallarına ince ayar yapın"
+msgstr "Ã–nbellek kurallarÄ±na ince ayar yapÄ±n"
 
 #: inc/Engine/Admin/Settings/Page.php:1247
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
-"Özel oturum açma/oturum kapatma URL’leri gibi hassas sayfalar önbellekten "
-"hariç tutulmalıdır."
+"Ã–zel oturum aÃ§ma/oturum kapatma URLâ€™leri gibi hassas sayfalar Ã¶nbellekten "
+"hariÃ§ tutulmalÄ±dÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:1250
 msgctxt "plugin name"
@@ -1103,21 +1103,21 @@ msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
 msgstr ""
-"<br><strong>%1$s%2$s%3$s</strong> içinde ayarlanan sepet, ödeme ve "
-"\"hesabım\" sayfaları algılanacak ve varsayılan olarak asla "
-"önbelleklenmeyecektir."
+"<br><strong>%1$s%2$s%3$s</strong> iÃ§inde ayarlanan sepet, Ã¶deme ve "
+"\"hesabÄ±m\" sayfalarÄ± algÄ±lanacak ve varsayÄ±lan olarak asla "
+"Ã¶nbelleklenmeyecektir."
 
 #: inc/Engine/Admin/Settings/Page.php:1274 inc/admin/options.php:128
 msgid "Never Cache URL(s)"
-msgstr "Asla Önbelleklenmeyen URL(ler)"
+msgstr "Asla Ã–nbelleklenmeyen URL(ler)"
 
 #: inc/Engine/Admin/Settings/Page.php:1282
 msgid "Never Cache Cookies"
-msgstr "Asla Önbelleklenmeyen Tanımlama Bilgileri"
+msgstr "Asla Ã–nbelleklenmeyen TanÄ±mlama Bilgileri"
 
 #: inc/Engine/Admin/Settings/Page.php:1288 inc/admin/options.php:129
 msgid "Never Cache User Agent(s)"
-msgstr "Asla Önbelleklenmeyen Kullanıcı Tanıtıcı(ları)sı"
+msgstr "Asla Ã–nbelleklenmeyen KullanÄ±cÄ± TanÄ±tÄ±cÄ±(larÄ±)sÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1294 inc/admin/options.php:130
 msgid "Always Purge URL(s)"
@@ -1125,7 +1125,7 @@ msgstr "Her Zaman Temizlenen URL(ler)"
 
 #: inc/Engine/Admin/Settings/Page.php:1300
 msgid "Cache Query String(s)"
-msgstr "Önbelleklenen Sorgu Dizgi(leri)si"
+msgstr "Ã–nbelleklenen Sorgu Dizgi(leri)si"
 
 #: inc/Engine/Admin/Settings/Page.php:1303
 #, php-format
@@ -1133,15 +1133,15 @@ msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
 msgstr ""
-"%1$sSorgu dizgilerini önbelleklemek%2$s belirli GET parametreleri için "
-"önbelleklemeye zorlamanızı etkinleştirir."
+"%1$sSorgu dizgilerini Ã¶nbelleklemek%2$s belirli GET parametreleri iÃ§in "
+"Ã¶nbelleklemeye zorlamanÄ±zÄ± etkinleÅŸtirir."
 
 #: inc/Engine/Admin/Settings/Page.php:1314
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
-"Asla önbelleklenmemesi gereken sayfa ve yazıların URL’lerini belirtin (her "
-"satıra bir tane)"
+"Asla Ã¶nbelleklenmemesi gereken sayfa ve yazÄ±larÄ±n URLâ€™lerini belirtin (her "
+"satÄ±ra bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1315
 #: inc/Engine/Admin/Settings/Page.php:1343
@@ -1149,90 +1149,90 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
 msgstr ""
-"URL’nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Verilen yol"
-" altında çoklu URL’leri adreslemek için (.*) joker karakterlerini kullanın."
+"URLâ€™nin etki alanÄ± kÄ±smÄ± otomatik olarak sadeleÅŸtirilecektir.<br>Verilen yol"
+" altÄ±nda Ã§oklu URLâ€™leri adreslemek iÃ§in (.*) joker karakterlerini kullanÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:1324
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
 msgstr ""
-"Ziyaretçinin tarayıcısında ayarlandığında, bir sayfanın önbelleklenmesine "
-"engel olması gereken, tanımlama bilgilerinin tam ya da kısmi kimliklerini "
-"belirtin (satır başına bir tane)"
+"ZiyaretÃ§inin tarayÄ±cÄ±sÄ±nda ayarlandÄ±ÄŸÄ±nda, bir sayfanÄ±n Ã¶nbelleklenmesine "
+"engel olmasÄ± gereken, tanÄ±mlama bilgilerinin tam ya da kÄ±smi kimliklerini "
+"belirtin (satÄ±r baÅŸÄ±na bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1332
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Önbelleklenmiş sayfaları asla görmemesi gereken kullanıcı tanıtıcı dizgisini"
-" belirtin (her satıra bir tane)"
+"Ã–nbelleklenmiÅŸ sayfalarÄ± asla gÃ¶rmemesi gereken kullanÄ±cÄ± tanÄ±tÄ±cÄ± dizgisini"
+" belirtin (her satÄ±ra bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1333
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
-"UA dizgilerinin parçalarını algılamak için (.*) joker karakterlerini "
-"kullanın."
+"UA dizgilerinin parÃ§alarÄ±nÄ± algÄ±lamak iÃ§in (.*) joker karakterlerini "
+"kullanÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:1342
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
 msgstr ""
-"Herhangi bir yazıyı veya sayfayı her güncellediğinizde daima önbellekten "
-"temizlenmesini istediğiniz URL’leri belirtin (her satıra bir tane)"
+"Herhangi bir yazÄ±yÄ± veya sayfayÄ± her gÃ¼ncellediÄŸinizde daima Ã¶nbellekten "
+"temizlenmesini istediÄŸiniz URLâ€™leri belirtin (her satÄ±ra bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1351
 msgid "Specify query strings for caching (one per line)"
-msgstr "Önbellekleme için sorgu dizgilerini belirtin (her satıra bir tane)"
+msgstr "Ã–nbellekleme iÃ§in sorgu dizgilerini belirtin (her satÄ±ra bir tane)"
 
 #: inc/Engine/Admin/Settings/Page.php:1376 inc/deprecated/deprecated.php:1775
 msgid "Database"
-msgstr "Veritabanı"
+msgstr "VeritabanÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1377
 msgid "Optimize, reduce bloat"
-msgstr "İyileştirin, şişmeyi azaltın"
+msgstr "Ä°yileÅŸtirin, ÅŸiÅŸmeyi azaltÄ±n"
 
 #: inc/Engine/Admin/Settings/Page.php:1384
 msgid "Post Cleanup"
-msgstr "Yazı Temizleme"
+msgstr "YazÄ± Temizleme"
 
 #: inc/Engine/Admin/Settings/Page.php:1386
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
 msgstr ""
-"Yazı incelemeleri ve taslaklar kalıcı olarak silinecektir. İncelemeleri ya "
-"da taslakları tutmanız gerekiyorsa bu seçeneği kullanmayın."
+"YazÄ± incelemeleri ve taslaklar kalÄ±cÄ± olarak silinecektir. Ä°ncelemeleri ya "
+"da taslaklarÄ± tutmanÄ±z gerekiyorsa bu seÃ§eneÄŸi kullanmayÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:1391
 msgid "Comments Cleanup"
-msgstr "Yorumları Temizleme"
+msgstr "YorumlarÄ± Temizleme"
 
 #: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam and trashed comments will be permanently deleted."
-msgstr "İstenmeyen mesaj ve çöpe atılmış yorumlar kalıcı olarak silinecektir."
+msgstr "Ä°stenmeyen mesaj ve Ã§Ã¶pe atÄ±lmÄ±ÅŸ yorumlar kalÄ±cÄ± olarak silinecektir."
 
 #: inc/Engine/Admin/Settings/Page.php:1397
 msgid "Transients Cleanup"
-msgstr "Geçicileri Temizleme"
+msgstr "GeÃ§icileri Temizleme"
 
 #: inc/Engine/Admin/Settings/Page.php:1399
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
 msgstr ""
-"Geçiciler geçici seçeneklerdir; kaldırması güvenlidir. Eklentilerinizin "
-"gerektirdiklerini otomatik olarak oluşturacaklardır."
+"GeÃ§iciler geÃ§ici seÃ§eneklerdir; kaldÄ±rmasÄ± gÃ¼venlidir. Eklentilerinizin "
+"gerektirdiklerini otomatik olarak oluÅŸturacaklardÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Database Cleanup"
-msgstr "Veritabanı Temizleme"
+msgstr "VeritabanÄ± Temizleme"
 
 #: inc/Engine/Admin/Settings/Page.php:1405
 msgid "Reduces overhead of database tables"
-msgstr "Veritabanı tablolarının ek yükünü azaltır"
+msgstr "VeritabanÄ± tablolarÄ±nÄ±n ek yÃ¼kÃ¼nÃ¼ azaltÄ±r"
 
 #: inc/Engine/Admin/Settings/Page.php:1409
 msgid "Automatic Cleanup"
@@ -1242,58 +1242,58 @@ msgstr "Otomatik Temizleme"
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] "Veritabanınızda %s düzeltme."
-msgstr[1] "Veritabanınızda %s düzeltme."
+msgstr[0] "VeritabanÄ±nÄ±zda %s dÃ¼zeltme."
+msgstr[1] "VeritabanÄ±nÄ±zda %s dÃ¼zeltme."
 
 #: inc/Engine/Admin/Settings/Page.php:1432
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] "Veritabanınızda %s taslak."
-msgstr[1] "Veritabanınızda %s taslak."
+msgstr[0] "VeritabanÄ±nÄ±zda %s taslak."
+msgstr[1] "VeritabanÄ±nÄ±zda %s taslak."
 
 #: inc/Engine/Admin/Settings/Page.php:1442
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "Veritabanınızda %s çöpe atılmış yazı."
-msgstr[1] "Veritabanınızda %s çöpe atılmış yazı."
+msgstr[0] "VeritabanÄ±nÄ±zda %s Ã§Ã¶pe atÄ±lmÄ±ÅŸ yazÄ±."
+msgstr[1] "VeritabanÄ±nÄ±zda %s Ã§Ã¶pe atÄ±lmÄ±ÅŸ yazÄ±."
 
 #: inc/Engine/Admin/Settings/Page.php:1452
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] "Veritabanınızda %s istenmeyen yorum."
-msgstr[1] "Veritabanınızda %s istenmeyen yorum."
+msgstr[0] "VeritabanÄ±nÄ±zda %s istenmeyen yorum."
+msgstr[1] "VeritabanÄ±nÄ±zda %s istenmeyen yorum."
 
 #: inc/Engine/Admin/Settings/Page.php:1462
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "Veritabanınızda %s çöpe atılmış yorum."
-msgstr[1] "Veritabanınızda %s çöpe atılmış yorum."
+msgstr[0] "VeritabanÄ±nÄ±zda %s Ã§Ã¶pe atÄ±lmÄ±ÅŸ yorum."
+msgstr[1] "VeritabanÄ±nÄ±zda %s Ã§Ã¶pe atÄ±lmÄ±ÅŸ yorum."
 
 #: inc/Engine/Admin/Settings/Page.php:1470
 msgid "All transients"
-msgstr "Tüm geçiciler"
+msgstr "TÃ¼m geÃ§iciler"
 
 #: inc/Engine/Admin/Settings/Page.php:1472
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "Veritabanınızda %s geçici."
-msgstr[1] "Veritabanınızda %s geçici."
+msgstr[0] "VeritabanÄ±nÄ±zda %s geÃ§ici."
+msgstr[1] "VeritabanÄ±nÄ±zda %s geÃ§ici."
 
 #: inc/Engine/Admin/Settings/Page.php:1480
 msgid "Optimize Tables"
-msgstr "Tabloları iyileştir"
+msgstr "TablolarÄ± iyileÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1482
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] "Veritabanınızda iyileştirmek için %s tablo."
-msgstr[1] "Veritabanınızda iyileştirmek için %s tablo."
+msgstr[0] "VeritabanÄ±nÄ±zda iyileÅŸtirmek iÃ§in %s tablo."
+msgstr[1] "VeritabanÄ±nÄ±zda iyileÅŸtirmek iÃ§in %s tablo."
 
 #: inc/Engine/Admin/Settings/Page.php:1493
 msgid "Schedule Automatic Cleanup"
@@ -1301,19 +1301,19 @@ msgstr "Otomatik Temizlemeyi Zamanla"
 
 #: inc/Engine/Admin/Settings/Page.php:1505
 msgid "Frequency"
-msgstr "Sıklıkla"
+msgstr "SÄ±klÄ±kla"
 
 #: inc/Engine/Admin/Settings/Page.php:1513
 msgid "Daily"
-msgstr "Günlük"
+msgstr "GÃ¼nlÃ¼k"
 
 #: inc/Engine/Admin/Settings/Page.php:1514
 msgid "Weekly"
-msgstr "Haftalık"
+msgstr "HaftalÄ±k"
 
 #: inc/Engine/Admin/Settings/Page.php:1515
 msgid "Monthly"
-msgstr "Aylık"
+msgstr "AylÄ±k"
 
 #: inc/Engine/Admin/Settings/Page.php:1531
 #: inc/Engine/Admin/Settings/Page.php:1542 inc/admin/ui/meta-boxes.php:108
@@ -1323,15 +1323,15 @@ msgstr "CDN"
 
 #: inc/Engine/Admin/Settings/Page.php:1532
 msgid "Integrate your CDN"
-msgstr "CDN’nizi bütünleştirin"
+msgstr "CDNâ€™nizi bÃ¼tÃ¼nleÅŸtirin"
 
 #: inc/Engine/Admin/Settings/Page.php:1544
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
 msgstr ""
-"Sabit dosyaların (CSS, JS, resimler) tüm URL’leri, verdiğiniz CNAME(lere)e "
-"yeniden yazılacaktır."
+"Sabit dosyalarÄ±n (CSS, JS, resimler) tÃ¼m URLâ€™leri, verdiÄŸiniz CNAME(lere)e "
+"yeniden yazÄ±lacaktÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:1546
 #, php-format
@@ -1339,12 +1339,12 @@ msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
 msgstr ""
-"Cloudflare ve Sucuri gibi hizmetler için gerekmez. Lütfen mevcut "
-"%1$sEklentilerimize%2$s bakın."
+"Cloudflare ve Sucuri gibi hizmetler iÃ§in gerekmez. LÃ¼tfen mevcut "
+"%1$sEklentilerimize%2$s bakÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:1561 inc/admin/options.php:131
 msgid "Exclude files from CDN"
-msgstr "CDN’den hariç tutulan dosyalar"
+msgstr "CDNâ€™den hariÃ§ tutulan dosyalar"
 
 #: inc/Engine/Admin/Settings/Page.php:1587
 msgid ""
@@ -1354,15 +1354,15 @@ msgid_plural ""
 "%1$s%2$l Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$l to work on your site."
 msgstr[0] ""
-"%1$s%2$l Eklentisi%3$s şu anda etkinleştirildi. CDN ayarlarının "
-"yapılandırması, sitenizde çalışması amacıyla %2$l için gerekmez."
+"%1$s%2$l Eklentisi%3$s ÅŸu anda etkinleÅŸtirildi. CDN ayarlarÄ±nÄ±n "
+"yapÄ±landÄ±rmasÄ±, sitenizde Ã§alÄ±ÅŸmasÄ± amacÄ±yla %2$l iÃ§in gerekmez."
 msgstr[1] ""
-"%1$s%2$l Eklentileri%3$s şu anda etkinleştirildi. CDN ayarlarının "
-"yapılandırması, sitenizde çalışması amacıyla %2$l için gerekmez."
+"%1$s%2$l Eklentileri%3$s ÅŸu anda etkinleÅŸtirildi. CDN ayarlarÄ±nÄ±n "
+"yapÄ±landÄ±rmasÄ±, sitenizde Ã§alÄ±ÅŸmasÄ± amacÄ±yla %2$l iÃ§in gerekmez."
 
 #: inc/Engine/Admin/Settings/Page.php:1612
 msgid "Enable Content Delivery Network"
-msgstr "İçerik Dağıtım Ağını (CDN) etkinleştir"
+msgstr "Ä°Ã§erik DaÄŸÄ±tÄ±m AÄŸÄ±nÄ± (CDN) etkinleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1621
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:150
@@ -1372,14 +1372,14 @@ msgstr "CDN CNAME(ler)"
 #: inc/Engine/Admin/Settings/Page.php:1622
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:151
 msgid "Specify the CNAME(s) below"
-msgstr "Aşağıda CNAME(leri) belirtin"
+msgstr "AÅŸaÄŸÄ±da CNAME(leri) belirtin"
 
 #: inc/Engine/Admin/Settings/Page.php:1629
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
-"CDN aracılığıyla sunulmaması gereken dosyaların URL(lerini)sini belirtin "
-"(her satıra bir tane)."
+"CDN aracÄ±lÄ±ÄŸÄ±yla sunulmamasÄ± gereken dosyalarÄ±n URL(lerini)sini belirtin "
+"(her satÄ±ra bir tane)."
 
 #: inc/Engine/Admin/Settings/Page.php:1630
 msgid ""
@@ -1387,73 +1387,73 @@ msgid ""
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
 msgstr ""
-"URL’nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Belirli bir"
-" yolda bulunan verilen bir dosya türünün tüm dosyalarını hariç tutmak için "
-"(.*) joker karakterlerini kullanın."
+"URLâ€™nin etki alanÄ± kÄ±smÄ± otomatik olarak sadeleÅŸtirilecektir.<br>Belirli bir"
+" yolda bulunan verilen bir dosya tÃ¼rÃ¼nÃ¼n tÃ¼m dosyalarÄ±nÄ± hariÃ§ tutmak iÃ§in "
+"(.*) joker karakterlerini kullanÄ±n."
 
 #: inc/Engine/Admin/Settings/Page.php:1653
 #: inc/Engine/Admin/Settings/Page.php:1661
 msgid "Heartbeat"
-msgstr "Kalp Atışı"
+msgstr "Kalp AtÄ±ÅŸÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1654
 msgid "Control WordPress Heartbeat API"
-msgstr "WordPress Kalp Atışı API’sini denetleyin"
+msgstr "WordPress Kalp AtÄ±ÅŸÄ± APIâ€™sini denetleyin"
 
 #: inc/Engine/Admin/Settings/Page.php:1662
 msgid ""
-"Reducing or disabling the Heartbeat API’s activity can help save some of "
-"your server’s resources."
+"Reducing or disabling the Heartbeat APIâ€™s activity can help save some of "
+"your serverâ€™s resources."
 msgstr ""
-"Kalp Atışı API’si etkinliğini azaltmak veya etkisizleştirmek, sunucunuzun "
-"kaynaklarının bazılarını kurtarmasına yardımcı olabilir."
+"Kalp AtÄ±ÅŸÄ± APIâ€™si etkinliÄŸini azaltmak veya etkisizleÅŸtirmek, sunucunuzun "
+"kaynaklarÄ±nÄ±n bazÄ±larÄ±nÄ± kurtarmasÄ±na yardÄ±mcÄ± olabilir."
 
 #: inc/Engine/Admin/Settings/Page.php:1668
 msgid "Reduce or disable Heartbeat activity"
-msgstr "Kalp Atışı etkinliğini azaltma veya etkisizleştirme"
+msgstr "Kalp AtÄ±ÅŸÄ± etkinliÄŸini azaltma veya etkisizleÅŸtirme"
 
 #: inc/Engine/Admin/Settings/Page.php:1669
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr ""
-"Etkinliği azaltmak Kalp Atışı sıklığını, her dakikada bir vuruştan her 2 "
-"dakikada bir vuruşa değiştirecektir."
+"EtkinliÄŸi azaltmak Kalp AtÄ±ÅŸÄ± sÄ±klÄ±ÄŸÄ±nÄ±, her dakikada bir vuruÅŸtan her 2 "
+"dakikada bir vuruÅŸa deÄŸiÅŸtirecektir."
 
 #: inc/Engine/Admin/Settings/Page.php:1669
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
-"Kalp Atışı’nın tamamen etkisizleştirilmesi bu API’yi kullanan eklentileri ve"
-" temaları bozabilir."
+"Kalp AtÄ±ÅŸÄ±â€™nÄ±n tamamen etkisizleÅŸtirilmesi bu APIâ€™yi kullanan eklentileri ve"
+" temalarÄ± bozabilir."
 
 #: inc/Engine/Admin/Settings/Page.php:1683
 msgid "Do not limit"
-msgstr "Sınırlandırma"
+msgstr "SÄ±nÄ±rlandÄ±rma"
 
 #: inc/Engine/Admin/Settings/Page.php:1684
 msgid "Reduce activity"
-msgstr "Etkinliği azalt"
+msgstr "EtkinliÄŸi azalt"
 
 #: inc/Engine/Admin/Settings/Page.php:1685
 msgid "Disable"
-msgstr "Etkisizleştir"
+msgstr "EtkisizleÅŸtir"
 
 #: inc/Engine/Admin/Settings/Page.php:1693
 msgid "Control Heartbeat"
-msgstr "Kalp Atışı’nı denetle"
+msgstr "Kalp AtÄ±ÅŸÄ±â€™nÄ± denetle"
 
 #: inc/Engine/Admin/Settings/Page.php:1702
 msgid "Behavior in backend"
-msgstr "Arka uçtaki davranış"
+msgstr "Arka uÃ§taki davranÄ±ÅŸ"
 
 #: inc/Engine/Admin/Settings/Page.php:1709
 msgid "Behavior in post editor"
-msgstr "Yazı düzenleyicideki davranış"
+msgstr "YazÄ± dÃ¼zenleyicideki davranÄ±ÅŸ"
 
 #: inc/Engine/Admin/Settings/Page.php:1715
 msgid "Behavior in frontend"
-msgstr "Ön uçtaki davranış"
+msgstr "Ã–n uÃ§taki davranÄ±ÅŸ"
 
 #: inc/Engine/Admin/Settings/Page.php:1732
 #: views/settings/page-sections/tutorials.php:39
@@ -1462,20 +1462,20 @@ msgstr "Eklentiler"
 
 #: inc/Engine/Admin/Settings/Page.php:1733
 msgid "Add more features"
-msgstr "Daha fazla özellik ekleyin"
+msgstr "Daha fazla Ã¶zellik ekleyin"
 
 #: inc/Engine/Admin/Settings/Page.php:1740
 msgid "One-click Rocket Add-ons"
-msgstr "Tek Tık Rocket Eklentileri"
+msgstr "Tek TÄ±k Rocket Eklentileri"
 
 #: inc/Engine/Admin/Settings/Page.php:1741
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
 msgstr ""
-"Tek Tık Eklentiler, yapılandırma gerekmeden mevcut seçenekleri genişleten "
-"özelliklerdir. Etkinleştirmek için seçeneği bu ekrandan \"açık\" olarak "
-"değiştirin."
+"Tek TÄ±k Eklentiler, yapÄ±landÄ±rma gerekmeden mevcut seÃ§enekleri geniÅŸleten "
+"Ã¶zelliklerdir. EtkinleÅŸtirmek iÃ§in seÃ§eneÄŸi bu ekrandan \"aÃ§Ä±k\" olarak "
+"deÄŸiÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:1751
 msgid "Rocket Add-ons"
@@ -1484,7 +1484,7 @@ msgstr "Rocket Eklentileri"
 #: inc/Engine/Admin/Settings/Page.php:1752
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
-"Rocket Eklentileri mevcut seçenekleri genişleten tamamlayıcı özelliklerdir."
+"Rocket Eklentileri mevcut seÃ§enekleri geniÅŸleten tamamlayÄ±cÄ± Ã¶zelliklerdir."
 
 #: inc/Engine/Admin/Settings/Page.php:1763
 #: inc/Engine/Admin/Settings/Page.php:1915
@@ -1493,7 +1493,7 @@ msgstr "Cloudflare"
 
 #: inc/Engine/Admin/Settings/Page.php:1769
 msgid "Integrate your Cloudflare account with this add-on."
-msgstr "Bu eklenti ile Cloudflare hesabınızı bütünleştirin."
+msgstr "Bu eklenti ile Cloudflare hesabÄ±nÄ±zÄ± bÃ¼tÃ¼nleÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:1770
 msgid ""
@@ -1501,9 +1501,9 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
-"Cloudflare önbelleğini temizlemek ve WP Rocket ile en uygun ayarları "
-"etkinleştirmek gibi seçenekleri kullanmak için hesap e-postanızı, genel API "
-"anahtarını ve etki alanını sağlar."
+"Cloudflare Ã¶nbelleÄŸini temizlemek ve WP Rocket ile en uygun ayarlarÄ± "
+"etkinleÅŸtirmek gibi seÃ§enekleri kullanmak iÃ§in hesap e-postanÄ±zÄ±, genel API "
+"anahtarÄ±nÄ± ve etki alanÄ±nÄ± saÄŸlar."
 
 #: inc/Engine/Admin/Settings/Page.php:1804
 msgid "Varnish"
@@ -1512,7 +1512,7 @@ msgstr "Varnish"
 #: inc/Engine/Admin/Settings/Page.php:1810
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
-"Varnish sunucunuzda çalışıyorsa, bu eklentiyi aktif etmek zorundasınız."
+"Varnish sunucunuzda Ã§alÄ±ÅŸÄ±yorsa, bu eklentiyi aktif etmek zorundasÄ±nÄ±z."
 
 #: inc/Engine/Admin/Settings/Page.php:1812
 #, php-format
@@ -1520,17 +1520,17 @@ msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
-"Varnish önbelleği, WP Rocket önbelleğini her temizlediğinde içeriğin her "
-"zaman güncel olduğunu garantilemek için temizlenecektir.<br>%1$sDaha fazla "
+"Varnish Ã¶nbelleÄŸi, WP Rocket Ã¶nbelleÄŸini her temizlediÄŸinde iÃ§eriÄŸin her "
+"zaman gÃ¼ncel olduÄŸunu garantilemek iÃ§in temizlenecektir.<br>%1$sDaha fazla "
 "bilgi edinin%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1847
 msgid "WebP Compatibility"
-msgstr "WebP Uyumluluğu"
+msgstr "WebP UyumluluÄŸu"
 
 #: inc/Engine/Admin/Settings/Page.php:1853
 msgid "Improve browser compatibility for WebP images."
-msgstr "WebP resimleri için tarayıcı uyumluluğunu iyileştirin."
+msgstr "WebP resimleri iÃ§in tarayÄ±cÄ± uyumluluÄŸunu iyileÅŸtirin."
 
 #: inc/Engine/Admin/Settings/Page.php:1857
 #, php-format
@@ -1540,22 +1540,22 @@ msgid ""
 "for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore "
 "info%2$s"
 msgstr ""
-"WP Rocket’in WebP resimlerini uyumlu tarayıcılara sunmasını istiyorsanız bu "
-"seçeneği etkinleştirin. WP Rocket’in sizin için WebP resimlerini "
-"oluşturamayacağını lütfen unutmayın. WebP resimleri oluşturmak için "
-"%1$sImagify%2$s öneriyoruz. %3$sDaha fazla bilgi%2$s"
+"WP Rocketâ€™in WebP resimlerini uyumlu tarayÄ±cÄ±lara sunmasÄ±nÄ± istiyorsanÄ±z bu "
+"seÃ§eneÄŸi etkinleÅŸtirin. WP Rocketâ€™in sizin iÃ§in WebP resimlerini "
+"oluÅŸturamayacaÄŸÄ±nÄ± lÃ¼tfen unutmayÄ±n. WebP resimleri oluÅŸturmak iÃ§in "
+"%1$sImagify%2$s Ã¶neriyoruz. %3$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1877
-msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
-msgstr "WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizler."
+msgid "Clear the Sucuri cache when WP Rocketâ€™s cache is cleared."
+msgstr "WP Rocketâ€™in Ã¶nbelleÄŸi temizlendiÄŸinde Sucuri Ã¶nbelleÄŸini temizler."
 
 #: inc/Engine/Admin/Settings/Page.php:1880
 msgid ""
-"Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
+"Provide your API key to clear the Sucuri cache when WP Rocketâ€™s cache is "
 "cleared."
 msgstr ""
-"WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizlemek için "
-"API anahtarınızı verin."
+"WP Rocketâ€™in Ã¶nbelleÄŸi temizlendiÄŸinde Sucuri Ã¶nbelleÄŸini temizlemek iÃ§in "
+"API anahtarÄ±nÄ±zÄ± verin."
 
 #: inc/Engine/Admin/Settings/Page.php:1888
 #: inc/Engine/Admin/Settings/Page.php:2032
@@ -1564,7 +1564,7 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1894
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Bu eklenti ile Sucuri önbelleğini eşitleyin."
+msgstr "Bu eklenti ile Sucuri Ã¶nbelleÄŸini eÅŸitleyin."
 
 #: inc/Engine/Admin/Settings/Page.php:1932
 msgid "Cloudflare credentials"
@@ -1572,31 +1572,31 @@ msgstr "Cloudflare kimlik bilgileri"
 
 #: inc/Engine/Admin/Settings/Page.php:1941
 msgid "Cloudflare settings"
-msgstr "Cloudflare ayarları"
+msgstr "Cloudflare ayarlarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1955
 msgctxt "Cloudflare"
 msgid "Global API key:"
-msgstr "Genel API anahtarı"
+msgstr "Genel API anahtarÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1956
 msgctxt "Cloudflare"
 msgid "Find your API key"
-msgstr "API anahtarınızı bulun"
+msgstr "API anahtarÄ±nÄ±zÄ± bulun"
 
 #: inc/Engine/Admin/Settings/Page.php:1968
 msgctxt "Cloudflare"
 msgid "Account email"
-msgstr "Hesap e-postası"
+msgstr "Hesap e-postasÄ±"
 
 #: inc/Engine/Admin/Settings/Page.php:1977
 msgctxt "Cloudflare"
 msgid "Zone ID"
-msgstr "Bölge Kimliği - Zone ID"
+msgstr "BÃ¶lge KimliÄŸi - Zone ID"
 
 #: inc/Engine/Admin/Settings/Page.php:1987
 msgid "Development mode"
-msgstr "Geliştirme kipi"
+msgstr "GeliÅŸtirme kipi"
 
 #: inc/Engine/Admin/Settings/Page.php:1989
 #, php-format
@@ -1604,7 +1604,7 @@ msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
-"Web sitenizde geçici olarak geliştirme kipini aktif edin. Bu ayar otomatik "
+"Web sitenizde geÃ§ici olarak geliÅŸtirme kipini aktif edin. Bu ayar otomatik "
 "olarak 3 saat sonra kapanacak. %1$sDaha fazla bilgi edinin%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1997
@@ -1616,12 +1616,12 @@ msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
-"Hız, performans puanı ve uyumluluk için Cloudflare yapılandırmanızı otomatik"
-" olarak iyileştirir."
+"HÄ±z, performans puanÄ± ve uyumluluk iÃ§in Cloudflare yapÄ±landÄ±rmanÄ±zÄ± otomatik"
+" olarak iyileÅŸtirir."
 
 #: inc/Engine/Admin/Settings/Page.php:2006
 msgid "Relative protocol"
-msgstr "Göreli protokol"
+msgstr "GÃ¶reli protokol"
 
 #: inc/Engine/Admin/Settings/Page.php:2007
 msgid ""
@@ -1629,9 +1629,9 @@ msgid ""
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
 "https://."
 msgstr ""
-"Sadece Cloudflare’in esnek SSL özelliği ile kullanılmalıdır. Sabit "
-"dosyaların (CSS, JS, resimler) URL’leri, http:// veya https:// yerine // "
-"kullanmak için yeniden yazılacaktır."
+"Sadece Cloudflareâ€™in esnek SSL Ã¶zelliÄŸi ile kullanÄ±lmalÄ±dÄ±r. Sabit "
+"dosyalarÄ±n (CSS, JS, resimler) URLâ€™leri, http:// veya https:// yerine // "
+"kullanmak iÃ§in yeniden yazÄ±lacaktÄ±r."
 
 #: inc/Engine/Admin/Settings/Page.php:2045
 msgid "Sucuri credentials"
@@ -1643,25 +1643,25 @@ msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
 "characters}</code>:"
 msgstr ""
-"Güvenlik Duvarı API anahtarı (eklenti için), <code>{32 karakter}/{32 "
-"karakter}</code> biçiminde olmak zorundadır:"
+"GÃ¼venlik DuvarÄ± API anahtarÄ± (eklenti iÃ§in), <code>{32 karakter}/{32 "
+"karakter}</code> biÃ§iminde olmak zorundadÄ±r:"
 
 #: inc/Engine/Admin/Settings/Page.php:2059
 msgctxt "Sucuri"
 msgid "Find your API key"
-msgstr "API anahtarınızı bulun"
+msgstr "API anahtarÄ±nÄ±zÄ± bulun"
 
 #: inc/Engine/Admin/Settings/Render.php:409 inc/deprecated/deprecated.php:1294
 msgid "Upload file and import settings"
-msgstr "Dosyayı gönder ve ayarları içe aktar"
+msgstr "DosyayÄ± gÃ¶nder ve ayarlarÄ± iÃ§e aktar"
 
 #: inc/Engine/Admin/Settings/Settings.php:375
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
 msgstr ""
-"Sucuri Eklentisi: Sucuri güvenlik duvarı için API anahtarı, <code>{32 "
-"karakter}/{32 karakter}</code> biçiminde olmak zorundadır."
+"Sucuri Eklentisi: Sucuri gÃ¼venlik duvarÄ± iÃ§in API anahtarÄ±, <code>{32 "
+"karakter}/{32 karakter}</code> biÃ§iminde olmak zorundadÄ±r."
 
 #: inc/Engine/Admin/Settings/Settings.php:466
 #: inc/deprecated/deprecated.php:1245
@@ -1673,87 +1673,87 @@ msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
 msgstr ""
-"Üzgünüz! Gelişmiş Kurallar > URL’(leri)yi Asla Önbellekleme içine /(.*) "
-"eklemek, sitenizdeki her sayfa için önbelleğe almayı ve iyileştirmeleri "
-"etkisizleştirdiğinden kaydedilmedi."
+"ÃœzgÃ¼nÃ¼z! GeliÅŸmiÅŸ Kurallar > URLâ€™(leri)yi Asla Ã–nbellekleme iÃ§ine /(.*) "
+"eklemek, sitenizdeki her sayfa iÃ§in Ã¶nbelleÄŸe almayÄ± ve iyileÅŸtirmeleri "
+"etkisizleÅŸtirdiÄŸinden kaydedilmedi."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:150
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
-msgstr "Araçlar"
+msgstr "AraÃ§lar"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:151
 msgid "Import, Export, Rollback"
-msgstr "İçe aktarın, Dışa aktarın, Geri alın"
+msgstr "Ä°Ã§e aktarÄ±n, DÄ±ÅŸa aktarÄ±n, Geri alÄ±n"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:176
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
-msgstr "Resim İyileştirme"
+msgstr "Resim Ä°yileÅŸtirme"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:177
 msgid "Compress your images"
-msgstr "Resimlerinizi sıkıştırın"
+msgstr "Resimlerinizi sÄ±kÄ±ÅŸtÄ±rÄ±n"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:194
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
-msgstr "Eğitimler"
+msgstr "EÄŸitimler"
 
 #: inc/Engine/Admin/Settings/Subscriber.php:195
 msgid "Getting started and how to videos"
-msgstr "Başlarken ve nasıl yapılır videoları"
+msgstr "BaÅŸlarken ve nasÄ±l yapÄ±lÄ±r videolarÄ±"
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:134
 msgid ""
 "We could not fetch the current price because RocketCDN API returned an "
 "unexpected error code."
 msgstr ""
-"RocketCDN API beklenmeyen bir hata kodu döndürdüğünden şu anki fiyatı "
+"RocketCDN API beklenmeyen bir hata kodu dÃ¶ndÃ¼rdÃ¼ÄŸÃ¼nden ÅŸu anki fiyatÄ± "
 "getiremedik."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:140
 msgid "RocketCDN is not available at the moment. Please retry later."
 msgstr ""
-"RocketCDN şu anda kullanılabilir değil. Lütfen daha sonra yeniden deneyin."
+"RocketCDN ÅŸu anda kullanÄ±labilir deÄŸil. LÃ¼tfen daha sonra yeniden deneyin."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
 msgstr ""
-"RocketCDN önbellek temizleme başarısız oldu: Eksik tanımlayıcı parametresi."
+"RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: Eksik tanÄ±mlayÄ±cÄ± parametresi."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
 msgstr ""
-"RocketCDN önbellek temizleme başarısız oldu: Eksik kullanıcı belirteci."
+"RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: Eksik kullanÄ±cÄ± belirteci."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:212
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
-"RocketCDN önbellek temizleme başarısız oldu: API beklenmeyen bir yanıt kodu "
-"döndürdü."
+"RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: API beklenmeyen bir yanÄ±t kodu "
+"dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:221
 msgid "RocketCDN cache purge failed: The API returned an empty response."
 msgstr ""
-"RocketCDN önbellek temizleme başarısız oldu: API boş bir yanıt döndürdü."
+"RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: API boÅŸ bir yanÄ±t dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:230
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
 msgstr ""
-"RocketCDN önbellek temizleme başarısız oldu: API beklenmeyen bir yanıt "
-"döndürdü."
+"RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: API beklenmeyen bir yanÄ±t "
+"dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:239
 #, php-format
 msgid "RocketCDN cache purge failed: %s."
-msgstr "RocketCDN önbellek temizleme başarısız oldu: %s"
+msgstr "RocketCDN Ã¶nbellek temizleme baÅŸarÄ±sÄ±z oldu: %s"
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN önbellek temizleme başarılı."
+msgstr "RocketCDN Ã¶nbellek temizleme baÅŸarÄ±lÄ±."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:81
 msgid "Next Billing Date"
@@ -1765,12 +1765,12 @@ msgstr "Abonelik Yok"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:126
 msgid "Your RocketCDN subscription is currently active."
-msgstr "RocketCDN aboneliğiniz şu anda etkin."
+msgstr "RocketCDN aboneliÄŸiniz ÅŸu anda etkin."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:132
 #, php-format
 msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
-msgstr "RocketCDN’yi kullanmak için CNAME’nizi %1$s%2$s%3$s ile değiştirin."
+msgstr "RocketCDNâ€™yi kullanmak iÃ§in CNAMEâ€™nizi %1$s%2$s%3$s ile deÄŸiÅŸtirin."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:143
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:208
@@ -1781,20 +1781,20 @@ msgstr "%1$sDaha Fazla Bilgi%2$s"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 msgid "RocketCDN enabled"
-msgstr "RocketCDN etkinleştirildi"
+msgstr "RocketCDN etkinleÅŸtirildi"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
 msgid "RocketCDN disabled"
-msgstr "RocketCDN etkisizleştirildi"
+msgstr "RocketCDN etkisizleÅŸtirildi"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:27
 #, php-format
 msgid "Valid until %s only!"
-msgstr "Sadece %s tarihine kadar geçerli!"
+msgstr "Sadece %s tarihine kadar geÃ§erli!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:36
 msgid "Speed up your website thanks to:"
-msgstr "Şunlar sayesinde web sitenizi hızlandırın:"
+msgstr "Å�unlar sayesinde web sitenizi hÄ±zlandÄ±rÄ±n:"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:42
 #, php-format
@@ -1802,7 +1802,7 @@ msgid ""
 "High performance Content Delivery Network (CDN) with %1$sunlimited "
 "bandwidth%2$s"
 msgstr ""
-"%1$sSınırsız bant genişliği%2$s ile yüksek performanslı İçerik Dağıtım Ağı "
+"%1$sSÄ±nÄ±rsÄ±z bant geniÅŸliÄŸi%2$s ile yÃ¼ksek performanslÄ± Ä°Ã§erik DaÄŸÄ±tÄ±m AÄŸÄ± "
 "(CDN)"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:48
@@ -1810,7 +1810,7 @@ msgstr ""
 msgid ""
 "Easy configuration: the %1$sbest CDN settings%2$s are automatically applied"
 msgstr ""
-"Kolay yapılandırma: %1$sen iyi CDN ayarları%2$s otomatik olarak uygulanır"
+"Kolay yapÄ±landÄ±rma: %1$sen iyi CDN ayarlarÄ±%2$s otomatik olarak uygulanÄ±r"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:54
 #, php-format
@@ -1818,12 +1818,12 @@ msgid ""
 "WP Rocket integration: the CDN option is %1$sautomatically configured%2$s in"
 " our plugin"
 msgstr ""
-"WP Rocket bütünleştirmesi: CDN seçeneği eklentimizde %1$sotomatik olarak "
-"yapılandırılır%2$s"
+"WP Rocket bÃ¼tÃ¼nleÅŸtirmesi: CDN seÃ§eneÄŸi eklentimizde %1$sotomatik olarak "
+"yapÄ±landÄ±rÄ±lÄ±r%2$s"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:58
 msgid "Learn more about RocketCDN"
-msgstr "RocketCDN hakkında daha fazla bilgi edinin"
+msgstr "RocketCDN hakkÄ±nda daha fazla bilgi edinin"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:65
 #, php-format
@@ -1831,26 +1831,26 @@ msgid ""
 "*$%1$s/month for 12 months then $%2$s/month. You can cancel your "
 "subscription at any time."
 msgstr ""
-"*12 ay için $%1$s/ay ardından $%2$s/ay. Aboneliğinizi istediğiniz zaman "
+"*12 ay iÃ§in $%1$s/ay ardÄ±ndan $%2$s/ay. AboneliÄŸinizi istediÄŸiniz zaman "
 "iptal edebilirsiniz."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:86
 msgid "Billed monthly"
-msgstr "Aylık faturalandırılır"
+msgstr "AylÄ±k faturalandÄ±rÄ±lÄ±r"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:87
 msgid "Get Started"
-msgstr "Başlayın"
+msgstr "BaÅŸlayÄ±n"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:92
 msgid "Reduce this banner"
-msgstr "Bu afişi küçült"
+msgstr "Bu afiÅŸi kÃ¼Ã§Ã¼lt"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-small.php:17
 msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network."
+"Speed up your website with RocketCDN, WP Rocketâ€™s Content Delivery Network."
 msgstr ""
-"RocketCDN, WP Rocket’in İçerik Dağıtım Ağı ile web sitenizi hızlandırın."
+"RocketCDN, WP Rocketâ€™in Ä°Ã§erik DaÄŸÄ±tÄ±m AÄŸÄ± ile web sitenizi hÄ±zlandÄ±rÄ±n."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-small.php:20
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:13
@@ -1860,11 +1860,11 @@ msgstr "Daha Fazla Bilgi Edinin"
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:23
 msgid "RocketCDN is unavailable on local domains and staging sites."
 msgstr ""
-"RocketCDN yerel etki alanlarında ve hazırlık sitelerinde kullanılamaz."
+"RocketCDN yerel etki alanlarÄ±nda ve hazÄ±rlÄ±k sitelerinde kullanÄ±lamaz."
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:32
 msgid "Get RocketCDN"
-msgstr "RocketCDN’yi Al"
+msgstr "RocketCDNâ€™yi Al"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:11
 msgid "New!"
@@ -1872,42 +1872,42 @@ msgstr "Yeni!"
 
 #: inc/Engine/CDN/RocketCDN/views/promote-notice.php:12
 msgid ""
-"Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
+"Speed up your website with RocketCDN, WP Rocketâ€™s Content Delivery Network!"
 msgstr ""
-"RocketCDN, WP Rocket’in İçerik Dağıtım Ağı ile web sitenizi hızlandırın!"
+"RocketCDN, WP Rocketâ€™in Ä°Ã§erik DaÄŸÄ±tÄ±m AÄŸÄ± ile web sitenizi hÄ±zlandÄ±rÄ±n!"
 
 #: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:96
 #: inc/admin/admin.php:118 inc/deprecated/3.5.php:898
 msgid "Clear this cache"
-msgstr "Bu önbelleği temizle"
+msgstr "Bu Ã¶nbelleÄŸi temizle"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Roket Süresi Dolmuş Önbellek Aralığı"
+msgstr "WP Roket SÃ¼resi DolmuÅŸ Ã–nbellek AralÄ±ÄŸÄ±"
 
 #: inc/Engine/Cache/WPCache.php:337
 msgid "WP_CACHE value"
-msgstr "WP_CACHE değeri"
+msgstr "WP_CACHE deÄŸeri"
 
 #: inc/Engine/Cache/WPCache.php:358
 msgid ""
 "The WP_CACHE constant needs to be set to true for WP Rocket cache to work "
 "properly"
 msgstr ""
-"WP Rocket önbelleğinin düzgün çalışması için WP_CACHE sabitinin true olarak "
-"ayarlanması gerekir"
+"WP Rocket Ã¶nbelleÄŸinin dÃ¼zgÃ¼n Ã§alÄ±ÅŸmasÄ± iÃ§in WP_CACHE sabitinin true olarak "
+"ayarlanmasÄ± gerekir"
 
 #: inc/Engine/Cache/WPCache.php:367
 msgid "WP_CACHE is set to true"
-msgstr "WP_CACHE, true olarak ayarlı"
+msgstr "WP_CACHE, true olarak ayarlÄ±"
 
 #: inc/Engine/Cache/WPCache.php:375
 msgid "WP_CACHE is not set"
-msgstr "WP_CACHE ayarlı değil"
+msgstr "WP_CACHE ayarlÄ± deÄŸil"
 
 #: inc/Engine/Cache/WPCache.php:383
 msgid "WP_CACHE is set to false"
-msgstr "WP_CACHE, false olarak ayarlı"
+msgstr "WP_CACHE, false olarak ayarlÄ±"
 
 #: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
 msgid "Every minute"
@@ -1916,7 +1916,7 @@ msgstr "Her dakika"
 #: inc/Engine/CriticalPath/APIClient.php:64
 #, php-format
 msgid "Critical CSS for %1$s not generated. Error: %2$s"
-msgstr "%1$s için Önemli CSS oluşturulmadı. Hata: %2$s"
+msgstr "%1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: %2$s"
 
 #: inc/Engine/CriticalPath/APIClient.php:170
 #, php-format
@@ -1924,26 +1924,26 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "empty response."
 msgstr ""
-"Mobil üzerinde %1$s için Önemli CSS oluşturulmadı. Hata: API boş bir yanıt "
-"döndürdü."
+"Mobil Ã¼zerinde %1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: API boÅŸ bir yanÄ±t "
+"dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CriticalPath/APIClient.php:173
 #, php-format
 msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an empty "
 "response."
-msgstr "%1$s için Önemli CSS oluşturulmadı. Hata: API boş bir yanıt döndürdü."
+msgstr "%1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: API boÅŸ bir yanÄ±t dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CriticalPath/APIClient.php:185
 #, php-format
 msgid "Critical CSS for %1$s on mobile not generated."
-msgstr "Mobil üzerinde %1$s için Önemli CSS oluşturulmadı."
+msgstr "Mobil Ã¼zerinde %1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±."
 
 #: inc/Engine/CriticalPath/APIClient.php:187
 #: inc/Engine/CriticalPath/ProcessorService.php:194
 #, php-format
 msgid "Critical CSS for %1$s not generated."
-msgstr "%1$s için Önemli CSS oluşturulmadı."
+msgstr "%1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±."
 
 #: inc/Engine/CriticalPath/APIClient.php:195
 #, php-format
@@ -1951,8 +1951,8 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The API returned an "
 "invalid response code."
 msgstr ""
-"Mobil üzerinde %1$s için Önemli CSS oluşturulmadı. Hata: API geçersiz bir "
-"yanıt kodu döndürdü."
+"Mobil Ã¼zerinde %1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: API geÃ§ersiz bir "
+"yanÄ±t kodu dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CriticalPath/APIClient.php:197
 #, php-format
@@ -1960,8 +1960,8 @@ msgid ""
 "Critical CSS for %1$s not generated. Error: The API returned an invalid "
 "response code."
 msgstr ""
-"%1$s için Önemli CSS oluşturulmadı. Hata: API geçersiz bir yanıt kodu "
-"döndürdü."
+"%1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: API geÃ§ersiz bir yanÄ±t kodu "
+"dÃ¶ndÃ¼rdÃ¼."
 
 #: inc/Engine/CriticalPath/APIClient.php:205
 #: inc/Engine/CriticalPath/ProcessorService.php:201
@@ -1971,48 +1971,48 @@ msgstr "Hata: %1$s"
 
 #: inc/Engine/CriticalPath/Admin/Admin.php:264
 msgid "Regenerate Critical Path CSS"
-msgstr "Önemli Yol CSS’yi yeniden oluştur"
+msgstr "Ã–nemli Yol CSSâ€™yi yeniden oluÅŸtur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:144
 #: views/cpcss/metabox/generate.php:47
 msgid "Generate Specific CPCSS"
-msgstr "Belirli ÖYCSS’yi Oluştur"
+msgstr "Belirli Ã–YCSSâ€™yi OluÅŸtur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:145
 #: views/cpcss/metabox/generate.php:45
 msgid "Regenerate specific CPCSS"
-msgstr "Belirli ÖYCSS’yi Yeniden Oluştur"
+msgstr "Belirli Ã–YCSSâ€™yi Yeniden OluÅŸtur"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:216
 msgid "This feature is not available for non-public post types."
 msgstr ""
-"Bu özellik ortak olmayan gönderi türleri için kullanılabilir değildir."
+"Bu Ã¶zellik ortak olmayan gÃ¶nderi tÃ¼rleri iÃ§in kullanÄ±labilir deÄŸildir."
 
 #: inc/Engine/CriticalPath/Admin/Post.php:219
 msgid "%l to use this feature."
-msgstr "Bu özelliği kullanmak için %l."
+msgstr "Bu Ã¶zelliÄŸi kullanmak iÃ§in %l."
 
 #: inc/Engine/CriticalPath/Admin/Post.php:222
 #, php-format
 msgid "Publish the %s"
-msgstr "%s Yayınla"
+msgstr "%s YayÄ±nla"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
-msgstr "WP Rocket ayarlarında CSS’yi eşzamanlı olmadan yükle’yi etkinleştir"
+msgstr "WP Rocket ayarlarÄ±nda CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kleâ€™yi etkinleÅŸtir"
 
 #: inc/Engine/CriticalPath/Admin/Post.php:224
 msgid "Enable Load CSS asynchronously in the options above"
-msgstr "Yukarıdaki seçeneklerde CSS’yi eşzamanlı olmadan yükle’yi etkinleştir"
+msgstr "YukarÄ±daki seÃ§eneklerde CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kleâ€™yi etkinleÅŸtir"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
 msgid "Critical CSS generation is currently running."
-msgstr "Önemli CSS üretimi şu anda çalışıyor."
+msgstr "Ã–nemli CSS Ã¼retimi ÅŸu anda Ã§alÄ±ÅŸÄ±yor."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:159
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
-msgstr "İlerlemeyi izlemek için %1$sWP Rocket ayarları%2$s sayfasına gidin."
+msgstr "Ä°lerlemeyi izlemek iÃ§in %1$sWP Rocket ayarlarÄ±%2$s sayfasÄ±na gidin."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:374
 #, php-format
@@ -2020,17 +2020,17 @@ msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr ""
-"Önemli CSS oluşturma şu anda çalışıyor: %1$d / %2$d sayfa türü tamamlandı. "
-"(İlerlemeyi görmek için bu sayfayı yenileyin)"
+"Ã–nemli CSS oluÅŸturma ÅŸu anda Ã§alÄ±ÅŸÄ±yor: %1$d / %2$d sayfa tÃ¼rÃ¼ tamamlandÄ±. "
+"(Ä°lerlemeyi gÃ¶rmek iÃ§in bu sayfayÄ± yenileyin)"
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:450
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
-msgstr "Önemli CSS oluşturma, %1$d / %2$d sayfa türü için bitti."
+msgstr "Ã–nemli CSS oluÅŸturma, %1$d / %2$d sayfa tÃ¼rÃ¼ iÃ§in bitti."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
 msgid "Critical CSS generation encountered one or more errors."
-msgstr "Önemli CSS oluşturma, bir ya da daha fazla hata ile karşılaştı."
+msgstr "Ã–nemli CSS oluÅŸturma, bir ya da daha fazla hata ile karÅŸÄ±laÅŸtÄ±."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
 msgid "Learn more."
@@ -2042,8 +2042,8 @@ msgid ""
 "Critical CSS for %1$s on mobile not generated. Error: The destination folder"
 " could not be created."
 msgstr ""
-"Mobil üzerinde %1$s için Önemli CSS oluşturulmadı. Hata: Hedef klasör "
-"oluşturulamadı."
+"Mobil Ã¼zerinde %1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: Hedef klasÃ¶r "
+"oluÅŸturulamadÄ±."
 
 #: inc/Engine/CriticalPath/DataManager.php:71
 #, php-format
@@ -2051,74 +2051,74 @@ msgid ""
 "Critical CSS for %1$s not generated. Error: The destination folder could not"
 " be created."
 msgstr ""
-"%1$s için Önemli CSS oluşturulmadı. Hata: Hedef klasör oluşturulamadı."
+"%1$s iÃ§in Ã–nemli CSS oluÅŸturulmadÄ±. Hata: Hedef klasÃ¶r oluÅŸturulamadÄ±."
 
 #: inc/Engine/CriticalPath/DataManager.php:106
 msgid "Critical CSS file for mobile does not exist"
-msgstr "Mobil için Önemli CSS dosyası yok"
+msgstr "Mobil iÃ§in Ã–nemli CSS dosyasÄ± yok"
 
 #: inc/Engine/CriticalPath/DataManager.php:108
 msgid "Critical CSS file does not exist"
-msgstr "Önemli CSS dosyası yok"
+msgstr "Ã–nemli CSS dosyasÄ± yok"
 
 #: inc/Engine/CriticalPath/DataManager.php:120
 msgid "Critical CSS file for mobile cannot be deleted"
-msgstr "Mobil için Önemli CSS dosyası silinemez"
+msgstr "Mobil iÃ§in Ã–nemli CSS dosyasÄ± silinemez"
 
 #: inc/Engine/CriticalPath/DataManager.php:122
 msgid "Critical CSS file cannot be deleted"
-msgstr "Önemli CSS dosyası silinemez"
+msgstr "Ã–nemli CSS dosyasÄ± silinemez"
 
 #: inc/Engine/CriticalPath/ProcessorService.php:187
 #, php-format
 msgid "Mobile Critical CSS for %1$s not generated."
-msgstr "%1$s için Mobil Önemli CSS oluşturulmadı."
+msgstr "%1$s iÃ§in Mobil Ã–nemli CSS oluÅŸturulmadÄ±."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:228
 #, php-format
 msgid "Critical CSS for %s in progress."
-msgstr "%s için Önemli CSS devam ediyor."
+msgstr "%s iÃ§in Ã–nemli CSS devam ediyor."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:262
 #, php-format
 msgid "Mobile Critical CSS for %s generated."
-msgstr "%s için Mobil Önemli CSS oluşturuldu."
+msgstr "%s iÃ§in Mobil Ã–nemli CSS oluÅŸturuldu."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:273
 #, php-format
 msgid "Critical CSS for %s generated."
-msgstr "%s için Önemli CSS oluşturuldu."
+msgstr "%s iÃ§in Ã–nemli CSS oluÅŸturuldu."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:295
 msgid "Critical CSS file deleted successfully."
-msgstr "Önemli CSS dosyası başarılı olarak silindi."
+msgstr "Ã–nemli CSS dosyasÄ± baÅŸarÄ±lÄ± olarak silindi."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:317
 #, php-format
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
-"%1$s için Mobil Önemli CSS zaman aşımına uğradı. Lütfen biraz sonra yeniden "
+"%1$s iÃ§in Mobil Ã–nemli CSS zaman aÅŸÄ±mÄ±na uÄŸradÄ±. LÃ¼tfen biraz sonra yeniden "
 "deneyin."
 
 #: inc/Engine/CriticalPath/ProcessorService.php:330
 #, php-format
 msgid "Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
-"%1$s için Önemli CSS zaman aşımına uğradı. Lütfen biraz sonra yeniden "
+"%1$s iÃ§in Ã–nemli CSS zaman aÅŸÄ±mÄ±na uÄŸradÄ±. LÃ¼tfen biraz sonra yeniden "
 "deneyin."
 
 #: inc/Engine/CriticalPath/RESTWP.php:141
 msgid "Mobile CPCSS generation not enabled."
-msgstr "Mobil ÖYCSS oluşturma etkinleştirilmedi."
+msgstr "Mobil Ã–YCSS oluÅŸturma etkinleÅŸtirilmedi."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:36
 #: inc/Engine/CriticalPath/RESTWPPost.php:69
 msgid "Requested post does not exist."
-msgstr "İstenen yazı yok."
+msgstr "Ä°stenen yazÄ± yok."
 
 #: inc/Engine/CriticalPath/RESTWPPost.php:46
 msgid "Cannot generate CPCSS for unpublished post."
-msgstr "Yayınlanmamış yazı için ÖYCSS oluşturulamıyor."
+msgstr "YayÄ±nlanmamÄ±ÅŸ yazÄ± iÃ§in Ã–YCSS oluÅŸturulamÄ±yor."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:82 inc/deprecated/3.5.php:858
 msgid ""
@@ -2130,45 +2130,45 @@ msgid_plural ""
 "system is not running properly, which can prevent some WP Rocket features "
 "from working as intended:"
 msgstr[0] ""
-"Aşağıdaki zamanlanan olayın çalıştırılması başarısız oldu. Bu, CRON "
-"sisteminin düzgün bir şekilde çalışmadığını gösterebilir ve bu da bazı WP "
-"Rocket özelliklerinin beklendiği gibi çalışmasını engelleyebilir:"
+"AÅŸaÄŸÄ±daki zamanlanan olayÄ±n Ã§alÄ±ÅŸtÄ±rÄ±lmasÄ± baÅŸarÄ±sÄ±z oldu. Bu, CRON "
+"sisteminin dÃ¼zgÃ¼n bir ÅŸekilde Ã§alÄ±ÅŸmadÄ±ÄŸÄ±nÄ± gÃ¶sterebilir ve bu da bazÄ± WP "
+"Rocket Ã¶zelliklerinin beklendiÄŸi gibi Ã§alÄ±ÅŸmasÄ±nÄ± engelleyebilir:"
 msgstr[1] ""
-"Aşağıdaki zamanlanan olayların çalıştırılması başarısız oldu. Bu, CRON "
-"sisteminin düzgün bir şekilde çalışmadığını gösterebilir ve bu da bazı WP "
-"Rocket özelliklerinin beklendiği gibi çalışmasını engelleyebilir:"
+"AÅŸaÄŸÄ±daki zamanlanan olaylarÄ±n Ã§alÄ±ÅŸtÄ±rÄ±lmasÄ± baÅŸarÄ±sÄ±z oldu. Bu, CRON "
+"sisteminin dÃ¼zgÃ¼n bir ÅŸekilde Ã§alÄ±ÅŸmadÄ±ÄŸÄ±nÄ± gÃ¶sterebilir ve bu da bazÄ± WP "
+"Rocket Ã¶zelliklerinin beklendiÄŸi gibi Ã§alÄ±ÅŸmasÄ±nÄ± engelleyebilir:"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:88 inc/deprecated/3.5.php:867
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
-"CRON’un çalışıp çalışmadığını denetlemek için lütfen barındırıcınız ile "
-"iletişime geçin."
+"CRONâ€™un Ã§alÄ±ÅŸÄ±p Ã§alÄ±ÅŸmadÄ±ÄŸÄ±nÄ± denetlemek iÃ§in lÃ¼tfen barÄ±ndÄ±rÄ±cÄ±nÄ±z ile "
+"iletiÅŸime geÃ§in."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:142
 msgid "Scheduled Cache Purge"
-msgstr "Zamanlanmış Önbellek Temizleme"
+msgstr "ZamanlanmÄ±ÅŸ Ã–nbellek Temizleme"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:143
 msgid "Scheduled Database Optimization"
-msgstr "Zamanlanmış Veritabanı İyileştirme"
+msgstr "ZamanlanmÄ±ÅŸ VeritabanÄ± Ä°yileÅŸtirme"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:144
 msgid "Database Optimization Process"
-msgstr "Veritabanı İyileştirme İşlemi"
+msgstr "VeritabanÄ± Ä°yileÅŸtirme Ä°ÅŸlemi"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:145
 msgctxt "noun"
 msgid "Preload"
-msgstr "Önyükleme"
+msgstr "Ã–nyÃ¼kleme"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:146
 msgid "Critical Path CSS Generation Process"
-msgstr "Önemli Yol CSS’yi Oluşturma İşlemi"
+msgstr "Ã–nemli Yol CSSâ€™yi OluÅŸturma Ä°ÅŸlemi"
 
 #: inc/Engine/License/Renewal.php:116
 #, php-format
 msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
-msgstr "Lisansınızı şimdi %1$s%3$s%2$s adresinden 1 yıllığına yenileyin."
+msgstr "LisansÄ±nÄ±zÄ± ÅŸimdi %1$s%3$s%2$s adresinden 1 yÄ±llÄ±ÄŸÄ±na yenileyin."
 
 #: inc/Engine/License/Renewal.php:129
 #, php-format
@@ -2176,13 +2176,13 @@ msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
 "will only pay %1$s%4$s%2$s!"
 msgstr ""
-"Lisansınızı 1 yıllığına hemen yenileyin ve %1$s%3$s İNDİRİM%2$s alın: sadece"
-" %1$s%4$s%2$s ödeyeceksiniz!"
+"LisansÄ±nÄ±zÄ± 1 yÄ±llÄ±ÄŸÄ±na hemen yenileyin ve %1$s%3$s Ä°NDÄ°RÄ°M%2$s alÄ±n: sadece"
+" %1$s%4$s%2$s Ã¶deyeceksiniz!"
 
 #: inc/Engine/License/Renewal.php:195
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
-msgstr "Çok geç olmadan yenileyin, %1$s%3$s%2$s ödeyeceksiniz."
+msgstr "Ã‡ok geÃ§ olmadan yenileyin, %1$s%3$s%2$s Ã¶deyeceksiniz."
 
 #: inc/Engine/License/Renewal.php:204
 #, php-format
@@ -2190,8 +2190,8 @@ msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
 "%1$s%4$s%3$s!"
 msgstr ""
-"Çok geç olmadan %1$s%2$s indirim%3$s ile yenileyin, sadece %1$s%4$s%3$s "
-"ödeyeceksiniz!"
+"Ã‡ok geÃ§ olmadan %1$s%2$s indirim%3$s ile yenileyin, sadece %1$s%4$s%3$s "
+"Ã¶deyeceksiniz!"
 
 #: inc/Engine/License/Renewal.php:491
 #, php-format
@@ -2199,21 +2199,21 @@ msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
 "before losing access."
 msgstr ""
-"Bu özelliği kullanmaya devam etmek için geçerli bir lisansa ihtiyacınız var."
-" Erişimi kaybetmeden önce %1$sşimdi yenileyin%2$s."
+"Bu Ã¶zelliÄŸi kullanmaya devam etmek iÃ§in geÃ§erli bir lisansa ihtiyacÄ±nÄ±z var."
+" EriÅŸimi kaybetmeden Ã¶nce %1$sÅŸimdi yenileyin%2$s."
 
 #: inc/Engine/License/Renewal.php:512
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
-"Bu seçeneği etkinleştirmek için aktif bir lisansa ihtiyacınız var. %1$sŞimdi"
+"Bu seÃ§eneÄŸi etkinleÅŸtirmek iÃ§in aktif bir lisansa ihtiyacÄ±nÄ±z var. %1$sÅ�imdi"
 " yenile%2$s."
 
 #: inc/Engine/License/Renewal.php:540
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
-"Bu seçeneği etkinleştirmek için aktif bir lisansa ihtiyacınız var. %1$sDaha "
+"Bu seÃ§eneÄŸi etkinleÅŸtirmek iÃ§in aktif bir lisansa ihtiyacÄ±nÄ±z var. %1$sDaha "
 "fazla bilgi%2$s."
 
 #: inc/Engine/License/Upgrade.php:252
@@ -2225,16 +2225,16 @@ msgid_plural ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to Infinite!%5$s"
 msgstr[0] ""
-"Daha fazla web sitesini hızlandırmak için %1$s avantajından yararlanın:%2$s "
-"%3$slisansınızı Infinite’e veya Plus’a yükseltmek%5$s için %3$s%4$s "
-"indirim%5$s alın!"
+"Daha fazla web sitesini hÄ±zlandÄ±rmak iÃ§in %1$s avantajÄ±ndan yararlanÄ±n:%2$s "
+"%3$slisansÄ±nÄ±zÄ± Infiniteâ€™e veya Plusâ€™a yÃ¼kseltmek%5$s iÃ§in %3$s%4$s "
+"indirim%5$s alÄ±n!"
 msgstr[1] ""
-"Daha fazla web sitesini hızlandırmak için %1$s avantajından yararlanın:%2$s "
-"%3$slisansınızı Infinite’e yükseltmek%5$s için %3$s%4$s indirim%5$s alın!"
+"Daha fazla web sitesini hÄ±zlandÄ±rmak iÃ§in %1$s avantajÄ±ndan yararlanÄ±n:%2$s "
+"%3$slisansÄ±nÄ±zÄ± Infiniteâ€™e yÃ¼kseltmek%5$s iÃ§in %3$s%4$s indirim%5$s alÄ±n!"
 
 #: inc/Engine/License/Upgrade.php:382 inc/Engine/License/Upgrade.php:405
 msgid "Unlimited"
-msgstr "Sınırsız"
+msgstr "SÄ±nÄ±rsÄ±z"
 
 #: inc/Engine/License/views/promo-banner.php:16
 #, php-format
@@ -2244,11 +2244,11 @@ msgstr "%s indirim"
 #: inc/Engine/License/views/promo-banner.php:21
 #, php-format
 msgid "%s promotion is live!"
-msgstr "%s promosyonu geçerli!"
+msgstr "%s promosyonu geÃ§erli!"
 
 #: inc/Engine/License/views/promo-banner.php:27
 msgid "Hurry Up! Deal ends in:"
-msgstr "Acele Edin! Anlaşmanın bitiş zamanı:"
+msgstr "Acele Edin! AnlaÅŸmanÄ±n bitiÅŸ zamanÄ±:"
 
 #: inc/Engine/License/views/promo-banner.php:31
 #: inc/Engine/License/views/renewal-soon-banner.php:14
@@ -2263,7 +2263,7 @@ msgstr "Saniye"
 #: inc/Engine/License/views/promo-banner.php:34
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "Upgrade now"
-msgstr "Şimdi yükselt"
+msgstr "Å�imdi yÃ¼kselt"
 
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
@@ -2271,19 +2271,19 @@ msgstr "Şimdi yükselt"
 #: inc/Engine/License/views/renewal-expired-banner.php:30
 #: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
-msgstr "Bu bildirimi anımsatma"
+msgstr "Bu bildirimi anÄ±msatma"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:11
 msgid "The Optimize CSS Delivery feature is disabled."
-msgstr "CSS teslimini iyileştir özelliği etkisizleştirildi."
+msgstr "CSS teslimini iyileÅŸtir Ã¶zelliÄŸi etkisizleÅŸtirildi."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:15
 msgid ""
 "You can no longer use the Remove Unused CSS or Load CSS asynchronously "
 "options."
 msgstr ""
-"Artık Kullanılmayan CSS’yi Kaldır veya CSS’yi eşzamansız olarak yükle "
-"seçeneklerini kullanamazsınız."
+"ArtÄ±k KullanÄ±lmayan CSSâ€™yi KaldÄ±r veya CSSâ€™yi eÅŸzamansÄ±z olarak yÃ¼kle "
+"seÃ§eneklerini kullanamazsÄ±nÄ±z."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:20
 #, php-format
@@ -2292,28 +2292,28 @@ msgid ""
 "which addresses a PageSpeed Insights recommendation and improves your page "
 "performance."
 msgstr ""
-"CSS teslimini iyileştirmeye devam etmek için bir PageSpeed ​​Insights "
-"önerisini ele alan ve sayfa performansınızı iyileştiren %1$saktif bir "
-"lisansa%2$s ihtiyacınız var."
+"CSS teslimini iyileÅŸtirmeye devam etmek iÃ§in bir PageSpeed â€‹â€‹Insights "
+"Ã¶nerisini ele alan ve sayfa performansÄ±nÄ±zÄ± iyileÅŸtiren %1$saktif bir "
+"lisansa%2$s ihtiyacÄ±nÄ±z var."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:29
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:39
 #: inc/Engine/License/views/renewal-expired-banner.php:27
 #: inc/Engine/License/views/renewal-soon-banner.php:31
 msgid "Renew now"
-msgstr "Şimdi yenile"
+msgstr "Å�imdi yenile"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:11
 msgid "You will soon lose access to some features"
-msgstr "Yakında bazı özelliklere erişiminizi kaybedeceksiniz"
+msgstr "YakÄ±nda bazÄ± Ã¶zelliklere eriÅŸiminizi kaybedeceksiniz"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:18
 #, php-format
 msgid ""
 "You need an %1$sactive license to continue optimizing your CSS delivery%2$s."
 msgstr ""
-"%1$sCSS teslimini iyileştirmeye devam etmek için aktif bir lisansa%2$s "
-"ihtiyacınız var."
+"%1$sCSS teslimini iyileÅŸtirmeye devam etmek iÃ§in aktif bir lisansa%2$s "
+"ihtiyacÄ±nÄ±z var."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:24
 msgid ""
@@ -2321,27 +2321,27 @@ msgid ""
 " to address the PageSpeed Insights recommendations and improve your website "
 "performance."
 msgstr ""
-"Kullanılmayan CSS’yi Kaldır veya CSS’yi eşzamansız olarak yükle özellikleri,"
-" PageSpeed ​​Insights önerilerini ele almak ve web sitenizin performansını "
-"artırmak için harika seçeneklerdir."
+"KullanÄ±lmayan CSSâ€™yi KaldÄ±r veya CSSâ€™yi eÅŸzamansÄ±z olarak yÃ¼kle Ã¶zellikleri,"
+" PageSpeed â€‹â€‹Insights Ã¶nerilerini ele almak ve web sitenizin performansÄ±nÄ± "
+"artÄ±rmak iÃ§in harika seÃ§eneklerdir."
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:29
 #, php-format
 msgid "They will be %1$sautomatically disabled on %3$s%2$s."
-msgstr "%1$s%3$s tarihinde otomatik olarak etkisizleştirileceklerdir%2$s."
+msgstr "%1$s%3$s tarihinde otomatik olarak etkisizleÅŸtirileceklerdir%2$s."
 
 #: inc/Engine/License/views/renewal-expired-banner.php:11
 msgid "Your WP Rocket license is expired!"
-msgstr "WP Rocket lisansınızın süresi doldu!"
+msgstr "WP Rocket lisansÄ±nÄ±zÄ±n sÃ¼resi doldu!"
 
 #: inc/Engine/License/views/renewal-expired-banner.php:18
 #, php-format
 msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
-"features and enhancements%2$s. 🚀"
+"features and enhancements%2$s. ğŸš€"
 msgstr ""
-"%1$sYeni özelliklerimizden ve geliştirmelerimizden%2$s yararlanabilseydi web"
-" siteniz çok daha hızlı olabilirdi.🚀"
+"%1$sYeni Ã¶zelliklerimizden ve geliÅŸtirmelerimizden%2$s yararlanabilseydi web"
+" siteniz Ã§ok daha hÄ±zlÄ± olabilirdi.ğŸš€"
 
 #: inc/Engine/License/views/renewal-soon-banner.php:22
 #, php-format
@@ -2349,12 +2349,12 @@ msgid ""
 "Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access"
 " to product updates and support."
 msgstr ""
-"%1$sWP Rocket lisansınızın süresi dolmak üzere%2$s: yakında ürün "
-"güncellemelerine ve desteğine erişiminizi kaybedeceksiniz."
+"%1$sWP Rocket lisansÄ±nÄ±zÄ±n sÃ¼resi dolmak Ã¼zere%2$s: yakÄ±nda Ã¼rÃ¼n "
+"gÃ¼ncellemelerine ve desteÄŸine eriÅŸiminizi kaybedeceksiniz."
 
 #: inc/Engine/License/views/upgrade-popin.php:12
 msgid "Speed Up More Websites"
-msgstr "Daha Fazla Web Sitesini Hızlandırın"
+msgstr "Daha Fazla Web Sitesini HÄ±zlandÄ±rÄ±n"
 
 #: inc/Engine/License/views/upgrade-popin.php:19
 #, php-format
@@ -2363,17 +2363,17 @@ msgid ""
 "upgrade, simply pay the %1$sprice difference%2$s between your current and "
 "new licenses, as shown below."
 msgstr ""
-"WP Rocket’ı lisansınızı yükselterek daha fazla web sitesinde "
-"kullanabilirsiniz. Yükseltmek için sadece şu anki ve yeni lisanslarınız "
-"arasındaki %1$sfiyat farkını%2$s, aşağıda gösterildiği gibi ödeyin."
+"WP Rocketâ€™Ä± lisansÄ±nÄ±zÄ± yÃ¼kselterek daha fazla web sitesinde "
+"kullanabilirsiniz. YÃ¼kseltmek iÃ§in sadece ÅŸu anki ve yeni lisanslarÄ±nÄ±z "
+"arasÄ±ndaki %1$sfiyat farkÄ±nÄ±%2$s, aÅŸaÄŸÄ±da gÃ¶sterildiÄŸi gibi Ã¶deyin."
 
 #: inc/Engine/License/views/upgrade-popin.php:25
 #, php-format
 msgid ""
 "%1$sN.B.%2$s: Upgrading your license does not change your expiration date"
 msgstr ""
-"%1$sLütfen Dikkat%2$s: Lisansınızı yükseltmek, geçerlilik sonu tarihinizi "
-"değiştirmez"
+"%1$sLÃ¼tfen Dikkat%2$s: LisansÄ±nÄ±zÄ± yÃ¼kseltmek, geÃ§erlilik sonu tarihinizi "
+"deÄŸiÅŸtirmez"
 
 #: inc/Engine/License/views/upgrade-popin.php:35
 #, php-format
@@ -2388,45 +2388,45 @@ msgstr "%s web sitesi"
 #: inc/Engine/License/views/upgrade-popin.php:54
 #, php-format
 msgid "Upgrade to %s"
-msgstr "%s olarak yükselt"
+msgstr "%s olarak yÃ¼kselt"
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid ""
 "You can use WP Rocket on more websites by upgrading your license (you will "
 "only pay the price difference between your current and new licenses)."
 msgstr ""
-"WP Rocket’ı lisansınızı yükselterek daha fazla web sitesinde "
-"kullanabilirsiniz (sadece şu anki ve yeni lisanslarınız arasındaki fiyat "
-"farkını ödeyeceksiniz)."
+"WP Rocketâ€™Ä± lisansÄ±nÄ±zÄ± yÃ¼kselterek daha fazla web sitesinde "
+"kullanabilirsiniz (sadece ÅŸu anki ve yeni lisanslarÄ±nÄ±z arasÄ±ndaki fiyat "
+"farkÄ±nÄ± Ã¶deyeceksiniz)."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:103
 msgid ""
 "You need an active license to get the latest version of the lists from our "
 "server."
 msgstr ""
-"Listelerin en son sürümünü sunucumuzdan almak için aktif bir lisansa "
-"ihtiyacınız var."
+"Listelerin en son sÃ¼rÃ¼mÃ¼nÃ¼ sunucumuzdan almak iÃ§in aktif bir lisansa "
+"ihtiyacÄ±nÄ±z var."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
 msgid "Could not get updated lists from server."
-msgstr "Sunucudan güncellenmiş listeler alınamadı."
+msgstr "Sunucudan gÃ¼ncellenmiÅŸ listeler alÄ±namadÄ±."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
 msgid "Lists are up to date."
-msgstr "Listeler güncel."
+msgstr "Listeler gÃ¼ncel."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:132
 msgid "Could not update lists."
-msgstr "Listeler güncellenemedi."
+msgstr "Listeler gÃ¼ncellenemedi."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
 msgid "Lists are successfully updated."
-msgstr "Listeler başarılı olarak güncellendi."
+msgstr "Listeler baÅŸarÄ±lÄ± olarak gÃ¼ncellendi."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
-msgstr "Kullanılan CSS’yi Temizle"
+msgstr "KullanÄ±lan CSSâ€™yi Temizle"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:219
 #, php-format
@@ -2434,8 +2434,8 @@ msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
 "your pages."
 msgstr ""
-"%1$s: Lütfen %2$s saniye bekleyin. Kullanılmayan CSS’yi Kaldır hizmeti "
-"sayfalarınızı işliyor."
+"%1$s: LÃ¼tfen %2$s saniye bekleyin. KullanÄ±lmayan CSSâ€™yi KaldÄ±r hizmeti "
+"sayfalarÄ±nÄ±zÄ± iÅŸliyor."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:264
 #, php-format
@@ -2443,21 +2443,21 @@ msgid ""
 "%1$s: The Used CSS of your homepage has been processed. WP Rocket will "
 "continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
-"%1$s: Ana sayfanızın Kullanılan CSS’si işlendi. WP Rocket, her %3$s saniyede"
-" %2$s URL’ye kadar Kullanılan CSS oluşturmaya devam edecek."
+"%1$s: Ana sayfanÄ±zÄ±n KullanÄ±lan CSSâ€™si iÅŸlendi. WP Rocket, her %3$s saniyede"
+" %2$s URLâ€™ye kadar KullanÄ±lan CSS oluÅŸturmaya devam edecek."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:273
 #, php-format
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
-"En hızlı sonuçlar için %1$sÖnyükleme%2$s’nin etkinleştirilmesini öneririz."
+"En hÄ±zlÄ± sonuÃ§lar iÃ§in %1$sÃ–nyÃ¼kleme%2$sâ€™nin etkinleÅŸtirilmesini Ã¶neririz."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:283
 #, php-format
 msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
-"İşlem hakkında daha fazla bilgi edinmek için %1$sbelgelerimizi%2$s gözden "
-"geçirin."
+"Ä°ÅŸlem hakkÄ±nda daha fazla bilgi edinmek iÃ§in %1$sbelgelerimizi%2$s gÃ¶zden "
+"geÃ§irin."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:481
 msgid ""
@@ -2465,15 +2465,15 @@ msgid ""
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
 "and further improve your website's performance."
 msgstr ""
-"WP Rocket’in nulled bir sürümünü kullandığınız için kullanılan CSS’yi "
-"oluşturamadık. Kullanılmayan CSS’yi Kaldır özelliğini kullanmak ve web "
-"sitenizin performansını daha da iyileştirmek için aktif bir lisansa "
-"ihtiyacınız var."
+"WP Rocketâ€™in nulled bir sÃ¼rÃ¼mÃ¼nÃ¼ kullandÄ±ÄŸÄ±nÄ±z iÃ§in kullanÄ±lan CSSâ€™yi "
+"oluÅŸturamadÄ±k. KullanÄ±lmayan CSSâ€™yi KaldÄ±r Ã¶zelliÄŸini kullanmak ve web "
+"sitenizin performansÄ±nÄ± daha da iyileÅŸtirmek iÃ§in aktif bir lisansa "
+"ihtiyacÄ±nÄ±z var."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:484
 #, php-format
 msgid "Click here to get a WP Rocket single license at %1$s off!"
-msgstr "%1$s indirimle WP Rocket tekli lisansı almak için burayı tıklayın!"
+msgstr "%1$s indirimle WP Rocket tekli lisansÄ± almak iÃ§in burayÄ± tÄ±klayÄ±n!"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:521
 #, php-format
@@ -2482,27 +2482,27 @@ msgid ""
 "Remove Unused CSS feature to work. Please reach out to <a href=\"%3$s\">our "
 "support</a>."
 msgstr ""
-"Kullanılmayan CSS'yi Kaldır özelliğinin çalışması için gerekli olan %2$s "
-"tablosu veritabanında oluşturulamadı. Lütfen <a href=\"%3$s\">destek "
-"birimimize</a> ulaşın."
+"KullanÄ±lmayan CSS'yi KaldÄ±r Ã¶zelliÄŸinin Ã§alÄ±ÅŸmasÄ± iÃ§in gerekli olan %2$s "
+"tablosu veritabanÄ±nda oluÅŸturulamadÄ±. LÃ¼tfen <a href=\"%3$s\">destek "
+"birimimize</a> ulaÅŸÄ±n."
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
-msgstr "%1$s: Kullanılan CSS seçeneği etkinleştirilmedi!"
+msgstr "%1$s: KullanÄ±lan CSS seÃ§eneÄŸi etkinleÅŸtirilmedi!"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
-msgstr "%1$s: Kullanılan CSS önbelleği temizlendi!"
+msgstr "%1$s: KullanÄ±lan CSS Ã¶nbelleÄŸi temizlendi!"
 
 #: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:711
 msgid "Clear Used CSS of this URL"
-msgstr "Bu URL’nin Kullanılan CSS’sini Temizle"
+msgstr "Bu URLâ€™nin KullanÄ±lan CSSâ€™sini Temizle"
 
 #: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
 msgid "WP Rocket Remove Unused CSS pending jobs"
-msgstr "WP Rocket Kullanılmayan CSS’yi Kaldır bekleyen işleri"
+msgstr "WP Rocket KullanÄ±lmayan CSSâ€™yi KaldÄ±r bekleyen iÅŸleri"
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
 #: inc/deprecated/3.3.php:770
@@ -2513,8 +2513,8 @@ msgid ""
 "href=\"%s\">contact support</a>."
 msgstr ""
 "Beklenmeyen bir hata meydana geldi. WP-Rocket.me veya bu sunucunun "
-"yapılandırması ile ilgili birşey yanlış gitmiş olabilir. Eğer sorunlar "
-"yaşamaya devam ederseniz, <a href=\"%s\">destekle iletişime geçin</a>."
+"yapÄ±landÄ±rmasÄ± ile ilgili birÅŸey yanlÄ±ÅŸ gitmiÅŸ olabilir. EÄŸer sorunlar "
+"yaÅŸamaya devam ederseniz, <a href=\"%s\">destekle iletiÅŸime geÃ§in</a>."
 
 #: inc/Engine/Plugin/UpdaterSubscriber.php:462
 #: inc/Engine/Plugin/UpdaterSubscriber.php:476
@@ -2523,13 +2523,13 @@ msgstr ""
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
 #, php-format
 msgid "%s Update Rollback"
-msgstr "%s Güncellemesi Geri Alma"
+msgstr "%s GÃ¼ncellemesi Geri Alma"
 
 #: inc/Engine/Plugin/UpdaterSubscriber.php:499 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
-"%1$sWP Rocket’a geri dönün%2$s ya da %3$sEklentiler sayfasına gidin%2$s"
+"%1$sWP Rocketâ€™a geri dÃ¶nÃ¼n%2$s ya da %3$sEklentiler sayfasÄ±na gidin%2$s"
 
 #: inc/Engine/Preload/Admin/Settings.php:57
 #, php-format
@@ -2538,17 +2538,17 @@ msgid ""
 "continue to cache all your pages whenever they are purged. No further action"
 " is needed."
 msgstr ""
-"%1$s: Önyükleme hizmeti artık etkin. İlk önyüklemeden sonra, tüm "
-"sayfalarınızı her temizlendiklerinde önbelleğe almaya devam edecek. Başka "
-"bir işlem yapılmasına gerek yoktur."
+"%1$s: Ã–nyÃ¼kleme hizmeti artÄ±k etkin. Ä°lk Ã¶nyÃ¼klemeden sonra, tÃ¼m "
+"sayfalarÄ±nÄ±zÄ± her temizlendiklerinde Ã¶nbelleÄŸe almaya devam edecek. BaÅŸka "
+"bir iÅŸlem yapÄ±lmasÄ±na gerek yoktur."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:132
 msgid "WP Rocket Preload pending jobs"
-msgstr "WP Rocket Önyükleme bekleyen işleri"
+msgstr "WP Rocket Ã–nyÃ¼kleme bekleyen iÅŸleri"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:160
 msgid "WP Rocket Preload revert stuck in-progress jobs"
-msgstr "WP Rocket Önyükleme, takılı kalmış devam eden işleri geri alır"
+msgstr "WP Rocket Ã–nyÃ¼kleme, takÄ±lÄ± kalmÄ±ÅŸ devam eden iÅŸleri geri alÄ±r"
 
 #: inc/ThirdParty/Hostings/Cloudways.php:82
 #, php-format
@@ -2556,8 +2556,8 @@ msgid ""
 "Varnish auto-purge will be automatically enabled once Varnish is enabled on "
 "your %s server."
 msgstr ""
-"%s sunucunuzda Varnish etkinleştirildikten sonra Varnish otomatik temizleme,"
-" otomatik olarak etkinleştirilecektir."
+"%s sunucunuzda Varnish etkinleÅŸtirildikten sonra Varnish otomatik temizleme,"
+" otomatik olarak etkinleÅŸtirilecektir."
 
 #: inc/ThirdParty/Hostings/Kinsta.php:158
 #, php-format
@@ -2567,10 +2567,10 @@ msgid ""
 "working correctly. Please get in touch with Kinsta support through your "
 "%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
-"Kurulumunuzda, Kinsta kurulumunuzu ve WP Rocket’in doğru bir şekilde "
-"çalışmasını önleyecek, Önbellek temizlemeyi yöneten çekirdek Kinsta "
-"dosyalarının eksik olduğu görülüyor. Lütfen bu sorunu çözmek için  "
-"%1$sMyKinsta%2$s hesabınız aracılığıyla Kinsta desteği ile temasa geçin."
+"Kurulumunuzda, Kinsta kurulumunuzu ve WP Rocketâ€™in doÄŸru bir ÅŸekilde "
+"Ã§alÄ±ÅŸmasÄ±nÄ± Ã¶nleyecek, Ã–nbellek temizlemeyi yÃ¶neten Ã§ekirdek Kinsta "
+"dosyalarÄ±nÄ±n eksik olduÄŸu gÃ¶rÃ¼lÃ¼yor. LÃ¼tfen bu sorunu Ã§Ã¶zmek iÃ§in  "
+"%1$sMyKinsta%2$s hesabÄ±nÄ±z aracÄ±lÄ±ÄŸÄ±yla Kinsta desteÄŸi ile temasa geÃ§in."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
 #, php-format
@@ -2578,9 +2578,9 @@ msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
-"%1$s: Cloudflare’in HTTP/2 Sunucu Yollaması, Kullanılmayan CSS’yi Kaldır ve "
-"CSS Dosyalarını Birleştir’in özellikleriyle uyumlu değil. "
-"Etkisizleştirmenizi şiddetle öneririz."
+"%1$s: Cloudflareâ€™in HTTP/2 Sunucu YollamasÄ±, KullanÄ±lmayan CSSâ€™yi KaldÄ±r ve "
+"CSS DosyalarÄ±nÄ± BirleÅŸtirâ€™in Ã¶zellikleriyle uyumlu deÄŸil. "
+"EtkisizleÅŸtirmenizi ÅŸiddetle Ã¶neririz."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -2588,8 +2588,8 @@ msgid ""
 "<strong>%1$s</strong>: Mod PageSpeed is not compatible with this plugin and "
 "may cause unexpected results. %2$sMore Info%3$s"
 msgstr ""
-"<strong>%1$s</strong>: Mod PageSpeed bu eklenti ile uyumlu değil ve "
-"beklenmeyen sonuçlara neden olabilir. %2$sDaha Fazla Bilgi%3$s"
+"<strong>%1$s</strong>: Mod PageSpeed bu eklenti ile uyumlu deÄŸil ve "
+"beklenmeyen sonuÃ§lara neden olabilir. %2$sDaha Fazla Bilgi%3$s"
 
 #: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:76
 #, php-format
@@ -2599,11 +2599,11 @@ msgid ""
 "not be applied to the file it creates. We suggest disabling %1$sJavaScript "
 "Aggregation%2$s to take full advantage of Delay JavaScript Execution."
 msgstr ""
-"%1$sWP Rocket: %2$sAutoptimize’ın JavaScript Toplama özelliğinin "
-"etkinleştirildiğini tespit ettik. WP Rocket’ın JavaScript’i Geciktir "
-"Yürütmesi, oluşturduğu dosyaya uygulanmayacaktır. JavaScript’i Geciktir "
-"Yürütmesi’nden tam olarak yararlanmak için %1$sJavaScript Toplama%2$s "
-"özelliğinin etkisizleştirilmesini öneririz."
+"%1$sWP Rocket: %2$sAutoptimizeâ€™Ä±n JavaScript Toplama Ã¶zelliÄŸinin "
+"etkinleÅŸtirildiÄŸini tespit ettik. WP Rocketâ€™Ä±n JavaScriptâ€™i Geciktir "
+"YÃ¼rÃ¼tmesi, oluÅŸturduÄŸu dosyaya uygulanmayacaktÄ±r. JavaScriptâ€™i Geciktir "
+"YÃ¼rÃ¼tmesiâ€™nden tam olarak yararlanmak iÃ§in %1$sJavaScript Toplama%2$s "
+"Ã¶zelliÄŸinin etkisizleÅŸtirilmesini Ã¶neririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:131
 #, php-format
@@ -2613,11 +2613,11 @@ msgid ""
 "correctly. We suggest disabling %1$sAggregate Inline CSS%2$s to take full "
 "advantage of Load CSS Asynchronously Execution."
 msgstr ""
-"%1$sWP Rocket: %2$sAutoptimize’ın Satır İçi CSS Topla özelliğinin "
-"etkinleştirildiğini tespit ettik. WP Rocket’ın CSS’yi Eşzamanlı Olmadan "
-"Yükle özelliği düzgün olarak çalışmayacaktır. CSS’yi Eşzamanlı Olmadan Yükle"
-" Yürütmesi’nden tam olarak yararlanmak için %1$sSatır İçi CSS Topla%2$s "
-"özelliğinin etkisizleştirilmesini öneririz."
+"%1$sWP Rocket: %2$sAutoptimizeâ€™Ä±n SatÄ±r Ä°Ã§i CSS Topla Ã¶zelliÄŸinin "
+"etkinleÅŸtirildiÄŸini tespit ettik. WP Rocketâ€™Ä±n CSSâ€™yi EÅŸzamanlÄ± Olmadan "
+"YÃ¼kle Ã¶zelliÄŸi dÃ¼zgÃ¼n olarak Ã§alÄ±ÅŸmayacaktÄ±r. CSSâ€™yi EÅŸzamanlÄ± Olmadan YÃ¼kle"
+" YÃ¼rÃ¼tmesiâ€™nden tam olarak yararlanmak iÃ§in %1$sSatÄ±r Ä°Ã§i CSS Topla%2$s "
+"Ã¶zelliÄŸinin etkisizleÅŸtirilmesini Ã¶neririz."
 
 #: inc/ThirdParty/Plugins/Optimization/Ezoic.php:45
 #, php-format
@@ -2625,9 +2625,9 @@ msgid ""
 "This plugin blocks WP Rocket's caching and optimizations. Deactivate it and "
 "use %1$sEzoic's nameserver integration%2$s instead."
 msgstr ""
-"Bu eklenti, WP Rocket’in önbelleğe alınmasını ve iyileştirmelerini engeller."
-" Bunu devre dışı bırakın ve bunun yerine %1$sEzoic’in ad sunucusu "
-"bütünleştirmesi%2$s'ni kullanın."
+"Bu eklenti, WP Rocketâ€™in Ã¶nbelleÄŸe alÄ±nmasÄ±nÄ± ve iyileÅŸtirmelerini engeller."
+" Bunu devre dÄ±ÅŸÄ± bÄ±rakÄ±n ve bunun yerine %1$sEzoicâ€™in ad sunucusu "
+"bÃ¼tÃ¼nleÅŸtirmesi%2$s'ni kullanÄ±n."
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:78
 #, php-format
@@ -2639,11 +2639,11 @@ msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
 msgstr[0] ""
-"Lütfen WP Rocket özellikleri ile çakışan aşağıdaki %s seçeneği devre dışı "
-"bırakın:"
+"LÃ¼tfen WP Rocket Ã¶zellikleri ile Ã§akÄ±ÅŸan aÅŸaÄŸÄ±daki %s seÃ§eneÄŸi devre dÄ±ÅŸÄ± "
+"bÄ±rakÄ±n:"
 msgstr[1] ""
-"Lütfen WP Rocket özellikleri ile çakışan aşağıdaki %s seçeneği devre dışı "
-"bırakın:"
+"LÃ¼tfen WP Rocket Ã¶zellikleri ile Ã§akÄ±ÅŸan aÅŸaÄŸÄ±daki %s seÃ§eneÄŸi devre dÄ±ÅŸÄ± "
+"bÄ±rakÄ±n:"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:151
 #, php-format
@@ -2651,8 +2651,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
 msgstr ""
-"%1$s %2$semoji etkisizleştirmesi%3$s WP Rockets %2$semoji "
-"etkisizleştirmesi%3$s ile çakışıyor"
+"%1$s %2$semoji etkisizleÅŸtirmesi%3$s WP Rockets %2$semoji "
+"etkisizleÅŸtirmesi%3$s ile Ã§akÄ±ÅŸÄ±yor"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:187
 #, php-format
@@ -2661,8 +2661,8 @@ msgid ""
 "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
 "compression%3$s"
 msgstr ""
-"%1$s %2$sGZIP sıkıştırması%3$s WP Rockets %2$sGZIP sıkıştırması%3$s ile "
-"çakışıyor"
+"%1$s %2$sGZIP sÄ±kÄ±ÅŸtÄ±rmasÄ±%3$s WP Rockets %2$sGZIP sÄ±kÄ±ÅŸtÄ±rmasÄ±%3$s ile "
+"Ã§akÄ±ÅŸÄ±yor"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:223
 #, php-format
@@ -2671,8 +2671,8 @@ msgid ""
 "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
 "caching%3$s"
 msgstr ""
-"%1$s %2$starayıcı önbelleklemesi%3$s WP Rockets %2$starayıcı "
-"önbelleklemesi%3$s ile çakışıyor"
+"%1$s %2$starayÄ±cÄ± Ã¶nbelleklemesi%3$s WP Rockets %2$starayÄ±cÄ± "
+"Ã¶nbelleklemesi%3$s ile Ã§akÄ±ÅŸÄ±yor"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:255
 #, php-format
@@ -2680,8 +2680,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
 msgstr ""
-"%1$s %2$ssayfa önbelleklemesi%3$s WP Rockets %2$ssayfa önbelleklemesi%3$s "
-"ile çakışıyor"
+"%1$s %2$ssayfa Ã¶nbelleklemesi%3$s WP Rockets %2$ssayfa Ã¶nbelleklemesi%3$s "
+"ile Ã§akÄ±ÅŸÄ±yor"
 
 #: inc/ThirdParty/Plugins/Optimization/Hummingbird.php:289
 #, php-format
@@ -2690,17 +2690,17 @@ msgid ""
 "%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
 "optimization%3$s"
 msgstr ""
-"%1$s %2$svarlık iyileştirmesi%3$s WP Rockets %2$sdosya iyileştirmesi%3$s ile"
-" çakışıyor"
+"%1$s %2$svarlÄ±k iyileÅŸtirmesi%3$s WP Rockets %2$sdosya iyileÅŸtirmesi%3$s ile"
+" Ã§akÄ±ÅŸÄ±yor"
 
 #: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
 #, php-format
 msgid ""
-"Delay JS is currently activated in %1$s. If you want to use WP Rocket’s "
+"Delay JS is currently activated in %1$s. If you want to use WP Rocketâ€™s "
 "delay JS, disable %1$s"
 msgstr ""
-"JS’yi geciktir, şu anda %1$s içinde aktif edildi. Eğer WP Rocket’in JS’yi "
-"geciktir’ini kullanmak istiyorsanız, %1$s etkisizleştirin."
+"JSâ€™yi geciktir, ÅŸu anda %1$s iÃ§inde aktif edildi. EÄŸer WP Rocketâ€™in JSâ€™yi "
+"geciktirâ€™ini kullanmak istiyorsanÄ±z, %1$s etkisizleÅŸtirin."
 
 #: inc/ThirdParty/Plugins/Smush.php:108 inc/ThirdParty/Plugins/Smush.php:126
 msgid "Smush"
@@ -2729,39 +2729,39 @@ msgstr "Ayarlar"
 
 #: inc/admin/admin.php:450
 msgid "Settings import failed: you do not have the permissions to do this."
-msgstr "Ayarları içe aktarma başarısız oldu: bunu yapmak için izniniz yok."
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu: bunu yapmak iÃ§in izniniz yok."
 
 #: inc/admin/admin.php:454
 msgid "Settings import failed: no file uploaded."
-msgstr "Ayarları içe aktarma başarısız oldu: gönderilen dosya yok."
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu: gÃ¶nderilen dosya yok."
 
 #: inc/admin/admin.php:458
 msgid "Settings import failed: incorrect filename."
-msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya adı."
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu: yanlÄ±ÅŸ dosya adÄ±."
 
 #: inc/admin/admin.php:469
 msgid "Settings import failed: incorrect filetype."
-msgstr "Ayarları içe aktarma başarısız oldu: yanlış dosya türü."
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu: yanlÄ±ÅŸ dosya tÃ¼rÃ¼."
 
 #: inc/admin/admin.php:479
 msgid "Settings import failed: "
-msgstr "Ayarları içe aktarma başarısız oldu:"
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu:"
 
 #: inc/admin/admin.php:495
 msgid "Settings import failed: unexpected file content."
-msgstr "Ayarları içe aktarma başarısız oldu: beklenmeyen dosya içeriği."
+msgstr "AyarlarÄ± iÃ§e aktarma baÅŸarÄ±sÄ±z oldu: beklenmeyen dosya iÃ§eriÄŸi."
 
 #: inc/admin/admin.php:525
 msgid "Settings imported and saved."
-msgstr "Ayarlar içe aktarıldı ve kaydedildi."
+msgstr "Ayarlar iÃ§e aktarÄ±ldÄ± ve kaydedildi."
 
 #: inc/admin/options.php:126
 msgid "Defer JavaScript Files"
-msgstr "JavaScript Dosyalarını Ertele"
+msgstr "JavaScript DosyalarÄ±nÄ± Ertele"
 
 #: inc/admin/options.php:127
 msgid "Excluded Delay JavaScript Files"
-msgstr "Hariç Tutulan JavaScript Dosyalarını Geciktirme"
+msgstr "HariÃ§ Tutulan JavaScript DosyalarÄ±nÄ± Geciktirme"
 
 #: inc/admin/options.php:149
 #, php-format
@@ -2771,8 +2771,8 @@ msgstr "%1$s: <em>%2$s</em>"
 #: inc/admin/options.php:159
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] "Aşağıdaki desen geçersizdir ve kaldırıldı:"
-msgstr[1] "Aşağıdaki desenler geçersizdir ve kaldırıldı:"
+msgstr[0] "AÅŸaÄŸÄ±daki desen geÃ§ersizdir ve kaldÄ±rÄ±ldÄ±:"
+msgstr[1] "AÅŸaÄŸÄ±daki desenler geÃ§ersizdir ve kaldÄ±rÄ±ldÄ±:"
 
 #: inc/admin/options.php:175
 msgid "More info"
@@ -2782,44 +2782,44 @@ msgstr "Daha fazla bilgi"
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
-msgstr "Önbelleği temizle"
+msgstr "Ã–nbelleÄŸi temizle"
 
 #: inc/admin/ui/meta-boxes.php:67
 msgid "WP Rocket Options"
-msgstr "WP Rocket Seçenekleri"
+msgstr "WP Rocket SeÃ§enekleri"
 
 #: inc/admin/ui/meta-boxes.php:96
 msgid "Never cache this page"
-msgstr "Bu sayfayı asla önbellekleme"
+msgstr "Bu sayfayÄ± asla Ã¶nbellekleme"
 
 #: inc/admin/ui/meta-boxes.php:100
 msgid "Activate these options on this post:"
-msgstr "Şu seçenekleri bu yazıda aktif et:"
+msgstr "Å�u seÃ§enekleri bu yazÄ±da aktif et:"
 
 #: inc/admin/ui/meta-boxes.php:103
 msgid "LazyLoad for images"
-msgstr "Resimler için LazyLoad"
+msgstr "Resimler iÃ§in LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:104
 msgid "LazyLoad for iframes/videos"
-msgstr "Iframe’ler ve görüntüler için LazyLoad"
+msgstr "Iframeâ€™ler ve gÃ¶rÃ¼ntÃ¼ler iÃ§in LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:105
 msgid "Minify/combine CSS"
-msgstr "CSS’yi küçült/birleştir"
+msgstr "CSSâ€™yi kÃ¼Ã§Ã¼lt/birleÅŸtir"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"
-msgstr "JS’yi küçült/birleştir"
+msgstr "JSâ€™yi kÃ¼Ã§Ã¼lt/birleÅŸtir"
 
 #: inc/admin/ui/meta-boxes.php:110
 msgid "Defer JS"
-msgstr "JS’i ertele"
+msgstr "JSâ€™i ertele"
 
 #: inc/admin/ui/meta-boxes.php:117
 #, php-format
 msgid "Activate first the %s option."
-msgstr "Önce %s seçeneğini aktif edin."
+msgstr "Ã–nce %s seÃ§eneÄŸini aktif edin."
 
 #: inc/admin/ui/meta-boxes.php:133
 #, php-format
@@ -2827,8 +2827,8 @@ msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
 "excluded from cache in the global cache settings."
 msgstr ""
-"%1$sNot:%2$s Bu yazı genel önbellek ayarlarındaki önbellekten hariç "
-"tutulduysa, bu seçeneklerden hiçbiri uygulanmayacaktır."
+"%1$sNot:%2$s Bu yazÄ± genel Ã¶nbellek ayarlarÄ±ndaki Ã¶nbellekten hariÃ§ "
+"tutulduysa, bu seÃ§eneklerden hiÃ§biri uygulanmayacaktÄ±r."
 
 #: inc/admin/ui/notices.php:31 inc/admin/ui/notices.php:44
 #, php-format
@@ -2836,8 +2836,8 @@ msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
 "Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:"
 msgstr ""
-"<strong>%1$s</strong>, eksik yazma izinlerinden dolayı devre dışı bırakılmadı.<br>\n"
-"<strong>%2$s</strong> yazılabilir yapın ve devre dışı bırakmayı yeniden deneyin, ya da şimdi devre dışı bırakmaya zorlayın:"
+"<strong>%1$s</strong>, eksik yazma izinlerinden dolayÄ± devre dÄ±ÅŸÄ± bÄ±rakÄ±lmadÄ±.<br>\n"
+"<strong>%2$s</strong> yazÄ±labilir yapÄ±n ve devre dÄ±ÅŸÄ± bÄ±rakmayÄ± yeniden deneyin, ya da ÅŸimdi devre dÄ±ÅŸÄ± bÄ±rakmaya zorlayÄ±n:"
 
 #: inc/admin/ui/notices.php:97
 #, php-format
@@ -2845,15 +2845,15 @@ msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
 "clear the cache if they affect the front end of your site."
 msgstr ""
-"<strong>%s</strong>: Bir ya da daha fazla eklenti etkinleştirildi veya "
-"etkisizleştirildi, sitenizin ön ucunu etkilerse önbelleği temizleyin."
+"<strong>%s</strong>: Bir ya da daha fazla eklenti etkinleÅŸtirildi veya "
+"etkisizleÅŸtirildi, sitenizin Ã¶n ucunu etkilerse Ã¶nbelleÄŸi temizleyin."
 
 #: inc/admin/ui/notices.php:190
 msgid ""
 "WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
 "be active at the same time."
 msgstr ""
-"WP Rocket Cloudflare Eklentisi benzer işlevsellikler sağlar. Aynı anda aktif"
+"WP Rocket Cloudflare Eklentisi benzer iÅŸlevsellikler saÄŸlar. AynÄ± anda aktif"
 " edilemezler."
 
 #: inc/admin/ui/notices.php:223
@@ -2862,21 +2862,21 @@ msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr ""
-"<strong>%s</strong>: Aşağıdaki eklentiler bu eklenti ile uyumlu değil ve "
-"beklenmeyen sonuçlara neden olabilir:"
+"<strong>%s</strong>: AÅŸaÄŸÄ±daki eklentiler bu eklenti ile uyumlu deÄŸil ve "
+"beklenmeyen sonuÃ§lara neden olabilir:"
 
 #: inc/admin/ui/notices.php:229
 msgid "Deactivate"
-msgstr "Devre Dışı Bırak"
+msgstr "Devre DÄ±ÅŸÄ± BÄ±rak"
 
 #: inc/admin/ui/notices.php:271
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
 msgstr ""
-"WP Rocket Footer JS resmi bir eklenti değildir. WP Rocket içindeki bazı "
-"seçeneklerin doğru olarak çalışmasını önler. Eğer sorunlar yaşarsanız lütfen"
-" devre dşı bırakın."
+"WP Rocket Footer JS resmi bir eklenti deÄŸildir. WP Rocket iÃ§indeki bazÄ± "
+"seÃ§eneklerin doÄŸru olarak Ã§alÄ±ÅŸmasÄ±nÄ± Ã¶nler. EÄŸer sorunlar yaÅŸarsanÄ±z lÃ¼tfen"
+" devre dÅŸÄ± bÄ±rakÄ±n."
 
 #: inc/admin/ui/notices.php:311
 #, php-format
@@ -2885,10 +2885,10 @@ msgid ""
 "Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
-"WP Rocket Önbelleği ile çakışacak olan Endurance Önbelleği şu anda "
-"etkinleştirildi. Herhangi bir sorunu önlemek için lütfen %1$sAyarlar > "
-"Genel%2$s sayfasında Endurance Önbelleğinin önbellek seviyesini Kapalı "
-"(Seviye 0) olarak ayarlayın."
+"WP Rocket Ã–nbelleÄŸi ile Ã§akÄ±ÅŸacak olan Endurance Ã–nbelleÄŸi ÅŸu anda "
+"etkinleÅŸtirildi. Herhangi bir sorunu Ã¶nlemek iÃ§in lÃ¼tfen %1$sAyarlar > "
+"Genel%2$s sayfasÄ±nda Endurance Ã–nbelleÄŸinin Ã¶nbellek seviyesini KapalÄ± "
+"(Seviye 0) olarak ayarlayÄ±n."
 
 #: inc/admin/ui/notices.php:332
 #, php-format
@@ -2896,21 +2896,21 @@ msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
-"%1$s: Özel bir kalıcı bağlantı yapısı eklentinin düzgün bir şekilde "
-"çalışması için gereklidir. %2$sKalıcı bağlantılar ayarlarına gidin%3$s"
+"%1$s: Ã–zel bir kalÄ±cÄ± baÄŸlantÄ± yapÄ±sÄ± eklentinin dÃ¼zgÃ¼n bir ÅŸekilde "
+"Ã§alÄ±ÅŸmasÄ± iÃ§in gereklidir. %2$sKalÄ±cÄ± baÄŸlantÄ±lar ayarlarÄ±na gidin%3$s"
 
 #: inc/admin/ui/notices.php:379
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
-"Eksik yazma izinlerinden dolayı %s .htaccess dosyasını yapılandıramadı."
+"Eksik yazma izinlerinden dolayÄ± %s .htaccess dosyasÄ±nÄ± yapÄ±landÄ±ramadÄ±."
 
 #: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:835
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
-"Sorun giderme: %1$sSistem dosyalarını nasıl yazılabilir yaparsınız%2$s"
+"Sorun giderme: %1$sSistem dosyalarÄ±nÄ± nasÄ±l yazÄ±labilir yaparsÄ±nÄ±z%2$s"
 
 #: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:837
 msgid ""
@@ -2922,19 +2922,19 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:393
 msgid ""
-"Don’t worry, WP Rocket’s page caching and settings will still function "
+"Donâ€™t worry, WP Rocketâ€™s page caching and settings will still function "
 "correctly."
 msgstr ""
-"Endişelenmeyin, WP Rocket’in sayfa önbelleklemesi ve ayarları hala düzgün "
-"çalışacaktır."
+"EndiÅŸelenmeyin, WP Rocketâ€™in sayfa Ã¶nbelleklemesi ve ayarlarÄ± hala dÃ¼zgÃ¼n "
+"Ã§alÄ±ÅŸacaktÄ±r."
 
 #: inc/admin/ui/notices.php:393
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
-"En iyi performans için .htaccess dosyanıza aşağıdaki satırları eklemeniz "
-"önerilir (gerekli değil):"
+"En iyi performans iÃ§in .htaccess dosyanÄ±za aÅŸaÄŸÄ±daki satÄ±rlarÄ± eklemeniz "
+"Ã¶nerilir (gerekli deÄŸil):"
 
 #: inc/admin/ui/notices.php:540
 #, php-format
@@ -2942,25 +2942,25 @@ msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr ""
-"%1$s gitmeye hazır! %2$sYükleme sürenizi deneyin%4$s, ya da "
-"%3$sayarlarınızı%4$s ziyaret edin."
+"%1$s gitmeye hazÄ±r! %2$sYÃ¼kleme sÃ¼renizi deneyin%4$s, ya da "
+"%3$sayarlarÄ±nÄ±zÄ±%4$s ziyaret edin."
 
 #: inc/admin/ui/notices.php:581
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr ""
-"WP Rocket’in hassas olmayan tanılama verilerini bu web sitesinden "
-"toplamasına izin verir misiniz?"
+"WP Rocketâ€™in hassas olmayan tanÄ±lama verilerini bu web sitesinden "
+"toplamasÄ±na izin verir misiniz?"
 
 #: inc/admin/ui/notices.php:582
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
-"Bu bize gelecekte WP Rocket’i sizin için iyileştirmemize yardımcı olacak."
+"Bu bize gelecekte WP Rocketâ€™i sizin iÃ§in iyileÅŸtirmemize yardÄ±mcÄ± olacak."
 
 #: inc/admin/ui/notices.php:588
 msgid "What info will we collect?"
-msgstr "Ne tür bilgi toplayacağız?"
+msgstr "Ne tÃ¼r bilgi toplayacaÄŸÄ±z?"
 
 #: inc/admin/ui/notices.php:593
 msgid ""
@@ -2969,10 +2969,10 @@ msgid ""
 "addresses (except for license validation), IP addresses, or third-party API "
 "keys."
 msgstr ""
-"Aşağıdakiler, izin verildiği takdirde WP Rocket’in toplayacağı tüm verilerin"
-" ayrıntılı bir görünümüdür. WP Rocket asla herhangi bir etki alanı adı veya "
-"e-posta adresini (lisans doğrulaması hariç), IP adresini ya da üçüncü taraf "
-"API anahtarını iletmez."
+"AÅŸaÄŸÄ±dakiler, izin verildiÄŸi takdirde WP Rocketâ€™in toplayacaÄŸÄ± tÃ¼m verilerin"
+" ayrÄ±ntÄ±lÄ± bir gÃ¶rÃ¼nÃ¼mÃ¼dÃ¼r. WP Rocket asla herhangi bir etki alanÄ± adÄ± veya "
+"e-posta adresini (lisans doÄŸrulamasÄ± hariÃ§), IP adresini ya da Ã¼Ã§Ã¼ncÃ¼ taraf "
+"API anahtarÄ±nÄ± iletmez."
 
 #: inc/admin/ui/notices.php:602
 msgid "Yes, allow"
@@ -2980,66 +2980,66 @@ msgstr "Evet, izin ver"
 
 #: inc/admin/ui/notices.php:605
 msgid "No, thanks"
-msgstr "Hayır, teşekkürler"
+msgstr "HayÄ±r, teÅŸekkÃ¼rler"
 
 #: inc/admin/ui/notices.php:644
 msgid "Thank you!"
-msgstr "Teşekkür ederiz!"
+msgstr "TeÅŸekkÃ¼r ederiz!"
 
 #: inc/admin/ui/notices.php:649
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket web sitenizden şimdi şu ölçümleri toplar:"
+msgstr "WP Rocket web sitenizden ÅŸimdi ÅŸu Ã¶lÃ§Ã¼mleri toplar:"
 
 #: inc/admin/ui/notices.php:687
 #, php-format
 msgid "%s: Cache cleared."
-msgstr "%s: Önbellek temizlendi."
+msgstr "%s: Ã–nbellek temizlendi."
 
 #: inc/admin/ui/notices.php:694
 #, php-format
 msgid "%s: Post cache cleared."
-msgstr "%s: Yazı önbelleği temizlendi."
+msgstr "%s: YazÄ± Ã¶nbelleÄŸi temizlendi."
 
 #: inc/admin/ui/notices.php:701
 #, php-format
 msgid "%s: Term cache cleared."
-msgstr "%s: Terim önbelleği temizlendi."
+msgstr "%s: Terim Ã¶nbelleÄŸi temizlendi."
 
 #: inc/admin/ui/notices.php:708
 #, php-format
 msgid "%s: User cache cleared."
-msgstr "%s: Kullanıcı önbelleği temizlendi."
+msgstr "%s: KullanÄ±cÄ± Ã¶nbelleÄŸi temizlendi."
 
 #: inc/admin/ui/notices.php:755
 msgid "Stop Preload"
-msgstr "Önyüklemeyi durdur"
+msgstr "Ã–nyÃ¼klemeyi durdur"
 
 #: inc/admin/ui/notices.php:773
 msgid "Force deactivation "
-msgstr "Devre dışı bırakmaya zorla"
+msgstr "Devre dÄ±ÅŸÄ± bÄ±rakmaya zorla"
 
 #: inc/admin/ui/notices.php:792
 msgid "The following code should have been written to this file:"
-msgstr "Aşağıdaki kod bu dosyaya yazılmalıdır:"
+msgstr "AÅŸaÄŸÄ±daki kod bu dosyaya yazÄ±lmalÄ±dÄ±r:"
 
 #: inc/admin/ui/notices.php:823
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
-msgstr "Eksik yazma izinlerinden dolayı %s kendini yapılandıramıyor."
+msgstr "Eksik yazma izinlerinden dolayÄ± %s kendini yapÄ±landÄ±ramÄ±yor."
 
 #: inc/admin/ui/notices.php:829
 #, php-format
 msgid "Affected file/folder: %s"
-msgstr "Etkilenen dosya/klasör: %s"
+msgstr "Etkilenen dosya/klasÃ¶r: %s"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr "Hata ayıklama dosyası silinemedi."
+msgstr "Hata ayÄ±klama dosyasÄ± silinemedi."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:147
 #, php-format
 msgid "To function properly, %1$s %2$s requires at least:"
-msgstr "Düzgün bir şekilde işlemesi için %1$s %2$s en az gerektirdiği:"
+msgstr "DÃ¼zgÃ¼n bir ÅŸekilde iÅŸlemesi iÃ§in %1$s %2$s en az gerektirdiÄŸi:"
 
 #: inc/classes/class-wp-rocket-requirements-check.php:151
 #, php-format
@@ -3047,8 +3047,8 @@ msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
 "upgrade your server to PHP %1$s or higher."
 msgstr ""
-"PHP %1$s. Bu WP Rocket sürümünü kullanmak için lütfen web barındırıcınıza "
-"sunucunuzu PHP %1$s veya daha yükseğine nasıl yükselteceğinizi sorun."
+"PHP %1$s. Bu WP Rocket sÃ¼rÃ¼mÃ¼nÃ¼ kullanmak iÃ§in lÃ¼tfen web barÄ±ndÄ±rÄ±cÄ±nÄ±za "
+"sunucunuzu PHP %1$s veya daha yÃ¼kseÄŸine nasÄ±l yÃ¼kselteceÄŸinizi sorun."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:156
 #, php-format
@@ -3056,22 +3056,22 @@ msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
 "version %1$s or higher."
 msgstr ""
-"WordPress %1$s. Bu WP Rocket sürümünü kullanmak için lütfen WordPress’i %1$s"
-" sürümü veya daha yükseğine yükseltin."
+"WordPress %1$s. Bu WP Rocket sÃ¼rÃ¼mÃ¼nÃ¼ kullanmak iÃ§in lÃ¼tfen WordPressâ€™i %1$s"
+" sÃ¼rÃ¼mÃ¼ veya daha yÃ¼kseÄŸine yÃ¼kseltin."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
 "If you are not able to upgrade, you can rollback to the previous version by "
 "using the button below."
 msgstr ""
-"Eğer yükseltemiyorsanız, aşağıdaki düğmeyi kullanarak önceki sürüme geri "
+"EÄŸer yÃ¼kseltemiyorsanÄ±z, aÅŸaÄŸÄ±daki dÃ¼ÄŸmeyi kullanarak Ã¶nceki sÃ¼rÃ¼me geri "
 "alabilirsiniz."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:161
 #: inc/deprecated/deprecated.php:1947
 #, php-format
 msgid "Re-install version %s"
-msgstr "%s sürümünü yeniden yükle"
+msgstr "%s sÃ¼rÃ¼mÃ¼nÃ¼ yeniden yÃ¼kle"
 
 #: inc/classes/dependencies/wp-media/background-processing/wp-background-process.php:447
 #, php-format
@@ -3081,16 +3081,16 @@ msgstr "Her %d Dakikada"
 #: inc/classes/logger/class-logger.php:260
 #: inc/classes/logger/class-logger.php:292
 msgid "The log file does not exist."
-msgstr "Günlük dosyası mevcut değil."
+msgstr "GÃ¼nlÃ¼k dosyasÄ± mevcut deÄŸil."
 
 #: inc/classes/logger/class-logger.php:266
 #: inc/classes/logger/class-logger.php:298
 msgid "The log file could not be read."
-msgstr "Günlük dosyası okunamadı."
+msgstr "GÃ¼nlÃ¼k dosyasÄ± okunamadÄ±."
 
 #: inc/classes/logger/class-logger.php:285
 msgid "The logs are not saved into a file."
-msgstr "Günlükler bir dosya içine kaydedilmedi."
+msgstr "GÃ¼nlÃ¼kler bir dosya iÃ§ine kaydedilmedi."
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:266
 #, php-format
@@ -3103,19 +3103,19 @@ msgid_plural ""
 "option. %2$sMore info%3$s %4$s If you prefer to have WP Rocket serve WebP "
 "for you instead, please disable WebP display in %1$s."
 msgstr[0] ""
-"WebP resimlerini sunmak için %1$s kullanıyorsunuz bu yüzden bu seçeneği "
-"etkinleştirmeniz gerekmiyor. %2$sDaha fazla bilgi%3$s %4$s Bu hizmeti "
-"WebP’nin yerine sizin için WP Rocket’in sunmasını tercih ederseniz, lütfen "
-"%1$s içinde WebP görüntülemeyi etkisizleştirin."
+"WebP resimlerini sunmak iÃ§in %1$s kullanÄ±yorsunuz bu yÃ¼zden bu seÃ§eneÄŸi "
+"etkinleÅŸtirmeniz gerekmiyor. %2$sDaha fazla bilgi%3$s %4$s Bu hizmeti "
+"WebPâ€™nin yerine sizin iÃ§in WP Rocketâ€™in sunmasÄ±nÄ± tercih ederseniz, lÃ¼tfen "
+"%1$s iÃ§inde WebP gÃ¶rÃ¼ntÃ¼lemeyi etkisizleÅŸtirin."
 msgstr[1] ""
-"WebP resimlerini sunmak için %1$s kullanıyorsunuz bu yüzden bu seçeneği "
-"etkinleştirmeniz gerekmiyor. %2$sDaha fazla bilgi%3$s %4$s Bu hizmeti "
-"WebP’nin yerine sizin için WP Rocket’in sunmasını tercih ederseniz, lütfen "
-"%1$s içinde WebP görüntülemeyi etkisizleştirin."
+"WebP resimlerini sunmak iÃ§in %1$s kullanÄ±yorsunuz bu yÃ¼zden bu seÃ§eneÄŸi "
+"etkinleÅŸtirmeniz gerekmiyor. %2$sDaha fazla bilgi%3$s %4$s Bu hizmeti "
+"WebPâ€™nin yerine sizin iÃ§in WP Rocketâ€™in sunmasÄ±nÄ± tercih ederseniz, lÃ¼tfen "
+"%1$s iÃ§inde WebP gÃ¶rÃ¼ntÃ¼lemeyi etkisizleÅŸtirin."
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:278
 msgid "WebP cache is disabled by filter."
-msgstr "WebP önbelleği, süzgeç tarafından etkisizleştirildi."
+msgstr "WebP Ã¶nbelleÄŸi, sÃ¼zgeÃ§ tarafÄ±ndan etkisizleÅŸtirildi."
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:288
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:314
@@ -3127,12 +3127,12 @@ msgid_plural ""
 "You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
 " them for you, activate this option. %2$sMore info%3$s"
 msgstr[0] ""
-"Resimleri WebP’ye dönüştürmek için %1$s kullanıyorsunuz. WP Rocket’in "
-"bunları sizin için sunmasını istiyorsanız, bu seçeneği aktif edin. %2$sDaha "
+"Resimleri WebPâ€™ye dÃ¶nÃ¼ÅŸtÃ¼rmek iÃ§in %1$s kullanÄ±yorsunuz. WP Rocketâ€™in "
+"bunlarÄ± sizin iÃ§in sunmasÄ±nÄ± istiyorsanÄ±z, bu seÃ§eneÄŸi aktif edin. %2$sDaha "
 "fazla bilgi%3$s"
 msgstr[1] ""
-"Resimleri WebP’ye dönüştürmek için %1$s kullanıyorsunuz. WP Rocket’in "
-"bunları sizin için sunmasını istiyorsanız, bu seçeneği aktif edin. %2$sDaha "
+"Resimleri WebPâ€™ye dÃ¶nÃ¼ÅŸtÃ¼rmek iÃ§in %1$s kullanÄ±yorsunuz. WP Rocketâ€™in "
+"bunlarÄ± sizin iÃ§in sunmasÄ±nÄ± istiyorsanÄ±z, bu seÃ§eneÄŸi aktif edin. %2$sDaha "
 "fazla bilgi%3$s"
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:300
@@ -3145,32 +3145,32 @@ msgid_plural ""
 "You are using %1$s to convert images to WebP. WP Rocket will create separate"
 " cache files to serve your WebP images. %2$sMore info%3$s"
 msgstr[0] ""
-"Resimleri WebP’ye dönüştürmek için %1$s kullanıyorsunuz. WP Rocket, WebP "
-"resimlerinizi sunmak için ayrı önbellek dosyaları oluşturacak. %2$sDaha "
+"Resimleri WebPâ€™ye dÃ¶nÃ¼ÅŸtÃ¼rmek iÃ§in %1$s kullanÄ±yorsunuz. WP Rocket, WebP "
+"resimlerinizi sunmak iÃ§in ayrÄ± Ã¶nbellek dosyalarÄ± oluÅŸturacak. %2$sDaha "
 "fazla bilgi%3$s"
 msgstr[1] ""
-"Resimleri WebP’ye dönüştürmek için %1$s kullanıyorsunuz. WP Rocket, WebP "
-"resimlerinizi sunmak için ayrı önbellek dosyaları oluşturacak. %2$sDaha "
+"Resimleri WebPâ€™ye dÃ¶nÃ¼ÅŸtÃ¼rmek iÃ§in %1$s kullanÄ±yorsunuz. WP Rocket, WebP "
+"resimlerinizi sunmak iÃ§in ayrÄ± Ã¶nbellek dosyalarÄ± oluÅŸturacak. %2$sDaha "
 "fazla bilgi%3$s"
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:346
 #, php-format
 msgid ""
-"%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t "
+"%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you donâ€™t "
 "already have WebP images on your site consider using %3$sImagify%2$s or "
 "another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP "
 "do not enable this option."
 msgstr ""
-"%5$sHerhangi bir uyumlu WebP eklentisi tespit etmedik!%6$s%4$s Eğer "
+"%5$sHerhangi bir uyumlu WebP eklentisi tespit etmedik!%6$s%4$s EÄŸer "
 "sitenizde zaten WebP resimleriniz yoksa, %3$sImagify%2$s veya desteklenen "
-"başka bir eklenti kullanmayı düşünün. %1$sDaha fazla bilgi%2$s %4$s Eğer "
-"WebP kullanmıyorsanız, bu seçeneği etkinleştirmeyin."
+"baÅŸka bir eklenti kullanmayÄ± dÃ¼ÅŸÃ¼nÃ¼n. %1$sDaha fazla bilgi%2$s %4$s EÄŸer "
+"WebP kullanmÄ±yorsanÄ±z, bu seÃ§eneÄŸi etkinleÅŸtirmeyin."
 
 #: inc/classes/subscriber/Media/class-webp-subscriber.php:358
 msgid "WP Rocket will create separate cache files to serve your WebP images."
 msgstr ""
-"WP Rocket, WebP resimlerinizi sunmak için ayrı önbellek dosyaları "
-"oluşturacak."
+"WP Rocket, WebP resimlerinizi sunmak iÃ§in ayrÄ± Ã¶nbellek dosyalarÄ± "
+"oluÅŸturacak."
 
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:151
 #, php-format
@@ -3179,11 +3179,11 @@ msgid ""
 msgid_plural ""
 "Failed to detect the following requirements in your theme: closing %1$s."
 msgstr[0] ""
-"Temanızdaki şurada belirtilen gereksinimi algılama başarısız: %1$s "
-"kapatılıyor."
+"TemanÄ±zdaki ÅŸurada belirtilen gereksinimi algÄ±lama baÅŸarÄ±sÄ±z: %1$s "
+"kapatÄ±lÄ±yor."
 msgstr[1] ""
-"Temanızdaki şurada belirtilen gereksinimleri algılama başarısız: %1$s "
-"kapatılıyor."
+"TemanÄ±zdaki ÅŸurada belirtilen gereksinimleri algÄ±lama baÅŸarÄ±sÄ±z: %1$s "
+"kapatÄ±lÄ±yor."
 
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:159
 msgid ""
@@ -3196,28 +3196,28 @@ msgstr ""
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear and preload cache"
-msgstr "Önbelleği temizle ve önyükle"
+msgstr "Ã–nbelleÄŸi temizle ve Ã¶nyÃ¼kle"
 
 #: inc/common/admin-bar.php:124 inc/functions/i18n.php:41
 #: inc/functions/i18n.php:51
 msgid "All languages"
-msgstr "Tüm diller"
+msgstr "TÃ¼m diller"
 
 #: inc/common/admin-bar.php:160
 msgid "Clear this post"
-msgstr "Bu yazıyı temizle"
+msgstr "Bu yazÄ±yÄ± temizle"
 
 #: inc/common/admin-bar.php:174
 msgid "Purge this URL"
-msgstr "Bu URL’yi temizle"
+msgstr "Bu URLâ€™yi temizle"
 
 #: inc/common/admin-bar.php:194
 msgid "Purge Sucuri cache"
-msgstr "Sucuri önbelleğini temizle"
+msgstr "Sucuri Ã¶nbelleÄŸini temizle"
 
 #: inc/common/admin-bar.php:218 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
-msgstr "RocketCDN önbelleğini temizle"
+msgstr "RocketCDN Ã¶nbelleÄŸini temizle"
 
 #: inc/common/admin-bar.php:231 views/settings/partials/documentation.php:14
 msgid "Documentation"
@@ -3225,15 +3225,15 @@ msgstr "Belgeler"
 
 #: inc/deprecated/3.10.php:163
 msgid "OPcache purge failed."
-msgstr "OPcache temizleme başarısız oldu."
+msgstr "OPcache temizleme baÅŸarÄ±sÄ±z oldu."
 
 #: inc/deprecated/3.10.php:168
 msgid "OPcache successfully purged"
-msgstr "OPcache başarılı olarak temizlendi"
+msgstr "OPcache baÅŸarÄ±lÄ± olarak temizlendi"
 
 #: inc/deprecated/3.11.php:81
 msgid "Yoast SEO XML sitemap"
-msgstr "Yoast SEO XML site haritası"
+msgstr "Yoast SEO XML site haritasÄ±"
 
 #: inc/deprecated/3.11.php:83 inc/deprecated/3.12.php:58
 #: inc/deprecated/3.12.php:87 inc/deprecated/3.12.php:186
@@ -3243,57 +3243,57 @@ msgid ""
 "We automatically detected the sitemap generated by the %s plugin. You can "
 "check the option to preload it."
 msgstr ""
-"%s eklentisi tarafından üretilen site haritasını otomatik olarak algıladık. "
-"Önyüklemek için seçeneği işaretleyebilirsiniz."
+"%s eklentisi tarafÄ±ndan Ã¼retilen site haritasÄ±nÄ± otomatik olarak algÄ±ladÄ±k. "
+"Ã–nyÃ¼klemek iÃ§in seÃ§eneÄŸi iÅŸaretleyebilirsiniz."
 
 #: inc/deprecated/3.12.php:56
 msgid "All in One SEO XML sitemap"
-msgstr "All in One SEO XML site haritası"
+msgstr "All in One SEO XML site haritasÄ±"
 
 #: inc/deprecated/3.12.php:85
 msgid "Rank Math XML sitemap"
-msgstr "Rank Math XML site haritası"
+msgstr "Rank Math XML site haritasÄ±"
 
 #: inc/deprecated/3.12.php:184
 msgid "SEOPress XML sitemap"
-msgstr "SEOPress XML site haritası"
+msgstr "SEOPress XML site haritasÄ±"
 
 #: inc/deprecated/3.12.php:251
 msgid "The SEO Framework XML sitemap"
-msgstr "SEO Framework XML site haritası"
+msgstr "SEO Framework XML site haritasÄ±"
 
 #: inc/deprecated/3.12.php:332
 msgid "Jetpack XML Sitemaps"
-msgstr "Jetpack XML Site Haritaları"
+msgstr "Jetpack XML Site HaritalarÄ±"
 
 #: inc/deprecated/3.12.php:334
 msgid "Preload the sitemap from the Jetpack plugin"
-msgstr "Jetpack eklentisinden site haritasını önyükleme yap"
+msgstr "Jetpack eklentisinden site haritasÄ±nÄ± Ã¶nyÃ¼kleme yap"
 
 #: inc/deprecated/3.2.php:52 views/settings/page-sections/imagify.php:36
 msgid "Activate Imagify"
-msgstr "Imagify’ı Etkinleştir"
+msgstr "Imagifyâ€™Ä± EtkinleÅŸtir"
 
 #: inc/deprecated/3.2.php:52
 msgid "Install Imagify for Free"
-msgstr "Imagify’ı Ücretsiz Yükleyin"
+msgstr "Imagifyâ€™Ä± Ãœcretsiz YÃ¼kleyin"
 
 #: inc/deprecated/3.2.php:67
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr ""
-"Imagify ile resim dosyası boyutlarını kalite kaybetmeden küçülterek web "
-"sitenizi hızlandırın ve SEO’nuzu yükseltin."
+"Imagify ile resim dosyasÄ± boyutlarÄ±nÄ± kalite kaybetmeden kÃ¼Ã§Ã¼lterek web "
+"sitenizi hÄ±zlandÄ±rÄ±n ve SEOâ€™nuzu yÃ¼kseltin."
 
 #: inc/deprecated/3.2.php:72
 msgid "More details"
-msgstr "Daha fazla ayrıntı"
+msgstr "Daha fazla ayrÄ±ntÄ±"
 
 #: inc/deprecated/3.2.php:228
 #, php-format
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "Site haritası önyükleme: %d sayfa önbelleklendi."
+msgstr "Site haritasÄ± Ã¶nyÃ¼kleme: %d sayfa Ã¶nbelleklendi."
 
 #: inc/deprecated/3.2.php:261
 #, php-format
@@ -3301,24 +3301,24 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Site haritası önyükleme: %d önbelleklenmeyen sayfanın şimdi önyüklemesi "
-"yapıldı. (ilerlemeyi görmek için yenileyin)"
+"Site haritasÄ± Ã¶nyÃ¼kleme: %d Ã¶nbelleklenmeyen sayfanÄ±n ÅŸimdi Ã¶nyÃ¼klemesi "
+"yapÄ±ldÄ±. (ilerlemeyi gÃ¶rmek iÃ§in yenileyin)"
 
 #: inc/deprecated/3.4.php:18
 msgid "Choose a domain from the list"
-msgstr "Listeden bir etki alanı seçin"
+msgstr "Listeden bir etki alanÄ± seÃ§in"
 
 #: inc/deprecated/3.4.php:31
 msgid "No domain available in your Cloudflare account"
-msgstr "Cloudflare hesabınızda hiç etki alanı mevcut değil"
+msgstr "Cloudflare hesabÄ±nÄ±zda hiÃ§ etki alanÄ± mevcut deÄŸil"
 
 #: inc/deprecated/3.5.php:71 inc/deprecated/3.5.php:195
 msgid ""
 "Curl is disabled on your server. Please ask your host to enable it. This is "
 "required for the Cloudflare Add-on to work correctly."
 msgstr ""
-"Curl, sunucunuzda etkisizleştirilmiş. Lütfen barındırıcınızdan bunu "
-"etkinleştirmesini isteyin. Bu, Cloudflare Eklentisinin doğru çalışması için "
+"Curl, sunucunuzda etkisizleÅŸtirilmiÅŸ. LÃ¼tfen barÄ±ndÄ±rÄ±cÄ±nÄ±zdan bunu "
+"etkinleÅŸtirmesini isteyin. Bu, Cloudflare Eklentisinin doÄŸru Ã§alÄ±ÅŸmasÄ± iÃ§in "
 "gereklidir."
 
 #: inc/deprecated/3.5.php:79
@@ -3327,8 +3327,8 @@ msgid ""
 "Cloudflare email, API key and Zone ID are not set. Read the "
 "%1$sdocumentation%2$s for further guidance."
 msgstr ""
-"Cloudflare e-posta adresi, API anahtarı ve Bölge Kimliği ayarlı değil. Daha "
-"fazla rehberlik için %1$sbelgeleri%2$s okuyun."
+"Cloudflare e-posta adresi, API anahtarÄ± ve BÃ¶lge KimliÄŸi ayarlÄ± deÄŸil. Daha "
+"fazla rehberlik iÃ§in %1$sbelgeleri%2$s okuyun."
 
 #: inc/deprecated/3.5.php:206
 #, php-format
@@ -3336,12 +3336,12 @@ msgid ""
 "Cloudflare email and API key are not set. Read the %1$sdocumentation%2$s for"
 " further guidance."
 msgstr ""
-"Cloudflare e-posta adresi ve API anahtarı ayarlı değil. Daha fazla rehberlik"
-" için %1$sbelgeleri%2$s okuyun."
+"Cloudflare e-posta adresi ve API anahtarÄ± ayarlÄ± deÄŸil. Daha fazla rehberlik"
+" iÃ§in %1$sbelgeleri%2$s okuyun."
 
 #: inc/deprecated/3.5.php:271
 msgid "Connection to Cloudflare failed"
-msgstr "Cloudflare’a bağlantı başarısız oldu"
+msgstr "Cloudflareâ€™a baÄŸlantÄ± baÅŸarÄ±sÄ±z oldu"
 
 #: inc/deprecated/DeprecatedClassTrait.php:54
 #, php-format
@@ -3349,20 +3349,20 @@ msgid ""
 "The called class %1$s is <strong>deprecated</strong> since version %2$s! Use"
 " %3$s instead."
 msgstr ""
-"Çağrılan %1$s sınıfı, %2$s sürümünden bu yana <strong>kullanım "
-"dışıdır</strong>! Bunun yerine %3$s kullanın."
+"Ã‡aÄŸrÄ±lan %1$s sÄ±nÄ±fÄ±, %2$s sÃ¼rÃ¼mÃ¼nden bu yana <strong>kullanÄ±m "
+"dÄ±ÅŸÄ±dÄ±r</strong>! Bunun yerine %3$s kullanÄ±n."
 
 #: inc/deprecated/DeprecatedClassTrait.php:65
 #, php-format
 msgid ""
 "The called class %1$s is <strong>deprecated</strong> since version %2$s!"
 msgstr ""
-"Çağrılan %1$s sınıfı, %2$s sürümünden bu yana <strong>kullanım "
-"dışıdır</strong>!"
+"Ã‡aÄŸrÄ±lan %1$s sÄ±nÄ±fÄ±, %2$s sÃ¼rÃ¼mÃ¼nden bu yana <strong>kullanÄ±m "
+"dÄ±ÅŸÄ±dÄ±r</strong>!"
 
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr "Yüklemesi Ertelenmiş JavaScript’i olan <strong>JS</strong> dosyaları"
+msgstr "YÃ¼klemesi ErtelenmiÅŸ JavaScriptâ€™i olan <strong>JS</strong> dosyalarÄ±"
 
 #: inc/deprecated/deprecated.php:293
 msgid "Add URL"
@@ -3373,29 +3373,29 @@ msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr ""
-"İçe aktarma dosyanızı göndermeden önce, şurada belirtilen hatayı düzeltmeniz"
+"Ä°Ã§e aktarma dosyanÄ±zÄ± gÃ¶ndermeden Ã¶nce, ÅŸurada belirtilen hatayÄ± dÃ¼zeltmeniz"
 " gerekecek:"
 
 #: inc/deprecated/deprecated.php:1288 views/settings/fields/import-form.php:35
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr "Bilgisayarınızdan bir dosya seçin (en fazla boyut: %s)"
+msgstr "BilgisayarÄ±nÄ±zdan bir dosya seÃ§in (en fazla boyut: %s)"
 
 #: inc/deprecated/deprecated.php:1385
 msgid "Your Cloudflare credentials are valid."
-msgstr "Cloudflare kimlik bilgileriniz geçerli."
+msgstr "Cloudflare kimlik bilgileriniz geÃ§erli."
 
 #: inc/deprecated/deprecated.php:1389
 msgid "Your Cloudflare credentials are invalid!"
-msgstr "Cloudflare kimlik bilgileriniz geçersiz!"
+msgstr "Cloudflare kimlik bilgileriniz geÃ§ersiz!"
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Save and optimize"
-msgstr "Kaydet ve iyileştir"
+msgstr "Kaydet ve iyileÅŸtir"
 
 #: inc/deprecated/deprecated.php:1453
 msgid "Optimize"
-msgstr "İyileştir"
+msgstr "Ä°yileÅŸtir"
 
 #: inc/deprecated/deprecated.php:1464 inc/deprecated/deprecated.php:1666
 msgctxt "screen-reader-text"
@@ -3410,33 +3410,33 @@ msgstr "Performans ipucu:"
 #: inc/deprecated/deprecated.php:1476
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
-msgstr "Üçüncü taraf özellik algılandı:"
+msgstr "ÃœÃ§Ã¼ncÃ¼ taraf Ã¶zellik algÄ±landÄ±:"
 
 #: inc/deprecated/deprecated.php:1488 inc/deprecated/deprecated.php:1672
 msgctxt "screen-reader-text"
 msgid "Warning:"
-msgstr "Uyarı:"
+msgstr "UyarÄ±:"
 
 #: inc/deprecated/deprecated.php:1501
 msgctxt "button text"
 msgid "Download settings"
-msgstr "Ayarları indir"
+msgstr "AyarlarÄ± indir"
 
 #: inc/deprecated/deprecated.php:1531
 msgid "Replace site's hostname with:"
-msgstr "Sitenin anamakine adını şununla değiştir:"
+msgstr "Sitenin anamakine adÄ±nÄ± ÅŸununla deÄŸiÅŸtir:"
 
 #: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
 #: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:32
 #: views/settings/fields/cnames.php:64 views/settings/fields/cnames.php:94
 msgid "reserved for"
-msgstr "şunun için ayrıldı:"
+msgstr "ÅŸunun iÃ§in ayrÄ±ldÄ±:"
 
 #: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
 #: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:35
 #: views/settings/fields/cnames.php:67 views/settings/fields/cnames.php:97
 msgid "All files"
-msgstr "Tüm dosyalar"
+msgstr "TÃ¼m dosyalar"
 
 #: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
 #: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:47
@@ -3450,7 +3450,7 @@ msgstr "CNAME ekle"
 
 #: inc/deprecated/deprecated.php:1706
 msgid "Watch the video"
-msgstr "Görüntüyü izleyin"
+msgstr "GÃ¶rÃ¼ntÃ¼yÃ¼ izleyin"
 
 #: inc/deprecated/deprecated.php:1771
 msgid "Basic"
@@ -3462,7 +3462,7 @@ msgstr "Sabit Dosyalar"
 
 #: inc/deprecated/deprecated.php:1774
 msgid "Advanced"
-msgstr "Gelişmiş"
+msgstr "GeliÅŸmiÅŸ"
 
 #: inc/deprecated/deprecated.php:1944
 #, php-format
@@ -3472,10 +3472,10 @@ msgid ""
 "higher. If you are not able to upgrade, you can rollback to the previous "
 "version by using the button below."
 msgstr ""
-"%1$s %2$s, düzgün bir şekilde işlemesi için en az PHP %3$s gerektirir. Bu "
-"sürümü kullanmak için lütfen web barındırıcınıza sunucunuzu PHP %3$s veya "
-"daha yüksek sürümüne nasıl yükselteceğinizi sorun. Eğer yükseltemiyorsanız, "
-"aşağıdaki düğmeyi kullanarak önceki sürüme geri döndürebilirsiniz."
+"%1$s %2$s, dÃ¼zgÃ¼n bir ÅŸekilde iÅŸlemesi iÃ§in en az PHP %3$s gerektirir. Bu "
+"sÃ¼rÃ¼mÃ¼ kullanmak iÃ§in lÃ¼tfen web barÄ±ndÄ±rÄ±cÄ±nÄ±za sunucunuzu PHP %3$s veya "
+"daha yÃ¼ksek sÃ¼rÃ¼mÃ¼ne nasÄ±l yÃ¼kselteceÄŸinizi sorun. EÄŸer yÃ¼kseltemiyorsanÄ±z, "
+"aÅŸaÄŸÄ±daki dÃ¼ÄŸmeyi kullanarak Ã¶nceki sÃ¼rÃ¼me geri dÃ¶ndÃ¼rebilirsiniz."
 
 #: inc/functions/admin.php:21
 msgid ""
@@ -3485,35 +3485,35 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
-"Lisansınızı doğrularken bir sorun oldu gibi görünüyor. Lütfen aşağıdaki hata"
-" iletisine bakın."
+"LisansÄ±nÄ±zÄ± doÄŸrularken bir sorun oldu gibi gÃ¶rÃ¼nÃ¼yor. LÃ¼tfen aÅŸaÄŸÄ±daki hata"
+" iletisine bakÄ±n."
 msgstr[1] ""
-"Lisansınızı doğrularken bir sorun oldu gibi görünüyor. Aşağıda hata "
-"iletilerini görebilirsiniz."
+"LisansÄ±nÄ±zÄ± doÄŸrularken bir sorun oldu gibi gÃ¶rÃ¼nÃ¼yor. AÅŸaÄŸÄ±da hata "
+"iletilerini gÃ¶rebilirsiniz."
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
-msgstr "Sunucu türü:"
+msgstr "Sunucu tÃ¼rÃ¼:"
 
 #: inc/functions/admin.php:370
 msgid "PHP version number:"
-msgstr "PHP sürüm numarası:"
+msgstr "PHP sÃ¼rÃ¼m numarasÄ±:"
 
 #: inc/functions/admin.php:379
 msgid "WordPress version number:"
-msgstr "WordPress sürüm numarası:"
+msgstr "WordPress sÃ¼rÃ¼m numarasÄ±:"
 
 #: inc/functions/admin.php:388
 msgid "WordPress multisite:"
-msgstr "WordPress çoklu site:"
+msgstr "WordPress Ã§oklu site:"
 
 #: inc/functions/admin.php:397
 msgid "Current theme:"
-msgstr "Şu anki tema:"
+msgstr "Å�u anki tema:"
 
 #: inc/functions/admin.php:406
 msgid "Current site language:"
-msgstr "Şu anki site dili:"
+msgstr "Å�u anki site dili:"
 
 #: inc/functions/admin.php:415
 msgid "Active plugins:"
@@ -3521,32 +3521,32 @@ msgstr "Aktif eklentiler:"
 
 #: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
-msgstr "Tüm aktif eklentilerin eklenti adları"
+msgstr "TÃ¼m aktif eklentilerin eklenti adlarÄ±"
 
 #: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
-msgstr "İsimsizleştirilmiş WP Rocket ayarları:"
+msgstr "Ä°simsizleÅŸtirilmiÅŸ WP Rocket ayarlarÄ±:"
 
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
-msgstr "Hangi WP Rocket ayarları aktif"
+msgstr "Hangi WP Rocket ayarlarÄ± aktif"
 
 #: inc/functions/options.php:409
 msgid "The provided license data are not valid."
-msgstr "Verilen lisans verileri geçerli değil."
+msgstr "Verilen lisans verileri geÃ§erli deÄŸil."
 
 #: inc/functions/options.php:412
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
-msgstr "Çözmek için lütfen %1$sdestek ile iletişime geçin%2$s."
+msgstr "Ã‡Ã¶zmek iÃ§in lÃ¼tfen %1$sdestek ile iletiÅŸime geÃ§in%2$s."
 
 #: inc/functions/options.php:471 inc/functions/options.php:510
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
-"Lisans doğrulama başarısız oldu. Sunucumuz web sitenizden gelen isteği "
-"çözemedi."
+"Lisans doÄŸrulama baÅŸarÄ±sÄ±z oldu. Sunucumuz web sitenizden gelen isteÄŸi "
+"Ã§Ã¶zemedi."
 
 #: inc/functions/options.php:471
 #, php-format
@@ -3554,55 +3554,55 @@ msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr ""
-"Aşağıda %1$sLisansı Doğrula%2$s düğmesine tıklamaya çalışın. Eğer hata devam"
-" ederse, %3$sbu kılavuzu%4$s takip edin."
+"AÅŸaÄŸÄ±da %1$sLisansÄ± DoÄŸrula%2$s dÃ¼ÄŸmesine tÄ±klamaya Ã§alÄ±ÅŸÄ±n. EÄŸer hata devam"
+" ederse, %3$sbu kÄ±lavuzu%4$s takip edin."
 
 #: inc/functions/options.php:487
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
-"Lisans doğrulama başarısız oldu. Eklentinin nulled sürümünü kullanıyorsunuz."
-" Lütfen aşağıdakini yapın:"
+"Lisans doÄŸrulama baÅŸarÄ±sÄ±z oldu. Eklentinin nulled sÃ¼rÃ¼mÃ¼nÃ¼ kullanÄ±yorsunuz."
+" LÃ¼tfen aÅŸaÄŸÄ±dakini yapÄ±n:"
 
 #: inc/functions/options.php:487 inc/functions/options.php:529
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
-msgstr "WP Rocket %1$shesabınıza%2$s oturum açın"
+msgstr "WP Rocket %1$shesabÄ±nÄ±za%2$s oturum aÃ§Ä±n"
 
 #: inc/functions/options.php:487 inc/functions/options.php:529
 msgid "Download the zip file"
-msgstr "Zip dosyasını indir"
+msgstr "Zip dosyasÄ±nÄ± indir"
 
 #: inc/functions/options.php:487 inc/functions/options.php:529
 msgid "Reinstall"
-msgstr "Yeniden Yükle"
+msgstr "Yeniden YÃ¼kle"
 
 #: inc/functions/options.php:487
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
-"Eğer bir WP Rocket hesabınız yoksa, lütfen %1$sbir lisans satın alın%2$s."
+"EÄŸer bir WP Rocket hesabÄ±nÄ±z yoksa, lÃ¼tfen %1$sbir lisans satÄ±n alÄ±n%2$s."
 
 #: inc/functions/options.php:495
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
-"Lisans doğrulama başarısız oldu. Bu kullanıcı veritabanımızda mevcut değil."
+"Lisans doÄŸrulama baÅŸarÄ±sÄ±z oldu. Bu kullanÄ±cÄ± veritabanÄ±mÄ±zda mevcut deÄŸil."
 
 #: inc/functions/options.php:495
 msgid "To resolve, please contact support."
-msgstr "Çözmek için lütfen destek ile iletişime geçin."
+msgstr "Ã‡Ã¶zmek iÃ§in lÃ¼tfen destek ile iletiÅŸime geÃ§in."
 
 #: inc/functions/options.php:503
 msgid "License validation failed. This user account is blocked."
-msgstr "Lisans doğrulama başarısız oldu. Bu kullanıcı hesabı engellendi."
+msgstr "Lisans doÄŸrulama baÅŸarÄ±sÄ±z oldu. Bu kullanÄ±cÄ± hesabÄ± engellendi."
 
 #: inc/functions/options.php:503
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
-msgstr "Daha fazla bilgi için lütfen %1$sbu kılavuza%2$s bakın."
+msgstr "Daha fazla bilgi iÃ§in lÃ¼tfen %1$sbu kÄ±lavuza%2$s bakÄ±n."
 
 #: inc/functions/options.php:510
 #, php-format
@@ -3610,21 +3610,21 @@ msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
 "%3$sthis guide%4$s."
 msgstr ""
-"Aşağıda %1$sDeğişiklikleri Kaydet%2$s düğmesine tıklamaya çalışın. Eğer hata"
-" devam ederse, %3$sbu kılavuzu%4$s takip edin."
+"AÅŸaÄŸÄ±da %1$sDeÄŸiÅŸiklikleri Kaydet%2$s dÃ¼ÄŸmesine tÄ±klamaya Ã§alÄ±ÅŸÄ±n. EÄŸer hata"
+" devam ederse, %3$sbu kÄ±lavuzu%4$s takip edin."
 
 #: inc/functions/options.php:523
 msgid "Your license is not valid."
-msgstr "Lisansınız geçerli değil."
+msgstr "LisansÄ±nÄ±z geÃ§erli deÄŸil."
 
 #: inc/functions/options.php:523
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
-msgstr "Aktif bir %1$sWP Rocket lisansına%2$s sahip olduğunuzdan emin olun."
+msgstr "Aktif bir %1$sWP Rocket lisansÄ±na%2$s sahip olduÄŸunuzdan emin olun."
 
 #: inc/functions/options.php:525
 msgid "You have added as many sites as your current license allows."
-msgstr "Şu anki lisansınızın izin verdiği kadar çok site eklediniz."
+msgstr "Å�u anki lisansÄ±nÄ±zÄ±n izin verdiÄŸi kadar Ã§ok site eklediniz."
 
 #: inc/functions/options.php:525
 #, php-format
@@ -3632,8 +3632,8 @@ msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
 "domain."
 msgstr ""
-"%1$sHesabınızı%2$s yükseltin ya da %3$slisansınızı bu etki alanına "
-"aktarın%2$s."
+"%1$sHesabÄ±nÄ±zÄ±%2$s yÃ¼kseltin ya da %3$slisansÄ±nÄ±zÄ± bu etki alanÄ±na "
+"aktarÄ±n%2$s."
 
 #: inc/functions/options.php:527
 msgid "This website is not allowed."
@@ -3642,37 +3642,37 @@ msgstr "Bu web sitesine izin verilmedi."
 #: inc/functions/options.php:527
 #, php-format
 msgid "Please %1$scontact support%2$s."
-msgstr "Lütfen %1$sdestek ile iletişime geçin%2$s."
+msgstr "LÃ¼tfen %1$sdestek ile iletiÅŸime geÃ§in%2$s."
 
 #: inc/functions/options.php:529
 msgid "This license key is not recognized."
-msgstr "Bu lisans anahtarı tanınmadı."
+msgstr "Bu lisans anahtarÄ± tanÄ±nmadÄ±."
 
 #: inc/functions/options.php:529
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
-msgstr "Eğer sorun devam ederse, lütfen %1$sdestek ile iletişime geçin%2$s."
+msgstr "EÄŸer sorun devam ederse, lÃ¼tfen %1$sdestek ile iletiÅŸime geÃ§in%2$s."
 
 #: inc/functions/options.php:535
 #, php-format
 msgid "License validation failed: %s"
-msgstr "Lisans doğrulama başarısız oldu: %s"
+msgstr "Lisans doÄŸrulama baÅŸarÄ±sÄ±z oldu: %s"
 
 #: inc/vendors/classes/class-imagify-partner.php:531
 msgid "Plugin installed successfully."
-msgstr "Eklenti başarılı olarak yüklendi."
+msgstr "Eklenti baÅŸarÄ±lÄ± olarak yÃ¼klendi."
 
 #: inc/vendors/classes/class-imagify-partner.php:532
 msgid "Sorry, you are not allowed to install plugins on this site."
-msgstr "Üzgünüz, bu sitede eklentileri yüklemenize izin verilmiyor."
+msgstr "ÃœzgÃ¼nÃ¼z, bu sitede eklentileri yÃ¼klemenize izin verilmiyor."
 
 #: inc/vendors/classes/class-imagify-partner.php:533
 msgid "Sorry, you are not allowed to do that."
-msgstr "Üzgünüz, bunu yapmanıza izin verilmiyor."
+msgstr "ÃœzgÃ¼nÃ¼z, bunu yapmanÄ±za izin verilmiyor."
 
 #: inc/vendors/classes/class-imagify-partner.php:534
 msgid "Plugin install failed."
-msgstr "Eklenti yükleme başarısız oldu."
+msgstr "Eklenti yÃ¼kleme baÅŸarÄ±sÄ±z oldu."
 
 #: inc/vendors/classes/class-imagify-partner.php:535
 msgid "Go back"
@@ -3680,20 +3680,20 @@ msgstr "Geri git"
 
 #: views/cpcss/activate-cpcss-mobile.php:13
 msgid "Load CSS asynchronously for mobile"
-msgstr "Mobil için CSS’yi eşzamanlı olmadan yükle"
+msgstr "Mobil iÃ§in CSSâ€™yi eÅŸzamanlÄ± olmadan yÃ¼kle"
 
 #: views/cpcss/activate-cpcss-mobile.php:14
 msgid ""
 "Your website currently uses the same Critical Path CSS for both desktop and "
 "mobile."
 msgstr ""
-"Web siteniz şu anda hem masaüstü hem de mobil cihazlar için aynı Önemli Yol "
-"CSS’yi kullanıyor."
+"Web siteniz ÅŸu anda hem masaÃ¼stÃ¼ hem de mobil cihazlar iÃ§in aynÄ± Ã–nemli Yol "
+"CSSâ€™yi kullanÄ±yor."
 
 #: views/cpcss/activate-cpcss-mobile.php:15
 msgid "Click the button to enable mobile-specific CPCSS for your site."
 msgstr ""
-"Siteniz için mobile özgü ÖYCSS’yi etkinleştirmek için düğmeye tıklayın."
+"Siteniz iÃ§in mobile Ã¶zgÃ¼ Ã–YCSSâ€™yi etkinleÅŸtirmek iÃ§in dÃ¼ÄŸmeye tÄ±klayÄ±n."
 
 #: views/cpcss/activate-cpcss-mobile.php:20
 #: views/settings/enable-google-fonts.php:19
@@ -3702,7 +3702,7 @@ msgid ""
 "This is a one-time action and this button will be removed afterwards. "
 "%1$sMore info%2$s"
 msgstr ""
-"Bu tek seferlik bir eylemdir ve daha sonra bu düğme kaldırılacaktır. "
+"Bu tek seferlik bir eylemdir ve daha sonra bu dÃ¼ÄŸme kaldÄ±rÄ±lacaktÄ±r. "
 "%1$sDaha fazla bilgi%2$s"
 
 #: views/cpcss/activate-cpcss-mobile.php:30
@@ -3710,46 +3710,46 @@ msgstr ""
 msgid ""
 "Your site is now using mobile-specific critical path CSS. %1$sMore info%2$s"
 msgstr ""
-"Bu site artık mobile özgü önemli yol CSS’yi kullanıyor. %1$sDaha fazla "
+"Bu site artÄ±k mobile Ã¶zgÃ¼ Ã¶nemli yol CSSâ€™yi kullanÄ±yor. %1$sDaha fazla "
 "bilgi%2$s"
 
 #: views/cpcss/activate-cpcss-mobile.php:39
 msgid "Generate Mobile Specific CPCSS"
-msgstr "Mobile Özgü ÖYCSS’yi Oluştur"
+msgstr "Mobile Ã–zgÃ¼ Ã–YCSSâ€™yi OluÅŸtur"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
-msgstr "Önemli Yol CSS"
+msgstr "Ã–nemli Yol CSS"
 
 #: views/cpcss/metabox/generate.php:23
 #, php-format
 msgid "Generate specific Critical Path CSS for this post. %1$sMore info%2$s"
 msgstr ""
-"Bu yazı için belirli bir Önemli Yol CSS’yi oluşturun. %1$sDaha fazla "
+"Bu yazÄ± iÃ§in belirli bir Ã–nemli Yol CSSâ€™yi oluÅŸturun. %1$sDaha fazla "
 "bilgi%2$s"
 
 #: views/cpcss/metabox/generate.php:33
 #, php-format
 msgid "This post uses specific Critical Path CSS. %1$sMore info%2$s"
 msgstr ""
-"Bu yazı belirli bir Önemli Yol CSS’yi kullanır. %1$sDaha fazla bilgi%2$s"
+"Bu yazÄ± belirli bir Ã–nemli Yol CSSâ€™yi kullanÄ±r. %1$sDaha fazla bilgi%2$s"
 
 #: views/cpcss/metabox/generate.php:56
 msgid "Revert back to the default CPCSS"
-msgstr "Varsayılan ÖYCSS’ye geri dön"
+msgstr "VarsayÄ±lan Ã–YCSSâ€™ye geri dÃ¶n"
 
 #: views/deactivation-intent/form.php:21
 msgid "Facing an issue?"
-msgstr "Bir sorunla mı karşılaşıyorsunuz?"
+msgstr "Bir sorunla mÄ± karÅŸÄ±laÅŸÄ±yorsunuz?"
 
 #: views/deactivation-intent/form.php:24
 msgid ""
 "It is not always necessary to deactivate WP Rocket when facing any issues. "
 "Most of them can be fixed by deactivating only some options."
 msgstr ""
-"Herhangi bir sorunla karşılaştığınızda WP Rocket’i devre dışı bırakmak her "
-"zaman gerekli değildir. Bunların çoğu, yalnızca bazı seçenekler devre dışı "
-"bırakılarak düzeltilebilir."
+"Herhangi bir sorunla karÅŸÄ±laÅŸtÄ±ÄŸÄ±nÄ±zda WP Rocketâ€™i devre dÄ±ÅŸÄ± bÄ±rakmak her "
+"zaman gerekli deÄŸildir. BunlarÄ±n Ã§oÄŸu, yalnÄ±zca bazÄ± seÃ§enekler devre dÄ±ÅŸÄ± "
+"bÄ±rakÄ±larak dÃ¼zeltilebilir."
 
 #: views/deactivation-intent/form.php:29
 #, php-format
@@ -3758,45 +3758,45 @@ msgid ""
 "quickly disable LazyLoad, File Optimization, and CDN options. Then check to "
 "see if your issue is resolved."
 msgstr ""
-"Bizim tavsiyemiz mi? WP Rocket’i devre dışı bırakmak yerine, LazyLoad, Dosya"
-" İyileştirmesi ve CDN seçeneklerini hızla devre dışı bırakmak için "
-"%1$sGüvenli Kip%2$s’imizi kullanın. Ardından, sorununuzun çözülüp "
-"çözülmediğini denetleyin."
+"Bizim tavsiyemiz mi? WP Rocketâ€™i devre dÄ±ÅŸÄ± bÄ±rakmak yerine, LazyLoad, Dosya"
+" Ä°yileÅŸtirmesi ve CDN seÃ§eneklerini hÄ±zla devre dÄ±ÅŸÄ± bÄ±rakmak iÃ§in "
+"%1$sGÃ¼venli Kip%2$sâ€™imizi kullanÄ±n. ArdÄ±ndan, sorununuzun Ã§Ã¶zÃ¼lÃ¼p "
+"Ã§Ã¶zÃ¼lmediÄŸini denetleyin."
 
 #: views/deactivation-intent/form.php:35
 msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
 msgstr ""
-"WP Rocket sorunlarını gidermek için Güvenli Kip’imizi kullanmak istiyor "
+"WP Rocket sorunlarÄ±nÄ± gidermek iÃ§in GÃ¼venli Kipâ€™imizi kullanmak istiyor "
 "musunuz?"
 
 #: views/deactivation-intent/form.php:44
 #, php-format
 msgid "Yes, apply \"%1$sSafe Mode%2$s\""
-msgstr "Evet, \"%1$sGüvenli Kip%2$s\"i uygula"
+msgstr "Evet, \"%1$sGÃ¼venli Kip%2$s\"i uygula"
 
 #: views/deactivation-intent/form.php:52
 msgid "No, deactivate and snooze this message for"
-msgstr "Hayır, bu iletiyi devre dışı bırak ve şu süre kadar ertele"
+msgstr "HayÄ±r, bu iletiyi devre dÄ±ÅŸÄ± bÄ±rak ve ÅŸu sÃ¼re kadar ertele"
 
 #: views/deactivation-intent/form.php:54
 msgid "1 day"
-msgstr "1 gün"
+msgstr "1 gÃ¼n"
 
 #: views/deactivation-intent/form.php:55
 msgid "7 days"
-msgstr "7 gün"
+msgstr "7 gÃ¼n"
 
 #: views/deactivation-intent/form.php:56
 msgid "30 days"
-msgstr "30 gün"
+msgstr "30 gÃ¼n"
 
 #: views/deactivation-intent/form.php:57
 msgid "Forever"
-msgstr "Sürekli"
+msgstr "SÃ¼rekli"
 
 #: views/deactivation-intent/form.php:63
 msgid "Cancel"
-msgstr "İptal"
+msgstr "Ä°ptal"
 
 #: views/deactivation-intent/form.php:64
 msgid "Confirm"
@@ -3804,7 +3804,7 @@ msgstr "Onayla"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr "Dahil Etme ve Hariç Tutma Listelerini Güncelle"
+msgstr "Dahil Etme ve HariÃ§ Tutma Listelerini gÃ¼ncelleyin"
 
 #: views/settings/dynamic-lists-update.php:19
 #, php-format
@@ -3812,40 +3812,40 @@ msgid ""
 "Compatibility lists are downloaded automatically every week. Click the "
 "button if you want to update them manually. %1$sMore info%2$s"
 msgstr ""
-"Uyumluluk listeleri her hafta otomatik olarak indirilir. Bunları el ile "
-"güncellemek istiyorsanız düğmeye tıklayın. %1$sDaha fazla bilgi%2$s"
+"Uyumluluk listeleri her hafta otomatik olarak indirilir. BunlarÄ± el ile "
+"gÃ¼ncellemek istiyorsanÄ±z dÃ¼ÄŸmeye tÄ±klayÄ±n. %1$sDaha fazla bilgi%2$s"
 
 #: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
-msgstr "Listeleri güncelle"
+msgstr "Listeleri gÃ¼ncelle"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Google Yazı Tipi İyileştirmeyi etkinleştir"
+msgstr "Google YazÄ± Tipi Ä°yileÅŸtirmesini etkinleÅŸtirin"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""
 "Improves font performance and combines multiple font requests to reduce the "
 "number of HTTP requests."
 msgstr ""
-"Yazı tipi performansını artırır ve HTTP isteklerinin sayısını azaltmak için "
-"birden çok yazı tipi isteğini birleştirir."
+"YazÄ± tipi performansÄ±nÄ± artÄ±rÄ±r ve HTTP isteklerinin sayÄ±sÄ±nÄ± azaltmak iÃ§in "
+"birden Ã§ok yazÄ± tipi isteÄŸini birleÅŸtirir."
 
 #: views/settings/enable-google-fonts.php:29
 #, php-format
 msgid ""
 "Google Fonts Optimization is now enabled for your site. %1$sMore info%2$s"
 msgstr ""
-"Google Yazı Tipleri İyileştirme artık siteniz için etkinleştirildi. %1$sDaha"
+"Google YazÄ± Tipleri Ä°yileÅŸtirme artÄ±k siteniz iÃ§in etkinleÅŸtirildi. %1$sDaha"
 " fazla bilgi%2$s"
 
 #: views/settings/enable-google-fonts.php:38
 msgid "Optimize Google Fonts"
-msgstr "Google Yazı Tiplerini iyileştir"
+msgstr "Google YazÄ± Tiplerini iyileÅŸtir"
 
 #: views/settings/fields/cache-lifespan.php:26
 msgid "Clear cache after"
-msgstr "Şu süreden sonra önbelleği temizle"
+msgstr "Å�u sÃ¼reden sonra Ã¶nbelleÄŸi temizle"
 
 #: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:81
 #: views/settings/fields/cnames.php:111
@@ -3864,7 +3864,7 @@ msgstr "CSS"
 
 #: views/settings/fields/import-form.php:29
 msgid "Import settings"
-msgstr "Ayarları içe aktarın"
+msgstr "AyarlarÄ± iÃ§e aktarÄ±n"
 
 #: views/settings/fields/one-click-addon.php:43
 #: views/settings/fields/rocket-addon.php:33
@@ -3873,7 +3873,7 @@ msgstr "Eklenti durumu"
 
 #: views/settings/fields/rocket-addon.php:56
 msgid "Modify options"
-msgstr "Seçenekleri değiştir"
+msgstr "SeÃ§enekleri deÄŸiÅŸtir"
 
 #: views/settings/fields/rocket-cdn.php:29
 #: views/settings/fields/rocket-cdn.php:41
@@ -3883,7 +3883,7 @@ msgstr "CDN CNAME"
 #: views/settings/fields/rocket-cdn.php:62
 #, php-format
 msgid "Purges RocketCDN cached resources for your website. %s"
-msgstr "Web siteniz için RocketCDN önbelleklenmiş kaynaklarını temizler. %s"
+msgstr "Web siteniz iÃ§in RocketCDN Ã¶nbelleklenmiÅŸ kaynaklarÄ±nÄ± temizler. %s"
 
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
@@ -3893,17 +3893,17 @@ msgstr "Daha fazla bilgi edinin"
 
 #: views/settings/fields/rocket-cdn.php:72
 msgid "Clear all RocketCDN cache files"
-msgstr "Tüm RocketCDN önbellek dosyalarını temizle"
+msgstr "TÃ¼m RocketCDN Ã¶nbellek dosyalarÄ±nÄ± temizle"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
-msgstr "Cloudflare Önbelleği"
+msgstr "Cloudflare Ã–nbelleÄŸi"
 
 #: views/settings/page-sections/cloudflare.php:35
 #: views/settings/page-sections/sucuri.php:36
 #, php-format
 msgid "Purges cached resources for your website. %s"
-msgstr "Web sitenizin önbelleklenmiş kaynaklarını temizler. %s"
+msgstr "Web sitenizin Ã¶nbelleklenmiÅŸ kaynaklarÄ±nÄ± temizler. %s"
 
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -3911,7 +3911,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Tüm Cloudflare önbellek dosyalarını temizle"
+msgstr "TÃ¼m Cloudflare Ã¶nbellek dosyalarÄ±nÄ± temizle"
 
 #: views/settings/page-sections/dashboard.php:38
 msgid "Congratulations!"
@@ -3919,11 +3919,11 @@ msgstr "Tebrikler!"
 
 #: views/settings/page-sections/dashboard.php:40
 msgid "WP Rocket is now activated and already working for you."
-msgstr "WP Rocket şu an aktif edildi ve halen sizin için çalışıyor."
+msgstr "WP Rocket ÅŸu an aktif edildi ve halen sizin iÃ§in Ã§alÄ±ÅŸÄ±yor."
 
 #: views/settings/page-sections/dashboard.php:42
 msgid "Your website should be loading faster now!"
-msgstr "Web siteniz artık daha hızlı yüklenmelidir!"
+msgstr "Web siteniz artÄ±k daha hÄ±zlÄ± yÃ¼klenmelidir!"
 
 #: views/settings/page-sections/dashboard.php:44
 #, php-format
@@ -3931,22 +3931,22 @@ msgid ""
 "To guarantee fast websites, WP Rocket automatically applies 80% of web "
 "performance best practices."
 msgstr ""
-"Hızlı web sitelerini garantilemek için en iyi WP Rocket web performans "
-"uygulamalarının %80’ini otomatik olarak uygular."
+"HÄ±zlÄ± web sitelerini garantilemek iÃ§in en iyi WP Rocket web performans "
+"uygulamalarÄ±nÄ±n %80â€™ini otomatik olarak uygular."
 
 #: views/settings/page-sections/dashboard.php:44
 msgid ""
 "We also enable options that provide immediate benefits to your website."
 msgstr ""
-"Ayrıca web sitenize anında fayda sağlayan seçenekleri etkinleştiriyoruz."
+"AyrÄ±ca web sitenize anÄ±nda fayda saÄŸlayan seÃ§enekleri etkinleÅŸtiriyoruz."
 
 #: views/settings/page-sections/dashboard.php:45
 msgid "Continue to the options to further optimize your site!"
-msgstr "Sitenizi daha da iyileştirmek için seçeneklere devam edin!"
+msgstr "Sitenizi daha da iyileÅŸtirmek iÃ§in seÃ§eneklere devam edin!"
 
 #: views/settings/page-sections/dashboard.php:62
 msgid "My Account"
-msgstr "Hesabım"
+msgstr "HesabÄ±m"
 
 #: views/settings/page-sections/dashboard.php:68
 msgid "Refresh info"
@@ -3958,43 +3958,43 @@ msgstr "birlikte"
 
 #: views/settings/page-sections/dashboard.php:100
 msgid "Expiration Date"
-msgstr "Bitiş Tarihi"
+msgstr "BitiÅŸ Tarihi"
 
 #: views/settings/page-sections/dashboard.php:110
 msgid "View my account"
-msgstr "Hesabımı göster"
+msgstr "HesabÄ±mÄ± gÃ¶ster"
 
 #: views/settings/page-sections/dashboard.php:137
 msgid "Quick Actions"
-msgstr "Hızlı Eylemler"
+msgstr "HÄ±zlÄ± Eylemler"
 
 #: views/settings/page-sections/dashboard.php:144
 msgid "Remove all cached files"
-msgstr "Tüm önbelleklenen dosyaları kaldırın"
+msgstr "TÃ¼m Ã¶nbelleklenen dosyalarÄ± kaldÄ±rÄ±n"
 
 #: views/settings/page-sections/dashboard.php:164
 #: views/settings/page-sections/dashboard.php:170
 msgid "Regenerate Critical CSS"
-msgstr "Önemli CSS’yi yeniden oluştur"
+msgstr "Ã–nemli CSSâ€™yi yeniden oluÅŸtur"
 
 #: views/settings/page-sections/dashboard.php:182
 msgid "Remove Used CSS Cache"
-msgstr "Kullanılan CSS Önbelleğini Kaldır"
+msgstr "KullanÄ±lan CSS Ã–nbelleÄŸini KaldÄ±r"
 
 #: views/settings/page-sections/dashboard.php:205
 msgid "Frequently Asked Questions"
-msgstr "Sıkça Sorulan Sorular"
+msgstr "SÄ±kÃ§a Sorulan Sorular"
 
 #: views/settings/page-sections/dashboard.php:219
 msgid "Still cannot find a solution?"
-msgstr "Hala bir çözüm bulamadınız mı?"
+msgstr "Hala bir Ã§Ã¶zÃ¼m bulamadÄ±nÄ±z mÄ±?"
 
 #: views/settings/page-sections/dashboard.php:220
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
-"Bir çağrı gönderin ve arkadaş yanlısı ve bilgili Roketçilerimizden yardım "
-"alın."
+"Bir Ã§aÄŸrÄ± gÃ¶nderin ve arkadaÅŸ yanlÄ±sÄ± ve bilgili RoketÃ§ilerimizden yardÄ±m "
+"alÄ±n."
 
 #: views/settings/page-sections/dashboard.php:228
 msgid "Ask support"
@@ -4002,18 +4002,18 @@ msgstr "Destek iste"
 
 #: views/settings/page-sections/database.php:25
 msgid "Backup your database before you run a cleanup!"
-msgstr "Temizlemeyi çalıştırmadan önce veritabanınızı yedekleyin!"
+msgstr "Temizlemeyi Ã§alÄ±ÅŸtÄ±rmadan Ã¶nce veritabanÄ±nÄ±zÄ± yedekleyin!"
 
 #: views/settings/page-sections/database.php:26
 msgid ""
 "Once a database optimization has been performed, there is no way to undo it."
 msgstr ""
-"Bir kere bir veritabanı iyileştirme yapıldı mı, bunu geri almanın hiç yolu "
+"Bir kere bir veritabanÄ± iyileÅŸtirme yapÄ±ldÄ± mÄ±, bunu geri almanÄ±n hiÃ§ yolu "
 "yoktur."
 
 #: views/settings/page-sections/database.php:28
 msgid "Save Changes and Optimize"
-msgstr "Değişiklikleri Kaydet ve İyileştir"
+msgstr "DeÄŸiÅŸiklikleri Kaydet ve Ä°yileÅŸtir"
 
 #: views/settings/page-sections/imagify.php:21
 #, php-format
@@ -4021,24 +4021,24 @@ msgid ""
 "%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image "
 "optimization.%2$s"
 msgstr ""
-"%1$sWP ROCKET%2$s, resim iyileştirme için sınıfının en iyisi %3$sIMAGIFY%4$s"
-" %1$seklentisini yarattı.%2$s"
+"%1$sWP ROCKET%2$s, resim iyileÅŸtirme iÃ§in sÄ±nÄ±fÄ±nÄ±n en iyisi %3$sIMAGIFY%4$s"
+" %1$seklentisini yarattÄ±.%2$s"
 
 #: views/settings/page-sections/imagify.php:24
 msgid ""
 "Compress image to make your website faster, all while maintaining image "
 "quality."
 msgstr ""
-"Tüm resim kalitesini korurken, web sitenizin daha hızlı hale getirmek için "
-"resmi sıkıştırın."
+"TÃ¼m resim kalitesini korurken, web sitenizin daha hÄ±zlÄ± hale getirmek iÃ§in "
+"resmi sÄ±kÄ±ÅŸtÄ±rÄ±n."
 
 #: views/settings/page-sections/imagify.php:25
 msgid "More on Imagify:"
-msgstr "Imagify’da daha fazlası:"
+msgstr "Imagifyâ€™da daha fazlasÄ±:"
 
 #: views/settings/page-sections/imagify.php:27
 msgid "Imagify Plugin Page"
-msgstr "Imagify Eklenti Sayfası"
+msgstr "Imagify Eklenti SayfasÄ±"
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Imagify Website"
@@ -4046,26 +4046,26 @@ msgstr "Imagify Web Sitesi"
 
 #: views/settings/page-sections/imagify.php:29
 msgid "Review of Image Compression Plugins"
-msgstr "Resim Sıkıştırma Eklentileri İncelemesi"
+msgstr "Resim SÄ±kÄ±ÅŸtÄ±rma Eklentileri Ä°ncelemesi"
 
 #: views/settings/page-sections/imagify.php:38
 msgid "Install Imagify"
-msgstr "Imagify’ı Yükle"
+msgstr "Imagifyâ€™Ä± YÃ¼kle"
 
 #: views/settings/page-sections/license.php:22
 msgid "WP Rocket was not able to automatically validate your license."
-msgstr "WP Rocket, lisansınızı otomatik olarak doğrulayamadı."
+msgstr "WP Rocket, lisansÄ±nÄ±zÄ± otomatik olarak doÄŸrulayamadÄ±."
 
 #: views/settings/page-sections/license.php:29
 #, php-format
 msgid "Follow this %1$s, or contact %2$s to get the engine started."
 msgstr ""
-"Motoru çalıştırmak için bu %1$s takip edin ya da %2$s ile iletişime geçin."
+"Motoru Ã§alÄ±ÅŸtÄ±rmak iÃ§in bu %1$s takip edin ya da %2$s ile iletiÅŸime geÃ§in."
 
 #: views/settings/page-sections/license.php:32
 #, php-format
 msgid "%1$s%2$s%3$stutorial%4$s"
-msgstr "%1$s%2$s%3$seğitimi%4$s"
+msgstr "%1$s%2$s%3$seÄŸitimi%4$s"
 
 #: views/settings/page-sections/license.php:34
 msgid ""
@@ -4082,43 +4082,43 @@ msgstr "%1$s%2$s%3$sdestek%4$s"
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
-msgstr "Tüm Sucuri önbellek dosyalarını temizle"
+msgstr "TÃ¼m Sucuri Ã¶nbellek dosyalarÄ±nÄ± temizle"
 
 #: views/settings/page-sections/tools.php:20
 #, php-format
 msgid "Files size: %1$s. Number of entries: %2$s."
-msgstr "Dosyaların boyutu: %1$s. Giriş sayısı: %2$s."
+msgstr "DosyalarÄ±n boyutu: %1$s. GiriÅŸ sayÄ±sÄ±: %2$s."
 
 #: views/settings/page-sections/tools.php:23
 #, php-format
 msgid "%1$sDownload the file%2$s."
-msgstr "%1$sDosyayı indir%2$s."
+msgstr "%1$sDosyayÄ± indir%2$s."
 
 #: views/settings/page-sections/tools.php:26
 #, php-format
 msgid "%1$sDelete the file%2$s."
-msgstr "%1$sDosyayı sil%2$s."
+msgstr "%1$sDosyayÄ± sil%2$s."
 
 #: views/settings/page-sections/tools.php:37
 msgid "Export settings"
-msgstr "Ayarları dışa aktarın"
+msgstr "AyarlarÄ± dÄ±ÅŸa aktarÄ±n"
 
 #: views/settings/page-sections/tools.php:38
 msgid "Download a backup file of your settings"
-msgstr "Ayarlarınızın bir yedekleme dosyasını indirin"
+msgstr "AyarlarÄ±nÄ±zÄ±n bir yedekleme dosyasÄ±nÄ± indirin"
 
 #: views/settings/page-sections/tools.php:46
 msgid "Download settings"
-msgstr "Ayarları indir"
+msgstr "AyarlarÄ± indir"
 
 #: views/settings/page-sections/tools.php:60
 msgid "Rollback"
-msgstr "Geri alın"
+msgstr "Geri alÄ±n"
 
 #: views/settings/page-sections/tools.php:64
 #, php-format
 msgid "Has version %s caused an issue on your website?"
-msgstr "%s sürümü web sitenizde bir soruna mı neden oldu?"
+msgstr "%s sÃ¼rÃ¼mÃ¼ web sitenizde bir soruna mÄ± neden oldu?"
 
 #: views/settings/page-sections/tools.php:69
 #, php-format
@@ -4126,65 +4126,65 @@ msgid ""
 "You can rollback to the previous major version here.%sThen send us a support"
 " request."
 msgstr ""
-"Burada önceki büyük sürüme geri alabilirsiniz.%sArdından bize bir destek "
-"isteği gönderin."
+"Burada Ã¶nceki bÃ¼yÃ¼k sÃ¼rÃ¼me geri alabilirsiniz.%sArdÄ±ndan bize bir destek "
+"isteÄŸi gÃ¶nderin."
 
 #: views/settings/page-sections/tools.php:80
 #, php-format
 msgid "Reinstall version %s"
-msgstr "%s sürümünü yeniden yükle"
+msgstr "%s sÃ¼rÃ¼mÃ¼nÃ¼ yeniden yÃ¼kle"
 
 #: views/settings/page-sections/tools.php:106
 msgid "Debug mode"
-msgstr "Hata ayıklama kipi"
+msgstr "Hata ayÄ±klama kipi"
 
 #: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
-msgstr "Hata ayıklama günlük dosyası oluşturun."
+msgstr "Hata ayÄ±klama gÃ¼nlÃ¼k dosyasÄ± oluÅŸturun."
 
 #: views/settings/page-sections/tutorials.php:13
 #: views/settings/partials/getting-started.php:18
 msgid "Getting Started"
-msgstr "Başlarken"
+msgstr "BaÅŸlarken"
 
 #: views/settings/page-sections/tutorials.php:15
 msgid "Getting Started with WP Rocket"
-msgstr "WP Rocket ile Başlarken"
+msgstr "WP Rocket ile BaÅŸlarken"
 
 #: views/settings/page-sections/tutorials.php:16
 #: views/settings/partials/getting-started.php:12
 msgid "Finding the Best Settings for Your Site"
-msgstr "Siteniz için En İyi Ayarları Bulma"
+msgstr "Siteniz iÃ§in En Ä°yi AyarlarÄ± Bulma"
 
 #: views/settings/page-sections/tutorials.php:17
 #: views/settings/partials/getting-started.php:13
 msgid "How to Check if WP Rocket is Caching Your Site"
-msgstr "WP Rocket’in Sitenizi Önbelleklediği Nasıl Denetlenir"
+msgstr "WP Rocketâ€™in Sitenizi Ã–nbelleklediÄŸi NasÄ±l Denetlenir"
 
 #: views/settings/page-sections/tutorials.php:18
 #: views/settings/partials/getting-started.php:14
 msgid "How to Measure the Speed of Your Site"
-msgstr "Sitenizin Hızı Nasıl Ölçülür"
+msgstr "Sitenizin HÄ±zÄ± NasÄ±l Ã–lÃ§Ã¼lÃ¼r"
 
 #: views/settings/page-sections/tutorials.php:19
 msgid "How Preloading Works"
-msgstr "Önyükleme Nasıl Çalışır"
+msgstr "Ã–nyÃ¼kleme NasÄ±l Ã‡alÄ±ÅŸÄ±r"
 
 #: views/settings/page-sections/tutorials.php:23
 msgid "Passing the Core Web vitals"
-msgstr "Core Web vitals bilgilerini geçme"
+msgstr "Core Web vitals bilgilerini geÃ§me"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve LCP with WP Rocket"
-msgstr "WP Rocket ile LCP nasıl geliştirilir"
+msgstr "WP Rocket ile LCP nasÄ±l geliÅŸtirilir"
 
 #: views/settings/page-sections/tutorials.php:26
 msgid "How to improve FID with WP Rocket"
-msgstr "WP Rocket ile FID nasıl geliştirilir"
+msgstr "WP Rocket ile FID nasÄ±l geliÅŸtirilir"
 
 #: views/settings/page-sections/tutorials.php:27
 msgid "How to improve CLS with WP Rocket"
-msgstr "WP Rocket ile CLS nasıl geliştirilir"
+msgstr "WP Rocket ile CLS nasÄ±l geliÅŸtirilir"
 
 #: views/settings/page-sections/tutorials.php:31
 msgid "Troubleshooting"
@@ -4192,15 +4192,15 @@ msgstr "Sorun Giderme"
 
 #: views/settings/page-sections/tutorials.php:33
 msgid "Troubleshooting Display Issues with File Optimization"
-msgstr "Dosya İyileştirme ile Görüntü Sorunlarının Sorununu Giderme"
+msgstr "Dosya Ä°yileÅŸtirme ile GÃ¶rÃ¼ntÃ¼ SorunlarÄ±nÄ±n Sorununu Giderme"
 
 #: views/settings/page-sections/tutorials.php:34
 msgid "How to Find the Right JavaScript to Exclude"
-msgstr "Hariç Tutmak için Doğru JavaScript Nasıl Bulunur"
+msgstr "HariÃ§ Tutmak iÃ§in DoÄŸru JavaScript NasÄ±l Bulunur"
 
 #: views/settings/page-sections/tutorials.php:35
 msgid "How External Content Slows Your Site"
-msgstr "Dış İçerik Sitenizi Nasıl Yavaşlatır"
+msgstr "DÄ±ÅŸ Ä°Ã§erik Sitenizi NasÄ±l YavaÅŸlatÄ±r"
 
 #: views/settings/page-sections/tutorials.php:41
 msgid "Set Up the Cloudflare Add-on"
@@ -4208,16 +4208,16 @@ msgstr "Cloudflare Eklentisini Ayarlama"
 
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
-msgstr "WP Rocket Ayarları"
+msgstr "WP Rocket AyarlarÄ±"
 
 #: views/settings/page.php:30
 #, php-format
 msgid "version %s"
-msgstr "sürüm %s"
+msgstr "sÃ¼rÃ¼m %s"
 
 #: views/settings/page.php:60
 msgid "Show Sidebar"
-msgstr "Kenar Çubuğunu Göster"
+msgstr "Kenar Ã‡ubuÄŸunu GÃ¶ster"
 
 #: views/settings/page.php:82
 #, php-format
@@ -4225,27 +4225,27 @@ msgid ""
 "Below is a detailed view of all data WP Rocket will collect %1$sif granted "
 "permission.%2$s"
 msgstr ""
-"Aşağıdakiler, %1$sizin verildiği takdirde%2$s WP Rocket’in toplayacağı tüm "
-"verilerin ayrıntılı bir görünümüdür."
+"AÅŸaÄŸÄ±dakiler, %1$sizin verildiÄŸi takdirde%2$s WP Rocketâ€™in toplayacaÄŸÄ± tÃ¼m "
+"verilerin ayrÄ±ntÄ±lÄ± bir gÃ¶rÃ¼nÃ¼mÃ¼dÃ¼r."
 
 #: views/settings/page.php:87
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
 msgstr ""
-"WP Rocket asla herhangi bir etki alanı adı veya e-posta adresini (lisans "
-"doğrulaması hariç), IP adreslerini, ya da üçüncü taraf API anahtarlarını "
+"WP Rocket asla herhangi bir etki alanÄ± adÄ± veya e-posta adresini (lisans "
+"doÄŸrulamasÄ± hariÃ§), IP adreslerini, ya da Ã¼Ã§Ã¼ncÃ¼ taraf API anahtarlarÄ±nÄ± "
 "iletmeyecek."
 
 #: views/settings/page.php:89
 msgid "Activate Rocket analytics"
-msgstr "Rocket çözümseli aktif et"
+msgstr "Rocket Ã§Ã¶zÃ¼mseli aktif et"
 
 #: views/settings/partials/documentation.php:15
 msgid "It is a great starting point to fix some of the most common issues."
 msgstr ""
-"En yaygın sorunların bazılarını düzeltmek için harika bir başlangıç "
-"noktasıdır."
+"En yaygÄ±n sorunlarÄ±n bazÄ±larÄ±nÄ± dÃ¼zeltmek iÃ§in harika bir baÅŸlangÄ±Ã§ "
+"noktasÄ±dÄ±r."
 
 #: views/settings/partials/documentation.php:22
 msgid "Read the documentation"
@@ -4253,16 +4253,16 @@ msgstr "Belgeleri okuyun"
 
 #: views/settings/partials/getting-started.php:11
 msgid "What WP Rocket Does For You By Default"
-msgstr "WP Roket Varsayılan Olarak Sizin İçin Ne Yapar"
+msgstr "WP Roket VarsayÄ±lan Olarak Sizin Ä°Ã§in Ne Yapar"
 
 #: views/settings/partials/sidebar.php:12
-msgid "How to correctly measure your website’s loading time"
-msgstr "Web sitenizin yükleme süresini nasıl doğru olarak ölçersiniz"
+msgid "How to correctly measure your websiteâ€™s loading time"
+msgstr "Web sitenizin yÃ¼kleme sÃ¼resini nasÄ±l doÄŸru olarak Ã¶lÃ§ersiniz"
 
 #: views/settings/partials/sidebar.php:14
 msgid "Check our tutorial and learn how to measure the speed of your site."
 msgstr ""
-"Eğitimimizi gözden geçirin ve sitenizin hızının nasıl ölçüldüğünü öğrenin."
+"EÄŸitimimizi gÃ¶zden geÃ§irin ve sitenizin hÄ±zÄ±nÄ±n nasÄ±l Ã¶lÃ§Ã¼ldÃ¼ÄŸÃ¼nÃ¼ Ã¶ÄŸrenin."
 
 #: views/settings/partials/sidebar.php:15
 #: views/settings/partials/sidebar.php:24
@@ -4272,11 +4272,11 @@ msgstr "Rehberimizi okuyun"
 #: views/settings/partials/sidebar.php:18
 msgid "Learn about optimal WP Rocket settings for mobile."
 msgstr ""
-"Mobil için en uygun WP Roket ayarları hakkında daha fazla bilgi edinin."
+"Mobil iÃ§in en uygun WP Roket ayarlarÄ± hakkÄ±nda daha fazla bilgi edinin."
 
 #: views/settings/partials/sidebar.php:27
 msgid "Test and Improve Google Core Web Vitals for WordPress."
-msgstr "WordPress için Google Core Web Vitals’ı Deneyin ve Geliştirin."
+msgstr "WordPress iÃ§in Google Core Web Vitalsâ€™Ä± Deneyin ve GeliÅŸtirin."
 
 #: views/settings/partials/sidebar.php:28
 msgid "Read more"
@@ -4284,16 +4284,16 @@ msgstr "Daha fazla bilgi edinin"
 
 #: views/settings/partials/sidebar.php:33
 msgid "You have not activated logged-in user cache."
-msgstr "Oturum açmış kullanıcı önbelleğini aktif etmediniz."
+msgstr "Oturum aÃ§mÄ±ÅŸ kullanÄ±cÄ± Ã¶nbelleÄŸini aktif etmediniz."
 
 #: views/settings/partials/sidebar.php:34
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
-"Web sitenizin hızını ve görsel görünümünü kontrol etmek için özel bir "
-"tarayıcı kullanın."
+"Web sitenizin hÄ±zÄ±nÄ± ve gÃ¶rsel gÃ¶rÃ¼nÃ¼mÃ¼nÃ¼ kontrol etmek iÃ§in Ã¶zel bir "
+"tarayÄ±cÄ± kullanÄ±n."
 
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/fields-container.php:28
 msgid "Need Help?"
-msgstr "Yardım Mı Gerekli?"
+msgstr "YardÄ±m MÄ± Gerekli?"
