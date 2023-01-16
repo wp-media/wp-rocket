@@ -51,7 +51,7 @@ class Perfmatters implements Subscriber_Interface {
 	/**
 	 * Check if perfmatters rucss is active.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function is_perfmatters_rucss_active(): bool {
 		$perfmatters_options = get_option( 'perfmatters_options' );
