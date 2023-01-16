@@ -23,7 +23,7 @@ class RapidLoad implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable RUCSS option.
+	 * Disable RUCSS setting.
 	 *
 	 * @param array $status RUCSS option status.
 	 * @return array
