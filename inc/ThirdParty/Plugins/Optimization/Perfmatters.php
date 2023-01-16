@@ -17,7 +17,7 @@ class Perfmatters implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_disable_rucss_setting'              => 'disable_rucss_setting',
+			'rocket_disable_rucss_setting'            => 'disable_rucss_setting',
 			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_rucss',
 		];
 	}
@@ -56,10 +56,6 @@ class Perfmatters implements Subscriber_Interface {
 	private function is_perfmatters_rucss_active(): bool {
 		$perfmatters_options = get_option( 'perfmatters_options' );
 
-		if ( ! empty( $perfmatters_options['assets']['remove_unused_css'] ) ) {
-			return true;
-		}
-
-		return false;
+		return ! empty( $perfmatters_options['assets']['remove_unused_css'] );
 	}
 }
