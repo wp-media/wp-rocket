@@ -28,7 +28,7 @@ class Perfmatters implements Subscriber_Interface {
 	 * @param array $status RUCSS option status.
 	 * @return array
 	 */
-	public function disable_rucss_option( array $status ): array {
+	public function disable_rucss_setting( array $status ): array {
 		if ( ! $this->is_perfmatters_rucss_active() ) {
 			return $status;
 		}
