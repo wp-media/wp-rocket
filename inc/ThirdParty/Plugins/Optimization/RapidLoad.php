@@ -17,7 +17,7 @@ class RapidLoad implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_disable_rucss_setting'              => 'disable_rucss_setting',
+			'rocket_disable_rucss_setting'            => 'disable_rucss_setting',
 			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_rucss',
 		];
 	}
