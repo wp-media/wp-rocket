@@ -577,7 +577,7 @@ class Page {
 		 * @param array $should_disable will return array with disable status and text.
 		 */
 		$rucss_status = apply_filters(
-			'rocket_maybe_disable_rucss',
+			'rocket_disable_rucss_setting',
 			[
 				'disable' => false,
 				'text'    => '',
