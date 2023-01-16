@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::disable_rucss_option
+ * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::disable_rucss_setting
  */
 class Test_DisableRucssOptionRapidLoad extends TestCase {
 	protected $subscriber;
@@ -28,6 +28,6 @@ class Test_DisableRucssOptionRapidLoad extends TestCase {
 			->with( 'autoptimize_uucss_settings' )
 			->andReturn( $config['autoptimize_uucss_settings'] );
 
-		$this->assertSame( $expected, $this->subscriber->disable_rucss_option( $config['rucss_status'] ) );
+		$this->assertSame( $expected, $this->subscriber->disable_rucss_setting( $config['rucss_status'] ) );
 	}
 }

@@ -20,6 +20,6 @@ class Test_DisableRucssOptionRapidLoad extends TestCase {
 			->with( 'autoptimize_uucss_settings' )
 			->andReturn( $config['autoptimize_uucss_settings'] );
 
-		$this->assertSame( $expected, apply_filters( 'rocket_maybe_disable_rucss', $config['rucss_status'] ) );
+		$this->assertSame( $expected, apply_filters( 'rocket_disable_rucss_setting', $config['rucss_status'] ) );
 	}
 }

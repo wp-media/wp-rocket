@@ -186,7 +186,9 @@
 		    "@test-integration-rank-math-seo",
 		    "@test-integration-all-in-seo-pack",
 		    "@test-integration-seopress",
-		    "@test-integration-the-events-calendar"
+		    "@test-integration-the-events-calendar",
+		    "@test-integration-perfmatters",
+		    "@test-integration-rapidload"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",

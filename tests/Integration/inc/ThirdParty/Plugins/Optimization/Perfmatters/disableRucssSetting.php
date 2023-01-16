@@ -20,6 +20,6 @@ class Test_DisableRucssOptionPerfmatters extends TestCase {
 			->with( 'perfmatters_options' )
 			->andReturn( $config['perfmatters_options'] );
             
-		$this->assertSame( $expected, apply_filters( 'rocket_maybe_disable_rucss', $config['rucss_status'] ) );
+		$this->assertSame( $expected, apply_filters( 'rocket_disable_rucss_setting', $config['rucss_status'] ) );
 	}
 }
