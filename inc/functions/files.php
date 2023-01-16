@@ -474,47 +474,46 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 
 /**
  * Returns the right path when the post is trashed.
+ *
  * @param array $parsed_url current parsed url.
  *
  * @return array
  */
-function rocket_maybe_find_right_trash_url(array $parsed_url) {
-	if(! array_key_exists('query', $parsed_url) || array_key_exists('query', $parsed_url) === '') {
+function rocket_maybe_find_right_trash_url( array $parsed_url ) {
+	if ( ! array_key_exists( 'query', $parsed_url ) || array_key_exists( 'query', $parsed_url ) === '' ) {
 		return $parsed_url;
 	}
 	$query = $parsed_url['query'];
-	$query = explode('&', $query);
+	$query = explode( '&', $query );
 
 	$params = [];
 
-	foreach ($query as $item) {
-		$item = explode('=', $item);
-		if(count($item) < 2) {
+	foreach ( $query as $item ) {
+		$item = explode( '=', $item );
+		if ( count( $item ) < 2 ) {
 			continue;
 		}
-		$params[$item[0]] = $item[1];
+		$params[ $item[0] ] = $item[1];
 	}
 
-	if( !key_exists('page_id', $params)) {
+	if ( ! key_exists( 'page_id', $params ) ) {
 		return $parsed_url;
 	}
 
-	$post = get_post((int) $params['page_id']);
+	$post = get_post( (int) $params['page_id'] );
 
-	if(! $post) {
+	if ( ! $post ) {
 		return $parsed_url;
 	}
 	$post->post_status = 'publish';
 
 	$permalink = get_permalink( $post );
 
-	if( ! $permalink ) {
+	if ( ! $permalink ) {
 		return $parsed_url;
 	}
 
 	$new_permalink = str_replace( '__trashed', '', $permalink );
-
-
 
 	return get_rocket_parse_url( $new_permalink );
 }
