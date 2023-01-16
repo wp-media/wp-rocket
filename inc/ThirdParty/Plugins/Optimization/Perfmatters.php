@@ -17,7 +17,7 @@ class Perfmatters implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_maybe_disable_rucss'              => 'disable_rucss_option',
+			'rocket_disable_rucss_setting'              => 'disable_rucss_setting',
 			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_rucss',
 		];
 	}
