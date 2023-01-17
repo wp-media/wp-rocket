@@ -18,7 +18,7 @@ class Test_MaybeLaunchDomainChanged extends TestCase
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 		Functions\when('trailingslashit')->returnArg();

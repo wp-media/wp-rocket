@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\AdminSubscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Engine\Cache\AdvancedCache;
@@ -24,7 +25,8 @@ class Test_AddPurgeTermLink extends TestCase {
 
 		$this->subscriber = new AdminSubscriber(
 			Mockery::mock( AdvancedCache::class ),
-			Mockery::mock( WPCache::class )
+			Mockery::mock( WPCache::class ),
+			Mockery::mock( WP_Filesystem_Direct::class )
 		);
 	}
 

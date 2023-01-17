@@ -47,7 +47,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @param WPCache                   $wp_cache WPCache instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache, $filesystem = null ) {
 		$this->advanced_cache = $advanced_cache;
 		$this->wp_cache       = $wp_cache;
 		$this->filesystem     = $filesystem ?: rocket_direct_filesystem();
