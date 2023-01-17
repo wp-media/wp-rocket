@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 
@@ -33,14 +34,20 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	private $wp_cache;
 
 	/**
+	 * @var WP_Filesystem_Direct
+	 */
+	private $filesystem;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param AdvancedCache $advanced_cache AdvancedCache instance.
 	 * @param WPCache       $wp_cache       WPCache instance.
 	 */
-	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache ) {
+	public function __construct( AdvancedCache $advanced_cache, WPCache $wp_cache, WP_Filesystem_Direct $filesystem = null) {
 		$this->advanced_cache = $advanced_cache;
 		$this->wp_cache       = $wp_cache;
+		$this->filesystem     = $filesystem ?: rocket_direct_filesystem();
 	}
 
 	/**
@@ -62,7 +69,10 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 			'site_status_tests'     => 'add_wp_cache_status_test',
-			'rocket_domain_changed' => 'regenerate_configs',
+			'rocket_domain_changed' => [
+				['regenerate_configs'],
+				['delete_old_configs']
+			],
 		];
 	}
 
@@ -174,5 +184,34 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function regenerate_configs() {
 		rocket_generate_advanced_cache_file();
+
+	}
+
+	public function delete_old_configs() {
+		$configs = [];
+
+		if ( is_multisite() ) {
+			foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
+				switch_to_blog( $site_id );
+				$configs[] = $this->generate_config_path();
+				restore_current_blog();
+			}
+		} else {
+			$configs[] = $this->generate_config_path();
+		}
+
+		$contents = $this->filesystem->dirlist(WP_ROCKET_CONFIG_PATH);
+		foreach ($contents as $content) {
+			if(! $this->filesystem->is_file($content) || in_array($content, $configs, true)) {
+				continue;
+			}
+			$this->filesystem->delete($content);
+		}
+	}
+
+	protected function generate_config_path() {
+		$file                = get_rocket_parse_url( untrailingslashit( home_url() ) );
+		$file['path']        = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
+		return WP_ROCKET_CONFIG_PATH . strtolower( $file['host'] ) . $file['path'] . '.php';
 	}
 }
