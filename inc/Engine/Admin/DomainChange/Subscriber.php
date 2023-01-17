@@ -32,15 +32,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_launch_domain_changed() {
 		$base_url = trailingslashit( home_url() );
+
 		if ( ! get_option( self::LAST_BASE_URL_OPTION ) ) {
 			update_option( self::LAST_BASE_URL_OPTION, $base_url );
 			return;
 		}
+
 		$last_base_url = get_option( self::LAST_BASE_URL_OPTION );
+
 		if ( $base_url === $last_base_url ) {
 			return;
 		}
-		update_option( self::LAST_BASE_URL_OPTION, $last_base_url );
+
+		update_option( self::LAST_BASE_URL_OPTION, $base_url );
+
 		do_action( 'rocket_domain_changed' );
 	}
 }
