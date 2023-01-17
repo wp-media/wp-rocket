@@ -62,6 +62,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 			'site_status_tests'     => 'add_wp_cache_status_test',
+			'rocket_domain_changed' => 'regenerate_configs',
 		];
 	}
 
@@ -164,5 +165,14 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function add_wp_cache_status_test( $tests ) {
 		return $this->wp_cache->add_wp_cache_status_test( $tests );
+	}
+
+	/**
+	 * Regenerate configs.
+	 *
+	 * @return void
+	 */
+	public function regenerate_configs() {
+		rocket_generate_advanced_cache_file();
 	}
 }

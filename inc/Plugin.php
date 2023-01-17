@@ -38,7 +38,7 @@ use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
-
+use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServiceProvider;
 /**
  * Plugin Manager.
  */
@@ -192,6 +192,7 @@ class Plugin {
 		$this->container->addServiceProvider( SettingsServiceProvider::class );
 		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
 		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
+		$this->container->addServiceProvider( DomainChangeServiceProvider::class );
 
 		return [
 			'beacon',
@@ -213,6 +214,7 @@ class Plugin {
 			'minify_admin_subscriber',
 			'action_scheduler_check',
 			'actionscheduler_admin_subscriber',
+			'domain_change_subscriber',
 		];
 	}
 
