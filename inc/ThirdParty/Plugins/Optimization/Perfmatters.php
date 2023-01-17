@@ -19,6 +19,7 @@ class Perfmatters implements Subscriber_Interface {
 		return [
 			'rocket_disable_rucss_setting'            => 'disable_rucss_setting',
 			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_rucss',
+			'rocket_enable_rucss_fonts_preload'       => 'maybe_disable_fonts_preload',
 		];
 	}
 
@@ -46,6 +47,17 @@ class Perfmatters implements Subscriber_Interface {
 	 */
 	public function maybe_disable_rucss() {
 		return $this->is_perfmatters_rucss_active() ? false : null;
+	}
+
+	/**
+	 * Disable fonts preloading.
+	 *
+	 * @return boolean
+	 */
+	public function maybe_disable_fonts_preload(): bool {
+		$perfmatters_options = get_option( 'perfmatters_options' );
+
+		return empty( $perfmatters_options['fonts']['local_google_fonts'] );
 	}
 
 	/**
