@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Activation\ActivationInterface;
 
 class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface {
 	/**
-	 * Array of events this subscribers listens to
+	 * Array of events this subscriber listens to.
 	 *
 	 * @return array
 	 */
@@ -20,6 +20,9 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		return [
 			'update_option_' . $slug => [ 'check_on_update_options', 10, 2 ],
 			'wp_rocket_update'       => 'maybe_recreate_as_tables',
+			'rocket_disable_option_ui' => [ 'disable_rucss_preload_with_older_as_versions', 10, 2 ],
+			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_options',
+			'pre_get_rocket_option_manual_preload' => 'maybe_disable_options',
 		];
 	}
 
@@ -29,6 +32,7 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return void
 	 */
 	public function activate() {
+		//add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'maybe_disable_options' ] );
 		add_action( 'rocket_activation', [ $this, 'maybe_recreate_as_tables' ] );
 	}
 
@@ -38,6 +42,10 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return bool
 	 */
 	public function maybe_recreate_as_tables(): bool {
+		if ( ! $this->is_valid_action_scheduler_version() ) {
+			return false;
+		}
+
 		if ( $this->is_valid_as_tables() ) {
 			return false;
 		}
@@ -126,5 +134,35 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
 
 		return 4 === count( $found_as_tables );
+	}
+
+	private function is_valid_action_scheduler_version() {
+		if ( ! class_exists( '\ActionScheduler_Versions' ) || ! class_exists( '\ActionScheduler' ) ) {
+			return false;
+		}
+
+		$version = \ActionScheduler_Versions::instance()->latest_version();
+		//die(var_dump($version));
+		if ( ! $version ) {
+			return false;
+		}
+
+		return version_compare( $version, '3.0.0', '>=' );
+	}
+
+	public function disable_rucss_preload_with_older_as_versions( $disabled, $option_key ) {
+		if ( ! in_array( $option_key, [ 'remove_unused_css', 'manual_preload' ], true ) ) {
+			return $disabled;
+		}
+
+		if ( ! $this->is_valid_action_scheduler_version() ) {
+			return false;
+		}
+
+		return $disabled;
+	}
+
+	public function maybe_disable_options() {
+		return $this->is_valid_action_scheduler_version();
 	}
 }
