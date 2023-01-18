@@ -1,4 +1,5 @@
 jQuery( document ).ready( function( $ ){
+var sent = false;
 	$( '.rocket-dismiss' ).on( 'click', function( e ) {
 		e.preventDefault();
 		var url = $( this ).attr( 'href' ).replace( 'admin-post', 'admin-ajax' );
@@ -19,12 +20,11 @@ jQuery( document ).ready( function( $ ){
 
 	$( '#wpr-deactivation-intent-form' ).submit(function (e) {
 		const checked = $( '#export_settings' ).prop('checked');
-		if(! checked) {
+		if(! checked || sent) {
 			return true;
 		}
 
 		e.preventDefault();
-
 		$.ajax( {
 			url: rocket_option_export.rest_url_option_export,
 			method: 'GET',
@@ -55,7 +55,7 @@ jQuery( document ).ready( function( $ ){
 				window.URL.revokeObjectURL(url);
 			},
 			complete: function () {
-				$( '#export_settings' ).prop('checked', false);
+				sent = true;
 				$( '#wpr-deactivation-intent-form' ).submit();
 			}
 		} );
