@@ -29,6 +29,7 @@ class Test_IsExcludedByFilter extends TestCase
 	public function testShouldReturnAsExpected($config, $expected) {
 		global $wp_rewrite;
 		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
+		$config['regexes'][]= $pagination_regex;
 		Filters\expectApplied('rocket_preload_exclude_urls')->with([$pagination_regex])->andReturn($config['regexes']);
 		$method = $this->get_reflective_method('is_excluded_by_filter',  get_class($this->trait));
 		$this->assertSame($expected, $method->invokeArgs($this->trait,[$config['url']]));
