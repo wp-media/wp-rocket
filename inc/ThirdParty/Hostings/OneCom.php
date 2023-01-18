@@ -29,6 +29,7 @@ class OneCom implements Subscriber_Interface {
 			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
+			'rocket_display_rocketcdn_cta'            => 'maybe_remove_rocketcdn_cta_banner',
 		];
 	}
 
@@ -161,5 +162,14 @@ class OneCom implements Subscriber_Interface {
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
+	}
+
+	/**
+	 * Remove RocketCDN cta banner.
+	 *
+	 * @return boolean
+	 */
+	public function maybe_remove_rocketcdn_cta_banner(): bool {
+		return ! $this->is_oc_cdn_enabled();
 	}
 }
