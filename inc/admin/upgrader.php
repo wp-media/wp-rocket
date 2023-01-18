@@ -313,3 +313,56 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
+
+/**
+ * Set plugin option before upgrade.
+ *
+ * @param mixed $return    The result of the upgrade process.
+ * @param array $plugin    The plugin data.
+ *
+ * @return mixed|WP_Error
+ */
+function rocket_upgrade_pre_install_option( $return, $plugin ) {
+
+	if ( is_wp_error( $return ) ) { // Bypass.
+		return $return;
+	}
+
+	$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
+
+	if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
+		$msg = __( 'Missing plugin.', 'rocket' );
+		return new WP_Error( 'bad_request', $msg );
+	}
+
+	update_option( 'wp_rocket_updating', true );
+
+	return $return;
+}
+
+add_action( 'upgrader_pre_install', 'rocket_upgrade_pre_install_option', 10, 2 );
+
+/**
+ * Update plugin option after upgrade.
+ *
+ * @param mixed $return    The result of the upgrade process.
+ * @param array $plugin    The plugin data.
+ *
+ * @return mixed|string|WP_Error
+ */
+function rocket_upgrade_post_install_option( $return, $plugin ) {
+	if ( is_wp_error( $return ) ) { // Bypass.
+		return $return;
+	}
+
+	$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
+	if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
+		$msg = __( 'Missing plugin.', 'rocket' );
+		return new WP_Error( 'bad_request', $msg );
+	}
+	update_option( 'wp_rocket_updating', false );
+
+	return $plugin;
+}
+
+add_action( 'upgrader_post_install', 'rocket_upgrade_post_install_option', 10, 2 );
