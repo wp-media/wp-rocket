@@ -28,9 +28,6 @@ var sent = false;
 		$.ajax( {
 			url: rocket_option_export.rest_url_option_export,
 			method: 'GET',
-			beforeSend: function ( xhr ) {
-				xhr.setRequestHeader( 'X-WP-Nonce', jQuery('#wpr-deactivation-intent-form input[name="rest_auth_nonce"]').val() );
-			},
 			success: function( data, textStatus, xhr ) {
 				const disposition = xhr.getResponseHeader('content-disposition');
 
