@@ -214,7 +214,7 @@ class ImageDimensions {
 		// URL has domain and domain is part of the internal domains.
 		if ( ! empty( $file['host'] ) ) {
 			foreach ( $hosts as $host ) {
-				if ( false !== strpos( $url, $host ) ) {
+				if ( false !== strpos( $file['host'], $host ) ) {
 					return false;
 				}
 			}

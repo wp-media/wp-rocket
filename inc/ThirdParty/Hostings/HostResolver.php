@@ -31,6 +31,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( isset( $_SERVER['ONECOM_DOMAIN_NAME'] ) ) {
+			self::$hostname = 'onecom';
+			return 'onecom';
+		}
+
 		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
 			self::$hostname = 'cloudways';
 

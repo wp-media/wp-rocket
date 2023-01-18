@@ -33,7 +33,18 @@ defined( 'ABSPATH' ) || exit;
 					?>
 				</p>
 				<p><strong><?php esc_html_e( 'Do you want to use our Safe Mode to troubleshoot WP Rocket?', 'rocket' ); ?></strong></p>
-				<form method="post" action="<?php echo esc_attr( $data['form_action'] ); ?>">
+				<form id="wpr-deactivation-intent-form" method="post" action="
+				<?php
+					echo esc_attr( $data['form_action'] );
+				?>
+				">
+					<input name="rest_auth_nonce" type="hidden" value="
+					<?php
+					echo esc_attr(
+						wp_create_nonce( 'wp_rest' )
+					);
+					?>
+					" />
 					<ul>
 						<li>
 							<input type="radio" id="safe_mode" value="safe_mode" name="mode" checked />
@@ -43,6 +54,19 @@ defined( 'ABSPATH' ) || exit;
 									// translators: %1$s = opening strong tag, %2$s = closing strong tag.
 									esc_html__( 'Yes, apply "%1$sSafe Mode%2$s"', 'rocket' ),
 									'<strong>',
+									'</strong>'
+								);
+								?>
+							</label>
+						</li>
+						<li class="wpr-sub-list">
+							<input type="checkbox" id="export_settings" name="export_settings" checked="checked" />
+							<label for="export_settings">
+								<?php
+								printf(
+										// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+										esc_html__( 'and export WP Rocket settings %1$s(Recommended as current settings will be deleted)%2$s', 'rocket' ),
+								'<strong>',
 									'</strong>'
 								);
 								?>
