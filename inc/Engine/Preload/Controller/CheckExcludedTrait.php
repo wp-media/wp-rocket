@@ -11,7 +11,12 @@ trait CheckExcludedTrait {
 	 * @return array
 	 */
 	public function add_cache_reject_uri_to_excluded( array $regexes ): array {
-		$user_added_cache_reject_uri         = (array) get_rocket_option( 'cache_reject_uri', [] );
+		$user_added_cache_reject_uri = (array) get_rocket_option( 'cache_reject_uri', [] );
+
+		if ( count( $user_added_cache_reject_uri ) === 0 ) {
+			return $user_added_cache_reject_uri;
+		}
+
 		$altered_user_added_cache_reject_uri = implode( '$|', $user_added_cache_reject_uri );
 
 		$user_added_cache_reject_uri = implode( '|', $user_added_cache_reject_uri );
