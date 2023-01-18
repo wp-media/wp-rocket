@@ -14,7 +14,7 @@ trait CheckExcludedTrait {
 		$user_added_cache_reject_uri = (array) get_rocket_option( 'cache_reject_uri', [] );
 
 		if ( count( $user_added_cache_reject_uri ) === 0 ) {
-			return $user_added_cache_reject_uri;
+			return $regexes;
 		}
 
 		$altered_user_added_cache_reject_uri = implode( '$|', $user_added_cache_reject_uri );
