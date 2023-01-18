@@ -180,6 +180,7 @@
 		    "@test-integration-wordfence",
 		    "@test-integration-kinsta",
 		    "@test-integration-convertplug",
+			"@test-integration-onecom",
 		    "@test-integration-jetpack",
 		    "@test-integration-rank-math-seo",
 		    "@test-integration-all-in-seo-pack",
