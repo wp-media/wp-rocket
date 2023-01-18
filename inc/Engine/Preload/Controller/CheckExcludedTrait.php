@@ -28,7 +28,9 @@ trait CheckExcludedTrait {
 		 *
 		 * @param string[] regexes to check
 		 */
-		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [] );
+		global $wp_rewrite;
+		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
+		$regexes          = (array) apply_filters( 'rocket_preload_exclude_urls', [ $pagination_regex ] );
 
 		if ( empty( $regexes ) ) {
 			return false;
