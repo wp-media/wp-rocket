@@ -32,9 +32,9 @@ class Test_CreateOrUpdate extends TestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		Functions\when('current_time')->justReturn($config['time']);
+		Functions\when('get_option')->justReturn($config['is_updating']);
 
-
-		if(! $config['rejected']) {
+		if(! $config['rejected'] && !$config['is_updating']) {
 			$this->query->expects(self::once())->method('query')->with([
 				'url' => $config['resource']['url'],
 			])->willReturn($config['rows']);
