@@ -31,7 +31,7 @@ class Subscriber implements Subscriber_Interface {
 			'wpr-admin-common',
 			'rocket_option_export',
 			[
-				'rest_url_option_export' => rest_url( 'wp-rocket/v1/options/export/' ),
+				'rest_url_option_export' => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_export' ), 'rocket_export' ),
 			]
 		);
 	}
