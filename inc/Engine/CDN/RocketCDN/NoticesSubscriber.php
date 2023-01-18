@@ -171,6 +171,15 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function display_rocketcdn_cta() {
+		/**
+		 * Filters the display of the rocketcdn banner.
+		 *
+		 * @param bool $display_cta_banner; true to display, false otherwise.
+		 */
+		if ( ! apply_filters( 'rocket_display_rocketcdn_cta', true ) ) {
+			return;
+		}
+
 		if ( $this->is_white_label_account() ) {
 			return;
 		}
