@@ -46,6 +46,9 @@ class Subscriber implements Subscriber_Interface {
 
 		update_option( self::LAST_BASE_URL_OPTION, $base_url );
 
+		/**
+		 * Fires when the domain of the website has been changed.
+		 */
 		do_action( 'rocket_domain_changed' );
 	}
 }
