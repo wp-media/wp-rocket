@@ -273,6 +273,16 @@ class PreloadUrl {
 
 		$cache_query_string = get_rocket_cache_query_string();
 
+		$cache_query_string = array_merge(
+			$cache_query_string,
+			[
+				'lang',
+				's',
+				'permalink_name',
+				'lp-variation-id',
+			]
+			);
+
 		if ( ! $cache_query_string ) {
 			return count( $queries ) === 0;
 		}
