@@ -23,14 +23,14 @@ trait CheckExcludedTrait {
 	 * @return bool
 	 */
 	protected function is_excluded_by_filter( string $url ): bool {
+		global $wp_rewrite;
+		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
 		/**
 		 * Regex to exclude URI from preload.
 		 *
 		 * @param string[] regexes to check
 		 */
-		global $wp_rewrite;
-		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
-		$regexes          = (array) apply_filters( 'rocket_preload_exclude_urls', [ $pagination_regex ] );
+		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [ $pagination_regex ] );
 
 		if ( empty( $regexes ) ) {
 			return false;
