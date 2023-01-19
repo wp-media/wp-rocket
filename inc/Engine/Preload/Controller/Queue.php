@@ -77,6 +77,10 @@ class Queue extends AbstractASQueue {
 	 * @return bool
 	 */
 	public function job_preload_job_check_finished_async_exists() {
+		if ( ! did_action( 'init' ) || doing_action( 'init' ) ) {
+			return true;
+		}
+
 		$row_found = $this->search(
 			[
 				'hook'   => 'rocket_preload_job_check_finished',

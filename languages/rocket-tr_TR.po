@@ -3804,7 +3804,7 @@ msgstr "Onayla"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr "Dahil Etme ve Hariç Tutma Listelerini Güncelle"
+msgstr "Dahil Etme ve Hariç Tutma Listelerini güncelleyin"
 
 #: views/settings/dynamic-lists-update.php:19
 #, php-format
@@ -3821,7 +3821,7 @@ msgstr "Listeleri güncelle"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
-msgstr "Google Yazı Tipi İyileştirmeyi etkinleştir"
+msgstr "Google Yazı Tipi İyileştirmesini etkinleştirin"
 
 #: views/settings/enable-google-fonts.php:14
 msgid ""

@@ -200,6 +200,11 @@ tests_add_filter(
 			define( 'ROCKET_LL_VERSION', '2.3.6' );
 		}
 
+		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
+			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
+			$_SERVER[ 'HTTP_HOST'] = 'example.com';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

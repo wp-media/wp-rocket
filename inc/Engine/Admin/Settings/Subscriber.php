@@ -45,11 +45,29 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
 			],
-			'admin_enqueue_scripts'                => 'enqueue_rocket_scripts',
+			'admin_enqueue_scripts'                => [
+				[ 'enqueue_rocket_scripts' ],
+				[ 'enqueue_url' ],
+			],
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 
 		];
+	}
+
+	/**
+	 * Enqueue the URL for option exporting.
+	 *
+	 * @return void
+	 */
+	public function enqueue_url() {
+		wp_localize_script(
+			'wpr-admin-common',
+			'rocket_option_export',
+			[
+				'rest_url_option_export' => rest_url( 'wp-rocket/v1/options/export/' ),
+			]
+		);
 	}
 
 	/**

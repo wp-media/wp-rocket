@@ -123,7 +123,7 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . "';\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri( true ) . "';\n";
 		}
 
 		if ( 'cache_query_strings' === $option ) {

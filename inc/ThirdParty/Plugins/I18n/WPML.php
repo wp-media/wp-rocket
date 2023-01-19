@@ -22,10 +22,9 @@ class WPML implements Subscriber_Interface {
 		}
 
 		$events = [
-			'wcml_is_cache_enabled_for_switching_currency' => 'return_true',
-			'rocket_rucss_is_home_url'                     => [ 'is_secondary_home', 10, 2 ],
-			'rocket_preload_all_to_pending_condition'      => 'clean_only_right_domain',
-			'rocket_preload_sitemap_before_queue'          => 'add_languages_sitemaps',
+			'rocket_rucss_is_home_url'                => [ 'is_secondary_home', 10, 2 ],
+			'rocket_preload_all_to_pending_condition' => 'clean_only_right_domain',
+			'rocket_preload_sitemap_before_queue'     => 'add_languages_sitemaps',
 		];
 
 		return $events;

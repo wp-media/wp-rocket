@@ -15,6 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetHostResolver extends TestCase {
 	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
+		unset( $_SERVER['ONECOM_DOMAIN_NAME'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
 
 		parent::tearDown();
@@ -37,6 +38,9 @@ class Test_GetHostResolver extends TestCase {
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'onecom':
+				$_SERVER['ONECOM_DOMAIN_NAME'] = true;
 				break;
 			default:
 				break;

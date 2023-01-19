@@ -39,7 +39,7 @@ function rocket_need_api_key() {
  */
 function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
 	// Delete a user meta for 1 user or all at a time.
-	delete_metadata( 'user', $uid, 'rocket_boxes', null === $uid );
+	delete_metadata( 'user', $uid, 'rocket_boxes', '', ! $uid );
 
 	// $keep_this works only for the current user.
 	if ( ! empty( $keep_this ) && null !== $uid ) {
