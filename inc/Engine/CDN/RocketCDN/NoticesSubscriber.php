@@ -63,6 +63,15 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function promote_rocketcdn_notice() {
+		/**
+		 * Filters RocketCDN promotion notice.
+		 *
+		 * @param bool $promotion_notice; true to display, false otherwise.
+		 */
+		if ( ! apply_filters( 'rocket_promote_rocketcdn_notice', true ) ) {
+			return;
+		}
+
 		if ( $this->is_white_label_account() ) {
 			return;
 		}
@@ -172,7 +181,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	public function display_rocketcdn_cta() {
 		/**
-		 * Filters the display of the rocketcdn banner.
+		 * Filters the display of the RocketCDN cta banner.
 		 *
 		 * @param bool $display_cta_banner; true to display, false otherwise.
 		 */
