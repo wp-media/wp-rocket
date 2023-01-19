@@ -75,6 +75,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'rocket_domain_changed' => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
+				[ 'clear_cache' ],
 			],
 		];
 	}
@@ -231,5 +232,14 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		$file         = get_rocket_parse_url( untrailingslashit( home_url() ) );
 		$file['path'] = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
 		return WP_ROCKET_CONFIG_PATH . strtolower( $file['host'] ) . $file['path'] . '.php';
+	}
+
+	/**
+	 * Clear cache.
+	 *
+	 * @return void
+	 */
+	protected function clear_cache() {
+		rocket_clean_domain();
 	}
 }
