@@ -67,4 +67,24 @@ class WPXCloud extends AbstractNoCacheHost {
 
 		return $header;
 	}
+
+	/**
+	 * Performs these actions during the plugin activation.
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		parent::activate();
+
+		add_action( 'rocket_activation', [ $this, 'append_cache_control_header_on_activation' ] );
+	}
+
+	/**
+	 * Append cache control header.
+	 *
+	 * @return void
+	 */
+	public function append_cache_control_header_on_activation() {
+		add_filter( 'after_rocket_htaccess_rules', [ $this, 'append_cache_control_header' ] );
+	}
 }
