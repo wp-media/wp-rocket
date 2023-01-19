@@ -19,7 +19,7 @@ class WPXCloud extends AbstractNoCacheHost {
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'do_rocket_varnish_http_purge'            => 'return_true',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
-			'after_rocket_htaccess_rules'             => [ 'append_cache_control_header', 5 ],
+			'after_rocket_htaccess_rules'             => 'append_cache_control_header',
 		];
 	}
 
