@@ -6,6 +6,7 @@ use Imagify_Partner;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -278,6 +279,7 @@ class Plugin {
 
 	private function init_common_subscribers(array $providers) {
 		$common_subscribers = [];
+
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {

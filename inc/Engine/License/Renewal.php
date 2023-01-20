@@ -68,6 +68,29 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
+		$discount          = esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) );
+		$price             = esc_html( '$' . number_format_i18n( $this->get_price(), 2 ) );
+
+				$data['message'] = sprintf(
+			// translators: %1$s = <strong>, %2$s = price, %3$s = </strong>.
+			esc_html__( 'Renew before it is too late, you will only pay %1$s%2$s%3$s!', 'rocket' ),
+				'<strong>',
+				$price,
+				'</strong>'
+			);
+
+		if ( $this->get_discount_percent() ) {
+			$data['message'] = sprintf(
+			// translators: %1$s = <strong>, %2$s = discount, %3$s = </strong>,%4$s = <strong>, %5$s = price, %6$s=</strong>.
+			esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %4$s%5$s%6$s!', 'rocket' ),
+				'<strong>',
+				$discount,
+				'</strong>',
+				'<strong>',
+				$price,
+				'</strong>'
+			);
+		}
 
 		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -120,7 +143,7 @@ class Renewal extends Abstract_Render {
 		);
 
 		if (
-			$this->is_grandfather()
+			( $this->is_grandfather() || $this->has_grandmother() )
 			&&
 			$expired_since < 15
 		) {
@@ -129,7 +152,7 @@ class Renewal extends Abstract_Render {
 				esc_html__( 'Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you will only pay %1$s%4$s%2$s!', 'rocket' ),
 				'<strong>',
 				'</strong>',
-				esc_html( $this->get_discount_percent() . '%' ),
+				esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) ),
 				$price
 			);
 		}
@@ -203,7 +226,7 @@ class Renewal extends Abstract_Render {
 				// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
 				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
 				'<strong>',
-				esc_html( $this->get_discount_percent() . '%' ),
+				esc_html( '$' . number_format_i18n( $this->get_discount_percent(), 2 ) ),
 				'</strong>',
 				$price
 			);
@@ -284,24 +307,32 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the discount percentage corresponding to the current user status
+	 * Gets the discount corresponding to the current user status
 	 *
 	 * @since 3.7.5
 	 *
 	 * @return int
 	 */
 	private function get_discount_percent() {
+		$prices = $this->get_license_pricing_data();
+
 		$renewals = $this->get_user_renewal_status();
 
-		if ( false === $renewals ) {
+		if ( false === $renewals || ! isset( $prices->prices, $prices->prices->renewal ) ) {
 			return 0;
 		}
 
+		$prices = $prices->prices;
+
 		if ( $renewals['is_grandfather'] ) {
-			return isset( $renewals['discount_percent']->is_grandfather ) ? $renewals['discount_percent']->is_grandfather : 0;
+			return isset( $prices->renewal->is_grandfather, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandfather : 0;
 		}
 
-		return isset( $renewals['discount_percent']->not_grandfather ) ? $renewals['discount_percent']->not_grandfather : 0;
+		if ( $renewals['is_grandmother'] ) {
+			return isset( $prices->renewal->is_grandmother, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandmother : 0;
+		}
+
+		return 0;
 	}
 
 	/**
@@ -312,7 +343,25 @@ class Renewal extends Abstract_Render {
 	private function is_grandfather(): bool {
 		$renewals = $this->get_user_renewal_status();
 
-		return $renewals['is_grandfather'];
+		if ( ! is_array( $renewals ) ) {
+			return false;
+		}
+
+		return key_exists( 'is_grandfather', $renewals ) && $renewals['is_grandfather'];
+	}
+	/**
+	 * Is user grandmothered
+	 *
+	 * @return bool
+	 */
+	private function has_grandmother(): bool {
+		$renewals = $this->get_user_renewal_status();
+
+		if ( ! is_array( $renewals ) ) {
+			return false;
+		}
+
+		return key_exists( 'is_grandmother', $renewals ) && $renewals['is_grandmother'];
 	}
 
 	/**
@@ -339,6 +388,11 @@ class Renewal extends Abstract_Render {
 			return isset( $license->prices->renewal->is_grandfather ) ? $license->prices->renewal->is_grandfather : 0;
 		}
 
+		if ( $renewals['is_grandmother'] &&
+			! $renewals['is_expired'] ) {
+			return isset( $license->prices->renewal->is_grandmother ) ? $license->prices->renewal->is_grandmother : 0;
+		}
+
 		return isset( $license->prices->renewal->not_grandfather ) ? $license->prices->renewal->not_grandfather : 0;
 	}
 
@@ -352,7 +406,7 @@ class Renewal extends Abstract_Render {
 	private function get_user_renewal_status() {
 		$renewals = $this->pricing->get_renewals_data();
 
-		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent ) ) {
+		if ( ! isset( $renewals->extra_days, $renewals->grandfather_date, $renewals->discount_percent, $renewals->grandmother_date ) ) {
 			return false;
 		}
 
@@ -360,6 +414,7 @@ class Renewal extends Abstract_Render {
 			'discount_percent' => $renewals->discount_percent,
 			'is_expired'       => time() > ( $this->user->get_license_expiration() + ( $renewals->extra_days * DAY_IN_SECONDS ) ),
 			'is_grandfather'   => $renewals->grandfather_date > $this->user->get_creation_date(),
+			'is_grandmother'   => $renewals->grandmother_date > $this->user->get_creation_date(),
 		];
 	}
 

@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\License\API;
 
 class PricingClient {
-	const PRICING_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing.php';
+	const PRICING_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/pricing-2023.php';
 
 	/**
 	 * Gets pricing data from cache if it exists, else gets it from the pricing endpoint
