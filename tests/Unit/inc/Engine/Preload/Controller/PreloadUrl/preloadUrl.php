@@ -65,7 +65,7 @@ class Test_PreloadUrl extends TestCase
 		if(! $config['is_cached']) {
 			return;
 		}
-		$this->controller->expects()->format_url($config['url'])->andReturn($config['url']);
+		$this->controller->expects()->format_url($config['url'], true)->andReturn($config['url']);
 		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
 	}

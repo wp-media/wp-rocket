@@ -74,7 +74,7 @@ class PreloadUrl {
 			return;
 		}
 
-		$url       = $this->format_url( $url );
+		$url       = $this->format_url( $url, true );
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
 
 		if (
@@ -157,7 +157,7 @@ class PreloadUrl {
 			}
 
 			wp_safe_remote_get(
-				$this->format_url( $request['url'], true ),
+				$request['url'],
 				$headers
 			);
 			/**

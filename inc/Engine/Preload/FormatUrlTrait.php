@@ -20,7 +20,7 @@ trait FormatUrlTrait {
 		$url = strtok( $url, '?' );
 
 		if ( $use_website_trailing ) {
-			$url = trailingslashit( $url );
+			$url = user_trailingslashit( $url );
 		} else {
 			$url = untrailingslashit( $url );
 		}
