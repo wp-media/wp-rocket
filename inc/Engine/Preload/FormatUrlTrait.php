@@ -8,10 +8,10 @@ trait FormatUrlTrait {
 	 * Format URL.
 	 *
 	 * @param string $url URL.
-	 *
+	 * @param bool   $use_website_trailing Use the website config for trailing slash.
 	 * @return string
 	 */
-	public function format_url( string $url ): string {
+	public function format_url( string $url, bool $use_website_trailing = false ): string {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 		$queries = $this->convert_query_to_array( $queries );
 
@@ -19,7 +19,11 @@ trait FormatUrlTrait {
 
 		$url = strtok( $url, '?' );
 
-		$url = untrailingslashit( $url );
+		if ( $use_website_trailing ) {
+			$url = trailingslashit( $url );
+		} else {
+			$url = untrailingslashit( $url );
+		}
 
 		return add_query_arg( $queries, $url );
 	}
