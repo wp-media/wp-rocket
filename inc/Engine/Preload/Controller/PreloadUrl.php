@@ -273,15 +273,29 @@ class PreloadUrl {
 
 		$cache_query_string = get_rocket_cache_query_string();
 
+
+		$default_params = [
+			'lang',
+			'permalink_name',
+			'lp-variation-id',
+		];
+
+		/**
+		 * At this point we’re in the WP’s search page.
+		 * This filter allows to cache search results.
+		 *
+		 * @since 2.3.8
+		 *
+		 * @param bool $cache_search True will force caching search results.
+		 */
+		if( apply_filters( 'rocket_cache_search', false ) ) {
+			$default_params [] = 's';
+		}
+
 		$cache_query_string = array_merge(
 			$cache_query_string,
-			[
-				'lang',
-				's',
-				'permalink_name',
-				'lp-variation-id',
-			]
-			);
+			$default_params
+		);
 
 		if ( ! $cache_query_string ) {
 			return count( $queries ) === 0;

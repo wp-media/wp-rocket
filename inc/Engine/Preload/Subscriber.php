@@ -188,6 +188,18 @@ class Subscriber implements Subscriber_Interface {
 
 		$excluded_params = rocket_get_ignored_parameters();
 
+		/**
+		 * At this point we’re in the WP’s search page.
+		 * This filter allows to cache search results.
+		 *
+		 * @since 2.3.8
+		 *
+		 * @param bool $cache_search True will force caching search results.
+		 */
+		if( ! apply_filters( 'rocket_cache_search', false ) ) {
+			$excluded_params ['s'] = 1;
+		}
+
 		if ( count( array_intersect( array_keys( $params ), array_keys( $excluded_params ) ) ) > 0 ) {
 			return;
 		}
