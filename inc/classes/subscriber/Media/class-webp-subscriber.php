@@ -100,14 +100,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                   => [ 'convert_to_webp', 16 ],
-			'rocket_cache_webp_setting_field' => [
+			'rocket_buffer'                     => [ 'convert_to_webp', 16 ],
+			'rocket_cache_webp_setting_field'   => [
 				[ 'maybe_disable_setting_field' ],
 				[ 'webp_section_description' ],
 			],
-			'rocket_disable_webp_cache'       => 'maybe_disable_webp_cache',
-			'rocket_third_party_webp_change'  => 'sync_webp_cache_with_third_party_plugins',
-			'rocket_preload_url_request_args' => 'add_accept_header',
+			'rocket_disable_webp_cache'         => 'maybe_disable_webp_cache',
+			'rocket_third_party_webp_change'    => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_preload_before_preload_url' => 'add_accept_header',
 		];
 	}
 
@@ -420,17 +420,23 @@ class Webp_Subscriber implements Subscriber_Interface {
 	/**
 	 * Add WebP to the HTTP_ACCEPT headers on preload request when the WebP option is active
 	 *
-	 * @param array $headers Headers from the requests to make.
+	 * @param array $requests Requests to make.
 	 * @return array
 	 */
-	public function add_accept_header( $headers ) {
-		if ( ! $this->options_data->get( 'cache_webp' ) ) {
-			return $headers;
+	public function add_accept_header( $requests ) {
+
+		if ( ! is_array( $requests ) || ! $this->options_data->get( 'cache_webp' ) ) {
+			return $requests;
 		}
 
-		$headers['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-		$headers['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
-		return $headers;
+		return array_map(
+			function ( $request ) {
+				$request['headers']['headers']['Accept']      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				$request['headers']['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+				return $request;
+			},
+			$requests
+			);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */

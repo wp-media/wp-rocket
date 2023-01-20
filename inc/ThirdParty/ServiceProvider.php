@@ -2,7 +2,6 @@
 namespace WP_Rocket\ThirdParty;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
@@ -12,6 +11,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
+use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
@@ -29,6 +29,7 @@ use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 use WP_Rocket\ThirdParty\Plugins\Smush;
+use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
@@ -91,6 +92,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wpml',
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
+		'the_events_calendar',
 	];
 
 	/**
@@ -143,7 +145,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'optimus_webp_subscriber', Optimus_Subscriber::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'bigcommerce_subscriber', BigCommerce_Subscriber::class )
+			->share( 'bigcommerce_subscriber', BigCommerce::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'beaverbuilder_subscriber', BeaverBuilder::class )
@@ -232,6 +234,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rocket_lazy_load', RocketLazyLoad::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'the_events_calendar', TheEventsCalendar::class )
 			->addTag( 'common_subscriber' );
 	}
 }

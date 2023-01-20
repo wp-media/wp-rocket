@@ -1,17 +1,17 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce;
+namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Traits\Config_Updater;
 
 /**
  * BigCommerce compatibility subscriber
  *
  * @since 3.3.7
- * @author Remy Perona
  */
-class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface {
-	use \WP_Rocket\Traits\Config_Updater;
+class BigCommerce implements Event_Manager_Aware_Subscriber_Interface {
+	use Config_Updater;
 
 	/**
 	 * The WordPress Event Manager
@@ -60,7 +60,6 @@ class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * Add exclusions when activating the BigCommerce plugin
 	 *
 	 * @since 3.3.7
-	 * @author Rémy Perona
 	 */
 	public function activate_bigcommerce() {
 		$this->event_manager->add_callback( 'rocket_cache_reject_uri', [ $this, 'exclude_pages' ] );
@@ -76,9 +75,8 @@ class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * Remove exclusions when deactivating the BigCommerce plugin
 	 *
 	 * @since 3.3.7
-	 * @author Rémy Perona
 	 */
-	public function deactivate_woocommerce() {
+	public function deactivate_bigcommerce() {
 		$this->event_manager->remove_callback( 'rocket_cache_reject_uri', [ $this, 'exclude_pages' ] );
 
 		// Update .htaccess file rules.
@@ -92,7 +90,6 @@ class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * Maybe regenerate the htaccess & config file if a BigCommerce page is published
 	 *
 	 * @since 3.3.7
-	 * @author Remy Perona
 	 *
 	 * @param string  $new_status New post status.
 	 * @param string  $old_status Old post status.
@@ -140,7 +137,6 @@ class BigCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * Excludes BigCommerce checkout page from cache
 	 *
 	 * @since 3.3.7
-	 * @author Remy Perona
 	 *
 	 * @param int    $page_id   ID of page to exclude.
 	 * @param string $post_type Post type of the page.

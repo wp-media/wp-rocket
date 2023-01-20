@@ -142,14 +142,14 @@ return [
 		],
 
 		'shouldChangeHTMLWhenHasExternalFoundImage' => [
-			'html' => '<!DOCTYPE html><html><body><img src="https://v3b4d4f5.rocketcdn.me/wp-content/themes/V4/assets/images/blocks/support/support@2x.png"></body></html>',
+			'html' => '<!DOCTYPE html><html><body><img src="https://wp-rocket.me/wp-content/themes/V4/assets/images/blocks/support/support@2x.png"></body></html>',
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
 				'external' => true,
 				'rocket_specify_image_dimensions_for_distant_filter' => true
 			],
-			'expected' => '<!DOCTYPE html><html><body><img width="1240" height="763" src="https://v3b4d4f5.rocketcdn.me/wp-content/themes/V4/assets/images/blocks/support/support@2x.png"></body></html>'
+			'expected' => '<!DOCTYPE html><html><body><img width="1240" height="763" src="https://wp-rocket.me/wp-content/themes/V4/assets/images/blocks/support/support@2x.png"></body></html>'
 		],
 
 		'shouldNotChangeHTMLWhenHasInternalNotFoundImage' => [
