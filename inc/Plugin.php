@@ -346,6 +346,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'cache_config',
 			'uncode',
 			'rocket_lazy_load',
 			'cache_config',
