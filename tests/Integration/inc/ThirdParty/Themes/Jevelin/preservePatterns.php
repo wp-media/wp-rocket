@@ -22,13 +22,13 @@ class Test_PreservePatterns extends WPThemeTestcase {
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'jevelin' ) );
+		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.jevelin' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'jevelin' ) );
+		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.jevelin' ) );
 	}
 	/**
 	 * @dataProvider ProviderTestData

@@ -28,6 +28,7 @@ use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvi
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\ServiceProvider as RUCSSServiceProvider;
+use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider;
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
 use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
 use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
@@ -153,11 +154,11 @@ class Plugin {
 			new HealthCheckServiceProvider(),
 			new MediaServiceProvider(),
 			new DeferJSServiceProvider(),
-			new LicenseServiceProvider(),
 		];
 
 		$providers = [
 			new SettingsServiceProvider(),
+			new OptimizationServiceProvider(),
 			new EngineAdminServiceProvider(),
 			new OptimizationAdminServiceProvider(),
 			new CapabilitiesServiceProvider(),
@@ -171,6 +172,7 @@ class Plugin {
 			new HostingsServiceProvider(),
 			new PluginServiceProvider(),
 			new DelayJSServiceProvider(),
+			new LicenseServiceProvider(),
 			new RUCSSServiceProvider(),
 			new HeartbeatServiceProvider(),
 			new DynamicListsServiceProvider(),
@@ -207,7 +209,6 @@ class Plugin {
 		$license_providers = [];
 
 		if ( is_admin() ) {
-
 			$admin_providers = $this->filter_service_provider( $providers, 'get_admin_subscribers' );
 		} elseif ($this->is_valid_key ) {
 			$subscribers = [];
@@ -270,7 +271,7 @@ class Plugin {
 		$subscribers = [];
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
 		if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
-			$subscribers[] = 'lazyload_subscriber';
+			$subscribers[] = 'wp_rocket.engine.media.serviceprovider.lazyload_subscriber';
 		}
 		$this->init_subscribers( $providers, 'get_license_subscribers', $subscribers);
 	}

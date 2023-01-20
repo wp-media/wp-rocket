@@ -22,7 +22,7 @@ class Test_ExcludeDelayJs extends TestCase {
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'avada_subscriber' ) );
+		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.avada' ) );
 	}
 
 	public function set_up() {
@@ -31,7 +31,7 @@ class Test_ExcludeDelayJs extends TestCase {
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'avada_subscriber' ) );
+		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.avada' ) );
 	}
 
 	public function tear_down() {

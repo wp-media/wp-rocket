@@ -39,7 +39,7 @@ class Test_CronCleanRows extends TestCase {
 	 */
 	public function testShouldDoExpected( $input ){
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 		$current_date        = current_time( 'mysql', true );
 		$old_date            = strtotime( $current_date. ' - 32 days' );
 
@@ -61,7 +61,7 @@ class Test_CronCleanRows extends TestCase {
 
 		do_action( 'rocket_rucss_clean_rows_time_event' );
 
-		$rucss_usedcss_query     = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query     = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 		$resultUsedCssAfterClean = $rucss_usedcss_query->query();
 
 

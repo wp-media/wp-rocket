@@ -33,7 +33,7 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		self::installFresh();
 
 		$container          = apply_filters( 'rocket_container', null );
-		self::$critical_css = $container->get( 'critical_css' );
+		self::$critical_css = $container->get( 'wp_rocket.engine.criticalpath.serviceprovider.critical_css' );
 
 		self::$user_id = static::factory()->user->create(
 			[

@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
-	public function get_front_subscribers(): array
+	public function get_license_subscribers(): array
 	{
 		return [
 			$this->generate_container_id('emojis_subscriber'),

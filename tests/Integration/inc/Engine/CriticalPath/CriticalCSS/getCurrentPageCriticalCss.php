@@ -22,7 +22,7 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 		parent::set_up_before_class();
 
 		$container          = apply_filters( 'rocket_container', null );
-		self::$critical_css = $container->get( 'critical_css' );
+		self::$critical_css = $container->get( 'wp_rocket.engine.criticalpath.serviceprovider.critical_css' );
 	}
 
 	public function tear_down() {

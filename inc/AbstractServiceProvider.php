@@ -165,8 +165,12 @@ abstract class AbstractServiceProvider extends LeagueServiceProvider
 		return $this->prefix . $id;
 	}
 
-	public function generate_id(string $class) {
+	public function generate_id(string $class, bool $without_namespace = false) {
 		$class = trim( $class, '\\' );
+		if( $without_namespace ) {
+			$parts = explode('\\', $class);
+			$class = array_pop($parts);
+		}
 		$class = str_replace( '\\', '.', $class );
 		return strtolower( preg_replace( ['/([a-z])\d([A-Z])/', '/[^_]([A-Z][a-z])]/'], '$1_$2', $class ) );
 	}

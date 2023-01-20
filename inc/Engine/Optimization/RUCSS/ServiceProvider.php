@@ -2,6 +2,8 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Rocket\AbstractServiceProvider;
+use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
+use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
@@ -20,6 +22,16 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscribe
  * @since  3.9
  */
 class ServiceProvider extends AbstractServiceProvider {
+
+	public function get_common_subscribers(): array
+	{
+		return [
+			$this->generate_container_id('rucss_admin_subscriber'),
+			$this->generate_container_id('rucss_cron_subscriber'),
+			$this->generate_container_id('rucss_frontend_subscriber')
+		];
+	}
+
 	public function declare()
 	{
 		$this->register_service('rucss_usedcss_table', function ($id) {
@@ -33,8 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('rucss_settings', function ($id) {
 			$this->add( $id, Settings::class )
-				->addArgument( $this->get_internal( 'options' ) )
-				->addArgument( $this->get_internal( 'beacon' ) )
+				->addArgument( $this->get_external( 'options' ) )
+				->addArgument( $this->get_external( 'beacon', BeaconServiceProvider::class ) )
 				->addArgument( $this->get_internal( 'rucss_usedcss_table' ) );
 		});
 
@@ -44,7 +56,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('rucss_frontend_api_client', function ($id) {
 			$this->add( $id, APIClient::class )
-				->addArgument( $this->get_internal( 'options' ) );
+				->addArgument( $this->get_external( 'options' ) );
 		});
 
 		$this->register_service('rucss_queue', function ($id) {
@@ -59,11 +71,11 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('rucss_used_css_controller', function ($id) {
 			$this->add( $id, UsedCSSController::class )
-				->addArgument( $this->get_internal( 'options' ) )
+				->addArgument( $this->get_external( 'options' ) )
 				->addArgument( $this->get_internal( 'rucss_used_css_query' ) )
 				->addArgument( $this->get_internal( 'rucss_frontend_api_client' ) )
 				->addArgument( $this->get_internal( 'rucss_queue' ) )
-				->addArgument( $this->get_internal( 'dynamic_lists_data_manager' ) )
+				->addArgument( $this->get_external( 'dynamic_lists_data_manager', DynamicListsServiceProvider::class ) )
 				->addArgument( $this->get_internal( 'rucss_filesystem' ) );
 		});
 

@@ -40,7 +40,7 @@ class Test_DisableDynamicCssOnRucss extends WPThemeTestcase {
 		$this->rucss_enable = $config['rucss_enabled'];
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
-		$delayjs_html = self::$container->get( 'delay_js_html' );
+		$delayjs_html = self::$container->get( 'wp_rocket.engine.optimization.delayjs.serviceprovider.delay_js_html' );
 		$options_api->set( 'settings', [] );
 		$divi        = new Divi( $options_api, $options, $delayjs_html );
 		$divi->disable_dynamic_css_on_rucss();

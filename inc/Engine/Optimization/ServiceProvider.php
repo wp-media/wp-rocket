@@ -17,16 +17,15 @@ use WP_Rocket\Engine\Optimization\Buffer\Subscriber as BufferSubscriber;
  * @since  3.6 Renamed and moved into this module.
  */
 class ServiceProvider extends AbstractServiceProvider {
-
-	public function get_front_subscribers(): array
+	public function get_license_subscribers(): array
 	{
 		return [
 			$this->generate_container_id('buffer_subscriber'),
-			$this->generate_container_id('cache_dynamic_resource'),
 			$this->generate_container_id('combine_google_fonts_subscriber'),
+			$this->generate_container_id('ie_conditionals_subscriber'),
 			$this->generate_container_id('minify_css_subscriber'),
 			$this->generate_container_id('minify_js_subscriber'),
-			$this->generate_container_id('ie_conditionals_subscriber'),
+			$this->generate_container_id('cache_dynamic_resource'),
 		];
 	}
 
@@ -41,17 +40,17 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('tests', function ($id) {
 			$this->add( $id, Tests::class )
-				->addArgument( $this->getContainer()->get( 'config' ) );
+				->addArgument( $this->get_internal( 'config' ) );
 		});
 
 		$this->register_service('buffer_optimization', function ($id) {
 			$this->add( $id, Optimization::class )
-				->addArgument( $this->getContainer()->get( 'tests' ) );
+				->addArgument( $this->get_internal( 'tests' ) );
 		});
 
 		$this->register_service('buffer_subscriber', function ($id) {
 			$this->share( $id, BufferSubscriber::class )
-				->addArgument( $this->getContainer()->get( 'buffer_optimization' ) )
+				->addArgument( $this->get_internal( 'buffer_optimization' ) )
 				->addTag( 'front_subscriber' );
 		});
 
@@ -75,8 +74,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('combine_google_fonts_subscriber', function ($id) {
 			$this->share( $id, Subscriber::class )
-				->addArgument( $this->getContainer()->get( 'optimize_google_fonts' ) )
-				->addArgument( $this->getContainer()->get( 'optimize_google_fonts_v2' ) )
+				->addArgument( $this->get_internal( 'optimize_google_fonts' ) )
+				->addArgument( $this->get_internal( 'optimize_google_fonts_v2' ) )
 				->addArgument( $this->get_external( 'options' ) )
 				->addTag( 'front_subscriber' );
 		});

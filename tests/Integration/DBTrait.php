@@ -5,19 +5,19 @@ namespace WP_Rocket\Tests\Integration;
 trait DBTrait {
 	public static function resourceFound( array $resource ) : bool {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_resources_query' );
+		$resource_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_resources_query' );
 		return $resource_query->query( $resource );
 	}
 
 	public static function cacheFound( array $cache): bool {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'preload_caches_query' );
+		$resource_query = $container->get( 'wp_rocket.engine.preload.serviceprovider.preload_caches_query' );
 		return count($resource_query->query( $cache )) > 0;
 	}
 
 	public static function truncateUsedCssTable() {
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_usedcss_table' );
 
 		if ( $rucss_usedcss_table->exists() ){
 			$rucss_usedcss_table->truncate();
@@ -26,7 +26,7 @@ trait DBTrait {
 
 	public static function addCache( array $resource ) {
 		$container = apply_filters( 'rocket_container', null );
-		$cache_query = $container->get( 'preload_caches_query' );
+		$cache_query = $container->get( 'wp_rocket.engine.preload.serviceprovider.preload_caches_query' );
 		return $cache_query->create_or_update( $resource );
 	}
 
@@ -35,22 +35,22 @@ trait DBTrait {
 
 		self::uninstallAll();
 
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table   = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
 
-		$preload_cache_table = $container->get( 'preload_caches_table' );
+		$preload_cache_table = $container->get( 'wp_rocket.engine.preload.serviceprovider.preload_caches_table' );
 		$preload_cache_table->install();
 	}
 
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+		$rucss_usedcss_table = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_usedcss_table' );
 
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
 		}
 
-		$preload_cache_table = $container->get( 'preload_caches_table' );
+		$preload_cache_table = $container->get( 'wp_rocket.engine.preload.serviceprovider.preload_caches_table' );
 		if ( $preload_cache_table->exists() ) {
 			$preload_cache_table->uninstall();
 		}
@@ -58,8 +58,8 @@ trait DBTrait {
 
 	public static function removeDBHooks() {
 		$container             = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
-		$preload_table         = $container->get( 'preload_caches_table' );
+		$rucss_usedcss_table   = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_usedcss_table' );
+		$preload_table         = $container->get( 'wp_rocket.engine.preload.serviceprovider.preload_caches_table' );
 
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);

@@ -35,7 +35,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		parent::set_up();
 
 		$this->api_client = Mockery::mock( APIClient::class );
-		$this->processor  = new ProcessorService( self::$container->get( 'cpcss_data_manager' ), $this->api_client );
+		$this->processor  = new ProcessorService( self::$container->get( 'wp_rocket.engine.criticalpath.serviceprovider.cpcss_data_manager' ), $this->api_client );
 	}
 
 	/**

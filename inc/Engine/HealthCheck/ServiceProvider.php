@@ -13,13 +13,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_admin_subscribers(): array
 	{
 		return [
-			$this->generate_container_id('health_check')
-		];
-	}
-
-	public function get_common_subscribers(): array
-	{
-		return [
+			$this->generate_container_id('health_check'),
 			$this->generate_container_id('action_scheduler_check')
 		];
 	}

@@ -19,7 +19,7 @@ class Test_UpdateLists extends FilesystemTestCase {
 		parent::set_up_before_class();
 
 		$container  = apply_filters( 'rocket_container', null );
-		self::$user = $container->get( 'user' );
+		self::$user = $container->get( 'wp_rocket.engine.license.serviceprovider.user' );
 	}
 
 	public function set_up() {

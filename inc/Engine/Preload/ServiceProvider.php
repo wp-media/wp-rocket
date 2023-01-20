@@ -39,6 +39,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		];
 	}
 
+	public function get_admin_subscribers(): array
+	{
+		return [
+			$this->generate_container_id('preload_admin_subscriber'),
+		];
+	}
+
 	public function declare()
 	{
 		$this->register_service('preload_queue', function ($id) {

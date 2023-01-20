@@ -15,7 +15,7 @@ use WP_Rocket\Engine\License\API\User;
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	public function get_admin_subscribers(): array
+	public function get_common_subscribers(): array
 	{
 		return [
 			$this->generate_container_id('license_subscriber')

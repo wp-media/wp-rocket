@@ -28,13 +28,13 @@ class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
 
 		parent::tear_down_after_class();
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
+		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.divi' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.divi' ) );
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 	}
 

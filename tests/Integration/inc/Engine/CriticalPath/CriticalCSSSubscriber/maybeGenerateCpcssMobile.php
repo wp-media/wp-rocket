@@ -29,7 +29,7 @@ class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->subscriber = self::$container->get( 'critical_css_subscriber' );
+		$this->subscriber = self::$container->get( 'wp_rocket.engine.criticalpath.serviceprovider.critical_css_subscriber' );
 	}
 
 	public function tear_down() {

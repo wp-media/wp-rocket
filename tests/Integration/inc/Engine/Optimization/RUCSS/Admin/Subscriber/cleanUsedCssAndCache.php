@@ -33,7 +33,7 @@ class Test_CleanUsedCssAndCache extends TestCase {
 	 */
 	public function testShouldDoExpected( $input ) {
 		$container              = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_query   = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query   = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 
 		$this->input = $input;
 
@@ -46,7 +46,7 @@ class Test_CleanUsedCssAndCache extends TestCase {
 
 		do_action( 'update_option_wp_rocket_settings', $input['settings'], $input['old_settings'] );
 
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();
 
 		if (

@@ -34,8 +34,8 @@ class Test_DeleteOldUsedCss extends TestCase{
 
 	public function testShouldTruncateTableWhenOptionIsEnabled(){
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_table = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_usedcss_table' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		$current_date = current_time( 'mysql', true );
@@ -69,7 +69,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 
 		do_action( 'rocket_rucss_clean_rows_time_event' );
 
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();
 
 		$this->assertCount( 1, $resultAfterTruncate );

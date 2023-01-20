@@ -28,7 +28,7 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 		parent::set_up();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'stop_critical_css_generation', 9 );
 		$this->unregisterAllCallbacksExcept( 'rocket_before_rollback', 'stop_critical_css_generation', 9 );
-		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
+		$this->subscriber   = self::$container->get( 'wp_rocket.engine.criticalpath.serviceprovider.critical_css_subscriber' );
 		$this->cancel_file_path              = WP_ROCKET_CACHE_ROOT_PATH . '.' . 'rocket_critical_css_generation_process_cancelled';
 
 	}

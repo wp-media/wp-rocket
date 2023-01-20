@@ -27,7 +27,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 
 		$container = apply_filters( 'rocket_container', null );
 
-		self::$wp_cache = $container->get( 'wp_cache' );
+		self::$wp_cache = $container->get( 'wp_rocket.engine.cache.serviceprovider.wp_cache' );
 	}
 
 	public function set_up() {

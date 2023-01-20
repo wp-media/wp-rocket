@@ -24,7 +24,7 @@ class Test_excludeJqueryFromDelayJs extends TestCase
 	{
 		parent::tear_down_after_class();
 
-		self::$container->get('event_manager')->remove_subscriber(self::$container->get('minimalist_blogger'));
+		self::$container->get('event_manager')->remove_subscriber(self::$container->get('wp_rocket.thirdparty.themes.serviceprovider.minimalistblogger'));
 	}
 
 	public function set_up()
@@ -33,7 +33,7 @@ class Test_excludeJqueryFromDelayJs extends TestCase
 
 		add_filter('pre_option_stylesheet', [$this, 'set_stylesheet']);
 
-		self::$container->get('event_manager')->add_subscriber(self::$container->get('minimalist_blogger'));
+		self::$container->get('event_manager')->add_subscriber(self::$container->get('wp_rocket.thirdparty.themes.serviceprovider.minimalistblogger'));
 	}
 
 	public function tear_down()

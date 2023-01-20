@@ -14,7 +14,7 @@ abstract class TestCase extends BaseTestCase {
 		parent::set_up_before_class();
 
 		$container        = apply_filters( 'rocket_container', null );
-		self::$subscriber = $container->get( 'ie_conditionals_subscriber' );
+		self::$subscriber = $container->get( 'wp_rocket.engine.optimization.serviceprovider.ie_conditionals_subscriber' );
 		self::resetConditionalValue();
 	}
 

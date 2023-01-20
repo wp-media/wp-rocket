@@ -12,14 +12,14 @@ use WP_Rocket\Engine\Optimization\DynamicLists\ServiceProvider as DynamicListsSe
  */
 class ServiceProvider extends AbstractServiceProvider {
 
-	public function get_front_subscribers(): array
+	public function get_license_subscribers(): array
 	{
 		return [
 			$this->generate_container_id('delay_js_subscriber')
 		];
 	}
 
-	public function get_admin_subscribers(): array
+	public function get_common_subscribers(): array
 	{
 		return [
 			$this->generate_container_id('delay_js_admin_subscriber'),

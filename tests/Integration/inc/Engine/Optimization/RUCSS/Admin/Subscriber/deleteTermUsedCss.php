@@ -41,7 +41,7 @@ class Test_DeleteTermUsedCss extends TestCase {
 	 */
 	public function testShouldDoExpected( $config ) {
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 
 		$this->rucss_option = $config['remove_unused_css'];
 		if(key_exists('is_disabled', $config)) {
@@ -73,7 +73,7 @@ class Test_DeleteTermUsedCss extends TestCase {
 		}
 
 
-		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$rucss_usedcss_query = $container->get( 'wp_rocket.engine.optimization.rucss.serviceprovider.rucss_used_css_query' );
 		$resultAfterDelete = $rucss_usedcss_query->query();
 
 		if ( $config['removed'] ) {

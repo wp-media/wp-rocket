@@ -18,7 +18,7 @@ class Test_FindWpconfigPath extends FilesystemTestCase {
 	public static function set_up_before_class() {
 		$container = apply_filters( 'rocket_container', null );
 
-		self::$wp_cache = $container->get( 'wp_cache' );
+		self::$wp_cache = $container->get( 'wp_rocket.engine.cache.serviceprovider.wp_cache' );
 	}
 
 	public function set_up() {

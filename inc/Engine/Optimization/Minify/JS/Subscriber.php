@@ -48,7 +48,7 @@ class Subscriber extends AbstractMinifySubscriber {
 		$container          = apply_filters( 'rocket_container', null );
 
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache, $container->get( 'defer_js' ) ) );
+			$this->set_processor_type( new Combine( $this->options, new MinifyJS(), $assets_local_cache, $container->get( 'wp_rocket.engine.optimization.deferjs.serviceprovider.defer_js' ) ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
 			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}

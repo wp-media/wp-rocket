@@ -32,13 +32,13 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase
 
 		parent::tear_down_after_class();
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
+		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.divi' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'wp_rocket.thirdparty.themes.serviceprovider.divi' ) );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Test_RemoveAssetsGenerated extends WPThemeTestcase
 		$this->assertTrue(has_action('et_dynamic_late_assets_generated'));
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
-		$delayjs_html = self::$container->get( 'delay_js_html' );
+		$delayjs_html = self::$container->get( 'wp_rocket.engine.optimization.delayjs.serviceprovider.delay_js_html' );
 		$options_api->set( 'settings', [] );
 
 		$divi        = new Divi( $options_api, $options, $delayjs_html );

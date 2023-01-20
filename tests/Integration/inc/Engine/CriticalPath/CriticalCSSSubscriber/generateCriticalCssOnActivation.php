@@ -44,7 +44,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		$this->did_filter   = [
 			'do_rocket_critical_css_generation' => 0,
 		];
-		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
+		$this->subscriber   = self::$container->get( 'wp_rocket.engine.criticalpath.serviceprovider.critical_css_subscriber' );
 	}
 
 	public function tear_down() {

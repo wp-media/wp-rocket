@@ -22,7 +22,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	{
 
 		$simple_registration_classes_ids = array_map(function ($class) {
-			return $this->generate_id($class);
+			return $this->generate_id( $class, true );
 		}, array_keys($this->simple_registration_classes));
 
 		$subscribers = array_merge($simple_registration_classes_ids, [
@@ -37,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function declare()
 	{
 		foreach ($this->simple_registration_classes as $simple_registration_class => $has_options) {
-			$id = $this->generate_id($simple_registration_class);
+			$id = $this->generate_id($simple_registration_class, true);
 			$this->register_service($id, function (string $id) use ($simple_registration_class, $has_options) {
 				if(! $has_options ) {
 					$this->share($id, $simple_registration_class )

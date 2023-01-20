@@ -38,9 +38,8 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
 
 	if ( is_null( $advanced_cache ) ) {
 		$container      = apply_filters( 'rocket_container', null );
-		$advanced_cache = $container->get( 'wp_rocket.engine.cache.serviceprovider.advanced_cache' );
+		$advanced_cache = $container->get( 'advanced_cache' );
 	}
-
 	return rocket_put_content(
 		rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php',
 		$advanced_cache->get_advanced_cache_content()
