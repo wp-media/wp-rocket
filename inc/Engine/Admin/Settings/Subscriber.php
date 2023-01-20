@@ -46,8 +46,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_tutorials_page', 11 ],
 			],
 			'admin_enqueue_scripts'                => [
-				'enqueue_rocket_scripts',
-				'enqueue_url',
+				[ 'enqueue_rocket_scripts' ],
+				[ 'enqueue_url' ],
 			],
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
