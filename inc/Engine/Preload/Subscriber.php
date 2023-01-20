@@ -196,7 +196,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $cache_search True will force caching search results.
 		 */
-		if( ! apply_filters( 'rocket_cache_search', false ) ) {
+		if ( ! apply_filters( 'rocket_cache_search', false ) ) {
 			$excluded_params ['s'] = 1;
 		}
 

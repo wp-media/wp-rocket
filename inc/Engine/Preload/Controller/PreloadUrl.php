@@ -273,7 +273,6 @@ class PreloadUrl {
 
 		$cache_query_string = get_rocket_cache_query_string();
 
-
 		$default_params = [
 			'lang',
 			'permalink_name',
@@ -288,7 +287,7 @@ class PreloadUrl {
 		 *
 		 * @param bool $cache_search True will force caching search results.
 		 */
-		if( apply_filters( 'rocket_cache_search', false ) ) {
+		if ( apply_filters( 'rocket_cache_search', false ) ) {
 			$default_params [] = 's';
 		}
 
