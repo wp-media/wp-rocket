@@ -32,7 +32,6 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return void
 	 */
 	public function activate() {
-		//add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'maybe_disable_options' ] );
 		add_action( 'rocket_activation', [ $this, 'maybe_recreate_as_tables' ] );
 	}
 
@@ -142,12 +141,7 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		}
 
 		$version = \ActionScheduler_Versions::instance()->latest_version();
-		//die(var_dump($version));
-		if ( ! $version ) {
-			return false;
-		}
-
-		return version_compare( $version, '3.0.0', '>=' );
+		return ! $version || version_compare( $version, '3.0.0', '>=' );
 	}
 
 	public function disable_rucss_preload_with_older_as_versions( $disabled, $option_key ) {
