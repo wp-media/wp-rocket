@@ -14,28 +14,28 @@ return [
         ],
         'expected' => true,
     ],
-    'shouldRemoveRocketcdnCtaBanner' => [
+    'shouldRemoveRocketcdnStatus' => [
         'config' => [
             'type' => 'status',
             'oc_cdn_enabled' => true,
         ],
         'expected' => false,
     ],
-    'shouldNotRemoveRocketcdnCtaBanner' => [
+    'shouldNotRemoveRocketcdnStatus' => [
         'config' => [
             'type' => 'status',
             'oc_cdn_enabled' => false,
         ],
         'expected' => true,
     ],
-    'shouldRemoveRocketcdnCtaBanner' => [
+    'shouldRemoveRocketcdnPromotionNotice' => [
         'config' => [
             'type' => 'notice',
             'oc_cdn_enabled' => true,
         ],
         'expected' => false,
     ],
-    'shouldNotRemoveRocketcdnCtaBanner' => [
+    'shouldNotRemoveRocketcdnPromotionNotice' => [
         'config' => [
             'type' => 'notice',
             'oc_cdn_enabled' => false,
