@@ -38,7 +38,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_oc_cdn_enabled(): bool {
-		return rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
+		return class_exists( 'VCachingOC' ) && rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
 	}
 
 	/**
@@ -48,11 +48,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return bool|null
 	 */
 	public function maybe_enable_cdn_option( ?string $cdn ) {
-		if ( ! $this->is_oc_cdn_enabled() ) {
-			return $cdn;
-		}
-
-		return ! $this->is_content_dir_changed();
+		return $this->is_oc_cdn_enabled() ? true : $cdn;
 	}
 
 	/**
@@ -90,16 +86,6 @@ class OneCom implements Subscriber_Interface {
 		$files[] = '/wp-includes/(.*)';
 
 		return $files;
-	}
-
-	/**
-	 * Does wp-content directory changed?
-	 *
-	 * @return bool
-	 */
-	private function is_content_dir_changed() {
-		$wp_content_path = rocket_get_constant( 'WP_CONTENT_DIR' );
-		return 'wp-content' !== str_replace( rocket_get_constant( 'ABSPATH' ), '', $wp_content_path );
 	}
 
 	/**
