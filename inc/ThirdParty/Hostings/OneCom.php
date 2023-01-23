@@ -167,7 +167,7 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Remove RocketCDN cta banner.
+	 * Remove RocketCDN related sections from UI.
 	 *
 	 * @return boolean
 	 */
