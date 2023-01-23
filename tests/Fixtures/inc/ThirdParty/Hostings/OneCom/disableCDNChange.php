@@ -3,6 +3,7 @@
 return [
 	'testShouldReturnDefaultFieldSettings' => [
 		'config'      => [
+			'onecom_performance_plugin_enabled' => true,
             'oc_cdn_enabled' => false,
             'field_settings' => [
                 'cdn' => [
@@ -32,6 +33,7 @@ return [
 	],
 	'testShouldUpdateFieldSettings' => [
 		'config'      => [
+			'onecom_performance_plugin_enabled' => true,
             'oc_cdn_enabled' => true,
             'field_settings' => [
                 'cdn' => [
