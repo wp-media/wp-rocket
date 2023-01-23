@@ -48,7 +48,11 @@ class OneCom implements Subscriber_Interface {
 	 * @return bool|null
 	 */
 	public function maybe_enable_cdn_option( ?string $cdn ) {
-		return $this->is_oc_cdn_enabled() ? true : $cdn;
+		if ( ! $this->is_oc_cdn_enabled() ) {
+			return $cdn;
+		}
+
+		return ! $this->is_content_dir_changed();
 	}
 
 	/**
@@ -73,12 +77,12 @@ class OneCom implements Subscriber_Interface {
 
 	/**
 	 * Exclude files from being rewritten.
+	 * From 3.12.5.2 we are excluding new wp-content directory paths if it's not the normal one.
 	 *
 	 * @param array $files Array of files to be excluded.
 	 * @return array
 	 */
 	public function exclude_from_cdn( array $files ): array {
-
 		if ( ! $this->is_oc_cdn_enabled() ) {
 			return $files;
 		}
@@ -86,6 +90,16 @@ class OneCom implements Subscriber_Interface {
 		$files[] = '/wp-includes/(.*)';
 
 		return $files;
+	}
+
+	/**
+	 * Does wp-content directory changed?
+	 *
+	 * @return bool
+	 */
+	private function is_content_dir_changed() {
+		$wp_content_path = rocket_get_constant( 'WP_CONTENT_DIR' );
+		return 'wp-content' !== str_replace( rocket_get_constant( 'ABSPATH' ), '', $wp_content_path );
 	}
 
 	/**
