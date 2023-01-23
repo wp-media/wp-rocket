@@ -6,11 +6,11 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_remove_rocketcdn_cta_banner
+ * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_remove_rocketcdn_from_ui
  * @group OneCom
  * @group ThirdParty
  */
-class Test_MaybeRemoveRocketcdnCtaBanner extends TestCase {
+class Test_MaybeRemoveRocketcdnFromUi extends TestCase {
     private $subscriber;
 
 	public function setUp() : void {
@@ -33,10 +33,10 @@ class Test_MaybeRemoveRocketcdnCtaBanner extends TestCase {
 			->with( 'oc_cdn_enabled' )
 			->andReturn( $config['oc_cdn_enabled'] );
 
-        $this->assertSame( $expected, $this->subscriber->maybe_remove_rocketcdn_cta_banner() );
+        $this->assertSame( $expected, $this->subscriber->maybe_remove_rocketcdn_from_ui() );
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'maybeRemoveRocketcdnCtaBanner' );
+		return $this->getTestData( __DIR__, 'maybeRemoveRocketcdnFromUi' );
 	}
 }

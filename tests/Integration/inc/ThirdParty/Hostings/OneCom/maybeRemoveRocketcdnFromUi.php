@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_remove_rocketcdn_cta_banner
+ * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_remove_rocketcdn_from_ui
  * @group OneCom
  * @group ThirdParty
  */
@@ -26,10 +26,20 @@ class Test_MaybeRemoveRocketcdnCtaBanner extends TestCase {
 			->with( 'oc_cdn_enabled' )
 			->andReturn( $config['oc_cdn_enabled'] );
 
-        $this->assertSame( $expected, apply_filters( 'rocket_display_rocketcdn_cta', true ) );
+		if ( 'cta_banner' === $config['type'] ) {
+			$this->assertSame( $expected, apply_filters( 'rocket_display_rocketcdn_cta', true ) );
+		}
+
+		if ( 'status' === $config['type'] ) {
+			$this->assertSame( $expected, apply_filters( 'rocket_display_rocketcdn_status', true ) );
+		}
+
+		if ( 'notice' === $config['type'] ) {
+			$this->assertSame( $expected, apply_filters( 'rocket_promote_rocketcdn_notice', true ) );
+		}
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'maybeRemoveRocketcdnCtaBanner' );
+		return $this->getTestData( __DIR__, 'maybeRemoveRocketcdnFromUi' );
 	}
 }
