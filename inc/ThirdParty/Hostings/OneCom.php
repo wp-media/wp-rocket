@@ -38,7 +38,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_oc_cdn_enabled(): bool {
-		return class_exists( 'VCachingOC' ) && rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
+		return rocket_get_constant( 'vcaching', false ) && rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
 	}
 
 	/**
