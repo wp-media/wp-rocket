@@ -149,6 +149,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="application/javascript">alert("application/javascript");</script>
 <script type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="d4f551d7e8e0f24d852b936c-text/javascript">alert("wildcard");</script>
 <script type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -389,6 +390,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="d4f551d7e8e0f24d852b936c-text/javascript">alert("wildcard");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -629,6 +631,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
+<script type="rocketlazyloadscript" data-rocket-type="d4f551d7e8e0f24d852b936c-text/javascript">alert("wildcard");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>

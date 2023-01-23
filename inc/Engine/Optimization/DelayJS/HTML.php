@@ -55,6 +55,7 @@ class HTML {
 		'text/livescript',
 		'text/x-ecmascript',
 		'text/x-javascript',
+		'(.*)-text/javascript',
 	];
 
 	/**
@@ -202,12 +203,13 @@ class HTML {
 
 		$type_regex = '/type\s*=\s*(["\'])(?<type>.*)\1/i';
 		preg_match( $type_regex . 'U', $matches['attr'], $type_matches );
+
 		if (
 			! empty( $type_matches )
 			&&
 			! empty( trim( $type_matches['type'] ) )
 			&&
-			! in_array( trim( $type_matches['type'] ), $this->allowed_types, true )
+			! $this->check_if_script_type_is_allowed( trim( $type_matches['type'] ) )
 		) {
 			return $matches[0];
 		}
@@ -284,5 +286,22 @@ class HTML {
 		$lists = $this->data_manager->get_lists();
 
 		$this->excluded = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
+	}
+
+	/**
+	 * Check if script type is allowed.
+	 *
+	 * @param string $type script type.
+	 *
+	 * @return bool
+	 */
+	private function check_if_script_type_is_allowed( $type ) {
+		$matches = false;
+		foreach ( $this->allowed_types as $pattern ) {
+			if ( preg_match( '@' . preg_quote( $pattern, '@' ) . '$@', $type ) ) {
+				$matches = true;
+			}
+		}
+		return $matches;
 	}
 }
