@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\OneCom;
 
 use WP_Rocket\ThirdParty\Hostings\OneCom;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -20,7 +20,7 @@ class Test_MaybeEnableCDNOption extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 
@@ -36,10 +36,16 @@ class Test_MaybeEnableCDNOption extends TestCase {
 			}
 		);
 
+		if ( isset( $config['wp_content_dir'] ) ) {
+			$this->wp_content_dir = $config['wp_content_dir'];
+		}
+
         $this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'maybeEnableCDNOption' );
+	public function tearDown(): void {
+		parent::tearDown();
+
+		$this->wp_content_dir = 'vfs://public/wp-content';
 	}
 }
