@@ -19,6 +19,7 @@ class RapidLoad implements Subscriber_Interface {
 		return [
 			'rocket_disable_rucss_setting'            => 'disable_rucss_setting',
 			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_rucss',
+			'deactivated_plugin'                      => [ 'rocket_clean_cache_on_deactivation', 12 ],
 		];
 	}
 
@@ -46,6 +47,21 @@ class RapidLoad implements Subscriber_Interface {
 	 */
 	public function maybe_disable_rucss() {
 		return $this->is_rapidload_active() ? false : null;
+	}
+
+	/**
+	 * Clean WP Rocket Cache when Rapidload is deactivated.
+	 *
+	 * @param string $plugin Plugin file.
+	 * @return void
+	 */
+	public function rocket_clean_cache_on_deactivation( string $plugin ): void {
+		if ( 'unusedcss/unusedcss.php' !== $plugin ) {
+			return;
+		}
+
+		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+		rocket_clean_domain();
 	}
 
 	/**
