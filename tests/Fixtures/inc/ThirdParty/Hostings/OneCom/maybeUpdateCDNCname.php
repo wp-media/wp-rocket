@@ -3,6 +3,7 @@
 return [
     'testShouldReturnNewArrayWithOneDotComCDNEnabled' => [
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'cname' => null,
             'oc_cdn_enabled' => true,
             'domain' => 'example.com',
@@ -15,6 +16,7 @@ return [
     ],
     'testShouldReturnNullWithOneDotComCDNDisabled' => [
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'cname' => null,
             'oc_cdn_enabled' => false,
             'domain' => 'example.com',

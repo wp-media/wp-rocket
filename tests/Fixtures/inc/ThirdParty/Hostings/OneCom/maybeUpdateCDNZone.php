@@ -3,6 +3,7 @@
 return [
     'testShouldReturnNewArrayWithOneDotComCDNEnabled' => [
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'zone' => null,
             'oc_cdn_enabled' => true,
         ],
@@ -14,6 +15,7 @@ return [
     ],
     'testShouldReturnNullWithOneDotComCDNDisabled' => [
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'zone' => null,
             'oc_cdn_enabled' => false,
         ],

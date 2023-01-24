@@ -142,7 +142,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_varnish_active() {
-		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
+		return rocket_get_constant( 'vcaching', false ) && rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
 	}
 
 	/**

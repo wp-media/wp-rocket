@@ -23,29 +23,22 @@ class Test_MaybeEnableCDNOption extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->constants['vcaching'] = $config['onecom_performance_plugin_enabled'];
 
-        Functions\expect( 'rest_sanitize_boolean' )
+		if ( $config['onecom_performance_plugin_enabled'] ) {
+			Functions\expect( 'rest_sanitize_boolean' )
 				->once()
 				->andReturn( $config['oc_cdn_enabled'] );
 
-        Functions\when( 'get_option' )
-			->alias( function( $value ) use( $config ) {
-				if ( 'oc_cdn_enabled' === $value ) {
-                    return $config['oc_cdn_enabled'];
-                }
-			}
-		);
-
-		if ( isset( $config['wp_content_dir'] ) ) {
-			$this->wp_content_dir = $config['wp_content_dir'];
+			Functions\when( 'get_option' )
+				->alias( function( $value ) use( $config ) {
+					if ( 'oc_cdn_enabled' === $value ) {
+						return $config['oc_cdn_enabled'];
+					}
+				}
+				);
 		}
 
         $this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
-	}
-
-	public function tearDown(): void {
-		parent::tearDown();
-
-		$this->wp_content_dir = 'vfs://public/wp-content';
 	}
 }

@@ -3,6 +3,7 @@
 return [
     'testShouldReturnDefaultVarnishSetting' =>[
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'is_varnish_active' => false,
             'varnish_field_settings' => [
                 'varnish_auto_purge' => [
@@ -29,6 +30,7 @@ return [
     ],
     'testShouldReturnUpdatedVarnishSetting' =>[
         'config' => [
+	        'onecom_performance_plugin_enabled' => true,
             'is_varnish_active' => true,
             'varnish_field_settings' => [
                 'varnish_auto_purge' => [

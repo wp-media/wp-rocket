@@ -3,6 +3,7 @@
 return [
 	'testShouldBailOutWithDisabledOneDotComCDN' => [
 		'config'      => [
+			'onecom_performance_plugin_enabled' => true,
             'oc_cdn_enabled' => false,
             'excluded' => [],
         ],
@@ -10,6 +11,7 @@ return [
 	],
 	'testShouldExcludeFromCDN' => [
 		'config'      => [
+			'onecom_performance_plugin_enabled' => true,
             'oc_cdn_enabled' => true,
             'excluded' => [],
         ],
