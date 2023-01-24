@@ -47,7 +47,7 @@ class Test_MaybeUpdateCDNCname extends TestCase {
 				);
 		}
 
-        if ( $config['oc_cdn_enabled'] ) {
+        if ( $config['oc_cdn_enabled'] && $config['onecom_performance_plugin_enabled'] ) {
             $domain_name = $_SERVER['ONECOM_DOMAIN_NAME'] = $config['domain'];
             $http_host = $_SERVER['HTTP_HOST'] = $config['domain'];
 
