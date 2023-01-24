@@ -56,6 +56,10 @@ class RapidLoad implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function rocket_clean_cache_on_deactivation( string $plugin ): void {
+		if ( ! $this->is_rapidload_active() ) {
+			return;
+		}
+
 		if ( 'unusedcss/unusedcss.php' !== $plugin ) {
 			return;
 		}
