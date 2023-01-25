@@ -1,13 +1,6 @@
 <?php
-$rocket_clean_domain = [
-	'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
-	'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
-];
 
 return [
-    'vfs_dir'   => 'wp-content/cache/',
-
     'test_data' => [
         'shouldDoNothingWhenRapidLoadIsNotActive' => [
             'config' => [
@@ -16,7 +9,6 @@ return [
             ],
             'expected' => [
                 'file' => 'unusedcss/unusedcss.php',
-                'rocket_clean_domain' => $rocket_clean_domain,
             ],
         ],
         'shouldDoNothingWhenDeactivatedPluginIsNotRapidLoad' => [
@@ -29,7 +21,6 @@ return [
             ],
             'expected' => [
                 'file' => 'unusedcss/unusedcss.php',
-                'rocket_clean_domain' => $rocket_clean_domain,
             ],
         ],
         'shouldCleanCacheWhenRapidLoadIsDeactivated' => [
@@ -42,7 +33,6 @@ return [
             ],
             'expected' => [
                 'file' => 'unusedcss/unusedcss.php',
-                'rocket_clean_domain' => $rocket_clean_domain,
             ],
         ],
     ]
