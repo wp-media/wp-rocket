@@ -35,5 +35,5 @@ return [
                 'file' => 'unusedcss/unusedcss.php',
             ],
         ],
-    ]
+    ],
 ];
