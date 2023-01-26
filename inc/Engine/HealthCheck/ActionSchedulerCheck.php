@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\HealthCheck;
 
+use ActionScheduler_Versions;
+use ActionScheduler;
 use ActionScheduler_StoreSchema;
 use ActionScheduler_LoggerSchema;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -20,9 +22,6 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		return [
 			'update_option_' . $slug => [ 'check_on_update_options', 10, 2 ],
 			'wp_rocket_update'       => 'maybe_recreate_as_tables',
-			'rocket_disable_option_ui' => [ 'disable_rucss_preload_with_older_as_versions', 10, 2 ],
-			'pre_get_rocket_option_remove_unused_css' => 'maybe_disable_options',
-			'pre_get_rocket_option_manual_preload' => 'maybe_disable_options',
 		];
 	}
 
@@ -135,28 +134,20 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		return 4 === count( $found_as_tables );
 	}
 
+	/**
+	 * Validate if the currenlt loaded action scheduler's version is more than 3.0.0.
+	 * Note: Latest_version method in ActionScheduler_Versions class will return null with first activation
+	 * in case we don't have any other active plugin which loads Action Scheduler.
+	 * Because with activation, our Action Scheduler still not initialized yet.
+	 *
+	 * @return bool
+	 */
 	private function is_valid_action_scheduler_version() {
-		if ( ! class_exists( '\ActionScheduler_Versions' ) || ! class_exists( '\ActionScheduler' ) ) {
+		if ( ! class_exists( 'ActionScheduler_Versions' ) || ! class_exists( 'ActionScheduler' ) ) {
 			return false;
 		}
 
-		$version = \ActionScheduler_Versions::instance()->latest_version();
+		$version = ActionScheduler_Versions::instance()->latest_version();
 		return ! $version || version_compare( $version, '3.0.0', '>=' );
-	}
-
-	public function disable_rucss_preload_with_older_as_versions( $disabled, $option_key ) {
-		if ( ! in_array( $option_key, [ 'remove_unused_css', 'manual_preload' ], true ) ) {
-			return $disabled;
-		}
-
-		if ( ! $this->is_valid_action_scheduler_version() ) {
-			return false;
-		}
-
-		return $disabled;
-	}
-
-	public function maybe_disable_options() {
-		return $this->is_valid_action_scheduler_version();
 	}
 }

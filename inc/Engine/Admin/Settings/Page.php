@@ -547,18 +547,6 @@ class Page {
 		);
 	}
 
-	private function is_option_ui_disabled( $option_key ) {
-		/**
-		 * Disable the option in UI or not.
-		 *
-		 * @since  3.12.6
-		 *
-		 * @param bool   $default True if disabled and false if not disabled, the default is false.
-		 * @param string $option_key Option key to be disabled.
-		 */
-		return apply_filters( 'rocket_disable_option_ui', false, $option_key );
-	}
-
 	/**
 	 * Registers CSS & Javascript section.
 	 *
@@ -584,7 +572,6 @@ class Page {
 		$disable_ocd         = 'local' === wp_get_environment_type();
 
 		$invalid_license = get_transient( 'wp_rocket_no_licence' );
-		$disable_rucss   = $this->is_option_ui_disabled( 'remove_unused_css' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -735,15 +722,15 @@ class Page {
 					'options'                 => [
 						'remove_unused_css' => [
 							'label'       => __( 'Remove Unused CSS', 'rocket' ),
-							'disabled'    => $invalid_license || $disable_rucss ? 'disabled' : false,
+							'disabled'    => $invalid_license ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'warning'     => $invalid_license || $disable_rucss ? [] : [
+							'warning'     => $invalid_license ? [] : [
 								'title'        => __( 'This could break things!', 'rocket' ),
 								'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 								'button_label' => __( 'Activate Remove Unused CSS', 'rocket' ),
 							],
-							'sub_fields'  => $invalid_license || $disable_rucss ? [] : [
+							'sub_fields'  => $invalid_license ? [] : [
 								'remove_unused_css_safelist' =>
 								[
 									'type'              => 'textarea',
@@ -1124,11 +1111,10 @@ class Page {
 			]
 		);
 
-		$bot_beacon      = $this->beacon->get_suggest( 'bot' );
-		$fonts_preload   = $this->beacon->get_suggest( 'fonts_preload' );
-		$preload_links   = $this->beacon->get_suggest( 'preload_links' );
-		$exclusions      = $this->beacon->get_suggest( 'preload_exclusions' );
-		$disable_preload = $this->is_option_ui_disabled( 'manual_preload' );
+		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
+		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
+		$preload_links = $this->beacon->get_suggest( 'preload_links' );
+		$exclusions    = $this->beacon->get_suggest( 'preload_exclusions' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1186,10 +1172,6 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 					'container_class'   => [
 						'wpr-isParent',
-						$disable_preload ? 'wpr-isDisabled' : '',
-					],
-					'input_attr'        => [
-						'disabled' => $disable_preload ? 1 : 0,
 					],
 				],
 				'preload_excluded_uri' => [
