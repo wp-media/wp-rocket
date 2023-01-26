@@ -69,7 +69,7 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Remove unmet dependencies by legacy versions
-      run: composer remove --dev  --update-no-dev --no-scripts coenjacobs/mozart
+      run: composer remove --dev --no-scripts coenjacobs/mozart
 
     - name: Require PHPUnit 7.5 for WP compatibility
       run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
