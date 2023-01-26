@@ -4,6 +4,8 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
@@ -46,7 +48,8 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->register_service('purge', function($id) use ($filesystem) {
 			$this->add( $id, Purge::class )
-				->addArgument( $filesystem );
+				->addArgument( $filesystem )
+        ->addArgument( $this->get_internal( 'preload_caches_query' )  );
 		});
 
 		$this->register_service('purge_actions_subscriber', function($id) {
@@ -73,6 +76,11 @@ class ServiceProvider extends AbstractServiceProvider {
 				->addArgument( $this->get_external( 'options' ) )
 				->addArgument( $this->get_internal( 'expired_cache_purge' ) )
 				->addTag( 'common_subscriber' );
+		});
+    
+    $this->register_service('preload_caches_query', function($id) {
+			$this->share( $id, CacheQuery::class )
+				->addArgument( new Logger() );
 		});
 
 		$this->register_service('cache_config', function($id) {
