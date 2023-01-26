@@ -124,7 +124,7 @@ class Cache extends Query {
 	public function create_or_update( array $resource ) {
 		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
 
-		if ( $this->is_rejected( $resource['url'] ) || get_option( 'wp_rocket_updating' ) ) {
+		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
 		}
 

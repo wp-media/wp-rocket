@@ -335,7 +335,7 @@ function rocket_upgrade_pre_install_option( $return, $plugin ) {
 		return new WP_Error( 'bad_request', $msg );
 	}
 
-	update_option( 'wp_rocket_updating', true );
+	set_transient( 'wp_rocket_updating', true, MINUTE_IN_SECONDS );
 
 	return $return;
 }
@@ -360,7 +360,7 @@ function rocket_upgrade_post_install_option( $return, $plugin ) {
 		$msg = __( 'Missing plugin.', 'rocket' );
 		return new WP_Error( 'bad_request', $msg );
 	}
-	update_option( 'wp_rocket_updating', false );
+	delete_transient( 'wp_rocket_updating' );
 
 	return $plugin;
 }
