@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with One.com hosting.
@@ -10,6 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.12.1
  */
 class OneCom implements Subscriber_Interface {
+	use ReturnTypesTrait;
 
 	/**
 	 * Array of events this subscriber wants to listen to.
@@ -29,9 +31,9 @@ class OneCom implements Subscriber_Interface {
 			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
-			'rocket_display_rocketcdn_cta'            => 'maybe_remove_rocketcdn_from_ui',
-			'rocket_display_rocketcdn_status'         => 'maybe_remove_rocketcdn_from_ui',
-			'rocket_promote_rocketcdn_notice'         => 'maybe_remove_rocketcdn_from_ui',
+			'rocket_display_rocketcdn_cta'            => 'return_false',
+			'rocket_display_rocketcdn_status'         => 'return_false',
+			'rocket_promote_rocketcdn_notice'         => 'return_false',
 		];
 	}
 
@@ -164,14 +166,5 @@ class OneCom implements Subscriber_Interface {
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
-	}
-
-	/**
-	 * Remove RocketCDN related sections from UI.
-	 *
-	 * @return boolean
-	 */
-	public function maybe_remove_rocketcdn_from_ui(): bool {
-		return ! $this->is_oc_cdn_enabled();
 	}
 }
