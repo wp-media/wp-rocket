@@ -136,7 +136,7 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 
 	/**
 	 * Validate if the currenlt loaded action scheduler's version is more than 3.0.0.
-	 * Note: Latest_version method in ActionScheduler_Versions class will return null with first activation
+	 * Note: Latest_version method in ActionScheduler_Versions class will return false with first activation
 	 * in case we don't have any other active plugin which loads Action Scheduler.
 	 * Because with activation, our Action Scheduler still not initialized yet.
 	 *
