@@ -68,7 +68,7 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 
 		$this->stubWpParseUrl();
 		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
-		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content' );
+		Functions\when( 'content_url' )->justReturn( 'http://example.org/wp-content/' );
 
 		$this->cdn->shouldReceive( 'get_cdn_hosts' )
 			->atMost()
