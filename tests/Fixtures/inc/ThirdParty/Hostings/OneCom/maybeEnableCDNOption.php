@@ -3,6 +3,7 @@
 return [
     'testShouldReturnTrueWithOneDotComCDNEnabled' => [
         'config' => [
+			'onecom_performance_plugin_enabled' => true,
             'cdn' => null,
             'oc_cdn_enabled' => true,
         ],
@@ -11,12 +12,23 @@ return [
         ],
     ],
     'testShouldReturnNullWithOneDotComCDNDisabled' => [
-        'config' => [
-            'cdn' => null,
-            'oc_cdn_enabled' => false,
-        ],
-        'expected' => [
-            'return' => null,
-        ],
+	    'config' => [
+		    'onecom_performance_plugin_enabled' => true,
+		    'cdn' => null,
+		    'oc_cdn_enabled' => false,
+	    ],
+	    'expected' => [
+		    'return' => null,
+	    ],
+    ],
+    'testShouldReturnNullWithOneDotComCDNEnabledAndPluginDisabled' => [
+	    'config' => [
+		    'onecom_performance_plugin_enabled' => false,
+		    'cdn' => null,
+		    'oc_cdn_enabled' => false,
+	    ],
+	    'expected' => [
+		    'return' => null,
+	    ],
     ],
 ];
