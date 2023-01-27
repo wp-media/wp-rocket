@@ -3853,7 +3853,7 @@ msgid ""
 "and export WP Rocket settings %1$s(Recommended as current settings will be "
 "deleted)%2$s"
 msgstr ""
-"et exporter les paramètres de WP Rocket %1$s(recommandé car les réglages "
+"et exporter les réglages de WP Rocket %1$s(recommandé car les réglages "
 "actuels seront supprimés)%2$s"
 
 #: views/deactivation-intent/form.php:76
