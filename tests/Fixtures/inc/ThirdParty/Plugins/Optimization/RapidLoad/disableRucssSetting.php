@@ -13,10 +13,27 @@ return [
 			'text'    => '',
 		],
     ],
+    'shouldDoNothingWhenRapidLoadLicenseIsInvalid' => [
+        'config' => [
+            'autoptimize_uucss_settings' => [
+                'uucss_api_key_verified' => 1,
+                'valid_domain' => false,
+            ],
+            'rucss_status' => [
+                'disable' => false,
+                'text' => '',
+            ],
+        ],
+        'expected' => [
+			'disable' => false,
+			'text'    => '',
+		],
+    ],
     'shouldDisableRucssOptionWhenRapidLoadIsActive' => [
         'config' => [
             'autoptimize_uucss_settings' => [
                 'uucss_api_key_verified' => 1,
+                'valid_domain' => true,
             ],
             'rucss_status' => [
                 'disable' => false,
