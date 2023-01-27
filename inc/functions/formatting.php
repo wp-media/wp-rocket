@@ -230,6 +230,7 @@ function rocket_sanitize_xml( $file ) {
 	return ( 'xml' === $ext ) ? trim( $file ) : false;
 }
 
+
 /**
  * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
  *
