@@ -177,6 +177,11 @@ class Test_ConvertToWebp extends TestCase {
 		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
+		Functions\when('wp_upload_dir')->justReturn([
+			'basedir' => '/Internal/path/to/root/wp-content/uploads/'
+		]);
+
+
 		Functions\when( 'apache_request_headers' )
 			->alias( function() {
 				return [
@@ -223,15 +228,81 @@ class Test_ConvertToWebp extends TestCase {
 		$this->assertSame( $expected, $subscriber->convert_to_webp( $original ) );
 	}
 
+	/**
+	 * @dataProvider matchCustomUploadProvider
+	 */
+	public function testShouldReturnModifiedHtmlWithCustomUpload( $original, $expected ) {
+		// Mock the required objets for Webp_Subscriber.
+		$mocks = $this->getConstructorMocks();
+
+		Functions\when('wp_upload_dir')->justReturn([
+			'basedir' => '/Internal/path/to/root/custom-uploads/',
+			'baseurl' => 'https://example.org/custom-uploads/'
+		]);
+
+
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
+
+		// rocket_direct_filesystem().
+		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
+			$uploads_path = '/Internal/path/to/root/wp-content/uploads/';
+			$filesystem   = Mockery::mock( 'WP_Filesystem_Direct' );
+
+			$data = [
+				[ $uploads_path . '2019/09/one-image.webp', true ],
+				[ $uploads_path . '2019/09/one-image.png.webp', false ],
+				[ $uploads_path . '2017/02/apple-touch-icon.webp', false ],
+				[ $uploads_path . '2017/02/apple-touch-icon.png.webp', true ],
+				[ $uploads_path . '2017/02/favicon-32x32.webp', true ],
+				[ $uploads_path . '2017/02/favicon-32x32.png.webp', false ],
+				[ $uploads_path . '2017/02/mstile-144x144.webp', false ],
+				[ $uploads_path . '2017/02/mstile-144x144.png.webp', false ],
+				[ $uploads_path . '2019/09/one-image-60x60.webp', false ],
+				[ $uploads_path . '2019/09/one-image-60x60.png.webp', false ],
+				[ $uploads_path . '2017/02/stats-php.webp', false ],
+				[ $uploads_path . '2017/02/stats-php.gif.webp', true ],
+			];
+
+			foreach ( $data as $values ) {
+				$filesystem
+					->shouldReceive( 'exists' )
+					->with( $values[0] )
+					->andReturn( $values[1] );
+			}
+
+			return $filesystem;
+		} );
+
+		// WP functions.
+		$this->mockWpFunctions(true);
+
+		$subscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+
+		// Assert that the HTML is the same.
+		$this->assertSame( $expected, $subscriber->convert_to_webp( $original ) );
+	}
+
 	public function matchProvider() {
 		return $this->getTestData( __DIR__, 'convert-to-webp-match' );
 	}
 
-	private function mockWpFunctions() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'WP_CONTENT_DIR' )
-			->andReturn( '/Internal/path/to/root/wp-content' );
+	public function matchCustomUploadProvider() {
+		return $this->getTestData( __DIR__, 'convert-to-webp-match-custom-upload' );
+	}
+
+	private function mockWpFunctions($custom_path = false ) {
+
+		if( ! $custom_path ) {
+			Functions\expect( 'rocket_get_constant' )
+				->once()
+				->with( 'WP_CONTENT_DIR' )
+				->andReturn( '/Internal/path/to/root/wp-content' );
+		}
 
 		// wp_parse_url().
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component ) {

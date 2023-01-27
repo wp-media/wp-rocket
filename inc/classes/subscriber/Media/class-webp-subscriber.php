@@ -690,15 +690,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 		$content_url = preg_replace( '@^https?:@', '', content_url( '/' ) );
 		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
 
+		$list = [ $content_url => $content_dir ];
 
-		$list        = [$content_url => $content_dir];
-
-		$upload = wp_upload_dir();
+		$upload     = wp_upload_dir();
 		$upload_dir = trailingslashit( $upload['basedir'] );
 
-		if( strpos( $content_dir, $upload_dir ) === false ) {
-			$upload_url = preg_replace( '@^https?:@', '', trailingslashit( $upload['baseurl'] ) );
-			$list[$upload_url]  = $upload_dir;
+		if ( strpos( $upload_dir, $content_dir ) === false ) {
+			$upload_url          = preg_replace( '@^https?:@', '', trailingslashit( $upload['baseurl'] ) );
+			$list[ $upload_url ] = $upload_dir;
 		}
 
 		/**
