@@ -600,7 +600,6 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		$src_path_webp = preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_path );
-
 		if ( $this->filesystem->exists( $src_path_webp ) ) {
 			// File name: image.jpg => image.webp.
 			return preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_url['src'] ) . $src_url['query'];
@@ -690,7 +689,17 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		$content_url = preg_replace( '@^https?:@', '', content_url( '/' ) );
 		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
-		$list        = [ $content_url => $content_dir ];
+
+
+		$list        = [$content_url => $content_dir];
+
+		$upload = wp_upload_dir();
+		$upload_dir = trailingslashit( $upload['basedir'] );
+
+		if( strpos( $content_dir, $upload_dir ) === false ) {
+			$upload_url = preg_replace( '@^https?:@', '', trailingslashit( $upload['baseurl'] ) );
+			$list[$upload_url]  = $upload_dir;
+		}
 
 		/**
 		 * Filter the list of URL/path associations.
