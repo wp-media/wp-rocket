@@ -241,11 +241,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			return true;
 		}
 
-		if ( ! $this->is_user_agent_compatible() ) {
-			return false;
-		}
-
-		return false;
+		return $this->is_user_agent_compatible();
 	}
 
 	/**
