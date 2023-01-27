@@ -76,6 +76,6 @@ class RapidLoad implements Subscriber_Interface {
 	private function is_rapidload_active(): bool {
 		$autoptimize_uucss_settings = get_option( 'autoptimize_uucss_settings' );
 
-		return ( isset( $autoptimize_uucss_settings['uucss_api_key_verified'] ) && 1 === $autoptimize_uucss_settings['uucss_api_key_verified'] );
+		return ( isset( $autoptimize_uucss_settings['uucss_api_key_verified'] ) && 1 === $autoptimize_uucss_settings['uucss_api_key_verified'] && $autoptimize_uucss_settings['valid_domain'] );
 	}
 }
