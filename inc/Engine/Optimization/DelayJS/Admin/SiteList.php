@@ -30,6 +30,8 @@ class SiteList {
 	 */
 	private $options_api;
 
+	private $list;
+
 	/**
 	 * SiteList Constructor.
 	 *
@@ -41,6 +43,17 @@ class SiteList {
 		$this->dynamic_lists = $dynamic_lists;
 		$this->options       = $options;
 		$this->options_api   = $options_api;
+	}
+
+	private function prepare_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		if ( empty( $list ) ) {
+			return;
+		}
+
+		foreach ( $list as $item_key => $item ) {
+
+		}
 	}
 
 	/**
