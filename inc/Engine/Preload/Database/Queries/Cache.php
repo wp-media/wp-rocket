@@ -498,7 +498,7 @@ class Cache extends Query {
 		 */
 		$condition = apply_filters( 'rocket_preload_all_to_pending_condition', ' WHERE 1 = 1' );
 
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'$condition" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "'$condition" );
 	}
 
 	/**
