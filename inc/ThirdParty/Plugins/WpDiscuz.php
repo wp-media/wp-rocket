@@ -21,7 +21,7 @@ class WpDiscuz implements Subscriber_Interface {
 
 		return [
 			'pre_get_rocket_option_do_caching_mobile_files' => 'return_true',
-			'pre_get_rocket_option_cache_mobile'            => 'return_true',
+			'pre_get_rocket_option_cache_mobile' => 'return_true',
 		];
 	}
 }
