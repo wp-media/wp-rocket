@@ -277,9 +277,11 @@ class Cache extends Query {
 	/**
 	 * Get all preload caches which were not accessed in the last month.
 	 *
+	 * @param string $delay delay before the not accessed row is deleted.
+	 *
 	 * @return array
 	 */
-	public function get_old_cache() : array {
+	public function get_old_cache( string $delay = '1 month' ) : array {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -289,7 +291,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delay)";
 		$rows_affected       = $db->get_results( $query );
 
 		return $rows_affected;
@@ -298,10 +300,12 @@ class Cache extends Query {
 	/**
 	 * Remove all completed rows one by one.
 	 *
+	 * @param string $delay delay before the not accessed row is deleted.
+	 *
 	 * @return void
 	 */
-	public function remove_all_not_accessed_rows() {
-		$rows = $this->get_old_cache();
+	public function remove_all_not_accessed_rows( string $delay = '1 month' ) {
+		$rows = $this->get_old_cache( $delay );
 
 		foreach ( $rows as $row ) {
 			if ( ! is_bool( $row ) ) {

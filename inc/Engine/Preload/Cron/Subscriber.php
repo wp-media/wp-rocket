@@ -224,7 +224,19 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_old_rows() {
-		$this->query->remove_all_not_accessed_rows();
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 * @returns string
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
+
+		if ( '' === $delay ) {
+			return;
+		}
+
+		$this->query->remove_all_not_accessed_rows( $delay );
 	}
 
 	/**
