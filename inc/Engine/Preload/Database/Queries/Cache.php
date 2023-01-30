@@ -552,6 +552,25 @@ class Cache extends Query {
 	}
 
 	/**
+	 * Unlock all URLs.
+	 *
+	 * @return false|void
+	 */
+	public function unlock_all() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$db->query( "UPDATE `$prefixed_table_name` SET is_locked = false;" );
+	}
+
+	/**
 	 * Unlock a URL.
 	 *
 	 * @param string $url URL to unlock.
