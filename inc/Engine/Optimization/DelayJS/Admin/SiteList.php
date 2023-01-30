@@ -30,8 +30,6 @@ class SiteList {
 	 */
 	private $options_api;
 
-	private $list;
-
 	/**
 	 * SiteList Constructor.
 	 *
@@ -43,17 +41,6 @@ class SiteList {
 		$this->dynamic_lists = $dynamic_lists;
 		$this->options       = $options;
 		$this->options_api   = $options_api;
-	}
-
-	private function prepare_list() {
-		$list = $this->dynamic_lists->get_delayjs_list();
-		if ( empty( $list ) ) {
-			return;
-		}
-
-		foreach ( $list as $item_key => $item ) {
-
-		}
 	}
 
 	/**
@@ -100,6 +87,26 @@ class SiteList {
 	private function get_scripts_from_list() {
 		$list = $this->dynamic_lists->get_delayjs_list();
 		return ! empty( $list->scripts ) ? (array) $list->scripts : [];
+	}
+
+	/**
+	 * Get all plugins from the list.
+	 *
+	 * @return array
+	 */
+	private function get_plugins_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->plugins ) ? (array) $list->plugins : [];
+	}
+
+	/**
+	 * Get all themes from the list.
+	 *
+	 * @return array
+	 */
+	private function get_themes_from_list() {
+		$list = $this->dynamic_lists->get_delayjs_list();
+		return ! empty( $list->themes ) ? (array) $list->themes : [];
 	}
 
 	/**
@@ -196,34 +203,37 @@ class SiteList {
 
 		// Scripts.
 		$scripts = $this->get_scripts_from_list();
-		foreach ( $scripts as $script ) {
-			$script                          = (array) $script;
+		foreach ( $scripts as $script_key => $script ) {
 			$full_list['scripts']['items'][] = [
-				'id'    => $script['condition'],
-				'title' => $script['title'],
+				'id'    => $script_key,
+				'title' => $script->title,
 				'icon'  => $this->get_icon( $script ),
 			];
 		}
 
-		foreach ( $this->get_active_plugins() as $plugin ) {
-			$plugin_in_list = $this->get_plugin_in_list( $plugin );
-			if ( empty( $plugin_in_list ) ) {
+		$active_plugins = $this->get_active_plugins();
+		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
+			if ( ! in_array( $plugin->condition, $active_plugins, true ) ) {
 				continue;
 			}
 
 			$full_list['plugins']['items'][] = [
-				'id'    => $plugin,
-				'title' => $plugin_in_list['title'],
-				'icon'  => $this->get_icon( $plugin_in_list ),
+				'id'    => $plugin_key,
+				'title' => $plugin->title,
+				'icon'  => $this->get_icon( $plugin ),
 			];
 		}
 
-		$theme_in_list = $this->get_theme_in_list( $this->get_active_theme() );
-		if ( ! empty( $theme_in_list ) ) {
+		$active_theme = $this->get_active_theme();
+		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
+			if ( $active_theme !== $theme->condition ) {
+				continue;
+			}
+
 			$full_list['themes']['items'][] = [
-				'id'    => $theme_in_list['condition'],
-				'title' => $theme_in_list['title'],
-				'icon'  => $this->get_icon( $theme_in_list ),
+				'id'    => $theme_key,
+				'title' => $theme->title,
+				'icon'  => $this->get_icon( $theme ),
 			];
 		}
 
@@ -236,11 +246,11 @@ class SiteList {
 	 * @return string
 	 */
 	private function get_icon( $item ) {
-		if ( empty( $item ) || empty( $item['icon_url'] ) ) {
+		if ( empty( $item ) || empty( $item->icon_url ) ) {
 			return rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'default-icon.png';
 		}
 
-		return $item['icon_url'];
+		return $item->icon_url;
 	}
 
 	/**
@@ -289,22 +299,23 @@ class SiteList {
 	public function get_default_exclusions() {
 		$items = [];
 
-		foreach ( $this->get_active_plugins() as $plugin ) {
-			$plugin_in_list = $this->get_plugin_in_list( $plugin );
-			if ( empty( $plugin_in_list ) || ! $plugin_in_list['is_default'] ) {
+		$active_plugins = $this->get_active_plugins();
+		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
+			if ( ! in_array( $plugin->condition, $active_plugins, true ) || ! $plugin->is_default ) {
 				continue;
 			}
 
-			$items[ $plugin ] = $plugin_in_list['exclusions'];
+			$items[ $plugin_key ] = $plugin->exclusions;
 		}
 
-		$theme_in_list = $this->get_theme_in_list( $this->get_active_theme() );
+		$active_theme = $this->get_active_theme();
+		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
+			if ( $active_theme !== $theme->condition || ! $theme->is_default ) {
+				continue;
+			}
 
-		if ( empty( $theme_in_list ) || ! $theme_in_list['is_default'] ) {
-			return $items;
+			$items[ $theme_key ] = $theme->exclusions;
 		}
-
-		$items[ $theme_in_list['condition'] ] = $theme_in_list['exclusions'];
 
 		return $items;
 	}
