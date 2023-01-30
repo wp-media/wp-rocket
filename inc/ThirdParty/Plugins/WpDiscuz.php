@@ -3,8 +3,12 @@
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class WpDiscuz implements Subscriber_Interface {
+
+	use ReturnTypesTrait;
+
 	/**
 	 * Subscriber for wpDiscuz.
 	 *
@@ -15,18 +19,9 @@ class WpDiscuz implements Subscriber_Interface {
 			return [];
 		}
 
-		return [ 'option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => 'force_mobile_cache' ];
-	}
-
-	/**
-	 * Forces the mobile cache when the plugin is enabled.
-	 *
-	 * @param array $options WP Rocket configs.
-	 *
-	 * @return array
-	 */
-	public function force_mobile_cache( $options ) {
-		$options['do_caching_mobile_files'] = true;
-		return $options;
+		return [
+			'pre_get_rocket_option_do_caching_mobile_files' => 'return_true',
+			'pre_get_rocket_option_cache_mobile'            => 'return_true',
+		];
 	}
 }
