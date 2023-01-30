@@ -75,8 +75,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 * @returns string
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
-		if ( wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
+		if ( $delay === "" || wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
 			return;
 		}
 
