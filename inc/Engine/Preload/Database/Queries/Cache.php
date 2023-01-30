@@ -457,7 +457,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' AND modified = " . current_time( 'mysql', true ) . " WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
@@ -473,7 +473,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' AND modified = " . current_time( 'mysql', true ) . " WHERE status = 'failed' AND `modified` <= date_sub(now(), interval 12 hour)" );
+		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'failed' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
