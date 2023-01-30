@@ -83,7 +83,7 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
-		if ( $delay === "" || wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
+		if ( '' === $delay || wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
 			return;
 		}
 
