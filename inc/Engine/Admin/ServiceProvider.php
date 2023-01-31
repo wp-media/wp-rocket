@@ -34,8 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @return string[]
 	 */
-	public function get_admin_subscribers(): array
-	{
+	public function get_admin_subscribers(): array {
 		return [
 			'deactivation_intent_subscriber',
 			'hummingbird_subscriber',

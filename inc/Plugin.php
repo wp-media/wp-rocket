@@ -376,7 +376,6 @@ class Plugin {
 	protected function add_subscribers( array $subscribers, array $added = [] ) {
 
 		foreach ( $subscribers as $subscriber ) {
-			var_dump($subscriber);
 			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
 		}
 		foreach ( $added as $subscriber ) {

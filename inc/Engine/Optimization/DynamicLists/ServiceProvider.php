@@ -32,7 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function get_common_subscribers(): array {
 		return [
-			 'dynamic_lists_subscriber',
+			'dynamic_lists_subscriber',
 		];
 	}
 
