@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\HealthCheck;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for health check subscribers
@@ -23,6 +23,18 @@ class ServiceProvider extends AbstractServiceProvider {
 		'health_check',
 		'action_scheduler_check',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'health_check',
+			'action_scheduler_check',
+		];
+	}
 
 	/**
 	 * Registers items with the container

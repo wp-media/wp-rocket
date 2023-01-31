@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket Defer JS
@@ -24,6 +24,28 @@ class ServiceProvider extends AbstractServiceProvider {
 		'defer_js_admin_subscriber',
 		'defer_js_subscriber',
 	];
+
+	/**
+	 * Return IDs from license subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_license_subscribers(): array {
+		return [
+			'defer_js_subscriber',
+		];
+	}
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'defer_js_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

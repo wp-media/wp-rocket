@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WPMedia\Cloudflare\APIClient;
@@ -28,6 +28,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'sucuri_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'sucuri_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

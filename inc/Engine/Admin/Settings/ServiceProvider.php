@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket settings.
@@ -26,6 +26,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'settings_page',
 		'settings_page_subscriber',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'settings_page_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

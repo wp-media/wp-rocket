@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Database;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for database optimization
@@ -24,6 +24,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'db_optimization',
 		'db_optimization_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'db_optimization_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the option array in the container

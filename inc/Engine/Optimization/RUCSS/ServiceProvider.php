@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
@@ -42,6 +42,19 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_filesystem',
 		'rucss_cron_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'rucss_admin_subscriber',
+			'rucss_cron_subscriber',
+			'rucss_frontend_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the option array in the container

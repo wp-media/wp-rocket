@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket CDN
@@ -22,6 +22,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn',
 		'cdn_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'cdn_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

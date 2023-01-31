@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket optimizations
@@ -25,6 +25,19 @@ class AdminServiceProvider extends AbstractServiceProvider {
 		'google_fonts_admin_subscriber',
 		'minify_admin_subscriber',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'minify_css_admin_subscriber',
+			'google_fonts_admin_subscriber',
+			'minify_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;

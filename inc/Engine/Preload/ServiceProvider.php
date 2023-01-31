@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Filesystem_Direct;
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
@@ -54,6 +54,32 @@ class ServiceProvider extends AbstractServiceProvider {
 		'fonts_preload_subscriber',
 		'preload_activation',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'preload_front_subscriber',
+			'preload_subscriber',
+			'preload_cron_subscriber',
+			'fonts_preload_subscriber',
+			'preload_admin_subscriber',
+		];
+	}
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'preload_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the subscribers in the container

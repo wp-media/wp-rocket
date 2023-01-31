@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\CriticalPath\Admin\Admin;
 use WP_Rocket\Engine\CriticalPath\Admin\Post;
 use WP_Rocket\Engine\CriticalPath\Admin\Settings;
@@ -38,6 +38,29 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cpcss_admin',
 		'critical_css_admin_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'rest_cpcss_subscriber',
+			'critical_css_subscriber',
+		];
+	}
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'critical_css_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

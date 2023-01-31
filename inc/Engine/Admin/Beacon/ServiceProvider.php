@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Beacon;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for Beacon
@@ -22,6 +22,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'beacon',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'beacon',
+		];
+	}
 
 	/**
 	 * Registers items with the container

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber as AdminSubscriber;
 
@@ -27,6 +27,28 @@ class ServiceProvider extends AbstractServiceProvider {
 		'delay_js_html',
 		'delay_js_subscriber',
 	];
+
+	/**
+	 * Return IDs from license subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_license_subscribers(): array {
+		return [
+			'delay_js_subscriber',
+		];
+	}
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'delay_js_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

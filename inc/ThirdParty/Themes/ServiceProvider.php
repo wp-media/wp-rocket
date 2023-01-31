@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -26,6 +26,25 @@ class ServiceProvider extends AbstractServiceProvider {
 		'uncode',
 		'xstore',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'avada_subscriber',
+			'bridge_subscriber',
+			'divi',
+			'flatsome',
+			'jevelin',
+			'minimalist_blogger',
+			'polygon',
+			'uncode',
+			'xstore',
+		];
+	}
 
 	/**
 	 * Registers the subscribers in the container

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\License;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\UserClient;
@@ -31,6 +31,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'renewal',
 		'license_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'license_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container
