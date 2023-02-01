@@ -154,6 +154,7 @@ class Plugin {
 			new HealthCheckServiceProvider(),
 			new MediaServiceProvider(),
 			new DeferJSServiceProvider(),
+			new AddonServiceProvider(),
 		];
 
 		$providers = [
@@ -162,7 +163,6 @@ class Plugin {
 			new EngineAdminServiceProvider(),
 			new OptimizationAdminServiceProvider(),
 			new CapabilitiesServiceProvider(),
-			new AddonServiceProvider(),
 			new VarnishServiceProvider(),
 			new PreloadServiceProvider(),
 			new PreloadLinksServiceProvider(),
