@@ -317,6 +317,14 @@ class SiteList {
 			$items[ $theme_key ] = $theme->exclusions;
 		}
 
-		return $items;
+		/**
+		 * Filters the delay JS default exclusions list.
+		 * Key is the plugin/theme/script unique ID and value is array of exclusions
+		 *
+		 * @since 3.13
+		 *
+		 * @param array $items Array of default excluded items.
+		 */
+		return apply_filters( 'rocket_delay_js_default_exclusions', $items );
 	}
 }
