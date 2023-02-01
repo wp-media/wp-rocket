@@ -1,0 +1,17 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = User Exclusion Textarea
+
+\*-----------------------------------------------*/
+
+.wpr-field--categorizedmultiselect {
+  padding-right: 80px;
+
+  .wpr-list-body {
+	display: block;
+	max-height: 250px;
+	overflow-y: scroll;
+  }
+}

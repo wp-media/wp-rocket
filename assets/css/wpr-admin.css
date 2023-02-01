@@ -1986,6 +1986,7 @@ div.wpr-upgrade-websites {
   .wpr-radio-buttons {
     padding-left: 24px;
   }
+
   .wpr-fieldWarning.wpr-radio-warning {
     margin-left: -24px;
     padding-left: 30px;
@@ -2886,48 +2887,11 @@ div.wpr-tutorial-item {
     Type = User Exclusion Textarea
 
 \*-----------------------------------------------*/
-.wpr-field--userexclusiontextarea {
-  margin-top: 8px;
+.wpr-field--categorizedmultiselect {
+  padding-right: 80px;
 }
-.wpr-field--userexclusiontextarea .wpr-list {
-  border: 2px solid #c2cad4;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 8px 0;
-}
-.wpr-field--userexclusiontextarea textarea {
-  width: 100%;
-  border: none;
-}
-.wpr-field--userexclusiontextarea + .wpr-field-description {
-  color: #00A66B;
-}
-.wpr-field--userexclusiontextarea .wpr-list-body {
+.wpr-field--categorizedmultiselect .wpr-list-body {
   display: block;
-}
-.wpr-field--userexclusiontextarea .wpr-list-body .wpr-checkbox label {
-  color: #72777C;
-}
-.wpr-field--userexclusiontextarea .wpr-list-body .wpr-checkbox input[checked=checked] + label {
-  color: #121116;
-}
-.wpr-field--userexclusiontextarea .wpr-list-header {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #c2cad4;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-}
-.wpr-field--userexclusiontextarea .wpr-list-header-arrow {
-  width: 15px;
-  cursor: pointer;
-  display: flex;
-  transform: rotate(0deg);
-}
-.wpr-field--userexclusiontextarea h3 {
-  font-weight: 500;
-  color: #121116;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  max-height: 250px;
+  overflow-y: scroll;
 }

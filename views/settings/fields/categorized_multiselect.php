@@ -34,13 +34,20 @@ use stdClass;/**
 defined( 'ABSPATH' ) || exit;
 ?>
 
-<div id='<?php echo esc_attr( $data['id'] ); ?>' class="wpr-field wpr-multiple-select <?php echo esc_attr( $data['container_class'] ); ?>" data-default="<?php echo ( ! empty( $data['default'] ) ? 'wpr-radio-' . esc_attr( $data['default'] ) : '' ); ?>" <?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
-	<h2><?php echo esc_html( __( 'Excluded JavaScript Files', 'rocket' ) ); ?></h2>
+<div id='<?php echo esc_attr( $data['id'] ); ?>' class="wpr-field wpr-multiple-select wpr-field--categorizedmultiselect <?php echo esc_attr( $data['container_class'] ); ?>" data-default="<?php echo ( ! empty( $data['default'] ) ? 'wpr-radio-' . esc_attr( $data['default'] ) : '' ); ?>" <?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
+	<div class="wpr-field-description-label"><?php echo esc_attr( $data['label'] ); ?></div>
 	<p>
-	<?php
-	echo esc_html( __( 'Add JavaScript files to be excluded from delaying execution by selected them / or by add in “My scripts”.', 'rocket' ) );
-	?>
+		<?php
+		echo esc_html( $data['description'] );
+		?>
 	</p>
+	<?php if( ! empty( $data['sub_description'] ) ){ ?>
+	<p>
+		<?php
+		echo esc_html( $data['sub_description'] );
+		?>
+	</p>
+	<?php } ?>
 
 	<?php
 	foreach ( $data['items'] as $rocket_item_key => $rocket_item ) {

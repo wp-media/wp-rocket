@@ -288,23 +288,6 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Displays the user exclusions textarea field template.
-	 *
-	 * @since 3.13
-	 *
-	 * @param array $args Array of arguments to populate the template.
-	 */
-	public function user_exclusions_textarea( $args ) {
-		if ( is_array( $args['value'] ) ) {
-			$args['value'] = implode( "\n", $args['value'] );
-		}
-
-		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
-
-		echo $this->generate( 'fields/user_exclusions_textarea', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
 	 * Displays the sliding checkbox field template.
 	 *
 	 * @since 3.0
