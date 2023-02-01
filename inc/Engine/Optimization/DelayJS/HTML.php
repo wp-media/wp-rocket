@@ -179,7 +179,7 @@ class HTML {
 		}
 
 		$replaced_html = $this->restore_xmp_tags( $replaced_html );
-		return $this->replace_svg_tags( $replaced_html );
+		return $this->restore_svg_tags( $replaced_html );
 	}
 
 	/**
