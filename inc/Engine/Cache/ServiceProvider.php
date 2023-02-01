@@ -46,6 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			'rocketcdn_data_manager_subscriber',
 			'rocketcdn_notices_subscriber',
 			'rocketcdn_admin_subscriber',
+			'admin_cache_subscriber',
 		];
 	}
 

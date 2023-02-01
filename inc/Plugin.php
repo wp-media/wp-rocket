@@ -11,6 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
+use WP_Rocket\Engine\Admin\ServiceProvider as AdminServiceProvider;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
@@ -176,6 +177,7 @@ class Plugin {
 			new HeartbeatServiceProvider(),
 			new DynamicListsServiceProvider(),
 			new ThemesServiceProvider(),
+			new AdminServiceProvider(),
 		];
 
 		$providers = $this->filter_right_providers( $providers );
@@ -260,6 +262,15 @@ class Plugin {
 			$imagify->init();
 			remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 		}
+
+		$this->container->add(
+			'settings_page_config',
+			[
+				'slug'       => WP_ROCKET_PLUGIN_SLUG,
+				'title'      => WP_ROCKET_PLUGIN_NAME,
+				'capability' => 'rocket_manage_options',
+			]
+		);
 
 		$this->init_subscribers( $providers, 'get_admin_subscribers' );
 	}
@@ -374,7 +385,6 @@ class Plugin {
 	 * @return void
 	 */
 	protected function add_subscribers( array $subscribers, array $added = [] ) {
-
 		foreach ( $subscribers as $subscriber ) {
 			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
 		}
