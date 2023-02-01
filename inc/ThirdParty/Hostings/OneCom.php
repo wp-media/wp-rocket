@@ -3,6 +3,7 @@
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with One.com hosting.
@@ -10,6 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.12.1
  */
 class OneCom implements Subscriber_Interface {
+	use ReturnTypesTrait;
 
 	/**
 	 * Array of events this subscriber wants to listen to.
@@ -29,6 +31,9 @@ class OneCom implements Subscriber_Interface {
 			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
+			'rocket_display_rocketcdn_cta'            => 'return_false',
+			'rocket_display_rocketcdn_status'         => 'return_false',
+			'rocket_promote_rocketcdn_notice'         => 'return_false',
 		];
 	}
 
