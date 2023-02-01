@@ -81,7 +81,9 @@ defined( 'ABSPATH' ) || exit;
 									value='<?php echo esc_attr( $rocket_oneitem['id'] ); ?>'
 									<?php echo checked( in_array( $rocket_oneitem['id'], $data['selected'], true ) ); ?> />
 								<label>
+									<?php if( empty( $rocket_oneitem['icon'] ) ){ ?>
 									<img src="<?php echo esc_url( $rocket_oneitem['icon'] ); ?>"/>
+									<?php } ?>
 									<?php echo esc_attr( $rocket_oneitem['title'] ); ?>
 								</label>
 							</div>

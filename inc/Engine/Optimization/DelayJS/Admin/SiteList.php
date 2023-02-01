@@ -247,7 +247,7 @@ class SiteList {
 	 */
 	private function get_icon( $item ) {
 		if ( empty( $item ) || empty( $item->icon_url ) ) {
-			return rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'default-icon.png';
+			return '';
 		}
 
 		return $item->icon_url;
