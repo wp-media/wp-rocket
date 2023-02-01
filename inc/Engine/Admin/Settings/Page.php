@@ -931,7 +931,7 @@ class Page {
 				],
 				'delay_js_exclusions'          => [
 					'type'              => 'textarea',
-					'label'             => __( 'My Scripts', 'rocket' ),
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs or keywords that can identify inline or JavaScript files to be excluded from delaying execution (one per line).', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
