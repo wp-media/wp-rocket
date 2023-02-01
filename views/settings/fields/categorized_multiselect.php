@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 		echo esc_html( $data['description'] );
 		?>
 	</p>
-	<?php if( ! empty( $data['sub_description'] ) ){ ?>
+	<?php if ( ! empty( $data['sub_description'] ) ) { ?>
 	<p>
 		<?php
 		echo esc_html( $data['sub_description'] );
@@ -81,7 +81,7 @@ defined( 'ABSPATH' ) || exit;
 									value='<?php echo esc_attr( $rocket_oneitem['id'] ); ?>'
 									<?php echo checked( in_array( $rocket_oneitem['id'], $data['selected'], true ) ); ?> />
 								<label>
-									<?php if( ! empty( $rocket_oneitem['icon'] ) ){ ?>
+									<?php if ( ! empty( $rocket_oneitem['icon'] ) ) { ?>
 									<img src="<?php echo esc_url( $rocket_oneitem['icon'] ); ?>"/>
 									<?php } ?>
 									<?php echo esc_attr( $rocket_oneitem['title'] ); ?>
