@@ -155,6 +155,7 @@ class Plugin {
 			new MediaServiceProvider(),
 			new DeferJSServiceProvider(),
 			new AddonServiceProvider(),
+			new HostingsServiceProvider(),
 		];
 
 		$providers = [
@@ -169,7 +170,6 @@ class Plugin {
 			new CDNServiceProvider(),
 			new Common_Subscribers(),
 			new ThirdPartyServiceProvider(),
-			new HostingsServiceProvider(),
 			new PluginServiceProvider(),
 			new DelayJSServiceProvider(),
 			new LicenseServiceProvider(),
@@ -185,7 +185,7 @@ class Plugin {
 		$providers = array_merge( $initial_providers, $providers );
 
 		foreach ( $providers as $provider ) {
-			$this->container->addServiceProvider( $provider );
+			$this->container->addServiceProvider( get_class($provider) );
 		}
 
 		if ( is_admin() ) {
