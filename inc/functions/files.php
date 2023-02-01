@@ -233,8 +233,8 @@ function rocket_delete_config_file() {
 		rocket_direct_filesystem()->delete( $config_file );
 	}
 
-	// Bail out if WP Rocket is not network active.
-	if ( is_multisite() && ! is_plugin_active_for_network( plugin_basename( WP_ROCKET_FILE ) ) ) {
+	// Bail out if WP Rocket is multisite.
+	if ( is_multisite() ) {
 		return;
 	}
 
