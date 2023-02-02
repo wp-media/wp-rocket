@@ -476,35 +476,18 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
  * Returns the right path when the post is trashed.
  *
  * @param array $parsed_url current parsed url.
+ * @param int $post_id 		ID from the post.
  *
  * @return array
  */
-function rocket_maybe_find_right_trash_url( array $parsed_url ) {
-	if ( ! array_key_exists( 'query', $parsed_url ) || array_key_exists( 'query', $parsed_url ) === '' ) {
-		return $parsed_url;
-	}
-	$query = $parsed_url['query'];
-	$query = explode( '&', $query );
+function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
 
-	$params = [];
+	$post = get_post($post_id);
 
-	foreach ( $query as $item ) {
-		$item = explode( '=', $item );
-		if ( count( $item ) < 2 ) {
-			continue;
-		}
-		$params[ $item[0] ] = $item[1];
-	}
-
-	if ( ! key_exists( 'page_id', $params ) ) {
+	if ( ! $post || $post->post_status !== 'trash' ) {
 		return $parsed_url;
 	}
 
-	$post = get_post( (int) $params['page_id'] );
-
-	if ( ! $post ) {
-		return $parsed_url;
-	}
 	$post->post_status = 'publish';
 
 	$permalink = get_permalink( $post );
@@ -576,7 +559,11 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
-		$parsed_url = rocket_maybe_find_right_trash_url( $parsed_url );
+		$post_id = url_to_postid($url);
+
+		if( $post_id ) {
+			$parsed_url = rocket_maybe_find_right_trash_url( $parsed_url, $post_id );
+		}
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
