@@ -3,7 +3,7 @@ Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, ja
 Tags: scheduler, cron
 Requires at least: 5.2
 Tested up to: 6.0
-Stable tag: 3.5.2
+Stable tag: 3.5.4
 License: GPLv3
 Requires PHP: 5.6
 
@@ -46,6 +46,19 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.5.4 - 2023-01-17 =
+* Add pre filters during action registration.
+* Async scheduling.
+* Calculate timeouts based on total actions.
+* Correctly order the parameters for `ActionScheduler_ActionFactory`'s calls to `single_unique`.
+* Fetch action in memory first before releasing claim to avoid deadlock.
+* PHP 8.2: declare property to fix creation of dynamic property warning.
+* PHP 8.2: fix "Using ${var} in strings is deprecated, use {$var} instead".
+* Prevent `undefined variable` warning for `$num_pastdue_actions`.
+
+= 3.5.3 - 2022-11-09 =
+* Query actions with partial match.
 
 = 3.5.2 - 2022-09-16 =
 * Fix - erroneous 3.5.1 release.
