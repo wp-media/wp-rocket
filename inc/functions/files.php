@@ -476,15 +476,15 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
  * Returns the right path when the post is trashed.
  *
  * @param array $parsed_url current parsed url.
- * @param int $post_id 		ID from the post.
+ * @param int   $post_id      ID from the post.
  *
  * @return array
  */
 function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
 
-	$post = get_post($post_id);
+	$post = get_post( $post_id );
 
-	if ( ! $post || $post->post_status !== 'trash' ) {
+	if ( ! $post || 'post_status' !== $post->post_status ) {
 		return $parsed_url;
 	}
 
@@ -559,9 +559,9 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
-		$post_id = url_to_postid($url);
+		$post_id = url_to_postid( $url );
 
-		if( $post_id ) {
+		if ( $post_id ) {
 			$parsed_url = rocket_maybe_find_right_trash_url( $parsed_url, $post_id );
 		}
 
