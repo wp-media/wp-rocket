@@ -121,7 +121,7 @@ trait RegexTrait {
 	/**
 	 * Replace <xmp> tags in the HTML with comment
 	 *
-	 * @since 3.12.3
+	 * @since 3.12.5.3
 	 *
 	 * @param string $html HTML content.
 	 * @return string
