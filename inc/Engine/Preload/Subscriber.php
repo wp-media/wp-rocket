@@ -15,7 +15,7 @@ use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
 
-	use CheckExcludedTrait, FormatUrlTrait;
+	use CheckExcludedTrait;
 
 	/**
 	 * Options instance.
