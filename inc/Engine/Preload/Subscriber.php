@@ -14,6 +14,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
+
 	use CheckExcludedTrait;
 
 	/**
@@ -115,7 +116,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_lock_url'             => 'lock_url',
 			'rocket_preload_unlock_url'           => 'unlock_url',
 			'rocket_preload_exclude_urls_regexes' => 'add_cache_reject_uri_to_excluded',
-			'rocket_preload_exclude_urls'         => 'add_preload_excluded_uri',
+			'rocket_preload_exclude_urls'         => [
+				[ 'add_preload_excluded_uri' ],
+				[ 'add_cache_reject_uri_to_excluded' ],
+			],
 		];
 	}
 
@@ -173,40 +177,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function update_cache_row() {
-
 		global $wp;
 
 		if ( is_user_logged_in() ) {
 			return;
 		}
 
-		$params = [];
-
-		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		}
-
-		$excluded_params = rocket_get_ignored_parameters();
-
-		/**
-		 * At this point we’re in the WP’s search page.
-		 * This filter allows to cache search results.
-		 *
-		 * @since 2.3.8
-		 *
-		 * @param bool $cache_search True will force caching search results.
-		 */
-		if ( ! apply_filters( 'rocket_cache_search', false ) ) {
-			$excluded_params ['s'] = 1;
-		}
-
-		if ( count( array_intersect( array_keys( $params ), array_keys( $excluded_params ) ) ) > 0 ) {
-			return;
-		}
-
-		$url = home_url( add_query_arg( $params, $wp->request ) );
-
-		$url = $this->format_url( $url );
+		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		if ( $this->query->is_preloaded( $url ) ) {
 			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
@@ -214,13 +191,13 @@ class Subscriber implements Subscriber_Interface {
 			/**
 			 * Fires when the preload from an URL is completed.
 			 *
-			 * @param string $url URL preloaded.
+			 * @param string $url URL preladed.
 			 * @param string $device Device from the cache.
 			 */
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -245,17 +222,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_url_on_not_found() {
 		global $wp;
-
-		$params = [];
-
-		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		}
-
-		$url = home_url( add_query_arg( $params, $wp->request ) );
-
-		$url = $this->format_url( $url );
-
+		$url = home_url( $wp->request );
 		$this->query->delete_by_url( $url );
 	}
 

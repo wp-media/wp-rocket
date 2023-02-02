@@ -38,7 +38,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_oc_cdn_enabled(): bool {
-		return rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
+		return rocket_get_constant( 'vcaching', false ) && rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
 	}
 
 	/**
@@ -73,12 +73,12 @@ class OneCom implements Subscriber_Interface {
 
 	/**
 	 * Exclude files from being rewritten.
+	 * From 3.12.5.2 we are excluding new wp-content directory paths if it's not the normal one.
 	 *
 	 * @param array $files Array of files to be excluded.
 	 * @return array
 	 */
 	public function exclude_from_cdn( array $files ): array {
-
 		if ( ! $this->is_oc_cdn_enabled() ) {
 			return $files;
 		}
@@ -142,7 +142,7 @@ class OneCom implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	public function is_varnish_active() {
-		return rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
+		return rocket_get_constant( 'vcaching', false ) && rest_sanitize_boolean( get_option( 'varnish_caching_enable' ) );
 	}
 
 	/**
