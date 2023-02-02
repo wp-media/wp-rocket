@@ -33,5 +33,5 @@ return [
 			'url' => 'http://example.org/test'
 		],
 		'expected' => true
-	]
+	],
 ];

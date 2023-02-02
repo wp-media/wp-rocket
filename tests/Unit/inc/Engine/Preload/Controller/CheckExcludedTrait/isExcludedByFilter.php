@@ -18,6 +18,7 @@ class Test_IsExcludedByFilter extends TestCase
 		$this->trait = Mockery::mock(CheckExcludedTrait::class)->makePartial();
 	}
 
+
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -31,6 +32,7 @@ class Test_IsExcludedByFilter extends TestCase
 		});
 		Filters\expectApplied('rocket_preload_exclude_urls')->with([])->andReturn($config['regexes']);
 		Filters\expectApplied('rocket_preload_exclude_urls_regexes')->with([])->andReturn($config['regexes']);
+
 		$method = $this->get_reflective_method('is_excluded_by_filter',  get_class($this->trait));
 		$this->assertSame($expected, $method->invokeArgs($this->trait,[$config['url']]));
 	}

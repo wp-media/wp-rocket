@@ -15,7 +15,7 @@ use WP_Rocket_Mobile_Detect;
 
 class Subscriber implements Subscriber_Interface {
 
-	use CheckExcludedTrait;
+	use CheckExcludedTrait, FormatUrlTrait;
 
 	/**
 	 * Options instance.
@@ -115,7 +115,10 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_lock_url'             => 'lock_url',
 			'rocket_preload_unlock_url'           => 'unlock_url',
-			'rocket_preload_exclude_urls_regexes' => 'add_cache_reject_uri_to_excluded',
+			'rocket_preload_exclude_urls_regexes' => [
+				[ 'add_cache_reject_uri_to_excluded' ],
+				[ 'add_pagination_to_preload_exclusion_urls' ],
+			],
 			'rocket_preload_exclude_urls'         => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
@@ -183,7 +186,15 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$url = home_url( add_query_arg( [], $wp->request ) );
+		$params = [];
+
+		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$url = home_url( add_query_arg( $params, $wp->request ) );
+
+		$url = $this->format_url( $url );
 
 		if ( $this->query->is_preloaded( $url ) ) {
 			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
@@ -197,7 +208,7 @@ class Subscriber implements Subscriber_Interface {
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
 
-		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && is_array( $_GET ) ) && 0 < count( $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -429,5 +440,20 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return array_merge( $regexes, $preload_excluded_uri );
+	}
+
+	/**
+	 * Excludes Pagination pages from the preload.
+	 *
+	 * @param string[] $regexes regexes containing excluded uris.
+	 *
+	 * @return string[]
+	 */
+	public function add_pagination_to_preload_exclusion_urls( array $regexes ) {
+		global $wp_rewrite;
+
+		$regexes[] = "/$wp_rewrite->pagination_base/\d+";
+
+		return $regexes;
 	}
 }
