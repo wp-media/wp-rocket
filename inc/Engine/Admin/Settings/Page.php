@@ -913,7 +913,7 @@ class Page {
 				),
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
-					'label'             => __( 'Delay JavaScript compatibilities', 'rocket' ),
+					'label'             => __( 'Excluded 3rd parties', 'rocket' ),
 					'description'       => __( 'When using this feature you may notice that it takes some time, or user\'s interaction for some elements, e.g. a menu, or a form that is located in the viewport, to appear.', 'rocket' ),
 					'sub_description'   => __( 'If you are using any of the following plugins/themes/services you can prevent that, by selecting them below.', 'rocket' ),
 					'container_class'   => [
