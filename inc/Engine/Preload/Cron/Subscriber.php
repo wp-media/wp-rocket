@@ -234,7 +234,6 @@ class Subscriber implements Subscriber_Interface {
 		 * Delay before the not accessed row is deleted.
 		 *
 		 * @param string $delay delay before the not accessed row is deleted.
-		 * @returns string
 		 */
 		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
