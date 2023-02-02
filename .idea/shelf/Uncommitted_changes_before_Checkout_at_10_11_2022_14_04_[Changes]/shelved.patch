@@ -1,0 +1,13 @@
+Index: inc/Engine/Preload/FormatUrlTrait.php
+===================================================================
+diff --git a/inc/Engine/Preload/FormatUrlTrait.php b/inc/Engine/Preload/FormatUrlTrait.php
+--- a/inc/Engine/Preload/FormatUrlTrait.php	
++++ b/inc/Engine/Preload/FormatUrlTrait.php	
+@@ -63,6 +63,6 @@
+ 		 *
+ 		 * @param bool $is_allowed True to allow, false otherwise.
+ 		 */
+-		return apply_filters( 'rocket_preload_query_string', false );
++		return (bool) apply_filters( 'rocket_preload_query_string', false );
+ 	}
+ }
