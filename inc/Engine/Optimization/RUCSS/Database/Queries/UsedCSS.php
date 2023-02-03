@@ -405,6 +405,29 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Get all failed rows.
+	 *
+	 * @return array|false
+	 */
+	public function get_failed_rows() {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		$query = $this->query(
+			[
+				'status' => 'failed',
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Returns the current status of `wpr_rucss_used_css` table; true if it exists, false otherwise.
 	 *
 	 * @return boolean
