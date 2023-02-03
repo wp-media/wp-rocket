@@ -3,10 +3,14 @@
 namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 use ReflectionClass;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\Cloudflare\Cloudflare;
 use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
+
+	use DBTrait;
+
 	protected static $container;
 	protected static $subscriber;
 
@@ -26,6 +30,8 @@ abstract class TestCase extends BaseTestCase {
 	];
 
 	public static function set_up_before_class() {
+		self::installFresh();
+
 		parent::set_up_before_class();
 
 		self::$api_credentials_config_file = WP_ROCKET_PLUGIN_ROOT . '/tests/env/local/cloudflare.php';
@@ -43,6 +49,7 @@ abstract class TestCase extends BaseTestCase {
 		self::$options_property = $class->getProperty( 'options' );
 		self::$options_property->setAccessible( true );
 		self::$subscriber_options = self::$options_property->getValue( self::$subscriber );
+
 	}
 
 	public static function tear_down_after_class() {
@@ -53,6 +60,7 @@ abstract class TestCase extends BaseTestCase {
 		self::$options_property->setAccessible( false );
 
 		parent::tear_down_after_class();
+		self::uninstallAll();
 	}
 
 	protected static function setApiCredentials() {

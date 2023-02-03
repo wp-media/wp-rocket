@@ -13,19 +13,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class Test_RocketNewUpgrade extends TestCase {
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function testShouldRegenerateAdvancedCacheFile() {
 		Functions\expect( 'rocket_generate_advanced_cache_file' )

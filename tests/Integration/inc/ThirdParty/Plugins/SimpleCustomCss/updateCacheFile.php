@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SimpleCustomCss;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -10,7 +11,20 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  WithSCCSS
  */
 class Test_DeleteCacheFile extends FilesystemTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/SimpleCustomCss/updateCacheFile.php';
+
+	public static function set_up_before_class() {
+		self::installFresh();
+		parent::set_up_before_class();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
 
 	public function testShouldDeleteTheFileAndRecreateIt() {
 		$filepath = 'wp-content/cache/busting/1/sccss.css';
