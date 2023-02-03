@@ -118,7 +118,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cron_remove_failed_jobs() {
-		$this->database->remove_failed_rows();
+		$this->used_css->clear_failed_urls();
 	}
 
 	/**
