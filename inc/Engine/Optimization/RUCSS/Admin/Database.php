@@ -102,17 +102,4 @@ class Database {
 
 		return delete_option( 'wpr_rucss_resources_version' );
 	}
-
-	/**
-	 * Remove all failed rows.
-	 *
-	 * @return bool|int
-	 */
-	public function remove_failed_rows() {
-		if ( ! $this->rucss_usedcss_table->exists() ) {
-			return false;
-		}
-
-		return $this->rucss_usedcss_table->remove_failed_rows();
-	}
 }
