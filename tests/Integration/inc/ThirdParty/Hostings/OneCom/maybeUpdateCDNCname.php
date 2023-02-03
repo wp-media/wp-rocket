@@ -15,26 +15,33 @@ class Test_MaybeUpdateCDNCname extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 
-        Functions\expect( 'rest_sanitize_boolean' )
+        $this->constants['vcaching'] = $config['onecom_performance_plugin_enabled'];
+
+		if ( $config['onecom_performance_plugin_enabled'] ) {
+			Functions\expect( 'rest_sanitize_boolean' )
 				->once()
 				->andReturn( $config['oc_cdn_enabled'] );
 
-        Functions\when( 'get_option' )
-			->alias( function( $value ) use( $config ) {
-				if ( 'oc_cdn_enabled' === $value ) {
-                    return $config['oc_cdn_enabled'];
-                }
-			}
-		);
+			Functions\when( 'get_option' )
+				->alias( function( $value ) use( $config ) {
+					if ( 'oc_cdn_enabled' === $value ) {
+						return $config['oc_cdn_enabled'];
+					}
+				}
+				);
+		}
 
-        if ( $config['oc_cdn_enabled'] ) {
+        if ( $config['oc_cdn_enabled'] && $config['onecom_performance_plugin_enabled'] ) {
+            $domain_name = $_SERVER['ONECOM_DOMAIN_NAME'] = $config['domain'];
+            $http_host = $_SERVER['HTTP_HOST'] = $config['domain'];
+
             Functions\expect( 'wp_unslash' )
                 ->times( 2 )
-                ->andReturn( $_SERVER[ 'ONECOM_DOMAIN_NAME'], $_SERVER[ 'HTTP_HOST'] );
+                ->andReturn( $domain_name, $http_host );
 
             Functions\expect( 'sanitize_text_field' )
                 ->times( 2 )
-                ->andReturn( $_SERVER[ 'ONECOM_DOMAIN_NAME'], $_SERVER[ 'HTTP_HOST'] );
+                ->andReturn( $domain_name, $http_host );
         }
 
         $this->assertSame( 
