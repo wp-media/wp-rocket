@@ -263,6 +263,22 @@ class UsedCSS extends Table {
 	}
 
 	/**
+	 * Remove all failed rows.
+	 *
+	 * @return bool|int
+	 */
+	public function remove_failed_rows() {
+		$db = $this->get_db();
+
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status = 'failed'" );
+	}
+
+	/**
 	 * Add error columns
 	 *
 	 * @return bool
