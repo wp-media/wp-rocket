@@ -36,18 +36,20 @@ defined( 'ABSPATH' ) || exit;
 
 <div id='<?php echo esc_attr( $data['id'] ); ?>' class="wpr-field wpr-multiple-select wpr-field--categorizedmultiselect <?php echo esc_attr( $data['container_class'] ); ?>" data-default="<?php echo ( ! empty( $data['default'] ) ? 'wpr-radio-' . esc_attr( $data['default'] ) : '' ); ?>" <?php echo $data['parent']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data['parent'] escaped with esc_attr. ?>>
 	<div class="wpr-field-description-label"><?php echo esc_attr( $data['label'] ); ?></div>
-	<p>
-		<?php
-		echo esc_html( $data['description'] );
-		?>
-	</p>
-	<?php if ( ! empty( $data['sub_description'] ) ) { ?>
-	<p>
-		<?php
-		echo esc_html( $data['sub_description'] );
-		?>
-	</p>
-	<?php } ?>
+	<div class="wpr-field-description">
+		<p>
+			<?php
+			echo esc_html( $data['description'] );
+			?>
+		</p>
+		<?php if ( ! empty( $data['sub_description'] ) ) { ?>
+			<p>
+				<?php
+				echo esc_html( $data['sub_description'] );
+				?>
+			</p>
+		<?php } ?>
+	</div>
 
 	<?php
 	foreach ( $data['items'] as $rocket_item_key => $rocket_item ) {

@@ -2893,5 +2893,5 @@ div.wpr-tutorial-item {
 .wpr-field--categorizedmultiselect .wpr-list-body {
   display: block;
   max-height: 250px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
