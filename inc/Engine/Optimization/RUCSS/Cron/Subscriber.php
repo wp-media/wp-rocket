@@ -46,10 +46,12 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
 			'rocket_deactivation'                => 'on_deactivation',
+			'rocket_remove_rucss_failed_jobs'    => 'cron_remove_failed_jobs',
 			'init'                               => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'initialize_rucss_queue_runner' ],
+				[ 'schedule_removing_failed_jobs' ],
 			],
 		];
 	}
@@ -111,6 +113,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Cron callback for removing failed jobs.
+	 *
+	 * @return void
+	 */
+	public function cron_remove_failed_jobs() {
+		$this->database->remove_failed_rows();
+	}
+
+	/**
 	 * Handle job status by DB row ID.
 	 *
 	 * @param int $row_id DB Row ID.
@@ -149,6 +160,18 @@ class Subscriber implements Subscriber_Interface {
 			'display'  => esc_html__( 'WP Rocket Remove Unused CSS pending jobs', 'rocket' ),
 		];
 
+		/**
+		 * Filters the cron interval for clearing failed jobs.
+		 *
+		 * @param int $interval Interval in seconds.
+		 */
+		$interval = apply_filters( 'rocket_remove_rucss_failed_jobs_cron_interval', 3 * rocket_get_constant( 'DAY_IN_SECONDS', 86400 ) );
+
+		$schedules['rocket_remove_rucss_failed_jobs'] = [
+			'interval' => $interval,
+			'display'  => esc_html__( 'WP Rocket clear Remove Unused CSS failed jobs', 'rocket' ),
+		];
+
 		return $schedules;
 	}
 
@@ -179,6 +202,33 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'rocket_rucss_pending_jobs', 'rocket_rucss_pending_jobs' );
+	}
+
+	/**
+	 * Schedules cron to remove failed jobs.
+	 *
+	 * @return void
+	 */
+	public function schedule_removing_failed_jobs() {
+		if (
+			! $this->used_css->is_enabled()
+			&&
+			wp_next_scheduled( 'rocket_remove_rucss_failed_jobs' )
+		) {
+			wp_clear_scheduled_hook( 'rocket_remove_rucss_failed_jobs' );
+
+			return;
+		}
+
+		if ( ! $this->used_css->is_enabled() ) {
+			return;
+		}
+
+		if ( wp_next_scheduled( 'rocket_remove_rucss_failed_jobs' ) ) {
+			return;
+		}
+
+		wp_schedule_event( time(), 'rocket_remove_rucss_failed_jobs', 'rocket_remove_rucss_failed_jobs' );
 	}
 
 	/**
