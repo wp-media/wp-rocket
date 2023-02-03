@@ -246,7 +246,7 @@ function rocket_delete_config_file() {
 
 	// Remove all files with php extension in the config folder.
 	foreach ( $config_dir as $file ) {
-		if ( ! $file->isFile() || 'php' !== $file->getExtension() ) {
+		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
 			continue;
 		}
 		rocket_direct_filesystem()->delete( $file->getPathname() );
