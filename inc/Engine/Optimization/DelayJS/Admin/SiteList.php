@@ -188,16 +188,19 @@ class SiteList {
 	public function prepare_delayjs_ui_list() {
 		$full_list = [
 			'scripts' => [
-				'title' => __( 'Analytics & Ads', 'rocket' ),
-				'items' => [],
+				'title'          => __( 'Analytics & Ads', 'rocket' ),
+				'items'          => [],
+				'dashicon-class' => 'analytics',
 			],
 			'plugins' => [
-				'title' => __( 'Plugins', 'rocket' ),
-				'items' => [],
+				'title'          => __( 'Plugins', 'rocket' ),
+				'items'          => [],
+				'dashicon-class' => 'admin-plugins',
 			],
 			'themes'  => [
-				'title' => __( 'Themes', 'rocket' ),
-				'items' => [],
+				'title'          => __( 'Themes', 'rocket' ),
+				'items'          => [],
+				'dashicon-class' => 'admin-appearance',
 			],
 		];
 

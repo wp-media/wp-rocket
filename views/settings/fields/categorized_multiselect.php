@@ -63,6 +63,9 @@ defined( 'ABSPATH' ) || exit;
 					<input class="wpr-main-checkbox" type="checkbox" />
 
 					<label>
+						<?php if( ! empty( $rocket_item['dashicon-class'] ) ){ ?>
+						<span class="dashicons dashicons-<?php echo $rocket_item['dashicon-class']; ?>"></span>
+						<?php } ?>
 						<span class="wpr-multiple-select">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
 						</span>
