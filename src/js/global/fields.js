@@ -265,7 +265,7 @@ $(document).ready(function(){
 
 	$('.wpr-multiple-select .wpr-checkbox').click(function (e) {
 
-		const checkbox = $(e.currentTarget).find('input');
+		const checkbox = $(this).find('input');
 
 		const is_checked = checkbox.attr('checked') !== undefined;
 
@@ -281,45 +281,13 @@ $(document).ready(function(){
 		}
 		const main_checkbox = $(checkbox).closest('.wpr-list').find('.wpr-main-checkbox');
 
-		if( is_checked) {
-
-			const sub_checked =  $.map(sub_checkboxes, checkbox => {
-				if($(checkbox).attr('checked') === undefined) {
-					return ;
-				}
-				return checkbox;
-			});
-
-			if(sub_checked.length  !== 0) {
-				return;
-			}
-
-			main_checkbox.attr('checked', null );
-			return;
-		}
-
-		main_checkbox.attr('checked', 'checked' );
-	});
-
-	$(".wpr-multiple-select .wpr-checkbox").click(function (e) {
-		const id = $(".wpr-multiple-select").attr('id');
-		const checkboxes = $('#' + id + ' .wpr-list-body input[type="checkbox"]');
-
-		const names = $.map(checkboxes, checkbox => {
-			 if ( ! $(checkbox).attr('checked') ) {
-				 return ;
-			 }
-			 return $(checkbox).attr('name');
-		});
-
-		const values = $.map(checkboxes, checkbox => {
-			if ( ! $(checkbox).attr('checked') ) {
+		const sub_checked =  $.map(sub_checkboxes, checkbox => {
+			if($(checkbox).attr('checked') === undefined) {
 				return ;
 			}
-			return $(checkbox).val();
+			return checkbox;
 		});
 
-		$($('input[name="wp_rocket_settings[' + id + '_selected]"]')[0]).val(JSON.stringify(names));
-		$($('input[name="wp_rocket_settings[' + id + '_selected_exclusions]"]')[0]).val(JSON.stringify(values));
+		main_checkbox.attr('checked', sub_checked.length === sub_checkboxes.length ? 'checked' : null );
 	});
 });
