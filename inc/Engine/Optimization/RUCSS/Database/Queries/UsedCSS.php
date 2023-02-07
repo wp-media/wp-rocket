@@ -428,6 +428,26 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Revert status to pending.
+	 *
+	 * @param integer $id Used CSS id.
+	 * @return boolean
+	 */
+	public function revert_to_pending( int $id ): bool {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		return (bool) $this->update_item(
+			$id,
+			[
+				'retries' => 0,
+				'status'  => 'pending',
+			]
+		);
+	}
+
+	/**
 	 * Returns the current status of `wpr_rucss_used_css` table; true if it exists, false otherwise.
 	 *
 	 * @return boolean
