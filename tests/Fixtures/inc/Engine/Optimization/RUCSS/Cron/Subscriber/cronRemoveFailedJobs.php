@@ -7,10 +7,9 @@ if(function_exists('current_time')) {
 	$old_date = 'old_date';
 }
 
-$used_css = [
+$failed_used_css = [
 	[
 		'url'            => 'http://example.org/home',
-		'css'            => 'h1{color:red;}',
         'hash'           => '',
         'error_code'     => '400',
 		'unprocessedcss' => json_encode( [] ),
@@ -23,7 +22,6 @@ $used_css = [
 	],
 	[
 		'url'            => 'http://example.org/category/level1',
-		'css'            => 'h1{color:red;}',
         'hash'           => '',
         'error_code'     => '400',
 		'unprocessedcss' => json_encode( [] ),
@@ -36,11 +34,38 @@ $used_css = [
 	],
 ];
 
+$pending_used_css = [
+	[
+		'url'            => 'http://example.org/home',
+        'hash'           => '',
+        'error_code'     => '',
+		'unprocessedcss' => json_encode( [] ),
+		'retries'        => 0,
+		'is_mobile'      => false,
+        'job_id'         => 304732178,
+        'status'         => 'pending',
+		'modified'       => $old_date,
+		'last_accessed'  => $old_date,
+	],
+	[
+		'url'            => 'http://example.org/category/level1',
+        'hash'           => '',
+        'error_code'     => '',
+		'unprocessedcss' => json_encode( [] ),
+		'retries'        => 0,
+		'is_mobile'      => false,
+        'job_id'         => 969832401,
+        'status'         => 'pending',
+		'modified'       => $old_date,
+		'last_accessed'  => $old_date,
+	],
+];
+
 return [
     'shouldDeleteFailedJobs' => [
         'input' => [
-            'used_css' => $used_css,
+            'used_css' => $failed_used_css,
         ],
-        'expected' => [],
+        'expected' => $pending_used_css,
     ],
 ];
