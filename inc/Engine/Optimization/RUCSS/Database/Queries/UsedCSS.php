@@ -441,8 +441,9 @@ class UsedCSS extends Query {
 		return (bool) $this->update_item(
 			$id,
 			[
-				'retries' => 0,
-				'status'  => 'pending',
+				'error_code' => '',
+				'retries'    => 0,
+				'status'     => 'pending',
 			]
 		);
 	}
