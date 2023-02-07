@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Plugin;
 
 use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 
@@ -113,6 +114,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'wp_rocket_loaded'                      => 'maybe_force_check',
 			'auto_update_plugin'                    => [ 'disable_auto_updates', 10, 2 ],
 			'admin_post_rocket_rollback'            => 'rollback',
+			'rocket_new_upgrade'                    => [ 'delete_wrong_shop_url', 10, 2 ],
 		];
 	}
 
@@ -426,6 +428,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		delete_site_transient( $this->cache_transient_name );
 	}
 
+
+
 	/**
 	 * Do the rollback
 	 *
@@ -482,6 +486,44 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				'response' => 200,
 			]
 		);
+	}
+
+	/**
+	 * Delete the problematic rows on update
+	 *
+	 * @param string $wp_rocket_version Latest WP Rocket version.
+	 * @param string $actual_version Installed WP Rocket version.
+	 *
+	 * @return void
+	 */
+	public function delete_wrong_shop_url( $wp_rocket_version, $actual_version ) {
+		if ( version_compare( $wp_rocket_version, '3.12.5.2', '>' ) ) {
+			return;
+		}
+
+		$container = apply_filters( 'rocket_container', null );
+
+		if ( ! $container ) {
+			return;
+		}
+
+		$query = $container->get( 'preload_caches_query' );
+		if ( ! $query ) {
+			return;
+		}
+		$filename          = 'index';
+		$post_type_archive = get_post_type_archive_link( 'product' );
+		if ( ! $post_type_archive ) {
+			return;
+		}
+		$post_type_archive = trailingslashit( $post_type_archive );
+		$url               = $post_type_archive . $filename . '.html';
+		$query->delete_by_url( $url );
+
+		$url = $post_type_archive . $filename . '.html_gzip';
+
+		$query->delete_by_url( $url );
+
 	}
 
 	/**
