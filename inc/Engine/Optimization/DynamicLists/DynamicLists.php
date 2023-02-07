@@ -103,7 +103,7 @@ class DynamicLists extends Abstract_Render {
 		}
 
 		$response = [];
-		$success = false;
+		$success  = false;
 
 		foreach ( $this->providers as $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
@@ -118,7 +118,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( 206 === $result['code'] ) {
-				$success = true;
+				$success                      = true;
 				$response[ $provider->title ] = [
 					'success' => true,
 					'data'    => '',
@@ -136,7 +136,7 @@ class DynamicLists extends Abstract_Render {
 				continue;
 			}
 
-			$success = true;
+			$success                      = true;
 			$response[ $provider->title ] = [
 				'success' => true,
 				'data'    => '',

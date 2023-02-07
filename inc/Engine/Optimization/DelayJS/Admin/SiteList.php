@@ -76,7 +76,7 @@ class SiteList {
 	 */
 	private function get_script_in_list( string $item_id ) {
 		$scripts = $this->get_scripts_from_list();
-		return ! empty( $scripts->$item_id ) ? (array) $scripts->$item_id : [];
+		return ! empty( $scripts[ $item_id ] ) ? (array) $scripts[ $item_id ] : [];
 	}
 
 	/**
@@ -301,6 +301,15 @@ class SiteList {
 	 */
 	public function get_default_exclusions() {
 		$items = [];
+
+		$scripts = $this->get_scripts_from_list();
+		foreach ( $scripts as $script_key => $script ) {
+			if ( ! $script->is_default ) {
+				continue;
+			}
+
+			$items[ $script_key ] = $script->exclusions;
+		}
 
 		$active_plugins = $this->get_active_plugins();
 		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {

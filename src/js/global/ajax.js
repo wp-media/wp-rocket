@@ -183,8 +183,7 @@ $(document).ready(function(){
 			success: function(responses) {
 				let exclusion_msg_container = $('#wpr-update-exclusion-msg');
 				exclusion_msg_container.html('');
-				const response_keys = Object.keys( responses );
-				response_keys.forEach(( response_key ) => {
+				Object.keys( responses ).forEach(( response_key ) => {
 					if ( responses[response_key]['success'] ) {
 						exclusion_msg_container.append( '<strong>' + response_key + ': </strong>' );
 						exclusion_msg_container.append( responses[response_key]['message'] );
