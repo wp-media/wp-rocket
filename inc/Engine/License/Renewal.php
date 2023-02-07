@@ -54,6 +54,10 @@ class Renewal extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_renewal_soon_banner() {
+		if ( 0 === $this->user->get_actual_creation_date() ) {
+			return;
+		}
+
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
 			return;
 		}
