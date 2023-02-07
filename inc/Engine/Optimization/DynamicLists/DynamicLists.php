@@ -102,59 +102,58 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		$code = 200;
+		$response = [];
+		$success = false;
 
 		foreach ( $this->providers as $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
 
 			if ( empty( $result['code'] ) || empty( $result['body'] ) ) {
-				$code = 0;
-				continue;
-			}
-
-			if ( 200 !== $result['code'] ) {
-				$code = $result['code'];
-				continue;
-			}
-
-			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
-				$code = 'NOT_SAVED';
-			}
-		}
-
-		switch ( $code ) {
-			case 0:
-				return [
+				$response[ $provider->title ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not get updated lists from server.', 'rocket' ),
 				];
-			case 206:
-				return [
+				continue;
+			}
+
+			if ( 206 === $result['code'] ) {
+				$success = true;
+				$response[ $provider->title ] = [
 					'success' => true,
 					'data'    => '',
 					'message' => __( 'Lists are up to date.', 'rocket' ),
 				];
-			case 'NOT_SAVED':
-				return [
+				continue;
+			}
+
+			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
+				$response[ $provider->title ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not update lists.', 'rocket' ),
 				];
-			default:
-				/**
-				 * Fires after saving all dynamic lists files.
-				 *
-				 * @since 3.12.1
-				 */
-				do_action( 'rocket_after_save_dynamic_lists' );
+				continue;
+			}
 
-				return [
-					'success' => true,
-					'data'    => '',
-					'message' => __( 'Lists are successfully updated.', 'rocket' ),
-				];
+			$success = true;
+			$response[ $provider->title ] = [
+				'success' => true,
+				'data'    => '',
+				'message' => __( 'Lists are successfully updated.', 'rocket' ),
+			];
 		}
+
+		if ( $success ) {
+			/**
+			 * Fires after saving all dynamic lists files.
+			 *
+			 * @since 3.12.1
+			 */
+			do_action( 'rocket_after_save_dynamic_lists' );
+		}
+
+		return $response;
 	}
 
 	/**

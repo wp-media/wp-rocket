@@ -180,10 +180,17 @@ $(document).ready(function(){
 				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
 			},
 			method: "PUT",
-			success: function(response) {
-				$('#wpr-update-exclusion-msg').html(response.message);
-				if ( response.success ) {
-				}
+			success: function(responses) {
+				let exclusion_msg_container = $('#wpr-update-exclusion-msg');
+				exclusion_msg_container.html('');
+				const response_keys = Object.keys( responses );
+				response_keys.forEach(( response_key ) => {
+					if ( responses[response_key]['success'] ) {
+						exclusion_msg_container.append( '<strong>' + response_key + ': </strong>' );
+						exclusion_msg_container.append( responses[response_key]['message'] );
+						exclusion_msg_container.append( '<br>' );
+					}
+				});
 			}
 		});
 	} );
