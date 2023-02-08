@@ -34,6 +34,7 @@ class Test_UpdateListsFromRemote extends TestCase {
 				(object) [
 					'api_client'   => $api_client,
 					'data_manager' => $data_manager,
+					'title'        => 'Default Lists',
 				],
 		];
 		$dynamic_lists = new DynamicLists( $providers, $user, '', Mockery::mock( Beacon::class ) );

@@ -33,8 +33,9 @@ class Test_restUpdateResponse extends TestCase {
 		$providers = [
 			'defaultlists' =>
 				(object) [
-					'api_client' => $dynamic_lists_api,
+					'api_client'   => $dynamic_lists_api,
 					'data_manager' => $data_manager,
+					'title'        => 'Default Lists',
 				],
 		];
 		$dynamic_lists = new DynamicLists( $providers, $user, '', Mockery::mock( Beacon::class ) );
