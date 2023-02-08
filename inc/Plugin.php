@@ -185,7 +185,7 @@ class Plugin {
 		$providers = array_merge( $initial_providers, $providers );
 
 		foreach ( $providers as $provider ) {
-			$this->container->addServiceProvider( get_class($provider) );
+			$this->container->addServiceProvider( get_class( $provider ) );
 		}
 
 		if ( is_admin() ) {
