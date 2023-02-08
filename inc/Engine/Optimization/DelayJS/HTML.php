@@ -164,6 +164,7 @@ class HTML {
 		}
 
 		$result = $this->replace_xmp_tags( $html );
+		$result = $this->replace_svg_tags( $result );
 
 		$replaced_html = preg_replace_callback(
 			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
@@ -176,7 +177,9 @@ class HTML {
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
-		return $this->restore_xmp_tags( $replaced_html );
+
+		$replaced_html = $this->restore_xmp_tags( $replaced_html );
+		return $this->restore_svg_tags( $replaced_html );
 	}
 
 	/**
