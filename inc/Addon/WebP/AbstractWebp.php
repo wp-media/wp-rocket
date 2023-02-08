@@ -55,7 +55,6 @@ abstract class AbstractWebp {
 
 			if ( ! $this->is_plugin_active( $plugin->get_basename() ) ) {
 				unset( $webp_plugins[ $plugin_key ] );
-				continue;
 			}
 		}
 
