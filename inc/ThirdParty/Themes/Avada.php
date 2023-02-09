@@ -40,6 +40,7 @@ class Avada extends ThirdpartyTheme {
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
 			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
 			'init'                                 => 'disable_compilers',
+			'rocket_lazyload_bg_images_regex'      => 'fix_regex_lazyload_bg_images',
 		];
 	}
 
@@ -145,5 +146,16 @@ class Avada extends ThirdpartyTheme {
 		if ( $this->options->get( 'remove_unused_css', false ) && ! defined( 'FUSION_DISABLE_COMPILERS' ) ) {
 			define( 'FUSION_DISABLE_COMPILERS', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 		}
+	}
+
+	/**
+	 * Add a fix to the lazyload regex on background images.
+	 *
+	 * @param string $regex regex used to deleted background images.
+	 *
+	 * @return string
+	 */
+	public function fix_regex_lazyload_bg_images( $regex ) {
+		return '(--awb-)?' . $regex;
 	}
 }
