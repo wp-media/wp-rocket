@@ -43,7 +43,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'get_actual_creation_date' )
+		$this->user->shouldReceive( 'get_creation_date' )
 			->atMost()
 			->once()
 			->andReturn( $config['user']['creation_date'] );
