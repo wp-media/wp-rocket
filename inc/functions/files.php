@@ -484,7 +484,7 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
 
 	$post = get_post( $post_id );
 
-	if ( ! $post || 'post_status' !== $post->post_status ) {
+	if ( ! $post || 'trash' !== $post->post_status ) {
 		return $parsed_url;
 	}
 
@@ -497,7 +497,6 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
 	}
 
 	$new_permalink = str_replace( '__trashed', '', $permalink );
-
 	return get_rocket_parse_url( $new_permalink );
 }
 
