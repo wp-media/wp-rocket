@@ -416,8 +416,16 @@ class UsedCSS extends Query {
 
 		$query = $this->query(
 			[
-				'status' => 'failed',
-			]
+				'status'     => 'failed',
+				'date_query' => [
+					[
+						'column'    => 'modified',
+						'before'    => '3 days ago',
+						'inclusive' => true,
+					],
+				],
+			],
+			false
 		);
 
 		if ( empty( $query ) ) {
