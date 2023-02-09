@@ -1,13 +1,25 @@
 <?php
 if(function_exists('current_time')) {
 	$current_date = current_time( 'mysql', true );
-	$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 32 days' ) );
+	$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 3 days' ) );
 } else {
 	$current_date = 'current_date';
 	$old_date = 'old_date';
 }
 
 $failed_used_css = [
+    [
+		'url'            => 'http://example.org/hello-world',
+        'hash'           => '',
+        'error_code'     => '400',
+		'unprocessedcss' => json_encode( [] ),
+		'retries'        => 3,
+		'is_mobile'      => false,
+        'job_id'         => 403192106,
+        'status'         => 'failed',
+		'modified'       => date('Y-m-d H:i:s'),
+		'last_accessed'  => date('Y-m-d H:i:s'),
+	],
 	[
 		'url'            => 'http://example.org/home',
         'hash'           => '',
