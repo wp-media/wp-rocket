@@ -120,17 +120,4 @@ class User {
 
 		return $this->user->renewal_url;
 	}
-
-	/**
-	 * Return the actual user creation date.
-	 *
-	 * @return integer
-	 */
-	public function get_actual_creation_date(): int {
-		if ( ! isset( $this->user->date_created ) ) {
-			return 0;
-		}
-
-		return $this->user->date_created;
-	}
 }
