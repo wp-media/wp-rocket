@@ -202,7 +202,7 @@ class Subscriber implements Subscriber_Interface {
 			/**
 			 * Fires when the preload from an URL is completed.
 			 *
-			 * @param string $url URL preladed.
+			 * @param string $url URL preloaded.
 			 * @param string $device Device from the cache.
 			 */
 			do_action( 'rocket_preload_completed', $url, $detected );
