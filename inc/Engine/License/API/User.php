@@ -61,7 +61,7 @@ class User {
 	 */
 	public function get_creation_date() {
 		if ( ! isset( $this->user->date_created ) ) {
-			return time();
+			return 0;
 		}
 
 		return (int) $this->user->date_created > 0
