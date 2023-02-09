@@ -54,7 +54,7 @@ class Renewal extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_renewal_soon_banner() {
-		if ( 0 === $this->user->get_actual_creation_date() ) {
+		if ( 0 === $this->user->get_creation_date() ) {
 			return;
 		}
 
