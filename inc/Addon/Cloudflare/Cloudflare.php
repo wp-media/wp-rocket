@@ -48,14 +48,6 @@ class Cloudflare {
 		// Update api_error with WP_Error if credentials are not valid.
 		// Update API with Cloudflare instance with correct auth data.
 		$this->get_cloudflare_instance();
-		if ( ! is_null( $this->cloudflare_api_error ) ) {
-			var_dump([
-				'ahmed_error',
-				$this->cloudflare_api_error,
-				$this->options->get( 'cloudflare_api_key', null ),
-				$this->options->get( 'cloudflare_email', null )
-			]);
-		}
 	}
 
 	/**
