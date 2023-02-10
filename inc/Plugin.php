@@ -372,23 +372,22 @@ class Plugin {
 				continue;
 			}
 
-			$this->add_subscribers( $provider->$method(), $added );
+			$this->add_subscribers( $provider->$method() );
 		}
+
+		$this->add_subscribers($added);
 	}
 
 	/**
 	 * Add subscribers to event manager.
 	 *
-	 * @param AbstractServiceProvider[] $subscribers Subscribers to add.
+	 * @param string[] $subscribers Subscribers to add.
 	 * @param string[]                  $added id from subscribers manually added.
 	 *
 	 * @return void
 	 */
-	protected function add_subscribers( array $subscribers, array $added = [] ) {
+	protected function add_subscribers( array $subscribers ) {
 		foreach ( $subscribers as $subscriber ) {
-			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
-		}
-		foreach ( $added as $subscriber ) {
 			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
 		}
 	}

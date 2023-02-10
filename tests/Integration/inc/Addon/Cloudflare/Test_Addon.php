@@ -18,7 +18,7 @@ class Test_Addon extends TestCase {
 	public function testContainerDoesNotHaveCloudflare() {
 		$container = apply_filters( 'rocket_container', '' );
 
-		$this->assertTrue( $container->has( 'cloudflare_subscriber' ) );
+		$this->assertFalse( $container->has( 'cloudflare_subscriber' ) );
 		$this->assertFalse( $container->has( 'cloudflare' ) );
 		$this->assertFalse( $container->has( 'cloudflare_api' ) );
 	}

@@ -27,7 +27,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'sucuri_subscriber',
-		'cloudflare_subscriber',
 	];
 
 	/**
