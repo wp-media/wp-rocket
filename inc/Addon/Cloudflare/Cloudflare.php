@@ -52,7 +52,8 @@ class Cloudflare {
 			var_dump([
 				'ahmed_error',
 				$this->cloudflare_api_error,
-				getenv()
+				$this->options->get( 'cloudflare_api_key', null ),
+				$this->options->get( 'cloudflare_email', null )
 			]);
 		}
 	}
@@ -65,8 +66,8 @@ class Cloudflare {
 	 * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise.
 	 */
 	public function get_cloudflare_instance() {
-		$cf_email             = defined( 'ROCKET_CLOUDFLARE_EMAIL' ) ? ROCKET_CLOUDFLARE_EMAIL : $this->options->get( 'cloudflare_email', null );
-		$cf_api_key           = defined( 'ROCKET_CLOUDFLARE_API_KEY' ) ? ROCKET_CLOUDFLARE_API_KEY : $this->options->get( 'cloudflare_api_key', null );
+		$cf_email             = $this->options->get( 'cloudflare_email', null );
+		$cf_api_key           = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
 		$cf_zone_id           = $this->options->get( 'cloudflare_zone_id', null );
 		$is_api_keys_valid_cf = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
@@ -99,8 +100,6 @@ class Cloudflare {
 	 */
 	public function is_api_keys_valid( $cf_email, $cf_api_key, $cf_zone_id ) {
 		if ( empty( $cf_email ) || empty( $cf_api_key ) ) {
-			var_dump(str_split($cf_email));
-			var_dump(str_split($cf_api_key));
 			return new WP_Error(
 				'cloudflare_credentials_empty',
 				sprintf(
