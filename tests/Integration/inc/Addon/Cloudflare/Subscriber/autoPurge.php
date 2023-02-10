@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers WPMedia\Cloudflare\Subscriber::auto_purge
+ * @covers \WPMedia\Cloudflare\Subscriber::auto_purge
  * @group  DoCloudflare
  * @group  Addons
  */
