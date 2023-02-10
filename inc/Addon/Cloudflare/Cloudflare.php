@@ -58,8 +58,6 @@ class Cloudflare {
 	 * @return Object Cloudflare instance & zone_id if credentials are correct, WP_Error otherwise.
 	 */
 	public function get_cloudflare_instance() {
-		var_dump('ahmed');
-		var_dump($this->options->get( 'cloudflare_api_key', null ));
 		$cf_email             = $this->options->get( 'cloudflare_email', null );
 		$cf_api_key           = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
 		$cf_zone_id           = $this->options->get( 'cloudflare_zone_id', null );
