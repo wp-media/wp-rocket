@@ -89,6 +89,7 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected function setApiCredentialsInOptions( array $options = [] ) {
+		echo "Setting API credentials in options for test";
 		$options = array_merge(
 			[
 				'cloudflare_email'   => self::$api_credentials['email'],
