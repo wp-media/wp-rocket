@@ -270,6 +270,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			if ( 14 > (int) $matches['version'] ) {
 				return false;
 			}
+
+			return true;
 		}
 
 		if ( preg_match( '#Version/(?<version>[0-9]{2,})(?:.*)Safari#i', $user_agent, $matches ) ) {
