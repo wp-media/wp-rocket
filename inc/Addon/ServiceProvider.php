@@ -37,7 +37,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function get_common_subscribers(): array {
 		return [
 			'sucuri_subscriber',
-			'cloudflare_subscriber',
 		];
 	}
 
@@ -66,6 +65,13 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @param Options_Data $options Instance of options.
 	 */
 	protected function addon_cloudflare( Options_Data $options ) {
+
+		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
+			return;
+		}
+
+		$this->provides[] = 'cloudflare_subscriber';
+
 		$this->getContainer()->add( 'cloudflare_api', APIClient::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
 		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
