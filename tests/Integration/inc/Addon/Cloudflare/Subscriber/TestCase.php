@@ -105,7 +105,9 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected function setOptions( $data ) {
+		var_dump('setting options');
 		update_option( 'wp_rocket_settings', $data );
+		var_dump( get_option( 'wp_rocket_settings' ) );
 
 		$cf_options = $this->getConcrete( 'options' );
 		$cf_options->set_values( $data );
