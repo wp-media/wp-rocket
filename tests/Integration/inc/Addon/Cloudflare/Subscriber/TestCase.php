@@ -88,7 +88,6 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected function setApiCredentialsInOptions( array $options = [] ) {
-		var_dump("set Api Credentials In Options");
 		$options = array_merge(
 			[
 				'cloudflare_email'   => self::$api_credentials['email'],
@@ -98,6 +97,19 @@ abstract class TestCase extends BaseTestCase {
 			$options
 		);
 		$this->setOptions( $options );
+	}
+
+	protected function setApiCredentialsInOptionsWithFilter() {
+		$options = [
+			'cloudflare_email'   => self::$api_credentials['email'],
+			'cloudflare_api_key' => self::$api_credentials['api_key'],
+			'cloudflare_zone_id' => self::$api_credentials['zone_id'],
+		];
+		foreach ( $options as $option_name => $option_value ) {
+			add_filter( 'pre_get_rocket_option_' . $option_name, function() use ($option_value){
+				return $option_value;
+			} );
+		}
 	}
 
 	protected function getConcrete( $key ) {

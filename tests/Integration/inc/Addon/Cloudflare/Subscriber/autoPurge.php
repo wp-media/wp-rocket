@@ -12,7 +12,7 @@ use Brain\Monkey\Functions;
 class Test_AutoPurge extends TestCase {
 
 	public function testShouldBailoutWhenUserCantPurgeCF() {
-		$this->setApiCredentialsInOptions();
+		$this->setApiCredentialsInOptionsWithFilter();
 
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
@@ -20,7 +20,6 @@ class Test_AutoPurge extends TestCase {
 		Functions\expect( 'is_wp_error' )->never();
 
 		do_action( 'after_rocket_clean_domain' );
-		var_dump('---------------AHMED_END-------------');
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
