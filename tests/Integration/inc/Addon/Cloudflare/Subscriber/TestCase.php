@@ -99,7 +99,7 @@ abstract class TestCase extends BaseTestCase {
 		$this->setOptions( $options );
 	}
 
-	protected function setApiCredentialsInOptionsWithFilter() {
+	protected static function setApiCredentialsInOptionsWithFilter() {
 		$options = [
 			'cloudflare_email'   => self::$api_credentials['email'],
 			'cloudflare_api_key' => self::$api_credentials['api_key'],
