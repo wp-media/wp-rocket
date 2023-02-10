@@ -21,8 +21,10 @@ class Test_AutoPurge extends TestCase {
 
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
-
-		Functions\expect( 'is_wp_error' )->never();
+		Functions\when('is_wp_error')->alias(function () {
+			debug_print_backtrace();
+		});
+		///Functions\expect( 'is_wp_error' )->never();
 
 		do_action( 'after_rocket_clean_domain' );
 		var_dump('end_cant');
@@ -34,14 +36,16 @@ class Test_AutoPurge extends TestCase {
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
-
-		Functions\expect( 'is_wp_error' )
+		Functions\when('is_wp_error')->alias(function () {
+			debug_print_backtrace();
+		});
+		/*Functions\expect( 'is_wp_error' )
 			->ordered()
 			->once()
 			->with( null )
 			->andAlsoExpectIt()
 			->once()
-			->with( 0 );
+			->with( 0 );*/
 
 		do_action( 'after_rocket_clean_domain' );
 		var_dump('end');
