@@ -152,11 +152,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function auto_purge() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+			var_dump('out');
 			return;
 		}
 
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
-		var_dump("purged");
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
 			return;
 		}

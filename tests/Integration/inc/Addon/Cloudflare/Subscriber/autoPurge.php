@@ -17,6 +17,7 @@ class Test_AutoPurge extends TestCase {
 	}
 
 	public function testShouldBailoutWhenUserCantPurgeCF() {
+		var_dump('start_cant');
 
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
@@ -24,6 +25,7 @@ class Test_AutoPurge extends TestCase {
 		Functions\expect( 'is_wp_error' )->never();
 
 		do_action( 'after_rocket_clean_domain' );
+		var_dump('end_cant');
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
