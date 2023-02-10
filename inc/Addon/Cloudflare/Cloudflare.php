@@ -98,6 +98,8 @@ class Cloudflare {
 	 */
 	public function is_api_keys_valid( $cf_email, $cf_api_key, $cf_zone_id ) {
 		if ( empty( $cf_email ) || empty( $cf_api_key ) ) {
+			var_dump(str_split($cf_email));
+			var_dump(str_split($cf_api_key));
 			return new WP_Error(
 				'cloudflare_credentials_empty',
 				sprintf(
