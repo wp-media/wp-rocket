@@ -23,7 +23,7 @@ class Test_AutoPurge extends TestCase {
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
-		$this->setApiCredentialsInOptions();
+		$this->setApiCredentialsInOptionsWithFilter();
 
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
