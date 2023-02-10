@@ -55,6 +55,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array subscribed events => callbacks.
 	 */
 	public static function get_subscribed_events() {
+		// If the option is not enabled, bail out. Don't load the addon.
+		if ( ! (bool) get_rocket_option( 'do_cloudflare', false ) ) {
+			return [];
+		}
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
