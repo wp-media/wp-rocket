@@ -257,7 +257,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			return '0000-00-00 00:00:00';
+			$next = date_create();
 		}
 		$next->setTimezone( new DateTimeZone( 'UTC' ) );
 
@@ -274,7 +274,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			return '0000-00-00 00:00:00';
+			$next = date_create();
 		}
 
 		ActionScheduler_TimezoneHelper::set_local_timezone( $next );
