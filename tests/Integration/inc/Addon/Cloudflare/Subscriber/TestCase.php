@@ -99,6 +99,19 @@ abstract class TestCase extends BaseTestCase {
 		$this->setOptions( $options );
 	}
 
+	protected static function setApiCredentialsInOptionsWithFilter() {
+		$options = [
+			'cloudflare_email'   => self::$api_credentials['email'],
+			'cloudflare_api_key' => self::$api_credentials['api_key'],
+			'cloudflare_zone_id' => self::$api_credentials['zone_id'],
+		];
+		foreach ( $options as $option_name => $option_value ) {
+			add_filter( 'pre_get_rocket_option_' . $option_name, function() use ($option_value){
+				return $option_value;
+			} );
+		}
+	}
+
 	protected function getConcrete( $key ) {
 		return self::$container->get( $key );
 	}

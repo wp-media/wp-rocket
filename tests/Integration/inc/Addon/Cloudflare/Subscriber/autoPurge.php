@@ -5,14 +5,18 @@ namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 use Brain\Monkey\Functions;
 
 /**
- * @covers WPMedia\Cloudflare\Subscriber::auto_purge
+ * @covers \WPMedia\Cloudflare\Subscriber::auto_purge
  * @group  DoCloudflare
  * @group  Addons
  */
 class Test_AutoPurge extends TestCase {
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::setApiCredentialsInOptionsWithFilter();
+	}
+
 	public function testShouldBailoutWhenUserCantPurgeCF() {
-		$this->setApiCredentialsInOptions();
 
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
@@ -23,7 +27,6 @@ class Test_AutoPurge extends TestCase {
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
-		$this->setApiCredentialsInOptions();
 
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
