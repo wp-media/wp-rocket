@@ -27,7 +27,7 @@ class Test_AutoPurge extends TestCase {
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
-
+	var_dump('start');
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
@@ -42,5 +42,6 @@ class Test_AutoPurge extends TestCase {
 			->with( 0 );
 
 		do_action( 'after_rocket_clean_domain' );
+		var_dump('end');
 	}
 }
