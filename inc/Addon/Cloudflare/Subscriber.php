@@ -201,6 +201,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @since 1.0
 	 */
 	public function purge_cache_no_die() {
+		var_dump(current_user_can( 'rocket_purge_cloudflare_cache' ));
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 			return;
 		}
