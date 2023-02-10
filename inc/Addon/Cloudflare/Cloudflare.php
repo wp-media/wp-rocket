@@ -51,7 +51,8 @@ class Cloudflare {
 		if ( ! is_null( $this->cloudflare_api_error ) ) {
 			var_dump([
 				'ahmed_error',
-				$this->cloudflare_api_error
+				$this->cloudflare_api_error,
+				getenv()
 			]);
 		}
 	}
