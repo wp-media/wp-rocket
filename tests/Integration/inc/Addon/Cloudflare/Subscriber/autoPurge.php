@@ -11,12 +11,9 @@ use Brain\Monkey\Functions;
  */
 class Test_AutoPurge extends TestCase {
 
-	public function set_up() {
-		parent::set_up();
-		$this->setApiCredentialsInOptions();
-	}
-
 	public function testShouldBailoutWhenUserCantPurgeCF() {
+		$this->setApiCredentialsInOptions();
+
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
 
@@ -26,6 +23,8 @@ class Test_AutoPurge extends TestCase {
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
+		$this->setApiCredentialsInOptions();
+
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );

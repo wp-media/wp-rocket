@@ -55,7 +55,6 @@ abstract class TestCase extends BaseTestCase {
 		parent::tear_down_after_class();
 	}
 
-
 	protected static function setApiCredentials() {
 		self::$api_credentials['email']    = static::getApiCredential( 'ROCKET_CLOUDFLARE_EMAIL' );
 		self::$api_credentials['api_key']  = static::getApiCredential( 'ROCKET_CLOUDFLARE_API_KEY' );
@@ -89,7 +88,7 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected function setApiCredentialsInOptions( array $options = [] ) {
-		var_dump( "Setting API credentials in options for test" );
+		var_dump("set Api Credentials In Options");
 		$options = array_merge(
 			[
 				'cloudflare_email'   => self::$api_credentials['email'],
@@ -106,6 +105,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	protected function setOptions( $data ) {
+		update_option( 'wp_rocket_settings', $data );
+
 		$cf_options = $this->getConcrete( 'options' );
 		$cf_options->set_values( $data );
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
