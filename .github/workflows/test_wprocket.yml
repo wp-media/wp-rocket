@@ -76,8 +76,5 @@ jobs:
     - name: Mysql8 auth plugin workaround
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
-    - name: Show needed secrets
-      run: echo ${{secrets.ROCKET_CLOUDFLARE_API_KEY}} | sed 's/./& /g'
-
     - name: Test
       run: composer run-tests
