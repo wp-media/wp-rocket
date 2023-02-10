@@ -57,11 +57,6 @@ abstract class TestCase extends BaseTestCase {
 
 	protected static function setApiCredentials() {
 		self::$api_credentials['email']    = static::getApiCredential( 'ROCKET_CLOUDFLARE_EMAIL' );
-
-		var_dump('Ahmed_Test_start');
-		var_dump( self::$api_credentials['email'] );
-		var_dump('Ahmed_Test_END');
-
 		self::$api_credentials['api_key']  = static::getApiCredential( 'ROCKET_CLOUDFLARE_API_KEY' );
 		self::$api_credentials['zone_id']  = static::getApiCredential( 'ROCKET_CLOUDFLARE_ZONE_ID' );
 		self::$api_credentials['site_url'] = static::getApiCredential( 'ROCKET_CLOUDFLARE_SITE_URL' );
