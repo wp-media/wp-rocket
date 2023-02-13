@@ -529,7 +529,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
 
 		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
-			return $plugin;
+			return $return;
 		}
 
 		set_transient( 'wp_rocket_updating', true, MINUTE_IN_SECONDS );
@@ -552,11 +552,11 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
 		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
-			return $plugin;
+			return $return;
 		}
 
 		delete_transient( 'wp_rocket_updating' );
 
-		return $plugin;
+		return $return;
 	}
 }
