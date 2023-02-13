@@ -522,15 +522,14 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function upgrade_pre_install_option( $return, $plugin ) {
 
-		if ( is_wp_error( $return ) ) { // Bypass.
+		if ( is_wp_error( $return ) ) {
 			return $return;
 		}
 
 		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
 
 		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
-			$msg = __( 'Missing plugin.', 'rocket' );
-			return new WP_Error( 'bad_request', $msg );
+			return $plugin;
 		}
 
 		set_transient( 'wp_rocket_updating', true, MINUTE_IN_SECONDS );
@@ -547,15 +546,15 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return mixed|string|WP_Error
 	 */
 	public function upgrade_post_install_option( $return, $plugin ) {
-		if ( is_wp_error( $return ) ) { // Bypass.
+		if ( is_wp_error( $return ) ) {
 			return $return;
 		}
 
 		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
 		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
-			$msg = __( 'Missing plugin.', 'rocket' );
-			return new WP_Error( 'bad_request', $msg );
+			return $plugin;
 		}
+
 		delete_transient( 'wp_rocket_updating' );
 
 		return $plugin;
