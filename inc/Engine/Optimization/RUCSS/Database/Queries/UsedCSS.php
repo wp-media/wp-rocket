@@ -453,6 +453,7 @@ class UsedCSS extends Query {
 				'error_message' => '',
 				'retries'       => 0,
 				'status'        => 'pending',
+				'modified'      => current_time( 'mysql', true ),
 			]
 		);
 	}
