@@ -22,14 +22,7 @@ class Test_AutoPurge extends TestCase {
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
 		Functions\when('is_wp_error')->alias(function () {
-			ob_start();
-
-			debug_print_backtrace();
-
-			$trace = ob_get_contents();
-
-			ob_end_clean();
-			echo $trace;
+			var_dump("ok");
 			return false;
 		});
 		///Functions\expect( 'is_wp_error' )->never();
@@ -45,14 +38,7 @@ class Test_AutoPurge extends TestCase {
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
 		Functions\when('is_wp_error')->alias(function () {
-			/*ob_start();
-
-			debug_print_backtrace();
-
-			$trace = ob_get_contents();
-
-			ob_end_clean();
-			echo $trace;*/
+			var_dump("ok");
 			return false;
 		});
 		/*Functions\expect( 'is_wp_error' )
