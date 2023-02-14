@@ -242,6 +242,13 @@ class Subscriber implements Subscriber_Interface {
 				'resolution' => $thumbnail_resolution,
 				'lazy_image' => (bool) $this->options->get( 'lazyload' ),
 				'native'     => $this->is_native_images(),
+				/**
+				 * Extension from the thumbnail from Youtube video.
+				 *
+				 * @param string $extension extension from the thumbnail from Youtube video.
+				 * @returns string
+				 */
+				'extension'  => apply_filters( 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' ),
 			]
 		);
 	}
