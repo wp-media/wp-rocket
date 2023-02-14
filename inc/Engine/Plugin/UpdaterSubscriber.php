@@ -520,9 +520,9 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|WP_Error
 	 */
-	public function upgrade_pre_install_option( $return, $plugin ) {
+	public function upgrade_pre_install_option( $return, $plugin = null ) {
 
-		if ( is_wp_error( $return ) ) {
+		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
 		}
 
@@ -545,8 +545,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|string|WP_Error
 	 */
-	public function upgrade_post_install_option( $return, $plugin ) {
-		if ( is_wp_error( $return ) ) {
+	public function upgrade_post_install_option( $return, $plugin = null ) {
+		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
 		}
 
