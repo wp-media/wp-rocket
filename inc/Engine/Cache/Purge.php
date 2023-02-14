@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use DirectoryIterator;
 use Exception;
 use WP_Term;
@@ -19,12 +20,21 @@ class Purge {
 	private $filesystem;
 
 	/**
-	 * Initialize the class
+	 * Cache Query
+	 *
+	 * @var Cache
+	 */
+	protected $query;
+
+	/**
+	 * Initialize the class.
 	 *
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
+	 * @param Cache                $query Cache query instance.
 	 */
-	public function __construct( $filesystem ) {
+	public function __construct( $filesystem, Cache $query ) {
 		$this->filesystem = $filesystem;
+		$this->query      = $query;
 	}
 
 	/**
@@ -245,5 +255,53 @@ class Purge {
 		 * @param array $urls List of taxonomies URLs
 		*/
 		return apply_filters( 'rocket_post_terms_urls', $urls );
+	}
+
+	/**
+	 * Purge single cache file(s) added in the Never Cache URL(s).
+	 *
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value An array of submitted values for the settings.
+	 * @return void
+	 */
+	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
+		// Bail out if cache_reject_uri key is not in the settings array.
+		if ( ! array_key_exists( 'cache_reject_uri', $old_value ) || ! array_key_exists( 'cache_reject_uri', $value ) ) {
+			return;
+		}
+
+		// Get change in uris.
+		$diff = array_diff( $value['cache_reject_uri'], $old_value['cache_reject_uri'] );
+
+		// Bail out if values has not changed.
+		if ( empty( $diff ) ) {
+			return;
+		}
+
+		$urls     = [];
+		$wildcard = '(.*)';
+		foreach ( $diff as $path ) {
+			// Check if string is a path or pattern.
+			if ( strpos( $path, $wildcard ) !== false ) {
+				$pattern = preg_replace( '#\(\.\*\).*#', '*', $path );
+				$results = $this->query->query(
+					[
+						'search'         => $pattern,
+						'search_columns' => [ 'url' ],
+						'status'         => 'completed',
+					]
+				);
+
+				foreach ( $results as $result ) {
+					$urls[] = $result->url;
+				}
+
+				continue;
+			}
+
+			// Get full url of never cache path.
+			$urls[] = home_url( $path );
+		}
+		rocket_clean_files( array_unique( $urls ) );
 	}
 }

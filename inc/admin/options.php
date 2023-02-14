@@ -50,6 +50,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		'sucury_waf_api_key'          => true,
 		'manual_preload'              => true,
 		'preload_excluded_uri'        => true,
+		'cache_reject_uri'            => true,
 	];
 
 	// Create 2 arrays to compare.

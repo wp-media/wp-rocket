@@ -78,7 +78,7 @@ return [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'now - 15 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'date_created'      => strtotime( 'last year' ),
+				'date_created'      => strtotime( '2022-01-05' ),
 				'is_auto_renew' => false,
 			] ) ),
 			'pricing' => $pricing,
@@ -92,7 +92,7 @@ return [
 				<p>
 				Your website could be much faster if it could take advantage of our <strong>new features and enhancements</strong>. 🚀
 				</p>
-				<p>Renew your license for 1 year now at<strong>$24.50</strong>.</p>
+				<p>Renew your license for 1 year now at<strong>$34.30</strong>.</p>
 			</div>
 			<div class="rocket-expired-cta-container">
 				<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
