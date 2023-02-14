@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Subscriber;
 
+use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -28,14 +29,11 @@ class Test_Preconnect extends TestCase {
     /**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $expected ) {
+	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $user_logged_in, $expected ) {
+		Functions\when( 'is_user_logged_in' )->justReturn( $user_logged_in );
+
 		if ( $bypass ) {
-			$GLOBALS['wp'] = (object) [
-				'query_vars' => [
-					'nowprocket' => 1,
-				],
-				'request'    => 'http://example.org',
-			];
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->option_value = $option_value;
