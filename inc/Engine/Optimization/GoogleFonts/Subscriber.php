@@ -120,6 +120,10 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		return (bool) $this->options->get( 'minify_google_fonts', 0 );
+		if ( ! $this->options->get( 'minify_google_fonts', 0 ) ) {
+			return false;
+		}
+
+		return ! is_user_logged_in();
 	}
 }
