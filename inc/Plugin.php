@@ -318,6 +318,7 @@ class Plugin {
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
+			'webp_admin_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
