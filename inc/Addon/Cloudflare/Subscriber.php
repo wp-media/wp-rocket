@@ -159,7 +159,6 @@ class Subscriber implements Subscriber_Interface {
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
 		var_dump('error');
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
-			var_dump('error');
 			return;
 		}
 		var_dump('error');

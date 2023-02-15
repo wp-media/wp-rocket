@@ -87,16 +87,14 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$purged = $this->clean_firewall_cache();
-		var_dump('sucuri post purge');
+
 		if ( is_wp_error( $purged ) ) {
-			var_dump('sucuri post purge');
 			$purged_result = [
 				'result'  => 'error',
 				/* translators: %s is the error message returned by the API. */
 				'message' => sprintf( __( 'Sucuri cache purge error: %s', 'rocket' ), $purged->get_error_message() ),
 			];
 		} else {
-			var_dump('sucuri post purge');
 			$purged_result = [
 				'result'  => 'success',
 				'message' => __( 'The Sucuri cache is being cleared. Note that it may take up to two minutes for it to be fully flushed.', 'rocket' ),
@@ -172,12 +170,9 @@ class Subscriber implements Subscriber_Interface {
 	private function clean_firewall_cache() {
 		$api_key = $this->get_api_key();
 
-		var_dump('sucuri firewall cache');
 		if ( is_wp_error( $api_key ) ) {
-			var_dump('sucuri firewall cache');
 			return $api_key;
 		}
-		var_dump('sucuri firewall cache');
 
 		$response = $this->request_api(
 			[
@@ -186,12 +181,10 @@ class Subscriber implements Subscriber_Interface {
 				's' => $api_key['s'],
 			]
 		);
-		var_dump('sucuri firewall cache');
+
 		if ( is_wp_error( $response ) ) {
-			var_dump('sucuri firewall cache');
 			return $response;
 		}
-		var_dump('sucuri firewall cache');
 
 		Logger::info(
 			'Sucuri firewall cache cleared.',
@@ -277,9 +270,8 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		$response = wp_remote_get( $url, $args );
-		var_dump('sucuri request api');
+
 		if ( is_wp_error( $response ) ) {
-			var_dump('sucuri request api');
 			Logger::error(
 				'Error when contacting the API.',
 				[
@@ -288,7 +280,6 @@ class Subscriber implements Subscriber_Interface {
 					'response' => $response->get_error_message(),
 				]
 			);
-			var_dump('sucuri request api');
 
 			// translators: %s is an error message.
 			return new WP_Error( 'wp_error_sucuri_api', sprintf( __( 'Error when contacting Sucuri firewall API. Error message was: %s', 'rocket' ), $response->get_error_message() ) );

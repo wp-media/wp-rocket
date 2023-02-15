@@ -107,7 +107,6 @@ class Admin {
 		$cpcss_pending[ $cpcss_item['path'] ]['check']++;
 
 		$this->cpcss_heartbeat_notices( $cpcss_generation, $cpcss_item );
-		var_dump('cpcss pending queue');
 
 		// Remove the item from the queue when (a) the CPCSS API returns success or error or (b) timeouts.
 		if (
@@ -119,11 +118,8 @@ class Admin {
 			||
 			$timeout
 		) {
-			var_dump('cpcss pending queue');
 			unset( $cpcss_pending[ $cpcss_item['path'] ] );
 		}
-		var_dump('cpcss pending queue');
-
 
 		return $cpcss_pending;
 	}
@@ -144,14 +140,11 @@ class Admin {
 		if ( ! isset( $transient['items'] ) ) {
 			$transient['items'] = [];
 		}
-		var_dump('cpcss heartbeat notice');
 
 		if ( is_wp_error( $cpcss_generation ) ) {
-			var_dump('cpcss heartbeat notice');
 			$this->update_running_transient( $transient, $cpcss_item['path'], $mobile, $cpcss_generation->get_error_message(), false );
 			return;
 		}
-		var_dump('cpcss heartbeat notice');
 
 		if (
 			isset( $cpcss_generation['code'] )

@@ -316,7 +316,6 @@ class Base {
 	 * @return bool
 	 */
 	protected function is_success( $result = false ) {
-		var_dump('base is success');
 
 		// Bail if no row exists
 		if ( empty( $result ) ) {
@@ -326,11 +325,9 @@ class Base {
 		} elseif ( is_wp_error( $result ) ) {
 			$this->last_error = $result;
 			$retval           = false;
-			var_dump('base is success');
 
 		// No errors
 		} else {
-			var_dump('base is success');
 			$retval = true;
 		}
 

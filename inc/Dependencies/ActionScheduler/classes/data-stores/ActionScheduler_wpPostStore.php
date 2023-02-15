@@ -96,13 +96,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
-		var_dump('action scheduler post array');
+
 		if ( is_wp_error( $post_id ) || empty( $post_id ) ) {
-			var_dump('action scheduler post array');
 			throw new RuntimeException( __( 'Unable to save action.', 'action-scheduler' ) );
 		}
-		var_dump('action scheduler post array');
-
 		return $post_id;
 	}
 
