@@ -114,8 +114,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'wp_rocket_loaded'                      => 'maybe_force_check',
 			'auto_update_plugin'                    => [ 'disable_auto_updates', 10, 2 ],
 			'admin_post_rocket_rollback'            => 'rollback',
-			'upgrader_pre_install'                  => 'upgrade_pre_install_option',
-			'upgrader_post_install'                 => 'upgrade_post_install_option',
+			'upgrader_pre_install'                  => [ 'upgrade_pre_install_option', 10, 2 ],
+			'upgrader_post_install'                 => [ 'upgrade_post_install_option', 10, 2 ],
 		];
 	}
 
@@ -520,9 +520,9 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|WP_Error
 	 */
-	public function upgrade_pre_install_option( $return, $plugin ) {
+	public function upgrade_pre_install_option( $return, $plugin = [] ) {
 
-		if ( is_wp_error( $return ) ) {
+		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
 		}
 
@@ -545,8 +545,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|string|WP_Error
 	 */
-	public function upgrade_post_install_option( $return, $plugin ) {
-		if ( is_wp_error( $return ) ) {
+	public function upgrade_post_install_option( $return, $plugin = [] ) {
+		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
 		}
 
