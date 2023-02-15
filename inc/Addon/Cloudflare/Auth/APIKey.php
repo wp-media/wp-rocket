@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\Auth;
 
@@ -35,7 +36,17 @@ class APIKey implements AuthInterface {
 		return [
 			'X-Auth-Email' => $this->email,
 			'X-Auth-Key'   => $this->api_key,
-			'User-Agent'   => 'wp-rocket/' . rocket_get_constant( 'WP_ROCKET_VERSION' ),
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function is_authorized(): bool {
+		return (
+			isset( $this->email, $this->api_key )
+			&&
+			false !== filter_var( $this->email, FILTER_VALIDATE_EMAIL )
+		);
 	}
 }
