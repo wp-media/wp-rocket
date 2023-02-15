@@ -1,6 +1,6 @@
 <?php
 
-namespace WPMedia\Cloudflare;
+namespace WP_Rocket\Addon\Cloudflare\API;
 
 use RuntimeException;
 
