@@ -459,9 +459,7 @@ function rocket_check_key() {
 		]
 	);
 
-	var_dump('check key');
 	if ( is_wp_error( $response ) ) {
-		var_dump('check key');
 		Logger::error(
 			'License validation failed.',
 			[
@@ -474,7 +472,6 @@ function rocket_check_key() {
 
 		return $return;
 	}
-	var_dump('check key');
 
 	$body = wp_remote_retrieve_body( $response );
 	$json = json_decode( $body );

@@ -311,12 +311,9 @@ function rocket_add_imagify_api_result( $result, $action, $args ) {
 	];
 	$imagify_data = plugins_api( 'plugin_information', $query_args );
 
-	var_dump('Imagify api result');
 	if ( is_wp_error( $imagify_data ) ) {
-		var_dump('Imagify api result');
 		return $result;
 	}
-	var_dump('Imagify api result');
 
 	if ( 'featured' === $args->browse ) {
 		array_push( $result->plugins, $imagify_data );

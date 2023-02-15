@@ -28,12 +28,9 @@ class CrawlHomepage {
 
 		$response = wp_remote_get( esc_url_raw( home_url() ), $args );
 
-		var_dump('Preload homepage');
 		if ( is_wp_error( $response ) ) {
-			var_dump('Preload homepage');
 			return false;
 		}
-		var_dump('Preload homepage');
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 

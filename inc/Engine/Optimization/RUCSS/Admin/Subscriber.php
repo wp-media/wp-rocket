@@ -183,12 +183,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$url = get_term_link( (int) $term_id );
-		var_dump('RUCSS delete term');
+
 		if ( is_wp_error( $url ) ) {
-			var_dump('RUCSS delete term');
 			return;
 		}
-		var_dump('RUCSS delete term');
 
 		$this->used_css->delete_used_css( untrailingslashit( $url ) );
 	}
