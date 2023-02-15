@@ -72,11 +72,15 @@ class User {
 	/**
 	 * Checks if user has auto-renew enabled
 	 *
-	 * @return boolean
+	 * @return mixed
 	 */
 	public function is_auto_renew() {
 		if ( ! isset( $this->user->has_auto_renew ) ) {
 			return false;
+		}
+
+		if ( '' === $this->user->has_auto_renew ) {
+			return '';
 		}
 
 		return (bool) $this->user->has_auto_renew;
