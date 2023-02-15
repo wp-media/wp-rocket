@@ -9,4 +9,12 @@ interface AuthInterface {
 	 * @return array
 	 */
     public function get_headers(): array;
+
+	/**
+	 * Checks if the credentials are set.
+	 *
+	 * @return bool true if authorized, false otherwise.
+	 */
+	public function is_authorized(): bool;
+	}
 }
