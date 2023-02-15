@@ -125,10 +125,12 @@ class APIClient {
 	 */
 	private function get_remote_pricing_data() {
 		$response = wp_remote_get( self::ROCKETCDN_API . 'pricing' );
-
+		var_dump('rocketcdn pricing data');
 		if ( is_wp_error( $response ) ) {
+			var_dump('rocketcdn pricing data');
 			return $response;
 		}
+		var_dump('rocketcdn pricing data');
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return $this->get_wp_error( __( 'We could not fetch the current price because RocketCDN API returned an unexpected error code.', 'rocket' ) );
@@ -198,13 +200,16 @@ class APIClient {
 			self::ROCKETCDN_API . 'website/' . $subscription['id'] . '/purge/',
 			$args
 		);
+		var_dump('rocketcdn purge cache');
 
 		if ( is_wp_error( $response ) ) {
+			var_dump('rocketcdn purge cache');
 			return [
 				'status'  => $status,
 				'message' => $response->get_error_message(),
 			];
 		}
+		var_dump('rocketcdn purge cache');
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return [

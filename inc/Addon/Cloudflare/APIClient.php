@@ -300,6 +300,7 @@ class APIClient {
 		$response = $this->do_remote_request( $path, $data, $method );
 		var_dump('cloud request');
 		if ( is_wp_error( $response ) ) {
+			var_dump('cloud request');
 			throw new Exception( $response->get_error_message() );
 		}
 		var_dump('cloud request');

@@ -55,8 +55,10 @@ class APIClient {
 	 * @return array|WP_Error
 	 */
 	private function prepare_response( $response, $url, $is_mobile = false, $item_type = 'custom' ) {
+		var_dump('critical path client');
 
 		if ( is_wp_error( $response ) ) {
+			var_dump('critical path client');
 			return new WP_Error(
 				$this->get_response_code( $response ),
 				sprintf(
@@ -70,6 +72,7 @@ class APIClient {
 				]
 			);
 		}
+		var_dump('critical path client');
 
 		$response_data        = $this->get_response_data( $response );
 		$response_status_code = $this->get_response_status( $response, ( isset( $response_data->status ) ) ? $response_data->status : null );

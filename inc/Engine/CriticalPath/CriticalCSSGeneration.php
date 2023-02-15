@@ -68,11 +68,14 @@ class CriticalCSSGeneration extends WP_Rocket_WP_Background_Process {
 			'item_type' => $item['type'],
 		];
 		$generated         = $this->processor->process_generate( $item['url'], $item['path'], $generation_params );
+		var_dump('cpcss task');
 
 		if ( is_wp_error( $generated ) ) {
+			var_dump('cpcss task');
 			$this->update_running_transient( $transient, $item['path'], $mobile, $generated->get_error_message(), false );
 			return false;
 		}
+		var_dump('cpcss task');
 
 		if ( isset( $generated['code'] ) && 'cpcss_generation_pending' === $generated['code'] ) {
 			$pending = get_transient( 'rocket_cpcss_generation_pending' );

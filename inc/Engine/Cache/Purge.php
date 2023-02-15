@@ -218,10 +218,14 @@ class Purge {
 
 			// Get the terms related to post.
 			$terms = get_the_terms( $post->ID, $taxonomy->name );
+			var_dump('purge');
 
 			if ( empty( $terms ) || is_wp_error( $terms ) ) {
+				var_dump('purge');
 				continue;
 			}
+			var_dump('purge');
+
 			foreach ( $terms as $term ) {
 				$term_url = get_term_link( $term->slug, $taxonomy->name );
 				var_dump("purge logic");

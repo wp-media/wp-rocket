@@ -70,6 +70,7 @@ class Cloudflare {
 		var_dump('cloud instance');
 
 		if ( is_wp_error( $is_api_keys_valid_cf ) ) {
+			var_dump('cloud instance');
 			// Sets Cloudflare API as WP_Error if credentials are not valid.
 			$this->cloudflare_api_error = $is_api_keys_valid_cf;
 
@@ -171,6 +172,7 @@ class Cloudflare {
 	public function has_page_rule( $action_value ) {
 		var_dump('cloudflare  pagerule');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare  pagerule');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare  pagerule');
@@ -195,6 +197,7 @@ class Cloudflare {
 	public function purge_cloudflare() {
 		var_dump('cloudflare  purge');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare  purge');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare  purge');
@@ -221,6 +224,7 @@ class Cloudflare {
 	public function purge_by_url( $post, $purge_urls, $lang ) {
 		var_dump('cloudflare  purge url');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare  purge url');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare  purge url');
@@ -245,6 +249,7 @@ class Cloudflare {
 	public function set_browser_cache_ttl( $mode ) {
 		var_dump('cloudflare browser cache ttl');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare browser cache ttl');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare browser cache ttl');
@@ -269,6 +274,7 @@ class Cloudflare {
 	public function set_rocket_loader( $mode ) {
 		var_dump('cloudflare rocket loader');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare rocket loader');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare rocket loader');
@@ -293,6 +299,7 @@ class Cloudflare {
 	public function set_minify( $mode ) {
 		var_dump('cloudflare minify');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare minify');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare minify');
@@ -323,6 +330,7 @@ class Cloudflare {
 	public function set_cache_level( $mode ) {
 		var_dump('cloudflare cahche level');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare cahche level');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare cahche level');
@@ -347,6 +355,7 @@ class Cloudflare {
 	public function set_devmode( $mode ) {
 		var_dump('cloudflare devmode');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare devmode');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare devmode');
@@ -381,6 +390,7 @@ class Cloudflare {
 		var_dump('cloudflare get settings');
 
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
+			var_dump('cloudflare get settings');
 			return $this->cloudflare_api_error;
 		}
 		var_dump('cloudflare get settings');

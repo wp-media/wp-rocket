@@ -96,10 +96,12 @@ function rocket_htaccess_rules_test( $rules_name ) {
 	);
 
 	$response = wp_remote_get( site_url( WP_ROCKET_URL . 'tests/' . $rules_name . '/index.html' ), $request_args );
-
+	var_dump('htacess');
 	if ( is_wp_error( $response ) ) {
+		var_dump('htacess');
 		return $response;
 	}
+	var_dump('htacess');
 
 	return 500 !== wp_remote_retrieve_response_code( $response );
 }

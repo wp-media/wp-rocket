@@ -218,8 +218,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$small_cta_data = [
 			'container_class' => $cta_small_class,
 		];
+		var_dump('rocketcdn cta');
 
 		if ( is_wp_error( $pricing ) ) {
+			var_dump('rocketcdn cta');
 			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
 			$more_info = sprintf(
 				// translators: %1$is = opening link tag, %2$s = closing link tag.
@@ -237,6 +239,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'message'         => $message,
 			];
 		} else {
+			var_dump('rocketcdn cta');
+
 			$current_price      = number_format_i18n( $pricing['monthly_price'], 2 );
 			$promotion_campaign = '';
 			$end_date           = strtotime( $pricing['end_date'] );
