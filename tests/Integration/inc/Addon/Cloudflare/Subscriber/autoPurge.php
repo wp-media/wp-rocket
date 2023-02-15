@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
 
 use Brain\Monkey\Functions;
+use Exception;
 
 /**
  * @covers \WPMedia\Cloudflare\Subscriber::auto_purge
@@ -23,6 +24,7 @@ class Test_AutoPurge extends TestCase {
 		wp_set_current_user( $user );
 		Functions\when('is_wp_error')->alias(function () {
 			var_dump('used');
+			throw new Exception();
 			return false;
 		});
 		///Functions\expect( 'is_wp_error' )->never();
@@ -39,6 +41,7 @@ class Test_AutoPurge extends TestCase {
 		wp_set_current_user( $user );
 		Functions\when('is_wp_error')->alias(function () {
 			var_dump("used");
+			throw new Exception();
 			return false;
 		});
 		/*Functions\expect( 'is_wp_error' )
