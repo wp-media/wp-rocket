@@ -446,8 +446,9 @@ trait FileBustingTrait {
 			);
 			return false;
 		}
-
+		var_dump('get remote content');
 		if ( is_wp_error( $response ) ) {
+			var_dump('get remote content');
 			Logger::error(
 				'Remote file could not be fetched.',
 				[
@@ -458,6 +459,7 @@ trait FileBustingTrait {
 			);
 			return false;
 		}
+		var_dump('get remote content');
 
 		$contents = wp_remote_retrieve_body( $response );
 

@@ -127,9 +127,12 @@ class InformationSubscriber implements Subscriber_Interface {
 	private function get_plugin_information() {
 		$response = wp_remote_get( $this->api_url );
 
+		var_dump('Info plugin info');
 		if ( is_wp_error( $response ) ) {
+			var_dump('Info plugin info');
 			return $this->get_request_error( $response->get_error_message() );
 		}
+		var_dump('Info plugin info');
 
 		$res  = maybe_unserialize( wp_remote_retrieve_body( $response ) );
 		$code = wp_remote_retrieve_response_code( $response );

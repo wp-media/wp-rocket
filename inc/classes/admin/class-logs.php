@@ -83,13 +83,15 @@ class Logs implements Subscriber_Interface {
 		}
 
 		$contents = Logger::get_log_file_contents();
-
+		var_dump('log debug file');
 		if ( is_wp_error( $contents ) ) {
+			var_dump('log debug file');
 			add_settings_error( 'general', $contents->get_error_code(), $contents->get_error_message(), 'error' );
 			set_transient( 'settings_errors', get_settings_errors(), 30 );
 
 			$this->redirect( add_query_arg( 'settings-updated', 1, wp_get_referer() ) );
 		}
+		var_dump('log debug file');
 
 		$file_name = Logger::get_log_file_path();
 		$file_name = basename( $file_name, '.log' ) . Logger::get_log_file_extension();

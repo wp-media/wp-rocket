@@ -296,7 +296,9 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 			// Install Imagify.
 			$result = $this->install_imagify();
 
+			var_dump('imagify post callback');
 			if ( is_wp_error( $result ) ) {
+				var_dump('imagify post callback');
 				// Install failed.
 				if ( self::doing_ajax() ) {
 					$this->send_json_error( $result );
@@ -304,11 +306,13 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 				// Redirect to the plugins search page.
 				$this->error_redirect( $result );
 			}
+			var_dump('imagify post callback');
 
 			// Activate Imagify.
 			$result = $this->activate_imagify();
-
+			var_dump('imagify post callback');
 			if ( is_wp_error( $result ) ) {
+				var_dump('imagify post callback');
 				// Activation failed.
 				if ( self::doing_ajax() ) {
 					$this->send_json_error( $result );
@@ -316,6 +320,7 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 				// Redirect to the plugins search page.
 				$this->error_redirect( $result );
 			}
+			var_dump('imagify post callback');
 
 			if ( self::doing_ajax() ) {
 				$this->send_json_success();
@@ -358,12 +363,15 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 				// No error messages.
 				return;
 			}
+			var_dump('imagify error notice');
 
 			if ( ! is_wp_error( $errors ) ) {
+				var_dump('imagify error notice');
 				// Invalid value.
 				delete_transient( self::ERROR_TRANSIENT_NAME );
 				return;
 			}
+			var_dump('imagify error notice');
 
 			$errors = $errors->get_error_messages();
 
@@ -476,9 +484,12 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 
 			$infos = $this->get_imagify_infos();
 
+			var_dump('imagify instal');
 			if ( is_wp_error( $infos ) ) {
+				var_dump('imagify instal');
 				return $infos;
 			}
+			var_dump('imagify instal');
 
 			ob_start();
 			@set_time_limit( 0 );
@@ -490,9 +501,12 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 
 			ob_end_clean();
 
+			var_dump('imagify instal');
 			if ( is_wp_error( $result ) ) {
+				var_dump('imagify instal');
 				return $result;
 			}
+			var_dump('imagify instal');
 
 			clearstatcache();
 
@@ -653,7 +667,9 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 		 * @param mixed $data Data to encode as JSON, then print and die.
 		 */
 		protected function send_json_error( $data ) {
+			var_dump('imagify json error');
 			if ( is_wp_error( $data ) ) {
+				var_dump('imagify json error');
 				$result = array();
 				foreach ( $data->errors as $code => $messages ) {
 					foreach ( $messages as $message ) {
@@ -664,6 +680,7 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 					}
 				}
 			} else {
+				var_dump('imagify json error');
 				$result = $data;
 			}
 

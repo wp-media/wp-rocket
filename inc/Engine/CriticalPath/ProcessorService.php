@@ -85,12 +85,14 @@ class ProcessorService {
 			'nofontface' => false,
 		];
 		$generated_job = $this->api_client->send_generation_request( $item_url, $params, $item_type );
-
+		var_dump('critical path generation request');
 		// validate generate response.
 		if ( is_wp_error( $generated_job ) ) {
+			var_dump('critical path generation request');
 			// Failed so return back the data.
 			return $generated_job;
 		}
+		var_dump('critical path generation request');
 
 		// Send generation request succeeded.
 		// Save job_id into cache.
@@ -112,10 +114,12 @@ class ProcessorService {
 	 */
 	private function get_cpcss_job_details( $job_id, $item_url, $item_type = 'custom' ) {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $item_type );
-
+		var_dump('critical path job details');
 		if ( is_wp_error( $job_details ) ) {
+			var_dump('critical path job details');
 			return $job_details;
 		}
+		var_dump('critical path job details');
 
 		return $job_details;
 	}
@@ -135,12 +139,14 @@ class ProcessorService {
 	 */
 	private function check_cpcss_job_status( $job_id, $item_path, $item_url, $is_mobile = false, $item_type = 'custom' ) {
 		$job_details = $this->api_client->get_job_details( $job_id, $item_url, $is_mobile, $item_type );
-
+		var_dump('critical path job status');
 		if ( is_wp_error( $job_details ) ) {
+			var_dump('critical path job status');
 			$this->data_manager->delete_cache_job_id( $item_url, $is_mobile );
 
 			return $job_details;
 		}
+		var_dump('critical path job status');
 
 		if ( 200 !== $job_details->status ) {
 			// On job error.
@@ -250,9 +256,12 @@ class ProcessorService {
 
 		// save the generated CPCSS code into file.
 		$saved = $this->data_manager->save_cpcss( $item_path, $cpcss_code, $item_url, $is_mobile, $item_type );
+		var_dump('critical path job success');
 		if ( is_wp_error( $saved ) ) {
+			var_dump('critical path job success');
 			return $saved;
 		}
+		var_dump('critical path job success');
 
 		if ( $is_mobile ) {
 			return [
@@ -285,10 +294,12 @@ class ProcessorService {
 	 */
 	public function process_delete( $item_path ) {
 		$deleted = $this->data_manager->delete_cpcss( $item_path );
-
+		var_dump('critical path job delete');
 		if ( is_wp_error( $deleted ) ) {
+			var_dump('critical path job delete');
 			return $deleted;
 		}
+		var_dump('critical path job delete');
 
 		return [
 			'code'    => 'success',

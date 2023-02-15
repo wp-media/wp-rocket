@@ -987,9 +987,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		);
 		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
+		var_dump('action scheduler post store');
 		if ( is_wp_error( $result ) ) {
+			var_dump('action scheduler post store');
 			throw new RuntimeException( $result->get_error_message() );
 		}
+		var_dump('action scheduler post store');
 
 		/**
 		 * Fires after a scheduled action has been completed.

@@ -149,9 +149,12 @@ abstract class RESTWP implements RESTWPInterface {
 
 		// validate item.
 		$validated = $this->validate_item_for_generate( $item_id );
+		var_dump('critical path generate');
 		if ( is_wp_error( $validated ) ) {
+			var_dump('critical path generate');
 			return rest_ensure_response( $this->return_error( $validated ) );
 		}
+		var_dump('critical path generate');
 
 		// get item url.
 		$item_url  = $this->get_url( $item_id );
@@ -164,12 +167,14 @@ abstract class RESTWP implements RESTWPInterface {
 			'item_type' => 'custom',
 		];
 		$generated         = $this->cpcss_service->process_generate( $item_url, $item_path, $additional_params );
-
+		var_dump('critical path generate');
 		if ( is_wp_error( $generated ) ) {
+			var_dump('critical path generate');
 			return rest_ensure_response(
 				$this->return_error( $generated )
 			);
 		}
+		var_dump('critical path generate');
 
 		$this->clean_post_cache( $item_id );
 
@@ -238,9 +243,12 @@ abstract class RESTWP implements RESTWPInterface {
 
 		// validate item.
 		$validated = $this->validate_item_for_delete( $item_id );
+		var_dump('critical path delete');
 		if ( is_wp_error( $validated ) ) {
+			var_dump('critical path delete');
 			return rest_ensure_response( $this->return_error( $validated ) );
 		}
+		var_dump('critical path delete');
 
 		if ( $this->options->get( 'async_css_mobile', 0 ) ) {
 			$mobile_item_path = $this->get_path( $item_id, true );
@@ -249,9 +257,12 @@ abstract class RESTWP implements RESTWPInterface {
 
 		$item_path = $this->get_path( $item_id );
 		$deleted   = $this->cpcss_service->process_delete( $item_path );
+		var_dump('critical path delete');
 		if ( is_wp_error( $deleted ) ) {
+			var_dump('critical path delete');
 			return rest_ensure_response( $this->return_error( $deleted ) );
 		}
+		var_dump('critical path delete');
 
 		$this->clean_post_cache( $item_id );
 
