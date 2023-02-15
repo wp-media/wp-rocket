@@ -1,152 +1,160 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\API;
 
 class Endpoints {
 	/**
+	 * Client instance
+	 *
+	 * @var Client
+	 */
+	private $client;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Client $client Client instance.
+	 */
+	public function __construct( Client $client ) {
+		$this->client = $client;
+	}
+
+	/**
 	 * Get zone data.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function get_zones() {
-		return $this->get( "zones/{$this->zone_id}" );
+	public function get_zones( string $zone_id ) {
+		return $this->client->get( "zones/{$zone_id}" );
 	}
 
 	/**
 	 * Get the zone's page rules.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $status Rule status.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function list_pagerules() {
-		return $this->get( "zones/{$this->zone_id}/pagerules?status=active" );
+	public function list_pagerules( string $zone_id, string $status ) {
+		return $this->client->get( "zones/{$zone_id}/pagerules?status={$status}" );
 	}
 
 	/**
 	 * Purges the cache.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function purge() {
-		return $this->delete( "zones/{$this->zone_id}/purge_cache", [ 'purge_everything' => true ] );
+	public function purge( string $zone_id ) {
+		return $this->client->post( "zones/{$zone_id}/purge_cache", [ 'purge_everything' => true ] );
 	}
 
 	/**
 	 * Purges the given URLs.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param array  $urls An array of URLs that should be removed from cache.
 	 *
-	 * @param array|null $urls An array of URLs that should be removed from cache.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function purge_files( array $urls ) {
-		return $this->delete( "zones/{$this->zone_id}/purge_cache", [ 'files' => $urls ] );
+	public function purge_files( string $zone_id, array $urls = [] ) {
+		return $this->client->post( "zones/{$zone_id}/purge_cache", [ 'files' => $urls ] );
 	}
 
 	/**
-	 * Changes the zone's browser cache TTL setting.
+	 * Updates the zone's browser cache TTL setting
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $value Cache TTL value.
 	 *
-	 * @param string $value New setting's value.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function change_browser_cache_ttl( $value ) {
-		return $this->change_setting( 'browser_cache_ttl', $value );
+	public function update_browser_cache_ttl( string $zone_id, $value ) {
+		return $this->update_setting( $zone_id, 'browser_cache_ttl', $value );
 	}
 
 	/**
-	 * Changes the zone's rocket loader setting.
+	 * Updates the zone's rocket loader setting.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $value Rocket Loader value.
 	 *
-	 * @param string $value New setting's value.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function change_rocket_loader( $value ) {
-		return $this->change_setting( 'rocket_loader', $value );
+	public function update_rocket_loader( string $zone_id, $value ) {
+		return $this->update_setting( $zone_id, 'rocket_loader', $value );
 	}
 
 	/**
-	 * Changes the zone's minify setting.
+	 * Updates the zone's minify setting.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $value Minify value.
 	 *
-	 * @param string $value New setting's value.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function change_minify( $value ) {
-		return $this->change_setting( 'minify', $value );
+	public function update_minify( string $zone_id, $value ) {
+		return $this->update_setting( $zone_id, 'minify', $value );
 	}
 
 	/**
-	 * Changes the zone's cache level.
+	 * Updates the zone's cache level.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $value Cache level value.
 	 *
-	 * @param string $value New setting's value.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function change_cache_level( $value ) {
-		return $this->change_setting( 'cache_level', $value );
+	public function change_cache_level( string $zone_id, $value ) {
+		return $this->update_setting( $zone_id, 'cache_level', $value );
 	}
 
 	/**
 	 * Changes the zone's development mode.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
+	 * @param string $value Development mode value.
 	 *
-	 * @param string $value New setting's value.
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function change_development_mode( $value ) {
-		return $this->change_setting( 'development_mode', $value );
+	public function change_development_mode( string $zone_id, $value ) {
+		return $this->update_setting( $zone_id, 'development_mode', $value );
 	}
 
 	/**
-	 * Changes the given setting.
-	 *
-	 * @since 1.0
+	 * Updates the given setting.
 	 *
 	 * @param string $setting Name of the setting to change.
-	 * @param string $value   New setting's value.
+	 * @param string $value   Setting value.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	protected function change_setting( $setting, $value ) {
-		return $this->patch( "zones/{$this->zone_id}/settings/{$setting}", [ 'value' => $value ] );
+	protected function update_setting( string $zone_id, $setting, $value ) {
+		return $this->client->patch( "zones/{$zone_id}/settings/{$setting}", [ 'value' => $value ] );
 	}
 
 	/**
 	 * Gets all of the Cloudflare settings.
 	 *
-	 * @since 1.0
+	 * @param string $zone_id Zone ID.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	public function get_settings() {
-		return $this->get( "zones/{$this->zone_id}/settings" );
+	public function get_settings( string $zone_id ) {
+		return $this->client->get( "zones/{$zone_id}/settings" );
 	}
 
 	/**
 	 * Gets Cloudflare's IPs.
 	 *
-	 * @since 1.0
-	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
 	public function get_ips() {
-		return $this->get( '/ips' );
+		return $this->client->get( '/ips' );
 	}
 }
