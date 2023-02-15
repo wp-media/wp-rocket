@@ -223,9 +223,14 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * @return bool
 	 */
 	protected function time_likely_to_be_exceeded( $processed_actions ) {
+		$execution_time     = $this->get_execution_time();
+		$max_execution_time = $this->get_time_limit();
 
-		$execution_time        = $this->get_execution_time();
-		$max_execution_time    = $this->get_time_limit();
+		// Safety against division by zero errors.
+		if ( 0 === $processed_actions ) {
+			return $execution_time >= $max_execution_time;
+		}
+
 		$time_per_action       = $execution_time / $processed_actions;
 		$estimated_time        = $execution_time + ( $time_per_action * 3 );
 		$likely_to_be_exceeded = $estimated_time > $max_execution_time;
