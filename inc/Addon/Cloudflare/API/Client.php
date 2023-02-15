@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\API;
 
+use Exception;
 use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 
 class Client {
@@ -15,7 +17,7 @@ class Client {
 	private $auth;
 
 	/**
-	 * An array of arguments for wp_remote_get.
+	 * An array of arguments for wp_remote_request()
 	 *
 	 * @var array
 	 */
@@ -29,73 +31,80 @@ class Client {
 		$this->args = [
 			'sslverify' => true,
 			'body'      => [],
+			'headers'   => [],
 		];
 	}
 
 	/**
 	 * API call method for sending requests using GET.
 	 *
-	 * @since 1.0
+	 * @param string $path Path of the endpoint.
+	 * @param array  $data Data to be sent along with the request.
+	 *
+	 * @return object
+	 */
+	public function get( $path, array $data = [] ) {
+		return $this->request( 'get', $path, $data );
+	}
+
+	/**
+	 * API call method for sending requests using POST.
 	 *
 	 * @param string $path Path of the endpoint.
 	 * @param array  $data Data to be sent along with the request.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	protected function get( $path, array $data = [] ) {
-		return $this->request( $path, $data, 'get' );
+	public function post( $path, array $data = [] ) {
+		return $this->request( 'post', $path, $data );
 	}
 
 	/**
 	 * API call method for sending requests using DELETE.
 	 *
-	 * @since 1.0
-	 *
 	 * @param string $path Path of the endpoint.
 	 * @param array  $data Data to be sent along with the request.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	protected function delete( $path, array $data = [] ) {
-		return $this->request( $path, $data, 'delete' );
+	public function delete( $path, array $data = [] ) {
+		return $this->request( 'delete', $path, $data );
 	}
 
 	/**
 	 * API call method for sending requests using PATCH.
 	 *
-	 * @since 1.0
-	 *
 	 * @param string $path Path of the endpoint.
 	 * @param array  $data Data to be sent along with the request.
 	 *
-	 * @return stdClass Cloudflare response packet.
+	 * @return object
 	 */
-	protected function patch( $path, array $data = [] ) {
-		return $this->request( $path, $data, 'patch' );
+	public function patch( $path, array $data = [] ) {
+		return $this->request( 'patch', $path, $data );
 	}
 
 	/**
-	 * API call method for sending requests using GET, POST, PUT, DELETE OR PATCH.
+	 * API call method for sending requests
 	 *
-	 * @since  1.0
-	 *
-	 * @author James Bell <james@james-bell.co.uk> - credit for original code adapted for version 1.0.
-	 * @author WP Media
-	 *
+	 * @param string $method Type of method that should be used.
 	 * @param string $path   Path of the endpoint.
 	 * @param array  $data   Data to be sent along with the request.
-	 * @param string $method Type of method that should be used ('GET', 'DELETE', 'PATCH').
 	 *
-	 * @return stdClass response object.
+	 * @return object
+	 *
 	 * @throws AuthenticationException When email or api key are not set.
 	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
 	 */
-	protected function request( $path, array $data = [], $method = 'get' ) {
-		if ( '/ips' !== $path && ! $this->is_authorized() ) {
+	protected function request( $method = 'get', $path, array $data = [] ) {
+		if (
+			'/ips' !== $path
+			&&
+			! $this->auth->is_authorized()
+		) {
 			throw new AuthenticationException( 'Authentication information must be provided.' );
 		}
 
-		$response = $this->do_remote_request( $path, $data, $method );
+		$response = $this->do_remote_request( $method, $path, $data );
 
 		if ( is_wp_error( $response ) ) {
 			throw new Exception( $response->get_error_message() );
@@ -112,7 +121,8 @@ class Client {
 		if ( empty( $data->success ) ) {
 			$errors = [];
 			foreach ( $data->errors as $error ) {
-				if ( 6003 === $error->code || 9103 === $error->code ) {
+				if (
+					6003 === $error->code || 9103 === $error->code ) {
 					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
 
 					$msg .= ' ' . sprintf(
@@ -143,40 +153,28 @@ class Client {
 			throw new Exception( wp_sprintf_l( '%l ', $errors ) );
 		}
 
-		return $data;
+		return $data->result;
 	}
 
 	/**
-	 * Checks if the email and API key for the API credentials are set.
+	 * Does the request remote request.
 	 *
-	 * @since 1.0
-	 *
-	 * @return bool true if authorized; else false.
-	 */
-	private function is_authorized() {
-		return (
-			isset( $this->email, $this->api_key )
-			&&
-			false !== filter_var( $this->email, FILTER_VALIDATE_EMAIL )
-		);
-	}
-
-	/**
-	 * Does the request remote cURL request.
-	 *
-	 * @since 1.0
-	 *
+	 * @param string $method Type of method that should be used.
 	 * @param string $path   Path of the endpoint.
 	 * @param array  $data   Data to be sent along with the request.
-	 * @param string $method Type of method that should be used ('GET', 'DELETE', 'PATCH').
 	 *
-	 * @return array curl response packet.
+	 * @return array|WP_Error
 	 */
-	private function do_remote_request( $path, array $data, $method ) {
+	private function do_remote_request( string $method, string $path, array $data ): array {
 		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
 
+		$headers = [
+			'User-Agent'   => 'wp-rocket/' . rocket_get_constant( 'WP_ROCKET_VERSION' ),
+			'Content-Type' => 'application/json',
+		];
+
 		if ( '/ips' !== $path ) {
-			$this->args['headers'] = $this->headers;
+			$this->args['headers'] = array_merge( $headers, $this->auth->get_headers() );
 		}
 
 		$this->args['body'] = [];
