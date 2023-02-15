@@ -47,6 +47,11 @@ class DisplayRenewalSoonBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['user']['creation_date'] );
+
+		$this->user->shouldReceive( 'is_auto_renew' )
+			->atMost()
+			->once()
+			->andReturn( $config['user']['auto_renew'] );
 			
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()

@@ -65,6 +65,18 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullAutoRenewalIsEmpty' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'auto_renew'         => '',
+				'licence_expiration' => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2022-05-12' ),
+			],
+		],
+		'expected' => null,
+	],
 	'testShouldReturnNullWhenLicenseAutoRenew' => [
 		'config'   => [
 			'user' => [
