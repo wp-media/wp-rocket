@@ -59,6 +59,10 @@ tests_add_filter(
 			$GLOBALS['kinsta_cache'] = new Kinsta_Cache();
 		}
 
+		if ( BootstrapManager::isGroup('Flywheel') ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/FlywheelNginxCompat.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
