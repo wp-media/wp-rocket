@@ -34,26 +34,17 @@ class Test_AutoPurge extends TestCase {
 
 		$user = $this->factory->user->create( [ 'role' => 'contributor' ] );
 		wp_set_current_user( $user );
-		/*Functions\when('is_wp_error')->alias(function ($t) {
-			var_dump($t);
-			var_dump($t);
-			var_dump($t);
-			return false;
-		});*/
 		Functions\expect( 'is_wp_error' )->never();
 
 		do_action( 'after_rocket_clean_domain' );
 	}
 
 	public function testShouldBailoutWhenNoPageRule() {
+		$this->setApiCredentialsInOptions();
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_purge_cloudflare_cache' );
 		$user = $this->factory->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
-		/*Functions\when('is_wp_error')->alias(function ($t) {
-			var_dump($t);
-			return false;
-		});*/
 		Functions\expect( 'is_wp_error' )
 			->ordered()
 			->once()
