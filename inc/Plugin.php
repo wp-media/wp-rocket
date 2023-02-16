@@ -375,14 +375,13 @@ class Plugin {
 			$this->add_subscribers( $provider->$method() );
 		}
 
-		$this->add_subscribers($added);
+		$this->add_subscribers( $added );
 	}
 
 	/**
 	 * Add subscribers to event manager.
 	 *
 	 * @param string[] $subscribers Subscribers to add.
-	 * @param string[]                  $added id from subscribers manually added.
 	 *
 	 * @return void
 	 */
