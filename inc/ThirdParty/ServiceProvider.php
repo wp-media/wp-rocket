@@ -141,6 +141,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			'cloudflare_plugin_subscriber',
 			'rocket_lazy_load',
 			'the_events_calendar',
+			'perfmatters',
+			'rapidload',
 		];
 	}
 
