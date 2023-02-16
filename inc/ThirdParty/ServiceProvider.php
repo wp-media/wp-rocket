@@ -94,7 +94,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
 		'the_events_calendar',
-		'wp_discuz',
 	];
 
 	/**
@@ -239,9 +238,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'the_events_calendar', TheEventsCalendar::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'wp_discuz', WpDiscuz::class )
 			->addTag( 'common_subscriber' );
 	}
 }
