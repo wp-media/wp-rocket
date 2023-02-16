@@ -224,13 +224,9 @@ class Purge {
 			}
 			foreach ( $terms as $term ) {
 				$term_url = get_term_link( $term->slug, $taxonomy->name );
-				var_dump("purge logic");
 				if ( ! is_wp_error( $term_url ) ) {
-					var_dump("purge logic");
 					$urls[] = $term_url;
 				}
-				var_dump("purge logic");
-
 				if ( ! is_taxonomy_hierarchical( $taxonomy->name ) ) {
 					continue;
 				}
@@ -241,12 +237,9 @@ class Purge {
 						continue;
 					}
 					$ancestor_term_url = get_term_link( $ancestor_object->slug, $taxonomy->name );
-					var_dump("purge logic");
 					if ( ! is_wp_error( $ancestor_term_url ) ) {
-						var_dump("purge logic");
 						$urls[] = $ancestor_term_url;
 					}
-					var_dump("purge logic");
 				}
 			}
 		}

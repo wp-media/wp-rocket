@@ -152,16 +152,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function auto_purge() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
-			var_dump('out');
 			return;
 		}
 
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
-		var_dump('error');
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
 			return;
 		}
-		var_dump('error');
 
 		// Purge CloudFlare.
 		$this->cloudflare->purge_cloudflare();
@@ -182,12 +179,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
-		var_dump('save clouflare pure cache url');
+
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
-			var_dump('save clouflare pure cache url');
 			return;
 		}
-		var_dump('save clouflare pure cache url');
 
 		// Add home URL and feeds URLs to Cloudflare clean cache URLs list.
 		$purge_urls[] = get_rocket_i18n_home_url( $lang );
@@ -215,16 +210,14 @@ class Subscriber implements Subscriber_Interface {
 
 		// Purge CloudFlare.
 		$cf_purge = $this->cloudflare->purge_cloudflare();
-		var_dump('save clouflare pure cache no die');
+
 		if ( is_wp_error( $cf_purge ) ) {
-			var_dump('save clouflare pure cache no die');
 			$cf_purge_result = [
 				'result'  => 'error',
 				// translators: %s = CloudFare API return message.
 				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
 			];
 		} else {
-			var_dump('save clouflare pure cache no die');
 			$cf_purge_result = [
 				'result'  => 'success',
 				'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
@@ -367,16 +360,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function save_cloudflare_devmode( $devmode ) {
 		$cloudflare_dev_mode_return = $this->cloudflare->set_devmode( $devmode );
-		var_dump('save clouflare devmode');
 		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
-			var_dump('save clouflare devmode');
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
 			];
 		}
-		var_dump('save clouflare devmode');
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
@@ -395,16 +385,14 @@ class Subscriber implements Subscriber_Interface {
 	private function save_cache_level( $cache_level ) {
 		// Set Cache Level to Aggressive.
 		$cf_cache_level_return = $this->cloudflare->set_cache_level( $cache_level );
-		var_dump('save clouflare cache level');
+
 		if ( is_wp_error( $cf_cache_level_return ) ) {
-			var_dump('save clouflare cache level');
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
 			];
 		}
-		var_dump('save clouflare cache level');
 
 		if ( 'aggressive' === $cf_cache_level_return ) {
 			$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
@@ -427,16 +415,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function save_minify( $minify ) {
 		$cf_minify_return = $this->cloudflare->set_minify( $minify );
-		var_dump('save clouflare minify');
+
 		if ( is_wp_error( $cf_minify_return ) ) {
-			var_dump('save clouflare minify');
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
 			];
 		}
-		var_dump('save clouflare minify');
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
@@ -455,16 +441,13 @@ class Subscriber implements Subscriber_Interface {
 	private function save_rocket_loader( $rocket_loader ) {
 		$cf_rocket_loader_return = $this->cloudflare->set_rocket_loader( $rocket_loader );
 
-		var_dump('save clouflare rocket loader');
 		if ( is_wp_error( $cf_rocket_loader_return ) ) {
-			var_dump('save clouflare rocket loader');
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
 			];
 		}
-		var_dump('save clouflare rocket loader');
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
@@ -482,18 +465,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function save_browser_cache_ttl( $browser_cache_ttl ) {
 		$cf_browser_cache_return = $this->cloudflare->set_browser_cache_ttl( $browser_cache_ttl );
-		var_dump('save clouflare cache ttl sub');
 
 		if ( is_wp_error( $cf_browser_cache_return ) ) {
-			var_dump('save clouflare cache ttl sub');
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
 				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
 			];
 		}
-		var_dump('save clouflare cache ttl sub');
-
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
@@ -577,15 +556,12 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// If is submit CF view & CF Credentials are invalid, display error and bail out.
-		var_dump('save clouflare options');
 		if ( is_wp_error( $is_api_keys_valid_cloudflare ) && $submit_cloudflare_view ) {
-			var_dump('save clouflare options');
 			$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
 			set_transient( get_current_user_id() . '_cloudflare_update_settings', [] );
 			return;
 		}
-		var_dump('save clouflare options');
 
 		// Update CloudFlare Development Mode.
 		$cloudflare_update_result = [];
@@ -624,12 +600,10 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			1 === $value['cloudflare_auto_settings']
 		) {
-			var_dump('old settings save');
 			$cf_settings                      = $this->cloudflare->get_settings();
 			$value['cloudflare_old_settings'] = ! is_wp_error( $cf_settings )
 				? implode( ',', array_filter( $cf_settings ) )
 				: '';
-			var_dump('old settings save');
 		}
 
 		return $value;

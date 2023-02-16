@@ -67,7 +67,6 @@ class Cloudflare {
 			$is_api_keys_valid_cf = $this->is_api_keys_valid( $cf_email, $cf_api_key, $cf_zone_id );
 			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cf, 2 * WEEK_IN_SECONDS );
 		}
-		var_dump('cloud instance');
 
 		if ( is_wp_error( $is_api_keys_valid_cf ) ) {
 			// Sets Cloudflare API as WP_Error if credentials are not valid.
@@ -75,7 +74,6 @@ class Cloudflare {
 
 			return;
 		}
-		var_dump('cloud instance');
 
 		// Sets Cloudflare Valid Credentials and User Agent.
 		$this->api->set_api_credentials( $cf_email, $cf_api_key, $cf_zone_id );
@@ -169,11 +167,9 @@ class Cloudflare {
 	 * @return mixed  Object|bool true / false if $action_value was found or not, WP_Error otherwise.
 	 */
 	public function has_page_rule( $action_value ) {
-		var_dump('cloudflare  pagerule');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare  pagerule');
 
 		try {
 			$cf_page_rule     = $this->api->list_pagerules();
@@ -193,11 +189,9 @@ class Cloudflare {
 	 * @return mixed Object|bool true if the purge is successful, WP_Error otherwise.
 	 */
 	public function purge_cloudflare() {
-		var_dump('cloudflare  purge');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare  purge');
 
 		try {
 			$cf_purge = $this->api->purge();
@@ -219,11 +213,9 @@ class Cloudflare {
 	 * @return mixed Object|bool true if the purge is successful, WP_Error otherwise
 	 */
 	public function purge_by_url( $post, $purge_urls, $lang ) {
-		var_dump('cloudflare  purge url');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare  purge url');
 
 		try {
 			$cf_purge = $this->api->purge_files( $purge_urls );
@@ -243,11 +235,9 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_browser_cache_ttl( $mode ) {
-		var_dump('cloudflare browser cache ttl');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare browser cache ttl');
 
 		try {
 			$cf_return = $this->api->change_browser_cache_ttl( (int) $mode );
@@ -267,11 +257,9 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_rocket_loader( $mode ) {
-		var_dump('cloudflare rocket loader');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare rocket loader');
 
 		try {
 			$cf_return = $this->api->change_rocket_loader( $mode );
@@ -291,11 +279,9 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_minify( $mode ) {
-		var_dump('cloudflare minify');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare minify');
 
 		$cf_minify_settings = [
 			'css'  => $mode,
@@ -321,11 +307,9 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_cache_level( $mode ) {
-		var_dump('cloudflare cahche level');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare cahche level');
 
 		try {
 			$cf_return = $this->api->change_cache_level( $mode );
@@ -345,11 +329,9 @@ class Cloudflare {
 	 * @return mixed Object|String Mode value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_devmode( $mode ) {
-		var_dump('cloudflare devmode');
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare devmode');
 
 		if ( 0 === (int) $mode ) {
 			$value = 'off';
@@ -378,12 +360,9 @@ class Cloudflare {
 	 * @return mixed bool|Array Array of Cloudflare settings, false if any error connection to Cloudflare.
 	 */
 	public function get_settings() {
-		var_dump('cloudflare get settings');
-
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {
 			return $this->cloudflare_api_error;
 		}
-		var_dump('cloudflare get settings');
 
 		try {
 			$cf_settings = $this->api->get_settings();
