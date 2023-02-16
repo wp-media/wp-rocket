@@ -586,4 +586,5 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		}
 		return 'webp';
 	}
+
 }
