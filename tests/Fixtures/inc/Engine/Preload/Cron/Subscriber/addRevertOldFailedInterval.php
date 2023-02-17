@@ -33,9 +33,9 @@ return [
 				'interval' => 10,
 				'display'  => 'test',
 			],
-			'rocket_revert_old_in_progress_rows' => [
+			'rocket_revert_old_failed_rows' => [
 				'interval' => 12 * 60 * 60,
-				'display'  => 'WP Rocket Preload revert stuck in-progress jobs',
+				'display'  => 'WP Rocket Preload revert stuck failed jobs',
 			]
 		]
 	]

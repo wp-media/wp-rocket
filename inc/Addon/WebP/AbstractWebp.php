@@ -28,7 +28,7 @@ abstract class AbstractWebp {
 	/**
 	 * Get a list of active plugins that convert and/or serve webp images.
 	 *
-	 * @since 3.4
+	 * @since 3.12.6
 	 *
 	 * @return array An array of Webp_Interface objects.
 	 */
@@ -47,15 +47,14 @@ abstract class AbstractWebp {
 			return [];
 		}
 
-		foreach ( $webp_plugins as $i => $plugin ) {
+		foreach ( $webp_plugins as $plugin_key => $plugin ) {
 			if ( ! $plugin instanceof Webp_Interface ) {
-				unset( $webp_plugins[ $i ] );
+				unset( $webp_plugins[ $plugin_key ] );
 				continue;
 			}
 
 			if ( ! $this->is_plugin_active( $plugin->get_basename() ) ) {
-				unset( $webp_plugins[ $i ] );
-				continue;
+				unset( $webp_plugins[ $plugin_key ] );
 			}
 		}
 
@@ -65,27 +64,27 @@ abstract class AbstractWebp {
 	/**
 	 * Tell if a plugin is active.
 	 *
-	 * @since 3.4
+	 * @since 3.12.6
 	 *
 	 * @param  string $plugin_basename A plugin basename.
 	 * @return bool
 	 */
 	protected function is_plugin_active( string $plugin_basename ): bool {
-		if ( \doing_action( 'deactivate_' . $plugin_basename ) ) {
+		if ( doing_action( 'deactivate_' . $plugin_basename ) ) {
 			return false;
 		}
 
-		if ( \doing_action( 'activate_' . $plugin_basename ) ) {
+		if ( doing_action( 'activate_' . $plugin_basename ) ) {
 			return true;
 		}
 
-		return \rocket_is_plugin_active( $plugin_basename );
+		return rocket_is_plugin_active( $plugin_basename );
 	}
 
 	/**
 	 * Tell if WP Rocket uses a CDN for images.
 	 *
-	 * @since 3.4
+	 * @since 3.12.6
 	 *
 	 * @return bool
 	 */

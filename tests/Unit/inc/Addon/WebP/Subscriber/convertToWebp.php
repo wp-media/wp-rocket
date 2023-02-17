@@ -44,11 +44,11 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 			->with( 'cache_webp', 0 )
 			->andReturn( $config['webp'] );
 
-
 		Functions\when('wp_upload_dir')->justReturn([
 			'basedir' => '/Internal/path/to/root/wp-content/uploads/',
 			'baseurl' => 'http://example.org/custom-folder/'
 		]);
+
 
 		Filters\expectApplied( 'rocket_disable_webp_cache' )
 			->atMost()

@@ -143,6 +143,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			$html     = str_replace( $attribute[0], $new_attr, $html );
 		}
 
+		$has_webp = apply_filters_deprecated( 'rocket_page_has_webp_files', [ $has_webp, $html ], '3.12.6', 'rocket_page_has_webp_files' );
+
 		/**
 		 * Tell if the page contains webp files.
 		 *
@@ -151,7 +153,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		 * @param bool   $has_webp True if the page contains webp files. False otherwise.
 		 * @param string $html     The page’s html contents.
 		 */
-		$has_webp = apply_filters( 'rocket_page_has_hebp_files', $has_webp, $html );
+
+		$has_webp = apply_filters( 'rocket_page_has_webp_files', $has_webp, $html );
 
 		if ( $has_webp ) {
 			return $html . '<!-- Rocket has webp -->';
@@ -268,6 +271,8 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			if ( 14 > (int) $matches['version'] ) {
 				return false;
 			}
+
+			return true;
 		}
 
 		if ( preg_match( '#Version/(?<version>[0-9]{2,})(?:.*)Safari#i', $user_agent, $matches ) ) {

@@ -15,17 +15,21 @@ class Test_MaybeSetVarnishAddonTitle extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 
-        Functions\expect( 'rest_sanitize_boolean' )
+		$this->constants['vcaching'] = $config['onecom_performance_plugin_enabled'];
+
+		if ( $config['onecom_performance_plugin_enabled'] ) {
+			Functions\expect( 'rest_sanitize_boolean' )
 				->once()
 				->andReturn( $config['is_varnish_active'] );
 
-        Functions\when( 'get_option' )
-			->alias( function( $value ) use( $config ) {
-				if ( 'varnish_caching_enable' === $value ) {
-                    return $config['is_varnish_active'];
-                }
-			}
-		);
+			Functions\when( 'get_option' )
+				->alias( function( $value ) use( $config ) {
+					if ( 'varnish_caching_enable' === $value ) {
+						return $config['is_varnish_active'];
+					}
+				}
+				);
+		}
 
 		$this->assertSame(
 			$expected['title'], 
