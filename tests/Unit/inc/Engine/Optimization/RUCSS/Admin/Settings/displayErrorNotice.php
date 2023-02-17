@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -17,13 +18,15 @@ class Test_DisplayErrorNotice extends FilesystemTestCase
 	protected $settings;
 	protected $options;
 	protected $beacon;
+	protected $used_css;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->beacon = Mockery::mock(Beacon::class);
-		$this->settings = new Settings($this->options, $this->beacon);
+		$this->used_css = $this->createMock(UsedCSS::class);
+		$this->settings = new Settings($this->options, $this->beacon, $this->used_css);
 		$this->stubTranslationFunctions();
 	}
 

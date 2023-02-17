@@ -528,21 +528,21 @@ class Settings {
 		// translators: %1$s = plugin name.
 			"%1\$s: $main_message<ul><li>$reason_1_message</li><li>$reason_2_message</li></ul>",
 			'<strong>WP Rocket</strong>'
-     );
+		);
 
 		rocket_notice_html(
 			[
-      	'status'               => 'error',
+				'status'               => 'error',
 				'message'              => $message,
 				'dismissible'          => '',
 				'id'                   => 'rocket-notice-rucss-error-http',
 				'dismiss_button'       => 'rucss_error_notice',
 				'dismiss_button_class' => 'button-primary',
-        ]
+			]
 		);
 	}
-   /**
-   * Display a notice on table missing.
+	/**
+	 * Display a notice on table missing.
 	 *
 	 * @return void
 	 */
