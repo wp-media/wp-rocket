@@ -244,7 +244,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'the_events_calendar', TheEventsCalendar::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'wp_discuz', WpDiscuz::class )
+			->share( 'perfmatters', Perfmatters::class )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'rapidload', RapidLoad::class );
 	}
 }
