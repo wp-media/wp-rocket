@@ -3,7 +3,7 @@
 namespace WP_Rocket\ThirdParty\Plugins\I18n;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
+use WP_Filesystem_Direct;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
