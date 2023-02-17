@@ -19,7 +19,7 @@ class Test_AddSeopressSitemap extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_seopress_sitemap');
+		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_seopress_sitemap', 15);
 	}
 
 	public function tearDown(): void

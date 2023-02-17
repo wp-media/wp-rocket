@@ -51,7 +51,7 @@ class TheSEOFramework implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_sitemap_preload_list' => 'add_tsf_sitemap_to_preload',
+			'rocket_sitemap_preload_list' => [ 'add_tsf_sitemap_to_preload', 15 ],
 		];
 	}
 

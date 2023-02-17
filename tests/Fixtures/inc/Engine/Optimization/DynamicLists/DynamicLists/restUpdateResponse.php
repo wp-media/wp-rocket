@@ -4,7 +4,7 @@ $data = "{\"rucss_inline_atts_exclusions\":[\"rocket-lazyload-inline-css\",\"div
 
 return [
 	'vfs_dir'   => 'wp-content/',
-/*	'structure' => [
+/*  'structure' => [
 		'wp-content' => [
 			'wp-rocket-config' => [
 				'dynamic-lists.json' => $data

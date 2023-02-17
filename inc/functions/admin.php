@@ -39,7 +39,7 @@ function rocket_need_api_key() {
  */
 function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
 	// Delete a user meta for 1 user or all at a time.
-	delete_metadata( 'user', $uid, 'rocket_boxes', null === $uid );
+	delete_metadata( 'user', $uid, 'rocket_boxes', '', ! $uid );
 
 	// $keep_this works only for the current user.
 	if ( ! empty( $keep_this ) && null !== $uid ) {
@@ -452,4 +452,30 @@ function rocket_settings_import_redirect( $message, $status ) {
 	$goback = add_query_arg( 'settings-updated', 'true', wp_get_referer() );
 	wp_safe_redirect( esc_url_raw( $goback ) );
 	die();
+}
+
+/**
+ * Check if WPR options should be displayed.
+ *
+ * @return bool
+ */
+function rocket_can_display_options() {
+	$disallowed_post_status = [
+		'draft',
+		'trash',
+		'private',
+		'future',
+		'pending',
+	];
+
+	$post_status = get_post_status();
+	if ( in_array( $post_status, $disallowed_post_status, true ) ) {
+		return false;
+	}
+
+	if ( function_exists( 'get_current_screen' ) && is_object( get_current_screen() ) && 'add' === get_current_screen()->action ) {
+		return false;
+	}
+
+	return true;
 }

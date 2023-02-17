@@ -6,6 +6,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProvi
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Engine\Capabilities\Manager;
+use WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck;
 
 /**
  * Service Provider for the activation process.
@@ -27,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'action_scheduler_check',
 	];
 
 	/**
@@ -52,5 +54,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$this->getContainer()->add( 'capabilities_manager', Manager::class );
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );
+		$this->getContainer()->add( 'action_scheduler_check', ActionSchedulerCheck::class );
 	}
 }

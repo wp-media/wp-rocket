@@ -2,15 +2,18 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-/**
- * Compatibility class for Bridge theme
- *
- * @since 3.3.1
- * @author Remy Perona
- */
-class Bridge implements Subscriber_Interface {
+class Bridge extends ThirdpartyTheme {
+	use ReturnTypesTrait;
+
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'bridge';
+
 	/**
 	 * Options instance
 	 *
@@ -21,20 +24,17 @@ class Bridge implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.3.1
-	 * @author Remy Perona
+	 * @since 3.3.1
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		$current_theme = wp_get_theme();
-
-		if ( 'Bridge' !== $current_theme->get( 'Name' ) ) {
+		if ( ! self::is_current_theme() ) {
 			return [];
 		}
 
 		return [
-			'rocket_lazyload_background_images' => 'disable_lazyload_background_images',
+			'rocket_lazyload_background_images' => 'return_false',
 			'update_option_qode_options_proya'  => [ 'maybe_clear_cache', 10, 2 ],
 		];
 	}
@@ -49,22 +49,9 @@ class Bridge implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable lazyload for background images when using Bridge theme
-	 *
-	 * @since 3.3.1
-	 * @author Remy Perona
-	 *
-	 * @return bool
-	 */
-	public function disable_lazyload_background_images() {
-		return false;
-	}
-
-	/**
 	 * Maybe clear WP Rocket cache when Bridge custom CSS/JS is updated
 	 *
 	 * @since 3.3.7
-	 * @author Remy Perona
 	 *
 	 * @param array $old_value Previous option values.
 	 * @param array $new_value New option values.

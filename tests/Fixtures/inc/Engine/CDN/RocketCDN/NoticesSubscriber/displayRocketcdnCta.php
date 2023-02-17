@@ -25,7 +25,7 @@ return [
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -76,7 +76,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -178,7 +178,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -258,7 +258,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -338,7 +338,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -418,7 +418,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -460,7 +460,7 @@ HTML
 				'discounted_price_monthly' => 5.99,
 				'discounted_price_yearly'  => 59.0,
 				'discount_campaign_name'   => 'Launch',
-				'end_date'                 => '2022-11-03',
+				'end_date'                 => date( 'Y-m-d', strtotime( 'tomorrow', time() ) ),
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.0,
 			],
@@ -474,13 +474,13 @@ HTML
 				'cta-big'   => [
 					'container_class'    => '',
 					'promotion_campaign' => 'Launch',
-					'promotion_end_date' => '2022-11-03',
+					'promotion_end_date' => date( 'Y-m-d', strtotime( 'tomorrow', time() ) ),
 					'nopromo_variant'    => '',
 					'regular_price'      => 7.99,
 					'current_price'      => 5.99,
 				],
 			],
-			'integration' => <<<HTML
+			'integration' => '
 <div class="wpr-rocketcdn-cta-small notice-alt notice-warning wpr-isHidden" id="wpr-rocketcdn-cta-small">
 	<div class="wpr-flex">
 		<section>
@@ -494,14 +494,14 @@ HTML
 <div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">
 	<div class="wpr-flex wpr-rocketcdn-promo">
 		<h3 class="wpr-rocketcdn-promo-title">Launch</h3>
-		<p class="wpr-title2 wpr-rocketcdn-promo-date">Valid until 2022-11-03 only!</p>
+		<p class="wpr-title2 wpr-rocketcdn-promo-date">Valid until '. date( 'Y-m-d', strtotime( 'tomorrow', time() ) ) .' only!</p>
 	</div>
 	<section class="wpr-rocketcdn-cta-content">
 		<h3 class="wpr-title2">RocketCDN</h3>
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">
@@ -524,8 +524,7 @@ HTML
 	<button class="wpr-rocketcdn-cta-close" id="wpr-rocketcdn-close-cta">
 		<span class="screen-reader-text">Reduce this banner</span>
 	</button>
-</div>
-HTML
+</div>'
 			,
 		],
 
@@ -573,7 +572,7 @@ HTML
 		<p class="wpr-rocketcdn-cta-subtitle">Speed up your website thanks to:</p>
 		<div class="wpr-flex">
 			<ul class="wpr-rocketcdn-features">
-				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwith</strong></li>
+				<li class="wpr-rocketcdn-feature wpr-rocketcdn-bandwidth">High performance Content Delivery Network (CDN) with <strong>unlimited bandwidth</strong></li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-configuration">Easy configuration: the <strong>best CDN settings</strong> are automatically applied</li>
 				<li class="wpr-rocketcdn-feature wpr-rocketcdn-automatic">WP Rocket integration: the CDN option is <strong>automatically configured</strong> in our plugin</li>
 				<li class="wpr-rocketcdn-cta-footer">

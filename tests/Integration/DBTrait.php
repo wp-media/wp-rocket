@@ -12,7 +12,6 @@ trait DBTrait {
 	public static function cacheFound( array $cache): bool {
 		$container = apply_filters( 'rocket_container', null );
 		$resource_query = $container->get( 'preload_caches_query' );
-
 		return count($resource_query->query( $cache )) > 0;
 	}
 

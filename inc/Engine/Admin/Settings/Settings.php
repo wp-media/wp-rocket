@@ -393,8 +393,7 @@ class Settings {
 
 		// Option : CDN Cnames.
 		if ( isset( $input['cdn_cnames'] ) ) {
-			$input['cdn_cnames'] = array_map( 'sanitize_text_field', $input['cdn_cnames'] );
-			$input['cdn_cnames'] = array_filter( $input['cdn_cnames'] );
+			$input['cdn_cnames'] = $this->sanitize_cdn_cnames( $input['cdn_cnames'] );
 		} else {
 			$input['cdn_cnames'] = [];
 		}
@@ -682,5 +681,35 @@ class Settings {
 		add_settings_error( 'general', 'reject_uri_global_exclusion', __( 'Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site.', 'rocket' ) );
 
 		return array_diff_key( $field, array_flip( array_keys( $field, '/(.*)', true ) ) );
+	}
+
+	/**
+	 * Sanitizes the CDN cnames values
+	 *
+	 * @param array $cnames Array of user submitted values for the cnames.
+	 *
+	 * @return array
+	 */
+	private function sanitize_cdn_cnames( array $cnames ) {
+		$cnames = array_map(
+			function( $cname ) {
+				$cname = trim( $cname );
+
+				if ( empty( $cname ) ) {
+					return false;
+				}
+
+				$cname_parts = get_rocket_parse_url( rocket_add_url_protocol( $cname ) );
+
+				if ( false === filter_var( $cname_parts['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+					return false;
+				}
+
+				return $cname_parts['scheme'] . '://' . $cname_parts['host'] . $cname_parts['path'];
+			},
+			$cnames
+		);
+
+		return array_unique( array_filter( $cnames ) );
 	}
 }

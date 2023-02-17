@@ -10,10 +10,18 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_UpdateCacheRow extends AdminTestCase
 {
+	protected $config;
+
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
 		self::installFresh();
+	}
+
+	public function set_up()
+	{
+		parent::set_up();
+		add_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
 	}
 
 	public static function tear_down_after_class()
@@ -22,10 +30,18 @@ class Test_UpdateCacheRow extends AdminTestCase
 		self::uninstallAll();
 	}
 
+	public function tear_down()
+	{
+		remove_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
+		$this->config = $config;
+
 		foreach ($config['links'] as $link) {
 			self::addCache($link);
 		}
@@ -37,11 +53,15 @@ class Test_UpdateCacheRow extends AdminTestCase
 		}
 
 		foreach ($expected['links'] as $link) {
-			$this->assertSame(true, self::cacheFound($link));
+			$this->assertSame($expected['exists'], self::cacheFound($link));
 		}
 	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'updateCacheRow' );
+	}
+
+	public function excluded($regexes): array {
+		return array_merge($regexes, $this->config['regexes']);
 	}
 }

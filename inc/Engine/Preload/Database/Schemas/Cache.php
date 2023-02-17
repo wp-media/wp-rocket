@@ -66,5 +66,17 @@ class Cache extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 		],
+
+		// IS_LOCKED column.
+		[
+			'name'       => 'is_locked',
+			'type'       => 'tinyint',
+			'length'     => '1',
+			'default'    => 0,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 	];
 }

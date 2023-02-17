@@ -53,7 +53,6 @@ class Test_UpdateLists extends FilesystemTestCase {
 			$expected['data'],
 			$this->filesystem->get_contents( $this->filesystem->getUrl( 'wp-content/wp-rocket-config/dynamic-lists.json' ) )
 		);
-
 		$this->assertEquals(
 			$expected['transient'],
 			get_transient( 'wpr_dynamic_lists' )

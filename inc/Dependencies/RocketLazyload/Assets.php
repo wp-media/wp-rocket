@@ -69,14 +69,13 @@ class Assets {
 		$script = '';
 
 		$args['options'] = array_intersect_key( $args['options'], $allowed_options );
-		$script .= 'window.lazyLoadOptions = ';
-		
+		$script         .= 'window.lazyLoadOptions = ';
+
 		if ( isset( $args['elements']['background_image'] ) ) {
-			$script .=	'[';
+			$script .= '[';
 		}
 
-		$script.='
-			{
+		$script .= '{
                 elements_selector: "' . esc_attr( implode( ',', $args['elements'] ) ) . '",
                 data_src: "lazy-src",
                 data_srcset: "lazy-srcset",
@@ -108,7 +107,7 @@ class Assets {
 
 		if ( isset( $args['elements']['background_image'] ) ) {
 			$script .= '},{
-				elements_selector: "'.esc_attr( $args['elements']['background_image'] ).'",
+				elements_selector: "' . esc_attr( $args['elements']['background_image'] ) . '",
 				data_src: "lazy-src",
 				data_srcset: "lazy-srcset",
 				data_sizes: "lazy-sizes",
@@ -116,8 +115,7 @@ class Assets {
 				class_loaded: "lazyloaded",
 				threshold: ' . esc_attr( $args['threshold'] ) . ',
 			}];';
-		}
-		else{
+		} else {
 			$script .= '};';
 		}
 
@@ -137,7 +135,7 @@ class Assets {
                                 continue;
                             }
 
-                           if (typeof mutation.addedNodes[i].getElementsByClassName !== \'function\') {
+                            if (typeof mutation.addedNodes[i].getElementsByClassName !== \'function\') {
                                 continue;
                             }
 

@@ -27,7 +27,7 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'stop_critical_css_generation', 9 );
-		$this->unregisterAllCallbacksExcept( 'admin_post_rocket_rollback', 'stop_critical_css_generation', 9 );
+		$this->unregisterAllCallbacksExcept( 'rocket_before_rollback', 'stop_critical_css_generation', 9 );
 		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
 		$this->cancel_file_path              = WP_ROCKET_CACHE_ROOT_PATH . '.' . 'rocket_critical_css_generation_process_cancelled';
 
@@ -39,7 +39,7 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 			$this->filesystem->delete( $this->cancel_file_path );
 		}
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
-		$this->restoreWpFilter( 'admin_post_rocket_rollback' );
+		$this->restoreWpFilter( 'rocket_before_rollback' );
 	}
 	/**
 	 * @dataProvider providerTestData
@@ -48,7 +48,7 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 		$this->subscriber->generate_critical_css_on_activation( $config['old'], $config['new'] );
 
 		if('rollback' === $config['upgrade_rollback']){
-			do_action('admin_post_rocket_rollback');
+			do_action('rocket_before_rollback');
 		} else{
 			do_action('wp_rocket_upgrade','3.9.4.1', '3.10');
 		}

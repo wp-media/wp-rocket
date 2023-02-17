@@ -32,12 +32,16 @@ class Test_CreateOrUpdate extends TestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		Functions\when('current_time')->justReturn($config['time']);
-		$this->query->expects(self::once())->method('query')->with([
-			'url' => $config['resource']['url'],
-		])->willReturn($config['rows']);
+		Functions\when('get_transient')->justReturn($config['is_updating']);
 
-		$this->configureCreate($config);
-		$this->configureUpdate($config);
+		if(! $config['rejected'] && !$config['is_updating']) {
+			$this->query->expects(self::once())->method('query')->with([
+				'url' => $config['resource']['url'],
+			])->willReturn($config['rows']);
+
+			$this->configureCreate($config);
+			$this->configureUpdate($config);
+		}
 
 		$this->assertSame($expected, $this->query->create_or_update($config['resource']));
 	}

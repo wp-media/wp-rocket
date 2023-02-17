@@ -501,6 +501,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
 		global $wp_version;
 
+		if ( ! is_array( $exclusions ) ) {
+			$exclusions = (array) $exclusions;
+		}
+
 		if ( ! $this->delayjs_html->is_allowed() ) {
 			return $exclusions;
 		}

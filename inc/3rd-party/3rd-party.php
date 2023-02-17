@@ -69,4 +69,3 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/sumome.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/nginx-helper.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/studiopress.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'themes/uncode.php';

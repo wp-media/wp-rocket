@@ -1,11 +1,13 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
-use Mockery;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\ThirdParty\Themes\Divi;
-use \WP_Theme;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\{Options, Options_Data};
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\ThirdParty\Themes\Divi;
+use WP_Theme;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
@@ -13,38 +15,37 @@ use Brain\Monkey\Functions;
  *
  * @group  ThirdParty
  */
-class Test_MaybeDisableYoutubePreview extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php';
-
+class Test_MaybeDisableYoutubePreview extends TestCase {
 	/**
-	 * @dataProvider ProviderTestData
+	 * @dataProvider configTestData
 	 */
 	public function testSetsCorrectOptions( $config, $expected ) {
 		$theme = new WP_Theme( $config['stylesheet'], 'wp-content/themes/' );
-		$theme->set_name( $config['theme-name'] );
+		$theme->set_name( $config['stylesheet'] );
 
-		if ( isset( $config['is-child'] ) ) {
-			$theme->set_template( $config['is-child'] );
+		if ( isset( $config['template'] ) ) {
+			$theme->set_template( $config['template'] );
 		}
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
-		$options = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
-		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
+		$options_api  = Mockery::mock( Options::class );
+		$options      = Mockery::mock( Options_Data::class );
+		$delayjs_html = Mockery::mock( HTML::class );
+
 		$options->shouldReceive( 'set' )
 		        ->times( $config['set-lazy'] )
 		        ->with( 'lazyload_youtube', 0 );
 		$options->shouldReceive( 'get_options' )
 		        ->times( $config['set-lazy'] )
 		        ->andReturn( [ 'lazyload_youtube' => 0, ] );
-
-		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
 		$options_api->shouldReceive( 'set' )
 		            ->times( $config['set-lazy'] )
 		            ->with( 'settings', [ 'lazyload_youtube' => 0, ] )
 		            ->andReturn( $expected );
 
 		$divi = new Divi( $options_api, $options, $delayjs_html );
+
 		$divi->maybe_disable_youtube_preview( $config['stylesheet'], $theme );
 	}
 }

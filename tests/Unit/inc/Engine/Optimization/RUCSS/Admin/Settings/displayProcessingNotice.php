@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
@@ -20,12 +21,14 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 	private $options;
 	private $settings;
 	protected $config;
+	protected $table;
 
 	public function setUp(): void {
 		parent::setUp();
 
 		$this->options  = Mockery::mock( Options_Data::class );
-		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ) );
+		$this->table = $this->createMock(UsedCSS::class);
+		$this->settings = new Settings( $this->options, Mockery::mock( Beacon::class ), $this->table );
 
 		$this->stubTranslationFunctions();
 	}
@@ -38,9 +41,12 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 		Functions\when( 'get_current_screen' )->justReturn( $config['current_screen'] );
 		Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
 
+		$this->table->expects(self::atMost(1))->method('exists')->willReturn($config['exists']);
+
 		$this->options->shouldReceive( 'get' )
-			->with( 'remove_unused_css', 0 )
-			->andReturn( $config['remove_unused_css'] );
+				->with( 'remove_unused_css', 0 )
+				->andReturn( $config['remove_unused_css'] );
+
 
 		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
 

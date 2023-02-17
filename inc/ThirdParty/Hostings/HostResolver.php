@@ -31,6 +31,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( isset( $_SERVER['ONECOM_DOMAIN_NAME'] ) ) {
+			self::$hostname = 'onecom';
+			return 'onecom';
+		}
+
 		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
 			self::$hostname = 'cloudways';
 
@@ -83,6 +88,11 @@ class HostResolver {
 
 		if ( self::is_dreampress() ) {
 			return 'dreampress';
+		}
+
+		if ( isset( $_SERVER['HTTP_WPXCLOUD'] ) ) {
+			self::$hostname = 'wpxcloud';
+			return 'wpxcloud';
 		}
 
 		if ( isset( $_SERVER['X-LSCACHE'] ) ) {

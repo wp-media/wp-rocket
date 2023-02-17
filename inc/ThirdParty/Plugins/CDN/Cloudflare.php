@@ -97,11 +97,12 @@ class Cloudflare implements Subscriber_Interface {
 
 		rocket_notice_html(
 			[
-				'status'         => 'warning',
-				'dismissible'    => '',
-				'message'        => $message,
-				'id'             => 'cloudflare_server_push_notice',
-				'dismiss_button' => $notice_name,
+				'status'               => 'warning',
+				'dismissible'          => '',
+				'message'              => $message,
+				'id'                   => 'cloudflare_server_push_notice',
+				'dismiss_button'       => $notice_name,
+				'dismiss_button_class' => 'button-primary',
 			]
 		);
 	}

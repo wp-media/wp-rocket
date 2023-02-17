@@ -187,6 +187,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'exclude_lazyload'           => [ 'sanitize_text_field' ],
 		'delay_js_exclusions'        => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 		'remove_unused_css_safelist' => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
+		'preload_excluded_uri'       => [ 'sanitize_text_field', 'rocket_clean_wildcards' ],
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
@@ -228,6 +229,7 @@ function rocket_sanitize_xml( $file ) {
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'xml' === $ext ) ? trim( $file ) : false;
 }
+
 
 /**
  * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.

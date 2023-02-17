@@ -370,11 +370,29 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'id'  => '5b4879100428630abc0c0713',
 					'url' => 'https://docs.wp-rocket.me/article/1104-excluding-inline-js-from-combine/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5b4dd9290428631d7a89023c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1109-exclure-les-js-inline-de-la-combinaison?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'exclude_js'                 => [
 				'en' => [
 					'id'  => '54b9509de4b07997ea3f27c7',
 					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '56967eebc69791436155e649',
+					'url' => 'https://fr.docs.wp-rocket.me/article/243-exclure-js-externe-minification?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'exclude_css'                => [
+				'en' => [
+					'id'  => '5bf339b12c7d3a31944e2111',
+					'url' => 'https://docs.wp-rocket.me/article/1131-resolving-issues-with-css-minify-combine?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5bf3bece04286304a71c6d35',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1132-resoudre-problemes-minification-combinaison-css?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'defer_js'                   => [
@@ -391,6 +409,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'en' => [
 					'id'  => '5f359695042863444aa04e26',
 					'url' => 'https://docs.wp-rocket.me/article/1349-delay-javascript-execution/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '60e5b05605ff892e6bc2e86c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1626-reporter-l-execution-du-javascript?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'delay_js_exclusions'        => [
@@ -420,9 +442,13 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'webp'                       => [
+				'fr' => [
+					'id'  => '5d7b495e04286364bc8f12ef',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1286-compatibilite-webp?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 				'en' => [
 					'id'  => '5d72919704286364bc8ed49d',
-					'url' => 'https://docs.wp-rocket.me/article/1282-webp',
+					'url' => 'https://docs.wp-rocket.me/article/1282-webp?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload_section'           => [
@@ -436,6 +462,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'preload_bot'                => [
 				'en' => '541780fde4b005ed2d11784c,55b282ede4b0b0593824f852,559113eae4b027e1978eba11',
 				'fr' => '5693d582c69791436155d645,569433d1c69791436155d99c',
+			],
+			'preload_exclusions'         => [
+				'en' => [
+					'id'  => '6349682bde258f5018eb456d',
+					'url' => 'https://docs.wp-rocket.me/article/1721-exclude-urls-from-being-preloaded?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '63496d5b8a552811521e52d2',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1722-exclure-url-du-prechargement?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'bot'                        => [
 				'en' => [
@@ -483,8 +519,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/27-using-wp-rocket-on-your-ecommerce-site/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '568f8291c69791436155caea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/176-compatibilite-extensions-e-commerce/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '569431189033603f7da2fc13',
+					'url' => 'https://fr.docs.wp-rocket.me/article/198-ecommerce?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cache_query_strings'        => [
@@ -649,6 +685,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1314-optimiser-les-google-fonts/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'dynamic_lists'              => [
+				'en' => [
+					'id'  => '63234712b0f178684ee3b04a',
+					'url' => 'https://docs.wp-rocket.me/article/1716-dynamic-exclusions-and-inclusions/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6323604341e1a47267b8d0e3',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1717-inclusions-et-exclusions-dynamiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'image_dimensions'           => [
 				'en' => [
 					'id'  => '5fc70216de1bfa158fb54737',
@@ -666,6 +712,10 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				],
 			],
 			'exclude_lazyload'           => [
+				'fr' => [
+					'id'  => '56967952c69791436155e60a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/235-desactivez-le-lazyload-sur-des-images-specifiques?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 				'en' => [
 					'id'  => '5418c792e4b0e7b8127bed99',
 					'url' => 'https://docs.wp-rocket.me/article/15-disabling-lazy-load-on-specific-images/?utm_source=wp_plugin&utm_medium=wp_rocket',

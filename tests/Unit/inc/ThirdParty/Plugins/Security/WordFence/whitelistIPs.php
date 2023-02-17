@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty\Plugins\Security\WordFence;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Security\WordFence;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
@@ -18,6 +18,8 @@ class Test_WordFenceWhitelistIPs extends TestCase {
 	public function setUp() : void {
 		parent::setup();
 		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
+		
 		wordfence::$white_listed_ips =[];
 		$this->WordFenceCompatibility        = new WordFenceCompatibility();
 	}

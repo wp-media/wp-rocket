@@ -6,6 +6,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -17,11 +18,13 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_DelayJs extends TestCase {
 	private $options;
+	private $data_manager;
 
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
+		$this->data_manager = Mockery::mock( DataManager::class );
 	}
 
 	/**
@@ -53,9 +56,13 @@ class Test_DelayJs extends TestCase {
 				->once()
 				->andReturn( $config['delay_js_exclusions'] );
 
+			$this->data_manager->shouldReceive( 'get_lists' )
+				->atMost()
+				->once()
+				->andReturn( $config['exclusions_list'] );
 		}
 
-		$delay_js_html = new HTML( $this->options );
+		$delay_js_html = new HTML( $this->options, $this->data_manager );
 
 		$this->assertSame(
 			$expected,

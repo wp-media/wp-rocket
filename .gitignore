@@ -3,5 +3,6 @@
 /tests/env/local/
 composer.lock
 vfs:/
-tests/Unit/.phpunit.result.cache
-tests/Integration/.phpunit.result.cache
+/tests/Integration/.phpunit.result.cache
+/tests/Unit/.phpunit.result.cache
+

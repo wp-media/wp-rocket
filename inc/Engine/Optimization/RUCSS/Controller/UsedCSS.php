@@ -78,6 +78,7 @@ class UsedCSS {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
+
 	/**
 	 * Instantiate the class.
 	 *
@@ -86,7 +87,7 @@ class UsedCSS {
 	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
-	 * @param Filesystem     $filesystem      Filesystem instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -205,38 +206,17 @@ class UsedCSS {
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
-			// Send the request to add this url into the queue and get the jobId and queueName.
-
-			/**
-			 * Filters the RUCSS safelist
-			 *
-			 * @since 3.11
-			 *
-			 * @param array $safelist Array of safelist values.
-			 */
-			$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
-
-			$config = [
-				'treeshake'      => 1,
-				'rucss_safelist' => $safelist,
-				'is_mobile'      => $is_mobile,
-				'is_home'        => $this->is_home( $url ),
-			];
-
-			$add_to_queue_response = $this->api->add_to_queue( $url, $config );
-			if ( 200 !== $add_to_queue_response['code'] ) {
-				Logger::error(
-					'Error when contacting the RUCSS API.',
-					[
-						'rucss error',
-						'url'     => $url,
-						'code'    => $add_to_queue_response['code'],
-						'message' => $add_to_queue_response['message'],
-					]
-				);
-
+			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
+			if ( false === $add_to_queue_response ) {
 				return $html;
 			}
+
+			/**
+			 * Lock preload URL.
+			 *
+			 * @param string $url URL to lock
+			 */
+			do_action( 'rocket_preload_lock_url', $url );
 
 			// We got jobid and queue name so save them into the DB and change status to be pending.
 			$this->used_css_query->create_new_job(
@@ -245,7 +225,6 @@ class UsedCSS {
 				$add_to_queue_response['contents']['queueName'],
 				$is_mobile
 			);
-
 			return $html;
 		}
 
@@ -270,6 +249,47 @@ class UsedCSS {
 		return $html;
 	}
 
+	/**
+	 * Send the request to add url into the queue.
+	 *
+	 * @param string $url page URL.
+	 * @param bool   $is_mobile page is for mobile.
+	 *
+	 * @return array|bool An array of response data, or false.
+	 */
+	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
+		/**
+		 * Filters the RUCSS safelist
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $safelist Array of safelist values.
+		 */
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+
+		$config = [
+			'treeshake'      => 1,
+			'rucss_safelist' => $safelist,
+			'is_mobile'      => $is_mobile,
+			'is_home'        => $this->is_home( $url ),
+		];
+
+		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+		if ( 200 !== $add_to_queue_response['code'] ) {
+			Logger::error(
+				'Error when contacting the RUCSS API.',
+				[
+					'rucss error',
+					'url'     => $url,
+					'code'    => $add_to_queue_response['code'],
+					'message' => $add_to_queue_response['message'],
+				]
+			);
+
+			return false;
+		}
+		return $add_to_queue_response;
+	}
 	/**
 	 * Delete used css based on URL.
 	 *
@@ -403,7 +423,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS attributes.
 			 */
-			apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_atts_exclusions', $this->inline_atts_exclusions )
 		);
 
 		$inline_content_exclusions = $this->validate_array_and_quote(
@@ -414,7 +434,7 @@ class UsedCSS {
 			 *
 			 * @param array $inline_atts_exclusions Array of patterns used to match against the inline CSS content.
 			 */
-			apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
+			(array) apply_filters( 'rocket_rucss_inline_content_exclusions', $this->inline_content_exclusions )
 		);
 
 		foreach ( $inline_styles as $style ) {
@@ -509,10 +529,8 @@ class UsedCSS {
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
-			&&
-			$this->options->get( 'do_caching_mobile_files', 0 )
-			&&
-			wp_is_mobile();
+			&& $this->options->get( 'do_caching_mobile_files', 0 )
+			&& wp_is_mobile();
 	}
 
 	/**
@@ -588,7 +606,7 @@ class UsedCSS {
 	 */
 	public function check_job_status( int $id ) {
 		Logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
-
+		$new_job_id  = false;
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
 			Logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
@@ -611,28 +629,51 @@ class UsedCSS {
 			// Failure, check the retries number.
 			if ( $row_details->retries >= 3 ) {
 				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
+				/**
+				 * Unlock preload URL.
+				 *
+				 * @param string $url URL to unlock
+				 */
+				do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-				$this->used_css_query->make_status_failed( $id );
+				$this->used_css_query->make_status_failed( $id, strval( $job_details['code'] ), $job_details['message'] );
 
 				return;
 			}
 
-			// Increment the retries number with 1 and Change status to pending again.
+			// on timeout errors with code 408 create new job.
+			switch ( $job_details['code'] ) {
+				case 408:
+					$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
+					if ( false !== $add_to_queue_response ) {
+						$new_job_id = $add_to_queue_response['contents']['jobId'];
+						$this->used_css_query->update_job_id( $id, $new_job_id );
+					}
+					break;
+			}
+
+			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
 		}
+		/**
+		 * Unlock preload URL.
+		 *
+		 * @param string $url URL to unlock
+		 */
+		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
 		$hash = md5( $css );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
-			Logger::error( 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url );
-
-			$this->used_css_query->make_status_failed( $id );
+			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
+			Logger::error( $message );
+			$this->used_css_query->make_status_failed( $id, '', $message );
 
 			return;
 		}
@@ -649,7 +690,6 @@ class UsedCSS {
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-
 	}
 
 	/**
@@ -660,6 +700,8 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
+		global $post;
+
 		if ( 'local' === wp_get_environment_type() ) {
 			return;
 		}
@@ -673,6 +715,22 @@ class UsedCSS {
 		}
 
 		if ( ! $this->can_optimize_url() ) {
+			return;
+		}
+
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
+		/**
+		 * Filters the rocket `clear used css of this url` option on admin bar menu.
+		 *
+		 * @since 3.12.1
+		 *
+		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
+		 * @param type  $post Post object.
+		 */
+		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
 			return;
 		}
 
@@ -690,9 +748,9 @@ class UsedCSS {
 		$wp_admin_bar->add_menu(
 			[
 				'parent' => 'wp-rocket',
-				'id'     => 'remove-usedcss-url',
+				'id'     => 'clear-usedcss-url',
 				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), 'remove_usedcss_url' ),
+				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			]
 		);
 	}

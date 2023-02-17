@@ -5,8 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\Pricing;
-use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\{Pricing, User};
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -36,6 +35,9 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				'views',
 			]
 		);
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 	}
 
 	/**
@@ -67,7 +69,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 		if ( ! is_null( $expected ) ) {
 			$this->user->shouldReceive( 'get_license_type' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['user']['licence_account'] );
 
 			$this->user->shouldReceive( 'get_renewal_url' )
@@ -85,7 +87,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['pricing']['single']->websites );
 
 			$this->pricing->shouldReceive( 'get_plus_websites_count' )
@@ -95,7 +97,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 
 			$this->pricing->shouldReceive( 'get_single_pricing' )
 				->atMost()
-				->once()
+				->twice()
 				->andReturn( $config['pricing']['single'] );
 
 			$this->pricing->shouldReceive( 'get_plus_pricing' )
@@ -108,7 +110,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
-			Functions\when( 'date_i18n' )->justReturn( date( 'Ymd', strtotime( 'now + 8 days' ) ) );
+			Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
 
 			Functions\when( 'get_option' )->justReturn( 'Ymd' );
 

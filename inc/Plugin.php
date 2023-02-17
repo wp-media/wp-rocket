@@ -5,6 +5,7 @@ namespace WP_Rocket;
 use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -36,6 +37,7 @@ use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
+use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -209,7 +211,8 @@ class Plugin {
 			'lazyload_admin_subscriber',
 			'preload_admin_subscriber',
 			'minify_admin_subscriber',
-			'notices_admin_subscriber',
+			'action_scheduler_check',
+			'actionscheduler_admin_subscriber',
 		];
 	}
 
@@ -267,6 +270,8 @@ class Plugin {
 		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
 		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
+		$this->container->addServiceProvider( ThemesServiceProvider::class );
+		$this->container->addServiceProvider( APIServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -286,7 +291,6 @@ class Plugin {
 			'avada_subscriber',
 			'ngg_subscriber',
 			'smush_subscriber',
-			'cache_dir_size_check',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
@@ -314,6 +318,7 @@ class Plugin {
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
+			'webp_admin_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
@@ -328,6 +333,7 @@ class Plugin {
 			'pwa',
 			'yoast_seo',
 			'flatsome',
+			'minimalist_blogger',
 			'convertplug',
 			'dynamic_lists_subscriber',
 			'jevelin',
@@ -341,6 +347,13 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'uncode',
+			'rocket_lazy_load',
+			'cache_config',
+			'the_events_calendar',
+			'admin_api_subscriber',
+			'perfmatters',
+			'rapidload',
 		];
 
 		$host_type = HostResolver::get_host_service();

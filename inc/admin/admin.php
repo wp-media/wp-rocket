@@ -63,11 +63,32 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  * @return array Updated array of row action links
  */
 function rocket_post_row_actions( $actions, $post ) {
+
+	if ( ! rocket_can_display_options() ) {
+		return $actions;
+	}
+
 	if ( ! current_user_can( 'rocket_purge_posts' ) ) {
 		return $actions;
 	}
 
-	if ( apply_filters( 'rocket_skip_post_row_actions', false, $post ) ) {
+	$cpts = get_post_types(
+		[
+			'public' => true,
+		],
+		'objects'
+	);
+
+	/**
+	 * Filters the post type on row actions.
+	 *
+	 * @since 3.11.4
+	 *
+	 * @param array $cpts Post Types.
+	 */
+	$cpts = apply_filters( 'rocket_skip_post_row_actions', $cpts );
+
+	if ( ! isset( $cpts[ $post->post_type ] ) ) {
 		return $actions;
 	}
 
@@ -128,6 +149,10 @@ function rocket_dismiss_boxes( $args = [] ) {
 		return;
 	}
 
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
 	rocket_dismiss_box( $args['box'] );
 
 	if ( 'admin-post.php' === $pagenow ) {
@@ -170,6 +195,10 @@ function rocket_deactivate_plugin() {
 		wp_nonce_ays( '' );
 	}
 
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
 	deactivate_plugins( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) );
 
 	wp_safe_redirect( wp_get_referer() );
@@ -187,11 +216,11 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$site_name = get_rocket_parse_url( get_home_url() );
-	$site_name = $site_name['host'] . $site_name['path'];
-	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	$gz        = 'gz' . strrev( 'etalfed' );
-	$options   = wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ); // do not use get_rocket_option() here.
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	list( $filename, $options ) = rocket_export_options();
 	nocache_headers();
 	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );

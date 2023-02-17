@@ -147,7 +147,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			 * @param bool  $should_skip Should skip adding clear post to rocket option in admin bar.
 			 * @param type  $post Post object.
 			 */
-			if ( ! apply_filters( 'rocket_skip_admin_bar_cache_purge_option', false, $post ) ) {
+			if ( ! apply_filters( 'rocket_skip_admin_bar_cache_purge_option', false, $post ) && rocket_can_display_options() ) {
 				if ( is_admin() ) {
 					/**
 					 * Purge a post.

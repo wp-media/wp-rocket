@@ -21,6 +21,8 @@ class Test_RunRocketBotAfterWPEngine extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRunRocketBotAfterWPEngine( $config, $expected ) {
+		Functions\when( 'current_user_can' )->justReturn( true );
+
 		if ( isset( $config['wpe_param'] ) ) {
 			Functions\expect( 'wpe_param' )
 				->once()

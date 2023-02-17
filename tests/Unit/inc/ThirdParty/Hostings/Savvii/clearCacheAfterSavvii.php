@@ -28,6 +28,8 @@ class Test_ClearCacheAfterSavvii extends TestCase {
 	public function testShouldDoExpected( $config, $expected ) {
 		$savvii = new Savvii();
 
+		Functions\when( 'current_user_can' )->justReturn( true );
+
 		if ( isset( $config['warpdrive_flush_now'] ) ) {
 			$_REQUEST['warpdrive_flush_now'] = true;
 

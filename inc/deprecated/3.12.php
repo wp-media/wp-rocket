@@ -640,3 +640,88 @@ function run_rocket_sitemap_preload() { // phpcs:ignore WordPress.NamingConventi
 
 	$controller->load_initial_sitemap();
 }
+
+/**
+ * Excludes Uncode init and ai-uncode JS files from minification/combine
+ *
+ * @since 3.12.3 deprecated
+ * @since 3.1
+ * @author Remy Perona
+ *
+ * @param array $excluded_js Array of JS filepaths to be excluded.
+ * @return array
+ */
+function rocket_exclude_js_uncode( $excluded_js ) {
+	_deprecated_function( __FUNCTION__, '3.12.3' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+	$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
+
+	return $excluded_js;
+}
+
+/**
+ * Excludes some Uncode inline scripts from combine JS
+ *
+ * @since 3.12.3 deprecated
+ * @since 3.1
+ * @author Remy Perona
+ *
+ * @param array $inline_js Array of patterns to match for exclusion.
+ * @return array
+ */
+function rocket_exclude_inline_js_uncode( $inline_js ) {
+	_deprecated_function( __FUNCTION__, '3.12.3' );
+	$inline_js[] = 'SiteParameters';
+	$inline_js[] = 'script-';
+	$inline_js[] = 'initBox';
+	$inline_js[] = 'initHeader';
+	$inline_js[] = 'fixMenuHeight';
+
+	return $inline_js;
+}
+
+/**
+ * Excludes Uncode JS files from defer JS
+ *
+ * @since 3.12.3 deprecated
+ * @since 3.2.5
+ * @author Remy Perona
+ *
+ * @param array $exclude_defer_js Array of JS filepaths to be excluded.
+ * @return array
+ */
+function rocket_exclude_defer_js_uncode( $exclude_defer_js ) {
+	_deprecated_function( __FUNCTION__, '3.12.3' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
+	$exclude_defer_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
+	return $exclude_defer_js;
+}
+
+/**
+ * Excludes Uncode JS files from delay JS
+ *
+ * @since 3.12.3 deprecated
+ * @since 3.10.5
+ *
+ * @param array $exclude_delay_js Array of JS to be excluded.
+ * @return array
+ */
+function rocket_exclude_delay_js_uncode( $exclude_delay_js ) {
+	_deprecated_function( __FUNCTION__, '3.12.3' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.min.js' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
+	$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
+	$exclude_delay_js[] = 'UNCODE\.';
+	return $exclude_delay_js;
+}

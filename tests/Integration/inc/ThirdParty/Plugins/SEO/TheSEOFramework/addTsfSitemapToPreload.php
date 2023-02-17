@@ -22,7 +22,7 @@ class Test_AddTsfSitemapToPreload extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_tsf_sitemap_to_preload');
+		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'add_tsf_sitemap_to_preload', 15);
 	}
 
 	public function tearDown(): void

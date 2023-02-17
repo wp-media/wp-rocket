@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
 
 class PreloadUrl {
+	use CheckExcludedTrait;
 
 	/**
 	 * Preload queue.
@@ -94,6 +95,10 @@ class PreloadUrl {
 		 */
 		$requests = apply_filters( 'rocket_preload_before_preload_url', $requests );
 
+		if ( ! is_array( $requests ) ) {
+			return;
+		}
+
 		$requests = array_filter( $requests );
 
 		foreach ( $requests as $request ) {
@@ -127,6 +132,10 @@ class PreloadUrl {
 				$headers
 			);
 
+			if ( ! is_array( $headers ) ) {
+				return;
+			}
+
 			wp_safe_remote_get(
 				user_trailingslashit( $request['url'] ),
 				$headers
@@ -141,7 +150,6 @@ class PreloadUrl {
 
 			usleep( $delay_between );
 		}
-
 	}
 
 	/**
@@ -173,8 +181,37 @@ class PreloadUrl {
 	 */
 	public function process_pending_jobs() {
 		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
-		$rows  = $this->query->get_pending_jobs( $count );
-		foreach ( $rows as $index => $row ) {
+
+		/**
+		 * Set the delay before an in-progress row is considered as outdated.
+		 *
+		 * @param int $delay delay.
+		 * @return int
+		 */
+		$delay = (int) apply_filters(
+			'rocket_preload_outdated',
+			/**
+			 * Set the max number of rows in batches.
+			 *
+			 * @param int $count number of rows in batches.
+			 * @return int
+			 */
+			(int) ( $count / 15 )
+		);
+
+		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
+
+		foreach ( $stuck_rows as $row ) {
+			$this->query->make_status_failed( $row->id );
+		}
+		$rows = $this->query->get_pending_jobs( $count );
+		foreach ( $rows as $row ) {
+
+			if ( $this->is_excluded_by_filter( $row->url ) ) {
+				$this->query->delete_by_url( $row->url );
+				continue;
+			}
+
 			$this->query->make_status_inprogress( $row->id );
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 
@@ -213,6 +250,13 @@ class PreloadUrl {
 
 		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
 
-		return $this->filesystem->exists( $file_cache_path );
+		if ( ! $this->options->get( 'cache_webp', false ) ) {
+			return $this->filesystem->exists( $file_cache_path );
+		}
+
+		$webp_path    = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '-webp.html';
+		$no_webp_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . '.no-webp';
+
+		return $this->filesystem->exists( $webp_path ) || ( $this->filesystem->exists( $no_webp_path ) && $this->filesystem->exists( $file_cache_path ) );
 	}
 }

@@ -1,7 +1,28 @@
 <?php
 return [
+	'phpShouldReturnFalse' => [
+		'config' => [
+			'rejected' => true,
+			'is_updating' => false,
+			'resource' => [
+				'url' => 'http://example.com/test.php',
+				'status' => 'pending',
+			],
+			'save' => [
+				'url' => 'http://example.com',
+				'status' => 'pending',
+				'last_accessed' => '838:59:59.000000'
+			],
+			'id' => 10,
+			'time' => '838:59:59.000000',
+			'rows' => [],
+		],
+		'expected' => false
+	],
 	'notExistingShouldCreate' => [
 		'config' => [
+			'rejected' => false,
+			'is_updating' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -9,7 +30,8 @@ return [
 			'save' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
-				'last_accessed' => '838:59:59.000000'
+				'last_accessed' => '838:59:59.000000',
+				'is_locked' => false,
 			],
 			'id' => 10,
 			'time' => '838:59:59.000000',
@@ -19,6 +41,8 @@ return [
 	],
 	'notExistingAndErrorShouldCreateAndReturnFalse' => [
 		'config' => [
+			'rejected' => false,
+			'is_updating' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -26,7 +50,8 @@ return [
 			'save' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
-				'last_accessed' => '838:59:59.000000'
+				'last_accessed' => '838:59:59.000000',
+				'is_locked' => false,
 			],
 			'id' => false,
 			'time' => '838:59:59.000000',
@@ -36,6 +61,8 @@ return [
 	],
 	'existingShouldUpdate' => [
 		'config' => [
+			'rejected' => false,
+			'is_updating' => false,
 			'resource' => [
 				'url' => 'http://example.com',
 				'status' => 'pending',
@@ -44,6 +71,7 @@ return [
 				'url' => 'http://example.com',
 				'status' => 'pending',
 				'modified' => '838:59:59.000001',
+				'is_locked' => false,
 			],
 			'id' => 10,
 			'time' => '838:59:59.000001',
@@ -52,10 +80,31 @@ return [
 					'url' => 'http://example.com',
 					'status' => 'completed',
 					'id' => 10,
-					'last_accessed' => '838:59:59.000000'
+					'last_accessed' => '838:59:59.000000',
+					'is_locked' => false,
 				]
 			],
 		],
 		'expected' => 10
+	],
+	'existingDuringUpdateShouldDoNothing' => [
+		'config' => [
+			'rejected' => false,
+			'is_updating' => true,
+			'resource' => [
+				'url' => 'http://example.com',
+				'status' => 'pending',
+			],
+			'save' => [
+				'url' => 'http://example.com',
+				'status' => 'pending',
+				'last_accessed' => '838:59:59.000000',
+				'is_locked' => false,
+			],
+			'id' => false,
+			'time' => '838:59:59.000000',
+			'rows' => [],
+		],
+		'expected' => false
 	],
 ];

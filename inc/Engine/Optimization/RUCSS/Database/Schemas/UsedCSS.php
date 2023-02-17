@@ -59,6 +59,27 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// error_code column.
+		[
+			'name'       => 'error_code',
+			'type'       => 'varchar',
+			'length'     => '32',
+			'default'    => null,
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
+		// error_message column.
+		[
+			'name'       => 'error_message',
+			'type'       => 'longtext',
+			'default'    => null,
+			'cache_key'  => false,
+			'searchable' => true,
+			'sortable'   => true,
+		],
+
 		// RETRIES column.
 		[
 			'name'       => 'retries',

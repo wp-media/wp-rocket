@@ -76,7 +76,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	/**
 	 * Query for action count or list of action IDs.
 	 *
-	 * @since x.x.x $query['status'] accepts array of statuses instead of a single status.
+	 * @since 3.3.0 $query['status'] accepts array of statuses instead of a single status.
 	 *
 	 * @param array  $query {
 	 *      Query filtering options.
@@ -104,7 +104,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	/**
 	 * Run query to get a single action ID.
 	 *
-	 * @since x.x.x
+	 * @since 3.3.0
 	 *
 	 * @see ActionScheduler_Store::query_actions for $query arg usage but 'per_page' and 'offset' can't be used.
 	 *
@@ -130,6 +130,34 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @return array
 	 */
 	abstract public function action_counts();
+
+	/**
+	 * Get additional action counts.
+	 *
+	 * - add past-due actions
+	 *
+	 * @return array
+	 */
+	public function extra_action_counts() {
+		$extra_actions = array();
+
+		$pastdue_action_counts = ( int ) $this->query_actions( array(
+			'status' => self::STATUS_PENDING,
+			'date'   => as_get_datetime_object(),
+		), 'count' );
+
+		if ( $pastdue_action_counts ) {
+			$extra_actions['past-due'] = $pastdue_action_counts;
+		}
+
+		/**
+		 * Allows 3rd party code to add extra action counts (used in filters in the list table).
+		 *
+		 * @since 3.5.0
+		 * @param $extra_actions array Array with format action_count_identifier => action count.
+		 */
+		return apply_filters( 'action_scheduler_extra_action_counts', $extra_actions );
+	}
 
 	/**
 	 * @param string $action_id
@@ -229,7 +257,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			return '0000-00-00 00:00:00';
+			$next = date_create();
 		}
 		$next->setTimezone( new DateTimeZone( 'UTC' ) );
 
@@ -246,7 +274,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			return '0000-00-00 00:00:00';
+			$next = date_create();
 		}
 
 		ActionScheduler_TimezoneHelper::set_local_timezone( $next );

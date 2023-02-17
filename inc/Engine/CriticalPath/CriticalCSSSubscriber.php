@@ -92,7 +92,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
-			'admin_post_rocket_rollback' => [ 'stop_critical_css_generation', 9 ],
+			'rocket_before_rollback' => [ 'stop_critical_css_generation', 9 ],
 			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned

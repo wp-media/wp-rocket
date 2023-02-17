@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.3.0
  *
  * @param string $option  The option name.
- * @param bool   $default (default: false) The default value of option.
+ * @param mixed  $default (default: false) The default value of option.
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -20,6 +20,18 @@ function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPr
 	$options     = new Options_Data( $options_api->get( 'settings', [] ) );
 
 	return $options->get( $option, $default );
+}
+
+/**
+ * Export settings into JSON.
+ *
+ * @return array
+ */
+function rocket_export_options() {
+	$site_name = get_rocket_parse_url( get_home_url() );
+	$site_name = $site_name['host'] . $site_name['path'];
+	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+	return [ $filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ) ]; // do not use get_rocket_option() here.
 }
 
 /**
@@ -154,82 +166,18 @@ function rocket_get_dns_prefetch_domains() {
  * These parameters are ignored when checking the query string during caching to allow serving the default cache when they are present
  *
  * @since 3.4
- * @author Remy Perona
  *
  * @return array
  */
 function rocket_get_ignored_parameters() {
-	$params = [
-		'utm_source'            => 1,
-		'utm_medium'            => 1,
-		'utm_campaign'          => 1,
-		'utm_expid'             => 1,
-		'utm_term'              => 1,
-		'utm_content'           => 1,
-		'mtm_source'            => 1,
-		'mtm_medium'            => 1,
-		'mtm_campaign'          => 1,
-		'mtm_keyword'           => 1,
-		'mtm_cid'               => 1,
-		'mtm_content'           => 1,
-		'pk_source'             => 1,
-		'pk_medium'             => 1,
-		'pk_campaign'           => 1,
-		'pk_keyword'            => 1,
-		'pk_cid'                => 1,
-		'pk_content'            => 1,
-		'fb_action_ids'         => 1,
-		'fb_action_types'       => 1,
-		'fb_source'             => 1,
-		'fbclid'                => 1,
-		'campaignid'            => 1,
-		'adgroupid'             => 1,
-		'adid'                  => 1,
-		'gclid'                 => 1,
-		'age-verified'          => 1,
-		'ao_noptimize'          => 1,
-		'usqp'                  => 1,
-		'cn-reloaded'           => 1,
-		'_ga'                   => 1,
-		'sscid'                 => 1,
-		'gclsrc'                => 1,
-		'_gl'                   => 1,
-		'mc_cid'                => 1,
-		'mc_eid'                => 1,
-		'_bta_tid'              => 1,
-		'_bta_c'                => 1,
-		'trk_contact'           => 1,
-		'trk_msg'               => 1,
-		'trk_module'            => 1,
-		'trk_sid'               => 1,
-		'gdfms'                 => 1,
-		'gdftrk'                => 1,
-		'gdffi'                 => 1,
-		'_ke'                   => 1,
-		'redirect_log_mongo_id' => 1,
-		'redirect_mongo_id'     => 1,
-		'sb_referer_host'       => 1,
-		'mkwid'                 => 1,
-		'pcrid'                 => 1,
-		'ef_id'                 => 1,
-		's_kwcid'               => 1,
-		'msclkid'               => 1,
-		'dm_i'                  => 1,
-		'epik'                  => 1,
-		'pp'                    => 1,
-		'gbraid'                => 1,
-		'wbraid'                => 1,
-	];
-
 	/**
 	 * Filters the ignored parameters
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $params An array of ignored parameters as array keys.
 	 */
-	return apply_filters( 'rocket_cache_ignored_parameters', $params );
+	return apply_filters( 'rocket_cache_ignored_parameters', [] );
 }
 
 /**

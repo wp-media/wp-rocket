@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\ApiTestCase;
-use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::register_enable_route
@@ -30,7 +29,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 		$actual = $this->requestEnableEndpoint(
 			[
 				'email' => 'nulled@wp-rocket.me',
-				'key'   => '',
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 				'url'   => 'https://rocketcdn.me',
 			]
 		);
@@ -48,7 +47,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -66,7 +65,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 	public function testShouldReturnErrorWhenIncorrectKeyProvided() {
 		$actual = $this->requestEnableEndpoint(
 			[
-				'email' => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
 				'key'   => '0123456',
 				'url'   => 'https://rocketcdn.me',
 			]
@@ -85,7 +84,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -103,8 +102,8 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 	public function testShouldReturnErrorWhenIncorrectURLProvided() {
 		$actual = $this->requestEnableEndpoint(
 			[
-				'email' => '',
-				'key'   => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 				'url'   => '',
 			]
 		);
@@ -122,7 +121,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -160,7 +159,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -179,7 +178,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 		$actual = $this->requestEnableEndpoint(
 			[
 				'email' => 'nulled@wp-rocket.me',
-				'key'   => '',
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 				'url'   => '',
 			]
 		);
@@ -198,7 +197,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -216,7 +215,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 	public function testShouldReturnErrorWhenIncorrectKeyAndURLProvided() {
 		$actual = $this->requestEnableEndpoint(
 			[
-				'email' => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
 				'key'   => '0123456',
 				'url'   => '',
 			]
@@ -236,7 +235,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -275,7 +274,7 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $actual );
-			
+
 			if ( is_array( $value ) ) {
 				foreach ( $value as $sub_key => $sub_value ) {
 					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
@@ -293,8 +292,8 @@ class Test_RegisterEnableRoute extends ApiTestCase {
 	public function testShouldReturnSuccessWhenCorrectDataProvided() {
 		$actual   = $this->requestEnableEndpoint(
 			[
-				'email' => '',
-				'key'   => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 				'url'   => 'https://rocketcdn.me',
 			]
 		);

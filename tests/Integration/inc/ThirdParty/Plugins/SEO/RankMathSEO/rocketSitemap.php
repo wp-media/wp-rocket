@@ -19,7 +19,7 @@ class Test_RocketSitemap extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'rocket_sitemap');
+		$this->unregisterAllCallbacksExcept('rocket_sitemap_preload_list', 'rocket_sitemap', 15);
 	}
 
 	public function tearDown(): void

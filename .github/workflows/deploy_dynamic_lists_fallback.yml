@@ -32,11 +32,11 @@ jobs:
 
       - name: save lists
         id: saveDynamicLists
-        run: |
-          touch dynamic-lists.json
-          echo '${{ steps.getDynamicLists.outputs.lists }}' > dynamic-lists.json
-          cat dynamic-lists.json
-
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "dynamic-lists.json"
+          json: ${{ steps.getDynamicLists.outputs.lists }}
+          dir: '/'
 
       - name: Commit the file
         if: ${{ steps.saveDynamicLists.outcome == 'success' }}

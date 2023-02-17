@@ -71,7 +71,8 @@ class LoadInitialSitemap {
 		 *
 		 * @param array Array of sitemaps URL
 		 */
-		$sitemaps = apply_filters( 'rocket_sitemap_preload_list', [] );
+		$sitemaps = (array) apply_filters( 'rocket_sitemap_preload_list', [] );
+
 		if ( count( $sitemaps ) > 0 ) {
 			/**
 			 * Filter sitemaps URL that will be preloaded.

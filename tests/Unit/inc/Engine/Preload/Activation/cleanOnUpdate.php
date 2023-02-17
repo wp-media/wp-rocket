@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Activation;
 
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
@@ -15,6 +16,7 @@ class Test_CleanOnUpdate extends TestCase
 	protected $activation;
 	protected $queue;
 	protected $query;
+	private $options;
 
 	protected function setUp(): void
 	{
@@ -22,7 +24,8 @@ class Test_CleanOnUpdate extends TestCase
 		$this->controller = Mockery::mock(LoadInitialSitemap::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->query = $this->createMock(Cache::class);
-		$this->activation = new Activation($this->queue, $this->query);
+		$this->options = $this->createMock( Options_Data::class );
+		$this->activation = new Activation($this->queue, $this->query, $this->options);
 	}
 
 	/**

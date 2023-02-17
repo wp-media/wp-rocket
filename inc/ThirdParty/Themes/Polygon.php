@@ -2,9 +2,13 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
-
-class Polygon implements Subscriber_Interface {
+class Polygon extends ThirdpartyTheme {
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'polygon';
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -12,7 +16,7 @@ class Polygon implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_polygon() ) {
+		if ( ! self::is_current_theme() ) {
 			return [];
 		}
 
@@ -22,7 +26,7 @@ class Polygon implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add excluded elements to rocket_rucss_safelist filter.
+	 * Add excluded elements to rocket_rucss_inline_content_exclusions filter.
 	 *
 	 * @param array $excluded excluded elements.
 	 * @return array
