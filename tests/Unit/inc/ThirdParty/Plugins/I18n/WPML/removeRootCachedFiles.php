@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\I18n\WPML;
 
 use Mockery;
-use WP_Rocket\Tests\Fixtures\WP_Filesystem_Direct;
+use WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use Brain\Monkey\Functions;
