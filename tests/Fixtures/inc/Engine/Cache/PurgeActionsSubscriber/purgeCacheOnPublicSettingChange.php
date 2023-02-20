@@ -1,7 +1,5 @@
 <?php
 
-$i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/pluginsData.php';
-
 return [
 	// Use in tests when the test data starts in this directory.
 	'vfs_dir'   => 'wp-content/cache/',
