@@ -28,6 +28,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
       - name: get latest dynamic lists
         id: getDynamicLists
