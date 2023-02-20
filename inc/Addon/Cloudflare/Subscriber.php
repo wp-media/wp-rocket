@@ -1,14 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\Cloudflare;
+namespace WP_Rocket\Addon\Cloudflare;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\{Options, Options_Data};
 
 class Subscriber implements Subscriber_Interface {
-
 	/**
 	 * Cloudflare instance.
 	 *
@@ -177,18 +175,17 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// Purge CloudFlare.
-		$cf_purge = $this->cloudflare->purge_cloudflare();
+		$cf_purge        = $this->cloudflare->purge_cloudflare();
+		$cf_purge_result = [
+			'result'  => 'success',
+			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
+		];
 
 		if ( is_wp_error( $cf_purge ) ) {
 			$cf_purge_result = [
 				'result'  => 'error',
 				// translators: %s = CloudFare API return message.
 				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
-			];
-		} else {
-			$cf_purge_result = [
-				'result'  => 'success',
-				'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
 			];
 		}
 
@@ -222,18 +219,18 @@ class Subscriber implements Subscriber_Interface {
 
 		$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
 		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
-		$ip            = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
-		$ipv6          = get_rocket_ipv6_full( $ip );
-		if ( false === strpos( $ip, ':' ) ) {
+		$current_ip    = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+		$ipv6          = get_rocket_ipv6_full( $current_ip );
+		if ( false === strpos( $current_ip, ':' ) ) {
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
 			$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
 		}
 
 		foreach ( $cf_ip_ranges as $range ) {
 			if (
-				( strpos( $ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) )
+				( strpos( $current_ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) )
 				||
-				( false === strpos( $ip, ':' ) && rocket_ipv4_in_range( $ip, $range ) )
+				( false === strpos( $current_ip, ':' ) && rocket_ipv4_in_range( $current_ip, $range ) )
 			) {
 				$_SERVER['REMOTE_ADDR'] = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) );
 				break;
@@ -244,145 +241,151 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Save Cloudflare dev mode admin option.
 	 *
-	 * @param string $devmode New value for Cloudflare dev mode.
+	 * @param string $value New value for Cloudflare dev mode.
 	 */
-	private function save_cloudflare_devmode( $devmode ) {
-		$cloudflare_dev_mode_return = $this->cloudflare->set_devmode( $devmode );
-		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
+	private function save_cloudflare_devmode( $value ) {
+		$result = $this->cloudflare->set_devmode( $value );
+
+		if ( is_wp_error( $result ) ) {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
+				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
+
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ),
+			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $result ),
 		];
 	}
 
 	/**
 	 * Save Cloudflare cache_level admin option.
 	 *
-	 * @param string $cache_level New value for Cloudflare cache_level.
+	 * @param string $value New value for Cloudflare cache_level.
 	 */
-	private function save_cache_level( $cache_level ) {
+	private function save_cache_level( $value ) {
 		// Set Cache Level to Aggressive.
-		$cf_cache_level_return = $this->cloudflare->set_cache_level( $cache_level );
+		$result = $this->cloudflare->set_cache_level( $value );
 
-		if ( is_wp_error( $cf_cache_level_return ) ) {
+		if ( is_wp_error( $result ) ) {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
+				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
-		if ( 'aggressive' === $cf_cache_level_return ) {
-			$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
+		if ( 'aggressive' === $result ) {
+			$level = _x( 'standard', 'Cloudflare caching level', 'rocket' );
 		}
 
 		return [
 			'result'  => 'success',
 			// translators: %s is the caching level returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
+			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $level ),
 		];
 	}
 
 	/**
 	 * Save Cloudflare minify admin option.
 	 *
-	 * @param string $minify New value for Cloudflare minify.
+	 * @param string $value New value for Cloudflare minify.
 	 */
-	private function save_minify( $minify ) {
-		$cf_minify_return = $this->cloudflare->set_minify( $minify );
+	private function save_minify( $value ) {
+		$result = $this->cloudflare->set_minify( $value );
 
-		if ( is_wp_error( $cf_minify_return ) ) {
+		if ( is_wp_error( $result ) ) {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
+				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
+
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ),
+			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
 		];
 	}
 
 	/**
 	 * Save Cloudflare rocket loader admin option.
 	 *
-	 * @param string $rocket_loader New value for Cloudflare rocket loader.
+	 * @param string $value New value for Cloudflare rocket loader.
 	 */
-	private function save_rocket_loader( $rocket_loader ) {
-		$cf_rocket_loader_return = $this->cloudflare->set_rocket_loader( $rocket_loader );
+	private function save_rocket_loader( $value ) {
+		$result = $this->cloudflare->set_rocket_loader( $value );
 
-		if ( is_wp_error( $cf_rocket_loader_return ) ) {
+		if ( is_wp_error( $result ) ) {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
+				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
+
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ),
+			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $result ),
 		];
 	}
 
 	/**
 	 * Save Cloudflare browser cache ttl admin option.
 	 *
-	 * @param int $browser_cache_ttl New value for Cloudflare browser cache ttl.
+	 * @param int $value New value for Cloudflare browser cache ttl.
 	 */
-	private function save_browser_cache_ttl( $browser_cache_ttl ) {
-		$cf_browser_cache_return = $this->cloudflare->set_browser_cache_ttl( $browser_cache_ttl );
+	private function save_browser_cache_ttl( $value ) {
+		$result = $this->cloudflare->set_browser_cache_ttl( $value );
 
-		if ( is_wp_error( $cf_browser_cache_return ) ) {
+		if ( is_wp_error( $result ) ) {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
+				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
+
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ),
+			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $result ),
 		];
 	}
 
 	/**
 	 * Save Cloudflare auto settings admin option.
 	 *
-	 * @param array $auto_settings New value for Cloudflare auto_settings.
-	 * @param array $old_settings  Cloudflare cloudflare_old_settings.
+	 * @param int $auto_settings New value for Cloudflare auto_settings.
+	 * @param string $old_settings Cloudflare cloudflare_old_settings.
 	 */
 	private function save_cloudflare_auto_settings( $auto_settings, $old_settings ) {
-		$cf_old_settings          = explode( ',', $old_settings );
-		$cloudflare_update_result = [];
+		$cf_old_settings = explode( ',', $old_settings );
+
+		$result = [];
 
 		// Set Cache Level to Aggressive.
-		$cf_cache_level             = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? 'basic' : 'aggressive';
-		$cloudflare_update_result[] = $this->save_cache_level( $cf_cache_level );
+		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? 'basic' : 'aggressive';
+		$result[]       = $this->save_cache_level( $cf_cache_level );
 
-		// Active Minification for HTML, CSS & JS.
-		$cf_minify                  = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
-		$cloudflare_update_result[] = $this->save_minify( $cf_minify );
+		// Active Minification for CSS & JS.
+		$cf_minify = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
+		$result[]  = $this->save_minify( $cf_minify );
 
 		// Deactivate Rocket Loader to prevent conflicts.
-		$cf_rocket_loader           = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
-		$cloudflare_update_result[] = $this->save_rocket_loader( $cf_rocket_loader );
+		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
+		$result[]         = $this->save_rocket_loader( $cf_rocket_loader );
 
 		// Set Browser cache to 1 year.
-		$cf_browser_cache_ttl       = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : '31536000';
-		$cloudflare_update_result[] = $this->save_browser_cache_ttl( $cf_browser_cache_ttl );
+		$cf_browser_cache_ttl = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : '31536000';
+		$result[]             = $this->save_browser_cache_ttl( $cf_browser_cache_ttl );
 
-		return $cloudflare_update_result;
+		return $result;
 	}
 
 	/**
@@ -396,56 +399,43 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$is_api_keys_valid_cloudflare = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
-		$submit_cloudflare_view       = false;
-		if (
-			( isset( $old_value['cloudflare_email'], $value['cloudflare_email'] ) && $old_value['cloudflare_email'] !== $value['cloudflare_email'] )
-			||
-			( isset( $old_value['cloudflare_api_key'], $value['cloudflare_api_key'] ) && $old_value['cloudflare_api_key'] !== $value['cloudflare_api_key'] )
-			||
-			( isset( $old_value['cloudflare_zone_id'], $value['cloudflare_zone_id'] ) && $old_value['cloudflare_zone_id'] !== $value['cloudflare_zone_id'] )
-		) {
-			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-			$is_api_keys_valid_cloudflare = $this->cloudflare->is_api_keys_valid( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'], true );
-			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cloudflare, 2 * WEEK_IN_SECONDS );
-			$submit_cloudflare_view = true;
+		$valid_key      = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
+		$submit_cf_view = false;
+
+		if ( false === $valid_key ) {
+			$result = $this->cloudflare->is_auth_valid( $value['cloudflare_zone_id'] );
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', $result, 2 * WEEK_IN_SECONDS );
+			$submit_cf_view = true;
 		}
 
 		if ( ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) ||
 			( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) ) {
-			$submit_cloudflare_view = true;
-		}
-
-		// Revalidate Cloudflare credentials if transient is false.
-		if ( false === $is_api_keys_valid_cloudflare ) {
-			if ( isset( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'] ) ) {
-				$is_api_keys_valid_cloudflare = $this->cloudflare->is_api_keys_valid( $value['cloudflare_email'], $value['cloudflare_api_key'], $value['cloudflare_zone_id'] );
-			} else {
-				$is_api_keys_valid_cloudflare = false;
-			}
-			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cloudflare, 2 * WEEK_IN_SECONDS );
+			$submit_cf_view = true;
 		}
 
 		// If is submit CF view & CF Credentials are invalid, display error and bail out.
-		if ( is_wp_error( $is_api_keys_valid_cloudflare ) && $submit_cloudflare_view ) {
-			$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $cloudflare_error_message . '<strong>', 'error' );
+		if ( is_wp_error( $valid_key ) && $submit_cf_view ) {
+			$error = $valid_key->get_error_message();
+
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error . '<strong>', 'error' );
+
 			set_transient( get_current_user_id() . '_cloudflare_update_settings', [] );
+
 			return;
 		}
 
 		// Update CloudFlare Development Mode.
-		$cloudflare_update_result = [];
+		$result = [];
 		if ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
-			$cloudflare_update_result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
+			$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
 		}
 
 		// Update CloudFlare settings.
 		if ( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
-			$cloudflare_update_result = array_merge( $cloudflare_update_result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
+			$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 		}
 
-		set_transient( get_current_user_id() . '_cloudflare_update_settings', $cloudflare_update_result );
+		set_transient( get_current_user_id() . '_cloudflare_update_settings', $result );
 	}
 
 	/**
