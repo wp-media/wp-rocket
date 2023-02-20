@@ -42,7 +42,15 @@ class APIKey implements AuthInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function is_authorized(): bool {
+	public function is_valid_credentials(): bool {
+		if (
+			empty( $this->email )
+			||
+			empty( $this->api_key )
+		) {
+			throw new CredentialsException( 'cloudflare_credentials_empty' );
+		}
+
 		return (
 			isset( $this->email, $this->api_key )
 			&&
