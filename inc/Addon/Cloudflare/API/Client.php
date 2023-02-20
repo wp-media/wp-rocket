@@ -5,6 +5,7 @@ namespace WP_Rocket\Addon\Cloudflare\API;
 
 use Exception;
 use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 
 class Client {
 	const CLOUDFLARE_API = 'https://api.cloudflare.com/client/v4/';
@@ -94,14 +95,19 @@ class Client {
 	 *
 	 * @throws AuthenticationException When email or api key are not set.
 	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
+	 * @throws CredentialsException
 	 */
 	protected function request( $method = 'get', $path, array $data = [] ) {
-		if (
-			'/ips' !== $path
-			&&
-			! $this->auth->is_authorized()
-		) {
-			throw new AuthenticationException( 'Authentication information must be provided.' );
+		try {
+			if (
+				'/ips' !== $path
+				&&
+				! $this->auth->is_valid_credentials()
+			) {
+				throw new AuthenticationException( 'Authentication information must be provided.' );
+			}
+		} catch ( CredentialsException $e ) {
+			throw new CredentialsException( $e->getMessage(), 0, $e );
 		}
 
 		$response = $this->do_remote_request( $method, $path, $data );
