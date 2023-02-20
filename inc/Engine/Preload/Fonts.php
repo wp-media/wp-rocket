@@ -114,7 +114,7 @@ class Fonts implements Subscriber_Interface {
 			);
 		}
 
-		return str_replace( '</title>', $preloads, $html );
+		return preg_replace( '#</title>#', $preloads, $html, 1 );
 	}
 
 	/**
