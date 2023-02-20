@@ -33,14 +33,14 @@ class Test_OnPermalinkChanged extends TestCase
 		$this->activation = Mockery::mock(Activation::class);
 		$this->mobile_detect = Mockery::mock(WP_Rocket_Mobile_Detect::class);
 		$this->clear_cache = Mockery::mock(ClearCache::class);
-		$this->queue = $this->createMock(Queue::class);
+		$this->queue = Mockery::mock(Queue::class);
 		$this->subscriber = new Subscriber($this->options, $this->controller, $this->query, $this->activation, $this->mobile_detect, $this->clear_cache, $this->queue );
 	}
 
 	public function testShouldDoAsExpected() {
 		$this->controller->expects()->load_initial_sitemap();
 		$this->query->expects(self::once())->method('remove_all');
-		$this->queue->expects(self::once())->method('cancel_pending_jobs');
+		$this->queue->expects()->cancel_pending_jobs();
 		$this->subscriber->on_permalink_changed();
 	}
 }
