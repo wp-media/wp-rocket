@@ -15,6 +15,5 @@ interface AuthInterface {
 	 *
 	 * @return bool true if authorized, false otherwise.
 	 */
-	public function is_authorized(): bool;
-	}
+	public function is_valid_credentials(): bool;
 }
