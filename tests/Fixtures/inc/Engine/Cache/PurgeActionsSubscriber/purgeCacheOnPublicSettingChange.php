@@ -7,6 +7,7 @@ return [
 	// Test data.
 	'test_data' => [
 		'shouldDeleteAll_example.org*' => [
+			'config'=>[],
 			'expected'  => [
 				'rocket_clean_domain_urls' => [ 'http://example.org' ],
 				'cleaned'                  => [

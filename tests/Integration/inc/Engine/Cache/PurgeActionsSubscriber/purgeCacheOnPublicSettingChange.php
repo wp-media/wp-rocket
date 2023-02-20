@@ -34,7 +34,7 @@ class Test_PurgeCacheOnPublicSettingChange extends FilesystemTestCase {
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
-	protected $path_to_test_data = '/inc/Engine/Cache/purgeCacheOnPublicSettingChange.php';
+	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php';
 
 	public function tear_down() {
 		parent::tear_down();
@@ -45,8 +45,12 @@ class Test_PurgeCacheOnPublicSettingChange extends FilesystemTestCase {
 	 */
 	public function testShouldCleanSingleDomain( $config, $expected ) {
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
+		if(get_option('blog_public') == "1"){
+			update_option( 'blog_public', '0' );
+		}else{
+			update_option( 'blog_public', '1' );
+		}
 
-		update_option( 'blog_public', 1 );
 		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();
 	}
