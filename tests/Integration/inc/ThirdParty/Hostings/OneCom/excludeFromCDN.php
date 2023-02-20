@@ -15,17 +15,21 @@ class Test_ExcludeFromCDN extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 
-        Functions\expect( 'rest_sanitize_boolean' )
+		$this->constants['vcaching'] = $config['onecom_performance_plugin_enabled'];
+
+		if ( $config['onecom_performance_plugin_enabled'] ) {
+			Functions\expect( 'rest_sanitize_boolean' )
 				->once()
 				->andReturn( $config['oc_cdn_enabled'] );
 
-        Functions\when( 'get_option' )
-			->alias( function( $value ) use( $config ) {
-				if ( 'oc_cdn_enabled' === $value ) {
-                    return $config['oc_cdn_enabled'];
-                }
-			}
-		);
+			Functions\when( 'get_option' )
+				->alias( function( $value ) use( $config ) {
+					if ( 'oc_cdn_enabled' === $value ) {
+						return $config['oc_cdn_enabled'];
+					}
+				}
+				);
+		}
 
 		$this->assertSame(
 			$expected,
