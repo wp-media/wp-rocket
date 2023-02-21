@@ -96,7 +96,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-		  	"./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
+		    "./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
 			  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		},
 		"mozart": {
@@ -110,6 +110,9 @@
 				"wp-media/rocket-lazyload-common",
 				"wp-media/wp-imagify-partner",
 				"league/container"
+			],
+			"excluded_packages": [
+				"psr/container"
 			]
 		}
 	},
