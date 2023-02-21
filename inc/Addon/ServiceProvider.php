@@ -1,38 +1,29 @@
 <?php
 namespace WP_Rocket\Addon;
 
+use WP_Rocket\Addon\Cloudflare\Admin\Subscriber as CloudflareAdminSubscriber;
+use WP_Rocket\Addon\Cloudflare\API\{Client, Endpoints};
+use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
+use WP_Rocket\Addon\Cloudflare\Cloudflare;
+use WP_Rocket\Addon\Cloudflare\Subscriber as CloudflareSubscriber;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
-use WPMedia\Cloudflare\APIClient;
-use WPMedia\Cloudflare\Cloudflare;
-use WPMedia\Cloudflare\Subscriber as CloudflareSubscriber;
 
 /**
  * Service provider for WP Rocket addons.
- *
- * @since 3.3
- * @since 3.5 - renamed and moved into this module.
  */
 class ServiceProvider extends AbstractServiceProvider {
 
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
-	 *
-	 * @var array
+	 * @inheritDoc
 	 */
 	protected $provides = [
 		'sucuri_subscriber',
 	];
 
 	/**
-	 * Registers items with the container
-	 *
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
@@ -49,8 +40,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	/**
 	 * Adds Cloudflare Addon into the Container when the addon is enabled.
 	 *
-	 * @since 3.5
-	 *
 	 * @param Options_Data $options Instance of options.
 	 */
 	protected function addon_cloudflare( Options_Data $options ) {
@@ -60,16 +49,28 @@ class ServiceProvider extends AbstractServiceProvider {
 		}
 
 		$this->provides[] = 'cloudflare_subscriber';
+		$this->provides[] = 'cloudflare_admin_subscriber';
 
-		$this->getContainer()->add( 'cloudflare_api', APIClient::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
+		if ( $options->get( 'cloudflare_api_key' ) ) {
+			$this->getContainer()->add( 'cloudflare_auth', APIKey::class )
+				->addArgument( $options->get( 'cloudflare_api_email' ) )
+				->addArgument( $options->get( 'cloudflare_api_key' ) );
+		}
+
+		$this->getContainer()->add( 'cloudflare_client', Client::class )
+			->addArgument( $this->getContainer()->get( 'cloudflare_auth' ) );
+		$this->getContainer()->add( 'cloudflare_endpoints', Endpoints::class )
+			->addArgument( $this->getContainer()->get( 'cloudflare_client' ) );
+
 		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
 			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cloudflare_api' ) );
+			->addArgument( $this->getContainer()->get( 'cloudflare_endpoints' ) );
 		$this->getContainer()->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addTag( 'cloudflare_subscriber' );
+		$this->getContainer()->share( 'cloudflare_admin_subscriber',
+		CloudflareAdminSubscriber::class );
 	}
 }
