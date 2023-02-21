@@ -3,7 +3,7 @@
 namespace WP_Rocket\Dependencies\League\Container;
 
 use WP_Rocket\Dependencies\League\Container\Exception\ContainerException;
-use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 trait ContainerAwareTrait
 {

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Dependencies\League\Container;
 
-use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 interface ContainerAwareInterface
 {
