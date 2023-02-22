@@ -2793,7 +2793,7 @@ msgid ""
 "Remove Unused CSS is currently activated in Perfmatters. If you want to use "
 "WP Rocket's Remove Unused CSS feature, disable this option in Perfmatters."
 msgstr ""
-"Kullanılmayan CSS’yi Kaldır şu anda Perfmatters’ta etkin. Eğer WP Rocket’ın "
+"Kullanılmayan CSS’yi Kaldır şu anda Perfmatters’ta etkin. Eğer WP Rocket’in "
 "Kullanılmayan CSS’yi Kaldır özelliğini kullanmak istiyorsanız, "
 "Perfmatters’ta bu seçeneği etkisizleştirin."
 
