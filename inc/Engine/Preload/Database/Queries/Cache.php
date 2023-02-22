@@ -124,7 +124,7 @@ class Cache extends Query {
 	public function create_or_update( array $resource ) {
 		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
 
-		if ( $this->is_rejected( $resource['url'] ) ) {
+		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
 		}
 
@@ -371,7 +371,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'status' => 'in-progress',
+				'status'   => 'in-progress',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -398,7 +399,8 @@ class Cache extends Query {
 		return $this->update_item(
 			$task->id,
 			[
-				'status' => 'completed',
+				'status'   => 'completed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -433,7 +435,8 @@ class Cache extends Query {
 			$this->update_item(
 				$in_progress->id,
 				[
-					'status' => 'pending',
+					'status'   => 'pending',
+					'modified' => current_time( 'mysql', true ),
 				]
 				);
 		}
@@ -441,6 +444,8 @@ class Cache extends Query {
 
 	/**
 	 * Revert old in-progress rows
+	 *
+	 * @depecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
@@ -452,7 +457,23 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+	}
+
+	/**
+	 * Revert old failed rows.
+	 */
+	public function revert_old_failed() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'failed' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
@@ -477,7 +498,7 @@ class Cache extends Query {
 		 */
 		$condition = apply_filters( 'rocket_preload_all_to_pending_condition', ' WHERE 1 = 1' );
 
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'$condition" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "'$condition" );
 	}
 
 	/**
@@ -552,6 +573,25 @@ class Cache extends Query {
 	}
 
 	/**
+	 * Unlock all URLs.
+	 *
+	 * @return false|void
+	 */
+	public function unlock_all() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$db->query( "UPDATE `$prefixed_table_name` SET is_locked = false;" );
+	}
+
+	/**
 	 * Unlock a URL.
 	 *
 	 * @param string $url URL to unlock.
@@ -584,5 +624,60 @@ class Cache extends Query {
 		$extension = pathinfo( $url, PATHINFO_EXTENSION );
 
 		return $extension && isset( $extensions[ $extension ] );
+	}
+
+	/**
+	 * Make the status from the task to failed.
+	 *
+	 * @param int $id id from the task.
+	 * @return bool
+	 */
+	public function make_status_failed( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'status'   => 'failed',
+				'modified' => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
+	 * Update last accessed from the row.
+	 *
+	 * @param int $id id from the row.
+	 * @return bool
+	 */
+	public function update_last_access( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
+	 * Return outdated in-progress jobs.
+	 *
+	 * @param int $delay delay to delete.
+	 * @return array|int
+	 */
+	public function get_outdated_in_progress_jobs( int $delay = 3 ) {
+
+		return $this->query(
+			[
+				'status'     => 'in-progress',
+				'is_locked'  => false,
+				'date_query' => [
+					[
+						'column' => 'modified',
+						'before' => "$delay minute ago",
+					],
+				],
+			],
+			false
+		);
+
 	}
 }

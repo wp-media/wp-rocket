@@ -205,6 +205,14 @@ tests_add_filter(
 			$_SERVER[ 'HTTP_HOST'] = 'example.com';
 		}
 
+		if ( BootstrapManager::isGroup( 'Perfmatters' ) ) {
+			define( 'PERFMATTERS_VERSION', '2.0.2' );
+		}
+
+		if ( BootstrapManager::isGroup( 'RapidLoad' ) ) {
+			define( 'UUCSS_VERSION', '1.6.34' );
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}

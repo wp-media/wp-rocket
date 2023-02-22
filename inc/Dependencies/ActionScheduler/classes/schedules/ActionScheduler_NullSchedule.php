@@ -5,6 +5,9 @@
  */
 class ActionScheduler_NullSchedule extends ActionScheduler_SimpleSchedule {
 
+	/** @var DateTime|null */
+	protected $scheduled_date;
+
 	/**
 	 * Make the $date param optional and default to null.
 	 *

@@ -4,7 +4,7 @@
 # Romain • WP Rocket <contact@wp-rocket.me>, 2019
 # Muhittin Sahilli <Muhittinyasarsahilli@gmail.com>, 2021
 # BouRock, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
