@@ -10,7 +10,6 @@ use WP_Rocket\Tests\Integration\CapTrait;
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clear_cache_after_pressidium
  * @group Pressidium
- * @group  AdminOnly
  */
 class Test_clearCacheAfterPressidium extends AdminTestCase {
 	use CapTrait;
