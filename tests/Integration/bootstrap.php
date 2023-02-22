@@ -63,6 +63,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/FlywheelNginxCompat.php';
 		}
 
+		if ( BootstrapManager::isGroup('Nginx') ) {
+			$_SERVER['SERVER_SOFTWARE'] = 'nginx';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
@@ -110,6 +114,19 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'Dreampress' ) ) {
 			$_SERVER[ 'DH_USER'] = 'wp_74cgrq';
+		}
+
+		if ( BootstrapManager::isGroup( 'Pressable' ) ) {
+			define('IS_PRESSABLE', true);
+			define('WP_STACK_CDN_DOMAIN', 'WP_STACK_CDN_DOMAIN');
+		}
+
+		if ( BootstrapManager::isGroup( 'Pressidium' ) ) {
+			define('WP_NINUKIS_WP_NAME', 'WP_NINUKIS_WP_NAME');
+		}
+
+		if ( BootstrapManager::isGroup( 'Siteground' ) ) {
+			define('WP_NINUKIS_WP_NAME', 'WP_NINUKIS_WP_NAME');
 		}
 
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {

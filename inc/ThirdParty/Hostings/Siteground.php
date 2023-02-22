@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use SiteGround_Optimizer\Supercacher\Supercacher;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Siteground extends AbstractNoCacheHost
@@ -94,7 +95,7 @@ class Siteground extends AbstractNoCacheHost
 		}
 
 		if ( ! version_compare( rocket_get_sg_optimizer_version(), '5.0' ) < 0 ) {
-			SiteGround_Optimizer\Supercacher\Supercacher::purge_cache();
+			Supercacher::purge_cache();
 		} elseif ( isset( $sg_cachepress_supercacher ) && $sg_cachepress_supercacher instanceof SG_CachePress_Supercacher ) {
 			$sg_cachepress_supercacher->purge_cache();
 		}

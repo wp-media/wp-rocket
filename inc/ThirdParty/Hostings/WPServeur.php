@@ -28,7 +28,7 @@ class WPServeur extends AbstractNoCacheHost
 	 *
 	 * @return array modified field settings data.
 	 */
-	function wpserveur_varnish_field( $settings ) {
+	public function wpserveur_varnish_field( $settings ) {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 		// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),

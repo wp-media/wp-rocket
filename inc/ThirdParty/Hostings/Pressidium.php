@@ -12,7 +12,6 @@ class Pressidium extends AbstractNoCacheHost
 	public static function get_subscribed_events()
 	{
 		$events = [];
-
 		if ( defined( 'WP_NINUKIS_WP_NAME' ) ) {
 			$events['rocket_varnish_field_settings'] = 'pressidium_varnish_field';
 			$events['rocket_display_input_varnish_auto_purge'] = 'return_false';
@@ -56,8 +55,6 @@ class Pressidium extends AbstractNoCacheHost
 			// Clear all caching files.
 			rocket_clean_domain();
 
-			// Preload cache.
-			run_rocket_bot();
 			run_rocket_sitemap_preload();
 		}
 	}

@@ -57,6 +57,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Siteground();
 			case 'presslabs':
 				return new Presslabs();
+			case 'pressidium':
+				return new Pressidium();
 			case 'pagely':
 				return new Pagely();
 			case 'nginx':

@@ -1,5 +1,8 @@
 <?php
 
+use WP_Rocket\ThirdParty\Hostings\Ngnix;
+use WP_Rocket\ThirdParty\Hostings\Siteground;
+
 return [
 	'test_data' => [
 		'testShouldReturnEmptyWhenNotCompatibleHost' => [
@@ -25,6 +28,14 @@ return [
 		'testShouldReturnSavvii' => [
 			'host'     => 'savvii',
 			'expected' => 'WP_Rocket\ThirdParty\Hostings\Savvii',
+		],
+		'testShouldReturnNginx' => [
+			'host'     => 'nginx',
+			'expected' => Ngnix::class,
+		],
+		'testShouldReturnSiteground' => [
+			'host'     => 'siteground',
+			'expected' => Siteground::class,
 		],
 	],
 ];

@@ -20,5 +20,11 @@ return [
 		'testShouldReturnOnecom' => [
 			'expected' => 'onecom',
 		],
+		'testShouldReturnNginx' => [
+			'expected' => 'nginx',
+		],
+		'testShouldReturnSiteground' => [
+			'expected' => 'siteground',
+		],
 	],
 ];

@@ -63,7 +63,7 @@ class Presslabs extends AbstractNoCacheHost
 	 *
 	 * @return void
 	 */
-	function pl_clean_home( $root = false, $lang = false ) {
+	public function pl_clean_home( $root = false, $lang = false ) {
 		if ( ! $post || ! $permalink ) {
 			return;
 		}

@@ -24,7 +24,6 @@ class Ngnix extends AbstractNoCacheHost
 	 */
 	function better_nginx_compatibility( $query_strings ) {
 		global $is_nginx;
-
 		if ( $is_nginx ) {
 			$query_strings[] = 'q';
 		}
