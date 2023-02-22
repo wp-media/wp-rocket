@@ -361,7 +361,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Save Cloudflare auto settings admin option.
 	 *
-	 * @param int $auto_settings New value for Cloudflare auto_settings.
+	 * @param int    $auto_settings New value for Cloudflare auto_settings.
 	 * @param string $old_settings Cloudflare cloudflare_old_settings.
 	 */
 	private function save_cloudflare_auto_settings( $auto_settings, $old_settings ) {
@@ -381,8 +381,8 @@ class Subscriber implements Subscriber_Interface {
 		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
 		$result[]         = $this->save_rocket_loader( $cf_rocket_loader );
 
-		// Set Browser cache to 1 year.
-		$cf_browser_cache_ttl = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : '31536000';
+		// Set Browser cache to 4 hours.
+		$cf_browser_cache_ttl = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : '14400';
 		$result[]             = $this->save_browser_cache_ttl( $cf_browser_cache_ttl );
 
 		return $result;
