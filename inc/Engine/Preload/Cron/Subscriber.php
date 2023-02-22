@@ -237,19 +237,18 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
-		$parts = explode(' ', $delay);
+		$parts = explode( ' ', $delay );
 
-		if ( '' === $delay) {
+		if ( '' === $delay ) {
 			return;
 		}
 
-
-		if( count($parts) !== 2 ) {
+		if ( count( $parts ) !== 2 ) {
 			$delay = $parts[0];
-			$unit = $parts[1];
+			$unit  = $parts[1];
 		} else {
 			$delay = 1;
-			$unit = 'month';
+			$unit  = 'month';
 		}
 
 		$this->query->remove_all_not_accessed_rows( $delay, $unit );

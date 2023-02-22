@@ -277,11 +277,11 @@ class Cache extends Query {
 	/**
 	 * Get all preload caches which were not accessed in the last month.
 	 *
-	 * @param int $delay delay before the not accessed row is deleted.
+	 * @param int    $delay delay before the not accessed row is deleted.
 	 * @param string $unit unit from the delay.
 	 * @return array
 	 */
-	public function get_old_cache( int $delay = 1, string $unit = 'month') : array {
+	public function get_old_cache( int $delay = 1, string $unit = 'month' ) : array {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -300,7 +300,7 @@ class Cache extends Query {
 	/**
 	 * Remove all completed rows one by one.
 	 *
-	 * @param int $delay delay before the not accessed row is deleted.
+	 * @param int    $delay delay before the not accessed row is deleted.
 	 * @param string $unit unit from the delay.
 	 * @return void
 	 */
