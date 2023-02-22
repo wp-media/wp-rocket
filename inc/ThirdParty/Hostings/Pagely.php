@@ -4,13 +4,18 @@ namespace WP_Rocket\ThirdParty\Hostings;
 
 use PagelyCachePurge;
 
-class Pagely extends AbstractNoCacheHost
-{
+class Pagely extends AbstractNoCacheHost {
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_domain' => 'clean_pagely'
+			'after_rocket_clean_domain' => 'clean_pagely',
 		];
 	}
 
@@ -21,7 +26,7 @@ class Pagely extends AbstractNoCacheHost
 	 *
 	 * @return void
 	 */
-	function clean_pagely() {
+	public function clean_pagely() {
 		if ( class_exists( 'PagelyCachePurge' ) ) {
 			$purger = new PagelyCachePurge();
 			$purger->purgeAll();

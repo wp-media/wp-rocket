@@ -4,16 +4,22 @@ namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class WPServeur extends AbstractNoCacheHost
-{
+class WPServeur extends AbstractNoCacheHost {
+
 	use ReturnTypesTrait;
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
 		return [
-			'do_rocket_varnish_http_purge' => 'return_true',
-			'rocket_cache_mandatory_cookies' => ['return_empty_array',PHP_INT_MAX],
-			'rocket_varnish_field_settings' => 'wpserveur_varnish_field',
+			'do_rocket_varnish_http_purge'            => 'return_true',
+			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
+			'rocket_varnish_field_settings'           => 'wpserveur_varnish_field',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 		];
 	}

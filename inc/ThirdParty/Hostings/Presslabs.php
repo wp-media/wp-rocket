@@ -5,23 +5,29 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use Presslabs\Cache\CacheHandler;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Presslabs extends AbstractNoCacheHost
-{
+class Presslabs extends AbstractNoCacheHost {
+
 	use ReturnTypesTrait;
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
 		require_once WP_CONTENT_DIR . '/advanced-cache.php';
 
 		$events = [
-			'pl_pre_cache_refresh' => 'rocket_clean_files',
+			'pl_pre_cache_refresh'               => 'rocket_clean_files',
 			'rocket_display_varnish_options_tab' => 'return_false',
-			'do_rocket_generate_caching_files' => 'return_false',
-			'rocket_cache_mandatory_cookies' => 'return_empty_array',
-			'after_rocket_clean_home' => 'pl_clean_home',
-			'after_rocket_clean_file' => 'pl_clean_post',
-			'pl_pre_url_button_cache_refresh' => 'rocket_clean_files',
-			'wp_rocket_loaded' => 'pl_remove_partial_purge_hooks',
+			'do_rocket_generate_caching_files'   => 'return_false',
+			'rocket_cache_mandatory_cookies'     => 'return_empty_array',
+			'after_rocket_clean_home'            => 'pl_clean_home',
+			'after_rocket_clean_file'            => 'pl_clean_post',
+			'pl_pre_url_button_cache_refresh'    => 'rocket_clean_files',
+			'wp_rocket_loaded'                   => 'pl_remove_partial_purge_hooks',
 		];
 
 		if ( ! defined( 'DISABLE_CDN_OFFLOAD' ) && defined( 'PL_CDN_HOST' ) ) {
@@ -41,7 +47,7 @@ class Presslabs extends AbstractNoCacheHost
 	 *
 	 * @return void
 	 */
-	function pl_clean_post( $post = false, $permalink = false ) {
+	public function pl_clean_post( $post = false, $permalink = false ) {
 		if ( ! $post || ! $permalink ) {
 			return;
 		}

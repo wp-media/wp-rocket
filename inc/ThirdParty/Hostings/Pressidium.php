@@ -5,18 +5,24 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use Ninukis_Plugin;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Pressidium extends AbstractNoCacheHost
-{
+class Pressidium extends AbstractNoCacheHost {
+
 	use ReturnTypesTrait;
 
-	public static function get_subscribed_events()
-	{
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
 		$events = [];
 		if ( defined( 'WP_NINUKIS_WP_NAME' ) ) {
-			$events['rocket_varnish_field_settings'] = 'pressidium_varnish_field';
+			$events['rocket_varnish_field_settings']           = 'pressidium_varnish_field';
 			$events['rocket_display_input_varnish_auto_purge'] = 'return_false';
-			$events['rocket_cache_mandatory_cookies'] = ['return_empty_array', PHP_INT_MAX];
-			$events['admin_init'] = 'clear_cache_after_pressidium';
+			$events['rocket_cache_mandatory_cookies']          = [ 'return_empty_array', PHP_INT_MAX ];
+			$events['admin_init']                              = 'clear_cache_after_pressidium';
 		}
 
 		if ( class_exists( 'Ninukis_Plugin' ) ) {

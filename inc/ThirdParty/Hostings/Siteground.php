@@ -5,21 +5,27 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Siteground extends AbstractNoCacheHost
-{
+class Siteground extends AbstractNoCacheHost {
+
 	use ReturnTypesTrait;
 
-	public static function get_subscribed_events()
-	{
-		if( rocket_is_supercacher_active() ) {
+	/**
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @see Subscriber_Interface.
+	 *
+	 * @return array
+	 */
+	public static function get_subscribed_events() {
+		if ( rocket_is_supercacher_active() ) {
 			return [];
 		}
 
 		$events = [
-			'admin_post_sg-cachepress-purge' => ['sg_clear_cache', 0],
-			'after_rocket_clean_domain' => 'clean_supercacher',
+			'admin_post_sg-cachepress-purge'     => [ 'sg_clear_cache', 0 ],
+			'after_rocket_clean_domain'          => 'clean_supercacher',
 			'rocket_display_varnish_options_tab' => 'return_false',
-			'rocket_cache_mandatory_cookies' => ['return_empty_array',PHP_INT_MAX],
+			'rocket_cache_mandatory_cookies'     => [ 'return_empty_array', PHP_INT_MAX ],
 		];
 
 		/**
@@ -31,13 +37,13 @@ class Siteground extends AbstractNoCacheHost
 		 * @link   https://github.com/wp-media/wp-rocket/issues/925
 		 */
 		if ( version_compare( rocket_get_sg_optimizer_version(), '4.0.5' ) < 0 ) {
-			$events['do_rocket_generate_caching_files'] = ['return_true', 11];
+			$events['do_rocket_generate_caching_files'] = [ 'return_true', 11 ];
 		}
 
 		if ( version_compare( rocket_get_sg_optimizer_version(), '5.0' ) < 0 ) {
-			$events['wp_ajax_sg-cachepress-purge'] = ['sg_clear_cache', 0];
+			$events['wp_ajax_sg-cachepress-purge'] = [ 'sg_clear_cache', 0 ];
 		} else {
-			$events['wp_ajax_admin_bar_purge_cache'] = ['sg_clear_cache', 0];
+			$events['wp_ajax_admin_bar_purge_cache'] = [ 'sg_clear_cache', 0 ];
 		}
 
 		return $events;
