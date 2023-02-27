@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare;
 
+use DateTimeImmutable;
 use Exception;
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
@@ -214,10 +215,37 @@ class Cloudflare {
 		try {
 			$this->endpoints->update_browser_cache_ttl( $this->options->get( 'cloudflare_zone_id', '' ), (int) $value );
 
-			return $value;
+			return $this->convert_time( $value );
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_browser_cache', $e->getMessage() );
 		}
+	}
+
+	/**
+	 * Convert value in seconds to seconds/minutes/hours/days
+	 *
+	 * @param int $value Value in seconds.
+	 *
+	 * @return string
+	 */
+	private function convert_time( $value ): string {
+		if ( ! is_int( $value ) ) {
+			$value = 0;
+		}
+
+		$base   = new DateTimeImmutable( "@0" );
+		$time   = new DateTimeImmutable( "@$value" );
+		$format = __( '%a days' );
+
+		if ( 60 > $value ) {
+			$format = __( '%s seconds' );
+		} elseif ( 3600 > $value ) {
+			$format = __( '%i minutes' );
+		} elseif ( 86400 > $value ) {
+			$format = __( '%h hours' );
+		}
+
+		return $base->diff( $time )->format( $format );
 	}
 
 	/**
