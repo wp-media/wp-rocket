@@ -243,12 +243,12 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$value = 1;
+		$unit   = 'month';
+
 		if ( count( $parts ) !== 2 ) {
-			$delay = $parts[0];
-			$unit  = $parts[1];
-		} else {
-			$delay = 1;
-			$unit  = 'month';
+			$value = $parts[0];
+			$unit   = $parts[1];
 		}
 
 		$this->query->remove_all_not_accessed_rows( $delay, $unit );
