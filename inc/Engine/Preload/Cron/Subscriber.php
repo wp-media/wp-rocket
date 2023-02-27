@@ -251,7 +251,7 @@ class Subscriber implements Subscriber_Interface {
 			$unit   = $parts[1];
 		}
 
-		$this->query->remove_all_not_accessed_rows( $delay, $unit );
+		$this->query->remove_all_not_accessed_rows( $value, $unit );
 	}
 
 	/**
