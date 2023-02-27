@@ -305,7 +305,7 @@ class Cache extends Query {
 	 * @return void
 	 */
 	public function remove_all_not_accessed_rows( int $delay = 1, string $unit = 'month' ) {
-		$rows = $this->get_old_cache( $delay );
+		$rows = $this->get_old_cache( $delay, $unit );
 
 		foreach ( $rows as $row ) {
 			if ( ! is_bool( $row ) ) {
