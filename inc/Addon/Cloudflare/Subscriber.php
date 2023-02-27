@@ -250,14 +250,14 @@ class Subscriber implements Subscriber_Interface {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $result->get_error_message() ),
+				'message' => sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $result ),
+			'message' => sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $result ),
 		];
 	}
 
@@ -274,7 +274,7 @@ class Subscriber implements Subscriber_Interface {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $result->get_error_message() ),
+				'message' => sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
@@ -285,7 +285,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'result'  => 'success',
 			// translators: %s is the caching level returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $level ),
+			'message' => sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $level ),
 		];
 	}
 
@@ -301,14 +301,14 @@ class Subscriber implements Subscriber_Interface {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
+				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
+			'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
 		];
 	}
 
@@ -324,14 +324,14 @@ class Subscriber implements Subscriber_Interface {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $result->get_error_message() ),
+				'message' => sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $result ),
+			'message' => sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $result ),
 		];
 	}
 
@@ -347,14 +347,14 @@ class Subscriber implements Subscriber_Interface {
 			return [
 				'result'  => 'error',
 				// translators: %s is the message returned by the CloudFlare API.
-				'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $result->get_error_message() ),
+				'message' => sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $result->get_error_message() ),
 			];
 		}
 
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => '<strong>' . __( 'WP Rocket: ', 'rocket' ) . '</strong>' . sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $result ),
+			'message' => sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $result ),
 		];
 	}
 
@@ -432,6 +432,20 @@ class Subscriber implements Subscriber_Interface {
 
 		// Update CloudFlare settings.
 		if ( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
+			$result['pre'] = sprintf(
+				__( '%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			);
+
+			if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
+				$result['pre'] = sprintf(
+					__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings.', 'rocket' ),
+					'<strong>',
+					'</strong>'
+				);
+			}
+
 			$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 		}
 
