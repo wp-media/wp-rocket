@@ -62,6 +62,13 @@ class Subscriber implements Subscriber_Interface {
 		$errors  = '';
 		$success = '';
 		delete_transient( $user_id . '_cloudflare_update_settings' );
+
+		if ( isset( $notices['pre'] ) ) {
+			$pre = $notices['pre'];
+
+			unset( $notices['pre'] );
+		}
+
 		foreach ( $notices as $notice ) {
 			if ( 'error' === $notice['result'] ) {
 				$errors .= $notice['message'] . '<br>';
@@ -73,7 +80,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! empty( $success ) ) {
 			rocket_notice_html(
 				[
-					'message' => $success,
+					'message' => $pre . $success,
 				]
 			);
 		}
