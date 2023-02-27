@@ -244,11 +244,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$value = 1;
-		$unit   = 'month';
+		$unit  = 'month';
 
 		if ( count( $parts ) !== 2 ) {
 			$value = $parts[0];
-			$unit   = $parts[1];
+			$unit  = $parts[1];
 		}
 
 		$this->query->remove_all_not_accessed_rows( $value, $unit );
