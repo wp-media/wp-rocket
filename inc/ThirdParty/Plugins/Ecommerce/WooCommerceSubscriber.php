@@ -199,9 +199,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		if ( ! function_exists( 'wc_get_page_id' ) ) {
 			return $urls;
 		}
-		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
-		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
-		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+		$checkout_urls = $this->exclude_page( sanitize_title( wc_get_page_id( 'checkout' ) ), 'page', '(.*)' );
+		$cart_urls     = $this->exclude_page( sanitize_title( wc_get_page_id( 'cart' ) ) );
+		$account_urls  = $this->exclude_page( sanitize_title( wc_get_page_id( 'myaccount' ) ), 'page', '(.*)' );
 
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}
