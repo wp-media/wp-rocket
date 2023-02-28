@@ -165,11 +165,9 @@ class Iframe {
 		$youtube_url = $this->changeYoutubeUrlForYoutuDotBe( $iframe['src'] );
 		$youtube_url = $this->cleanYoutubeUrl( $iframe['src'] );
 
-		if ( ! preg_match( '@\s*title\s*=\s*(\'|")(?<title>.*)\1@iUs', $iframe['atts'], $atts ) ) {
-			$title = '';
-		}
+		preg_match( '@\s*title\s*=\s*(\'|")(?<title>.*)\1@iUs', $iframe['atts'], $atts );
 
-		$title = $atts['title'];
+		$title = $atts['title'] ?? '';
 		/**
 		 * Filter the LazyLoad HTML output on Youtube iframes
 		 *
