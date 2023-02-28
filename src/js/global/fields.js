@@ -259,4 +259,20 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
+	var key = document.getElementById( 'cloudflare_api_key' );
+	var zone = document.getElementById( 'cloudflare_zone_id' );
+
+	if ( key.value.length != 0 ) {
+		key.value = hideFieldValue( key.value );
+	}
+
+	if ( zone.value.length != 0 ) {
+		zone.value = hideFieldValue( zone.value );
+	}
+
+	function hideFieldValue( str ) {
+		const show = 4;
+
+		return '*'.repeat( str.length - show ) + str.slice( -show );
+	}
 });
