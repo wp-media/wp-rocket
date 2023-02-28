@@ -118,7 +118,6 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( 206 === $result['code'] ) {
-				$success                      = true;
 				$response[ $provider->title ] = [
 					'success' => true,
 					'data'    => '',
