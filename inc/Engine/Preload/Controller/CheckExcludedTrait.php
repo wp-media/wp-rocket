@@ -11,7 +11,18 @@ trait CheckExcludedTrait {
 	 * @return array
 	 */
 	public function add_cache_reject_uri_to_excluded( array $regexes ): array {
-		$regexes[] = get_rocket_cache_reject_uri();
+		$user_added_cache_reject_uri = (array) get_rocket_option( 'cache_reject_uri', [] );
+
+		if ( count( $user_added_cache_reject_uri ) === 0 ) {
+			return $regexes;
+		}
+
+		$altered_user_added_cache_reject_uri = implode( '$|', $user_added_cache_reject_uri );
+
+		$user_added_cache_reject_uri = implode( '|', $user_added_cache_reject_uri );
+		$cache_reject_uri            = get_rocket_cache_reject_uri();
+
+		$regexes[] = str_replace( $user_added_cache_reject_uri . '|', $altered_user_added_cache_reject_uri . '$|', $cache_reject_uri );
 
 		return $regexes;
 	}
@@ -23,12 +34,14 @@ trait CheckExcludedTrait {
 	 * @return bool
 	 */
 	protected function is_excluded_by_filter( string $url ): bool {
+		global $wp_rewrite;
+		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
 		/**
 		 * Regex to exclude URI from preload.
 		 *
 		 * @param string[] regexes to check
 		 */
-		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [] );
+		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls', [ $pagination_regex ] );
 
 		if ( empty( $regexes ) ) {
 			return false;
