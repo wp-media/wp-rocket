@@ -48,6 +48,10 @@ class ServiceProvider extends AbstractServiceProvider {
 			return;
 		}
 
+		$this->provides[] = 'cloudflare_auth';
+		$this->provides[] = 'cloudflare_client';
+		$this->provides[] = 'cloudflare_endpoints';
+		$this->provides[] = 'cloudflare';
 		$this->provides[] = 'cloudflare_subscriber';
 		$this->provides[] = 'cloudflare_admin_subscriber';
 
