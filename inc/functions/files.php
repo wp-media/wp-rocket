@@ -662,6 +662,10 @@ function rocket_clean_home( $lang = '' ) {
  */
 function rocket_clean_home_feeds() {
 
+	if ( ! get_rocket_option( 'cache_feed', false ) ) {
+		return;
+	}
+
 	$urls   = [];
 	$urls[] = get_feed_link();
 	$urls[] = get_feed_link( 'comments_' );
