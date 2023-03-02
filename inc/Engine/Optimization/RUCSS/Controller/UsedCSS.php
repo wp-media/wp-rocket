@@ -357,6 +357,7 @@ class UsedCSS {
 	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
 	 * @param string $html HTML content.
 	 *
 	 * @return string HTML content.
