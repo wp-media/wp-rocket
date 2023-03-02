@@ -18,7 +18,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 	use RegexTrait;
 
-	const SCRIPT_VERSION = '17.8.2';
+	const SCRIPT_VERSION = '17.8.3';
 
 	/**
 	 * Options_Data instance
