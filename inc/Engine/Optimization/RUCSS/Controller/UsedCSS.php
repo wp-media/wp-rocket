@@ -188,6 +188,10 @@ class UsedCSS {
 		return ! empty( $post->post_password );
 	}
 
+	private function is_valid_html( string $html ) {
+		return (bool) preg_match( '#</title>#iU', $html );
+	}
+
 	/**
 	 * Start treeshaking the current page.
 	 *
@@ -197,6 +201,14 @@ class UsedCSS {
 	 */
 	public function treeshake( string $html ): string {
 		if ( ! $this->is_allowed() ) {
+			return $html;
+		}
+
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+
+		if ( ! $this->is_valid_html( $clean_html ) ) {
 			return $html;
 		}
 
@@ -240,7 +252,7 @@ class UsedCSS {
 			return $html;
 		}
 
-		$html = $this->remove_used_css_from_html( $html );
+		$html = $this->remove_used_css_from_html( $clean_html, $html );
 		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
@@ -341,14 +353,9 @@ class UsedCSS {
 	 *
 	 * @return string HTML content.
 	 */
-	private function remove_used_css_from_html( string $html ): string {
-		$clean_html = $this->hide_comments( $html );
-		$clean_html = $this->hide_noscripts( $clean_html );
-		$clean_html = $this->hide_scripts( $clean_html );
+	private function remove_used_css_from_html( string $clean_html, string $html ): string {
 		$this->set_inline_exclusions_lists();
-
 		$html = $this->remove_external_styles_from_html( $clean_html, $html );
-
 		return $this->remove_internal_styles_from_html( $clean_html, $html );
 	}
 
