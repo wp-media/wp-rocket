@@ -188,6 +188,14 @@ class UsedCSS {
 		return ! empty( $post->post_password );
 	}
 
+	/**
+	 * Checks if the page HTML is valid or not.
+	 * Valid here means that it has a closing title tag.
+	 *
+	 * @param string $html Page HTML.
+	 *
+	 * @return bool
+	 */
 	private function is_valid_html( string $html ) {
 		return (bool) preg_match( '#</title>#iU', $html );
 	}
