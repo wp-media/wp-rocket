@@ -662,7 +662,7 @@ function rocket_clean_home( $lang = '' ) {
  */
 function rocket_clean_home_feeds() {
 
-	if ( ! get_rocket_option( 'cache_feed', false ) ) {
+	if ( ! has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) ) {
 		return;
 	}
 
