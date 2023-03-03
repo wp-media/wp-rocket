@@ -229,7 +229,7 @@ class SiteList {
 
 		$active_theme = $this->get_active_theme();
 		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
-			if ( $active_theme !== strtolower( $theme->condition ) ) {
+			if ( strtolower( $theme->condition ) !== $active_theme ) {
 				continue;
 			}
 
@@ -322,7 +322,7 @@ class SiteList {
 
 		$active_theme = $this->get_active_theme();
 		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
-			if ( $active_theme !== strtolower( $theme->condition ) || ! $theme->is_default ) {
+			if ( strtolower( $theme->condition ) !== $active_theme || ! $theme->is_default ) {
 				continue;
 			}
 
