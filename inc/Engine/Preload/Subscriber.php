@@ -233,7 +233,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_url_on_not_found() {
 		global $wp;
-		$url = home_url( $wp->request );
+
+		$params = [];
+
+		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$url = home_url( add_query_arg( $params, $wp->request ) );
+
+		$url = $this->format_url( $url );
 		$this->query->delete_by_url( $url );
 	}
 
