@@ -216,7 +216,7 @@ class SiteList {
 
 		$active_plugins = $this->get_active_plugins();
 		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
-			if ( ! in_array( $plugin->condition, $active_plugins, true ) ) {
+			if ( ! in_array( strtolower( $plugin->condition ), $active_plugins, true ) ) {
 				continue;
 			}
 
@@ -313,7 +313,7 @@ class SiteList {
 
 		$active_plugins = $this->get_active_plugins();
 		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
-			if ( ! in_array( $plugin->condition, $active_plugins, true ) || ! $plugin->is_default ) {
+			if ( ! in_array( strtolower( $plugin->condition ), $active_plugins, true ) || ! $plugin->is_default ) {
 				continue;
 			}
 
