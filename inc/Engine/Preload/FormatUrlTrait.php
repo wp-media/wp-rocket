@@ -15,6 +15,10 @@ trait FormatUrlTrait {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 		$queries = $this->convert_query_to_array( $queries );
 
+		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+
+		$queries = array_diff( $queries, $ignored_queries );
+
 		ksort( $queries );
 
 		$url = strtok( $url, '?' );

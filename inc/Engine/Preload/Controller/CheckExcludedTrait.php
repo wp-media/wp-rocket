@@ -116,4 +116,68 @@ trait CheckExcludedTrait {
 
 		return count( array_intersect( $queries, array_keys( $excluded_queries ) ) ) > 0 || $this->is_excluded_by_filter( $url );
 	}
+
+	/**
+	 * Check if the URL has query string.
+	 *
+	 * @param string $url URL to check.
+	 *
+	 * @return bool
+	 */
+	public function has_query_string( string $url ) {
+		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+
+		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+
+		$queries = array_diff( $queries, $ignored_queries );
+
+		return ! empty( $queries );
+	}
+
+	/**
+	 * Check if the url has query params.
+	 *
+	 * @param string $url url to check.
+	 * @return bool
+	 */
+	public function has_cached_query_string( string $url ) {
+		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+
+		if ( empty( $queries ) ) {
+			return true;
+		}
+
+		$queries = $this->convert_query_to_array( $queries );
+
+		$cache_query_string = get_rocket_cache_query_string();
+
+		$default_params = [
+			'lang',
+			'permalink_name',
+			'lp-variation-id',
+		];
+
+		/**
+		 * At this point we’re in the WP’s search page.
+		 * This filter allows to cache search results.
+		 *
+		 * @since 2.3.8
+		 *
+		 * @param bool $cache_search True will force caching search results.
+		 */
+		if ( apply_filters( 'rocket_cache_search', false ) ) {
+			$default_params [] = 's';
+		}
+
+		$cache_query_string = array_merge(
+			$cache_query_string,
+			$default_params
+		);
+
+		if ( ! $cache_query_string ) {
+			return count( $queries ) === 0;
+		}
+
+		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
+	}
 }

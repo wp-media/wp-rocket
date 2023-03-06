@@ -72,9 +72,6 @@ class Test_ParseSitemap extends TestCase {
 			->andReturn( $config['children'] );
 
 		foreach ( $config['links'] as $index => $link ) {
-			$this->controller->expects()->is_url_excluded( $link )
-				->once()
-				->andReturn( $config['is_excluded'] );
 
 			if ( ! $config['is_excluded'] ) {
 				$this->query->expects( self::any() )->method( 'create_or_nothing' )
