@@ -80,6 +80,16 @@ $html = '<html>
 </head>
 <body>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
@@ -324,6 +334,16 @@ $delay_html_upgrade = '<html>
 </head>
 <body>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
@@ -568,6 +588,16 @@ $delay_html = '<html>
 </head>
 <body>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
