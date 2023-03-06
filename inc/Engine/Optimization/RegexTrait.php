@@ -128,7 +128,7 @@ trait RegexTrait {
 	 */
 	protected function replace_svg_tags( $html ) {
 		$this->svg_replace = [];
-		$regex             = '#<svg.*>.*</svg>#Uis';
+		$regex             = '#<svg.*>.*<\\\\?/svg>#Uis';
 		$replaced_html     = preg_replace_callback( $regex, [ $this, 'replace_svg' ], $html );
 
 		if ( empty( $replaced_html ) ) {
