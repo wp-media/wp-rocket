@@ -4,6 +4,7 @@ namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
 
 /**
@@ -200,9 +201,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return $urls;
 		}
 
-		$checkout_urls = $this->exclude_page( sanitize_title( wc_get_page_id( 'checkout' ) ), 'page', '(.*)' );
-		$cart_urls     = $this->exclude_page( sanitize_title( wc_get_page_id( 'cart' ) ) );
-		$account_urls  = $this->exclude_page( sanitize_title( wc_get_page_id( 'myaccount' ) ), 'page', '(.*)' );
+		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
+		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
+		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}

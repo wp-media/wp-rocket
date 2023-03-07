@@ -247,6 +247,11 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		return '';
 	}
 
+	$uris = array_map( function ($uri){
+		//Sanitize URIs and remove single quote from them to avoid syntax errors in .htaccess and php config file.
+		return str_replace( "'", '', sanitize_url($uri) );
+	}, $uris );
+
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {
 			if ( preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
