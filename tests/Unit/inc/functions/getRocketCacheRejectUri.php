@@ -30,7 +30,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 			->andReturn( $config['options']['cache_reject_uri'] );
 
 
-		Functions\expect( 'sanitize_url' )->andReturnUsing( [ $this, 'sanitizeURL' ] );
+		Functions\expect( 'esc_url_raw' )->andReturnUsing( [ $this, 'sanitizeURL' ] );
 		Functions\when( 'rocket_get_home_dirname' )->justReturn( $config['home_dirname'] );
 
 		Functions\expect( 'apply_filters' )
