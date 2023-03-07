@@ -24,7 +24,7 @@ class Test_UpdateLists extends FilesystemTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
+		delete_transient( 'wpr_dynamic_lists' );
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
