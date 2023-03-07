@@ -55,6 +55,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array subscribed events => callbacks.
 	 */
 	public static function get_subscribed_events() {
+		// If the option is not enabled, bail out. Don't load the addon.
+		if ( ! (bool) get_rocket_option( 'do_cloudflare', false ) ) {
+			return [];
+		}
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
@@ -152,7 +156,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
-
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
 			return;
 		}

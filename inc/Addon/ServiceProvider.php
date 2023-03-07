@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
@@ -32,6 +32,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'webp_subscriber',
 		'webp_admin_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'sucuri_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container
@@ -70,7 +81,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @param Options_Data $options Instance of options.
 	 */
 	protected function addon_cloudflare( Options_Data $options ) {
-		// If the option is not enabled, bail out. Don't load the addon.
+
 		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
 			return;
 		}

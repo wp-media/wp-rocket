@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket DynamicLists
@@ -24,6 +24,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'dynamic_lists',
 		'dynamic_lists_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'dynamic_lists_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the option array in the container

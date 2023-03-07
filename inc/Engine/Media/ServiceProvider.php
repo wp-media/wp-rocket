@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Media;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Dependencies\RocketLazyload\Assets;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
 use WP_Rocket\Dependencies\RocketLazyload\Image;
@@ -39,6 +39,30 @@ class ServiceProvider extends AbstractServiceProvider {
 		'image_dimensions_subscriber',
 		'image_dimensions_admin_subscriber',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'lazyload_admin_subscriber',
+			'image_dimensions_admin_subscriber',
+		];
+	}
+
+	/**
+	 * Return IDs from license subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_license_subscribers(): array {
+		return [
+			'emojis_subscriber',
+			'image_dimensions_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

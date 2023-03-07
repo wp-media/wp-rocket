@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
@@ -35,6 +35,34 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_caches_query',
 		'cache_config',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'rocketcdn_data_manager_subscriber',
+			'rocketcdn_notices_subscriber',
+			'rocketcdn_admin_subscriber',
+			'admin_cache_subscriber',
+		];
+	}
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'rocketcdn_rest_subscriber',
+			'cache_config',
+			'purge_actions_subscriber',
+			'expired_cache_purge_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

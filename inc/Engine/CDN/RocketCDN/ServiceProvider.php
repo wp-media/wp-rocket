@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for RocketCDN
@@ -26,6 +26,30 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_admin_subscriber',
 		'rocketcdn_notices_subscriber',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'rocketcdn_data_manager_subscriber',
+			'rocketcdn_notices_subscriber',
+			'rocketcdn_admin_subscriber',
+		];
+	}
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'rocketcdn_rest_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

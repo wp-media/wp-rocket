@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
@@ -98,6 +98,53 @@ class ServiceProvider extends AbstractServiceProvider {
 		'perfmatters',
 		'rapidload',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'mobile_subscriber',
+			'woocommerce_subscriber',
+			'syntaxhighlighter_subscriber',
+			'elementor_subscriber',
+			'ngg_subscriber',
+			'smush_subscriber',
+			'imagify_webp_subscriber',
+			'shortpixel_webp_subscriber',
+			'ewww_webp_subscriber',
+			'optimus_webp_subscriber',
+			'bigcommerce_subscriber',
+			'beaverbuilder_subscriber',
+			'amp_subscriber',
+			'simple_custom_css',
+			'pdfembedder',
+			'mod_pagespeed',
+			'adthrive',
+			'autoptimize',
+			'wp-meteor',
+			'revolution_slider_subscriber',
+			'wordfence_subscriber',
+			'ezoic',
+			'pwa',
+			'convertplug',
+			'unlimited_elements',
+			'inline_related_posts',
+			'jetpack',
+			'rank_math_seo',
+			'all_in_one_seo_pack',
+			'seopress',
+			'the_seo_framework',
+			'wpml',
+			'cloudflare_plugin_subscriber',
+			'rocket_lazy_load',
+			'the_events_calendar',
+			'perfmatters',
+			'rapidload',
+		];
+	}
 
 	/**
 	 * Registers the subscribers in the container

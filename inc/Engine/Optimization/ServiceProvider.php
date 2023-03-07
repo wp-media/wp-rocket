@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Buffer\Config;
 use WP_Rocket\Engine\Optimization\Buffer\Optimization;
 use WP_Rocket\Buffer\Tests;
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
@@ -40,6 +40,22 @@ class ServiceProvider extends AbstractServiceProvider {
 		'minify_css_subscriber',
 		'minify_js_subscriber',
 	];
+
+	/**
+	 * Return IDs from license subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_license_subscribers(): array {
+		return [
+			'buffer_subscriber',
+			'combine_google_fonts_subscriber',
+			'ie_conditionals_subscriber',
+			'minify_css_subscriber',
+			'minify_js_subscriber',
+			'cache_dynamic_resource',
+		];
+	}
 
 	/**
 	 * Registers items with the container

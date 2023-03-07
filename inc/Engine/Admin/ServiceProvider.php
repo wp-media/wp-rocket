@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 use WP_Rocket\Engine\Admin\Deactivation\Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
@@ -28,6 +28,19 @@ class ServiceProvider extends AbstractServiceProvider {
 		'hummingbird_subscriber',
 		'actionscheduler_admin_subscriber',
 	];
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'deactivation_intent_subscriber',
+			'hummingbird_subscriber',
+			'actionscheduler_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Plugin;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket updates.
@@ -22,6 +22,20 @@ class ServiceProvider extends AbstractServiceProvider {
 		'plugin_information_subscriber',
 		'plugin_updater_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'plugin_updater_common_subscriber',
+			'plugin_information_subscriber',
+			'plugin_updater_subscriber',
+			'plugin_updater_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Support;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -22,6 +22,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rest_support',
 		'support_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'support_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the services in the container

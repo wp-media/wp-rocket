@@ -68,11 +68,11 @@ $default = [
 $integration                                 = $default;
 $integration[ 'async_css_mobile' ]           = 1;
 $integration[ 'exclude_defer_js' ]           = [];
+$integration[ 'preload_links' ]              = 1;
 $integration[ 'delay_js' ]                   = 0;
 $integration[ 'delay_js_exclusions' ]        = [];
 $integration[ 'remove_unused_css' ]          = 0;
 $integration[ 'remove_unused_css_safelist' ] = [];
-$integration[ 'preload_links' ]              = 1;
 $integration[ 'image_dimensions' ]           = 0;
 $integration[ 'exclude_lazyload' ]           = [];
 

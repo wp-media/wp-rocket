@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Preload\Links;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket preload links.
@@ -20,6 +20,18 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_links_admin_subscriber',
 		'preload_links_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'preload_links_admin_subscriber',
+			'preload_links_subscriber',
+		];
+	}
 
 	/**
 	 * Registers the subscribers in the container

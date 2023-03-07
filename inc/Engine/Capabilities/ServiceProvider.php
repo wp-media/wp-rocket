@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Capabilities;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service Provider for capabilities
@@ -23,6 +23,29 @@ class ServiceProvider extends AbstractServiceProvider {
 		'capabilities_manager',
 		'capabilities_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'rest_cpcss_subscriber',
+			'critical_css_subscriber',
+		];
+	}
+
+	/**
+	 * Return IDs from admin subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_admin_subscribers(): array {
+		return [
+			'critical_css_admin_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

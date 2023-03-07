@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Addon\Varnish;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for Varnish Addon.
@@ -21,6 +21,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		'varnish',
 		'varnish_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'varnish_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

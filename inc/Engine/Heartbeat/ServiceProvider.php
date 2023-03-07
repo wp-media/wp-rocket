@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Heartbeat;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for Media module
@@ -22,6 +22,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'heartbeat_subscriber',
 	];
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'heartbeat_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container

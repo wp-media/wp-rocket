@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\ServiceProvider;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket features common for admin and front
@@ -22,6 +22,19 @@ class Common_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'detect_missing_tags_subscriber',
 	];
+
+
+	/**
+	 * Returns common subscribers.
+	 *
+	 * @return string[]
+	 */
+	public function get_common_subscribers(): array {
+		return [
+			'webp_subscriber',
+			'detect_missing_tags_subscriber',
+		];
+	}
 
 	/**
 	 * Registers items with the container
