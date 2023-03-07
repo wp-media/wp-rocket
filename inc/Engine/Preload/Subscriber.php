@@ -188,7 +188,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$params = [];
 
-		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! empty( $_GET ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
@@ -207,8 +207,7 @@ class Subscriber implements Subscriber_Interface {
 			 */
 			do_action( 'rocket_preload_completed', $url, $detected );
 		}
-
-		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && ! $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 

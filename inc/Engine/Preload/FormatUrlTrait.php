@@ -12,12 +12,18 @@ trait FormatUrlTrait {
 	 * @return string
 	 */
 	public function format_url( string $url, bool $use_website_trailing = false ): string {
-		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
-		$queries = $this->convert_query_to_array( $queries );
-
+		$queries         = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
+		$queries         = $this->convert_query_to_array( $queries );
 		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
 
-		$queries = array_diff( $queries, $ignored_queries );
+		$queries_keys = array_diff( array_keys( $queries ), array_keys( $ignored_queries ) );
+
+		foreach ( $queries as $key => $value ) {
+			if ( in_array( $key, $queries_keys, true ) ) {
+				continue;
+			}
+			unset( $queries[ $key ] );
+		}
 
 		ksort( $queries );
 

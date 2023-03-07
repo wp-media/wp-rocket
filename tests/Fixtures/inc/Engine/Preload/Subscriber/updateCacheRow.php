@@ -6,6 +6,9 @@ return [
 			'params' => [
 			],
 			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -31,6 +34,9 @@ return [
 			'params' => [
 			],
 			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -54,12 +60,15 @@ return [
 		'config' => [
 			'query_enabled' => false,
 			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'params' => [
 				'test' => 1
 			],
 			'links' => [
 				[
-					'url' => 'http://example.org?test=1',
+					'url' => 'http://example.org',
 					'status' => 'in-progress',
 				],
 			],
@@ -69,6 +78,7 @@ return [
 			'url' => 'http://example.org?test=1',
       		'exists' => true,
 			'links' => [
+
 				[
 					'url' => 'http://example.org',
 					'status' => 'in-progress',
@@ -80,6 +90,67 @@ return [
 		'config' => [
 			'query_enabled' => true,
 			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
+			'params' => [
+				'lang' => 1
+			],
+			'links' => [
+				[
+					'url' => 'http://example.org?lang=1',
+					'status' => 'in-progress',
+				],
+			],
+			'is_preloaded' => false,
+		],
+        'expected' => [
+			'url' => 'http://example.org?lang=1',
+			'exists' => true,
+			'links' => [
+				[
+					'url' => 'http://example.org?lang=1',
+					'status' => 'completed',
+				],
+			],
+		],
+	],
+	'testQueryParamShouldAddWithoutParamWhenFilterEnabledAndExcluded' => [
+		'config' => [
+			'query_enabled' => true,
+			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
+			'params' => [
+				'excluded' => 1
+			],
+			'links' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'in-progress',
+				],
+			],
+			'is_preloaded' => false,
+		],
+		'expected' => [
+			'url' => 'http://example.org',
+			'exists' => true,
+			'links' => [
+				[
+					'url' => 'http://example.org',
+					'status' => 'completed',
+				],
+			],
+		],
+	],
+	'testQueryParamShouldNotChangeIfNotCachedParamWhenFilterEnabled' => [
+		'config' => [
+			'query_enabled' => true,
+			'regexes' => [],
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'params' => [
 				'test' => 1
 			],
@@ -88,16 +159,24 @@ return [
 					'url' => 'http://example.org?test=1',
 					'status' => 'in-progress',
 				],
+				[
+					'url' => 'http://example.org',
+					'status' => 'in-progress',
+				],
 			],
 			'is_preloaded' => false,
 		],
-        'expected' => [
+		'expected' => [
 			'url' => 'http://example.org?test=1',
 			'exists' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org?test=1',
-					'status' => 'completed',
+					'status' => 'in-progress',
+				],
+				[
+					'url' => 'http://example.org',
+					'status' => 'in-progress',
 				],
 			],
 		],
@@ -107,6 +186,9 @@ return [
 			'query_enabled' => true,
 			'regexes' => [
 				'(.*)example.org(.*)'
+			],
+			'excluded_params' => [
+				'excluded' => 1,
 			],
 			'params' => [
 				'test' => 1

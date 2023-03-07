@@ -62,14 +62,24 @@ class FetchSitemap {
 
 		$this->sitemap_parser->set_content( $data );
 		$links = $this->sitemap_parser->get_links();
+
 		foreach ( $links as $link ) {
-			if ( ! $this->is_excluded_by_filter( $link ) ) {
-				$this->query->create_or_nothing(
-					[
-						'url' => $link,
-					]
-				);
+			if (
+			(
+				! $this->has_cached_query_string( $url )
+				&&
+				$this->can_preload_query_strings()
+			) || (
+				! $this->can_preload_query_strings() &&
+				$this->has_query_string( $url )
+			) || $this->is_excluded_by_filter( $link ) ) {
+				continue;
 			}
+			$this->query->create_or_nothing(
+				[
+					'url' => $link,
+				]
+			);
 		}
 
 		$children = $this->sitemap_parser->get_children();

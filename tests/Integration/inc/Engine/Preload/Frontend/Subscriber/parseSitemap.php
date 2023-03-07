@@ -29,6 +29,20 @@ class Test_ParseSitemap extends TestCase {
 		parent::tear_down_after_class();
 	}
 
+	public function set_up()
+	{
+		parent::set_up();
+		add_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+		add_filter('rocket_cache_ignored_parameters', [$this, 'excluded_query_params']);
+	}
+
+	public function tear_down()
+	{
+		remove_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+		remove_filter('rocket_cache_ignored_parameters', [$this, 'excluded_query_params']);
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */
@@ -61,5 +75,13 @@ class Test_ParseSitemap extends TestCase {
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, 'parseSitemap' );
+	}
+
+	public function query_enabled() {
+		return $this->config['query_enabled'];
+	}
+
+	public function excluded_query_params($exclusions) {
+		return  array_merge($exclusions, $this->config['excluded_params']);
 	}
 }

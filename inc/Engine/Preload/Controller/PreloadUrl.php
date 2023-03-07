@@ -70,7 +70,6 @@ class PreloadUrl {
 			)
 		) {
 			$this->query->delete_by_url( $url, false );
-
 			return;
 		}
 

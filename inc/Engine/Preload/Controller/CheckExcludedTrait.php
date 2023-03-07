@@ -127,9 +127,20 @@ trait CheckExcludedTrait {
 	public function has_query_string( string $url ) {
 		$queries = wp_parse_url( $url, PHP_URL_QUERY ) ?: '';
 
-		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+		if ( ! $queries ) {
+			return false;
+		}
 
-		$queries = array_diff( $queries, $ignored_queries );
+		$queries         = explode( '&', $queries );
+		$queries         = array_map(
+			function ( $query ) {
+				$query = explode( '=', $query );
+				return array_shift( $query );
+			},
+			$queries
+		);
+		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+		$queries         = array_diff( $queries, $ignored_queries );
 
 		return ! empty( $queries );
 	}
