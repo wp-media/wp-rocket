@@ -183,16 +183,14 @@ $(document).ready(function(){
 			success: function(responses) {
 				let exclusion_msg_container = $('#wpr-update-exclusion-msg');
 				exclusion_msg_container.html('');
-				if ( Array.isArray( responses ) && undefined !== responses['success'] ) {
-					exclusion_msg_container.append( responses['message'] );
+				if ( undefined !== responses['success'] ) {
+					exclusion_msg_container.append( '<div class="error">' + responses['message'] + '</div>' );
 					return;
 				}
 				Object.keys( responses ).forEach(( response_key ) => {
-					if ( responses[response_key]['success'] ) {
-						exclusion_msg_container.append( '<strong>' + response_key + ': </strong>' );
-						exclusion_msg_container.append( responses[response_key]['message'] );
-						exclusion_msg_container.append( '<br>' );
-					}
+					exclusion_msg_container.append( '<strong>' + response_key + ': </strong>' );
+					exclusion_msg_container.append( responses[response_key]['message'] );
+					exclusion_msg_container.append( '<br>' );
 				});
 			}
 		});
