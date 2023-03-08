@@ -211,7 +211,7 @@ trait CheckExcludedTrait {
 			return $queries_keys;
 		}
 
-		foreach ( $queries as $key => $value ) {
+		foreach ( array_keys( $queries ) as $key ) {
 			if ( in_array( $key, $queries_keys, true ) ) {
 				continue;
 			}

@@ -18,7 +18,7 @@ trait FormatUrlTrait {
 
 		$queries_keys = array_diff( array_keys( $queries ), array_keys( $ignored_queries ) );
 
-		foreach ( $queries as $key => $value ) {
+		foreach ( array_keys( $queries ) as $key ) {
 			if ( in_array( $key, $queries_keys, true ) ) {
 				continue;
 			}
