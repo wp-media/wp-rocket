@@ -184,7 +184,7 @@ $(document).ready(function(){
 				let exclusion_msg_container = $('#wpr-update-exclusion-msg');
 				exclusion_msg_container.html('');
 				if ( undefined !== responses['success'] ) {
-					exclusion_msg_container.append( '<div class="error">' + responses['message'] + '</div>' );
+					exclusion_msg_container.append( '<div class="notice notice-error">' + responses['message'] + '</div>' );
 					return;
 				}
 				Object.keys( responses ).forEach(( response_key ) => {
