@@ -1,16 +1,21 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\classes\subscriber\Media\WebpSubscriber;
+namespace WP_Rocket\Tests\Integration\Addon\WebP\Subscriber;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Media\Webp_Subscriber::convert_to_webp
- * @group Subscriber
+ * @covers \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
  * @group WebP
  */
 class Test_ConvertToWebp extends TestCase {
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cache_webp', [ $this, 'return_1' ] );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider noMatchProvider
 	 */
@@ -25,9 +30,10 @@ class Test_ConvertToWebp extends TestCase {
 			}
 		);
 
-		$this->assertSame( $expected, apply_filters( 'rocket_buffer', $original ) );
-
-		remove_filter( 'pre_get_rocket_option_cache_webp', [ $this, 'return_1' ] );
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_buffer', $original )
+		);
 	}
 
 	public function noMatchProvider() {

@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Plugin;
 
 use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
+use WP_Error;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 
@@ -113,6 +114,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'wp_rocket_loaded'                      => 'maybe_force_check',
 			'auto_update_plugin'                    => [ 'disable_auto_updates', 10, 2 ],
 			'admin_post_rocket_rollback'            => 'rollback',
+			'upgrader_pre_install'                  => [ 'upgrade_pre_install_option', 10, 2 ],
+			'upgrader_post_install'                 => [ 'upgrade_post_install_option', 10, 2 ],
 		];
 	}
 
@@ -507,5 +510,53 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		);
 
 		return $update_actions;
+	}
+
+	/**
+	 * Set plugin option before upgrade.
+	 *
+	 * @param mixed $return    The result of the upgrade process.
+	 * @param array $plugin    The plugin data.
+	 *
+	 * @return mixed|WP_Error
+	 */
+	public function upgrade_pre_install_option( $return, $plugin = [] ) {
+
+		if ( is_wp_error( $return ) || ! $plugin ) {
+			return $return;
+		}
+
+		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
+
+		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
+			return $return;
+		}
+
+		set_transient( 'wp_rocket_updating', true, MINUTE_IN_SECONDS );
+
+		return $return;
+	}
+
+	/**
+	 * Update plugin option after upgrade.
+	 *
+	 * @param mixed $return    The result of the upgrade process.
+	 * @param array $plugin    The plugin data.
+	 *
+	 * @return mixed|string|WP_Error
+	 */
+	public function upgrade_post_install_option( $return, $plugin = [] ) {
+		if ( is_wp_error( $return ) || ! $plugin ) {
+			return $return;
+		}
+
+		$plugin = isset( $plugin['plugin'] ) ? $plugin['plugin'] : '';
+		if ( empty( $plugin ) || 'wp-rocket/wp-rocket.php' !== $plugin ) {
+			return $return;
+		}
+
+		delete_transient( 'wp_rocket_updating' );
+
+		return $return;
 	}
 }
