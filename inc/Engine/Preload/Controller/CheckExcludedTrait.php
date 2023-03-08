@@ -131,16 +131,16 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
-		$queries         = explode( '&', $queries );
-		$queries         = array_map(
+		$queries = explode( '&', $queries );
+		$queries = array_map(
 			function ( $query ) {
 				$query = explode( '=', $query );
 				return array_shift( $query );
 			},
 			$queries
 		);
-		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
-		$queries         = array_diff( $queries, $ignored_queries );
+
+		$queries = $this->drop_excluded_params( $queries, true );
 
 		return ! empty( $queries );
 	}
@@ -159,6 +159,8 @@ trait CheckExcludedTrait {
 		}
 
 		$queries = $this->convert_query_to_array( $queries );
+
+		$queries = $this->drop_excluded_params( $queries );
 
 		$cache_query_string = get_rocket_cache_query_string();
 
@@ -190,5 +192,32 @@ trait CheckExcludedTrait {
 		}
 
 		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
+	}
+
+	/**
+	 * Drop excluded query params.
+	 *
+	 * @param array $queries queries from the url.
+	 * @param bool  $only_keys has the query array only keys.
+	 *
+	 * @return array|int[]|string[]
+	 */
+	protected function drop_excluded_params( array $queries, bool $only_keys = false ) {
+		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+		$queries_keys    = $only_keys ? $queries : array_keys( $queries );
+		$queries_keys    = array_diff( $queries_keys, array_keys( $ignored_queries ) );
+
+		if ( $only_keys ) {
+			return $queries_keys;
+		}
+
+		foreach ( $queries as $key => $value ) {
+			if ( in_array( $key, $queries_keys, true ) ) {
+				continue;
+			}
+			unset( $queries[ $key ] );
+		}
+
+		return $queries;
 	}
 }

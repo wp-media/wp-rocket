@@ -66,12 +66,12 @@ class FetchSitemap {
 		foreach ( $links as $link ) {
 			if (
 			(
-				! $this->has_cached_query_string( $url )
+				! $this->has_cached_query_string( $link )
 				&&
 				$this->can_preload_query_strings()
 			) || (
 				! $this->can_preload_query_strings() &&
-				$this->has_query_string( $url )
+				$this->has_query_string( $link )
 			) || $this->is_excluded_by_filter( $link ) ) {
 				continue;
 			}
