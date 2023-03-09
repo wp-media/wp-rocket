@@ -139,8 +139,9 @@ class Client {
 						'</a>'
 					);
 
-					throw new Exception( $msg );
+					throw new UnauthorizedException( $msg );
 				}
+
 				if ( 7003 === $error->code ) {
 					$msg = __( 'Incorrect Cloudflare Zone ID.', 'rocket' );
 
@@ -152,10 +153,12 @@ class Client {
 						'</a>'
 					);
 
-					throw new Exception( $msg );
+					throw new UnauthorizedException( $msg );
 				}
+
 				$errors[] = $error->message;
 			}
+
 			throw new Exception( wp_sprintf_l( '%l ', $errors ) );
 		}
 
