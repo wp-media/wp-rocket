@@ -51,8 +51,6 @@ class Cloudflare {
 	 * Check valid connection with Cloudflare
 	 */
 	private function check_connection() {
-		$cf_api_key           = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $this->options->get( 'cloudflare_api_key', null );
-
 		$is_api_keys_valid_cf = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
 		if ( false === $is_api_keys_valid_cf ) {
