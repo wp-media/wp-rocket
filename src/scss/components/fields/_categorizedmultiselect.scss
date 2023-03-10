@@ -22,7 +22,11 @@
 
 	&-header{
 	  .wpr-checkbox{
-		padding-left: 27px;
+		padding-left: 29px;
+
+		[type=checkbox] + label:before{
+		  top: 3px;
+		}
 	  }
 	}
   }
