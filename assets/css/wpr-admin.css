@@ -2899,10 +2899,10 @@ div.wpr-tutorial-item {
   margin-bottom: 10px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
-  top: 3px;
+  top: 4px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox]:checked + label:after {
-  top: 3px;
+  top: 4px;
 }
 .wpr-field--categorizedmultiselect .wpr-list-header .wpr-checkbox {
   padding-left: 29px;

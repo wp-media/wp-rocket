@@ -23,13 +23,13 @@
 	[type=checkbox]{
 	  & + label{
 		&:before{
-		  top: 3px;
+		  top: 4px;
 		}
 	  }
 	  &:checked{
 		& + label{
 		  &:after{
-			top: 3px;
+			top: 4px;
 		  }
 		}
 	  }
