@@ -20,13 +20,26 @@
 	  }
 	}
 
+	[type=checkbox]{
+	  & + label{
+		&:before{
+		  top: 3px;
+		}
+	  }
+	  &:checked{
+		& + label{
+		  &:after{
+			top: 3px;
+			left: 1px;
+		  }
+		}
+	  }
+	}
+
 	&-header{
 	  .wpr-checkbox{
 		padding-left: 29px;
 
-		[type=checkbox] + label:before{
-		  top: 3px;
-		}
 	  }
 	}
   }

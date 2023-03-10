@@ -2898,11 +2898,15 @@ div.wpr-tutorial-item {
   padding-bottom: 9px;
   margin-bottom: 10px;
 }
+.wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
+  top: 3px;
+}
+.wpr-field--categorizedmultiselect .wpr-list [type=checkbox]:checked + label:after {
+  top: 3px;
+  left: 1px;
+}
 .wpr-field--categorizedmultiselect .wpr-list-header .wpr-checkbox {
   padding-left: 29px;
-}
-.wpr-field--categorizedmultiselect .wpr-list-header .wpr-checkbox [type=checkbox] + label:before {
-  top: 3px;
 }
 .wpr-field--categorizedmultiselect .wpr-list-body {
   display: block;
