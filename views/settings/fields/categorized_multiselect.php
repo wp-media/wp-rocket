@@ -59,14 +59,12 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="wpr-list<?php echo 'scripts' === $rocket_item_key ? ' open' : ''; ?>">
 			<div class="wpr-list-header">
-				<div class="wpr-checkbox">
-					<input class="wpr-main-checkbox" type="checkbox" />
-
+				<div class="">
 					<label>
 						<?php if ( ! empty( $rocket_item['dashicon-class'] ) ) { ?>
-						<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
+							<span class="dashicons dashicons-<?php echo esc_html( $rocket_item['dashicon-class'] ); ?>"></span>
 						<?php } ?>
-						<span class="wpr-multiple-select">
+						<span class="wpr-multiple-select-title">
 							<?php echo esc_html( $rocket_item['title'] ); ?>
 						</span>
 					</label>

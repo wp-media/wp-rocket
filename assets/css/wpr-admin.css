@@ -2890,11 +2890,33 @@ div.wpr-tutorial-item {
 .wpr-field--categorizedmultiselect {
   padding-right: 80px;
 }
+.wpr-field--categorizedmultiselect .wpr-list {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
+  padding-bottom: 10px;
+  margin-bottom: 0;
+}
 .wpr-field--categorizedmultiselect .wpr-list-body {
   display: block;
   max-height: 250px;
   overflow-y: auto;
 }
+.wpr-field--categorizedmultiselect .wpr-list-body ul li {
+  margin-bottom: 10px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul li .wpr-checkbox {
+  padding-left: 25px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul li .wpr-checkbox label {
+  color: #121116 !important;
+  font-weight: normal;
+}
 .wpr-field--categorizedmultiselect .dashicons {
   color: #72777c;
+}
+.wpr-field--categorizedmultiselect .wpr-multiple-select-title {
+  font-weight: bold;
+  margin-left: 5px;
 }
