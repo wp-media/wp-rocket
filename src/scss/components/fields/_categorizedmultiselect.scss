@@ -12,11 +12,19 @@
   .wpr-list{
 	padding-right: 15px;
 	padding-left: 15px;
-  }
 
-  .wpr-list.open .wpr-list-header{
-	padding-bottom: 10px;
-	margin-bottom: 0;
+	&.open{
+	  .wpr-list-header{
+		padding-bottom: 9px;
+		margin-bottom: 10px;
+	  }
+	}
+
+	&-header{
+	  .wpr-checkbox{
+		padding-left: 27px;
+	  }
+	}
   }
 
   .wpr-list-body {
@@ -25,6 +33,7 @@
 	overflow-y: auto;
 
 	ul{
+	  margin: 0;
 	  li{
 		margin-bottom: 10px;
 
