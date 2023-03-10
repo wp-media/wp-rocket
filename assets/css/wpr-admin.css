@@ -2903,7 +2903,6 @@ div.wpr-tutorial-item {
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox]:checked + label:after {
   top: 3px;
-  left: 1px;
 }
 .wpr-field--categorizedmultiselect .wpr-list-header .wpr-checkbox {
   padding-left: 29px;
