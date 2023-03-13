@@ -246,7 +246,7 @@ class Subscriber implements Subscriber_Interface {
 		$value = 1;
 		$unit  = 'month';
 
-		if ( count( $parts ) === 2 ) {
+		if ( count( $parts ) === 2 || $parts[0] >= 0 ) {
 			$value = $parts[0];
 			$unit  = $parts[1];
 		}
