@@ -179,7 +179,6 @@ class SiteList {
 	public function get_active_plugins() {
 		$plugins = (array) get_option( 'active_plugins', [] );
 
-
 		if ( ! is_multisite() ) {
 			return $plugins;
 		}
