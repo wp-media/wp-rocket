@@ -177,7 +177,11 @@ class SiteList {
 	 * @return array
 	 */
 	public function get_active_plugins() {
-		return (array) get_option( 'active_plugins', [] );
+		if ( ! is_multisite() || ! is_plugin_active_for_network( plugin_basename( rocket_get_constant( 'WP_ROCKET_FILE' ) ) ) ) {
+			return (array) get_option( 'active_plugins', [] );
+		}
+
+		return array_keys( (array) get_site_option( 'active_sitewide_plugins', [] ) );
 	}
 
 	/**
