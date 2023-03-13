@@ -3,16 +3,16 @@
 # Translators:
 # Romain • WP Rocket <contact@wp-rocket.me>, 2019
 # www.servitium.pl <lgustaw@gmail.com>, 2020
-# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2022
+# Dariusz Zielonka <info@dariusz-zielonka.pl>, 2023
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.12\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2022-10-18 09:38-0400\n"
+"POT-Creation-Date: 2023-01-18 09:48-0500\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2022\n"
+"Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2023\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/wp-media/teams/18133/pl_PL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,9 +39,11 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
+#: inc/ThirdParty/Hostings/OneCom.php:132
 #: inc/ThirdParty/Hostings/Savvii.php:50
-#: inc/ThirdParty/Hostings/WPEngine.php:47 inc/deprecated/3.6.php:698
-#: inc/deprecated/3.6.php:998 inc/deprecated/3.9.php:22
+#: inc/ThirdParty/Hostings/WPEngine.php:47
+#: inc/ThirdParty/Hostings/WPXCloud.php:64 inc/deprecated/3.6.php:697
+#: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for "
@@ -274,7 +276,6 @@ msgid "Tables"
 msgstr "Tabele"
 
 #: inc/Engine/Admin/Database/Subscriber.php:79
-#: inc/Engine/HealthCheck/CacheDirSizeCheck.php:88
 #: inc/deprecated/Engine/Addon/FacebookTracking/Subscriber.php:92
 #: inc/deprecated/Engine/Addon/GoogleTracking/Subscriber.php:137
 msgid "weekly"
@@ -1689,12 +1690,12 @@ msgstr ""
 "Dodatek Sucuri: Klucz API dla zapory sieciowej Sucuri musi być w formacie "
 "<code>{32 znaki}/{32 znaki}</code>."
 
-#: inc/Engine/Admin/Settings/Settings.php:466
+#: inc/Engine/Admin/Settings/Settings.php:465
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Ustawienia zostały zapisane."
 
-#: inc/Engine/Admin/Settings/Settings.php:682
+#: inc/Engine/Admin/Settings/Settings.php:681
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -1703,31 +1704,31 @@ msgstr ""
 "URL(i) nie zostało zapisane, ponieważ wyłącza buforowanie i optymalizacje "
 "dla każdej strony w Twojej witrynie."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:150
+#: inc/Engine/Admin/Settings/Subscriber.php:168
 #: inc/deprecated/deprecated.php:1786
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Narzędzia"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:151
+#: inc/Engine/Admin/Settings/Subscriber.php:169
 msgid "Import, Export, Rollback"
 msgstr "Import, Eksport, Wycofanie"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:176
+#: inc/Engine/Admin/Settings/Subscriber.php:194
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Optymalizacja obrazków"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:177
+#: inc/Engine/Admin/Settings/Subscriber.php:195
 msgid "Compress your images"
 msgstr "Kompresuj obrazy"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:194
+#: inc/Engine/Admin/Settings/Subscriber.php:212
 #: views/settings/page-sections/tutorials.php:48
 msgid "Tutorials"
 msgstr "Poradniki"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:195
+#: inc/Engine/Admin/Settings/Subscriber.php:213
 msgid "Getting started and how to videos"
 msgstr "Pierwsze kroki i szkolenia wideo"
 
@@ -2210,12 +2211,26 @@ msgstr "Wstępne ładowanie"
 msgid "Critical Path CSS Generation Process"
 msgstr "Proces generowania krytycznej ścieżki CSS"
 
-#: inc/Engine/License/Renewal.php:116
+#: inc/Engine/License/Renewal.php:76
+#, php-format
+msgid "Renew before it is too late, you will only pay %1$s%2$s%3$s!"
+msgstr "Odnów, zanim będzie za późno, bo zapłacisz %1$s%3$s%2$s."
+
+#: inc/Engine/License/Renewal.php:85
+#, php-format
+msgid ""
+"Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
+"%4$s%5$s%6$s!"
+msgstr ""
+"Odnów z %1$s%2$s rabatem %3$s zanim będzie za późno, zapłacisz tylko "
+"%4$s%5$s%6$s!"
+
+#: inc/Engine/License/Renewal.php:139
 #, php-format
 msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
 msgstr "Odnów swoją licencję na 1 rok już teraz pod adresem %1$s%3$s%2$s."
 
-#: inc/Engine/License/Renewal.php:129
+#: inc/Engine/License/Renewal.php:152
 #, php-format
 msgid ""
 "Renew your license for 1 year now and get %1$s%3$s OFF%2$s immediately: you "
@@ -2224,12 +2239,12 @@ msgstr ""
 "Przedłuż swoją licencję na 1 rok już teraz i otrzymaj od razu %1$s%3$s "
 "zniżki%2$s: zapłacisz tylko %1$s%4$s%2$s!"
 
-#: inc/Engine/License/Renewal.php:195
+#: inc/Engine/License/Renewal.php:218
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Odnów, zanim będzie za późno, bo zapłacisz %1$s%3$s%2$s."
 
-#: inc/Engine/License/Renewal.php:204
+#: inc/Engine/License/Renewal.php:227
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
@@ -2238,7 +2253,7 @@ msgstr ""
 "Odnów z %1$s%2$s rabatem %3$s zanim będzie za późno, zapłacisz tylko "
 "%1$s%4$s%3$s!"
 
-#: inc/Engine/License/Renewal.php:491
+#: inc/Engine/License/Renewal.php:546
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -2247,13 +2262,13 @@ msgstr ""
 "Aby móc dalej korzystać z tej funkcji, trzeba mieć ważną licencję. "
 "%1$sProszę odnowić teraz%2$s przed utratą dostępu."
 
-#: inc/Engine/License/Renewal.php:512
+#: inc/Engine/License/Renewal.php:567
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 "Aby włączyć tę opcję, musisz mieć aktywną licencję. %1$sOdnów teraz%2$s."
 
-#: inc/Engine/License/Renewal.php:540
+#: inc/Engine/License/Renewal.php:595
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -2540,21 +2555,21 @@ msgstr ""
 "działania funkcji Usuń nieużywany CSS. Skontaktuj się z <a "
 "href=\"%3$s\">naszym działem wsparcia</a>."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:287
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: Opcja Używanego CSS nie jest włączona!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:307
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:308
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Pamięć podręczna używanego CSS została wyczyszczona!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:711
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:752
 msgid "Clear Used CSS of this URL"
 msgstr "Wyczyść używane CSS dla tego adresu URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:148
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:149
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "Zadania oczekujące usuwania nieużywanego CSS"
 
@@ -2570,8 +2585,8 @@ msgstr ""
 "konfiguracją Twojego serwera. Jeśli nadal masz problemy, <a "
 "href=\"%s\">skontaktuj się z wsparciem technicznym</a>."
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:462
-#: inc/Engine/Plugin/UpdaterSubscriber.php:476
+#: inc/Engine/Plugin/UpdaterSubscriber.php:466
+#: inc/Engine/Plugin/UpdaterSubscriber.php:480
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
@@ -2579,7 +2594,7 @@ msgstr ""
 msgid "%s Update Rollback"
 msgstr "%s Wycofania aktualizacji"
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:499 inc/deprecated/3.11.php:279
+#: inc/Engine/Plugin/UpdaterSubscriber.php:503 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sWróć do WP Rocket%2$s lub %3$s przejdź do strony Wtyczki%2$s"
@@ -2755,7 +2770,7 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:119
+#: inc/ThirdParty/Themes/Avada.php:115
 msgid "Avada"
 msgstr "Avada"
 
@@ -2776,32 +2791,32 @@ msgstr "FAQ"
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: inc/admin/admin.php:450
+#: inc/admin/admin.php:458
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 "Importowanie ustawień nie powiodło się: nie masz uprawnień, aby to zrobić."
 
-#: inc/admin/admin.php:454
+#: inc/admin/admin.php:462
 msgid "Settings import failed: no file uploaded."
 msgstr "Import ustawień nie powiódł się: nie został przesłany żaden plik."
 
-#: inc/admin/admin.php:458
+#: inc/admin/admin.php:466
 msgid "Settings import failed: incorrect filename."
 msgstr "Import ustawień nie powiódł się: nieprawidłowa nazwa pliku."
 
-#: inc/admin/admin.php:469
+#: inc/admin/admin.php:477
 msgid "Settings import failed: incorrect filetype."
 msgstr "Import ustawień nie powiódł się: nieprawidłowy typ pliku."
 
-#: inc/admin/admin.php:479
+#: inc/admin/admin.php:487
 msgid "Settings import failed: "
 msgstr "Import ustawień nie powiódł się: "
 
-#: inc/admin/admin.php:495
+#: inc/admin/admin.php:503
 msgid "Settings import failed: unexpected file content."
 msgstr "Import ustawień nie powiódł się: nieoczekiwana zawartość pliku."
 
-#: inc/admin/admin.php:525
+#: inc/admin/admin.php:533
 msgid "Settings imported and saved."
 msgstr "Ustawienia zostały zaimportowane i zapisane."
 
@@ -3499,24 +3514,24 @@ msgid "Replace site's hostname with:"
 msgstr "Zastąp nazwę hosta witryny nazwą:"
 
 #: inc/deprecated/deprecated.php:1550 inc/deprecated/deprecated.php:1587
-#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:32
-#: views/settings/fields/cnames.php:64 views/settings/fields/cnames.php:94
+#: inc/deprecated/deprecated.php:1615 views/settings/fields/cnames.php:41
+#: views/settings/fields/cnames.php:75 views/settings/fields/cnames.php:105
 msgid "reserved for"
 msgstr "zarezerwowane dla"
 
 #: inc/deprecated/deprecated.php:1552 inc/deprecated/deprecated.php:1589
-#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:35
-#: views/settings/fields/cnames.php:67 views/settings/fields/cnames.php:97
+#: inc/deprecated/deprecated.php:1617 views/settings/fields/cnames.php:44
+#: views/settings/fields/cnames.php:78 views/settings/fields/cnames.php:108
 msgid "All files"
 msgstr "Wszystkie pliki"
 
 #: inc/deprecated/deprecated.php:1564 inc/deprecated/deprecated.php:1594
-#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:47
-#: views/settings/fields/cnames.php:79 views/settings/fields/cnames.php:109
+#: inc/deprecated/deprecated.php:1622 views/settings/fields/cnames.php:56
+#: views/settings/fields/cnames.php:90 views/settings/fields/cnames.php:120
 msgid "Images"
 msgstr "Obrazy"
 
-#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:120
+#: inc/deprecated/deprecated.php:1635 views/settings/fields/cnames.php:132
 msgid "Add CNAME"
 msgstr "Dodaj CNAME"
 
@@ -3609,17 +3624,17 @@ msgstr "Anonimowe ustawienia WP Rocket:"
 msgid "Which WP Rocket settings are active"
 msgstr "Które ustawienia WP Rocket są aktywne"
 
-#: inc/functions/options.php:409
+#: inc/functions/options.php:421
 msgid "The provided license data are not valid."
 msgstr "Podane dane licencyjne są nieprawidłowe."
 
-#: inc/functions/options.php:412
+#: inc/functions/options.php:424
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr ""
 "Aby rozwiązać problem, należy %1$sskontaktować się z pomocą techniczną%2$s."
 
-#: inc/functions/options.php:471 inc/functions/options.php:510
+#: inc/functions/options.php:483 inc/functions/options.php:522
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3627,7 +3642,7 @@ msgstr ""
 "Walidacja licencji nie powiodła się. Nasz serwer nie był w stanie "
 "zrealizować żądania z Twojej witryny internetowej."
 
-#: inc/functions/options.php:471
+#: inc/functions/options.php:483
 #, php-format
 msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
@@ -3636,7 +3651,7 @@ msgstr ""
 "Proszę spróbować kliknąć %1$sWeryfikuj licencję%2$s poniżej. Jeżeli błąd "
 "nadal występuje, proszę postępować zgodnie z %3$stym przewodnikiem%4$s."
 
-#: inc/functions/options.php:487
+#: inc/functions/options.php:499
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3644,49 +3659,49 @@ msgstr ""
 "Walidacja licencji nie powiodła się. Możliwe jest, że używasz wersji nulled "
 "wtyczki. Proszę wykonać następujące czynności:"
 
-#: inc/functions/options.php:487 inc/functions/options.php:529
+#: inc/functions/options.php:499 inc/functions/options.php:541
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Zaloguj się do swojego %1$skonta WP Rocket%2$s"
 
-#: inc/functions/options.php:487 inc/functions/options.php:529
+#: inc/functions/options.php:499 inc/functions/options.php:541
 msgid "Download the zip file"
 msgstr "Pobierz plik zip"
 
-#: inc/functions/options.php:487 inc/functions/options.php:529
+#: inc/functions/options.php:499 inc/functions/options.php:541
 msgid "Reinstall"
 msgstr "Reinstalacja"
 
-#: inc/functions/options.php:487
+#: inc/functions/options.php:499
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Jeśli nie posiadasz konta WP Rocket, proszę %1$szakupić licencję%2$s."
 
-#: inc/functions/options.php:495
+#: inc/functions/options.php:507
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Weryfikacja licencji nie powiodła się. To konto użytkownika nie istnieje w "
 "naszej bazie danych."
 
-#: inc/functions/options.php:495
+#: inc/functions/options.php:507
 msgid "To resolve, please contact support."
 msgstr ""
 "Aby rozwiązać problem, prosimy o kontakt z działem pomocy technicznej."
 
-#: inc/functions/options.php:503
+#: inc/functions/options.php:515
 msgid "License validation failed. This user account is blocked."
 msgstr ""
 "Zatwierdzenie licencji nie powiodło się. To konto użytkownika jest "
 "zablokowane."
 
-#: inc/functions/options.php:503
+#: inc/functions/options.php:515
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Zobacz %1$sten poradnik%2$s, aby uzyskać więcej informacji."
 
-#: inc/functions/options.php:510
+#: inc/functions/options.php:522
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3695,20 +3710,20 @@ msgstr ""
 "Spróbuj kliknąć %1$sZapisz zmiany%2$s poniżej. Jeśli błąd występuje nadal, "
 "postępuj zgodnie z %3$szaleceniami przewodnika%4$s."
 
-#: inc/functions/options.php:523
+#: inc/functions/options.php:535
 msgid "Your license is not valid."
 msgstr "Twoja licencja jest niepoprawna."
 
-#: inc/functions/options.php:523
+#: inc/functions/options.php:535
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Upewnij się, że posiadasz aktywną licencję %1$sWP Rocket%2$s."
 
-#: inc/functions/options.php:525
+#: inc/functions/options.php:537
 msgid "You have added as many sites as your current license allows."
 msgstr "Dodałeś tyle witryn, na ile pozwala aktualna licencja."
 
-#: inc/functions/options.php:525
+#: inc/functions/options.php:537
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3716,27 +3731,27 @@ msgid ""
 msgstr ""
 "Ulepsz swoje %1$skonto%2$s lub %3$stransferuj licencję%2$s do tej domeny."
 
-#: inc/functions/options.php:527
+#: inc/functions/options.php:539
 msgid "This website is not allowed."
 msgstr "Ta witryna nie jest dozwolona."
 
-#: inc/functions/options.php:527
+#: inc/functions/options.php:539
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Prosimy o %1$skontakt z działem pomocy technicznej%2$s."
 
-#: inc/functions/options.php:529
+#: inc/functions/options.php:541
 msgid "This license key is not recognized."
 msgstr "Ten klucz licencyjny nie został rozpoznany."
 
-#: inc/functions/options.php:529
+#: inc/functions/options.php:541
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 "Jeśli problem występuje nadal się, prosimy o %1$skontakt z działem pomocy "
 "technicznej%2$s."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:547
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Weryfikacja licencji nie powiodła się: %s"
@@ -3855,36 +3870,45 @@ msgstr ""
 "Czy chcesz skorzystać z naszego trybu bezpiecznego, aby rozwiązać problem z "
 "WP Rocket?"
 
-#: views/deactivation-intent/form.php:44
+#: views/deactivation-intent/form.php:55
 #, php-format
 msgid "Yes, apply \"%1$sSafe Mode%2$s\""
 msgstr "Tak, zastosuj \"%1$s Tryb bezpieczny%2$s\""
 
-#: views/deactivation-intent/form.php:52
+#: views/deactivation-intent/form.php:68
+#, php-format
+msgid ""
+"and export WP Rocket settings %1$s(Recommended as current settings will be "
+"deleted)%2$s"
+msgstr ""
+"i wyeksportuj ustawienia WP Rocket %1$s(zalecane, ponieważ bieżące "
+"ustawienia zostaną usunięte)%2$s"
+
+#: views/deactivation-intent/form.php:76
 msgid "No, deactivate and snooze this message for"
 msgstr "Nie, dezaktywuj i wycisz tę wiadomość na"
 
-#: views/deactivation-intent/form.php:54
+#: views/deactivation-intent/form.php:78
 msgid "1 day"
 msgstr "1 dzień"
 
-#: views/deactivation-intent/form.php:55
+#: views/deactivation-intent/form.php:79
 msgid "7 days"
 msgstr "7 dni"
 
-#: views/deactivation-intent/form.php:56
+#: views/deactivation-intent/form.php:80
 msgid "30 days"
 msgstr "30 dni"
 
-#: views/deactivation-intent/form.php:57
+#: views/deactivation-intent/form.php:81
 msgid "Forever"
 msgstr "Na zawsze"
 
-#: views/deactivation-intent/form.php:63
+#: views/deactivation-intent/form.php:87
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: views/deactivation-intent/form.php:64
+#: views/deactivation-intent/form.php:88
 msgid "Confirm"
 msgstr "Potwierdź"
 
@@ -3933,18 +3957,18 @@ msgstr "Optymalizacja czcionek Google"
 msgid "Clear cache after"
 msgstr "Wyczyść pamięć podręczną po"
 
-#: views/settings/fields/cnames.php:49 views/settings/fields/cnames.php:81
-#: views/settings/fields/cnames.php:111
+#: views/settings/fields/cnames.php:58 views/settings/fields/cnames.php:92
+#: views/settings/fields/cnames.php:122
 msgid "CSS & JavaScript"
 msgstr "CSS i JavaScript"
 
-#: views/settings/fields/cnames.php:50 views/settings/fields/cnames.php:82
-#: views/settings/fields/cnames.php:112
+#: views/settings/fields/cnames.php:59 views/settings/fields/cnames.php:93
+#: views/settings/fields/cnames.php:123
 msgid "JavaScript"
 msgstr "JavaScript"
 
-#: views/settings/fields/cnames.php:51 views/settings/fields/cnames.php:83
-#: views/settings/fields/cnames.php:113
+#: views/settings/fields/cnames.php:60 views/settings/fields/cnames.php:94
+#: views/settings/fields/cnames.php:124
 msgid "CSS"
 msgstr "CSS"
 
