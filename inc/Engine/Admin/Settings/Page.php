@@ -639,16 +639,19 @@ class Page {
 			]
 		);
 
-		$delay_js_list_helper = sprintf(
-		// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
-			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><pre><code>%1$s</code></pre><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
-			implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
+		$delay_js_list_helper  = esc_html__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:', 'rocket' );
+		$delay_js_list_helper .= sprintf( '<br><pre><code>%1$s</code></pre><br>', implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ) );
+		$delay_js_list_helper .= sprintf(
+		// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+			esc_html__( 'Also, please check our %1$sdocumentation%2$s for a list of compatibility exclusions.', 'rocket' ),
 			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
 		);
-		$delay_js_found_list_helper = sprintf(
+
+		$delay_js_found_list_helper  = esc_html__( 'Internal scripts are excluded by default to prevent issues. Remove them to take full advantage of this option.', 'rocket' );
+		$delay_js_found_list_helper .= '<br>' . sprintf(
 		// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-			__( 'Internal scripts are excluded by default to prevent issues. Remove them to take full advantage of this option.<br>If this causes trouble, restore the default exclusions, found %1$shere%2$s', 'rocket' ),
+			esc_html__( 'If this causes trouble, restore the default exclusions, found %1$shere%2$s', 'rocket' ),
 			'<a href="' . esc_url( $delay_js_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
 		);
