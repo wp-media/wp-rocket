@@ -93,8 +93,12 @@ abstract class AbstractOptimization {
 
 		$wp_content = wp_parse_url( content_url() );
 
-		if ( empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+		if ( empty( $wp_content['path'] ) ) {
 			return true;
+		}
+
+		if ( empty( $wp_content['host'] ) ) {
+			$wp_content['host'] = wp_parse_url( home_url(), PHP_URL_HOST );
 		}
 
 		/**
