@@ -69,7 +69,7 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'preload_fonts' ],
+			'rocket_buffer' => [ 'preload_fonts', 20 ],
 		];
 	}
 
