@@ -112,7 +112,7 @@ abstract class AbstractOptimization {
 			$hosts[] = $wp_content['host'];
 		}
 
-		$langs   = get_rocket_i18n_uri();
+		$langs = get_rocket_i18n_uri();
 
 		// Get host for all langs.
 		foreach ( $langs as $lang ) {
