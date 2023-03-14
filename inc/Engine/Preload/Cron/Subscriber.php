@@ -239,7 +239,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$parts = explode( ' ', $delay );
 
-		if ( '' === $delay ) {
+		if ( '' === $delay || '0' === $delay ) {
 			return;
 		}
 
