@@ -11,6 +11,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
  */
 class Test_Preconnect extends TestCase {
 	private $option_value;
+	private $cache_logged_user;
 
 	public function set_up() {
 		parent::set_up();
@@ -29,7 +30,7 @@ class Test_Preconnect extends TestCase {
     /**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $user_logged_in, $expected ) {
+	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $user_logged_in, $cache_logged_user, $expected ) {
 		Functions\when( 'is_user_logged_in' )->justReturn( $user_logged_in );
 
 		if ( $bypass ) {
@@ -37,8 +38,10 @@ class Test_Preconnect extends TestCase {
 		}
 
 		$this->option_value = $option_value;
+		$this->cache_logged_user = $cache_logged_user;
 
 		add_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'set_option' ] );
+		add_filter( 'pre_get_rocket_option_cache_logged_user', [ $this, 'set_cache_logged_user' ] );
 
 		$this->assertSame(
 			$expected,
@@ -52,5 +55,9 @@ class Test_Preconnect extends TestCase {
 
 	public function set_option() {
 		return $this->option_value;
+	}
+
+	public function set_cache_logged_user() {
+		return $this->cache_logged_user;
 	}
 }
