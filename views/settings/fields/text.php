@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-text">
 		<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-flex">
-			<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo 'sucury_waf_api_key' === $data['id'] ? $data['label'] : esc_html( $data['label'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></label>
+			<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['label'] ); ?></label>
 			<div class="wpr-field-description">
 				<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			</div>
