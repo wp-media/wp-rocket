@@ -26,13 +26,21 @@ class Test_Preconnect extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $user_logged_in, $expected ) {
+	public function testShouldReturnExpectedArray( $bypass, $option_value, $urls, $relation_type, $user_logged_in, $cache_logged_user, $expected ) {
 		Functions\when( 'rocket_bypass' )->justReturn( $bypass );
 
 		if ( ! $bypass ) {
 			$this->options->shouldReceive( 'get' )
+				->with( 'minify_google_fonts', 0 )
 				->once()
 				->andReturn( $option_value );
+
+		if ( $user_logged_in ) {
+			$this->options->shouldReceive( 'get' )
+				->once()
+				->with( 'cache_logged_user', 0 )
+				->andReturn( $cache_logged_user );
+		}
 
 			Functions\when( 'is_user_logged_in' )->justReturn( $user_logged_in );
 		} else {

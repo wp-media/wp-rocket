@@ -7,6 +7,7 @@ return [
 		[],
 		'preconnect',
 		false,
+		0,
 		[],
 	],
 	// Optimize Google Fonts disabled.
@@ -16,6 +17,7 @@ return [
 		[],
 		'preconnect',
 		false,
+		0,
 		[],
 	],
 	// Relation type is not preconnect.
@@ -25,6 +27,7 @@ return [
 		[],
 		'prefetch',
 		false,
+		0,
 		[],
 	],
 	// Relation type is preconnect, origin array empty.
@@ -34,6 +37,7 @@ return [
 		[],
 		'preconnect',
 		false,
+		0,
 		[
 			[
 				'href' => 'https://fonts.gstatic.com',
@@ -53,6 +57,7 @@ return [
 		],
 		'preconnect',
 		false,
+		0,
 		[
 			[
 				'href' => 'https://123456.rocketcdn.me',
@@ -64,13 +69,28 @@ return [
 			],
 		],
 	],
-	'UserLoggedIn' => [
+	'UserLoggedInCacheLoggedUserDisabled' => [
 		false,
 		1,
 		[],
 		'preconnect',
 		true,
+		0,
 		[],
+	],
+	'UserLoggedInCacheLoggedUserEnabled' => [
+		false,
+		1,
+		[],
+		'preconnect',
+		true,
+		1,
+		[
+			[
+				'href' => 'https://fonts.gstatic.com',
+				1      => 'crossorigin',
+			],
+		],
 	],
 	'UserNotLoggedIn' => [
 		false,
@@ -78,6 +98,7 @@ return [
 		[],
 		'preconnect',
 		false,
+		0,
 		[
 			[
 				'href' => 'https://fonts.gstatic.com',
