@@ -124,6 +124,6 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		return ! is_user_logged_in();
+		return ! is_user_logged_in() || (bool) $this->options->get( 'cache_logged_user', 0 );
 	}
 }
