@@ -232,6 +232,25 @@ function rocket_delete_config_file() {
 	foreach ( $config_files_path as $config_file ) {
 		rocket_direct_filesystem()->delete( $config_file );
 	}
+
+	// Bail out if WP Rocket is multisite.
+	if ( is_multisite() ) {
+		return;
+	}
+
+	try {
+		$config_dir = new FilesystemIterator( (string) rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) );
+	} catch ( Exception $e ) {
+		return;
+	}
+
+	// Remove all files with php extension in the config folder.
+	foreach ( $config_dir as $file ) {
+		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
+			continue;
+		}
+		rocket_direct_filesystem()->delete( $file->getPathname() );
+	}
 }
 
 /**
