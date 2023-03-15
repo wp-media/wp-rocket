@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/exclusions/list)"
 
-      - name: save lists
+      - name: Save Default Lists
         id: saveDynamicLists
         uses: jsdaniell/create-json@1.1.2
         with:
@@ -44,9 +44,29 @@ jobs:
           json: ${{ steps.getDynamicLists.outputs.lists }}
           dir: '/'
 
-      - name: Commit the file
+      - name: Commit Default Lists JSON file
         if: ${{ steps.saveDynamicLists.outcome == 'success' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update dynamic lists
+          commit_user_name: WP Media GitHub Actions Bot
+
+      - name: get latest DelayJS lists
+        id: getDynamicDelayJSLists
+        run: |
+          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list)"
+
+      - name: Save DelayJS Lists
+        id: saveDynamicDelayJSLists
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "dynamic-lists-delayjs.json"
+          json: ${{ steps.getDynamicDelayJSLists.outputs.lists }}
+          dir: '/'
+
+      - name: Commit DelayJS JSON file
+        if: ${{ steps.saveDynamicDelayJSLists.outcome == 'success' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update delay JS dynamic lists
           commit_user_name: WP Media GitHub Actions Bot
