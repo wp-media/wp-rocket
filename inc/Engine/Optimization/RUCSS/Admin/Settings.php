@@ -556,11 +556,11 @@ class Settings {
 		}
 
 		// translators: %2$s = table name, %3$s = support url.
-		$main_message = __( 'Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="%3$s">our support</a>.', 'rocket' );
+		$main_message = __( '%1$s: Could not create the %2$s table in the database which is necessary for the Remove Unused CSS feature to work. Please reach out to <a href="%3$s">our support</a>.', 'rocket' );
 
 		$message = sprintf(
 		// translators: %1$s = plugin name, %2$s = table name, %3$s = support url.
-			"%1\$s: $main_message",
+			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
 			$this->get_support_url()
