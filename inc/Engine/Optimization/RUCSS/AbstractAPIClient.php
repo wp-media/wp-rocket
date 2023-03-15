@@ -81,14 +81,16 @@ abstract class AbstractAPIClient {
 
 		$args['method'] = strtoupper( $type );
 
+		/**
+		 * RUCSS SAAS request arguments.
+		 *
+		 * @param array $args request arguments.
+		 * @returns array
+		 */
+		$args = apply_filters( 'rocket_rucss_api_endpoint', $args );
+
 		$response = wp_remote_request(
-			/**
-			 * RUCSS SAAS endpoint.
-			 *
-			 * @param string $url endpoint url.
-			 * @returns string
-			 */
-			apply_filters( 'rocket_rucss_api_endpoint', $api_url . $this->request_path ),
+			$api_url . $this->request_path,
 			$args
 		);
 
