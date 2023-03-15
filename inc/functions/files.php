@@ -888,7 +888,7 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
-		$cache_dir = $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
+		$cache_dir = $parse_url['host'] . '-' . $user_key . $parse_url['path'];
 		$cache_dir = preg_replace( '/[^a-z0-9_\-]/', '', strtolower( $cache_dir ) );
 		$root      = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $cache_dir;
 
