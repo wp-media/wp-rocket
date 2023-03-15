@@ -116,17 +116,18 @@ class Client {
 			throw new Exception( $response->get_error_message() );
 		}
 
-		$data = wp_remote_retrieve_body( $response );
+		$content = wp_remote_retrieve_body( $response );
 
-		if ( empty( $data ) ) {
+		if ( empty( $content ) ) {
 			throw new Exception( __( 'Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
 		}
 
-		$data = json_decode( $data );
+		$content = json_decode( $content );
 
-		if ( empty( $data->success ) ) {
+		if ( empty( $content->success ) ) {
 			$errors = [];
-			foreach ( $data->errors as $error ) {
+
+			foreach ( $content->errors as $error ) {
 				if (
 					6003 === $error->code || 9103 === $error->code ) {
 					$msg = __( 'Incorrect Cloudflare email address or API key.', 'rocket' );
@@ -162,7 +163,7 @@ class Client {
 			throw new Exception( wp_sprintf_l( '%l ', $errors ) );
 		}
 
-		return $data->result;
+		return $content->result;
 	}
 
 	/**
@@ -174,7 +175,7 @@ class Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	private function do_remote_request( string $method, string $path, array $data ): array {
+	private function do_remote_request( string $method, string $path, array $data ) {
 		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
 
 		$headers = [
