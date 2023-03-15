@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;

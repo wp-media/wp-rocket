@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\DynamicLists;
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
 
-class APIClient {
+abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
@@ -17,28 +17,28 @@ class APIClient {
 	 *
 	 * @var int
 	 */
-	protected $response_code = 200;
+	private $response_code = 200;
 
 	/**
 	 * Error message.
 	 *
 	 * @var string
 	 */
-	protected $error_message = '';
+	private $error_message = '';
 
 	/**
 	 * Response Body.
 	 *
 	 * @var string
 	 */
-	protected $response_body = '';
+	private $response_body = '';
 
 	/**
 	 * Plugin options instance.
 	 *
 	 * @var Options_Data
 	 */
-	protected $options;
+	private $options;
 
 	/**
 	 * Instantiate the class.
@@ -48,6 +48,13 @@ class APIClient {
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
+
+	/**
+	 * Specify API endpoint path.
+	 *
+	 * @return string
+	 */
+	abstract protected function get_api_path();
 
 	/**
 	 * Get exclusions list.
@@ -64,7 +71,7 @@ class APIClient {
 			'timeout' => 5,
 		];
 
-		if ( ! $this->handle_request( 'exclusions/list', $args ) ) {
+		if ( ! $this->handle_request( $args ) ) {
 			return [
 				'code'    => $this->response_code,
 				'message' => $this->error_message,
@@ -80,12 +87,11 @@ class APIClient {
 	/**
 	 * Handle the request.
 	 *
-	 * @param string $request_path request path.
-	 * @param array  $args Passed arguments.
+	 * @param array $args Passed arguments.
 	 *
 	 * @return bool
 	 */
-	private function handle_request( string $request_path, array $args ) {
+	private function handle_request( array $args ) {
 		$api_url = rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_EXCLUSIONS_API_URL', false )
 			: self::API_URL;
@@ -100,7 +106,7 @@ class APIClient {
 		];
 
 		$response = wp_remote_get(
-			$api_url . $request_path,
+			$api_url . $this->get_api_path(),
 			$args
 		);
 
