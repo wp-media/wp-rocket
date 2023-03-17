@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Theme;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -51,6 +52,9 @@ class Subscriber implements Subscriber_Interface {
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
 			'rocket_hidden_settings_fields'        => 'add_exclusions_hidden_field',
 			'rocket_after_save_dynamic_lists'      => 'refresh_exclusions_option',
+			'activate_plugin'                      => 'add_plugin_exclusions',
+			'deactivate_plugin'                    => 'remove_plugin_exclusions',
+			'switch_theme'                         => [ 'handle_switch_theme_exclusions', 10, 3 ],
 		];
 	}
 
@@ -164,5 +168,40 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function refresh_exclusions_option() {
 		$this->site_list->refresh_exclusions_option();
+	}
+
+	/**
+	 * Remove plugin from exclusions list once deactivated.
+	 *
+	 * @param string $plugin Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function remove_plugin_exclusions( string $plugin ) {
+		$this->site_list->remove_plugin_selection( $plugin );
+	}
+
+	/**
+	 * Handle switch theme exclusions, remove the old theme exclusions and add the new one.
+	 *
+	 * @param string   $new_name  Name of the new theme.
+	 * @param WP_Theme $new_theme WP_Theme instance of the new theme.
+	 * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+	 *
+	 * @return void
+	 */
+	public function handle_switch_theme_exclusions( string $new_name, WP_Theme $new_theme, WP_Theme $old_theme ) {
+		$this->site_list->replace_theme_selection( $new_theme, $old_theme );
+	}
+
+	/**
+	 * Add plugin exclusions with plugin activation for default checked plugins.
+	 *
+	 * @param string $plugin Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function add_plugin_exclusions( string $plugin ) {
+		$this->site_list->add_default_plugin_exclusions( $plugin );
 	}
 }
