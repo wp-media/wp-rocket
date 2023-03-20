@@ -13,7 +13,7 @@ return [
 		],
 		'expected' => true,
 	],
-	'shouldReturnTrueWhenNotHasPageRule' => [
+	'shouldReturnFalseWhenNotHasPageRule' => [
 		'config' => [
 			'zone_id' => '12345',
 			'response' => (object) [
