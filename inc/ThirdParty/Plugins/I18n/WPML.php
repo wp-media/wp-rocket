@@ -40,11 +40,12 @@ class WPML implements Subscriber_Interface {
 		}
 
 		$events = [
-			'rocket_rucss_is_home_url'                => [ 'is_secondary_home', 10, 2 ],
-			'rocket_preload_all_to_pending_condition' => 'clean_only_right_domain',
-			'rocket_preload_sitemap_before_queue'     => 'add_languages_sitemaps',
-			'after_rocket_clean_home'                 => 'remove_root_cached_files',
-			'after_rocket_clean_domain'               => 'remove_root_cached_files',
+			'rocket_rucss_is_home_url'                 => [ 'is_secondary_home', 10, 2 ],
+			'rocket_preload_all_to_pending_condition'  => 'clean_only_right_domain',
+			'rocket_preload_sitemap_before_queue'      => 'add_languages_sitemaps',
+			'after_rocket_clean_home'                  => 'remove_root_cached_files',
+			'after_rocket_clean_domain'                => 'remove_root_cached_files',
+			'pre_update_option_icl_sitepress_settings' => [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ],
 		];
 
 		return $events;
@@ -137,5 +138,27 @@ class WPML implements Subscriber_Interface {
 			}
 			$this->filesystem->delete( $cache_folder_path . $entry );
 		}
+	}
+
+	/**
+	 * Reset cache when changing the option.
+	 *
+	 * @param array $new new configurations.
+	 * @param array $old old configurations.
+	 *
+	 * @return array
+	 */
+	public function on_change_directory_for_default_language_clean_cache( $new, $old ) {
+		if ( ! is_array( $old ) || ! is_array( $new ) ) {
+			return $new;
+		}
+
+		if ( ! key_exists( 'urls', $old ) || ! key_exists( 'directory_for_default_language', $old['urls'] ) || ! key_exists( 'urls', $new ) || ! key_exists( 'directory_for_default_language', $new['urls'] ) || $new['urls']['directory_for_default_language'] === $old['urls']['directory_for_default_language'] ) {
+			return $new;
+		}
+
+		rocket_clean_domain();
+
+		return $new;
 	}
 }
