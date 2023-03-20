@@ -23,22 +23,25 @@ class Test_GetContent extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldSaveLocalContent( $url, $file, $content ) {
-		Functions\expect( 'wp_remote_get' )
-			->once()
-			->with( $url );
+	public function testShouldSaveLocalContent( $config, $expected ) {
+		if ( ! $config['found'] ) {
+			Functions\expect( 'wp_remote_get' )
+				->once()
+				->with( $config['url'] );
 
-		Functions\expect( 'wp_remote_retrieve_body' )
-			->once()
-			->andReturn( $content );
+			Functions\expect( 'wp_remote_retrieve_body' )
+				->once()
+				->andReturn( $expected );
+		}
+
 
 		$local_cache = new AssetsLocalCache( $this->filesystem->getUrl( 'wp-content/cache/min/' ), $this->filesystem );
 
 		$this->assertSame(
-			$content,
-			$local_cache->get_content( $url )
+			$expected,
+			$local_cache->get_content( $config['url'] )
 		);
 
-		$this->assertTrue( $this->filesystem->exists( $file ) );
+		$this->assertTrue( $this->filesystem->exists( $config['file'] ) );
 	}
 }
