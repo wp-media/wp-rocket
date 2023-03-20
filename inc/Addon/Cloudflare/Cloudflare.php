@@ -89,7 +89,7 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_zone    = $this->endpoints->get_zones( $zone_id );
+			$result     = $this->endpoints->get_zones( $zone_id );
 			$zone_found = false;
 			$site_url   = get_site_url();
 
@@ -97,10 +97,10 @@ class Cloudflare {
 				$site_url = domain_mapping_siteurl( $site_url );
 			}
 
-			if ( ! empty( $cf_zone->result ) ) {
+			if ( ! empty( $result ) ) {
 				$parsed_url = wp_parse_url( $site_url );
 
-				if ( false !== strpos( strtolower( $parsed_url['host'] ), $cf_zone->result->name ) ) {
+				if ( false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
 					$zone_found = true;
 				}
 			}
@@ -151,10 +151,10 @@ class Cloudflare {
 		}
 
 		try {
-			$cf_page_rule     = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
-			$cf_page_rule_arr = wp_json_encode( $cf_page_rule );
+			$result     = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
+			$page_rule  = wp_json_encode( $result );
 
-			return preg_match( '/' . $action_value . '/', $cf_page_rule_arr );
+			return (bool) preg_match( '/' . $action_value . '/', $page_rule );
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
 		}
