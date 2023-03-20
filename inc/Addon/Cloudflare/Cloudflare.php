@@ -194,7 +194,9 @@ class Cloudflare {
 		}
 
 		try {
-			return $this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
+			$this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
+
+			return true;
 		} catch ( Exception $e ) {
 			return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
 		}
