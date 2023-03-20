@@ -165,7 +165,9 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_remove_rucss_failed_jobs_cron_interval', 3 * rocket_get_constant( 'DAY_IN_SECONDS', 86400 ) );
+		$default_interval = 3 * rocket_get_constant( 'DAY_IN_SECONDS', 86400 );
+		$interval         = apply_filters( 'rocket_remove_rucss_failed_jobs_cron_interval', $default_interval );
+		$interval         = (bool) $interval ? $interval : $default_interval;
 
 		$schedules['rocket_remove_rucss_failed_jobs'] = [
 			'interval' => $interval,
