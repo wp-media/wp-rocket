@@ -11,9 +11,7 @@ return [
 	'shouldReturnWPErrorWhenEmptyResult' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'result' => [],
-			],
+			'response' => [],
 		],
 		'expected' => 'error',
 	],
@@ -21,9 +19,7 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'response' => (object) [
-				'result' => [
-					'name' => 'test.com',
-				],
+				'name' => 'test.com',
 			],
 		],
 		'expected' => 'error',
@@ -32,9 +28,7 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'response' => (object) [
-				'result' => (object) [
-					'name' => 'example.org',
-				],
+				'name' => 'example.org',
 			],
 		],
 		'expected' => true,
