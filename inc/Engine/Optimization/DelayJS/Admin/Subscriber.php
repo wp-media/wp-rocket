@@ -50,7 +50,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'sanitize_selected_exclusions', 14 ],
 			],
 			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
-			'rocket_hidden_settings_fields'        => 'add_exclusions_hidden_field',
 			'rocket_after_save_dynamic_lists'      => 'refresh_exclusions_option',
 			'activate_plugin'                      => 'add_plugin_exclusions',
 			'deactivate_plugin'                    => 'remove_plugin_exclusions',
@@ -147,18 +146,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_combine_js( $value, $old_value ): array {
 		return $this->settings->maybe_disable_combine_js( $value, $old_value );
-	}
-
-	/**
-	 * Add exclusions hidden field.
-	 *
-	 * @param array $fields Hidden fields.
-	 *
-	 * @return array
-	 */
-	public function add_exclusions_hidden_field( array $fields ) {
-		$fields[] = 'delay_js_exclusion_selected_exclusions';
-		return $fields;
 	}
 
 	/**
