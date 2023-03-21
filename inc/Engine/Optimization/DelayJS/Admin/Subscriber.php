@@ -165,6 +165,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_plugin_exclusions( string $plugin ) {
+		if ( plugin_basename( WP_ROCKET_FILE ) === $plugin ) {
+			return;
+		}
 		$this->site_list->remove_plugin_selection( $plugin );
 	}
 
@@ -189,6 +192,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_plugin_exclusions( string $plugin ) {
+		if ( plugin_basename( WP_ROCKET_FILE ) === $plugin ) {
+			return;
+		}
 		$this->site_list->add_default_plugin_exclusions( $plugin );
 	}
 }
