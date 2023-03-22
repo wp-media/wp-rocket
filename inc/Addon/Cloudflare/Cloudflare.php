@@ -363,7 +363,7 @@ class Cloudflare {
 		try {
 			$cf_settings = $this->endpoints->get_settings( $this->options->get( 'cloudflare_zone_id', '' ) );
 
-			foreach ( $cf_settings->result as $cloudflare_option ) {
+			foreach ( $cf_settings as $cloudflare_option ) {
 				switch ( $cloudflare_option->id ) {
 					case 'browser_cache_ttl':
 						$browser_cache_ttl = $cloudflare_option->value;
@@ -409,6 +409,7 @@ class Cloudflare {
 	 */
 	public function get_cloudflare_ips() {
 		$cf_ips = get_transient( 'rocket_cloudflare_ips' );
+
 		if ( false !== $cf_ips ) {
 			return $cf_ips;
 		}
@@ -416,7 +417,7 @@ class Cloudflare {
 		try {
 			$cf_ips = $this->endpoints->get_ips();
 
-			if ( empty( $cf_ips->success ) ) {
+			if ( empty( $cf_ips ) ) {
 				// Set default IPs from Cloudflare if call to Cloudflare /ips API does not contain a success.
 				// Prevents from making API calls on each page load.
 				$cf_ips = $this->get_default_ips();
@@ -439,13 +440,11 @@ class Cloudflare {
 	 */
 	private function get_default_ips() {
 		$cf_ips = (object) [
-			'result'   => (object) [],
-			'success'  => true,
-			'errors'   => [],
-			'messages' => [],
+			'ipv4_cidrs' => [],
+			'ipv6_cidrs' => [],
 		];
 
-		$cf_ips->result->ipv4_cidrs = [
+		$cf_ips->ipv4_cidrs = [
 			'173.245.48.0/20',
 			'103.21.244.0/22',
 			'103.22.200.0/22',
@@ -463,7 +462,7 @@ class Cloudflare {
 			'131.0.72.0/22',
 		];
 
-		$cf_ips->result->ipv6_cidrs = [
+		$cf_ips->ipv6_cidrs = [
 			'2400:cb00::/32',
 			'2606:4700::/32',
 			'2803:f800::/32',
