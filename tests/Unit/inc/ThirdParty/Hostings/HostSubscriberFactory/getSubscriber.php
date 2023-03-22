@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
@@ -29,6 +30,7 @@ class Test_GetSubscriber extends TestCase {
 	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
+		unset( $GLOBALS['is_nginx'] );
 
 		parent::tearDown();
 	}
@@ -37,6 +39,8 @@ class Test_GetSubscriber extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
+		$is_valid = false;
+
 		switch ( $host ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -51,9 +55,20 @@ class Test_GetSubscriber extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
+			case 'nginx':
+				global $is_nginx;
+				$is_nginx = true;
+				break;
+			case 'siteground':
+				$is_valid = true;
+				break;
 			default:
 				break;
 		}
+
+		Functions\when('rocket_is_plugin_active')->alias(function ($plugin) use ($is_valid) {
+			return $is_valid;
+		});
 
 		$this->assertInstanceOf( $expected, $this->factory->get_subscriber());
 	}

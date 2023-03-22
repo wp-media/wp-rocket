@@ -49,6 +49,20 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Kinsta();
 			case 'onecom':
 				return new OneCom();
+			case 'flywheel':
+				return new Flywheel();
+			case 'wp-serveur':
+				return new WPServeur();
+			case 'siteground':
+				return new Siteground();
+			case 'presslabs':
+				return new Presslabs();
+			case 'pressidium':
+				return new Pressidium();
+			case 'pagely':
+				return new Pagely();
+			case 'nginx':
+				return new Ngnix();
 			default:
 				return new NullSubscriber();
 		}

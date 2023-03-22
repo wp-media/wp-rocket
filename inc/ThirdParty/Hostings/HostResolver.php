@@ -26,6 +26,7 @@ class HostResolver {
 	 * @return string Name of the hosting service or '' if no service is recognized.
 	 */
 	public static function get_host_service( $ignore_cached_hostname = false ) {
+		global $is_nginx;
 
 		if ( ! $ignore_cached_hostname && ! empty( self::$hostname ) ) {
 			return self::$hostname;
@@ -108,6 +109,40 @@ class HostResolver {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			self::$hostname = 'kinsta';
 			return 'kinsta';
+		}
+
+		if ( class_exists( 'FlywheelNginxCompat' ) ) {
+			self::$hostname = 'flywheel';
+			return self::$hostname;
+		}
+
+		if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
+			self::$hostname = 'wp-serveur';
+			return self::$hostname;
+		}
+
+		if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
+			self::$hostname = 'siteground';
+			return self::$hostname;
+		}
+
+		if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
+			self::$hostname = 'presslabs';
+			return self::$hostname;
+		}
+
+		if ( class_exists( 'PagelyCachePurge' ) ) {
+			self::$hostname = 'pagely';
+			return self::$hostname;
+		}
+
+		if ( $is_nginx ) {
+			self::$hostname = 'nginx';
+			return self::$hostname;
+		}
+		if ( defined( 'WP_NINUKIS_WP_NAME' ) || class_exists( 'Ninukis_Plugin' ) ) {
+			self::$hostname = 'pressidium';
+			return self::$hostname;
 		}
 
 		return '';
