@@ -67,6 +67,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_reject_uri']            = [
 				[ 'exclude_pages' ],
 			];
+			$events['rocket_preload_exclude_urls']        = [
+				[ 'exclude_pages' ],
+			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
 			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
