@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetHostResolver extends TestCase {
 	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
-		unset( $_SERVER['ONECOM_DOMAIN_NAME'] );
+		unset( $_SERVER['GROUPONE_BRAND_NAME'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
 
 		parent::tearDown();
