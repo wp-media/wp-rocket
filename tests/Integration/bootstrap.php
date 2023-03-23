@@ -201,7 +201,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
-			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'example.com';
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'one.com';
 			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
 			$_SERVER[ 'HTTP_HOST'] = 'example.com';
 		}
