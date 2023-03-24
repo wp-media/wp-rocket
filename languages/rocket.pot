@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-15 15:42-0400\n"
+"POT-Creation-Date: 2023-03-24 15:00-0400\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
@@ -750,13 +750,13 @@ msgid ""
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "Excluded 3rd parties"
+msgid "One-click exclusions"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
 "When using this feature you may notice that it takes some time, or user "
-"interaction for some elements, e.g. a menu, or a form that is located in the "
+"interaction for specific elements, e.g. a menu, or a form that is located in the "
 "viewport, to appear."
 msgstr ""
 
@@ -2125,15 +2125,15 @@ msgid ""
 "pay the price difference between your current and new licenses)."
 msgstr ""
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:200
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"
 msgstr ""
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:205
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:200
 msgid "Plugins"
 msgstr ""
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:210
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:205
 msgid "Themes"
 msgstr ""
 
