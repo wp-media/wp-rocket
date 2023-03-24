@@ -41,7 +41,7 @@
 	"vinyl-buffer": "^1.0.1",
 	"vinyl-source-stream": "^2.0.0",
 	"watchify": "^4.0.0",
-	"webpack": "^5.64.4",
+	"webpack": "^5.76.0",
 	"webpack-cli": "^4.9.1",
 	"yargs": "^17.3.0",
 	"sass": "^1.44.0"
