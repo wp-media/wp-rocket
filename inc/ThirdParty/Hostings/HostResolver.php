@@ -32,7 +32,7 @@ class HostResolver {
 		}
 
 		if ( isset( $_SERVER['GROUPONE_BRAND_NAME'] ) ) {
-			if ( 'one.com' === strtolower( sanitize_text_field( $_SERVER['GROUPONE_BRAND_NAME'] ) ) ) ) {
+			if ( 'one.com' === strtolower( sanitize_text_field( $_SERVER['GROUPONE_BRAND_NAME'] ) ) ) {
 				self::$hostname = 'onecom';
 				return 'onecom';
 			}
