@@ -939,9 +939,9 @@ class Page {
 				),
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
-					'label'             => __( '3rd parties exclusions', 'rocket' ),
+					'label'             => __( 'One-click exclusions', 'rocket' ),
 					'description'       => __( 'When using this feature you may notice that it takes some time, or user interaction for specific elements, e.g. a menu, or a form that is located in the viewport, to appear.', 'rocket' ),
-					'sub_description'   => __( 'Select plugins, themes or services you\'d like to exclude from being delayed.', 'rocket' ),
+					'sub_description'   => __( 'If you are using any of the following plugins/themes/services you can prevent that, by selecting them below.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
