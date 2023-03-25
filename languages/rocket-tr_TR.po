@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-15 15:42-0400\n"
+"POT-Creation-Date: 2023-03-24 15:00-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2023\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -920,16 +920,16 @@ msgstr ""
 " tıklama) kadar geciktirerek performansı artırır. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "Excluded 3rd parties"
-msgstr "Hariç tutulan 3. taraflar"
+msgid "One-click exclusions"
+msgstr "Tek tıkla hariç tutmalar"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
 "When using this feature you may notice that it takes some time, or user "
-"interaction for some elements, e.g. a menu, or a form that is located in the"
-" viewport, to appear."
+"interaction for specific elements, e.g. a menu, or a form that is located in"
+" the viewport, to appear."
 msgstr ""
-"Bu özelliği kullanırken, bazı öğeler için biraz zaman veya kullanıcı "
+"Bu özelliği kullanırken, belirli öğeler için biraz zaman veya kullanıcı "
 "etkileşimi gerektiğini fark edebilirsiniz, örn. görüntü alanında bulunan bir"
 " menü veya form görüntülenir."
 
@@ -2526,15 +2526,15 @@ msgstr ""
 "kullanabilirsiniz (sadece şu anki ve yeni lisanslarınız arasındaki fiyat "
 "farkını ödeyeceksiniz)."
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:200
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"
 msgstr "Çözümsel ve Reklamlar"
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:205
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:200
 msgid "Plugins"
 msgstr "Eklentiler"
 
-#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:210
+#: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:205
 msgid "Themes"
 msgstr "Temalar"
 
