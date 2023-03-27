@@ -17,7 +17,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.2']
-        wp-versions: ['5.8']
+        wp-versions: ['5.7']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
 
