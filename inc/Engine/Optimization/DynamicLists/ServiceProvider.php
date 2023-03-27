@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				(object) [
 					'api_client'   => $this->getContainer()->get( 'dynamic_lists_delayjslists_api_client' ),
 					'data_manager' => $this->getContainer()->get( 'dynamic_lists_delayjslists_data_manager' ),
-					'title'        => __( 'Delay JS Exclusion Lists', 'rocket' ),
+					'title'        => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
 				],
 		];
 
