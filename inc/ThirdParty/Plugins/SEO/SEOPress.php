@@ -31,7 +31,7 @@ class SEOPress implements Subscriber_Interface {
 			return [];
 		}
 
-		if ( ! method_exists( seopress_get_service( 'SitemapOption' ), 'isEnabled' )  || '1' !== seopress_get_service( 'SitemapOption' )->isEnabled() ) {
+		if ( ! method_exists( seopress_get_service( 'SitemapOption' ), 'isEnabled' ) || '1' !== seopress_get_service( 'SitemapOption' )->isEnabled() ) {
 			return [];
 		}
 
