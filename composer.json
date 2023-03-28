@@ -191,6 +191,7 @@
 		    "@test-integration-all-in-seo-pack",
 		    "@test-integration-seopress",
 		    "@test-integration-the-events-calendar",
+		    "@test-integration-wpxcloud",
 		    "@test-integration-perfmatters",
 		    "@test-integration-rapidload"
 		],
