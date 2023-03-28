@@ -133,7 +133,7 @@ class WPML implements Subscriber_Interface {
 		$cache_folder_path      = _rocket_get_wp_rocket_cache_path() . $host_name . '/';
 		$cache_folder_directory = $this->filesystem->dirlist( $cache_folder_path );
 
-		if( ! is_array( $cache_folder_directory ) || ! is_array( array_keys( $cache_folder_directory ) ) ) {
+		if ( ! is_array( $cache_folder_directory ) || ! is_array( array_keys( $cache_folder_directory ) ) ) {
 			return;
 		}
 
