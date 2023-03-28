@@ -27,9 +27,14 @@ class SEOPress implements Subscriber_Interface {
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
-		if ( ! function_exists( 'seopress_get_toggle_xml_sitemap_option' ) || 1 !== (int) seopress_get_toggle_xml_sitemap_option() ) {
+		if ( ! function_exists('seopress_get_toggle_option') || '1' !== seopress_get_toggle_option('xml-sitemap')) {
 			return [];
 		}
+
+		if ( ! method_exists(seopress_get_service('SitemapOption'), 'isEnabled')  || '1' !== seopress_get_service('SitemapOption')->isEnabled() ) {
+			return [];
+		}
+
 		return [
 			'rocket_sitemap_preload_list' => [ 'add_seopress_sitemap', 15 ],
 		];
