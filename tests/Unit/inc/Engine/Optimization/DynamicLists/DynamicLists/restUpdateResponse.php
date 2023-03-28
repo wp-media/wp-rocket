@@ -5,8 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\DynamicLists
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\Optimization\DynamicLists\APIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\APIClient;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -30,7 +30,15 @@ class Test_restUpdateResponse extends TestCase {
 		$dynamic_lists_api = Mockery::mock( APIClient::class );
 		$data_manager = Mockery::mock( DataManager::class );
 		$user = Mockery::mock( User::class );
-		$dynamic_lists = new DynamicLists( $dynamic_lists_api, $data_manager, $user, '', Mockery::mock( Beacon::class ) );
+		$providers = [
+			'defaultlists' =>
+				(object) [
+					'api_client'   => $dynamic_lists_api,
+					'data_manager' => $data_manager,
+					'title'        => 'Default Lists',
+				],
+		];
+		$dynamic_lists = new DynamicLists( $providers, $user, '', Mockery::mock( Beacon::class ) );
 
 		$hash = '';
 

@@ -4,7 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class HTML {
@@ -86,6 +86,7 @@ class HTML {
 		$this->set_exclusions();
 
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
 		/**
 		 * Filters the delay JS exclusions array
