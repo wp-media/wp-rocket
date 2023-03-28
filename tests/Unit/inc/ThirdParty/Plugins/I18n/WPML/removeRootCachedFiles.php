@@ -28,7 +28,6 @@ class Test_RemoveRootCachedFiles extends TestCase
 		Functions\expect('home_url')->andReturn($config['home_url']);
 		Functions\expect('wp_parse_url')->with($config['home_url'], PHP_URL_HOST)->andReturn($config['host']);
 		Functions\expect('_rocket_get_wp_rocket_cache_path')->with($config['home_url'], PHP_URL_HOST)->andReturn($config['path']);
-		Filters\expectApplied('wpml_active_languages')->with(null)->andReturn($config['languages']);
 		$this->filesystem->expects()->dirlist($config['cache_path'])->andReturn($config['entries']);
 		$this->filesystem->expects()->is_dir($config['entry_path'])->andReturn(false);
 		$this->filesystem->expects()->delete($config['entry_path']);

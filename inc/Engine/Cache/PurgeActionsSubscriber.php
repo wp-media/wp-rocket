@@ -56,6 +56,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 			'rocket_after_save_dynamic_lists'     => 'purge_cache',
 			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
+			'update_option_blog_public'           => 'purge_cache',
 		];
 	}
 

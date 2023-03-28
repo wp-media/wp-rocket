@@ -66,6 +66,7 @@ class WPRocketUninstall {
 		'wpr_preload_running',
 		'rocket_preload_as_tables_count',
 		'wpr_dynamic_lists',
+		'wpr_dynamic_lists_delayjs',
 	];
 
 	/**
