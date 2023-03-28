@@ -155,6 +155,8 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
 
+	$buffer .= '$rocket_permalink_structure = \'' . get_option( 'permalink_structure' ) . "';\n";
+
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$buffer .= '$rocket_url_no_dots = 1;';
@@ -231,6 +233,25 @@ function rocket_delete_config_file() {
 	list( $config_files_path ) = get_rocket_config_file();
 	foreach ( $config_files_path as $config_file ) {
 		rocket_direct_filesystem()->delete( $config_file );
+	}
+
+	// Bail out if WP Rocket is multisite.
+	if ( is_multisite() ) {
+		return;
+	}
+
+	try {
+		$config_dir = new FilesystemIterator( (string) rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) );
+	} catch ( Exception $e ) {
+		return;
+	}
+
+	// Remove all files with php extension in the config folder.
+	foreach ( $config_dir as $file ) {
+		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
+			continue;
+		}
+		rocket_direct_filesystem()->delete( $file->getPathname() );
 	}
 }
 
@@ -661,6 +682,10 @@ function rocket_clean_home( $lang = '' ) {
  * @return void
  */
 function rocket_clean_home_feeds() {
+
+	if ( ! has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) ) {
+		return;
+	}
 
 	$urls   = [];
 	$urls[] = get_feed_link();
