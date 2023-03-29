@@ -186,17 +186,15 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
-		if ( $this->query->is_preloaded( $url ) ) {
-			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
-			/**
-			 * Fires when the preload from an URL is completed.
-			 *
-			 * @param string $url URL preladed.
-			 * @param string $device Device from the cache.
-			 */
-			do_action( 'rocket_preload_completed', $url, $detected );
-		}
+		/**
+		 * Fires when the preload from an URL is completed.
+		 *
+		 * @param string $url URL preladed.
+		 * @param string $device Device from the cache.
+		 */
+		do_action( 'rocket_preload_completed', $url, $detected );
 
 		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
