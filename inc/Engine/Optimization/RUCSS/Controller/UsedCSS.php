@@ -785,6 +785,33 @@ class UsedCSS {
 	}
 
 	/**
+	 * Clear failed urls.
+	 *
+	 * @return void
+	 */
+	public function clear_failed_urls() {
+		$rows = $this->used_css_query->get_failed_rows();
+
+		if ( empty( $rows ) ) {
+			return;
+		}
+
+		$failed_urls = [];
+
+		foreach ( $rows as  $row ) {
+			$failed_urls[] = $row->url;
+			$this->used_css_query->revert_to_pending( $row->id );
+		}
+
+		/**
+		 * Fires after clearing failed urls.
+		 *
+		 * @param array $urls Failed urls.
+		 */
+		do_action( 'rocket_rucss_after_clearing_failed_url', $failed_urls );
+	}
+
+	/**
 	 * Add preload links for the fonts in the used CSS
 	 *
 	 * @param string $html HTML content.
