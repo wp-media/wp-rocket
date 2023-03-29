@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Page;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
@@ -33,7 +34,8 @@ class Test_EnqueueRocketScripts extends TestCase {
 			Mockery::mock( 'WP_Rocket\Interfaces\Render_Interface'),
 			Mockery::mock( Beacon::class),
 			Mockery::mock( Optimization::class ),
-			Mockery::mock( UserClient::class )
+			Mockery::mock( UserClient::class ),
+			Mockery::mock( SiteList::class )
 		);
 
 		if ( true === $expected ) {

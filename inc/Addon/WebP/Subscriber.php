@@ -173,7 +173,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_webp_cache( $disable_webp_cache ): bool {
-		return $disable_webp_cache && ! empty( $this->get_plugins_serving_webp() ) ? true : (bool) $disable_webp_cache;
+		return $disable_webp_cache || ! empty( $this->get_plugins_serving_webp() );
 	}
 
 	/**
