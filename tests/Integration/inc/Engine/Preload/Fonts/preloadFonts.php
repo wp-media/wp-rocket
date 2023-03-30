@@ -30,7 +30,7 @@ class Test_PreloadFonts extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddPreloadTagsWhenValidFonts( $bypass, $filter, $rocket_options, $expected ) {
+	public function testShouldAddPreloadTagsWhenValidFonts( $buffer, $bypass, $filter, $rocket_options, $expected ) {
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
 			'request'    => 'http://example.org',
@@ -46,24 +46,14 @@ class Test_PreloadFonts extends TestCase {
 
 		$this->setUpOptionsAndHooks( $rocket_options );
 
-		ob_start();
-		do_action( 'wp_head' );
-		$output = ob_get_clean();
+		$output = apply_filters( 'rocket_buffer', $buffer );
 
 		$actual = $this->format_the_html( $output );
 
-		if ( empty( $expected ) ) {
-			$this->assertStringNotContainsString(
-				'<link rel="preload" as="font"',
-				$actual
-			);
-
-		} else {
-			$this->assertStringContainsString(
-				$this->format_the_html( $expected ),
-				$actual
-			);
-		}
+		$this->assertStringContainsString(
+			$this->format_the_html( $expected ),
+			$actual
+		);
 	}
 
 	protected function setUpOptionsAndHooks( $rocket_options ) {
