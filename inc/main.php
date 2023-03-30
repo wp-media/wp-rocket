@@ -69,6 +69,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.11.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.12.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.14.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 
@@ -90,7 +91,6 @@ function rocket_init() {
 	} elseif ( rocket_valid_key() ) {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
-		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
