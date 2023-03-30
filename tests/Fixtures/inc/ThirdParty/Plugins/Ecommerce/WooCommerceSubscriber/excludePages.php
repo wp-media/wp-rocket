@@ -1,7 +1,8 @@
 <?php
 return [
-    '' => [
+    'ExcludeShouldExcludePages' => [
         'config' => [
+			'use_trailing_slashes' => false,
             'urls' => [],
 			'checkout_id' => 10,
 			'cart_id' => 18,
