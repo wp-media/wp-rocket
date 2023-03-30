@@ -211,8 +211,6 @@ class HTML {
 			}
 		}
 
-		$this->logger->debug( "DelayJS: Script {$matches[0]} delayed" );
-
 		if ( empty( $matches['attr'] ) ) {
 			return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
 		}
