@@ -4,6 +4,8 @@ namespace WP_Rocket\Addon;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
+use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
+use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
 use WPMedia\Cloudflare\APIClient;
 use WPMedia\Cloudflare\Cloudflare;
 use WPMedia\Cloudflare\Subscriber as CloudflareSubscriber;
@@ -27,6 +29,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'sucuri_subscriber',
+		'webp_subscriber',
+		'webp_admin_subscriber',
 	];
 
 	/**
@@ -44,6 +48,18 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		// Cloudflare Addon.
 		$this->addon_cloudflare( $options );
+
+		$this->getContainer()->share( 'webp_admin_subscriber', WebPAdminSubscriber::class )
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->share( 'webp_subscriber', WebPSubscriber::class )
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addTag( 'common_subscriber' );
 	}
 
 	/**

@@ -35,7 +35,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $config,  $expected ) {
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 

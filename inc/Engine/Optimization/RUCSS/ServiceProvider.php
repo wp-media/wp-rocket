@@ -71,7 +71,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_data_manager' ) )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
 
 		$this->getContainer()->share( 'rucss_admin_subscriber', AdminSubscriber::class )
