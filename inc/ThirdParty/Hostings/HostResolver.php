@@ -32,9 +32,15 @@ class HostResolver {
 		}
 
 		if ( isset( $_SERVER['GROUPONE_BRAND_NAME'] ) ) {
-			if ( 'one.com' === strtolower( sanitize_text_field( wp_unslash( $_SERVER['GROUPONE_BRAND_NAME'] ) ) ) ) {
-				self::$hostname = 'onecom';
-				return 'onecom';
+			$group_one_brand_name = strtolower( sanitize_text_field( wp_unslash( $_SERVER['GROUPONE_BRAND_NAME'] ) ) );
+
+			switch ( $group_one_brand_name ) {
+				case 'one.com':
+					self::$hostname = 'onecom';
+					return 'onecom';
+				case 'proisp.no':
+					self::$hostname = 'proisp';
+					return 'proisp';
 			}
 		}
 
