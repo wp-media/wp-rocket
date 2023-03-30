@@ -4,7 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class HTML {
@@ -86,6 +86,7 @@ class HTML {
 		$this->set_exclusions();
 
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
 		/**
 		 * Filters the delay JS exclusions array
@@ -164,6 +165,7 @@ class HTML {
 		}
 
 		$result = $this->replace_xmp_tags( $html );
+		$result = $this->replace_svg_tags( $result );
 
 		$replaced_html = preg_replace_callback(
 			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
@@ -176,7 +178,9 @@ class HTML {
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
-		return $this->restore_xmp_tags( $replaced_html );
+
+		$replaced_html = $this->restore_xmp_tags( $replaced_html );
+		return $this->restore_svg_tags( $replaced_html );
 	}
 
 	/**

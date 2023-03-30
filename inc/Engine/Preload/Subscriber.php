@@ -94,7 +94,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'update_option_' . WP_ROCKET_SLUG     => [
+			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_load_initial_sitemap', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
@@ -120,6 +120,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
+			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 		];
 	}
 
@@ -185,17 +186,15 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
-		if ( $this->query->is_preloaded( $url ) ) {
-			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
-			/**
-			 * Fires when the preload from an URL is completed.
-			 *
-			 * @param string $url URL preladed.
-			 * @param string $device Device from the cache.
-			 */
-			do_action( 'rocket_preload_completed', $url, $detected );
-		}
+		/**
+		 * Fires when the preload from an URL is completed.
+		 *
+		 * @param string $url URL preladed.
+		 * @param string $device Device from the cache.
+		 */
+		do_action( 'rocket_preload_completed', $url, $detected );
 
 		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
@@ -233,6 +232,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_permalink_changed() {
 		$this->query->remove_all();
+		$this->queue->cancel_pending_jobs();
 		$this->controller->load_initial_sitemap();
 	}
 
@@ -402,6 +402,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function lock_url( string $url ) {
 		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock all URL.
+	 *
+	 * @return void
+	 */
+	public function unlock_all_urls() {
+		$this->query->unlock_all();
 	}
 
 	/**

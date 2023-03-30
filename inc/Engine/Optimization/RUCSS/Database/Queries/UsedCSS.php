@@ -405,6 +405,60 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Get all failed rows.
+	 *
+	 * @return array|false
+	 */
+	public function get_failed_rows() {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		$query = $this->query(
+			[
+				'status'     => 'failed',
+				'date_query' => [
+					[
+						'column'    => 'modified',
+						'before'    => '3 days ago',
+						'inclusive' => true,
+					],
+				],
+			],
+			false
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Revert status to pending.
+	 *
+	 * @param integer $id Used CSS id.
+	 * @return boolean
+	 */
+	public function revert_to_pending( int $id ): bool {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		return (bool) $this->update_item(
+			$id,
+			[
+				'error_code'    => '',
+				'error_message' => '',
+				'retries'       => 0,
+				'status'        => 'pending',
+				'modified'      => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
 	 * Returns the current status of `wpr_rucss_used_css` table; true if it exists, false otherwise.
 	 *
 	 * @return boolean
@@ -425,7 +479,7 @@ class UsedCSS extends Query {
 
 		// Query statement.
 		$query    = 'SHOW TABLES LIKE %s';
-		$like     = $db->esc_like( $this->table_name );
+		$like     = $db->esc_like( $db->{$this->table_name} );
 		$prepared = $db->prepare( $query, $like );
 		$result   = $db->get_var( $prepared );
 

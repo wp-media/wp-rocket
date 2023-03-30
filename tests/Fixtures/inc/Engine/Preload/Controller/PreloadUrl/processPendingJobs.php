@@ -23,9 +23,19 @@ $row3 = new CacheRow([
 	'status' => 'pending',
 ]);
 
+$outdated_row = new CacheRow([
+	'id' => 14,
+	'is_mobile' => false,
+	'url' => 'http://example3',
+	'status' => 'in-progress',
+]);
+
 return [
 	'shouldPassJobsInPending' => [
 		'config' => [
+			'outdated_jobs' => [
+				$outdated_row
+			],
 			'excluded' => [
 			false,
 			false,
@@ -39,6 +49,9 @@ return [
 			]
 		],
 		'expected' => [
+			'outdated_jobs_id' => [
+				[14]
+			],
 			'job_ids' => [
 				[10],
 				[11],

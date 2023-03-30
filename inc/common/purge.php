@@ -552,15 +552,15 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  * @param array       $hook_extra  Array of bulk item update data.
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
-	if ( 'update' !== $hook_extra['action'] ) {
+	if ( ! isset( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
 		return;
 	}
 
-	if ( 'theme' !== $hook_extra['type'] ) {
+	if ( ! isset( $hook_extra['type'] ) || 'theme' !== $hook_extra['type'] ) {
 		return;
 	}
 
-	if ( ! is_array( $hook_extra['themes'] ) ) {
+	if ( ! isset( $hook_extra['themes'] ) || ! is_array( $hook_extra['themes'] ) ) {
 		return;
 	}
 

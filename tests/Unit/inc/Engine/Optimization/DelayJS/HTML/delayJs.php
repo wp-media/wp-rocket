@@ -6,7 +6,7 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -55,6 +55,12 @@ class Test_DelayJs extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['delay_js_exclusions'] );
+
+			$this->options->shouldReceive( 'get' )
+				->with( 'delay_js_exclusions_selected_exclusions', [] )
+				->atMost()
+				->once()
+				->andReturn( [] );
 
 			$this->data_manager->shouldReceive( 'get_lists' )
 				->atMost()

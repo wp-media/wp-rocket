@@ -34,12 +34,15 @@ use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
+use WP_Rocket\ThirdParty\Plugins\WpDiscuz;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
+use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -93,6 +96,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
 		'the_events_calendar',
+		'perfmatters',
+		'rapidload',
 	];
 
 	/**
@@ -238,5 +243,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'the_events_calendar', TheEventsCalendar::class )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'perfmatters', Perfmatters::class )
+			->addTag( 'common_subscriber' );
+		$this->getContainer()
+			->share( 'rapidload', RapidLoad::class );
 	}
 }

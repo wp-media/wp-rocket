@@ -111,6 +111,6 @@ class Activation implements ActivationInterface {
 	public function deactivation() {
 		wp_clear_scheduled_hook( 'rocket_preload_clean_rows_time_event' );
 		wp_clear_scheduled_hook( 'rocket_preload_process_pending' );
-		wp_clear_scheduled_hook( 'rocket_preload_revert_old_in_progress_rows' );
+		wp_clear_scheduled_hook( 'rocket_preload_revert_old_failed_rows' );
 	}
 }
