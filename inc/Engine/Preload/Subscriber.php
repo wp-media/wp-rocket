@@ -100,7 +100,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocket_after_process_buffer'            => 'update_cache_row',
 			'rocket_deactivation'                    => 'on_deactivation',
-      'rocket_reset_preload'                => 'on_permalink_changed',
+			'rocket_reset_preload'                   => 'on_permalink_changed',
 			'permalink_structure_changed'            => 'on_permalink_changed',
 			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
 			'rocket_rucss_complete_job_status'       => 'clean_url',
