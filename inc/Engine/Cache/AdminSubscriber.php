@@ -188,7 +188,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function regenerate_configs() {
 		rocket_generate_advanced_cache_file();
-
 	}
 
 	/**
@@ -239,7 +238,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	protected function clear_cache() {
+	public function clear_cache() {
 		rocket_clean_domain();
 	}
 }
