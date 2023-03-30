@@ -25,7 +25,11 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function add_async( $hook, $args = [] ) {
 		try {
-			return as_enqueue_async_action( $hook, $args, $this->group );
+			if ( function_exists( 'as_enqueue_async_action' ) ) {
+				return as_enqueue_async_action( $hook, $args, $this->group );
+			}
+
+			return $this->schedule_single( time() + MINUTE_IN_SECONDS, $hook, $args );
 		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), [ 'Action Scheduler Queue' ] );
 
