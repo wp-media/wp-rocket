@@ -218,20 +218,28 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$cf_ips_values = $this->cloudflare->get_cloudflare_ips();
-		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
+		$cf_ip_ranges  = $cf_ips_values->ipv6_cidrs;
 		$current_ip    = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 		$ipv6          = get_rocket_ipv6_full( $current_ip );
 
 		if ( false === strpos( $current_ip, ':' ) ) {
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
-			$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
+			$cf_ip_ranges = $cf_ips_values->ipv4_cidrs;
 		}
 
 		foreach ( $cf_ip_ranges as $range ) {
 			if (
-				( strpos( $current_ip, ':' ) && rocket_ipv6_in_range( $ipv6, $range ) )
+				(
+					strpos( $current_ip, ':' )
+					&&
+					rocket_ipv6_in_range( $ipv6, $range )
+				)
 				||
-				( false === strpos( $current_ip, ':' ) && rocket_ipv4_in_range( $current_ip, $range ) )
+				(
+					false === strpos( $current_ip, ':' )
+					&&
+					rocket_ipv4_in_range( $current_ip, $range )
+				)
 			) {
 				$_SERVER['REMOTE_ADDR'] = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) );
 				break;
