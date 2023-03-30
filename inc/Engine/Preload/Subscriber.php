@@ -233,6 +233,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_permalink_changed() {
 		$this->query->remove_all();
+		$this->queue->cancel_pending_jobs();
 		$this->controller->load_initial_sitemap();
 	}
 
