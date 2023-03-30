@@ -221,6 +221,7 @@ class Subscriber implements Subscriber_Interface {
 		$cf_ip_ranges  = $cf_ips_values->result->ipv6_cidrs;
 		$current_ip    = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 		$ipv6          = get_rocket_ipv6_full( $current_ip );
+
 		if ( false === strpos( $current_ip, ':' ) ) {
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
 			$cf_ip_ranges = $cf_ips_values->result->ipv4_cidrs;
@@ -408,8 +409,19 @@ class Subscriber implements Subscriber_Interface {
 			$submit_cf_view = true;
 		}
 
-		if ( ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) ||
-			( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) ) {
+		if (
+			(
+				isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] )
+				&&
+				(int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode']
+			)
+			||
+			(
+				isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] )
+				&&
+				(int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings']
+			)
+		) {
 			$submit_cf_view = true;
 		}
 
@@ -426,12 +438,20 @@ class Subscriber implements Subscriber_Interface {
 
 		// Update CloudFlare Development Mode.
 		$result = [];
-		if ( isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
+		if (
+			isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] )
+			&&
+			(int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode']
+		) {
 			$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
 		}
 
 		// Update CloudFlare settings.
-		if ( isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
+		if (
+			isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] )
+			&&
+			(int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings']
+		) {
 			$result['pre'] = sprintf(
 				__( '%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:', 'rocket' ),
 				'<strong>',
