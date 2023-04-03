@@ -272,8 +272,8 @@ class ImageDimensions {
 	 * @return string|false
 	 */
 	private function set_dimensions( string $image, array $sizes ) {
-		preg_match( '/<img.*height=[\'\"](?<height>\S+)[\'\"].*>/i', $image, $initial_height );
-		preg_match( '/<img.*width=[\'\"](?<width>\S+)[\'\"].*>/i', $image, $initial_width );
+		preg_match( '/<img.*\sheight=[\'\"](?<height>\S+)[\'\"].*>/i', $image, $initial_height );
+		preg_match( '/<img.*\swidth=[\'\"](?<width>\S+)[\'\"].*>/i', $image, $initial_width );
 
 		if (
 			empty( $initial_height['height'] )
@@ -295,7 +295,7 @@ class ImageDimensions {
 
 			$ratio = $initial_height['height'] / $sizes[1];
 
-			return 'width="' . (int) round( $sizes[0] * $ratio ) . '" height="' . $initial_height['height'] . '"';
+			return 'width="' . (int) round( $sizes[0] * $ratio ) . '" height="' . $initial_height['height'] . '" ';
 		}
 
 		if ( ! empty( $initial_width['width'] ) ) {
@@ -310,7 +310,7 @@ class ImageDimensions {
 
 			$ratio = $initial_width['width'] / $sizes[0];
 
-			return 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '"';
+			return 'width="' . $initial_width['width'] . '" height="' . (int) round( $sizes[1] * $ratio ) . '" ';
 		}
 	}
 
@@ -324,7 +324,7 @@ class ImageDimensions {
 	 */
 	private function assign_width_height( string $image, string $width_height ): string {
 		// Remove old width and height attributes if found.
-		$changed_image = preg_replace( '/(height|width)=[\'"](?:\S+)*[\'"]\s?/i', '', $image );
+		$changed_image = preg_replace( '/\s(height|width)=[\'"](?:\S+)*[\'"]\s?/i', '', $image );
 		$changed_image = preg_replace( '/<\s*img/i', '<img ' . $width_height, $changed_image );
 
 		if ( null === $changed_image ) {

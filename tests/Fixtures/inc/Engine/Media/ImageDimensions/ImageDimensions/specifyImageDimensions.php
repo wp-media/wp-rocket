@@ -289,5 +289,23 @@ return [
 			],
 			'expected'     => '<!DOCTYPE html><html><body><script><img src="http://example.org/wp-content/themes/viewbox.svg"></script></body></html>',
 		],
+		'shouldNotChangeImgCustomHeightAttr' => [
+			'html' => '<!DOCTYPE html><html><body><img data-height="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>',
+			'config' => [
+				'image_dimensions' => true,
+				'rocket_specify_image_dimensions_filter' => true,
+
+			],
+			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" data-height="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
+		],
+		'shouldNotChangeImgCustomWidthAttr' => [
+			'html' => '<!DOCTYPE html><html><body><img custom-width="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>',
+			'config' => [
+				'image_dimensions' => true,
+				'rocket_specify_image_dimensions_filter' => true,
+
+			],
+			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" custom-width="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
+		],
 	],
 ];
