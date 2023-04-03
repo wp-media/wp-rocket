@@ -294,7 +294,7 @@ return [
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
-
+				'internal' => true,
 			],
 			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" data-height="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
@@ -303,7 +303,7 @@ return [
 			'config' => [
 				'image_dimensions' => true,
 				'rocket_specify_image_dimensions_filter' => true,
-
+				'internal' => true,
 			],
 			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" custom-width="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
