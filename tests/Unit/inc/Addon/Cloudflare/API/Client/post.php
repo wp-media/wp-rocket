@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group Cloudflare
  */
-class TestPOST extends TestCase {
+class TestPost extends TestCase {
 	protected $rocket_version = '3.13';
 
 	/**
