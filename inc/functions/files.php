@@ -252,7 +252,7 @@ function rocket_delete_config_file() {
 			continue;
 		}
 
-		if ( 2 !== substr_count( $file->getFilename(), '.' ) ) {
+		if ( 1 === substr_count( $file->getFilename(), '.' ) ) {
 			continue;
 		}
 
