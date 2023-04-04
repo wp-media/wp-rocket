@@ -251,6 +251,15 @@ function rocket_delete_config_file() {
 		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
 			continue;
 		}
+
+		if ( 2 !== substr_count( $file->getFilename(), '.' ) ) {
+			continue;
+		}
+
+		if ( false === strpos( rocket_direct_filesystem()->get_contents( $file->getPathname() ), '$rocket_cookie_hash' ) ) {
+			continue;
+		}
+
 		rocket_direct_filesystem()->delete( $file->getPathname() );
 	}
 }
