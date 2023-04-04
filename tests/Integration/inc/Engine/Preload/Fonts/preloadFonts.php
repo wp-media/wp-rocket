@@ -22,7 +22,7 @@ class Test_PreloadFonts extends TestCase {
 		remove_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'return_cdn_zones' ] );
 		remove_filter( 'rocket_disable_preload_fonts', [ $this, 'return_true' ] );
 
-		unset( $GLOBALS['wp'] );
+		unset( $_GET['nowprocket'] );
 
 		parent::tear_down();
 	}
@@ -31,13 +31,8 @@ class Test_PreloadFonts extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddPreloadTagsWhenValidFonts( $buffer, $bypass, $filter, $rocket_options, $expected ) {
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-		];
-
 		if ( $bypass ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] =  1;
+			$_GET['nowprocket'] =  1;
 		}
 
 		if ( $filter ) {
