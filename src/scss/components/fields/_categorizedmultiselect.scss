@@ -7,7 +7,6 @@
 \*-----------------------------------------------*/
 
 .wpr-field--categorizedmultiselect {
-  padding-right: 80px;
 
   .wpr-list{
 	padding-right: 15px;
@@ -17,6 +16,9 @@
 	  .wpr-list-header{
 		padding-bottom: 9px;
 		margin-bottom: 10px;
+	  }
+	  .wpr-list-header{
+		max-height:32px;
 	  }
 	}
 
@@ -72,5 +74,10 @@
   .wpr-multiple-select-title{
 	font-weight: bold;
 	margin-left: 5px;
+  }
+}
+@media only screen and (min-width: 782px) {
+  .wpr-field--categorizedmultiselect {
+	padding-right: 80px;
   }
 }
