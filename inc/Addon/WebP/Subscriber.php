@@ -153,6 +153,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		 * @param bool   $has_webp True if the page contains webp files. False otherwise.
 		 * @param string $html     The page’s html contents.
 		 */
+
 		$has_webp = apply_filters( 'rocket_page_has_webp_files', $has_webp, $html );
 
 		if ( $has_webp ) {
@@ -172,7 +173,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_webp_cache( $disable_webp_cache ): bool {
-		return $disable_webp_cache && ! empty( $this->get_plugins_serving_webp() ) ? true : (bool) $disable_webp_cache;
+		return $disable_webp_cache || ! empty( $this->get_plugins_serving_webp() );
 	}
 
 	/**
@@ -517,6 +518,14 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$content_url = preg_replace( '@^https?:@', '', content_url( '/' ) );
 		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
 		$list        = [ $content_url => $content_dir ];
+
+		$upload     = wp_upload_dir();
+		$upload_dir = trailingslashit( $upload['basedir'] );
+
+		if ( strpos( $upload_dir, $content_dir ) === false ) {
+			$upload_url          = preg_replace( '@^https?:@', '', trailingslashit( $upload['baseurl'] ) );
+			$list[ $upload_url ] = $upload_dir;
+		}
 
 		/**
 		 * Filter the list of URL/path associations.
