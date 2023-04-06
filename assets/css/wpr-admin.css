@@ -2895,7 +2895,7 @@ div.wpr-tutorial-item {
   padding-bottom: 9px;
   margin-bottom: 10px;
 }
-.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header {
+.wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
   max-height: 32px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
