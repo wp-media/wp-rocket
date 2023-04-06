@@ -572,7 +572,6 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	foreach ( $urls as $url ) {
-
 		/**
 		 * Fires before the cache file is deleted.
 		 *
@@ -596,7 +595,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
-				$entry = $dir . $parsed_url['path'];
+				$entry = $dir . str_replace( [ '%2F', '%2C', '%7C', '%2B', '%40' ], [ '/', ',', '|', '+', '@' ], rawurlencode( $parsed_url['path'] ) );
 				$entry = strtolower( $entry );
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
