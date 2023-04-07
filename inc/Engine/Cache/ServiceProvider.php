@@ -4,6 +4,8 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
@@ -30,6 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'admin_cache_subscriber',
 		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
+		'preload_caches_query',
 		'cache_config',
 	];
 
@@ -41,13 +44,18 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$filesystem = rocket_direct_filesystem();
 
+		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
+			->addArgument( new Logger() );
+		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
 			->addArgument( $filesystem );
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );
 		$this->getContainer()->add( 'purge', Purge::class )
-			->addArgument( $filesystem );
+			->addArgument( $filesystem )
+			->addArgument( $cache_query );
 		$this->getContainer()->share( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )

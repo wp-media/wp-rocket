@@ -16,16 +16,14 @@ class Bypass extends TestCase {
 	}
 
 	public function tear_down() {
-		unset( $GLOBALS['wp'] );
-
 		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $wp, $url, $expected ) {
-		$GLOBALS['wp'] = $wp;
+	public function testShouldReturnExpected( $query_vars, $expected ) {
+		$_GET = $query_vars;
 
 		if ( $expected ) {
 			$this->assertTrue( rocket_bypass() );

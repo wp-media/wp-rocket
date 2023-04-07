@@ -51,20 +51,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_preload_clean_rows_time_event'       => 'remove_old_rows',
-			'rocket_preload_process_pending'             => [
+			'rocket_preload_clean_rows_time_event'  => 'remove_old_rows',
+			'rocket_preload_process_pending'        => [
 				[ 'process_pending_urls' ],
 				[ 'clean_preload_jobs' ],
 			],
-			'rocket_preload_revert_old_in_progress_rows' => 'revert_old_in_progress_rows',
-			'cron_schedules'                             => [
+			'rocket_preload_revert_old_failed_rows' => 'revert_old_failed_rows',
+			'cron_schedules'                        => [
 				[ 'add_interval' ],
-				[ 'add_revert_old_in_progress_interval' ],
+				[ 'add_revert_old_failed_interval' ],
 			],
-			'init'                                       => [
+			'init'                                  => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
-				[ 'schedule_revert_old_in_progress_rows' ],
+				[ 'schedule_revert_old_failed_rows' ],
 			],
 		];
 	}
@@ -75,8 +75,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
-		if ( wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
+		if ( '' === $delay || wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
 			return;
 		}
 
@@ -141,7 +147,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $schedules Cron schedules.
 	 * @return mixed
 	 */
-	public function add_revert_old_in_progress_interval( $schedules ) {
+	public function add_revert_old_failed_interval( $schedules ) {
 		if ( ! $this->settings->is_enabled() ) {
 			return $schedules;
 		}
@@ -153,11 +159,11 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_preload_revert_old_in_progress_rows_cron_interval', 12 * rocket_get_constant( 'HOUR_IN_SECONDS', 60 * 60 ) );
+		$interval = apply_filters( 'rocket_preload_revert_old_failed_rows_cron_interval', 12 * rocket_get_constant( 'HOUR_IN_SECONDS', 60 * 60 ) );
 
-		$schedules['rocket_revert_old_in_progress_rows'] = [
+		$schedules['rocket_revert_old_failed_rows'] = [
 			'interval' => $interval,
-			'display'  => esc_html__( 'WP Rocket Preload revert stuck in-progress jobs', 'rocket' ),
+			'display'  => esc_html__( 'WP Rocket Preload revert stuck failed jobs', 'rocket' ),
 		];
 
 		return $schedules;
@@ -192,17 +198,17 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Schedule revert stuck in progress row cron.
+	 * Schedule revert stuck failed row cron.
 	 *
 	 * @return void
 	 */
-	public function schedule_revert_old_in_progress_rows() {
+	public function schedule_revert_old_failed_rows() {
 		if (
 			! $this->settings->is_enabled()
 			&&
-			wp_next_scheduled( 'rocket_preload_revert_old_in_progress_rows' )
+			wp_next_scheduled( 'rocket_preload_revert_old_failed_rows' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_preload_revert_old_in_progress_rows' );
+			wp_clear_scheduled_hook( 'rocket_preload_revert_old_failed_rows' );
 
 			return;
 		}
@@ -211,11 +217,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_preload_revert_old_in_progress_rows' ) ) {
+		if ( wp_next_scheduled( 'rocket_preload_revert_old_failed_rows' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_in_progress_rows', 'rocket_preload_revert_old_in_progress_rows' );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'rocket_revert_old_failed_rows', 'rocket_preload_revert_old_failed_rows' );
 	}
 
 	/**
@@ -224,15 +230,36 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_old_rows() {
-		$this->query->remove_all_not_accessed_rows();
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
+
+		$parts = explode( ' ', $delay );
+
+		if ( '' === $delay || '0' === $delay ) {
+			return;
+		}
+
+		$value = 1;
+		$unit  = 'month';
+
+		if ( count( $parts ) === 2 && $parts[0] >= 0 ) {
+			$value = $parts[0];
+			$unit  = $parts[1];
+		}
+
+		$this->query->remove_all_not_accessed_rows( $value, $unit );
 	}
 
 	/**
-	 * Remove old in-progress urls.
+	 * Remove old failed urls.
 	 *
 	 * @return void
 	 */
-	public function revert_old_in_progress_rows() {
-		$this->query->revert_old_in_progress();
+	public function revert_old_failed_rows() {
+		$this->query->revert_old_failed();
 	}
 }

@@ -318,6 +318,7 @@ class Plugin {
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
+			'webp_admin_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
@@ -346,11 +347,14 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'cache_config',
 			'uncode',
 			'rocket_lazy_load',
 			'cache_config',
 			'the_events_calendar',
 			'admin_api_subscriber',
+			'perfmatters',
+			'rapidload',
 		];
 
 		$host_type = HostResolver::get_host_service();

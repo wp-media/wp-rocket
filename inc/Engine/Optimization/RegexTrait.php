@@ -11,6 +11,14 @@ trait RegexTrait {
 	 * @var array
 	 */
 	private $xmp_replace = [];
+
+
+	/**
+	 * Array of replaced svg tags
+	 *
+	 * @var array
+	 */
+	private $svg_replace = [];
 	/**
 	 * Finds nodes matching the pattern in the HTML.
 	 *
@@ -111,6 +119,40 @@ trait RegexTrait {
 	}
 
 	/**
+	 * Replace <svg> tags in the HTML with comment
+	 *
+	 * @since 3.12.5.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function replace_svg_tags( $html ) {
+		$this->svg_replace = [];
+		$regex             = '#<\s*svg.*>.*<\s*\\\\?/\s*svg\s*>#Uis';
+		$replaced_html     = preg_replace_callback( $regex, [ $this, 'replace_svg' ], $html );
+
+		if ( empty( $replaced_html ) ) {
+			return $html;
+		}
+
+		return $replaced_html;
+	}
+
+	/**
+	 * Replace svg with comment
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param array $match svg tag.
+	 * @return string
+	 */
+	protected function replace_svg( $match ) {
+		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_SVG_' ) );
+		$this->svg_replace[ $key ] = $match[0];
+		return $key;
+	}
+
+	/**
 	 * Replace xmp with comment
 	 *
 	 * @since 3.12.3
@@ -122,6 +164,22 @@ trait RegexTrait {
 		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_XMP_' ) );
 		$this->xmp_replace[ $key ] = $match[0];
 		return $key;
+	}
+
+	/**
+	 * Restore <svg> tags
+	 *
+	 * @since 3.12.5.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function restore_svg_tags( $html ) {
+		if ( empty( $this->svg_replace ) ) {
+			return $html;
+		}
+
+		return str_replace( array_keys( $this->svg_replace ), array_values( $this->svg_replace ), $html );
 	}
 
 	/**
