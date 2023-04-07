@@ -31,9 +31,17 @@ class HostResolver {
 			return self::$hostname;
 		}
 
-		if ( isset( $_SERVER['ONECOM_DOMAIN_NAME'] ) ) {
-			self::$hostname = 'onecom';
-			return 'onecom';
+		if ( isset( $_SERVER['GROUPONE_BRAND_NAME'] ) ) {
+			$group_one_brand_name = strtolower( sanitize_text_field( wp_unslash( $_SERVER['GROUPONE_BRAND_NAME'] ) ) );
+
+			switch ( $group_one_brand_name ) {
+				case 'one.com':
+					self::$hostname = 'onecom';
+					return 'onecom';
+				case 'proisp.no':
+					self::$hostname = 'proisp';
+					return 'proisp';
+			}
 		}
 
 		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {

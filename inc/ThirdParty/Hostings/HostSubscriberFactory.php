@@ -49,6 +49,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Kinsta();
 			case 'onecom':
 				return new OneCom();
+			case 'proisp':
+				return new ProIsp();
 			default:
 				return new NullSubscriber();
 		}

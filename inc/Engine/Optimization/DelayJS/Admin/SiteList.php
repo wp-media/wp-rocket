@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
+use WP_Theme;
 
 class SiteList {
 	/**
@@ -162,13 +163,7 @@ class SiteList {
 	 * @return string
 	 */
 	public function get_active_theme() {
-		$theme  = wp_get_theme();
-		$parent = $theme->get_template();
-		if ( ! empty( $parent ) ) {
-			return strtolower( $parent );
-		}
-
-		return strtolower( $theme->get( 'Name' ) );
+		return $this->get_theme_name( wp_get_theme() );
 	}
 
 	/**
@@ -295,6 +290,196 @@ class SiteList {
 	public function refresh_exclusions_option() {
 		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
 
+		$this->options->set(
+			'delay_js_exclusions_selected_exclusions',
+			$this->get_delayjs_items_exclusions( $selected_items )
+		);
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Get plugin item ids from the list using plugin base.
+	 *
+	 * @param string $plugin_base Plugin basename.
+	 *
+	 * @return string[]
+	 */
+	private function get_plugin_item_ids( string $plugin_base ) {
+		$item_ids = [];
+		foreach ( $this->get_plugins_from_list() as $plugin_key => $plugin ) {
+			if ( strtolower( $plugin_base ) !== strtolower( $plugin->condition ) ) {
+				continue;
+			}
+			$item_ids[ $plugin_key ] = $plugin->is_default;
+		}
+		return $item_ids;
+	}
+
+	/**
+	 * Add plugin exclusions only if plugin is default is checked in backend.
+	 *
+	 * @param string $plugin_base Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function add_default_plugin_exclusions( string $plugin_base ) {
+		$plugin_item_ids = $this->get_plugin_item_ids( $plugin_base );
+		if ( empty( $plugin_item_ids ) ) {
+			return;
+		}
+
+		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
+		if ( empty( $selected_items ) ) {
+			return;
+		}
+
+		$current_selected_items = $selected_items;
+
+		foreach ( $plugin_item_ids as $plugin_item_id => $plugin_is_default ) {
+			if ( ! $plugin_is_default ) {
+				continue;
+			}
+			$selected_items[] = $plugin_item_id;
+		}
+
+		if ( $current_selected_items === $selected_items ) {
+			return;
+		}
+
+		$this->options->set( 'delay_js_exclusions_selected', $selected_items );
+		$this->options->set(
+			'delay_js_exclusions_selected_exclusions',
+			$this->get_delayjs_items_exclusions( $selected_items )
+		);
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Remove plugin selections from settings.
+	 *
+	 * @param string $plugin_base Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function remove_plugin_selection( $plugin_base ) {
+		$plugin_item_ids = $this->get_plugin_item_ids( $plugin_base );
+		if ( empty( $plugin_item_ids ) ) {
+			return;
+		}
+
+		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
+		if ( empty( $selected_items ) ) {
+			return;
+		}
+
+		$current_selected_items = $selected_items;
+
+		foreach ( $plugin_item_ids as $plugin_item_id => $plugin_is_default ) {
+			$selected_item_key = array_search( $plugin_item_id, $selected_items, true );
+			if ( false === $selected_item_key ) {
+				continue;
+			}
+			unset( $selected_items[ $selected_item_key ] );
+		}
+
+		if ( $current_selected_items === $selected_items ) {
+			return;
+		}
+
+		$this->options->set( 'delay_js_exclusions_selected', $selected_items );
+		$this->options->set(
+			'delay_js_exclusions_selected_exclusions',
+			$this->get_delayjs_items_exclusions( $selected_items )
+		);
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Get theme name from theme object.
+	 *
+	 * @param WP_Theme $theme Theme to get its name.
+	 *
+	 * @return string
+	 */
+	private function get_theme_name( WP_Theme $theme ) {
+		$parent = $theme->get_template();
+		if ( ! empty( $parent ) ) {
+			return strtolower( $parent );
+		}
+
+		return strtolower( $theme->get( 'Name' ) );
+	}
+
+	/**
+	 * Get Theme item ids from the list using theme name.
+	 *
+	 * @param string $theme_name Theme name.
+	 *
+	 * @return string[]
+	 */
+	private function get_theme_item_ids( $theme_name ) {
+		$item_ids = [];
+		foreach ( $this->get_themes_from_list() as $theme_key => $theme ) {
+			if ( strtolower( $theme_name ) !== strtolower( $theme->condition ) ) {
+				continue;
+			}
+
+			$item_ids[] = $theme_key;
+		}
+		return $item_ids;
+	}
+
+	/**
+	 * Replace the old theme with the new theme exclusions.
+	 *
+	 * @param WP_Theme $new_theme WP_Theme instance of the new theme.
+	 * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+	 *
+	 * @return void
+	 */
+	public function replace_theme_selection( $new_theme, $old_theme ) {
+		$new_theme_ids = $this->get_theme_item_ids( $this->get_theme_name( $new_theme ) );
+		$old_theme_ids = $this->get_theme_item_ids( $this->get_theme_name( $old_theme ) );
+
+		if ( empty( $new_theme_ids ) && empty( $old_theme_ids ) ) {
+			return;
+		}
+
+		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
+		if ( empty( $selected_items ) ) {
+			return;
+		}
+
+		$current_selected_items = $selected_items;
+
+		if ( ! empty( $old_theme_ids ) ) {
+			foreach ( $old_theme_ids as $old_theme_id ) {
+				$selected_item_key = array_search( $old_theme_id, $selected_items, true );
+				if ( false === $selected_item_key ) {
+					continue;
+				}
+				unset( $selected_items[ $selected_item_key ] );
+			}
+		}
+
+		if ( ! empty( $new_theme_ids ) ) {
+			$themes = $this->get_themes_from_list();
+			foreach ( $new_theme_ids as $new_theme_id ) {
+				if ( ! $themes[ $new_theme_id ]->is_default ) {
+					continue;
+				}
+				$selected_items[] = $new_theme_id;
+			}
+		}
+
+		if ( $current_selected_items === $selected_items ) {
+			return;
+		}
+
+		$this->options->set( 'delay_js_exclusions_selected', $selected_items );
 		$this->options->set(
 			'delay_js_exclusions_selected_exclusions',
 			$this->get_delayjs_items_exclusions( $selected_items )
