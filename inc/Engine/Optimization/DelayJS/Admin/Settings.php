@@ -146,7 +146,7 @@ class Settings {
 
 		$exclusions = [
 			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
-			'js-before',
+			'js-(before|after)',
 			'/jquery-migrate(.min)?.js',
 		];
 
