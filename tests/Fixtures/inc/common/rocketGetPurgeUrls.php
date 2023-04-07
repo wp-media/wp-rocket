@@ -113,7 +113,7 @@ return [
 				'http://example.org/custompost/test_custom_post/',
 				'http://example.org/custompost/index.html',
 				'http://example.org/custompost/index.html_gzip',
-				'http://example.org/custompost/indexpage',
+				'http://example.org/custompost/page',
 				'http://example.org/author/author_name/',
 				'http://example.org/test_parent/',
 				'http://example.org/test_parent_2/'
