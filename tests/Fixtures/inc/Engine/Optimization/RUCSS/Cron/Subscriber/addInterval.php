@@ -28,4 +28,24 @@ return [
 			'display'  => 'WP Rocket Remove Unused CSS pending jobs',
 		],
 	],
+	'shouldAddDefaultIntervalWhenRUCSSEnabledForDeletingFailedRows' => [
+		'config' => [
+			'remove_unused_css' => 1,
+			'interval' => null,
+		],
+		'expected' => [
+			'interval' => 259200,
+			'display'  => 'WP Rocket clear Remove Unused CSS failed jobs',
+		],
+	],
+	'shouldAddDefaultIntervalWhenRUCSSEnabledForDeletingFailedRowsWithFilter' => [
+		'config' => [
+			'remove_unused_css' => 1,
+			'interval' => 604800,
+		],
+		'expected' => [
+			'interval' => 604800,
+			'display'  => 'WP Rocket clear Remove Unused CSS failed jobs',
+		]
+	],
 ];

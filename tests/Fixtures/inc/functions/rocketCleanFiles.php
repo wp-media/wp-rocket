@@ -8,6 +8,9 @@ return [
 	'test_data' => [
 		'shouldBailOutWhenNoURLsToClean'                        => [
 			'urls'     => [],
+			'configs' => [
+				'post_id' => 0,
+			],
 			'expected' => [
 				'cleaned' => [],
 			],
@@ -16,6 +19,9 @@ return [
 			'urls'     => [
 				'test',
 			],
+			'configs' => [
+				'post_id' => 0,
+			],
 			'expected' => [
 				'cleaned' => [],
 			],
@@ -23,6 +29,9 @@ return [
 		'shouldDeleteSingleDirUrl'                              => [
 			'urls'     => [
 				'http://baz.example.org/',
+			],
+			'configs' => [
+				'post_id' => 0,
 			],
 			'expected' => [
 				'cleaned' => [
@@ -33,6 +42,9 @@ return [
 		'shouldDeleteSingleFileUrlFromDomainAndUserCaches'      => [
 			'urls'     => [
 				'http://example.org/index.html',
+			],
+			'configs' => [
+				'post_id' => 0,
 			],
 			'expected' => [
 				'cleaned' => [
@@ -47,6 +59,9 @@ return [
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
 			],
+			'configs' => [
+				'post_id' => 0,
+			],
 			'expected' => [
 				'cleaned' => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html'                    => null,
@@ -60,6 +75,9 @@ return [
 			'urls'     => [
 				'http://example.org/lorem-ipsum/',
 			],
+			'configs' => [
+				'post_id' => 0,
+			],
 			'expected' => [
 				'cleaned' => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'                => null,
@@ -71,6 +89,9 @@ return [
 			'urls'     => [
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/',
 			],
+			'configs' => [
+				'post_id' => 0,
+			],
 			'expected' => [
 				'cleaned' => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/'               => null,
@@ -81,6 +102,9 @@ return [
 		'shouldDeleteLangUrlInCacheAndUserCaches'               => [
 			'urls'     => [
 				'http://example.org/fr/',
+			],
+			'configs' => [
+				'post_id' => 0,
 			],
 			'expected' => [
 				'cleaned' => [
@@ -96,6 +120,9 @@ return [
 				'http://example.org/lorem-ipsum/',
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip',
+			],
+			'configs' => [
+				'post_id' => 0,
 			],
 			'expected' => [
 				'cleaned' => [
@@ -113,6 +140,9 @@ return [
 		'shouldDeleteSiteUrlInCacheAndUserCaches'               => [
 			'urls'     => [
 				'http://example.org/',
+			],
+			'configs' => [
+				'post_id' => 0,
 			],
 			'expected' => [
 				'cleaned' => [
