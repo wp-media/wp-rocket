@@ -12,8 +12,6 @@ return [
 			'/wp-content/themes/uncode/library/js/min/ai-uncode.min.js',
 			'/wp-content/themes/uncode/library/js/ai-uncode.min.js',
 			'/wp-content/themes/uncode/library/js/ai-uncode.js',
-			'/wp-content/themes/uncode/library/js/app.min.js',
-			'/wp-content/themes/uncode/library/js/plugins.min.js',
 			'UNCODE\.(.*)\)\;'
 		],
 	],
