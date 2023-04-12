@@ -8,11 +8,11 @@ return [
 	'shouldReturnArrayWhenMatchingProperty' => [
 		'list' => (object) [
 			'preload_exclusions' => [
-				'test.github.com',
+				'/test/1',
 			],
 		],
 		'expected' => [
-			'test.github.com',
+			'/test/1',
 		],
 	],
 ];
