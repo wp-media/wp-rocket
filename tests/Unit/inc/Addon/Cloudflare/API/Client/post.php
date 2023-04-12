@@ -73,8 +73,10 @@ class TestPost extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['error'] );
 
-		Functions\when( 'wp_remote_retrieve_body' )
-			->justReturn( $config['body'] );
+		if ( is_array( $config['response'] ) ) {
+			Functions\when( 'wp_remote_retrieve_body' )
+				->justReturn( $config['response']['body'] );
+		}
 
 		Functions\when( 'wp_sprintf_l' )
 			->returnArg();
