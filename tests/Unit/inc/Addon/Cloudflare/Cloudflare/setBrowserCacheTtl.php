@@ -20,6 +20,8 @@ class TestSetBrowserCacheTtl extends TestCase {
 	private $cloudflare;
 
 	protected function setUp(): void {
+		$this->stubTranslationFunctions();
+
 		Functions\when( 'get_transient' )
 			->justReturn( true );
 
