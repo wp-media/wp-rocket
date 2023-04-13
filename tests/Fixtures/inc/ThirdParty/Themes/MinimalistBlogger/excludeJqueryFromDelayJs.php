@@ -7,8 +7,7 @@ return [
 			'excluded' => []
 		],
 		'expected' => [
-			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
-			'/jquery-migrate(.min)?.js',
+			'/jquery(-migrate)?((|.min|.slim|.slim.min)|.*?([0-9]+)(|.min|.slim|.slim.min))?.js'
 		]
 	],
 	'testThemeShouldReturnExpected' => [
@@ -18,8 +17,7 @@ return [
 			'excluded' => []
 		],
 		'expected' => [
-			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
-			'/jquery-migrate(.min)?.js',
+			'/jquery(-migrate)?((|.min|.slim|.slim.min)|.*?([0-9]+)(|.min|.slim|.slim.min))?.js'
 		]
 	]
 ];
