@@ -290,7 +290,10 @@ class SiteList {
 	public function refresh_exclusions_option() {
 		$slug    = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 		$options = get_option( $slug, [] );
-		$options['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $options['delay_js_exclusions_selected'] );
+		if ( empty( $options ) ) {
+			return;
+		}
+		$options['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $options['delay_js_exclusions_selected'] ?? [] );
 		update_option( $slug, $options );
 	}
 
