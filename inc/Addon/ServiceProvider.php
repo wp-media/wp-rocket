@@ -6,11 +6,11 @@ use WP_Rocket\Addon\Cloudflare\API\{Client, Endpoints};
 use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Addon\Cloudflare\Subscriber as CloudflareSubscriber;
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
 use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket addons.
@@ -64,6 +64,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			return;
 		}
 
+		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? rocket_get_constant( 'WP_ROCKET_CF_API_KEY' ) : $options->get( 'cloudflare_api_key', '' );
+
+		if (
+			empty( $options->get( 'cloudflare_api_key', '' ) )
+			||
+			empty( $cf_api_key )
+		) {
+			return;
+		}
+
 		$this->provides[] = 'cloudflare_auth';
 		$this->provides[] = 'cloudflare_client';
 		$this->provides[] = 'cloudflare_endpoints';
@@ -71,13 +81,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->provides[] = 'cloudflare_subscriber';
 		$this->provides[] = 'cloudflare_admin_subscriber';
 
-		if ( $options->get( 'cloudflare_api_key' ) ) {
-			$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? WP_ROCKET_CF_API_KEY : $options->get( 'cloudflare_api_key', null );
-
-			$this->getContainer()->add( 'cloudflare_auth', APIKey::class )
-				->addArgument( $options->get( 'cloudflare_api_email' ) )
-				->addArgument( $cf_api_key );
-		}
+		$this->getContainer()->add( 'cloudflare_auth', APIKey::class )
+			->addArgument( $options->get( 'cloudflare_api_email' ) )
+			->addArgument( $cf_api_key );
 
 		$this->getContainer()->add( 'cloudflare_client', Client::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare_auth' ) );
