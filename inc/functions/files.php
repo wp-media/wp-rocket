@@ -595,9 +595,19 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
-				// Encode url path and preserve special characters.
-				$entry = $dir . str_replace( [ '%2F', '%2C', '%7C', '%2B', '%40' ], [ '/', ',', '|', '+', '@' ], rawurlencode( $parsed_url['path'] ) );
+				// Non-Latin Characters added to permalink structure are not encoded;
+				// Encode Non-latin characters if found in url path.
+				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
+					$encode_non_latin = function( $non_latin ) {
+						return rawurlencode( $non_latin );
+					};
+
+					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
+				}
+
+				$entry = $dir . $parsed_url['path'];
 				$entry = strtolower( $entry );
+
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
 					continue;
