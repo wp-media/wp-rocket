@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-24 15:00-0400\n"
+"POT-Creation-Date: 2023-04-14 10:33-0400\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
@@ -34,9 +34,9 @@ msgstr ""
 #: inc/3rd-party/hosting/wp-serveur.php:27 inc/ThirdParty/Hostings/Cloudways.php:90
 #: inc/ThirdParty/Hostings/Dreampress.php:44 inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49 inc/ThirdParty/Hostings/OneCom.php:137
-#: inc/ThirdParty/Hostings/Savvii.php:50 inc/ThirdParty/Hostings/WPEngine.php:47
-#: inc/ThirdParty/Hostings/WPXCloud.php:51 inc/deprecated/3.6.php:697
-#: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/WPEngine.php:47 inc/ThirdParty/Hostings/WPXCloud.php:51
+#: inc/deprecated/3.6.php:697 inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
@@ -2164,7 +2164,7 @@ msgid "Default Lists"
 msgstr ""
 
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
-msgid "Delay JS Exclusion Lists"
+msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr ""
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
@@ -2230,8 +2230,12 @@ msgstr ""
 msgid "Clear Used CSS of this URL"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:149
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:160
 msgid "WP Rocket Remove Unused CSS pending jobs"
+msgstr ""
+
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:174
+msgid "WP Rocket clear Remove Unused CSS failed jobs"
 msgstr ""
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
@@ -2243,8 +2247,8 @@ msgid ""
 "\">contact support</a>."
 msgstr ""
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:469
-#: inc/Engine/Plugin/UpdaterSubscriber.php:483
+#: inc/Engine/Plugin/UpdaterSubscriber.php:472
+#: inc/Engine/Plugin/UpdaterSubscriber.php:486
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
@@ -2252,7 +2256,7 @@ msgstr ""
 msgid "%s Update Rollback"
 msgstr ""
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:506 inc/deprecated/3.11.php:279
+#: inc/Engine/Plugin/UpdaterSubscriber.php:509 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr ""
@@ -2265,11 +2269,11 @@ msgid ""
 "needed."
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:132
+#: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
 msgstr ""
 
-#: inc/Engine/Preload/Cron/Subscriber.php:160
+#: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr ""
 
