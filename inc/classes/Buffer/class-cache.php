@@ -740,9 +740,8 @@ class Cache extends Abstract_Buffer {
 	 *
 	 * @return string
 	 */
-	private function sanitize_user( string $user ): string {
-		$sanitized_user = '';
-		$sanitized_user = rawurlencode( $user );
+	private function sanitize_user( string $user = '' ): string {
+		return strtolower( rawurlencode( $user ) );
 
 		return strtolower( $sanitized_user );
 	}
