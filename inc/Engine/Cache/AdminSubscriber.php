@@ -75,7 +75,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'rocket_domain_changed' => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
-				[ 'clear_cache' ],
+				[ 'clear_cache', 10, 2 ],
 			],
 		];
 	}
@@ -188,6 +188,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function regenerate_configs() {
 		rocket_generate_advanced_cache_file();
+		flush_rocket_htaccess();
 	}
 
 	/**
@@ -211,13 +212,22 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		$contents = $this->filesystem->dirlist( WP_ROCKET_CONFIG_PATH );
 		foreach ( $contents as $content ) {
 			$content = WP_ROCKET_CONFIG_PATH . $content['name'];
-			if ( ! preg_match( '#\.php$#', $content ) || ! $this->filesystem->is_file( $content ) || in_array(
+			if ( 'php' !== strtolower( $content->getExtension() ) || ! $this->filesystem->is_file( $content ) || in_array(
 				$content,
 					$configs,
 				true
 				) ) {
 				continue;
 			}
+
+			if ( 1 === substr_count( $content->getFilename(), '.' ) ) {
+				continue;
+			}
+
+			if ( false === strpos( $this->filesystem->get_contents( $content->getPathname() ), '$rocket_cookie_hash' ) ) {
+				continue;
+			}
+
 			$this->filesystem->delete( $content );
 		}
 	}
@@ -236,9 +246,12 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Clear cache.
 	 *
+	 * @param string $current_url current URL from the website.
+	 * @param string $old_url old URL from the website.
+	 *
 	 * @return void
 	 */
-	public function clear_cache() {
-		rocket_clean_domain();
+	public function clear_cache( string $current_url, string $old_url ) {
+		rocket_clean_files( [ $old_url ] );
 	}
 }
