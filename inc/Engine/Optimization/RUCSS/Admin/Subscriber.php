@@ -436,6 +436,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_processing_notice() {
+		if ( $this->has_error_notice() ) {
+			return;
+		}
 		$this->settings->display_processing_notice();
 	}
 
@@ -447,6 +450,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_success_notice() {
+		if ( $this->has_error_notice() ) {
+			return;
+		}
 		$this->settings->display_success_notice();
 	}
 
@@ -471,13 +477,20 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_error_notice() {
-		$transient = get_transient( 'wp_rocket_rucss_errors_count' );
-
-		if ( ! $transient ) {
+		if ( ! $this->has_error_notice() ) {
 			return;
 		}
 
 		$this->settings->display_error_notice();
+	}
+
+	/**
+	 * Is the error notice present.
+	 *
+	 * @return bool
+	 */
+	public function has_error_notice() {
+		return (bool) get_transient( 'wp_rocket_rucss_errors_count' );
 	}
 
 
