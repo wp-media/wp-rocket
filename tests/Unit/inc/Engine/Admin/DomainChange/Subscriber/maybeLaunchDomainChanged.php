@@ -26,11 +26,11 @@ class Test_MaybeLaunchDomainChanged extends TestCase
 		Functions\expect('get_option')->with(Subscriber::LAST_BASE_URL_OPTION)->andReturn($config['last_base_url']);
 
 		if($config['is_base_url_different'] || ! $config['base_url_exist']) {
-			Functions\expect('update_option')->with(Subscriber::LAST_BASE_URL_OPTION, $expected);
+			Functions\expect('update_option')->with(Subscriber::LAST_BASE_URL_OPTION, $expected['encrypted_old_url']);
 		}
 
 		if($config['is_base_url_different']) {
-			Actions\expectDone('rocket_domain_changed');
+			Actions\expectDone('rocket_domain_changed')->with($expected['url'], $expected['old_url']);
 		} else {
 			Actions\expectDone('rocket_domain_changed')->never();
 		}

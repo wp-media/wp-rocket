@@ -248,6 +248,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_cache( string $current_url, string $old_url ) {
-		rocket_clean_files( [ $old_url ] );
+		rocket_clean_files( [ $old_url ], null, false );
 	}
 }

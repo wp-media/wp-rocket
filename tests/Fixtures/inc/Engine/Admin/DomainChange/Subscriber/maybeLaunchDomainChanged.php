@@ -3,28 +3,40 @@ return [
 	'noBaseUrlShouldAdd' =>  [
 		'config' => [
 			'base_url' => 'http://www.example.org',
-			'last_base_url' => 'http://example.org',
+			'last_base_url' => base64_encode('http://example.org'),
 			'is_base_url_different' => true,
 			'base_url_exist' => false,
 		],
-		'expected' => 'http://www.example.org'
+		'expected' => [
+			'url' => 'http://www.example.org',
+			'old_url' =>'http://example.org',
+			'encrypted_old_url' => base64_encode('http://www.example.org')
+			]
 	],
 	'baseUrlMatchingShouldDoNothing' => [
 		'config' => [
 			'base_url' => 'http://example.org',
-			'last_base_url' => 'http://example.org',
+			'last_base_url' => base64_encode('http://example.org'),
 			'is_base_url_different' => false,
 			'base_url_exist' => true,
 		],
-		'expected' => 'http://example.org'
+		'expected' => [
+			'url' => 'http://example.org',
+			'old_url' =>'http://example.org',
+			'encrypted_old_url' => base64_encode('http://example.org')
+		]
 	],
 	'baseUrlNotMatchingShouldFireHook' => [
 		'config' => [
 			'base_url' => 'http://www.example.org',
-			'last_base_url' => 'http://example.org',
+			'last_base_url' => base64_encode('http://example.org'),
 			'is_base_url_different' => true,
 			'base_url_exist' => true,
 		],
-		'expected' => 'http://www.example.org'
+		'expected' => [
+			'url' => 'http://www.example.org',
+			'old_url' =>'http://example.org',
+			'encrypted_old_url' => base64_encode('http://www.example.org')
+		]
 	]
 ];
