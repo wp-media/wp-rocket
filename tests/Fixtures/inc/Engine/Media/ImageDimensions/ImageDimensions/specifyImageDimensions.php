@@ -308,4 +308,13 @@ return [
 			'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" custom-width="189" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
 		],
 	],
+	'shouldChangeImgWithEmptyWidthAndHeight' => [
+		'html' => '<!DOCTYPE html><html><body><img src="http://example.org/wp-content/themes/image.jpg" height="" width=""></body></html>',
+		'config' => [
+			'image_dimensions' => true,
+			'rocket_specify_image_dimensions_filter' => true,
+			'internal' => true,
+		],
+		'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
+	],
 ];
