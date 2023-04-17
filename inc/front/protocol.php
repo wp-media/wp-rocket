@@ -25,7 +25,7 @@ if ( ( get_rocket_option( 'do_cloudflare', 0 ) && get_rocket_option( 'cloudflare
  * @return string Updated HTML content
  */
 function rocket_protocol_rewrite( $buffer ) {
-	$re     = "/(<(script|link|img|form)(?!.*?\bcanonical\b)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i";
+	$re     = "/(<(script|link|img|form)(?!.*?\b[\"']canonical[\"']\b)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i";
 	$subst  = '$1//';
 	$return = preg_replace( $re, $subst, $buffer );
 
