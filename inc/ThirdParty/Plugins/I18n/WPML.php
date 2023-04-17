@@ -184,6 +184,10 @@ class WPML implements Subscriber_Interface {
 			return;
 		}
 
+		/**
+		 * Reset WP Rocket Preload.
+		 */
+		do_action( 'rocket_reset_preload' );
 		rocket_clean_domain();
 	}
 }
