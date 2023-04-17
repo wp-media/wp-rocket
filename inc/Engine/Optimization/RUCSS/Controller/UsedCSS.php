@@ -617,6 +617,16 @@ class UsedCSS {
 
 		// Send the request to get the job status from SaaS.
 		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
+
+		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
+
+		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
+			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
+			Logger::error( $message );
+			$this->used_css_query->make_status_failed( $id, '500', $message );
+			return;
+		}
+
 		if (
 			200 !== $job_details['code']
 			||
