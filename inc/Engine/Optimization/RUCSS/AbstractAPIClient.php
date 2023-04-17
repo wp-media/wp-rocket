@@ -74,12 +74,9 @@ abstract class AbstractAPIClient {
 			$args['body'] = [];
 		}
 
-		$args['body']['credentials'] = [
-			'wpr_email' => $this->options->get( 'consumer_email', '' ),
-			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
-		];
-
 		$args['method'] = strtoupper( $type );
+
+		$old_args = $args;
 
 		/**
 		 * RUCSS SAAS request arguments.
@@ -88,6 +85,15 @@ abstract class AbstractAPIClient {
 		 * @returns array
 		 */
 		$args = apply_filters( 'rocket_rucss_api_endpoint', $args );
+
+		if ( ! is_array( $args ) ) {
+			$args = $old_args;
+		}
+
+		$args['body']['credentials'] = [
+			'wpr_email' => $this->options->get( 'consumer_email', '' ),
+			'wpr_key'   => $this->options->get( 'consumer_key', '' ),
+		];
 
 		$response = wp_remote_request(
 			$api_url . $this->request_path,
