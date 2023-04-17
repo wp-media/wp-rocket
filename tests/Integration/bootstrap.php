@@ -214,6 +214,10 @@ tests_add_filter(
 			define( 'UUCSS_VERSION', '1.6.34' );
 		}
 
+		if ( BootstrapManager::isGroup( 'ProIsp' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'proisp.no';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
