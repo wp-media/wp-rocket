@@ -46,6 +46,8 @@ class WPML implements Subscriber_Interface {
 			'after_rocket_clean_home'                  => 'remove_root_cached_files',
 			'after_rocket_clean_domain'                => 'remove_root_cached_files',
 			'pre_update_option_icl_sitepress_settings' => [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ],
+			'activate_sitepress-multilingual-cms/sitepress.php' => 'maybe_clear_on_disable',
+			'deactivate_sitepress-multilingual-cms/sitepress.php' => 'maybe_clear_on_disable',
 		];
 
 		return $events;
@@ -169,5 +171,19 @@ class WPML implements Subscriber_Interface {
 		rocket_clean_domain();
 
 		return $new;
+	}
+
+	/**
+	 * Clear the cache when the option language directory is enabled.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_on_disable() {
+		$option = get_option( 'icl_sitepress_settings' );
+		if ( ! $option || ! is_array( $option ) || ! key_exists( 'urls', $option ) || ! key_exists( 'directory_for_default_language', $option['urls'] ) || false === $option['urls']['directory_for_default_language'] ) {
+			return;
+		}
+
+		rocket_clean_domain();
 	}
 }
