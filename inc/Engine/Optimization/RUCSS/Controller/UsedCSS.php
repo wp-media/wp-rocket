@@ -621,7 +621,7 @@ class UsedCSS {
 		/**
 		 * Filters the rocket min rucss css result size.
 		 *
-		 * @since 3.12.3
+		 * @since 3.13.3
 		 *
 		 * @param int min size.
 		 */
