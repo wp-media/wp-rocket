@@ -212,7 +212,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		$contents = $this->filesystem->dirlist( WP_ROCKET_CONFIG_PATH );
 		foreach ( $contents as $content ) {
 			$content = WP_ROCKET_CONFIG_PATH . $content['name'];
-			if ( 'php' !== strtolower( $content->getExtension() ) || ! $this->filesystem->is_file( $content ) || in_array(
+			if ( ! preg_match( '#\.php$#', $content ) || ! $this->filesystem->is_file( $content ) || in_array(
 				$content,
 					$configs,
 				true
@@ -220,11 +220,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				continue;
 			}
 
-			if ( 1 === substr_count( $content->getFilename(), '.' ) ) {
-				continue;
-			}
-
-			if ( false === strpos( $this->filesystem->get_contents( $content->getPathname() ), '$rocket_cookie_hash' ) ) {
+			if ( false === strpos( $this->filesystem->get_contents( $content ), '$rocket_cookie_hash' ) ) {
 				continue;
 			}
 
