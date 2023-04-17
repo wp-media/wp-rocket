@@ -618,6 +618,13 @@ class UsedCSS {
 		// Send the request to get the job status from SaaS.
 		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
 
+		/**
+		 * Filters the rocket min rucss css result size.
+		 *
+		 * @since 3.12.3
+		 *
+		 * @param int min size.
+		 */
 		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
 
 		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
