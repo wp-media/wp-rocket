@@ -1,0 +1,42 @@
+<?php
+
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\WPGeotargeting;
+
+use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
+
+
+use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
+
+/**
+ * @covers \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::deactivate_geotargetingwp
+ */
+class Test_deactivateGeotargetingwp extends TestCase {
+
+    /**
+     * @var WPGeotargeting
+     */
+    protected $wpgeotargeting;
+
+    public function set_up() {
+        parent::set_up();
+
+        $this->wpgeotargeting = new WPGeotargeting();
+    }
+
+    public function testShouldDoAsExpected( )
+    {
+		Filters\expectRemoved('rocket_htaccess_mod_rewrite')->with('__return_false', 72);
+		Filters\expectRemoved('rocket_cache_dynamic_cookies')->with([$this->wpgeotargeting, 'add_geotargetingwp_dynamic_cookies']);
+		Filters\expectRemoved('rocket_cache_mandatory_cookies')->with([$this->wpgeotargeting, 'add_geotargetingwp_mandatory_cookie']);
+
+		Functions\expect('flush_rocket_htaccess');
+		Functions\expect('rocket_generate_config_file');
+
+		Functions\expect('update_option')->with('geotWP-deactivated', true);
+
+
+		$this->wpgeotargeting->deactivate_geotargetingwp();
+    }
+}
