@@ -76,7 +76,7 @@ class WPGeotargeting implements Subscriber_Interface {
 	 * @author Damian Logghe
 	 */
 	public function activate_geotargetingwp() {
-		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 72 );
+		add_filter( 'rocket_htaccess_mod_rewrite', [$this, 'return_false'], 72 );
 		add_filter( 'rocket_cache_dynamic_cookies', [$this, 'add_geot_cookies'] );
 		add_filter( 'rocket_cache_mandatory_cookies', [$this, 'add_geot_cookies'] );
 
@@ -95,9 +95,9 @@ class WPGeotargeting implements Subscriber_Interface {
 	public function deactivate_geotargetingwp() {
 		// add into db a record saying we deactivated one of the family plugins.
 		update_option( 'geotWP-deactivated', true );
-		remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 72 );
-		remove_filter( 'rocket_cache_dynamic_cookies', 'add_geot_cookies' );
-		remove_filter( 'rocket_cache_mandatory_cookies', 'add_geot_cookies' );
+		remove_filter( 'rocket_htaccess_mod_rewrite', [$this, 'return_false'], 72 );
+		remove_filter( 'rocket_cache_dynamic_cookies', [$this, 'add_geot_cookies'] );
+		remove_filter( 'rocket_cache_mandatory_cookies', [$this, 'add_geot_cookies'] );
 
 		// Update the WP Rocket rules on the .htaccess file.
 		flush_rocket_htaccess();

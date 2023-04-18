@@ -27,9 +27,9 @@ class Test_deactivateGeotargetingwp extends TestCase {
 
     public function testShouldDoAsExpected( )
     {
-		Filters\expectRemoved('rocket_htaccess_mod_rewrite')->with('__return_false', 72);
-		Filters\expectRemoved('rocket_cache_dynamic_cookies')->with([$this->wpgeotargeting, 'add_geotargetingwp_dynamic_cookies']);
-		Filters\expectRemoved('rocket_cache_mandatory_cookies')->with([$this->wpgeotargeting, 'add_geotargetingwp_mandatory_cookie']);
+		Filters\expectRemoved('rocket_htaccess_mod_rewrite')->with([$this->wpgeotargeting, 'return_false'], 72);
+		Filters\expectRemoved('rocket_cache_dynamic_cookies')->with([$this->wpgeotargeting, 'add_geot_cookies']);
+		Filters\expectRemoved('rocket_cache_mandatory_cookies')->with([$this->wpgeotargeting, 'add_geot_cookies']);
 
 		Functions\expect('flush_rocket_htaccess');
 		Functions\expect('rocket_generate_config_file');

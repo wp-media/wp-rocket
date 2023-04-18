@@ -1,21 +1,21 @@
 <?php
 return [
-    'noQueryShouldStayFalse' => [
+    'noQueryShouldTrue' => [
         'config' => [
               'bool' => false,
               'opts' => [],
               'current_url' => 'http://example.org',
 			  'query' => '',
         ],
-        'expected' => false
+        'expected' => true
     ],
-	'QueryShouldReturnTrue' => [
+	'QueryShouldReturnFalse' => [
 		'config' => [
 			'bool' => false,
 			'opts' => [],
-			'current_url' => 'http://example.org',
-			'query' => '',
+			'current_url' => 'http://example.org?nowprocket',
+			'query' => 'nowprocket',
 		],
-		'expected' => true
+		'expected' => false
 	],
 ];

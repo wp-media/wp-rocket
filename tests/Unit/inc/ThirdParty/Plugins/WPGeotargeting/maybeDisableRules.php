@@ -29,7 +29,7 @@ class Test_maybeDisableRules extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Functions\expect('wp_parse_url')->with($expected('current_url', PHP_URL_QUERY))->andReturn($config ['query']);
+		Functions\expect('wp_parse_url')->with($config['current_url'], PHP_URL_QUERY)->andReturn($config['query']);
 
         $this->assertSame($expected, $this->wpgeotargeting->maybe_disable_rules($config['bool'], $config['opts'], $config['current_url']));
     }
