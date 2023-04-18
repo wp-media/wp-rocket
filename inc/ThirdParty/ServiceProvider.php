@@ -251,6 +251,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
 
-		$this->getContainer()->share('wpgeotargeting', WPGeotargeting::class);
+		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }
