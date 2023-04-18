@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  *
  * @group  DynamicLists
  */
-class Test_AddPreloadExcluisons extends TestCase {
+class Test_AddPreloadExclusions extends TestCase {
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists' );
 
