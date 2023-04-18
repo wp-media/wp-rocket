@@ -742,7 +742,6 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function sanitize_user( string $user = '' ): string {
 		return strtolower( rawurlencode( $user ) );
-
 	}
 
 	/**
