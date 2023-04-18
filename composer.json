@@ -194,7 +194,7 @@
 		    "@test-integration-perfmatters",
 		    "@test-integration-rapidload",
 		    "@test-integration-proisp",
-			"test-integration-wp-geotargeting"
+			"@test-integration-wp-geotargeting"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
