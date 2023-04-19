@@ -3,7 +3,7 @@
 return [
 	'vfs_dir'   => 'wp-content/',
 
-	// Virtual filesystem structure.
+	// Virtual file system structure.
 	'structure' => [
 		'wp-content' => [
 			'cache' => [

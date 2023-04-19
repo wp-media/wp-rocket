@@ -2887,9 +2887,6 @@ div.wpr-tutorial-item {
     Type = User Exclusion Textarea
 
 \*-----------------------------------------------*/
-.wpr-field--categorizedmultiselect {
-  padding-right: 80px;
-}
 .wpr-field--categorizedmultiselect .wpr-list {
   padding-right: 15px;
   padding-left: 15px;
@@ -2897,6 +2894,9 @@ div.wpr-tutorial-item {
 .wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
   padding-bottom: 9px;
   margin-bottom: 10px;
+}
+.wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
+  max-height: 32px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
   top: 4px;
@@ -2931,4 +2931,10 @@ div.wpr-tutorial-item {
 .wpr-field--categorizedmultiselect .wpr-multiple-select-title {
   font-weight: bold;
   margin-left: 5px;
+}
+
+@media only screen and (min-width: 782px) {
+  .wpr-field--categorizedmultiselect {
+    padding-right: 80px;
+  }
 }

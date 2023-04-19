@@ -251,7 +251,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<head\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -261,7 +261,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<html\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -270,7 +270,7 @@ class HTML {
 			return $replaced_html;
 		}
 
-		$replaced_html = preg_replace( '/(<\w+)/', "${matches[0]}\${1}", $replaced_html, 1 );
+		$replaced_html = preg_replace( '/(<\w+)/', "{$matches[0]}\${1}", $replaced_html, 1 );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;
