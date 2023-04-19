@@ -201,6 +201,7 @@ tests_add_filter(
 		}
 
 		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'one.com';
 			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
 			$_SERVER[ 'HTTP_HOST'] = 'example.com';
 		}
@@ -211,6 +212,10 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'RapidLoad' ) ) {
 			define( 'UUCSS_VERSION', '1.6.34' );
+		}
+
+		if ( BootstrapManager::isGroup( 'ProIsp' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'proisp.no';
 		}
 
 		// Load the plugin.
