@@ -122,7 +122,16 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
-		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
+
+		/**
+		 * Format the url.
+		 *
+		 * @param string $url url to format.
+		 * @return string
+		 */
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = untrailingslashit( strtok( $url, '?' ) );
 
 		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
@@ -193,7 +202,15 @@ class Cache extends Query {
 			return false;
 		}
 
-		$url = strtok( $resource['url'], '?' );
+		/**
+			* Format the url.
+			*
+			* @param string $url url to format.
+			* @return string
+			*/
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = strtok( $url, '?' );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
@@ -277,9 +294,11 @@ class Cache extends Query {
 	/**
 	 * Get all preload caches which were not accessed in the last month.
 	 *
+	 * @param float  $delay delay before the not accessed row is deleted.
+	 * @param string $unit unit from the delay.
 	 * @return array
 	 */
-	public function get_old_cache() : array {
+	public function get_old_cache( float $delay = 1, string $unit = 'month' ) : array {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -289,7 +308,7 @@ class Cache extends Query {
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delay $unit)";
 		$rows_affected       = $db->get_results( $query );
 
 		return $rows_affected;
@@ -298,10 +317,12 @@ class Cache extends Query {
 	/**
 	 * Remove all completed rows one by one.
 	 *
+	 * @param float  $delay delay before the not accessed row is deleted.
+	 * @param string $unit unit from the delay.
 	 * @return void
 	 */
-	public function remove_all_not_accessed_rows() {
-		$rows = $this->get_old_cache();
+	public function remove_all_not_accessed_rows( float $delay = 1, string $unit = 'month' ) {
+		$rows = $this->get_old_cache( $delay, $unit );
 
 		foreach ( $rows as $row ) {
 			if ( ! is_bool( $row ) ) {

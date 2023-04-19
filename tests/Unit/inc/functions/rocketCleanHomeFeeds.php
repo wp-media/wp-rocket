@@ -30,6 +30,8 @@ class Test_RocketCleanHomeFeeds extends FilesystemTestCase {
 	public function testShouldExpected( $config, $expected ) {
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
+		Functions\when('url_to_postid')->justReturn();
+
 		if($config['cache_feed']){
 			add_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' );
 			Functions\expect( 'get_feed_link' )

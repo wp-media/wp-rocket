@@ -14,7 +14,7 @@ class disableEmoji extends TestCase {
 	public function tear_down() {
         parent::tear_down();
 
-        unset( $GLOBALS['wp'] );
+        unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_emoji', [ $this, 'set_emoji_value' ] );
 		$this->restoreWpFilter( 'init' );
 	}
@@ -23,13 +23,9 @@ class disableEmoji extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$GLOBALS['wp'] = (object) [
-            'query_vars' => [],
-            'request'    => 'http://example.org',
-        ];
 
         if ( $config['bypass'] ) {
-            $GLOBALS['wp']->query_vars['nowprocket'] = 1;
+            $_GET['nowprocket'] = 1;
 		}
 
 		$this->emoji_option = $config['options']['emoji'];
