@@ -66,10 +66,7 @@ class WPGeotargeting implements Subscriber_Interface {
 	 */
 	public function maybe_disable_rules( $bool, $opts, $current_url ) {
 		$query = wp_parse_url( $current_url, PHP_URL_QUERY );
-		if ( str_contains( $query ? $query : '', 'nowprocket' ) ) {
-			return false;
-		}
-		return true;
+		return ! str_contains( $query ? $query : '', 'nowprocket' );
 	}
 
 	/**
@@ -117,7 +114,12 @@ class WPGeotargeting implements Subscriber_Interface {
 	 * @return array Updated array of cookies
 	 */
 	public function add_geot_cookies( $cookies ) {
-		// valid options are country, state, city.
+		/**
+		 * Geotargeting cookies.
+		 *
+		 * @param array $types Types from cookies (country, state, city).
+		 * @return array
+		 */
 		$enabled_cookies = apply_filters( 'rocket_geotargetingwp_enabled_cookies', [ 'country' ] );
 		foreach ( $enabled_cookies as $enabled_cookie ) {
 			if ( ! in_array( 'geot_rocket_' . $enabled_cookie, $cookies, true ) ) {
