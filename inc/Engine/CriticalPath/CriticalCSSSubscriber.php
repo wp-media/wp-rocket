@@ -699,10 +699,14 @@ JS;
 	 * Regenerates the CPCSS when switching theme if the option is active.
 	 *
 	 * @since 3.3
-	 * @since 3.13.2 Force clearing all CPCSS files (default and mobile).
 	 */
 	public function maybe_regenerate_cpcss() {
 		if ( ! $this->options->get( 'async_css' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_mobile_cpcss_active() ) {
+			$this->critical_css->process_handler();
 			return;
 		}
 

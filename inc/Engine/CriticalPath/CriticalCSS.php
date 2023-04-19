@@ -85,6 +85,7 @@ class CriticalCSS {
 	/**
 	 * Performs the critical CSS generation.
 	 *
+	 * @since 3.13.2 Always clear all CPCSS files.
 	 * @since 3.6 Added the $version parameter.
 	 * @since 2.11
 	 *
@@ -108,7 +109,7 @@ class CriticalCSS {
 			return;
 		}
 
-		$this->clean_critical_css( $version );
+		$this->clean_critical_css( 'all' );
 
 		$this->stop_generation();
 
