@@ -35,20 +35,22 @@ class WPML implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
-			return [];
-		}
 
 		$events = [
-			'rocket_rucss_is_home_url'                 => [ 'is_secondary_home', 10, 2 ],
-			'rocket_preload_all_to_pending_condition'  => 'clean_only_right_domain',
-			'rocket_preload_sitemap_before_queue'      => 'add_languages_sitemaps',
-			'after_rocket_clean_home'                  => 'remove_root_cached_files',
-			'after_rocket_clean_domain'                => 'remove_root_cached_files',
-			'pre_update_option_icl_sitepress_settings' => [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ],
 			'activate_sitepress-multilingual-cms/sitepress.php' => 'maybe_clear_on_disable',
 			'deactivate_sitepress-multilingual-cms/sitepress.php' => 'maybe_clear_on_disable',
 		];
+
+		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) ) {
+			return $events;
+		}
+
+		$events['rocket_rucss_is_home_url' ]                = [ 'is_secondary_home', 10, 2 ];
+		$events['rocket_preload_all_to_pending_condition']  = 'clean_only_right_domain';
+		$events['rocket_preload_sitemap_before_queue']      = 'add_languages_sitemaps';
+		$events['after_rocket_clean_home']                  = 'remove_root_cached_files';
+		$events['after_rocket_clean_domain']                = 'remove_root_cached_files';
+		$events['pre_update_option_icl_sitepress_settings'] = [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ];
 
 		return $events;
 	}
