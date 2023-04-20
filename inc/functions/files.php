@@ -601,7 +601,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
-					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
+					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
 
 				$entry = $dir . $parsed_url['path'];
