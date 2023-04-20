@@ -47,6 +47,8 @@ class Test_RocketFirstInstall extends TestCase {
 		delete_option( $this->option_name );
 		delete_user_meta( self::$user_id, 'rocket_boxes' );
 		set_transient( $this->box_name, 'foobar' );
+
+		add_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
 	public function tear_down() {
@@ -77,6 +79,8 @@ class Test_RocketFirstInstall extends TestCase {
 		} else {
 			delete_transient( $this->box_name );
 		}
+
+		remove_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
 	/**

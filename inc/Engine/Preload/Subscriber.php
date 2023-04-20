@@ -94,7 +94,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'update_option_' . WP_ROCKET_SLUG     => [
+			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_load_initial_sitemap', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
@@ -115,6 +115,8 @@ class Subscriber implements Subscriber_Interface {
 			'pre_delete_term'                     => 'delete_term_preload_cache',
 			'rocket_preload_lock_url'             => 'lock_url',
 			'rocket_preload_unlock_url'           => 'unlock_url',
+      'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
+      'rocket_preload_format_url'              => 'format_preload_url', 
 			'rocket_preload_exclude_urls_regexes' => [
 				[ 'add_cache_reject_uri_to_excluded' ],
 				[ 'add_pagination_to_preload_exclusion_urls' ],
@@ -123,6 +125,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
+			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 		];
 	}
 
@@ -196,18 +199,17 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = $this->format_url( $url );
 
-		if ( $this->query->is_preloaded( $url ) ) {
-			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
-			/**
-			 * Fires when the preload from an URL is completed.
-			 *
-			 * @param string $url URL preloaded.
-			 * @param string $device Device from the cache.
-			 */
-			do_action( 'rocket_preload_completed', $url, $detected );
-		}
-		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		/**
+			* Fires when the preload from an URL is completed.
+			*
+			* @param string $url URL preloaded.
+			* @param string $device Device from the cache.
+			*/
+		do_action( 'rocket_preload_completed', $url, $detected );
+		
+    if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -252,6 +254,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_permalink_changed() {
 		$this->query->remove_all();
+		$this->queue->cancel_pending_jobs();
 		$this->controller->load_initial_sitemap();
 	}
 
@@ -410,6 +413,17 @@ class Subscriber implements Subscriber_Interface {
 				$this->clear_cache->partial_clean( [ str_replace( $data['home_path'], $data['home_url'], $file_path ) ] );
 			}
 		}
+	}
+
+	/**
+	 * Remove index from url.
+	 *
+	 * @param string $url url to reformat.
+	 *
+	 * @return string
+	 */
+	public function format_preload_url( string $url ) {
+		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
 	}
 
 	/**

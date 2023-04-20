@@ -76,6 +76,10 @@ class Cache extends Abstract_Buffer {
 			return;
 		}
 
+		if ( $this->maybe_allow_wp_redirect() ) {
+			return;
+		}
+
 		/**
 		 * Serve the cache file if it exists.
 		 */
@@ -537,7 +541,7 @@ class Cache extends Abstract_Buffer {
 
 			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
 			$user_key = reset( $user_key );
-			$user_key = $this->sanitize_key( $user_key . '-' . $this->config->get_config( 'secret_cache_key' ) );
+			$user_key = $this->sanitize_user( $user_key ) . '-' . $this->config->get_config( 'secret_cache_key' );
 
 			// Get cache folder of host name.
 			return $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
@@ -604,24 +608,79 @@ class Cache extends Abstract_Buffer {
 			return $filename;
 		}
 
-		$http_accept = $this->config->get_server_input( 'HTTP_ACCEPT', '' );
-
-		if ( ! $http_accept && function_exists( 'apache_request_headers' ) ) {
-			$headers     = apache_request_headers();
-			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
-		}
-
-		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
-			if ( preg_match( '#Firefox/(?<version>[0-9]{2})#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ), $matches ) ) {
-				if ( 66 <= (int) $matches['version'] ) {
-					return $filename . '-webp';
-				}
-			}
-
+		if ( ! $this->is_browser_webp_compatible() ) {
 			return $filename;
 		}
 
 		return $filename . '-webp';
+	}
+
+	/**
+	 * Checks if the browser is WebP compatible
+	 *
+	 * @since 3.12.6
+	 *
+	 * @return bool
+	 */
+	private function is_browser_webp_compatible(): bool {
+		// Only to supporting browsers.
+		$http_accept = $this->config->get_server_input( 'HTTP_ACCEPT', '' );
+
+		if (
+			empty( $http_accept )
+			&&
+			function_exists( 'apache_request_headers' )
+		) {
+			$headers     = apache_request_headers();
+			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
+		}
+
+		if (
+			! empty( $http_accept )
+			&&
+			false !== strpos( $http_accept, 'webp' )
+		) {
+			return true;
+		}
+
+		return $this->is_user_agent_compatible();
+	}
+
+	/**
+	 * Check the User Agent if the Accept headers is missing the WebP info
+	 *
+	 * @since 3.12.6
+	 *
+	 * @return bool
+	 */
+	private function is_user_agent_compatible(): bool {
+		$user_agent = $this->config->get_server_input( 'HTTP_USER_AGENT' );
+
+		if ( empty( $user_agent ) ) {
+			return false;
+		}
+
+		if ( preg_match( '#Firefox/(?<version>[0-9]{2,})#i', $user_agent, $matches ) ) {
+			if ( 66 >= (int) $matches['version'] ) {
+				return false;
+			}
+		}
+
+		if ( preg_match( '#(?:iPad|iPhone)(.*)Version/(?<version>[0-9]{2,})#i', $user_agent, $matches ) ) {
+			if ( 14 > (int) $matches['version'] ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		if ( preg_match( '#Version/(?<version>[0-9]{2,})(?:.*)Safari#i', $user_agent, $matches ) ) {
+			if ( 16 > (int) $matches['version'] ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -675,16 +734,52 @@ class Cache extends Abstract_Buffer {
 	}
 
 	/**
-	 * Sanitizes a string key.
+	 * Sanitizes a string username.
 	 *
-	 * @param string $key String key.
+	 * @param string $user String username.
 	 *
 	 * @return string
 	 */
-	private function sanitize_key( string $key ): string {
-		$sanitized_key = '';
-		$sanitized_key = strtolower( $key );
+	private function sanitize_user( string $user = '' ): string {
+		return strtolower( rawurlencode( $user ) );
+	}
 
-		return preg_replace( '/[^a-z0-9_\-]/', '', $sanitized_key );
+	/**
+	 * Check if permalink structure and url match.
+	 *
+	 * @return bool
+	 */
+	private function maybe_allow_wp_redirect(): bool {
+
+		$permalink_structure = $this->config->get_config( 'permalink_structure' );
+
+		// Last character of permalink.
+		$permalink_last_char = '/' !== substr( $permalink_structure, -1 ) ? '' : '/';
+
+		// Request uri without protocol & domain name.
+		$request_uri = $this->tests->get_request_uri_base();
+
+		// Last character of request uri.
+		$request_uri_last_char = '/' !== substr( $request_uri, -1 ) ? '' : '/';
+
+		// In cases where we have the home with a trailng slash (visible or invisible)
+		// and permalink is without trailing slash.
+		if ( '' === $permalink_last_char ) {
+			// Check for root installation.
+			$request_uri_last_char = '/' === $request_uri ? '' : $request_uri_last_char;
+
+			/**
+			 * Check for subdir installation.
+			 * Use config file name to get home request_uri.
+			 */
+			$home = str_replace( $this->config->get_host(), '', basename( $this->config->get_config_file_path()['path'] ) );
+			$home = str_replace( '.', '/', str_replace( '.php', '', $home ) );
+
+			if ( '/' !== $request_uri && rtrim( $request_uri, '/' ) === $home ) {
+				$request_uri_last_char = '';
+			}
+		}
+
+		return $permalink_last_char !== $request_uri_last_char;
 	}
 }

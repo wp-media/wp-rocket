@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\HealthCheck;
 
+use ActionScheduler_Versions;
+use ActionScheduler;
 use ActionScheduler_StoreSchema;
 use ActionScheduler_LoggerSchema;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -10,7 +12,7 @@ use WP_Rocket\Engine\Activation\ActivationInterface;
 
 class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface {
 	/**
-	 * Array of events this subscribers listens to
+	 * Array of events this subscriber listens to.
 	 *
 	 * @return array
 	 */
@@ -38,6 +40,10 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return bool
 	 */
 	public function maybe_recreate_as_tables(): bool {
+		if ( ! $this->is_valid_action_scheduler_version() ) {
+			return false;
+		}
+
 		if ( $this->is_valid_as_tables() ) {
 			return false;
 		}
@@ -126,5 +132,22 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 		set_transient( 'rocket_rucss_as_tables_count', count( $found_as_tables ), rocket_get_constant( 'DAY_IN_SECONDS', 24 * 60 * 60 ) );
 
 		return 4 === count( $found_as_tables );
+	}
+
+	/**
+	 * Validate if the currenlt loaded action scheduler's version is more than 3.0.0.
+	 * Note: Latest_version method in ActionScheduler_Versions class will return false with first activation
+	 * in case we don't have any other active plugin which loads Action Scheduler.
+	 * Because with activation, our Action Scheduler still not initialized yet.
+	 *
+	 * @return bool
+	 */
+	private function is_valid_action_scheduler_version() {
+		if ( ! class_exists( 'ActionScheduler_Versions' ) || ! class_exists( 'ActionScheduler' ) ) {
+			return false;
+		}
+
+		$version = ActionScheduler_Versions::instance()->latest_version();
+		return ! $version || version_compare( $version, '3.0.0', '>=' );
 	}
 }

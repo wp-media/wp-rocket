@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -15,11 +16,19 @@ class Test_UpdateLists extends FilesystemTestCase {
 	private static $user;
 	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php';
 
+	use DBTrait;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-
+		self::installFresh();
 		$container  = apply_filters( 'rocket_container', null );
 		self::$user = $container->get( 'user' );
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
