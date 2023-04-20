@@ -597,7 +597,7 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
-					$encode_non_latin = function( $non_latin ) {
+					$cb_encode_non_latin = function( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
