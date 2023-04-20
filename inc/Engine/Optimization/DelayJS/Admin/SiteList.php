@@ -288,14 +288,13 @@ class SiteList {
 	 * @return void
 	 */
 	public function refresh_exclusions_option() {
-		$selected_items = $this->options->get( 'delay_js_exclusions_selected', [] );
-
-		$this->options->set(
-			'delay_js_exclusions_selected_exclusions',
-			$this->get_delayjs_items_exclusions( $selected_items )
-		);
-
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$slug    = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+		$options = get_option( $slug, [] );
+		if ( empty( $options ) ) {
+			return;
+		}
+		$options['delay_js_exclusions_selected_exclusions'] = $this->get_delayjs_items_exclusions( $options['delay_js_exclusions_selected'] ?? [] );
+		update_option( $slug, $options );
 	}
 
 	/**
