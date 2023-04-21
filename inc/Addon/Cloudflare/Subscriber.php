@@ -490,7 +490,7 @@ class Subscriber implements Subscriber_Interface {
 			return $buffer;
 		}
 
-		$return = preg_replace( "/(<(script|link|img|form)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i", '$1//', $buffer );
+		$return = preg_replace( "/(<(script|link|img|form)(?!.*?[\"']\bcanonical\b[\"'])([^>]*)(href|src|action)=[\"'])https?:\\/\\//i", '$1//', $buffer );
 
 		if ( $return ) {
 			$buffer = $return;
