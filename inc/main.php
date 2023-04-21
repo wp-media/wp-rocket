@@ -1,5 +1,6 @@
 <?php
 
+use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
@@ -12,16 +13,7 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
-/**
- * Fix Cloudflare Flexible SSL redirect first
- *
- * @since  3.4.1
- * @author Soponar Cristina
- */
-require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
-require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
-
-rocket_fix_cf_flexible_ssl();
+Cloudflare::fix_cf_flexible_ssl();
 
 require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'ActionScheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
 

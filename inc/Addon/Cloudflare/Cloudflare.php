@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare;
 
+use Cloudflare\IpRewrite;
 use DateTimeImmutable;
 use Exception;
 use WP_Error;
@@ -473,5 +474,36 @@ class Cloudflare {
 		];
 
 		return $cf_ips;
+	}
+
+	/**
+	 * Sets the Cloudflare IP Rewrite
+	 *
+	 * @return IpRewrite
+	 */
+	public static function set_ip_rewrite() {
+		static $instance = null;
+
+		if ( is_null( $instance ) ) {
+			$instance = new IpRewrite();
+
+			return $instance;
+		}
+
+		return $instance;
+	}
+
+	/**
+	 * Fixes Cloudflare Flexible SSL redirect loop
+	 */
+	public static function fix_cf_flexible_ssl() {
+		$ip_rewrite = self::set_ip_rewrite();
+
+		if ( $ip_rewrite->isCloudFlare() ) {
+			// Fixes Flexible SSL.
+			if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {
+				$_SERVER['HTTPS'] = 'on';
+			}
+		}
 	}
 }
