@@ -40,6 +40,8 @@ tests_add_filter(
 				[
 					'do_cloudflare'               => 1,
 					'cloudflare_protocol_rewrite' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
 				]
 			);
 		}
