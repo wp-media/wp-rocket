@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -19,12 +20,14 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_DelayJs extends TestCase {
 	private $options;
 	private $data_manager;
+	protected $logger;
 
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->data_manager = Mockery::mock( DataManager::class );
+		$this->logger = Mockery::mock(Logger::class);
 	}
 
 	/**
@@ -32,6 +35,8 @@ class Test_DelayJs extends TestCase {
 	 */
 	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
 		$this->donotrocketoptimize = $config['donotoptimize'];
+
+		$this->logger->allows()->debug(Mockery::any());
 
 		Functions\expect( 'rocket_bypass' )
 			->atMost()
@@ -68,7 +73,7 @@ class Test_DelayJs extends TestCase {
 				->andReturn( $config['exclusions_list'] );
 		}
 
-		$delay_js_html = new HTML( $this->options, $this->data_manager );
+		$delay_js_html = new HTML( $this->options, $this->data_manager, $this->logger );
 
 		$this->assertSame(
 			$expected,
