@@ -44,7 +44,7 @@ class APIKey implements AuthInterface {
 	/**
 	 * Checks if the credentials are set.
 	 *
-	 * @throws CredentialsException
+	 * @throws CredentialsException When credentials are empty.
 	 *
 	 * @return bool true if authorized, false otherwise.
 	 */

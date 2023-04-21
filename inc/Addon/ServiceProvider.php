@@ -100,7 +100,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addTag( 'cloudflare_subscriber' );
-		$this->getContainer()->share( 'cloudflare_admin_subscriber',
-		CloudflareAdminSubscriber::class );
+		$this->getContainer()->share(
+			'cloudflare_admin_subscriber',
+			CloudflareAdminSubscriber::class
+		);
 	}
 }

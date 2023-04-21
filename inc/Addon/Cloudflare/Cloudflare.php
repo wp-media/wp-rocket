@@ -238,14 +238,14 @@ class Cloudflare {
 
 		$base   = new DateTimeImmutable( '@0' );
 		$time   = new DateTimeImmutable( "@$value" );
-		$format = __( '%a days', 'rocket' );
+		$format = '%a ' . __( 'days', 'rocket' );
 
 		if ( 60 > $value ) {
-			$format = __( '%s seconds', 'rocket' );
+			$format = '%s ' . __( 'seconds', 'rocket' );
 		} elseif ( 3600 > $value ) {
-			$format = __( '%i minutes', 'rocket' );
+			$format = '%i ' . __( 'minutes', 'rocket' );
 		} elseif ( 86400 > $value ) {
-			$format = __( '%h hours', 'rocket' );
+			$format = '%h ' . __( 'hours', 'rocket' );
 		}
 
 		return $base->diff( $time )->format( $format );
