@@ -251,6 +251,15 @@ function rocket_delete_config_file() {
 		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
 			continue;
 		}
+
+		if ( 1 === substr_count( $file->getFilename(), '.' ) ) {
+			continue;
+		}
+
+		if ( false === strpos( rocket_direct_filesystem()->get_contents( $file->getPathname() ), '$rocket_cookie_hash' ) ) {
+			continue;
+		}
+
 		rocket_direct_filesystem()->delete( $file->getPathname() );
 	}
 }
@@ -494,6 +503,34 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 }
 
 /**
+ * Returns the right path when the post is trashed.
+ *
+ * @param array $parsed_url current parsed url.
+ * @param int   $post_id      ID from the post.
+ *
+ * @return array
+ */
+function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
+
+	$post = get_post( $post_id );
+
+	if ( ! $post || 'trash' !== $post->post_status ) {
+		return $parsed_url;
+	}
+
+	$post->post_status = 'publish';
+
+	$permalink = get_permalink( $post );
+
+	if ( ! $permalink ) {
+		return $parsed_url;
+	}
+
+	$new_permalink = str_replace( '__trashed', '', $permalink );
+	return get_rocket_parse_url( $new_permalink );
+}
+
+/**
  * Delete one or several cache files.
  *
  * @since 3.5.5 Optimizes by grabbing root cache dirs once, bailing out when file/dir doesn't exist, & directly
@@ -550,6 +587,12 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 		}
 
 		$parsed_url = get_rocket_parse_url( $url );
+
+		$post_id = url_to_postid( $url );
+
+		if ( $post_id ) {
+			$parsed_url = rocket_maybe_find_right_trash_url( $parsed_url, $post_id );
+		}
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
@@ -903,7 +946,7 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 		return;
 	}
 
-	$user_key = $user->user_login . '-' . get_rocket_option( 'secret_cache_key' );
+	$user_key = rawurlencode( $user->user_login ) . '-' . get_rocket_option( 'secret_cache_key' );
 
 	foreach ( $urls as $url ) {
 		$parse_url = get_rocket_parse_url( $url );
@@ -913,7 +956,9 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
-		$root = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
+		$cache_dir = $parse_url['host'] . '-' . strtolower( $user_key );
+		$cache_dir = $cache_dir . $parse_url['path'];
+		$root      = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $cache_dir;
 
 		/**
 		 * Fires before all caching files are deleted for a specific user

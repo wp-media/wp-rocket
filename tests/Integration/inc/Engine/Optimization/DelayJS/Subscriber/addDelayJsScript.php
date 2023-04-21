@@ -19,7 +19,7 @@ class Test_AddDelayJsScript extends TestCase {
 	}
 
 	public function tear_down() {
-		unset( $GLOBALS['wp'] );
+		unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
 		$this->delay_js = false;
@@ -37,16 +37,8 @@ class Test_AddDelayJsScript extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-			'public_query_vars' => [
-				'embed',
-			],
-		];
-
 		if ( $config['bypass'] ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->assertSame(

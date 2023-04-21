@@ -93,7 +93,7 @@ abstract class AbstractOptimization {
 
 		$wp_content = wp_parse_url( content_url() );
 
-		if ( empty( $wp_content['host'] ) || empty( $wp_content['path'] ) ) {
+		if ( empty( $wp_content['path'] ) ) {
 			return true;
 		}
 
@@ -106,9 +106,13 @@ abstract class AbstractOptimization {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
-		$hosts[] = $wp_content['host'];
-		$langs   = get_rocket_i18n_uri();
+		$hosts = (array) apply_filters( 'rocket_cdn_hosts', [], $this->get_zones() );
+
+		if ( ! empty( $wp_content['host'] ) ) {
+			$hosts[] = $wp_content['host'];
+		}
+
+		$langs = get_rocket_i18n_uri();
 
 		// Get host for all langs.
 		foreach ( $langs as $lang ) {
