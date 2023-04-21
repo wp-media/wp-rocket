@@ -30,7 +30,9 @@ class APIKey implements AuthInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Gets headers for Cloudflare API request
+	 *
+	 * @return array
 	 */
 	public function get_headers(): array {
 		return [
@@ -40,7 +42,11 @@ class APIKey implements AuthInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Checks if the credentials are set.
+	 *
+	 * @throws CredentialsException
+	 *
+	 * @return bool true if authorized, false otherwise.
 	 */
 	public function is_valid_credentials(): bool {
 		if (

@@ -129,6 +129,7 @@ class Endpoints {
 	/**
 	 * Updates the given setting.
 	 *
+	 * @param string $zone_id Zone ID.
 	 * @param string $setting Name of the setting to change.
 	 * @param string $value   Setting value.
 	 *

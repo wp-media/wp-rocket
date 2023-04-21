@@ -152,8 +152,8 @@ class Cloudflare {
 		}
 
 		try {
-			$result     = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
-			$page_rule  = wp_json_encode( $result );
+			$result    = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
+			$page_rule = wp_json_encode( $result );
 
 			return (bool) preg_match( '/' . $action_value . '/', $page_rule );
 		} catch ( Exception $e ) {
@@ -236,16 +236,16 @@ class Cloudflare {
 			$value = 0;
 		}
 
-		$base   = new DateTimeImmutable( "@0" );
+		$base   = new DateTimeImmutable( '@0' );
 		$time   = new DateTimeImmutable( "@$value" );
-		$format = __( '%a days' );
+		$format = __( '%a days', 'rocket' );
 
 		if ( 60 > $value ) {
-			$format = __( '%s seconds' );
+			$format = __( '%s seconds', 'rocket' );
 		} elseif ( 3600 > $value ) {
-			$format = __( '%i minutes' );
+			$format = __( '%i minutes', 'rocket' );
 		} elseif ( 86400 > $value ) {
-			$format = __( '%h hours' );
+			$format = __( '%h hours', 'rocket' );
 		}
 
 		return $base->diff( $time )->format( $format );

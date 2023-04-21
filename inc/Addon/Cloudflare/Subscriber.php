@@ -42,7 +42,9 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Returns an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
@@ -104,8 +106,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_filter_varnish(): bool {
-		return
-			apply_filters( 'do_rocket_varnish_http_purge', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		// This filter is documented in inc/Addon/Varnish.php.
+		return apply_filters( 'do_rocket_varnish_http_purge', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			||
 			$this->options->get( 'varnish_auto_purge', 0 );
 	}
@@ -429,6 +431,7 @@ class Subscriber implements Subscriber_Interface {
 			(int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings']
 		) {
 			$result['pre'] = sprintf(
+				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
 				__( '%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:', 'rocket' ),
 				'<strong>',
 				'</strong>'
@@ -436,6 +439,7 @@ class Subscriber implements Subscriber_Interface {
 
 			if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
 				$result['pre'] = sprintf(
+					// translators: %1$s = strong opening tag, %2$s = strong closing tag.
 					__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings.', 'rocket' ),
 					'<strong>',
 					'</strong>'

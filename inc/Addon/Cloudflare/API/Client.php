@@ -26,6 +26,8 @@ class Client {
 
 	/**
 	 * Constructor.
+	 *
+	 * @param AuthInterface Auth implementation.
 	 */
 	public function __construct( AuthInterface $auth ) {
 		$this->auth = $auth;
@@ -93,6 +95,7 @@ class Client {
 	 *
 	 * @return object
 	 *
+	 * @throws Exception
 	 * @throws AuthenticationException When email or api key are not set.
 	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
 	 * @throws CredentialsException

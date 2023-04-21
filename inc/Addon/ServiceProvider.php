@@ -18,7 +18,9 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 class ServiceProvider extends AbstractServiceProvider {
 
 	/**
-	 * @inheritDoc
+	 * Provides
+	 *
+	 * @var array
 	 */
 	protected $provides = [
 		'sucuri_subscriber',
@@ -27,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * @inheritDoc
+	 * Registers items with the container
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );

@@ -8,7 +8,7 @@ interface AuthInterface {
 	 *
 	 * @return array
 	 */
-    public function get_headers(): array;
+	public function get_headers(): array;
 
 	/**
 	 * Checks if the credentials are set.
