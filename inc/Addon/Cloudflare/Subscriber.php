@@ -59,8 +59,8 @@ class Subscriber implements Subscriber_Interface {
 			'init'                                      => [ 'set_real_ip', 1 ],
 			'update_option_' . $slug                    => [ 'save_cloudflare_options', 10, 2 ],
 			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
-			'rocket_buffer'                             => [ 'rocket_protocol_rewrite', PHP_INT_MAX ],
-			'wp_calculate_image_srcset'                 => [ 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ],
+			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
+			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
 		];
 	}
 
