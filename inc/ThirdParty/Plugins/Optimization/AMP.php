@@ -134,6 +134,8 @@ class AMP implements Subscriber_Interface {
 		add_filter( 'pre_get_rocket_option_preload_links', '__return_false' );
 		add_filter( 'pre_get_rocket_option_minify_js', '__return_false' );
 		add_filter( 'pre_get_rocket_option_minify_google_fonts', '__return_false' );
+		add_filter( 'pre_get_cloudflare_protocol_rewrite', '__return_false' );
+		add_filter( 'do_rocket_protocol_rewrite', '__return_false' );
 
 		unset( $wp_filter['rocket_buffer'] );
 
@@ -145,19 +147,6 @@ class AMP implements Subscriber_Interface {
 			add_filter( 'rocket_cdn_reject_files', [ $this, 'reject_files' ], PHP_INT_MAX );
 			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] );
 			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] );
-		}
-
-		if (
-			(bool) $this->options->get( 'do_cloudflare', 0 )
-			&&
-			(
-				(bool) $this->options->get( 'cloudflare_protocol_rewrite', 0 )
-				||
-				// this filter is documented in inc/front/protocol.php.
-				(bool) apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-			)
-		) {
-			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
 	}
 
