@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare;
 
-use Cloudflare\IpRewrite;
+use CloudFlare\IpRewrite;
 use DateTimeImmutable;
 use Exception;
 use WP_Error;
