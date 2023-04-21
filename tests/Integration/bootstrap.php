@@ -126,7 +126,14 @@ tests_add_filter(
 		redefine( 'rocket_valid_key', '__return_true' );
 
 		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
-			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+				]
+			);
 		}
 
 		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
