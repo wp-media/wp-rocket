@@ -47,7 +47,7 @@ class Client {
 	 * @return object
 	 */
 	public function get( $path, array $data = [] ) {
-		return $this->request( 'get', $path, $data );
+		return $this->request( $path, 'get', $data );
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Client {
 	 * @return object
 	 */
 	public function post( $path, array $data = [] ) {
-		return $this->request( 'post', $path, $data );
+		return $this->request( $path, 'post', $data );
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Client {
 	 * @return object
 	 */
 	public function delete( $path, array $data = [] ) {
-		return $this->request( 'delete', $path, $data );
+		return $this->request( $path, 'delete', $data );
 	}
 
 	/**
@@ -83,14 +83,14 @@ class Client {
 	 * @return object
 	 */
 	public function patch( $path, array $data = [] ) {
-		return $this->request( 'patch', $path, $data );
+		return $this->request( $path, 'patch', $data );
 	}
 
 	/**
 	 * API call method for sending requests
 	 *
-	 * @param string $method Type of method that should be used.
 	 * @param string $path   Path of the endpoint.
+	 * @param string $method Type of method that should be used.
 	 * @param array  $data   Data to be sent along with the request.
 	 *
 	 * @return object
@@ -100,7 +100,7 @@ class Client {
 	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
 	 * @throws CredentialsException When credentials are not valid.
 	 */
-	protected function request( $method = 'get', $path, array $data = [] ) {
+	protected function request( $path, $method = 'get', array $data = [] ) {
 		try {
 			if (
 				'/ips' !== $path
@@ -113,7 +113,7 @@ class Client {
 			throw new CredentialsException( $e->getMessage(), 0, $e );
 		}
 
-		$response = $this->do_remote_request( $method, $path, $data );
+		$response = $this->do_remote_request( $path, $method, $data );
 
 		if ( is_wp_error( $response ) ) {
 			throw new Exception( $response->get_error_message() );
@@ -172,13 +172,13 @@ class Client {
 	/**
 	 * Does the request remote request.
 	 *
-	 * @param string $method Type of method that should be used.
 	 * @param string $path   Path of the endpoint.
+	 * @param string $method Type of method that should be used.
 	 * @param array  $data   Data to be sent along with the request.
 	 *
 	 * @return array|WP_Error
 	 */
-	private function do_remote_request( string $method, string $path, array $data ) {
+	private function do_remote_request( string $path, string $method, array $data ) {
 		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
 
 		$headers = [
