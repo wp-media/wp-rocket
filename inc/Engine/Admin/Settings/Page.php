@@ -2110,7 +2110,7 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'sucury_waf_api_key' => [
-					'label'       => _x( 'Firewall API key (for plugin), must be in format <code>{32 characters}/{32 characters}</code>:', 'Sucuri', 'rocket' ),
+					'label'       => _x( 'Firewall API key (for plugin), must be in format {32 characters}/{32 characters}:', 'Sucuri', 'rocket' ),
 					'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://kb.sucuri.net/firewall/Performance/clearing-cache', _x( 'Find your API key', 'Sucuri', 'rocket' ) ),
 					'default'     => '',
 					'section'     => 'sucuri_credentials',
