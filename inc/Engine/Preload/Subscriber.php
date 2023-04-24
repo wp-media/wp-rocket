@@ -98,30 +98,30 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_load_initial_sitemap', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
-			'rocket_after_process_buffer'         => 'update_cache_row',
-			'rocket_deactivation'                 => 'on_deactivation',
-			'permalink_structure_changed'         => 'on_permalink_changed',
-			'wp_rocket_upgrade'                   => [ 'on_update', 16, 2 ],
-			'rocket_rucss_complete_job_status'    => 'clean_url',
-			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
-			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
-			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_file'             => 'clean_url',
-			'set_404'                             => 'delete_url_on_not_found',
-			'rocket_after_clean_terms'            => 'clean_urls',
-			'after_rocket_clean_domain'           => 'clean_full_cache',
-			'delete_post'                         => 'delete_post_preload_cache',
-			'pre_delete_term'                     => 'delete_term_preload_cache',
-			'rocket_preload_lock_url'             => 'lock_url',
-			'rocket_preload_unlock_url'           => 'unlock_url',
-      'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
-      'rocket_preload_format_url'              => 'format_preload_url', 
-			'rocket_preload_exclude_urls_regexes' => [
+			'rocket_after_process_buffer'            => 'update_cache_row',
+			'rocket_deactivation'                    => 'on_deactivation',
+			'permalink_structure_changed'            => 'on_permalink_changed',
+			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
+			'rocket_rucss_complete_job_status'       => 'clean_url',
+			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url', 20 ],
+			'rocket_after_automatic_cache_purge'     => 'preload_after_automatic_cache_purge',
+			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'                => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'                => 'clean_url',
+			'set_404'                                => 'delete_url_on_not_found',
+			'rocket_after_clean_terms'               => 'clean_urls',
+			'after_rocket_clean_domain'              => 'clean_full_cache',
+			'delete_post'                            => 'delete_post_preload_cache',
+			'pre_delete_term'                        => 'delete_term_preload_cache',
+			'rocket_preload_lock_url'                => 'lock_url',
+			'rocket_preload_unlock_url'              => 'unlock_url',
+			'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
+			'rocket_preload_format_url'              => 'format_preload_url',
+			'rocket_preload_exclude_urls_regexes'    => [
 				[ 'add_cache_reject_uri_to_excluded' ],
 				[ 'add_pagination_to_preload_exclusion_urls' ],
 			],
-			'rocket_preload_exclude_urls'         => [
+			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
@@ -208,8 +208,8 @@ class Subscriber implements Subscriber_Interface {
 			* @param string $device Device from the cache.
 			*/
 		do_action( 'rocket_preload_completed', $url, $detected );
-		
-    if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
