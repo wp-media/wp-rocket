@@ -438,6 +438,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Unlock all URL.
+	 *
+	 * @return void
+	 */
+	public function unlock_all_urls() {
+		$this->query->unlock_all();
+	}
+
+	/**
 	 * Unlock a URL.
 	 *
 	 * @param string $url URL to unlock.
