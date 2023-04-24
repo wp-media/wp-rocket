@@ -134,9 +134,7 @@ class Cache extends Query {
 		 * @param string $url url to format.
 		 * @return string
 		 */
-		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
-
-		$url = untrailingslashit( strtok( $url, '?' ) );
+		$url = apply_filters( 'rocket_preload_format_url', $url );
 
 		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
