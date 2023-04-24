@@ -37,8 +37,8 @@ class TestAutoPurgeByUrl extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['error'] );
 
-		$this->cloudflare->expects()
-			->has_page_rule( 'cache_everything' )
+		$this->cloudflare->shouldReceive( 'has_page_rule' )
+			->with( 'cache_everything' )
 			->atMost()
 			->once()
 			->andReturn( $config['page_rule'] );

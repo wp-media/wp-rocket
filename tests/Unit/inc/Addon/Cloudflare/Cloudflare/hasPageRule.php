@@ -49,8 +49,8 @@ class TestHasPageRule extends TestCase {
 				->list_pagerules( $config['zone_id'], 'active' )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->list_pagerules( $config['zone_id'], 'active' )
+			$this->endpoints->shouldReceive( 'list_pagerules' )
+				->with( $config['zone_id'], 'active' )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

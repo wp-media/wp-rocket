@@ -58,8 +58,7 @@ class TestGet extends TestCase {
 				return json_encode( $config['data'] );
 			} );
 
-		$auth->expects()
-			->get_headers()
+		$auth->shouldReceive( 'get_headers' )
 			->atMost()
 			->once()
 			->andReturn( [

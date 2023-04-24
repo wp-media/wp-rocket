@@ -36,8 +36,8 @@ class TestProtocolRewriteSrcset extends TestCase {
 			->once()
 			->andReturn( $config['cloudflare'] );
 
-		$this->options->expects()
-			->get( 'cloudflare_protocol_rewrite', 0 )
+		$this->options->shouldReceive( 'get' )
+			->with( 'cloudflare_protocol_rewrite', 0 )
 			->atMost()
 			->once()
 			->andReturn( $config['rewrite'] );

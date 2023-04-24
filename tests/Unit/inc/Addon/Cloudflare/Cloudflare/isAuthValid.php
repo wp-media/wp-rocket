@@ -45,8 +45,8 @@ class TestIsAuthValid extends TestCase {
 				->get_zones( $config['zone_id'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->get_zones( $config['zone_id'] )
+			$this->endpoints->shouldReceive( 'get_zones' )
+				->with( $config['zone_id'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

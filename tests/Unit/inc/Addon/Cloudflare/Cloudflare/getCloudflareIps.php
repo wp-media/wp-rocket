@@ -40,8 +40,7 @@ class TestGetCloudflareIps extends TestCase {
 				->get_ips()
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->get_ips()
+			$this->endpoints->shouldReceive( 'get_ips' )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

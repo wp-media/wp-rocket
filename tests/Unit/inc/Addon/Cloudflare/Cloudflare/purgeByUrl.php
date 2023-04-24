@@ -44,8 +44,8 @@ class TestPurgeByUrl extends TestCase {
 				->purge_files( $config['zone_id'], $config['urls'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->purge_files( $config['zone_id'], $config['urls'] )
+			$this->endpoints->shouldReceive( 'purge_files' )
+				->with( $config['zone_id'], $config['urls'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

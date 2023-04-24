@@ -44,8 +44,8 @@ class TestSetCacheLevel extends TestCase {
 				->change_cache_level( $config['zone_id'], $config['value'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->change_cache_level( $config['zone_id'], $config['value'] )
+			$this->endpoints->shouldReceive( 'change_cache_level' )
+				->with( $config['zone_id'], $config['value'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

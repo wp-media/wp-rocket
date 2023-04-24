@@ -31,13 +31,13 @@ class TestProtocolRewrite extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $value, $expected ) {
-		$this->options->expects()
-			->get( 'do_cloudflare', 0 )
+		$this->options->shouldReceive( 'get' )
+			->with( 'do_cloudflare', 0 )
 			->once()
 			->andReturn( $config['cloudflare'] );
 
-		$this->options->expects()
-			->get( 'cloudflare_protocol_rewrite', 0 )
+		$this->options->shouldReceive( 'get' )
+			->with( 'cloudflare_protocol_rewrite', 0 )
 			->atMost()
 			->once()
 			->andReturn( $config['rewrite'] );

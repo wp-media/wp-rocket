@@ -44,8 +44,8 @@ class TestSetRocketLoader extends TestCase {
 				->update_rocket_loader( $config['zone_id'], $config['value'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->update_rocket_loader( $config['zone_id'], $config['value'] )
+			$this->endpoints->shouldReceive( 'update_rocket_loader' )
+				->with( $config['zone_id'], $config['value'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

@@ -44,8 +44,8 @@ class TestSetDevMode extends TestCase {
 				->change_development_mode( $config['zone_id'], $config['setting'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->change_development_mode( $config['zone_id'], $config['setting'] )
+			$this->endpoints->shouldReceive( 'change_development_mode' )
+				->with( $config['zone_id'], $config['setting'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

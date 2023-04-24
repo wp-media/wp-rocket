@@ -44,8 +44,8 @@ class TestPurgeCloudflare extends TestCase {
 				->purge( $config['zone_id'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->purge( $config['zone_id'] )
+			$this->endpoints->shouldReceive( 'purge' )
+				->with( $config['zone_id'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

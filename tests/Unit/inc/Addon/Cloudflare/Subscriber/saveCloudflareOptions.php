@@ -46,8 +46,8 @@ class TestSaveCloudflareOptions extends TestCase {
 			->justReturn( 1 );
 
 		if ( false === $config['transient'] ) {
-			$this->cloudflare->expects()
-			->is_auth_valid( $config['value']['cloudflare_zone_id'] )
+			$this->cloudflare->shouldReceive( 'is_auth_valid' )
+			->with( $config['value']['cloudflare_zone_id'] )
 			->atMost()
 			->once()
 			->andReturn( $config['auth_valid'] );
@@ -71,27 +71,27 @@ class TestSaveCloudflareOptions extends TestCase {
 				->once();
 		}
 
-		$this->cloudflare->expects()
-			->set_cache_level( 'aggressive' )
-			->atmost()
+		$this->cloudflare->shouldReceive( 'set_cache_level' )
+			->with( 'aggressive' )
+			->atMost()
 			->once()
 			->andReturn( 'aggressive' );
 
-		$this->cloudflare->expects()
-			->set_minify( 'on' )
-			->atmost()
+		$this->cloudflare->shouldReceive( 'set_minify' )
+			->with( 'on' )
+			->atMost()
 			->once()
 			->andReturn( 'on' );
 
-		$this->cloudflare->expects()
-			->set_rocket_loader( 'off' )
-			->atmost()
+		$this->cloudflare->shouldReceive( 'set_rocket_loader' )
+			->with( 'off' )
+			->atMost()
 			->once()
 			->andReturn( 'off' );
 
-		$this->cloudflare->expects()
-			->set_browser_cache_ttl( 14400 )
-			->atmost()
+		$this->cloudflare->shouldReceive( 'set_browser_cache_ttl' )
+			->with( 14400 )
+			->atMost()
 			->once()
 			->andReturn( 14400 );
 

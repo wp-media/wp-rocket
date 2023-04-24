@@ -44,8 +44,8 @@ class TestSetMinify extends TestCase {
 				->update_minify( $config['zone_id'], $config['setting'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->update_minify( $config['zone_id'], $config['setting'] )
+			$this->endpoints->shouldReceive( 'update_minify' )
+				->with( $config['zone_id'], $config['setting'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

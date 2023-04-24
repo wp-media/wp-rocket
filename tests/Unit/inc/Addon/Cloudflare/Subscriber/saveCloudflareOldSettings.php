@@ -37,8 +37,7 @@ class TestSaveCloudflareOldSettings extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['error'] );
 
-		$this->cloudflare->expects()
-			->get_settings()
+		$this->cloudflare->shouldReceive( 'get_settings' )
 			->atMost()
 			->once()
 			->andReturn( $config['result'] );

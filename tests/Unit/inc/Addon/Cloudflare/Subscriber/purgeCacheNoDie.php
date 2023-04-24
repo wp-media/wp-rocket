@@ -39,8 +39,7 @@ class TestPurgeCacheNoDie extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['error'] );
 
-		$this->cloudflare->expects()
-			->purge_cloudflare()
+		$this->cloudflare->shouldReceive( 'purge_cloudflare' )
 			->atMost()
 			->once()
 			->andReturn( $config['result'] );

@@ -46,8 +46,8 @@ class TestSetBrowserCacheTtl extends TestCase {
 				->update_browser_cache_ttl( $config['zone_id'], $config['value'] )
 				->andThrow( new \Exception() );
 		} else {
-			$this->endpoints->expects()
-				->update_browser_cache_ttl( $config['zone_id'], $config['value'] )
+			$this->endpoints->shouldReceive( 'update_browser_cache_ttl' )
+				->with( $config['zone_id'], $config['value'] )
 				->atMost()
 				->once()
 				->andReturn( $config['response'] );

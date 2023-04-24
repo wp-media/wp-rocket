@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group Cloudflare
  */
-class TestGetCloudflareIps extends TestCase {
+class TestSetVarnishLocalhost extends TestCase {
 	private $options_api;
 	private $options;
 	private $cloudflare;
@@ -31,8 +31,8 @@ class TestGetCloudflareIps extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->options->expects()
-			->get( 'varnish_auto_purge', 0 )
+		$this->options->shouldReceive( 'get' )
+			->with( 'varnish_auto_purge', 0 )
 			->atMost()
 			->once()
 			->andReturn( $config['option'] );
