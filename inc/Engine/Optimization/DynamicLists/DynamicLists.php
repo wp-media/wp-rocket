@@ -235,6 +235,17 @@ class DynamicLists extends Abstract_Render {
 	}
 
 	/**
+	 * Get the preload exclusions
+	 *
+	 * @return array
+	 */
+	public function get_preload_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return isset( $lists->preload_exclusions ) ? $lists->preload_exclusions : [];
+	}
+
+	/**
 	 * Get Delay JS dynamic list.
 	 *
 	 * @return array
