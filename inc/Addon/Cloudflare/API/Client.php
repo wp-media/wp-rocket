@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\API;
 
-use Exception;
+use WP_Error;
 use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 
 class Client {
 	const CLOUDFLARE_API = 'https://api.cloudflare.com/client/v4/';
@@ -93,36 +92,31 @@ class Client {
 	 * @param string $method Type of method that should be used.
 	 * @param array  $data   Data to be sent along with the request.
 	 *
-	 * @return object
-	 *
-	 * @throws Exception When empty content.
-	 * @throws AuthenticationException When email or api key are not set.
-	 * @throws UnauthorizedException When Cloudflare's API returns a 401 or 403.
-	 * @throws CredentialsException When credentials are not valid.
+	 * @return object|WP_Error
 	 */
 	protected function request( $path, $method = 'get', array $data = [] ) {
-		try {
-			if (
-				'/ips' !== $path
-				&&
-				! $this->auth->is_valid_credentials()
-			) {
-				throw new AuthenticationException( 'Authentication information must be provided.' );
+		if ( '/ips' !== $path ) {
+			$valid = $this->auth->is_valid_credentials();
+
+			if ( is_wp_error( $valid ) ) {
+				return $valid;
 			}
-		} catch ( CredentialsException $e ) {
-			throw new CredentialsException( $e->getMessage(), 0, $e );
+
+			if ( ! $valid ) {
+				return new WP_Error( 'cloudflare_missing_authentication', 'Authentication information must be provided.' );
+			}
 		}
 
 		$response = $this->do_remote_request( $path, $method, $data );
 
 		if ( is_wp_error( $response ) ) {
-			throw new Exception( $response->get_error_message() );
+			return $response;
 		}
 
 		$content = wp_remote_retrieve_body( $response );
 
 		if ( empty( $content ) ) {
-			throw new Exception( __( 'Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
+			return new WP_Error( 'cloudflare_no_reply', __( 'Cloudflare did not provide any reply. Please try again later.', 'rocket' ) );
 		}
 
 		$content = json_decode( $content );
@@ -143,7 +137,7 @@ class Client {
 						'</a>'
 					);
 
-					throw new UnauthorizedException( $msg );
+					return new WP_Error( 'cloudflare_incorrect_credentials', $msg );
 				}
 
 				if ( 7003 === $error->code ) {
@@ -157,13 +151,13 @@ class Client {
 						'</a>'
 					);
 
-					throw new UnauthorizedException( $msg );
+					return new WP_Error( 'cloudflare_incorrect_zone_id', $msg );
 				}
 
 				$errors[] = $error->message;
 			}
 
-			throw new Exception( wp_sprintf_l( '%l ', $errors ) );
+			return new WP_Error( 'cloudflare_request_error', wp_sprintf_l( '%l ', $errors ) );
 		}
 
 		return $content->result;

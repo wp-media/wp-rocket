@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\Auth;
 
+use WP_Error;
+
 class APIKey implements AuthInterface {
 	/**
 	 * Cloudflare email
@@ -44,9 +46,7 @@ class APIKey implements AuthInterface {
 	/**
 	 * Checks if the credentials are set.
 	 *
-	 * @throws CredentialsException When credentials are empty.
-	 *
-	 * @return bool true if authorized, false otherwise.
+	 * @return bool|WP_Error true if authorized, false if not, WP_Error if either credential is empty.
 	 */
 	public function is_valid_credentials(): bool {
 		if (
@@ -54,7 +54,16 @@ class APIKey implements AuthInterface {
 			||
 			empty( $this->api_key )
 		) {
-			throw new CredentialsException( 'cloudflare_credentials_empty' );
+			return new WP_Error(
+				'cloudflare_credentials_empty',
+				sprintf(
+					/* translators: %1$s = opening link; %2$s = closing link */
+					__( 'Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+					// translators: Documentation exists in EN, FR; use localized URL if applicable.
+					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+					'</a>'
+				)
+			);
 		}
 
 		return (

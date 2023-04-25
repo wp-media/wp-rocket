@@ -13,7 +13,7 @@ interface AuthInterface {
 	/**
 	 * Checks if the credentials are set.
 	 *
-	 * @return bool true if authorized, false otherwise.
+	 * @return bool|WP_Error true if authorized, false otherwise, WP_Error if missing credentials.
 	 */
-	public function is_valid_credentials(): bool;
+	public function is_valid_credentials();
 }

@@ -5,11 +5,9 @@ namespace WP_Rocket\Addon\Cloudflare;
 
 use CloudFlare\IpRewrite;
 use DateTimeImmutable;
-use Exception;
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Cloudflare\API\Endpoints;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 
 class Cloudflare {
 
@@ -72,7 +70,7 @@ class Cloudflare {
 	 *
 	 * @param string $zone_id Cloudflare zone ID.
 	 *
-	 * @return mixed true if credentials are ok, WP_Error otherwise.
+	 * @return bool|WP_Error true if credentials are ok, WP_Error otherwise.
 	 */
 	public function is_auth_valid( string $zone_id ) {
 		if ( empty( $zone_id ) ) {
@@ -89,54 +87,44 @@ class Cloudflare {
 			return new WP_Error( 'cloudflare_no_zone_id', $msg );
 		}
 
-		try {
-			$result     = $this->endpoints->get_zones( $zone_id );
-			$zone_found = false;
-			$site_url   = get_site_url();
 
-			if ( function_exists( 'domain_mapping_siteurl' ) ) {
-				$site_url = domain_mapping_siteurl( $site_url );
+		$result = $this->endpoints->get_zones( $zone_id );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$zone_found = false;
+		$site_url   = get_site_url();
+
+		if ( function_exists( 'domain_mapping_siteurl' ) ) {
+			$site_url = domain_mapping_siteurl( $site_url );
+		}
+
+		if ( ! empty( $result ) ) {
+			$parsed_url = wp_parse_url( $site_url );
+
+			if ( false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
+				$zone_found = true;
 			}
+		}
 
-			if ( ! empty( $result ) ) {
-				$parsed_url = wp_parse_url( $site_url );
+		if ( ! $zone_found ) {
+			$msg = __( 'It looks like your domain is not set up on Cloudflare.', 'rocket' );
 
-				if ( false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
-					$zone_found = true;
-				}
-			}
-
-			if ( ! $zone_found ) {
-				$msg = __( 'It looks like your domain is not set up on Cloudflare.', 'rocket' );
-
-				$msg .= ' ' . sprintf(
-					/* translators: %1$s = opening link; %2$s = closing link */
-					__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-					// translators: Documentation exists in EN, FR; use localized URL if applicable.
-					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-					'</a>'
-				);
-
-				return new WP_Error( 'cloudflare_wrong_zone_id', $msg );
-			}
-
-			$this->cloudflare_api_error = null;
-			return true;
-		} catch ( CredentialsException $e ) {
-			return new WP_Error(
-				'cloudflare_credentials_empty',
-				sprintf(
-					/* translators: %1$s = opening link; %2$s = closing link */
-					__( 'Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-					// translators: Documentation exists in EN, FR; use localized URL if applicable.
-					'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-					'</a>'
-				)
+			$msg .= ' ' . sprintf(
+				/* translators: %1$s = opening link; %2$s = closing link */
+				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
 			);
+
+			return new WP_Error( 'cloudflare_zone_not_found', $msg );
 		}
-		catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_invalid_auth', $e->getMessage() );
-		}
+
+		$this->cloudflare_api_error = null;
+		return true;
 	}
 
 	/**
@@ -151,14 +139,15 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$result    = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
-			$page_rule = wp_json_encode( $result );
+		$result = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
 
-			return (bool) preg_match( '/' . $action_value . '/', $page_rule );
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_page_rule_failed', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		$page_rule = wp_json_encode( $result );
+
+		return (bool) preg_match( '/' . $action_value . '/', $page_rule );
 	}
 
 	/**
@@ -171,13 +160,13 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$this->endpoints->purge( $this->options->get( 'cloudflare_zone_id', '' ) );
+		$result = $this->endpoints->purge( $this->options->get( 'cloudflare_zone_id', '' ) );
 
-			return true;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return true;
 	}
 
 	/**
@@ -194,13 +183,13 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
+		$result = $this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
 
-			return true;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return true;
 	}
 
 	/**
@@ -215,13 +204,13 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$this->endpoints->update_browser_cache_ttl( $this->options->get( 'cloudflare_zone_id', '' ), (int) $value );
+		$result = $this->endpoints->update_browser_cache_ttl( $this->options->get( 'cloudflare_zone_id', '' ), (int) $value );
 
-			return $this->convert_time( $value );
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_browser_cache', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return $this->convert_time( $value );
 	}
 
 	/**
@@ -263,13 +252,13 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$this->endpoints->update_rocket_loader( $this->options->get( 'cloudflare_zone_id', '' ), $value );
+		$result = $this->endpoints->update_rocket_loader( $this->options->get( 'cloudflare_zone_id', '' ), $value );
 
-			return $value;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_rocket_loader', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -290,13 +279,13 @@ class Cloudflare {
 			'js'   => $value,
 		];
 
-		try {
-			$this->endpoints->update_minify( $this->options->get( 'cloudflare_zone_id', '' ),  $cf_minify_settings );
+		$result = $this->endpoints->update_minify( $this->options->get( 'cloudflare_zone_id', '' ),  $cf_minify_settings );
 
-			return $value;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_minification', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -311,13 +300,13 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$this->endpoints->change_cache_level( $this->options->get( 'cloudflare_zone_id', '' ), $value );
+		$result = $this->endpoints->change_cache_level( $this->options->get( 'cloudflare_zone_id', '' ), $value );
 
-			return $value;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_cache_level', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -338,17 +327,17 @@ class Cloudflare {
 			$value = 'on';
 		}
 
-		try {
-			$this->endpoints->change_development_mode( $this->options->get( 'cloudflare_zone_id', '' ), $value );
+		$result = $this->endpoints->change_development_mode( $this->options->get( 'cloudflare_zone_id', '' ), $value );
 
-			if ( 'on' === $value ) {
-				wp_schedule_single_event( time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
-			}
-
-			return $value;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_dev_mode', $e->getMessage() );
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
+
+		if ( 'on' === $value ) {
+			wp_schedule_single_event( time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -361,46 +350,46 @@ class Cloudflare {
 			return $this->cloudflare_api_error;
 		}
 
-		try {
-			$cf_settings = $this->endpoints->get_settings( $this->options->get( 'cloudflare_zone_id', '' ) );
+		$cf_settings = $this->endpoints->get_settings( $this->options->get( 'cloudflare_zone_id', '' ) );
 
-			foreach ( $cf_settings as $cloudflare_option ) {
-				switch ( $cloudflare_option->id ) {
-					case 'browser_cache_ttl':
-						$browser_cache_ttl = $cloudflare_option->value;
-						break;
-					case 'cache_level':
-						$cache_level = $cloudflare_option->value;
-						break;
-					case 'rocket_loader':
-						$rocket_loader = $cloudflare_option->value;
-						break;
-					case 'minify':
-						$cf_minify = $cloudflare_option->value;
-						break;
-				}
-			}
-			$cf_minify_value = 'on';
-
-			if (
-				'off' === $cf_minify->js
-				||
-				'off' === $cf_minify->css
-			) {
-				$cf_minify_value = 'off';
-			}
-
-			$cf_settings_array = [
-				'cache_level'       => $cache_level,
-				'minify'            => $cf_minify_value,
-				'rocket_loader'     => $rocket_loader,
-				'browser_cache_ttl' => $browser_cache_ttl,
-			];
-
-			return $cf_settings_array;
-		} catch ( Exception $e ) {
-			return new WP_Error( 'cloudflare_current_settings', $e->getMessage() );
+		if ( is_wp_error( $cf_settings ) ) {
+			return $cf_settings;
 		}
+
+		foreach ( $cf_settings as $cloudflare_option ) {
+			switch ( $cloudflare_option->id ) {
+				case 'browser_cache_ttl':
+					$browser_cache_ttl = $cloudflare_option->value;
+					break;
+				case 'cache_level':
+					$cache_level = $cloudflare_option->value;
+					break;
+				case 'rocket_loader':
+					$rocket_loader = $cloudflare_option->value;
+					break;
+				case 'minify':
+					$cf_minify = $cloudflare_option->value;
+					break;
+			}
+		}
+		$cf_minify_value = 'on';
+
+		if (
+			'off' === $cf_minify->js
+			||
+			'off' === $cf_minify->css
+		) {
+			$cf_minify_value = 'off';
+		}
+
+		$cf_settings_array = [
+			'cache_level'       => $cache_level,
+			'minify'            => $cf_minify_value,
+			'rocket_loader'     => $rocket_loader,
+			'browser_cache_ttl' => $browser_cache_ttl,
+		];
+
+		return $cf_settings_array;
 	}
 
 	/**
@@ -415,16 +404,14 @@ class Cloudflare {
 			return $cf_ips;
 		}
 
-		try {
-			$cf_ips = $this->endpoints->get_ips();
+		$cf_ips = $this->endpoints->get_ips();
 
-			if ( empty( $cf_ips ) ) {
-				// Set default IPs from Cloudflare if call to Cloudflare /ips API does not contain a success.
-				// Prevents from making API calls on each page load.
-				$cf_ips = $this->get_default_ips();
-			}
-		} catch ( Exception $e ) {
-			// Set default IPs from Cloudflare if call to Cloudflare /ips API fails.
+		if (
+			is_wp_error( $cf_ips )
+			||
+			empty( $cf_ips )
+		) {
+			// Set default IPs from Cloudflare if call to Cloudflare /ips API does not contain a success.
 			// Prevents from making API calls on each page load.
 			$cf_ips = $this->get_default_ips();
 		}
