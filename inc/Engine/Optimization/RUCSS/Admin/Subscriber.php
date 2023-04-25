@@ -477,7 +477,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_error_notice() {
+
 		if ( ! $this->has_error_notice() ) {
+			$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+			if( ! in_array( 'rucss_error_notice', (array) $boxes, true ) ) {
+				unset($boxes['rucss_error_notice']);
+				update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
+			}
+
 			return;
 		}
 
