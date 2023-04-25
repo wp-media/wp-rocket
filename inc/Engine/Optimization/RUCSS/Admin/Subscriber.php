@@ -480,8 +480,8 @@ class Subscriber implements Subscriber_Interface {
 
 		if ( ! $this->has_error_notice() ) {
 			$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-			if( ! in_array( 'rucss_error_notice', (array) $boxes, true ) ) {
-				unset($boxes['rucss_error_notice']);
+			if ( ! in_array( 'rucss_error_notice', (array) $boxes, true ) ) {
+				unset( $boxes['rucss_error_notice'] );
 				update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
 			}
 
