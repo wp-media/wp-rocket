@@ -245,7 +245,7 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		$extension = apply_filters( 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
 
-		if ( ! is_string( $extension ) ) {
+		if ( ! is_string( $extension ) || ! in_array( $extension, [ 'jpg', 'webp' ], true ) ) {
 			$extension = 'jpg';
 		}
 
