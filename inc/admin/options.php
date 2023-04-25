@@ -21,7 +21,58 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		return;
 	}
 
-	// These values do not need to clean the cache domain.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
+		||
+		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
+		||
+		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
+		||
+		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
+	) {
+		rocket_clean_minify( 'js' );
+	}
+
+	// Regenerate advanced-cache.php file.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
+		rocket_generate_advanced_cache_file();
+	}
+
+	// Update .htaccess file rules.
+	flush_rocket_htaccess( ! rocket_valid_key() );
+
+	// Update config file.
+	rocket_generate_config_file();
+
+	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
+		set_transient( 'rocket_analytics_optin', 1 );
+	}
+	// If it's different, clean the domain.
+	if ( rocket_create_options_hash( $value ) !== rocket_create_options_hash( $oldvalue ) ) {
+		// Purge all cache files.
+		rocket_clean_domain();
+
+		/**
+		 * Fires after WP Rocket options that require a cache purge have changed
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $value An array of submitted values for the settings.
+		 */
+		do_action( 'rocket_options_changed', $value );
+	}
+}
+add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
+
+/**
+ * Create a hash from wp rocket options.
+ *
+ * @param array $value options.
+ *
+ * @return string
+ */
+function rocket_create_options_hash( $value ) {
 	$removed = [
 		'cache_mobile'                => true,
 		'purge_cron_interval'         => true,
@@ -54,55 +105,11 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	];
 
 	// Create 2 arrays to compare.
-	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
-	$value_diff    = array_diff_key( $value, $removed );
-
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
-		||
-		( array_key_exists( 'exclude_js', $oldvalue ) && array_key_exists( 'exclude_js', $value ) && $oldvalue['exclude_js'] !== $value['exclude_js'] )
-		||
-		( array_key_exists( 'cdn', $oldvalue ) && array_key_exists( 'cdn', $value ) && $oldvalue['cdn'] !== $value['cdn'] )
-		||
-		( array_key_exists( 'cdn_cnames', $oldvalue ) && array_key_exists( 'cdn_cnames', $value ) && $oldvalue['cdn_cnames'] !== $value['cdn_cnames'] )
-	) {
-		rocket_clean_minify( 'js' );
-	}
-
-	// Regenerate advanced-cache.php file.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
-		rocket_generate_advanced_cache_file();
-	}
-
-	// Update .htaccess file rules.
-	flush_rocket_htaccess( ! rocket_valid_key() );
-
-	// Update config file.
-	rocket_generate_config_file();
-
-	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
-		set_transient( 'rocket_analytics_optin', 1 );
-	}
-	ksort( $oldvalue_diff );
+	$value_diff = array_diff_key( $value, $removed );
 	ksort( $value_diff );
 
-	// If it's different, clean the domain.
-	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
-		// Purge all cache files.
-		rocket_clean_domain();
-
-		/**
-		 * Fires after WP Rocket options that require a cache purge have changed
-		 *
-		 * @since 3.11
-		 *
-		 * @param array $value An array of submitted values for the settings.
-		 */
-		do_action( 'rocket_options_changed', $value );
-	}
+	return md5( wp_json_encode( $value_diff ) );
 }
-add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
 
 /**
  * Perform actions when settings are saved.
