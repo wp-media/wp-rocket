@@ -26,7 +26,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_init'                    => 'maybe_launch_domain_changed',
 			'rocket_configurations_changed' => 'configurations_changed',
 			'rocket_domain_changed'         => 'maybe_clean_cache_domain_change',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => 'save_hash_on_update_options',
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => ['save_hash_on_update_options', 10, 2],
 		];
 	}
 
@@ -76,7 +76,6 @@ class Subscriber implements Subscriber_Interface {
 		$last_option_hash = get_option( self::LAST_OPTION_HASH );
 
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
-
 		return rocket_create_options_hash( $options ) !== $last_option_hash;
 	}
 
@@ -95,8 +94,6 @@ class Subscriber implements Subscriber_Interface {
 		$hash = rocket_create_options_hash( $value );
 
 		update_option( self::LAST_OPTION_HASH, $hash );
-
-		return $value;
 	}
 
 	/**
