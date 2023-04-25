@@ -77,7 +77,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
 
-		return $last_option_hash !== rocket_create_options_hash( $options );
+		return rocket_create_options_hash( $options ) !== $last_option_hash;
 	}
 
 	/**
