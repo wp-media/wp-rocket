@@ -18,7 +18,11 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 class ServiceProvider extends AbstractServiceProvider {
 
 	/**
-	 * Provides
+	 * The provides array is a way to let the container
+	 * know that a service is provided by this service
+	 * provider. Every service that is registered via
+	 * this service provider must have an alias added
+	 * to this array or it will be ignored.
 	 *
 	 * @var array
 	 */
