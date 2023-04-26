@@ -589,7 +589,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 *
 	 * @return string
 	 */
-	public function change_youtube_thumbnail( string $extension ): string {
+	public function change_youtube_thumbnail( $extension ) {
 		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			return $extension;
 		}
