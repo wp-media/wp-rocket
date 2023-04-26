@@ -63,7 +63,7 @@
 		"wp-coding-standards/wpcs": "^2",
 		"wp-media/background-processing": "^1.3",
 		"wp-media/phpunit": "^3.0.1",
-		"wp-media/rocket-lazyload-common": "^3.0",
+		"wp-media/rocket-lazyload-common": "^3.0.11",
 		"wp-media/wp-imagify-partner": "^1.0",
 		"wpackagist-plugin/amp": "^1.1.4",
 		"wpackagist-plugin/hummingbird-performance": "2.0.1",

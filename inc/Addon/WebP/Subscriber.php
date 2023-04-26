@@ -70,10 +70,11 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                     => [ 'convert_to_webp', 16 ],
-			'rocket_disable_webp_cache'         => 'maybe_disable_webp_cache',
-			'rocket_third_party_webp_change'    => 'sync_webp_cache_with_third_party_plugins',
-			'rocket_preload_before_preload_url' => 'add_accept_header',
+			'rocket_buffer'                               => [ 'convert_to_webp', 16 ],
+			'rocket_disable_webp_cache'                   => 'maybe_disable_webp_cache',
+			'rocket_third_party_webp_change'              => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_preload_before_preload_url'           => 'add_accept_header',
+			'rocket_lazyload_youtube_thumbnail_extension' => 'change_youtube_thumbnail',
 		];
 	}
 
@@ -580,4 +581,19 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 
 		return $checks;
 	}
+
+	/**
+	 * Change Youtube thumbnail extension.
+	 *
+	 * @param string $extension extension from the thumbnail.
+	 *
+	 * @return string
+	 */
+	public function change_youtube_thumbnail( $extension ) {
+		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
+			return $extension;
+		}
+		return 'webp';
+	}
+
 }
