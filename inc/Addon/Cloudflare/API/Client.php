@@ -103,7 +103,7 @@ class Client {
 			}
 
 			if ( ! $valid ) {
-				return new WP_Error( 'cloudflare_missing_authentication', 'Authentication information must be provided.' );
+				return new WP_Error( 'cloudflare_invalid_credentials', 'Cloudflare credentials are invalid.' );
 			}
 		}
 
