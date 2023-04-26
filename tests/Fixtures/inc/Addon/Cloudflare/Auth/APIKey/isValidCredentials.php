@@ -1,26 +1,26 @@
 <?php
 
 return [
-	'testShouldThrowExceptionWhenEmptyCredentials' => [
+	'testShouldReturnWPErrorWhenEmptyCredentials' => [
 		'config' => [
 			'email'   => '',
 			'api_key' => '',
 		],
-		'expected' => 'exception',
+		'expected' => 'error',
 	],
-	'testShouldReturnFalseWhenEmptyEmail' => [
+	'testShouldReturnWPErrorWhenEmptyEmail' => [
 		'config' => [
 			'email'   => '',
 			'api_key' => '12345',
 		],
-		'expected' => 'exception',
+		'expected' => 'error',
 	],
-	'testShouldReturnFalseWhenEmptyAPIKey' => [
+	'testShouldReturnWPErrorWhenEmptyAPIKey' => [
 		'config' => [
 			'email'   => 'roger@wp-rocket.me',
 			'api_key' => '',
 		],
-		'expected' => 'exception',
+		'expected' => 'error',
 	],
 	'testShouldReturnFalseWhenInvalidEmail' => [
 		'config' => [

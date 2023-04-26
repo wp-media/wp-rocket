@@ -3,13 +3,10 @@
 namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\API\Client;
 
 use Brain\Monkey\Functions;
-use Exception;
 use Mockery;
-use WP_Rocket\Addon\Cloudflare\API\AuthenticationException;
+use WP_Error;
 use WP_Rocket\Addon\Cloudflare\API\Client;
-use WP_Rocket\Addon\Cloudflare\API\UnauthorizedException;
 use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -30,28 +27,9 @@ class TestPatch extends TestCase {
 		$auth   = Mockery::mock( AuthInterface::class );
 		$client = new Client( $auth );
 
-		if ( 'unauthenticated' === $expected ) {
-			$this->expectException( AuthenticationException::class );
-		}
-
-		if ( 'credentials' === $expected ) {
-			$auth->shouldReceive( 'is_valid_credentials' )
-			->andThrow( CredentialsException::class );
-
-			$this->expectException( CredentialsException::class );
-		} else {
-			$auth->expects()
+		$auth->expects()
 			->is_valid_credentials()
 			->andReturn( $config['valid_credentials'] );
-		}
-
-		if ( 'unauthorized' === $expected ) {
-			$this->expectException( UnauthorizedException::class );
-		}
-
-		if ( 'exception' === $expected ) {
-			$this->expectException( Exception::class );
-		}
 
 		Functions\when( 'wp_json_encode' )
 			->alias( function() use ( $config ) {
@@ -69,8 +47,13 @@ class TestPatch extends TestCase {
 		Functions\when( 'wp_remote_request' )
 			->justReturn( $config['response'] );
 
-		Functions\when( 'is_wp_error' )
-			->justReturn( $config['error'] );
+		Functions\expect( 'is_wp_error' )
+			->once()
+			->andReturn( $config['valid_error'] )
+			->andAlsoExpectIt()
+			->atMost()
+			->once()
+			->andReturn( $config['request_error'] );
 
 		if ( is_array( $config['response'] ) ) {
 			Functions\when( 'wp_remote_retrieve_body' )
@@ -80,9 +63,20 @@ class TestPatch extends TestCase {
 		Functions\when( 'wp_sprintf_l' )
 			->returnArg();
 
-		$this->assertSame(
-			$expected,
-			$client->patch( $config['path'], $config['data'] )
-		);
+		$result = $client->patch( $config['path'], $config['data'] );
+
+		if ( 'error' === $expected['result'] ) {
+			$this->assertInstanceOf( WP_Error::class, $result );
+
+				$this->assertSame(
+					$expected['error_code'],
+					$result->get_error_code()
+				);
+		} else {
+			$this->assertSame(
+				$expected['result'],
+				$result
+			);
+		}
 	}
 }

@@ -35,6 +35,7 @@ return [
 				'ipv4_cidrs' => [],
 				'ipv6_cidrs' => [],
 			],
+			'wp_error' => false,
 		],
 		'expected' => (object) [
 			'ipv4_cidrs' => [
@@ -69,6 +70,7 @@ return [
 		'config' => [
 			'transient' => false,
 			'response' => [],
+			'wp_error' => false,
 		],
 		'expected' => (object) [
 			'ipv4_cidrs' => [
@@ -99,10 +101,11 @@ return [
 			],
 		],
 	],
-	'shouldReturnDefaultValueWhenException' => [
+	'shouldReturnDefaultValueWhenWPError' => [
 		'config' => [
 			'transient' => false,
-			'response' => 'exception',
+			'response' => new WP_Error( 'error' ),
+			'wp_error' => true,
 		],
 		'expected' => (object) [
 			'ipv4_cidrs' => [
@@ -164,6 +167,7 @@ return [
 					'2c0f:f248::/32',
 				],
 			],
+			'wp_error' => false,
 		],
 		'expected' => (object) [
 			'ipv4_cidrs' => [

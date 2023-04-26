@@ -26,6 +26,7 @@ return [
 					],
 				],
 			],
+			'request_error' => false,
 		],
 		'expected' => [
 			'cache_level'       => 'aggressive',
@@ -59,6 +60,7 @@ return [
 					],
 				],
 			],
+			'request_error' => false,
 		],
 		'expected' => [
 			'cache_level'       => 'aggressive',
@@ -67,11 +69,11 @@ return [
 			'browser_cache_ttl' => 14400,
 		],
 	],
-	'shouldReturnWPErrorWhenException' => [
+	'shouldReturnWPErrorWhenError' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => 'exception',
-			'action_value' => 'cache_everything',
+			'response' => new WP_Error( 'error' ),
+			'request_error' => true,
 		],
 		'expected' => 'error',
 	],

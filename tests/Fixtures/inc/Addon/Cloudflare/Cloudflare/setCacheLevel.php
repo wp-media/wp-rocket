@@ -8,14 +8,16 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 		],
 		'expected' => 'aggressive',
 	],
-	'shouldReturnWPErrorWhenException' => [
+	'shouldReturnWPErrorWhenError' => [
 		'config' => [
 			'zone_id' => '12345',
 			'value' => 'off',
-			'response' => 'exception',
+			'response' => new WP_Error( 'error' ),
+			'request_error' => true,
 		],
 		'expected' => 'error',
 	],

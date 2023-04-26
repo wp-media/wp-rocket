@@ -4,9 +4,9 @@ namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Cloudflare;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Error;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Addon\Cloudflare\API\Endpoints;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -36,21 +36,14 @@ class TestIsAuthValid extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		if ( 'credentials_exception' === $config['response'] ) {
-			$this->endpoints->expects()
-				->get_zones( $config['zone_id'] )
-				->andThrow( new CredentialsException() );
-		} elseif ( 'exception' === $config['response'] ) {
-			$this->endpoints->expects()
-				->get_zones( $config['zone_id'] )
-				->andThrow( new \Exception() );
-		} else {
-			$this->endpoints->shouldReceive( 'get_zones' )
-				->with( $config['zone_id'] )
-				->atMost()
-				->once()
-				->andReturn( $config['response'] );
-		}
+		$this->endpoints->shouldReceive( 'get_zones' )
+			->with( $config['zone_id'] )
+			->atMost()
+			->once()
+			->andReturn( $config['response'] );
+
+		Functions\when( 'is_wp_error' )
+			->justReturn( $config['request_error'] );
 
 		Functions\when( 'get_site_url' )
 			->justReturn( 'http://example.org' );
@@ -61,7 +54,7 @@ class TestIsAuthValid extends TestCase {
 
 		if ( 'error' === $expected ) {
 			$this->assertInstanceOf(
-				'WP_Error',
+				WP_Error::class,
 				$result
 			);
 		} else {

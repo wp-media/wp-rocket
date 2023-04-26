@@ -7,6 +7,7 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 			'urls' => [
 				'about',
 				'contact',
@@ -14,14 +15,15 @@ return [
 		],
 		'expected' => true,
 	],
-	'shouldReturnWPErrorWhenException' => [
+	'shouldReturnWPErrorWhenError' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => 'exception',
+			'response' => new WP_Error( 'error' ),
 			'urls' => [
 				'about',
 				'contact',
 			],
+			'request_error' => true,
 		],
 		'expected' => 'error',
 	],

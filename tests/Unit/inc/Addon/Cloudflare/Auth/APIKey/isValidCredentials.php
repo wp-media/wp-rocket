@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Auth\APIKey;
 
+use WP_Error;
 use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -16,15 +16,24 @@ class TestIsValidCredentials extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $credentials, $expected ) {
-		if ( 'exception' === $expected ) {
-			$this->expectException( CredentialsException::class );
-		}
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 
 		$auth = new APIKey( $credentials['email'], $credentials['api_key'] );
 
-		$this->assertSame(
-			$expected,
-			$auth->is_valid_credentials()
-		);
+		$result = $auth->is_valid_credentials();
+
+		if ( 'error' === $expected ) {
+			$this->assertInstanceOf( WP_Error::class, $result );
+			$this->assertSame(
+				'cloudflare_credentials_empty',
+				$result->get_error_code()
+			);
+		} else {
+			$this->assertSame(
+				$expected,
+				$result
+			);
+		}
 	}
 }

@@ -5,13 +5,15 @@ return [
 		'config' => [
 			'zone_id' => '',
 			'response' => [],
+			'request_error' => false,
 		],
 		'expected' => 'error',
 	],
 	'shouldReturnWPErrorWhenEmptyResult' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => [],
+			'response' => new WP_Error( 'error' ),
+			'request_error' => true,
 		],
 		'expected' => 'error',
 	],
@@ -21,6 +23,7 @@ return [
 			'response' => (object) [
 				'name' => 'test.com',
 			],
+			'request_error' => false,
 		],
 		'expected' => 'error',
 	],
@@ -30,21 +33,8 @@ return [
 			'response' => (object) [
 				'name' => 'example.org',
 			],
+			'request_error' => false,
 		],
 		'expected' => true,
-	],
-	'shouldReturnWPErrorWhenCredentialsException' => [
-		'config' => [
-			'zone_id' => '12345',
-			'response' => 'credentials_exception',
-		],
-		'expected' => 'error',
-	],
-	'shouldReturnWPErrorWhenException' => [
-		'config' => [
-			'zone_id' => '12345',
-			'response' => 'exception',
-		],
-		'expected' => 'error',
 	],
 ];

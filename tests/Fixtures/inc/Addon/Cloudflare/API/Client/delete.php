@@ -1,9 +1,10 @@
 <?php
 
 return [
-	'testShouldThrowUnauthenticatedException' => [
+	'testShouldReturnEmptyCredentialsWPError' => [
 		'config' => [
-			'valid_credentials' => false,
+			'valid_credentials' => new WP_Error( 'cloudflare_credentials_empty', '' ),
+			'valid_error' => true,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -12,13 +13,17 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => '',
+			'request_error' => false,
 		],
-		'expected' => 'unauthenticated',
+		'expected' => [
+			'error_code' => 'cloudflare_credentials_empty',
+			'result' => 'error',
+		],
 	],
-	'testShouldThrowCredentialsException' => [
+	'testShouldReturnIncorrectCredentialsWPError' => [
 		'config' => [
 			'valid_credentials' => false,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -27,23 +32,31 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => '',
+			'request_error' => false,
 		],
-		'expected' => 'credentials',
+		'expected' => [
+			'error_code' => 'cloudflare_invalid_credentials',
+			'result' => 'error',
+		],
 	],
-	'testShouldThrowExceptionWhenError' => [
+	'testShouldReturnWPErrorWhenRequestError' => [
 		'config' => [
 			'valid_credentials' => true,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => new WP_Error( '404', 'message' ),
-			'error' => true,
+			'request_error' => true,
 		],
-		'expected' => 'exception',
+		'expected' => [
+			'error_code' => '404',
+			'result' => 'error',
+		],
 	],
-	'testShouldThrowExceptionWhenEmptyData' => [
+	'testShouldReturnEmptyResponseWPError' => [
 		'config' => [
 			'valid_credentials' => true,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -52,13 +65,17 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => false,
+			'request_error' => false,
 		],
-		'expected' => 'exception',
+		'expected' => [
+			'error_code' => 'cloudflare_no_reply',
+			'result' => 'error',
+		],
 	],
-	'testShouldThrowUnauthorizedException' => [
+	'testShouldReturnWPErrorWhenIncorrectResponseCode' => [
 		'config' => [
 			'valid_credentials' => true,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -74,13 +91,17 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => false,
+			'request_error' => false,
 		],
-		'expected' => 'unauthorized',
+		'expected' => [
+			'error_code' => 'cloudflare_incorrect_credentials',
+			'result' => 'error',
+		],
 	],
-	'testShouldThrowExceptionWhenErrorInResponse' => [
+	'testShouldReturnWPErrorWhenCFError' => [
 		'config' => [
 			'valid_credentials' => true,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -97,13 +118,17 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => false,
+			'request_error' => false,
 		],
-		'expected' => 'exception',
+		'expected' => [
+			'error_code' => 'cloudflare_request_error',
+			'result' => 'error',
+		],
 	],
 	'testShouldReturnResult' => [
 		'config' => [
 			'valid_credentials' => true,
+			'valid_error' => false,
 			'path' => '',
 			'data' => [],
 			'response' => [
@@ -115,8 +140,10 @@ return [
 				'response' => [],
 				'cookies' => [],
 			],
-			'error' => false,
+			'request_error' => false,
 		],
-		'expected' => [],
+		'expected' => [
+			'result' => [],
+		],
 	],
 ];

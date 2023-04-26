@@ -8,6 +8,7 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 		],
 		'expected' => '30 seconds',
 	],
@@ -18,6 +19,7 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 		],
 		'expected' => '2 minutes',
 	],
@@ -28,6 +30,7 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 		],
 		'expected' => '2 hours',
 	],
@@ -38,14 +41,16 @@ return [
 			'response' => (object) [
 				'succcess' => true,
 			],
+			'request_error' => false,
 		],
 		'expected' => '2 days',
 	],
-	'shouldReturnWPErrorWhenException' => [
+	'shouldReturnWPErrorWhenError' => [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 30,
-			'response' => 'exception',
+			'response' => new WP_Error( 'error' ),
+			'request_error' => true,
 		],
 		'expected' => 'error',
 	],
