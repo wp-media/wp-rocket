@@ -87,7 +87,6 @@ class Cloudflare {
 			return new WP_Error( 'cloudflare_no_zone_id', $msg );
 		}
 
-
 		$result = $this->endpoints->get_zones( $zone_id );
 
 		if ( is_wp_error( $result ) ) {
