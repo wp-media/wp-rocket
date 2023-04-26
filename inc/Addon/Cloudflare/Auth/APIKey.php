@@ -48,7 +48,7 @@ class APIKey implements AuthInterface {
 	 *
 	 * @return bool|WP_Error true if authorized, false if not, WP_Error if either credential is empty.
 	 */
-	public function is_valid_credentials(): bool {
+	public function is_valid_credentials() {
 		if (
 			empty( $this->email )
 			||
