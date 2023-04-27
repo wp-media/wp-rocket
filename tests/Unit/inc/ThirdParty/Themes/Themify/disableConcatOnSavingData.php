@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Themify;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Themes\Themify;
 
 
@@ -18,10 +20,13 @@ class Test_disableConcatOnSavingData extends TestCase {
      */
     protected $themify;
 
+	protected $options;
+
     public function set_up() {
         parent::set_up();
 
-        $this->themify = new Themify();
+		$this->options = Mockery::mock(Options_Data::class);
+		$this->themify = new Themify($this->options);
     }
 
     /**
@@ -29,7 +34,7 @@ class Test_disableConcatOnSavingData extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Filters\expectApplied('rocket_disable_rucss_setting')->with(false)->andReturn( $config['rucss_enabled'] );
+		$this->options->expects()->get( 'rocket_disable_rucss_setting', false )->andReturn( $config['rucss_enabled'] );
 		$this->assertSame($expected, $this->themify->disable_concat_on_saving_data($config['value']));
     }
 }

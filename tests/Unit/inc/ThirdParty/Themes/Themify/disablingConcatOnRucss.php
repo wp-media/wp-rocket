@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Themify;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Themes\Themify;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
@@ -18,10 +20,13 @@ class Test_disablingConcatOnRucss extends TestCase {
      */
     protected $themify;
 
-    public function set_up() {
-        parent::set_up();
+	protected $options;
 
-        $this->themify = new Themify();
+	public function set_up() {
+        parent::set_up();
+		$this->options = Mockery::mock(Options_Data::class);
+
+        $this->themify = new Themify($this->options);
     }
 
     /**
@@ -30,7 +35,7 @@ class Test_disablingConcatOnRucss extends TestCase {
     public function testShouldDoAsExpected( $config, $expected )
     {
 		Functions\expect('themify_get_data')->andReturn($config['value']);
-		Filters\expectApplied('rocket_disable_rucss_setting')->with(false)->andReturn( $config['rucss_enabled'] );
+		$this->options->expects()->get('rocket_disable_rucss_setting', false)->andReturn( $config['rucss_enabled'] );
 
 		Functions\when('rocket_has_constant')->justReturn($config['has_constant']);
 

@@ -7,7 +7,7 @@ return [
 			],
 			'need_add' => true,
 			'rucss_enabled' => true,
-			'has_constant' => false,
+			'has_constant' => true,
         ],
 		'expected' => [
 			'value' => [
@@ -23,7 +23,7 @@ return [
 			],
 			'need_add' => false,
 			'rucss_enabled' => false,
-			'has_constant' => false,
+			'has_constant' => true,
 		],
 		'expected' => [
 			'value' => [
@@ -39,7 +39,7 @@ return [
 			],
 			'need_add' => false,
 			'rucss_enabled' => true,
-			'has_constant' => false,
+			'has_constant' => true,
 		],
 		'expected' => [
 			'value' => [

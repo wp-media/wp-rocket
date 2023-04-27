@@ -1,7 +1,16 @@
 <?php
 namespace WP_Rocket\ThirdParty\Themes;
 
+use WP_Rocket\Admin\Options_Data;
+
 class Themify extends ThirdpartyTheme {
+
+	/**
+	 * WP Rocket options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
 
 	/**
 	 * Theme name
@@ -9,6 +18,15 @@ class Themify extends ThirdpartyTheme {
 	 * @var string
 	 */
 	protected static $theme_name = 'themify';
+
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param Options_Data $options WP Rocket options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -31,10 +49,10 @@ class Themify extends ThirdpartyTheme {
 	 * Disable concat on saving theme options.
 	 *
 	 * @param array $value theme options.
-	 * @return mixed
+	 * @return array
 	 */
 	public function disable_concat_on_saving_data( $value ) {
-		if ( ! apply_filters( 'rocket_disable_rucss_setting', false ) ) {
+		if ( ! $this->options->get( 'rocket_disable_rucss_setting', false ) ) {
 			return $value;
 		}
 		$value['setting-dev-mode-concate'] = false;
@@ -49,7 +67,7 @@ class Themify extends ThirdpartyTheme {
 	public function disabling_concat_on_rucss() {
 		$data = themify_get_data();
 
-		if ( ! apply_filters( 'rocket_disable_rucss_setting', false ) ) {
+		if ( ! $this->options->get( 'rocket_disable_rucss_setting', false ) ) {
 			return;
 		}
 
