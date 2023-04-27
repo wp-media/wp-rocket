@@ -12,7 +12,7 @@ return [
 		'expected' => [
 			'value' => [
 				'test' => true,
-				'setting-dev-mode-concate' => false,
+				'setting-dev-mode-concate' => true,
 			]
 		]
     ],
@@ -34,7 +34,7 @@ return [
 	'RucssActivatedWithSetShouldNotAdd' => [
 		'config' => [
 			'value' => [
-				'setting-dev-mode-concate' => false,
+				'setting-dev-mode-concate' => true,
 				'test' => true,
 			],
 			'need_add' => false,
@@ -43,7 +43,7 @@ return [
 		],
 		'expected' => [
 			'value' => [
-				'setting-dev-mode-concate' => false,
+				'setting-dev-mode-concate' => true,
 				'test' => true,
 			]
 		]

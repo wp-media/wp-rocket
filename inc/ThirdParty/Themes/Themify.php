@@ -40,6 +40,7 @@ class Themify extends ThirdpartyTheme {
 
 		return [
 			'init'              => 'disabling_concat_on_rucss',
+			'admin_init'        => 'disabling_concat_on_rucss',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => 'disabling_concat_on_rucss',
 			'themify_save_data' => 'disable_concat_on_saving_data',
 		];
@@ -52,10 +53,10 @@ class Themify extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public function disable_concat_on_saving_data( $value ) {
-		if ( ! $this->options->get( 'rocket_disable_rucss_setting', false ) ) {
+		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
 			return $value;
 		}
-		$value['setting-dev-mode-concate'] = false;
+		$value['setting-dev-mode-concate'] = true;
 		return $value;
 	}
 
@@ -67,7 +68,7 @@ class Themify extends ThirdpartyTheme {
 	public function disabling_concat_on_rucss() {
 		$data = themify_get_data();
 
-		if ( ! $this->options->get( 'rocket_disable_rucss_setting', false ) ) {
+		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
 			return;
 		}
 
@@ -75,11 +76,11 @@ class Themify extends ThirdpartyTheme {
 			define( 'THEMIFY_DEV', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 		}
 
-		if ( key_exists( 'setting-dev-mode-concate', $data ) && ! $data['setting-dev-mode-concate'] ) {
+		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] ) {
 			return;
 		}
 
-		$data['setting-dev-mode-concate'] = false;
+		$data['setting-dev-mode-concate'] = true;
 
 		themify_set_data( $data );
 	}

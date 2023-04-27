@@ -34,7 +34,7 @@ class Test_disableConcatOnSavingData extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		$this->options->expects()->get( 'rocket_disable_rucss_setting', false )->andReturn( $config['rucss_enabled'] );
+		$this->options->expects()->get( 'remove_unused_css', false )->andReturn( $config['rucss_enabled'] );
 		$this->assertSame($expected, $this->themify->disable_concat_on_saving_data($config['value']));
     }
 }
