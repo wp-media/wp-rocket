@@ -69,7 +69,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'xstore', Xstore::class )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->share( 'themify', Themify::class );
+		$this->getContainer()->share( 'themify', Themify::class )
+			->addArgument( $options );
 
 	}
 }
