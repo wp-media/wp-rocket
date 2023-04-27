@@ -2,12 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\API\Client;
 
-use Exception;
-use WP_Rocket\Addon\Cloudflare\API\AuthenticationException;
+use WP_Error;
 use WP_Rocket\Addon\Cloudflare\API\Client;
-use WP_Rocket\Addon\Cloudflare\API\UnauthorizedException;
 use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
-use WP_Rocket\Addon\Cloudflare\Auth\CredentialsException;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -30,38 +27,26 @@ class TestDelete extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->response = $config['response'];
-		$email = 'roger@wp-rocket.me';
-		$api_key = '12345';
 
 		add_filter( 'pre_http_request', [ $this, 'http_request'] );
 
-		if ( 'unauthenticated' === $expected ) {
-			$email = 'rogerwp-rocket.me';
-			$api_key = '12345';
-			$this->expectException( AuthenticationException::class );
-		}
-
-		if ( 'credentials' === $expected ) {
-			$email = '';
-			$api_key = '';
-			$this->expectException( CredentialsException::class );
-		}
-
-		if ( 'unauthorized' === $expected ) {
-			$this->expectException( UnauthorizedException::class );
-		}
-
-		if ( 'exception' === $expected ) {
-			$this->expectException( Exception::class );
-		}
-
-		$auth = new APIKey( $email, $api_key );
+		$auth = new APIKey( $config['email'], $config['api_key'] );
 		$client = new Client( $auth );
+		$result = $client->delete( $config['path'], $config['data'] );
 
-		$this->assertSame(
-			$expected,
-			$client->delete( $config['path'], $config['data'] )
-		);
+		if ( 'error' === $expected['result'] ) {
+			$this->assertInstanceOf( WP_Error::class, $result );
+
+				$this->assertSame(
+					$expected['error_code'],
+					$result->get_error_code()
+				);
+		} else {
+			$this->assertSame(
+				$expected['result'],
+				$result
+			);
+		}
 	}
 
 	public function http_request() {

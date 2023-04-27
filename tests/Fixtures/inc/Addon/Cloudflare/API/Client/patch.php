@@ -3,6 +3,8 @@
 return [
 	'testShouldReturnEmptyCredentialsWPError' => [
 		'config' => [
+			'email' => '',
+			'api_key' => '',
 			'valid_credentials' => new WP_Error( 'cloudflare_credentials_empty', '' ),
 			'valid_error' => true,
 			'path' => '',
@@ -22,6 +24,8 @@ return [
 	],
 	'testShouldReturnIncorrectCredentialsWPError' => [
 		'config' => [
+			'email' => 'roger',
+			'api_key' => 'test12345',
 			'valid_credentials' => false,
 			'valid_error' => false,
 			'path' => '',
@@ -41,20 +45,24 @@ return [
 	],
 	'testShouldReturnWPErrorWhenRequestError' => [
 		'config' => [
+			'email' => 'roger@wp-rocket.me',
+			'api_key' => 'test12345',
 			'valid_credentials' => true,
 			'valid_error' => false,
 			'path' => '',
 			'data' => [],
-			'response' => new WP_Error( '404', 'message' ),
+			'response' => new WP_Error( 'request_error', 'message' ),
 			'request_error' => true,
 		],
 		'expected' => [
-			'error_code' => '404',
+			'error_code' => 'request_error',
 			'result' => 'error',
 		],
 	],
 	'testShouldReturnEmptyResponseWPError' => [
 		'config' => [
+			'email' => 'roger@wp-rocket.me',
+			'api_key' => 'test12345',
 			'valid_credentials' => true,
 			'valid_error' => false,
 			'path' => '',
@@ -74,6 +82,8 @@ return [
 	],
 	'testShouldReturnWPErrorWhenIncorrectResponseCode' => [
 		'config' => [
+			'email' => 'roger@wp-rocket.me',
+			'api_key' => 'test12345',
 			'valid_credentials' => true,
 			'valid_error' => false,
 			'path' => '',
@@ -100,6 +110,8 @@ return [
 	],
 	'testShouldReturnWPErrorWhenCFError' => [
 		'config' => [
+			'email' => 'roger@wp-rocket.me',
+			'api_key' => 'test12345',
 			'valid_credentials' => true,
 			'valid_error' => false,
 			'path' => '',
@@ -127,6 +139,8 @@ return [
 	],
 	'testShouldReturnResult' => [
 		'config' => [
+			'email' => 'roger@wp-rocket.me',
+			'api_key' => 'test12345',
 			'valid_credentials' => true,
 			'valid_error' => false,
 			'path' => '',
