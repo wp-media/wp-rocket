@@ -355,6 +355,7 @@ class Plugin {
 			'admin_api_subscriber',
 			'perfmatters',
 			'rapidload',
+			'themify',
 		];
 
 		$host_type = HostResolver::get_host_service();

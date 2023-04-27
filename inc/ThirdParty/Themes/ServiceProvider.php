@@ -25,6 +25,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'polygon',
 		'uncode',
 		'xstore',
+		'themify',
 	];
 
 	/**
@@ -67,5 +68,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'xstore', Xstore::class )
 			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->share('themify', Themify::class);
+
 	}
 }
