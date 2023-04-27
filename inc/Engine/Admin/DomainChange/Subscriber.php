@@ -4,7 +4,6 @@ namespace WP_Rocket\Engine\Admin\DomainChange;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
-use function Patchwork\Config\get;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -26,7 +25,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_init'                    => 'maybe_launch_domain_changed',
 			'rocket_configurations_changed' => 'configurations_changed',
 			'rocket_domain_changed'         => 'maybe_clean_cache_domain_change',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => ['save_hash_on_update_options', 10, 2],
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
 		];
 	}
 
@@ -102,6 +101,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_clean_cache_domain_change() {
+		/**
+		 * Has Rocket configurations changed.
+		 *
+		 * @param bool $changed Has Rocket configurations changed.
+		 * @return bool
+		 */
 		if ( apply_filters( 'rocket_configurations_changed', false ) ) {
 			return;
 		}
