@@ -594,7 +594,7 @@ class Page {
 			]
 		);
 
-		$invalid_license = get_transient( 'wp_rocket_no_licence' );
+		$invalid_license = (bool) get_transient( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
