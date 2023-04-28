@@ -110,6 +110,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
+			'admin_init'                              => 'set_default_wp_rocket_no_licence',
 		];
 	}
 
@@ -712,10 +713,22 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function disable_russ_on_wrong_license() {
-		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+		if ( false !== (bool) get_transient( 'wp_rocket_no_licence' ) ) {
 			return false;
 		}
 		return null;
+	}
+
+	/**
+	 * Set default no license when not defined.
+	 *
+	 * @return void
+	 */
+	public function set_default_wp_rocket_no_licence() {
+		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+			return;
+		}
+		set_transient( 'wp_rocket_no_licence', 0, WEEK_IN_SECONDS );
 	}
 
 	/**
