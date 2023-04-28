@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Logger;
+namespace WP_Rocket\Logger;
 
 use Monolog\Handler\StreamHandler as MonoStreamHandler;
 use UnexpectedValueException;

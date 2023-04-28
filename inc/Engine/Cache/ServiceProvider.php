@@ -2,11 +2,11 @@
 namespace WP_Rocket\Engine\Cache;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
-use WP_Rocket\Engine\Logger\Logger;
-use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Service Provider for cache subscribers

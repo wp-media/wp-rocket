@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Logger;
+namespace WP_Rocket\Logger;
 
 class CacheCleanStreamHandler extends StreamHandler {
 
