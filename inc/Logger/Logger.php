@@ -8,12 +8,6 @@ use Monolog\Logger as Monologger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Registry;
 use WP_Error;
-use function WP_Rocket\Engine\Logger\__;
-use function WP_Rocket\Engine\Logger\number_format_i18n;
-use function WP_Rocket\Engine\Logger\size_format;
-use const WP_Rocket\Engine\Logger\WP_ROCKET_DEBUG;
-use const WP_Rocket\Engine\Logger\WP_ROCKET_DEBUG_CACHE_CLEARING;
-use const WP_Rocket\Engine\Logger\WP_ROCKET_DEBUG_LOG_FILE;
 
 /**
  * Class used to log events.
