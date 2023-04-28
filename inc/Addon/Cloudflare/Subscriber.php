@@ -372,6 +372,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param array $old_value An array of previous values for the settings.
 	 * @param array $value     An array of submitted values for the settings.
+	 *
+	 * @return void
 	 */
 	public function save_cloudflare_options( $old_value, $value ) {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
@@ -381,10 +383,15 @@ class Subscriber implements Subscriber_Interface {
 		$valid_key      = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 		$submit_cf_view = false;
 
-		if ( false === $valid_key ) {
+		if (
+			false === $valid_key
+			||
+			is_wp_error( $valid_key )
+		) {
 			$result = $this->cloudflare->is_auth_valid( $value['cloudflare_zone_id'] );
 			set_transient( 'rocket_cloudflare_is_api_keys_valid', $result, 2 * WEEK_IN_SECONDS );
 			$submit_cf_view = true;
+			$valid_key      = $result;
 		}
 
 		if (

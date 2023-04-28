@@ -39,8 +39,12 @@ class TestSaveCloudflareOptions extends TestCase {
 		Functions\when( 'get_transient' )
 			->justReturn( $config['transient'] );
 
-		Functions\when( 'is_wp_error' )
-			->justReturn( $config['error'] );
+		Functions\expect( 'is_wp_error' )
+			->atMost()
+			->once()
+			->andReturn( false )
+			->andAlsoExpectIt()
+			->andReturn( $config['error'] );
 
 		Functions\when( 'get_current_user_id' )
 			->justReturn( 1 );
