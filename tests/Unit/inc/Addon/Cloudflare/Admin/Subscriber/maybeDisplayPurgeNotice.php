@@ -30,7 +30,7 @@ class TestMaybeDisplayPurgeNotice extends TestCase {
 
 		$subscriber = new Subscriber();
 
-		if ( null !== $expected ) {
+		if ( '' !== $expected ) {
 			Functions\expect( 'rocket_notice_html' )
 				->once();
 		} else {
