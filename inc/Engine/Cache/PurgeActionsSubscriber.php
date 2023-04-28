@@ -69,6 +69,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'update_option_blog_public'           => 'purge_cache',
 			'before_rocket_clean_domain'          => 'log_clear_domain',
 			'before_rocket_clean_post'            => [ 'log_clear_post', 10, 3 ],
+			'wp_rocket_upgrade'                   => [ 'on_update', 10, 2 ],
 		];
 	}
 
@@ -209,6 +210,23 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 				'purged_urls' => $purge_url,
 			]
 			);
+	}
+
+	/**
+	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
+	 *
+	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
+	 * @since 3.7
+	 *
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update($new_version, $old_version) {
+		if ( version_compare( $old_version, '3.12', '>=' ) ) {
+			return;
+		}
+		rocket_generate_advanced_cache_file();
 	}
 
 	/**
