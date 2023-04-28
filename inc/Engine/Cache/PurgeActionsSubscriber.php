@@ -1,9 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
+use Psr\Log\LoggerInterface;
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
 
 /**
  * Subscriber for the cache purge actions
@@ -26,14 +27,23 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	private $purge;
 
 	/**
+	 * Logger instance.
+	 *
+	 * @var LoggerInterface
+	 */
+	private $logger;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket options instance.
-	 * @param Purge        $purge   Purge instance.
+	 * @param Options_Data    $options WP Rocket options instance.
+	 * @param Purge           $purge Purge instance.
+	 * @param LoggerInterface $logger Logger instance.
 	 */
-	public function __construct( Options_Data $options, Purge $purge ) {
+	public function __construct( Options_Data $options, Purge $purge, LoggerInterface $logger ) {
 		$this->options = $options;
 		$this->purge   = $purge;
+		$this->logger  = $logger;
 	}
 
 	/**
@@ -57,6 +67,8 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'rocket_after_save_dynamic_lists'     => 'purge_cache',
 			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
 			'update_option_blog_public'           => 'purge_cache',
+			'before_rocket_clean_domain'          => 'log_clear_domain',
+			'before_rocket_clean_post'            => [ 'log_clear_post', 10, 3 ],
 		];
 	}
 
@@ -155,9 +167,48 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public function purge_url_cache( string $url ) {
 		// Flush cache for this url.
-		Logger::debug( 'RUCSS: Purge the cache for url: ' . $url );
+		$this->logger->debug( 'RUCSS: Purge the cache for url: ' . $url );
 
 		$this->purge->purge_url( $url );
+	}
+
+	/**
+	 * Log information when clearing domain.
+	 *
+	 * @return void
+	 */
+	public function log_clear_domain() {
+		$this->logger->info(
+			'clear_domain',
+			[
+				'type' => 'cache-clearing',
+				'date' => gmdate( 'Y-m-d H:i:s', time() ),
+			]
+			);
+	}
+
+
+	/**
+	 * Log information
+	 *
+	 * @param WP_Post $post Post cleared.
+	 * @param string  $purge_url URL purged.
+	 * @param string  $lang Current language.
+	 *
+	 * @return void
+	 */
+	public function log_clear_post( $post, $purge_url, $lang ) {
+		$this->logger->info(
+			'clear_domain',
+			[
+				'type'        => 'cache-clearing',
+				'date'        => gmdate( 'Y-m-d H:i:s', time() ),
+				'url'         => get_permalink( $post->ID ),
+				'lang'        => $lang,
+				'post_type'   => $post->post_type,
+				'purged_urls' => $purge_url,
+			]
+			);
 	}
 
 	/**

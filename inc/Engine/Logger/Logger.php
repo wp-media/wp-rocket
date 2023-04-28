@@ -1,21 +1,20 @@
 <?php
-namespace WP_Rocket\Logger;
 
-use Monolog\Logger as Monologger;
-use Monolog\Registry;
-use Monolog\Processor\IntrospectionProcessor;
-use Monolog\Handler\StreamHandler as MonoStreamHandler;
+namespace WP_Rocket\Engine\Logger;
+
 use Monolog\Formatter\LineFormatter;
-use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
-use WP_Rocket\Logger\Stream_Handler as StreamHandler;
-
-defined( 'ABSPATH' ) || exit;
+use Monolog\Handler\StreamHandler as MonoStreamHandler;
+use Monolog\Logger as Monologger;
+use Monolog\Processor\IntrospectionProcessor;
+use Monolog\Registry;
+use WP_Error;
 
 /**
  * Class used to log events.
  *
  * @since  3.1.4
  * @since  3.2 Changed namespace from \WP_Rocket to \WP_Rocket\Logger.
+ * @since  3.14 Changed namespace from \WP_Rocket\Logger to \WP_Rocket\Engine\Logger.
  * @author Grégory Viguier
  */
 class Logger {
@@ -176,15 +175,17 @@ class Logger {
 	/**
 	 * Get the logger instance.
 	 *
-	 * @since  3.1.4
-	 * @access public
+	 * @return Logger A Logger instance.
 	 * @author Grégory Viguier
 	 *
-	 * @return Logger A Logger instance.
+	 * @since  3.1.4
+	 * @access public
 	 */
 	public static function get_logger() {
 		$logger_name = static::LOGGER_NAME;
 		$log_level   = Monologger::DEBUG;
+
+		$handlers = [];
 
 		if ( Registry::hasLogger( $logger_name ) ) {
 			return Registry::$logger_name();
@@ -199,6 +200,14 @@ class Logger {
 
 		$handler->setFormatter( $formatter );
 
+		$handlers[] = $handler;
+
+		if ( rocket_get_constant( 'WP_ROCKET_DEBUG_CACHE_CLEARING', false ) ) {
+			$handler = new CacheCleanStreamHandler( static::get_cache_clean_log_file_path(), $log_level );
+			$handler->setFormatter( $formatter );
+			$handlers [] = $handler;
+		}
+
 		/**
 		 * Thanks to the processors, add data to each log:
 		 * - `debug_backtrace()` (exclude this class and Abstract_Buffer).
@@ -206,7 +215,7 @@ class Logger {
 		$trace_processor = new IntrospectionProcessor( $log_level, [ get_called_class(), 'Abstract_Buffer' ] );
 
 		// Create the logger.
-		$logger = new Monologger( $logger_name, [ $handler ], [ $trace_processor ] );
+		$logger = new Monologger( $logger_name, $handlers, [ $trace_processor ] );
 
 		// Store the logger.
 		Registry::addLogger( $logger );
@@ -244,6 +253,26 @@ class Logger {
 	}
 
 	/**
+	 * Get the path to the cache clean log file.
+	 *
+	 * @return string
+	 */
+	public static function get_cache_clean_log_file_path() {
+		if ( defined( 'WP_ROCKET_DEBUG_CACHE_CLEARING' ) && WP_ROCKET_DEBUG_CACHE_CLEARING && is_string( WP_ROCKET_DEBUG_CACHE_CLEARING ) ) {
+			// Make sure the file uses a ".log" extension.
+			return preg_replace( '/\.[^.]*$/', '', WP_ROCKET_DEBUG_CACHE_CLEARING ) . '.log';
+		}
+
+		if ( defined( 'WP_ROCKET_DEBUG_INTERVAL' ) ) {
+			// Adds an optional logs rotator depending on a constant value - WP_ROCKET_DEBUG_INTERVAL (interval by minutes).
+			$rotator = str_pad( round( ( strtotime( 'now' ) - strtotime( 'today midnight' ) ) / 60 / WP_ROCKET_DEBUG_INTERVAL ), 4, '0', STR_PAD_LEFT );
+			return WP_CONTENT_DIR . '/wp-rocket-config/' . $rotator . '-' . static::LOG_FILE_NAME;
+		} else {
+			return WP_CONTENT_DIR . '/wp-rocket-config/' . static::LOG_FILE_NAME;
+		}
+	}
+
+	/**
 	 * Get the log file contents.
 	 *
 	 * @since  3.1.4
@@ -257,13 +286,13 @@ class Logger {
 		$file_path  = static::get_log_file_path();
 
 		if ( ! $filesystem->exists( $file_path ) ) {
-			return new \WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
+			return new WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
 		}
 
 		$contents = $filesystem->get_contents( $file_path );
 
 		if ( false === $contents ) {
-			return new \WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
+			return new WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
 		}
 
 		return $contents;
@@ -282,20 +311,20 @@ class Logger {
 		$formatter = static::get_stream_formatter();
 
 		if ( ! $formatter ) {
-			return new \WP_Error( 'no_stream_formatter', __( 'The logs are not saved into a file.', 'rocket' ) );
+			return new WP_Error( 'no_stream_formatter', __( 'The logs are not saved into a file.', 'rocket' ) );
 		}
 
 		$filesystem = \rocket_direct_filesystem();
 		$file_path  = static::get_log_file_path();
 
 		if ( ! $filesystem->exists( $file_path ) ) {
-			return new \WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
+			return new WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
 		}
 
 		$contents = $filesystem->get_contents( $file_path );
 
 		if ( false === $contents ) {
-			return new \WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
+			return new WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
 		}
 
 		if ( $formatter instanceof HtmlFormatter ) {
@@ -309,7 +338,7 @@ class Logger {
 		$entries  = $entries ? number_format_i18n( count( $entries ) ) : '0';
 		$bytes    = $filesystem->size( $file_path );
 		$decimals = $bytes > pow( 1024, 3 ) ? 1 : 0;
-		$bytes    = @size_format( $bytes, $decimals );
+		$bytes    = @size_format( $bytes, $decimals ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$bytes    = str_replace( ' ', ' ', $bytes ); // Non-breaking space character.
 
 		return compact( 'entries', 'bytes' );
@@ -561,3 +590,4 @@ class Logger {
 		return $cookies;
 	}
 }
+

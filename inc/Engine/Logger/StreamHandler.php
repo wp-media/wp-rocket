@@ -1,15 +1,12 @@
 <?php
-namespace WP_Rocket\Logger;
 
+namespace WP_Rocket\Engine\Logger;
+
+use Monolog\Handler\StreamHandler as MonoStreamHandler;
 use UnexpectedValueException;
-use Monolog\Handler\StreamHandler;
 
-/**
- * Class used to log records into a local file.
- *
- * @since 3.2
- */
-class Stream_Handler extends StreamHandler {
+class StreamHandler extends MonoStreamHandler {
+
 
 	/**
 	 * Tell if the .htaccess file exists.
@@ -101,7 +98,7 @@ class Stream_Handler extends StreamHandler {
 
 		fwrite( $file_resource, $new_content );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
 		fclose( $file_resource );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
-		@chmod( $file_path, 0644 );
+		@chmod( $file_path, 0644 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		$this->htaccess_exists = true;
 

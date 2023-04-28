@@ -5,7 +5,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
-use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Logger\Logger;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
@@ -59,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )
+			->addArgument( new Logger() )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()->share( 'admin_cache_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'advanced_cache' ) )
