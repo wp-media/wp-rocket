@@ -40,10 +40,16 @@ class TestGetCloudflareIps extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['wp_error'] );
 
+		if ( is_array( $config['response']) && isset( $config['response']['response'] ) ) {
+			$response = $config['response']['response'];
+		} else {
+			$response = $config['response'];
+		}
+
 		$this->endpoints->shouldReceive( 'get_ips' )
 			->atMost()
 			->once()
-			->andReturn( $config['response'] );
+			->andReturn( $response );
 
 		if ( false === $config['transient'] ) {
 			Functions\expect( 'set_transient' )
