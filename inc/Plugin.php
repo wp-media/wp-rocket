@@ -364,6 +364,7 @@ class Plugin {
 		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
+			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
