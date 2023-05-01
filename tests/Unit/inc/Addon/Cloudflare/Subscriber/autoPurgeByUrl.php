@@ -21,6 +21,8 @@ class TestAutoPurgeByUrl extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->options_api = Mockery::mock( Options::class );
 		$this->options     = Mockery::mock( Options_Data::class );
 		$this->cloudflare  = Mockery::mock( Cloudflare::class );

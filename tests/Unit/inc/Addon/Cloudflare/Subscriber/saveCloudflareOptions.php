@@ -21,6 +21,8 @@ class TestSaveCloudflareOptions extends TestCase {
 	private $subscriber;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->stubTranslationFunctions();
 
 		$this->options_api = Mockery::mock( Options::class );

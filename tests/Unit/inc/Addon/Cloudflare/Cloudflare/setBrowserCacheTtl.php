@@ -21,6 +21,8 @@ class TestSetBrowserCacheTtl extends TestCase {
 	private $cloudflare;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->stubTranslationFunctions();
 
 		Functions\when( 'get_transient' )

@@ -21,6 +21,8 @@ class TestIsAuthValid extends TestCase {
 	private $cloudflare;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		$this->stubTranslationFunctions();
 		$this->stubEscapeFunctions();
 

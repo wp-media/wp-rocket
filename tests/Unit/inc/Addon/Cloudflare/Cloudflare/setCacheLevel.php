@@ -21,6 +21,8 @@ class TestSetCacheLevel extends TestCase {
 	private $cloudflare;
 
 	protected function setUp(): void {
+		parent::setUp();
+
 		Functions\when( 'get_transient' )
 			->justReturn( true );
 
