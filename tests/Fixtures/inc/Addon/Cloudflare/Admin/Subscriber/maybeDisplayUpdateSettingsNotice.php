@@ -48,13 +48,13 @@ return [
 			],
 			'cap' => true,
 			'transient' => [
-				'pre' => '',
+				'pre' => '<strong>WP Rocket:</strong> Optimal settings activated for Cloudflare:',
 				[
 					'result' => 'success',
 					'message' => 'test',
 				],
 			],
 		],
-		'expected' => 'html',
+		'expected' => '<strong>WP Rocket:</strong> Optimal settings activated for Cloudflare:',
 	],
 ];
