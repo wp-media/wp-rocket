@@ -13,7 +13,7 @@ return [
 				'message' => '',
 			],
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenNoCap' => [
 		'config' => [
@@ -29,7 +29,7 @@ return [
 				],
 			],
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenNoTransient' => [
 		'config' => [
@@ -39,7 +39,7 @@ return [
 			'cap' => true,
 			'transient' => false,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNoticeWhenTransient' => [
 		'config' => [

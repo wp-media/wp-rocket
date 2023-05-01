@@ -9,26 +9,23 @@ return [
 				'message' => '',
 			],
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenNoTransient' => [
 		'config' => [
 			'cap' => true,
 			'transient' => false,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNoticeWhenTransient' => [
 		'config' => [
 			'cap' => true,
 			'transient' => [
-				'result' => '',
-				'message' => '',
+				'result' => 'success',
+				'message' => '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.',
 			],
 		],
-		'expected' => [
-			'result' => '',
-			'message' => '',
-		],
+		'expected' => '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.',
 	],
 ];
