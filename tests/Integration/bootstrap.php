@@ -127,7 +127,19 @@ tests_add_filter(
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
-		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
+		if ( BootstrapManager::isGroup( 'Cloudflare' ) ) {
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+				]
+			);
+		}
+
+		if ( BootstrapManager::isGroup( 'CloudflareAdmin' ) ) {
+			define( 'WP_ADMIN', true );
 			update_option(
 				'wp_rocket_settings',
 				[
