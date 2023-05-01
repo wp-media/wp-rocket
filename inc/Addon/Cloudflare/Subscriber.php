@@ -257,6 +257,8 @@ class Subscriber implements Subscriber_Interface {
 			];
 		}
 
+		$level = $value;
+
 		if ( 'aggressive' === $result ) {
 			$level = _x( 'standard', 'Cloudflare caching level', 'rocket' );
 		}
