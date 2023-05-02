@@ -342,7 +342,7 @@ class Cloudflare {
 	/**
 	 * Get all the current Cloudflare settings for a given domain.
 	 *
-	 * @return mixed Array of Cloudflare settings, false if any error connection to Cloudflare.
+	 * @return array|WP_Error Array of Cloudflare settings, WP_Error if any error connection to Cloudflare.
 	 */
 	public function get_settings() {
 		if ( is_wp_error( $this->cloudflare_api_error ) ) {

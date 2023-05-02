@@ -40,8 +40,9 @@ class TestGetCloudflareIps extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['wp_error'] );
 
-		if ( is_array( $config['response']) && isset( $config['response']['response'] ) ) {
-			$response = $config['response']['response'];
+		if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			$body = json_decode( $config['response']['body'] );
+			$response = $body->result;
 		} else {
 			$response = $config['response'];
 		}

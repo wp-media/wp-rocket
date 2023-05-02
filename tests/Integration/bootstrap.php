@@ -128,12 +128,15 @@ tests_add_filter(
 		redefine( 'rocket_valid_key', '__return_true' );
 
 		if ( BootstrapManager::isGroup( 'Cloudflare' ) ) {
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', true );
+
 			update_option(
 				'wp_rocket_settings',
 				[
 					'do_cloudflare' => 1,
 					'cloudflare_email' => 'roger@wp-rocket.me',
 					'cloudflare_api_key' => '12345',
+					'cloudflare_zone_id' => '12234',
 				]
 			);
 		}

@@ -5,26 +5,33 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'response' => [
-				(object) [
-					'id' =>'browser_cache_ttl',
-					'value'=> 14400 ,
-				],
-				(object) [
-					'id' =>'cache_level',
-					'value'=> 'aggressive',
-				],
-				(object) [
-					'id' =>'rocket_loader',
-					'value'=> 'off',
-				],
-				(object) [
-					'id' =>'minify',
-					'value'=> (object) [
-						'js' => 'off',
-						'css' => 'off',
-						'html' => 'off',
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => [
+						(object) [
+							'id' =>'browser_cache_ttl',
+							'value'=> 14400 ,
+						],
+						(object) [
+							'id' =>'cache_level',
+							'value'=> 'aggressive',
+						],
+						(object) [
+							'id' =>'rocket_loader',
+							'value'=> 'off',
+						],
+						(object) [
+							'id' =>'minify',
+							'value'=> (object) [
+								'js' => 'off',
+								'css' => 'off',
+								'html' => 'off',
+							],
+						],
 					],
-				],
+				] ),
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -39,26 +46,33 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'response' => [
-				(object) [
-					'id' =>'browser_cache_ttl',
-					'value'=> 14400 ,
-				],
-				(object) [
-					'id' =>'cache_level',
-					'value'=> 'aggressive',
-				],
-				(object) [
-					'id' =>'rocket_loader',
-					'value'=> 'off',
-				],
-				(object) [
-					'id' =>'minify',
-					'value'=> (object) [
-						'js' => 'on',
-						'css' => 'on',
-						'html' => 'off',
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => [
+						(object) [
+							'id' =>'browser_cache_ttl',
+							'value'=> 14400 ,
+						],
+						(object) [
+							'id' =>'cache_level',
+							'value'=> 'aggressive',
+						],
+						(object) [
+							'id' =>'rocket_loader',
+							'value'=> 'off',
+						],
+						(object) [
+							'id' =>'minify',
+							'value'=> (object) [
+								'js' => 'on',
+								'css' => 'on',
+								'html' => 'off',
+							],
+						],
 					],
-				],
+				] ),
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

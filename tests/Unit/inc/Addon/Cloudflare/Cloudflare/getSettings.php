@@ -51,11 +51,18 @@ class TestGetSettings extends TestCase {
 			->get( 'cloudflare_zone_id', '' )
 			->andReturn( $config['zone_id'] );
 
+		if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			$body = json_decode( $config['response']['body'] );
+			$response = $body->result;
+		} else {
+			$response = $config['response'];
+		}
+
 		$this->endpoints->shouldReceive( 'get_settings' )
 			->with( $config['zone_id'] )
 			->atMost()
 			->once()
-			->andReturn( $config['response'] );
+			->andReturn( $response );
 
 		$result = $this->cloudflare->get_settings();
 
