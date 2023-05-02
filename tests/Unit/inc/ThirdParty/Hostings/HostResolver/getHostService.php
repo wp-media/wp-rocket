@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -15,7 +16,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetHostResolver extends TestCase {
 	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
-		unset( $_SERVER['ONECOM_DOMAIN_NAME'] );
+		unset( $_SERVER['GROUPONE_BRAND_NAME'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
 
 		parent::tearDown();
@@ -25,6 +26,12 @@ class Test_GetHostResolver extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
+		Functions\when( 'wp_unslash' )
+			->returnArg();
+
+		Functions\when( 'sanitize_text_field' )
+			->returnArg();
+
 		switch ( $expected ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -40,7 +47,7 @@ class Test_GetHostResolver extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
 			case 'onecom':
-				$_SERVER['ONECOM_DOMAIN_NAME'] = true;
+				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
 				break;
 			default:
 				break;

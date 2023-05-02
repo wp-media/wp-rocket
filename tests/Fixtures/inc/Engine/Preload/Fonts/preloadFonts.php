@@ -1,7 +1,56 @@
 <?php
 
+$html = <<<HTML
+<html>
+	<head>
+		<title>
+			WP Rocket
+		</title>
+	</head>
+	<body>
+	</body>
+</html>
+HTML;
+
+$valid_preload_fonts_options = <<<HTML
+<html>
+	<head>
+		<title>
+			WP Rocket
+		</title>
+<link rel="preload" as="font" href="http://example.org/wp-content/file.otf" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/file.ttf" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/file.svg" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" crossorigin>
+<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" crossorigin>
+	</head>
+	<body>
+	</body>
+</html>
+HTML;
+
+$valid_preload_fonts_options_wit_cdn = <<<HTML
+<html>
+	<head>
+		<title>
+			WP Rocket
+		</title>
+<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" crossorigin>
+<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" crossorigin>
+<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" crossorigin>
+<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" crossorigin>
+<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" crossorigin>
+	</head>
+	<body>
+	</body>
+</html>
+HTML;
+
 return [
 	'NowprocketQueryString'               => [
+		'buffer'   => $html,
 		'bypass'   => true,
 		'filter'   => false,
 		'settings' => [
@@ -9,10 +58,11 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => '',
+		'expected' => $html,
 	],
 
 	'DoNothingWhenFilterIsTrue'           => [
+		'buffer'   => $html,
 		'bypass'   => false,
 		'filter'   => true,
 		'settings' => [
@@ -20,10 +70,11 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => '',
+		'expected' => $html,
 	],
 
 	'emptyPreloadFontsOption'             => [
+		'buffer'   => $html,
 		'bypass'   => false,
 		'filter'   => false,
 		'settings' => [
@@ -31,9 +82,10 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => '',
+		'expected' => $html,
 	],
 	'invalidPreloadFontsOptionExtensions' => [
+		'buffer'   => $html,
 		'bypass'   => false,
 		'filter'   => false,
 		'settings' => [
@@ -45,9 +97,10 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => '',
+		'expected' => $html,
 	],
 	'validPreloadFontsOptions'            => [
+		'buffer'   => $html,
 		'bypass'   => false,
 		'filter'   => false,
 		'settings' => [
@@ -73,18 +126,10 @@ return [
 			'cdn'           => false,
 			'cdn_cnames'    => [],
 		],
-		'expected' => <<<HTML
-<link rel="preload" as="font" href="http://example.org/wp-content/file.otf" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.ttf" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.svg" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.woff?v=4.4.0" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/file.woff2" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2?v=4.4.0" crossorigin>
-<link rel="preload" as="font" href="http://example.org/wp-content/themes/paperback/inc/fontawesome/fonts/fontawesome-webfont.woff2#123" crossorigin>
-HTML
-		,
+		'expected' => $valid_preload_fonts_options,
 	],
 	'validPreloadFontsOptionsWithCDN'     => [
+		'buffer'   => $html,
 		'bypass'   => false,
 		'filter'   => false,
 		'settings' => [
@@ -101,13 +146,6 @@ HTML
 				'https://123456.rocketcdn.me',
 			],
 		],
-		'expected' => <<<HTML
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.otf" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.ttf" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.svg" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff" crossorigin>
-<link rel="preload" as="font" href="https://123456.rocketcdn.me/wp-content/file.woff2" crossorigin>
-HTML
-		,
+		'expected' => $valid_preload_fonts_options_wit_cdn,
 	],
 ];

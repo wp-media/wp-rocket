@@ -68,9 +68,14 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_reject_uri']            = [
 				[ 'exclude_pages' ],
 			];
+			$events['rocket_preload_exclude_urls']        = [
+				[ 'exclude_pages' ],
+			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
-			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
+			$events['after_rocket_clean_post_urls']       = [ 'reformat_shop_url_for_preload', 10, 2 ];
+
+			$events['rocket_exclude_post_taxonomy'] = 'exclude_product_shipping_taxonomy';
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -94,6 +99,43 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Reformat Shop URL to prevent error on preload.
+	 *
+	 * @param array   $urls urls cleared.
+	 * @param WP_Post $object post object.
+	 * @return array
+	 */
+	public function reformat_shop_url_for_preload( array $urls, $object ) {
+		$post_type = $object->post_type;
+		if ( 'product' !== $post_type ) {
+			return $urls;
+		}
+		$post_type_archive = get_post_type_archive_link( $post_type );
+		if ( ! $post_type_archive ) {
+			return $urls;
+		}
+
+		// Rename the caching filename for SSL URLs.
+		$filename = 'index';
+		if ( is_ssl() ) {
+			$filename .= '-https';
+		}
+
+		$post_type_archive = trailingslashit( $post_type_archive );
+		$index_url         = $post_type_archive . $filename . '.html';
+		$index_url_gzip    = $post_type_archive . $filename . '.html_gzip';
+		$pagination_url    = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
+
+		foreach ( $urls as $index => $url ) {
+			if ( in_array( $url, [ $index_url, $index_url_gzip, $pagination_url ], true ) ) {
+				$urls[ $index ] = $post_type_archive;
+			}
+		}
+
+		return array_unique( $urls );
 	}
 
 	/**
@@ -201,10 +243,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			return $urls;
 		}
 
-		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
+		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '?(.*)' );
 		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
-		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
-
+		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '?(.*)' );
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}
 
@@ -220,6 +261,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return array
 	 */
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
+		global $wp_rewrite;
 		$urls = [];
 
 		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
@@ -228,6 +270,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 		if ( 'publish' !== get_post_status( $page_id ) ) {
 			return $urls;
+		}
+
+		if ( $wp_rewrite->use_trailing_slashes ) {
+			$pattern = "?$pattern";
 		}
 
 		$urls = get_rocket_i18n_translated_post_urls( $page_id, $post_type, $pattern );

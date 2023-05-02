@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
+use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -13,7 +14,21 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddHiddenAsyncCssMobile extends TestCase {
 	use ProviderTrait;
+	use FilterTrait;
+
 	protected static $provider_class = 'Settings';
+
+	public function set_up()
+	{
+		parent::set_up();
+		$this->unregisterAllCallbacksExcept('rocket_hidden_settings_fields', 'add_hidden_async_css_mobile');
+	}
+
+	public function tear_down()
+	{
+		$this->restoreWpFilter('rocket_hidden_settings_fields');
+		parent::tear_down();
+	}
 
 	/**
 	 * @dataProvider providerTestData
