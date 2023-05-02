@@ -1,5 +1,4 @@
 <?php
-use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -64,52 +63,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 }
 add_action( 'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ), 'rocket_after_save_options', 10, 2 );
-
-/**
- * Create a hash from wp rocket options.
- *
- * @param array $value options.
- *
- * @return string
- */
-function rocket_create_options_hash( $value ) {
-	$removed = [
-		'cache_mobile'                => true,
-		'purge_cron_interval'         => true,
-		'purge_cron_unit'             => true,
-		'database_revisions'          => true,
-		'database_auto_drafts'        => true,
-		'database_trashed_posts'      => true,
-		'database_spam_comments'      => true,
-		'database_trashed_comments'   => true,
-		'database_all_transients'     => true,
-		'database_optimize_tables'    => true,
-		'schedule_automatic_cleanup'  => true,
-		'automatic_cleanup_frequency' => true,
-		'do_cloudflare'               => true,
-		'cloudflare_email'            => true,
-		'cloudflare_api_key'          => true,
-		'cloudflare_zone_id'          => true,
-		'cloudflare_devmode'          => true,
-		'cloudflare_auto_settings'    => true,
-		'cloudflare_old_settings'     => true,
-		'heartbeat_admin_behavior'    => true,
-		'heartbeat_editor_behavior'   => true,
-		'varnish_auto_purge'          => true,
-		'analytics_enabled'           => true,
-		'sucury_waf_cache_sync'       => true,
-		'sucury_waf_api_key'          => true,
-		'manual_preload'              => true,
-		'preload_excluded_uri'        => true,
-		'cache_reject_uri'            => true,
-	];
-
-	// Create 2 arrays to compare.
-	$value_diff = array_diff_key( $value, $removed );
-	ksort( $value_diff );
-
-	return md5( wp_json_encode( $value_diff ) );
-}
 
 /**
  * Perform actions when settings are saved.
