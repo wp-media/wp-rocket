@@ -317,4 +317,13 @@ return [
 		],
 		'expected' => '<!DOCTYPE html><html><body><img width="1" height="1" src="http://example.org/wp-content/themes/image.jpg"></body></html>'
 	],
+	'shouldAddMissingHeightWhenOnlyWidthSpecifiedWithoutoutes' => [
+		'html'     => '<!DOCTYPE html><html><body><img width=75 src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+		'config'   => [
+			'image_dimensions'                       => true,
+			'rocket_specify_image_dimensions_filter' => true,
+			'internal' => true,
+		],
+		'expected'     => '<!DOCTYPE html><html><body><img width=75 height="75" src="http://example.org/wp-content/themes/100x100image.jpg"></body></html>',
+	],
 ];
