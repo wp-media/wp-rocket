@@ -145,7 +145,7 @@ class Settings {
 	public static function get_delay_js_default_exclusions(): array {
 
 		$exclusions = [
-			'/jquery(-migrate)?((|.min|.slim|.slim.min)|.*?([0-9]+)(|.min|.slim|.slim.min))?.js',
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?$',
 			'js-(before|after)',
 		];
 
