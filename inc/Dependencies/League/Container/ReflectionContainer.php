@@ -4,7 +4,7 @@ namespace WP_Rocket\Dependencies\League\Container;
 
 use WP_Rocket\Dependencies\League\Container\Argument\{ArgumentResolverInterface, ArgumentResolverTrait};
 use WP_Rocket\Dependencies\League\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
+use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;

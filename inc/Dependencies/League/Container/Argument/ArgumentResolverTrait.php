@@ -5,7 +5,7 @@ namespace WP_Rocket\Dependencies\League\Container\Argument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Dependencies\League\Container\Exception\{ContainerException, NotFoundException};
 use WP_Rocket\Dependencies\League\Container\ReflectionContainer;
-use Psr\Container\ContainerInterface;
+use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 use ReflectionFunctionAbstract;
 use ReflectionParameter;
 

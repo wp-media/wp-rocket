@@ -10,7 +10,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\{
     ServiceProviderAggregateInterface,
     ServiceProviderInterface
 };
-use Psr\Container\ContainerInterface;
+use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
 {
