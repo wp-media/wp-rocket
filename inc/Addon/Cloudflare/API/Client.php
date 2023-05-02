@@ -163,7 +163,7 @@ class Client {
 	/**
 	 * Sets the WP_Error when request is not successful
 	 *
-	 * @param object $content Response object
+	 * @param object $content Response object.
 	 *
 	 * @return WP_Error
 	 */
