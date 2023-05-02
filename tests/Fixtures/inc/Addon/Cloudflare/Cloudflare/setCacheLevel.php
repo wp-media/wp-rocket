@@ -5,8 +5,14 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 'aggressive',
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

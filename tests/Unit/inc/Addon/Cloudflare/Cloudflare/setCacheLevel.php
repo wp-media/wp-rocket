@@ -46,11 +46,18 @@ class TestSetCacheLevel extends TestCase {
 			->get( 'cloudflare_zone_id', '' )
 			->andReturn( $config['zone_id'] );
 
+		if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			$body = json_decode( $config['response']['body'] );
+			$response = $body->result;
+		} else {
+			$response = $config['response'];
+		}
+
 		$this->endpoints->shouldReceive( 'change_cache_level' )
 			->with( $config['zone_id'], $config['value'] )
 			->atMost()
 			->once()
-			->andReturn( $config['response'] );
+			->andReturn( $response );
 
 		$result = $this->cloudflare->set_cache_level( $config['value'] );
 

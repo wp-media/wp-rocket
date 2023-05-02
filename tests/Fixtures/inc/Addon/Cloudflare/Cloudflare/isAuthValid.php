@@ -20,8 +20,16 @@ return [
 	'shouldReturnWPErrorWhenNotFound' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'name' => 'test.com',
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'name' => 'test.com',
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -30,8 +38,16 @@ return [
 	'shouldReturnTrueWhenFound' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'name' => 'example.org',
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'name' => 'example.org',
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

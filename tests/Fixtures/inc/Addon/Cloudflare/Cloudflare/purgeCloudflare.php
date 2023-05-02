@@ -4,8 +4,14 @@ return [
 	'shouldReturnTrueWhenRequestSuccessful' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

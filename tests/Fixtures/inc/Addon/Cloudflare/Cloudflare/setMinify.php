@@ -10,8 +10,14 @@ return [
 				'html' => 'off',
 				'js'   => 'on',
 			],
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

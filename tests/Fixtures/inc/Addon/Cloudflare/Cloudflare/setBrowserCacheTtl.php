@@ -5,8 +5,14 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 30,
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -16,8 +22,14 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 120,
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -27,8 +39,16 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 7200,
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'succcess' => true,
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -38,8 +58,16 @@ return [
 		'config' => [
 			'zone_id' => '12345',
 			'value'   => 172800,
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'succcess' => true,
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

@@ -46,11 +46,18 @@ class TestSetMinify extends TestCase {
 			->get( 'cloudflare_zone_id', '' )
 			->andReturn( $config['zone_id'] );
 
+		if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			$body = json_decode( $config['response']['body'] );
+			$response = $body->result;
+		} else {
+			$response = $config['response'];
+		}
+
 		$this->endpoints->shouldReceive( 'update_minify' )
 			->with( $config['zone_id'], $config['setting'] )
 			->atMost()
 			->once()
-			->andReturn( $config['response'] );
+			->andReturn( $response );
 
 		$result = $this->cloudflare->set_minify( $config['value'] );
 

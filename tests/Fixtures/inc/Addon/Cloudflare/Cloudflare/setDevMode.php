@@ -6,8 +6,14 @@ return [
 			'zone_id' => '12345',
 			'value'   => 1,
 			'setting' => 'on',
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],
@@ -18,8 +24,14 @@ return [
 			'zone_id' => '12345',
 			'value'   => 0,
 			'setting' => 'off',
-			'response' => (object) [
-				'succcess' => true,
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => '',
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 		],

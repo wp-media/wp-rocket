@@ -38,11 +38,18 @@ class TestIsAuthValid extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		if ( is_array( $config['response'] ) && isset( $config['response']['body'] ) ) {
+			$body = json_decode( $config['response']['body'] );
+			$response = $body->result;
+		} else {
+			$response = $config['response'];
+		}
+
 		$this->endpoints->shouldReceive( 'get_zones' )
 			->with( $config['zone_id'] )
 			->atMost()
 			->once()
-			->andReturn( $config['response'] );
+			->andReturn( $response );
 
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['request_error'] );

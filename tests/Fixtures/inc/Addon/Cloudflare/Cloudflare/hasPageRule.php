@@ -4,10 +4,18 @@ return [
 	'shouldReturnTrueWhenHasPageRule' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'actions' => [
-					'id' => 'cache_everything',
-				],
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'actions' => [
+							'id' => 'cache_everything',
+						],
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'request_error' => false,
 			'action_value' => 'cache_everything',
@@ -17,10 +25,18 @@ return [
 	'shouldReturnFalseWhenNotHasPageRule' => [
 		'config' => [
 			'zone_id' => '12345',
-			'response' => (object) [
-				'actions' => [
-					'id' => 'browser_check',
-				],
+			'response' => [
+				'headers' => [],
+				'body' => json_encode( (object) [
+					'success' => true,
+					'result' => (object) [
+						'actions' => [
+							'id' => 'browser_check',
+						],
+					],
+				] ),
+				'response' => '',
+				'cookies' => [],
 			],
 			'action_value' => 'cache_everything',
 			'request_error' => false,
