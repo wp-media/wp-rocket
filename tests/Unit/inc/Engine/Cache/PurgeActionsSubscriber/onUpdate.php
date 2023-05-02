@@ -6,9 +6,9 @@ use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
-use Psr\Log\LoggerInterface;
 
 
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
@@ -41,7 +41,7 @@ class Test_onUpdate extends TestCase {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
         $this->purge = Mockery::mock(Purge::class);
-        $this->logger = Mockery::mock(LoggerInterface::class);
+        $this->logger = Mockery::mock(Logger::class);
 
         $this->purgeactionssubscriber = new PurgeActionsSubscriber($this->options, $this->purge, $this->logger);
     }

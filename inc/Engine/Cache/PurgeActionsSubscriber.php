@@ -36,9 +36,9 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data    $options WP Rocket options instance.
-	 * @param Purge           $purge Purge instance.
-	 * @param Logger $logger Logger instance.
+	 * @param Options_Data $options WP Rocket options instance.
+	 * @param Purge        $purge Purge instance.
+	 * @param Logger       $logger Logger instance.
 	 */
 	public function __construct( Options_Data $options, Purge $purge, Logger $logger ) {
 		$this->options = $options;
@@ -215,14 +215,15 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	/**
 	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
-	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
-	 * @since 3.7
-	 *
+	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
+	 * @since 3.7
+	 *
+	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 */
-	public function on_update($new_version, $old_version) {
+	public function on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.12', '>=' ) ) {
 			return;
 		}
