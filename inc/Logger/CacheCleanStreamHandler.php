@@ -17,7 +17,7 @@ class CacheCleanStreamHandler extends StreamHandler {
 		}
 
 		if ( ! key_exists( 'context', $record ) || ! key_exists( 'type', $record['context'] ) ) {
-			return true;
+			return false;
 		}
 		return 'cache-clearing' === $record['context']['type'];
 	}
