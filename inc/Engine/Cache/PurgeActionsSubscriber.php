@@ -1,10 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
-use Psr\Log\LoggerInterface;
 use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Subscriber for the cache purge actions
@@ -29,7 +29,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	/**
 	 * Logger instance.
 	 *
-	 * @var LoggerInterface
+	 * @var Logger
 	 */
 	private $logger;
 
@@ -38,9 +38,9 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data    $options WP Rocket options instance.
 	 * @param Purge           $purge Purge instance.
-	 * @param LoggerInterface $logger Logger instance.
+	 * @param Logger $logger Logger instance.
 	 */
-	public function __construct( Options_Data $options, Purge $purge, LoggerInterface $logger ) {
+	public function __construct( Options_Data $options, Purge $purge, Logger $logger ) {
 		$this->options = $options;
 		$this->purge   = $purge;
 		$this->logger  = $logger;
