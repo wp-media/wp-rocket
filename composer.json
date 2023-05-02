@@ -161,6 +161,7 @@
 			"@test-integration",
 			"@test-integration-adminonly",
 			"@test-integration-cloudflare",
+			"@test-integration-cloudflareadmin",
 			"@test-integration-bb",
 			"@test-integration-elementor",
 			"@test-integration-hummingbird",
