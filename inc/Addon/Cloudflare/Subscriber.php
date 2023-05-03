@@ -116,12 +116,14 @@ class Subscriber implements Subscriber_Interface {
 	 * Automatically set Cloudflare development mode value to off after 3 hours to reflect Cloudflare behaviour.
 	 */
 	public function deactivate_devmode() {
-		$this->options->set( 'cloudflare_devmode', 'off' );
+		$this->options->set( 'cloudflare_devmode', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 
 	/**
 	 * Purge Cloudflare cache automatically if Cache Everything is set as a Page Rule.
+	 *
+	 * @return void
 	 */
 	public function auto_purge() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
