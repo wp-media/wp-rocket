@@ -30,18 +30,18 @@ class TestDeactivateDevmode extends TestCase {
 
 	public function testShouldDoExpected() {
 		$this->options->expects()
-			->set( 'cloudflare_devmode', 'off' )
+			->set( 'cloudflare_devmode', 0 )
 			->once();
 
 		$this->options->expects()
 			->get_options()
 			->andReturn( [
-				'cloudflare_devmode' => 'off'
+				'cloudflare_devmode' => 0
 			] );
 
 		$this->options_api->expects()
 			->set( 'settings', [
-				'cloudflare_devmode' => 'off'
+				'cloudflare_devmode' => 0
 			] )
 			->once();
 
