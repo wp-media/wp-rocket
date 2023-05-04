@@ -36,6 +36,6 @@ class TranslatePress implements Subscriber_Interface {
 
 		$url_language = $url_converter->get_url_for_language( $language );
 
-		return $url === $url_language ? $url_language : $home_url;
+		return untrailingslashit( $url ) === untrailingslashit( $url_language ) ? $url_language : $home_url;
 	}
 }
