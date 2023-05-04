@@ -337,7 +337,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'result'  => 'success',
 			// translators: %s is the message returned by the CloudFlare API.
-			'message' => sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $result ),
+			'message' => sprintf( __( 'Cloudflare browser cache set to %s', 'rocket' ), $result ),
 		];
 	}
 
