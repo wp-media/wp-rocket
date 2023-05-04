@@ -446,15 +446,15 @@ class Subscriber implements Subscriber_Interface {
 				__( '%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:', 'rocket' ),
 				'<strong>',
 				'</strong>'
-			);
+			) . '<br>';
 
 			if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
 				$result['pre'] = sprintf(
 					// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-					__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings.', 'rocket' ),
+					__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings:', 'rocket' ),
 					'<strong>',
 					'</strong>'
-				);
+				) . '<br>';
 			}
 
 			$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
