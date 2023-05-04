@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Optimization\DelayJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Logger\Logger;
 
 class HTML {
 	use RegexTrait;
@@ -58,14 +59,23 @@ class HTML {
 	];
 
 	/**
+	 * Logger instance.
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
+
+	/**
 	 * Creates an instance of HTML.
 	 *
 	 * @param Options_Data $options Plugin options instance.
 	 * @param DataManager  $data_manager DataManager instance.
+	 * @param Logger       $logger Logger instance.
 	 */
-	public function __construct( Options_Data $options, DataManager $data_manager ) {
+	public function __construct( Options_Data $options, DataManager $data_manager, Logger $logger ) {
 		$this->options      = $options;
 		$this->data_manager = $data_manager;
+		$this->logger       = $logger;
 	}
 
 	/**
@@ -196,6 +206,7 @@ class HTML {
 	public function replace_scripts( $matches ): string {
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
+				$this->logger->debug( "DelayJS: Script {$matches[0]} excluded by $pattern" );
 				return $matches[0];
 			}
 		}
@@ -251,7 +262,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<head\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -261,7 +272,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<html\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -270,7 +281,7 @@ class HTML {
 			return $replaced_html;
 		}
 
-		$replaced_html = preg_replace( '/(<\w+)/', "${matches[0]}\${1}", $replaced_html, 1 );
+		$replaced_html = preg_replace( '/(<\w+)/', "{$matches[0]}\${1}", $replaced_html, 1 );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;

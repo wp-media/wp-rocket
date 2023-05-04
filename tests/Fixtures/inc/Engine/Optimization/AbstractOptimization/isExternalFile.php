@@ -56,9 +56,11 @@ return [
 		'config' => [
 			'url' => 'url',
 			'file' => [
-				'path' => 'path'
+				'path' => 'path',
+				'host' => 'host',
 			],
 			'parse_content' => true,
+			'collect_hosts' => true,
 			'content_url' => 'content_url',
 			'url_host' => 'url_host',
 			'url_parsed' => [
@@ -69,11 +71,11 @@ return [
 				'js'
 			],
 			'cdn_hosts' => [
-				'exmaple.com'
+
 			],
 			'lang_url' => 'en.exmaple.com',
 			'lang_hosts' => [
-				'en.exmaple.com'
+
 			]
 		],
 		'expected' => true,

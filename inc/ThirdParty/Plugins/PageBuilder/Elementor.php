@@ -59,6 +59,7 @@ class Elementor implements Subscriber_Interface {
 			'wp_rocket_loaded'                            => 'remove_widget_callback',
 			'rocket_exclude_css'                          => 'exclude_post_css',
 			'elementor/core/files/clear_cache'            => 'clear_cache',
+			'elementor/maintenance_mode/mode_changed'     => 'clear_cache',
 			'update_option__elementor_global_css'         => 'clear_cache',
 			'delete_option__elementor_global_css'         => 'clear_cache',
 			'rocket_buffer'                               => [ 'add_fix_animation_script', 28 ],

@@ -4,6 +4,7 @@ namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
 
 /**
@@ -65,6 +66,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['woocommerce_save_product_variation'] = 'clean_cache_after_woocommerce_save_product_variation';
 			$events['transition_post_status']             = [ 'maybe_exclude_page', 10, 3 ];
 			$events['rocket_cache_reject_uri']            = [
+				[ 'exclude_pages' ],
+			];
+			$events['rocket_preload_exclude_urls']        = [
 				[ 'exclude_pages' ],
 			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
@@ -238,10 +242,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		if ( ! function_exists( 'wc_get_page_id' ) ) {
 			return $urls;
 		}
-		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
-		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
-		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 
+		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '?(.*)' );
+		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
+		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '?(.*)' );
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}
 
@@ -257,6 +261,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return array
 	 */
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
+		global $wp_rewrite;
 		$urls = [];
 
 		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
@@ -265,6 +270,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 		if ( 'publish' !== get_post_status( $page_id ) ) {
 			return $urls;
+		}
+
+		if ( $wp_rewrite->use_trailing_slashes ) {
+			$pattern = "?$pattern";
 		}
 
 		$urls = get_rocket_i18n_translated_post_urls( $page_id, $post_type, $pattern );
