@@ -356,6 +356,7 @@ class Plugin {
 			'perfmatters',
 			'rapidload',
 			'themify',
+			'wpgeotargeting',
 		];
 
 		$host_type = HostResolver::get_host_service();
