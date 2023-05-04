@@ -69,18 +69,21 @@ class Fonts implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_head' => [ 'preload_fonts' ],
+			'rocket_buffer' => [ 'preload_fonts', 20 ],
 		];
 	}
 
 	/**
 	 * Add the required <link/> tags used to preload fonts.
 	 *
+	 * @param string $html html buffer.
+	 * @return string
+	 *
 	 * @since 3.6
 	 */
-	public function preload_fonts() {
+	public function preload_fonts( $html ): string {
 		if ( ! $this->is_allowed() ) {
-			return;
+			return $html;
 		}
 
 		$fonts = $this->options->get( 'preload_fonts', [] );
@@ -96,18 +99,22 @@ class Fonts implements Subscriber_Interface {
 		$fonts = array_filter( $fonts );
 
 		if ( empty( $fonts ) ) {
-			return;
+			return $html;
 		}
 
 		$base_url = get_rocket_parse_url( home_url() );
 		$base_url = "{$base_url['scheme']}://{$base_url['host']}";
 
+		$preloads = '</title>';
+
 		foreach ( array_unique( $fonts ) as $font ) {
-			printf(
+			$preloads .= sprintf(
 				"\n<link rel=\"preload\" as=\"font\" href=\"%s\" crossorigin>",
 				esc_url( $this->cdn->rewrite_url( $base_url . $font ) )
 			);
 		}
+
+		return preg_replace( '#</title>#', $preloads, $html, 1 );
 	}
 
 	/**

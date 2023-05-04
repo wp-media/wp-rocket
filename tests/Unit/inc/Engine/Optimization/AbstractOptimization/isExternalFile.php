@@ -22,8 +22,7 @@ class Test_IsExternalFile extends TestCase {
 		Functions\expect('get_rocket_parse_url')->with($config['url'])->andReturn($config['file']);
 		$this->configureParseContent($config);
 		$this->configureCollectHosts($config);
-		$this->assertSame($expected, $this->callProtectedMethod($this->optimization, 'is_external_file', array
-		($config['url'])));
+		$this->assertSame($expected, $this->callProtectedMethod($this->optimization, 'is_external_file', array($config['url'])));
 	}
 
 	protected function configureParseContent($config) {

@@ -70,10 +70,11 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                     => [ 'convert_to_webp', 16 ],
-			'rocket_disable_webp_cache'         => 'maybe_disable_webp_cache',
-			'rocket_third_party_webp_change'    => 'sync_webp_cache_with_third_party_plugins',
-			'rocket_preload_before_preload_url' => 'add_accept_header',
+			'rocket_buffer'                               => [ 'convert_to_webp', 16 ],
+			'rocket_disable_webp_cache'                   => 'maybe_disable_webp_cache',
+			'rocket_third_party_webp_change'              => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_preload_before_preload_url'           => 'add_accept_header',
+			'rocket_lazyload_youtube_thumbnail_extension' => 'change_youtube_thumbnail',
 		];
 	}
 
@@ -153,6 +154,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		 * @param bool   $has_webp True if the page contains webp files. False otherwise.
 		 * @param string $html     The page’s html contents.
 		 */
+
 		$has_webp = apply_filters( 'rocket_page_has_webp_files', $has_webp, $html );
 
 		if ( $has_webp ) {
@@ -172,7 +174,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_webp_cache( $disable_webp_cache ): bool {
-		return $disable_webp_cache && ! empty( $this->get_plugins_serving_webp() ) ? true : (bool) $disable_webp_cache;
+		return $disable_webp_cache || ! empty( $this->get_plugins_serving_webp() );
 	}
 
 	/**
@@ -518,6 +520,14 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$content_dir = trailingslashit( rocket_get_constant( 'WP_CONTENT_DIR' ) );
 		$list        = [ $content_url => $content_dir ];
 
+		$upload     = wp_upload_dir();
+		$upload_dir = trailingslashit( $upload['basedir'] );
+
+		if ( strpos( $upload_dir, $content_dir ) === false ) {
+			$upload_url          = preg_replace( '@^https?:@', '', trailingslashit( $upload['baseurl'] ) );
+			$list[ $upload_url ] = $upload_dir;
+		}
+
 		/**
 		 * Filter the list of URL/path associations.
 		 * The URLs with the most levels must come first.
@@ -571,4 +581,19 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 
 		return $checks;
 	}
+
+	/**
+	 * Change Youtube thumbnail extension.
+	 *
+	 * @param string $extension extension from the thumbnail.
+	 *
+	 * @return string
+	 */
+	public function change_youtube_thumbnail( $extension ) {
+		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
+			return $extension;
+		}
+		return 'webp';
+	}
+
 }

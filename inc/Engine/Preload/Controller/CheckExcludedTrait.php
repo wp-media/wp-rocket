@@ -48,6 +48,7 @@ trait CheckExcludedTrait {
 		}
 
 		$regexes = array_unique( $regexes );
+		$url     = strtok( $url, '?' );
 		$url     = user_trailingslashit( $url );
 
 		foreach ( $regexes as $regex ) {

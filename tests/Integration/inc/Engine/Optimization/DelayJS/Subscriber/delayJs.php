@@ -25,7 +25,8 @@ class Test_DelayJs extends TestCase {
 	}
 
 	public function tear_down() {
-		unset( $GLOBALS['wp'] );
+		unset( $_GET['nowprocket'] );
+		
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
 		delete_transient( 'wpr_dynamic_lists' );
@@ -57,16 +58,8 @@ class Test_DelayJs extends TestCase {
 
 		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-			'public_query_vars' => [
-				'embed',
-			],
-		];
-
 		if ( $config['bypass'] ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->assertSame(

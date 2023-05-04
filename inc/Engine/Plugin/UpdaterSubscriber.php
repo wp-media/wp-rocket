@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Plugin;
 
 use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Error;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
@@ -428,6 +429,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public function delete_rocket_update_data_cache() {
 		delete_site_transient( $this->cache_transient_name );
 	}
+
+
 
 	/**
 	 * Do the rollback

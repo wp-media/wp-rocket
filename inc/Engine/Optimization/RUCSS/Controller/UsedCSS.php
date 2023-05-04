@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
@@ -782,6 +782,33 @@ class UsedCSS {
 	 */
 	public function get_not_completed_count() {
 		return $this->used_css_query->get_not_completed_count();
+	}
+
+	/**
+	 * Clear failed urls.
+	 *
+	 * @return void
+	 */
+	public function clear_failed_urls() {
+		$rows = $this->used_css_query->get_failed_rows();
+
+		if ( empty( $rows ) ) {
+			return;
+		}
+
+		$failed_urls = [];
+
+		foreach ( $rows as  $row ) {
+			$failed_urls[] = $row->url;
+			$this->used_css_query->revert_to_pending( $row->id );
+		}
+
+		/**
+		 * Fires after clearing failed urls.
+		 *
+		 * @param array $urls Failed urls.
+		 */
+		do_action( 'rocket_rucss_after_clearing_failed_url', $failed_urls );
 	}
 
 	/**
