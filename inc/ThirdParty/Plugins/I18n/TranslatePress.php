@@ -31,7 +31,7 @@ class TranslatePress implements Subscriber_Interface {
 	 */
 	public function detect_homepage( $home_url, $url ) {
 
-		$url_converter = new TRP_Url_Converter( (new TRP_Settings())->get_settings() );
+		$url_converter = new TRP_Url_Converter( ( new TRP_Settings() )->get_settings() );
 		$language      = $url_converter->get_lang_from_url_string( $url );
 
 		$url_language = $url_converter->get_url_for_language( $language );
