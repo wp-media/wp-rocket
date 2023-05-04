@@ -43,6 +43,7 @@ class Themify extends ThirdpartyTheme {
 			'admin_init'        => 'disabling_concat_on_rucss',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => 'disabling_concat_on_rucss',
 			'themify_save_data' => 'disable_concat_on_saving_data',
+			'themify_dev_mode'  => 'maybe_enable_dev_mode',
 		];
 	}
 
@@ -69,6 +70,7 @@ class Themify extends ThirdpartyTheme {
 		$data = themify_get_data();
 
 		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
+			$this->maybe_disable( $data );
 			return;
 		}
 
@@ -80,8 +82,41 @@ class Themify extends ThirdpartyTheme {
 			return;
 		}
 
+		$data['setting-dev-mode']         = true;
 		$data['setting-dev-mode-concate'] = true;
 
 		themify_set_data( $data );
+	}
+
+	/**
+	 * Maybe disable concate CSS.
+	 *
+	 * @param array $data themify settings.
+	 * @return void
+	 */
+	protected function maybe_disable( array $data ) {
+		if ( ! key_exists( 'setting-dev-mode-concate', $data ) || ! $data['setting-dev-mode-concate'] ) {
+			return;
+		}
+
+		$data['setting-dev-mode-concate'] = false;
+		$data['setting-dev-mode']         = false;
+
+		themify_set_data( $data );
+	}
+
+	/**
+	 * Enable the dev mode when RUCSS is activated.
+	 *
+	 * @param bool $is_enabled Is dev mode enabled.
+	 * @return bool
+	 */
+	public function maybe_enable_dev_mode( $is_enabled ) {
+
+		if ( $this->options->get( 'remove_unused_css', false ) ) {
+			return true;
+		}
+
+		return $is_enabled;
 	}
 }
