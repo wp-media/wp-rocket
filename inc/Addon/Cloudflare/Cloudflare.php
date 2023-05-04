@@ -332,12 +332,12 @@ class Cloudflare {
 			return $result;
 		}
 
-		switch( $value ) {
+		switch ( $value ) {
 			case 'on':
 				wp_schedule_single_event( time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
 				break;
 			case 'off':
-				$next_event = wp_next_scheduled ( 'rocket_cron_deactivate_cloudflare_devmode' );
+				$next_event = wp_next_scheduled( 'rocket_cron_deactivate_cloudflare_devmode' );
 
 				if ( false !== $next_event ) {
 					wp_unschedule_event( $next_event, 'rocket_cron_deactivate_cloudflare_devmode' );
