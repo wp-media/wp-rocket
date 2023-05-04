@@ -38,8 +38,12 @@ class TestSetDevMode extends TestCase {
 
 		$result = $this->cloudflare->set_devmode( $config['value'] );
 
-		if ( 1 === $config['value'] ) {
-			$this->assertNotFalse( wp_get_scheduled_event( 'rocket_cron_deactivate_cloudflare_devmode' ) );
+		if ( 'error' !== $expected ) {
+			if ( 1 === $config['value'] ) {
+				$this->assertNotFalse( wp_next_scheduled( 'rocket_cron_deactivate_cloudflare_devmode' ) );
+			} else {
+				$this->assertFalse( wp_next_scheduled( 'rocket_cron_deactivate_cloudflare_devmode' ) );
+			}
 		}
 
 		if ( 'error' === $expected ) {

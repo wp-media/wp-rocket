@@ -59,9 +59,17 @@ class TestSetDevMode extends TestCase {
 			->once()
 			->andReturn( $response );
 
-		if ( 1 === $config['value'] ) {
-			Functions\expect( 'wp_schedule_single_event' )
-				->once();
+
+		if( 'error' !== $expected) {
+			if ( 1 === $config['value'] ) {
+				Functions\expect( 'wp_schedule_single_event' )
+					->once();
+			} else {
+				Functions\when( 'wp_next_scheduled' )
+					->justReturn( 12345 );
+				Functions\expect( 'wp_unschedule_event' )
+					->once();
+			}
 		}
 
 		$result = $this->cloudflare->set_devmode( $config['value'] );

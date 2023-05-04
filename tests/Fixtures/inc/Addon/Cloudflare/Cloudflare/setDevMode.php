@@ -40,8 +40,8 @@ return [
 	'shouldReturnWPErrorWhenError' => [
 		'config' => [
 			'zone_id' => '12345',
-			'value' => 0,
-			'setting' => 'off',
+			'value' => 1,
+			'setting' => 'on',
 			'response' => new WP_Error( 'error' ),
 			'request_error' => true,
 		],
