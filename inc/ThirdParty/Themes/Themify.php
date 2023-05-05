@@ -79,7 +79,7 @@ class Themify extends ThirdpartyTheme {
 			define( 'THEMIFY_DEV', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 		}
 
-		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] ) {
+		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && $data['setting-dev-mode'] ) {
 			return;
 		}
 

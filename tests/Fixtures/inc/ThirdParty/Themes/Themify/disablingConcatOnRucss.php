@@ -36,6 +36,7 @@ return [
 		'config' => [
 			'value' => [
 				'setting-dev-mode-concate' => true,
+				'setting-dev-mode' => true,
 				'test' => true,
 			],
 			'need_add' => false,
@@ -45,6 +46,7 @@ return [
 		'expected' => [
 			'value' => [
 				'setting-dev-mode-concate' => true,
+				'setting-dev-mode' => true,
 				'test' => true,
 			]
 		]
