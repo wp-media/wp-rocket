@@ -20,6 +20,7 @@ return [
 		],
 		'expected' => [
 			'test' => true,
+			'setting-dev-mode' => true,
 			'setting-dev-mode-concate' => true
 		]
 	],
