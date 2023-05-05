@@ -39,7 +39,6 @@ class Themify extends ThirdpartyTheme {
 		}
 
 		return [
-			'after_setup_theme'  => 'disabling_concat_on_rucss',
 			'after_switch_theme' => 'disabling_concat_on_rucss',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => 'disabling_concat_on_rucss',
 			'themify_save_data'  => 'disable_concat_on_saving_data',
