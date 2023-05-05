@@ -121,6 +121,7 @@ class Test_CheckJobStatus extends TestCase {
 				$this->api->expects()->add_to_queue( $row_details->url, [
 					'treeshake'      => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile'      => $row_details->is_mobile,
 					'is_home'        => $row_details->is_home,
 				] )

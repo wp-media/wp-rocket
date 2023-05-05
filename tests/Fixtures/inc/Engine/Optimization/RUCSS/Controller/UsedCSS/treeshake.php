@@ -25,9 +25,11 @@ return [
 			],
 			'create_new_job' => [
 				'safelist' => [],
+				'skipped_attr' => [],
 				'config' => [
 					'treeshake' => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile' => false,
 					'is_home' => true,
 				],
@@ -58,9 +60,11 @@ return [
 			],
 			'create_new_job' => [
 				'safelist' => [],
+				'skipped_attr' => [],
 				'config' => [
 					'treeshake' => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile' => true,
 					'is_home' => true,
 				],
