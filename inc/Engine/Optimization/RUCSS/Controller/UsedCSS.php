@@ -189,18 +189,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Checks if the page HTML is valid or not.
-	 * Valid here means that it has a closing title tag.
-	 *
-	 * @param string $html Page HTML.
-	 *
-	 * @return bool
-	 */
-	private function is_valid_html( string $html ) {
-		return (bool) preg_match( '#</title>#iU', $html );
-	}
-
-	/**
 	 * Start treeshaking the current page.
 	 *
 	 * @param string $html Buffet HTML for current page.
@@ -216,7 +204,7 @@ class UsedCSS {
 		$clean_html = $this->hide_noscripts( $clean_html );
 		$clean_html = $this->hide_scripts( $clean_html );
 
-		if ( ! $this->is_valid_html( $clean_html ) ) {
+		if ( ! $this->html_has_title_tag( $clean_html ) ) {
 			return $html;
 		}
 
