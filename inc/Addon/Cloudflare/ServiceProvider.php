@@ -39,11 +39,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		// If the option is not enabled, bail out. Don't load the addon.
-		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
-			return;
-		}
-
 		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? rocket_get_constant( 'WP_ROCKET_CF_API_KEY', '' ) : $options->get( 'cloudflare_api_key', '' );
 
 		$this->getContainer()->add( 'cloudflare_auth', APIKey::class )

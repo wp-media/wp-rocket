@@ -258,7 +258,7 @@ class Plugin {
 	private function init_common_subscribers() {
 		$this->container->addServiceProvider( CapabilitiesServiceProvider::class );
 		$this->container->addServiceProvider( AddonServiceProvider::class );
-		$this->container->addServiceProvider( CloudflareServiceProvider::class );
+
 		$this->container->addServiceProvider( VarnishServiceProvider::class );
 		$this->container->addServiceProvider( PreloadServiceProvider::class );
 		$this->container->addServiceProvider( PreloadLinksServiceProvider::class );
@@ -367,6 +367,8 @@ class Plugin {
 		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
+			$this->container->addServiceProvider( CloudflareServiceProvider::class );
+
 			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
