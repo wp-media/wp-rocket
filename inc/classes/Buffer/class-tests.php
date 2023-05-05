@@ -197,7 +197,7 @@ class Tests {
 
 		// Don’t process with query strings parameters, but the processed content is served if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking.
 		if ( $this->has_test( 'query_string' ) && ! $this->can_process_query_string() ) {
-			$this->set_error( 'Query string URL is excluded.' );
+			$this->set_error( 'Query string URL is excluded.' . PHP_EOL . print_r( $_GET, true ) );// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r, WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 

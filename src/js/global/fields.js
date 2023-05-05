@@ -259,4 +259,37 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
+	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
+	});
+
+	$('.wpr-multiple-select .wpr-checkbox').click(function (e) {
+		const checkbox = $(this).find('input');
+		const is_checked = checkbox.attr('checked') !== undefined;
+		checkbox.attr('checked', is_checked ? null : 'checked' );
+		const sub_checkboxes = $(checkbox).closest('.wpr-list').find('.wpr-list-body input[type="checkbox"]');
+		if(checkbox.hasClass('wpr-main-checkbox')) {
+			$.map(sub_checkboxes, checkbox => {
+				$(checkbox).attr('checked', is_checked ? null : 'checked' );
+			});
+			return;
+		}
+		const main_checkbox = $(checkbox).closest('.wpr-list').find('.wpr-main-checkbox');
+
+		const sub_checked =  $.map(sub_checkboxes, checkbox => {
+			if($(checkbox).attr('checked') === undefined) {
+				return ;
+			}
+			return checkbox;
+		});
+		main_checkbox.attr('checked', sub_checked.length === sub_checkboxes.length ? 'checked' : null );
+	});
+
+	if ( $( '.wpr-main-checkbox' ).length > 0 ) {
+		$('.wpr-main-checkbox').each((checkbox_key, checkbox) => {
+			let parent_list = $(checkbox).parents('.wpr-list');
+			let not_checked = parent_list.find( '.wpr-list-body input[type=checkbox]:not(:checked)' ).length;
+			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
+		});
+	}
 });

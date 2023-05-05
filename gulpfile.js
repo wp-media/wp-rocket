@@ -26,7 +26,6 @@ const compile_sass_rtl = (name, minify = false) => {
       .pipe(gulp.dest('assets/css'));
 }
 
-
 const build_sass_admin_unmin = () => {
 	return compile_sass_admin('wpr-admin.css');
 }
@@ -151,12 +150,10 @@ gulp.task('watch', function () {
 
 gulp.task('default', gulp.parallel('watch', 'sass:watch', 'bundle:unminify'));
 
-
-
 /** Tasks for deployment */
 const build_sass_admin = () => {
 	return compile_sass_admin('wpr-admin.min.css', true);
-	
+
 }
 const build_sass_rtl = () => {
 	return compile_sass_rtl('wpr-admin-rtl.min.css', true);

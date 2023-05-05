@@ -347,6 +347,7 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'cache_config',
 			'uncode',
 			'rocket_lazy_load',
 			'cache_config',
@@ -354,6 +355,7 @@ class Plugin {
 			'admin_api_subscriber',
 			'perfmatters',
 			'rapidload',
+			'wpgeotargeting',
 		];
 
 		$host_type = HostResolver::get_host_service();

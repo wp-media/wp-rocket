@@ -75,8 +75,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function schedule_clean_not_commonly_used_rows() {
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
 
-		if ( wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
+		if ( '' === $delay || wp_next_scheduled( 'rocket_preload_clean_rows_time_event' ) ) {
 			return;
 		}
 
@@ -224,7 +230,28 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_old_rows() {
-		$this->query->remove_all_not_accessed_rows();
+		/**
+		 * Delay before the not accessed row is deleted.
+		 *
+		 * @param string $delay delay before the not accessed row is deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_preload_delay_delete_non_accessed', '1 month' );
+
+		$parts = explode( ' ', $delay );
+
+		if ( '' === $delay || '0' === $delay ) {
+			return;
+		}
+
+		$value = 1;
+		$unit  = 'month';
+
+		if ( count( $parts ) === 2 && $parts[0] >= 0 ) {
+			$value = $parts[0];
+			$unit  = $parts[1];
+		}
+
+		$this->query->remove_all_not_accessed_rows( $value, $unit );
 	}
 
 	/**

@@ -41,7 +41,7 @@ function rocket_export_options() {
  * @since 2.7
  *
  * @param  string $key    The option name.
- * @param  string $value  The value of the option.
+ * @param  mixed  $value  The value of the option.
  * @return void
  */
 function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -246,6 +246,14 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 	if ( ! $uris ) {
 		return '';
 	}
+
+	$uris = array_map(
+			function ( $uri ) {
+				// Sanitize URIs and remove single quote from them to avoid syntax errors in .htaccess and php config file.
+				return str_replace( "'", '', esc_url_raw( $uri ) );
+			},
+		$uris
+		);
 
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {

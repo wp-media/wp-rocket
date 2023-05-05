@@ -34,6 +34,8 @@ use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
+use WP_Rocket\ThirdParty\Plugins\WpDiscuz;
+use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
@@ -97,6 +99,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'the_events_calendar',
 		'perfmatters',
 		'rapidload',
+		'wpgeotargeting',
 	];
 
 	/**
@@ -246,7 +249,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'perfmatters', Perfmatters::class )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
-			->share( 'rapidload', RapidLoad::class )
-			->addTag( 'common_subscriber' );
+			->share( 'rapidload', RapidLoad::class );
+
+		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }
