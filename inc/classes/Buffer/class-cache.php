@@ -751,6 +751,13 @@ class Cache extends Abstract_Buffer {
 	 */
 	private function maybe_allow_wp_redirect(): bool {
 
+		if ( ! preg_match( '#wp\\-json#', $this->config->get_config( 'cache_reject_uri' ) )
+			&&
+			preg_match( '#wp-json/wp/v[0-9]+(/|)$#', $this->tests->get_request_uri_base() )
+		) {
+			return false;
+		}
+
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 
 		// Last character of permalink.
