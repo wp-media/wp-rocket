@@ -71,8 +71,8 @@
 		"wpackagist-plugin/pdf-embedder": "^4.6",
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
-		"wpackagist-plugin/woocommerce": "^5.3",
-		"wpackagist-plugin/wp-smushit": "^3.0"
+		"wpackagist-plugin/woocommerce": "^7",
+		"wpackagist-plugin/wp-smushit": "^3"
 	},
 	"autoload": {
 		"classmap": [
@@ -96,7 +96,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-		  	"./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
+		    "./inc/Dependencies/ActionScheduler/": ["woocommerce/action-scheduler"],
 			  "vendor/{$vendor}/{$name}/": ["type:wordpress-plugin"]
 		},
 		"mozart": {
