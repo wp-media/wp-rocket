@@ -71,6 +71,15 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
+		/**
+		 * Filters the display of the RocketCDN status.
+		 *
+		 * @param bool $display_rocketcdn_status; true to display, false otherwise.
+		 */
+		if ( ! apply_filters( 'rocket_display_rocketcdn_status', true ) ) {
+			return;
+		}
+
 		if ( $this->is_white_label_account() ) {
 			return;
 		}

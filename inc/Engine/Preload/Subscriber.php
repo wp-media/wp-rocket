@@ -94,31 +94,34 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'update_option_' . WP_ROCKET_SLUG     => [
+			'update_option_' . WP_ROCKET_SLUG        => [
 				[ 'maybe_load_initial_sitemap', 10, 2 ],
 				[ 'maybe_cancel_preload', 10, 2 ],
 			],
-			'rocket_after_process_buffer'         => 'update_cache_row',
-			'rocket_deactivation'                 => 'on_deactivation',
-			'permalink_structure_changed'         => 'on_permalink_changed',
-			'wp_rocket_upgrade'                   => [ 'on_update', 16, 2 ],
-			'rocket_rucss_complete_job_status'    => 'clean_url',
-			'rocket_rucss_after_clearing_usedcss' => [ 'clean_url', 20 ],
-			'rocket_after_automatic_cache_purge'  => 'preload_after_automatic_cache_purge',
-			'after_rocket_clean_post'             => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_term'             => [ 'clean_partial_cache', 10, 3 ],
-			'after_rocket_clean_file'             => 'clean_url',
-			'set_404'                             => 'delete_url_on_not_found',
-			'rocket_after_clean_terms'            => 'clean_urls',
-			'after_rocket_clean_domain'           => 'clean_full_cache',
-			'delete_post'                         => 'delete_post_preload_cache',
-			'pre_delete_term'                     => 'delete_term_preload_cache',
-			'rocket_preload_lock_url'             => 'lock_url',
-			'rocket_preload_unlock_url'           => 'unlock_url',
-			'rocket_preload_exclude_urls'         => [
+			'rocket_after_process_buffer'            => 'update_cache_row',
+			'rocket_deactivation'                    => 'on_deactivation',
+			'permalink_structure_changed'            => 'on_permalink_changed',
+			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
+			'rocket_rucss_complete_job_status'       => 'clean_url',
+			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url', 20 ],
+			'rocket_after_automatic_cache_purge'     => 'preload_after_automatic_cache_purge',
+			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_term'                => [ 'clean_partial_cache', 10, 3 ],
+			'after_rocket_clean_file'                => 'clean_url',
+			'set_404'                                => 'delete_url_on_not_found',
+			'rocket_after_clean_terms'               => 'clean_urls',
+			'after_rocket_clean_domain'              => 'clean_full_cache',
+			'delete_post'                            => 'delete_post_preload_cache',
+			'pre_delete_term'                        => 'delete_term_preload_cache',
+			'rocket_preload_format_url'              => 'format_preload_url',
+			'rocket_preload_lock_url'                => 'lock_url',
+			'rocket_preload_unlock_url'              => 'unlock_url',
+			'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
+			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
+			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 		];
 	}
 
@@ -184,17 +187,15 @@ class Subscriber implements Subscriber_Interface {
 
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
-		if ( $this->query->is_preloaded( $url ) ) {
-			$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
+		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
-			/**
-			 * Fires when the preload from an URL is completed.
-			 *
-			 * @param string $url URL preladed.
-			 * @param string $device Device from the cache.
-			 */
-			do_action( 'rocket_preload_completed', $url, $detected );
-		}
+		/**
+		 * Fires when the preload from an URL is completed.
+		 *
+		 * @param string $url URL preladed.
+		 * @param string $device Device from the cache.
+		 */
+		do_action( 'rocket_preload_completed', $url, $detected );
 
 		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
@@ -232,6 +233,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_permalink_changed() {
 		$this->query->remove_all();
+		$this->queue->cancel_pending_jobs();
 		$this->controller->load_initial_sitemap();
 	}
 
@@ -393,6 +395,17 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Remove index from url.
+	 *
+	 * @param string $url url to reformat.
+	 *
+	 * @return string
+	 */
+	public function format_preload_url( string $url ) {
+		return preg_replace( '/(index(-https)?\.html$)|(index(-https)?\.html_gzip$)/', '', $url );
+	}
+
+	/**
 	 * Lock a URL.
 	 *
 	 * @param string $url URL to lock.
@@ -401,6 +414,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function lock_url( string $url ) {
 		$this->query->lock( $url );
+	}
+
+	/**
+	 * Unlock all URL.
+	 *
+	 * @return void
+	 */
+	public function unlock_all_urls() {
+		$this->query->unlock_all();
 	}
 
 	/**

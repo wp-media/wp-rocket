@@ -40,6 +40,8 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
 			'profile_update'                      => 'purge_user_cache',
 			'delete_user'                         => 'purge_user_cache',
@@ -53,6 +55,8 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 			'rocket_after_save_dynamic_lists'     => 'purge_cache',
+			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
+			'update_option_blog_public'           => 'purge_cache',
 		];
 	}
 
@@ -163,5 +167,16 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public function purge_cache() {
 		rocket_clean_domain();
+	}
+
+	/**
+	 * Purge single cache file(s) added in the Never Cache URL(s).
+	 *
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value An array of submitted values for the settings.
+	 * @return void
+	 */
+	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
+		$this->purge->purge_cache_reject_uri_partially( $old_value, $value );
 	}
 }

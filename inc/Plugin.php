@@ -5,6 +5,7 @@ namespace WP_Rocket;
 use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -270,6 +271,7 @@ class Plugin {
 		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
 		$this->container->addServiceProvider( ThemesServiceProvider::class );
+		$this->container->addServiceProvider( APIServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -316,6 +318,7 @@ class Plugin {
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
+			'webp_admin_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
@@ -344,10 +347,15 @@ class Plugin {
 			'wpml',
 			'xstore',
 			'cloudflare_plugin_subscriber',
+			'cache_config',
 			'uncode',
 			'rocket_lazy_load',
 			'cache_config',
 			'the_events_calendar',
+			'admin_api_subscriber',
+			'perfmatters',
+			'rapidload',
+			'wpgeotargeting',
 		];
 
 		$host_type = HostResolver::get_host_service();

@@ -19,6 +19,8 @@ class Test_CheckOnUpdateOptions extends TestCase {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Action_Scheduler/ActionScheduler.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/Action_Scheduler/ActionScheduler_Versions.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/HealthCheck/ActionSchedulerCheck/ActionScheduler_StoreSchema.php';
         require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/HealthCheck/ActionSchedulerCheck/ActionScheduler_LoggerSchema.php';
 	}

@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Admin\Settings;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 
@@ -85,6 +86,13 @@ class Page {
 	private $user_client;
 
 	/**
+	 * Delay JS Site List controller.
+	 *
+	 * @var SiteList
+	 */
+	protected $delayjs_sitelist;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -95,8 +103,9 @@ class Page {
 	 * @param Beacon           $beacon      Beacon instance.
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
+	 * @param SiteList         $delayjs_sitelist User client instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist ) {
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -106,14 +115,15 @@ class Page {
 			$args
 		);
 
-		$this->slug        = $args['slug'];
-		$this->title       = $args['title'];
-		$this->capability  = $args['capability'];
-		$this->settings    = $settings;
-		$this->render      = $render;
-		$this->beacon      = $beacon;
-		$this->optimize    = $optimize;
-		$this->user_client = $user_client;
+		$this->slug             = $args['slug'];
+		$this->title            = $args['title'];
+		$this->capability       = $args['capability'];
+		$this->settings         = $settings;
+		$this->render           = $render;
+		$this->beacon           = $beacon;
+		$this->optimize         = $optimize;
+		$this->user_client      = $user_client;
+		$this->delayjs_sitelist = $delayjs_sitelist;
 	}
 
 	/**
@@ -571,6 +581,19 @@ class Page {
 		$disable_combine_css = $this->disable_combine_css();
 		$disable_ocd         = 'local' === wp_get_environment_type();
 
+		/**
+		 * Filters the status of the RUCSS option.
+		 *
+		 * @param array $should_disable will return array with disable status and text.
+		 */
+		$rucss_status = apply_filters(
+			'rocket_disable_rucss_setting',
+			[
+				'disable' => false,
+				'text'    => '',
+			]
+		);
+
 		$invalid_license = get_transient( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
@@ -581,6 +604,17 @@ class Page {
 			]
 		);
 
+		$css_section_helper = [];
+
+		if ( rocket_maybe_disable_minify_css() ) {
+			// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
+			$css_section_helper[] = sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME );
+		}
+
+		if ( $rucss_status['disable'] ) {
+			$css_section_helper[] = $rucss_status['text'];
+		}
+
 		$this->settings->add_settings_sections(
 			[
 				'css' => [
@@ -590,8 +624,7 @@ class Page {
 						'url' => $files_beacon['url'],
 					],
 					'page'   => 'file_optimization',
-					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
-					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
+					'helper' => $css_section_helper,
 				],
 				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
@@ -606,16 +639,19 @@ class Page {
 			]
 		);
 
-		$delay_js_list_helper = sprintf(
-			// translators: %1$s = exclusion list, %2$s = opening </a> tag, %3$s = closing </a> tag.
-			__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:<br><pre><code>%1$s</code></pre><br>Also, please check our %2$sdocumentation%3$s for a list of compatibility exclusions.', 'rocket' ),
-			implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ),
+		$delay_js_list_helper  = esc_html__( 'If you have problems after activating this option, copy and paste the default exclusions to quickly resolve issues:', 'rocket' );
+		$delay_js_list_helper .= sprintf( '<br><pre><code>%1$s</code></pre><br>', implode( '<br>', DelayJSSettings::get_delay_js_default_exclusions() ) );
+		$delay_js_list_helper .= sprintf(
+		// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+			esc_html__( 'Also, please check our %1$sdocumentation%2$s for a list of compatibility exclusions.', 'rocket' ),
 			'<a href="' . esc_url( $delay_js_exclusions_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
 		);
-		$delay_js_found_list_helper = sprintf(
-			// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-			__( 'Internal scripts are excluded by default to prevent issues. Remove them to take full advantage of this option.<br>If this causes trouble, restore the default exclusions, found %1$shere%2$s', 'rocket' ),
+
+		$delay_js_found_list_helper  = esc_html__( 'Internal scripts are excluded by default to prevent issues. Remove them to take full advantage of this option.', 'rocket' );
+		$delay_js_found_list_helper .= '<br>' . sprintf(
+		// translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
+			esc_html__( 'If this causes trouble, restore the default exclusions, found %1$shere%2$s', 'rocket' ),
 			'<a href="' . esc_url( $delay_js_beacon['url'] ) . '"  target="_blank" rel="noopener">',
 			'</a>'
 		);
@@ -722,7 +758,7 @@ class Page {
 					'options'                 => [
 						'remove_unused_css' => [
 							'label'       => __( 'Remove Unused CSS', 'rocket' ),
-							'disabled'    => $invalid_license ? 'disabled' : false,
+							'disabled'    => $invalid_license || $rucss_status['disable'] ? 'disabled' : false,
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description' => sprintf( __( 'Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $rucss_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $rucss_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'warning'     => $invalid_license ? [] : [
@@ -901,6 +937,24 @@ class Page {
 						'sanitize_callback' => 'sanitize_checkbox',
 					]
 				),
+				'delay_js_exclusions_selected' => [
+					'type'              => 'categorized_multiselect',
+					'label'             => __( 'One-click exclusions', 'rocket' ),
+					'description'       => __( 'When using this feature you may notice that it takes some time, or user interaction for specific elements, e.g. a menu, or a form that is located in the viewport, to appear.', 'rocket' ),
+					'sub_description'   => __( 'If you are using any of the following plugins/themes/services you can prevent that, by selecting them below.', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'delay_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
+					],
+					'items'             => $this->delayjs_sitelist->prepare_delayjs_ui_list(),
+				],
 				'delay_js_exclusions'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
@@ -917,6 +971,7 @@ class Page {
 						'disabled' => get_rocket_option( 'delay_js' ) ? 0 : 1,
 					],
 					'helper'            => DelayJSSettings::exclusion_list_has_default() ? $delay_js_found_list_helper : $delay_js_list_helper,
+					'placeholder'       => '/wp-includes/js/jquery/jquery.min.js',
 				],
 			]
 		);
@@ -2055,7 +2110,7 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'sucury_waf_api_key' => [
-					'label'       => _x( 'Firewall API key (for plugin), must be in format <code>{32 characters}/{32 characters}</code>:', 'Sucuri', 'rocket' ),
+					'label'       => _x( 'Firewall API key (for plugin), must be in format {32 characters}/{32 characters}:', 'Sucuri', 'rocket' ),
 					'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://kb.sucuri.net/firewall/Performance/clearing-cache', _x( 'Find your API key', 'Sucuri', 'rocket' ) ),
 					'default'     => '',
 					'section'     => 'sucuri_credentials',

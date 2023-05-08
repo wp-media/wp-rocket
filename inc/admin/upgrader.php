@@ -243,6 +243,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_safe_remote_get( esc_url( home_url() ) );
 	}
 
+	if ( version_compare( $actual_version, '3.12.6', '<' ) ) {
+		do_action( 'rocket_preload_unlock_all_urls' );
+	}
+
 	if ( version_compare( $actual_version, '3.3.6', '<' ) ) {
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
@@ -305,6 +309,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
 		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
+		delete_transient( 'wp_rocket_pricing' );
 	}
 
 }

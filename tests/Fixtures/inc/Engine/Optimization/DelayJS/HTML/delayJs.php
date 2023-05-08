@@ -79,6 +79,17 @@ $html = '<html>
 	<script>document.addEventListener("DOMContentLoaded",function(){var lazyLoadInstance=new LazyLoad({elements_selector:"[loading=lazy],.perfmatters-lazy",thresholds:"200% 0px",callback_loaded:function(element){if(element.tagName==="IFRAME"){if(element.classList.contains("loaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}});});function perfmattersLazyLoadYouTube(e){var iframe=document.createElement("iframe");var params="ID?autoplay=1";params+=0===e.dataset.query.length?"":"&"+e.dataset.query;iframe.setAttribute("src",params.replace("ID",e.dataset.src));iframe.setAttribute("frameborder","0");iframe.setAttribute("allowfullscreen","1");iframe.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");e.replaceChild(iframe,e.firstChild)}</script>
 </head>
 <body>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
@@ -89,6 +100,9 @@ $html = '<html>
 	var billing_county =\'\';
 	var billing_additional_field =\'\';
 	var country_restriction =\'HK\';
+</script>
+<script>
+var twentyseventeenScreenReaderText = {"quote":"<svg class=\"icon icon-quote-right\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-quote-right\" xlink:href=\"#icon-quote-right\"><\/use> <\/svg>","expand":"Expand child menu","collapse":"Collapse child menu","icon":"<svg class=\"icon icon-angle-down\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-angle-down\" xlink:href=\"#icon-angle-down\"><\/use> <span class=\"svg-fallback icon-angle-down\"><\/span><\/svg>"};
 </script>
 <script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
@@ -149,7 +163,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="application/javascript">alert("application/javascript");</script>
 <script type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="application/jscript">alert("application/jscript");</script>
 <script type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -203,6 +216,18 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type="text/javascript"></script>
+<script type = "" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type = ""></script>
+<script type="" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type ></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -256,7 +281,7 @@ $delay_html_upgrade = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
-	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
+	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="text/javascript" async="async" data-noptimize="1" data-cfasync="false" src="//scripts.mediavine.com/tags/test.js"></script>
@@ -308,6 +333,17 @@ $delay_html_upgrade = '<html>
 	<script>document.addEventListener("DOMContentLoaded",function(){var lazyLoadInstance=new LazyLoad({elements_selector:"[loading=lazy],.perfmatters-lazy",thresholds:"200% 0px",callback_loaded:function(element){if(element.tagName==="IFRAME"){if(element.classList.contains("loaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}});});function perfmattersLazyLoadYouTube(e){var iframe=document.createElement("iframe");var params="ID?autoplay=1";params+=0===e.dataset.query.length?"":"&"+e.dataset.query;iframe.setAttribute("src",params.replace("ID",e.dataset.src));iframe.setAttribute("frameborder","0");iframe.setAttribute("allowfullscreen","1");iframe.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");e.replaceChild(iframe,e.firstChild)}</script>
 </head>
 <body>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
@@ -318,6 +354,9 @@ $delay_html_upgrade = '<html>
 	var billing_county =\'\';
 	var billing_additional_field =\'\';
 	var country_restriction =\'HK\';
+</script>
+<script type="rocketlazyloadscript">
+var twentyseventeenScreenReaderText = {"quote":"<svg class=\"icon icon-quote-right\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-quote-right\" xlink:href=\"#icon-quote-right\"><\/use> <\/svg>","expand":"Expand child menu","collapse":"Collapse child menu","icon":"<svg class=\"icon icon-angle-down\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-angle-down\" xlink:href=\"#icon-angle-down\"><\/use> <span class=\"svg-fallback icon-angle-down\"><\/span><\/svg>"};
 </script>
 <script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
@@ -378,7 +417,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -432,6 +470,18 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type="text/javascript"></script>
+<script type = "" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type = ""></script>
+<script type="" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type></script>
+<script src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" type ></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );
@@ -469,8 +519,8 @@ var FuseboxPlayerAPIKey = "";
 
 $delay_html = '<html>
 <head>
-	<script type="rocketlazyloadscript" src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
-	<script type="rocketlazyloadscript" src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
+	<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+	<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-includes/js/jquery/jquery.min.js?ver=3.5.1"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/wp-smush/assets/js/smush-lazy-load-native.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/lazysizes-pre.js"></script>
@@ -485,7 +535,7 @@ $delay_html = '<html>
 	<script src="http://example.org/wp-content/plugins/ewww-image-optimizer/includes/check-webp.min.js"></script>
 	<script src="http://example.org/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js"></script>
 	<script src="http://example.org/wp-content/themes/avada/assets/js/library/lazysizes.js"></script>
-	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js">< / script>
+	<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
 	<script src="https://tests.local/wp-includes/js/wp-embed.min.js?ver=5.7" id="wp-embed-js"></script>
 	<script src="http://example.org/wp-content/plugins/sitepress-multilingual-cms/dist/js/browser-redirect/app.js"></script>
 	<script type="text/javascript" async="async" data-noptimize="1" data-cfasync="false" src="//scripts.mediavine.com/tags/test.js"></script>
@@ -537,6 +587,17 @@ $delay_html = '<html>
 	<script>document.addEventListener("DOMContentLoaded",function(){var lazyLoadInstance=new LazyLoad({elements_selector:"[loading=lazy],.perfmatters-lazy",thresholds:"200% 0px",callback_loaded:function(element){if(element.tagName==="IFRAME"){if(element.classList.contains("loaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}});});function perfmattersLazyLoadYouTube(e){var iframe=document.createElement("iframe");var params="ID?autoplay=1";params+=0===e.dataset.query.length?"":"&"+e.dataset.query;iframe.setAttribute("src",params.replace("ID",e.dataset.src));iframe.setAttribute("frameborder","0");iframe.setAttribute("allowfullscreen","1");iframe.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");e.replaceChild(iframe,e.firstChild)}</script>
 </head>
 <body>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" xml:space="preserve" class="brz-icon-svg align-[initial] brz-form-spinner brz-invisible brz-ed-animated--spin" data-type="glyph" data-name="circle-02"><g class="nc-icon-wrapper" fill="currentColor"><g class="nc-loop_circle-02-24" transform="rotate(21.8999999999999 12 12)"> <path opacity="0.4" fill="currentColor" d="M12,24C5.3833008,24,0,18.6166992,0,12S5.3833008,0,12,0s12,5.3833008,12,12 S18.6166992,24,12,24z M12,2C6.4858398,2,2,6.4858398,2,12s4.4858398,10,10,10s10-4.4858398,10-10S17.5141602,2,12,2z"></path> <path data-color="color-2" fill="currentColor" d="M24,12h-2c0-5.5141602-4.4858398-10-10-10V0C18.6166992,0,24,5.3833008,24,12z"></path> </g> <script>!function(){function t(t){this.element=t,this.animationId,this.start=null,this.init()}if(!window.requestAnimationFrame){var i=null;window.requestAnimationFrame=function(t,n){var e=(new Date).getTime();i||(i=e);var a=Math.max(0,16-(e-i)),o=window.setTimeout(function(){t(e+a)},a);return i=e+a,o}}t.prototype.init=function(){var t=this;this.animationId=window.requestAnimationFrame(t.triggerAnimation.bind(t))},t.prototype.reset=function(){var t=this;window.cancelAnimationFrame(t.animationId)},t.prototype.triggerAnimation=function(t){var i=this;this.start||(this.start=t);var n=t-this.start;504&gt;n||(this.start=this.start+504),this.element.setAttribute("transform","rotate("+Math.min(n/1.4,360)+" 12 12)");if(document.documentElement.contains(this.element))window.requestAnimationFrame(i.triggerAnimation.bind(i))};var n=document.getElementsByClassName("nc-loop_circle-02-24"),e=[];if(n)for(var a=0;n.length&gt;a;a++)!function(i){e.push(new t(n[i]))}(a);document.addEventListener("visibilitychange",function(){"hidden"==document.visibilityState?e.forEach(function(t){t.reset()}):e.forEach(function(t){t.init()})})}();</script></g></svg>
+< svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+
+  <script type="text/javascript">
+        window.addEventListener("load",function(){
+        alert("Hi")
+        })
+    </script>
+    <script src="/wp-content/rocket-test-data/scripts/print-helloworld.js" type="text/javascript"></script>
+< / svg >
 <script>
 	// Billing
 	var billing_address =\' #billing_address_1\';
@@ -547,6 +608,9 @@ $delay_html = '<html>
 	var billing_county =\'\';
 	var billing_additional_field =\'\';
 	var country_restriction =\'HK\';
+</script>
+<script type="rocketlazyloadscript">
+var twentyseventeenScreenReaderText = {"quote":"<svg class=\"icon icon-quote-right\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-quote-right\" xlink:href=\"#icon-quote-right\"><\/use> <\/svg>","expand":"Expand child menu","collapse":"Collapse child menu","icon":"<svg class=\"icon icon-angle-down\" aria-hidden=\"true\" role=\"img\"> <use href=\"#icon-angle-down\" xlink:href=\"#icon-angle-down\"><\/use> <span class=\"svg-fallback icon-angle-down\"><\/span><\/svg>"};
 </script>
 <script>var rbs_gallery_60d183e796fbf = {"version":"3.0.7","id":27381,"class":"id27381","roboGalleryDelay":1000,"mainContainer":"#robo_gallery_main_block_rbs_gallery_60d183e796fbf","loadingContainer":"#rbs_gallery_60d183e796fbf-block-loader","loadingContainerObj":"rbs_gallery_60d183e796fbf-block-loader","columnWidth":"auto","columns":3,"resolutions":[{"columnWidth":"auto","columns":3,"maxWidth":960},{"columnWidth":"auto","columns":2,"maxWidth":650},{"columnWidth":300,"maxWidth":450}],"descBox":true,"descBoxClass":"rbs_desc_panel_light","lightboxOptions":{"gallery":{"enabled":true,"tCounter":"%curr% of %total%"}},"facebook":true,"twitter":true,"pinterest":true,"overlayEffect":"direction-aware-fade","boxesToLoadStart":6,"boxesToLoad":6,"lazyLoad":1,"waitUntilThumbLoads":1,"LoadingWord":"Loading Videos...","loadMoreWord":"Loading More Videos","noMoreEntriesWord":"No More Videos","horizontalSpaceBetweenBoxes":15,"verticalSpaceBetweenBoxes":15,"noHoverOnMobile":"false","wrapContainer":"#robo-gallery-wrap-rbs_gallery_60d183e796fbf"};</script>
 <script type="text/javascript">
@@ -559,7 +623,7 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script>
 <script type="rocketlazyloadscript">var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};</script>
 <script src="http://example.org/wp-includes/js/comment-reply.min.js?ver=5.7" id="comment-reply-js"></script>
-<script type="rocketlazyloadscript" data-rocket-type="module" src="http://example.org/wp-content/plugins/module/test.js"></script>
+<script type="rocketlazyloadscript" data-rocket-type="module" data-rocket-src="http://example.org/wp-content/plugins/module/test.js"></script>
 <script id="astra-theme-js-js-extra">var astra = {"break_point:"921","isRtl:""};</script>
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -607,7 +671,6 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script type="rocketlazyloadscript" data-rocket-type="application/javascript">alert("application/javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/x-javascript">alert("application/x-javascript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="application/ecmascript">alert("application/ecmascript");</script>
-<script type="rocketlazyloadscript" data-rocket-type="application/jscript">alert("application/jscript");</script>
 <script type="rocketlazyloadscript" data-rocket-type="module">alert("module");</script>
 <script src=\'https://stats.wp.com/e-202124.js\' defer></script>
 <script>
@@ -661,6 +724,18 @@ window.fluent_form_ff_form_instance_1_1 = {"id":"1","settings":{"layout":{"label
 <script src="http://served-by.pixfuture.com/www/delivery/ads.js"></script>
 <script src="http://served-by.pixfuture.com/www/delivery/headerbid_sticky_refresh.js"></script>
 <script src="http://serv-vdo.pixfuture.com/vpaid/ads.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous">
+</script>
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" data-rocket-type="text/javascript"></script>
+<script type="rocketlazyloadscript" data-rocket-type="" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js" data-rocket-type=""></script>
+<script type="rocketlazyloadscript" data-rocket-type="" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
+<script type="rocketlazyloadscript" data-rocket-src="http://example.org/wp-content/plugins/my-custom-plugin-types/assets/js/name_script.min.js"></script>
 <script>
 function wprRemoveCPCSS() {
 	let preload_stylesheets = document.querySelectorAll( \'link[data-rocket-async="style"][rel="preload"]\' );

@@ -2811,3 +2811,130 @@ div.wpr-tutorial-item {
 .wpr-multiple-close:hover + span, .wpr-multiple-close:focus + span {
   color: #D33F49;
 }
+
+/*-----------------------------------------------*\
+
+    Multiple select field
+
+\*-----------------------------------------------*/
+.wpr-multiple-select .wpr-list {
+  border: 2px solid #c2cad4;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 8px 0;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header {
+  display: flex;
+  justify-content: space-between;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_ads:before {
+  font-family: "wpr-icomoon";
+  content: "\e9b7";
+  padding-right: 8px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_plugins:before {
+  font-family: "wpr-icomoon";
+  content: "\e991";
+  padding-right: 8px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header .wpr-multiple-select-exclude_js_themes:before {
+  font-family: "wpr-icomoon";
+  content: "\e927";
+  padding-right: 8px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-header .wpr-list-header-arrow {
+  width: 15px;
+  cursor: pointer;
+  display: flex;
+  transform: rotate(180deg);
+}
+.wpr-multiple-select .wpr-list .wpr-list-header h3 {
+  font-weight: 500;
+  color: #121116;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.wpr-multiple-select .wpr-list .wpr-list-body {
+  display: none;
+}
+.wpr-multiple-select .wpr-list .wpr-list-body li {
+  padding-left: 30px;
+}
+.wpr-multiple-select .wpr-list .wpr-list-body li .wpr-checkbox img {
+  width: 15px;
+}
+.wpr-multiple-select .wpr-list.open .wpr-list-body {
+  display: block;
+}
+.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-checkbox label {
+  color: #72777C;
+}
+.wpr-multiple-select .wpr-list.open .wpr-list-body .wpr-checkbox input[checked=checked] + label {
+  color: #121116;
+}
+.wpr-multiple-select .wpr-list.open .wpr-list-header {
+  border-bottom: 1px solid #c2cad4;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+.wpr-multiple-select .wpr-list.open .wpr-list-header-arrow {
+  transform: rotate(0deg);
+}
+
+/*-----------------------------------------------*\
+
+    Type = User Exclusion Textarea
+
+\*-----------------------------------------------*/
+.wpr-field--categorizedmultiselect .wpr-list {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+}
+.wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
+  max-height: 32px;
+}
+.wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {
+  top: 4px;
+}
+.wpr-field--categorizedmultiselect .wpr-list [type=checkbox]:checked + label:after {
+  top: 4px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-header .wpr-checkbox {
+  padding-left: 29px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body {
+  display: block;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul {
+  margin: 0;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul li {
+  margin-bottom: 10px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul li .wpr-checkbox {
+  padding-left: 25px;
+}
+.wpr-field--categorizedmultiselect .wpr-list-body ul li .wpr-checkbox label {
+  color: #121116 !important;
+  font-weight: normal;
+}
+.wpr-field--categorizedmultiselect .dashicons {
+  color: #72777c;
+}
+.wpr-field--categorizedmultiselect .wpr-multiple-select-title {
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+@media only screen and (min-width: 782px) {
+  .wpr-field--categorizedmultiselect {
+    padding-right: 80px;
+  }
+}

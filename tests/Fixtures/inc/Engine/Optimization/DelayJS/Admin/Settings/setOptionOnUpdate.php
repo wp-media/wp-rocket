@@ -34,11 +34,7 @@ return [
 		'expected'      => [
 			'delay_js'              => 1,
 			'minify_concatenate_js' => 0,
-			'delay_js_exclusions'   => [
-				'(?:/wp-content|/wp-includes/)(.*)',
-				'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-				'js-(before|after)',
-			],
+			'delay_js_exclusions'   => [],
 		],
 	],
 ];
