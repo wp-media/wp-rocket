@@ -5,6 +5,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Service provider for the WP Rocket Delay JS
@@ -48,7 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->add( 'delay_js_html', HTML::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) );
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
+			->addArgument( new Logger() );
 		$this->getContainer()->share( 'delay_js_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )

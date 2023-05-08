@@ -39,6 +39,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_minify_excluded_external_js' => 'add_minify_excluded_external_js',
 			'rocket_move_after_combine_js'       => 'add_move_after_combine_js',
 			'rocket_excluded_inline_js_content'  => 'add_combine_js_excluded_inline',
+			'rocket_preload_exclude_urls'        => 'add_preload_exclusions',
 		];
 	}
 
@@ -157,4 +158,20 @@ class Subscriber implements Subscriber_Interface {
 
 		return array_merge( $excluded, $this->dynamic_lists->get_combine_js_excluded_inline() );
 	}
+
+	/**
+	 * Add the preload exclusions to the array
+	 *
+	 * @param array $excluded Array of ignored URL regex.
+	 *
+	 * @return array
+	 */
+	public function add_preload_exclusions( $excluded = [] ): array {
+		if ( ! is_array( $excluded ) ) {
+			$excluded = (array) $excluded;
+		}
+
+		return array_merge( $excluded, $this->dynamic_lists->get_preload_exclusions() );
+	}
+
 }
