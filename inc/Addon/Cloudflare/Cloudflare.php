@@ -209,7 +209,7 @@ class Cloudflare {
 			return $result;
 		}
 
-		return $this->convert_time( $value );
+		return $this->convert_time( (int) $value );
 	}
 
 	/**
