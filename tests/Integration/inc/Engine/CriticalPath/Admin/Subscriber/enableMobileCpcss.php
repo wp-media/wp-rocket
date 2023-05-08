@@ -81,8 +81,6 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 
 		$response = $this->callAjaxAction();
 
-		var_export( $response );
-
 		$options = get_option( 'wp_rocket_settings' );
 		if ( $update ) {
 			$this->assertArrayHasKey( 'async_css_mobile', $options );

@@ -36,8 +36,6 @@ class Test_EnableGoogleFonts extends AjaxTestCase {
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
 		$response       = $this->callAjaxAction();
 
-		var_export( $response );
-
 		$options   = get_option( 'wp_rocket_settings' );
 		$gf_minify = $options['minify_google_fonts'];
 
