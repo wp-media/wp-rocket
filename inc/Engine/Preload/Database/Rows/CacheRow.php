@@ -5,6 +5,12 @@ namespace WP_Rocket\Engine\Preload\Database\Rows;
 use WP_Rocket\Dependencies\Database\Row;
 
 class CacheRow extends Row {
+	private $id;
+	private $url;
+	private $status;
+	private $modified;
+	private $last_accessed;
+	private $is_locked;
 
 	/**
 	 * CacheRow constructor.

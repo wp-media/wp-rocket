@@ -8,6 +8,20 @@ use WP_Rocket\Dependencies\Database\Row;
  * RUCSS UsedCSS Row.
  */
 class UsedCSS extends Row {
+	private $id;
+	private $url;
+	private $css;
+	private $hash;
+	private $error_code;
+	private $error_message;
+	private $retries;
+	private $is_mobile;
+	private $job_id;
+	private $queue_name;
+	private $status;
+	private $modified;
+	private $last_accessed;
+
 	/**
 	 * UsedCSS constructor.
 	 *
