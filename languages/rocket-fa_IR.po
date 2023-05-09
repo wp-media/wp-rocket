@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-04-14 10:33-0400\n"
+"POT-Creation-Date: 2023-05-05 10:48-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -1718,11 +1718,11 @@ msgstr "اعتبارهای Sucuri"
 #: inc/Engine/Admin/Settings/Page.php:2113
 msgctxt "Sucuri"
 msgid ""
-"Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
-"characters}</code>:"
+"Firewall API key (for plugin), must be in format {32 characters}/{32 "
+"characters}:"
 msgstr ""
-"شناسه API فایروال (برای افزونه)، باید در فرمت <code>{32 characters}/{32 "
-"characters}</code>:"
+"شناسه API فایروال (برای افزونه)، باید در فرمت {32 characters}/{32 "
+"characters}:"
 
 #: inc/Engine/Admin/Settings/Page.php:2114
 msgctxt "Sucuri"
@@ -3520,23 +3520,23 @@ msgstr "تنظیمات ناشناس موشک وردپرس:"
 msgid "Which WP Rocket settings are active"
 msgstr "کدام تنظیمات موشک وردپرس فعال هستند"
 
-#: inc/functions/options.php:421
+#: inc/functions/options.php:429
 msgid "The provided license data are not valid."
 msgstr "داده لایسنس شما معتبر نیست."
 
-#: inc/functions/options.php:424
+#: inc/functions/options.php:432
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "برای رفع مشکل، لطفا با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:483 inc/functions/options.php:522
+#: inc/functions/options.php:491 inc/functions/options.php:530
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
 "اعتبارسنجی لایسنس انجام نشد. سرور ما نتوانست درخواست وب سایت شما را حل کند."
 
-#: inc/functions/options.php:483
+#: inc/functions/options.php:491
 #, php-format
 msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
@@ -3545,7 +3545,7 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3553,45 +3553,45 @@ msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. شاید شما از نسخه نال استفاده می کنید. لطفا "
 "موارد زیر را انجام دهید:"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "وارد شدن به %1$sحساب کاربری%2$s موشک وردپرس"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
 msgstr "دانلود فایل فشرده"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Reinstall"
 msgstr "نصب مجدد"
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "اگر حساب کاربری موشک وردپرس ندارید، لطفا %1$sخرید کنید%2$s."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری در پایگاه داده ما وجود ندارد."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid "To resolve, please contact support."
 msgstr "برای رفع مشکل با پشتیبانی تماس بگیرید."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 msgid "License validation failed. This user account is blocked."
 msgstr "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری بلاک شده است."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "برای کسب اطلاعات بیشتر%1$sراهنمایی%2$s را مطالعه کنید."
 
-#: inc/functions/options.php:522
+#: inc/functions/options.php:530
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3600,20 +3600,20 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 msgid "Your license is not valid."
 msgstr "لایسنس شما نامعتبر است."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "مطمئن شوید که %1$sلایسنس موشک وردپرس%2$s فعال دارید."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 msgid "You have added as many sites as your current license allows."
 msgstr "شما به اندازه لایسنس فعلی سایت اضافه کرده اید."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3622,25 +3622,25 @@ msgstr ""
 "حساب کاربری%1$sخودرا%2$sارتقاء دهید یا%3$sلایسنس خود را به دامنه فعلی %2$s "
 "منتقل کنید."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 msgid "This website is not allowed."
 msgstr "این وب سایت مجاز نمی باشد."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "با %1$sپشتیبانی%2$sتماس بگیرید."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 msgid "This license key is not recognized."
 msgstr "این لایسنس شناسایی نشد."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "اگر مشکل همچنان برقرار بود با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:555
 #, php-format
 msgid "License validation failed: %s"
 msgstr "اعتبارسنجی لایسنس شکست خورد: %s"
