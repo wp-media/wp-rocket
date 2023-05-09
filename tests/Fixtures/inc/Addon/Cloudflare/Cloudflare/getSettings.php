@@ -11,7 +11,7 @@ return [
 					'result' => [
 						(object) [
 							'id' =>'browser_cache_ttl',
-							'value'=> 14400 ,
+							'value'=> 31536000 ,
 						],
 						(object) [
 							'id' =>'cache_level',
@@ -39,7 +39,7 @@ return [
 			'cache_level'       => 'aggressive',
 			'minify'            => 'off',
 			'rocket_loader'     => 'off',
-			'browser_cache_ttl' => 14400,
+			'browser_cache_ttl' => 31536000,
 		],
 	],
 	'shouldReturnArrayWhenMinifyOn' => [
@@ -52,7 +52,7 @@ return [
 					'result' => [
 						(object) [
 							'id' =>'browser_cache_ttl',
-							'value'=> 14400 ,
+							'value'=> 31536000 ,
 						],
 						(object) [
 							'id' =>'cache_level',
@@ -67,7 +67,7 @@ return [
 							'value'=> (object) [
 								'js' => 'on',
 								'css' => 'on',
-								'html' => 'off',
+								'html' => 'on',
 							],
 						],
 					],
@@ -80,7 +80,7 @@ return [
 			'cache_level'       => 'aggressive',
 			'minify'            => 'on',
 			'rocket_loader'     => 'off',
-			'browser_cache_ttl' => 14400,
+			'browser_cache_ttl' => 31536000,
 		],
 	],
 	'shouldReturnWPErrorWhenError' => [

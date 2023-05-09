@@ -7,7 +7,7 @@ return [
 			'value'   => 'on',
 			'setting' => [
 				'css'  => 'on',
-				'html' => 'off',
+				'html' => 'on',
 				'js'   => 'on',
 			],
 			'response' => [

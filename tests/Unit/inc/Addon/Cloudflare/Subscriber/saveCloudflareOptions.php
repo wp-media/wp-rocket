@@ -96,10 +96,10 @@ class TestSaveCloudflareOptions extends TestCase {
 			->andReturn( 'off' );
 
 		$this->cloudflare->shouldReceive( 'set_browser_cache_ttl' )
-			->with( 14400 )
+			->with( 31536000 )
 			->atMost()
 			->once()
-			->andReturn( 14400 );
+			->andReturn( 31536000 );
 
 		if ( is_array( $expected ) ) {
 			Functions\expect( 'set_transient' )

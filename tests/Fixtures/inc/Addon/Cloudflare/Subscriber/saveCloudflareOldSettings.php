@@ -122,7 +122,7 @@ return [
 							'value'=> (object) [
 								'js' => 'on',
 								'css' => 'on',
-								'html' => 'off',
+								'html' => 'on',
 							],
 						],
 					],
