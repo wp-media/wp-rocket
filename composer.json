@@ -71,7 +71,7 @@
 		"wpackagist-plugin/pdf-embedder": "^4.6",
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
-		"wpackagist-plugin/woocommerce": "^7",
+		"wpackagist-plugin/woocommerce": "^6.9",
 		"wpackagist-plugin/wp-smushit": "^3"
 	},
 	"autoload": {
