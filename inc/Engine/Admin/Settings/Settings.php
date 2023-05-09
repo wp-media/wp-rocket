@@ -223,7 +223,7 @@ class Settings {
 		$input['minify_css'] = ! empty( $input['minify_css'] ) ? 1 : 0;
 		$input['minify_js']  = ! empty( $input['minify_js'] ) ? 1 : 0;
 
-		$input['minify_concatenate_js']  = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
+		$input['minify_concatenate_js'] = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
 
 		$input['defer_all_js']     = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['exclude_defer_js'] = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
