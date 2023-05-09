@@ -132,7 +132,6 @@ class DeactivationIntent extends Abstract_Render {
 				'lazyload_iframes'       => 0,
 				'lazyload_youtube'       => 0,
 				'minify_css'             => 0,
-				'minify_concatenate_css' => 0,
 				'minify_js'              => 0,
 				'minify_concatenate_js'  => 0,
 				'defer_all_js'           => 0,
