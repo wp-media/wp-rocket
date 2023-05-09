@@ -1,4 +1,4 @@
-name: Unit/Integration tests
+name: Unit/Integration tests PHP8
 
 on:
   pull_request:

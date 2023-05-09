@@ -1,4 +1,4 @@
-name: Unit/Integration tests
+name: Unit/Integration tests Old PHP
 
 on:
   pull_request:
