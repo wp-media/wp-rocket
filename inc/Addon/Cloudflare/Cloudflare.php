@@ -274,7 +274,7 @@ class Cloudflare {
 
 		$cf_minify_settings = [
 			'css'  => $value,
-			'html' => 'off',
+			'html' => $value,
 			'js'   => $value,
 		];
 
@@ -386,6 +386,8 @@ class Cloudflare {
 			'off' === $cf_minify->js
 			||
 			'off' === $cf_minify->css
+			||
+			'off' === $cf_minify->html
 		) {
 			$cf_minify_value = 'off';
 		}

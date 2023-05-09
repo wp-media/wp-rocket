@@ -356,7 +356,7 @@ class Subscriber implements Subscriber_Interface {
 		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? 'basic' : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
 
-		// Active Minification for CSS & JS.
+		// Active Minification for HTML, CSS & JS.
 		$cf_minify = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
 		$result[]  = $this->save_minify( $cf_minify );
 
@@ -364,8 +364,8 @@ class Subscriber implements Subscriber_Interface {
 		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
 		$result[]         = $this->save_rocket_loader( $cf_rocket_loader );
 
-		// Set Browser cache to 4 hours.
-		$cf_browser_cache_ttl = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : '14400';
+		// Set Browser cache to 1 year.
+		$cf_browser_cache_ttl = isset( $cf_old_settings[3] ) && 0 === $auto_settings ? $cf_old_settings[3] : 31536000;
 		$result[]             = $this->save_browser_cache_ttl( $cf_browser_cache_ttl );
 
 		return $result;
