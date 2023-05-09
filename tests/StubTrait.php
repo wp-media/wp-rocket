@@ -22,6 +22,7 @@ trait StubTrait {
 	protected $plugin_name = 'WP Rocket';
 	protected $rucss_api = 'http://localhost';
 	protected $constants = [];
+	protected $dontasynccss = false;
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -35,7 +36,7 @@ trait StubTrait {
 			'wp_rocket_debug'          => false,
 			'wp_rocket_advanced_cache' => true,
 			'donotrocketoptimize'      => null,
-			'dontasynccss'             => null,
+			'dontasynccss'             => false,
 			'white_label'              => false,
 			'white_label_footprint'    => null,
 			'constants'                => [],
