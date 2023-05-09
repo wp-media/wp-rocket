@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -16,9 +15,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use ProviderTrait;
-	protected static $provider_class = 'Admin';
 
+	protected static $provider_class = 'Admin';
 	private static $user_id;
+	private $async_css;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();

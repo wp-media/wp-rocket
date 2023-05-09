@@ -45,6 +45,10 @@ class Test_WarningNotice extends TestCase {
 	}
 
 	public function active_plugin( $plugins ) {
+		if ( ! is_array( $plugins ) ) {
+			$plugins = (array) $plugins;
+		}
+
 		$plugins[] = 'hummingbird-performance/wp-hummingbird.php';
 
 		return $plugins;

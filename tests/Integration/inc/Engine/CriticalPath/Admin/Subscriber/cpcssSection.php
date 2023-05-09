@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -16,10 +15,11 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_CpcssSection extends TestCase {
 	use ProviderTrait;
-	protected static $provider_class = 'Post';
 
-	private        $async_css_mobile;
-	private        $post_id;
+	protected static $provider_class = 'Post';
+	private $async_css_mobile;
+	private $async_css;
+	private $post_id;
 	private static $user_id;
 
 	public static function set_up_before_class() {

@@ -20,6 +20,8 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	private        $post_id;
 	private static $user_id;
+	private $async_css;
+	private $async_css_mobile;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
