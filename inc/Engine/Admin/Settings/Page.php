@@ -2128,6 +2128,7 @@ class Page {
 					'emoji',
 					'remove_unused_css',
 					'async_css',
+					'minify_concatenate_css',
 				]
 			)
 		);

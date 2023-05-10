@@ -92,6 +92,6 @@ class Subscriber extends AbstractMinifySubscriber {
 		if ( version_compare( $old_version, '3.15', '>=' ) ) {
 			return;
 		}
-		rocket_clean_domain();
+		rocket_clean_minify();
 	}
 }
