@@ -69,6 +69,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 				[ 'maybe_unlock_preload', 9, 2 ],
+				[ 'maybe_delete_transient', 10, 2 ],
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
@@ -810,6 +811,30 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_no_table_notice() {
 		$this->settings->display_no_table_notice();
+	}
+
+	/**
+	 * Maybe delete transient.
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_delete_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 1 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		delete_transient( 'wp_rocket_no_licence' );
 	}
 
 	/**
