@@ -29,6 +29,29 @@ return [
 			'site_url' => 'http://example.org',
 		],
 
+		'dontCombineCssFilesWhenNoTitleTag' => [
+			'original' =>
+				'<html><head>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				'<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				'</head><body></body></html>',
+
+			'expected' => [
+				'html'  => '<html><head>' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+				           '<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				           '<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				           '</head><body></body></html>',
+				'files' => [],
+				'css' => false,
+			],
+
+			'cdn_host' => [],
+			'cdn_url'  => 'http://example.org',
+			'site_url' => 'http://example.org',
+		],
+
 		'combineNotfoundFiles' => [
 			'original' =>
 				'<html><head><title>Sample Page</title>' .
