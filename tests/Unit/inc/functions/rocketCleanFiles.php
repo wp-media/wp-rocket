@@ -47,7 +47,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $config, $expected ) {
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
 			$GLOBALS['debug_fs'] = true;
 		}
@@ -55,7 +55,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
-			$this->doCleanFilesTest( $urls, $expected );
+			$this->doCleanFilesTest( $urls, $config, $expected );
 		}
 
 		// Run it.
@@ -71,7 +71,8 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		Functions\expect( 'rocket_rrmdir' )->never();
 	}
 
-	private function doCleanFilesTest( $urls, $expected ) {
+	private function doCleanFilesTest( $urls, $config, $expected ) {
+		Functions\when('url_to_postid')->justReturn($config['post_id']);
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )

@@ -6,20 +6,20 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\WPXCloud;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPXCloud::remove_htaccess_html_expire
+ * @covers \WP_Rocket\ThirdParty\Hostings\WPXCloud::append_cache_control_header
  *
  * @group  WPXCloud
  */
-class Test_RemoveHtaccessHtmlExpire extends TestCase {
+class Test_AppendCacheControlHeader extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $htaccess_rules, $expected ) {
+	public function testShouldDoExpected( $expected ) {
 		$wpx_cloud = new WPXCloud();
 
 		$this->assertSame(
 			$expected,
-			$wpx_cloud->remove_htaccess_html_expire( $htaccess_rules )
+			$wpx_cloud->append_cache_control_header()
 		);
 	}
 }

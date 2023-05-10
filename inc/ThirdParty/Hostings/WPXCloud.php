@@ -19,7 +19,7 @@ class WPXCloud extends AbstractNoCacheHost {
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'do_rocket_varnish_http_purge'            => 'return_true',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
-			'rocket_htaccess_mod_expires'             => [ 'remove_htaccess_html_expire', 5 ],
+			'after_rocket_htaccess_rules'             => 'append_cache_control_header',
 		];
 	}
 
@@ -40,19 +40,6 @@ class WPXCloud extends AbstractNoCacheHost {
 	}
 
 	/**
-	 * Remove expiration on HTML to prevent issue with Varnish cache.
-	 *
-	 * @param  string $rules htaccess rules.
-	 * @return string Updated htaccess rules.
-	 */
-	public function remove_htaccess_html_expire( $rules ) {
-		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
-		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
-
-		return $rules;
-	}
-
-	/**
 	 * Displays custom title for the Varnish add-on
 	 *
 	 * @param array $settings Array of settings for Varnish.
@@ -66,5 +53,38 @@ class WPXCloud extends AbstractNoCacheHost {
 		);
 
 		return $settings;
+	}
+
+	/**
+	 * Append cache control header.
+	 *
+	 * @return string
+	 */
+	public function append_cache_control_header(): string {
+		$header  = '<IfModule mod_headers.c>' . PHP_EOL;
+		$header .= 'Header append Cache-Control " s-maxage=3600, stale-while-revalidate=21600" "expr=%{CONTENT_TYPE} =~ m#text/html#"' . PHP_EOL;
+		$header .= '</IfModule>' . PHP_EOL;
+
+		return $header;
+	}
+
+	/**
+	 * Performs these actions during the plugin activation.
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		parent::activate();
+
+		add_action( 'rocket_activation', [ $this, 'append_cache_control_header_on_activation' ] );
+	}
+
+	/**
+	 * Append cache control header.
+	 *
+	 * @return void
+	 */
+	public function append_cache_control_header_on_activation() {
+		add_filter( 'after_rocket_htaccess_rules', [ $this, 'append_cache_control_header' ] );
 	}
 }
