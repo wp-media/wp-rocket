@@ -23,6 +23,7 @@ return [
 	],
 
 	'urls' => [
+		'site_url'=> 'http://example.org/',
 		'posts' => [
 			20 => 'http://example.org/blog/',
 			2 => 'http://example.org/next_post/',
@@ -32,7 +33,8 @@ return [
 			6 => 'http://example.org/test3/'
 		],
 		'authors' => [
-			1 => 'http://example.org/author/author_name/'
+			1 => 'http://example.org/author/author_name/',
+			2 => 'http://example.org/',
 		],
 		'archives' => [
 			'page' => false,
@@ -183,6 +185,30 @@ return [
 			]
 		],
 
+		'shouldNotAddAuthorURL' => [
+			'config' => [
+				'options' => [
+					'page_for_posts' => 20,
+					'cache_purge_pages' => false
+				],
 
+				'post_data' => [
+					'ID' => 1,
+					'post_name' => 'test',
+					'url' => '/test/',
+					'post_type' => 'post',
+					'next_post_id' => 2,
+					'post_author' => 2,
+					'ancestors' => [ 3, 4 ]
+				]
+			],
+			'expected' => [
+				'http://example.org/test/',
+				'http://example.org/blog/',
+				'http://example.org/next_post/',
+				'http://example.org/test_parent/',
+				'http://example.org/test_parent_2/'
+			]
+		],
 	]
 ];

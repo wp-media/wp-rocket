@@ -132,7 +132,10 @@ function rocket_get_purge_urls( $post_id, $post ) {
 	}
 
 	// Add the author page.
-	$purge_urls[] = get_author_posts_url( $post->post_author );
+	$author_url = get_author_posts_url( $post->post_author );
+	if ( site_url() !== $author_url ) {
+		$purge_urls[] = $author_url;
+	}
 
 	// Add all parents.
 	$parents = get_post_ancestors( $post_id );

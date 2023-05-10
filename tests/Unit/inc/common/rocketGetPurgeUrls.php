@@ -85,6 +85,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 			->with($post->post_author)
 			->andReturn( $this->get_author_url( $post->post_author ) );
 
+		Functions\expect('site_url')
+			->once()
+			->andReturn( $this->get_site_url() );
+
 		Functions\expect('get_post_ancestors')
 			->once()
 			->with($post_id)
@@ -123,6 +127,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 	private function get_archive_url( $post_type ) {
 		return isset( $this->config['urls']['archives'][$post_type] ) ? $this->config['urls']['archives'][$post_type] : '';
+	}
+
+	private function get_site_url( ) {
+		return isset( $this->config['urls']['site_url'] ) ? $this->config['urls']['site_url'] : '';
 	}
 
 }
