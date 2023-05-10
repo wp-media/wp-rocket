@@ -59,7 +59,7 @@ abstract class SmushSubscriberTestCase extends TestCase {
 
 		$this->smush->set_setting( $this->smush_settings_option_name, $settings );
 
-		$settings           = $this->smush_lazy;
+		$settings           = (array) $this->smush_lazy;
 		$settings['format'] = $lazyload_formats;
 
 		$this->smush->set_setting( $this->smush_lazy_option_name, $settings );
