@@ -100,6 +100,13 @@ class UsedCSS extends Row {
 	public $last_accessed;
 
 	/**
+	 * Unused variable
+	 *
+	 * @var string
+	 */
+	public $unprocessedcss;
+
+	/**
 	 * UsedCSS constructor.
 	 *
 	 * @param mixed $item Object Row.

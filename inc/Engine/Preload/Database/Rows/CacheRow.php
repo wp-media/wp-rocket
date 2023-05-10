@@ -48,6 +48,13 @@ class CacheRow extends Row {
 	public $is_locked;
 
 	/**
+	 * Unused variable
+	 *
+	 * @var bool
+	 */
+	public $is_mobile;
+
+	/**
 	 * CacheRow constructor.
 	 *
 	 * @param object $item Current row details.
