@@ -625,7 +625,7 @@ class UsedCSS {
 		 *
 		 * @param int min size.
 		 */
-		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
+		$min_rucss_size = (int) apply_filters( 'rocket_min_rucss_size', 150 );
 
 		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
 			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
