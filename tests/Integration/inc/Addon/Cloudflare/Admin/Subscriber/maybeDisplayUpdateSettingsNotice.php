@@ -27,7 +27,7 @@ class TestMaybeDisplayUpdateSettingsNotice extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$role = get_role( 'administrator' );
-		$role->add_cap( 'rocket_purge_cloudflare_cache' );
+		$role->add_cap( 'rocket_manage_options' );
 
 		if ( $config['cap'] ) {
 			$user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
