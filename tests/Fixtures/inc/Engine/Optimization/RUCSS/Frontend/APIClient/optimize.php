@@ -30,7 +30,6 @@ return [
 						'message'  => 'OK',
 						'contents' => [
 							'shakedCSS'      => 'h1{color:red;}',
-							'unProcessedCss' => [],
 						],
 					]
 				),
@@ -45,7 +44,6 @@ return [
 				'code'            => 200,
 				'message'         => 'OK',
 				'css'             => 'h1{color:red;}',
-				'unprocessed_css' => [],
 			],
 		],
 

@@ -21,6 +21,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	protected $config;
 	private $consumer_key;
 	private $consumer_email;
+	private $wp_version;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
