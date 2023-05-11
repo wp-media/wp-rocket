@@ -13,6 +13,7 @@ use Brain\Monkey\Functions;
 
 class Test_CleanOnUpdate extends TestCase
 {
+	protected $controller;
 	protected $activation;
 	protected $queue;
 	protected $query;

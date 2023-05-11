@@ -1,4 +1,4 @@
-name: Unit/Integration tests Old PHP
+name: Unit/Integration tests PHP8
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.3', '7.4']
+        php-versions: ['8.0', '8.1', '8.2']
         wp-versions: ['latest']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.

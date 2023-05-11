@@ -45,7 +45,6 @@ class Test_DeleteOldUsedCss extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => false,
 				'last_accessed'  => $current_date,
@@ -55,7 +54,6 @@ class Test_DeleteOldUsedCss extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => true,
 				'last_accessed'  => $old_date,
