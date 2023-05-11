@@ -90,8 +90,9 @@ class CriticalCSS {
 	 * @since 2.11
 	 *
 	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
+	 * @param string $clean_version Optional: Version of the CPCSS files to clean. Possible values: default, mobile, all.
 	 */
-	public function process_handler( $version = 'default' ) {
+	public function process_handler( $version = 'default', $clean_version = '' ) {
 		/**
 		 * Filters the critical CSS generation process.
 		 *
@@ -109,7 +110,11 @@ class CriticalCSS {
 			return;
 		}
 
-		$this->clean_critical_css( 'all' );
+		if ( empty( $clean_version ) ) {
+			$clean_version = $version;
+		}
+
+		$this->clean_critical_css( $clean_version );
 
 		$this->stop_generation();
 

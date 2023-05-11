@@ -706,7 +706,7 @@ JS;
 		}
 
 		if ( ! $this->is_mobile_cpcss_active() ) {
-			$this->critical_css->process_handler();
+			$this->critical_css->process_handler( 'default', 'all' );
 			return;
 		}
 
