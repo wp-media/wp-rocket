@@ -56,6 +56,8 @@ class Subscriber implements Subscriber_Interface {
 		$user_id = get_current_user_id();
 		$notices = get_transient( $user_id . '_cloudflare_update_settings' );
 
+		var_export( $notices );
+
 		if ( ! $notices ) {
 			return;
 		}
@@ -79,6 +81,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! empty( $success ) ) {
+			var_export( 'success' );
 			rocket_notice_html(
 				[
 					'message' => $pre . $success,
