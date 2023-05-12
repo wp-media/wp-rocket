@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
 
 use Smush\Core\Settings;
-use WP_Rocket\ThirdParty\Plugins\Smush;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 abstract class SmushSubscriberTestCase extends TestCase {
@@ -11,10 +10,10 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	protected $options_data;
 	protected $options_api;
 	protected $smush;
-	protected $smush_settings_option_name;
-	protected $smush_settings;
-	protected $smush_lazy_option_name;
-	protected $smush_lazy;
+	protected $smush_settings_option_name = '';
+	protected $smush_settings = [];
+	protected $smush_lazy_option_name = '';
+	protected $smush_lazy = [];
 
 	public function set_up() {
 		parent::set_up();
@@ -50,8 +49,8 @@ abstract class SmushSubscriberTestCase extends TestCase {
 		$this->subscriber     = null;
 		$this->options_data   = null;
 		$this->options_api    = null;
-		$this->smush_settings = null;
-		$this->smush_lazy     = null;
+		$this->smush_settings = [];
+		$this->smush_lazy     = [];
 	}
 
 	protected function setSmushSettings( $lazyload_enabled, array $lazyload_formats ) {
@@ -60,7 +59,7 @@ abstract class SmushSubscriberTestCase extends TestCase {
 
 		$this->smush->set_setting( $this->smush_settings_option_name, $settings );
 
-		$settings           = $this->smush_lazy;
+		$settings           = (array) $this->smush_lazy;
 		$settings['format'] = $lazyload_formats;
 
 		$this->smush->set_setting( $this->smush_lazy_option_name, $settings );

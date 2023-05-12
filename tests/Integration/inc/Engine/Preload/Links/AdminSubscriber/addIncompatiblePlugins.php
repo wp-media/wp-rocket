@@ -10,6 +10,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  PreloadLinks
  */
 class Test_AddIncompatiblePlugins extends TestCase {
+	private $preload_value;
+
     public function tear_down() {
         parent::tear_down();
 
