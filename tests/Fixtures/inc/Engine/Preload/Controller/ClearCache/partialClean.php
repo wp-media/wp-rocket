@@ -75,7 +75,7 @@ return [
 			]
 		]
 	],
-	'continueWithPostStatusAsPrivate' => [
+	'excludePostStatusWithPrivateStatus' => [
 		'config' => [
 			'urls' => [
 				'url',
