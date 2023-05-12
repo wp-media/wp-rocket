@@ -4,7 +4,7 @@ namespace WP_Rocket\Logger;
 
 use Monolog\Formatter\HtmlFormatter as MonoHtmlFormatter;
 
-class HTMLFormatter extends MonoHtmlFormatter {
+class HtmlFormatter extends MonoHtmlFormatter {
 
 	/**
 	 * Formats a log record.

@@ -35,7 +35,7 @@ spl_autoload_register(
 			'WP_Rocket\\Buffer\\Cache'                   => $rocket_path . 'inc/classes/Buffer/class-cache.php',
 			'WP_Rocket\\Buffer\\Tests'                   => $rocket_path . 'inc/classes/Buffer/class-tests.php',
 			'WP_Rocket\\Buffer\\Config'                  => $rocket_path . 'inc/classes/Buffer/class-config.php',
-			'WP_Rocket\\Logger\\HTMLFormatter'           => $rocket_path . 'inc/Logger/HTMLFormatter.php',
+			'WP_Rocket\\Logger\\HtmlFormatter'           => $rocket_path . 'inc/Logger/HtmlFormatter.php',
 			'WP_Rocket\\Logger\\CacheCleanStreamHandler' => $rocket_path . 'inc/Logger/CacheCleanStreamHandler.php',
 			'WP_Rocket\\Logger\\Logger'                  => $rocket_path . 'inc/Logger/Logger.php',
 			'WP_Rocket\\Logger\\StreamHandler'           => $rocket_path . 'inc/Logger/StreamHandler.php',
