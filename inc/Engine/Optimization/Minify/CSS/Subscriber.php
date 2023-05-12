@@ -93,5 +93,6 @@ class Subscriber extends AbstractMinifySubscriber {
 			return;
 		}
 		rocket_clean_minify();
+		rocket_clean_domain();
 	}
 }

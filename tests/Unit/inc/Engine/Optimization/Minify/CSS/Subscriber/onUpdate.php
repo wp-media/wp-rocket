@@ -57,8 +57,10 @@ class Test_onUpdate extends TestCase {
     {
 		if($expected) {
 			Functions\expect('rocket_clean_minify');
+			Functions\expect('rocket_clean_domain');
 		}else {
 			Functions\expect('rocket_clean_minify')->never();
+			Functions\expect('rocket_clean_domain')->never();
 		}
         $this->subscriber->on_update($config['old_version']);
     }

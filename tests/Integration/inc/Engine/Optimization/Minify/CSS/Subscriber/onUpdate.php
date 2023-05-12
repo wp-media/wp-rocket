@@ -17,8 +17,10 @@ class Test_onUpdate extends TestCase {
     {
 		if($expected) {
 			Functions\expect('rocket_clean_minify');
+			Functions\expect('rocket_clean_domain');
 		}else {
 			Functions\expect('rocket_clean_minify')->never();
+			Functions\expect('rocket_clean_domain')->never();
 		}
 		do_action('wp_rocket_upgrade', $config['old_version'], '3.15');
     }
