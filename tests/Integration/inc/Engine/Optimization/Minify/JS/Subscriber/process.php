@@ -20,6 +20,8 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @group  Minify
  */
 class Test_Process extends TestCase {
+	private $defer_all_js;
+
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Subscriber/process.php';
 
 	public function tear_down() {

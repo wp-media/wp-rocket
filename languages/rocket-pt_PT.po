@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-24 15:00-0400\n"
+"POT-Creation-Date: 2023-04-14 10:33-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2023\n"
-"Language-Team: Portuguese (Portugal) (https://www.transifex.com/wp-media/teams/18133/pt_PT/)\n"
+"Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/OneCom.php:137
-#: inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47
 #: inc/ThirdParty/Hostings/WPXCloud.php:51 inc/deprecated/3.6.php:697
 #: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
@@ -2584,8 +2584,8 @@ msgid "Default Lists"
 msgstr "Listas por omissão"
 
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
-msgid "Delay JS Exclusion Lists"
-msgstr "Listas de exclusão do diferimento da execução do JS"
+msgid "Delay JavaScript Execution Exclusion Lists"
+msgstr "Listas de exclusão do diferimento da execução de JavaScript"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
@@ -2664,9 +2664,13 @@ msgstr "%1$s: A cache do CSS utilizado foi limpa!"
 msgid "Clear Used CSS of this URL"
 msgstr "Limpar CSS utilizado deste URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:149
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:160
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "Tarefas pendentes do WP Rocket de remoção de CSS não utilizado"
+
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:174
+msgid "WP Rocket clear Remove Unused CSS failed jobs"
+msgstr "Limpar tarefas falhadas do WP Rocket de remoção de CSS não utilizado"
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
 #: inc/deprecated/3.3.php:770
@@ -2680,8 +2684,8 @@ msgstr ""
 "ou na configuração deste servidor. Se o problema persistir, <a "
 "href=\"%s\">contacte o suporte</a>."
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:469
-#: inc/Engine/Plugin/UpdaterSubscriber.php:483
+#: inc/Engine/Plugin/UpdaterSubscriber.php:472
+#: inc/Engine/Plugin/UpdaterSubscriber.php:486
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
@@ -2689,7 +2693,7 @@ msgstr ""
 msgid "%s Update Rollback"
 msgstr "Reversão da actualização do %s"
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:506 inc/deprecated/3.11.php:279
+#: inc/Engine/Plugin/UpdaterSubscriber.php:509 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sVolte para o WP Rocket%2$s ou %3$svá para a página de plugins%2$s"
@@ -2706,11 +2710,11 @@ msgstr ""
 "páginas, sempre que as respectivas caches forem limpas. Não é necessária "
 "qualquer outra acção."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:132
+#: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
 msgstr "Tarefas pendentes do pré-carregamento do WP Rocket"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:160
+#: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "Reverter tarefas falhadas de pré-carregamento do WP Rocket"
 
