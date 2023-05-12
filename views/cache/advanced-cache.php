@@ -48,6 +48,10 @@ spl_autoload_register(
 			$file = $rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\', '/', $class ) . '.php';
 		} elseif ( strpos( $class, 'Psr\\Log\\' ) === 0 ) {
 			$file = $rocket_path . 'vendor/psr/log/' . str_replace( '\\', '/', $class ) . '.php';
+			if ( ! file_exists( $file ) ) {
+				$class = str_replace( 'Psr\\Log\\', 'src/', $class );
+				$file  = $rocket_path . 'vendor/psr/log/' . str_replace( '\\', '/', $class ) . '.php';
+			}
 		} else {
 			return;
 		}
