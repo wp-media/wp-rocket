@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\PurgeActionsSubscriber;
 use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Logger\Logger;
 use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Cache\Purge;
@@ -22,7 +23,7 @@ class Test_PurgeUserCache extends TestCase {
 		parent::setUp();
 
 		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new PurgeActionsSubscriber( $this->options, Mockery::mock( Purge::class ) );
+		$this->subscriber = new PurgeActionsSubscriber( $this->options, Mockery::mock( Purge::class ), Mockery::mock(Logger::class) );
 	}
 
 	public function testShouldNotPurgeUserCacheWhenUserCacheDisabled() {

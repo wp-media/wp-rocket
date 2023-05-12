@@ -42,14 +42,15 @@ $end = <<<ENDING_CONTENTS
 spl_autoload_register(
 	function( \$class ) use ( \$rocket_path ) {
 		\$rocket_classes = [
-			'WP_Rocket\\\Buffer\\\Abstract_Buffer' => \$rocket_path . 'inc/classes/Buffer/class-abstract-buffer.php',
-			'WP_Rocket\\\Buffer\\\Cache'           => \$rocket_path . 'inc/classes/Buffer/class-cache.php',
-			'WP_Rocket\\\Buffer\\\Tests'           => \$rocket_path . 'inc/classes/Buffer/class-tests.php',
-			'WP_Rocket\\\Buffer\\\Config'          => \$rocket_path . 'inc/classes/Buffer/class-config.php',
-			'WP_Rocket\\\Logger\\\HTML_Formatter'  => \$rocket_path . 'inc/classes/logger/class-html-formatter.php',
-			'WP_Rocket\\\Logger\\\Logger'          => \$rocket_path . 'inc/classes/logger/class-logger.php',
-			'WP_Rocket\\\Logger\\\Stream_Handler'  => \$rocket_path . 'inc/classes/logger/class-stream-handler.php',
-			'WP_Rocket\\\Traits\\\Memoize'         => \$rocket_path . 'inc/classes/traits/trait-memoize.php',
+			'WP_Rocket\\\Buffer\\\Abstract_Buffer'         => \$rocket_path . 'inc/classes/Buffer/class-abstract-buffer.php',
+			'WP_Rocket\\\Buffer\\\Cache'                   => \$rocket_path . 'inc/classes/Buffer/class-cache.php',
+			'WP_Rocket\\\Buffer\\\Tests'                   => \$rocket_path . 'inc/classes/Buffer/class-tests.php',
+			'WP_Rocket\\\Buffer\\\Config'                  => \$rocket_path . 'inc/classes/Buffer/class-config.php',
+			'WP_Rocket\\\Logger\\\HTMLFormatter'           => \$rocket_path . 'inc/Logger/HTMLFormatter.php',
+			'WP_Rocket\\\Logger\\\CacheCleanStreamHandler' => \$rocket_path . 'inc/Logger/CacheCleanStreamHandler.php',
+			'WP_Rocket\\\Logger\\\Logger'                  => \$rocket_path . 'inc/Logger/Logger.php',
+			'WP_Rocket\\\Logger\\\StreamHandler'           => \$rocket_path . 'inc/Logger/StreamHandler.php',
+			'WP_Rocket\\\Traits\\\Memoize'                 => \$rocket_path . 'inc/classes/traits/trait-memoize.php',
 		];
 
 		if ( isset( \$rocket_classes[ \$class ] ) ) {
