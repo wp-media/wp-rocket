@@ -179,6 +179,10 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'WPGeotargeting' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/WPGeotargeting/fixtures.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
 			if(! defined('AIOSEOP_VERSION')) {
 				define('AIOSEOP_VERSION', true);

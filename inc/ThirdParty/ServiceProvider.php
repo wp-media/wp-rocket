@@ -36,6 +36,7 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\WpDiscuz;
+use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
@@ -100,6 +101,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'perfmatters',
 		'rapidload',
 		'translatepress',
+		'wpgeotargeting',
 	];
 
 	/**
@@ -251,6 +253,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
 		$this->getContainer()->share( 'translatepress', TranslatePress::class );
-
+		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }

@@ -11,6 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
+	private $input;
+
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );

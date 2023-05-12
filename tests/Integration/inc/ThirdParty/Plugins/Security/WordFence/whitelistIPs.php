@@ -13,6 +13,7 @@ use wordfence;
  * @group  ThirdParty
  */
 class Test_WordFenceWhitelistIPs extends TestCase {
+	private $WordFenceCompatibility;
 
 	public function set_up() {
 
