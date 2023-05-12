@@ -211,7 +211,7 @@ class Logger {
 
 		$handlers[] = $handler;
 
-		if ( rocket_get_constant( 'WP_ROCKET_DEBUG_CACHE_CLEARING', false ) ) {
+		if (  defined( 'WP_ROCKET_DEBUG_CACHE_CLEARING' ) ) {
 			$handler = new CacheCleanStreamHandler( static::get_cache_clean_log_file_path(), $log_level );
 			$handler->setFormatter( $formatter );
 			$handlers [] = $handler;
