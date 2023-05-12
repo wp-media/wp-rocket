@@ -20,9 +20,10 @@ class Test_PartialClean extends TestCase
 	{
 		parent::setUp();
 		$this->query = $this->createMock(Cache::class);
-		$this->controller = Mockery::mock(ClearCache::class . '[is_excluded,is_excluded_by_filter]', [$this->query])
+		$this->controller = Mockery::mock(ClearCache::class . '[is_excluded,is_excluded_by_filter,is_private]', [$this->query])
 			->shouldAllowMockingProtectedMethods();
 	}
+
 
 	/**
 	 * @dataProvider configTestData
@@ -30,14 +31,28 @@ class Test_PartialClean extends TestCase
 	public function testShouldDoAsExpected($config, $expected) {
 
 		foreach ($config['urls'] as $url) {
-			$this->controller->expects()->is_excluded_by_filter($url)->andReturn($config['is_excluded']);
-			$this->controller->shouldReceive('is_excluded_by_filter')->with($url)->andReturn($config['is_excluded_by_filter']);
+			$this->controller->expects()->is_private($url)->andReturn($config['is_private']);
+			if ( ! $config['is_private'] ) {
+				$this->controller->expects()->is_excluded_by_filter($url)->andReturn($config['is_excluded']);
+				$this->controller->shouldReceive('is_excluded_by_filter')->with($url)->andReturn($config['is_excluded_by_filter']);
+			}
+			else{
+				$this->controller->expects()->is_excluded_by_filter($url)->never();
+				$this->controller->shouldReceive('is_excluded_by_filter')->never();
+			}
 		}
-		if(! $config['is_excluded']) {
-			if(! $config['is_excluded_by_filter']) {
-				$this->query->expects(self::atLeastOnce())->method('create_or_update')->withConsecutive(...$expected['urls']);
-			} else {
-				$this->query->expects(self::atLeastOnce())->method('delete_by_url')->withConsecutive(...$expected['urls']);
+
+		if ( $config['is_private'] ) {
+			$this->query->expects($this->never())->method('create_or_update');
+			$this->query->expects($this->never())->method('delete_by_url');
+		}
+		else {
+			if(! $config['is_excluded']) {
+				if(! $config['is_excluded_by_filter']) {
+					$this->query->expects(self::atLeastOnce())->method('create_or_update')->withConsecutive(...$expected['urls']);
+				} else {
+					$this->query->expects(self::atLeastOnce())->method('delete_by_url')->withConsecutive(...$expected['urls']);
+				}
 			}
 		}
 

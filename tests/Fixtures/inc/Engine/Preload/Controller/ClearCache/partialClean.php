@@ -8,6 +8,7 @@ return [
 			],
 			'is_excluded' => false,
 			'is_excluded_by_filter' => false,
+			'is_private' => false,
 		],
 		'expected' => [
 			'urls' => [
@@ -34,6 +35,7 @@ return [
 			],
 			'is_excluded' => true,
 			'is_excluded_by_filter' => false,
+			'is_private' => false,
 		],
 		'expected' => [
 			'urls' => [
@@ -60,6 +62,28 @@ return [
 			],
 			'is_excluded' => true,
 			'is_excluded_by_filter' => true,
+			'is_private' => false,
+		],
+		'expected' => [
+			'urls' => [
+				[
+					'url',
+				],
+				[
+					'url1',
+				]
+			]
+		]
+	],
+	'continueWithPostStatusAsPrivate' => [
+		'config' => [
+			'urls' => [
+				'url',
+				'url1',
+			],
+			'is_excluded' => true,
+			'is_excluded_by_filter' => true,
+			'is_private' => true,
 		],
 		'expected' => [
 			'urls' => [
