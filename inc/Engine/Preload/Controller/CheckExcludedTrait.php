@@ -64,4 +64,17 @@ trait CheckExcludedTrait {
 		}
 		return false;
 	}
+
+	/**
+	 * Checks that a page is private.
+	 *
+	 * @param   string $url  Page url.
+	 *
+	 * @return  bool         Return true if page is private; false otherwise.
+	 */
+	protected function is_private( string $url ) : bool {
+		$post_id = url_to_postid( $url );
+
+		return 'private' === get_post_status( $post_id );
+	}
 }
