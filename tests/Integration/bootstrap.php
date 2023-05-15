@@ -16,6 +16,10 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+        if ( BootstrapManager::isGroup( '' ) ) {
+            // TODO: add your logic from .
+        }
+
 		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {
 			// Load Simple Custom CSS plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/simple-custom-css/simple-custom-css.php';
