@@ -35,6 +35,6 @@ class Test_onInstall extends TestCase {
     public function testShouldDoAsExpected()
     {
 		Functions\expect('update_option')->with('wp_rocket_no_licence', 0);
-        $this->subscriber->on_install();
+        $this->subscriber->on_install([]);
     }
 }
