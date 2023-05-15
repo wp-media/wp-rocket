@@ -89,6 +89,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 			->once()
 			->andReturn( $this->get_site_url() );
 
+		Functions\expect('home_url')
+			->zeroOrMoreTimes()
+			->andReturn( $this->get_home_url() );
+
 		Functions\expect('get_post_ancestors')
 			->once()
 			->with($post_id)
@@ -131,6 +135,10 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 
 	private function get_site_url( ) {
 		return isset( $this->config['urls']['site_url'] ) ? $this->config['urls']['site_url'] : '';
+	}
+
+	private function get_home_url( ) {
+		return isset( $this->config['urls']['home_url'] ) ? $this->config['urls']['home_url'] : '';
 	}
 
 }
