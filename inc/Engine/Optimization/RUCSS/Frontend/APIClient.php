@@ -59,6 +59,8 @@ class APIClient extends AbstractAPIClient {
 		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
 			set_transient( 'wp_rocket_no_licence', true, WEEK_IN_SECONDS );
 			update_rocket_option( 'remove_unused_css', 0 );
+		} else {
+			set_transient( 'wp_rocket_no_licence', 0, WEEK_IN_SECONDS );
 		}
 
 		return wp_parse_args( (array) $result, $default );
