@@ -92,9 +92,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add option on installation.
 	 *
-	 * @return void
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
 	 */
-	public function on_install($options) {
+	public function on_install( $options ) {
 
 		update_option( 'wp_rocket_no_licence', 0 );
 
