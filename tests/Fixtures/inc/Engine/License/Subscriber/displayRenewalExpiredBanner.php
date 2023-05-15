@@ -58,7 +58,7 @@ return [
 			'pricing' => $pricing,
 			'transient' => false,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
@@ -70,7 +70,7 @@ return [
 			'pricing' => $pricing,
 			'transient' => true,
 		],
-		'expected' => null,
+		'expected' => '',
 	],
 	'testShouldDisplayBannerWhenLicenseExpired' => [
 		'config'   => [

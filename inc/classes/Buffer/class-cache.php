@@ -39,6 +39,15 @@ class Cache extends Abstract_Buffer {
 	private $cache_dir_path;
 
 	/**
+	 * Exclude urls from wp canonical redirect.
+	 *
+	 * @var array Array of url patterns to exclude from wp canonical redirect.
+	 */
+	private $wp_redirect_exclusions = [
+		'(.*)wp\-json(/.*|$)',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @since  3.3
@@ -541,7 +550,7 @@ class Cache extends Abstract_Buffer {
 
 			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
 			$user_key = reset( $user_key );
-			$user_key = $this->sanitize_key( $user_key . '-' . $this->config->get_config( 'secret_cache_key' ) );
+			$user_key = $this->sanitize_user( $user_key ) . '-' . $this->config->get_config( 'secret_cache_key' );
 
 			// Get cache folder of host name.
 			return $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
@@ -734,17 +743,14 @@ class Cache extends Abstract_Buffer {
 	}
 
 	/**
-	 * Sanitizes a string key.
+	 * Sanitizes a string username.
 	 *
-	 * @param string $key String key.
+	 * @param string $user String username.
 	 *
 	 * @return string
 	 */
-	private function sanitize_key( string $key ): string {
-		$sanitized_key = '';
-		$sanitized_key = strtolower( $key );
-
-		return preg_replace( '/[^a-z0-9_\-]/', '', $sanitized_key );
+	private function sanitize_user( string $user = '' ): string {
+		return strtolower( rawurlencode( $user ) );
 	}
 
 	/**
@@ -753,6 +759,14 @@ class Cache extends Abstract_Buffer {
 	 * @return bool
 	 */
 	private function maybe_allow_wp_redirect(): bool {
+
+		$exclusions = implode( '|', $this->wp_redirect_exclusions );
+
+		// Return early for excluded urls.
+		if ( preg_match( '#' . $exclusions . '#', $this->tests->get_request_uri_base() )
+		) {
+			return false;
+		}
 
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 

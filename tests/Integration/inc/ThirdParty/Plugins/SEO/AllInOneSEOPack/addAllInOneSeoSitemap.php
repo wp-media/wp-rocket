@@ -15,6 +15,7 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 	use FilterTrait;
 
 	protected $aioseop_options;
+	private $aioseo;
 
 	public function setUp(): void
 	{

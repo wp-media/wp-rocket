@@ -28,7 +28,7 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 
 		self::installFresh();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );

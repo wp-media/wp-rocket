@@ -24,10 +24,10 @@ abstract class TestCase extends BaseTestCase {
 
 		self::installFresh();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -42,10 +42,10 @@ abstract class TestCase extends BaseTestCase {
 
 		self::uninstallAll();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {

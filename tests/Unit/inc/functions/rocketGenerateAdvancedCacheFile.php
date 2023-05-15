@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 
 use Mockery;
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
@@ -21,8 +20,10 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketGenerateAdvancedCacheFile extends FilesystemTestCase {
 	protected $path_to_test_data   = '/inc/functions/rocketGenerateAdvancedCacheFile.php';
 	private   $advanced_cache_file = 'vfs://public/wp-content/advanced-cache.php';
+	private $container;
+	private $advanced_cache;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->container      = Mockery::mock( 'container' );
