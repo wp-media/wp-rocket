@@ -1,32 +1,5 @@
 <?php
-
 defined( 'ABSPATH' ) || exit;
-
-/**
- * Compatibility with GeotargetingWP Plugins
- *
- * @author Damian Logghe <info@timersys.com>
- */
-if ( class_exists( 'GeotWP\GeotargetingWP' ) ) :
-
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 72 );
-	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_geotargetingwp_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_geotargetingwp_mandatory_cookie' );
-
-	/**
-	 * If we recently deactivated a plugin of the family but
-	 * we still see the class it means another plugin is still active,
-	 * so flush rules once more to be safe
-	 */
-	if ( get_option( 'geotWP-deactivated' ) ) {
-		// Update the WP Rocket rules on the .htaccess file.
-		add_action( 'admin_init', 'flush_rocket_htaccess' );
-
-		// Regenerate the config file.
-		add_action( 'admin_init', 'rocket_generate_config_file' );
-		delete_option( 'geotWP-deactivated' );
-	}
-endif;
 
 /**
  * Add cookies when we activate any goetargetingWP plugin.
@@ -35,6 +8,7 @@ endif;
  * @author Damian Logghe
  */
 function rocket_activate_geotargetingwp() {
+	_deprecated_function( __FUNCTION__ . '()', '3.13.3' );
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 72 );
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_geotargetingwp_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_geotargetingwp_mandatory_cookie' );
@@ -45,7 +19,6 @@ function rocket_activate_geotargetingwp() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
-add_action( 'geotWP/activated', 'rocket_activate_geotargetingwp', 11 );
 
 /**
  * Remove cookies when we deactivate the plugin.
@@ -54,6 +27,7 @@ add_action( 'geotWP/activated', 'rocket_activate_geotargetingwp', 11 );
  * @author Damian Logghe
  */
 function rocket_deactivate_geotargetingwp() {
+	_deprecated_function( __FUNCTION__ . '()', '3.13.3' );
 	// add into db a record saying we deactivated one of the family plugins.
 	update_option( 'geotWP-deactivated', true );
 	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 72 );
@@ -66,7 +40,6 @@ function rocket_deactivate_geotargetingwp() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
-add_action( 'geotWP/deactivated', 'rocket_deactivate_geotargetingwp', 11 );
 
 /**
  * Add the GeotargetingWP cookies to generate caching files depending on their values.
@@ -78,6 +51,7 @@ add_action( 'geotWP/deactivated', 'rocket_deactivate_geotargetingwp', 11 );
  * @return Array Updated array of cookies
  */
 function rocket_add_geotargetingwp_dynamic_cookies( $cookies ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.13.3' );
 	return rocket_add_geot_cookies( $cookies );
 }
 
@@ -91,6 +65,7 @@ function rocket_add_geotargetingwp_dynamic_cookies( $cookies ) {
  * @return Array Updated array of cookies
  */
 function rocket_add_geotargetingwp_mandatory_cookie( $cookies ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.13.3' );
 	return rocket_add_geot_cookies( $cookies );
 }
 
@@ -104,6 +79,7 @@ function rocket_add_geotargetingwp_mandatory_cookie( $cookies ) {
  * @return Array Updated array of cookies
  */
 function rocket_add_geot_cookies( $cookies ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.13.3' );
 	// valid options are country, state, city.
 	$enabled_cookies = apply_filters( 'rocket_geotargetingwp_enabled_cookies', [ 'country' ] );
 	foreach ( $enabled_cookies as $enabled_cookie ) {

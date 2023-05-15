@@ -74,6 +74,9 @@ jobs:
     - name: Require PHPUnit 7.5 for WP compatibility
       run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
 
+    - name: Require WooCommerce 5.9 for PHP 7.2 compatibility
+      run: composer require --dev --no-scripts wpackagist-plugin/woocommerce "^5.9" -W
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
 
