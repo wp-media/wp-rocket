@@ -11,10 +11,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices' => [
+			'admin_notices'         => [
 				[ 'maybe_display_purge_notice' ],
 				[ 'maybe_display_update_settings_notice' ],
 			],
+			'rocket_input_sanitize' => [ 'sanitize_options', 20, 2 ],
 		];
 	}
 
@@ -94,5 +95,31 @@ class Subscriber implements Subscriber_Interface {
 				]
 			);
 		}
+	}
+
+	/**
+	 * Sanitize Cloudflare options
+	 *
+	 * @param array    $input gtArray of sanitized values after being submitted by the form.
+	 * @param Settings $settings Settings instance.
+	 *
+	 * @return array
+	 */
+	public function sanitize_options( $input, $settings ) {
+		$input['do_cloudflare']               = $settings->sanitize_checkbox( $input, 'do_cloudflare' );
+		$input['cloudflare_devmode']          = $settings->sanitize_checkbox( $input, 'cloudflare_devmode' );
+		$input['cloudflare_auto_settings']    = $settings->sanitize_checkbox( $input, 'cloudflare_auto_settings' );
+		$input['cloudflare_protocol_rewrite'] = $settings->sanitize_checkbox( $input, 'cloudflare_protocol_rewrite' );
+
+		$input['cloudflare_email']   = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
+		$input['cloudflare_zone_id'] = isset( $input['cloudflare_zone_id'] ) ? sanitize_text_field( $input['cloudflare_zone_id'] ) : '';
+
+		$input['cloudflare_api_key'] = isset( $input['cloudflare_api_key'] ) ? sanitize_text_field( $input['cloudflare_api_key'] ) : '';
+
+		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
+			$input['cloudflare_api_key'] = rocket_get_constant( 'WP_ROCKET_CF_API_KEY', '' );
+		}
+
+		return $input;
 	}
 }
