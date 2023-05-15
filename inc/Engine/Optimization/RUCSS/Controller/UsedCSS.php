@@ -265,7 +265,7 @@ class UsedCSS {
 		 *
 		 * @param array $safelist Array of safelist values.
 		 */
-		$safelist    = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
 
 		/**
 		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
