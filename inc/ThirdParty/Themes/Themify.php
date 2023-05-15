@@ -40,8 +40,8 @@ class Themify extends ThirdpartyTheme {
 
 		return [
 			'after_switch_theme' => 'disabling_concat_on_rucss',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => 'disabling_concat_on_rucss',
-			'themify_save_data'  => 'disable_concat_on_saving_data',
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => ['disabling_concat_on_rucss', 10, 2],
+			'themify_save_data'  => 'disabling_concat_on_save',
 			'themify_dev_mode'   => 'maybe_enable_dev_mode',
 		];
 	}
@@ -64,28 +64,39 @@ class Themify extends ThirdpartyTheme {
 	/**
 	 * Disable concat on RUCSS enabled.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function disabling_concat_on_rucss() {
+	public function disabling_concat_on_rucss($old, $new) {
+
+		if(! key_exists('remove_unused_css', $old) || ! key_exists('remove_unused_css', $new) || $old['remove_unused_css'] === $new['remove_unused_css']) {
+			return;
+		}
+
 		$data = themify_get_data();
 
-		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
-			$this->maybe_disable( $data );
-			return;
+		if ( ! $new['remove_unused_css'] ) {
+			$data = $this->maybe_disable( $data );
 		}
 
-		if ( ! rocket_has_constant( 'THEMIFY_DEV' ) ) {
-			define( 'THEMIFY_DEV', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+		if( $new['remove_unused_css'] ) {
+			$data = $this->maybe_enable( $data );
 		}
-
-		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && $data['setting-dev-mode'] ) {
-			return;
-		}
-
-		$data['setting-dev-mode']         = true;
-		$data['setting-dev-mode-concate'] = true;
 
 		themify_set_data( $data );
+	}
+
+	/**
+	 * Disable concat on RUCSS enabled.
+	 *
+	 * @return array
+	 */
+	public function disabling_concat_on_save($data) {
+
+		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
+			return $data;
+		}
+
+		return $this->maybe_enable( $data );
 	}
 
 	/**
@@ -95,14 +106,26 @@ class Themify extends ThirdpartyTheme {
 	 * @return void
 	 */
 	protected function maybe_disable( array $data ) {
-		if ( ! key_exists( 'setting-dev-mode-concate', $data ) || ! $data['setting-dev-mode-concate'] ) {
-			return;
+		if ( key_exists( 'setting-dev-mode-concate', $data ) && ! $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && ! $data['setting-dev-mode'] ) {
+			return $data;
 		}
 
 		$data['setting-dev-mode-concate'] = false;
 		$data['setting-dev-mode']         = false;
 
-		themify_set_data( $data );
+		return $data;
+	}
+
+	protected function maybe_enable( array $data ) {
+
+		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && $data['setting-dev-mode'] ) {
+			return $data;
+		}
+
+		$data['setting-dev-mode']         = true;
+		$data['setting-dev-mode-concate'] = true;
+
+		return $data;
 	}
 
 	/**
