@@ -42,7 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? rocket_get_constant( 'WP_ROCKET_CF_API_KEY', '' ) : $options->get( 'cloudflare_api_key', '' );
 
 		$this->getContainer()->add( 'cloudflare_auth', APIKey::class )
-			->addArgument( $options->get( 'cloudflare_email' ) )
+			->addArgument( $options->get( 'cloudflare_email', '' ) )
 			->addArgument( $cf_api_key );
 
 		$this->getContainer()->add( 'cloudflare_client', Client::class )
