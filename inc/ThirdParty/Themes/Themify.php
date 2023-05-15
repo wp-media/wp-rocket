@@ -40,7 +40,7 @@ class Themify extends ThirdpartyTheme {
 
 		return [
 			'after_switch_theme' => 'disabling_concat_on_rucss',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => ['disabling_concat_on_rucss', 10, 2],
+			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => [ 'disabling_concat_on_rucss', 10, 2 ],
 			'themify_save_data'  => 'disabling_concat_on_save',
 			'themify_dev_mode'   => 'maybe_enable_dev_mode',
 		];
@@ -64,11 +64,14 @@ class Themify extends ThirdpartyTheme {
 	/**
 	 * Disable concat on RUCSS enabled.
 	 *
-	 * @return array
+	 * @param array $old Old configurations.
+	 * @param array $new New configurations.
+	 *
+	 * @return void
 	 */
-	public function disabling_concat_on_rucss($old, $new) {
+	public function disabling_concat_on_rucss( $old, $new ) {
 
-		if(! key_exists('remove_unused_css', $old) || ! key_exists('remove_unused_css', $new) || $old['remove_unused_css'] === $new['remove_unused_css']) {
+		if ( ! key_exists( 'remove_unused_css', $old ) || ! key_exists( 'remove_unused_css', $new ) || $old['remove_unused_css'] === $new['remove_unused_css'] ) {
 			return;
 		}
 
@@ -78,7 +81,7 @@ class Themify extends ThirdpartyTheme {
 			$data = $this->maybe_disable( $data );
 		}
 
-		if( $new['remove_unused_css'] ) {
+		if ( $new['remove_unused_css'] ) {
 			$data = $this->maybe_enable( $data );
 		}
 
@@ -90,7 +93,7 @@ class Themify extends ThirdpartyTheme {
 	 *
 	 * @return array
 	 */
-	public function disabling_concat_on_save($data) {
+	public function disabling_concat_on_save( $data ) {
 
 		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
 			return $data;
@@ -102,10 +105,11 @@ class Themify extends ThirdpartyTheme {
 	/**
 	 * Maybe disable concate CSS.
 	 *
-	 * @param array $data themify settings.
-	 * @return void
+	 * @param array $data Themify data.
+	 *
+	 * @return array
 	 */
-	protected function maybe_disable( array $data ) {
+	protected function maybe_disable( array $data ): array {
 		if ( key_exists( 'setting-dev-mode-concate', $data ) && ! $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && ! $data['setting-dev-mode'] ) {
 			return $data;
 		}
@@ -116,7 +120,14 @@ class Themify extends ThirdpartyTheme {
 		return $data;
 	}
 
-	protected function maybe_enable( array $data ) {
+	/**
+	 * Maybe enable dev mode and concat.
+	 *
+	 * @param array $data Themify data.
+	 *
+	 * @return array
+	 */
+	protected function maybe_enable( array $data ): array {
 
 		if ( key_exists( 'setting-dev-mode-concate', $data ) && $data['setting-dev-mode-concate'] && key_exists( 'setting-dev-mode', $data ) && $data['setting-dev-mode'] ) {
 			return $data;
