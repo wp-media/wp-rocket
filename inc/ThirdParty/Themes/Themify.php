@@ -41,7 +41,7 @@ class Themify extends ThirdpartyTheme {
 		return [
 			'after_switch_theme' => 'disabling_concat_on_rucss',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => [ 'disabling_concat_on_rucss', 10, 2 ],
-			'themify_save_data'  => 'disabling_concat_on_save',
+			'themify_save_data'  => 'disable_concat_on_saving_data',
 			'themify_dev_mode'   => 'maybe_enable_dev_mode',
 		];
 	}
@@ -56,9 +56,8 @@ class Themify extends ThirdpartyTheme {
 		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
 			return $value;
 		}
-		$value['setting-dev-mode']         = true;
-		$value['setting-dev-mode-concate'] = true;
-		return $value;
+
+		return $this->maybe_enable( $value );
 	}
 
 	/**
@@ -86,21 +85,6 @@ class Themify extends ThirdpartyTheme {
 		}
 
 		themify_set_data( $data );
-	}
-
-	/**
-	 * Disable concat on RUCSS enabled.
-	 *
-	 * @param array $data Themify data.
-	 * @return array
-	 */
-	public function disabling_concat_on_save( $data ) {
-
-		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
-			return $data;
-		}
-
-		return $this->maybe_enable( $data );
 	}
 
 	/**
