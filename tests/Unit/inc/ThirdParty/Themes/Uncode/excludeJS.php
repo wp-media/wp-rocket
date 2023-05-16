@@ -14,7 +14,7 @@ use Brain\Monkey\Functions;
 class Test_ExcludeJS extends TestCase {
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testExcludeJS( $config, $expected ) {
 		Functions\when( 'get_template_directory_uri' )->justReturn('/wp-content/themes/uncode' );
@@ -23,9 +23,5 @@ class Test_ExcludeJS extends TestCase {
 		$uncode = new Uncode();
 
 		$this->assertSame( $expected, $uncode->exclude_js($config['exclusions']) );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'excludeJS' );
 	}
 }

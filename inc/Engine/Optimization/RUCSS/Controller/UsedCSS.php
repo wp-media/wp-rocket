@@ -200,6 +200,14 @@ class UsedCSS {
 			return $html;
 		}
 
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+
+		if ( ! $this->html_has_title_tag( $clean_html ) ) {
+			return $html;
+		}
+
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
@@ -240,7 +248,7 @@ class UsedCSS {
 			return $html;
 		}
 
-		$html = $this->remove_used_css_from_html( $html );
+		$html = $this->remove_used_css_from_html( $clean_html, $html );
 		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
@@ -337,18 +345,14 @@ class UsedCSS {
 	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
 	 * @param string $html HTML content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function remove_used_css_from_html( string $html ): string {
-		$clean_html = $this->hide_comments( $html );
-		$clean_html = $this->hide_noscripts( $clean_html );
-		$clean_html = $this->hide_scripts( $clean_html );
+	private function remove_used_css_from_html( string $clean_html, string $html ): string {
 		$this->set_inline_exclusions_lists();
-
 		$html = $this->remove_external_styles_from_html( $clean_html, $html );
-
 		return $this->remove_internal_styles_from_html( $clean_html, $html );
 	}
 
