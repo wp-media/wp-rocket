@@ -91,6 +91,7 @@ class Themify extends ThirdpartyTheme {
 	/**
 	 * Disable concat on RUCSS enabled.
 	 *
+	 * @param array $data Themify data.
 	 * @return array
 	 */
 	public function disabling_concat_on_save( $data ) {
