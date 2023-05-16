@@ -3,7 +3,7 @@
 # Translators:
 # FX Bénard <fxb@wp-translations.org>, 2020
 # Romain • WP Rocket <contact@wp-rocket.me>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -3019,8 +3019,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad sur les iframes et vidéos"
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
-msgstr "Minifier / combiner le CSS"
+msgid "Minify CSS"
+msgstr "Minifier le CSS"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"

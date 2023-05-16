@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2891,8 +2891,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "بارگذاری با تاخیر آی‌‌فریم‌ها\\ویدیوها"
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
-msgstr "فشرده‌سازی\\ترکیب CSS"
+msgid "Minify CSS"
+msgstr "فشرده‌سازی\\ CSS"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"

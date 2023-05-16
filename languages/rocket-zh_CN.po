@@ -5,7 +5,7 @@
 # Kurumi Tokisaki, 2021
 # 码农志 <liyangobj@gmail.com>, 2021
 # Tony Tong <tw191@163.com>, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2487,8 +2487,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "框架 / 视频 延迟加载"
 
 #: inc/admin/ui/meta-boxes.php:74
-msgid "Minify/combine CSS"
-msgstr "压缩 / 合并 CSS"
+msgid "Minify CSS"
+msgstr "压缩 CSS"
 
 #: inc/admin/ui/meta-boxes.php:75
 msgid "Remove Unused CSS"

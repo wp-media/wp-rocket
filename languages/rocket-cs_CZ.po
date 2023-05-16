@@ -3,7 +3,7 @@
 # Translators:
 # wpmedia <contact@wp-media.me>, 2019
 # Tomas Hrdina <mot2425@gmail.com>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2259,8 +2259,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad pro iframe/videa"
 
 #: inc/admin/ui/meta-boxes.php:75
-msgid "Minify/combine CSS"
-msgstr "Zmenšit/zkombinovat CSS"
+msgid "Minify CSS"
+msgstr "Zmenšit CSS"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"

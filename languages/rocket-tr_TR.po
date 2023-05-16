@@ -4,7 +4,7 @@
 # Romain • WP Rocket <contact@wp-rocket.me>, 2019
 # Muhittin Sahilli <Muhittinyasarsahilli@gmail.com>, 2021
 # BouRock, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2976,8 +2976,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "Iframe’ler ve görüntüler için LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
-msgstr "CSS’yi küçült/birleştir"
+msgid "Minify CSS"
+msgstr "CSS’yi küçült"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"

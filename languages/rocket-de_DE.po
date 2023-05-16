@@ -6,7 +6,7 @@
 # Romain • WP Rocket <contact@wp-rocket.me>, 2020
 # Rico Michael <webmaster@hotel-brunner.de>, 2021
 # Christian Herrmann, 2023
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2975,8 +2975,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad für iframes und Videos"
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
-msgstr "CSS minifizieren/zusammenfassen"
+msgid "Minify CSS"
+msgstr "CSS minifizieren"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"

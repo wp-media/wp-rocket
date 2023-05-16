@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Oliver Kardos, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2996,8 +2996,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad iframe-k/videók számára"
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
-msgstr "CSS miniatűrizálása/egyesítése"
+msgid "Minify CSS"
+msgstr "CSS miniatűrizálása"
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Remove Unused CSS"
