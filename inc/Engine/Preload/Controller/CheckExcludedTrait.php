@@ -75,6 +75,10 @@ trait CheckExcludedTrait {
 	protected function is_private( string $url ) : bool {
 		$post_id = url_to_postid( $url );
 
+		if ( 0 === $post_id ) {
+			return false;
+		}
+
 		return 'private' === get_post_status( $post_id );
 	}
 }
