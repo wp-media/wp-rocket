@@ -38,30 +38,18 @@ class TestSaveCloudflareOptions extends TestCase {
 		Functions\when( 'current_user_can' )
 			->justReturn( $config['cap'] );
 
-		Functions\when( 'get_transient' )
-			->justReturn( $config['transient'] );
-
 		Functions\expect( 'is_wp_error' )
 			->atMost()
 			->once()
-			->andReturn( false )
+			->andReturn( $config['connection'] )
 			->andAlsoExpectIt()
 			->andReturn( $config['error'] );
 
 		Functions\when( 'get_current_user_id' )
 			->justReturn( 1 );
 
-		if ( false === $config['transient'] ) {
-			$this->cloudflare->shouldReceive( 'is_auth_valid' )
-			->with( $config['value']['cloudflare_zone_id'] )
-			->atMost()
-			->once()
-			->andReturn( $config['auth_valid'] );
-
-			Functions\expect( 'set_transient' )
-				->with( 'rocket_cloudflare_is_api_keys_valid', Mockery::type( 'bool'), Mockery::type( 'int') )
-				->once();
-		}
+		$this->cloudflare->shouldReceive( 'check_connection' )
+			->andReturn( $config['transient'] );
 
 		if ( null === $expected ) {
 			Functions\expect( 'set_transient' )
@@ -70,10 +58,6 @@ class TestSaveCloudflareOptions extends TestCase {
 
 		if ( 'error' === $expected ) {
 			Functions\expect( 'add_settings_error' )
-				->once();
-
-			Functions\expect( 'set_transient' )
-				->with( '1_cloudflare_update_settings', [] )
 				->once();
 		}
 

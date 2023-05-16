@@ -39,6 +39,9 @@ class TestAutoPurge extends TestCase {
 		Functions\when( 'is_wp_error' )
 			->justReturn( $config['error'] );
 
+		$this->cloudflare->shouldReceive( 'check_connection' )
+			->andReturn( true );
+
 		$this->cloudflare->shouldReceive( 'has_page_rule' )
 			->with( 'cache_everything' )
 			->atMost()

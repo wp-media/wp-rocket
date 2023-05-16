@@ -37,9 +37,6 @@ class TestPurgeCloudflare extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		Functions\expect( 'is_wp_error' )
 			->once()
-			->andReturn( false )
-			->andAlsoExpectIt()
-			->once()
 			->andReturn( $config['request_error'] );
 
 		$this->options->expects()

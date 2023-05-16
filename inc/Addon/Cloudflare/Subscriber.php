@@ -57,7 +57,10 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
-			'update_option_' . $slug                    => [ 'save_cloudflare_options', 10, 2 ],
+			'update_option_' . $slug                    => [
+				[ 'save_cloudflare_options', 10, 2 ],
+				[ 'update_dev_mode', 11, 2 ],
+			],
 			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
 			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
 			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
@@ -130,6 +133,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+			return;
+		}
+
 		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
 
 		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
@@ -149,6 +156,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function auto_purge_by_url( $post, $purge_urls, $lang ) {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+			return;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
 			return;
 		}
 
@@ -177,6 +188,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function purge_cache_no_die() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+			return;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
 			return;
 		}
 
@@ -353,7 +368,7 @@ class Subscriber implements Subscriber_Interface {
 		$result = [];
 
 		// Set Cache Level to Aggressive.
-		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? 'basic' : 'aggressive';
+		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
 
 		// Active Minification for HTML, CSS & JS.
@@ -372,6 +387,45 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Update the development mode value on Cloudflare
+	 *
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value     An array of submitted values for the settings.
+	 *
+	 * @return void
+	 */
+	public function update_dev_mode( $old_value, $value ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( ! isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) ) {
+			return;
+		}
+
+		if ( (int) $old_value['cloudflare_devmode'] === (int) $value['cloudflare_devmode'] ) {
+			return;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+			$error = $this->cloudflare->check_connection();
+
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error->get_error_message() . '<strong>', 'error' );
+
+			return;
+		}
+
+		$result = [];
+		$update = get_transient( get_current_user_id() . '_cloudflare_update_settings' );
+
+		if ( false !== $update ) {
+			$result = $update;
+		}
+
+		$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
+	}
+
+	/**
 	 * Save Cloudflare admin options.
 	 *
 	 * @param array $old_value An array of previous values for the settings.
@@ -384,81 +438,41 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$valid_key      = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
-		$submit_cf_view = false;
-
-		if (
-			false === $valid_key
-			||
-			is_wp_error( $valid_key )
-		) {
-			$result = $this->cloudflare->is_auth_valid( $value['cloudflare_zone_id'] );
-			set_transient( 'rocket_cloudflare_is_api_keys_valid', $result, 2 * WEEK_IN_SECONDS );
-			$submit_cf_view = true;
-			$valid_key      = $result;
+		if ( ! isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) ) {
+			return;
 		}
 
-		if (
-			(
-				isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] )
-				&&
-				(int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode']
-			)
-			||
-			(
-				isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] )
-				&&
-				(int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings']
-			)
-		) {
-			$submit_cf_view = true;
+		if ( (int) $old_value['cloudflare_auto_settings'] === (int) $value['cloudflare_auto_settings'] ) {
+			return;
 		}
 
-		// If is submit CF view & CF Credentials are invalid, display error and bail out.
-		if ( is_wp_error( $valid_key ) && $submit_cf_view ) {
-			$error = $valid_key->get_error_message();
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+			$error = $this->cloudflare->check_connection();
 
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error . '<strong>', 'error' );
-
-			set_transient( get_current_user_id() . '_cloudflare_update_settings', [] );
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error->get_error_message() . '<strong>', 'error' );
 
 			return;
 		}
 
-		// Update CloudFlare Development Mode.
-		$result = [];
-		if (
-			isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] )
-			&&
-			(int) $old_value['cloudflare_devmode'] !== (int) $value['cloudflare_devmode']
-		) {
-			$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
-		}
-
-		// Update CloudFlare settings.
-		if (
-			isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] )
-			&&
-			(int) $old_value['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings']
-		) {
-			$result['pre'] = sprintf(
+		$result = [
+			'pre' => sprintf(
 				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
 				__( '%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:', 'rocket' ),
 				'<strong>',
 				'</strong>'
+			) . '<br>',
+		];
+
+		if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
+			$result['pre'] = sprintf(
+				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
+				__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings:', 'rocket' ),
+				'<strong>',
+				'</strong>'
 			) . '<br>';
-
-			if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
-				$result['pre'] = sprintf(
-					// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-					__( '%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to previous settings:', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				) . '<br>';
-			}
-
-			$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 		}
+
+		$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 
 		set_transient( get_current_user_id() . '_cloudflare_update_settings', $result );
 	}
@@ -473,6 +487,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function save_cloudflare_old_settings( $value, $old_value ) {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return $value;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
 			return $value;
 		}
 

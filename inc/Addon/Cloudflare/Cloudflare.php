@@ -10,7 +10,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Cloudflare\API\Endpoints;
 
 class Cloudflare {
-
 	/**
 	 * Options Data instance.
 	 *
@@ -26,13 +25,6 @@ class Cloudflare {
 	private $endpoints;
 
 	/**
-	 * WP_Error if Cloudflare Credentials are not valid.
-	 *
-	 * @var WP_Error
-	 */
-	private $cloudflare_api_error;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket options instance.
@@ -41,28 +33,21 @@ class Cloudflare {
 	public function __construct( Options_Data $options, Endpoints $endpoints ) {
 		$this->endpoints = $endpoints;
 		$this->options   = $options;
-		// Update api_error with WP_Error if credentials are not valid.
-		// Update API with Cloudflare instance with correct auth data.
-		$this->check_connection();
 	}
 
 	/**
 	 * Check valid connection with Cloudflare
 	 */
-	private function check_connection() {
-		$is_api_keys_valid_cf = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
+	public function check_connection() {
+		$is_valid = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
-		if ( false === $is_api_keys_valid_cf ) {
-			$is_api_keys_valid_cf = $this->is_auth_valid( $this->options->get( 'cloudflare_zone_id', '' ) );
-			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_api_keys_valid_cf, 2 * WEEK_IN_SECONDS );
+		if ( false === $is_valid ) {
+			$is_valid = $this->is_auth_valid( $this->options->get( 'cloudflare_zone_id', '' ) );
+
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_valid, 2 * WEEK_IN_SECONDS );
 		}
 
-		if ( is_wp_error( $is_api_keys_valid_cf ) ) {
-			// Sets Cloudflare API as WP_Error if credentials are not valid.
-			$this->cloudflare_api_error = $is_api_keys_valid_cf;
-
-			return;
-		}
+		return $is_valid;
 	}
 
 	/**
@@ -134,10 +119,6 @@ class Cloudflare {
 	 * @return mixed true/false if $action_value was found or not, WP_Error otherwise.
 	 */
 	public function has_page_rule( $action_value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->list_pagerules( $this->options->get( 'cloudflare_zone_id', '' ), 'active' );
 
 		if ( is_wp_error( $result ) ) {
@@ -155,10 +136,6 @@ class Cloudflare {
 	 * @return mixed true if the purge is successful, WP_Error otherwise.
 	 */
 	public function purge_cloudflare() {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->purge( $this->options->get( 'cloudflare_zone_id', '' ) );
 
 		if ( is_wp_error( $result ) ) {
@@ -178,10 +155,6 @@ class Cloudflare {
 	 * @return mixed true if the purge is successful, WP_Error otherwise
 	 */
 	public function purge_by_url( $post, $purge_urls, $lang ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
 
 		if ( is_wp_error( $result ) ) {
@@ -199,10 +172,6 @@ class Cloudflare {
 	 * @return mixed Value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_browser_cache_ttl( $value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->update_browser_cache_ttl( $this->options->get( 'cloudflare_zone_id', '' ), (int) $value );
 
 		if ( is_wp_error( $result ) ) {
@@ -247,10 +216,6 @@ class Cloudflare {
 	 * @return mixed Value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_rocket_loader( $value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->update_rocket_loader( $this->options->get( 'cloudflare_zone_id', '' ), $value );
 
 		if ( is_wp_error( $result ) ) {
@@ -268,10 +233,6 @@ class Cloudflare {
 	 * @return mixed Value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_minify( $value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$cf_minify_settings = [
 			'css'  => $value,
 			'html' => $value,
@@ -295,10 +256,6 @@ class Cloudflare {
 	 * @return mixed Value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_cache_level( $value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$result = $this->endpoints->change_cache_level( $this->options->get( 'cloudflare_zone_id', '' ), $value );
 
 		if ( is_wp_error( $result ) ) {
@@ -316,10 +273,6 @@ class Cloudflare {
 	 * @return mixed Value if the update is successful, WP_Error otherwise.
 	 */
 	public function set_devmode( $value ) {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		if ( 0 === (int) $value ) {
 			$value = 'off';
 		} else {
@@ -354,10 +307,6 @@ class Cloudflare {
 	 * @return array|WP_Error Array of Cloudflare settings, WP_Error if any error connection to Cloudflare.
 	 */
 	public function get_settings() {
-		if ( is_wp_error( $this->cloudflare_api_error ) ) {
-			return $this->cloudflare_api_error;
-		}
-
 		$cf_settings = $this->endpoints->get_settings( $this->options->get( 'cloudflare_zone_id', '' ) );
 
 		if ( is_wp_error( $cf_settings ) ) {
