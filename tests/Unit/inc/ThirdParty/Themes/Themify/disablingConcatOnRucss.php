@@ -6,7 +6,6 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Themes\Themify;
 use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
 
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -35,15 +34,12 @@ class Test_disablingConcatOnRucss extends TestCase {
     public function testShouldDoAsExpected( $config, $expected )
     {
 		Functions\expect('themify_get_data')->andReturn($config['value']);
-		$this->options->expects()->get('remove_unused_css', false)->andReturn( $config['rucss_enabled'] );
 
 		Functions\when('rocket_has_constant')->justReturn($config['has_constant']);
 
-		if( $config['rucss_enabled'] && $config['need_add'] ) {
-			Functions\expect('themify_set_data')->with($expected['value']);
-		}
+		Functions\expect('themify_set_data')->with($expected['value']);
 
-		$this->themify->disabling_concat_on_rucss();
+		$this->themify->disabling_concat_on_rucss( $config['old_configurations'], $config['new_configurations'] );
 
 		$this->assertTrue(true);
     }

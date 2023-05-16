@@ -8,6 +8,12 @@ return [
 			'need_add' => true,
 			'rucss_enabled' => true,
 			'has_constant' => true,
+			'new_configurations' => [
+				'remove_unused_css' => true,
+			],
+			'old_configurations' => [
+				'remove_unused_css' => false,
+			]
         ],
 		'expected' => [
 			'value' => [
@@ -17,14 +23,19 @@ return [
 			]
 		]
     ],
-	'RucssDisactivatedShouldNotAdd' => [
+	'RucssDeasactivatedShouldNotAdd' => [
 		'config' => [
 			'value' => [
 				'test' => true,
 			],
 			'need_add' => false,
-			'rucss_enabled' => false,
 			'has_constant' => true,
+			'new_configurations' => [
+				'remove_unused_css' => false,
+			],
+			'old_configurations' => [
+				'remove_unused_css' => true,
+			]
 		],
 		'expected' => [
 			'value' => [
@@ -40,8 +51,13 @@ return [
 				'test' => true,
 			],
 			'need_add' => false,
-			'rucss_enabled' => true,
 			'has_constant' => true,
+			'new_configurations' => [
+				'remove_unused_css' => true,
+			],
+			'old_configurations' => [
+				'remove_unused_css' => false,
+			]
 		],
 		'expected' => [
 			'value' => [
