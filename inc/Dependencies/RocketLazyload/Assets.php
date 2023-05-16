@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -12,7 +13,8 @@ namespace WP_Rocket\Dependencies\RocketLazyload;
 /**
  * Class containing the methods to return or print the assets needed for lazyloading
  */
-class Assets {
+class Assets
+{
 
 	/**
 	 * Inserts the lazyload script in the HTML
@@ -20,8 +22,9 @@ class Assets {
 	 * @param array $args Array of arguments to populate the lazyload script tag.
 	 * @return void
 	 */
-	public function insertLazyloadScript( $args = [] ) {
-		echo $this->getLazyloadScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	public function insertLazyloadScript($args = [])
+	{
+		echo $this->getLazyloadScript($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -30,7 +33,8 @@ class Assets {
 	 * @param array $args Array of arguments to populate the lazyload script options.
 	 * @return string
 	 */
-	public function getInlineLazyloadScript( $args = [] ) {
+	public function getInlineLazyloadScript($args = [])
+	{
 		$defaults = [
 			'elements'  => [
 				'iframe',
@@ -65,24 +69,24 @@ class Assets {
 			'use_native'          => 1,
 		];
 
-		$args   = wp_parse_args( $args, $defaults );
+		$args   = wp_parse_args($args, $defaults);
 		$script = '';
 
-		$args['options'] = array_intersect_key( $args['options'], $allowed_options );
+		$args['options'] = array_intersect_key($args['options'], $allowed_options);
 		$script         .= 'window.lazyLoadOptions = ';
 
-		if ( isset( $args['elements']['background_image'] ) ) {
+		if (isset($args['elements']['background_image'])) {
 			$script .= '[';
 		}
 
 		$script .= '{
-                elements_selector: "' . esc_attr( implode( ',', $args['elements'] ) ) . '",
+                elements_selector: "' . esc_attr(implode(',', $args['elements'])) . '",
                 data_src: "lazy-src",
                 data_srcset: "lazy-srcset",
                 data_sizes: "lazy-sizes",
                 class_loading: "lazyloading",
                 class_loaded: "lazyloaded",
-                threshold: ' . esc_attr( $args['threshold'] ) . ',
+                threshold: ' . esc_attr($args['threshold']) . ',
                 callback_loaded: function(element) {
                     if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
                         if (element.classList.contains("lazyloaded") ) {
@@ -95,25 +99,25 @@ class Assets {
                     }
                 }';
 
-		if ( ! empty( $args['options'] ) ) {
+		if (!empty($args['options'])) {
 			$script .= ',' . PHP_EOL;
 
-			foreach ( $args['options'] as $option => $value ) {
+			foreach ($args['options'] as $option => $value) {
 				$script .= $option . ': ' . $value . ',';
 			}
 
-			$script = rtrim( $script, ',' );
+			$script = rtrim($script, ',');
 		}
 
-		if ( isset( $args['elements']['background_image'] ) ) {
+		if (isset($args['elements']['background_image'])) {
 			$script .= '},{
-				elements_selector: "' . esc_attr( $args['elements']['background_image'] ) . '",
+				elements_selector: "' . esc_attr($args['elements']['background_image']) . '",
 				data_src: "lazy-src",
 				data_srcset: "lazy-srcset",
 				data_sizes: "lazy-sizes",
 				class_loading: "lazyloading",
 				class_loaded: "lazyloaded",
-				threshold: ' . esc_attr( $args['threshold'] ) . ',
+				threshold: ' . esc_attr($args['threshold']) . ',
 			}];';
 		} else {
 			$script .= '};';
@@ -139,10 +143,10 @@ class Assets {
                                 continue;
                             }
 
-                            images = mutation.addedNodes[i].getElementsByTagName(\'img\');
-                            is_image = mutation.addedNodes[i].tagName == "IMG";
-                            iframes = mutation.addedNodes[i].getElementsByTagName(\'iframe\');
-                            is_iframe = mutation.addedNodes[i].tagName == "IFRAME";
+                            let images = mutation.addedNodes[i].getElementsByTagName(\'img\');
+                            let is_image = mutation.addedNodes[i].tagName == "IMG";
+                            let iframes = mutation.addedNodes[i].getElementsByTagName(\'iframe\');
+                            let is_iframe = mutation.addedNodes[i].tagName == "IFRAME";
                             rocket_lazy = mutation.addedNodes[i].getElementsByClassName(\'rocket-lazyload\');
 
                             image_count += images.length;
@@ -180,14 +184,15 @@ class Assets {
 	 * @param array $args Array of arguments to populate the lazyload script options.
 	 * @return string
 	 */
-	public function getLazyloadScript( $args = [] ) {
+	public function getLazyloadScript($args = [])
+	{
 		$defaults = [
 			'base_url' => '',
 			'version'  => '',
 		];
 
-		$args = wp_parse_args( $args, $defaults );
-		$min  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$args = wp_parse_args($args, $defaults);
+		$min  = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
 		/**
 		 * Filters the script tag for the lazyload script
@@ -196,7 +201,7 @@ class Assets {
 		 *
 		 * @param $script_tag HTML tag for the lazyload script.
 		 */
-		return apply_filters( 'rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>' ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+		return apply_filters('rocket_lazyload_script_tag', '<script data-no-minify="1" async src="' . $args['base_url'] . $args['version'] . '/lazyload' . $min . '.js"></script>'); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 	}
 
 	/**
@@ -205,8 +210,9 @@ class Assets {
 	 * @param array $args Array of arguments to populate the script options.
 	 * @return void
 	 */
-	public function insertYoutubeThumbnailScript( $args = [] ) {
-		echo $this->getYoutubeThumbnailScript( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	public function insertYoutubeThumbnailScript($args = [])
+	{
+		echo $this->getYoutubeThumbnailScript($args); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -215,7 +221,8 @@ class Assets {
 	 * @param array $args Array of arguments to populate the script options.
 	 * @return string
 	 */
-	public function getYoutubeThumbnailScript( $args = [] ) {
+	public function getYoutubeThumbnailScript($args = [])
+	{
 		$defaults = [
 			'resolution' => 'hqdefault',
 			'lazy_image' => false,
@@ -247,22 +254,22 @@ class Assets {
 			],
 		];
 
-		$args['resolution'] = ( isset( $args['resolution'] ) && isset( $allowed_resolutions[ $args['resolution'] ] ) ) ? $args['resolution'] : 'hqdefault';
+		$args['resolution'] = (isset($args['resolution']) && isset($allowed_resolutions[$args['resolution']])) ? $args['resolution'] : 'hqdefault';
 
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args($args, $defaults);
 
 		$extension_uri = 'webp' === $args['extension'] ? 'vi_webp' : 'vi';
 
 		$image_url = 'https://i.ytimg.com/' . $extension_uri . '/ID/' . $args['resolution'] . '.' . $args['extension'];
 
-		$image = '<img src="' . $image_url . '" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '">';
+		$image = '<img src="' . $image_url . '" alt="" width="' . $allowed_resolutions[$args['resolution']]['width'] . '" height="' . $allowed_resolutions[$args['resolution']]['height'] . '">';
 
-		if ( isset( $args['lazy_image'] ) && $args['lazy_image'] ) {
-			$attributes = 'alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"';
+		if (isset($args['lazy_image']) && $args['lazy_image']) {
+			$attributes = 'alt="" width="' . $allowed_resolutions[$args['resolution']]['width'] . '" height="' . $allowed_resolutions[$args['resolution']]['height'] . '"';
 
 			$image = '<img data-lazy-src="' . $image_url . '" ' . $attributes . '><noscript><img src="' . $image_url . '" ' . $attributes . '></noscript>';
 
-			if ( $args['native'] ) {
+			if ($args['native']) {
 				$image = '<img loading="lazy" src="' . $image_url . '" ' . $attributes . '>';
 			}
 		}
@@ -276,10 +283,11 @@ class Assets {
 	 * @param array $args Array of arguments to populate the CSS.
 	 * @return void
 	 */
-	public function insertYoutubeThumbnailCSS( $args = [] ) {
-		wp_register_style( 'rocket-lazyload', false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_style( 'rocket-lazyload' );
-		wp_add_inline_style( 'rocket-lazyload', $this->getYoutubeThumbnailCSS( $args ) );
+	public function insertYoutubeThumbnailCSS($args = [])
+	{
+		wp_register_style('rocket-lazyload', false); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_style('rocket-lazyload');
+		wp_add_inline_style('rocket-lazyload', $this->getYoutubeThumbnailCSS($args));
 	}
 
 	/**
@@ -288,17 +296,18 @@ class Assets {
 	 * @param array $args Array of arguments to populate the CSS.
 	 * @return string
 	 */
-	public function getYoutubeThumbnailCSS( $args = [] ) {
+	public function getYoutubeThumbnailCSS($args = [])
+	{
 		$defaults = [
 			'base_url'          => '',
 			'responsive_embeds' => true,
 		];
 
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args($args, $defaults);
 
 		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player:focus-within{outline: 2px solid currentColor;outline-offset: 5px;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:100%;width:100%;left:0;top:0;position:absolute;background:url(' . $args['base_url'] . 'img/youtube.png) no-repeat center;background-color: transparent !important;cursor:pointer;border:none;}';
 
-		if ( $args['responsive_embeds'] ) {
+		if ($args['responsive_embeds']) {
 			$css .= '.wp-embed-responsive .wp-has-aspect-ratio .rll-youtube-player{position:absolute;padding-bottom:0;width:100%;height:100%;top:0;bottom:0;left:0;right:0}';
 		}
 
@@ -308,7 +317,8 @@ class Assets {
 	/**
 	 * Inserts the CSS needed when Javascript is not enabled to keep the display correct
 	 */
-	public function insertNoJSCSS() {
+	public function insertNoJSCSS()
+	{
 		echo $this->getNoJSCSS(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -317,7 +327,8 @@ class Assets {
 	 *
 	 * @return string
 	 */
-	public function getNoJSCSS() {
+	public function getNoJSCSS()
+	{
 		return '<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>';
 	}
 }
