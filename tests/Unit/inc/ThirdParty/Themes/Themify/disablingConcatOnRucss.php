@@ -33,11 +33,16 @@ class Test_disablingConcatOnRucss extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-		Functions\expect('themify_get_data')->andReturn($config['value']);
+		if($config['same_rucss']) {
+			Functions\expect('themify_get_data')->never();
+			Functions\expect('themify_set_data')->never();
+		} else {
+			Functions\expect('themify_get_data')->andReturn($config['value']);
+			Functions\expect('themify_set_data')->with($expected['value']);
+		}
 
 		Functions\when('rocket_has_constant')->justReturn($config['has_constant']);
 
-		Functions\expect('themify_set_data')->with($expected['value']);
 
 		$this->themify->disabling_concat_on_rucss( $config['old_configurations'], $config['new_configurations'] );
 
