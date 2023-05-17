@@ -517,7 +517,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Delete the transient CF connection status when API Key, Email or Zone ID is changed
 	 *
-	 * * @param array $value     An array of previous values for the settings.
+	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
 	 *
 	 * @return array
