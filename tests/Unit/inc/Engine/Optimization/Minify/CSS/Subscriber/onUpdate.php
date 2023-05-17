@@ -62,6 +62,6 @@ class Test_onUpdate extends TestCase {
 			Functions\expect('rocket_clean_minify')->never();
 			Functions\expect('rocket_clean_domain')->never();
 		}
-        $this->subscriber->on_update($config['old_version']);
+        $this->subscriber->on_update('3.15', $config['old_version']);
     }
 }
