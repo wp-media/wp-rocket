@@ -105,17 +105,13 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
-		$queries          = explode( '&', $queries );
-		$queries          = array_map(
-			function ( $query ) {
-				$query = explode( '=', $query );
-				return array_shift( $query );
-			},
-			$queries
-		);
+		$query_array = [];
+
+		parse_str( $queries, $query_array );
+
 		$excluded_queries = rocket_get_ignored_parameters();
 
-		return count( array_intersect( $queries, array_keys( $excluded_queries ) ) ) > 0 || $this->is_excluded_by_filter( $url );
+		return count( array_intersect( array_keys( $query_array ), array_keys( $excluded_queries ) ) ) > 0 || $this->is_excluded_by_filter( $url );
 	}
 
 	/**
@@ -132,18 +128,13 @@ trait CheckExcludedTrait {
 			return false;
 		}
 
-		$queries = explode( '&', $queries );
-		$queries = array_map(
-			function ( $query ) {
-				$query = explode( '=', $query );
-				return array_shift( $query );
-			},
-			$queries
-		);
+		$query_array = [];
 
-		$queries = $this->drop_excluded_params( $queries, true );
+		parse_str( $queries, $query_array );
 
-		return ! empty( $queries );
+		$query_array = $this->drop_excluded_params( $query_array, true );
+
+		return ! empty( $query_array );
 	}
 
 	/**
@@ -192,7 +183,7 @@ trait CheckExcludedTrait {
 			return count( $queries ) === 0;
 		}
 
-		return count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0 || count( $queries ) === 0;
+		return empty( $queries ) || count( array_intersect( array_keys( $queries ), $cache_query_string ) ) > 0;
 	}
 
 	/**
