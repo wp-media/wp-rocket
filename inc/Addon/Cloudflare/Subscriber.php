@@ -61,7 +61,10 @@ class Subscriber implements Subscriber_Interface {
 				[ 'save_cloudflare_options', 10, 2 ],
 				[ 'update_dev_mode', 11, 2 ],
 			],
-			'pre_update_option_' . $slug                => [ 'save_cloudflare_old_settings', 10, 2 ],
+			'pre_update_option_' . $slug                => [
+				[ 'save_cloudflare_old_settings', 10, 2 ],
+				[ 'delete_connection_transient', 10, 2 ],
+			],
 			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
 			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
 		];
@@ -407,10 +410,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
-			$error = $this->cloudflare->check_connection();
+		$connection = $this->cloudflare->check_connection();
 
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error->get_error_message() . '<strong>', 'error' );
+		if ( is_wp_error( $connection ) ) {
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 
 			return;
 		}
@@ -446,10 +449,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
-			$error = $this->cloudflare->check_connection();
+		$connection = $this->cloudflare->check_connection();
 
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $error->get_error_message() . '<strong>', 'error' );
+		if ( is_wp_error( $connection ) ) {
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 
 			return;
 		}
@@ -483,7 +486,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
 	 *
-	 * @return array settings with old settings.
+	 * @return array
 	 */
 	public function save_cloudflare_old_settings( $value, $old_value ) {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
@@ -506,6 +509,32 @@ class Subscriber implements Subscriber_Interface {
 			$value['cloudflare_old_settings'] = ! is_wp_error( $cf_settings )
 				? implode( ',', array_filter( $cf_settings ) )
 				: '';
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Delete the transient CF connection status when API Key, Email or Zone ID is changed
+	 *
+	 * * @param array $value     An array of previous values for the settings.
+	 * @param array $old_value An array of submitted values for the settings.
+	 *
+	 * @return array
+	 */
+	public function delete_connection_transient( $value, $old_value ) {
+		if ( ! isset( $old_value['cloudflare_api_key'], $old_value['cloudflare_email'], $old_value['cloudflare_zone_id'], $value['cloudflare_api_key'], $value['cloudflare_email'], $value['cloudflare_zone_id'] ) ) {
+			return $value;
+		}
+
+		if (
+			$old_value['cloudflare_api_key'] !== $value['cloudflare_api_key']
+			||
+			$old_value['cloudflare_email'] !== $value['cloudflare_email']
+			||
+			$old_value['cloudflare_zone_id'] !== $value['cloudflare_zone_id']
+		) {
+			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 		}
 
 		return $value;
