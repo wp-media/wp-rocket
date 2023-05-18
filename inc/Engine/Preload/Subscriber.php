@@ -122,6 +122,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
+			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
 		];
 	}
 
@@ -450,5 +451,26 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return array_merge( $regexes, $preload_excluded_uri );
+	}
+
+	/**
+	 * Remove private post from cache.
+	 *
+	 * @param string  $new_status New post status.
+	 * @param string  $old_status Old post status.
+	 * @param WP_Post $post Wp post object.
+	 * @return void
+	 */
+	public function remove_private_post( string $new_status, string $old_status, WP_Post $post ) {
+
+		if ( $new_status === $old_status ) {
+			return;
+		}
+
+		if ( 'private' !== $new_status ) {
+			return;
+		}
+
+		$this->delete_post_preload_cache( $post->ID );
 	}
 }
