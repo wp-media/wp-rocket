@@ -17,7 +17,8 @@ class RenewalNotice extends Abstract_Render {
 	/**
 	 * Constructor
 	 *
-	 * @param string $template Template path.
+	 * @param User   $user User instance.
+	 * @param string $template_path Template path.
 	 */
 	public function __construct( User $user, string $template_path ) {
 		parent::__construct( $template_path );
@@ -47,7 +48,7 @@ class RenewalNotice extends Abstract_Render {
 			'renew_url'   => $this->user->get_renewal_url(),
 		];
 
-		echo $this->generate( 'update-renewal-expired-notice', $data );
+		echo $this->generate( 'update-renewal-expired-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
