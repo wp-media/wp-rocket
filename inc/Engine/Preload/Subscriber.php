@@ -461,7 +461,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param WP_Post $post Wp post object.
 	 * @return void
 	 */
-	public function remove_private_post( string $new_status, string $old_status, WP_Post $post ) {
+	public function remove_private_post( string $new_status, string $old_status, $post ) {
 
 		if ( $new_status === $old_status ) {
 			return;
