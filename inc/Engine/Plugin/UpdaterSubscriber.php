@@ -3,10 +3,8 @@ namespace WP_Rocket\Engine\Plugin;
 
 use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
-use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Error;
-use WP_Rocket\Event_Management\Event_Manager;
-use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
+use WP_Rocket\Event_Management\{Event_Manager,Event_Manager_Aware_Subscriber_Interface};
 
 /**
  * Manages the plugin updates.
@@ -75,6 +73,8 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	protected $event_manager;
 
+	private $renewal_notice;
+
 	/**
 	 * Constructor
 	 *
@@ -87,12 +87,14 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *     @type string $api_url        URL to contact to get update info.
 	 * }
 	 */
-	public function __construct( $args ) {
+	public function __construct( RenewalNotice $renewal_notice, $args ) {
 		foreach ( [ 'plugin_file', 'plugin_version', 'vendor_url', 'api_url', 'icons' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
 		}
+
+		$this->renewal_notice = $renewal_notice;
 	}
 
 	/**
@@ -109,14 +111,15 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'http_request_args'                     => [ 'exclude_rocket_from_wp_updates', 5, 2 ],
-			'pre_set_site_transient_update_plugins' => 'maybe_add_rocket_update_data',
-			'deleted_site_transient'                => 'maybe_delete_rocket_update_data_cache',
-			'wp_rocket_loaded'                      => 'maybe_force_check',
-			'auto_update_plugin'                    => [ 'disable_auto_updates', 10, 2 ],
-			'admin_post_rocket_rollback'            => 'rollback',
-			'upgrader_pre_install'                  => [ 'upgrade_pre_install_option', 10, 2 ],
-			'upgrader_post_install'                 => [ 'upgrade_post_install_option', 10, 2 ],
+			'http_request_args'                        => [ 'exclude_rocket_from_wp_updates', 5, 2 ],
+			'pre_set_site_transient_update_plugins'    => 'maybe_add_rocket_update_data',
+			'deleted_site_transient'                   => 'maybe_delete_rocket_update_data_cache',
+			'wp_rocket_loaded'                         => 'maybe_force_check',
+			'auto_update_plugin'                       => [ 'disable_auto_updates', 10, 2 ],
+			'admin_post_rocket_rollback'               => 'rollback',
+			'upgrader_pre_install'                     => [ 'upgrade_pre_install_option', 10, 2 ],
+			'upgrader_post_install'                    => [ 'upgrade_post_install_option', 10, 2 ],
+			'after_plugin_row_wp-rocket/wp-rocket.php' => 'display_renewal_notice',
 		];
 	}
 
@@ -340,11 +343,12 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		$obj = new \stdClass();
 
-		$obj->slug        = $this->get_plugin_slug( $this->plugin_file );
-		$obj->plugin      = plugin_basename( $this->plugin_file );
-		$obj->new_version = $match['user_version'];
-		$obj->url         = $this->vendor_url;
-		$obj->package     = $match['package'];
+		$obj->slug           = $this->get_plugin_slug( $this->plugin_file );
+		$obj->plugin         = plugin_basename( $this->plugin_file );
+		$obj->new_version    = $match['user_version'];
+		$obj->url            = $this->vendor_url;
+		$obj->package        = $match['package'];
+		$obj->stable_version = $match['stable_version'];
 
 		/**
 		 * Filters the WP tested version value
@@ -561,5 +565,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		delete_transient( 'wp_rocket_updating' );
 
 		return $return;
+	}
+
+	/**
+	 * Displays Renewal notice on the plugins page
+	 *
+	 * @return void
+	 */
+	public function display_renewal_notice() {
+		$latest_version_data = $this->get_cached_latest_version_data();
+
+		if ( is_wp_error( $latest_version_data ) ) {
+			return;
+		}
+
+		$this->renewal_notice->renewal_notice( $latest_version_data->stable_version );
 	}
 }
