@@ -44,7 +44,7 @@ class RenewalNotice extends Abstract_Render {
 
 		$data = [
 			'version'     => $this->extract_major( $version ),
-			'release_url' => 'https://wp-rocket.me/blog/' . str_replace('.', '-', $version ),
+			'release_url' => 'https://wp-rocket.me/blog/' . str_replace( '.', '-', $version ),
 			'renew_url'   => $this->user->get_renewal_url(),
 		];
 

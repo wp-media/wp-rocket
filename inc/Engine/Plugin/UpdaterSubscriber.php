@@ -73,6 +73,11 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	protected $event_manager;
 
+	/**
+	 * RenewalNotice instance
+	 *
+	 * @var RenewalNotice
+	 */
 	private $renewal_notice;
 
 	/**
