@@ -4,14 +4,12 @@ $items = [
 	[
 		'url'            => 'http://example.org/path1',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => false,
 	],
 	[
 		'url'            => 'http://example.org/path2',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => false,
 	],

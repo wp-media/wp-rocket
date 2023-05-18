@@ -11,6 +11,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Emojis
  */
 class disableEmoji extends TestCase {
+	private $emoji_option;
+
 	public function tear_down() {
         parent::tear_down();
 

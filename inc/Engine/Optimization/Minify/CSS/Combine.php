@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use WP_Rocket\Dependencies\Minify\CSS as MinifyCSS;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -12,7 +13,7 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Combine extends AbstractCSSOptimization implements ProcessorInterface {
-	use CSSTrait;
+	use CSSTrait, RegexTrait;
 
 	/**
 	 * Array of styles
@@ -40,7 +41,12 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 		Logger::info( 'CSS COMBINE PROCESS STARTED.', [ 'css combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
-		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
+
+		if ( ! $this->html_has_title_tag( $html_nocomments ) ) {
+			return $html;
+		}
+
+		$styles = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			Logger::debug( 'No `<link>` tags found.', [ 'css combine process' ] );

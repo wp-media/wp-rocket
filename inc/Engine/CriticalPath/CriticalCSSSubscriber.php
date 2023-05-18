@@ -698,14 +698,19 @@ JS;
 	/**
 	 * Regenerates the CPCSS when switching theme if the option is active.
 	 *
-	 * @since  3.3
+	 * @since 3.3
 	 */
 	public function maybe_regenerate_cpcss() {
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return;
 		}
 
-		$this->critical_css->process_handler();
+		if ( ! $this->is_mobile_cpcss_active() ) {
+			$this->critical_css->process_handler( 'default', 'all' );
+			return;
+		}
+
+		$this->critical_css->process_handler( 'all' );
 	}
 
 	/**

@@ -11,7 +11,6 @@ $used_css = [
 	[
 		'url'            => 'http://example.org/home/',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => false,
 		'modified'       => $old_date,
@@ -20,7 +19,6 @@ $used_css = [
 	[
 		'url'            => 'http://example.org/category/level1/',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => false,
 		'modified'       => $old_date,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-24 15:00-0400\n"
+"POT-Creation-Date: 2023-04-14 10:33-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/OneCom.php:137
-#: inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47
 #: inc/ThirdParty/Hostings/WPXCloud.php:51 inc/deprecated/3.6.php:697
 #: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
@@ -2501,8 +2501,8 @@ msgid "Default Lists"
 msgstr "لیست پیشفرض"
 
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
-msgid "Delay JS Exclusion Lists"
-msgstr "لیست مستثنی کردن تاخیر JS"
+msgid "Delay JavaScript Execution Exclusion Lists"
+msgstr "به تأخیر انداختن لیست های لغو اجرای جاوا اسکریپت"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
@@ -2576,9 +2576,13 @@ msgstr "%1$s: کش CSS استفاده شده پاک شد!"
 msgid "Clear Used CSS of this URL"
 msgstr "پاکسازی CSS استفاده شده برای این URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:149
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:160
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "WP Rocket حذف کارهای معلق Unused CSS"
+
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:174
+msgid "WP Rocket clear Remove Unused CSS failed jobs"
+msgstr "WP Rocket پاکسازی حذف کارهای ناموفق CSS های بلااستفاده"
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
 #: inc/deprecated/3.3.php:770
@@ -2592,8 +2596,8 @@ msgstr ""
 "سرور&#8217;s شما باشد. اگر مشکل شما ادامه داشت، <a href=\"%s\">با پشتیبانی "
 "تماس بگیرید</a>."
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:469
-#: inc/Engine/Plugin/UpdaterSubscriber.php:483
+#: inc/Engine/Plugin/UpdaterSubscriber.php:472
+#: inc/Engine/Plugin/UpdaterSubscriber.php:486
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
@@ -2601,7 +2605,7 @@ msgstr ""
 msgid "%s Update Rollback"
 msgstr "%s بازگشتن به نسخه قبلی"
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:506 inc/deprecated/3.11.php:279
+#: inc/Engine/Plugin/UpdaterSubscriber.php:509 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sبازگشت به موشک وردپرس%2$sیا %3$s رفتن به برگه افزونه‌ها%2$s"
@@ -2617,11 +2621,11 @@ msgstr ""
 "صفحات شما پاک شوند، به کش کردن آن ها ادامه می دهد. هیچ اقدام دیگری لازم "
 "نیست."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:132
+#: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
 msgstr "کارهای معلق پیش بارگذاری"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:160
+#: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "پیش بارگذاری برگرداندن کارهای ناموفق گیر کرده است"
 
