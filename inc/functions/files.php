@@ -609,10 +609,10 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 				$matches    = preg_grep( '/%/', $url_chunks );
 
 				if ( ! empty( $matches ) ) {
-					$transform_to_lower = function( $encoded_upper ) {
+					$cb_transform_to_lower = function( $encoded_upper ) {
 						return strtolower( $encoded_upper );
 					};
-					$parsed_url['path'] = str_replace( $matches, array_map( $transform_to_lower, $matches ), $parsed_url['path'] );
+					$parsed_url['path']    = str_replace( $matches, array_map( $cb_transform_to_lower, $matches ), $parsed_url['path'] );
 				}
 
 				$entry = $dir . $parsed_url['path'];
