@@ -2116,6 +2116,57 @@ div.wpr-upgrade-websites {
     Notice for first time on dashboard
 
 \*-----------------------------------------------*/
+.notice-wpr-warning {
+  background: #FFD147;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin-top: 16px;
+  padding: 8px 32px;
+  border: 0;
+}
+.notice-wpr-warning p:first-child {
+  font-size: 1rem;
+  line-height: 1.125;
+}
+.notice-wpr-warning p:first-child::before {
+  content: url(../img/warning.svg);
+  display: inline-block;
+  height: 48px;
+  width: 63px;
+  margin-right: 17px;
+  vertical-align: middle;
+}
+.notice-wpr-warning p:last-child {
+  margin-left: 63px;
+  flex-basis: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  display: flex;
+}
+.notice-wpr-warning p:last-child a {
+  margin: 0 16px;
+}
+.notice-wpr-warning p:last-child a:first-child {
+  display: block;
+  background: #172153;
+  border-radius: 44px;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.125;
+  font-weight: bold;
+  padding: 16px 24px;
+  text-decoration: none;
+}
+.notice-wpr-warning p:last-child a:first-child:hover, .notice-wpr-warning p:last-child a:first-child:active, .notice-wpr-warning p:last-child a:first-child:focus {
+  color: #fff;
+}
+.notice-wpr-warning p:last-child a:first-child::after {
+  content: "→";
+  font-weight: normal;
+  margin-left: 8px;
+}
+
 .wpr-notice {
   position: relative;
   color: #444444;
@@ -2896,6 +2947,9 @@ div.wpr-tutorial-item {
   margin-bottom: 10px;
 }
 .wpr-field--categorizedmultiselect .wpr-list.open .wpr-list-header {
+  max-height: 32px;
+}
+.wpr-field--categorizedmultiselect .wpr-list .wpr-list-header {
   max-height: 32px;
 }
 .wpr-field--categorizedmultiselect .wpr-list [type=checkbox] + label:before {

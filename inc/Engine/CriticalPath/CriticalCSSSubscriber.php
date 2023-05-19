@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
@@ -43,17 +44,26 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private $cpcss_service;
 
 	/**
+	 * User instance.
+	 *
+	 * @var User
+	 */
+	protected $user;
+
+	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param CriticalCSS          $critical_css  Critical CSS instance.
+	 * @param CriticalCSS          $critical_css Critical CSS instance.
 	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
-	 * @param Options_Data         $options       WP Rocket options.
-	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
+	 * @param Options_Data         $options WP Rocket options.
+	 * @param User                 $user User instance.
+	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem ) {
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, User $user, $filesystem ) {
 		$this->critical_css  = $critical_css;
 		$this->cpcss_service = $cpcss_service;
 		$this->options       = $options;
+		$this->user          = $user;
 		$this->filesystem    = $filesystem;
 	}
 
@@ -80,6 +90,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
+				[ 'switch_to_rucss_notice' ],
 			],
 
 			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
@@ -94,6 +105,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'before_delete_post'                => 'delete_cpcss',
 			'rocket_before_rollback' => [ 'stop_critical_css_generation', 9 ],
 			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
+			'admin_post_switch_to_rucss' => 'switch_to_rucss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -763,5 +775,69 @@ JS;
 		$this->critical_css->stop_generation();
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
+	}
+
+	public function switch_to_rucss_notice() {
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
+		if ( $this->user->is_license_expired() ) {
+			return;
+		}
+
+		if ( isset( $screen->id ) && 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'                 => 'wpr-warning',
+				'dismissible'            => '',
+				'dismiss_button'         => 'test',
+				'message'                => sprintf(
+					// translators: %s = opening bold tag, %s = closing bold tag.
+					__( 'We highly recommend the %1$s updated Remove Unused CSS %2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
+					'<b>',
+							'</b>'
+				),
+				'action'                 => 'switch_to_rucss',
+				'dismiss_button_message' => __( 'Stay with old option', 'rocket' ),
+			]
+		);
+
+	}
+
+	/**
+	 * Switch to RUCSS.
+	 *
+	 * @return void
+	 */
+	public function switch_to_rucss() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rucss_switch' ) ) {
+			wp_nonce_ays( '' );
+		}
+
+		if ( ! current_user_can( 'administrator' ) ) {
+			wp_safe_redirect( wp_get_referer() );
+			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+		}
+
+		if ( 'true' === $_GET['value'] ) {
+			$this->options->set( 'critical_css', false );
+			$this->options->set( 'remove_unused_css', true );
+			do_action( 'rocket_clear_usedcss' );
+		}
+
+		rocket_dismiss_box( 'switch_to_rucss_notice' );
+
+		wp_safe_redirect( wp_get_referer() );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }
