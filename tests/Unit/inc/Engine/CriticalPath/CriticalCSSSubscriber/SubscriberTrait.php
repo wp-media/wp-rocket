@@ -9,11 +9,13 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
+use WP_Rocket\Engine\License\API\User;
 
 trait SubscriberTrait {
 	protected $options;
 	protected $subscriber;
 	protected $critical_css;
+	protected $user;
 	protected $processor_service;
 
 	protected function setUpTests( $filesystem = null, $site_id = 1 ) {
@@ -27,7 +29,8 @@ trait SubscriberTrait {
 			$filesystem,
 		] );
 		$this->processor_service = Mockery::mock( ProcessorService::class );
-		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $this->options, $filesystem );
+		$this->user = Mockery::mock(User::class);
+		$this->subscriber        = new CriticalCSSSubscriber( $this->critical_css, $this->processor_service, $this->options, $this->user, $filesystem );
 
 	}
 }
