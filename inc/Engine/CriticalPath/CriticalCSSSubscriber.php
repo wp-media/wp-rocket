@@ -839,7 +839,7 @@ JS;
 			wp_nonce_ays( '' );
 		}
 
-		if ( ! current_user_can( 'administrator' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
