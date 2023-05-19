@@ -817,7 +817,7 @@ JS;
 			[
 				'status'                 => 'wpr-warning',
 				'dismissible'            => '',
-				'dismiss_button'         => 'test',
+				'dismiss_button'         => __FUNCTION__,
 				'message'                => sprintf(
 					// translators: %s = opening bold tag, %s = closing bold tag.
 					__( 'We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
@@ -825,7 +825,7 @@ JS;
 							'</b>'
 				),
 				'action'                 => 'switch_to_rucss',
-				'dismiss_button_message' => __( 'Stay with old option', 'rocket' ),
+				'dismiss_button_message' => __( 'Stay with the old option', 'rocket' ),
 			]
 		);
 
