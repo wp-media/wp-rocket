@@ -807,6 +807,8 @@ JS;
 			return;
 		}
 
+		$screen = get_current_screen();
+
 		if ( isset( $screen->id ) && 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
@@ -835,16 +837,14 @@ JS;
 	 * @return void
 	 */
 	public function switch_to_rucss() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rucss_switch' ) ) {
-			wp_nonce_ays( '' );
-		}
+		check_admin_referer( 'rucss_switch' );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		if ( 'true' === $_GET['value'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		if ( is_array( $_GET ) && key_exists( 'value', $_GET ) && $_GET['value'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 			$this->options->set( 'critical_css', false );
 			$this->options->set( 'remove_unused_css', true );
 			$this->options_api->set( 'settings', $this->options->get_options() );
