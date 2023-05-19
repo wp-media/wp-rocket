@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
@@ -22,6 +23,7 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 	private $subscriber;
 	private $critical_css;
 	private $processor_service;
+	protected $user;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -35,7 +37,8 @@ class Test_MaybeGenerateCpcssMobile extends TestCase {
 			$options,
 			null,
 		] );
-		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, Mockery::mock( ProcessorService::class ), $options, null );
+		$this->user = Mockery::mock(User::class);
+		$this->subscriber   = new CriticalCSSSubscriber( $this->critical_css, Mockery::mock( ProcessorService::class ), $options, $this->user, null );
 	}
 
 	/**

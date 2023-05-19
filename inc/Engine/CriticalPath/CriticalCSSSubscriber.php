@@ -787,6 +787,11 @@ JS;
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
 
+	/**
+	 * Display a notice to pass from CPCSS to RUCSS.
+	 *
+	 * @return void
+	 */
 	public function switch_to_rucss_notice() {
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
@@ -839,7 +844,7 @@ JS;
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		if ( 'true' === $_GET['value'] ) {
+		if ( 'true' === $_GET['value'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			$this->options->set( 'critical_css', false );
 			$this->options->set( 'remove_unused_css', true );
 			$this->options_api->set( 'settings', $this->options->get_options() );
