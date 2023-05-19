@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Optimization\RegexTrait;
@@ -30,6 +31,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	protected $options;
 
 	/**
+	 * WordPress options.
+	 *
+	 * @var Options
+	 */
+	protected $options_api;
+
+	/**
 	 * Instance of the filesystem handler.
 	 *
 	 * @var WP_Filesystem_Direct
@@ -56,13 +64,15 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @param CriticalCSS          $critical_css Critical CSS instance.
 	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
 	 * @param Options_Data         $options WP Rocket options.
+	 * @param Options              $options_api WordPress options.
 	 * @param User                 $user User instance.
 	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, User $user, $filesystem ) {
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, Options $options_api, User $user, $filesystem ) {
 		$this->critical_css  = $critical_css;
 		$this->cpcss_service = $cpcss_service;
 		$this->options       = $options;
+		$this->options_api   = $options_api;
 		$this->user          = $user;
 		$this->filesystem    = $filesystem;
 	}
@@ -832,6 +842,7 @@ JS;
 		if ( 'true' === $_GET['value'] ) {
 			$this->options->set( 'critical_css', false );
 			$this->options->set( 'remove_unused_css', true );
+			$this->options_api->set( 'settings', $this->options->get_options() );
 			do_action( 'rocket_clear_usedcss' );
 		}
 
