@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
-#[AllowDynamicProperties]
+#[\AllowDynamicProperties]
 class Base {
 
 	/**
