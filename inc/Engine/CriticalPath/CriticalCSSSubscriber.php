@@ -818,7 +818,7 @@ JS;
 				'dismiss_button'         => 'test',
 				'message'                => sprintf(
 					// translators: %s = opening bold tag, %s = closing bold tag.
-					__( 'We highly recommend the %1$s updated Remove Unused CSS %2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
+					__( 'We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
 					'<b>',
 							'</b>'
 				),
