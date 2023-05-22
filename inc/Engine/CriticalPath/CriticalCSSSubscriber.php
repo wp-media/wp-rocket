@@ -842,7 +842,7 @@ JS;
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-			return;
+			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
 		}
 
 		if ( is_array( $_GET ) && key_exists( 'value', $_GET ) && $_GET['value'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
