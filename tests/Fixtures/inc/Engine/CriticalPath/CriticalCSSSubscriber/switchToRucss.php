@@ -32,20 +32,4 @@ return [
 			'options' => 'options',
 		]
 	],
-	'noValueShouldDismiss' => [
-		'config' => [
-			'user_can' => true,
-			'referer' => 'referer',
-			'valid_value' => false,
-			'get' => [
-
-			],
-			'options' => 'options',
-		],
-		'expected' => [
-			'referer' => 'referer',
-			'action' => 'rucss_switch',
-			'options' => 'options',
-		]
-	]
 ];

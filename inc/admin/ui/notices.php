@@ -758,7 +758,6 @@ function rocket_notice_html( $args ) {
 		case 'switch_to_rucss':
 			$params         = [
 				'action' => 'switch_to_rucss',
-				'value'  => 'true',
 			];
 			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
 			break;

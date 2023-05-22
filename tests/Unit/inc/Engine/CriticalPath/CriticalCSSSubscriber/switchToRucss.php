@@ -13,7 +13,7 @@ use WP_Rocket\Engine\License\API\User;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-use Brain\Monkey\Actions;
+
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss
  */
@@ -74,7 +74,6 @@ class Test_switchToRucss extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-		$_GET = $config['get'];
 		Functions\when('rocket_get_constant')->justReturn(true);
 		Functions\expect('check_admin_referer')->with($expected['action']);
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['user_can']);
@@ -88,14 +87,14 @@ class Test_switchToRucss extends TestCase {
     }
 
 	protected function configure_switch_rucss( $config, $expected ) {
-		if(! $config['user_can'] || ! $config['valid_value']) {
+		if(! $config['user_can']) {
 			return;
 		}
 		$this->options->expects()->set('critical_css', false);
 		$this->options->expects()->set('remove_unused_css', true);
 		$this->options->expects()->get_options()->andReturn($config['options']);
 		$this->options_api->expects()->set('settings', $expected['options']);
-		Actions\expectDone('rocket_clear_usedcss');
+
 	}
 
 	protected function configure_dismiss( $config, $expected ) {

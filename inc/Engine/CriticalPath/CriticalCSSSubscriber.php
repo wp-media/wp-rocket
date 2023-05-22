@@ -845,12 +845,10 @@ JS;
 			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
 		}
 
-		if ( is_array( $_GET ) && key_exists( 'value', $_GET ) && $_GET['value'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$this->options->set( 'critical_css', false );
-			$this->options->set( 'remove_unused_css', true );
-			$this->options_api->set( 'settings', $this->options->get_options() );
-			do_action( 'rocket_clear_usedcss' );
-		}
+		$this->options->set( 'critical_css', false );
+		$this->options->set( 'remove_unused_css', true );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+		do_action( 'rocket_clear_usedcss' );
 
 		rocket_dismiss_box( 'switch_to_rucss_notice' );
 
