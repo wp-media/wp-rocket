@@ -819,7 +819,7 @@ JS;
 				'dismissible'            => '',
 				'dismiss_button'         => __FUNCTION__,
 				'message'                => sprintf(
-					// translators: %s = opening bold tag, %s = closing bold tag.
+					// translators: %1$ = opening bold tag, %2$ = closing bold tag.
 					__( 'We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
 					'<b>',
 							'</b>'
