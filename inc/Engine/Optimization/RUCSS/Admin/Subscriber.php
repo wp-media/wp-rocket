@@ -79,7 +79,6 @@ class Subscriber implements Subscriber_Interface {
 			'edit_term'                               => 'delete_term_used_css',
 			'pre_delete_term'                         => 'delete_term_used_css',
 			'admin_post_rocket_clear_usedcss'         => 'truncate_used_css_handler',
-			'rocket_clear_usedcss'                    => 'clear_rucss_rows',
 			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
@@ -330,7 +329,24 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
-		$this->clear_rucss_rows();
+		$this->delete_used_css_rows();
+
+		rocket_clean_domain();
+		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+
+		set_transient(
+			'rocket_clear_usedcss_response',
+			[
+				'status'  => 'success',
+				'message' => sprintf(
+					// translators: %1$s = plugin name.
+					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
+					'<strong>WP Rocket</strong>'
+				),
+			]
+		);
+
+		$this->set_notice_transient();
 
 		wp_remote_get(
 			home_url(),
@@ -344,32 +360,6 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Clear RUCSS rows.
-	 *
-	 * @return void
-	 */
-	public function clear_rucss_rows() {
-		$this->delete_used_css_rows();
-
-		rocket_clean_domain();
-		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-
-		set_transient(
-			'rocket_clear_usedcss_response',
-			[
-				'status'  => 'success',
-				'message' => sprintf(
-				// translators: %1$s = plugin name.
-					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
-					'<strong>WP Rocket</strong>'
-				),
-			]
-		);
-
-		$this->set_notice_transient();
 	}
 
 	/**
