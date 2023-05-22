@@ -100,7 +100,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
-				[ 'switch_to_rucss_notice' ],
+				[ 'switch_to_rucss_notice', 9 ],
 			],
 
 			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
