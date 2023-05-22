@@ -132,7 +132,7 @@ trait CheckExcludedTrait {
 
 		parse_str( $queries, $query_array );
 
-		$query_array = $this->drop_excluded_params( array_keys($query_array), true );
+		$query_array = $this->drop_excluded_params( array_keys( $query_array ), true );
 
 		return ! empty( $query_array );
 	}
