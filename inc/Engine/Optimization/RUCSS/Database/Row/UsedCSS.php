@@ -9,6 +9,104 @@ use WP_Rocket\Dependencies\Database\Row;
  */
 class UsedCSS extends Row {
 	/**
+	 * Row ID
+	 *
+	 * @var int
+	 */
+	public $id;
+
+	/**
+	 * URL
+	 *
+	 * @var string
+	 */
+	public $url;
+
+	/**
+	 * CSS
+	 *
+	 * @var string
+	 */
+	public $css;
+
+	/**
+	 * Hash storage value
+	 *
+	 * @var string
+	 */
+	public $hash;
+
+	/**
+	 * Error code
+	 *
+	 * @var string
+	 */
+	public $error_code;
+
+	/**
+	 * Error message
+	 *
+	 * @var string
+	 */
+	public $error_message;
+
+	/**
+	 * Number of retries
+	 *
+	 * @var int
+	 */
+	public $retries;
+
+	/**
+	 * Is CSS for mobile
+	 *
+	 * @var bool
+	 */
+	public $is_mobile;
+
+	/**
+	 * Job ID
+	 *
+	 * @var string
+	 */
+	public $job_id;
+
+	/**
+	 * Job queue name
+	 *
+	 * @var string
+	 */
+	public $queue_name;
+
+	/**
+	 * Status
+	 *
+	 * @var string
+	 */
+	public $status;
+
+	/**
+	 * Last modified time
+	 *
+	 * @var int
+	 */
+	public $modified;
+
+	/**
+	 * Last accessed time
+	 *
+	 * @var int
+	 */
+	public $last_accessed;
+
+	/**
+	 * Unused variable
+	 *
+	 * @var string
+	 */
+	public $unprocessedcss;
+
+	/**
 	 * UsedCSS constructor.
 	 *
 	 * @param mixed $item Object Row.
@@ -28,7 +126,7 @@ class UsedCSS extends Row {
 		$this->job_id        = (string) $this->job_id;
 		$this->queue_name    = (string) $this->queue_name;
 		$this->status        = (string) $this->status;
-		$this->modified      = false === $this->modified ? 0 : strtotime( $this->modified );
-		$this->last_accessed = false === $this->last_accessed ? 0 : strtotime( $this->last_accessed );
+		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
+		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( $this->last_accessed );
 	}
 }

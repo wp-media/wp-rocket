@@ -43,7 +43,6 @@ class Test_TruncateUsedCssTable extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => false,
 			]
@@ -52,7 +51,6 @@ class Test_TruncateUsedCssTable extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => true,
 			]
