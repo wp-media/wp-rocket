@@ -106,7 +106,7 @@ return [
 				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
 				'http://www.photoshoptuto.com/proposer-un-tuto',
 				'http://www.photoshoptuto.com/tag/35mm',
-				'http://www.photoshoptuto.com/sitemap/2',
+				'http://www.photoshoptuto.com/sitemap/22',
 			]
 		]
 	],
