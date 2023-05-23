@@ -19,12 +19,11 @@ class Subscriber extends AbstractMinifySubscriber {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'rocket_css_url'    => [
+			'rocket_css_url' => [
 				[ 'fix_ssl_minify' ],
 				[ 'i18n_multidomain_url' ],
 			],
-			'wp_rocket_upgrade' => [ 'on_update', 16, 2 ],
-			'rocket_buffer'     => [ 'process', 16 ],
+			'rocket_buffer'  => [ 'process', 16 ],
 		];
 
 		return $events;
@@ -80,20 +79,5 @@ class Subscriber extends AbstractMinifySubscriber {
 	 */
 	public function get_zones() {
 		return [ 'all', 'css_and_js', 'css' ];
-	}
-
-	/**
-	 * Clean cache on update.
-	 *
-	 * @param string $new_version new version from the plugin.
-	 * @param string $old_version old version from the plugin.
-	 * @return void
-	 */
-	public function on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.15', '>=' ) ) {
-			return;
-		}
-		rocket_clean_minify();
-		rocket_clean_domain();
 	}
 }
