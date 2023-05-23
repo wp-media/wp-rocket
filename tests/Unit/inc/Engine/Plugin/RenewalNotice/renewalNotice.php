@@ -39,7 +39,7 @@ class TestRenewalNotice extends TestCase {
 			->once()
 			->andReturn( $config['license_expired'] );
 
-		if ( ! empty( $expected ) ) {
+		if ( ! empty( $expected['data'] ) ) {
 			$this->user->shouldReceive( 'get_renewal_url' )
 				->once()
 				->andReturn( $config['renewal_url'] );
