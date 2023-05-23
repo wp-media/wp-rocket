@@ -17,7 +17,7 @@
 
 	p:first-child {
 		@include font-size(16,18);
-
+		margin-left: 80px;
 		&::before {
 			content: url(../img/warning.svg);
 			display: inline-block;
@@ -25,6 +25,10 @@
 			width: 63px;
 			margin-right: 17px;
 			vertical-align: middle;
+			margin-left: -80px;
+			@include respond-to('md') {
+				margin-bottom: -30px;
+			}
 		}
 	}
 
@@ -34,9 +38,16 @@
 		align-items: center;
 		justify-content: flex-start;
 		display: flex;
+		@include respond-to('xs') {
+			align-content: center;
+			flex-direction: column;
+			margin-left: 0;
+		}
 		a {
 			margin: 0 2 * $space;
-
+			@include respond-to('xs') {
+				margin: $space 2 * $space;
+			}
 			&:first-child {
 				display: block;
 				background: $bunting;
@@ -64,54 +75,54 @@
 }
 
 .wpr-notice {
-    position: relative;
-    color: $cGreyDark1;
-    background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
-    background-size: 350px;
-    margin-top: $space*3;
-    border-radius: 4px;
-    overflow: hidden;
+	position: relative;
+	color: $cGreyDark1;
+	background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
+	background-size: 350px;
+	margin-top: $space*3;
+	border-radius: 4px;
+	overflow: hidden;
 
-    &-container{
-        padding: $space*3 25% $space*3 $space*5;
-    }
+	&-container{
+		padding: $space*3 25% $space*3 $space*5;
+	}
 
-    &-supTitle{
-        @include font-size(16,22);
-        font-weight: bold;
-    }
+	&-supTitle{
+		@include font-size(16,22);
+		font-weight: bold;
+	}
 
-    &-title{
-        @include font-size(24,32);
-        color: $cGreen;
-        margin-top: $space*2;
-        font-weight: bold;
-    }
+	&-title{
+		@include font-size(24,32);
+		color: $cGreen;
+		margin-top: $space*2;
+		font-weight: bold;
+	}
 
-    &-description{
-        @include font-size(14,22);
-        margin: $space*2 0 $space*3;
-    }
+	&-description{
+		@include font-size(14,22);
+		margin: $space*2 0 $space*3;
+	}
 
-    &-continue{
-        color: $cGreyDark2;
-    }
+	&-continue{
+		color: $cGreyDark2;
+	}
 
-    &-close{
-        position: absolute;
-        top: $space*3;
-        right: $space*3;
-        color: $cGreyDark2;
-        text-decoration: none;
-        @include font-size(24,24);
-        @include transition(color, 200ms);
+	&-close{
+		position: absolute;
+		top: $space*3;
+		right: $space*3;
+		color: $cGreyDark2;
+		text-decoration: none;
+		@include font-size(24,24);
+		@include transition(color, 200ms);
 
-        &:hover{
-            color: $cGreyDark1;
-        }
+		&:hover{
+			color: $cGreyDark1;
+		}
 
-        &:focus{
-            outline: none;
-        }
-    }
+		&:focus{
+			outline: none;
+		}
+	}
 }
