@@ -38,6 +38,8 @@ class Test_MaybeDisableDelayJsField extends TestCase {
 			return $plugins;
 		}
 
+		$plugins = [];
+
 		$plugins[] = 'wp-meteor/wp-meteor.php';
 
 		return $plugins;

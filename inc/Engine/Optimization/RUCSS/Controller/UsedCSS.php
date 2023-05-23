@@ -200,6 +200,14 @@ class UsedCSS {
 			return $html;
 		}
 
+		$clean_html = $this->hide_comments( $html );
+		$clean_html = $this->hide_noscripts( $clean_html );
+		$clean_html = $this->hide_scripts( $clean_html );
+
+		if ( ! $this->html_has_title_tag( $clean_html ) ) {
+			return $html;
+		}
+
 		global $wp;
 		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
@@ -240,7 +248,7 @@ class UsedCSS {
 			return $html;
 		}
 
-		$html = $this->remove_used_css_from_html( $html );
+		$html = $this->remove_used_css_from_html( $clean_html, $html );
 		$html = $this->add_used_css_to_html( $html, $used_css_content );
 		$html = $this->add_used_fonts_preload( $html, $used_css_content );
 		$html = $this->remove_google_font_preconnect( $html );
@@ -337,18 +345,14 @@ class UsedCSS {
 	/**
 	 * Alter HTML and remove all CSS which was processed from HTML page.
 	 *
+	 * @param string $clean_html Cleaned HTML after removing comments, noscripts and scripts.
 	 * @param string $html HTML content.
 	 *
 	 * @return string HTML content.
 	 */
-	private function remove_used_css_from_html( string $html ): string {
-		$clean_html = $this->hide_comments( $html );
-		$clean_html = $this->hide_noscripts( $clean_html );
-		$clean_html = $this->hide_scripts( $clean_html );
+	private function remove_used_css_from_html( string $clean_html, string $html ): string {
 		$this->set_inline_exclusions_lists();
-
 		$html = $this->remove_external_styles_from_html( $clean_html, $html );
-
 		return $this->remove_internal_styles_from_html( $clean_html, $html );
 	}
 
@@ -617,6 +621,26 @@ class UsedCSS {
 
 		// Send the request to get the job status from SaaS.
 		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
+
+		/**
+		 * Filters the rocket min rucss css result size.
+		 *
+		 * @since 3.13.3
+		 *
+		 * @param int min size.
+		 */
+		$min_rucss_size = apply_filters( 'rocket_min_rucss_size', 150 );
+		if ( ! is_numeric( $min_rucss_size ) ) {
+			$min_rucss_size = 150;
+		}
+
+		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
+			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
+			Logger::error( $message );
+			$this->used_css_query->make_status_failed( $id, '500', $message );
+			return;
+		}
+
 		if (
 			200 !== $job_details['code']
 			||
