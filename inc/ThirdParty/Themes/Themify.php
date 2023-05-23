@@ -17,7 +17,7 @@ class Themify extends ThirdpartyTheme {
 	 *
 	 * @var string
 	 */
-	protected static $theme_name = 'themify';
+	protected static $theme_name = 'themify-ultra';
 
 	/**
 	 * Instantiate the class.
