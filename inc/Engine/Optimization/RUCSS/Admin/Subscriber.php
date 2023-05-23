@@ -437,9 +437,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_processing_notice() {
-		if ( $this->has_error_notice() ) {
-			return;
-		}
 		$this->settings->display_processing_notice();
 	}
 
@@ -451,9 +448,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_success_notice() {
-		if ( $this->has_error_notice() ) {
-			return;
-		}
 		$this->settings->display_success_notice();
 	}
 
@@ -477,28 +471,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function display_error_notice() {
-
-		if ( ! $this->has_error_notice() ) {
-			$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-			if ( in_array( 'rucss_error_notice', (array) $boxes, true ) ) {
-				unset( $boxes['rucss_error_notice'] );
-				update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
-			}
-
-			return;
-		}
-
-		$this->settings->display_error_notice();
-	}
-
-	/**
-	 * Is the error notice present.
-	 *
-	 * @return bool
-	 */
-	public function has_error_notice() {
-		return (bool) get_transient( 'wp_rocket_rucss_errors_count' );
+	public function display_saas_error_notice() {
+		$this->settings->display_saas_error_notice();
 	}
 
 

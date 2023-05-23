@@ -12,6 +12,7 @@ return [
 				'has_rights' => true,
 				'is_enabled' => true,
 				'boxes'             => [],
+				'saas_transient'         => true,
 			],
 			'expected' => ''
 		],
@@ -24,6 +25,7 @@ return [
 				'has_rights' => false,
 				'is_enabled' => true,
 				'boxes'             => [],
+				'saas_transient'         => true,
 			],
 			'expected' => ''
 		],
@@ -36,6 +38,7 @@ return [
 				'has_rights' => true,
 				'is_enabled' => true,
 				'boxes'             => [],
+				'saas_transient'         => true,
 			],
 			'expected' => ''
 		],
@@ -48,6 +51,20 @@ return [
 				'has_rights' => true,
 				'is_enabled' => false,
 				'boxes'             => [],
+				'saas_transient'         => true,
+			],
+			'expected' => ''
+		],
+		'NotSassErrorShouldDisplayNothing' => [
+			'config' => [
+				'is_writable' => true,
+				'current_screen' => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'has_rights' => true,
+				'is_enabled' => false,
+				'boxes'             => [],
+				'saas_transient'         => false,
 			],
 			'expected' => ''
 		]

@@ -48,7 +48,12 @@ class Test_DisplayProcessingNotice extends FilesystemTestCase {
 				->andReturn( $config['remove_unused_css'] );
 
 
-		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
+		Functions\when('get_transient')->alias(function ($name) use ($config) {
+			if('wp_rocket_rucss_errors_count' === $name) {
+				return $config['saas_transient'];
+			}
+			return $config['transient'];
+		});
 
 		if ( $expected ) {
 			Functions\expect( 'rocket_notice_html' )

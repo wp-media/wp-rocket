@@ -12,7 +12,7 @@ use Brain\Monkey\Functions;
  * @group  RUCSS
  * @group  AdminOnly
  */
-class Test_DisplayErrorNotice extends AdminTestCase {
+class Test_DisplaySaasErrorNotice extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
