@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-05-05 10:48-0400\n"
+"POT-Creation-Date: 2023-05-23 09:57-0400\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
@@ -750,20 +750,20 @@ msgid ""
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "One-click exclusions"
+msgid "One-click exclusions from delay"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
-"When using this feature you may notice that it takes some time, or user "
-"interaction for specific elements, e.g. a menu, or a form that is located in the "
-"viewport, to appear."
+"When using the Delay JavaScript Execution, you might experience delay loading "
+"elements located in the viewport that need to appear immediately - e.g. slider, "
+"header, menu."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:944
 msgid ""
-"If you are using any of the following plugins/themes/services you can prevent "
-"that, by selecting them below."
+"If you need instant visibility, click below on files that should NOT be delayed. "
+"This selection will help users interact with the elements straight away."
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:961
@@ -1569,8 +1569,8 @@ msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:226
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:324
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:230
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr ""
@@ -2225,7 +2225,7 @@ msgstr ""
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:752
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:776
 msgid "Clear Used CSS of this URL"
 msgstr ""
 
