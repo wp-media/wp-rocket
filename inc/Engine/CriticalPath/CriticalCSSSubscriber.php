@@ -845,7 +845,7 @@ JS;
 			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
 		}
 
-		$this->options->set( 'critical_css', false );
+		$this->options->set( 'async_css', false );
 		$this->options->set( 'remove_unused_css', true );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 

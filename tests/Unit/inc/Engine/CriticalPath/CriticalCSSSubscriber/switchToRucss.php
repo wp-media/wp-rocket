@@ -90,7 +90,7 @@ class Test_switchToRucss extends TestCase {
 		if(! $config['user_can']) {
 			return;
 		}
-		$this->options->expects()->set('critical_css', false);
+		$this->options->expects()->set('async_css', false);
 		$this->options->expects()->set('remove_unused_css', true);
 		$this->options->expects()->get_options()->andReturn($config['options']);
 		$this->options_api->expects()->set('settings', $expected['options']);
