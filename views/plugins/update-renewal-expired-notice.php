@@ -28,9 +28,9 @@ defined( 'ABSPATH' ) || exit;
 				'<strong>',
 				esc_html( $data['version'] ),
 				'</strong>',
-				'<a href="' . esc_url( $data['release_url'] ) . '">',
+				'<a href="' . esc_url( $data['release_url'] ) . '" rel="noopener" target="_blank">',
 				'</a>',
-				'<a href="' . esc_url( $data['renew_url'] ) . '">'
+				'<a href="' . esc_url( $data['renew_url'] ) . '" rel="noopener" target="_blank">'
 			);
 			?>
 			</p>
