@@ -39,11 +39,30 @@ class Themify extends ThirdpartyTheme {
 		}
 
 		return [
-			'after_switch_theme' => 'disabling_concat_on_rucss',
+			'after_switch_theme' => 'disabling_concat_on_theme',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ) => [ 'disabling_concat_on_rucss', 10, 2 ],
 			'themify_save_data'  => 'disable_concat_on_saving_data',
 			'themify_dev_mode'   => 'maybe_enable_dev_mode',
 		];
+	}
+
+	/**
+	 * Change the value on change theme.
+	 *
+	 * @return void
+	 */
+	public function disabling_concat_on_theme() {
+		$data = themify_get_data();
+
+		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
+			$data = $this->maybe_disable( $data );
+		}
+
+		if ( $this->options->get( 'remove_unused_css', false ) ) {
+			$data = $this->maybe_enable( $data );
+		}
+
+		themify_set_data( $data );
 	}
 
 	/**
