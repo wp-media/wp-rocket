@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-05-23 09:57-0400\n"
+"POT-Creation-Date: 2023-05-23 12:23-0400\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
@@ -1775,33 +1775,44 @@ msgstr ""
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:176
 msgid "Critical CSS generation is currently running."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:159
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:181
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:374
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:396
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:450
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:472
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Learn more."
+msgstr ""
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:840
+#, php-format
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:845
+msgid "Stay with the old option"
 msgstr ""
 
 #: inc/Engine/CriticalPath/DataManager.php:68
@@ -2019,7 +2030,7 @@ msgstr ""
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:744 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr ""
 
@@ -2473,7 +2484,7 @@ msgstr[1] ""
 msgid "More info"
 msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:752
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:753
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -2582,12 +2593,12 @@ msgstr ""
 msgid "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:842
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:837
+#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:844
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2667,24 +2678,28 @@ msgstr ""
 msgid "%s: User cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:756
 msgid "Stop Preload"
 msgstr ""
 
-#: inc/admin/ui/notices.php:773
+#: inc/admin/ui/notices.php:762
+msgid "Turn on Remove Unused CSS"
+msgstr ""
+
+#: inc/admin/ui/notices.php:780
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:792
+#: inc/admin/ui/notices.php:799
 msgid "The following code should have been written to this file:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:823
+#: inc/admin/ui/notices.php:830
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:836
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr ""
