@@ -750,7 +750,7 @@ msgid ""
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "One-click exclusions from delay"
+msgid "One-click exclusions"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:943

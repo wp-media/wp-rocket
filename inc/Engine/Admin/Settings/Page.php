@@ -939,7 +939,7 @@ class Page {
 				),
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
-					'label'             => __( 'One-click exclusions from delay', 'rocket' ),
+					'label'             => __( 'One-click exclusions', 'rocket' ),
 					'description'       => __( 'When using the Delay JavaScript Execution, you might experience delay loading elements located in the viewport that need to appear immediately - e.g. slider, header, menu.', 'rocket' ),
 					'sub_description'   => __( 'If you need instant visibility, click below on files that should NOT be delayed. This selection will help users interact with the elements straight away.', 'rocket' ),
 					'container_class'   => [
