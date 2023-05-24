@@ -15,7 +15,7 @@ class Test_WarningNotice extends TestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		$user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
@@ -45,6 +45,10 @@ class Test_WarningNotice extends TestCase {
 	}
 
 	public function active_plugin( $plugins ) {
+		if ( ! is_array( $plugins ) ) {
+			$plugins = (array) $plugins;
+		}
+
 		$plugins[] = 'hummingbird-performance/wp-hummingbird.php';
 
 		return $plugins;
