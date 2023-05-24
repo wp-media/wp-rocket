@@ -418,7 +418,14 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$result = [];
+		$result = [
+			'pre' => sprintf(
+				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
+				__( '%1$sWP Rocket:%2$s', 'rocket' ),
+				'<strong>',
+				'</strong>&nbsp;'
+			),
+		];
 		$update = get_transient( get_current_user_id() . '_cloudflare_update_settings' );
 
 		if ( false !== $update ) {
@@ -426,6 +433,8 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
+
+		set_transient( get_current_user_id() . '_cloudflare_update_settings', $result );
 	}
 
 	/**
