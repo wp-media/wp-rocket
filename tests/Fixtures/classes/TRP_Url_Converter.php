@@ -10,7 +10,7 @@ if ( ! class_exists( 'TRP_Url_Converter' ) ) {
 			return self::$lang;
 		}
 
-		public function get_url_for_language(string $code) {
+		public function get_url_for_language(string $home_url, string $url) {
 			return self::$url;
 		}
     }
