@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-05-05 10:48-0400\n"
+"POT-Creation-Date: 2023-05-23 12:23-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2023\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -928,27 +928,28 @@ msgstr ""
 "d'infos%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "One-click exclusions"
-msgstr "Exclusions en un clic"
+msgid "One-click exclusions from delay"
+msgstr "Exclusion en un clic du report"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
-"When using this feature you may notice that it takes some time, or user "
-"interaction for specific elements, e.g. a menu, or a form that is located in"
-" the viewport, to appear."
+"When using the Delay JavaScript Execution, you might experience delay "
+"loading elements located in the viewport that need to appear immediately - "
+"e.g. slider, header, menu."
 msgstr ""
-"Lorsque vous utilisez cette option, vous pouvez remarquer qu'il faut un "
-"certain temps ou une interaction de l'utilisateur pour que des éléments "
-"particuliers, par exemple un menu ou un formulaire situé dans la fenêtre, "
-"s'affichent."
+"Lorsque vous utilisez l'option Reporter l’exécution du JavaScript, il se "
+"peut que le chargement d'éléments qui doivent apparaître immédiatement soit "
+"retardé - ex. : un slider, un en-tête, un menu."
 
 #: inc/Engine/Admin/Settings/Page.php:944
 msgid ""
-"If you are using any of the following plugins/themes/services you can "
-"prevent that, by selecting them below."
+"If you need instant visibility, click below on files that should NOT be "
+"delayed. This selection will help users interact with the elements straight "
+"away."
 msgstr ""
-"Si vous utilisez l'un des plugins/thèmes/services suivants, vous pouvez "
-"empêcher cela en les sélectionnant ci-dessous."
+"Si vous avez besoin d'une visibilité immédiate, cliquez ci-dessous sur les "
+"fichiers qui ne doivent PAS être reportés. Cela permettra aux utilisateurs "
+"d'interagir immédiatement avec ces éléments."
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid ""
@@ -1909,8 +1910,8 @@ msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr "Pour utiliser RocketCDN, remplacez votre CNAME par %1$s%2$s%3$s."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:226
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:324
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:230
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sPlus d'infos%2$s"
@@ -2142,17 +2143,17 @@ msgstr "Activez Chargement Asynchrone du CSS dans les réglages de WP Rocket"
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "Activez Chargement Asynchrone du CSS dans les options ci-dessus"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:176
 msgid "Critical CSS generation is currently running."
 msgstr "La génération du Critical CSS est en cours."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:159
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:181
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 "Rendez-vous aux %1$sréglages de WP Rocket%2$s pour suivre la progression."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:374
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:396
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2161,20 +2162,34 @@ msgstr ""
 "La génération du Critical CSS est en cours : %1$d de %2$d de types de page "
 "complétés. (Rafraîchir pour voir la progression)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:450
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:472
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "La génération du Critical CSS est en terminée : %1$d de %2$d de types de "
 "page."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "La génération du CSS critique a rencontré une ou plusieurs erreur(s)."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Learn more."
 msgstr "En savoir plus."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:840
+#, php-format
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+"Nous recommandons vivement %1$sSupprimer les ressources CSS inutilisées%2$s "
+"pour une meilleure optimisation CSS. Le Chargement Asynchrone du CSS est "
+"toujours disponible comme solution de secours."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:845
+msgid "Stay with the old option"
+msgstr "Garder l'ancienne option"
 
 #: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
@@ -2431,7 +2446,7 @@ msgstr "Mettez à niveau maintenant"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:744 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "Ne pas tenir compte de cet avertissement."
 
@@ -2681,7 +2696,7 @@ msgstr "%1$s: L'option du CSS utilisé n'est pas activée !"
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Cache du CSS utilisé vidée !"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:752
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:776
 msgid "Clear Used CSS of this URL"
 msgstr "Nettoyer le CSS utilisé pour cet URL"
 
@@ -2998,7 +3013,7 @@ msgstr[2] "Les patterns suivants sont invalides et ont été supprimés :"
 msgid "More info"
 msgstr "Plus d'infos"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:752
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:753
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -3126,14 +3141,14 @@ msgstr ""
 "%s n'a pas pu modifier le fichier .htaccess en raison d'un défaut de "
 "permissions en écriture."
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:842
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
 "accessible à l'écriture%2$s"
 
-#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:837
+#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:844
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3230,26 +3245,30 @@ msgstr "%s : Cache Terme vidé."
 msgid "%s: User cache cleared."
 msgstr "%s : Cache Utilisateur vidé."
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:756
 msgid "Stop Preload"
 msgstr "Arrêter le préchargement"
 
-#: inc/admin/ui/notices.php:773
+#: inc/admin/ui/notices.php:762
+msgid "Turn on Remove Unused CSS"
+msgstr "Activer l'option Supprimer les ressources CSS inutilisées"
+
+#: inc/admin/ui/notices.php:780
 msgid "Force deactivation "
 msgstr "Forcer la désactivation"
 
-#: inc/admin/ui/notices.php:792
+#: inc/admin/ui/notices.php:799
 msgid "The following code should have been written to this file:"
 msgstr "Le code suivant aurait dû être écrit sur ce fichier :"
 
-#: inc/admin/ui/notices.php:823
+#: inc/admin/ui/notices.php:830
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s ne peut pas se configurer seul en raison de l'absence de permissions en "
 "écriture."
 
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:836
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fichier/dossier affecté : %s"
