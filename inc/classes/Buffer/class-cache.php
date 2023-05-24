@@ -39,6 +39,15 @@ class Cache extends Abstract_Buffer {
 	private $cache_dir_path;
 
 	/**
+	 * Exclude urls from wp canonical redirect.
+	 *
+	 * @var array Array of url patterns to exclude from wp canonical redirect.
+	 */
+	private $wp_redirect_exclusions = [
+		'(.*)wp\-json(/.*|$)',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @since  3.3
@@ -750,6 +759,14 @@ class Cache extends Abstract_Buffer {
 	 * @return bool
 	 */
 	private function maybe_allow_wp_redirect(): bool {
+
+		$exclusions = implode( '|', $this->wp_redirect_exclusions );
+
+		// Return early for excluded urls.
+		if ( preg_match( '#' . $exclusions . '#', $this->tests->get_request_uri_base() )
+		) {
+			return false;
+		}
 
 		$permalink_structure = $this->config->get_config( 'permalink_structure' );
 

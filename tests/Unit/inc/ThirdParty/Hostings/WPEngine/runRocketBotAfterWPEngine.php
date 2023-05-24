@@ -17,6 +17,8 @@ use WP_Rocket\ThirdParty\Hostings\WPEngine;
  * @group  ThirdParty
  */
 class Test_RunRocketBotAfterWPEngine extends TestCase {
+	private $wpengine;
+
 	/**
 	 * @dataProvider providerTestData
 	 */
