@@ -54,11 +54,13 @@ class Themify extends ThirdpartyTheme {
 	public function disabling_concat_on_theme() {
 		$data = themify_get_data();
 
-		if ( ! $this->options->get( 'remove_unused_css', false ) ) {
+		$remove_unused_css = $this->options->get( 'remove_unused_css', false );
+
+		if ( ! $remove_unused_css ) {
 			$data = $this->maybe_disable( $data );
 		}
 
-		if ( $this->options->get( 'remove_unused_css', false ) ) {
+		if ( $remove_unused_css ) {
 			$data = $this->maybe_enable( $data );
 		}
 
