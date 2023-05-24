@@ -595,6 +595,14 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
+				// Decode url path.
+				$url_chunks = explode( '/', $parsed_url['path'] );
+				$matches    = preg_grep( '/%/', $url_chunks );
+
+				if ( ! empty( $matches ) ) {
+					$parsed_url['path'] = rawurldecode( $parsed_url['path'] );
+				}
+
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
 					$cb_encode_non_latin = function( $non_latin ) {
@@ -602,17 +610,6 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 					};
 
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
-				}
-
-				// Transform encoded characters to lower case.
-				$url_chunks = explode( '/', $parsed_url['path'] );
-				$matches    = preg_grep( '/%/', $url_chunks );
-
-				if ( ! empty( $matches ) ) {
-					$cb_transform_to_lower = function( $encoded_upper ) {
-						return strtolower( $encoded_upper );
-					};
-					$parsed_url['path']    = str_replace( $matches, array_map( $cb_transform_to_lower, $matches ), $parsed_url['path'] );
 				}
 
 				$entry = $dir . $parsed_url['path'];
