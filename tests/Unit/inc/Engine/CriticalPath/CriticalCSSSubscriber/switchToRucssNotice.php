@@ -13,6 +13,7 @@ use WP_Rocket\Engine\License\API\User;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
  */
@@ -73,6 +74,7 @@ class Test_switchToRucssNotice extends TestCase {
         $this->configure_async_css_activated($config, $expected);
 		$this->configure_licence($config, $expected);
 		$this->configure_current_screen($config, $expected);
+		$this->configure_rucss_status($config, $expected);
 		$this->configure_display_notice($config, $expected);
 		$this->criticalcsssubscriber->switch_to_rucss_notice();
     }
@@ -98,8 +100,20 @@ class Test_switchToRucssNotice extends TestCase {
 		Functions\expect('get_current_screen')->andReturn($config['screen']);
 	}
 
-	protected function configure_display_notice( $config ,$expected ) {
+	protected function configure_rucss_status($config, $expected) {
 		if( $config['in_boxes'] || ! $config['async_css'] || $config['expired_license'] || ! $config['is_right_screen'] ) {
+			return;
+		}
+		Filters\expectApplied('rocket_disable_rucss_setting')->with([
+			'disable' => false,
+			'text'    => '',
+		])->andReturn([
+			'disable' => $config['rucss_status']
+		]);
+	}
+
+	protected function configure_display_notice( $config ,$expected ) {
+		if( $config['in_boxes'] || ! $config['async_css'] || $config['expired_license'] || ! $config['is_right_screen'] || $config['rucss_status'] ) {
 			Functions\expect('rocket_notice_html')->never();
 			return;
 		}

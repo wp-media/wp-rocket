@@ -27,6 +27,6 @@ abstract class ThirdpartyTheme implements Subscriber_Interface {
 			return false;
 		}
 
-		return str_contains( strtolower( static::$theme_name ), strtolower( $template ) );
+		return str_contains( strtolower( $template ), strtolower( static::$theme_name ) );
 	}
 }
