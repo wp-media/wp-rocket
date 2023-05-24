@@ -929,7 +929,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:942
 msgid "One-click exclusions from delay"
-msgstr "Exclusion en un clic du report"
+msgstr "Exclusions en un clic"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
