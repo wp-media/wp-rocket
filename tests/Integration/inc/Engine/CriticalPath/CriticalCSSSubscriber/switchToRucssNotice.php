@@ -35,6 +35,7 @@ class Test_switchToRucssNotice extends TestCase {
 	{
 		parent::set_up();
 		add_filter('pre_get_rocket_option_async_css', [$this, 'async_css']);
+		add_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 
 		wp_set_current_user( self::$user_id );
 
@@ -46,6 +47,7 @@ class Test_switchToRucssNotice extends TestCase {
 	{
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		remove_filter('pre_get_rocket_option_async_css', [$this, 'async_css']);
+		remove_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 		update_user_meta( get_current_user_id(), 'rocket_boxes', [] );
 		set_current_screen( 'front' );
 		parent::tear_down();
@@ -86,5 +88,11 @@ class Test_switchToRucssNotice extends TestCase {
 
 	public function async_css() {
 		return $this->config['async_css'];
+	}
+
+	public function rucss() {
+		return [
+			'disable' => $this->config['rucss_status'],
+		];
 	}
 }
