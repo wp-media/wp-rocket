@@ -357,6 +357,7 @@ class Plugin {
 			'admin_api_subscriber',
 			'perfmatters',
 			'rapidload',
+			'themify',
 			'wpgeotargeting',
 		];
 
