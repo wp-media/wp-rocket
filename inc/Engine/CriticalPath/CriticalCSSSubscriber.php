@@ -830,8 +830,7 @@ JS;
 			return;
 		}
 
-
-    rocket_notice_html(
+		rocket_notice_html(
 			[
 				'status'                 => 'wpr-warning',
 				'dismissible'            => '',
