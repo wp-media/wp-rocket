@@ -1,4 +1,15 @@
 <?php
+
+$notice = <<<NOTICE
+<div class="notice notice-wpr-warning ">
+<p>
+We highly recommend the<b>
+updated Remove Unused CSS</b>
+for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.</p>
+<p>
+NOTICE;
+
+
 return [
     'shouldDisplayNotice' => [
         'config' => [
@@ -13,8 +24,15 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
         ],
 		'expected' => [
+			'contains' => true,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -39,8 +57,15 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -65,8 +90,15 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -91,8 +123,15 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'last year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -117,8 +156,15 @@ return [
 			'screen' => (object) [
 				'id' => 'random'
 			],
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
