@@ -13,6 +13,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_ExcludeJs extends FilesystemTestCase {
 	private static $container;
 	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Uncode/excludeJs.php';
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -30,6 +31,7 @@ class Test_ExcludeJs extends FilesystemTestCase {
 
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
+		add_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'uncode' ) );
 	}
@@ -40,7 +42,13 @@ class Test_ExcludeJs extends FilesystemTestCase {
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
+		remove_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
+
 		parent::tear_down();
+	}
+
+	public function set_template_uri() {
+		return 'http://example.org/wp-content/themes/uncode';
 	}
 
 	public function set_stylesheet() {
@@ -58,10 +66,10 @@ class Test_ExcludeJs extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpected( $exclusions, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_exclude_js', $exclusions )
+			apply_filters( 'rocket_exclude_js', $config['exclusions'] )
 		);
 	}
 }
