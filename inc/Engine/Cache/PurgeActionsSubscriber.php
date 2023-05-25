@@ -57,6 +57,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 			'rocket_after_save_dynamic_lists'     => 'purge_cache',
 			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],
 			'update_option_blog_public'           => 'purge_cache',
+			'wp_rocket_upgrade'                   => [ 'on_update', 10, 2 ],
 		];
 	}
 
@@ -178,5 +179,20 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 */
 	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
 		$this->purge->purge_cache_reject_uri_partially( $old_value, $value );
+	}
+
+	/**
+	 * Regenerate the advanced cache file on update
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.13.3', '>=' ) ) {
+			return;
+		}
+		rocket_generate_advanced_cache_file();
 	}
 }

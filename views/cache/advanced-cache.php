@@ -35,17 +35,17 @@ spl_autoload_register(
 			'WP_Rocket\\Buffer\\Cache'           => $rocket_path . 'inc/classes/Buffer/class-cache.php',
 			'WP_Rocket\\Buffer\\Tests'           => $rocket_path . 'inc/classes/Buffer/class-tests.php',
 			'WP_Rocket\\Buffer\\Config'          => $rocket_path . 'inc/classes/Buffer/class-config.php',
-			'WP_Rocket\\Logger\\HTML_Formatter'  => $rocket_path . 'inc/Logger/HTMLFormatter.php',
+			'WP_Rocket\\Logger\\HTMLFormatter'   => $rocket_path . 'inc/Logger/HTMLFormatter.php',
 			'WP_Rocket\\Logger\\Logger'          => $rocket_path . 'inc/Logger/Logger.php',
-			'WP_Rocket\\Logger\\Stream_Handler'  => $rocket_path . 'inc/Logger/StreamHandler.php',
+			'WP_Rocket\\Logger\\StreamHandler'   => $rocket_path . 'inc/Logger/StreamHandler.php',
 			'WP_Rocket\\Traits\\Memoize'         => $rocket_path . 'inc/classes/traits/trait-memoize.php',
 		];
 
 		if ( isset( $rocket_classes[ $class ] ) ) {
 			$file = $rocket_classes[ $class ];
-		} elseif ( strpos( $class, 'Monolog\\' ) === 0 ) {
+		} elseif ( strpos( $class, 'WP_Rocket\\Dependencies\\Monolog\\' ) === 0 ) {
 			$file = $rocket_path . 'inc/Dependencies/Monolog/' . str_replace( '\\', '/', $class ) . '.php';
-		} elseif ( strpos( $class, 'Psr\\Log\\' ) === 0 ) {
+		} elseif ( strpos( $class, 'WP_Rocket\\Dependencies\\Psr\\Log\\' ) === 0 ) {
 			$file = $rocket_path . 'inc/Dependencies/Psr/Log/' . str_replace( '\\', '/', $class ) . '.php';
 		} else {
 			return;
