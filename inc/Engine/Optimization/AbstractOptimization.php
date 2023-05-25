@@ -141,6 +141,11 @@ abstract class AbstractOptimization {
 
 			return true;
 		}
+
+		if ( empty( $file['host'] ) ) {
+			return false;
+		}
+
 		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
 		return ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] );
 	}
