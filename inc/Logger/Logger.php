@@ -309,7 +309,7 @@ class Logger {
 		$entries  = $entries ? number_format_i18n( count( $entries ) ) : '0';
 		$bytes    = $filesystem->size( $file_path );
 		$decimals = $bytes > pow( 1024, 3 ) ? 1 : 0;
-		$bytes    = @size_format( $bytes, $decimals );
+		$bytes    = @size_format( $bytes, $decimals ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 		$bytes    = str_replace( ' ', ' ', $bytes ); // Non-breaking space character.
 
 		return compact( 'entries', 'bytes' );

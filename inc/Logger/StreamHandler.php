@@ -101,7 +101,7 @@ class StreamHandler extends MonoStreamHandler {
 
 		fwrite( $file_resource, $new_content );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
 		fclose( $file_resource );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
-		@chmod( $file_path, 0644 );
+		@chmod( $file_path, 0644 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 		$this->htaccess_exists = true;
 
