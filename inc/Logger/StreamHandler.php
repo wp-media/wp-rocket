@@ -2,14 +2,14 @@
 namespace WP_Rocket\Logger;
 
 use UnexpectedValueException;
-use Monolog\Handler\StreamHandler;
+use WP_Rocket\Dependencies\Monolog\Handler\StreamHandler as MonoStreamHandler;
 
 /**
  * Class used to log records into a local file.
  *
  * @since 3.2
  */
-class Stream_Handler extends StreamHandler {
+class StreamHandler extends MonoStreamHandler {
 
 	/**
 	 * Tell if the .htaccess file exists.

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Logger;
 
-use Monolog\Formatter\HtmlFormatter;
+use WP_Rocket\Dependencies\Monolog\Formatter\HtmlFormatter as MonoHtmlFormatter;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * @since  3.2
  * @author Grégory Viguier
  */
-class HTML_Formatter extends HtmlFormatter {
+class HTMLFormatter extends MonoHtmlFormatter {
 
 	/**
 	 * Formats a log record.

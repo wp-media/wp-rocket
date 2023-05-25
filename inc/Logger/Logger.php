@@ -1,13 +1,13 @@
 <?php
 namespace WP_Rocket\Logger;
 
-use Monolog\Logger as Monologger;
-use Monolog\Registry;
-use Monolog\Processor\IntrospectionProcessor;
-use Monolog\Handler\StreamHandler as MonoStreamHandler;
-use Monolog\Formatter\LineFormatter;
-use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
-use WP_Rocket\Logger\Stream_Handler as StreamHandler;
+use WP_Rocket\Dependencies\Monolog\Logger as Monologger;
+use WP_Rocket\Dependencies\Monolog\Registry;
+use WP_Rocket\Dependencies\Monolog\Processor\IntrospectionProcessor;
+use WP_Rocket\Dependencies\Monolog\Handler\StreamHandler as MonoStreamHandler;
+use WP_Rocket\Dependencies\Monolog\Formatter\LineFormatter;
+use WP_Rocket\Logger\HTMLFormatter as HtmlFormatter;
+use WP_Rocket\Logger\StreamHandler as StreamHandler;
 
 defined( 'ABSPATH' ) || exit;
 
