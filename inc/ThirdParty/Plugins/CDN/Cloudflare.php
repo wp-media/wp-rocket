@@ -1,16 +1,15 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility class for cloudflare.
- *
- * @since 3.11.6
  */
 class Cloudflare implements Subscriber_Interface {
-
 	/**
 	 * Options instance.
 	 *
@@ -19,7 +18,7 @@ class Cloudflare implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Call class instance.
+	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
 	 */
@@ -30,20 +29,18 @@ class Cloudflare implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.11.6
-	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices' => 'display_server_pushing_mode_notice',
+			'rocket_display_input_do_cloudflare' => 'hide_addon_radio',
+			'rocket_cloudflare_field_settings' => 'update_addon_field',
 		];
 	}
 
 	/**
 	 * Display notice for server pushing mode.
-	 *
-	 * @since  3.11.6
 	 *
 	 * @return void
 	 */
@@ -105,5 +102,60 @@ class Cloudflare implements Subscriber_Interface {
 				'dismiss_button_class' => 'button-primary',
 			]
 		);
+	}
+
+	/**
+	 * Hide WP Rocket CF Addon activation button if the official CF plugin is enabled
+	 *
+	 * @param bool $enable True to display, False otherwise.
+	 *
+	 * @return void
+	 */
+	public function hide_addon_radio( $enable ) {
+		if ( ! $this->is_plugin_active() ) {
+			return $enable;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Updates WP Rocket CF Addon field when the official CF plugin is enabled
+	 *
+	 * @param array $settings Array of values to populate the field.
+	 *
+	 * @return array
+	 */
+	public function update_addon_field( $settings ) {
+		if ( ! $this->is_plugin_active() ) {
+			return $settings;
+		}
+
+		$settings['title'] = __( 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.', 'rocket' );
+		$settings['description'] = __( 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.', 'rocket' );
+		$settings['helper'] = '';
+
+		return $settings;
+	}
+
+	/**
+	 * Checks if CF plugin is enabled & credentials saved
+	 *
+	 * @return bool
+	 */
+	private function is_plugin_active(): bool {
+		if ( ! is_plugin_active( 'cloudflare/cloudflare.php' ) ) {
+			return false;
+		}
+
+		if (
+			empty( get_option( 'cloudflare_api_email' ) )
+			||
+			empty( get_option( 'cloudflare_api_key' ) )
+		) {
+			return false;
+		}
+
+		return true;
 	}
 }
