@@ -502,23 +502,26 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
+		if ( ! isset( $value['cloudflare_auto_settings'], $old_value ['cloudflare_auto_settings'] ) ) {
+			return $value;
+		}
+
+		if ( $value['cloudflare_auto_settings'] === $old_value ['cloudflare_auto_settings'] ) {
+			return $value;
+		}
+
+		if ( 0 === (int) $value['cloudflare_auto_settings'] ) {
+			return $value;
+		}
+
 		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
 			return $value;
 		}
 
-		// Save old CloudFlare settings.
-		if (
-			isset( $value['cloudflare_auto_settings'], $old_value ['cloudflare_auto_settings'] )
-			&&
-			$value['cloudflare_auto_settings'] !== $old_value ['cloudflare_auto_settings']
-			&&
-			1 === $value['cloudflare_auto_settings']
-		) {
-			$cf_settings                      = $this->cloudflare->get_settings();
-			$value['cloudflare_old_settings'] = ! is_wp_error( $cf_settings )
-				? implode( ',', array_filter( $cf_settings ) )
-				: '';
-		}
+		$cf_settings                      = $this->cloudflare->get_settings();
+		$value['cloudflare_old_settings'] = ! is_wp_error( $cf_settings )
+			? implode( ',', array_filter( $cf_settings ) )
+			: '';
 
 		return $value;
 	}
