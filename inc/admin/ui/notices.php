@@ -185,11 +185,6 @@ function rocket_plugins_to_deactivate() {
 		$plugins['scripts-to-footerphp'] = 'scripts-to-footerphp/scripts-to-footer.php';
 	}
 
-	if ( get_rocket_option( 'do_cloudflare' ) ) {
-		$plugins['cloudflare']              = 'cloudflare/cloudflare.php';
-		$plugins_explanations['cloudflare'] = __( 'WP Rocket Cloudflare Add-on provides similar functionalities. They can not be active at the same time.', 'rocket' );
-	}
-
 	if ( get_rocket_option( 'control_heartbeat' ) ) {
 		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
 	}
