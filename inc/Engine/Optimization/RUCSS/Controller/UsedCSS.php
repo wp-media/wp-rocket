@@ -275,6 +275,7 @@ class UsedCSS {
 		 * @param array $skipped_attr Array of safelist values.
 		 */
 		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
+		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
 
 		$config = [
 			'treeshake'      => 1,
