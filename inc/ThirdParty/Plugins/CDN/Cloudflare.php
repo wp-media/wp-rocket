@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -18,13 +19,21 @@ class Cloudflare implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * @var Options
+	 */
+	private $option_api;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
+	 * @param Options $option_api
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, Options $option_api ) {
+		$this->options    = $options;
+		$this->option_api = $option_api;
 	}
+
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -36,6 +45,10 @@ class Cloudflare implements Subscriber_Interface {
 			'admin_notices' => 'display_server_pushing_mode_notice',
 			'rocket_display_input_do_cloudflare' => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings' => 'update_addon_field',
+			'enable_cloudflare/cloudflare.php' => 'disable_on_official',
+			'cloudflare_purge_everything_actions' => 'add_clean_domain_on_purge',
+			'cloudflare_purge_by_url' => ['add_rocket_purge_url_to_purge_url', 10, 2],
+			'cloudflare_purge_url_actions' => 'add_after_rocket_clean_to_actions',
 		];
 	}
 
@@ -136,6 +149,33 @@ class Cloudflare implements Subscriber_Interface {
 		$settings['helper'] = '';
 
 		return $settings;
+	}
+
+	public function disable_on_official() {
+
+	}
+
+	public function display_apo_cookies_notice() {
+
+	}
+
+	public function display_apo_cache_notice() {
+
+	}
+
+	public function add_clean_domain_on_purge($actions) {
+
+		return $actions;
+	}
+
+	public function add_rocket_purge_url_to_purge_url($urls, $post_id) {
+
+		return $urls;
+	}
+
+	public function add_after_rocket_clean_to_actions($actions) {
+
+		return $actions;
 	}
 
 	/**
