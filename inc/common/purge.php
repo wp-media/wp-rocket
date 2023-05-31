@@ -191,6 +191,16 @@ function rocket_clean_post( $post_id, $post = null ) {
 		return false;
 	}
 
+	/**
+	 * Filters specific post_type cache from being cleared.
+	 *
+	 * @param bool $allow_exclusion Allow cache clearing for specific post type if true; otherwise if false.
+	 * @param string $post_type Post Type.
+	 */
+	if ( apply_filters( 'rocket_exclude_post_type_cache_clearing', false, $post->post_type ) ) {
+		return false;
+	}
+
 	// No purge for specific conditions.
 	if ( 'auto-draft' === $post->post_status || 'draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
 		return false;
