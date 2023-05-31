@@ -69,6 +69,7 @@ class Elementor implements Subscriber_Interface {
 			'rocket_skip_admin_bar_cache_purge_option'    => [ 'skip_admin_bar_option', 1, 2 ],
 			'rocket_submitbox_options_post_types'         => 'remove_rocket_option',
 			'rocket_skip_admin_bar_clear_used_css_option' => [ 'skip_admin_bar_option', 1, 2 ],
+			'rocket_exclude_post_type_cache_clearing'     => [ 'exclude_post_type_cache_clearing', 10, 2 ],
 		];
 	}
 
@@ -204,5 +205,20 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		return $should_skip;
+	}
+
+	/**
+	 * Exclude elementor library post type from cache clearing.
+	 *
+	 * @param boolean $allow_exclusion Exclude cache of specific post type from being cleared if true; otherwise false.
+	 * @param string  $post_type Post Type.
+	 * @return boolean
+	 */
+	public function exclude_post_type_cache_clearing( bool $allow_exclusion, string $post_type ) : bool {
+		if ( 'elementor_library' === $post_type ) {
+			return true;
+		}
+
+		return $allow_exclusion;
 	}
 }
