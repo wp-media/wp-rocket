@@ -70,6 +70,7 @@ class Elementor implements Subscriber_Interface {
 			'rocket_submitbox_options_post_types'         => 'remove_rocket_option',
 			'rocket_skip_admin_bar_clear_used_css_option' => [ 'skip_admin_bar_option', 1, 2 ],
 			'rocket_exclude_post_type_cache_clearing'     => [ 'exclude_post_type_cache_clearing', 10, 2 ],
+			'elementor/editor/after_save'                 => 'clear_related_post_cache',
 		];
 	}
 
@@ -220,5 +221,35 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		return $allow_exclusion;
+	}
+
+	/**
+	 * Clear cache of related posts.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @return void
+	 */
+	public function clear_related_post_cache( int $post_id ) {
+		global $wpdb;
+
+		$template_id = '%' . $wpdb->esc_like( $post_id ) . '%';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$results = $wpdb->get_results(
+				$wpdb->prepare(
+				"SELECT post_id FROM `$wpdb->postmeta` WHERE `meta_key` = %s AND `meta_value` LIKE %s",
+				[ '_elementor_data', $template_id ]
+				)
+			);
+
+		if ( ! $results ) {
+			return;
+		}
+
+		foreach ( $results as $result ) {
+			if ( 'publish' === get_post_status( $result->post_id ) ) {
+				rocket_clean_post( $result->post_id );
+			}
+		}
 	}
 }
