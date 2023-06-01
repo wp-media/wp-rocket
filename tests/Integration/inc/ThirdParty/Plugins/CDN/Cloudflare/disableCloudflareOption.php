@@ -8,9 +8,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::disable_on_official
+ * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::disable_cloudflare_option
  */
-class Test_disableOnOfficial extends TestCase {
+class Test_disableCloudflareOption extends TestCase {
 
 	/**
 	 * @var Options_Data
