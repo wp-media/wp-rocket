@@ -47,7 +47,7 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
     {
 		Functions\expect('get_post')->with($expected['post_id'])->andReturn($config['post']);
 		$this->configure_apply_filter($config, $expected);
-        $this->assertSame($expected['result'], $this->cloudflare->add_rocket_purge_url_to_purge_url($config['purge_urls']), $config['post_id']);
+        $this->assertSame($expected['result'], $this->cloudflare->add_rocket_purge_url_to_purge_url($config['purge_urls'], $config['post_id']));
     }
 
 	protected function configure_apply_filter($config, $expected) {

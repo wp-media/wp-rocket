@@ -13,7 +13,7 @@ return [
     ],
 	'emptyEmailShouldReturnSame' => [
 		'config' => [
-			'enabled' => true,
+			'enabled' => false,
 			'plugin_active' => true,
 			'cloudflare_api_email' => '',
 			'cloudflare_api_key' => '1ef242',
@@ -24,7 +24,7 @@ return [
 	],
 	'emptyAPIKeyShouldReturnSame' => [
 		'config' => [
-			'enabled' => true,
+			'enabled' => false,
 			'plugin_active' => true,
 			'cloudflare_api_email' => 'email@test.test',
 			'cloudflare_api_key' => '',

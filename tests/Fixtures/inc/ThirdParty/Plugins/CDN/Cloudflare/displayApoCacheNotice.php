@@ -3,9 +3,11 @@ return [
 	'pluginDisabledShouldDisplayNothing' => [
 		'config' => [
 			'plugin_enabled' => false,
+			'is_plugin_activated' => false,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
 			'domain' => 'example.org',
+			'can' => true,
 			'settings' => [
 				'id' => 'automatic_platform_optimization',
 				'value' => false,
@@ -29,6 +31,8 @@ return [
 	'noEmailShouldDisplayNothing' => [
 		'config' => [
 			'plugin_enabled' => true,
+			'can' => true,
+			'is_plugin_activated' => false,
 			'email' => '',
 			'key' => 'azz12feee',
 			'domain' => 'example.org',
@@ -55,6 +59,8 @@ return [
 	'noKeyShouldDisplayNothing' => [
 		'config' => [
 			'plugin_enabled' => true,
+			'can' => true,
+			'is_plugin_activated' => false,
 			'email' => 'example@email.mail',
 			'key' => '',
 			'domain' => 'example.org',
@@ -81,6 +87,8 @@ return [
 	'noDomainShouldDisplayNothing' => [
 		'config' => [
 			'plugin_enabled' => true,
+			'can' => true,
+			'is_plugin_activated' => false,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
 			'domain' => '',
@@ -104,8 +112,38 @@ return [
 			]
 		]
 	],
+	'noRightShouldDisplayNothing' => [
+		'config' => [
+			'can' => false,
+			'plugin_enabled' => true,
+			'is_plugin_activated' => true,
+			'email' => 'example@email.mail',
+			'key' => 'azz12feee',
+			'domain' => 'example.org',
+			'settings' => [
+				'id' => 'automatic_platform_optimization',
+				'value' => true,
+			],
+			'screen' => (object) [
+				'id' => 'settings_page_wprocket'
+			],
+			'cloudflare_mobile_cache' => [
+				'id' => 'automatic_platform_optimization_cache_by_device_type',
+				'value' => false
+			],
+			'mobile_cache' => false,
+			'should_display' => false,
+		],
+		'expected' => [
+			'notice' => [
+				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+			]
+		]
+	],
 	'noAPOShouldDisplayNothing' => [
 		'config' => [
+			'can' => true,
+			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
@@ -132,6 +170,8 @@ return [
 	],
 	'noScreenShouldDisplayNothing' => [
 		'config' => [
+			'can' => true,
+			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
@@ -158,6 +198,8 @@ return [
 	],
 	'mobileCacheMatchShouldDisplayNothing' => [
 		'config' => [
+			'can' => true,
+			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
@@ -184,6 +226,8 @@ return [
 	],
 	'mobileCacheMismatchMobileEnabledShouldDisplayNotice' => [
 		'config' => [
+			'can' => true,
+			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
@@ -210,6 +254,8 @@ return [
 	],
 	'mobileCacheMismatchMobileDisabledShouldDisplayNotice' => [
 		'config' => [
+			'can' => true,
+			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
 			'email' => 'example@email.mail',
 			'key' => 'azz12feee',
