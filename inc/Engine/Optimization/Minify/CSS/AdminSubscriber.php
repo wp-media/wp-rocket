@@ -136,7 +136,6 @@ class AdminSubscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.15', '>=' ) ) {
 			return;
 		}
-		rocket_clean_minify();
 		rocket_clean_domain();
 	}
 }
