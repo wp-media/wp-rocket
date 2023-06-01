@@ -207,6 +207,11 @@ class PreloadUrl {
 		$rows = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $row ) {
 
+			if ( $this->is_private( $row->url ) ) {
+				$this->query->delete_by_url( $row->url );
+				continue;
+			}
+
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
 				$this->query->delete_by_url( $row->url );
 				continue;
