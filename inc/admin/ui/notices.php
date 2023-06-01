@@ -756,6 +756,12 @@ function rocket_notice_html( $args ) {
 			];
 			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
 			break;
+		case 'enable_separate_mobile_cache':
+			$params         = [
+				'action' => 'rocket_enable_separate_mobile_cache',
+			];
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Turn on Separate cache for mobile', 'rocket' ) . '</a>';
+			break;
 		case 'force_deactivation':
 			/**
 			 * Allow a "force deactivation" link to be printed, use at your own risks

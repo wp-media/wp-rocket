@@ -645,6 +645,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on',
 				],
 			],
+			'cloudflare_apo'             => [
+				'en' => [
+					'id'  => '602593e90a2dae5b58faee1e',
+					'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'sucuri_credentials'         => [
 				'en' => [
 					'id'  => '5bce07be2c7d3a04dd5bf94d',
