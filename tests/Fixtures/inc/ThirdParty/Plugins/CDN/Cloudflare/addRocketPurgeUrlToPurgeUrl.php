@@ -28,7 +28,9 @@ return [
 		],
 	    'expected' => [
 		    'post_id' => 145,
-		    'result' => [],
+		    'result' => [
+				'http://example.org/test'
+			],
 		    'purge_urls' => [],
 		    'post' => $post,
 	    ]

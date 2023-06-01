@@ -3,13 +3,13 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
 
 
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
 /**
@@ -21,6 +21,11 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
      * @var Options_Data
      */
     protected $options;
+
+	/**
+	 * @var Beacon
+	 */
+	protected $beacon;
 
     /**
      * @var Options
@@ -35,9 +40,10 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
     public function set_up() {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
-        $this->option_api = Mockery::mock(Options::class);
+		$this->option_api = Mockery::mock(Options::class);
+		$this->beacon = Mockery::mock(Beacon::class);
 
-        $this->cloudflare = new Cloudflare($this->options, $this->option_api);
+        $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon);
     }
 
     /**
@@ -55,6 +61,6 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
 			return;
 		}
 
-		Filters\expectApplied('rocket_post_purge_urls')->with($expected['purge_urls'], $expected['post'])->andReturn($config['filtered_purge_urls']);
+		Functions\expect('rocket_get_purge_urls')->with($expected['purge_urls'], $expected['post'])->andReturn($config['filtered_purge_urls']);
 	}
 }

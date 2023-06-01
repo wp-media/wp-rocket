@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
@@ -21,6 +22,11 @@ class Test_disableCloudflareOption extends TestCase {
      */
     protected $options;
 
+	/**
+	 * @var Beacon
+	 */
+	protected $beacon;
+
     /**
      * @var Options
      */
@@ -34,8 +40,10 @@ class Test_disableCloudflareOption extends TestCase {
     public function set_up() {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
+		$this->option_api = Mockery::mock(Options::class);
+		$this->beacon = Mockery::mock(Beacon::class);
 
-        $this->cloudflare = new Cloudflare($this->options);
+        $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon);
     }
 
     /**
@@ -50,6 +58,10 @@ class Test_disableCloudflareOption extends TestCase {
 			}
 			if('cloudflare_api_key' === $name) {
 				return $config['cloudflare_api_key'];
+			}
+
+			if('cloudflare_cached_domain_name' === $name) {
+				return $config['cloudflare_cached_domain_name'];
 			}
 
 			return null;
