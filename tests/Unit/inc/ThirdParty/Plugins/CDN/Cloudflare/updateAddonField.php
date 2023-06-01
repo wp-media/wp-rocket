@@ -42,7 +42,7 @@ class Test_updateAddonField extends TestCase {
         $this->options = Mockery::mock(Options_Data::class);
 		$this->option_api = Mockery::mock(Options::class);
 		$this->beacon = Mockery::mock(Beacon::class);
-		
+
         $this->cloudflare = new Cloudflare($this->options, $this->option_api, $this->beacon);
     }
 
@@ -60,6 +60,10 @@ class Test_updateAddonField extends TestCase {
 
 			if('cloudflare_api_key' === $name) {
 				return $config['cloudflare_api_key'];
+			}
+
+			if('cloudflare_cached_domain_name' === $name) {
+				return $config['cloudflare_cached_domain_name'];
 			}
 
 			if('cloudflare_cached_domain_name' === $name) {

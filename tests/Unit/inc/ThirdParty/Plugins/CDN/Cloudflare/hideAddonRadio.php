@@ -60,6 +60,10 @@ class Test_hideAddonRadio extends TestCase {
 			    return $config['cloudflare_api_key'];
 			}
 
+			if('cloudflare_cached_domain_name' === $name) {
+				return $config['cloudflare_cached_domain_name'];
+			}
+
 			return null;
 		});
 		$this->assertSame($expected, $this->cloudflare->hide_addon_radio($config['enable']));
