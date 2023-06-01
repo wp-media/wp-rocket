@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -19,21 +18,13 @@ class Cloudflare implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * @var Options
-	 */
-	private $option_api;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
-	 * @param Options $option_api
 	 */
-	public function __construct( Options_Data $options, Options $option_api ) {
-		$this->options    = $options;
-		$this->option_api = $option_api;
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
 	}
-
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -45,7 +36,7 @@ class Cloudflare implements Subscriber_Interface {
 			'admin_notices' => 'display_server_pushing_mode_notice',
 			'rocket_display_input_do_cloudflare' => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings' => 'update_addon_field',
-			'enable_cloudflare/cloudflare.php' => 'disable_on_official',
+			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'cloudflare_purge_everything_actions' => 'add_clean_domain_on_purge',
 			'cloudflare_purge_by_url' => ['add_rocket_purge_url_to_purge_url', 10, 2],
 			'cloudflare_purge_url_actions' => 'add_after_rocket_clean_to_actions',
@@ -151,29 +142,88 @@ class Cloudflare implements Subscriber_Interface {
 		return $settings;
 	}
 
-	public function disable_on_official() {
-
+	/**
+	 * Disable WP Rocket CF option when Cloudflare plugin is enabled
+	 *
+	 * @return bool
+	 */
+	public function disable_cloudflare_option() {
+		return ! $this->is_plugin_active();
 	}
 
+	/**
+	 * Display a notice when APO is enabled and mandatory/dynamic cookies exists
+	 *
+	 * @return void
+	 */
 	public function display_apo_cookies_notice() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
 
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return;
+		}
+
+		if (
+			empty( get_rocket_cache_mandatory_cookies() )
+			&&
+			empty( get_rocket_cache_dynamic_cookies() )
+		) {
+			return;
+		}
+
+		if ( ! $this->is_apo_enabled() ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status' => 'warning',
+				'dismissible' => '',
+				'message' => __( 'You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>' .
+				__( 'You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. More info (link to docs)', 'rocket' ),
+			]
+		);
 	}
 
 	public function display_apo_cache_notice() {
 
 	}
 
-	public function add_clean_domain_on_purge($actions) {
+	/**
+	 * Adds clear WP Rocket cache on CF purge
+	 *
+	 * @param array $actions Actions to clear Cloudflare.
+	 *
+	 * @return array
+	 */
+	public function add_clean_domain_on_purge( $actions ) {
+		$actions[] = 'after_rocket_clean_domain';
 
 		return $actions;
 	}
 
-	public function add_rocket_purge_url_to_purge_url($urls, $post_id) {
+	public function add_rocket_purge_url_to_purge_url( $urls, $post_id ) {
 
 		return $urls;
 	}
 
-	public function add_after_rocket_clean_to_actions($actions) {
+	/**
+	 * Adds clear WP Rocket partial cache on CF partial purge
+	 *
+	 * @param array $actions Actions to clear CF URL cache
+	 *
+	 * @return array
+	 */
+	public function add_after_rocket_clean_to_actions( $actions ) {
+		$actions[] = 'after_rocket_clean_post';
 
 		return $actions;
 	}
@@ -197,5 +247,20 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if CF APO is enabled
+	 *
+	 * @return bool
+	 */
+	private function is_apo_enabled(): bool {
+		$headers = wp_get_http_headers( home_url() );
+
+		return (
+			isset( $headers['cf-edge-cache'] )
+			&&
+			'cache, platform=wordpress' === $headers['cf-edge-cache']
+		);
 	}
 }
