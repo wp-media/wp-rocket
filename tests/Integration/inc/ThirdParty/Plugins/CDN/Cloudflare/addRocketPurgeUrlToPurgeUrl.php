@@ -11,7 +11,17 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
 
 	protected $config;
 
-	public function set_up()
+	private static $post_id;
+
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$post_id = $factory->post->create();
+		// Set global for WP<5.2 where get_the_content() doesn't take the $post parameter.
+		$GLOBALS['post'] = get_post( self::$post_id );
+		setup_postdata( self::$post_id );
+	}
+
+
+		public function set_up()
 	{
 		parent::set_up();
 		add_filter('rocket_post_purge_urls', [$this, 'rocket_post_purge_urls']);
@@ -30,7 +40,7 @@ class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
     {
 
 		if($config['post']) {
-			$post_id = wp_insert_post([]);
+			$post_id = self::$post_id;
 		} else {
 			$post_id = -1;
 		}
