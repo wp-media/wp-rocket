@@ -14,6 +14,6 @@ class Test_addAfterRocketCleanToActions extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-        $this->assertSame($expected, apply_filters('cloudflare_purge_url_actions', $config['enable']));
+        $this->assertSame($expected, apply_filters('cloudflare_purge_url_actions', $config));
     }
 }

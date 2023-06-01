@@ -2,6 +2,9 @@
 return [
     'pluginDisabledShouldReturnSame' => [
         'config' => [
+			  'active_plugins' => [
+				 'cloudflare/cloudflare.php'
+			  ],
               'settings' => [],
               'plugin_active' => false,
               'cloudflare_api_email' => 'email@test.test',
@@ -14,7 +17,10 @@ return [
     ],
     'emptyEmailShouldReturnSame' => [
 	    'config' => [
-		    'settings' => [],
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
+			'settings' => [],
 		    'plugin_active' => true,
 		    'cloudflare_api_email' => '',
 		    'cloudflare_api_key' => '1ef242',
@@ -26,6 +32,9 @@ return [
     ],
     'emptyAPIKeyShouldReturnSame' => [
 	    'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 		    'settings' => [],
 		    'plugin_active' => true,
 		    'cloudflare_api_email' => 'email@test.test',
@@ -39,6 +48,9 @@ return [
 
 	'emptyDomainShouldReturnSame' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'settings' => [],
 			'plugin_active' => false,
 			'cloudflare_api_email' => 'email@test.test',
@@ -52,6 +64,9 @@ return [
 
     'shouldAddNotice' => [
 	    'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 		    'settings' => [],
 		    'plugin_active' => true,
 		    'cloudflare_api_email' => 'email@test.test',
