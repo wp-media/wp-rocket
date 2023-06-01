@@ -33,9 +33,8 @@ class Test_disableCloudflareOption extends TestCase {
     public function set_up() {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
-        $this->option_api = Mockery::mock(Options::class);
 
-        $this->cloudflare = new Cloudflare($this->options, $this->option_api);
+        $this->cloudflare = new Cloudflare($this->options);
     }
 
     /**
@@ -43,10 +42,17 @@ class Test_disableCloudflareOption extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-	    $this->options->expects()->set('do_cloudflare', false);
-	    $this->options->expects()->get_options()->andReturn($config['settings']);
-	    $this->option_api->expects()->set('settings', $expected['settings']);
-        $this->cloudflare->disable_on_official();
+		Functions\expect('is_plugin_active')->with('cloudflare/cloudflare.php')->andReturn($config['plugin_active']);
+		Functions\when('get_option')->alias(function ($name) use ($config) {
+			if('cloudflare_api_email' === $name) {
+				return $config['cloudflare_api_email'];
+			}
+			if('cloudflare_api_key' === $name) {
+				return $config['cloudflare_api_key'];
+			}
 
+			return null;
+		});
+		$this->assertSame($expected['enabled'], $this->cloudflare->disable_cloudflare_option($config['enabled']));
     }
 }

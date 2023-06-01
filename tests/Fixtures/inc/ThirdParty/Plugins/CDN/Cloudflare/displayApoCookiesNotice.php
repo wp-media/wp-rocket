@@ -54,7 +54,7 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<p>You are using “Dynamic Cookies Cache”. Cloudflare APO is not yet compatible with that feature.</p><p>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a></p>',
+				'message' => '<p>You are using “Dynamic Cookies Cache”. Cloudflare APO is not yet compatible with that feature.</p><p>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket">More info</a></p>',
 			]
 		]
 	],

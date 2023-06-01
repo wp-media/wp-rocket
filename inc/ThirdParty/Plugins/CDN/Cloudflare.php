@@ -147,8 +147,12 @@ class Cloudflare implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	public function disable_cloudflare_option() {
-		return ! $this->is_plugin_active();
+	public function disable_cloudflare_option($value) {
+		if( ! $this->is_plugin_active() ) {
+			return $value;
+		}
+
+		return false;
 	}
 
 	/**

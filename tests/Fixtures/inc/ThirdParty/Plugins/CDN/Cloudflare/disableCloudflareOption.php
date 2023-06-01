@@ -1,16 +1,47 @@
 <?php
 return [
-    'shouldDisable' => [
+    'pluginDisabledShouldReturnSame' => [
         'config' => [
-			'settings' => [
-				'do_cloudflare' => false,
-			]
+			'enabled' => false,
+			'plugin_active' => false,
+			'cloudflare_api_email' => 'email@test.test',
+			'cloudflare_api_key' => '1ef242',
         ],
 	    'expected' => [
-		    'settings' => [
-			    'do_cloudflare' => false,
-		    ]
+			'enabled' => false,
 	    ]
     ],
-
+	'emptyEmailShouldReturnSame' => [
+		'config' => [
+			'enabled' => true,
+			'plugin_active' => true,
+			'cloudflare_api_email' => '',
+			'cloudflare_api_key' => '1ef242',
+		],
+		'expected' => [
+			'enabled' => false,
+		]
+	],
+	'emptyAPIKeyShouldReturnSame' => [
+		'config' => [
+			'enabled' => true,
+			'plugin_active' => true,
+			'cloudflare_api_email' => 'email@test.test',
+			'cloudflare_api_key' => '',
+		],
+		'expected' => [
+			'enabled' => false,
+		]
+	],
+	'shouldReturnFalse' => [
+		'config' => [
+			'enabled' => true,
+			'plugin_active' => true,
+			'cloudflare_api_email' => 'email@test.test',
+			'cloudflare_api_key' => '1ef242',
+		],
+		'expected' => [
+			'enabled' => false,
+		]
+	]
 ];
