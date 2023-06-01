@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options;
 
 
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::disable_cloudflare_option

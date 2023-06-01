@@ -46,8 +46,7 @@ class Test_displayApoCookiesNotice extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected )
 	{
 		Functions\when('home_url')->justReturn($config['home_url']);
-		Functions\expect('wp_remote_retrieve_headers')->with($expected['response'])->andReturn($config['headers']);
-		Functions\expect('wp_remote_request')->with($expected['home_url'], $expected['configs'])->andReturn($config['response']);
+		Functions\expect('wp_get_http_headers')->with($expected['home_url'])->andReturn($config['headers']);
 		$this->configure_apply_mandatory_cookies($config, $expected);
 		$this->configure_apply_dynamic_cookies($config, $expected);
 		$this->configure_notice($config, $expected);
@@ -71,7 +70,9 @@ class Test_displayApoCookiesNotice extends TestCase {
 	}
 
 	protected function configure_screen($config, $expected) {
-
+		if(! $config['has_apo'] || count($config['']) === 0 || $this->count($config['']) === 0) {
+			return;
+		}
 	}
 
 	protected function configure_notice($config, $expected) {
