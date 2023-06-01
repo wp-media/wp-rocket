@@ -23,7 +23,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser = Mockery::mock( SitemapParser::class );
 		$this->queue = Mockery::mock( Queue::class );
 		$this->query = $this->createMock( Cache::class );
-		$this->controller = Mockery::mock( FetchSitemap::class . '[is_excluded_by_filter]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock( FetchSitemap::class . '[is_excluded_by_filter,is_private]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -72,11 +72,20 @@ class Test_ParseSitemap extends TestCase {
 			->andReturn( $config['children'] );
 
 		foreach ( $config['links'] as $index => $link ) {
-			$this->controller->expects()->is_excluded_by_filter( $link )
+			$this->controller->expects()->is_private( $link )
 				->once()
-				->andReturn( $config['is_excluded'] );
+				->andReturn( $config['is_private'] );
 
-			if ( ! $config['is_excluded'] ) {
+			if ( $config['is_private'] ) {
+				$this->controller->shouldReceive('is_excluded_by_filter')->never();
+			}
+			else{
+				$this->controller->expects()->is_excluded_by_filter( $link )
+					->once()
+					->andReturn( $config['is_excluded'] );
+			}
+			
+			if ( ! $config['is_excluded'] && ! $config['is_private'] ) {
 				$this->query->expects( self::any() )->method( 'create_or_nothing' )
 					->withConsecutive( ...$config['jobs'] )
 					->willReturn( true );
