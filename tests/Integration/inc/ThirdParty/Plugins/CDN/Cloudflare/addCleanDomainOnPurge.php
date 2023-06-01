@@ -14,6 +14,6 @@ class Test_addCleanDomainOnPurge extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-        $this->assertSame($expected, apply_filters('cloudflare_purge_everything_actions'));
+        $this->assertSame($expected, apply_filters('cloudflare_purge_everything_actions', $config['']));
     }
 }

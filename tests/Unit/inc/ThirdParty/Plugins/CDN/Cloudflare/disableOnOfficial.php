@@ -43,7 +43,7 @@ class Test_disableOnOfficial extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-	    $this->options->expects()->set('do_cloudflare', true);
+	    $this->options->expects()->set('do_cloudflare', false);
 	    $this->options->expects()->get_options()->andReturn($config['settings']);
 	    $this->option_api->expects()->set('settings', $expected['settings']);
         $this->cloudflare->disable_on_official();
