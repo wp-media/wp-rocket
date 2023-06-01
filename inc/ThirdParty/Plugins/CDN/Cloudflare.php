@@ -52,12 +52,16 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                                  => 'display_server_pushing_mode_notice',
+			'admin_notices'                                  => [
+				[ 'display_server_pushing_mode_notice' ],
+				['display_apo_cookies_notice'],
+				['display_apo_cache_notice'],
+			],
 			'rocket_display_input_do_cloudflare'             => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings'               => 'update_addon_field',
 			'pre_get_rocket_option_do_cloudflare'            => 'disable_cloudflare_option',
 			'cloudflare_purge_everything_actions'            => 'add_clean_domain_on_purge',
-			'cloudflare_purge_by_url'                        => ['add_rocket_purge_url_to_purge_url', 10, 2],
+			'cloudflare_purge_by_url'                        => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
 			'cloudflare_purge_url_actions'                   => 'add_after_rocket_clean_to_actions',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 		];
@@ -133,7 +137,7 @@ class Cloudflare implements Subscriber_Interface {
 	 *
 	 * @param bool $enable True to display, False otherwise.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function hide_addon_radio( $enable ) {
 		if ( ! $this->is_plugin_active() ) {
@@ -165,9 +169,11 @@ class Cloudflare implements Subscriber_Interface {
 	/**
 	 * Disable WP Rocket CF option when Cloudflare plugin is enabled
 	 *
+	 * @param mixed $value Pre option value.
+	 *
 	 * @return bool
 	 */
-	public function disable_cloudflare_option($value) {
+	public function disable_cloudflare_option( $value ) {
 		if( ! $this->is_plugin_active() ) {
 			return $value;
 		}
@@ -261,9 +267,9 @@ class Cloudflare implements Subscriber_Interface {
 		$doc = $this->beacon->get_suggest( 'cloudflare_apo' );
 
 		if (
-			(int) $mobile_cache === 1
+			1 === (int) $mobile_cache
 			&&
-			(int) $cf_device_type['value'] === 0
+			0 === (int) $cf_device_type['value']
 		) {
 			rocket_notice_html(
 				[
@@ -278,9 +284,9 @@ class Cloudflare implements Subscriber_Interface {
 				]
 			);
 		} elseif (
-			(int) $mobile_cache === 0
+			0 === (int) $mobile_cache
 			&&
-			(int) $cf_device_type['value'] === 1
+			1 === (int) $cf_device_type['value']
 		) {
 			rocket_notice_html(
 				[
@@ -324,7 +330,7 @@ class Cloudflare implements Subscriber_Interface {
 	/**
 	 * Adds clear WP Rocket partial cache on CF partial purge
 	 *
-	 * @param array $actions Actions to clear CF URL cache
+	 * @param array $actions Actions to clear CF URL cache.
 	 *
 	 * @return array
 	 */
@@ -384,7 +390,7 @@ class Cloudflare implements Subscriber_Interface {
 		return (
 			isset( $headers['cf-edge-cache'] )
 			&&
-			'cache, platform=wordpress' === $headers['cf-edge-cache']
+			'cache, platform=wordpress' === $headers['cf-edge-cache'] // phpcs:ignore WordPress.WP.CapitalPDangit.Misspelled
 		);
 	}
 }
