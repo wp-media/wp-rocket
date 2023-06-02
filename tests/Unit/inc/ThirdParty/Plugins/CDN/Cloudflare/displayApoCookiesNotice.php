@@ -53,47 +53,52 @@ class Test_displayApoCookiesNotice extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected )
 	{
+		Functions\when('esc_url')->returnArg();
+		Functions\when('esc_attr')->returnArg();
+		$this->stubTranslationFunctions();
 		Functions\when('home_url')->justReturn($config['home_url']);
+		$this->configure_user_can($config, $expected);
+		$this->configure_screen($config, $expected);
 		$this->configure_apply_mandatory_cookies($config, $expected);
 		$this->configure_apply_dynamic_cookies($config, $expected);
+		$this->configure_apo($config,$expected);
 		$this->configure_notice($config, $expected);
 		$this->cloudflare->display_apo_cookies_notice();
 	}
 
 	protected function configure_user_can($config, $expected) {
-		if(! $config['has_apo']) {
-			return;
-		}
-
 		Functions\expect('current_user_can')->with('rocket_manage_options')->andReturn($config['can']);
 	}
 
+	protected function configure_screen($config, $expected) {
+		if(! $config['can']) {
+			return;
+		}
+		Functions\expect('get_current_screen')->andReturn($config['screen']);
+	}
+
 	protected function configure_apply_mandatory_cookies($config, $expected) {
-		if(! $config['has_apo'] || ! $config['can']) {
+		if(! $config['right_screen'] || ! $config['can']) {
 			return;
 		}
 
-		Filters\expectApplied('rocket_cache_mandatory_cookies')->with([])->andReturn($config['mandatory_cookies']);
+		Functions\expect('get_rocket_cache_mandatory_cookies')->with()->andReturn($config['mandatory_cookies']);
 	}
 
 	protected function configure_apo($config, $expected) {
-
+		if(! $config['right_screen'] || ! $config['can'] || (count($config['dynamic_cookies']) === 0 && count($config['mandatory_cookies']) === 0)) {
+			return;
+		}
 		Functions\expect('wp_get_http_headers')->with($expected['home_url'])->andReturn($config['headers']);
+		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
 	}
 
 	protected function configure_apply_dynamic_cookies($config, $expected) {
-		if(! $config['has_apo'] || ! $config['can']) {
+		if(! $config['right_screen'] || ! $config['can']) {
 			return;
 		}
 
-		Filters\expectApplied('rocket_cache_dynamic_cookies')->with([])->andReturn($config['dynamic_cookies']);
-	}
-
-	protected function configure_screen($config, $expected) {
-		if(! $config['has_apo'] || count($config['']) === 0 || count($config['']) === 0) {
-			return;
-		}
-		Functions\expect('get_current_screen')->andReturn($config['']);
+		Functions\expect('get_rocket_cache_dynamic_cookies')->with()->andReturn($config['dynamic_cookies']);
 	}
 
 	protected function configure_notice($config, $expected) {

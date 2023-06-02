@@ -223,7 +223,7 @@ class Cloudflare implements Subscriber_Interface {
 
 		$message .= sprintf(
 			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-			__( 'You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %1$sMore info%2$s (link to docs)', 'rocket' ),
+			__( 'You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %1$sMore info%2$s', 'rocket' ),
 			'<a href="' . esc_url( $doc['url'] ) . '" data-beacon-article="' . esc_attr( $doc['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 			'</a>'
 		);
@@ -267,7 +267,7 @@ class Cloudflare implements Subscriber_Interface {
 
 		$mobile_cache   = $this->options->get( 'do_caching_mobile_files', 0 );
 		$cf_device_type = get_option( 'automatic_platform_optimization_cache_by_device_type', [] );
-
+var_dump($cf_device_type);
 		if ( (int) $mobile_cache === (int) $cf_device_type['value'] ) {
 			return;
 		}

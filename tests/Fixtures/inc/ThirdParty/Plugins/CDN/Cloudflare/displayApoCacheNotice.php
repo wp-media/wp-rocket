@@ -2,16 +2,22 @@
 return [
 	'pluginDisabledShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+			],
 			'plugin_enabled' => false,
 			'is_plugin_activated' => false,
-			'email' => 'example@email.mail',
+			'has_apo' => true,
+			'cloudflare_api_email' => 'example@email.mail',
 			'key' => 'azz12feee',
 			'domain' => 'example.org',
 			'can' => true,
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => false,
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
+			'right_screen' => true,
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
@@ -30,15 +36,22 @@ return [
 	],
 	'noEmailShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'plugin_enabled' => true,
 			'can' => true,
+			'has_apo' => true,
+			'right_screen' => true,
 			'is_plugin_activated' => false,
-			'email' => '',
+			'cloudflare_api_email' => '',
 			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => false,
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -58,15 +71,22 @@ return [
 	],
 	'noKeyShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'plugin_enabled' => true,
+			'right_screen' => true,
 			'can' => true,
+			'has_apo' => true,
 			'is_plugin_activated' => false,
-			'email' => 'example@email.mail',
-			'key' => '',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => false,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => '',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -86,15 +106,22 @@ return [
 	],
 	'noDomainShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'plugin_enabled' => true,
 			'can' => true,
+			'has_apo' => true,
+			'right_screen' => true,
 			'is_plugin_activated' => false,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => '',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => false,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => '',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -114,15 +141,22 @@ return [
 	],
 	'noRightShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'can' => false,
 			'plugin_enabled' => true,
+			'right_screen' => true,
+			'has_apo' => true,
 			'is_plugin_activated' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => true,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -142,15 +176,19 @@ return [
 	],
 	'noAPOShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'can' => true,
 			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => false,
+			'has_apo' => false,
+			'right_screen' => true,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -170,15 +208,22 @@ return [
 	],
 	'noScreenShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'can' => true,
+			'right_screen' => false,
+			'has_apo' => true,
 			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => true,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'random'
@@ -198,15 +243,22 @@ return [
 	],
 	'mobileCacheMatchShouldDisplayNothing' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'can' => true,
+			'right_screen' => true,
 			'is_plugin_activated' => true,
+			'has_apo' => true,
 			'plugin_enabled' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => true,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -226,15 +278,22 @@ return [
 	],
 	'mobileCacheMismatchMobileEnabledShouldDisplayNotice' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
 			'can' => true,
+			'right_screen' => true,
 			'is_plugin_activated' => true,
+			'has_apo' => true,
 			'plugin_enabled' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => true,
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
 			],
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
@@ -244,7 +303,7 @@ return [
 				'value' => false
 			],
 			'mobile_cache' => true,
-			'should_display' => false,
+			'should_display' => true,
 		],
 		'expected' => [
 			'notice' => [
@@ -254,16 +313,23 @@ return [
 	],
 	'mobileCacheMismatchMobileDisabledShouldDisplayNotice' => [
 		'config' => [
+			'active_plugins' => [
+				'cloudflare/cloudflare.php'
+			],
+			'home_url' => 'http://example.org',
+			'headers' => [
+				'CF-Cache-Status' => 'HIT',
+				'cf-apo-via' => 'tcache',
+				'cf-edge-cache' => 'cache, platform=wordpress',
+			],
 			'can' => true,
+			'right_screen' => true,
+			'has_apo' => true,
 			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
-			'email' => 'example@email.mail',
-			'key' => 'azz12feee',
-			'domain' => 'example.org',
-			'settings' => [
-				'id' => 'automatic_platform_optimization',
-				'value' => true,
-			],
+			'cloudflare_api_email' => 'example@email.mail',
+			'cloudflare_api_key' => 'azz12feee',
+			'cloudflare_cached_domain_name' => 'example.org',
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
@@ -272,7 +338,7 @@ return [
 				'value' => true
 			],
 			'mobile_cache' => false,
-			'should_display' => false,
+			'should_display' => true,
 		],
 		'expected' => [
 			'notice' => [
