@@ -356,6 +356,7 @@ class Plugin {
 			'perfmatters',
 			'rapidload',
 			'translatepress',
+			'themify',
 			'wpgeotargeting',
 		];
 

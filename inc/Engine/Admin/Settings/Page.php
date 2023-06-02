@@ -594,7 +594,7 @@ class Page {
 			]
 		);
 
-		$invalid_license = get_transient( 'wp_rocket_no_licence' );
+		$invalid_license = get_option( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -940,8 +940,8 @@ class Page {
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
 					'label'             => __( 'One-click exclusions', 'rocket' ),
-					'description'       => __( 'When using this feature you may notice that it takes some time, or user interaction for specific elements, e.g. a menu, or a form that is located in the viewport, to appear.', 'rocket' ),
-					'sub_description'   => __( 'If you are using any of the following plugins/themes/services you can prevent that, by selecting them below.', 'rocket' ),
+					'description'       => __( 'When using the Delay JavaScript Execution, you might experience delay loading elements located in the viewport that need to appear immediately - e.g. slider, header, menu.', 'rocket' ),
+					'sub_description'   => __( 'If you need instant visibility, click below on files that should NOT be delayed. This selection will help users interact with the elements straight away.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],

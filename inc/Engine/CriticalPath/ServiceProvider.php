@@ -83,6 +83,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $critical_css )
 			->addArgument( $processor_service )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'user' ) )
 			->addArgument( $filesystem )
 			->addTag( 'common_subscriber' );
 
