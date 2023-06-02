@@ -57,8 +57,24 @@ class Test_displayApoCookiesNotice extends TestCase {
 		Functions\when('esc_attr')->returnArg();
 		$this->stubTranslationFunctions();
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_option')->alias(function ($name) use ($config) {
+			if('cloudflare_api_email' === $name) {
+				return $config['cloudflare_api_email'];
+			}
+			if('cloudflare_api_key' === $name) {
+				return $config['cloudflare_api_key'];
+			}
+
+			if('cloudflare_cached_domain_name' === $name) {
+				return $config['cloudflare_cached_domain_name'];
+			}
+
+			return null;
+		});
 		$this->configure_user_can($config, $expected);
 		$this->configure_screen($config, $expected);
+		$this->configure_plugin($config, $expected);
+		$this->configure_check_plugin($config, $expected);
 		$this->configure_apply_mandatory_cookies($config, $expected);
 		$this->configure_apply_dynamic_cookies($config, $expected);
 		$this->configure_apo($config,$expected);
@@ -77,12 +93,25 @@ class Test_displayApoCookiesNotice extends TestCase {
 		Functions\expect('get_current_screen')->andReturn($config['screen']);
 	}
 
+	protected function configure_check_plugin($config, $expected) {
+		if( ! $config['right_screen'] || ! $config['can']) {
+			return;
+		}
+		Functions\expect('is_plugin_active')->with('cloudflare/cloudflare.php')->andReturn($config['plugin_enabled']);
+	}
+
 	protected function configure_apply_mandatory_cookies($config, $expected) {
 		if(! $config['right_screen'] || ! $config['can']) {
 			return;
 		}
 
 		Functions\expect('get_rocket_cache_mandatory_cookies')->with()->andReturn($config['mandatory_cookies']);
+	}
+
+	protected function configure_plugin($config, $expected) {
+		if(! $config['right_screen'] || ! $config['can'] || (count($config['dynamic_cookies']) === 0 && count($config['mandatory_cookies']) === 0)) {
+			return;
+		}
 	}
 
 	protected function configure_apo($config, $expected) {

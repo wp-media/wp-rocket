@@ -52,17 +52,17 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                                  => [
+			'admin_notices'                       => [
 				[ 'display_server_pushing_mode_notice' ],
-				['display_apo_cookies_notice'],
-				['display_apo_cache_notice'],
+				[ 'display_apo_cookies_notice' ],
+				[ 'display_apo_cache_notice' ],
 			],
-			'rocket_display_input_do_cloudflare'             => 'hide_addon_radio',
-			'rocket_cloudflare_field_settings'               => 'update_addon_field',
-			'pre_get_rocket_option_do_cloudflare'            => 'disable_cloudflare_option',
-			'cloudflare_purge_everything_actions'            => 'add_clean_domain_on_purge',
-			'cloudflare_purge_by_url'                        => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
-			'cloudflare_purge_url_actions'                   => 'add_after_rocket_clean_to_actions',
+			'rocket_display_input_do_cloudflare'  => 'hide_addon_radio',
+			'rocket_cloudflare_field_settings'    => 'update_addon_field',
+			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
+			'cloudflare_purge_everything_actions' => 'add_clean_domain_on_purge',
+			'cloudflare_purge_by_url'             => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
+			'cloudflare_purge_url_actions'        => 'add_after_rocket_clean_to_actions',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 		];
 	}
@@ -154,9 +154,9 @@ class Cloudflare implements Subscriber_Interface {
 			return $settings;
 		}
 
-		$settings['title'] = __( 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.', 'rocket' );
+		$settings['title']       = __( 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.', 'rocket' );
 		$settings['description'] = __( 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.', 'rocket' );
-		$settings['helper'] = '';
+		$settings['helper']      = '';
 
 		return $settings;
 	}
@@ -169,7 +169,7 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function disable_cloudflare_option( $value ) {
-		if( ! $this->is_plugin_active() ) {
+		if ( ! $this->is_plugin_active() ) {
 			return $value;
 		}
 
@@ -225,9 +225,9 @@ class Cloudflare implements Subscriber_Interface {
 
 		rocket_notice_html(
 			[
-				'status' => 'warning',
+				'status'      => 'warning',
 				'dismissible' => '',
-				'message' => $message,
+				'message'     => $message,
 			]
 		);
 	}
@@ -251,7 +251,6 @@ class Cloudflare implements Subscriber_Interface {
 		) {
 			return;
 		}
-
 		if ( ! $this->is_plugin_active() ) {
 			return;
 		}
