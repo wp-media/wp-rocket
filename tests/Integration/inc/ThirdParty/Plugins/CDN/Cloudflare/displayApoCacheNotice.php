@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
+use function Crontrol\Schedule\add;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
@@ -13,6 +14,8 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
+
+	protected $config;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -27,12 +30,13 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 	public function set_up()
 	{
 		parent::set_up();
-		add_filter('pre_http_request', [$this, 'request'], 10, 2);
+		add_filter('pre_http_request', [$this, 'request'], 10, 3);
 		add_filter('pre_option_active_plugins', [$this, 'active_plugins']);
 		add_filter('pre_option_cloudflare_api_email', [$this, 'cloudflare_api_email']);
 		add_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		add_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
-
+		add_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
+		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 	}
 
 	public function tear_down()
@@ -42,6 +46,9 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		remove_filter('pre_option_cloudflare_api_email', [$this, 'cloudflare_api_email']);
 		remove_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		remove_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
+		remove_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
+		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
+
 		parent::tear_down();
 	}
 
@@ -50,9 +57,11 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected )
 	{
+		$this->config = $config;
+
 		set_current_screen( $config['screen']->id );
 
-		if ( $config['capability'] ) {
+		if ( $config['can'] ) {
 			$user_id = self::$admin_user_id;
 		}else{
 			$user_id = self::$contributer_user_id;
@@ -64,18 +73,18 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		$notices = ob_get_clean();
 		if($config['should_display']) {
 			$this->assertStringContainsString(
-				$this->format_the_html( $expected['notice']['message'] ),
+				$this->format_the_html( $expected['notice_content'] ),
 				$this->format_the_html( $notices )
 			);
 		} else {
 			$this->assertStringNotContainsString(
-				$this->format_the_html( $expected['notice']['message'] ),
+				$this->format_the_html( $expected['notice_content'] ),
 				$this->format_the_html( $notices )
 			);
 		}
 	}
 
-	public function request($args, $url) {
+	public function request($response, $args, $url) {
 		if('http://example.org' === $url) {
 			return $this->config['response_fixture'];
 		}
@@ -95,5 +104,13 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 
 	public function cloudflare_api_email() {
 		return $this->config['cloudflare_api_email'];
+	}
+
+	public function automatic_platform_optimization_cache_by_device_type() {
+		return $this->config['cloudflare_mobile_cache'];
+	}
+
+	public function do_caching_mobile_files() {
+		return $this->config['mobile_cache'];
 	}
 }

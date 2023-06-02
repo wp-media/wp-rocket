@@ -56,7 +56,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
     {
 		set_current_screen( $config['screen']->id );
 
-		if ( $config['capability'] ) {
+		if ( $config['can'] ) {
 			$user_id = self::$admin_user_id;
 		}else{
 			$user_id = self::$contributer_user_id;
