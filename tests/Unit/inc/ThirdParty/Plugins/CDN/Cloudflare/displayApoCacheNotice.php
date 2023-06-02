@@ -101,7 +101,7 @@ class Test_displayApoCacheNotice extends TestCase {
 			return;
 		}
 		Functions\expect('wp_get_http_headers')->with($config['home_url'])->andReturn($config['headers']);
-		if(! $config['mobile_cache'] == $config['cloudflare_mobile_cache']['value']) {
+		if(! $config['mobile_cache'] !== $config['cloudflare_mobile_cache']['value']) {
 			return;
 		}
 		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
