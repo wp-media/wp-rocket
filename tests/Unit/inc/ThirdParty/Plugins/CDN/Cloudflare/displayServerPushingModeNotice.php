@@ -53,7 +53,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
         Functions\stubs([
             'get_current_screen'   => $config['current_screen'],
             'current_user_can'    => $config['capability'],
-            'rocket_is_cloudflare' => true,
             'get_current_user_id' => 1,
             'get_user_meta' => $config['boxes'],
         ]);

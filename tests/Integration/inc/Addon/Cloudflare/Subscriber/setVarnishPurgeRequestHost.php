@@ -1,66 +1,47 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
+
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WPMedia\Cloudflare\Subscriber::set_varnish_purge_request_host
- * @group  DoCloudflare
- * @group  Addons
+ * @covers WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_purge_request_host
+ *
+ * @group Cloudflare
  */
-class Test_SetVarnishPurgeRequestHost extends TestCase {
+class TestSetVarnishPurgeRequestHost extends TestCase {
+	private $option;
+	private $filter;
 
-	public function testShouldReturnDefaultWhenCloudflareDisabled() {
-		$this->setOptions( [ 'do_cloudflare' => 0 ] );
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option'] );
+		remove_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter'] );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnExpected( $config, $expected ) {
+		$this->option = $config['option'];
+		$this->filter = $config['filter'];
+
+		add_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option'] );
+		add_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter'] );
+
 
 		$this->assertSame(
-			'example.org',
-			apply_filters( 'rocket_varnish_purge_request_host', 'example.org' )
+			$expected,
+			apply_filters( 'rocket_varnish_purge_request_host', $config['value'] )
 		);
 	}
 
-	public function testShouldReturnDefaultWhenVarnishDisabled() {
-		$this->setOptions(
-			[
-				'do_cloudflare'      => 1,
-				'varnish_auto_purge' => 0,
-			]
-		);
-
-		$this->assertSame(
-			'example.org',
-			apply_filters( 'rocket_varnish_purge_request_host', 'example.org' )
-		);
+	public function set_option() {
+		return $this->option;
 	}
 
-	public function testShouldReturnCurrentHostWhenVarnishEnabled() {
-		$this->setOptions(
-			[
-				'do_cloudflare'      => 1,
-				'varnish_auto_purge' => 1,
-			]
-		);
-
-		$this->assertSame(
-			'example.org',
-			apply_filters( 'rocket_varnish_purge_request_host', 'test.local' )
-		);
-	}
-
-	public function testShouldReturnCurrentHostWhenFilterTrue() {
-		$this->setOptions(
-			[
-				'do_cloudflare'      => 1,
-				'varnish_auto_purge' => 0,
-			]
-		);
-
-		add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
-
-		$this->assertSame(
-			'example.org',
-			apply_filters( 'rocket_varnish_purge_request_host', 'test.local' )
-		);
-
-		remove_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+	public function set_filter() {
+		return $this->filter;
 	}
 }

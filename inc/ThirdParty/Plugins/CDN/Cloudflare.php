@@ -73,11 +73,6 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_server_pushing_mode_notice() {
-
-		if ( ! rocket_is_cloudflare() ) {
-			return;
-		}
-
 		if ( ! rocket_get_constant( 'CLOUDFLARE_PLUGIN_DIR' ) ) {
 			return;
 		}
