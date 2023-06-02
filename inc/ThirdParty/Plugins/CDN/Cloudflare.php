@@ -209,6 +209,10 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
 		if ( ! $this->is_apo_enabled() ) {
 			return;
 		}
@@ -250,6 +254,10 @@ class Cloudflare implements Subscriber_Interface {
 			&&
 			'settings_page_wprocket' !== $screen->id
 		) {
+			return;
+		}
+
+		if ( ! $this->is_plugin_active() ) {
 			return;
 		}
 
@@ -321,7 +329,12 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_rocket_purge_url_to_purge_url( $urls, $post_id ) {
-		$post        = get_post( $post_id );
+		$post = get_post( $post_id );
+
+		if ( empty( $post ) ) {
+			return $urls;
+		}
+
 		$rocket_urls = rocket_get_purge_urls( $post_id, $post );
 
 		return array_unique( array_merge( $urls, $rocket_urls ) );
