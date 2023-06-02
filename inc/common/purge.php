@@ -29,7 +29,7 @@ function rocket_widget_update_callback( $instance ) {
 }
 add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 
-if( ! function_exists('rocket_get_purge_urls')) {
+if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 	/**
 	 * Get post purge urls.
 	 *
