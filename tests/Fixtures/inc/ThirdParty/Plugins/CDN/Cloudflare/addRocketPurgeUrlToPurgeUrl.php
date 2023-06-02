@@ -1,5 +1,5 @@
 <?php
-$post = Mockery::mock(WP_Post::class);
+$post = new WP_Post((object)[]);
 return [
     'noPostShouldReturnSame' => [
         'config' => [
@@ -7,7 +7,7 @@ return [
 	        'purge_urls' => [],
 	        'post_id' => 145,
 			'filtered_purge_urls' => [
-				'http://example.org/test'
+				'http://example.org/author/'
 			],
         ],
         'expected' => [
@@ -23,13 +23,13 @@ return [
 		    'purge_urls' => [],
 		    'post_id' => 145,
 			'filtered_purge_urls' => [
-				'http://example.org/test'
+				'http://example.org/author/'
 			],
 		],
 	    'expected' => [
 		    'post_id' => 145,
 		    'result' => [
-				'http://example.org/test'
+				'http://example.org/author/'
 			],
 		    'purge_urls' => [],
 		    'post' => $post,
