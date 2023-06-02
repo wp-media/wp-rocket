@@ -35,7 +35,7 @@ $rocket_settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page
 			}
 
 			if ( $rocket_display ) :
-			?>
+				?>
 				<div class="wpr-radio wpr-radio--reverse">
 					<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?> <?php echo $data['input_attr'];//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
 					<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
