@@ -5,8 +5,9 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Kinsta;
 use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
+use WP_Rocket\Tests\Fixtures\WP_Post;
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Post;
+
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_post_cache
  *

@@ -1,5 +1,7 @@
 <?php
 
+use WP_Rocket\Tests\Fixtures\WP_Post;
+
 return [
 	'whenPostHookShouldChangeStatusUrls' => [
 		'config' => [

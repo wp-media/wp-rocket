@@ -1,5 +1,6 @@
 <?php
-$post = new WP_Post((object)[]);
+
+$post = defined('WP_CONTENT_DIR') ? new WP_Post((object) []) : Mockery::mock(WP_Post::class);
 return [
     'noPostShouldReturnSame' => [
         'config' => [
