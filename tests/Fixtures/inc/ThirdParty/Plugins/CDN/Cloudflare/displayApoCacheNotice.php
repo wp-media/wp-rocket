@@ -27,10 +27,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -62,10 +69,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -97,10 +111,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -132,10 +153,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -167,10 +195,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -199,10 +234,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -234,10 +276,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -269,10 +318,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => false,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	],
@@ -304,11 +360,16 @@ return [
 			],
 			'mobile_cache' => true,
 			'should_display' => true,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You are using “Separate cache files for mobile devices”. You need to activate “Cache by Device Type” on Cloudflare APO to serve the right version of the cache: (add the path to activate “Cache by Device Type” on Cloudflare plugin)</p><a href="https://docs.wp-rocket.me/article/1313-create-different-cache-files-with-dynamic-and-mandatory-cookies">More info</a>'
-			]
+				'status' => 'warning',
+				'dismissible' => '',
+				'message' => 'You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>'			]
 		]
 	],
 	'mobileCacheMismatchMobileDisabledShouldDisplayNotice' => [
@@ -339,10 +400,17 @@ return [
 			],
 			'mobile_cache' => false,
 			'should_display' => true,
+			'beacon_response' => [
+				'id'  => '602593e90a2dae5b58faee1e',
+				'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+			]
 		],
 		'expected' => [
 			'notice' => [
-				'message' => '<p>You have “Cache by Device Type” enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.</p>'
+				'status' => 'warning',
+				'dismiss_button' => true,
+				'action' => 'enable_separate_mobile_cache',
+				'message' => 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.'
 			]
 		]
 	]

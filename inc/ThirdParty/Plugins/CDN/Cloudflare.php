@@ -267,7 +267,6 @@ class Cloudflare implements Subscriber_Interface {
 
 		$mobile_cache   = $this->options->get( 'do_caching_mobile_files', 0 );
 		$cf_device_type = get_option( 'automatic_platform_optimization_cache_by_device_type', [] );
-var_dump($cf_device_type);
 		if ( (int) $mobile_cache === (int) $cf_device_type['value'] ) {
 			return;
 		}
