@@ -145,9 +145,8 @@ class Settings {
 	public static function get_delay_js_default_exclusions(): array {
 
 		$exclusions = [
-			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?$',
 			'js-(before|after)',
-			'/jquery-migrate(.min)?.js',
 		];
 
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
