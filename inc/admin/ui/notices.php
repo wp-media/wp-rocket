@@ -736,13 +736,14 @@ add_action( 'admin_notices', 'rocket_clear_cache_notice' );
  */
 function rocket_notice_html( $args ) {
 	$defaults = [
-		'status'           => 'success',
-		'dismissible'      => 'is-dismissible',
-		'message'          => '',
-		'action'           => '',
-		'dismiss_button'   => false,
-		'readonly_content' => '',
-		'id'               => '',
+		'status'                 => 'success',
+		'dismissible'            => 'is-dismissible',
+		'message'                => '',
+		'action'                 => '',
+		'dismiss_button'         => false,
+		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
+		'readonly_content'       => '',
+		'id'                     => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -753,6 +754,12 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
+			break;
+		case 'switch_to_rucss':
+			$params         = [
+				'action' => 'switch_to_rucss',
+			];
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
 			break;
 		case 'force_deactivation':
 			/**
@@ -799,7 +806,7 @@ function rocket_notice_html( $args ) {
 		<p>
 			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss <?php echo $args['dismiss_button_class'] ?? ''; ?>" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></a>
+			<a class="rocket-dismiss <?php echo $args['dismiss_button_class'] ?? ''; ?>" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php echo esc_html( $args['dismiss_button_message'] ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>
