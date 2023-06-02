@@ -194,7 +194,17 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+		$connection = $this->cloudflare->check_connection();
+
+		if ( is_wp_error( $connection ) ) {
+			$cf_purge_result = [
+				'result'  => 'error',
+				// translators: %s = CloudFare API return message.
+				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $connection->get_error_message() ),
+			];
+
+			set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
+
 			return;
 		}
 
