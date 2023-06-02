@@ -3,9 +3,10 @@ return [
     'pluginDisabledShouldReturnSame' => [
         'config' => [
 			  'active_plugins' => [
-				 'cloudflare/cloudflare.php'
 			  ],
-              'settings' => [],
+              'settings' => [
+
+			  ],
               'plugin_active' => false,
               'cloudflare_api_email' => 'email@test.test',
               'cloudflare_api_key' => '1ef242',
