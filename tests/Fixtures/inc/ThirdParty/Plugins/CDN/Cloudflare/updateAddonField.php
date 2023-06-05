@@ -75,9 +75,11 @@ return [
 			'cloudflare_cached_domain_name' => 'domain',
 		],
 	    'expected' => [
-			'title' => 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.',
-			'description' => 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.',
-		    'helper' => ''
+			'do_cloudflare' => [
+				'title' => 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.',
+				'description' => 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.',
+		    	'helper' => ''
+			]
 	    ]
     ],
 
