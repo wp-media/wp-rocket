@@ -53,7 +53,6 @@
 		"mikey179/vfsstream": "1.6.11",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^2.8",
-		"mockery/mockery": "1.5.1",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/phpstan": "^0.12",
 		"phpunit/phpunit": "^7.5 || ^8 || ^9",
