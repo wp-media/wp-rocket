@@ -665,15 +665,13 @@ class UsedCSS {
 				return;
 			}
 
-			// on timeout errors with code 408 create new job.
-			switch ( $job_details['code'] ) {
-				case 408:
+			// on errors start with code 40 create new job.
+			if ( strpos( (string) $job_details['code'], '40' ) === 0 ) {
 					$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-					if ( false !== $add_to_queue_response ) {
-						$new_job_id = $add_to_queue_response['contents']['jobId'];
-						$this->used_css_query->update_job_id( $id, $new_job_id );
-					}
-					break;
+				if ( false !== $add_to_queue_response ) {
+					$new_job_id = $add_to_queue_response['contents']['jobId'];
+					$this->used_css_query->update_job_id( $id, $new_job_id );
+				}
 			}
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
