@@ -270,6 +270,8 @@ class Cloudflare implements Subscriber_Interface {
 		if (
 			1 === (int) $mobile_cache
 			&&
+			key_exists( 'value', $cf_device_type )
+			&&
 			0 === (int) $cf_device_type['value']
 		) {
 			rocket_notice_html(
@@ -286,6 +288,8 @@ class Cloudflare implements Subscriber_Interface {
 			);
 		} elseif (
 			0 === (int) $mobile_cache
+			&&
+			key_exists( 'value', $cf_device_type )
 			&&
 			1 === (int) $cf_device_type['value']
 		) {
