@@ -261,11 +261,11 @@ class Cloudflare implements Subscriber_Interface {
 
 		$cf_device_type = get_option( 'automatic_platform_optimization_cache_by_device_type', [] );
 
-		if(! key_exists('value', $cf_device_type)) {
+		if ( ! key_exists( 'value', $cf_device_type ) ) {
 			return;
 		}
 
-		$mobile_cache   = $this->options->get( 'do_caching_mobile_files', 0 );
+		$mobile_cache = $this->options->get( 'do_caching_mobile_files', 0 );
 		if ( (int) $mobile_cache === (int) $cf_device_type['value'] ) {
 			return;
 		}
