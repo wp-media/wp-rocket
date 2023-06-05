@@ -40,7 +40,6 @@ class Cloudflare {
 	 */
 	public function check_connection() {
 		$is_valid = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
-
 		if ( false === $is_valid ) {
 			$is_valid = $this->is_auth_valid( $this->options->get( 'cloudflare_zone_id', '' ) );
 

@@ -545,19 +545,27 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function delete_connection_transient( $value, $old_value ) {
-		if ( ! isset( $old_value['cloudflare_api_key'], $old_value['cloudflare_email'], $old_value['cloudflare_zone_id'], $value['cloudflare_api_key'], $value['cloudflare_email'], $value['cloudflare_zone_id'] ) ) {
+
+		$fields = [
+			'cloudflare_api_key',
+			'cloudflare_email',
+			'cloudflare_zone_id',
+			'cloudflare_devmode',
+			'cloudflare_auto_settings',
+			'cloudflare_protocol_rewrite',
+		];
+
+		$out = false;
+
+		foreach ( $fields as $field ) {
+			$out &= ! isset( $old_value[ $field ], $value[ $field ] ) || $old_value[ $field ] !== $value[ $field ];
+		}
+
+		if ( $out ) {
 			return $value;
 		}
 
-		if (
-			$old_value['cloudflare_api_key'] !== $value['cloudflare_api_key']
-			||
-			$old_value['cloudflare_email'] !== $value['cloudflare_email']
-			||
-			$old_value['cloudflare_zone_id'] !== $value['cloudflare_zone_id']
-		) {
-			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-		}
+		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
 		return $value;
 	}
