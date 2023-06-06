@@ -60,6 +60,7 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . $slug                    => [
 				[ 'save_cloudflare_options', 10, 2 ],
 				[ 'update_dev_mode', 11, 2 ],
+				[ 'display_settings_notice', 11, 2 ],
 			],
 			'pre_update_option_' . $slug                => [
 				[ 'delete_connection_transient', 10, 2 ],
@@ -420,11 +421,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$connection = $this->cloudflare->check_connection();
+		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
 
 		if ( is_wp_error( $connection ) ) {
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
-
 			return;
 		}
 
@@ -468,11 +467,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$connection = $this->cloudflare->check_connection();
+		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
 
 		if ( is_wp_error( $connection ) ) {
-			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
-
 			return;
 		}
 
@@ -524,7 +521,7 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+		if ( is_wp_error( $this->cloudflare->check_connection($value['cloudflare_zone_id']) ) ) {
 			return $value;
 		}
 
@@ -565,9 +562,25 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
+		delete_transient(get_current_user_id() . '_cloudflare_update_settings');
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
 		return $value;
+	}
+
+	/**
+	 * Display the error notice.
+	 * @param array $value     An array of previous values for the settings.
+	 * @param array $old_value An array of submitted values for the settings.
+	 *
+	 * @return void
+	 */
+	public function display_settings_notice($value, $old_value) {
+		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
+
+		if ( is_wp_error( $connection ) ) {
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
+		}
 	}
 
 	/**

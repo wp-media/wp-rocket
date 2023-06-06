@@ -38,10 +38,15 @@ class Cloudflare {
 	/**
 	 * Check valid connection with Cloudflare
 	 */
-	public function check_connection() {
+	public function check_connection( string $zone_id = '' ) {
 		$is_valid = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 		if ( false === $is_valid ) {
-			$is_valid = $this->is_auth_valid( $this->options->get( 'cloudflare_zone_id', '' ) );
+
+			if('' === $zone_id) {
+				$zone_id = $this->options->get( 'cloudflare_zone_id', '' );
+			}
+
+			$is_valid = $this->is_auth_valid( $zone_id );
 
 			set_transient( 'rocket_cloudflare_is_api_keys_valid', $is_valid, 2 * WEEK_IN_SECONDS );
 		}
