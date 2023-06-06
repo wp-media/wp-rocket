@@ -62,8 +62,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'update_dev_mode', 11, 2 ],
 			],
 			'pre_update_option_' . $slug                => [
-				[ 'save_cloudflare_old_settings', 10, 2 ],
 				[ 'delete_connection_transient', 10, 2 ],
+				[ 'save_cloudflare_old_settings', 10, 2 ],
 			],
 			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
 			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
