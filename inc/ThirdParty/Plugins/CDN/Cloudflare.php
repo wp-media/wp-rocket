@@ -154,10 +154,10 @@ class Cloudflare implements Subscriber_Interface {
 			return $settings;
 		}
 
-		$settings['do_cloudflare']['title']       = __( 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.', 'rocket' );
-		$settings['do_cloudflare']['description'] = __( 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.', 'rocket' );
-		$settings['do_cloudflare']['helper']      = '';
-		$settings['do_cloudflare']['settings_page']      = '';
+		$settings['do_cloudflare']['title']         = __( 'Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible.', 'rocket' );
+		$settings['do_cloudflare']['description']   = __( 'Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.', 'rocket' );
+		$settings['do_cloudflare']['helper']        = '';
+		$settings['do_cloudflare']['settings_page'] = '';
 
 		return $settings;
 	}

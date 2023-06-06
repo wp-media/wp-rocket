@@ -1822,7 +1822,12 @@ class Page {
 				],
 				'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
 				'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-				'helper'            => __( 'Planning on using Automatic Platform Optimization (APO)? Activate the official Cloudflare plugin and configure it. WP Rocket will automatically enable compatibility.', 'rocket' ),
+				'helper'            => sprintf(
+				// translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s = closing em tag.
+				__( '%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just activate the official Cloudflare plugin and configure it. WP Rocket will automatically enable compatibility.', 'rocket' ),
+					'<span class="wpr-helper-title">',
+							'</span>'
+				),
 				'section'           => 'addons',
 				'page'              => 'addons',
 				'settings_page'     => 'cloudflare',
