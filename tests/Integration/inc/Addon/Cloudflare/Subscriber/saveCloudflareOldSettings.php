@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 
+use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -10,11 +11,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestSaveCloudflareOldSettings extends TestCase {
+	use FilterTrait;
 	private $response;
+
+	public function set_up()
+	{
+		parent::set_up();
+		$this->unregisterAllCallbacksExcept('pre_update_option_wp_rocket_settings', 'save_cloudflare_old_settings');
+	}
 
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
-
+		$this->restoreWpFilter('pre_update_option_wp_rocket_settings');
 		parent::tear_down();
 	}
 
