@@ -273,6 +273,9 @@ class Cloudflare implements Subscriber_Interface {
 
 		$doc = $this->beacon->get_suggest( 'cloudflare_apo' );
 
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
 		if (
 			1 === (int) $mobile_cache
 			&&
@@ -294,12 +297,15 @@ class Cloudflare implements Subscriber_Interface {
 			0 === (int) $mobile_cache
 			&&
 			1 === (int) $cf_device_type['value']
+			&&
+			! in_array( __FUNCTION__, (array) $boxes, true )
 		) {
 			rocket_notice_html(
 				[
 					'status'         => 'warning',
 					'message'        => __( 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
-					'dismiss_button' => true,
+					'dismiss_button' => __FUNCTION__,
+					'dismissible' => '',
 					'action'         => 'enable_separate_mobile_cache',
 				]
 			);
@@ -366,6 +372,9 @@ class Cloudflare implements Subscriber_Interface {
 
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		wp_safe_redirect( wp_get_referer() );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
