@@ -544,6 +544,7 @@ class Subscriber implements Subscriber_Interface {
 	public function change_auth( $value, $old_value ) {
 		$auth = $this->auth_factory->create( $value );
 		$this->cloudflare->change_auth( $auth );
+		return $value;
 	}
 
 	/**
