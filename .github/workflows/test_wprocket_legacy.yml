@@ -16,8 +16,8 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.2']
-        wp-versions: ['5.7']
+        php-versions: ['7.3']
+        wp-versions: ['5.8']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
 
