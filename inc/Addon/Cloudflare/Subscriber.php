@@ -5,6 +5,7 @@ namespace WP_Rocket\Addon\Cloudflare;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\{Options, Options_Data};
+use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -29,16 +30,22 @@ class Subscriber implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * @var AuthFactoryInterface
+	 */
+	protected $auth_factory;
+
+	/**
 	 * Creates an instance of the Cloudflare Subscriber.
 	 *
 	 * @param Cloudflare   $cloudflare  Cloudflare instance.
 	 * @param Options_Data $options     WP Rocket options instance.
 	 * @param Options      $options_api Options instance.
 	 */
-	public function __construct( Cloudflare $cloudflare, Options_Data $options, Options $options_api ) {
-		$this->options     = $options;
-		$this->options_api = $options_api;
-		$this->cloudflare  = $cloudflare;
+	public function __construct( Cloudflare $cloudflare, Options_Data $options, Options $options_api, AuthFactoryInterface $auth_factory ) {
+		$this->options      = $options;
+		$this->options_api  = $options_api;
+		$this->cloudflare   = $cloudflare;
+		$this->auth_factory = $auth_factory;
 	}
 
 	/**
@@ -63,6 +70,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_settings_notice', 11, 2 ],
 			],
 			'pre_update_option_' . $slug                => [
+				[ 'change_auth', 8, 2 ],
 				[ 'delete_connection_transient', 10, 2 ],
 				[ 'save_cloudflare_old_settings', 10, 2 ],
 			],
@@ -421,7 +429,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
+		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
 			return;
@@ -467,7 +475,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
+		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
 			return;
@@ -521,7 +529,7 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection($value['cloudflare_zone_id']) ) ) {
+		if ( is_wp_error( $this->cloudflare->check_connection( $value['cloudflare_zone_id'] ) ) ) {
 			return $value;
 		}
 
@@ -531,6 +539,11 @@ class Subscriber implements Subscriber_Interface {
 			: '';
 
 		return $value;
+	}
+
+	public function change_auth( $value, $old_value ) {
+		$auth = $this->auth_factory->create( $value );
+		$this->cloudflare->change_auth( $auth );
 	}
 
 	/**
@@ -562,7 +575,7 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		delete_transient(get_current_user_id() . '_cloudflare_update_settings');
+		delete_transient( get_current_user_id() . '_cloudflare_update_settings' );
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 
 		return $value;
@@ -570,13 +583,14 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Display the error notice.
+	 *
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
 	 *
 	 * @return void
 	 */
-	public function display_settings_notice($value, $old_value) {
-		$connection = $this->cloudflare->check_connection($value['cloudflare_zone_id']);
+	public function display_settings_notice( $value, $old_value ) {
+		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );

@@ -36,6 +36,16 @@ class Client {
 			'headers'   => [],
 		];
 	}
+	/**
+	 * Change client auth.
+	 *
+	 * @param AuthInterface $auth Client auth.
+	 *
+	 * @return void
+	 */
+	public function set_auth( AuthInterface $auth ) {
+		$this->auth = $auth;
+	}
 
 	/**
 	 * API call method for sending requests using GET.

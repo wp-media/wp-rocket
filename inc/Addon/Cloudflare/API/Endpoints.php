@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\API;
 
+use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
+
 class Endpoints {
 	/**
 	 * Client instance
@@ -157,5 +159,16 @@ class Endpoints {
 	 */
 	public function get_ips() {
 		return $this->client->get( '/ips' );
+	}
+
+	/**
+	 * Change client auth.
+	 *
+	 * @param AuthInterface $auth Client auth.
+	 *
+	 * @return void
+	 */
+	public function change_auth( AuthInterface $auth ) {
+		$this->client->set_auth( $auth );
 	}
 }

@@ -9,6 +9,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Addon\Cloudflare\Subscriber as CloudflareSubscriber;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WPMedia\Cloudflare\Auth\APIKeyFactory;
 
 /**
  * Service provider for Cloudflare Addon.
@@ -25,7 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'cloudflare_auth',
 		'cloudflare_client',
 		'cloudflare_endpoints',
 		'cloudflare',
@@ -39,14 +39,12 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getLeagueContainer()->add( 'cloudflare_auth_factory', APIKeyFactory::class )->addArgument( $options );
+
 		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? rocket_get_constant( 'WP_ROCKET_CF_API_KEY', '' ) : $options->get( 'cloudflare_api_key', '' );
 
-		$this->getContainer()->add( 'cloudflare_auth', APIKey::class )
-			->addArgument( $options->get( 'cloudflare_email', '' ) )
-			->addArgument( $cf_api_key );
-
 		$this->getContainer()->add( 'cloudflare_client', Client::class )
-			->addArgument( $this->getContainer()->get( 'cloudflare_auth' ) );
+			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' )->create() );
 		$this->getContainer()->add( 'cloudflare_endpoints', Endpoints::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare_client' ) );
 
@@ -57,6 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' ) )
 			->addTag( 'cloudflare_subscriber' );
 		$this->getContainer()->share(
 			'cloudflare_admin_subscriber',

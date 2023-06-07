@@ -6,6 +6,7 @@ namespace WP_Rocket\Addon\Cloudflare;
 use CloudFlare\IpRewrite;
 use DateTimeImmutable;
 use WP_Error;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Cloudflare\API\Endpoints;
 
@@ -42,7 +43,7 @@ class Cloudflare {
 		$is_valid = get_transient( 'rocket_cloudflare_is_api_keys_valid' );
 		if ( false === $is_valid ) {
 
-			if('' === $zone_id) {
+			if ( '' === $zone_id ) {
 				$zone_id = $this->options->get( 'cloudflare_zone_id', '' );
 			}
 
@@ -455,5 +456,16 @@ class Cloudflare {
 				$_SERVER['HTTPS'] = 'on';
 			}
 		}
+	}
+
+	/**
+	 * Change client auth.
+	 *
+	 * @param AuthInterface $auth Client auth.
+	 *
+	 * @return void
+	 */
+	public function change_auth( AuthInterface $auth ) {
+		$this->endpoints->change_auth( $auth );
 	}
 }
