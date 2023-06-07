@@ -73,6 +73,7 @@ trait CheckExcludedTrait {
 	 * @return  bool         Return true if page is private; false otherwise.
 	 */
 	protected function is_private( string $url ) : bool {
+		$url               = user_trailingslashit( $url );
 		$private_post_urls = [];
 		$query             = new \WP_Query( [ 'post_status' => 'private' ] );
 
