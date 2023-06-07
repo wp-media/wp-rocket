@@ -145,7 +145,15 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+		$settings = $this->options_api->get( 'settings', [] );
+
+		$this->options->set_values( $settings );
+
+		$auth = $this->auth_factory->create( $settings );
+
+		$this->cloudflare->change_auth( $auth );
+
+		if ( is_wp_error( $this->cloudflare->check_connection( $this->options->get( 'cloudflare_zone_id', '' ) ) ) ) {
 			return;
 		}
 
