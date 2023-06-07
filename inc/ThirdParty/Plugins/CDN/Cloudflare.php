@@ -273,7 +273,6 @@ class Cloudflare implements Subscriber_Interface {
 
 		$doc = $this->beacon->get_suggest( 'cloudflare_apo' );
 
-
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 		if (
@@ -305,7 +304,7 @@ class Cloudflare implements Subscriber_Interface {
 					'status'         => 'warning',
 					'message'        => __( 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
 					'dismiss_button' => __FUNCTION__,
-					'dismissible' => '',
+					'dismissible'    => '',
 					'action'         => 'enable_separate_mobile_cache',
 				]
 			);
@@ -411,7 +410,7 @@ class Cloudflare implements Subscriber_Interface {
 		return (
 			isset( $headers['cf-edge-cache'] )
 			&&
-			'cache, platform=wordpress' === $headers['cf-edge-cache'] // phpcs:ignore WordPress.WP.CapitalPDangit.Misspelled
+			in_array( $headers['cf-edge-cache'], [ 'cache, platform=wordpress', 'cache,platform=wordpress' ], true ) // phpcs:ignore WordPress.WP.CapitalPDangit.Misspelled
 		);
 	}
 }
