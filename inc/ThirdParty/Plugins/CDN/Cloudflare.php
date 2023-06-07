@@ -405,12 +405,12 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_apo_enabled(): bool {
-		$cf_device_type = get_option( 'automatic_platform_optimization', [] );
+		$is_apo_enabled = get_option( 'automatic_platform_optimization', [] );
 
-		if ( ! key_exists( 'value', $cf_device_type ) ) {
+		if ( ! key_exists( 'value', $is_apo_enabled ) ) {
 			return false;
 		}
 
-		return $cf_device_type['value'];
+		return (bool) $is_apo_enabled['value'];
 	}
 }
