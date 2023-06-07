@@ -41,8 +41,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getLeagueContainer()->add( 'cloudflare_auth_factory', APIKeyFactory::class )->addArgument( $options );
 
-		$cf_api_key = defined( 'WP_ROCKET_CF_API_KEY' ) ? rocket_get_constant( 'WP_ROCKET_CF_API_KEY', '' ) : $options->get( 'cloudflare_api_key', '' );
-
 		$this->getContainer()->add( 'cloudflare_client', Client::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' )->create() );
 		$this->getContainer()->add( 'cloudflare_endpoints', Endpoints::class )

@@ -595,6 +595,8 @@ class Subscriber implements Subscriber_Interface {
 		if ( is_wp_error( $connection ) ) {
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 		}
+
+		return $old_value;
 	}
 
 	/**
