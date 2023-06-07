@@ -92,6 +92,7 @@ function rocket_init() {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
+		require WP_ROCKET_FRONT_PATH . 'regenerate-folders-and-cache.php';
 	}
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
