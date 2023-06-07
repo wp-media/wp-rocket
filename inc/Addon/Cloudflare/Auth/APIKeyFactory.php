@@ -15,6 +15,15 @@ class APIKeyFactory implements AuthFactoryInterface {
 	protected $options;
 
 	/**
+	 * @param Options_Data $options
+	 */
+	public function __construct(Options_Data $options)
+	{
+		$this->options = $options;
+	}
+
+
+	/**
 	 * @param array $data
 	 * @return AuthInterface
 	 */
