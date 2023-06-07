@@ -585,12 +585,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Display the error notice.
 	 *
-	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
+	 * @param array $value     An array of previous values for the settings.
 	 *
 	 * @return void
 	 */
-	public function display_settings_notice( $value, $old_value ) {
+	public function display_settings_notice( $old_value, $value ) {
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
