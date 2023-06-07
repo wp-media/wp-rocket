@@ -82,7 +82,9 @@ trait CheckExcludedTrait {
 		}
 
 		foreach ( $query->posts as $post ) {
-			$private_post_urls[] = get_permalink( $post->ID );
+			// Temporarily cast publish status to get pretty url.
+			$post->post_status   = 'publish';
+			$private_post_urls[] = get_permalink( $post );
 		}
 
 		return in_array( $url, $private_post_urls, true );
