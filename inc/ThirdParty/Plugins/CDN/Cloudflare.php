@@ -209,10 +209,6 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->is_apo_enabled() ) {
-			return;
-		}
-
 		$doc = $this->beacon->get_suggest( 'cloudflare_apo' );
 
 		$message = __( 'You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>';
@@ -253,10 +249,6 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 		if ( ! $this->is_plugin_active() ) {
-			return;
-		}
-
-		if ( ! $this->is_apo_enabled() ) {
 			return;
 		}
 
@@ -397,20 +389,5 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Checks if CF APO is enabled
-	 *
-	 * @return bool
-	 */
-	private function is_apo_enabled(): bool {
-		$headers = wp_get_http_headers( home_url() );
-
-		return (
-			isset( $headers['cf-edge-cache'] )
-			&&
-			in_array( $headers['cf-edge-cache'], [ 'cache, platform=wordpress', 'cache,platform=wordpress' ], true ) // phpcs:ignore WordPress.WP.CapitalPDangit.Misspelled
-		);
 	}
 }
