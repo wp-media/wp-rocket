@@ -107,7 +107,6 @@ class Cloudflare {
 			return new WP_Error( 'cloudflare_zone_not_found', $msg );
 		}
 
-		$this->cloudflare_api_error = null;
 		return true;
 	}
 

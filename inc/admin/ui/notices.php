@@ -760,7 +760,7 @@ function rocket_notice_html( $args ) {
 			$params         = [
 				'action' => 'rocket_enable_separate_mobile_cache',
 			];
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Turn on Separate cache for mobile', 'rocket' ) . '</a>';
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Enable “Separate Cache Files for Mobile Devices” now', 'rocket' ) . '</a>';
 			break;
 		case 'force_deactivation':
 			/**

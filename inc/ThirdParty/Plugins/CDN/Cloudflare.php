@@ -218,8 +218,10 @@ class Cloudflare implements Subscriber_Interface {
 		$message = __( 'You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>';
 
 		$message .= sprintf(
-			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-			__( 'You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %1$sMore info%2$s', 'rocket' ),
+			// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
+			__( '%1$sWP Rocket:%2$sYou should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %3$sMore info%4$s', 'rocket' ),
+			'<strong>',
+			'</strong>',
 			'<a href="' . esc_url( $doc['url'] ) . '" data-beacon-article="' . esc_attr( $doc['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 			'</a>'
 		);
@@ -285,8 +287,10 @@ class Cloudflare implements Subscriber_Interface {
 					'status'      => 'warning',
 					'dismissible' => '',
 					'message'     => sprintf(
-						// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						__( 'You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). %1$sMore info%2$s', 'rocket' ),
+						// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
+						__( '%1$sWP Rocket:%2$sYou are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). %3$sMore info%4$s', 'rocket' ),
+						'<strong>',
+						'</strong>',
 						'<a href="' . esc_url( $doc['url'] ) . '" data-beacon-article="' . esc_attr( $doc['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 						'</a>'
 					),
@@ -302,7 +306,12 @@ class Cloudflare implements Subscriber_Interface {
 			rocket_notice_html(
 				[
 					'status'         => 'warning',
-					'message'        => __( 'You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
+					'message'        => sprintf(
+					// Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+						__( '%1$sWP Rocket:%2$sYou have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
+						'<strong>',
+						'</strong>'
+					),
 					'dismiss_button' => __FUNCTION__,
 					'dismissible'    => '',
 					'action'         => 'enable_separate_mobile_cache',
@@ -369,6 +378,7 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
+		$this->options->set( 'cache_mobile', 1 );
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
