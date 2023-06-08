@@ -8,6 +8,10 @@ return [
 			'headers' => [
 
 			],
+			'automatic_platform_optimization' => [
+				'id' => 'automatic_platform_optimization',
+				'value' => false
+			],
 			'response' => [
 				'code' => 200
 			],
@@ -58,6 +62,10 @@ return [
 			'active_plugins' => [
 				'cloudflare/cloudflare.php'
 			],
+			'automatic_platform_optimization' => [
+				'id' => 'automatic_platform_optimization',
+				'value' => true
+			],
 			'home_url' => 'http://example.org',
 			'headers' => [
 
@@ -115,6 +123,10 @@ return [
 			'active_plugins' => [
 				'cloudflare/cloudflare.php'
 			],
+			'automatic_platform_optimization' => [
+				'id' => 'automatic_platform_optimization',
+				'value' => true
+			],
 			'home_url' => 'http://example.org',
 			'headers' => [
 
@@ -164,6 +176,10 @@ return [
 		'config' => [
 			'active_plugins' => [
 				'cloudflare/cloudflare.php'
+			],
+			'automatic_platform_optimization' => [
+				'id' => 'automatic_platform_optimization',
+				'value' => true
 			],
 			'is_plugin_activated' => true,
 			'plugin_enabled' => true,
