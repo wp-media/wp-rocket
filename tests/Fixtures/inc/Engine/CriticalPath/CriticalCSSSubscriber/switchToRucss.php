@@ -9,6 +9,7 @@ return [
 				'value' => 'true'
 			],
 			'options' => 'options',
+			'has_box' => true,
         ],
 		'expected' => [
 			'referer' => 'referer',
@@ -25,6 +26,7 @@ return [
 				'value' => 'true'
 			],
 			'options' => 'options',
+			'has_box' => false,
 		],
 		'expected' => [
 			'referer' => 'referer',
