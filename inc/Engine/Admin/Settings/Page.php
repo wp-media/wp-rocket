@@ -608,7 +608,7 @@ class Page {
 
 		if ( rocket_maybe_disable_minify_css() ) {
 			// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
-			$css_section_helper[] = sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME );
+			$css_section_helper[] = sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable this option in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME );
 		}
 
 		if ( $rucss_status['disable'] ) {
