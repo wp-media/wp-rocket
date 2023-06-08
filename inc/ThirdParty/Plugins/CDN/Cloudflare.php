@@ -215,13 +215,15 @@ class Cloudflare implements Subscriber_Interface {
 
 		$doc = $this->beacon->get_suggest( 'cloudflare_apo' );
 
-		$message = __( 'You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>';
-
+		$message = sprintf(
+		// Translators: %1$s = strong opening tag, %2$s = strong closing tag.
+		__( '%1$sWP Rocket:%2$sYou are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>',
+		'<strong>',
+			'</strong>'
+		);
 		$message .= sprintf(
-			// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
-			__( '%1$sWP Rocket:%2$sYou should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %3$sMore info%4$s', 'rocket' ),
-			'<strong>',
-			'</strong>',
+			// Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
+			__( 'You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %1$sMore info%2$s', 'rocket' ),
 			'<a href="' . esc_url( $doc['url'] ) . '" data-beacon-article="' . esc_attr( $doc['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 			'</a>'
 		);

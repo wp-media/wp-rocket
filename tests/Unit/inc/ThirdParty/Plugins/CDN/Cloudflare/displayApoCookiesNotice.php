@@ -69,6 +69,10 @@ class Test_displayApoCookiesNotice extends TestCase {
 				return $config['cloudflare_cached_domain_name'];
 			}
 
+			if('automatic_platform_optimization' === $name) {
+				return $config['automatic_platform_optimization'];
+			}
+
 			return null;
 		});
 		$this->configure_user_can($config, $expected);
@@ -118,7 +122,6 @@ class Test_displayApoCookiesNotice extends TestCase {
 		if(! $config['right_screen'] || ! $config['can'] || (count($config['dynamic_cookies']) === 0 && count($config['mandatory_cookies']) === 0)) {
 			return;
 		}
-		Functions\expect('wp_get_http_headers')->with($expected['home_url'])->andReturn($config['headers']);
 		$this->beacon->expects()->get_suggest('cloudflare_apo')->andReturn($config['beacon_response']);
 	}
 

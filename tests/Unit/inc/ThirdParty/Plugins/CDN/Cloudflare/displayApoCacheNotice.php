@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
+use CoquardcyrWpArticleScheduler\Dependencies\League\Plates\Template\Func;
 use Mockery;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
@@ -52,6 +53,9 @@ class Test_displayApoCacheNotice extends TestCase {
     {
 		Functions\when('esc_url')->returnArg();
 		Functions\when('esc_attr')->returnArg();
+		Functions\when('get_current_user_id')->justReturn($config['user_id']);
+		Functions\when('get_user_meta')->justReturn($config['boxes']);
+
 		$this->stubTranslationFunctions();
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_option')->alias(function ($name) use ($config) {
@@ -64,6 +68,14 @@ class Test_displayApoCacheNotice extends TestCase {
 
 			if('cloudflare_cached_domain_name' === $name) {
 				return $config['cloudflare_cached_domain_name'];
+			}
+
+			if('automatic_platform_optimization' === $name) {
+				return $config['automatic_platform_optimization'];
+			}
+
+			if('automatic_platform_optimization_cache_by_device_type' === $name) {
+				return $config['cloudflare_mobile_cache'];
 			}
 
 			return null;
@@ -100,7 +112,7 @@ class Test_displayApoCacheNotice extends TestCase {
 		if( ! $config['right_screen'] || ! $config['can'] || ! $config['is_plugin_activated']) {
 			return;
 		}
-		Functions\expect('wp_get_http_headers')->with($config['home_url'])->andReturn($config['headers']);
+
 		if(! $config['mobile_cache'] !== $config['cloudflare_mobile_cache']['value']) {
 			return;
 		}
@@ -119,7 +131,6 @@ class Test_displayApoCacheNotice extends TestCase {
 			return;
 		}
 		$this->options->expects()->get('do_caching_mobile_files', 0)->andReturn($config['mobile_cache']);
-		Functions\when('get_option')->justReturn($config['cloudflare_mobile_cache']);
 	}
 
 	protected function configure_notice($config, $expected) {
