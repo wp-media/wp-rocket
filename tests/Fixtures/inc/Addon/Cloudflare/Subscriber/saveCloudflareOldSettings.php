@@ -7,9 +7,11 @@ return [
 			'error' => false,
 			'response' => [],
 			'result' => [],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
 				'cloudflare_auto_settings' => 0,
 				'cloudflare_old_settings' => '',
+				'cloudflare_zone_id' => 'cf_zone_id',
 			],
 			'old_value' => [
 				'cloudflare_auto_settings' => 0,
@@ -19,6 +21,7 @@ return [
 		'expected' => [
 			'cloudflare_auto_settings' => 0,
 			'cloudflare_old_settings' => '',
+			'cloudflare_zone_id' => 'cf_zone_id',
 		],
 	],
 	'testShouldReturnSameWhenAutoSettingsNotSet' => [
@@ -27,7 +30,9 @@ return [
 			'error' => false,
 			'response' => [],
 			'result' => [],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
+				'cloudflare_zone_id' => 'cf_zone_id',
 				'cloudflare_old_settings' => '',
 			],
 			'old_value' => [
@@ -35,6 +40,7 @@ return [
 			],
         ],
 		'expected' => [
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'cloudflare_old_settings' => '',
 		],
 	],
@@ -44,9 +50,11 @@ return [
 			'error' => false,
 			'response' => [],
 			'result' => [],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
 				'cloudflare_auto_settings' => 0,
 				'cloudflare_old_settings' => '',
+				'cloudflare_zone_id' => 'cf_zone_id',
 			],
 			'old_value' => [
 				'cloudflare_auto_settings' => 0,
@@ -56,6 +64,7 @@ return [
 		'expected' => [
 			'cloudflare_auto_settings' => 0,
 			'cloudflare_old_settings' => '',
+			'cloudflare_zone_id' => 'cf_zone_id',
 		],
 	],
 	'testShouldReturnSameWhenAutoSettingsZero' => [
@@ -64,9 +73,11 @@ return [
 			'error' => false,
 			'response' => [],
 			'result' => [],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
 				'cloudflare_auto_settings' => 0,
 				'cloudflare_old_settings' => '',
+				'cloudflare_zone_id' => 'cf_zone_id',
 			],
 			'old_value' => [
 				'cloudflare_auto_settings' => 1,
@@ -76,6 +87,7 @@ return [
 		'expected' => [
 			'cloudflare_auto_settings' => 0,
 			'cloudflare_old_settings' => '',
+			'cloudflare_zone_id' => 'cf_zone_id',
 		],
 	],
 	'testShouldReturnUpdatedEmptyWhenError' => [
@@ -84,8 +96,10 @@ return [
 			'error' => true,
 			'response' => new WP_Error( 'error' ),
 			'result' => [],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
 				'cloudflare_auto_settings' => 1,
+				'cloudflare_zone_id' => 'cf_zone_id',
 			],
 			'old_value' => [
 				'cloudflare_auto_settings' => 0,
@@ -93,6 +107,7 @@ return [
         ],
 		'expected' => [
 			'cloudflare_auto_settings' => 1,
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'cloudflare_old_settings' => '',
 		],
 	],
@@ -135,8 +150,10 @@ return [
 				'rocket_loader'     => 'off',
 				'browser_cache_ttl' => 14400,
 			],
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'value' => [
 				'cloudflare_auto_settings' => 1,
+				'cloudflare_zone_id' => 'cf_zone_id',
 			],
 			'old_value' => [
 				'cloudflare_auto_settings' => 0,
@@ -144,6 +161,7 @@ return [
         ],
 		'expected' => [
 			'cloudflare_auto_settings' => 1,
+			'cloudflare_zone_id' => 'cf_zone_id',
 			'cloudflare_old_settings' => 'aggressive,on,off,14400',
 		],
 	],

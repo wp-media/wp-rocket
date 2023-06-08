@@ -540,7 +540,9 @@ class Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		if ( is_wp_error( $this->cloudflare->check_connection( $value['cloudflare_zone_id'] ) ) ) {
+		$cloudflare_zone_id = key_exists( 'cloudflare_zone_id', $value ) ? $value['cloudflare_zone_id'] : '';
+
+		if ( is_wp_error( $this->cloudflare->check_connection( $cloudflare_zone_id ) ) ) {
 			return $value;
 		}
 
