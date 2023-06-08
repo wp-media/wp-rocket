@@ -27,7 +27,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 	public function set_up()
 	{
 		parent::set_up();
-		add_filter('pre_http_request', [$this, 'request'], 10, 3);
+		add_filter('pre_option_automatic_platform_optimization', [$this, 'automatic_platform_optimization']);
 		add_filter('rocket_cache_mandatory_cookies', [$this, 'mandatory_cookies']);
 		add_filter('rocket_cache_dynamic_cookies', [$this, 'dynamic_cookies']);
 		add_filter('pre_option_active_plugins', [$this, 'active_plugins']);
@@ -39,9 +39,9 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 
 	public function tear_down()
 	{
+		remove_filter('pre_option_automatic_platform_optimization', [$this, 'automatic_platform_optimization']);
 		remove_filter('rocket_cache_mandatory_cookies', [$this, 'dynamic_cookies']);
 		remove_filter('rocket_cache_dynamic_cookies', [$this, 'mandatory_cookies']);
-		remove_filter('pre_http_request', [$this, 'request'], 10);
 		remove_filter('pre_option_active_plugins', [$this, 'active_plugins']);
 		remove_filter('pre_option_cloudflare_api_email', [$this, 'cloudflare_api_email']);
 		remove_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
@@ -80,10 +80,8 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		}
 	}
 
-	public function request($response, $args, $url) {
-		if('http://example.org' === $url) {
-			return $this->config['response_fixture'];
-		}
+	public function automatic_platform_optimization() {
+		return $this->config['automatic_platform_optimization'];
 	}
 
 	public function mandatory_cookies() {

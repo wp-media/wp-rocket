@@ -243,6 +243,7 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_apo_cache_notice() {
+
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
