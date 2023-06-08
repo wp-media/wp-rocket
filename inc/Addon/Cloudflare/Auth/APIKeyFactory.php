@@ -10,12 +10,16 @@ class APIKeyFactory implements AuthFactoryInterface {
 
 
 	/**
+	 * Options Data instance.
+	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
 	/**
-	 * @param Options_Data $options
+	 * Instantiate the class.
+	 *
+	 * @param Options_Data $options Options Data instance.
 	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
@@ -23,7 +27,9 @@ class APIKeyFactory implements AuthFactoryInterface {
 
 
 	/**
-	 * @param array $data
+	 * Create a new authentication instance.
+	 *
+	 * @param array $data Data to inject into the  client.
 	 * @return AuthInterface
 	 */
 	public function create( array $data = [] ): AuthInterface {

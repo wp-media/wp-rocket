@@ -38,6 +38,9 @@ class Cloudflare {
 
 	/**
 	 * Check valid connection with Cloudflare
+	 *
+	 * @param string $zone_id Cloudflare zone ID.
+	 * @return bool|mixed|WP_Error
 	 */
 	public function check_connection( string $zone_id = '' ) {
 		$is_valid = get_transient( 'rocket_cloudflare_is_api_keys_valid' );

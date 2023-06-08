@@ -30,6 +30,8 @@ class Subscriber implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * Authentication factory.
+	 *
 	 * @var AuthFactoryInterface
 	 */
 	protected $auth_factory;
@@ -37,9 +39,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Creates an instance of the Cloudflare Subscriber.
 	 *
-	 * @param Cloudflare   $cloudflare  Cloudflare instance.
-	 * @param Options_Data $options     WP Rocket options instance.
-	 * @param Options      $options_api Options instance.
+	 * @param Cloudflare           $cloudflare Cloudflare instance.
+	 * @param Options_Data         $options WP Rocket options instance.
+	 * @param Options              $options_api Options instance.
+	 * @param AuthFactoryInterface $auth_factory Authentication factory.
 	 */
 	public function __construct( Cloudflare $cloudflare, Options_Data $options, Options $options_api, AuthFactoryInterface $auth_factory ) {
 		$this->options      = $options;
@@ -549,6 +552,14 @@ class Subscriber implements Subscriber_Interface {
 		return $value;
 	}
 
+	/**
+	 * Change the authentification.
+	 *
+	 * @param array $value     An array of previous values for the settings.
+	 * @param array $old_value An array of submitted values for the settings.
+	 *
+	 * @return mixed
+	 */
 	public function change_auth( $value, $old_value ) {
 		$auth = $this->auth_factory->create( $value );
 		$this->cloudflare->change_auth( $auth );
@@ -596,7 +607,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $old_value An array of submitted values for the settings.
 	 * @param array $value     An array of previous values for the settings.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function display_settings_notice( $old_value, $value ) {
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
