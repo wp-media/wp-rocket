@@ -357,6 +357,7 @@ class Cloudflare implements Subscriber_Interface {
 	 */
 	public function add_after_rocket_clean_to_actions( $actions ) {
 		$actions[] = 'after_rocket_clean_post';
+		$actions[] = 'after_rocket_clean_file';
 
 		return $actions;
 	}
