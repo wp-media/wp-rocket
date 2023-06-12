@@ -236,6 +236,7 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		$mobile_cache = $this->options->get( 'do_caching_mobile_files', 0 );
+
 		if ( (int) $mobile_cache === (int) $cf_device_type['value'] ) {
 			return;
 		}
@@ -255,7 +256,7 @@ class Cloudflare implements Subscriber_Interface {
 					'dismissible' => '',
 					'message'     => sprintf(
 						// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
-						__( '%1$sWP Rocket:%2$s You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" %3$ssetting%4$s on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). %3$sMore info%4$s', 'rocket' ),
+						__( '%1$sWP Rocket:%2$s You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" %3$ssetting%5$s on Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s', 'rocket' ),
 						'<strong>',
 						'</strong>',
 						'<a href="' . esc_url( admin_url( 'options-general.php?page=cloudflare' ) ) . '">',

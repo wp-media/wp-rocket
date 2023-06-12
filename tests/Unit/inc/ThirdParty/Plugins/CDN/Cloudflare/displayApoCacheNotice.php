@@ -57,7 +57,9 @@ class Test_displayApoCacheNotice extends TestCase {
 		Functions\when('get_current_user_id')->justReturn( $config['user_id'] );
 		Functions\when('get_user_meta')->justReturn($config['boxes']);
 		Functions\when('home_url')->justReturn($config['home_url']);
-		Functions\when( 'admin_url' )->justReturn( 'http://example.org/wp-admin/' );
+		Functions\when( 'admin_url' )->alias( function( $path ) {
+			return 'http://example.org/wp-admin/' . $path;
+		} );
 		Functions\when('get_option')->alias(function ($name) use ($config) {
 			if('cloudflare_api_email' === $name) {
 				return $config['cloudflare_api_email'];
