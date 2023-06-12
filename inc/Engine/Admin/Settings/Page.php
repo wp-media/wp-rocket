@@ -1816,17 +1816,17 @@ class Page {
 				'type'              => 'rocket_addon',
 				'label'             => __( 'Cloudflare', 'rocket' ),
 				'logo'              => [
-					'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
+					'url'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'logo-cloudflare2.svg',
 					'width'  => 153,
 					'height' => 51,
 				],
 				'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
 				'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
 				'helper'            => sprintf(
-				// translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s = closing em tag.
+				// translators: %1$s = opening span tag, %2$s = closing span tag.
 				__( '%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just activate the official Cloudflare plugin and configure it. WP Rocket will automatically enable compatibility.', 'rocket' ),
 					'<span class="wpr-helper-title">',
-							'</span>'
+					'</span>'
 				),
 				'section'           => 'addons',
 				'page'              => 'addons',
@@ -1843,11 +1843,8 @@ class Page {
 		 *
 		 * @param array $cf_settings Array of values to populate the field.
 		 */
-		$cf_settings = apply_filters( 'rocket_cloudflare_field_settings', $default_cf_settings );
-
-		if ( ! is_array( $cf_settings ) ) {
-			$cf_settings = $default_cf_settings;
-		}
+		$cf_settings = (array) apply_filters( 'rocket_cloudflare_field_settings', $default_cf_settings );
+		$cf_settings = wp_parse_args( $cf_settings, $default_cf_settings );
 
 		$this->settings->add_settings_fields( $cf_settings );
 
