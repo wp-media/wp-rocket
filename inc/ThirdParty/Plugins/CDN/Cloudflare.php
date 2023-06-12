@@ -199,7 +199,7 @@ class Cloudflare implements Subscriber_Interface {
 
 		$message = sprintf(
 		// Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-		__( '%1$sWP Rocket:%2$sYou are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>',
+		__( '%1$sWP Rocket:%2$s You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.', 'rocket' ) . '<br>',
 		'<strong>',
 			'</strong>'
 		);
@@ -277,7 +277,7 @@ class Cloudflare implements Subscriber_Interface {
 					'status'         => 'warning',
 					'message'        => sprintf(
 					// Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-						__( '%1$sWP Rocket:%2$sYou have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
+						__( '%1$sWP Rocket:%2$s You have "Cache by Device Type" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate.', 'rocket' ),
 						'<strong>',
 						'</strong>'
 					),

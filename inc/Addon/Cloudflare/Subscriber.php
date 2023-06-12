@@ -219,8 +219,13 @@ class Subscriber implements Subscriber_Interface {
 		if ( is_wp_error( $connection ) ) {
 			$cf_purge_result = [
 				'result'  => 'error',
-				// translators: %s = CloudFare API return message.
-				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $connection->get_error_message() ),
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
+				'message' => sprintf(
+					__( '%1$sWP Rocket:%2$s %3$s', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					$connection->get_error_message()
+				),
 			];
 
 			set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
@@ -232,14 +237,24 @@ class Subscriber implements Subscriber_Interface {
 		$cf_purge        = $this->cloudflare->purge_cloudflare();
 		$cf_purge_result = [
 			'result'  => 'success',
-			'message' => __( '<strong>WP Rocket:</strong> Cloudflare cache successfully purged.', 'rocket' ),
+			// translators: %1$s = <strong>, %2$s = </strong>.
+			'message' => sprintf(
+				__( '%1$sWP Rocket:%2$s Cloudflare cache successfully purged.', 'rocket' ),
+				'<strong>',
+				'</strong>',
+			),
 		];
 
 		if ( is_wp_error( $cf_purge ) ) {
 			$cf_purge_result = [
 				'result'  => 'error',
-				// translators: %s = CloudFare API return message.
-				'message' => sprintf( __( '<strong>WP Rocket:</strong> %s', 'rocket' ), $cf_purge->get_error_message() ),
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
+				'message' => sprintf(
+					__( '%1$sWP Rocket:%2$s %3$s', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					$connection->get_error_message()
+				),
 			];
 		}
 
@@ -448,8 +463,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$result = [
 			'pre' => sprintf(
-				// translators: %1$s = strong opening tag, %2$s = strong closing tag.
-				__( '%1$sWP Rocket:%2$s', 'rocket' ),
+				'%1$sWP Rocket:%2$s',
 				'<strong>',
 				'</strong>&nbsp;'
 			),
