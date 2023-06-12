@@ -37,6 +37,8 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		add_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 		add_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
+
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_apo_cache_notice' );
 	}
 
 	public function tear_down()
@@ -48,6 +50,8 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		remove_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 		remove_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
+
+		$this->restoreWpFilter( 'admin_notices' );
 
 		parent::tear_down();
 	}

@@ -493,7 +493,7 @@ return [
 				'dismissible' => '',
 				'message' => '<strong>WP Rocket:</strong> You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" <a href="http://example.org/wp-admin/options-general.php?page=cloudflare">setting</a> on Cloudflare APO to serve the right version of the cache. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>'
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" on Cloudflare APO to serve the right version of the cache. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>'
+			'notice_content' => '<strong>WP Rocket:</strong>You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" <a href="http://example.org/wp-admin/options-general.php?page=cloudflare">setting</a> on Cloudflare APO to serve the right version of the cache. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>'
 		],
 	],
 	'mobileCacheMismatchMobileDisabledShouldDisplayNotice' => [
