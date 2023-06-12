@@ -253,7 +253,7 @@ class Subscriber implements Subscriber_Interface {
 					__( '%1$sWP Rocket:%2$s %3$s', 'rocket' ),
 					'<strong>',
 					'</strong>',
-					$connection->get_error_message()
+					$cf_purge->get_error_message()
 				),
 			];
 		}

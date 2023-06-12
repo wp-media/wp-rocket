@@ -52,9 +52,9 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 		]
 	],
 	'noRightShouldDisplayNothing' => [
@@ -113,9 +113,9 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 		]
 	],
 	'noRightShouldDisplayNothing' => [
@@ -167,9 +167,9 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 		]
 	],
 	'emptyCookiesShouldDisplayNothing' => [
@@ -227,9 +227,9 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 		]
 	],
 	'mandatoryCookiesShouldDisplayNotice' => [
@@ -289,9 +289,9 @@ return [
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>
 You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly.<a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">
 More info</a>',
 			]
@@ -353,9 +353,9 @@ More info</a>',
 			'notice' => [
 				'status' => 'warning',
 				'dismissible'          => '',
-				'message' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
+				'message' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. <a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">More info</a>',
 			],
-			'notice_content' => '<strong>WP Rocket:</strong>You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>
+			'notice_content' => '<strong>WP Rocket:</strong> You are using "Dynamic Cookies Cache". Cloudflare APO is not yet compatible with that feature.<br>
 You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly.<a href="https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="602593e90a2dae5b58faee1e" target="_blank" rel="noopener noreferrer">
 More info</a>',
 		]
