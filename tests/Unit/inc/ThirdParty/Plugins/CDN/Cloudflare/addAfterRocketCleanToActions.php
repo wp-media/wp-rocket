@@ -7,12 +7,13 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_after_rocket_clean_to_actions
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_addAfterRocketCleanToActions extends TestCase {
 
