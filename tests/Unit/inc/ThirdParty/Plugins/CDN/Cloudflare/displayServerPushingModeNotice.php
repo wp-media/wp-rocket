@@ -4,6 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
@@ -18,11 +20,24 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
     private $options;
     private $cloudflare;
 
+	/**
+	 * @var Options
+	 */
+	protected $option_api;
+
+	/**
+	 * @var Beacon
+	 */
+	protected $beacon;
+
     public function setUp(): void {
         parent::setUp();
 
         $this->options  = Mockery::mock( Options_Data::class );
-        $this->cloudflare = new Cloudflare( $this->options );
+		$this->option_api = Mockery::mock(Options::class);
+		$this->beacon = Mockery::mock(Beacon::class);
+
+        $this->cloudflare = new Cloudflare( $this->options, $this->option_api, $this->beacon );
 
         $this->stubTranslationFunctions();
     }

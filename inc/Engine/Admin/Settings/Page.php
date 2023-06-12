@@ -1811,26 +1811,42 @@ class Page {
 			]
 		);
 
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
+		$default_cf_settings = [
+			'do_cloudflare' => [
+				'type'              => 'rocket_addon',
+				'label'             => __( 'Cloudflare', 'rocket' ),
+				'logo'              => [
+					'url'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'logo-cloudflare2.svg',
+					'width'  => 153,
+					'height' => 51,
 				],
-			]
-		);
+				'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+				'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+				'helper'            => sprintf(
+				// translators: %1$s = opening span tag, %2$s = closing span tag.
+				__( '%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just activate the official Cloudflare plugin and configure it. WP Rocket will automatically enable compatibility.', 'rocket' ),
+					'<span class="wpr-helper-title">',
+					'</span>'
+				),
+				'section'           => 'addons',
+				'page'              => 'addons',
+				'settings_page'     => 'cloudflare',
+				'default'           => 0,
+				'sanitize_callback' => 'sanitize_checkbox',
+			],
+		];
+
+		/**
+		 * Filters the Cloudflare Addon field values
+		 *
+		 * @since 3.14
+		 *
+		 * @param array $cf_settings Array of values to populate the field.
+		 */
+		$cf_settings = (array) apply_filters( 'rocket_cloudflare_field_settings', $default_cf_settings );
+		$cf_settings = wp_parse_args( $cf_settings, $default_cf_settings );
+
+		$this->settings->add_settings_fields( $cf_settings );
 
 		/**
 		 * Allow to display the "Varnish" tab in the settings page

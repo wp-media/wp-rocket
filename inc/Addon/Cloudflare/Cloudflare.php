@@ -96,7 +96,7 @@ class Cloudflare {
 		if ( ! empty( $result ) ) {
 			$parsed_url = wp_parse_url( $site_url );
 
-			if ( false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
+			if ( is_object( $result ) && property_exists( $result, 'name' ) && false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
 				$zone_found = true;
 			}
 		}
@@ -115,7 +115,6 @@ class Cloudflare {
 			return new WP_Error( 'cloudflare_zone_not_found', $msg );
 		}
 
-		$this->cloudflare_api_error = null;
 		return true;
 	}
 
