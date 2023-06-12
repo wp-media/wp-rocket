@@ -183,17 +183,7 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_apo_cookies_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
+		if ( ! $this->can_display_notice() ) {
 			return;
 		}
 
@@ -202,14 +192,6 @@ class Cloudflare implements Subscriber_Interface {
 			&&
 			empty( get_rocket_cache_dynamic_cookies() )
 		) {
-			return;
-		}
-
-		if ( ! $this->is_plugin_active() ) {
-			return;
-		}
-
-		if ( ! $this->is_apo_enabled() ) {
 			return;
 		}
 
@@ -243,25 +225,7 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_apo_cache_notice() {
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if (
-			isset( $screen->id )
-			&&
-			'settings_page_wprocket' !== $screen->id
-		) {
-			return;
-		}
-		if ( ! $this->is_plugin_active() ) {
-			return;
-		}
-
-		if ( ! $this->is_apo_enabled() ) {
+		if ( ! $this->can_display_notice() ) {
 			return;
 		}
 
@@ -322,6 +286,32 @@ class Cloudflare implements Subscriber_Interface {
 				]
 			);
 		}
+	}
+
+	/**
+	 * Checks if APO notices should be displayed
+	 *
+	 * @return bool
+	 */
+	private function can_display_notice(): bool {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+
+		if (
+			isset( $screen->id )
+			&&
+			'settings_page_wprocket' !== $screen->id
+		) {
+			return false;
+		}
+		if ( ! $this->is_plugin_active() ) {
+			return false;
+		}
+
+		return $this->is_apo_enabled();
 	}
 
 	/**
