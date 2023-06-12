@@ -290,10 +290,11 @@ class Cloudflare implements Subscriber_Interface {
 					'status'      => 'warning',
 					'dismissible' => '',
 					'message'     => sprintf(
-						// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
-						__( '%1$sWP Rocket:%2$sYou are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). %3$sMore info%4$s', 'rocket' ),
+						// Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
+						__( '%1$sWP Rocket:%2$s You are using "Separate cache files for mobile devices". You need to activate "Cache by Device Type" %3$ssetting%4$s on Cloudflare APO to serve the right version of the cache: (add the path to activate "Cache by Device Type" on Cloudflare plugin). %3$sMore info%4$s', 'rocket' ),
 						'<strong>',
 						'</strong>',
+						'<a href="' . esc_url( admin_url( 'options-general.php?page=cloudflare' ) ) . '">',
 						'<a href="' . esc_url( $doc['url'] ) . '" data-beacon-article="' . esc_attr( $doc['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 						'</a>'
 					),
