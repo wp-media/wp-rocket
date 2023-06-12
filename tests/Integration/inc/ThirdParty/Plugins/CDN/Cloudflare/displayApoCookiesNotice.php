@@ -3,11 +3,13 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cookies_notice
+ *
  * @group AdminOnly
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_displayApoCookiesNotice extends AdminTestCase {
 

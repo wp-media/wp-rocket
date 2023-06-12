@@ -2,20 +2,19 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
-use CoquardcyrWpArticleScheduler\Dependencies\League\Plates\Template\Func;
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cookies_notice
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_displayApoCookiesNotice extends TestCase {
 
@@ -41,6 +40,10 @@ class Test_displayApoCookiesNotice extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
+
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->option_api = Mockery::mock(Options::class);
 		$this->beacon = Mockery::mock(Beacon::class);
@@ -53,9 +56,6 @@ class Test_displayApoCookiesNotice extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected )
 	{
-		Functions\when('esc_url')->returnArg();
-		Functions\when('esc_attr')->returnArg();
-		$this->stubTranslationFunctions();
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_option')->alias(function ($name) use ($config) {
 			if('cloudflare_api_email' === $name) {

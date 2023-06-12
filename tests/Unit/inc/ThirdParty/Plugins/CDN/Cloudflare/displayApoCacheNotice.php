@@ -13,7 +13,8 @@ use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
  *
- * @group CloudflareCDN
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_displayApoCacheNotice extends TestCase {
 

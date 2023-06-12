@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_rocket_purge_url_to_purge_url
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_addRocketPurgeUrlToPurgeUrl extends TestCase {
 

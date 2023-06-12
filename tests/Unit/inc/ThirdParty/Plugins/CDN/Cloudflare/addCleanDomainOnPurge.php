@@ -7,12 +7,13 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_clean_domain_on_purge
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_addCleanDomainOnPurge extends TestCase {
 

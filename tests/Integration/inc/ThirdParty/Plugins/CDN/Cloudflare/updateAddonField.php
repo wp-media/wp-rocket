@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::update_addon_field
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_updateAddonField extends TestCase {
 

@@ -1,12 +1,10 @@
 <?php
 return [
     'shouldAddHook' => [
-        'config' => [
-
-        ],
+        'config' => [],
         'expected' => [
-			'after_rocket_clean_post'
-        ]
+			'after_rocket_clean_post',
+			'after_rocket_clean_file',
+		],
     ],
-
 ];

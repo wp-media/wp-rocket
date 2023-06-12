@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_after_rocket_clean_to_actions
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_addAfterRocketCleanToActions extends TestCase {
 

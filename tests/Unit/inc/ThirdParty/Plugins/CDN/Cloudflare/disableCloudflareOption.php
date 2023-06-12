@@ -7,13 +7,14 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-
-
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::disable_cloudflare_option
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_disableCloudflareOption extends TestCase {
 

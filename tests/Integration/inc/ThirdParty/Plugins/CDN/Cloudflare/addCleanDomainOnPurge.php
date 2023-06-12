@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_clean_domain_on_purge
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_addCleanDomainOnPurge extends TestCase {
 
