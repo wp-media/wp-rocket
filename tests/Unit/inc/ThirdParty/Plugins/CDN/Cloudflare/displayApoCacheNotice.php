@@ -2,18 +2,18 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
-use CoquardcyrWpArticleScheduler\Dependencies\League\Plates\Template\Func;
+use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Options;
-
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
+ *
+ * @group CloudflareCDN
  */
 class Test_displayApoCacheNotice extends TestCase {
 
@@ -37,8 +37,12 @@ class Test_displayApoCacheNotice extends TestCase {
      */
     protected $cloudflare;
 
-    public function set_up() {
-        parent::set_up();
+    protected function setUp(): void {
+        parent::setUp();
+
+		$this->stubTranslationFunctions();
+		$this->stubEscapeFunctions();
+
         $this->options = Mockery::mock(Options_Data::class);
         $this->option_api = Mockery::mock(Options::class);
 		$this->beacon = Mockery::mock(Beacon::class);
@@ -49,15 +53,11 @@ class Test_displayApoCacheNotice extends TestCase {
     /**
      * @dataProvider configTestData
      */
-    public function testShouldDoAsExpected( $config, $expected )
-    {
-		Functions\when('esc_url')->returnArg();
-		Functions\when('esc_attr')->returnArg();
-		Functions\when('get_current_user_id')->justReturn($config['user_id']);
+    public function testShouldDoAsExpected( $config, $expected ) {
+		Functions\when('get_current_user_id')->justReturn( $config['user_id'] );
 		Functions\when('get_user_meta')->justReturn($config['boxes']);
-
-		$this->stubTranslationFunctions();
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when( 'admin_url' )->justReturn( 'http://example.org/wp-admin/' );
 		Functions\when('get_option')->alias(function ($name) use ($config) {
 			if('cloudflare_api_email' === $name) {
 				return $config['cloudflare_api_email'];
