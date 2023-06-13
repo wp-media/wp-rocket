@@ -33,16 +33,25 @@ class Cloudflare implements Subscriber_Interface {
 	private $beacon;
 
 	/**
+	 * CloudflareFacade instance.
+	 *
+	 * @var CloudflareFacade
+	 */
+	private $facade;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data $options Options instance.
 	 * @param Options      $options_api Options API instance.
 	 * @param Beacon       $beacon Beacon instance.
+	 * @param Facade       $facade CloudflareFacade instance.
 	 */
-	public function __construct( Options_Data $options, Options $options_api, Beacon $beacon ) {
+	public function __construct( Options_Data $options, Options $options_api, Beacon $beacon, CloudflareFacade $facade ) {
 		$this->options     = $options;
 		$this->options_api = $options_api;
 		$this->beacon      = $beacon;
+		$this->facade      = $facade;
 	}
 
 	/**
@@ -60,10 +69,12 @@ class Cloudflare implements Subscriber_Interface {
 			'rocket_display_input_do_cloudflare'  => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings'    => 'update_addon_field',
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
-			'cloudflare_purge_everything_actions' => 'add_clean_domain_on_purge',
-			'cloudflare_purge_by_url'             => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
-			'cloudflare_purge_url_actions'        => 'add_after_rocket_clean_to_actions',
+			//'cloudflare_purge_everything_actions' => 'add_clean_domain_on_purge',
+			//'cloudflare_purge_by_url'             => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
+			//'cloudflare_purge_url_actions'        => 'add_after_rocket_clean_to_actions',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
+			'after_rocket_clean_domain'                      => 'purge_cloudflare',
+			'after_rocket_clean_post'                        => 'purge_cloudflare_post',
 		];
 	}
 
@@ -329,6 +340,15 @@ class Cloudflare implements Subscriber_Interface {
 	}
 
 	/**
+	 * Purge everything on Cloudflare
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare() {
+		$this->facade->purge_everything();
+	}
+
+	/**
 	 * Add WP Rocket purge URLs list to CF purge URLs list
 	 *
 	 * @param array $urls CF purge URLs list.
@@ -360,6 +380,17 @@ class Cloudflare implements Subscriber_Interface {
 		$actions[] = 'after_rocket_clean_file';
 
 		return $actions;
+	}
+
+	/**
+	 * Purges post and related URLs on Cloudflare
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_post( $post_id ) {
+		$this->facade->purge_url( $post_id );
 	}
 
 	/**
