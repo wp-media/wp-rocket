@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
+use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
@@ -257,6 +258,7 @@ class Plugin {
 	private function init_common_subscribers() {
 		$this->container->addServiceProvider( CapabilitiesServiceProvider::class );
 		$this->container->addServiceProvider( AddonServiceProvider::class );
+
 		$this->container->addServiceProvider( VarnishServiceProvider::class );
 		$this->container->addServiceProvider( PreloadServiceProvider::class );
 		$this->container->addServiceProvider( PreloadLinksServiceProvider::class );
@@ -367,6 +369,9 @@ class Plugin {
 		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
+			$this->container->addServiceProvider( CloudflareServiceProvider::class );
+
+			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 

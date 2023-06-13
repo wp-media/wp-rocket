@@ -217,6 +217,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'jetpack', Jetpack::class )
