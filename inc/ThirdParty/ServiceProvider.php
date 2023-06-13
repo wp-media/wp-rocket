@@ -13,6 +13,7 @@ use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
+use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
@@ -99,6 +100,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'the_events_calendar',
 		'perfmatters',
 		'rapidload',
+		'translatepress',
 		'wpgeotargeting',
 	];
 
@@ -252,7 +254,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
-
+		$this->getContainer()->share( 'translatepress', TranslatePress::class );
 		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }
