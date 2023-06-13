@@ -4,8 +4,8 @@
  *
  * @package     Database
  * @subpackage  Column
- * @copyright   Copyright (c) 2020
- * @license     https://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @copyright   Copyright (c) 2021
+ * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
 namespace WP_Rocket\Dependencies\Database;
@@ -433,39 +433,39 @@ class Column extends Base {
 		$r = wp_parse_args( $args, array(
 
 			// Table
-			'name'       => '',
-			'type'       => '',
-			'length'     => '',
-			'unsigned'   => false,
-			'zerofill'   => false,
-			'binary'     => false,
-			'allow_null' => false,
-			'default'    => '',
-			'extra'      => '',
-			'encoding'   => $this->get_db()->charset,
-			'collation'  => $this->get_db()->collate,
-			'comment'    => '',
+			'name'          => '',
+			'type'          => '',
+			'length'        => '',
+			'unsigned'      => false,
+			'zerofill'      => false,
+			'binary'        => false,
+			'allow_null'    => false,
+			'default'       => '',
+			'extra'         => '',
+			'encoding'      => $this->get_db()->charset,
+			'collation'     => $this->get_db()->collate,
+			'comment'       => '',
 
 			// Query
-			'pattern'    => false,
-			'searchable' => false,
-			'sortable'   => false,
-			'date_query' => false,
-			'transition' => false,
-			'in'         => true,
-			'not_in'     => true,
+			'pattern'       => false,
+			'searchable'    => false,
+			'sortable'      => false,
+			'date_query'    => false,
+			'transition'    => false,
+			'in'            => true,
+			'not_in'        => true,
 
 			// Special
-			'primary'    => false,
-			'created'    => false,
-			'modified'   => false,
-			'uuid'       => false,
+			'primary'       => false,
+			'created'       => false,
+			'modified'      => false,
+			'uuid'          => false,
 
 			// Cache
-			'cache_key'  => false,
+			'cache_key'     => false,
 
 			// Validation
-			'validate'   => '',
+			'validate'      => '',
 
 			// Capabilities
 			'caps'          => array(),
@@ -692,10 +692,10 @@ class Column extends Base {
 	 * Sanitize the pattern
 	 *
 	 * @since 1.0.0
-	 * @param mixed $pattern
+	 * @param string $pattern
 	 * @return string
 	 */
-	private function sanitize_pattern( $pattern = false ) {
+	private function sanitize_pattern( $pattern = '%s' ) {
 
 		// Allowed patterns
 		$allowed_patterns = array( '%s', '%d', '%f' );

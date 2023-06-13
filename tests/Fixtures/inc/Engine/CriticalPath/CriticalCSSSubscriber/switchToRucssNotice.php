@@ -1,4 +1,15 @@
 <?php
+
+$notice = <<<NOTICE
+<div class="notice notice-wpr-warning ">
+<p>
+We highly recommend the<b>
+updated Remove Unused CSS</b>
+for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.</p>
+<p>
+NOTICE;
+
+
 return [
     'shouldDisplayNotice' => [
         'config' => [
@@ -13,9 +24,16 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
-			'rucss_status' => false,
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+        'rucss_status' => false,
         ],
 		'expected' => [
+			'contains' => true,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -40,9 +58,16 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
-			'rucss_status' => false,
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
+			'rucss_status' => false,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -67,9 +92,16 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
-			'rucss_status' => false,
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
+			'rucss_status' => false,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -94,9 +126,16 @@ return [
 			'screen' => (object) [
 				'id' => 'settings_page_wprocket'
 			],
-			'rucss_status' => false,
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'last year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+      'rucss_status' => false,
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -121,9 +160,16 @@ return [
 			'screen' => (object) [
 				'id' => 'random'
 			],
-			'rucss_status' => false,
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
+			'contains' => false,
+			'content' => $notice,
+			'rucss_status' => false,
 			'user_id' => 42,
 			'notice' => [
 				'status'                 => 'wpr-warning',
@@ -149,9 +195,16 @@ return [
 				'id' => 'settings_page_wprocket'
 			],
 			'rucss_status' => true,
+      'user'   => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
 		],
 		'expected' => [
-			'user_id' => 42,
+      'user_id' => 42,
+      'contains' => false,
+			'content' => $notice,
 			'notice' => [
 				'status'                 => 'wpr-warning',
 				'dismissible'            => '',
