@@ -390,6 +390,9 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function purge_cloudflare_cache() {
+		if ( ! class_exists( '\CF\WordPress\Hooks' ) ) {
+			return;
+		}
 		$cloudflare_hooks = new Hooks();
 		$cloudflare_hooks->purgeCacheEverything();
 	}
