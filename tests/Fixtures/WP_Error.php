@@ -6,7 +6,7 @@ if ( ! class_exists( 'WP_Error') ) {
 		private $message;
 		private $error_data;
 
-		public function __construct( $code, $message, $error_data = null ) {
+		public function __construct( $code = '', $message = '', $error_data = '' ) {
 			$this->code = $code;
 			$this->message = $message;
 			$this->error_data = $error_data;
