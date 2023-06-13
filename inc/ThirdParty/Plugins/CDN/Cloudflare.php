@@ -329,6 +329,10 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function purge_cloudflare() {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
 		$this->facade->purge_everything();
 	}
 
@@ -340,6 +344,10 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function purge_cloudflare_post( $post_id ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
 		$this->facade->purge_url( $post_id );
 	}
 
