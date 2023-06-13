@@ -38,7 +38,7 @@ class CloudflareFacade {
 	/**
 	 * Calls purge relevant URLs from CF hooks class
 	 *
-	 * @param int|array $post_id Post ID or array of post IDs
+	 * @param int|array $post_ids Post ID or array of post IDs.
 	 *
 	 * @return void
 	 */
