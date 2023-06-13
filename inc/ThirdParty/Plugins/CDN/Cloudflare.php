@@ -6,6 +6,7 @@ namespace WP_Rocket\ThirdParty\Plugins\CDN;
 use WP_Rocket\Admin\{Options,Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use CF\WordPress\Hooks;
 
 /**
  * Compatibility class for cloudflare.
@@ -64,6 +65,7 @@ class Cloudflare implements Subscriber_Interface {
 			'cloudflare_purge_by_url'             => [ 'add_rocket_purge_url_to_purge_url', 10, 2 ],
 			'cloudflare_purge_url_actions'        => 'add_after_rocket_clean_to_actions',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
+			'before_rocket_clean_domain'          => 'purge_cloudflare_cache',
 		];
 	}
 
@@ -380,6 +382,16 @@ class Cloudflare implements Subscriber_Interface {
 
 		wp_safe_redirect( wp_get_referer() );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Purge Cloudflare cache with our cache clearing.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_cache() {
+		$cloudflare_hooks = new Hooks();
+		$cloudflare_hooks->purgeCacheEverything();
 	}
 
 	/**
