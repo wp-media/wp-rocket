@@ -71,6 +71,7 @@ class Cloudflare implements Subscriber_Interface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'after_rocket_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_post'             => 'purge_cloudflare_post',
+			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 		];
 	}
@@ -348,7 +349,35 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
-		$this->facade->purge_url( $post_id );
+		$this->facade->purge_urls( $post_id );
+	}
+
+	/**
+	 * Purges posts when using purge this URL button
+	 *
+	 * @param array $urls Array of URLs.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_partial( $urls ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		$post_ids = array_map(
+			function( $url ) {
+				$post_id = url_to_postid( $url );
+
+				if ( empty( $post_id ) ) {
+					return;
+				}
+
+				return $post_id;
+			},
+			$urls
+		);
+
+		$this->facade->purge_urls( $post_ids );
 	}
 
 	/**

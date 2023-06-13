@@ -38,15 +38,15 @@ class CloudflareFacade {
 	/**
 	 * Calls purge relevant URLs from CF hooks class
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int|array $post_id Post ID or array of post IDs
 	 *
 	 * @return void
 	 */
-	public function purge_url( $post_id ) {
+	public function purge_urls( $post_ids ) {
 		if ( is_null( $this->hooks ) ) {
 			$this->set_hooks();
 		}
 
-		$this->hooks->purgeCacheByRelevantURLs( $post_id );
+		$this->hooks->purgeCacheByRelevantURLs( $post_ids );
 	}
 }
