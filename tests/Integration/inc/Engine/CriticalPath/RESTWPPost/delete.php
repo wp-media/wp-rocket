@@ -61,6 +61,10 @@ class Test_Delete extends RESTVfsTestCase {
 		$cache_file_path = $this->filesystem->getUrl( "{$this->config['vfs_dir']}cache/wp-rocket/example.org/{$config['post_data']['post_title']}/index.html" );
 		$this->assertTrue( $this->filesystem->exists( $cache_file_path ) );
 
+		if ( ! empty( $expected['success'] ) ) {
+			$this->set_permalink_structure( "/%postname%/" );
+		}
+
 		$this->setUpTest( 1, $config );
 
 		$this->assertFilesExistBefore( $config );
