@@ -49,23 +49,10 @@ trait FormatUrlTrait {
 		if ( empty( $query ) ) {
 			return [];
 		}
+		$query_array = [];
+		parse_str( $query, $query_array );
 
-		$query = trim( $query, '&' );
-
-		return array_reduce(
-			explode( '&', $query ),
-			static function( $result, $query ) {
-				$param = explode( '=', $query );
-
-				if ( count( $param ) < 2 ) {
-					return $result;
-				}
-
-				$result[ $param[0] ] = $param[1];
-				return $result;
-			},
-			[]
-			);
+		return $query_array;
 	}
 
 	/**
