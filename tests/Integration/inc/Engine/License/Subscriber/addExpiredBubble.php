@@ -14,6 +14,7 @@ class Test_AddExpiredBubble extends TestCase {
 	private static $user_id;
 	private static $user;
 	private $original_user;
+	private $ocd;
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );

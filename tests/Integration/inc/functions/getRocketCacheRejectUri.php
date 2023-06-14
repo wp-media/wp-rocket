@@ -11,6 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Options
  */
 class Test_GetRocketCacheRejectUri extends TestCase {
+	private $cache_reject_uri;
 
 	/**
 	 * @dataProvider providerTestData

@@ -166,10 +166,14 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		check_ajax_referer( 'rocketcdn_dismiss_notice', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error( 'no permissions' );
+
 			return;
 		}
 
 		update_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -279,10 +283,14 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error( 'no permissions' );
+
 			return;
 		}
 
 		if ( ! isset( $_POST['status'] ) ) {
+			wp_send_json_error( 'missing status' );
+
 			return;
 		}
 
@@ -291,6 +299,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		} elseif ( 'small' === $_POST['status'] ) {
 			update_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true );
 		}
+
+		wp_send_json_success();
 	}
 
 	/**
