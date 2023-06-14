@@ -594,7 +594,7 @@ class Settings {
 			$main_message,
 			'<strong>WP Rocket</strong>',
 			$this->used_css->get_name(),
-			'<a href="' . $this->get_support_url() . '">',
+			'<a href="' . $this->get_support_url() . '" target="_blank" rel="noopener">',
 			'</a>'
 		);
 
