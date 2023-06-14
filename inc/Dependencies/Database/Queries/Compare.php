@@ -4,8 +4,8 @@
  *
  * @package     Database
  * @subpackage  Compare
- * @copyright   Copyright (c) 2020
- * @license     https://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @copyright   Copyright (c) 2021
+ * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
 namespace WP_Rocket\Dependencies\Database\Queries;
@@ -23,6 +23,35 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0.0
  */
 class Compare extends Meta {
+
+	// All supported SQL comparisons
+	const ALL_COMPARES = array(
+		'=',
+		'!=',
+		'>',
+		'>=',
+		'<',
+		'<=',
+		'LIKE',
+		'NOT LIKE',
+		'IN',
+		'NOT IN',
+		'BETWEEN',
+		'NOT BETWEEN',
+		'EXISTS',
+		'NOT EXISTS',
+		'REGEXP',
+		'NOT REGEXP',
+		'RLIKE',
+	);
+
+	// IN and BETWEEN
+	const IN_BETWEEN_COMPARES = array(
+		'IN',
+		'NOT IN',
+		'BETWEEN',
+		'NOT BETWEEN'
+	);
 
 	/**
 	 * Generate SQL WHERE clauses for a first-order query clause.
@@ -44,65 +73,57 @@ class Compare extends Meta {
 	public function get_sql_for_clause( &$clause, $parent_query, $clause_key = '' ) {
 		global $wpdb;
 
+		// Default chunks
 		$sql_chunks = array(
 			'where' => array(),
 			'join'  => array(),
 		);
 
+		// Maybe format compare clause
 		if ( isset( $clause['compare'] ) ) {
 			$clause['compare'] = strtoupper( $clause['compare'] );
+
+		// Or set compare clause based on value
 		} else {
-			$clause['compare'] = isset( $clause['value'] ) && is_array( $clause['value'] ) ? 'IN' : '=';
+			$clause['compare'] = isset( $clause['value'] ) && is_array( $clause['value'] )
+				? 'IN'
+				: '=';
 		}
 
-		if ( ! in_array(
-			$clause['compare'], array(
-				'=',
-				'!=',
-				'>',
-				'>=',
-				'<',
-				'<=',
-				'LIKE',
-				'NOT LIKE',
-				'IN',
-				'NOT IN',
-				'BETWEEN',
-				'NOT BETWEEN',
-				'EXISTS',
-				'NOT EXISTS',
-				'REGEXP',
-				'NOT REGEXP',
-				'RLIKE',
-			), true
-		) ) {
+		// Fallback to equals
+		if ( ! in_array( $clause['compare'], self::ALL_COMPARES, true ) ) {
 			$clause['compare'] = '=';
 		}
 
-		if ( isset( $clause['compare_key'] ) && 'LIKE' === strtoupper( $clause['compare_key'] ) ) {
+		// Uppercase or equals
+		if ( isset( $clause['compare_key'] ) && ( 'LIKE' === strtoupper( $clause['compare_key'] ) ) ) {
 			$clause['compare_key'] = strtoupper( $clause['compare_key'] );
 		} else {
 			$clause['compare_key'] = '=';
 		}
 
-		$compare     = $clause['compare'];
-		$compare_key = $clause['compare_key'];
+		// Get comparison from clause
+		$compare = $clause['compare'];
 
-		// Build the WHERE clause.
+		/** Build the WHERE clause ********************************************/
 
 		// Column name and value.
 		if ( array_key_exists( 'key', $clause ) && array_key_exists( 'value', $clause ) ) {
 			$column = sanitize_key( $clause['key'] );
 			$value  = $clause['value'];
 
-			if ( in_array( $compare, array( 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN' ), true ) ) {
+			// IN or BETWEEN
+			if ( in_array( $compare, self::IN_BETWEEN_COMPARES, true ) ) {
 				if ( ! is_array( $value ) ) {
 					$value = preg_split( '/[,\s]+/', $value );
 				}
+
+			// Anything else
 			} else {
 				$value = trim( $value );
 			}
 
+			// Format WHERE from compare value(s)
 			switch ( $compare ) {
 				case 'IN':
 				case 'NOT IN':
@@ -139,7 +160,8 @@ class Compare extends Meta {
 
 			}
 
-			if ( $where ) {
+			// Maybe add column, compare, & where to chunks
+			if ( ! empty( $where ) ) {
 				$sql_chunks['where'][] = "{$column} {$compare} {$where}";
 			}
 		}
@@ -152,6 +174,7 @@ class Compare extends Meta {
 			$sql_chunks['where'] = array( '( ' . implode( ' AND ', $sql_chunks['where'] ) . ' )' );
 		}
 
+		// Return
 		return $sql_chunks;
 	}
 }

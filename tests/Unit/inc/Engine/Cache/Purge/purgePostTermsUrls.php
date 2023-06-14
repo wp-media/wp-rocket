@@ -2,14 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
-use WP_Post;
-use WP_Term;
-use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use Mockery;
 use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Post;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Term;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls

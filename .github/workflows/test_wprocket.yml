@@ -7,6 +7,7 @@ on:
       - develop
       - branch-*
       - feature/*
+      - enhancement/*
 
 jobs:
   run:
@@ -17,7 +18,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.3', '7.4']
-        wp-versions: ['latest']
+        wp-versions: ['5.8']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
 
@@ -66,6 +67,9 @@ jobs:
         path: ${{ steps.composercache.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
+
+    - name: Require PHPUnit 7.5 for WP compatibility
+      run: composer require --dev --no-scripts phpunit/phpunit "^7.5" -W
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts

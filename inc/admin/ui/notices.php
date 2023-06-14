@@ -185,11 +185,6 @@ function rocket_plugins_to_deactivate() {
 		$plugins['scripts-to-footerphp'] = 'scripts-to-footerphp/scripts-to-footer.php';
 	}
 
-	if ( get_rocket_option( 'do_cloudflare' ) ) {
-		$plugins['cloudflare']              = 'cloudflare/cloudflare.php';
-		$plugins_explanations['cloudflare'] = __( 'WP Rocket Cloudflare Add-on provides similar functionalities. They can not be active at the same time.', 'rocket' );
-	}
-
 	if ( get_rocket_option( 'control_heartbeat' ) ) {
 		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
 	}
@@ -760,6 +755,12 @@ function rocket_notice_html( $args ) {
 				'action' => 'switch_to_rucss',
 			];
 			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
+			break;
+		case 'enable_separate_mobile_cache':
+			$params         = [
+				'action' => 'rocket_enable_separate_mobile_cache',
+			];
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Enable “Separate Cache Files for Mobile Devices” now', 'rocket' ) . '</a>';
 			break;
 		case 'force_deactivation':
 			/**

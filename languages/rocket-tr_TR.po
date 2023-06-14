@@ -8,9 +8,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.13\n"
+"Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-05-23 12:23-0400\n"
+"POT-Creation-Date: 2023-05-24 12:23-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2023\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -920,8 +920,8 @@ msgstr ""
 " tıklama) kadar geciktirerek performansı artırır. %1$sDaha fazla bilgi%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:942
-msgid "One-click exclusions from delay"
-msgstr "Gecikmeden tek tıkla hariç tutmalar"
+msgid "One-click exclusions"
+msgstr "Tek tıkla hariç tutmalar"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
