@@ -1625,15 +1625,14 @@ class Page {
 		);
 
 		$maybe_display_cdn_helper = '';
-		$addons                   = [];
 
-		if ( get_rocket_option( 'do_cloudflare' ) ) {
-			$addons[] = 'Cloudflare';
+		$addons = apply_filters( 'rocket_cdn_helper_addons', [] );
+
+		if ( ! is_array( $addons ) ) {
+			$addons = [];
 		}
 
-		if ( get_rocket_option( 'sucury_waf_cache_sync' ) ) {
-			$addons[] = 'Sucuri';
-		}
+		$addons = array_unique( $addons );
 
 		if ( ! empty( $addons ) ) {
 			$maybe_display_cdn_helper = wp_sprintf(

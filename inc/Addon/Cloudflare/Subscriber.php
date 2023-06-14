@@ -79,6 +79,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
 			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
+			'rocket_cdn_helper_addons'                  => 'add_cdn_helper_message',
 		];
 	}
 
@@ -692,5 +693,16 @@ class Subscriber implements Subscriber_Interface {
 			||
 			apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		);
+	}
+
+	/**
+	 * Add the helper message on the CDN settings.
+	 *
+	 * @param string[] $addons Name from the addon that requires the helper message.
+	 * @return string[]
+	 */
+	public function add_cdn_helper_message( array $addons ): array {
+		$addons[] = 'Cloudflare';
+		return $addons;
 	}
 }
