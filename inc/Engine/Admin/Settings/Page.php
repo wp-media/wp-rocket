@@ -594,7 +594,7 @@ class Page {
 			]
 		);
 
-		$invalid_license = get_transient( 'wp_rocket_no_licence' );
+		$invalid_license = get_option( 'wp_rocket_no_licence' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -940,8 +940,8 @@ class Page {
 				'delay_js_exclusions_selected' => [
 					'type'              => 'categorized_multiselect',
 					'label'             => __( 'One-click exclusions', 'rocket' ),
-					'description'       => __( 'When using this feature you may notice that it takes some time, or user interaction for specific elements, e.g. a menu, or a form that is located in the viewport, to appear.', 'rocket' ),
-					'sub_description'   => __( 'If you are using any of the following plugins/themes/services you can prevent that, by selecting them below.', 'rocket' ),
+					'description'       => __( 'When using the Delay JavaScript Execution, you might experience delay loading elements located in the viewport that need to appear immediately - e.g. slider, header, menu.', 'rocket' ),
+					'sub_description'   => __( 'If you need instant visibility, click below on files that should NOT be delayed. This selection will help users interact with the elements straight away.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -1811,26 +1811,42 @@ class Page {
 			]
 		);
 
-		$this->settings->add_settings_fields(
-			[
-				'do_cloudflare' => [
-					'type'              => 'rocket_addon',
-					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
-						'width'  => 153,
-						'height' => 51,
-					],
-					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
-					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
-					'section'           => 'addons',
-					'page'              => 'addons',
-					'settings_page'     => 'cloudflare',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
+		$default_cf_settings = [
+			'do_cloudflare' => [
+				'type'              => 'rocket_addon',
+				'label'             => __( 'Cloudflare', 'rocket' ),
+				'logo'              => [
+					'url'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL', '' ) . 'logo-cloudflare2.svg',
+					'width'  => 153,
+					'height' => 51,
 				],
-			]
-		);
+				'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+				'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+				'helper'            => sprintf(
+				// translators: %1$s = opening span tag, %2$s = closing span tag.
+				__( '%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just activate the official Cloudflare plugin and configure it. WP Rocket will automatically enable compatibility.', 'rocket' ),
+					'<span class="wpr-helper-title">',
+					'</span>'
+				),
+				'section'           => 'addons',
+				'page'              => 'addons',
+				'settings_page'     => 'cloudflare',
+				'default'           => 0,
+				'sanitize_callback' => 'sanitize_checkbox',
+			],
+		];
+
+		/**
+		 * Filters the Cloudflare Addon field values
+		 *
+		 * @since 3.14
+		 *
+		 * @param array $cf_settings Array of values to populate the field.
+		 */
+		$cf_settings = (array) apply_filters( 'rocket_cloudflare_field_settings', $default_cf_settings );
+		$cf_settings = wp_parse_args( $cf_settings, $default_cf_settings );
+
+		$this->settings->add_settings_fields( $cf_settings );
 
 		/**
 		 * Allow to display the "Varnish" tab in the settings page

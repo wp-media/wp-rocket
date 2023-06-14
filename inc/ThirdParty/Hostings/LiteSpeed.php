@@ -6,6 +6,12 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class LiteSpeed implements Subscriber_Interface {
+	/**
+	 * Litespeed headers
+	 *
+	 * @var array
+	 */
+	private $headers = [];
 
 	/**
 	 * Subscribed events for Litespeed.

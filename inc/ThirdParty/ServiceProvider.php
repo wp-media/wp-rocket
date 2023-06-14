@@ -13,6 +13,7 @@ use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
+use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
@@ -35,6 +36,7 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\WpDiscuz;
+use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
@@ -98,6 +100,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'the_events_calendar',
 		'perfmatters',
 		'rapidload',
+		'translatepress',
+		'wpgeotargeting',
 	];
 
 	/**
@@ -213,6 +217,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'jetpack', Jetpack::class )
@@ -248,5 +254,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
+		$this->getContainer()->share( 'translatepress', TranslatePress::class );
+		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }
