@@ -385,7 +385,7 @@ class Cloudflare implements Subscriber_Interface {
 
 		$post_id = url_to_postid( $url );
 
-		if ( empty ( $post_id ) ) {
+		if ( empty( $post_id ) ) {
 			return;
 		}
 
