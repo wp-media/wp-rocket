@@ -72,6 +72,8 @@ class Cloudflare implements Subscriber_Interface {
 			'after_rocket_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_post'             => 'purge_cloudflare_post',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
+			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
+			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 		];
 	}
@@ -364,20 +366,30 @@ class Cloudflare implements Subscriber_Interface {
 			return;
 		}
 
-		$post_ids = array_map(
-			function( $url ) {
-				$post_id = url_to_postid( $url );
-
-				if ( empty( $post_id ) ) {
-					return;
-				}
-
-				return $post_id;
-			},
-			$urls
-		);
+		$post_ids = array_filter( array_map( 'url_to_postid', $urls ) );
 
 		$this->facade->purge_urls( $post_ids );
+	}
+
+	/**
+	 * Purges CF after Used CSS generation or clean
+	 *
+	 * @param string $url URL to purge.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_after_usedcss( $url ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		$post_id = url_to_postid( $url );
+
+		if ( empty ( $post_id) ) {
+			return;
+		}
+
+		$this->facade->purge_urls( $post_id );
 	}
 
 	/**
