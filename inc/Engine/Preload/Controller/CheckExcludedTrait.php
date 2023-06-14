@@ -195,7 +195,7 @@ trait CheckExcludedTrait {
 	 * @return array|int[]|string[]
 	 */
 	protected function drop_excluded_params( array $queries, bool $only_keys = false ) {
-		$ignored_queries = apply_filters( 'rocket_cache_ignored_parameters', [] );
+		$ignored_queries = rocket_get_ignored_parameters();
 		$queries_keys    = $only_keys ? $queries : array_keys( $queries );
 		$queries_keys    = array_diff( $queries_keys, array_keys( $ignored_queries ) );
 
