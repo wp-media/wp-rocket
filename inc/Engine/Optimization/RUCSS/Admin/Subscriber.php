@@ -484,7 +484,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_as_missed_tables_notice() {
-		if ( function_exists( 'get_current_screen' ) && 'tools_page_action-scheduler' === get_current_screen()->id ) {
+		$screen = get_current_screen();
+
+		if ( isset( $screen->id ) && 'tools_page_action-scheduler' === $screen->id ) {
 			return;
 		}
 
