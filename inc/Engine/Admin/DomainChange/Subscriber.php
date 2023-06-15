@@ -26,7 +26,9 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_configurations_changed' => 'configurations_changed',
 			'rocket_domain_changed'         => 'maybe_clean_cache_domain_change',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
-		];
+			'rocket_notice_args' => 'add_regenerate_configuration_action',
+			'admin_post_rocket_regenerate_configuration' => 'regenerate_configuration',
+			];
 	}
 
 	/**
@@ -123,5 +125,46 @@ class Subscriber implements Subscriber_Interface {
 		 * @param array $value An array of submitted values for the settings.
 		 */
 		do_action( 'rocket_options_changed', $options );
+	}
+
+	public function maybe_display_domain_change_notice() {
+		$notice = get_transient('rocket_domain_changed');
+
+		if( ! $notice ) {
+			return;
+		}
+
+		rocket_notice_html([
+			'status' => '',
+			'message' => esc_html__( 'We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. Learn More (https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket)', 'rocket' ),
+		]);
+	}
+
+	public function add_regenerate_configuration_action($args) {
+		if(! key_exists('action', $args) || 'regenerate_configuration' !== $args['action']) {
+			return $args;
+		}
+
+		$params         = [
+			'action' => 'rocket_regenerate_configuration',
+		];
+
+		$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_regenerate_configuration' ) ) . '">' . __( 'Regenerate WP Rocket configuration files now', 'rocket' ) . '</a>';
+
+		return $args;
+	}
+
+	public function regenerate_configuration() {
+		check_admin_referer( 'rocket_regenerate_configuration' );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		rocket_generate_advanced_cache_file();
+		flush_rocket_htaccess();
+
+		wp_safe_redirect( wp_get_referer() );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }
