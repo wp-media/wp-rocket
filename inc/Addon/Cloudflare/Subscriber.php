@@ -440,25 +440,25 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $old_value An array of previous values for the settings.
 	 * @param array $value     An array of submitted values for the settings.
 	 *
-	 * @return array
+	 * @return void
 	 */
 	public function update_dev_mode( $old_value, $value ) {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return $old_value;
+			return;
 		}
 
 		if ( ! isset( $old_value['cloudflare_devmode'], $value['cloudflare_devmode'] ) ) {
-			return $old_value;
+			return;
 		}
 
 		if ( (int) $old_value['cloudflare_devmode'] === (int) $value['cloudflare_devmode'] ) {
-			return $old_value;
+			return;
 		}
 
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
-			return $old_value;
+			return;
 		}
 
 		$result = [
@@ -477,8 +477,6 @@ class Subscriber implements Subscriber_Interface {
 		$result[] = $this->save_cloudflare_devmode( $value['cloudflare_devmode'] );
 
 		set_transient( get_current_user_id() . '_cloudflare_update_settings', $result );
-
-		return $old_value;
 	}
 
 	/**
@@ -487,25 +485,25 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $old_value An array of previous values for the settings.
 	 * @param array $value     An array of submitted values for the settings.
 	 *
-	 * @return array
+	 * @return void
 	 */
 	public function save_cloudflare_options( $old_value, $value ) {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return $old_value;
+			return;
 		}
 
 		if ( ! isset( $old_value['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) ) {
-			return $old_value;
+			return;
 		}
 
 		if ( (int) $old_value['cloudflare_auto_settings'] === (int) $value['cloudflare_auto_settings'] ) {
-			return $old_value;
+			return;
 		}
 
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
-			return $old_value;
+			return;
 		}
 
 		$result = [
@@ -529,8 +527,6 @@ class Subscriber implements Subscriber_Interface {
 		$result = array_merge( $result, $this->save_cloudflare_auto_settings( $value['cloudflare_auto_settings'], $value['cloudflare_old_settings'] ) );
 
 		set_transient( get_current_user_id() . '_cloudflare_update_settings', $result );
-
-		return $old_value;
 	}
 
 	/**
