@@ -630,6 +630,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return mixed
 	 */
 	public function display_settings_notice( $value, $old_value ) {
+
+		if ( ! key_exists( 'cloudflare_zone_id', $value ) ) {
+			return $value;
+		}
+
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
