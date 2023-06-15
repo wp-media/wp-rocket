@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Admin\DomainChange;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
 
@@ -14,7 +15,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	const LAST_BASE_URL_OPTION = 'wp_rocket_last_base_url';
 	const LAST_OPTION_HASH     = 'wp_rocket_last_option_hash';
-
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -22,7 +22,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                    => 'maybe_launch_domain_changed',
+			'admin_init'                    => [
+				['maybe_launch_domain_changed'],
+				['maybe_display_domain_change_notice']
+			],
 			'rocket_configurations_changed' => 'configurations_changed',
 			'rocket_domain_changed'         => 'maybe_clean_cache_domain_change',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
@@ -127,19 +130,44 @@ class Subscriber implements Subscriber_Interface {
 		do_action( 'rocket_options_changed', $options );
 	}
 
+	/**
+	 * Maybe display a notice when domain change.
+	 *
+	 * @return void
+	 */
 	public function maybe_display_domain_change_notice() {
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		$notice = get_transient('rocket_domain_changed');
 
 		if( ! $notice ) {
 			return;
 		}
-
 		rocket_notice_html([
-			'status' => '',
-			'message' => esc_html__( 'We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. Learn More (https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket)', 'rocket' ),
+			'status' => 'warning',
+			'action' => 'regenerate_configuration',
+			'dissmissible' => '',
+			'message' => sprintf(
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+				__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
+				'</a>',
+			),
 		]);
 	}
 
+	/**
+	 * Add mapping on notice.
+	 *
+	 * @param array $args Arguments from the notice.
+	 *
+	 * @return array
+	 */
 	public function add_regenerate_configuration_action($args) {
 		if(! key_exists('action', $args) || 'regenerate_configuration' !== $args['action']) {
 			return $args;
@@ -161,10 +189,20 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		rocket_generate_advanced_cache_file();
-		flush_rocket_htaccess();
+		do_action('rocket_domain_changed');
 
 		wp_safe_redirect( wp_get_referer() );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Generate the path to the config for the current website.
+	 *
+	 * @return string
+	 */
+	protected function generate_config_path() {
+		$file         = get_rocket_parse_url( untrailingslashit( home_url() ) );
+		$file['path'] = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
+		return WP_ROCKET_CONFIG_PATH . strtolower( $file['host'] ) . $file['path'] . '.php';
 	}
 }
