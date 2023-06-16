@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Admin\DomainChange;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -17,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'domain_change_subscriber',
+		'ajax_handler',
 	];
 
 	/**
@@ -25,6 +27,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'domain_change_subscriber', Subscriber::class );
+		$this->getContainer()->add( 'ajax_handler', AjaxHandler::class );
+		$this->getContainer()->add( 'domain_change_subscriber', Subscriber::class )
+			->addArgument( $this->getContainer()->get( 'ajax_handler' ) );
 	}
 }

@@ -2,11 +2,17 @@
 
 namespace WP_Rocket\Engine\Admin\DomainChange;
 
-use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Filesystem_Direct;
 
 class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Handle basic ajax operations.
+	 *
+	 * @var AjaxHandler
+	 */
+	protected $ajax_handler;
 
 	/**
 	 * Name of the option saving the last base URL.
@@ -15,6 +21,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	const LAST_BASE_URL_OPTION = 'wp_rocket_last_base_url';
 	const LAST_OPTION_HASH     = 'wp_rocket_last_option_hash';
+
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param AjaxHandler $ajax_handler Handle basic ajax operations.
+	 */
+	public function __construct(AjaxHandler $ajax_handler)
+	{
+		$this->ajax_handler = $ajax_handler;
+	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -196,9 +213,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function regenerate_configuration() {
-		check_admin_referer( 'rocket_regenerate_configuration' );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! $this->ajax_handler->validate_referer(
+			[
+				'referer'    => 'rocket_regenerate_configuration',
+				'capacities' => 'rocket_manage_options',
+			]
+			) ) {
 			return;
 		}
 
@@ -211,11 +231,16 @@ class Subscriber implements Subscriber_Interface {
 		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 		$base_url      = trailingslashit( home_url() );
 
+		/**
+		 * Fires when the domain of the website has been changed and user clicked on notice.
+		 *
+		 * @param string $current_url current URL from the website.
+		 * @param string $old_url old URL from the website.
+		 */
 		do_action( 'rocket_domain_changed', $base_url, $last_base_url );
 
 		delete_transient( 'rocket_domain_changed' );
 
-		wp_safe_redirect( wp_get_referer() );
-		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+		$this->ajax_handler->redirect();
 	}
 }
