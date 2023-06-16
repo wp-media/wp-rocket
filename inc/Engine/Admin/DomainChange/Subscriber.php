@@ -22,16 +22,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                    => [
-				['maybe_launch_domain_changed'],
-				['maybe_display_domain_change_notice']
+			'admin_init'                                 => [
+				[ 'maybe_launch_domain_changed' ],
+				[ 'maybe_display_domain_change_notice' ],
 			],
-			'rocket_configurations_changed' => 'configurations_changed',
-			'rocket_domain_changed'         => 'maybe_clean_cache_domain_change',
+			'rocket_configurations_changed'              => 'configurations_changed',
+			'rocket_domain_changed'                      => 'maybe_clean_cache_domain_change',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
-			'rocket_notice_args' => 'add_regenerate_configuration_action',
+			'rocket_notice_args'                         => 'add_regenerate_configuration_action',
 			'admin_post_rocket_regenerate_configuration' => 'regenerate_configuration',
-			];
+		];
 	}
 
 	/**
@@ -57,6 +57,8 @@ class Subscriber implements Subscriber_Interface {
 		update_option( self::LAST_BASE_URL_OPTION, $base_url_encoded );
 
 		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+
+		set_transient( 'rocket_domain_changed', true, 2 * rocket_get_constant( 'WEEK_IN_SECONDS', 604800 ) );
 
 		/**
 		 * Fires when the domain of the website has been changed.
@@ -141,24 +143,26 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$notice = get_transient('rocket_domain_changed');
+		$notice = get_transient( 'rocket_domain_changed' );
 
-		if( ! $notice ) {
+		if ( ! $notice ) {
 			return;
 		}
-		rocket_notice_html([
-			'status' => 'warning',
-			'action' => 'regenerate_configuration',
-			'dissmissible' => '',
-			'message' => sprintf(
-				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
-				__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
-				'<strong>',
-				'</strong>',
-				'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
-				'</a>',
-			),
-		]);
+		rocket_notice_html(
+			[
+				'status'       => 'warning',
+				'action'       => 'regenerate_configuration',
+				'dissmissible' => '',
+				'message'      => sprintf(
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+					__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
+					'<strong>',
+					'</strong>',
+					'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
+					'</a>',
+				),
+			]
+			);
 	}
 
 	/**
@@ -168,12 +172,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_regenerate_configuration_action($args) {
-		if(! key_exists('action', $args) || 'regenerate_configuration' !== $args['action']) {
+	public function add_regenerate_configuration_action( $args ) {
+		if ( ! key_exists( 'action', $args ) || 'regenerate_configuration' !== $args['action'] ) {
 			return $args;
 		}
 
-		$params         = [
+		$params = [
 			'action' => 'rocket_regenerate_configuration',
 		];
 
@@ -182,6 +186,11 @@ class Subscriber implements Subscriber_Interface {
 		return $args;
 	}
 
+	/**
+	 * Regenerate configurations.
+	 *
+	 * @return void
+	 */
 	public function regenerate_configuration() {
 		check_admin_referer( 'rocket_regenerate_configuration' );
 
@@ -189,20 +198,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		do_action('rocket_domain_changed');
+		do_action( 'rocket_domain_changed' );
+
+		delete_transient( 'rocket_domain_changed' );
 
 		wp_safe_redirect( wp_get_referer() );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Generate the path to the config for the current website.
-	 *
-	 * @return string
-	 */
-	protected function generate_config_path() {
-		$file         = get_rocket_parse_url( untrailingslashit( home_url() ) );
-		$file['path'] = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
-		return WP_ROCKET_CONFIG_PATH . strtolower( $file['host'] ) . $file['path'] . '.php';
 	}
 }
