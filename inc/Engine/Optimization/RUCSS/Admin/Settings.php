@@ -545,11 +545,7 @@ class Settings {
 		$security_message = __( 'In the security plugin, if you are using one', 'rocket' );
 		$firewall_message = __( "In the server's firewall - your host can help you with this", 'rocket' );
 
-		$message = sprintf(
-		// translators: %1$s = plugin name.
-			"%1\$s: $main_message<ul><li>$security_message</li><li>$firewall_message</li></ul>",
-			'<strong>WP Rocket</strong>'
-		);
+		$message = "<strong>WP Rocket</strong>: $main_message<ul><li>$security_message</li><li>$firewall_message</li></ul>";
 
 		rocket_notice_html(
 			[
