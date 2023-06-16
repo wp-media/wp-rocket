@@ -27,8 +27,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param AjaxHandler $ajax_handler Handle basic ajax operations.
 	 */
-	public function __construct(AjaxHandler $ajax_handler)
-	{
+	public function __construct( AjaxHandler $ajax_handler ) {
 		$this->ajax_handler = $ajax_handler;
 	}
 
