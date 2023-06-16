@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 
-		set_transient( 'rocket_domain_changed', true, 2 * rocket_get_constant( 'WEEK_IN_SECONDS', 604800 ) );
+		set_transient( 'rocket_domain_changed', $last_base_url_encoded, 2 * rocket_get_constant( 'WEEK_IN_SECONDS', 604800 ) );
 
 		/**
 		 * Fires when the domain of the website has been changed.
@@ -66,7 +66,7 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string $current_url current URL from the website.
 		 * @param string $old_url old URL from the website.
 		 */
-		do_action( 'rocket_domain_changed', $base_url, $last_base_url );
+		do_action( 'rocket_detected_domain_changed', $base_url, $last_base_url );
 	}
 
 	/**
@@ -148,21 +148,25 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $notice ) {
 			return;
 		}
-		rocket_notice_html(
-			[
-				'status'       => 'warning',
-				'action'       => 'regenerate_configuration',
-				'dissmissible' => '',
-				'message'      => sprintf(
-					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
-					__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
-					'<strong>',
-					'</strong>',
-					'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
-					'</a>',
-				),
-			]
-			);
+
+		$args = [
+			'status'       => 'warning',
+			'dissmissible' => '',
+			'message'      => sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+				__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
+				'</a>',
+			),
+		];
+
+		if(! is_multisite()) {
+			$args['action'] = 'regenerate_configuration';
+		}
+
+		rocket_notice_html( $args );
 	}
 
 	/**
@@ -198,7 +202,16 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		do_action( 'rocket_domain_changed' );
+		$last_base_url_encoded = get_transient( 'rocket_domain_changed' );
+
+		if ( ! $last_base_url_encoded ) {
+			return;
+		}
+
+		$last_base_url = base64_decode( $last_base_url_encoded );
+		$base_url         = trailingslashit( home_url() );
+
+		do_action( 'rocket_domain_changed', $base_url, $last_base_url );
 
 		delete_transient( 'rocket_domain_changed' );
 
