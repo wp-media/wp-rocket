@@ -784,12 +784,13 @@ function rocket_notice_html( $args ) {
 	}
 	/**
 	 * Notice arguments.
+	 *
 	 * @param array $args arguments from the notice.
 	 * @return array
 	 */
-	$filtered_args = apply_filters('rocket_notice_args', $args);
+	$filtered_args = apply_filters( 'rocket_notice_args', $args );
 
-	if(is_array($filtered_args)) {
+	if ( is_array( $filtered_args ) ) {
 		$args = wp_parse_args( $filtered_args, $defaults );
 	}
 
