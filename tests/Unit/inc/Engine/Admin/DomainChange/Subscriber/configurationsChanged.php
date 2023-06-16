@@ -2,15 +2,19 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\DomainChange\Subscriber;
 
+use Mockery;
 use WP_Rocket\Engine\Admin\DomainChange\Subscriber;
 
 
+use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 /**
  * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::configurations_changed
  */
 class Test_configurationsChanged extends TestCase {
+
+	protected $ajax_handler;
 
     /**
      * @var Subscriber
@@ -20,7 +24,9 @@ class Test_configurationsChanged extends TestCase {
     public function set_up() {
         parent::set_up();
 
-        $this->subscriber = new Subscriber();
+		$this->ajax_handler = Mockery::mock(AjaxHandler::class);
+
+        $this->subscriber = new Subscriber($this->ajax_handler);
     }
 
     /**

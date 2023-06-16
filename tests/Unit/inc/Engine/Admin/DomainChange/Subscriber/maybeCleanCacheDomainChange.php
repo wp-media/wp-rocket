@@ -2,9 +2,11 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\DomainChange\Subscriber;
 
+use Mockery;
 use WP_Rocket\Engine\Admin\DomainChange\Subscriber;
 
 
+use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
@@ -19,10 +21,13 @@ class Test_maybeCleanCacheDomainChange extends TestCase {
      */
     protected $subscriber;
 
-    public function set_up() {
-        parent::set_up();
+	protected $ajax_handler;
 
-        $this->subscriber = new Subscriber();
+	public function set_up() {
+        parent::set_up();
+		$this->ajax_handler = Mockery::mock(AjaxHandler::class);
+
+        $this->subscriber = new Subscriber($this->ajax_handler);
     }
 
     /**
