@@ -22,6 +22,7 @@ class Test_MaybeLaunchDomainChanged extends TestCase
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 		Functions\when('trailingslashit')->returnArg();
+		Functions\when('rocket_get_constant')->returnArg(2);
 		Functions\expect('home_url')->andReturn($config['base_url']);
 		Functions\expect('get_option')->with(Subscriber::LAST_BASE_URL_OPTION)->andReturn($config['last_base_url']);
 
@@ -30,9 +31,10 @@ class Test_MaybeLaunchDomainChanged extends TestCase
 		}
 
 		if($config['is_base_url_different']) {
-			Actions\expectDone('rocket_domain_changed')->with($expected['url'], $expected['old_url']);
+			Actions\expectDone('rocket_detected_domain_changed')->with($expected['url'], $expected['old_url']);
+			Functions\expect('set_transient')->with('rocket_domain_changed', $config['last_base_url'], 1209600);
 		} else {
-			Actions\expectDone('rocket_domain_changed')->never();
+			Actions\expectDone('rocket_detected_domain_changed')->never();
 		}
 
 		$this->subscriber->maybe_launch_domain_changed();

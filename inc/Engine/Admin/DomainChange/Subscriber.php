@@ -158,11 +158,11 @@ class Subscriber implements Subscriber_Interface {
 				'<strong>',
 				'</strong>',
 				'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
-				'</a>',
+				'</a>'
 			),
 		];
 
-		if(! is_multisite()) {
+		if ( ! is_multisite() ) {
 			$args['action'] = 'regenerate_configuration';
 		}
 
@@ -208,8 +208,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$last_base_url = base64_decode( $last_base_url_encoded );
-		$base_url         = trailingslashit( home_url() );
+		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+		$base_url      = trailingslashit( home_url() );
 
 		do_action( 'rocket_domain_changed', $base_url, $last_base_url );
 
