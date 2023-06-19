@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-05-24 12:23-0400\n"
+"POT-Creation-Date: 2023-06-12 13:56-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2023\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -52,19 +52,19 @@ msgstr ""
 "Siteniz %s üzerinde barındırılıyor, uyumluluk için Varnish oto-temizle’yi "
 "etkinleştirdik."
 
-#: inc/Addon/Cloudflare/APIClient.php:309
+#: inc/Addon/Cloudflare/API/Client.php:129
 msgid "Cloudflare did not provide any reply. Please try again later."
 msgstr "Cloudflare hiçbir yanıt vermedi. Lütfen daha sonra tekrar deneyin."
 
-#: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:112
+#: inc/Addon/Cloudflare/API/Client.php:186 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
 msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
 
-#: inc/Addon/Cloudflare/APIClient.php:322
-#: inc/Addon/Cloudflare/APIClient.php:335
-#: inc/Addon/Cloudflare/Cloudflare.php:112
-#: inc/Addon/Cloudflare/Cloudflare.php:144
+#: inc/Addon/Cloudflare/API/Client.php:190
+#: inc/Addon/Cloudflare/API/Client.php:204
+#: inc/Addon/Cloudflare/Cloudflare.php:74
+#: inc/Addon/Cloudflare/Cloudflare.php:109
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
 #: inc/deprecated/3.5.php:92 inc/deprecated/3.5.php:116
 #: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
@@ -73,11 +73,11 @@ msgstr "Yanlış Cloudflare e-posta adresi veya API anahtarı."
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "İleriki rehberlik için %1$sbelgeleri%2$s okuyun."
 
-#: inc/Addon/Cloudflare/APIClient.php:324
-#: inc/Addon/Cloudflare/APIClient.php:337
-#: inc/Addon/Cloudflare/Cloudflare.php:101
-#: inc/Addon/Cloudflare/Cloudflare.php:114
-#: inc/Addon/Cloudflare/Cloudflare.php:146 inc/deprecated/3.5.php:81
+#: inc/Addon/Cloudflare/API/Client.php:192
+#: inc/Addon/Cloudflare/API/Client.php:206
+#: inc/Addon/Cloudflare/Auth/APIKey.php:63
+#: inc/Addon/Cloudflare/Cloudflare.php:76
+#: inc/Addon/Cloudflare/Cloudflare.php:111 inc/deprecated/3.5.php:81
 #: inc/deprecated/3.5.php:94 inc/deprecated/3.5.php:118
 #: inc/deprecated/3.5.php:131 inc/deprecated/3.5.php:159
 #: inc/deprecated/3.5.php:175 inc/deprecated/3.5.php:208
@@ -88,11 +88,11 @@ msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
 
-#: inc/Addon/Cloudflare/APIClient.php:331 inc/deprecated/3.5.php:125
+#: inc/Addon/Cloudflare/API/Client.php:200 inc/deprecated/3.5.php:125
 msgid "Incorrect Cloudflare Zone ID."
 msgstr "Yanlış Cloudflare Bölge Kimliği."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:99
+#: inc/Addon/Cloudflare/Auth/APIKey.php:61
 #, php-format
 msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
@@ -101,93 +101,114 @@ msgstr ""
 "Cloudflare e-posta adresi ve/veya API anahtarı ayarlı değil. Daha fazla "
 "rehberlik için %1$sbelgeleri%2$s okuyun."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:108 inc/deprecated/3.5.php:88
+#: inc/Addon/Cloudflare/Cloudflare.php:70 inc/deprecated/3.5.php:88
 msgid "Missing Cloudflare Zone ID."
 msgstr "Eksik Cloudflare Bölge Kimliği."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:140 inc/deprecated/3.5.php:153
+#: inc/Addon/Cloudflare/Cloudflare.php:105 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
 msgstr "Etki alanınız Cloudflare’de ayarlanmamış gibi görünüyor."
 
-#: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:587
+#: inc/Addon/Cloudflare/Cloudflare.php:205
+msgid "days"
+msgstr "gün"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:208
+msgid "seconds"
+msgstr "saniye"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:210
+msgid "minutes"
+msgstr "dakika"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:212
+msgid "hours"
+msgstr "saat"
+
+#: inc/Addon/Cloudflare/Subscriber.php:224
+#: inc/Addon/Cloudflare/Subscriber.php:253
 #, php-format
-msgid "<strong>WP Rocket:</strong> %s"
-msgstr "<strong>WP Rocket:</strong> %s"
+msgid "%1$sWP Rocket:%2$s %3$s"
+msgstr "%1$sWP Rocket:%2$s %3$s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:592
-msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
-msgstr ""
-"<strong>WP Rocket:</strong> Cloudflare önbelleği başarılı olarak temizlendi."
+#: inc/Addon/Cloudflare/Subscriber.php:242
+#, php-format
+msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
+msgstr "%1$sWP Rocket:%2$s Cloudflare önbelleği başarılı olarak temizlendi."
 
-#: inc/Addon/Cloudflare/Subscriber.php:364
-#: inc/Addon/Cloudflare/Subscriber.php:370
-#: inc/Addon/Cloudflare/Subscriber.php:390
-#: inc/Addon/Cloudflare/Subscriber.php:401
-#: inc/Addon/Cloudflare/Subscriber.php:420
-#: inc/Addon/Cloudflare/Subscriber.php:426
-#: inc/Addon/Cloudflare/Subscriber.php:445
-#: inc/Addon/Cloudflare/Subscriber.php:451
-#: inc/Addon/Cloudflare/Subscriber.php:470
-#: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:184
-#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
-msgid "WP Rocket: "
-msgstr "WP Rocket: "
-
-#: inc/Addon/Cloudflare/Subscriber.php:364
+#: inc/Addon/Cloudflare/Subscriber.php:297
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Cloudflare geliştirme kipi hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:370
+#: inc/Addon/Cloudflare/Subscriber.php:304
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare geliştirme kipi %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:390
+#: inc/Addon/Cloudflare/Subscriber.php:321
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Cloudflare önbellek seviyesi hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:395
+#: inc/Addon/Cloudflare/Subscriber.php:328
 msgctxt "Cloudflare caching level"
-msgid "Standard"
-msgstr "Standart"
+msgid "standard"
+msgstr "standart"
 
-#: inc/Addon/Cloudflare/Subscriber.php:401
+#: inc/Addon/Cloudflare/Subscriber.php:334
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare önbellek seviyesi %s olarak ayarlandı"
 
-#: inc/Addon/Cloudflare/Subscriber.php:420
+#: inc/Addon/Cloudflare/Subscriber.php:350
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Cloudflare küçültme hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:426
+#: inc/Addon/Cloudflare/Subscriber.php:357
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Cloudflare küçültme %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:445
+#: inc/Addon/Cloudflare/Subscriber.php:373
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Cloudflare rocket yükleyici hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:451
+#: inc/Addon/Cloudflare/Subscriber.php:380
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare rocket yükleyici %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:470
+#: inc/Addon/Cloudflare/Subscriber.php:396
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Cloudflare tarayıcı önbelleği hatası: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:476
+#: inc/Addon/Cloudflare/Subscriber.php:403
 #, php-format
-msgid "Cloudflare browser cache set to %s seconds"
-msgstr "Cloudflare tarayıcı önbelleği %s saniyeye ayarlandı"
+msgid "Cloudflare browser cache set to %s"
+msgstr "Cloudflare tarayıcı önbelleği %s olarak ayarlandı"
+
+#: inc/Addon/Cloudflare/Subscriber.php:512
+#, php-format
+msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
+msgstr "%1$sWP Rocket:%2$s Cloudflare için en uygun ayarlar aktif edildi:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:521
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
+"previous settings:"
+msgstr ""
+"%1$sWP Rocket:%2$s Cloudflare için en uygun ayarlar devre dışı bırakıldı, "
+"önceki ayarlara geri döndürüldü:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:184
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
+msgid "WP Rocket: "
+msgstr "WP Rocket: "
 
 #: inc/Addon/Sucuri/Subscriber.php:95
 #, php-format
@@ -741,7 +762,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:767
 msgid "Activate Remove Unused CSS"
-msgstr "Kullanılmayan CSS’yi Kaldır’ı Aktif Et"
+msgstr "Kullanılmayan CSS’yi Kaldır’ı aktif et"
 
 #: inc/Engine/Admin/Settings/Page.php:773
 msgid "CSS safelist"
@@ -1601,16 +1622,16 @@ msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Rocket Eklentileri mevcut seçenekleri genişleten tamamlayıcı özelliklerdir."
 
-#: inc/Engine/Admin/Settings/Page.php:1818
-#: inc/Engine/Admin/Settings/Page.php:1970
+#: inc/Engine/Admin/Settings/Page.php:1817
+#: inc/Engine/Admin/Settings/Page.php:1986
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1824
+#: inc/Engine/Admin/Settings/Page.php:1823
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Bu eklenti ile Cloudflare hesabınızı bütünleştirin."
 
-#: inc/Engine/Admin/Settings/Page.php:1825
+#: inc/Engine/Admin/Settings/Page.php:1824
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1620,34 +1641,45 @@ msgstr ""
 "etkinleştirmek gibi seçenekleri kullanmak için hesap e-postanızı, genel API "
 "anahtarını ve etki alanını sağlar."
 
-#: inc/Engine/Admin/Settings/Page.php:1859
+#: inc/Engine/Admin/Settings/Page.php:1827
+#, php-format
+msgid ""
+"%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
+"activate the official Cloudflare plugin and configure it. WP Rocket will "
+"automatically enable compatibility."
+msgstr ""
+"%1$sOtomatik Platform İyileştirmesini (APO) kullanmayı mı "
+"planlıyorsunuz?%2$s Sadece resmi Cloudflare eklentisini aktif edin ve "
+"yapılandırın. WP Rocket uyumluluğu otomatik olarak etkinleştirecektir."
+
+#: inc/Engine/Admin/Settings/Page.php:1875
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1865
+#: inc/Engine/Admin/Settings/Page.php:1881
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Varnish sunucunuzda çalışıyorsa, bu eklentiyi aktif etmek zorundasınız."
 
-#: inc/Engine/Admin/Settings/Page.php:1867
+#: inc/Engine/Admin/Settings/Page.php:1883
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
 "Varnish önbelleği, WP Rocket önbelleğini her temizlediğinde içeriğin her "
-"zaman güncel olduğunu garantilemek için temizlenecektir.<br>%1$sDaha fazla "
-"bilgi edinin%2$s"
+"zaman güncel olmasını sağlamak için temizlenecektir.<br>%1$sDaha fazla bilgi"
+" edinin%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1902
+#: inc/Engine/Admin/Settings/Page.php:1918
 msgid "WebP Compatibility"
 msgstr "WebP Uyumluluğu"
 
-#: inc/Engine/Admin/Settings/Page.php:1908
+#: inc/Engine/Admin/Settings/Page.php:1924
 msgid "Improve browser compatibility for WebP images."
 msgstr "WebP resimleri için tarayıcı uyumluluğunu iyileştirin."
 
-#: inc/Engine/Admin/Settings/Page.php:1912
+#: inc/Engine/Admin/Settings/Page.php:1928
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -1660,11 +1692,11 @@ msgstr ""
 "oluşturamayacağını lütfen unutmayın. WebP resimleri oluşturmak için "
 "%1$sImagify%2$s öneriyoruz. %3$sDaha fazla bilgi%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1932
+#: inc/Engine/Admin/Settings/Page.php:1948
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizler."
 
-#: inc/Engine/Admin/Settings/Page.php:1935
+#: inc/Engine/Admin/Settings/Page.php:1951
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1672,48 +1704,48 @@ msgstr ""
 "WP Rocket’in önbelleği temizlendiğinde Sucuri önbelleğini temizlemek için "
 "API anahtarınızı verin."
 
-#: inc/Engine/Admin/Settings/Page.php:1943
-#: inc/Engine/Admin/Settings/Page.php:2087
+#: inc/Engine/Admin/Settings/Page.php:1959
+#: inc/Engine/Admin/Settings/Page.php:2103
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1949
+#: inc/Engine/Admin/Settings/Page.php:1965
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Bu eklenti ile Sucuri önbelleğini eşitleyin."
 
-#: inc/Engine/Admin/Settings/Page.php:1987
+#: inc/Engine/Admin/Settings/Page.php:2003
 msgid "Cloudflare credentials"
 msgstr "Cloudflare kimlik bilgileri"
 
-#: inc/Engine/Admin/Settings/Page.php:1996
+#: inc/Engine/Admin/Settings/Page.php:2012
 msgid "Cloudflare settings"
 msgstr "Cloudflare ayarları"
 
-#: inc/Engine/Admin/Settings/Page.php:2010
+#: inc/Engine/Admin/Settings/Page.php:2026
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Genel API anahtarı"
 
-#: inc/Engine/Admin/Settings/Page.php:2011
+#: inc/Engine/Admin/Settings/Page.php:2027
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "API anahtarınızı bulun"
 
-#: inc/Engine/Admin/Settings/Page.php:2023
+#: inc/Engine/Admin/Settings/Page.php:2039
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Hesap e-postası"
 
-#: inc/Engine/Admin/Settings/Page.php:2032
+#: inc/Engine/Admin/Settings/Page.php:2048
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Bölge Kimliği - Zone ID"
 
-#: inc/Engine/Admin/Settings/Page.php:2042
+#: inc/Engine/Admin/Settings/Page.php:2058
 msgid "Development mode"
 msgstr "Geliştirme kipi"
 
-#: inc/Engine/Admin/Settings/Page.php:2044
+#: inc/Engine/Admin/Settings/Page.php:2060
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1722,11 +1754,11 @@ msgstr ""
 "Web sitenizde geçici olarak geliştirme kipini aktif edin. Bu ayar otomatik "
 "olarak 3 saat sonra kapanacak. %1$sDaha fazla bilgi edinin%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2052
+#: inc/Engine/Admin/Settings/Page.php:2068
 msgid "Optimal settings"
 msgstr "En uygun ayarlar"
 
-#: inc/Engine/Admin/Settings/Page.php:2053
+#: inc/Engine/Admin/Settings/Page.php:2069
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1734,11 +1766,11 @@ msgstr ""
 "Hız, performans puanı ve uyumluluk için Cloudflare yapılandırmanızı otomatik"
 " olarak iyileştirir."
 
-#: inc/Engine/Admin/Settings/Page.php:2061
+#: inc/Engine/Admin/Settings/Page.php:2077
 msgid "Relative protocol"
 msgstr "Göreli protokol"
 
-#: inc/Engine/Admin/Settings/Page.php:2062
+#: inc/Engine/Admin/Settings/Page.php:2078
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1748,11 +1780,11 @@ msgstr ""
 "dosyaların (CSS, JS, resimler) URL’leri, http:// veya https:// yerine // "
 "kullanmak için yeniden yazılacaktır."
 
-#: inc/Engine/Admin/Settings/Page.php:2100
+#: inc/Engine/Admin/Settings/Page.php:2116
 msgid "Sucuri credentials"
 msgstr "Sucuri kimlik bilgileri"
 
-#: inc/Engine/Admin/Settings/Page.php:2113
+#: inc/Engine/Admin/Settings/Page.php:2129
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
@@ -1761,7 +1793,7 @@ msgstr ""
 "Güvenlik Duvarı API anahtarı (eklenti için), {32 karakter}/{32 karakter} "
 "biçiminde olmak zorundadır:"
 
-#: inc/Engine/Admin/Settings/Page.php:2114
+#: inc/Engine/Admin/Settings/Page.php:2130
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "API anahtarınızı bulun"
@@ -1770,7 +1802,7 @@ msgstr "API anahtarınızı bulun"
 msgid "Upload file and import settings"
 msgstr "Dosyayı gönder ve ayarları içe aktar"
 
-#: inc/Engine/Admin/Settings/Settings.php:375
+#: inc/Engine/Admin/Settings/Settings.php:362
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1778,12 +1810,12 @@ msgstr ""
 "Sucuri Eklentisi: Sucuri güvenlik duvarı için API anahtarı, <code>{32 "
 "karakter}/{32 karakter}</code> biçiminde olmak zorundadır."
 
-#: inc/Engine/Admin/Settings/Settings.php:465
+#: inc/Engine/Admin/Settings/Settings.php:452
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Ayarlar kaydedildi."
 
-#: inc/Engine/Admin/Settings/Settings.php:681
+#: inc/Engine/Admin/Settings/Settings.php:668
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -2412,7 +2444,7 @@ msgstr "Şimdi yükselt"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:744 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:739 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "Bu bildirimi anımsatma"
 
@@ -2739,7 +2771,7 @@ msgstr ""
 "dosyalarının eksik olduğu görülüyor. Lütfen bu sorunu çözmek için  "
 "%1$sMyKinsta%2$s hesabınız aracılığıyla Kinsta desteği ile temasa geçin."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:114
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -2748,6 +2780,71 @@ msgstr ""
 "%1$s: Cloudflare’in HTTP/2 Sunucu Yollaması, Kullanılmayan CSS’yi Kaldır ve "
 "CSS Dosyalarını Birleştir’in özellikleriyle uyumlu değil. "
 "Etkisizleştirmenizi şiddetle öneririz."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:157
+msgid ""
+"Your site is using the official Cloudflare plugin. We have enabled "
+"Cloudflare auto-purge for compatibility. If you have APO activated, it is "
+"also compatible."
+msgstr ""
+"Siteniz resmi Cloudflare eklentisini kullanıyor. Uyumluluk için Cloudflare "
+"otomatik temizlemeyi etkinleştirdik. Eğer APO’nuzu aktif ettiyseniz, o da "
+"uyumludur."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:158
+msgid ""
+"Cloudflare cache will be purged each time WP Rocket clears its cache to "
+"ensure content is always up-to-date."
+msgstr ""
+"Cloudflare önbelleği, WP Rocket önbelleğini her temizlediğinde içeriğin her "
+"zaman güncel olmasını sağlamak için temizlenecektir."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:202
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
+"is not yet compatible with that feature."
+msgstr ""
+"%1$sWP Rocket:%2$s \"Değişken Tanımlama Bilgileri Önbelleği\"ni "
+"kullanıyorsunuz. Cloudflare APO henüz bu özellikle uyumlu değil."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:208
+#, php-format
+msgid ""
+"You should either disable Cloudflare APO or check with the theme/plugin "
+"requiring the use of “Dynamic Cookies Cache” developers for an alternative "
+"way to be page-cache friendly. %1$sMore info%2$s"
+msgstr ""
+"Sayfa önbelleği dostu olmanın alternatif bir yolu için ya Cloudflare APO’yu "
+"etkisizleştirmeli ya da “Değişken Tanımlama Bilgileri Önbelleği” "
+"geliştiricilerinin kullanımını gerektiren temayı/eklentiyi "
+"işaretlemelisiniz. %1$sDaha fazla bilgi%2$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:259
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
+"devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
+"Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
+msgstr ""
+"%1$sWP Rocket:%2$s \"Mobil cihazlar için önbellek dosyalarını ayır\"ı "
+"kullanıyorsunuz. Önbelleğin doğru sürümünü sunmak için Cloudflare APO’da "
+"\"Cihaz Türüne Göre Önbellekle\" %3$sayarını%5$s aktif etmeniz "
+"gerek.%4$sDaha fazla bilgi%5$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:280
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
+"APO. If you judge it necessary for the website to have a different cache on "
+"mobile and desktop, we suggest you enable our “Separate Cache Files for "
+"Mobiles Devices” to ensure the generated cache is accurate."
+msgstr ""
+"%1$sWP Rocket:%2$s Cloudflare APO’da \"Cihaz Türüne Göre Önbellekle\"yi "
+"etkinleştirdiniz. Eğer web sitesi için mobil ve masaüstünde farklı bir "
+"önbelleğe sahip olmasının gerekli olduğuna karar verirseniz, oluşturulan "
+"önbelleğin doğru olduğundan emin olmak için \"Mobil Cihazlar için Önbellek "
+"Dosyalarını Ayır\" seçeneğimizi etkinleştirmenizi öneririz."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -2865,8 +2962,8 @@ msgid ""
 "Remove Unused CSS is currently activated in Perfmatters. If you want to use "
 "WP Rocket's Remove Unused CSS feature, disable this option in Perfmatters."
 msgstr ""
-"Kullanılmayan CSS’yi Kaldır şu anda Perfmatters’ta etkin. Eğer WP Rocket’in "
-"Kullanılmayan CSS’yi Kaldır özelliğini kullanmak istiyorsanız, "
+"Kullanılmayan CSS’yi Kaldır şu anda Perfmatters’ta aktif edildi. Eğer WP "
+"Rocket’in Kullanılmayan CSS’yi Kaldır özelliğini kullanmak istiyorsanız, "
 "Perfmatters’ta bu seçeneği etkisizleştirin."
 
 #: inc/ThirdParty/Plugins/Optimization/RapidLoad.php:39
@@ -2876,9 +2973,9 @@ msgid ""
 "disable the  RapidLoad Power-Up for Autoptimize plugin."
 msgstr ""
 "Otomatikleştirilmiş kullanılmayan CSS kaldırma şu anda RapidLoad Power-Up "
-"for Autoptimize’da etkin. Eğer WP Rocket’in Kullanılmayan CSS’yi Kaldır "
-"özelliğini kullanmak istiyorsanız, RapidLoad Power-Up for Autoptimize "
-"eklentisini etkisizleştirin."
+"for Autoptimize’da aktif edildi. Eğer WP Rocket’in Kullanılmayan CSS’yi "
+"Kaldır özelliğini kullanmak istiyorsanız, RapidLoad Power-Up for Autoptimize"
+" eklentisini etkisizleştirin."
 
 #: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
 #, php-format
@@ -2965,7 +3062,7 @@ msgstr[1] "Aşağıdaki desenler geçersizdir ve kaldırıldı:"
 msgid "More info"
 msgstr "Daha fazla bilgi"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:753
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:748
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -3035,15 +3132,7 @@ msgstr ""
 "<strong>%s</strong>: Bir ya da daha fazla eklenti etkinleştirildi veya "
 "etkisizleştirildi, sitenizin ön ucunu etkilerse önbelleği temizleyin."
 
-#: inc/admin/ui/notices.php:190
-msgid ""
-"WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
-"be active at the same time."
-msgstr ""
-"WP Rocket Cloudflare Eklentisi benzer işlevsellikler sağlar. Aynı anda aktif"
-" edilemezler."
-
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:218
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -3052,11 +3141,11 @@ msgstr ""
 "<strong>%s</strong>: Aşağıdaki eklentiler bu eklenti ile uyumlu değil ve "
 "beklenmeyen sonuçlara neden olabilir:"
 
-#: inc/admin/ui/notices.php:229
+#: inc/admin/ui/notices.php:224
 msgid "Deactivate"
 msgstr "Devre Dışı Bırak"
 
-#: inc/admin/ui/notices.php:271
+#: inc/admin/ui/notices.php:266
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -3065,7 +3154,7 @@ msgstr ""
 "seçeneklerin doğru olarak çalışmasını önler. Eğer sorunlar yaşarsanız lütfen"
 " devre dşı bırakın."
 
-#: inc/admin/ui/notices.php:311
+#: inc/admin/ui/notices.php:306
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -3077,7 +3166,7 @@ msgstr ""
 "Genel%2$s sayfasında Endurance Önbelleğinin önbellek seviyesini Kapalı "
 "(Seviye 0) olarak ayarlayın."
 
-#: inc/admin/ui/notices.php:332
+#: inc/admin/ui/notices.php:327
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -3086,20 +3175,20 @@ msgstr ""
 "%1$s: Özel bir kalıcı bağlantı yapısı eklentinin düzgün bir şekilde "
 "çalışması için gereklidir. %2$sKalıcı bağlantılar ayarlarına gidin%3$s"
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:374
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
 "Eksik yazma izinlerinden dolayı %s .htaccess dosyasını yapılandıramadı."
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:842
+#: inc/admin/ui/notices.php:380 inc/admin/ui/notices.php:843
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Sorun giderme: %1$sSistem dosyalarını nasıl yazılabilir yaparsınız%2$s"
 
-#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:844
+#: inc/admin/ui/notices.php:382 inc/admin/ui/notices.php:845
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3107,7 +3196,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -3115,7 +3204,7 @@ msgstr ""
 "Endişelenmeyin, WP Rocket’in sayfa önbelleklemesi ve ayarları hala düzgün "
 "çalışacaktır."
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -3123,7 +3212,7 @@ msgstr ""
 "En iyi performans için .htaccess dosyanıza aşağıdaki satırları eklemeniz "
 "önerilir (gerekli değil):"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:535
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -3132,7 +3221,7 @@ msgstr ""
 "%1$s gitmeye hazır! %2$sYükleme sürenizi deneyin%4$s, ya da "
 "%3$sayarlarınızı%4$s ziyaret edin."
 
-#: inc/admin/ui/notices.php:581
+#: inc/admin/ui/notices.php:576
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -3140,16 +3229,16 @@ msgstr ""
 "WP Rocket’in hassas olmayan tanılama verilerini bu web sitesinden "
 "toplamasına izin verir misiniz?"
 
-#: inc/admin/ui/notices.php:582
+#: inc/admin/ui/notices.php:577
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 "Bu bize gelecekte WP Rocket’i sizin için iyileştirmemize yardımcı olacak."
 
-#: inc/admin/ui/notices.php:588
+#: inc/admin/ui/notices.php:583
 msgid "What info will we collect?"
 msgstr "Ne tür bilgi toplayacağız?"
 
-#: inc/admin/ui/notices.php:593
+#: inc/admin/ui/notices.php:588
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -3161,64 +3250,68 @@ msgstr ""
 "e-posta adresini (lisans doğrulaması hariç), IP adresini ya da üçüncü taraf "
 "API anahtarını iletmez."
 
-#: inc/admin/ui/notices.php:602
+#: inc/admin/ui/notices.php:597
 msgid "Yes, allow"
 msgstr "Evet, izin ver"
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:600
 msgid "No, thanks"
 msgstr "Hayır, teşekkürler"
 
-#: inc/admin/ui/notices.php:644
+#: inc/admin/ui/notices.php:639
 msgid "Thank you!"
 msgstr "Teşekkür ederiz!"
 
-#: inc/admin/ui/notices.php:649
+#: inc/admin/ui/notices.php:644
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket web sitenizden şimdi şu ölçümleri toplar:"
 
-#: inc/admin/ui/notices.php:687
+#: inc/admin/ui/notices.php:682
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Önbellek temizlendi."
 
-#: inc/admin/ui/notices.php:694
+#: inc/admin/ui/notices.php:689
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Yazı önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:701
+#: inc/admin/ui/notices.php:696
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Terim önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:708
+#: inc/admin/ui/notices.php:703
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Kullanıcı önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:756
+#: inc/admin/ui/notices.php:751
 msgid "Stop Preload"
 msgstr "Önyüklemeyi durdur"
 
-#: inc/admin/ui/notices.php:762
+#: inc/admin/ui/notices.php:757
 msgid "Turn on Remove Unused CSS"
 msgstr "Kullanılmayan CSS’yi Kaldır’ı Aç"
 
-#: inc/admin/ui/notices.php:780
+#: inc/admin/ui/notices.php:763
+msgid "Enable “Separate Cache Files for Mobile Devices” now"
+msgstr "“Mobil Cihazlar İçin Önbellek Dosyalarını Ayır”ı şimdi etkinleştir"
+
+#: inc/admin/ui/notices.php:781
 msgid "Force deactivation "
 msgstr "Devre dışı bırakmaya zorla"
 
-#: inc/admin/ui/notices.php:799
+#: inc/admin/ui/notices.php:800
 msgid "The following code should have been written to this file:"
 msgstr "Aşağıdaki kod bu dosyaya yazılmalıdır:"
 
-#: inc/admin/ui/notices.php:830
+#: inc/admin/ui/notices.php:831
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "Eksik yazma izinlerinden dolayı %s kendini yapılandıramıyor."
 
-#: inc/admin/ui/notices.php:836
+#: inc/admin/ui/notices.php:837
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Etkilenen dosya/klasör: %s"
@@ -3453,6 +3546,16 @@ msgstr ""
 #: inc/deprecated/3.5.php:271
 msgid "Connection to Cloudflare failed"
 msgstr "Cloudflare’a bağlantı başarısız oldu"
+
+#: inc/deprecated/3.5.php:587
+#, php-format
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
+
+#: inc/deprecated/3.5.php:592
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr ""
+"<strong>WP Rocket:</strong> Cloudflare önbelleği başarılı olarak temizlendi."
 
 #: inc/deprecated/DeprecatedClassTrait.php:54
 #, php-format
@@ -3987,11 +4090,11 @@ msgid "Import settings"
 msgstr "Ayarları içe aktarın"
 
 #: views/settings/fields/one-click-addon.php:43
-#: views/settings/fields/rocket-addon.php:33
+#: views/settings/fields/rocket-addon.php:43
 msgid "Add-on status"
 msgstr "Eklenti durumu"
 
-#: views/settings/fields/rocket-addon.php:56
+#: views/settings/fields/rocket-addon.php:72
 msgid "Modify options"
 msgstr "Seçenekleri değiştir"
 
