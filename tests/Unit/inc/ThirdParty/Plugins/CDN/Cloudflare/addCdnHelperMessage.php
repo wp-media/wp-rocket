@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use Brain\Monkey\Functions;
 
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_cdn_helper_message
@@ -36,13 +37,19 @@ class Test_addCdnHelperMessage extends TestCase {
      */
     protected $cloudflare;
 
+	/**
+	 * @var CloudflareFacade
+	 */
+	protected $facade;
+
     public function set_up() {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
         $this->options_api = Mockery::mock(Options::class);
         $this->beacon = Mockery::mock(Beacon::class);
+		$this->facade = Mockery::mock(CloudflareFacade::class);
 
-        $this->cloudflare = new Cloudflare($this->options, $this->options_api, $this->beacon);
+        $this->cloudflare = new Cloudflare($this->options, $this->options_api, $this->beacon, $this->facade);
     }
 
     /**
