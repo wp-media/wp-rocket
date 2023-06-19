@@ -344,19 +344,6 @@ class Settings {
 		// Option : fonts to preload.
 		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
 
-		// Options : CloudFlare.
-		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
-		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
-		$input['cloudflare_api_key']          = isset( $input['cloudflare_api_key'] ) ? sanitize_text_field( $input['cloudflare_api_key'] ) : '';
-		$input['cloudflare_zone_id']          = isset( $input['cloudflare_zone_id'] ) ? sanitize_text_field( $input['cloudflare_zone_id'] ) : '';
-		$input['cloudflare_devmode']          = isset( $input['cloudflare_devmode'] ) && is_numeric( $input['cloudflare_devmode'] ) ? (int) $input['cloudflare_devmode'] : 0;
-		$input['cloudflare_auto_settings']    = ( isset( $input['cloudflare_auto_settings'] ) && is_numeric( $input['cloudflare_auto_settings'] ) ) ? (int) $input['cloudflare_auto_settings'] : 0;
-		$input['cloudflare_protocol_rewrite'] = ! empty( $input['cloudflare_protocol_rewrite'] ) ? 1 : 0;
-
-		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
-			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
-		}
-
 		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
 
