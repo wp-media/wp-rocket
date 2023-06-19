@@ -6,6 +6,7 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * WooCommerce compatibility
@@ -14,6 +15,7 @@ use WP_Rocket\Traits\Config_Updater;
  */
 class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use Config_Updater;
+	use ReturnTypesTrait;
 
 	/**
 	 * The WordPress Event Manager
@@ -92,6 +94,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
 			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
+
+			$events['wp_ajax_woocommerce_product_ordering'] = [ 'allow_clean_post', 9 ];
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -591,5 +595,14 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$exclusions_gallery = apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions_gallery );
 
 		return array_merge( $exclusions, $exclusions_gallery );
+	}
+
+	/**
+	 * Disable rocket clean post.
+	 *
+	 * @return void
+	 */
+	public function allow_clean_post() {
+		add_filter( 'rocket_allow_clean_post', [ $this, 'return_true' ] );
 	}
 }
