@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Adi Azudin <adi.azudin@gmail.com>, 2019
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -285,7 +285,7 @@ msgid "Minify HTML"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
+msgid "Minify CSS"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:77

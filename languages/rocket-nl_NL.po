@@ -5,7 +5,7 @@
 # Thom, 2019
 # Niels Hoogenhout <info@aphotrax.eu>, 2019
 # Noëll van Peppix Benelux <ntaravati@peppix.nl>, 2019
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -285,7 +285,7 @@ msgid "Minify HTML"
 msgstr "HTML verkleinen"
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
+msgid "Minify CSS"
 msgstr "CSS verkleinen/combineren"
 
 #: inc/admin/ui/meta-boxes.php:77
