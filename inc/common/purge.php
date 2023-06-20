@@ -176,7 +176,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	/**
 	 * Filters post cache cleaning.
 	 *
-	 * @param array $allow_clean_post Allow cleaning post cache if true; otherwise false.
+	 * @param bool $allow_clean_post Allow cleaning post cache if true; otherwise false.
 	 */
 	if ( ! apply_filters( 'rocket_allow_clean_post', true ) ) {
 		return false;
