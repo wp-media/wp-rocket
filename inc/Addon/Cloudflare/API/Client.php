@@ -151,7 +151,7 @@ class Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	private function do_remote_request( string $path, string $method = 'GET', array $data ) {
+	private function do_remote_request( string $path, string $method = 'GET', array $data = [] ) {
 		$this->args['method'] = strtoupper( $method );
 
 		$headers = [
