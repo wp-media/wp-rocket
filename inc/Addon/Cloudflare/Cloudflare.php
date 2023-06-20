@@ -6,6 +6,7 @@ namespace WP_Rocket\Addon\Cloudflare;
 use CloudFlare\IpRewrite;
 use DateTimeImmutable;
 use WP_Error;
+use WP_Post;
 use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Addon\Cloudflare\API\Endpoints;
@@ -93,12 +94,10 @@ class Cloudflare {
 			$site_url = domain_mapping_siteurl( $site_url );
 		}
 
-		if ( ! empty( $result ) ) {
-			$parsed_url = wp_parse_url( $site_url );
+		$parsed_url = wp_parse_url( $site_url );
 
-			if ( is_object( $result ) && property_exists( $result, 'name' ) && false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
-				$zone_found = true;
-			}
+		if ( property_exists( $result, 'name' ) && false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
+			$zone_found = true;
 		}
 
 		if ( ! $zone_found ) {
@@ -195,11 +194,7 @@ class Cloudflare {
 	 *
 	 * @return string
 	 */
-	private function convert_time( $value ): string {
-		if ( ! is_int( $value ) ) {
-			$value = 0;
-		}
-
+	private function convert_time( int $value ): string {
 		$base   = new DateTimeImmutable( '@0' );
 		$time   = new DateTimeImmutable( "@$value" );
 		$format = '%a ' . __( 'days', 'rocket' );
@@ -320,6 +315,11 @@ class Cloudflare {
 			return $cf_settings;
 		}
 
+		$browser_cache_ttl = 0;
+		$cache_level       = '';
+		$rocket_loader     = '';
+		$cf_minify         = '';
+
 		foreach ( $cf_settings as $cloudflare_option ) {
 			switch ( $cloudflare_option->id ) {
 				case 'browser_cache_ttl':
@@ -372,11 +372,7 @@ class Cloudflare {
 
 		$cf_ips = $this->endpoints->get_ips();
 
-		if (
-			is_wp_error( $cf_ips )
-			||
-			empty( $cf_ips )
-		) {
+		if ( is_wp_error( $cf_ips ) ) {
 			// Set default IPs from Cloudflare if call to Cloudflare /ips API does not contain a success.
 			// Prevents from making API calls on each page load.
 			$cf_ips = $this->get_default_ips();

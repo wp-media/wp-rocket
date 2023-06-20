@@ -131,7 +131,11 @@ class Client {
 
 		$content = json_decode( $content );
 
-		if ( empty( $content->success ) ) {
+		if (
+			empty( $content->success )
+			||
+			empty( $content->result )
+		) {
 			return $this->set_request_error( $content );
 		}
 
@@ -147,8 +151,8 @@ class Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	private function do_remote_request( string $path, string $method, array $data ) {
-		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
+	private function do_remote_request( string $path, string $method = 'GET', array $data ) {
+		$this->args['method'] = strtoupper( $method );
 
 		$headers = [
 			'User-Agent'   => 'wp-rocket/' . rocket_get_constant( 'WP_ROCKET_VERSION' ),

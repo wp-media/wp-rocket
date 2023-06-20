@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\Admin;
 
+use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -63,6 +64,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$errors  = '';
 		$success = '';
+		$pre     = '';
 		delete_transient( $user_id . '_cloudflare_update_settings' );
 
 		if ( isset( $notices['pre'] ) ) {

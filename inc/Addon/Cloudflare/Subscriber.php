@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
