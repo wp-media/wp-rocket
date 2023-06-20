@@ -131,12 +131,12 @@ class Client {
 
 		$content = json_decode( $content );
 
-		if (
-			empty( $content->success )
-			||
-			empty( $content->result )
-		) {
+		if ( empty( $content->success ) ) {
 			return $this->set_request_error( $content );
+		}
+
+		if ( ! property_exists( $content, 'result' ) ) {
+			return new WP_Error( 'cloudflare_no_reply', __( 'Missing Cloudflare result.', 'rocket' ) );
 		}
 
 		return $content->result;
