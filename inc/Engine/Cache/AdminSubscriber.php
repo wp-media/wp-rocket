@@ -50,7 +50,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
-
 		return [
 			'admin_init'            => [
 				[ 'register_terms_row_action' ],
@@ -176,7 +175,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.13.3', '>=' ) ) {
+		if ( version_compare( $old_version, '3.15', '<=' ) ) {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
