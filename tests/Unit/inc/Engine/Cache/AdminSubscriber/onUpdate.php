@@ -34,7 +34,7 @@ class Test_onUpdate extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config )
 	{
-		if($config['is_superior']) {
+		if( ! $config['is_superior'] ) {
 			Functions\expect('rocket_generate_advanced_cache_file')->never();
 		} else {
 			Functions\expect('rocket_generate_advanced_cache_file');
