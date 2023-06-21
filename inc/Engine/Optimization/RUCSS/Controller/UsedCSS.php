@@ -835,7 +835,12 @@ class UsedCSS {
 
 		foreach ( $rows as  $row ) {
 			$failed_urls[] = $row->url;
-			$this->used_css_query->revert_to_pending( $row->id );
+
+			if ( empty( $row->id ) || ! is_int( $row->id ) ) {
+				continue;
+			}
+
+			$this->used_css_query->revert_to_pending( (int) $row->id );
 		}
 
 		/**
