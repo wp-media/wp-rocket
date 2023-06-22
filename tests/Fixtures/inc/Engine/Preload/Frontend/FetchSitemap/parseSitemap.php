@@ -56,5 +56,5 @@ return [
 				'children2',
 			]
 		],
-	],
+	]
 ];
