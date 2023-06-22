@@ -172,16 +172,6 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  * @param WP_Post $post    WP_Post object.
  */
 function rocket_clean_post( $post_id, $post = null ) {
-
-	/**
-	 * Filters post cache cleaning.
-	 *
-	 * @param bool $allow_clean_post Allow cleaning post cache if true; otherwise false.
-	 */
-	if ( ! apply_filters( 'rocket_allow_clean_post', true ) ) {
-		return false;
-	}
-
 	static $done = [];
 
 	if ( isset( $done[ $post_id ] ) ) {
