@@ -19,7 +19,7 @@ class Client {
 	/**
 	 * An array of arguments for wp_remote_request()
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	protected $args = [];
 
@@ -50,8 +50,8 @@ class Client {
 	/**
 	 * API call method for sending requests using GET.
 	 *
-	 * @param string $path Path of the endpoint.
-	 * @param array  $data Data to be sent along with the request.
+	 * @param string  $path Path of the endpoint.
+	 * @param mixed[] $data Data to be sent along with the request.
 	 *
 	 * @return object
 	 */
@@ -130,6 +130,10 @@ class Client {
 		}
 
 		$content = json_decode( $content );
+
+		if ( ! is_object( $content ) ) {
+			return new WP_Error( 'cloudflare_content_error', __( 'Cloudflare unexpected response', 'rocket' ) );
+		}
 
 		if ( empty( $content->success ) ) {
 			return $this->set_request_error( $content );

@@ -22,6 +22,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * This notice is displayed after purging the CloudFlare cache.
+	 *
+	 * @return void
 	 */
 	public function maybe_display_purge_notice() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
@@ -47,6 +49,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * This notice is displayed after modifying the CloudFlare settings.
+	 *
+	 * @return void
 	 */
 	public function maybe_display_update_settings_notice() {
 		$screen = get_current_screen();

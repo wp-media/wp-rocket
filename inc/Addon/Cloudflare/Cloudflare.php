@@ -444,6 +444,8 @@ class Cloudflare {
 
 	/**
 	 * Fixes Cloudflare Flexible SSL redirect loop
+	 *
+	 * @return void
 	 */
 	public static function fix_cf_flexible_ssl() {
 		$ip_rewrite = self::set_ip_rewrite();
