@@ -483,6 +483,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function exclude_private_post_url( $regexes ) : array {
 		static $private_urls;
+		$private_post_urls = [];
 
 		if ( isset( $private_urls ) ) {
 			return $private_urls;
