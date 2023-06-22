@@ -483,7 +483,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function exclude_private_post_url( $regexes ) : array {
 		static $private_urls;
-		$private_post_urls = [];
 
 		if ( isset( $private_urls ) ) {
 			return $private_urls;
@@ -500,6 +499,7 @@ class Subscriber implements Subscriber_Interface {
 			return $regexes;
 		}
 
+		$private_post_urls = [];
 		foreach ( $query->posts as $post ) {
 			// Temporarily cast publish status to get pretty url.
 			$post->post_status   = 'publish';
