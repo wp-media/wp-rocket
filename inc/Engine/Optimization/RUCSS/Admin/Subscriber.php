@@ -455,7 +455,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function display_wrong_license_notice() {
-		$transient = get_transient( 'wp_rocket_no_licence' );
+		$transient = get_option( 'wp_rocket_no_licence' );
 
 		if ( ! $transient ) {
 			return;
@@ -712,7 +712,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function disable_russ_on_wrong_license() {
-		if ( false !== get_transient( 'wp_rocket_no_licence' ) ) {
+		if ( false !== (bool) get_option( 'wp_rocket_no_licence' ) ) {
 			return false;
 		}
 		return null;

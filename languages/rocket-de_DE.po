@@ -10,9 +10,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.13\n"
+"Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-04-14 10:33-0400\n"
+"POT-Creation-Date: 2023-06-12 13:56-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Christian Herrmann, 2023\n"
 "Language-Team: German (Germany) (https://app.transifex.com/wp-media/teams/18133/de_DE/)\n"
@@ -54,20 +54,20 @@ msgstr ""
 "Deine Website ist bei %s gehostet, wir haben daher das automatische Leeren "
 "des serverseitigen Varnish-Caches aktiviert."
 
-#: inc/Addon/Cloudflare/APIClient.php:309
+#: inc/Addon/Cloudflare/API/Client.php:129
 msgid "Cloudflare did not provide any reply. Please try again later."
 msgstr ""
 "Cloudflare hat keine Antwort zurückgegeben. Bitte versuche es später erneut."
 
-#: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:112
+#: inc/Addon/Cloudflare/API/Client.php:186 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
 msgstr "Ungültige Cloudflare-E-Mail-Adresse oder API-Schlüssel."
 
-#: inc/Addon/Cloudflare/APIClient.php:322
-#: inc/Addon/Cloudflare/APIClient.php:335
-#: inc/Addon/Cloudflare/Cloudflare.php:112
-#: inc/Addon/Cloudflare/Cloudflare.php:144
+#: inc/Addon/Cloudflare/API/Client.php:190
+#: inc/Addon/Cloudflare/API/Client.php:204
+#: inc/Addon/Cloudflare/Cloudflare.php:74
+#: inc/Addon/Cloudflare/Cloudflare.php:109
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
 #: inc/deprecated/3.5.php:92 inc/deprecated/3.5.php:116
 #: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
@@ -76,11 +76,11 @@ msgstr "Ungültige Cloudflare-E-Mail-Adresse oder API-Schlüssel."
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "Lies die %1$sDokumentation%2$s für weitere Hinweise."
 
-#: inc/Addon/Cloudflare/APIClient.php:324
-#: inc/Addon/Cloudflare/APIClient.php:337
-#: inc/Addon/Cloudflare/Cloudflare.php:101
-#: inc/Addon/Cloudflare/Cloudflare.php:114
-#: inc/Addon/Cloudflare/Cloudflare.php:146 inc/deprecated/3.5.php:81
+#: inc/Addon/Cloudflare/API/Client.php:192
+#: inc/Addon/Cloudflare/API/Client.php:206
+#: inc/Addon/Cloudflare/Auth/APIKey.php:63
+#: inc/Addon/Cloudflare/Cloudflare.php:76
+#: inc/Addon/Cloudflare/Cloudflare.php:111 inc/deprecated/3.5.php:81
 #: inc/deprecated/3.5.php:94 inc/deprecated/3.5.php:118
 #: inc/deprecated/3.5.php:131 inc/deprecated/3.5.php:159
 #: inc/deprecated/3.5.php:175 inc/deprecated/3.5.php:208
@@ -91,11 +91,11 @@ msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
 
-#: inc/Addon/Cloudflare/APIClient.php:331 inc/deprecated/3.5.php:125
+#: inc/Addon/Cloudflare/API/Client.php:200 inc/deprecated/3.5.php:125
 msgid "Incorrect Cloudflare Zone ID."
 msgstr "Ungültige Cloudflare Zone ID."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:99
+#: inc/Addon/Cloudflare/Auth/APIKey.php:61
 #, php-format
 msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
@@ -104,92 +104,114 @@ msgstr ""
 "Cloudflare-E-Mail und/oder API-Schlüssel sind nicht eingerichtet. Lies die "
 "%1$sDokumentation%2$s für weitere Anleitung."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:108 inc/deprecated/3.5.php:88
+#: inc/Addon/Cloudflare/Cloudflare.php:70 inc/deprecated/3.5.php:88
 msgid "Missing Cloudflare Zone ID."
 msgstr "Fehlende Cloudflare Zone ID."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:140 inc/deprecated/3.5.php:153
+#: inc/Addon/Cloudflare/Cloudflare.php:105 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
 msgstr "Wie es aussieht, ist deine Domain nicht auf Cloudflare eingerichtet."
 
-#: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:587
+#: inc/Addon/Cloudflare/Cloudflare.php:205
+msgid "days"
+msgstr "Tage"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:208
+msgid "seconds"
+msgstr "Sekunden"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:210
+msgid "minutes"
+msgstr "Minuten"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:212
+msgid "hours"
+msgstr "Stunden"
+
+#: inc/Addon/Cloudflare/Subscriber.php:224
+#: inc/Addon/Cloudflare/Subscriber.php:253
 #, php-format
-msgid "<strong>WP Rocket:</strong> %s"
-msgstr "<strong>WP Rocket:</strong> %s"
+msgid "%1$sWP Rocket:%2$s %3$s"
+msgstr "%1$sWP Rocket:%2$s %3$s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:592
-msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
-msgstr "<strong>WP Rocket:</strong> Cloudflare-Cache erfolgreich geleert."
+#: inc/Addon/Cloudflare/Subscriber.php:242
+#, php-format
+msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
+msgstr "%1$sWP Rocket:%2$s Cloudflare-Cache erfolgreich geleert."
 
-#: inc/Addon/Cloudflare/Subscriber.php:364
-#: inc/Addon/Cloudflare/Subscriber.php:370
-#: inc/Addon/Cloudflare/Subscriber.php:390
-#: inc/Addon/Cloudflare/Subscriber.php:401
-#: inc/Addon/Cloudflare/Subscriber.php:420
-#: inc/Addon/Cloudflare/Subscriber.php:426
-#: inc/Addon/Cloudflare/Subscriber.php:445
-#: inc/Addon/Cloudflare/Subscriber.php:451
-#: inc/Addon/Cloudflare/Subscriber.php:470
-#: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:184
-#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
-msgid "WP Rocket: "
-msgstr "WP Rocket: "
-
-#: inc/Addon/Cloudflare/Subscriber.php:364
+#: inc/Addon/Cloudflare/Subscriber.php:297
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Fehler mit Cloudflare Development Mode: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:370
+#: inc/Addon/Cloudflare/Subscriber.php:304
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare Development Mode: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:390
+#: inc/Addon/Cloudflare/Subscriber.php:321
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Fehler mit Cloudflare Cache Level: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:395
+#: inc/Addon/Cloudflare/Subscriber.php:328
 msgctxt "Cloudflare caching level"
-msgid "Standard"
+msgid "standard"
 msgstr "Standard"
 
-#: inc/Addon/Cloudflare/Subscriber.php:401
+#: inc/Addon/Cloudflare/Subscriber.php:334
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare Cache Level: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:420
+#: inc/Addon/Cloudflare/Subscriber.php:350
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Fehler mit Cloudflare Minification: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:426
+#: inc/Addon/Cloudflare/Subscriber.php:357
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Cloudflare Minification: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:445
+#: inc/Addon/Cloudflare/Subscriber.php:373
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Fehler mit Cloudflare RocketLoader: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:451
+#: inc/Addon/Cloudflare/Subscriber.php:380
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare RocketLoader: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:470
+#: inc/Addon/Cloudflare/Subscriber.php:396
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Fehler mit CloudFlare Browser Cache: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:476
+#: inc/Addon/Cloudflare/Subscriber.php:403
 #, php-format
-msgid "Cloudflare browser cache set to %s seconds"
-msgstr "CloudFlare Browser Cache: %s Sekunden"
+msgid "Cloudflare browser cache set to %s"
+msgstr "Cloudflare-Browsercache auf %s eingestellt"
+
+#: inc/Addon/Cloudflare/Subscriber.php:512
+#, php-format
+msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
+msgstr "%1$sWP Rocket:%2$s Optimale Einstellungen für Cloudflare aktiviert:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:521
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
+"previous settings:"
+msgstr ""
+"%1$sWP Rocket:%2$s Optimale Einstellungen für Cloudflare wurden deaktiviert "
+"und die vorherigen Einstellungen wiederhergestellt:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:184
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
+msgid "WP Rocket: "
+msgstr "WP Rocket: "
 
 #: inc/Addon/Sucuri/Subscriber.php:95
 #, php-format
@@ -919,22 +941,23 @@ msgstr "Ein-Klick-Exklusionen"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
-"When using this feature you may notice that it takes some time, or user "
-"interaction for specific elements, e.g. a menu, or a form that is located in"
-" the viewport, to appear."
+"When using the Delay JavaScript Execution, you might experience delay "
+"loading elements located in the viewport that need to appear immediately - "
+"e.g. slider, header, menu."
 msgstr ""
-"Wenn du diese Funktion benutzt, stellst du womöglich fest, dass es einige "
-"Zeit dauert, oder eine Benutzerinteraktion braucht, bis bestimmte Elemente, "
-"z. B. ein Menü oder ein Formular, das sich im Ansichtsfenster befindet, "
-"erscheinen."
+"Wenn du die Ausführung von JavaScript verzögerst, kann es zu Verzögerungen "
+"beim Laden von Elementen im Viewport kommen, die sofort angezeigt werden "
+"müssen, z. B. Slider, Header, Menü."
 
 #: inc/Engine/Admin/Settings/Page.php:944
 msgid ""
-"If you are using any of the following plugins/themes/services you can "
-"prevent that, by selecting them below."
+"If you need instant visibility, click below on files that should NOT be "
+"delayed. This selection will help users interact with the elements straight "
+"away."
 msgstr ""
-"Falls du folgende Plugins/Themes/Dienste benutzt, kannst du das verhindern, "
-"indem du sie unten auswählst."
+"Wenn du sofortige Sichtbarkeit brauchst, klicke unten auf die Dateien, die "
+"NICHT verzögert werden sollten. Diese Auswahl hilft den Nutzern, sofort mit "
+"den Elementen zu interagieren."
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid ""
@@ -1589,16 +1612,16 @@ msgstr "Rocket Add-ons"
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr "Rocket Add-ons erweitern den Funktionsumfang um zusätzliche Features."
 
-#: inc/Engine/Admin/Settings/Page.php:1818
-#: inc/Engine/Admin/Settings/Page.php:1970
+#: inc/Engine/Admin/Settings/Page.php:1817
+#: inc/Engine/Admin/Settings/Page.php:1986
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1824
+#: inc/Engine/Admin/Settings/Page.php:1823
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integriere dein Cloudflare-Konto mit diesem Add-on."
 
-#: inc/Engine/Admin/Settings/Page.php:1825
+#: inc/Engine/Admin/Settings/Page.php:1824
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1608,17 +1631,28 @@ msgstr ""
 "Rocket auswählen kannst, gib hier die folgenden in deinem Cloudflare-Konto "
 "hinterlegten Daten ein: E-Mail-Adresse, globaler API-Schlüssel, Domain"
 
-#: inc/Engine/Admin/Settings/Page.php:1859
+#: inc/Engine/Admin/Settings/Page.php:1827
+#, php-format
+msgid ""
+"%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
+"activate the official Cloudflare plugin and configure it. WP Rocket will "
+"automatically enable compatibility."
+msgstr ""
+"%1$sPlanst du, Automatic Platform Optimization (APO) einzusetzen?%2$s "
+"Aktiviere einfach das offizielle Cloudflare-Plugin und konfiguriere es. WP "
+"Rocket wird automatisch für Kompatibilität sorgen."
+
+#: inc/Engine/Admin/Settings/Page.php:1875
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1865
+#: inc/Engine/Admin/Settings/Page.php:1881
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Du musst diese Einstellung aktivieren, wenn Varnish auf deinem Server aktiv "
 "ist."
 
-#: inc/Engine/Admin/Settings/Page.php:1867
+#: inc/Engine/Admin/Settings/Page.php:1883
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1627,15 +1661,15 @@ msgstr ""
 "Der Varnish-Cache wird automatisch jedes Mal geleert, wenn der Cache von WP "
 "Rocket geleert wird, damit er immer aktuell ist.<br>%1$sMehr erfahren%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1902
+#: inc/Engine/Admin/Settings/Page.php:1918
 msgid "WebP Compatibility"
 msgstr "WebP-Kompatibilität"
 
-#: inc/Engine/Admin/Settings/Page.php:1908
+#: inc/Engine/Admin/Settings/Page.php:1924
 msgid "Improve browser compatibility for WebP images."
 msgstr "Browserkompatibilität für WebP-Bilder verbessern"
 
-#: inc/Engine/Admin/Settings/Page.php:1912
+#: inc/Engine/Admin/Settings/Page.php:1928
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -1648,11 +1682,11 @@ msgstr ""
 "Bilder für dich erstellen kann. Dür das Erstellen von WebP-Bildern empfehlen"
 " wir %1$sImagify%2$s. %3$sMehr erfahren%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1932
+#: inc/Engine/Admin/Settings/Page.php:1948
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Sucuri-Cache leeren, wenn der Cache von WP Rocket geleert wird."
 
-#: inc/Engine/Admin/Settings/Page.php:1935
+#: inc/Engine/Admin/Settings/Page.php:1951
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1660,48 +1694,48 @@ msgstr ""
 "Gib deinen API-Schlüssel an, um auch den Sucuri-Cache zu leeren, sobald der "
 "Cache von WP Rocket geleert wird."
 
-#: inc/Engine/Admin/Settings/Page.php:1943
-#: inc/Engine/Admin/Settings/Page.php:2087
+#: inc/Engine/Admin/Settings/Page.php:1959
+#: inc/Engine/Admin/Settings/Page.php:2103
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1949
+#: inc/Engine/Admin/Settings/Page.php:1965
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sucuri-Cache mit diesem Add-on synchronisieren."
 
-#: inc/Engine/Admin/Settings/Page.php:1987
+#: inc/Engine/Admin/Settings/Page.php:2003
 msgid "Cloudflare credentials"
 msgstr "Cloudflare-Zugangsdaten"
 
-#: inc/Engine/Admin/Settings/Page.php:1996
+#: inc/Engine/Admin/Settings/Page.php:2012
 msgid "Cloudflare settings"
 msgstr "Cloudflare-Einstellungen"
 
-#: inc/Engine/Admin/Settings/Page.php:2010
+#: inc/Engine/Admin/Settings/Page.php:2026
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globaler API-Schlüssel:"
 
-#: inc/Engine/Admin/Settings/Page.php:2011
+#: inc/Engine/Admin/Settings/Page.php:2027
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "API-Schlüssel finden"
 
-#: inc/Engine/Admin/Settings/Page.php:2023
+#: inc/Engine/Admin/Settings/Page.php:2039
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "E-Mail-Adresse des Kontos"
 
-#: inc/Engine/Admin/Settings/Page.php:2032
+#: inc/Engine/Admin/Settings/Page.php:2048
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/Engine/Admin/Settings/Page.php:2042
+#: inc/Engine/Admin/Settings/Page.php:2058
 msgid "Development mode"
 msgstr "Entwicklungsmodus"
 
-#: inc/Engine/Admin/Settings/Page.php:2044
+#: inc/Engine/Admin/Settings/Page.php:2060
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1711,11 +1745,11 @@ msgstr ""
 "Einstellung wird nach 3 Stunden automatisch deaktiviert. %1$sMehr "
 "erfahren%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2052
+#: inc/Engine/Admin/Settings/Page.php:2068
 msgid "Optimal settings"
 msgstr "Optimale Einstellungen"
 
-#: inc/Engine/Admin/Settings/Page.php:2053
+#: inc/Engine/Admin/Settings/Page.php:2069
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1723,11 +1757,11 @@ msgstr ""
 "Verbessert deine Cloudflare-Konfiguration automatischen hinsichtlich "
 "Geschwindigkeit, Leistungsfähigkeit und Kompatibilität."
 
-#: inc/Engine/Admin/Settings/Page.php:2061
+#: inc/Engine/Admin/Settings/Page.php:2077
 msgid "Relative protocol"
 msgstr "Relatives Protokoll"
 
-#: inc/Engine/Admin/Settings/Page.php:2062
+#: inc/Engine/Admin/Settings/Page.php:2078
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1737,20 +1771,20 @@ msgstr ""
 "statischer Dateien (CSS, JS, Bilder) werden auf // anstatt http:// oder "
 "https:// umgeschrieben."
 
-#: inc/Engine/Admin/Settings/Page.php:2100
+#: inc/Engine/Admin/Settings/Page.php:2116
 msgid "Sucuri credentials"
 msgstr "Sucuri-Zugangsdaten"
 
-#: inc/Engine/Admin/Settings/Page.php:2113
+#: inc/Engine/Admin/Settings/Page.php:2129
 msgctxt "Sucuri"
 msgid ""
-"Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
-"characters}</code>:"
+"Firewall API key (for plugin), must be in format {32 characters}/{32 "
+"characters}:"
 msgstr ""
-"Firewall API-Schlüssel (für Plugin), muss im Format <code>{32 Zeichen}/{32 "
-"Zeichen}</code> sein:"
+"Firewall-API-Schlüssel (für Plugin) muss das Format {32 Zeichen}/{32 "
+"Zeichen} aufweisen:"
 
-#: inc/Engine/Admin/Settings/Page.php:2114
+#: inc/Engine/Admin/Settings/Page.php:2130
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "API-Schlüssel finden"
@@ -1759,7 +1793,7 @@ msgstr "API-Schlüssel finden"
 msgid "Upload file and import settings"
 msgstr "Datei hochladen und Einstellungen importieren."
 
-#: inc/Engine/Admin/Settings/Settings.php:375
+#: inc/Engine/Admin/Settings/Settings.php:362
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1767,12 +1801,12 @@ msgstr ""
 "Sucuri Add-on: Der API-Schlüssel für die Sucuri-Firewall muss im Format "
 "<code>{32 Zeichen}/{32 Zeichen}</code> sein:"
 
-#: inc/Engine/Admin/Settings/Settings.php:465
+#: inc/Engine/Admin/Settings/Settings.php:452
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
-#: inc/Engine/Admin/Settings/Settings.php:681
+#: inc/Engine/Admin/Settings/Settings.php:668
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -1877,8 +1911,8 @@ msgid "To use RocketCDN, replace your CNAME with %1$s%2$s%3$s."
 msgstr "Um RocketCDN zu benutzen, ersetze deinen CNAME mit %1$s%2$s%3$s."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:226
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:324
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:230
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sMehr erfahren%2$s"
@@ -2113,18 +2147,18 @@ msgstr "Asynchrones Laden von CSS in den WP-Rocket-Einstellungen aktivieren"
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "Asynchrones Laden von CSS in den Optionen oben aktivieren"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:176
 msgid "Critical CSS generation is currently running."
 msgstr "Kritisches CSS wird gerade neu erstellt."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:159
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:181
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr ""
 "Gehe zu den %1$sEinstellungen von WP Rocket%2$s, um den Fortschritt zu "
 "beobachten."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:374
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:396
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2133,19 +2167,33 @@ msgstr ""
 "Kritisches CSS wird gerade neu erstellt: %1$d von %2$d Seiten-Typen "
 "komplett. (Seite neu laden für aktuellen Stand)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:450
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:472
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Kritisches CSS erstellt für %1$d von %2$d Seiten-Typen."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 "Bei der Erzeugung von Kritischem CSS sind ein oder mehr Fehler aufgetreten."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Learn more."
 msgstr "Mehr erfahren."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:840
+#, php-format
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+"Wir empfehlen dringend das %1$saktualisierte Entfernen von unbenutzem "
+"CSS%2$s für eine bessere CSS-Optimierung. CSS-Dateien asynchron laden ist "
+"als Ersatz immer verfügbar."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:845
+msgid "Stay with the old option"
+msgstr "Bei der alten Option bleiben"
 
 #: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
@@ -2396,7 +2444,7 @@ msgstr "Upgrade jetzt durchführen"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:739 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "Diese Meldung ausblenden"
 
@@ -2643,7 +2691,7 @@ msgstr "%1$s: Option für benutztes CSS ist nicht aktiv!"
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Cache für benutztes CSS geleert!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:752
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:776
 msgid "Clear Used CSS of this URL"
 msgstr "Benutztes CSS für diese URL leeren"
 
@@ -2722,7 +2770,7 @@ msgstr ""
 "und WP Rocket. Kontaktiere bitte den Support bei Kinsta über dein "
 "%1$sMyKinsta%2$s-Konto, um dieses Problem zu lösen."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:114
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -2731,6 +2779,71 @@ msgstr ""
 "%1$s: HTTP/2 Server Push von Cloudflare ist mit den Funktionen zum Entfernen"
 " unbenötigten CSS und dem Zusammenfassen von CSS-Dateien nicht kompatibel. "
 "Wir empfehlen dringend, es zu deaktivieren."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:157
+msgid ""
+"Your site is using the official Cloudflare plugin. We have enabled "
+"Cloudflare auto-purge for compatibility. If you have APO activated, it is "
+"also compatible."
+msgstr ""
+"Deine Website benutzt das offizielle Cloudflare-Plugin. Wir haben das "
+"automatische Leeren für Cloudflare aus Kompatibilitätsgründen aktiviert. "
+"Wenn du APO aktiviert hast, ist es auch kompatibel."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:158
+msgid ""
+"Cloudflare cache will be purged each time WP Rocket clears its cache to "
+"ensure content is always up-to-date."
+msgstr ""
+"Der Cloudflare-Cache wird jedes Mal geleert, wenn WP Rocket seinen Cache "
+"leert, damit Inhalte immer auf dem neuesten Stand sind."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:202
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
+"is not yet compatible with that feature."
+msgstr ""
+"%1$sWP Rocket:%2$s Du nutzt den „Dynamischen Cookie-Cache\". Cloudflare-APO "
+"ist derzeit nicht mit dieser Funktion kompatibel."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:208
+#, php-format
+msgid ""
+"You should either disable Cloudflare APO or check with the theme/plugin "
+"requiring the use of “Dynamic Cookies Cache” developers for an alternative "
+"way to be page-cache friendly. %1$sMore info%2$s"
+msgstr ""
+"Du solltest Cloudflare-APO entweder deaktivieren oder dich beim Anbieter des"
+" Themes/Plugins, das „Dynamischen Cookie-Cache“ erfordert nach alternativen "
+"Methoden erkundigen, das Caching von Seiten zu ermöglichen. %1$sMehr "
+"erfahren%2$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:259
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
+"devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
+"Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
+msgstr ""
+"%1$sWP Rocket:%2$s Du benutzt die Funktion „Separater Cache für mobile "
+"Geräte“. Damit die richtige Version des Caches ausgeliefert wird, musst du "
+"die %3$sEinstellung%5$s „Cache nach Gerätetyp“ bei der Cloudflare-APO "
+"aktivieren. %4$sMehr erfahren%5$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:280
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
+"APO. If you judge it necessary for the website to have a different cache on "
+"mobile and desktop, we suggest you enable our “Separate Cache Files for "
+"Mobiles Devices” to ensure the generated cache is accurate."
+msgstr ""
+"%1$sWP Rocket:%2$s Du hast „Cache nach Gerätetyp“ bei der Cloudflare-APO "
+"aktiviert. Falls du es für  die Website für notwendig hältst, verschiedene "
+"Caches für Mobilgeräte und Desktop zu haben, schlagen wir vor, „Separater "
+"Cache für mobile Geräte“ zu aktivieren, um sicherzustellen, dass der Cache "
+"korrekt erzeugt wird."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -2948,7 +3061,7 @@ msgstr[1] "Folgende Muster sind ungültig und wurden entfernt:"
 msgid "More info"
 msgstr "Mehr erfahren"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:752
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:748
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -3018,15 +3131,7 @@ msgstr ""
 "<strong>%s</strong>: Plugin(s) aktiviert oder deaktiviert. Falls dies die "
 "Darstellung deiner Website betrifft, lösche jetzt den Cache."
 
-#: inc/admin/ui/notices.php:190
-msgid ""
-"WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
-"be active at the same time."
-msgstr ""
-"WP Rocket Cloudflare Add-on bietet vergleichbare Funktionalitäten. Sie "
-"können nicht zur gleichen Zeit aktiv sein."
-
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:218
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -3035,11 +3140,11 @@ msgstr ""
 "<strong>%s</strong>: Folgende Plugins sind mit diesem Plugin nicht "
 "kompatibel und können unerwartete Ergebnisse hervorrufen:"
 
-#: inc/admin/ui/notices.php:229
+#: inc/admin/ui/notices.php:224
 msgid "Deactivate"
 msgstr "Deaktivieren"
 
-#: inc/admin/ui/notices.php:271
+#: inc/admin/ui/notices.php:266
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -3048,7 +3153,7 @@ msgstr ""
 "Optionen in WP Rocket  korrekt funktionieren. Bitte deaktiviere es, falls du"
 " Probleme damit hast."
 
-#: inc/admin/ui/notices.php:311
+#: inc/admin/ui/notices.php:306
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -3060,7 +3165,7 @@ msgstr ""
 "Seite %1$sEinstellungen > Allgemein%2$sauf „Aus“ (Level 0), um Probleme zu "
 "verhindern."
 
-#: inc/admin/ui/notices.php:332
+#: inc/admin/ui/notices.php:327
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -3069,7 +3174,7 @@ msgstr ""
 "%1$s: Eine angepasste Permalink-Struktur ist erforderlich für die korrekte "
 "Funktionsweise des Plugins. %2$sPermalink-Einstellungen aufrufen%3$s"
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:374
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -3077,13 +3182,13 @@ msgstr ""
 "%s konnte die .htaccess-Datei nicht ändern aufgrund fehlender "
 "Schreibberechtigungen."
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:380 inc/admin/ui/notices.php:843
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Fehlerbehebung: %1$sFehlende Schreibrechte für System-Dateien beheben%2$s"
 
-#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:837
+#: inc/admin/ui/notices.php:382 inc/admin/ui/notices.php:845
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3092,7 +3197,7 @@ msgstr ""
 "system-dateien-beheben-htaccess-wp-"
 "configphp?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -3100,7 +3205,7 @@ msgstr ""
 "Keine Bange. Das Cachen der Seiten durch WP Rocket und die Einstellungen "
 "werden weiterhin korrekt funktionieren."
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -3108,7 +3213,7 @@ msgstr ""
 "Für optimale Leistung wird das Hinzufügen folgender Zeilen in deine "
 ".htaccess-Datei empfohlen (nicht erforderlich):"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:535
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -3117,7 +3222,7 @@ msgstr ""
 "%1$s ist fertig aktiviert! %2$sTeste deine Ladezeiten%4$s, oder schau dir "
 "deine %3$sEinstellungen%4$s an."
 
-#: inc/admin/ui/notices.php:581
+#: inc/admin/ui/notices.php:576
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -3125,16 +3230,16 @@ msgstr ""
 "Würdest du WP Rocket erlauben, anonymisierte technische Daten von dieser "
 "Website zu sammeln?"
 
-#: inc/admin/ui/notices.php:582
+#: inc/admin/ui/notices.php:577
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 "Das würde uns dabei unterstützen, WP Rocket in Zukunft weiter zu verbessern."
 
-#: inc/admin/ui/notices.php:588
+#: inc/admin/ui/notices.php:583
 msgid "What info will we collect?"
 msgstr "Um welche Art Daten geht es genau?"
 
-#: inc/admin/ui/notices.php:593
+#: inc/admin/ui/notices.php:588
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -3146,61 +3251,69 @@ msgstr ""
 "Namen, E-Mail-Adressen (außer zur Lizenzprüfung), IP-Adressen oder API-"
 "Schlüssel von Drittanbietern übermitteln."
 
-#: inc/admin/ui/notices.php:602
+#: inc/admin/ui/notices.php:597
 msgid "Yes, allow"
 msgstr "Ja, erlauben"
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:600
 msgid "No, thanks"
 msgstr "Nein, danke"
 
-#: inc/admin/ui/notices.php:644
+#: inc/admin/ui/notices.php:639
 msgid "Thank you!"
 msgstr "Danke!"
 
-#: inc/admin/ui/notices.php:649
+#: inc/admin/ui/notices.php:644
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket erhebt jetzt die folgenden Kennzahlen von deiner Website:"
 
-#: inc/admin/ui/notices.php:687
+#: inc/admin/ui/notices.php:682
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Cache geleert."
 
-#: inc/admin/ui/notices.php:694
+#: inc/admin/ui/notices.php:689
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Cache für Beitrag/Seite geleert."
 
-#: inc/admin/ui/notices.php:701
+#: inc/admin/ui/notices.php:696
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Cache für Begriff geleert."
 
-#: inc/admin/ui/notices.php:708
+#: inc/admin/ui/notices.php:703
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Cache für Benutzer/-in geleert."
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:751
 msgid "Stop Preload"
 msgstr "Vorladen beenden"
 
-#: inc/admin/ui/notices.php:773
+#: inc/admin/ui/notices.php:757
+msgid "Turn on Remove Unused CSS"
+msgstr "Unbenutztes CSS entfernen aktivieren"
+
+#: inc/admin/ui/notices.php:763
+msgid "Enable “Separate Cache Files for Mobile Devices” now"
+msgstr "„Separater Cache für mobile Geräte“ jetzt aktivieren"
+
+#: inc/admin/ui/notices.php:781
 msgid "Force deactivation "
 msgstr "Deaktivierung forcieren"
 
-#: inc/admin/ui/notices.php:792
+#: inc/admin/ui/notices.php:800
 msgid "The following code should have been written to this file:"
 msgstr "Folgender Code hätte in diese Datei geschrieben werden sollen:"
 
-#: inc/admin/ui/notices.php:823
+#: inc/admin/ui/notices.php:831
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s kann sich wegen fehlender Schreibrechte nicht selbst konfigurieren."
 
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:837
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Betroffene Dateien/Ordner: %s"
@@ -3436,6 +3549,15 @@ msgstr ""
 msgid "Connection to Cloudflare failed"
 msgstr "Keine Verbindung mit Cloudflare möglich"
 
+#: inc/deprecated/3.5.php:587
+#, php-format
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>WP Rocket:</strong> %s"
+
+#: inc/deprecated/3.5.php:592
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr "<strong>WP Rocket:</strong> Cloudflare-Cache erfolgreich geleert."
+
 #: inc/deprecated/DeprecatedClassTrait.php:54
 #, php-format
 msgid ""
@@ -3623,16 +3745,16 @@ msgstr "Anonymisierte  Einstellungen von WP Rocket:"
 msgid "Which WP Rocket settings are active"
 msgstr "Alle aktiven Einstellungen in WP Rocket"
 
-#: inc/functions/options.php:421
+#: inc/functions/options.php:429
 msgid "The provided license data are not valid."
 msgstr "Die angegebenen Lizenzdaten sind nicht gültig."
 
-#: inc/functions/options.php:424
+#: inc/functions/options.php:432
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "Bitte %1$skontaktiere den Support%2$s für eine Lösung."
 
-#: inc/functions/options.php:483 inc/functions/options.php:522
+#: inc/functions/options.php:491 inc/functions/options.php:530
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -3640,7 +3762,7 @@ msgstr ""
 "Überprüfung der Lizenz fehlgeschlagen. Unser Server konnte die Anfrage von "
 "deiner Website nicht verarbeiten."
 
-#: inc/functions/options.php:483
+#: inc/functions/options.php:491
 #, php-format
 msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
@@ -3649,7 +3771,7 @@ msgstr ""
 "Versuche, %1$sLizenz prüfen%2$s unten anzuklicken. Falls der Fehler weiter "
 "besteht, folge %3$sdieser Anleitung%4$s."
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3657,47 +3779,47 @@ msgstr ""
 "Überprüfung der Lizenz fehlgeschlagen. Du benutzt möglicherweise eine "
 "„nulled“ Version des Plugins. Bitte tue folgendes:"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Melde dich auf deinem WP-Rocket-%1$sKonto%2$s an"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
 msgstr "zip-Datei herunterladen"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Reinstall"
 msgstr "Neu installieren"
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 "Falls du noch kein WP-Rocket-Konto hast, %1$skaufe bitte eine Lizenz%2$s."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Überprüfung der Lizenz fehlgeschlagen. Dieses Benutzerkonto existiert nicht "
 "in unserer Datenbank."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid "To resolve, please contact support."
 msgstr "Bitte kontaktiere den Support für eine Lösung."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 msgid "License validation failed. This user account is blocked."
 msgstr "Lizenzprüfung fehlgeschlagen. Dieses Benutzerkonto ist gesperrt."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Lies bitte %1$sdiese Anleitung%2$s für weitere Informationen."
 
-#: inc/functions/options.php:522
+#: inc/functions/options.php:530
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3706,21 +3828,21 @@ msgstr ""
 "Versuche %1$sÄnderungen speichern%2$s unten anzuklicken. Falls der Fehler "
 "weiter besteht, folge %3$sdieser Anleitung%4$s."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 msgid "Your license is not valid."
 msgstr "Deine Lizenz ist nicht gültig."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Stelle sicher, dass du eine aktive %1$sWP-Rocket-Lizenz%2$s hast."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Du hast so viele aktive Websites hinzugefügt, wie es deine Lizenz erlaubt."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3729,26 +3851,26 @@ msgstr ""
 "Führe ein Upgrade für dein %1$sKonto%2$s durch oder %3$sübertrage deine "
 "Lizenz%2$s zu dieser Domain."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 msgid "This website is not allowed."
 msgstr "Diese Domain ist nicht erlaubt."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "%1$sKontaktiere bitte den Support%2$s."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 msgid "This license key is not recognized."
 msgstr "Dieser Lizenzschlüssel wird nicht erkannt."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 "Falls das Problem weiter besteht, %1$skontaktiere bitte den Support%2$s."
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:555
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Prüfung der Lizenz fehlgeschlagen: %s"
@@ -3975,11 +4097,11 @@ msgid "Import settings"
 msgstr "Einstellungen importieren"
 
 #: views/settings/fields/one-click-addon.php:43
-#: views/settings/fields/rocket-addon.php:33
+#: views/settings/fields/rocket-addon.php:43
 msgid "Add-on status"
 msgstr "Add-on Status"
 
-#: views/settings/fields/rocket-addon.php:56
+#: views/settings/fields/rocket-addon.php:72
 msgid "Modify options"
 msgstr "Einstellungen bearbeiten"
 

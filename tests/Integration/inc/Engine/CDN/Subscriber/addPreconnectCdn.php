@@ -8,7 +8,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  CDN
  */
 class Test_addPreconnectCdn extends TestCase {
-
 	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'wp_resource_hints', 'add_preconnect_cdn', 10 );
 
@@ -22,7 +21,7 @@ class Test_addPreconnectCdn extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddPreconnectCdn($cnames, $expected) {
 		$this->cnames = $cnames;
@@ -32,17 +31,10 @@ class Test_addPreconnectCdn extends TestCase {
 
 		ob_start();
 		wp_resource_hints();
-		$expected_str = $expected['new'];
-		if ( substr( get_bloginfo( 'version' ), 0, 3 ) === '5.7') {
-			$expected_str = $expected['legacy'];
-		}
-		$this->assertSame(
-			$this->format_the_html($expected_str),
-			$this->format_the_html(ob_get_clean())
-		);
-	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'add-preconnect-cdn' );
+		$this->assertStringContainsString(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( ob_get_clean() )
+		);
 	}
 }

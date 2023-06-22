@@ -6,55 +6,123 @@
 
 \*-----------------------------------------------*/
 
-.wpr-notice{
-    position: relative;
-    color: $cGreyDark1;
-    background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
-    background-size: 350px;
-    margin-top: $space*3;
-    border-radius: 4px;
-    overflow: hidden;
+.notice-wpr-warning {
+	background: $brightSun;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	margin-top: 2 * $space;
+	padding: $space 4 * $space;
+	border: 0;
 
-    &-container{
-        padding: $space*3 25% $space*3 $space*5;
-    }
+	p:first-child {
+		@include font-size(16,18);
+		margin-left: 80px;
+		&::before {
+			content: url(../img/warning.svg);
+			display: inline-block;
+			height:48px;
+			width: 63px;
+			margin-right: 17px;
+			vertical-align: middle;
+			margin-left: -80px;
+			@include respond-to('md') {
+				margin-bottom: -30px;
+			}
+		}
+	}
 
-    &-supTitle{
-        @include font-size(16,22);
-        font-weight: bold;
-    }
+	p:last-child {
+		margin-left: 63px;
+		flex-basis: 100%;
+		align-items: center;
+		justify-content: flex-start;
+		display: flex;
+		@include respond-to('xs') {
+			align-content: center;
+			flex-direction: column;
+			margin-left: 0;
+		}
+		a {
+			margin: 0 2 * $space;
+			@include respond-to('xs') {
+				margin: $space 2 * $space;
+			}
+			&:first-child {
+				display: block;
+				background: $bunting;
+				border-radius: 44px;
+				color: $cWhite;
+				@include font-size(16,18);
+				font-weight: bold;
+				padding: 2 * $space 3 * $space;
+				text-decoration: none;
 
-    &-title{
-        @include font-size(24,32);
-        color: $cGreen;
-        margin-top: $space*2;
-        font-weight: bold;
-    }
+				&:hover,
+				&:active,
+				&:focus {
+					color: $cWhite;
+				}
 
-    &-description{
-        @include font-size(14,22);
-        margin: $space*2 0 $space*3;
-    }
+				&::after {
+					content: "\2192";
+					font-weight: normal;
+					margin-left: $space;
+				}
+			}
+		}
+	}
+}
 
-    &-continue{
-        color: $cGreyDark2;
-    }
+.wpr-notice {
+	position: relative;
+	color: $cGreyDark1;
+	background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
+	background-size: 350px;
+	margin-top: $space*3;
+	border-radius: 4px;
+	overflow: hidden;
 
-    &-close{
-        position: absolute;
-        top: $space*3;
-        right: $space*3;
-        color: $cGreyDark2;
-        text-decoration: none;
-        @include font-size(24,24);
-        @include transition(color, 200ms);
+	&-container{
+		padding: $space*3 25% $space*3 $space*5;
+	}
 
-        &:hover{
-            color: $cGreyDark1;
-        }
+	&-supTitle{
+		@include font-size(16,22);
+		font-weight: bold;
+	}
 
-        &:focus{
-            outline: none;
-        }
-    }
+	&-title{
+		@include font-size(24,32);
+		color: $cGreen;
+		margin-top: $space*2;
+		font-weight: bold;
+	}
+
+	&-description{
+		@include font-size(14,22);
+		margin: $space*2 0 $space*3;
+	}
+
+	&-continue{
+		color: $cGreyDark2;
+	}
+
+	&-close{
+		position: absolute;
+		top: $space*3;
+		right: $space*3;
+		color: $cGreyDark2;
+		text-decoration: none;
+		@include font-size(24,24);
+		@include transition(color, 200ms);
+
+		&:hover{
+			color: $cGreyDark1;
+		}
+
+		&:focus{
+			outline: none;
+		}
+	}
 }
