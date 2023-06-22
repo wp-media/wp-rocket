@@ -95,7 +95,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
 			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
 
-			$events['wp_ajax_woocommerce_product_ordering'] = [ 'allow_clean_post', 9 ];
+			$events['wp_ajax_woocommerce_product_ordering'] = [ 'disallow_rocket_clean_post', 9 ];
+			$events['woocommerce_after_product_ordering']   = [ 'allow_rocket_clean_post' ];
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -598,11 +599,20 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	}
 
 	/**
-	 * Disable rocket clean post.
+	 * Disable post cache clearing during product sorting.
 	 *
 	 * @return void
 	 */
-	public function allow_clean_post() {
-		add_filter( 'rocket_allow_clean_post', [ $this, 'return_true' ] );
+	public function disallow_rocket_clean_post() : void {
+		$this->event_manager->remove_callback( 'clean_post_cache', 'rocket_clean_post' );
+	}
+
+	/**
+	 * Re-enable post cache clearing after product sorting.
+	 *
+	 * @return void
+	 */
+	public function allow_rocket_clean_post() : void {
+		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }
