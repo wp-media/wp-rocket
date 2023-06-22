@@ -41,11 +41,6 @@ return [
 			false,
 			true,
 			],
-			'is_private' => [
-				false,
-				false,
-				true,
-			],
 			'rows' => 101,
 			'jobs' => [
 				$row1,

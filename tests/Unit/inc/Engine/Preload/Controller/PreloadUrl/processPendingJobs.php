@@ -31,7 +31,7 @@ class Test_processPendingJobs extends TestCase
 		$this->query = $this->createMock(Cache::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->file_system = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->controller = Mockery::mock( PreloadUrl::class . '[is_excluded_by_filter,is_private]' ,  [$this->options, $this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock( PreloadUrl::class . '[is_excluded_by_filter]' ,  [$this->options, $this->queue, $this->query, $this->file_system])->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -46,7 +46,6 @@ class Test_processPendingJobs extends TestCase
 		$this->query->expects(self::atLeastOnce())->method('make_status_inprogress')->withConsecutive(...$expected['job_ids']);
 		$this->query->expects(self::atLeast(0))->method('delete_by_url')->withConsecutive($expected['job_deleted']);
 		$this->controller->shouldReceive('is_excluded_by_filter')->zeroOrMoreTimes()->andReturnValues($config['excluded']);
-		$this->controller->shouldReceive('is_private')->zeroOrMoreTimes()->andReturnValues($config['is_private']);
 		foreach ($expected['job_urls'] as $url) {
 			$this->queue->expects()->add_job_preload_job_preload_url_async( $url );
 		}
