@@ -4,8 +4,30 @@ namespace WP_Rocket\Engine\Common\Cache;
 
 use WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface;
 use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
+use WP_Filesystem_Direct;
 
 class FilesystemCache implements CacheInterface {
+
+	/**
+	 * @var string
+	 */
+	protected $root_folder;
+
+	/**
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
+	 * @param string $root_folder
+	 * @param WP_Filesystem_Direct|null $filesystem
+	 */
+	public function __construct(string $root_folder, WP_Filesystem_Direct $filesystem = null)
+	{
+		$this->root_folder = $root_folder;
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+	}
+
 
 	/**
 	 * Fetches a value from the cache.
@@ -48,7 +70,18 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function delete( $key ) {
-		return false;
+		$root_path = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$parsed_url = get_rocket_parse_url( $key );
+		$path = $root_path . $parsed_url['host'] . $parsed_url['path'];
+		if( ! $this->filesystem->exists( $path ) ) {
+			return false;
+		}
+		if( $this->filesystem->is_dir( $path )) {
+			rocket_rrmdir($path, [], $this->filesystem);
+			return true;
+		}
+
+		return $this->filesystem->delete($path);
 	}
 
 	/**
@@ -100,7 +133,11 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if $keys is neither an array nor a Traversable, or if any of the $keys are not a legal value.
 	 */
 	public function deleteMultiple( $keys ) {
-		return false;
+		$result = true;
+		foreach ($keys as $key) {
+			$result &= $this->delete($key);
+		}
+		return (bool) $result;
 	}
 
 	/**
