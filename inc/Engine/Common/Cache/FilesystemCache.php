@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 
 class FilesystemCache implements CacheInterface {
 
-
 	/**
 	 * Fetches a value from the cache.
 	 *
@@ -120,5 +119,15 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function has( $key ) {
 		return false;
+	}
+
+	/**
+	 * Generate the real URL.
+	 *
+	 * @param string $url original URL.
+	 * @return string
+	 */
+	public function generate_url( string $url ): string {
+		return $url;
 	}
 }
