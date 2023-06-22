@@ -77,8 +77,9 @@ trait CheckExcludedTrait {
 		$private_post_urls = [];
 
 		$arg   = [
-			'post_type'   => 'any',
-			'post_status' => 'private',
+			'post_type'      => 'any',
+			'post_status'    => 'private',
+			'posts_per_page' => -1,
 		];
 		$query = new \WP_Query( $arg );
 
