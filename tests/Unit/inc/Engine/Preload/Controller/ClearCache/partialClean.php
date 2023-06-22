@@ -24,7 +24,6 @@ class Test_PartialClean extends TestCase
 			->shouldAllowMockingProtectedMethods();
 	}
 
-
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -34,7 +33,6 @@ class Test_PartialClean extends TestCase
 			$this->controller->expects()->is_excluded_by_filter($url)->andReturn($config['is_excluded']);
 			$this->controller->shouldReceive('is_excluded_by_filter')->with($url)->andReturn($config['is_excluded_by_filter']);
 		}
-
 		if(! $config['is_excluded']) {
 			if(! $config['is_excluded_by_filter']) {
 				$this->query->expects(self::atLeastOnce())->method('create_or_update')->withConsecutive(...$expected['urls']);
