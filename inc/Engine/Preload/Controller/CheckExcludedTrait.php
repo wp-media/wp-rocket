@@ -64,35 +64,4 @@ trait CheckExcludedTrait {
 		}
 		return false;
 	}
-
-	/**
-	 * Checks that a page is private.
-	 *
-	 * @param   string $url  Page url.
-	 *
-	 * @return  bool         Return true if page is private; false otherwise.
-	 */
-	protected function is_private( string $url ) : bool {
-		$url               = user_trailingslashit( $url );
-		$private_post_urls = [];
-
-		$arg   = [
-			'post_type'      => 'any',
-			'post_status'    => 'private',
-			'posts_per_page' => -1,
-		];
-		$query = new \WP_Query( $arg );
-
-		if ( empty( $query ) ) {
-			return false;
-		}
-
-		foreach ( $query->posts as $post ) {
-			// Temporarily cast publish status to get pretty url.
-			$post->post_status   = 'publish';
-			$private_post_urls[] = get_permalink( $post );
-		}
-
-		return in_array( $url, $private_post_urls, true );
-	}
 }
