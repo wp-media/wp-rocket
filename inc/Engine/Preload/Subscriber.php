@@ -484,6 +484,10 @@ class Subscriber implements Subscriber_Interface {
 	public function exclude_private_post_uri( $regexes ) : array {
 		static $private_urls;
 
+		if ( ! is_array( $regexes ) ) {
+			$regexes = (array) $regexes;
+		}
+
 		if ( isset( $private_urls ) ) {
 			return $private_urls;
 		}
@@ -495,7 +499,7 @@ class Subscriber implements Subscriber_Interface {
 		];
 		$query = new \WP_Query( $arg );
 
-		if ( empty( $query ) ) {
+		if ( ! $query->have_posts() ) {
 			return $regexes;
 		}
 
