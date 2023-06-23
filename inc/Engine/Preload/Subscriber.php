@@ -120,7 +120,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
-				[ 'exclude_private_post_url' ],
+				[ 'exclude_private_post_uri' ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
@@ -481,7 +481,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $regexes regexes containing excluded uris.
 	 * @return array
 	 */
-	public function exclude_private_post_url( $regexes ) : array {
+	public function exclude_private_post_uri( $regexes ) : array {
 		static $private_urls;
 
 		if ( isset( $private_urls ) ) {
