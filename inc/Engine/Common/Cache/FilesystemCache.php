@@ -9,23 +9,28 @@ use WP_Filesystem_Direct;
 class FilesystemCache implements CacheInterface {
 
 	/**
+	 * Root folder from the path.
+	 *
 	 * @var string
 	 */
 	protected $root_folder;
 
 	/**
+	 * WordPress filesystem.
+	 *
 	 * @var WP_Filesystem_Direct
 	 */
 	protected $filesystem;
 
 	/**
-	 * @param string $root_folder
-	 * @param WP_Filesystem_Direct|null $filesystem
+	 * Class instantiation.
+	 *
+	 * @param string                    $root_folder Root folder from the path.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct(string $root_folder, WP_Filesystem_Direct $filesystem = null)
-	{
+	public function __construct( string $root_folder, WP_Filesystem_Direct $filesystem = null ) {
 		$this->root_folder = $root_folder;
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+		$this->filesystem  = $filesystem ?: rocket_direct_filesystem();
 	}
 
 
@@ -40,7 +45,14 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function get( $key, $default = null ) {
-		return $key;
+		$path = $this->generate_path( $key );
+		if ( ! $this->filesystem->exists( $path ) ) {
+			return $default;
+		}
+
+		$content = $this->filesystem->get_contents( $path );
+
+		return $content;
 	}
 
 	/**
@@ -57,7 +69,9 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function set( $key, $value, $ttl = null ) {
-		return false;
+		$path = $this->generate_path( $key );
+
+		return $this->filesystem->put_contents( $path, $value );
 	}
 
 	/**
@@ -70,18 +84,18 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function delete( $key ) {
-		$root_path = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$root_path  = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
 		$parsed_url = get_rocket_parse_url( $key );
-		$path = $root_path . $parsed_url['host'] . $parsed_url['path'];
-		if( ! $this->filesystem->exists( $path ) ) {
+		$path       = $root_path . $parsed_url['host'] . $parsed_url['path'];
+		if ( ! $this->filesystem->exists( $path ) ) {
 			return false;
 		}
-		if( $this->filesystem->is_dir( $path )) {
-			rocket_rrmdir($path, [], $this->filesystem);
+		if ( $this->filesystem->is_dir( $path ) ) {
+			rocket_rrmdir( $path, [], $this->filesystem );
 			return true;
 		}
 
-		return $this->filesystem->delete($path);
+		return $this->filesystem->delete( $path );
 	}
 
 	/**
@@ -90,7 +104,12 @@ class FilesystemCache implements CacheInterface {
 	 * @return bool True on success and false on failure.
 	 */
 	public function clear() {
-		return false;
+		$root_path = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		if ( ! $this->filesystem->exists( $root_path ) ) {
+			return false;
+		}
+		rocket_rrmdir( $root_path, [], $this->filesystem );
+		return true;
 	}
 
 	/**
@@ -104,7 +123,11 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if $keys is neither an array nor a Traversable, or if any of the $keys are not a legal value.
 	 */
 	public function getMultiple( $keys, $default = null ) {
-		return [];
+		$results = [];
+		foreach ( $keys as $key ) {
+			$results[ $key ] = $this->get( $key, $default );
+		}
+		return $results;
 	}
 
 	/**
@@ -120,7 +143,11 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if $values is neither an array nor a Traversable, or if any of the $values are not a legal value.
 	 */
 	public function setMultiple( $values, $ttl = null ) {
-		return false;
+		$result = true;
+		foreach ( $values as $key => $value ) {
+			$result &= $this->set( $key, $value, $ttl );
+		}
+		return (bool) $result;
 	}
 
 	/**
@@ -134,8 +161,8 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function deleteMultiple( $keys ) {
 		$result = true;
-		foreach ($keys as $key) {
-			$result &= $this->delete($key);
+		foreach ( $keys as $key ) {
+			$result &= $this->delete( $key );
 		}
 		return (bool) $result;
 	}
@@ -155,7 +182,9 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function has( $key ) {
-		return false;
+		$path = $this->generate_path( $key );
+
+		return $this->filesystem->exists( $path );
 	}
 
 	/**
@@ -165,6 +194,29 @@ class FilesystemCache implements CacheInterface {
 	 * @return string
 	 */
 	public function generate_url( string $url ): string {
-		return $url;
+		$path = $this->generate_path( $url );
+		if ( ! $this->filesystem->exists( $path ) ) {
+			return $url;
+		}
+
+		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
+
+		$wp_content_url = rocket_get_constant( 'WP_CONTENT_URL' );
+
+		$relative_path = str_replace( $wp_content_dir, '', $path );
+
+		return $wp_content_url . $relative_path;
+	}
+
+	/**
+	 * Generate a path from the URL.
+	 *
+	 * @param string $url URL to change to a path.
+	 * @return string
+	 */
+	protected function generate_path( string $url ):string {
+		$root_path  = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$parsed_url = get_rocket_parse_url( $url );
+		return $root_path . $parsed_url['host'] . $parsed_url['path'];
 	}
 }
