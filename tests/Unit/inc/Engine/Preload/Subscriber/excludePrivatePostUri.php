@@ -63,7 +63,7 @@ class Test_ExcludePrivatePostUri extends TestCase
         }
         else {
             Functions\expect( 'get_permalink' )
-            ->twice()
+            ->once()
             ->andReturnValues( $config['get_permalink'] );
         }
 
