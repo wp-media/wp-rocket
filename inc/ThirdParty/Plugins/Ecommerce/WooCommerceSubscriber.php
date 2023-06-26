@@ -608,9 +608,14 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * Re-enable post cache clearing after product sorting.
 	 *
+	 * @param integer $product_id ID of sorted product.
 	 * @return void
 	 */
-	public function allow_rocket_clean_post() : void {
+	public function allow_rocket_clean_post( int $product_id ) : void {
+		$term_list = wp_get_post_terms( $product_id, 'product_cat', [ 'fields' => 'ids' ] );
+		$cat_id    = (int) $term_list[0];
+		rocket_clean_files( get_term_link( $cat_id, 'product_cat' ) );
+
 		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }
