@@ -18,8 +18,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param CacheInterface $cache Cache instance.
 	 */
-	public function __construct(CacheInterface $cache)
-	{
+	public function __construct( CacheInterface $cache ) {
 		$this->cache = $cache;
 	}
 
@@ -44,7 +43,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_meta_boxes_fields' => 'add_meta_box',
-			'admin_notices' => 'maybe_add_error_notice',
+			'admin_notices'            => 'maybe_add_error_notice',
 		];
 	}
 
@@ -55,7 +54,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_meta_box( array $fields ) {
-		$fields['disable_css_bg_img_lazyload'] = __('LazyLoad CSS backgrounds', 'rocket');
+		$fields['disable_css_bg_img_lazyload'] = __( 'LazyLoad CSS backgrounds', 'rocket' );
 		return $fields;
 	}
 
@@ -65,15 +64,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_add_error_notice() {
-		if(! current_user_can('rocket_manage_options') || $this->cache->is_accessible()) {
+		if ( ! current_user_can( 'rocket_manage_options' ) || $this->cache->is_accessible() ) {
 			return;
 		}
 
-		rocket_notice_html([
-			'status'           => 'error',
-			'dismissible'      => '',
-			'message'          => rocket_notice_writing_permissions( $this->cache->get_root_path() ),
-		]);
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => rocket_notice_writing_permissions( $this->cache->get_root_path() ),
+			]
+			);
 	}
 
 }

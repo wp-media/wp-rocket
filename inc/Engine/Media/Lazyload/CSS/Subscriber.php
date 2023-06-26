@@ -20,8 +20,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param CacheInterface $cache Cache instance.
 	 */
-	public function __construct(CacheInterface $cache)
-	{
+	public function __construct( CacheInterface $cache ) {
 		$this->cache = $cache;
 	}
 
