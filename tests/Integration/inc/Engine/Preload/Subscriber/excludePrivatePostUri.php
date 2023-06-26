@@ -23,8 +23,8 @@ class Test_ExcludePrivatePostUri extends AdminTestCase
 	}
 
     public function set_up() {
+        parent::set_up();
         $this->set_permalink_structure( "/%postname%/" );
-		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_preload_exclude_urls', 'exclude_private_post_uri', 10 );
 	}
