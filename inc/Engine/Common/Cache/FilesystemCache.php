@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Engine\Common\Cache;
 
-use WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface;
 use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 use WP_Filesystem_Direct;
 
@@ -84,7 +83,7 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function delete( $key ) {
-		$root_path  = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$root_path  = $this->get_root_path();
 		$parsed_url = get_rocket_parse_url( $key );
 		$path       = $root_path . $parsed_url['host'] . $parsed_url['path'];
 		if ( ! $this->filesystem->exists( $path ) ) {
@@ -104,7 +103,7 @@ class FilesystemCache implements CacheInterface {
 	 * @return bool True on success and false on failure.
 	 */
 	public function clear() {
-		$root_path = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			return false;
 		}
@@ -215,8 +214,23 @@ class FilesystemCache implements CacheInterface {
 	 * @return string
 	 */
 	protected function generate_path( string $url ):string {
-		$root_path  = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$root_path  = $this->get_root_path();
 		$parsed_url = get_rocket_parse_url( $url );
 		return $root_path . $parsed_url['host'] . $parsed_url['path'];
+	}
+
+	public function is_accessible(): bool
+	{
+		$root_path  = $this->get_root_path();
+		if ( ! $this->filesystem->exists( $root_path ) ) {
+			rocket_mkdir_p( $root_path );
+		}
+
+		return $this->filesystem->is_writable( $root_path );
+	}
+
+	public function get_root_path(): string
+	{
+		return _rocket_get_wp_rocket_cache_path() . $this->root_folder;
 	}
 }

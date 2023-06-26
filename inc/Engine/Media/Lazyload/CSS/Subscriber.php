@@ -2,9 +2,28 @@
 namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Post;
-use WP_Rocket\EventManagement\SubscriberInterface;
+use WP_Rocket\Engine\Common\Cache\CacheInterface;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements SubscriberInterface {
+class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Cache instance.
+	 *
+	 * @var CacheInterface
+	 */
+	protected $cache;
+
+	/**
+	 *
+	 * Instantiate class.
+	 *
+	 * @param CacheInterface $cache Cache instance.
+	 */
+	public function __construct(CacheInterface $cache)
+	{
+		$this->cache = $cache;
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
