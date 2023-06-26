@@ -6,7 +6,6 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Traits\Config_Updater;
-use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * WooCommerce compatibility
@@ -15,7 +14,6 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
  */
 class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use Config_Updater;
-	use ReturnTypesTrait;
 
 	/**
 	 * The WordPress Event Manager
