@@ -219,9 +219,13 @@ class FilesystemCache implements CacheInterface {
 		return $root_path . $parsed_url['host'] . $parsed_url['path'];
 	}
 
-	public function is_accessible(): bool
-	{
-		$root_path  = $this->get_root_path();
+	/**
+	 * Is the root path available.
+	 *
+	 * @return bool
+	 */
+	public function is_accessible(): bool {
+		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			rocket_mkdir_p( $root_path );
 		}
@@ -229,8 +233,12 @@ class FilesystemCache implements CacheInterface {
 		return $this->filesystem->is_writable( $root_path );
 	}
 
-	public function get_root_path(): string
-	{
+	/**
+	 * Get root path from the cache.
+	 *
+	 * @return string
+	 */
+	public function get_root_path(): string {
 		return _rocket_get_wp_rocket_cache_path() . $this->root_folder;
 	}
 }

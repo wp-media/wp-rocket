@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Engine\Common\Cache;
 
-interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface
-{
+interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface {
+
 	/**
 	 * Generate the real URL.
 	 *
