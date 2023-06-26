@@ -18,6 +18,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  AdvancedCache
  */
 class Test_NoticePermissions extends FilesystemTestCase {
+	use CapTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
 	private static $user_id;
@@ -25,7 +27,7 @@ class Test_NoticePermissions extends FilesystemTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 

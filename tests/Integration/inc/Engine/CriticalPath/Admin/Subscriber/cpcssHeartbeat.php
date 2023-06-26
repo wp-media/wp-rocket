@@ -42,7 +42,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 		self::installFresh();
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -98,6 +98,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 
 		$_POST['_nonce'] = wp_create_nonce( 'cpcss_heartbeat_nonce' );
 		$response        = $this->callAjaxAction();
+
 		if ( $expected['bailout'] ) {
 			$this->assertFalse( $response->success );
 		} else {

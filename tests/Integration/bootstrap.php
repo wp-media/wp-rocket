@@ -16,6 +16,11 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+        if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Url_Converter.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {
 			// Load Simple Custom CSS plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/simple-custom-css/simple-custom-css.php';
@@ -40,6 +45,8 @@ tests_add_filter(
 				[
 					'do_cloudflare'               => 1,
 					'cloudflare_protocol_rewrite' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
 				]
 			);
 		}
@@ -125,8 +132,30 @@ tests_add_filter(
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
-		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
-			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		if ( BootstrapManager::isGroup( 'Cloudflare' ) ) {
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', true );
+
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+					'cloudflare_zone_id' => '12234',
+				]
+			);
+		}
+
+		if ( BootstrapManager::isGroup( 'CloudflareAdmin' ) ) {
+			define( 'WP_ADMIN', true );
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+				]
+			);
 		}
 
 		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
@@ -172,6 +201,10 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'TheSEOFramework' ) ) {
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WPGeotargeting' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/WPGeotargeting/fixtures.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {

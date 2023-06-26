@@ -23,7 +23,7 @@ abstract class AdminTestCase extends BaseTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		DBTrait::removeDBHooks();
+		self::removeDBHooks();
 
 		$this->stubRocketGetConstant();
 

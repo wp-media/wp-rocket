@@ -25,9 +25,11 @@ return [
 			],
 			'create_new_job' => [
 				'safelist' => [],
+				'skipped_attr' => [],
 				'config' => [
 					'treeshake' => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile' => false,
 					'is_home' => true,
 				],
@@ -58,9 +60,11 @@ return [
 			],
 			'create_new_job' => [
 				'safelist' => [],
+				'skipped_attr' => [],
 				'config' => [
 					'treeshake' => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile' => true,
 					'is_home' => true,
 				],
@@ -221,5 +225,14 @@ return [
 			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_exclude_content.php'),
 		],
 		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/filtered_exclude_content.php'),
+	],
+	'expectSameHtmlWhenNoTitleTag' => [
+		'config' => [
+			'home_url' => 'http://example.com',
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_without_title.php'),
+			'is_allowed' => true,
+		],
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_without_title.php'),
+
 	],
 ];

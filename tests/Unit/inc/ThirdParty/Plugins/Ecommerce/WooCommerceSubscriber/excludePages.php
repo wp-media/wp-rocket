@@ -7,7 +7,6 @@ use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 use Mockery;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use Brain\Monkey\Functions;
-
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**

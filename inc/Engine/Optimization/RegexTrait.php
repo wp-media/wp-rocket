@@ -197,4 +197,16 @@ trait RegexTrait {
 
 		return str_replace( array_keys( $this->xmp_replace ), array_values( $this->xmp_replace ), $html );
 	}
+
+	/**
+	 * Checks if the page HTML is valid or not.
+	 * Valid here means that it has a closing title tag.
+	 *
+	 * @param string $html Page HTML.
+	 *
+	 * @return bool
+	 */
+	private function html_has_title_tag( string $html ) {
+		return (bool) preg_match( '#</title>#iU', $html );
+	}
 }
