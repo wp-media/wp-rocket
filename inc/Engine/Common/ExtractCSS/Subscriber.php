@@ -1,9 +1,11 @@
 <?php
 namespace WP_Rocket\Engine\Common\ExtractCSS;
 
-use WP_Rocket\EventManagement\SubscriberInterface;
+use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements SubscriberInterface {
+class Subscriber implements Subscriber_Interface {
+	use RegexTrait;
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -24,7 +26,12 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [];
+		return [
+			'rocket_generate_lazyloaded_css' => [
+				[ 'extract_css_files_from_html' ],
+				[ 'extract_inline_css_from_html' ],
+			],
+		];
 	}
 
 	/**
@@ -34,6 +41,39 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public function extract_css_files_from_html( array $data ): array {
+
+		if ( ! key_exists( 'html', $data ) ) {
+			return $data;
+		}
+
+		if ( ! key_exists( 'css_files', $data ) ) {
+			$data['css_files'] = [];
+		}
+
+		$css_links = [];
+
+		$link_styles = $this->find(
+			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
+			$data['html'],
+			'Uis'
+		);
+
+		foreach ( $link_styles as $style ) {
+			if (
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
+				||
+				( strstr( $style['url'], '//fonts.googleapis.com/css' ) )
+			) {
+				continue;
+			}
+
+			$css_links [] = $style['url'];
+		}
+
+		$data['css_files'] = array_merge( $data['css_files'], $css_links );
+
 		return $data;
 	}
 
@@ -44,6 +84,34 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public function extract_inline_css_from_html( array $data ): array {
+		if ( ! key_exists( 'html', $data ) ) {
+			return $data;
+		}
+
+		if ( ! key_exists( 'css_files', $data ) ) {
+			$data['css_files'] = [];
+		}
+
+		$css_links = [];
+
+		$inline_styles = $this->find(
+			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
+			$data['html']
+		);
+
+		foreach ( $inline_styles as $style ) {
+
+			$content = trim( $style['content'] );
+
+			if ( empty( $content ) ) {
+				continue;
+			}
+
+			$css_links [] = $content;
+		}
+
+		$data['css_files'] = array_merge( $data['css_files'], $css_links );
+
 		return $data;
 	}
 }

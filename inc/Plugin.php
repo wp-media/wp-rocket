@@ -6,6 +6,7 @@ use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
+use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -274,12 +275,14 @@ class Plugin {
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
 		$this->container->addServiceProvider( ThemesServiceProvider::class );
 		$this->container->addServiceProvider( APIServiceProvider::class );
+		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
+			'common_extractcss_subscriber',
 			'expired_cache_purge_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
