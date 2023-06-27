@@ -80,33 +80,6 @@ return [
 		],
 		'expected' => true,
 	],
-	'testNoHostFileShouldReturnTrue' => [
-		'config' => [
-			'url' => 'url',
-			'file' => [
-				'path' => 'random'
-			],
-			'parse_content' => true,
-			'collect_hosts' => true,
-			'content_url' => 'content_url',
-			'url_host' => 'url_host',
-			'url_parsed' => [
-				'host' => 'host',
-				'path' => 'path',
-			],
-			'zones' => [
-				'js'
-			],
-			'cdn_hosts' => [
-
-			],
-			'lang_url' => 'en.exmaple.com',
-			'lang_hosts' => [
-
-			]
-		],
-		'expected' => true,
-	],
 	'testNoHostFileShouldReturnFalse' => [
 		'config' => [
 			'url' => 'url',

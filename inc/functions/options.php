@@ -577,6 +577,7 @@ function rocket_check_key() {
 	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
 	rocket_delete_licence_data_file();
+	update_option( 'wp_rocket_no_licence', 0 );
 
 	return $rocket_options;
 }
