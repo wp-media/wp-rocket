@@ -2055,6 +2055,8 @@ class Page {
 					'emoji',
 					'remove_unused_css',
 					'async_css',
+					'cache_mobile',
+					'do_caching_mobile_files',
 				]
 			)
 		);
