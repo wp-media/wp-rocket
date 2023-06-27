@@ -1208,6 +1208,17 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
+				'cache_lifespan'               => [
+					'title'       => __( 'Cache Lifespan', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
+					'help'        => [
+						'url' => $cache_life_beacon['url'],
+						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
+					],
+					'page'        => 'advanced_cache',
+				],
 				'cache_reject_uri_section'     => [
 					'title'       => __( 'Never Cache URL(s)', 'rocket' ),
 					'type'        => 'fields_container',
@@ -1242,22 +1253,25 @@ class Page {
 					'help'        => $cache_query_strings_beacon,
 					'page'        => 'advanced_cache',
 				],
-				'cache_lifespan'               => [
-					'title'       => __( 'Cache Lifespan', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
-					'help'        => [
-						'url' => $cache_life_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
-					],
-					'page'        => 'advanced_cache',
-				],
 			]
 		);
 
 		$this->settings->add_settings_fields(
 			[
+				'purge_cron_interval'  => [
+					'type'              => 'cache_lifespan',
+					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'cache_lifespan',
+					'page'              => 'advanced_cache',
+					'default'           => 10,
+					'sanitize_callback' => 'sanitize_cache_lifespan',
+					'choices'           => [
+						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
+						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
+					],
+				],
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URLs of pages or posts that should never be cached (one per line)', 'rocket' ),
@@ -1302,20 +1316,6 @@ class Page {
 					'page'              => 'advanced_cache',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'purge_cron_interval'  => [
-					'type'              => 'cache_lifespan',
-					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'cache_lifespan',
-					'page'              => 'advanced_cache',
-					'default'           => 10,
-					'sanitize_callback' => 'sanitize_cache_lifespan',
-					'choices'           => [
-						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
-						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
-					],
 				],
 			]
 		);
