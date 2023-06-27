@@ -177,7 +177,6 @@ class Page {
 		$rocket_valid_key = rocket_valid_key();
 		if ( $rocket_valid_key ) {
 			$this->dashboard_section();
-			$this->cache_section();
 			$this->assets_section();
 			$this->media_section();
 			$this->preload_section();
@@ -434,124 +433,6 @@ class Page {
 					'page'              => 'dashboard',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
-			]
-		);
-	}
-
-	/**
-	 * Registers Cache section.
-	 *
-	 * @since 3.0
-	 */
-	private function cache_section() {
-		$mobile_cache_beacon = $this->beacon->get_suggest( 'mobile_cache' );
-		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
-		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
-		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
-
-		$this->settings->add_page_section(
-			'cache',
-			[
-				'title'            => __( 'Cache', 'rocket' ),
-				'menu_description' => __( 'Basic cache options', 'rocket' ),
-			]
-		);
-
-		$this->settings->add_settings_sections(
-			[
-				'mobile_cache_section' => [
-					'title'       => __( 'Mobile Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
-					'help'        => [
-						'url' => $mobile_cache_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'mobile_cache_section' ),
-					],
-					'helper'      => rocket_is_mobile_plugin_active() ? __( 'We detected you use a plugin that requires a separate cache for mobile, and automatically enabled this option for compatibility.', 'rocket' ) : '',
-					'page'        => 'cache',
-				],
-				'user_cache_section'   => [
-					'title'       => __( 'User Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sUser cache%2$s is great when you have user-specific or restricted content on your website.', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'help'        => [
-						'url' => $user_cache_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'user_cache_section' ),
-					],
-					'page'        => 'cache',
-				],
-				'cache_lifespan'       => [
-					'title'       => __( 'Cache Lifespan', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
-					'help'        => [
-						'url' => $cache_life_beacon['url'],
-						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
-					],
-					'page'        => 'cache',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'cache_logged_user'       => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
-					'section'           => 'user_cache_section',
-					'page'              => 'cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'cache_mobile'            => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for mobile devices', 'rocket' ),
-					'container_class'   => [
-						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
-						'wpr-isParent',
-					],
-					'section'           => 'mobile_cache_section',
-					'page'              => 'cache',
-					'default'           => 1,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
-					],
-				],
-				'do_caching_mobile_files' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Most modern themes are responsive and should work without a separate cache. Enable this only if you have a dedicated mobile theme or plugin. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $mobile_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $mobile_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'container_class'   => [
-						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
-						'wpr-field--children',
-					],
-					'parent'            => 'cache_mobile',
-					'section'           => 'mobile_cache_section',
-					'page'              => 'cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
-					],
-				],
-				'purge_cron_interval'     => [
-					'type'              => 'cache_lifespan',
-					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'cache_lifespan',
-					'page'              => 'cache',
-					'default'           => 10,
-					'sanitize_callback' => 'sanitize_cache_lifespan',
-					'choices'           => [
-						'HOUR_IN_SECONDS' => __( 'Hours', 'rocket' ),
-						'DAY_IN_SECONDS'  => __( 'Days', 'rocket' ),
-					],
 				],
 			]
 		);
