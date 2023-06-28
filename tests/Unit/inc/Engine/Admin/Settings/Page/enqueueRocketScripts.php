@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Page::enqueue_rocket_scripts
@@ -28,6 +29,8 @@ class Test_EnqueueRocketScripts extends TestCase {
 			'capability' => 'rocket_manage_options',
 		];
 
+		$template_path = 'vfs://public/wp-content/plugins/wp-rocket/views';
+
 		$page = new Page(
 			$config,
 			Mockery::mock( Settings::class ),
@@ -35,7 +38,9 @@ class Test_EnqueueRocketScripts extends TestCase {
 			Mockery::mock( Beacon::class),
 			Mockery::mock( Optimization::class ),
 			Mockery::mock( UserClient::class ),
-			Mockery::mock( SiteList::class )
+			Mockery::mock( SiteList::class ),
+			$template_path,
+			Mockery::mock( Options_Data::class )
 		);
 
 		if ( true === $expected ) {
