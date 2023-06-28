@@ -2242,4 +2242,18 @@ class Page extends Abstract_Render {
 
 		wp_send_json_success();
 	}
+
+	/**
+	 * Enable Separate cache files for mobile devices on upgrade.
+	 *
+	 * @return void
+	 */
+	public function enable_separate_cache_files_mobile() : void {
+		if ( ! (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
+			return;
+		}
+
+		$this->options->set( 'do_caching_mobile_files', 1 );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+	}
 }
