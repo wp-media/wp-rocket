@@ -2185,18 +2185,4 @@ class Page {
 		$sub_fields = $this->settings->set_radio_buttons_sub_fields_value( $sub_fields );
 		$this->render->render_fields( $sub_fields );
 	}
-
-	/**
-	 * Render mobile cache option.
-	 *
-	 * @return void
-	 */
-	public function display_enable_mobile_cache_option() : void {
-		if ( (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
-			return;
-		}
-
-		$data = $this->beacon->get_suggest( 'mobile_cache' );
-		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
 }
