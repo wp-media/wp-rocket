@@ -52,6 +52,7 @@ class Subscriber implements Subscriber_Interface {
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
+			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 		];
 	}
 
@@ -239,5 +240,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_mobile_cache_option() : void {
 		$this->page->display_mobile_cache_option();
+	}
+
+	/**
+	 * Callback method for the AJAX request to mobile cache.
+	 *
+	 * @return void
+	 */
+	public function enable_mobile_cache() : void {
+		$this->page->enable_mobile_cache();
 	}
 }

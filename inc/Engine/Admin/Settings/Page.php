@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -94,6 +95,13 @@ class Page extends Abstract_Render {
 	protected $delayjs_sitelist;
 
 	/**
+	 * WP Rocket options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @since 3.0
@@ -106,8 +114,19 @@ class Page extends Abstract_Render {
 	 * @param UserClient       $user_client User client instance.
 	 * @param SiteList         $delayjs_sitelist User client instance.
 	 * @param string           $template_path Path to views.
+	 * @param Options_Data     $options       WP Rocket options instance.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist, $template_path ) {
+	public function __construct(
+		array $args,
+		Settings $settings,
+		Render_Interface $render,
+		Beacon $beacon,
+		Optimization $optimize,
+		UserClient $user_client,
+		SiteList $delayjs_sitelist,
+		$template_path,
+		Options_Data $options
+	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
 			[
@@ -127,6 +146,7 @@ class Page extends Abstract_Render {
 		$this->optimize         = $optimize;
 		$this->user_client      = $user_client;
 		$this->delayjs_sitelist = $delayjs_sitelist;
+		$this->options          = $options;
 	}
 
 	/**
@@ -2201,5 +2221,25 @@ class Page extends Abstract_Render {
 
 		$data = $this->beacon->get_suggest( 'mobile_cache' );
 		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Callback method for the AJAX request to mobile cache.
+	 *
+	 * @return void
+	 */
+	public function enable_mobile_cache() : void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return;
+		}
+
+		$this->options->set( 'cache_mobile', 1 );
+		$this->options->set( 'do_caching_mobile_files', 1 );
+		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+
+		wp_send_json_success();
 	}
 }

@@ -45,7 +45,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->addArgument( $this->getContainer()->get( 'user_client' ) )
 			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) );
+			->addArgument( $this->getContainer()->get( 'template_path' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'settings_page_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'settings_page' ) )
 			->addTag( 'admin_subscriber' );
