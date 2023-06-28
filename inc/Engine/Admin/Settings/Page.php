@@ -1694,7 +1694,9 @@ class Page {
 	 * @since 3.0
 	 */
 	private function addons_section() {
-		$webp_beacon = $this->beacon->get_suggest( 'webp' );
+		$webp_beacon       = $this->beacon->get_suggest( 'webp' );
+		$user_cache_beacon = $this->beacon->get_suggest( 'user_cache' );
+
 		$this->settings->add_page_section(
 			'addons',
 			[
@@ -1721,6 +1723,28 @@ class Page {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'user_cache_section' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'User Cache', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
+						'width'  => 152,
+						'height' => 135,
+					],
+					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website..<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'settings_page'     => 'user_cache',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -2160,5 +2184,19 @@ class Page {
 	public function display_radio_options_sub_fields( $sub_fields ) {
 		$sub_fields = $this->settings->set_radio_buttons_sub_fields_value( $sub_fields );
 		$this->render->render_fields( $sub_fields );
+	}
+
+	/**
+	 * Render mobile cache option.
+	 *
+	 * @return void
+	 */
+	public function display_enable_mobile_cache_option() : void {
+		if ( (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
+			return;
+		}
+
+		$data = $this->beacon->get_suggest( 'mobile_cache' );
+		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }
