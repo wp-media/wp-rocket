@@ -9,11 +9,11 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-tools">
 	<div class="wpr-tools-col">
 		<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php esc_html_e( 'Mobile Cache', 'rocket' ); ?></div>
-		<div class="wpr-field-description">
+		<div class="wpr-field-description" id="wpr_mobile_cache_default">
 			<?php
-			esc_html__( 'Speed your site for mobile visitors.', 'rocket' );
+			echo esc_html__( 'Speed your site for mobile visitors.', 'rocket' );
 			?>
-			<br><br>
+			<br>
 			<?php
 			printf(
 				// translators: %1$s = opening link tag, %2$s = closing link tag.
@@ -23,7 +23,11 @@ defined( 'ABSPATH' ) || exit;
 			);
 			?>
 		</div>
-		<div id="wpr-update-exclusion-msg" class="wpr-field-description"></div>
+		<div class="wpr-field-description wpr-field wpr-isHidden" id="wpr_mobile_cache_response">
+			<?php
+			echo esc_html__( 'Mobile Cache is now enabled for your site.', 'rocket' );
+			?>
+		</div>
 	</div>
 	<div class="wpr-tools-col">
 		<button id="wpr_enable_mobile_cache" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-refresh">
