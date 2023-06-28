@@ -4,8 +4,8 @@
  *
  * @package     Database
  * @subpackage  Base
- * @copyright   Copyright (c) 2020
- * @license     https://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @copyright   Copyright (c) 2021
+ * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.0.0
  */
 namespace WP_Rocket\Dependencies\Database;
@@ -22,6 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  */
+#[\AllowDynamicProperties]
 class Base {
 
 	/**
@@ -177,8 +178,14 @@ class Base {
 
 		// Trim spaces off the ends
 		$unspace = trim( $string );
+
+		// Only non-accented table names (avoid truncation)
 		$accents = remove_accents( $unspace );
+
+		// Only lowercase letters are allowed
 		$lower   = strtolower( $accents );
+
+		// Explode into parts
 		$parts   = explode( $sep, $lower );
 
 		// Loop through parts and concatenate the first letters together
@@ -290,7 +297,7 @@ class Base {
 		 * Developer note:
 		 *
 		 * It should be impossible for a database table to be interacted with
-		 * before the primary database interface it is setup.
+		 * before the primary database interface is setup.
 		 *
 		 * However, because applications are complicated, it is unsafe to assume
 		 * anything, so this silently returns false instead of halting everything.
