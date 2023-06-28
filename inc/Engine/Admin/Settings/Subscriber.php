@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
-
+			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 		];
 	}
 
@@ -230,5 +230,14 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->page->display_radio_options_sub_fields( $option_data['sub_fields'] );
+	}
+
+	/**
+	 * Render mobile cache option.
+	 *
+	 * @return void
+	 */
+	public function display_mobile_cache_option() : void {
+		$this->page->display_mobile_cache_option();
 	}
 }

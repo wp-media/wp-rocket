@@ -7,6 +7,7 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Interfaces\Render_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
+use WP_Rocket\Abstract_Render;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -14,7 +15,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.0
  */
-class Page {
+class Page extends Abstract_Render {
 	/**
 	 * Plugin slug.
 	 *
@@ -104,8 +105,10 @@ class Page {
 	 * @param Optimization     $optimize    Database optimization instance.
 	 * @param UserClient       $user_client User client instance.
 	 * @param SiteList         $delayjs_sitelist User client instance.
+	 * @param string           $template_path Path to views.
 	 */
-	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist ) {
+	public function __construct( array $args, Settings $settings, Render_Interface $render, Beacon $beacon, Optimization $optimize, UserClient $user_client, SiteList $delayjs_sitelist, $template_path ) {
+		parent::__construct( $template_path );
 		$args = array_merge(
 			[
 				'slug'       => 'wprocket',
@@ -2184,5 +2187,19 @@ class Page {
 	public function display_radio_options_sub_fields( $sub_fields ) {
 		$sub_fields = $this->settings->set_radio_buttons_sub_fields_value( $sub_fields );
 		$this->render->render_fields( $sub_fields );
+	}
+
+	/**
+	 * Render mobile cache option.
+	 *
+	 * @return void
+	 */
+	public function display_mobile_cache_option() : void {
+		if ( (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
+			return;
+		}
+
+		$data = $this->beacon->get_suggest( 'mobile_cache' );
+		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }
