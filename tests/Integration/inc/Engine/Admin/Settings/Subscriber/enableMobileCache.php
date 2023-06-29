@@ -12,28 +12,6 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  */
 class Test_EnableMobileCache extends AjaxTestCase {
 
-    private static $admin_user_id  = 0;
-	private static $editor_user_id = 0;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::installFresh();
-
-		self::setAdminCap();
-
-		//create an editor user that has the capability
-		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
-		//create an editor user that has no capability
-		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
-	}
-
-    public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
-	}
-
 	public function set_up() {
 		parent::set_up();
 
@@ -45,20 +23,31 @@ class Test_EnableMobileCache extends AjaxTestCase {
         $this->action = 'rocket_enable_mobile_cache';
 	}
 
+    public function testCallbackIsRegistered() {
+		$this->assertTrue( has_action( 'wp_ajax_rocket_enable_mobile_cache' ) );
+
+		global $wp_filter;
+		$obj = $wp_filter['wp_ajax_rocket_enable_mobile_cache'];
+		$callback_registration = current( $obj->callbacks[10] );
+		$this->assertEquals( 'enable_mobile_cache', $callback_registration['function'][1] );
+	}
+
 	/**
 	 * @dataProvider provideTestData
 	 */
 	public function testShouldEnableMobileCache( $is_user_auth ) {
 		if ( $is_user_auth ) {
-			$user_id = static::$admin_user_id;
+            $role = get_role( 'administrator' );
+		    $role->add_cap( 'rocket_manage_options' );
+
+			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
 		} else {
-			$user_id = static::$editor_user_id;
+			wp_set_current_user( static::factory()->user->create( [ 'role' => 'editor' ] ) );
 		}
 
-        wp_set_current_user( $user_id );
-        
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
         $_POST['action'] = 'rocket_enable_mobile_cache';
+
 		$response       = $this->callAjaxAction();
 
 		$options   = get_option( 'wp_rocket_settings' );
