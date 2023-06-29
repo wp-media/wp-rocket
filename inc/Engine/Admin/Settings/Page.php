@@ -2244,7 +2244,7 @@ class Page extends Abstract_Render {
 	}
 
 	/**
-	 * Enable Separate cache files for mobile devices on upgrade.
+	 * Enable Separate cache files option on upgrade.
 	 *
 	 * @return void
 	 */
