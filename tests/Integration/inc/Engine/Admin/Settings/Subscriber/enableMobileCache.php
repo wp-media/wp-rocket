@@ -19,14 +19,14 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		$options['cache_mobile'] = 0;
 		$options['do_caching_mobile_files'] = 0;
 		update_option( 'wp_rocket_settings', $options );
+
+        $this->action = 'rocket_enable_mobile_cache';
 	}
 
 	/**
 	 * @dataProvider provideTestData
 	 */
 	public function testShouldEnableMobileCache( $is_user_auth ) {
-		$this->action = 'rocket_enable_mobile_cache';
-
 		if ( $is_user_auth ) {
 			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
 		} else {
@@ -34,6 +34,7 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
+        $_POST['action'] = $this->action;
 		$response       = $this->callAjaxAction();
 
 		$options   = get_option( 'wp_rocket_settings' );
