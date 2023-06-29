@@ -12,6 +12,28 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  */
 class Test_EnableMobileCache extends AjaxTestCase {
 
+    private static $admin_user_id  = 0;
+	private static $editor_user_id = 0;
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installFresh();
+
+		self::setAdminCap();
+
+		//create an editor user that has the capability
+		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
+		//create an editor user that has no capability
+		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
+	}
+
+    public static function tear_down_after_class()
+	{
+		parent::tear_down_after_class();
+		self::uninstallAll();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
@@ -28,13 +50,15 @@ class Test_EnableMobileCache extends AjaxTestCase {
 	 */
 	public function testShouldEnableMobileCache( $is_user_auth ) {
 		if ( $is_user_auth ) {
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
+			$user_id = static::$admin_user_id;
 		} else {
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'editor' ] ) );
+			$user_id = static::$editor_user_id;
 		}
 
+        wp_set_current_user( $user_id );
+        
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-        $_POST['action'] = $this->action;
+        $_POST['action'] = 'rocket_enable_mobile_cache';
 		$response       = $this->callAjaxAction();
 
 		$options   = get_option( 'wp_rocket_settings' );
