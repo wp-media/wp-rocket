@@ -1,11 +1,11 @@
 <?php
 return [
-    'shouldAddHook' => [
+    'shouldReturnMessage' => [
         'config' => [
-
+              'addons' => [],
         ],
         'expected' => [
-			'after_rocket_clean_domain'
+			'Cloudflare'
         ]
     ],
 
