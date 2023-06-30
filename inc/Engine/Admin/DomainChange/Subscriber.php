@@ -166,10 +166,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$args = [
-			'status'       => 'warning',
-			'dissmissible' => '',
+			'status'         => 'warning',
+			'dismissible'    => '',
 			'dismiss_button' => false,
-			'message'      => sprintf(
+			'message'        => sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
 				__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
 				'<strong>',
