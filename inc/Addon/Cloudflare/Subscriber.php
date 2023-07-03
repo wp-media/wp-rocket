@@ -70,15 +70,16 @@ class Subscriber implements Subscriber_Interface {
 			'update_option_' . $slug                    => [
 				[ 'save_cloudflare_options', 10, 2 ],
 				[ 'update_dev_mode', 11, 2 ],
-				[ 'display_settings_notice', 11, 2 ],
 			],
 			'pre_update_option_' . $slug                => [
 				[ 'change_auth', 8, 2 ],
 				[ 'delete_connection_transient', 10, 2 ],
 				[ 'save_cloudflare_old_settings', 10, 2 ],
+				[ 'display_settings_notice', 11, 2 ],
 			],
 			'rocket_buffer'                             => [ 'protocol_rewrite', PHP_INT_MAX ],
 			'wp_calculate_image_srcset'                 => [ 'protocol_rewrite_srcset', PHP_INT_MAX ],
+			'rocket_cdn_helper_addons'                  => 'add_cdn_helper_message',
 		];
 	}
 
@@ -219,8 +220,8 @@ class Subscriber implements Subscriber_Interface {
 		if ( is_wp_error( $connection ) ) {
 			$cf_purge_result = [
 				'result'  => 'error',
-				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
 				'message' => sprintf(
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
 					__( '%1$sWP Rocket:%2$s %3$s', 'rocket' ),
 					'<strong>',
 					'</strong>',
@@ -237,23 +238,23 @@ class Subscriber implements Subscriber_Interface {
 		$cf_purge        = $this->cloudflare->purge_cloudflare();
 		$cf_purge_result = [
 			'result'  => 'success',
-			// translators: %1$s = <strong>, %2$s = </strong>.
 			'message' => sprintf(
+				// translators: %1$s = <strong>, %2$s = </strong>.
 				__( '%1$sWP Rocket:%2$s Cloudflare cache successfully purged.', 'rocket' ),
 				'<strong>',
-				'</strong>',
+				'</strong>'
 			),
 		];
 
 		if ( is_wp_error( $cf_purge ) ) {
 			$cf_purge_result = [
 				'result'  => 'error',
-				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
 				'message' => sprintf(
+					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return message.
 					__( '%1$sWP Rocket:%2$s %3$s', 'rocket' ),
 					'<strong>',
 					'</strong>',
-					$connection->get_error_message()
+					$cf_purge->get_error_message()
 				),
 			];
 		}
@@ -601,13 +602,13 @@ class Subscriber implements Subscriber_Interface {
 			'cloudflare_protocol_rewrite',
 		];
 
-		$out = false;
+		$change = false;
 
 		foreach ( $fields as $field ) {
-			$out &= ! isset( $old_value[ $field ], $value[ $field ] ) || $old_value[ $field ] !== $value[ $field ];
+			$change |= ! isset( $old_value[ $field ], $value[ $field ] ) || $old_value[ $field ] !== $value[ $field ];
 		}
 
-		if ( $out ) {
+		if ( ! $change ) {
 			return $value;
 		}
 
@@ -620,19 +621,24 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Display the error notice.
 	 *
-	 * @param array $old_value An array of submitted values for the settings.
 	 * @param array $value     An array of previous values for the settings.
+	 * @param array $old_value An array of submitted values for the settings.
 	 *
 	 * @return mixed
 	 */
-	public function display_settings_notice( $old_value, $value ) {
+	public function display_settings_notice( $value, $old_value ) {
+
+		if ( ! key_exists( 'cloudflare_zone_id', $value ) ) {
+			return $value;
+		}
+
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
 		if ( is_wp_error( $connection ) ) {
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 		}
 
-		return $old_value;
+		return $value;
 	}
 
 	/**
@@ -692,5 +698,16 @@ class Subscriber implements Subscriber_Interface {
 			||
 			apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		);
+	}
+
+	/**
+	 * Add the helper message on the CDN settings.
+	 *
+	 * @param string[] $addons Name from the addon that requires the helper message.
+	 * @return string[]
+	 */
+	public function add_cdn_helper_message( array $addons ): array {
+		$addons[] = 'Cloudflare';
+		return $addons;
 	}
 }

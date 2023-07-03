@@ -7,15 +7,6 @@ $new = <<<HTML
 <link href='https://another.cdn.com' rel='preconnect' />
 HTML;
 
-$legacy = <<<HTML
-<link rel='dns-prefetch' href='//s.w.org' />
-<link href='//123456.rocketcdn.me' rel='preconnect' />
-<link href='https://my-cdn.cdnservice.com' rel='preconnect' />
-<link href='http://cdn.example.com' rel='preconnect' />
-<link href='//8901.wicked-fast-cdn.com' rel='preconnect' />
-<link href='https://another.cdn.com' rel='preconnect' />
-HTML;
-
 return [
 	'shouldAddPreconnectLinkForCdn' => [
 		'cdn-cnames' => [
@@ -27,9 +18,6 @@ return [
 			'8901.wicked-fast-cdn.com/path/to/my/files',
 			'https://another.cdn.com/with/a/path',
 		],
-		'expected'   => [
-			'new'    => $new,
-			'legacy' => $legacy,
-		]
+		'expected'   => $new,
 	],
 ];
