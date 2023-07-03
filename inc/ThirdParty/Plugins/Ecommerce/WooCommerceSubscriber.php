@@ -612,10 +612,22 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return void
 	 */
 	public function allow_rocket_clean_post( int $product_id ) : void {
-		$term_list = wp_get_post_terms( $product_id, 'product_cat', [ 'fields' => 'ids' ] );
-		$cat_id    = (int) $term_list[0];
-		rocket_clean_files( get_term_link( $cat_id, 'product_cat' ) );
+		$urls          = [];
+		$category_list = wc_get_product_category_list( $product_id );
 
+		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
+			$urls = $matches['urls'];
+		}
+
+		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
+
+		if ( empty( $shop_page ) ) {
+			$shop_page = home_url( 'shop' );
+		}
+
+		$urls[] = $shop_page;
+
+		rocket_clean_files( $urls );
 		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }
