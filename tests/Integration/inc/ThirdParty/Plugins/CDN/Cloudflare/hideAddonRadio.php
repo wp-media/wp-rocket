@@ -6,6 +6,9 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::hide_addon_radio
+ *
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_hideAddonRadio extends TestCase {
 

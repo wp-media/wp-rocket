@@ -2,15 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
-use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
  *
- * @group  AdminOnly
- * @group  ThirdParty
+ * @group AdminOnly
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_DisplayServerPushingModeNotice extends TestCase{
 

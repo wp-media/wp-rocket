@@ -3,12 +3,13 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\TestCase;
-use function Crontrol\Schedule\add;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
+ *
  * @group AdminOnly
+ * @group ThirdParty
+ * @group CloudflarePlugin
  */
 class Test_displayApoCacheNotice extends AdminTestCase {
 

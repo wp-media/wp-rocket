@@ -23,6 +23,9 @@ class TestSaveCloudflareOldSettings extends TestCase {
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
 		$this->restoreWpFilter('pre_update_option_wp_rocket_settings');
+
+		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
+
 		parent::tear_down();
 	}
 
@@ -31,6 +34,8 @@ class TestSaveCloudflareOldSettings extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->response = $config['response'];
+
+		set_transient( 'rocket_cloudflare_is_api_keys_valid', 1 );
 
 		add_filter( 'pre_http_request', [ $this, 'http_request'] );
 
