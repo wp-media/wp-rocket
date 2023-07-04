@@ -78,6 +78,10 @@ class Test_ParseSitemap extends TestCase {
 			$this->controller->shouldReceive('has_query_string')->with($link)->with($link)->andReturn(false)->atLeast()->once();
 			$this->controller->shouldReceive('is_excluded_by_filter')->with($link)->with($link)->andReturn(false)->atLeast()->once();
 
+			$this->controller->expects()->is_excluded_by_filter( $link )
+					->once()
+					->andReturn( $config['is_excluded'] );
+			
 			if ( ! $config['is_excluded'] ) {
 				$this->query->expects( self::any() )->method( 'create_or_nothing' )
 					->withConsecutive( ...$config['jobs'] )
