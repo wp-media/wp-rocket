@@ -1,10 +1,71 @@
 <?php
 namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
+use WP_Filesystem_Direct;
 use WP_Post;
-use WP_Rocket\EventManagement\SubscriberInterface;
+use WP_Rocket\Engine\Common\Cache\FilesystemCache;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\JsonFormatter;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Subscriber implements SubscriberInterface {
+class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * @var Extractor
+	 */
+	protected $extractor;
+
+	/**
+	 * @var RuleFormatter
+	 */
+	protected $rule_formatter;
+
+	/**
+	 * @var FileResolver
+	 */
+	protected $file_resolver;
+
+	/**
+	 * @var FilesystemCache
+	 */
+	protected $filesystem_cache;
+
+	/**
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
+	 * @var JsonFormatter
+	 */
+	protected $json_formatter;
+
+	/**
+	 * @var TagGenerator
+	 */
+	protected $tag_generator;
+
+	/**
+	 * @param Extractor $extractor
+	 * @param RuleFormatter $rule_formatter
+	 * @param FileResolver $file_resolver
+	 * @param FilesystemCache $filesystem_cache
+	 * @param WP_Filesystem_Direct $filesystem
+	 * @param JsonFormatter $json_formatter
+	 */
+	public function __construct(Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, WP_Filesystem_Direct $filesystem, JsonFormatter $json_formatter, TagGenerator $tag_generator)
+	{
+		$this->extractor = $extractor;
+		$this->rule_formatter = $rule_formatter;
+		$this->file_resolver = $file_resolver;
+		$this->filesystem_cache = $filesystem_cache;
+		$this->filesystem = $filesystem;
+		$this->json_formatter = $json_formatter;
+		$this->tag_generator = $tag_generator;
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -25,7 +86,16 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		return [];
+		return [
+			'rocket_generate_lazyloaded_css' => [
+				'create_lazy_css_files',
+				'create_lazy_inline_css',
+			],
+			'rocket_buffer'                  => 'maybe_replace_css_images',
+			'after_rocket_clean_domain'      => 'clear_generated_css',
+			'after_rocket_clean_post'        => 'clear_generate_css_post',
+			'wp_enqueue_scripts'             => 'insert_lazyload_script',
+		];
 	}
 
 	/**
@@ -35,7 +105,16 @@ class Subscriber implements SubscriberInterface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
-		return $html;
+		$output = apply_filters('rocket_generate_lazyloaded_css', [
+			'html' => $html
+		]);
+
+
+		if(! is_array($output) || ! key_exists('html', $output)) {
+			return $html;
+		}
+
+		return $output['html'];
 	}
 
 	/**
@@ -44,7 +123,7 @@ class Subscriber implements SubscriberInterface {
 	 * @return void
 	 */
 	public function clear_generated_css() {
-
+		$this->filesystem_cache->clear();
 	}
 
 	/**
@@ -54,7 +133,11 @@ class Subscriber implements SubscriberInterface {
 	 * @return void
 	 */
 	public function clear_generate_css_post( WP_Post $post ) {
-
+			$url = get_post_permalink($post);
+			if(! $url) {
+				return;
+			}
+			$this->filesystem_cache->delete($url);
 	}
 
 	/**
@@ -63,7 +146,7 @@ class Subscriber implements SubscriberInterface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
-
+		wp_enqueue_script('rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.js', [], rocket_get_constant('WP_ROCKET_VERSION'), true);
 	}
 
 	/**
@@ -73,7 +156,99 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public function create_lazy_css_files( array $data ): array {
+
+		if(! key_exists('html', $data) || ! key_exists('css_files', $data)) {
+			return $data;
+		}
+
+		$html = $data['html'];
+
+		$mapping = [];
+
+		foreach ( $data['css_files'] as $url ) {
+			if ( ! $this->filesystem_cache->has( $url ) ) {
+				$mapping = $this->generate_css_file( $url );
+				if ( empty( $mapping ) ) {
+					continue;
+				}
+			} else {
+				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
+			}
+
+			$cached_url = $this->filesystem_cache->generate_url( $url );
+
+			$html = str_replace( $url, $cached_url, $html );
+		}
+
+		$data['html']              = $html;
+
+		if(! key_exists('lazyloaded_images', $data)) {
+			$data['lazyloaded_images'] = [];
+		}
+
+		$data['lazyloaded_images'] = array_merge($data['lazyloaded_images'], $mapping);
+
 		return $data;
+	}
+
+	public function add_lazy_tag(array $data): array {
+		if(! key_exists('html', $data) || ! key_exists('lazyloaded_images', $data)) {
+			return $data;
+		}
+
+		$loaded = apply_filters('rocket_css_image_lazyload_images_load', []);
+
+		$tags = $this->tag_generator->generate($data['lazyloaded_images'], $loaded);
+
+		$data['html'] = str_replace('</head>', "$tags</head>", $data['html']);
+
+		return $data;
+	}
+
+	protected function generate_css_file( string $url ) {
+		$path = $this->file_resolver->resolve( $url );
+
+		if ( ! $path ) {
+			return [];
+		}
+
+		$content = $this->filesystem->get_contents( $path );
+
+		if ( ! $content ) {
+			return [];
+		}
+
+		$output = $this->generate_content( $content );
+
+		if ( ! $this->filesystem_cache->set( $url, $output['content'] ) ) {
+			return [];
+		}
+
+		return $output['urls'];
+	}
+
+	protected function generate_content( string $content ): array {
+		$urls           = $this->extractor->extract( $content );
+		$formatted_urls = [];
+		foreach ( $urls as $url_tag ) {
+			$url_tag['hash']   = wp_generate_uuid4();
+			$content           = $this->rule_formatter->format( $content, $url_tag );
+			$formatted_urls [] = $this->json_formatter->format( $url_tag );
+		}
+
+		return [
+			'urls'    => $formatted_urls,
+			'content' => $content,
+		];
+	}
+
+	protected function load_existing_mapping( string $url ) {
+		$content = $this->filesystem_cache->get( $url . '.json' );
+		$urls    = json_decode( $content, true );
+		if ( ! $urls ) {
+			return [];
+		}
+		return $urls;
 	}
 
 	/**
@@ -83,6 +258,35 @@ class Subscriber implements SubscriberInterface {
 	 * @return array
 	 */
 	public function create_lazy_inline_css( array $data ): array {
+
+		if(! key_exists('html', $data) || ! key_exists('css_inline', $data)) {
+			return $data;
+		}
+
+		$html = $data['html'];
+
+		$output = [
+			'urls' => []
+		];
+
+		foreach ( $data['css_inline'] as $content ) {
+			$output = $this->generate_content( $content );
+
+			if ( empty( $output ) ) {
+				continue;
+			}
+
+			$html = str_replace( $content, $output['content'], $html );
+		}
+
+		$data['html']              = $html;
+
+		if(! key_exists('lazyloaded_images', $data)) {
+			$data['lazyloaded_images'] = [];
+		}
+
+		$data['lazyloaded_images'] = array_merge($data['lazyloaded_images'], $output['urls']);
+
 		return $data;
 	}
 }

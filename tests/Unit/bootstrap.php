@@ -35,6 +35,7 @@ function load_original_files_before_mocking() {
 	$fixtures = [
 		'/WP_Error.php',
 		'/WP.php',
+		'/WP_Post.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
 		'/WP_Sitemaps_Index.php',
