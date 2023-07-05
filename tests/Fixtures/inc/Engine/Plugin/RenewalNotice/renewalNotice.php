@@ -40,7 +40,7 @@ return [
 		'expected' => [
 			'data' => [
 				'version' => '3.14',
-				'release_url' => 'https://wp-rocket.me/blog/3-14',
+				'release_url' => 'https://wp-rocket.me/blog/3-14/',
 				'renew_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			],
 			'output' => 'wp-rocket-update',
