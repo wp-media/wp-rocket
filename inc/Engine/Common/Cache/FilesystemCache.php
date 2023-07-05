@@ -70,7 +70,8 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function set( $key, $value, $ttl = null ) {
 		$path = $this->generate_path( $key );
-
+		$directory = dirname( $path );
+		rocket_mkdir_p( $directory );
 		return $this->filesystem->put_contents( $path, $value );
 	}
 

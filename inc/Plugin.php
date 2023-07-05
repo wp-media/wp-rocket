@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -276,6 +277,7 @@ class Plugin {
 		$this->container->addServiceProvider( ThemesServiceProvider::class );
 		$this->container->addServiceProvider( APIServiceProvider::class );
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
+		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -363,6 +365,7 @@ class Plugin {
 			'translatepress',
 			'themify',
 			'wpgeotargeting',
+			'lazyload_css_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

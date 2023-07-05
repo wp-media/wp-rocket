@@ -53,16 +53,17 @@ class Subscriber implements Subscriber_Interface {
 	 * @param RuleFormatter $rule_formatter
 	 * @param FileResolver $file_resolver
 	 * @param FilesystemCache $filesystem_cache
-	 * @param WP_Filesystem_Direct $filesystem
 	 * @param JsonFormatter $json_formatter
+	 * @param TagGenerator $tag_generator
+	 * @param WP_Filesystem_Direct|null $filesystem
 	 */
-	public function __construct(Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, WP_Filesystem_Direct $filesystem, JsonFormatter $json_formatter, TagGenerator $tag_generator)
+	public function __construct(Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, JsonFormatter $json_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null)
 	{
 		$this->extractor = $extractor;
 		$this->rule_formatter = $rule_formatter;
 		$this->file_resolver = $file_resolver;
 		$this->filesystem_cache = $filesystem_cache;
-		$this->filesystem = $filesystem;
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 		$this->json_formatter = $json_formatter;
 		$this->tag_generator = $tag_generator;
 	}
@@ -88,8 +89,9 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_generate_lazyloaded_css' => [
-				'create_lazy_css_files',
-				'create_lazy_inline_css',
+				['create_lazy_css_files', 13],
+				['create_lazy_inline_css', 14],
+				['add_lazy_tag', 15],
 			],
 			'rocket_buffer'                  => 'maybe_replace_css_images',
 			'after_rocket_clean_domain'      => 'clear_generated_css',
@@ -162,7 +164,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$html = $data['html'];
-
 		$mapping = [];
 
 		foreach ( $data['css_files'] as $url ) {
@@ -207,7 +208,6 @@ class Subscriber implements Subscriber_Interface {
 
 	protected function generate_css_file( string $url ) {
 		$path = $this->file_resolver->resolve( $url );
-
 		if ( ! $path ) {
 			return [];
 		}
@@ -219,10 +219,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$output = $this->generate_content( $content );
-
 		if ( ! $this->filesystem_cache->set( $url, $output['content'] ) ) {
 			return [];
 		}
+
+		$this->filesystem_cache->set($url . '.json', json_encode( $output['urls'] ));
 
 		return $output['urls'];
 	}
@@ -230,10 +231,13 @@ class Subscriber implements Subscriber_Interface {
 	protected function generate_content( string $content ): array {
 		$urls           = $this->extractor->extract( $content );
 		$formatted_urls = [];
-		foreach ( $urls as $url_tag ) {
-			$url_tag['hash']   = wp_generate_uuid4();
-			$content           = $this->rule_formatter->format( $content, $url_tag );
-			$formatted_urls [] = $this->json_formatter->format( $url_tag );
+		foreach ( $urls as $url_tags ) {
+			$url_tags = array_map(function ($url_tag) {
+				$url_tag['hash']   = wp_generate_uuid4();
+				return $url_tag;
+			}, $url_tags);
+			$content           = $this->rule_formatter->format( $content, $url_tags );
+			$formatted_urls = array_merge($formatted_urls, $this->json_formatter->format( $url_tags ));
 		}
 
 		return [

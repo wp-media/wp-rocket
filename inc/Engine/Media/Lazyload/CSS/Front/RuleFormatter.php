@@ -5,21 +5,32 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 class RuleFormatter {
 
 	public function format( string $css, array $data ): string {
-		if ( ! key_exists( 'selector', $data ) || ! key_exists( 'url', $data ) || ! key_exists( 'block', $data ) || ! key_exists( 'hash', $data ) ) {
+
+		if ( count( $data ) === 0 ) {
 			return $css;
 		}
 
-		$block = $data['block'];
-		$url   = $data['url'];
+		$block          = '';
+		$replaced_block = null;
 
-		$hash = $data['hash'];
+		foreach ( $data as $datum ) {
+			if ( ! key_exists( 'selector', $datum ) || ! key_exists( 'url', $datum ) || ! key_exists( 'block', $datum ) || ! key_exists( 'hash', $datum ) ) {
+				return $css;
+			}
 
-		$selector = $data['selector'] . $hash;
+			$block          = $datum['block'];
+			$replaced_block = $replaced_block ?: $datum['block'];
+			$url            = $datum['url'];
 
-		$placeholder          = "--wpr-bg-`$selector`";
-		$variable_placeholder = "--var($placeholder)";
+			$hash = $datum['hash'];
 
-		$replaced_block = str_replace( $url, $variable_placeholder, $block );
+			$selector = $datum['selector'] . $hash;
+
+			$placeholder          = "--wpr-bg-`$selector`";
+			$variable_placeholder = "--var($placeholder)";
+
+			$replaced_block = str_replace( $url, $variable_placeholder, $replaced_block );
+		}
 
 		return str_replace( $block, $replaced_block, $css );
 	}

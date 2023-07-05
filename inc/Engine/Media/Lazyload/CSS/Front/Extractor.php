@@ -38,10 +38,10 @@ class Extractor {
 			$urls = $this->extract_urls( $property );
 
 			foreach ( $urls as $url ) {
-				$results[] = [
+				$results[ $selector ][] = [
 					'selector' => $selector,
-					'url' => $url,
-					'block' => $match[0]
+					'url'   => $url,
+					'block' => $match[0],
 				];
 			}
 		}

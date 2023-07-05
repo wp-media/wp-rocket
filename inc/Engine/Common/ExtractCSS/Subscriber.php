@@ -28,8 +28,8 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_generate_lazyloaded_css' => [
-				[ 'extract_css_files_from_html' ],
-				[ 'extract_inline_css_from_html' ],
+				[ 'extract_css_files_from_html', 11 ],
+				[ 'extract_inline_css_from_html', 12 ],
 			],
 		];
 	}
@@ -88,8 +88,8 @@ class Subscriber implements Subscriber_Interface {
 			return $data;
 		}
 
-		if ( ! key_exists( 'css_files', $data ) ) {
-			$data['css_files'] = [];
+		if ( ! key_exists( 'css_inline', $data ) ) {
+			$data['css_inline'] = [];
 		}
 
 		$css_links = [];
@@ -110,7 +110,7 @@ class Subscriber implements Subscriber_Interface {
 			$css_links [] = $content;
 		}
 
-		$data['css_files'] = array_merge( $data['css_files'], $css_links );
+		$data['css_inline'] = array_merge( $data['css_inline'], $css_links );
 
 		return $data;
 	}

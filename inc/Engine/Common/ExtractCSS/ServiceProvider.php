@@ -31,7 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$root = apply_filters( 'rocket_lazyload_css_cache_root', '/background-css/' );
+		$root = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' );
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( $root );
 		$this->getContainer()->share( 'common_extractcss_subscriber', Subscriber::class );

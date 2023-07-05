@@ -5,18 +5,22 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 class JsonFormatter {
 
 	public function format( array $data ): array {
-		$hash = $data['hash'];
+		$formatted_urls = [];
+		foreach ($data as $datum) {
+			$hash = $datum['hash'];
 
-		$selector      = $data['selector'] . $hash;
-		$selector_hash = $data['selector'] . $hash;
-		$url           = $data['url'];
+			$selector      = $datum['selector'] . $hash;
+			$selector_hash = $datum['selector'] . $hash;
+			$url           = $datum['url'];
 
-		$placeholder          = "--wpr-bg-`$selector_hash`";
-		$variable_placeholder = ":root\{$placeholder: $url;\}";
+			$placeholder          = "--wpr-bg-`$selector_hash`";
+			$variable_placeholder = ':root{'.$placeholder.': '. $url.';}';
+			$formatted_urls[] = [
+				'selector' => $selector,
+				'style'    => $variable_placeholder,
+			];
+		}
 
-		return [
-			'selector' => $selector,
-			'style'    => $variable_placeholder,
-		];
+		return $formatted_urls;
 	}
 }

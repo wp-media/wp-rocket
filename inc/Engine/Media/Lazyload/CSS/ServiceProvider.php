@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Media\Lazyload;
+namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
@@ -24,7 +24,7 @@ class ServiceProvider extends AbstractServiceProvider
 	 */
 	protected $provides = [
 		'lazyload_css_subscriber',
-		'',
+		'rocket_css_image_lazyload_dir_level',
 	];
 
 
@@ -36,18 +36,20 @@ class ServiceProvider extends AbstractServiceProvider
     public function register()
     {
 
-		$this->getLeagueContainer()->add('lazyload_css_cache', FilesystemCache::class);
+		$this->getLeagueContainer()->add('lazyload_css_cache', FilesystemCache::class)
+			->addArgument(apply_filters('rocket_css_image_lazyload_dir_level', 'background-css'));
 
 		$this->getLeagueContainer()->add('lazyload_css_extractor', Extractor::class);
 		$this->getLeagueContainer()->add('lazyload_css_file_resolver', FileResolver::class);
 		$this->getLeagueContainer()->add('lazyload_css_json_formatter', JsonFormatter::class);
 		$this->getLeagueContainer()->add('lazyload_css_rule_formatter', RuleFormatter::class);
 		$this->getLeagueContainer()->add('lazyload_css_tag_generator', TagGenerator::class);
-        $this->getLeagueContainer()->add('lazyload_css_subscriber', \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::class)
+        $this->getLeagueContainer()->add('lazyload_css_subscriber', Subscriber::class)
 			->addArgument($this->getContainer()->get('lazyload_css_extractor'))
 			->addArgument($this->getContainer()->get('lazyload_css_rule_formatter'))
 			->addArgument($this->getContainer()->get('lazyload_css_file_resolver'))
-			->addArgument($this->getContainer()->get('lazyload_css_file_resolver'))
-			->addArgument($this->getContainer()->get('lazyload_css_file_resolver'));
+			->addArgument($this->getContainer()->get('lazyload_css_cache'))
+			->addArgument($this->getContainer()->get('lazyload_css_json_formatter'))
+			->addArgument($this->getContainer()->get('lazyload_css_tag_generator'));
     }
 }
