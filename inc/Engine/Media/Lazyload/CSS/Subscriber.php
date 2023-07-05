@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Filesystem_Direct;
 use WP_Post;
-use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;

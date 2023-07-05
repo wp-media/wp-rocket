@@ -39,7 +39,8 @@ return [
 			'cache_set' => [],
 			'cache_get' => [],
 			'generate_url' => [],
-        ],
+			'json_set' => [],
+		],
         'expected' => [
 			'css_files' => [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css',
@@ -60,6 +61,7 @@ return [
 			'cache_set' => [],
 			'cache_get' => [],
 			'generate_url' => [],
+			'json_set' => [],
 		],
 		'expected' => [
 			"html" => $html,

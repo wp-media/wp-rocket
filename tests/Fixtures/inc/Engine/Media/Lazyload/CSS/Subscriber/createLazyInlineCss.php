@@ -50,7 +50,7 @@ $html_filtered = <<<HTML
 <body>
 <!-- internal CSS -->
 <style>
-	content2</style>
+	content</style>
 </body>
 </html>
 HTML;
@@ -133,39 +133,30 @@ return [
 						[
 							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
 						],
-				]
+					]
+				],
 			],
 			'rule_format' => [
 				[
 					'tag' => [
-						'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-						'hash' => 'hash',
+						[
+							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+							'hash' => 'hash',
+						],
+						[
+							'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
+							'hash' => 'hash',
+						],
+						[
+							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+							'hash' => 'hash',
+						],
 					],
 					'content' => $css_content,
 					'new_content' => 'content',
 					'formatted_urls' => [
 						'formatted_urls1',
-					],
-				],
-				[
-					'tag' => [
-						'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
-						'hash' => 'hash',
-					],
-					'content' => 'content',
-					'new_content' => 'content1',
-					'formatted_urls' => [
 						'formatted_urls2',
-					],
-				],
-				[
-					'tag' => [
-						'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-						'hash' => 'hash',
-					],
-					'content' => 'content1',
-					'new_content' => 'content2',
-					'formatted_urls' => [
 						'formatted_urls3',
 					],
 				],
@@ -177,15 +168,9 @@ return [
 				$css_content
 			],
 			'lazyloaded_images' => [
-				[
-					'formatted_urls1'
-				],
-				[
-					'formatted_urls2'
-				],
-				[
-					'formatted_urls3'
-				]
+				'formatted_urls1',
+				'formatted_urls2',
+				'formatted_urls3',
 			]
 		]
 	]
