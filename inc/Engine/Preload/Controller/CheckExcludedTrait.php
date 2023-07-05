@@ -46,7 +46,7 @@ trait CheckExcludedTrait {
 		 */
 		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls_regexes', [] );
 
-		$url = $this->format_url($url);
+		$url = $this->format_url( $url );
 
 		/**
 		 * Regex to exclude URI from preload.

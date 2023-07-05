@@ -489,7 +489,7 @@ class Subscriber implements Subscriber_Interface {
 		$regexes[] = "/$wp_rewrite->pagination_base/\d+";
 
 		return $regexes;
-		}
+	}
 
 	/**
 	 * Remove private post from cache .
