@@ -151,6 +151,7 @@ class Test_Treeshake extends TestCase {
 		$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn($config['create_new_job']['safelist']);
 
 		Brain\Monkey\Filters\expectApplied('rocket_rucss_safelist')->with($config['create_new_job']['safelist'])->andReturn($config['create_new_job']['safelist']);
+		Brain\Monkey\Filters\expectApplied('rocket_rucss_skip_styles_with_attr')->with($config['create_new_job']['skipped_attr'])->andReturn($config['create_new_job']['skipped_attr']);
 
 		$this->api->expects()->add_to_queue($config['home_url'], $config['create_new_job']['config'])->andReturn
 		($config['create_new_job']['response']);
