@@ -226,7 +226,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	/**
 	 * Returns plugin data
 	 *
-	 * @param string $slug
+	 * @param string $slug Plugin slug.
 	 *
 	 * @return array|object
 	 */
