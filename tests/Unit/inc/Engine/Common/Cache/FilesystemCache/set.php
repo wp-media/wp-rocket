@@ -44,6 +44,7 @@ class Test_set extends TestCase {
     {
 		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
 		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
 
 		$this->filesystem->expects()->put_contents($expected['path'], $expected['content'])->andReturn($config['saved']);
 

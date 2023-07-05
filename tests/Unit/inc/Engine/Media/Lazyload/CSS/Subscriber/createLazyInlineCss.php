@@ -71,7 +71,7 @@ class Test_createLazyInlineCss extends TestCase {
         $this->json_formatter = Mockery::mock(JsonFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 
-        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->filesystem, $this->json_formatter, $this->tag_generator);
+        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
     }
 
     /**

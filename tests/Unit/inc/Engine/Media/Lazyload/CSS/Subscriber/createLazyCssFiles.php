@@ -71,7 +71,7 @@ class Test_createLazyCssFiles extends TestCase {
         $this->json_formatter = Mockery::mock(JsonFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 
-        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->filesystem, $this->json_formatter, $this->tag_generator);
+        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
     }
 
     /**
@@ -109,6 +109,10 @@ class Test_createLazyCssFiles extends TestCase {
 
 		foreach ($config['cache_get'] as $url => $content) {
 			$this->filesystem_cache->expects()->get($url)->andReturn($content);
+		}
+
+		foreach ($config['json_set'] as $url => $content) {
+			$this->filesystem_cache->expects()->set($url, $content);
 		}
 
 		foreach ($config['generate_url'] as $url => $output) {

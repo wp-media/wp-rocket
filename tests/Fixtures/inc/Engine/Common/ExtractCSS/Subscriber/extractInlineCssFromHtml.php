@@ -23,7 +23,7 @@ return [
 		],
 		'expected' => [
 			'html' => $html_without_css,
-			"css_files" =>  []
+			"css_inline" =>  []
 		]
 	],
     'CssShouldReturnCSSContent' => [
@@ -34,7 +34,7 @@ return [
         ],
         'expected' => [
 			'html' => $html_with_css,
-			"css_files" =>  [
+			"css_inline" =>  [
 				"body{
 		width:40%;
 		margin-left: auto;

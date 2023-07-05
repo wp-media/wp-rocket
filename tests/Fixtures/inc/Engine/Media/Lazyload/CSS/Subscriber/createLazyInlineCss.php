@@ -123,15 +123,16 @@ return [
 			],
 			'extract' => [
 				$css_content => [
-					[
-						'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-					],
-					[
-						'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
-					],
-					[
-						'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-					],
+					'selector' => [
+						[
+							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+						],
+						[
+							'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
+						],
+						[
+							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+						],
 				]
 			],
 			'rule_format' => [

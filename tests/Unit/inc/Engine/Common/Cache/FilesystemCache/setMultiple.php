@@ -48,6 +48,7 @@ class Test_setMultiple extends TestCase {
 			}
 			return $config['parsed_url'][$url];
 		});
+		Functions\when('rocket_mkdir_p')->justReturn();
 
 		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
 
