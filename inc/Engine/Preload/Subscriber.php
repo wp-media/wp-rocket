@@ -489,12 +489,14 @@ class Subscriber implements Subscriber_Interface {
 		$regexes[] = "/$wp_rewrite->pagination_base/\d+";
 
 		return $regexes;
-  }
-	 * Remove private post from cache.
+		}
+
+	/**
+	 * Remove private post from cache .
 	 *
-	 * @param string  $new_status New post status.
-	 * @param string  $old_status Old post status.
-	 * @param WP_Post $post Wp post object.
+	 * @param string  $new_status new post status() .
+	 * @param string  $old_status Old post status .
+	 * @param WP_Post $post Wp post object .
 	 * @return void
 	 */
 	public function remove_private_post( string $new_status, string $old_status, $post ) {

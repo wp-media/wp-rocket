@@ -46,10 +46,7 @@ trait CheckExcludedTrait {
 		 */
 		$regexes = (array) apply_filters( 'rocket_preload_exclude_urls_regexes', [] );
 
-
-		$pagination_regex = "/$wp_rewrite->pagination_base/\d+";
-		$url              = strtok( $url, '?' );
-		$url              = user_trailingslashit( $url );
+		$url = $this->format_url($url);
 
 		/**
 		 * Regex to exclude URI from preload.
@@ -57,7 +54,7 @@ trait CheckExcludedTrait {
 		 * @param string[] $regexes Regexes to check.
 		 * @param string   $url Current preloading url.
 		 */
-		$regexes_urls = (array) apply_filters( 'rocket_preload_exclude_urls', [ $pagination_regex ], $url );
+		$regexes_urls = (array) apply_filters( 'rocket_preload_exclude_urls', [], $url );
 
 		if ( $this->is_match( $url, $regexes, false ) ) {
 			return true;

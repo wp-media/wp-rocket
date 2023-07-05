@@ -62,7 +62,6 @@ class FetchSitemap {
 
 		$this->sitemap_parser->set_content( $data );
 		$links = $this->sitemap_parser->get_links();
-
 		foreach ( $links as $link ) {
 			if (
 			(
