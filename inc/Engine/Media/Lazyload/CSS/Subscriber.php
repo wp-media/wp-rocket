@@ -3,10 +3,11 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Filesystem_Direct;
 use WP_Post;
+use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\JsonFormatter;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -14,58 +15,73 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 
 	/**
+	 * Extract background images from CSS.
+	 *
 	 * @var Extractor
 	 */
 	protected $extractor;
 
 	/**
+	 * Format the CSS rule inside the CSS content.
+	 *
 	 * @var RuleFormatter
 	 */
 	protected $rule_formatter;
 
 	/**
+	 * Resolves the name from the file from its URL.
+	 *
 	 * @var FileResolver
 	 */
 	protected $file_resolver;
 
 	/**
+	 * Background CSS cache.
+	 *
 	 * @var FilesystemCache
 	 */
 	protected $filesystem_cache;
 
 	/**
+	 * WordPress filesystem.
+	 *
 	 * @var WP_Filesystem_Direct
 	 */
 	protected $filesystem;
 
 	/**
-	 * @var JsonFormatter
+	 * Format data for the Mapping file.
+	 *
+	 * @var MappingFormatter
 	 */
-	protected $json_formatter;
+	protected $mapping_formatter;
 
 	/**
+	 * Generate tags from the mapping of lazyloaded images.
+	 *
 	 * @var TagGenerator
 	 */
 	protected $tag_generator;
 
 	/**
-	 * @param Extractor $extractor
-	 * @param RuleFormatter $rule_formatter
-	 * @param FileResolver $file_resolver
-	 * @param FilesystemCache $filesystem_cache
-	 * @param JsonFormatter $json_formatter
-	 * @param TagGenerator $tag_generator
-	 * @param WP_Filesystem_Direct|null $filesystem
+	 * Instantiate class.
+	 *
+	 * @param Extractor                 $extractor Extract background images from CSS.
+	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
+	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
+	 * @param FilesystemCache           $filesystem_cache Background CSS cache.
+	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
+	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct(Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, JsonFormatter $json_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null)
-	{
-		$this->extractor = $extractor;
-		$this->rule_formatter = $rule_formatter;
-		$this->file_resolver = $file_resolver;
-		$this->filesystem_cache = $filesystem_cache;
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
-		$this->json_formatter = $json_formatter;
-		$this->tag_generator = $tag_generator;
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null ) {
+		$this->extractor         = $extractor;
+		$this->rule_formatter    = $rule_formatter;
+		$this->file_resolver     = $file_resolver;
+		$this->filesystem_cache  = $filesystem_cache;
+		$this->filesystem        = $filesystem ?: rocket_direct_filesystem();
+		$this->mapping_formatter = $mapping_formatter;
+		$this->tag_generator     = $tag_generator;
 	}
 
 	/**
@@ -89,9 +105,9 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_generate_lazyloaded_css' => [
-				['create_lazy_css_files', 13],
-				['create_lazy_inline_css', 14],
-				['add_lazy_tag', 15],
+				[ 'create_lazy_css_files', 13 ],
+				[ 'create_lazy_inline_css', 14 ],
+				[ 'add_lazy_tag', 15 ],
 			],
 			'rocket_buffer'                  => 'maybe_replace_css_images',
 			'after_rocket_clean_domain'      => 'clear_generated_css',
@@ -107,12 +123,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
-		$output = apply_filters('rocket_generate_lazyloaded_css', [
-			'html' => $html
-		]);
+		$output = apply_filters(
+			'rocket_generate_lazyloaded_css',
+			[
+				'html' => $html,
+			]
+			);
 
-
-		if(! is_array($output) || ! key_exists('html', $output)) {
+		if ( ! is_array( $output ) || ! key_exists( 'html', $output ) ) {
 			return $html;
 		}
 
@@ -135,11 +153,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_generate_css_post( WP_Post $post ) {
-			$url = get_post_permalink($post);
-			if(! $url) {
-				return;
-			}
-			$this->filesystem_cache->delete($url);
+			$url = get_post_permalink( $post );
+		if ( ! $url ) {
+			return;
+		}
+			$this->filesystem_cache->delete( $url );
 	}
 
 	/**
@@ -148,7 +166,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
-		wp_enqueue_script('rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.js', [], rocket_get_constant('WP_ROCKET_VERSION'), true);
+		wp_enqueue_script( 'rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
 	}
 
 	/**
@@ -159,11 +177,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function create_lazy_css_files( array $data ): array {
 
-		if(! key_exists('html', $data) || ! key_exists('css_files', $data)) {
+		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_files', $data ) ) {
 			return $data;
 		}
 
-		$html = $data['html'];
+		$html    = $data['html'];
 		$mapping = [];
 
 		foreach ( $data['css_files'] as $url ) {
@@ -181,31 +199,43 @@ class Subscriber implements Subscriber_Interface {
 			$html = str_replace( $url, $cached_url, $html );
 		}
 
-		$data['html']              = $html;
+		$data['html'] = $html;
 
-		if(! key_exists('lazyloaded_images', $data)) {
+		if ( ! key_exists( 'lazyloaded_images', $data ) ) {
 			$data['lazyloaded_images'] = [];
 		}
 
-		$data['lazyloaded_images'] = array_merge($data['lazyloaded_images'], $mapping);
+		$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $mapping );
 
 		return $data;
 	}
 
-	public function add_lazy_tag(array $data): array {
-		if(! key_exists('html', $data) || ! key_exists('lazyloaded_images', $data)) {
+	/**
+	 * Add the lazy tag to the current HTML.
+	 *
+	 * @param array $data Data sent.
+	 * @return array
+	 */
+	public function add_lazy_tag( array $data ): array {
+		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
 			return $data;
 		}
 
-		$loaded = apply_filters('rocket_css_image_lazyload_images_load', []);
+		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [] );
 
-		$tags = $this->tag_generator->generate($data['lazyloaded_images'], $loaded);
+		$tags = $this->tag_generator->generate( $data['lazyloaded_images'], $loaded );
 
-		$data['html'] = str_replace('</head>', "$tags</head>", $data['html']);
+		$data['html'] = str_replace( '</head>', "$tags</head>", $data['html'] );
 
 		return $data;
 	}
 
+	/**
+	 * Generate lazy CSS for a file.
+	 *
+	 * @param string $url Url from the CSS.
+	 * @return array
+	 */
 	protected function generate_css_file( string $url ) {
 		$path = $this->file_resolver->resolve( $url );
 		if ( ! $path ) {
@@ -223,21 +253,30 @@ class Subscriber implements Subscriber_Interface {
 			return [];
 		}
 
-		$this->filesystem_cache->set($url . '.json', json_encode( $output['urls'] ));
+		$this->filesystem_cache->set( $url . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
 		return $output['urls'];
 	}
 
+	/**
+	 * Generate lazy content for a certain content.
+	 *
+	 * @param string $content Content to generate lazy for.
+	 * @return array
+	 */
 	protected function generate_content( string $content ): array {
 		$urls           = $this->extractor->extract( $content );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
-			$url_tags = array_map(function ($url_tag) {
-				$url_tag['hash']   = wp_generate_uuid4();
-				return $url_tag;
-			}, $url_tags);
-			$content           = $this->rule_formatter->format( $content, $url_tags );
-			$formatted_urls = array_merge($formatted_urls, $this->json_formatter->format( $url_tags ));
+			$url_tags       = array_map(
+				function ( $url_tag ) {
+					$url_tag['hash'] = wp_generate_uuid4();
+					return $url_tag;
+				},
+				$url_tags
+				);
+			$content        = $this->rule_formatter->format( $content, $url_tags );
+			$formatted_urls = array_merge( $formatted_urls, $this->mapping_formatter->format( $url_tags ) );
 		}
 
 		return [
@@ -246,6 +285,12 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
+	/**
+	 * Load existing mapping for a URL.
+	 *
+	 * @param string $url Url we load mapping for.
+	 * @return array
+	 */
 	protected function load_existing_mapping( string $url ) {
 		$content = $this->filesystem_cache->get( $url . '.json' );
 		$urls    = json_decode( $content, true );
@@ -263,14 +308,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function create_lazy_inline_css( array $data ): array {
 
-		if(! key_exists('html', $data) || ! key_exists('css_inline', $data)) {
+		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_inline', $data ) ) {
 			return $data;
 		}
 
 		$html = $data['html'];
 
 		$output = [
-			'urls' => []
+			'urls' => [],
 		];
 
 		foreach ( $data['css_inline'] as $content ) {
@@ -283,13 +328,13 @@ class Subscriber implements Subscriber_Interface {
 			$html = str_replace( $content, $output['content'], $html );
 		}
 
-		$data['html']              = $html;
+		$data['html'] = $html;
 
-		if(! key_exists('lazyloaded_images', $data)) {
+		if ( ! key_exists( 'lazyloaded_images', $data ) ) {
 			$data['lazyloaded_images'] = [];
 		}
 
-		$data['lazyloaded_images'] = array_merge($data['lazyloaded_images'], $output['urls']);
+		$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output['urls'] );
 
 		return $data;
 	}

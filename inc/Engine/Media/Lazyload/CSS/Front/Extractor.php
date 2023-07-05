@@ -16,7 +16,7 @@ class Extractor {
 	 */
 	public function extract( string $content ): array {
 
-		 $matches = $this->find( '(?<selector>[ \-\w.#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}', $content, 'mi' );
+		$matches = $this->find( '(?<selector>[ \-\w.#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}', $content, 'mi' );
 
 		if ( empty( $matches ) ) {
 			return [];
@@ -40,8 +40,8 @@ class Extractor {
 			foreach ( $urls as $url ) {
 				$results[ $selector ][] = [
 					'selector' => $selector,
-					'url'   => $url,
-					'block' => $match[0],
+					'url'      => $url,
+					'block'    => $match[0],
 				];
 			}
 		}
@@ -49,6 +49,12 @@ class Extractor {
 		return $results;
 	}
 
+	/**
+	 * Extract URLS from a CSS property.
+	 *
+	 * @param string $content Content from the CSS property.
+	 * @return array
+	 */
 	protected function extract_urls( string $content ): array {
 		$matches = $this->find( '(?<tag>url\([\'"]?(?<url>[^\)]*)[\'"]?\))', $content, 'mi' );
 

@@ -4,6 +4,13 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 class RuleFormatter {
 
+	/**
+	 * Format the CSS rule inside the CSS content.
+	 *
+	 * @param string $css CSS content.
+	 * @param array  $data Data to format.
+	 * @return string
+	 */
 	public function format( string $css, array $data ): string {
 
 		if ( count( $data ) === 0 ) {

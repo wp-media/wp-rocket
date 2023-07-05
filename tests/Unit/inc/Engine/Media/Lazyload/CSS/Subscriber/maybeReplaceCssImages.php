@@ -6,7 +6,7 @@ use Mockery;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\JsonFormatter;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
@@ -46,7 +46,7 @@ class Test_maybeReplaceCssImages extends TestCase {
 	protected $filesystem;
 
 	/**
-	 * @var JsonFormatter
+	 * @var MappingFormatter
 	 */
 	protected $json_formatter;
 
@@ -67,7 +67,7 @@ class Test_maybeReplaceCssImages extends TestCase {
 		$this->file_resolver = Mockery::mock(FileResolver::class);
 		$this->filesystem_cache = Mockery::mock(FilesystemCache::class);
 		$this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
-		$this->json_formatter = Mockery::mock(JsonFormatter::class);
+		$this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 
 		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);

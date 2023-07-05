@@ -69,7 +69,7 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function set( $key, $value, $ttl = null ) {
-		$path = $this->generate_path( $key );
+		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
 		return $this->filesystem->put_contents( $path, $value );

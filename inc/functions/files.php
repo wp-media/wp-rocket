@@ -1163,17 +1163,17 @@ function rocket_mkdir( $dir ) {
 /**
  * Recursive directory creation based on full path.
  *
+ * @param string                    $target path to the directory we want to create.
+ * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+ * @return bool True if directory is created/exists, false otherwise
  * @since 1.3.4
  *
  * @source wp_mkdir_p() in /wp-includes/functions.php
- *
- * @param string $target path to the directory we want to create.
- * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target, $filesystem = null ) {
 	$wrapper = null;
 
-	$filesystem = $filesystem?: rocket_direct_filesystem();
+	$filesystem = $filesystem ?: rocket_direct_filesystem();
 
 	if ( rocket_is_stream( $target ) ) {
 		list( $wrapper, $target ) = explode( '://', $target, 2 );
