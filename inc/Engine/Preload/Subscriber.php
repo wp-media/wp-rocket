@@ -519,14 +519,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_private_post_uri( $regexes ) : array {
-		static $private_urls;
 
 		if ( ! is_array( $regexes ) ) {
 			$regexes = (array) $regexes;
-		}
-
-		if ( isset( $private_urls ) ) {
-			return $private_urls;
 		}
 
 		$arg   = [

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\FilterTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
@@ -10,6 +11,8 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_ExcludePrivatePostUri extends AdminTestCase
 {
+	use FilterTrait;
+
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
@@ -26,7 +29,8 @@ class Test_ExcludePrivatePostUri extends AdminTestCase
         parent::set_up();
         $this->set_permalink_structure( "/%postname%/" );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_preload_exclude_urls', 'exclude_private_post_uri', 10 );
+		$this->unregisterAllCallbacksExcept('rocket_preload_exclude_urls', 'exclude_private_post_uri');
+
 	}
 
     public function tear_down() {
