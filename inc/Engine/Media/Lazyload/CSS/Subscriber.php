@@ -42,13 +42,6 @@ class Subscriber implements Subscriber_Interface {
 	protected $file_resolver;
 
 	/**
-	 * Background CSS cache.
-	 *
-	 * @var FilesystemCache
-	 */
-	protected $filesystem_cache;
-
-	/**
 	 * WordPress filesystem.
 	 *
 	 * @var WP_Filesystem_Direct
@@ -75,14 +68,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Extractor                 $extractor Extract background images from CSS.
 	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
 	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
-	 * @param CacheInterface $cache Cache instance.
+	 * @param CacheInterface            $cache Cache instance.
 	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
 	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
 	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor         = $extractor;
-		$this->cache = $cache;
+		$this->cache             = $cache;
 		$this->rule_formatter    = $rule_formatter;
 		$this->file_resolver     = $file_resolver;
 		$this->filesystem        = $filesystem ?: rocket_direct_filesystem();
@@ -149,7 +142,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_generated_css() {
-		$this->filesystem_cache->clear();
+		$this->cache->clear();
 	}
 
 	/**
@@ -163,7 +156,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! $url ) {
 			return;
 		}
-			$this->filesystem_cache->delete( $url );
+			$this->cache->delete( $url );
 	}
 
 	/**
@@ -191,7 +184,7 @@ class Subscriber implements Subscriber_Interface {
 		$mapping = [];
 
 		foreach ( $data['css_files'] as $url ) {
-			if ( ! $this->filesystem_cache->has( $url ) ) {
+			if ( ! $this->cache->has( $url ) ) {
 				$mapping = $this->generate_css_file( $url );
 				if ( empty( $mapping ) ) {
 					continue;
@@ -200,7 +193,7 @@ class Subscriber implements Subscriber_Interface {
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
-			$cached_url = $this->filesystem_cache->generate_url( $url );
+			$cached_url = $this->cache->generate_url( $url );
 
 			$html = str_replace( $url, $cached_url, $html );
 		}
@@ -255,11 +248,11 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$output = $this->generate_content( $content );
-		if ( ! $this->filesystem_cache->set( $url, $output['content'] ) ) {
+		if ( ! $this->cache->set( $url, $output['content'] ) ) {
 			return [];
 		}
 
-		$this->filesystem_cache->set( $url . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+		$this->cache->set( $url . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
 		return $output['urls'];
 	}
@@ -298,7 +291,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	protected function load_existing_mapping( string $url ) {
-		$content = $this->filesystem_cache->get( $url . '.json' );
+		$content = $this->cache->get( $url . '.json' );
 		$urls    = json_decode( $content, true );
 		if ( ! $urls ) {
 			return [];
