@@ -1024,6 +1024,16 @@ class Page {
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
 		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality for bg css.
+		 *
+		 * @since 3.5.5
+		 *
+		 * @param array $disable_css_bg_img_lazyload Will return the array with all plugin names which should disable LazyLoad
+		 */
+		$disable_css_bg_img_lazyload = (array) apply_filters( 'rocket_maybe_disable_css_bg_img_lazyload_helper', $disable_css_bg_img_lazyload );
+		$disable_css_bg_img_lazyload = $this->sanitize_and_format_list( $disable_css_bg_img_lazyload );
+
+		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
 		 *
 		 * @since 3.6.3
@@ -1078,7 +1088,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'lazyload'         => [
+				'lazyload'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -1094,7 +1104,22 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
-				'lazyload_iframes' => [
+				'lazyload_css_bg_img' => [
+					'container_class'   => [
+						! empty( $disable_css_bg_img_lazyload ) ? 'wpr-isDisabled' : '',
+						'wpr-isParent',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable for CSS background images', 'rocket' ),
+					'section'           => 'lazyload_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => ! empty( $disable_css_bg_img_lazyload ) ? 1 : 0,
+					],
+				],
+				'lazyload_iframes'    => [
 					'container_class'   => [
 						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
@@ -1109,7 +1134,7 @@ class Page {
 						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
-				'lazyload_youtube' => [
+				'lazyload_youtube'    => [
 					'container_class'   => [
 						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
@@ -1127,20 +1152,20 @@ class Page {
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
 				],
-				'exclude_lazyload' => [
+				'exclude_lazyload'    => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
 					'type'            => 'textarea',
 					'label'           => __( 'Excluded images or iframes', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'         => 'lazyload_section',
 					'page'            => 'media',
 					'default'         => [],
-					'placeholder'     => "example-image.jpg\nslider-image",
+					'placeholder'     => "example-image.jpg\nslider-image\nbackground-image-style.css",
 				],
-				'image_dimensions' => [
+				'image_dimensions'    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
 					'section'           => 'dimensions_section',

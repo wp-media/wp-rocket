@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
@@ -195,6 +196,7 @@ class Plugin {
 		$this->container->addServiceProvider( SettingsServiceProvider::class );
 		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
 		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
+		$this->container->addServiceProvider( AdminLazyloadCSSServiceProvider::class );
 
 		return [
 			'beacon',
@@ -216,6 +218,7 @@ class Plugin {
 			'minify_admin_subscriber',
 			'action_scheduler_check',
 			'actionscheduler_admin_subscriber',
+			'lazyload_css_admin_subscriber',
 		];
 	}
 

@@ -10,6 +10,10 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 
+
+/**
+ * Service provider.
+ */
 class ServiceProvider extends AbstractServiceProvider {
 
 
@@ -23,20 +27,17 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'lazyload_css_cache',
 		'lazyload_css_subscriber',
-		'rocket_css_image_lazyload_dir_level',
 	];
-
-
 	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
-
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
-			->addArgument( apply_filters( 'rocket_css_image_lazyload_dir_level', 'background-css' ) );
+			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' ) );
 
 		$this->getLeagueContainer()->add( 'lazyload_css_extractor', Extractor::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_file_resolver', FileResolver::class );

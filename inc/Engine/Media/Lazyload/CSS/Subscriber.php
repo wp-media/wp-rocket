@@ -3,12 +3,12 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Filesystem_Direct;
 use WP_Post;
-use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
+use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -19,6 +19,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @var Extractor
 	 */
 	protected $extractor;
+
+	/**
+	 * Cache instance.
+	 *
+	 * @var CacheInterface
+	 */
+	protected $cache;
 
 	/**
 	 * Format the CSS rule inside the CSS content.
@@ -68,16 +75,16 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Extractor                 $extractor Extract background images from CSS.
 	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
 	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
-	 * @param FilesystemCache           $filesystem_cache Background CSS cache.
+	 * @param CacheInterface $cache Cache instance.
 	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
 	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, FilesystemCache $filesystem_cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor         = $extractor;
+		$this->cache = $cache;
 		$this->rule_formatter    = $rule_formatter;
 		$this->file_resolver     = $file_resolver;
-		$this->filesystem_cache  = $filesystem_cache;
 		$this->filesystem        = $filesystem ?: rocket_direct_filesystem();
 		$this->mapping_formatter = $mapping_formatter;
 		$this->tag_generator     = $tag_generator;
