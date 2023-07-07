@@ -1,6 +1,6 @@
 <?php
 
-$post = new WP_Post();
+$post = new WP_Post((object) []);
 
 return [
     'shouldDelete' => [

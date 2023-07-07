@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Filesystem_Direct;
 
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
@@ -19,6 +20,7 @@ use Brain\Monkey\Filters;
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
  */
 class Test_maybeReplaceCssImages extends TestCase {
+	use HasLoggerTrait;
 
 	/**
 	 * @var Extractor
@@ -71,6 +73,7 @@ class Test_maybeReplaceCssImages extends TestCase {
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 
 		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
+		$this->set_logger($this->subscriber);
 	}
 
     /**

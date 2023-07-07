@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServi
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
@@ -133,6 +134,10 @@ class Plugin {
 		$this->container->add( 'options_api', $this->options_api );
 		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
+
+		$this->container->addServiceProvider( LoggerServiceProvider::class );
+
+		$this->container->get( 'logger' );
 
 		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
 		$this->container->addServiceProvider( SupportServiceProvider::class );

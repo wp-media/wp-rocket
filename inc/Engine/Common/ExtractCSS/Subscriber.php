@@ -3,9 +3,11 @@ namespace WP_Rocket\Engine\Common\ExtractCSS;
 
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class Subscriber implements Subscriber_Interface {
-	use RegexTrait;
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
+	use RegexTrait, LoggerAware;
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -43,6 +45,13 @@ class Subscriber implements Subscriber_Interface {
 	public function extract_css_files_from_html( array $data ): array {
 
 		if ( ! key_exists( 'html', $data ) ) {
+			$this->logger::notice(
+				'Extract CSS files bailed out',
+				[
+					'type' => 'extract_css',
+					'data' => $data,
+				]
+				);
 			return $data;
 		}
 
@@ -66,10 +75,24 @@ class Subscriber implements Subscriber_Interface {
 				||
 				( strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
+				$this->logger::notice(
+					"Skipped URL: {$style['url']}",
+					[
+						'type' => 'extract_css',
+						'data' => $style[0],
+					]
+					);
 				continue;
 			}
 
 			$css_links [] = $style['url'];
+			$this->logger::notice(
+				"Extracted URL: {$style['url']}",
+				[
+					'type' => 'extract_css',
+					'data' => $style[0],
+				]
+				);
 		}
 
 		$data['css_files'] = array_merge( $data['css_files'], $css_links );
@@ -85,6 +108,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function extract_inline_css_from_html( array $data ): array {
 		if ( ! key_exists( 'html', $data ) ) {
+			$this->logger::notice(
+				'Extract CSS inline bailed out',
+				[
+					'type' => 'extract_css',
+					'data' => $data,
+				]
+				);
 			return $data;
 		}
 
@@ -104,10 +134,24 @@ class Subscriber implements Subscriber_Interface {
 			$content = trim( $style['content'] );
 
 			if ( empty( $content ) ) {
+				$this->logger::notice(
+					"Skipped Content: {$style['content']}",
+					[
+						'type' => 'extract_css',
+						'data' => $style[0],
+					]
+					);
 				continue;
 			}
 
 			$css_links [] = $content;
+			$this->logger::notice(
+				"Extracted Content: $content",
+				[
+					'type' => 'extract_css',
+					'data' => $style[0],
+				]
+				);
 		}
 
 		$data['css_inline'] = array_merge( $data['css_inline'], $css_links );

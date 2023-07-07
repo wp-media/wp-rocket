@@ -5,12 +5,14 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Common\ExtractCSS\Subscriber;
 use WP_Rocket\Engine\Common\ExtractCSS\Subscriber;
 
 
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Common\ExtractCSS\Subscriber::extract_inline_css_from_html
  */
 class Test_extractInlineCssFromHtml extends TestCase {
+	use HasLoggerTrait;
 
     /**
      * @var Subscriber
@@ -21,6 +23,7 @@ class Test_extractInlineCssFromHtml extends TestCase {
         parent::set_up();
 
         $this->subscriber = new Subscriber();
+		$this->set_logger($this->subscriber);
     }
 
     /**

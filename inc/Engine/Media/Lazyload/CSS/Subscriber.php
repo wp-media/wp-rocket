@@ -10,9 +10,11 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class Subscriber implements Subscriber_Interface {
-
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
+	use LoggerAware;
 	/**
 	 * Extract background images from CSS.
 	 *
@@ -122,6 +124,15 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
+
+		$this->logger::debug(
+			'Starting lazyload',
+			[
+				'type' => 'lazyload_css_bg_images',
+				'data' => $html,
+			]
+			);
+
 		$output = apply_filters(
 			'rocket_generate_lazyloaded_css',
 			[
@@ -130,8 +141,23 @@ class Subscriber implements Subscriber_Interface {
 			);
 
 		if ( ! is_array( $output ) || ! key_exists( 'html', $output ) ) {
+			$this->logger::debug(
+				'Lazyload bailed out',
+				[
+					'type' => 'lazyload_css_bg_images',
+					'data' => $html,
+				]
+				);
 			return $html;
 		}
+
+		$this->logger::debug(
+			'Ending lazyload',
+			[
+				'type' => 'lazyload_css_bg_images',
+				'data' => $html,
+			]
+			);
 
 		return $output['html'];
 	}
@@ -142,6 +168,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_generated_css() {
+		$this->logger::debug(
+			'Clear lazy CSS',
+			[
+				'type' => 'lazyload_css_bg_images',
+			]
+			);
 		$this->cache->clear();
 	}
 
@@ -152,8 +184,20 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_generate_css_post( WP_Post $post ) {
-			$url = get_post_permalink( $post );
+		$url = get_post_permalink( $post );
+		$this->logger::debug(
+			"Clear lazy CSS for $url",
+			[
+				'type' => 'lazyload_css_bg_images',
+			]
+			);
 		if ( ! $url ) {
+			$this->logger::debug(
+				"Clear lazy CSS for $url",
+				[
+					'type' => 'lazyload_css_bg_images',
+				]
+				);
 			return;
 		}
 			$this->cache->delete( $url );
@@ -177,6 +221,13 @@ class Subscriber implements Subscriber_Interface {
 	public function create_lazy_css_files( array $data ): array {
 
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_files', $data ) ) {
+			$this->logger::debug(
+				'Create lazy css files bailed out',
+				[
+					'type' => 'lazyload_css_bg_images',
+					'data' => $data,
+				]
+				);
 			return $data;
 		}
 
@@ -185,16 +236,40 @@ class Subscriber implements Subscriber_Interface {
 
 		foreach ( $data['css_files'] as $url ) {
 			if ( ! $this->cache->has( $url ) ) {
+				$this->logger::debug(
+					"Generate lazy css files $url",
+					[
+						'type' => 'lazyload_css_bg_images',
+					]
+					);
 				$mapping = $this->generate_css_file( $url );
 				if ( empty( $mapping ) ) {
+					$this->logger::debug(
+						"Create lazy css files $url bailed out",
+						[
+							'type' => 'lazyload_css_bg_images',
+						]
+						);
 					continue;
 				}
 			} else {
+				$this->logger::debug(
+					"Load lazy css files $url",
+					[
+						'type' => 'lazyload_css_bg_images',
+					]
+					);
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
 			$cached_url = $this->cache->generate_url( $url );
-
+			$this->logger::debug(
+				"Generated url lazy css files $url",
+				[
+					'type' => 'lazyload_css_bg_images',
+					'data' => $cached_url,
+				]
+				);
 			$html = str_replace( $url, $cached_url, $html );
 		}
 
@@ -217,13 +292,26 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_lazy_tag( array $data ): array {
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
+			$this->logger::debug(
+				'Add lazy tag bailed out',
+				[
+					'type' => 'lazyload_css_bg_images',
+					'data' => $data,
+				]
+				);
 			return $data;
 		}
 
 		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [] );
 
 		$tags = $this->tag_generator->generate( $data['lazyloaded_images'], $loaded );
-
+		$this->logger::debug(
+			'Add lazy tag generated',
+			[
+				'type' => 'lazyload_css_bg_images',
+				'data' => $tags,
+			]
+			);
 		$data['html'] = str_replace( '</head>', "$tags</head>", $data['html'] );
 
 		return $data;
@@ -308,6 +396,13 @@ class Subscriber implements Subscriber_Interface {
 	public function create_lazy_inline_css( array $data ): array {
 
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_inline', $data ) ) {
+			$this->logger::debug(
+				'Create lazy css inline bailed out',
+				[
+					'type' => 'lazyload_css_bg_images',
+					'data' => $data,
+				]
+				);
 			return $data;
 		}
 
@@ -321,6 +416,16 @@ class Subscriber implements Subscriber_Interface {
 			$output = $this->generate_content( $content );
 
 			if ( empty( $output ) ) {
+				$this->logger::debug(
+					"Create lazy css inline $content bailed out",
+					[
+						'type' => 'lazyload_css_bg_images',
+						'data' => [
+							'content' => $content,
+							'output'  => $output,
+						],
+					]
+					);
 				continue;
 			}
 

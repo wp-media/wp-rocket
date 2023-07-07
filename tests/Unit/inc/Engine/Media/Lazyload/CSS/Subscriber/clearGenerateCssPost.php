@@ -13,6 +13,7 @@ use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 
 
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
@@ -20,6 +21,8 @@ use Brain\Monkey\Functions;
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::clear_generate_css_post
  */
 class Test_clearGenerateCssPost extends TestCase {
+
+	use HasLoggerTrait;
 
     /**
      * @var Extractor
@@ -72,7 +75,8 @@ class Test_clearGenerateCssPost extends TestCase {
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 
         $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
-    }
+    	$this->set_logger($this->subscriber);
+	}
 
     /**
      * @dataProvider configTestData
