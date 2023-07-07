@@ -23,9 +23,9 @@ use Brain\Monkey\Functions;
 class Test_Process extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
+
 	public function set_up() {
 		parent::set_up();
-
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_css_key', [ $this, 'return_key' ] );
 	}
@@ -43,6 +43,9 @@ class Test_Process extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyCSS( $original, $expected, $settings ) {
+
+		$this->wp_rocket_debug = $settings['wp_debug'];
+
 		$this->settings = $settings;
 		$this->setSettings();
 

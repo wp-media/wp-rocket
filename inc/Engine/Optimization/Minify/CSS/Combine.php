@@ -307,9 +307,11 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 
 				$file_content = $this->get_file_content( $filepath );
 				$file_content = $this->rewrite_paths( $filepath, $combined_file, $file_content );
+				$file_content = $this->add_comment( "START {$style['url']}" ) . $file_content . $this->add_comment( "END {$style['url']}" );
 			} elseif ( 'external' === $style['type'] ) {
 				$file_content = $this->local_cache->get_content( $style['url'] );
 				$file_content = $this->rewrite_paths( $style['url'], $combined_file, $file_content );
+				$file_content = $this->add_comment( "START {$style['url']}" ) . $file_content . $this->add_comment( "END {$style['url']}" );
 			}
 
 			if ( empty( $file_content ) ) {
@@ -344,5 +346,18 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			&&
 			! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(?:\s*?,\s*?)?(all|screen)(?:\s*?,\s*?[^"\']*)?)["\']/i', $tag )
 		);
+	}
+
+	/**
+	 * Added a comment only when WP Rocket is in debug mode
+	 *
+	 * @param string $comment_message message from the comment.
+	 * @return string the comment maybe added.
+	 */
+	private function add_comment( string $comment_message ) {
+		if ( ! rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
+			return '';
+		}
+		return "/*!{$comment_message}*/\r\n";
 	}
 }

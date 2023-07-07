@@ -57,6 +57,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -98,6 +99,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -145,6 +147,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -193,6 +196,7 @@ return [
 				'cdn_zone'               => [
 					'all',
 				],
+				'wp_debug' => false,
 			],
 		],
 
@@ -237,6 +241,7 @@ return [
 				'cdn'                    => 1,
 				'cdn_cnames'             => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'               => [ 'all' ],
+				'wp_debug' => false,
 			],
 		],
 
@@ -282,10 +287,11 @@ return [
 				'cdn'                    => 1,
 				'cdn_cnames'             => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'               => [ 'all' ],
+				'wp_debug' => false,
 			],
 		],
 
-		'combineCssFiles' => [
+		'combineCssFilesWithDebug' => [
 			'original' => '<html>' .
 			              '<head>' .
 			              '<title>Sample Page</title>' .
@@ -310,6 +316,49 @@ return [
 					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css',
 					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css.gz',
 				],
+				'css' => '/*!START http://example.org/wp-content/themes/twentytwenty/style.css*/
+body{font-family:Helvetica,Arial,sans-serif;text-align:center}/*!END http://example.org/wp-content/themes/twentytwenty/style.css*/
+/*!START http://example.org/wp-content/plugins/hello-dolly/style.css*/
+body{font-family:Helvetica,Arial,sans-serif;text-align:center}/*!END http://example.org/wp-content/plugins/hello-dolly/style.css*/
+/*!START http://example.org/wp-includes/css/dashicons.min.css*/
+body{font-family:Helvetica,Arial,sans-serif;text-align:center}/*!END http://example.org/wp-includes/css/dashicons.min.css*/
+',
+			],
+
+			'settings' => [
+				'minify_concatenate_css' => 1,
+				'cdn'                    => 0,
+				'cdn_cnames'             => [],
+				'cdn_zone'               => [],
+				'wp_debug' => true,
+			],
+		],
+
+		'combineCssFiles' => [
+			'original' => '<html>' .
+				'<head>' .
+				'<title>Sample Page</title>' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/themes/twentytwenty/style.css" type="text/css" media="all">' .
+				'<link rel="stylesheet" href="http://example.org/wp-content/plugins/hello-dolly/style.css">' .
+				'<link rel="stylesheet" href="http://example.org/wp-includes/css/dashicons.min.css">' .
+				'</head>' .
+				'<body>' .
+				'</body>' .
+				'</html>',
+
+			'expected' => [
+				'html'  => '<html>' .
+					'<head>' .
+					'<title>Sample Page</title>' .
+					'<link rel="stylesheet" href="http://example.org/wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css" media="all" data-minify="1" />' .
+					'</head>' .
+					'<body>' .
+					'</body>' .
+					'</html>',
+				'files' => [
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css',
+					'wp-content/cache/min/1/eb7ac62f1625bbbcc73a159d5f6aa290.css.gz',
+				],
 				'css' => 'body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}body{font-family:Helvetica,Arial,sans-serif;text-align:center}',
 			],
 
@@ -318,6 +367,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -349,6 +399,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -385,6 +436,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -419,6 +471,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -446,6 +499,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -482,6 +536,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -522,6 +577,7 @@ return [
 				'cdn'                    => 0,
 				'cdn_cnames'             => [],
 				'cdn_zone'               => [],
+				'wp_debug' => false,
 			],
 		],
 
@@ -558,6 +614,7 @@ return [
 				'cdn'                    => 1,
 				'cdn_cnames'             => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'               => [ 'all' ],
+				'wp_debug' => false,
 			],
 		],
 
@@ -594,6 +651,7 @@ return [
 				'cdn'                    => 1,
 				'cdn_cnames'             => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'               => [ 'all' ],
+				'wp_debug' => false,
 			],
 		],
 
@@ -634,6 +692,7 @@ return [
 				'cdn_zone'               => [
 					'all',
 				],
+				'wp_debug' => false,
 			],
 		],
 	],

@@ -41,6 +41,9 @@ class Test_Process extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldMinifyJS( $original, $expected, $settings ) {
+
+		$this->wp_rocket_debug = $settings['wp_debug'];
+
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_minify_js_key', [ $this, 'return_key' ] );
 		add_filter( 'rocket_excluded_inline_js_content', [ $this, 'set_excluded_inline'] );

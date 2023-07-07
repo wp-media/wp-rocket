@@ -59,6 +59,52 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
+			],
+		],
+
+		'minifyJSFileWithDebug' => [
+			// Test Data: Original JS files.
+			'original' =>
+				'<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+					<script type="text/javascript" src="http://example.org' . $jquery_path . '"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html' => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
+						<script type="text/javascript" src="http://example.org' . $jquery_path . '"></script>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js?ver={{mtime}}"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js',
+					'wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js.gz',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js',
+					'wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js.gz',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js.gz',
+				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+				'wp_debug' => true,
 			],
 		],
 
@@ -100,6 +146,7 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -130,6 +177,7 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -168,6 +216,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -207,6 +256,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -245,6 +295,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -288,6 +339,7 @@ return [
 				'cdn_cnames'            => [],
 				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -333,6 +385,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -379,6 +432,7 @@ return [
 				'cdn_cnames'            => [ ],
 				'cdn_zone'              => [ ],
 				'defer_all_js'          => 1,
+				'wp_debug' => false,
 			],
 		],
 
@@ -427,6 +481,7 @@ return [
 				'cdn_cnames'            => [ ],
 				'cdn_zone'              => [ ],
 				'defer_all_js'          => 1,
+				'wp_debug' => false,
 			],
 		],
 
@@ -473,6 +528,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 1,
+				'wp_debug' => false,
 			],
 		],
 
@@ -521,6 +577,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 1,
+				'wp_debug' => false,
 			],
 		],
 
@@ -566,6 +623,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 
@@ -612,6 +670,7 @@ return [
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'              => [ 'all' ],
 				'defer_all_js'          => 0,
+				'wp_debug' => false,
 			],
 		],
 	],

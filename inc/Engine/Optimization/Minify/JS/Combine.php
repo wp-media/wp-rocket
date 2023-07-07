@@ -319,17 +319,21 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 
 		foreach ( $this->scripts as $script ) {
 			if ( 'file' === $script['type'] ) {
-				$file_content = $this->get_file_content( $script['content'] );
+				$file_content = $this->add_comment( "START {$script['content']}" ) . $this->get_file_content(
+					$script['content']
+					) . $this->add_comment( "END {$script['content']}" );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
 			} elseif ( 'url' === $script['type'] ) {
-				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
+				$file_content = $this->add_comment( "START {$script['content']}" ) . $this->local_cache->get_content(
+					rocket_add_url_protocol( $script['content'] )
+					) . $this->add_comment( "END {$script['content']}" );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
 			} elseif ( 'inline' === $script['type'] ) {
-				$inline_js = rtrim( $script['content'], ";\n\t\r" ) . ';';
+				$inline_js = $this->add_comment( 'Inline Script START' ) . rtrim( $script['content'], ";\n\t\r" ) . ';' . $this->add_comment( 'Inline Script END' );
 				$content  .= $inline_js;
 
 				$this->add_to_minify( $inline_js );
@@ -506,5 +510,18 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Added a comment only when WP Rocket is in debug mode
+	 *
+	 * @param string $comment_message message from the comment.
+	 * @return string the comment maybe added.
+	 */
+	private function add_comment( string $comment_message ) {
+		if ( ! rocket_get_constant( 'WP_ROCKET_DEBUG' ) ) {
+			return '';
+		}
+		return "/*!{$comment_message}*/\r\n";
 	}
 }
