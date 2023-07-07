@@ -42,7 +42,30 @@ class Activation {
 		$container->addServiceProvider( ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
 
+		// Last constants.
+		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+		define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+
 		$host_type = HostResolver::get_host_service();
+
+		$event_manager = new Event_Manager();
+
+		$api_url = wp_parse_url( WP_ROCKET_WEB_INFO );
+
+		$container->share( 'plugin_updater_common_subscriber', \WP_Rocket\Engine\Plugin\UpdaterApiCommonSubscriber::class )
+			->addArgument(
+				[
+					'api_host'           => $api_url['host'],
+					'site_url'           => home_url(),
+					'plugin_version'     => WP_ROCKET_VERSION,
+					'settings_slug'      => WP_ROCKET_SLUG,
+					'settings_nonce_key' => WP_ROCKET_PLUGIN_SLUG,
+					'plugin_options'     => $container->get( 'options' ),
+				]
+			)
+			->addTag( 'common_subscriber' );
+
+		$event_manager->add_subscriber( $container->get( 'plugin_updater_common_subscriber' ) );
 
 		if ( ! empty( $host_type ) ) {
 			array_unshift( self::$activators, $host_type );
@@ -51,10 +74,6 @@ class Activation {
 		foreach ( self::$activators as $activator ) {
 			$container->get( $activator );
 		}
-
-		// Last constants.
-		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
-		define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 		if ( defined( 'SUNRISE' ) && SUNRISE === 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 			require WP_ROCKET_INC_PATH . 'domain-mapping.php';
@@ -83,6 +102,14 @@ class Activation {
 		// Create the config folder (wp-rocket-config).
 		rocket_init_config_dir();
 
+		// Create config file when WP CLI.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
+			require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
+			rocket_upgrader();
+			rocket_generate_config_file();
+		}
+
 		// Update customer key & licence.
 		wp_remote_get(
 			WP_ROCKET_WEB_API . 'activate-licence.php',
@@ -90,6 +117,13 @@ class Activation {
 				'blocking' => false,
 			]
 		);
+
+		// Recheck license when WP CLI.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			if ( ! rocket_valid_key() ) {
+				rocket_check_key();
+			}
+		}
 
 		wp_remote_get(
 			home_url(),
@@ -100,5 +134,10 @@ class Activation {
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			]
 		);
+
+		/**
+		 * WP Rocket after activation hook.
+		 */
+		do_action( 'rocket_activation_after' );
 	}
 }
