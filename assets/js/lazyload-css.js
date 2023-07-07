@@ -22,6 +22,6 @@ pairs.forEach(pair => {
 	elements.forEach(el => {
 		observer.observe(el);
 		// Save el in the pair object (create a new empty array if it doesn't exist)
-		(pair.selector.elements ||= []).push(el);
+		(pair.elements ||= []).push(el);
 	});
 });

@@ -15,11 +15,10 @@ class MappingFormatter {
 		foreach ( $data as $datum ) {
 			$hash = $datum['hash'];
 
-			$selector      = $datum['selector'] . $hash;
-			$selector_hash = $datum['selector'] . $hash;
+			$selector      = $datum['selector'];
 			$url           = $datum['url'];
 
-			$placeholder          = "--wpr-bg-`$selector_hash`";
+			$placeholder          = "--wpr-bg-$hash";
 			$variable_placeholder = ':root{' . $placeholder . ': ' . $url . ';}';
 			$formatted_urls[]     = [
 				'selector' => $selector,

@@ -31,10 +31,8 @@ class RuleFormatter {
 
 			$hash = $datum['hash'];
 
-			$selector = $datum['selector'] . $hash;
-
-			$placeholder          = "--wpr-bg-`$selector`";
-			$variable_placeholder = "--var($placeholder)";
+			$placeholder          = "--wpr-bg-$hash";
+			$variable_placeholder = "var($placeholder)";
 
 			$replaced_block = str_replace( $url, $variable_placeholder, $replaced_block );
 		}
