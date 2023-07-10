@@ -163,8 +163,8 @@ class InformationSubscriber implements Subscriber_Interface {
 		}
 
 		$plugins = [
-			'imagify'  => 'imagify/imagify.php',
-			'rankmath' => 'seo-by-rank-math/rank-math.php',
+			'imagify'          => 'imagify/imagify.php',
+			'seo-by-rank-math' => 'seo-by-rank-math/rank-math.php',
 		];
 
 		// grab all slugs from the api results.
