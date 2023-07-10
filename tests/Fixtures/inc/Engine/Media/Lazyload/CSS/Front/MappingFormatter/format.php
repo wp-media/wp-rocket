@@ -17,12 +17,12 @@ return [
         ],
         'expected' => [
 			[
-				'selector' => '#first_ida122ad12df3',
-        		'style' => ':root{--wpr-bg-`#first_ida122ad12df3`: http://example.org;}'
+				'selector' => '#first_id',
+        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}'
 			],
 			[
-				'selector' => '#second_ida122ad12df2',
-        		'style' => ':root{--wpr-bg-`#second_ida122ad12df2`: http://example.org/test;}'
+				'selector' => '#second_id',
+        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}'
 			]
         ]
     ],

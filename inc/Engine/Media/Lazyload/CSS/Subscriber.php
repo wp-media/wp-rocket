@@ -200,7 +200,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				);
 			return;
 		}
-			$this->cache->delete( $url );
+			$this->cache->delete( $this->format_url( $url ) );
 	}
 
 	/**
@@ -235,7 +235,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$mapping = [];
 
 		foreach ( $data['css_files'] as $url ) {
-			if ( ! $this->cache->has( $url ) ) {
+			$url_key = $this->format_url( $url );
+			if ( ! $this->cache->has( $url_key ) ) {
 				$this->logger::debug(
 					"Generate lazy css files $url",
 					[
@@ -262,7 +263,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
-			$cached_url = $this->cache->generate_url( $url );
+
+
+			$cached_url = $this->cache->generate_url( $url_key );
 			$this->logger::debug(
 				"Generated url lazy css files $url",
 				[
@@ -270,7 +273,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'data' => $cached_url,
 				]
 				);
-			$html = str_replace( $url, $cached_url, $html );
+			$html = str_replace( $url_key, $cached_url, $html );
 		}
 
 		$data['html'] = $html;
@@ -335,12 +338,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return [];
 		}
 
+		$url_key = $this->format_url( $url );
+
 		$output = $this->generate_content( $content );
-		if ( ! $this->cache->set( $url, $output['content'] ) ) {
+		if ( ! $this->cache->set( $url_key, $output['content'] ) ) {
 			return [];
 		}
 
-		$this->cache->set( $url . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+		$this->cache->set( $url_key . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
 		return $output['urls'];
 	}
@@ -379,7 +384,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	protected function load_existing_mapping( string $url ) {
-		$content = $this->cache->get( $url . '.json' );
+		$content = $this->cache->get( $this->format_url( $url ) . '.json' );
 		$urls    = json_decode( $content, true );
 		if ( ! $urls ) {
 			return [];
@@ -441,5 +446,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output['urls'] );
 
 		return $data;
+	}
+
+	/**
+	 * Format a URL.
+	 *
+	 * @param string $url URL to format.
+	 * @return string
+	 */
+	protected function format_url( string $url ): string {
+		return strtok( $url, '?' );
 	}
 }

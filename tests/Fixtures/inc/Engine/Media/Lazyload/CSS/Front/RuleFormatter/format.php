@@ -44,7 +44,7 @@ $css_formatted = <<<CSS
 		background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), url("/wp-content/rocket-test-data/images/paper.jpeg");
 	}
 	.internal-css-background{
-		background: --var(--wpr-bg-`.internal-css-background_ida122ad12df2`);
+		background: var(--wpr-bg-_ida122ad12df2);
 	}
 CSS;
 
