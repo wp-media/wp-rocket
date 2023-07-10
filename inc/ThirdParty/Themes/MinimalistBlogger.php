@@ -35,7 +35,7 @@ class MinimalistBlogger extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public function exclude_jquery_from_delay_js( array $exclusions = [] ) {
-		$exclusions[] = '\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?(\'|"| |<|>)';
+		$exclusions[] = '\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)';
 		return $exclusions;
 	}
 }
