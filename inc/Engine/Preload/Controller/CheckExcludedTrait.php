@@ -56,11 +56,7 @@ trait CheckExcludedTrait {
 		 */
 		$regexes_urls = (array) apply_filters( 'rocket_preload_exclude_urls', [], $url );
 
-		if ( $this->is_match( $url, $regexes, false ) ) {
-			return true;
-		}
-
-		return $this->is_match( $url, $regexes_urls );
+		return $this->is_match( $url, $regexes, false ) || $this->is_match( $url, $regexes_urls );
 	}
 
 	/**
