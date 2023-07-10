@@ -1756,7 +1756,7 @@ class Page extends Abstract_Render {
 					'type'              => 'one_click_addon',
 					'label'             => __( 'User Cache', 'rocket' ),
 					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
 						'width'  => 152,
 						'height' => 135,
 					],
