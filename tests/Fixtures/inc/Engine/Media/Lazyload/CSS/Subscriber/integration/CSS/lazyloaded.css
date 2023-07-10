@@ -1,26 +1,26 @@
 .external-css-background-image{
 	width: 100%;
 	height: 400px;
-	background-image: --var(--wpr-bg-`.external-css-background-imagehash`);
+	background-image: var(--wpr-bg-hash);
 	background-color: #cccccc;
 }
 .external-css-background-images{
 	width: 100%;
 	height: 400px;
-	background-image: --var(--wpr-bg-`.external-css-background-imageshash`), --var(--wpr-bg-`.external-css-background-imageshash`);
+	background-image: var(--wpr-bg-hash), var(--wpr-bg-hash);
 	background-color: #3dd83d;
 }
 .external-css-background-image-gradient{
 	width: 100%;
 	height: 400px;
-	background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), --var(--wpr-bg-`.external-css-background-image-gradienthash`);
+	background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), var(--wpr-bg-hash);
 }
 .external-css-background{
-	background: --var(--wpr-bg-`.external-css-backgroundhash`) no-repeat;
+	background: var(--wpr-bg-hash) no-repeat;
 	background-color: #4fc1dd;
 }
 
 .external-css-backgroundsvg{
-	background: --var(--wpr-bg-`.external-css-backgroundsvghash`) no-repeat;
+	background: var(--wpr-bg-hash) no-repeat;
 	background-color: #c63dd8;
 }

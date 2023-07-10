@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>HTML 5 Boilerplate</title>
 	<!-- external CSS background images here min and non-min file -->
-	<link rel="stylesheet" href="http://example.org/wp-content/cache/wp-rocket/background-css/wp-content/rocket-test-data/styles/lazyload_css_background_images.css">
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/wp-rocket/background-css/wp-content/rocket-test-data/styles/lazyload_css_background_images.css?test=1">
 	<link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css">
 
 	<!-- CSS loaded by js, probably won't be processed -->
@@ -27,9 +27,9 @@
 
 <style id="wpr-lazyload-bg"></style>
 <noscript>
-<style id="wpr-lazyload-bg-nostyle">:root{--wpr-bg-`.internal-css-background-imagehash`: url("/wp-content/rocket-test-data/images/paper.jpeg");}:root{--wpr-bg-`.internal-css-background-imageshash`: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-`.internal-css-background-imageshash`: url( "/wp-content/rocket-test-data/images/paper.jpeg" );}:root{--wpr-bg-`.internal-css-background-image-gradienthash`: url("/wp-content/rocket-test-data/images/paper.jpeg");}:root{--wpr-bg-`.internal-css-backgroundhash`: url('/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-`.internal-css-background404hash`: url('/wp-content/rocket-test-data/images/testnotExist.png');}:root{--wpr-bg-`#internal-BG-imageshash`: url(/wp-content/rocket-test-data/images/butterfly.avif);}:root{--wpr-bg-`#internal-BG-imageshash`: url(/wp-content/rocket-test-data/images/file_example_TIFF_1MB.tiff);}</style>
+<style id="wpr-lazyload-bg-nostyle">:root{--wpr-bg-hash: url("/wp-content/rocket-test-data/images/paper.jpeg");}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url( "/wp-content/rocket-test-data/images/paper.jpeg" );}:root{--wpr-bg-hash: url("/wp-content/rocket-test-data/images/paper.jpeg");}:root{--wpr-bg-hash: url('/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('/wp-content/rocket-test-data/images/testnotExist.png');}:root{--wpr-bg-hash: url(/wp-content/rocket-test-data/images/butterfly.avif);}:root{--wpr-bg-hash: url(/wp-content/rocket-test-data/images/file_example_TIFF_1MB.tiff);}</style>
 </noscript>
-<script type="application/javascript">const pairs = [{"selector":".internal-css-background-imagehash","style":":root{--wpr-bg-`.internal-css-background-imagehash`: url(\"\/wp-content\/rocket-test-data\/images\/paper.jpeg\");}"},{"selector":".internal-css-background-imageshash","style":":root{--wpr-bg-`.internal-css-background-imageshash`: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/test.png');}"},{"selector":".internal-css-background-imageshash","style":":root{--wpr-bg-`.internal-css-background-imageshash`: url( \"\/wp-content\/rocket-test-data\/images\/paper.jpeg\" );}"},{"selector":".internal-css-background-image-gradienthash","style":":root{--wpr-bg-`.internal-css-background-image-gradienthash`: url(\"\/wp-content\/rocket-test-data\/images\/paper.jpeg\");}"},{"selector":".internal-css-backgroundhash","style":":root{--wpr-bg-`.internal-css-backgroundhash`: url('\/wp-content\/rocket-test-data\/images\/test.png');}"},{"selector":".internal-css-background404hash","style":":root{--wpr-bg-`.internal-css-background404hash`: url('\/wp-content\/rocket-test-data\/images\/testnotExist.png');}"},{"selector":"#internal-BG-imageshash","style":":root{--wpr-bg-`#internal-BG-imageshash`: url(\/wp-content\/rocket-test-data\/images\/butterfly.avif);}"},{"selector":"#internal-BG-imageshash","style":":root{--wpr-bg-`#internal-BG-imageshash`: url(\/wp-content\/rocket-test-data\/images\/file_example_TIFF_1MB.tiff);}"}];</script></head>
+<script type="application/javascript">const pairs = [{"selector":".internal-css-background-image","style":":root{--wpr-bg-hash: url(\"\/wp-content\/rocket-test-data\/images\/paper.jpeg\");}"},{"selector":".internal-css-background-images","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/test.png');}"},{"selector":".internal-css-background-images","style":":root{--wpr-bg-hash: url( \"\/wp-content\/rocket-test-data\/images\/paper.jpeg\" );}"},{"selector":".internal-css-background-image-gradient","style":":root{--wpr-bg-hash: url(\"\/wp-content\/rocket-test-data\/images\/paper.jpeg\");}"},{"selector":".internal-css-background","style":":root{--wpr-bg-hash: url('\/wp-content\/rocket-test-data\/images\/test.png');}"},{"selector":".internal-css-background404","style":":root{--wpr-bg-hash: url('\/wp-content\/rocket-test-data\/images\/testnotExist.png');}"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-hash: url(\/wp-content\/rocket-test-data\/images\/butterfly.avif);}"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-hash: url(\/wp-content\/rocket-test-data\/images\/file_example_TIFF_1MB.tiff);}"}];</script></head>
 <body>
 <div>
 	<h2>Background images from internal CSS</h2>
@@ -137,25 +137,25 @@
 	.internal-css-background-image{
 		width: 100%;
 		height: 400px;
-		background-image: --var(--wpr-bg-`.internal-css-background-imagehash`);
+		background-image: var(--wpr-bg-hash);
 		background-color: #cccccc;
 	}
 	.internal-css-background-images{
 		width: 100%;
 		height: 400px;
-		background-image: --var(--wpr-bg-`.internal-css-background-imageshash`), --var(--wpr-bg-`.internal-css-background-imageshash`);
+		background-image: var(--wpr-bg-hash), var(--wpr-bg-hash);
 		background-color: #cccccc;
 	}
 	.internal-css-background-image-gradient{
 		width: 100%;
 		height: 400px;
-		background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), --var(--wpr-bg-`.internal-css-background-image-gradienthash`);
+		background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), var(--wpr-bg-hash);
 	}
 	.internal-css-background{
-		background: --var(--wpr-bg-`.internal-css-backgroundhash`);
+		background: var(--wpr-bg-hash);
 	}
 	.internal-css-background404{
-		background: --var(--wpr-bg-`.internal-css-background404hash`);
+		background: var(--wpr-bg-hash);
 	}
 	.background-no-repeat{
 		background-repeat: no-repeat;
@@ -170,7 +170,7 @@
 	}
 
 	#internal-BG-images {
-		background: --var(--wpr-bg-`#internal-BG-imageshash`) right bottom no-repeat, --var(--wpr-bg-`#internal-BG-imageshash`) left top repeat;
+		background: var(--wpr-bg-hash) right bottom no-repeat, var(--wpr-bg-hash) left top repeat;
 		padding: 15px;
 	}
 </style>

@@ -29,7 +29,7 @@ return [
 					],
 					'/wp-content/cache/wp-rocket/background-css/wp-content/rocket-test-data/styles/lazyload_css_background_images.css.json' => [
 						'exists' => true,
-						'content' => file_get_contents(__DIR__ . '/CSS/lazyload.css.json.css')
+						'content' => file_get_contents(__DIR__ . '/CSS/lazyload.css.json')
 					],
 				]
 			]

@@ -22,8 +22,10 @@ class FileResolver {
 
 		$path = $parsed_url['path'];
 
-		$path = str_replace( $home_parsed_path, '', $path );
+		if ( $home_parsed_path ) {
+			$path = str_replace( $home_parsed_path, '', $path );
+		}
 
-		return get_home_path() . $path;
+		return rocket_get_constant('ABSPATH', '') . $path;
 	}
 }

@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>HTML 5 Boilerplate</title>
 	<!-- external CSS background images here min and non-min file -->
-	<link rel="stylesheet" href="/wp-content/rocket-test-data/styles/lazyload_css_background_images.css">
+	<link rel="stylesheet" href="/wp-content/rocket-test-data/styles/lazyload_css_background_images.css?test=1">
 	<link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css">
 
 	<!-- CSS loaded by js, probably won't be processed -->

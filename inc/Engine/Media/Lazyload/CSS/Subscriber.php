@@ -244,6 +244,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					]
 					);
 				$mapping = $this->generate_css_file( $url );
+
 				if ( empty( $mapping ) ) {
 					$this->logger::debug(
 						"Create lazy css files $url bailed out",
@@ -266,6 +267,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 
 			$cached_url = $this->cache->generate_url( $url_key );
+
 			$this->logger::debug(
 				"Generated url lazy css files $url",
 				[
@@ -341,6 +343,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$url_key = $this->format_url( $url );
 
 		$output = $this->generate_content( $content );
+
 		if ( ! $this->cache->set( $url_key, $output['content'] ) ) {
 			return [];
 		}

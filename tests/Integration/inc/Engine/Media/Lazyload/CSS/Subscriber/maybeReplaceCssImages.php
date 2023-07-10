@@ -32,7 +32,22 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Functions\when('get_home_path')->justReturn($this->filesystem->getUrl('/'));
+		Functions\when('rocket_get_constant')->alias(function ($name, $default = null) {
+			if('ABSPATH' === $name) {
+				return $this->filesystem->getUrl('/');
+			}
+
+			if('WP_CONTENT_DIR' === $name) {
+				return $this->filesystem->getUrl('/') . 'wp-content';
+			}
+
+			if(defined($name)) {
+				return constant($name);
+			}
+
+			return $default;
+		});
+
 		Functions\when('wp_generate_uuid4')->alias(function () {
 			return 'hash';
 		});
@@ -46,7 +61,10 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 				continue;
 			}
 
-			$this->assertSame($content['content'], $this->filesystem->get_contents($path));
+			$expected_content = trim($content['content']);
+			$content = trim($this->filesystem->get_contents($path));
+
+			$this->assertSame($expected_content, $content);
 
 		}
 	}
