@@ -74,8 +74,7 @@ trait CheckExcludedTrait {
 		}
 
 		$regexes = array_unique( $regexes );
-		$url     = $this->format_url( $url );
-		$url     = user_trailingslashit( $url );
+		$url     = $this->format_url( $url, true );
 
 		foreach ( $regexes as $regex ) {
 			if ( ! is_string( $regex ) ) {
