@@ -158,7 +158,7 @@ class PreloadUrl {
 	 * @return string
 	 */
 	protected function get_mobile_user_agent_prefix() {
-		$prefix = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		$prefix = 'WP Rocket Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
 
 		/**
 		 * Filter the prefix to prepend to the user agent used for preload to make a HTTP request detected as a mobile device.
