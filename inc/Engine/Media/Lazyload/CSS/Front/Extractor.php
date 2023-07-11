@@ -16,7 +16,20 @@ class Extractor {
 	 */
 	public function extract( string $content ): array {
 
-		$matches = $this->find( '(?<selector>[ \-\w.#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}', $content, 'mi' );
+		$old_regex = '(?<selector>[ \-\w.#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}';
+
+		/**
+		 * Lazyload property regex.
+		 *
+		 * @param string $regex Lazyload property regex.
+		 */
+		$regex = apply_filters( 'rocket_lazyload_css_extract_property_regex', $old_regex );
+
+		if ( ! is_string( $regex ) ) {
+			$regex = $old_regex;
+		}
+
+		$matches = $this->find( $regex, $content, 'mi' );
 
 		if ( empty( $matches ) ) {
 			return [];
@@ -56,7 +69,20 @@ class Extractor {
 	 * @return array
 	 */
 	protected function extract_urls( string $content ): array {
-		$matches = $this->find( '(?<tag>url\([\'"]?(?<url>[^\)]*)[\'"]?\))', $content, 'mi' );
+
+		$old_regex = '(?<tag>url\([\'"]?(?<url>[^\)]*)[\'"]?\))';
+		/**
+		 * Lazyload URL regex.
+		 *
+		 * @param string $regex Lazyload URL regex.
+		 */
+		$regex = apply_filters( 'rocket_lazyload_css_extract_url_regex', $old_regex );
+
+		if ( ! is_string( $regex ) ) {
+			$regex = $old_regex;
+		}
+
+		$matches = $this->find( $regex, $content, 'mi' );
 
 		$output = [];
 

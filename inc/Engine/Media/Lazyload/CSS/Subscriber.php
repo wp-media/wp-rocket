@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Filesystem_Direct;
 use WP_Post;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
@@ -98,19 +97,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
-	 *
-	 * The array key is the event name. The value can be:
-	 *
-	 *  * The method name
-	 *  * An array with the method name and priority
-	 *  * An array with the method name, priority and number of accepted arguments
-	 *
-	 * For instance:
-	 *
-	 *  * array('hook_name' => 'method_name')
-	 *  * array('hook_name' => array('method_name', $priority))
-	 *  * array('hook_name' => array('method_name', $priority, $accepted_args))
-	 *  * array('hook_name' => array(array('method_name_1', $priority_1, $accepted_args_1)), array('method_name_2', $priority_2, $accepted_args_2)))
 	 *
 	 * @return array
 	 */
@@ -414,7 +400,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		foreach ( $urls as $url_tags ) {
 			$url_tags       = array_map(
 				function ( $url_tag ) {
-					$url_tag['hash'] = wp_generate_uuid4();
+					/**
+					 * Lazyload CSS hash.
+					 *
+					 * @param string $hash Lazyload CSS hash.
+					 */
+					$url_tag['hash'] = apply_filters( 'rocket_lazyload_css_hash',  wp_generate_uuid4(), $url_tag );
 					return $url_tag;
 				},
 				$url_tags
