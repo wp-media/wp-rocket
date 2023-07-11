@@ -7,8 +7,8 @@ return [
 			'excluded' => []
 		],
 		'expected' => [
-			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?$'
-		]
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+		],
 	],
 	'testThemeShouldReturnExpected' => [
 		'config' => [
@@ -17,7 +17,7 @@ return [
 			'excluded' => []
 		],
 		'expected' => [
-			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?$'
-		]
-	]
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
+		],
+	],
 ];
