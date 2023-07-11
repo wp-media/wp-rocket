@@ -111,6 +111,19 @@ function rocket_display_cache_options_meta_boxes() {
 				'delay_js'          => __( 'Delay JavaScript execution', 'rocket' ),
 			];
 
+			$old_fields = $fields;
+
+			/**
+			 * Metaboxes fields.
+			 *
+			 * @param string[] $fields Metaboxes fields.
+			 */
+			$fields = apply_filters( 'rocket_meta_boxes_fields', $fields );
+
+			if ( ! is_array( $fields ) ) {
+				$fields = $old_fields;
+			}
+
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
 				// translators: %s is the name of the option.
