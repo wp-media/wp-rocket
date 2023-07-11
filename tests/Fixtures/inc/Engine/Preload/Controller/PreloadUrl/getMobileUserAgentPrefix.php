@@ -14,6 +14,6 @@ return [
 			'filter' => 'new_prefix',
 
 		],
-		'expected' => 'WP Rocket new_prefix'
+		'expected' => 'WP Rocket/Preload new_prefix'
 	]
 ];
