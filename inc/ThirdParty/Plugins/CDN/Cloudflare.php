@@ -75,6 +75,7 @@ class Cloudflare implements Subscriber_Interface {
 			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
+			'rocket_cdn_helper_addons'            => 'add_cdn_helper_message',
 		];
 	}
 
@@ -448,5 +449,19 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		return (bool) $is_apo_enabled['value'];
+	}
+
+	/**
+	 * Add the helper message on the CDN settings.
+	 *
+	 * @param string[] $addons Name from the addon that requires the helper message.
+	 * @return string[]
+	 */
+	public function add_cdn_helper_message( array $addons ): array {
+		if ( ! $this->is_plugin_active() ) {
+			return $addons;
+		}
+		$addons[] = 'Cloudflare';
+		return $addons;
 	}
 }
