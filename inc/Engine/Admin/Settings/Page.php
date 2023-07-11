@@ -341,6 +341,10 @@ class Page extends Abstract_Render {
 
 		update_rocket_option( sanitize_key( $_POST['option']['name'] ), $value );
 
+		if ( 'cache_logged_user' === $_POST['option']['name'] ) {
+			rocket_generate_config_file();
+		}
+
 		wp_die();
 	}
 
