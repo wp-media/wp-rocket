@@ -54,6 +54,23 @@ class RenewalNotice extends Abstract_Render {
 	}
 
 	/**
+	 * Adds styles for expired banner
+	 *
+	 * @return void
+	 */
+	public function add_expired_styles( $version ) {
+		if ( ! $this->user->is_license_expired() ) {
+			return;
+		}
+
+		if ( ! $this->is_major_version_available( $version ) ) {
+			return;
+		}
+
+		echo '<style>.plugins tr[data-slug=wp-rocket] th, .plugins tr[data-slug=wp-rocket] td {box-shadow: none !important;}@media screen and (max-width: 782px){.plugins tr[data-slug=wp-rocket].active + .plugin-update-tr::before {background-color: #f0f6fc;border-left: 4px solid #72aee6;}}</style>';
+	}
+
+	/**
 	 * Checks if a new major version is available
 	 *
 	 * @param string $version Version available from the API.

@@ -126,6 +126,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			'upgrader_pre_install'                     => [ 'upgrade_pre_install_option', 10, 2 ],
 			'upgrader_post_install'                    => [ 'upgrade_post_install_option', 10, 2 ],
 			'after_plugin_row_wp-rocket/wp-rocket.php' => 'display_renewal_notice',
+			'admin_print_styles-plugins.php'           => 'add_expired_styles',
 		];
 	}
 
@@ -586,5 +587,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		$this->renewal_notice->renewal_notice( $latest_version_data->stable_version );
+	}
+
+	/**
+	 * Adds styles for expired banner
+	 *
+	 * @return void
+	 */
+	public function add_expired_styles() {
+		$latest_version_data = $this->get_cached_latest_version_data();
+
+		if ( is_wp_error( $latest_version_data ) ) {
+			return;
+		}
+
+		$this->renewal_notice->add_expired_styles( $latest_version_data->stable_version );
 	}
 }
