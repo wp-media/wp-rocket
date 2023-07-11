@@ -330,7 +330,7 @@ class Page extends Abstract_Render {
 			'sucury_waf_cache_sync'       => 1,
 			'sucury_waf_api_key'          => 1,
 			'cache_webp'                  => 1,
-			'user_cache_section'          => 1,
+			'cache_logged_user'           => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $allowed[ $_POST['option']['name'] ] ) ) {
@@ -1753,7 +1753,7 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_fields(
 			[
-				'user_cache_section' => [
+				'cache_logged_user' => [
 					'type'              => 'one_click_addon',
 					'label'             => __( 'User Cache', 'rocket' ),
 					'logo'              => [
