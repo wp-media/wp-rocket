@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use Mockery;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
@@ -59,6 +60,11 @@ class Test_createLazyCssFiles extends TestCase {
 	 */
 	protected $tag_generator;
 
+	/**
+	 * @var ContextInterface
+	 */
+	protected $context;
+
     /**
      * @var Subscriber
      */
@@ -73,8 +79,9 @@ class Test_createLazyCssFiles extends TestCase {
         $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
         $this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
+		$this->context = Mockery::mock(ContextInterface::class);
 
-        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
+        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->context, $this->filesystem);
 
 		$this->set_logger($this->subscriber);
 	}

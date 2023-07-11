@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use Mockery;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
@@ -12,7 +13,7 @@ use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use Brain\Monkey\Functions;
-
+use Brain\Monkey\Filters;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -55,6 +56,11 @@ class Test_insertLazyloadScript extends TestCase {
 	 */
 	protected $tag_generator;
 
+	/**
+	 * @var ContextInterface
+	 */
+	protected $context;
+
     /**
      * @var Subscriber
      */
@@ -69,8 +75,9 @@ class Test_insertLazyloadScript extends TestCase {
         $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
         $this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
+		$this->context = Mockery::mock(ContextInterface::class);
 
-        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
+        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->context, $this->filesystem);
     }
 
     /**
@@ -88,7 +95,9 @@ class Test_insertLazyloadScript extends TestCase {
 
 			return null;
 		});
+		Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
 		Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css', $expected['url'], [], $expected['version'], true);
-        $this->subscriber->insert_lazyload_script();
+		Functions\expect('wp_localize_script')->with('rocket_lazyload_css', 'rocket_lazyload_css_data', $expected['data']);
+		$this->subscriber->insert_lazyload_script();
     }
 }

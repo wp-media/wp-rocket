@@ -31,7 +31,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		return [
 			'rocket_generate_lazyloaded_css' => [
 				[ 'extract_css_files_from_html', 11 ],
-				[ 'extract_inline_css_from_html', 12 ],
+				[ 'extract_inline_css_from_html', 14 ],
 			],
 		];
 	}

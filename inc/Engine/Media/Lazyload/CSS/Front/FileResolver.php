@@ -26,6 +26,6 @@ class FileResolver {
 			$path = str_replace( $home_parsed_path, '', $path );
 		}
 
-		return rocket_get_constant('ABSPATH', '') . $path;
+		return rocket_get_constant( 'ABSPATH', '' ) . $path;
 	}
 }

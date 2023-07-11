@@ -1023,6 +1023,8 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
+		$disable_css_bg_img_lazyload = [];
+
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality for bg css.
 		 *

@@ -39,16 +39,23 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' ) );
 
+		$cache = $this->getContainer()->get( 'lazyload_css_cache' );
+
+		$this->getLeagueContainer()->add( 'lazyload_css_context' )
+			->addArgument( $this - $this->getContainer()->get( 'options' ) )
+			->addArgument( $cache );
+
 		$this->getLeagueContainer()->add( 'lazyload_css_extractor', Extractor::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_file_resolver', FileResolver::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_json_formatter', MappingFormatter::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_rule_formatter', RuleFormatter::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_tag_generator', TagGenerator::class );
+
 		$this->getLeagueContainer()->add( 'lazyload_css_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_extractor' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_rule_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_file_resolver' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_css_cache' ) )
+			->addArgument( $cache )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_json_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_tag_generator' ) );
 	}

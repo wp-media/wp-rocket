@@ -3,6 +3,8 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 
 use WP_Filesystem_Direct;
 use WP_Post;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
@@ -65,6 +67,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	protected $tag_generator;
 
 	/**
+	 * Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $context;
+
+	/**
 	 * Instantiate class.
 	 *
 	 * @param Extractor                 $extractor Extract background images from CSS.
@@ -73,9 +82,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param CacheInterface            $cache Cache instance.
 	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
 	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
+	 * @param ContextInterface          $context Context.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContextInterface $context, WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor         = $extractor;
 		$this->cache             = $cache;
 		$this->rule_formatter    = $rule_formatter;
@@ -83,6 +93,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->filesystem        = $filesystem ?: rocket_direct_filesystem();
 		$this->mapping_formatter = $mapping_formatter;
 		$this->tag_generator     = $tag_generator;
+		$this->context           = $context;
 	}
 
 	/**
@@ -106,11 +117,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_generate_lazyloaded_css' => [
-				[ 'create_lazy_css_files', 13 ],
-				[ 'create_lazy_inline_css', 14 ],
-				[ 'add_lazy_tag', 15 ],
+				[ 'create_lazy_css_files', 18 ],
+				[ 'create_lazy_inline_css', 21 ],
+				[ 'add_lazy_tag', 24 ],
 			],
-			'rocket_buffer'                  => 'maybe_replace_css_images',
+			'rocket_buffer'                  => [ 'maybe_replace_css_images', 1002 ],
 			'after_rocket_clean_domain'      => 'clear_generated_css',
 			'after_rocket_clean_post'        => 'clear_generate_css_post',
 			'wp_enqueue_scripts'             => 'insert_lazyload_script',
@@ -124,6 +135,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
+
+		if ( ! $this->context->is_allowed() ) {
+			return $html;
+		}
 
 		$this->logger::debug(
 			'Starting lazyload',
@@ -209,7 +224,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
+
+		/**
+		 * Filters the threshold at which lazyload is triggered
+		 *
+		 * @since 1.2
+		 *
+		 * @param int $threshold Threshold value.
+		 */
+		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
+
 		wp_enqueue_script( 'rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+
+		wp_localize_script(
+			'rocket_lazyload_css',
+			'rocket_lazyload_css_data',
+			[
+				'threshold' => $threshold,
+			]
+			);
 	}
 
 	/**
@@ -234,7 +267,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$html    = $data['html'];
 		$mapping = [];
 
+		/**
+		 * Filters the src used to prevent lazy load from being applied.
+		 *
+		 * @param array $excluded_src An array of excluded src.
+		 */
+		$exclusions = apply_filters( 'rocket_lazyload_excluded_src', [] );
+
 		foreach ( $data['css_files'] as $url ) {
+
+			if ( $this->is_excluded( $url, $exclusions ) ) {
+				$this->logger::debug(
+					"Excluded lazy css files $url",
+					[
+						'type' => 'lazyload_css_bg_images',
+					]
+				);
+				continue;
+			}
+
 			$url_key = $this->format_url( $url );
 			if ( ! $this->cache->has( $url_key ) ) {
 				$this->logger::debug(
@@ -263,8 +314,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					);
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
-
-
 
 			$cached_url = $this->cache->generate_url( $url_key );
 
@@ -459,5 +508,30 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	protected function format_url( string $url ): string {
 		return strtok( $url, '?' );
+	}
+
+	/**
+	 * Check of the string is excluded.
+	 *
+	 * @param string $string String to check.
+	 * @param mixed  $excluded_values Excluded values.
+	 * @return bool
+	 */
+	protected function is_excluded( string $string, $excluded_values ) {
+		if ( ! is_array( $excluded_values ) ) {
+			$excluded_values = (array) $excluded_values;
+		}
+
+		if ( empty( $excluded_values ) ) {
+			return false;
+		}
+
+		foreach ( $excluded_values as $excluded_value ) {
+			if ( strpos( $string, $excluded_value ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

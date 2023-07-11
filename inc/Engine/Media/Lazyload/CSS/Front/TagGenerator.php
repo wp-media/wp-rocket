@@ -28,7 +28,7 @@ class TagGenerator {
 
 		$mapping_json = json_encode( $mapping ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
-		$script_content = "const pairs = $mapping_json;";
+		$script_content = "const rocket_pairs = $mapping_json;";
 
 		$script_tag = "<script type=\"application/javascript\">$script_content</script>";
 

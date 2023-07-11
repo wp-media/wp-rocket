@@ -15,12 +15,28 @@ HTML;
 
 
 return [
+	'notAllowedShouldReturnSame' => [
+		'config' => [
+			'html' => $html,
+			'data' => [
+				'html' => $html_filtered
+			],
+			'is_allowed' => false,
+		],
+		'expected' => [
+			'data' => [
+				'html' => $html
+			],
+			'output' => $html
+		]
+	],
     'shouldReturnAsExpected' => [
         'config' => [
 			'html' => $html,
 			'data' => [
 				'html' => $html_filtered
-			]
+			],
+			'is_allowed' => true,
         ],
         'expected' => [
 			'data' => [

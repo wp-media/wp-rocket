@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use Mockery;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
@@ -58,6 +59,11 @@ class Test_maybeReplaceCssImages extends TestCase {
 	protected $tag_generator;
 
 	/**
+	 * @var ContextInterface
+	 */
+	protected $context;
+
+	/**
 	 * @var Subscriber
 	 */
 	protected $subscriber;
@@ -71,8 +77,9 @@ class Test_maybeReplaceCssImages extends TestCase {
 		$this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
+		$this->context = Mockery::mock(ContextInterface::class);
 
-		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->filesystem);
+		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->context, $this->filesystem);
 		$this->set_logger($this->subscriber);
 	}
 
@@ -81,7 +88,10 @@ class Test_maybeReplaceCssImages extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Filters\expectApplied('rocket_generate_lazyloaded_css')->with($expected['data'])->andReturn($config['data']);
+		if($config['is_allowed']) {
+			Filters\expectApplied('rocket_generate_lazyloaded_css')->with($expected['data'])->andReturn($config['data']);
+		}
+		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
         $this->assertSame($expected['output'], $this->subscriber->maybe_replace_css_images($config['html']));
     }
 }
