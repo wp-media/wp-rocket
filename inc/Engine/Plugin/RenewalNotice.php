@@ -56,6 +56,8 @@ class RenewalNotice extends Abstract_Render {
 	/**
 	 * Adds styles for expired banner
 	 *
+	 * @param string $version Latest version number.
+	 *
 	 * @return void
 	 */
 	public function add_expired_styles( $version ) {
