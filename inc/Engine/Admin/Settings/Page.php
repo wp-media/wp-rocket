@@ -343,6 +343,7 @@ class Page extends Abstract_Render {
 
 		if ( 'cache_logged_user' === $_POST['option']['name'] ) {
 			rocket_generate_config_file();
+			flush_rocket_htaccess();
 		}
 
 		wp_die();
