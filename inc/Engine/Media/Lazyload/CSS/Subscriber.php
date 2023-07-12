@@ -455,9 +455,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$html = $data['html'];
 
-		$output = [
-			'urls' => [],
-		];
+		if ( ! key_exists( 'lazyloaded_images', $data ) ) {
+			$data['lazyloaded_images'] = [];
+		}
 
 		foreach ( $data['css_inline'] as $content ) {
 			$output = $this->generate_content( $content );
@@ -477,15 +477,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			}
 
 			$html = str_replace( $content, $output['content'], $html );
+
+			$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output['urls'] );
 		}
 
 		$data['html'] = $html;
-
-		if ( ! key_exists( 'lazyloaded_images', $data ) ) {
-			$data['lazyloaded_images'] = [];
-		}
-
-		$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output['urls'] );
 
 		return $data;
 	}
