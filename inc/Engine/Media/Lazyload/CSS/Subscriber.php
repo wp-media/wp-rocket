@@ -185,7 +185,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function clear_generate_css_post( WP_Post $post ) {
-		$url = get_post_permalink( $post );
+		$url = get_post_permalink( $post->ID );
 		$this->logger::debug(
 			"Clear lazy CSS for $url",
 			[
@@ -210,7 +210,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
-
 		/**
 		 * Filters the threshold at which lazyload is triggered
 		 *

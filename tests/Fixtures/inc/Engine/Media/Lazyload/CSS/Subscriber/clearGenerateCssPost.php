@@ -1,6 +1,6 @@
 <?php
 
-$post = new WP_Post((object) []);
+$post = new WP_Post((object) ['ID' => 1]);
 
 return [
     'shouldDelete' => [
@@ -10,7 +10,7 @@ return [
 			'url' => 'http://example.org',
         ],
 		'expected' => [
-			'post' => $post,
+			'post' => 1,
 			'url' => 'http://example.org',
 		]
     ],
@@ -22,7 +22,7 @@ return [
 			'url' => false,
 		],
 		'expected' => [
-			'post' => $post,
+			'post' => 1,
 			'url' => 'http://example.org',
 		]
 	],
