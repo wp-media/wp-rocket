@@ -15,7 +15,7 @@ class Test_extractCssFilesFromHtml extends TestCase {
 	public function set_up()
 	{
 		parent::set_up();
-		$this->unregisterAllCallbacksExcept('rocket_generate_lazyloaded_css', 'extract_css_files_from_html');
+		$this->unregisterAllCallbacksExcept('rocket_generate_lazyloaded_css', 'extract_css_files_from_html', 11);
 	}
 
 	public function tear_down()

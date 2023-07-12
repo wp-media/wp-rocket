@@ -15,14 +15,19 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Subscriber/integration/maybeReplaceCssImages.php';
 
+	protected $config;
+
 	public function set_up()
 	{
 		parent::set_up();
-		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images');
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 1002);
+
+		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 	}
 
 	public function tear_down()
 	{
+		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		$this->restoreWpFilter('rocket_buffer');
 		parent::tear_down();
 	}
@@ -32,6 +37,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
+		$this->config = $config;
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = null) {
 			if('ABSPATH' === $name) {
 				return $this->filesystem->getUrl('/');
@@ -67,5 +73,9 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 			$this->assertSame($expected_content, $content);
 
 		}
+	}
+
+	public function lazyload_css_bg_img() {
+		return $this->config['lazyload_css_bg_img'];
 	}
 }

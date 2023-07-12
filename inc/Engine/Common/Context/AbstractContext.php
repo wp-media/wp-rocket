@@ -31,7 +31,7 @@ abstract class AbstractContext implements ContextInterface {
 	 * @return bool
 	 */
 	public function run_common_checks( array $args = [] ): bool {
-		if ( key_exists( 'do_not_optimize', $args ) && rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) !== (bool) $args['do_not_optimize'] ) {
+		if ( key_exists( 'do_not_optimize', $args ) && (bool) rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) !== (bool) $args['do_not_optimize'] ) {
 			return false;
 		}
 
@@ -39,7 +39,7 @@ abstract class AbstractContext implements ContextInterface {
 			return false;
 		}
 
-		if ( key_exists( 'option', $args ) && is_string( $args['option'] ) && (bool) $this->options->get( $args['option'], 0 ) ) {
+		if ( key_exists( 'option', $args ) && is_string( $args['option'] ) && ! (bool) $this->options->get( $args['option'], 0 ) ) {
 			return false;
 		}
 

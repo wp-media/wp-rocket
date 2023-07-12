@@ -19,6 +19,7 @@ return [
 		'shouldReturnAsExpected' => [
 			'config' => [
 				'html' => $html,
+				'lazyload_css_bg_img' => true,
 			],
 			'expected' => [
 				'output' => $html_filtered,

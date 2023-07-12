@@ -7,7 +7,7 @@ $notice = <<<NOTICE
 WP Rocket</strong>
 cannot configure itself due to missing writing permissions.<br>
 Affected file/folder:<code>
-vfs://public/wp-content/cache/wp-rocket/background-css/</code>
+vfs://public/wp-content/cache/wp-rocket/background-css</code>
 <br>
 Troubleshoot:<a href="https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">
 How to make system files writeable</a>

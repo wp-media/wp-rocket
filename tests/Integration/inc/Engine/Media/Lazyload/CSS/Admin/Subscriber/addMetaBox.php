@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_meta_box
+ * @group AdminOnly
  */
 class Test_addMetaBox extends TestCase {
 
