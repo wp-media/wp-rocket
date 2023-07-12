@@ -2,7 +2,6 @@
 
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\AdvancedCache;
-use WP_Rocket\Buffer\Config;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -237,9 +236,7 @@ function rocket_generate_config_file( $cache_mobile = true ) {
  */
 function rocket_get_config( $config_name ) {
 	$container = apply_filters( 'rocket_container', null );
-	$container->add( 'config', Config::class )->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
-
-	$config = $container->get( 'config' );
+	$config    = $container->get( 'config' );
 
 	return $config->get_config( $config_name );
 }
