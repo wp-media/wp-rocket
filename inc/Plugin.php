@@ -360,6 +360,7 @@ class Plugin {
 			'translatepress',
 			'themify',
 			'wpgeotargeting',
+			'health_check_page_cache',
 		];
 
 		$host_type = HostResolver::get_host_service();
