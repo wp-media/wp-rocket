@@ -582,8 +582,6 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public function display_renewal_notice() {
 		$latest_version_data = $this->get_cached_latest_version_data();
 
-		error_log( var_export( $latest_version_data, true ) );
-
 		if ( is_wp_error( $latest_version_data ) ) {
 			return;
 		}
@@ -602,8 +600,6 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function add_expired_styles() {
 		$latest_version_data = $this->get_cached_latest_version_data();
-
-		error_log( var_export( $latest_version_data, true ) );
 
 		if ( is_wp_error( $latest_version_data ) ) {
 			return;
