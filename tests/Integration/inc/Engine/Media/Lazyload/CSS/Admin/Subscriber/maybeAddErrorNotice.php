@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -10,7 +9,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AdminOnly
  */
 class Test_maybeAddErrorNotice extends FilesystemTestCase {
-	use CapTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Admin/Subscriber/maybeAddErrorNoticeIntegration.php';
 
@@ -20,12 +18,10 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
-		self::setAdminCap();
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public static function tear_down_after_class() {
-		self::resetAdminCap();
 		set_current_screen( 'front' );
 	}
 
