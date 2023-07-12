@@ -2,6 +2,7 @@
 
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Buffer\Config;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -52,9 +53,10 @@ function rocket_generate_advanced_cache_file( $advanced_cache = null ) {
  *
  * @since 2.0
  *
+ * @param bool $cache_mobile Mobile Cache config value.
  * @return array Names of all config files & The content that will be printed
  */
-function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_config_file( $cache_mobile = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
@@ -114,7 +116,11 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
-		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+			$buffer .= $cache_mobile ? '$rocket_' . $option . ' = ' . (int) $value . ";\n" : '$rocket_' . $option . ' = ' . 0 . ";\n";
+		}
+
+		if ( 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
@@ -208,10 +214,11 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
  *
  * @since 2.0
  *
+ * @param bool $cache_mobile Mobile Cache config value.
  * @return void
  */
-function rocket_generate_config_file() {
-	list( $config_files_path, $buffer ) = get_rocket_config_file();
+function rocket_generate_config_file( $cache_mobile = true ) {
+	list( $config_files_path, $buffer ) = get_rocket_config_file( $cache_mobile );
 
 	if ( count( $config_files_path ) ) {
 		rocket_init_config_dir();
