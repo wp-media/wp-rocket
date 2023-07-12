@@ -78,13 +78,13 @@ class Options_Data {
 
 		switch ( $key ) {
 			case 'cache_mobile':
-				if ( rocket_get_config( 'cache_mobile' ) !== $this->options[ $key ] ) {
+				if ( isset( $this->options[ $key ] ) && rocket_get_config( 'cache_mobile' ) !== $this->options[ $key ] ) {
 					rocket_generate_config_file();
 				}
 
 				break;
 			case 'do_caching_mobile_files':
-				if ( rocket_get_config( 'do_caching_mobile_files' ) !== $this->options[ $key ] ) {
+				if ( isset( $this->options[ $key ] ) && rocket_get_config( 'do_caching_mobile_files' ) !== $this->options[ $key ] ) {
 					rocket_generate_config_file();
 				}
 
