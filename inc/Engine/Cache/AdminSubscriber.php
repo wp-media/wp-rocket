@@ -175,7 +175,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.15', '<=' ) ) {
+		if ( version_compare( $old_version, '3.15', '>=') ) {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
