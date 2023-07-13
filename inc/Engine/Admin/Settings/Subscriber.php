@@ -53,7 +53,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
-			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 14 ],
+			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 14, 2 ],
 		];
 	}
 
@@ -255,9 +255,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Enable Separate cache files for mobile devices on upgrade.
 	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
 	 * @return void
 	 */
-	public function enable_separate_cache_files_mobile() : void {
+	public function enable_separate_cache_files_mobile( $new_version, $old_version ) : void {
+		if ( version_compare( $old_version, '3.16', '>' ) ) {
+			return;
+		}
+
 		$this->page->enable_separate_cache_files_mobile();
 	}
 }
