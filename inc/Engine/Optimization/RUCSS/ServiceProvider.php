@@ -37,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_frontend_api_client',
 		'rucss_used_css',
 		'rucss_used_css_query',
+		'rucss_used_css_controller',
 		'rucss_frontend_subscriber',
 		'rucss_queue',
 		'rucss_filesystem',
