@@ -591,12 +591,6 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
-		$post_id = url_to_postid( $url );
-
-		if ( $post_id ) {
-			$parsed_url = rocket_maybe_find_right_trash_url( $parsed_url, $post_id );
-		}
-
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.

@@ -80,13 +80,19 @@ return [
 			'response' => [
 				'headers' => [],
 				'body' => json_encode( (object) [
-					'success' => true,
-					'result' => '',
+					'errors' => [
+						[
+						  'code' => 7003,
+						  'message' => 'No route for the URI',
+						],
+					],
+					'success' => false,
+					'result' => null,
 				] ),
 				'response' => '',
 				'cookies' => [],
 			],
-			'wp_error' => false,
+			'wp_error' => true,
 		],
 		'expected' => (object) [
 			'ipv4_cidrs' => [

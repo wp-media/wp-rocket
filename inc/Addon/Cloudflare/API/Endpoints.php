@@ -95,8 +95,8 @@ class Endpoints {
 	/**
 	 * Updates the zone's minify setting.
 	 *
-	 * @param string $zone_id Zone ID.
-	 * @param string $value Minify value.
+	 * @param string   $zone_id Zone ID.
+	 * @param string[] $value Minify value.
 	 *
 	 * @return object
 	 */
@@ -133,7 +133,7 @@ class Endpoints {
 	 *
 	 * @param string $zone_id Zone ID.
 	 * @param string $setting Name of the setting to change.
-	 * @param string $value   Setting value.
+	 * @param mixed  $value   Setting value.
 	 *
 	 * @return object
 	 */
