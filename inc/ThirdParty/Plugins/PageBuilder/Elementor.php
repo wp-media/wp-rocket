@@ -6,6 +6,7 @@ namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 /**
  * Compatibility file for Elementor plugin
@@ -33,16 +34,25 @@ class Elementor implements Subscriber_Interface {
 	private $delayjs_html;
 
 	/**
+	 * UsedCSS instance
+	 *
+	 * @var UsedCSS
+	 */
+	private $used_css;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data          $options WP Rocket options.
 	 * @param \WP_Filesystem_Direct $filesystem The Filesystem object.
 	 * @param HTML                  $delayjs_html DelayJS HTML class.
+	 * @param UsedCSS               $used_css UsedCSS class.
 	 */
-	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html ) {
+	public function __construct( Options_Data $options, $filesystem, HTML $delayjs_html, UsedCSS $used_css ) {
 		$this->options      = $options;
 		$this->filesystem   = $filesystem;
 		$this->delayjs_html = $delayjs_html;
+		$this->used_css     = $used_css;
 	}
 
 	/**
@@ -249,6 +259,11 @@ class Elementor implements Subscriber_Interface {
 		foreach ( $results as $result ) {
 			if ( 'publish' === get_post_status( $result->post_id ) ) {
 				rocket_clean_post( $result->post_id );
+
+				if ( get_rocket_option( 'remove_unused_css' ) ) {
+					$url = get_permalink( $result->post_id );
+					$this->used_css->delete_used_css( $url );
+				}
 			}
 		}
 	}
