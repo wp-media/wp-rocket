@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Addon\Cloudflare\Auth;
 
+use WP_Error;
+
 interface AuthInterface {
 	/**
 	 * Gets headers for Cloudflare API request
