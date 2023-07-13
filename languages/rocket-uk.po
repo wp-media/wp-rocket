@@ -5,7 +5,7 @@
 # Bogdan Gerasymenko, 2019
 # Paul Gorinetsky <gorinetsky@hotmail.co.uk>, 2019
 # Sabrina Zeidan <sabrinazeidan@gmail.com>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -294,8 +294,8 @@ msgid "Minify HTML"
 msgstr "Зменшити HTML"
 
 #: inc/admin/ui/meta-boxes.php:75
-msgid "Minify/combine CSS"
-msgstr "Зменшити/об'єднати CSS"
+msgid "Minify CSS"
+msgstr "Зменшити CSS"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"

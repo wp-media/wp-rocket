@@ -4,7 +4,7 @@
 # Seggev Shoresh, 2019
 # wpmedia <contact@wp-media.me>, 2019
 # Yoni Mantin <yoniseo@gmail.com>, 2019
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -280,8 +280,8 @@ msgid "Minify HTML"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
-msgstr "כווץ/מזג CSS"
+msgid "Minify CSS"
+msgstr "כווץ CSS"
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Minify/combine JS"

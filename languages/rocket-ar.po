@@ -3,7 +3,7 @@
 # Translators:
 # wpmedia <contact@wp-media.me>, 2019
 # Mohamed Elsa3dy <m.elsa3dy@gmail.com>, 2019
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -285,8 +285,8 @@ msgid "Minify HTML"
 msgstr "تصغير HTML"
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
-msgstr "تصغير / دمج CSS"
+msgid "Minify CSS"
+msgstr "تصغير CSS"
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Minify/combine JS"

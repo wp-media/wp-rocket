@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Daiya MORITA, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2435,8 +2435,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "iframes/videos の LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:74
-msgid "Minify/combine CSS"
-msgstr "CSS 圧縮・軽量化 / 連結"
+msgid "Minify CSS"
+msgstr "CSS 圧縮・軽量化"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine JS"

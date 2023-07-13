@@ -6,7 +6,7 @@
 # Serghey Colos <kasart.ru@gmail.com>, 2019
 # Sabrina Zeidan <sabrinazeidan@gmail.com>, 2020
 # Bogdan Gerasymenko <bogdan@at.ua>, 2021
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2633,8 +2633,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad для фреймов и видео"
 
 #: inc/admin/ui/meta-boxes.php:74
-msgid "Minify/combine CSS"
-msgstr "Сжатие и объединение CSS"
+msgid "Minify CSS"
+msgstr "Сжатие CSS"
 
 #: inc/admin/ui/meta-boxes.php:75
 msgid "Remove Unused CSS"
