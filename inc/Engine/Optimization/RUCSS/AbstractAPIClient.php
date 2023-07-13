@@ -124,13 +124,15 @@ abstract class AbstractAPIClient {
 			: $response->get_error_code();
 
 		if ( 200 !== $this->response_code ) {
+			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
+			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
 			$this->error_message = is_array( $response )
 				? wp_remote_retrieve_response_message( $response )
 				: $response->get_error_message();
 
 			return false;
 		}
-
+		delete_transient( 'wp_rocket_rucss_errors_count' );
 		$this->response_body = wp_remote_retrieve_body( $response );
 
 		return true;

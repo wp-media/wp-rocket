@@ -6,17 +6,19 @@ parameters:
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     paths:
-#        Test all PHP code.
-#        - %currentWorkingDirectory%/inc/
-        - %currentWorkingDirectory%/inc/classes/
-    autoload_files:
+        # Test only the new architecture for now.
+        - %currentWorkingDirectory%/inc/Engine/
+        - %currentWorkingDirectory%/inc/Addon/
+        - %currentWorkingDirectory%/inc/ThirdParty/
+    bootstrapFiles:
         - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
         # Must be first
         - %currentWorkingDirectory%/inc/functions/options.php
         # Procedural code
+        - %currentWorkingDirectory%/inc/constants.php
+        - %currentWorkingDirectory%/inc/API/bypass.php
         - %currentWorkingDirectory%/inc/3rd-party/plugins/autoptimize.php
         - %currentWorkingDirectory%/inc/admin/ui/notices.php
-        - %currentWorkingDirectory%/inc/constants.php
         - %currentWorkingDirectory%/inc/functions/admin.php
         - %currentWorkingDirectory%/inc/functions/api.php
         - %currentWorkingDirectory%/inc/functions/files.php
@@ -27,13 +29,8 @@ parameters:
         # Composer autoloader "exclude-from-classmap"
         - %currentWorkingDirectory%/inc/classes/class-wp-rocket-requirements-check.php
         - %currentWorkingDirectory%/inc/vendors/classes/class-rocket-mobile-detect.php
-        - %currentWorkingDirectory%/inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php
-    excludes_analyse:
+    excludePaths:
          - %currentWorkingDirectory%/inc/vendors/
          # These need plugin stubs!
          - %currentWorkingDirectory%/inc/classes/subscriber/third-party/
-    ignoreErrors:
-        # Uses func_get_args()
-        - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
-        # https://core.trac.wordpress.org/ticket/43304
-        #- '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
+         - %currentWorkingDirectory%/inc/3rd-party/

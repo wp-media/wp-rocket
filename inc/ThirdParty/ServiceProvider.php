@@ -13,6 +13,7 @@ use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
 use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
+use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
@@ -32,11 +33,9 @@ use WP_Rocket\ThirdParty\Plugins\Smush;
 use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
-use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
-use WP_Rocket\ThirdParty\Plugins\WpDiscuz;
 use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
-use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
@@ -94,11 +93,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		'seopress',
 		'the_seo_framework',
 		'wpml',
+		'cloudflare_plugin_facade',
 		'cloudflare_plugin_subscriber',
 		'rocket_lazy_load',
 		'the_events_calendar',
 		'perfmatters',
 		'rapidload',
+		'translatepress',
 		'wpgeotargeting',
 	];
 
@@ -213,11 +214,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'wpml', WPML::class )
 			->addTag( 'common_subscriber' );
+		$this->getContainer()->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
 		$this->getContainer()
 			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addArgument( $this->getContainer()->get( 'cloudflare_plugin_facade' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'jetpack', Jetpack::class )
@@ -253,7 +256,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
-
+		$this->getContainer()->share( 'translatepress', TranslatePress::class );
 		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}
 }

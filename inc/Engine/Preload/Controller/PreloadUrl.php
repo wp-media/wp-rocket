@@ -171,7 +171,7 @@ class PreloadUrl {
 			return $prefix;
 		}
 
-		return $new_prefix;
+		return 'WP Rocket/Preload ' . $new_prefix;
 	}
 
 	/**

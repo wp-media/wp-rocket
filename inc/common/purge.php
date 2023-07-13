@@ -622,7 +622,7 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	// Bail out if the post status is draft, pending or auto-draft.
-	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft' ], true ) ) {
+	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft', 'trash' ], true ) ) {
 		return;
 	}
 	$post_name = get_post_field( 'post_name', $post_id );

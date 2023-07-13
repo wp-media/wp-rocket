@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare\Admin;
 
+use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -21,6 +22,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * This notice is displayed after purging the CloudFlare cache.
+	 *
+	 * @return void
 	 */
 	public function maybe_display_purge_notice() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
@@ -46,6 +49,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * This notice is displayed after modifying the CloudFlare settings.
+	 *
+	 * @return void
 	 */
 	public function maybe_display_update_settings_notice() {
 		$screen = get_current_screen();
@@ -63,6 +68,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$errors  = '';
 		$success = '';
+		$pre     = '';
 		delete_transient( $user_id . '_cloudflare_update_settings' );
 
 		if ( isset( $notices['pre'] ) ) {

@@ -10,8 +10,17 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DynamicLists
  */
 class Test_AddPreloadExclusions extends TestCase {
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_preload_exclude_urls', 'add_preload_exclusions', 10 );
+	}
+
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists' );
+
+		$this->restoreWpFilter( 'rocket_preload_exclude_urls' );
 
 		parent::tear_down();
 	}
