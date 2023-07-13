@@ -120,6 +120,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', WooCommerceSubscriber::class )
