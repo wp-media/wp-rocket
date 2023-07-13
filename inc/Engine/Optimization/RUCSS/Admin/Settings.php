@@ -543,7 +543,7 @@ class Settings {
 		$main_message = __( "It seems a security plugin or the server's firewall prevents WP Rocket from accessing the Remove Unused CSS generator. The following IP address 135.125.83.227 should be allowlisted:", 'rocket' );
 
 		$security_message = __( '- In the security plugin, if you are using one', 'rocket' );
-		$firewall_message = __( "- In the server's firewall - your host can help you with this", 'rocket' );
+		$firewall_message = __( "- In the server's firewall. Your host can help you with this", 'rocket' );
 
 		$message = "<strong>WP Rocket</strong>: $main_message<ul><li>$security_message</li><li>$firewall_message</li></ul>";
 

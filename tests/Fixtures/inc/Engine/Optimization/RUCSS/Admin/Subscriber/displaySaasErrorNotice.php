@@ -10,7 +10,7 @@ WP Rocket</strong>
 <li>
 - In the security plugin, if you are using one</li>
 <li>
-- In the server's firewall - your host can help you with this</li>
+- In the server's firewall. Your host can help you with this</li>
 </ul>
 </p>
 <p>
