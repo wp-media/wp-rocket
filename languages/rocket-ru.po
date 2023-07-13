@@ -274,7 +274,7 @@ msgid "Minify HTML"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
+msgid "Minify CSS"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:77

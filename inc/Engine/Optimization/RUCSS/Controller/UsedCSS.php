@@ -275,9 +275,20 @@ class UsedCSS {
 		 */
 		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
 
+		/**
+		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
+		 *
+		 * @since 3.14
+		 *
+		 * @param array $skipped_attr Array of safelist values.
+		 */
+		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
+		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
+
 		$config = [
 			'treeshake'      => 1,
 			'rucss_safelist' => $safelist,
+			'skip_attr'      => $skipped_attr,
 			'is_mobile'      => $is_mobile,
 			'is_home'        => $this->is_home( $url ),
 		];

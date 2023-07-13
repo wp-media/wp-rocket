@@ -55,6 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_meta_box( array $fields ) {
 		$fields['disable_css_bg_img_lazyload'] = __( 'LazyLoad CSS backgrounds', 'rocket' );
+
 		return $fields;
 	}
 

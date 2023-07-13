@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\Cache;
 
+use WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface;
 use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 use WP_Filesystem_Direct;
 
@@ -104,6 +105,7 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function clear() {
 		$root_path = $this->get_root_path();
+
 		if ( ! $this->filesystem->exists( $root_path ) ) {
 			return false;
 		}
