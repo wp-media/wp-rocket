@@ -38,10 +38,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                                 => [
-				[ 'maybe_launch_domain_changed' ],
-				[ 'maybe_display_domain_change_notice' ],
-			],
+			'admin_init'                                 => 'maybe_launch_domain_changed',
+			'admin_notices'                              => 'maybe_display_domain_change_notice',
 			'rocket_configurations_changed'              => 'configurations_changed',
 			'rocket_domain_changed'                      => 'maybe_clean_cache_domain_change',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
