@@ -587,6 +587,10 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
+		if ( '/' === $parsed_url['path'] ) {
+			continue;
+		}
+
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.
