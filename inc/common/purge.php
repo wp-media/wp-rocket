@@ -197,9 +197,9 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	/**
-	 * Filters post cache to be cleared.
+	 * Filters the preemptive return value of clean post
 	 *
-	 * @param mixed $clear_post Allow cache clearing of specific post if true; otherwise null.
+	 * @param mixed $clear_post $clear_post A preemptive return value. Default null.
 	 * @param  $post Post Object.
 	 */
 	$pre = apply_filters( 'rocket_pre_clean_post', null, $post );

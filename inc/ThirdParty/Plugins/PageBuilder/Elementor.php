@@ -221,7 +221,7 @@ class Elementor implements Subscriber_Interface {
 	/**
 	 * Exclude elementor library post type from cache clearing.
 	 *
-	 * @param mixed $clear_post Allow cache clearing of specific post if true; otherwise null.
+	 * @param mixed $clear_post A preemptive return value. Default null.
 	 * @param Post  $post Post Object.
 	 * @return boolean
 	 */
