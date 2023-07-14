@@ -72,7 +72,6 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	}
 
 	private function doCleanFilesTest( $urls, $config, $expected ) {
-		Functions\when('url_to_postid')->justReturn($config['post_id']);
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )

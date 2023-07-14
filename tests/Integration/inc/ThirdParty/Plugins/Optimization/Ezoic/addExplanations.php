@@ -14,7 +14,7 @@ class Test_Explanations extends TestCase {
 	public function testShouldReturnExpected() {
 		$plugins_explanations = [];
 		$expected             = [
-			'ezoic' => 'This plugin blocks WP Rocket\'s caching and optimizations. Deactivate it and use <a href="https://support.ezoic.com/support/solutions/articles/48000453926-name-server-integration" target="_blank" rel="noopener noreferrer">Ezoic\'s nameserver integration</a> instead.',
+			'ezoic' => 'This plugin blocks WP Rocket\'s caching and optimizations. Deactivate it and use <a href="https://support.ezoic.com/kb/article/how-can-i-integrate-my-site-with-ezoic" target="_blank" rel="noopener noreferrer">Ezoic\'s nameserver integration</a> instead.',
 		];
 
 		$this->assertSame(

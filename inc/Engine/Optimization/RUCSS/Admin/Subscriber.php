@@ -69,6 +69,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 				[ 'maybe_unlock_preload', 9, 2 ],
+				[ 'maybe_delete_transient', 10, 2 ],
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
@@ -85,6 +86,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_saas_error_notice' ],
 				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
 			],
@@ -464,6 +466,37 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Display error notice when connection to SAAS fails
+	 *
+	 * @return void
+	 */
+	public function display_saas_error_notice() {
+		$this->settings->display_saas_error_notice();
+	}
+
+
+	/**
+	 * Display admin notice when detecting any missed Action scheduler tables.
+	 *
+	 * @since 3.11.0.3
+	 *
+	 * @return void
+	 */
+	public function display_as_missed_tables_notice() {
+		$screen = get_current_screen();
+
+		if ( isset( $screen->id ) && 'tools_page_action-scheduler' === $screen->id ) {
+			return;
+		}
+
+		if ( $this->is_valid_as_tables() ) {
+			return;
+		}
+
+		$this->settings->display_as_missed_tables_notice();
+	}
+
+	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -739,6 +772,30 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_no_table_notice() {
 		$this->settings->display_no_table_notice();
+	}
+
+	/**
+	 * Maybe delete transient.
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_delete_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 1 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		delete_transient( 'wp_rocket_no_licence' );
 	}
 
 	/**

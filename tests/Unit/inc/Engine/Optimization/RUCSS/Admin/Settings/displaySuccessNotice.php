@@ -42,6 +42,12 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 		Functions\when( 'current_user_can' )->justReturn( $config['capability'] );
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( $config['boxes'] );
+		Functions\when('get_transient')->alias(function ($name) use ($config) {
+			if('wp_rocket_rucss_errors_count' === $name) {
+				return $config['saas_transient'];
+			}
+			return $config['transient'];
+		});
 
 		$this->used_css->expects(self::atMost(1))->method('exists')->willReturn($config['exists']);
 
@@ -67,11 +73,9 @@ class Test_DisplaySuccessNotice extends FilesystemTestCase {
 
 	public function configureDisplayNotice($config) {
 
-		if( ! $config['exists'] ) {
+		if( ! $config['exists'] || $config['saas_transient'] ) {
 			return;
 		}
-
-		Functions\when( 'get_transient' )->justReturn( $config['transient'] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'manual_preload', 0 )
