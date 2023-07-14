@@ -50,7 +50,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
-
 		return [
 			'admin_init'            => [
 				[ 'register_terms_row_action' ],
@@ -62,6 +61,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 			'site_status_tests'     => 'add_wp_cache_status_test',
+			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 		];
 	}
 
@@ -164,5 +164,20 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function add_wp_cache_status_test( $tests ) {
 		return $this->wp_cache->add_wp_cache_status_test( $tests );
+	}
+
+	/**
+	 * Regenerate the advanced cache file on update
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.15', '>=' ) ) {
+			return;
+		}
+		rocket_generate_advanced_cache_file();
 	}
 }
