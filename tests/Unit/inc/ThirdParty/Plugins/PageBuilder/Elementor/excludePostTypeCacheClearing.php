@@ -29,7 +29,7 @@ class Test_ExcludePostTypeCacheClearing extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->assertSame(
 			$expected,
-			$this->elementor->exclude_post_type_cache_clearing( $config['allow_exclusion'], $config['post_type'] )
+			$this->elementor->exclude_post_type_cache_clearing( $config['allow_exclusion'], $config['post'] )
 		);
 	}
 }

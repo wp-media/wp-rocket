@@ -16,7 +16,7 @@ class Test_ExcludePostTypeCacheClearing extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_exclude_post_type_cache_clearing', $config['allow_exclusion'], $config['post_type'] )
+			apply_filters( 'rocket_exclude_post_type_cache_clearing', $config['allow_exclusion'], $config['post'] )
 		);
 	}
 }

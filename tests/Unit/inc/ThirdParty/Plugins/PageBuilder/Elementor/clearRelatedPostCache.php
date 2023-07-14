@@ -17,6 +17,8 @@ use wpdb;
 class Test_ClearRelatedPostCache extends TestCase {
     private $elementor;
 	private $wpdb;
+    private $options;
+    private $used_css;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -34,7 +36,9 @@ class Test_ClearRelatedPostCache extends TestCase {
 			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 		}
 
-        $this->elementor = new Elementor( Mockery::mock( Options_Data::class ), null, Mockery::mock( HTML::class ), Mockery::mock( UsedCSS::class ) );
+        $this->options = Mockery::mock( Options_Data::class );
+        $this->used_css = Mockery::mock( UsedCSS::class );
+		$this->elementor = new Elementor( $this->options, null, Mockery::mock( HTML::class ), $this->used_css );
 		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
 	}
 
@@ -63,6 +67,16 @@ class Test_ClearRelatedPostCache extends TestCase {
                 
             foreach ( $config['results'] as $result ) {
                 if ( 'publish' === $config['post_status'] ) {
+                    $this->options->shouldReceive( 'get' )
+                        ->with( 'remove_unused_css', 0 )
+		                ->andReturn( $config[ 'remove_unused_css' ] );
+
+                        if ( 1 === $config[ 'remove_unused_css' ] ) {
+                            Functions\expect( 'get_permalink' )->with( $result->post_id )->andReturn( $result->url );
+                            $this->used_css->shouldReceive( 'delete_used_css' )
+                                ->with($result->url )
+                                ->andReturn( true );
+                        }
                     Functions\expect( 'rocket_clean_post' )->with( $result->post_id )->andReturnNull();
                 }
             }

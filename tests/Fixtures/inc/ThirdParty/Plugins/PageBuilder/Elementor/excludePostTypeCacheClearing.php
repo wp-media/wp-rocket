@@ -3,16 +3,21 @@
 return [
 	'shouldReturnTrueIfPostTypeIsElementor' => [
 		'config' => [
-            'post_type' => 'elementor_library',
-            'allow_exclusion' => false,
+            'post' => (object) [
+                'post_type' => 'elementor_library',
+            ],
+            'elementor_library',
+            'allow_exclusion' => null,
         ],
         'expected' => true,
 	],
 	'shouldReturnFalseIfPostTypeIsNotElementor' => [
 		'config' => [
-            'post_type' => 'post',
-            'allow_exclusion' => false,
+            'post' => (object) [
+                'post_type' => 'post',
+            ],
+            'allow_exclusion' => null,
         ],
-        'expected' => false,
+        'expected' => null,
 	],
 ];
