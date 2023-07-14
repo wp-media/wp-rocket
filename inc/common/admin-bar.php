@@ -100,7 +100,12 @@ function rocket_admin_bar( $wp_admin_bar ) {
 						$langlinks = get_rocket_polylang_langs_for_admin_bar();
 						break;
 					default:
-						$langlinks = [];
+						/**
+						 * Filters the value of the lang links menu
+						 *
+						 * @param array $langlinks Array of languages.
+						 */
+						$langlinks = apply_filters( 'rocket_i18n_admin_bar_menu' [] );
 				}
 
 				if ( $langlinks ) {
