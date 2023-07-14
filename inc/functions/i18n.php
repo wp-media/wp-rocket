@@ -153,7 +153,7 @@ function get_rocket_polylang_langs_for_admin_bar() { // phpcs:ignore WordPress.N
  * @since 2.0
  * @since 3.2.1 Return an identifier on success instead of true.
  *
- * @return string|bool An identifier corresponding to the active plugin. False otherwize.
+ * @return string|bool An identifier corresponding to the active plugin. False otherwise.
  */
 function rocket_has_i18n() {
 	global $sitepress, $q_config, $polylang;
@@ -186,7 +186,12 @@ function rocket_has_i18n() {
 		}
 	}
 
-	return false;
+	/**
+	 * Filters the value of i18n plugin detection
+	 *
+	 * @param string|bool $identifier An identifier value, false otherwise.
+	 */
+	return apply_filters( 'rocket_has_i18n', false );
 }
 
 /**
@@ -507,7 +512,6 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
  * Returns the home URL, without WPML filters if the plugin is active
  *
  * @since 3.2.4
- * @author Remy Perona
  *
  * @param string $path Path to add to the home URL.
  * @return string
@@ -542,7 +546,6 @@ function rocket_get_home_url( $path = '' ) {
  * Gets the current language if Polylang or WPML is used
  *
  * @since 3.3.3
- * @author Remy Perona
  *
  * @return string|bool
  */
