@@ -69,7 +69,7 @@ class RenewalNotice extends Abstract_Render {
 			return;
 		}
 
-		echo '<style>.plugins tr[data-slug=wp-rocket] th, .plugins tr[data-slug=wp-rocket] td {box-shadow: none !important;}.notice.wp-rocket-update{border-color:#d43436;background-color:#fbf9e8;}.plugin-update .notice.wp-rocket-update a{color:#3984c6;text-decoration:none;}@media screen and (max-width: 782px){.plugins tr[data-slug=wp-rocket].active + .plugin-update-tr::before {background-color: #f0f6fc;border-left: 4px solid #72aee6;}}</style>';
+		echo '<style>.plugins tr[data-slug=wp-rocket] th, .plugins tr[data-slug=wp-rocket] td {box-shadow: none !important;}.notice.wp-rocket-update{border-color:#d63638;background-color:#fbf9e8;}.plugin-update .notice.wp-rocket-update a{color:#2782ad;}.wp-rocket-update p::before{display: inline-block;font: normal 20px/1 dashicons;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;vertical-align: top;color: #d63638;content: "\f534";}@media screen and (max-width: 782px){.plugins tr[data-slug=wp-rocket].active + .plugin-update-tr::before {background-color: #f0f6fc;border-left: 4px solid #72aee6;}}</style>';
 	}
 
 	/**
