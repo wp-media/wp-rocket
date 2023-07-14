@@ -197,13 +197,15 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	/**
-	 * Filters specific post_type cache from being cleared.
+	 * Filters post cache to be cleared.
 	 *
-	 * @param bool $allow_exclusion Allow cache clearing for specific post type if true; otherwise if false.
-	 * @param string $post_type Post Type.
+	 * @param mixed $clear_post Allow cache clearing of specific post if true; otherwise null.
+	 * @param  $post Post Object.
 	 */
-	if ( apply_filters( 'rocket_exclude_post_type_cache_clearing', false, $post->post_type ) ) {
-		return false;
+	$pre = apply_filters( 'rocket_pre_clean_post', null, $post );
+
+	if ( null !== $pre ) {
+		return $pre;
 	}
 
 	// No purge for specific conditions.
