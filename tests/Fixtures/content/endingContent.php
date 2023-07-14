@@ -1,32 +1,4 @@
-<?php
 
-use WP_Rocket\Buffer\Cache;
-use WP_Rocket\Buffer\Config;
-use WP_Rocket\Buffer\Tests;
-
-defined( 'ABSPATH' ) || exit;
-
-define( 'WP_ROCKET_ADVANCED_CACHE', true );
-
-$rocket_path        = '{{WP_ROCKET_PATH}}';
-$rocket_config_path = '{{WP_ROCKET_CONFIG_PATH}}';
-$rocket_cache_path  = '{{WP_ROCKET_CACHE_PATH}}';
-
-if (
-	version_compare( phpversion(), '{{WP_ROCKET_PHP_VERSION}}', '<' )
-	|| ! file_exists( $rocket_path )
-	|| ! file_exists( $rocket_config_path )
-	|| ! file_exists( $rocket_cache_path )
-) {
-	define( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );
-	return;
-}
-
-'{{MOBILE_CACHE}}';
-if ( file_exists( '{{WP_ROCKET_PATH}}inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php' ) && ! class_exists( 'WP_Rocket_Mobile_Detect' ) ) {
-	include_once '{{WP_ROCKET_PATH}}inc/classes/dependencies/mobiledetect/mobiledetectlib/Mobile_Detect.php';
-}
-'{{/MOBILE_CACHE}}';
 
 spl_autoload_register(
 	function( $class ) use ( $rocket_path ) {
