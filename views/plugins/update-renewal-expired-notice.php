@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 <tr class="plugin-update-tr active" id="wp-rocket-update">
 	<td class="plugin-update colspanchange" colspan="4">
-		<div class="wp-rocket-update update-message inline notice">
+		<div class="wp-rocket-update inline notice">
 			<p>
 			<?php
 			printf(
