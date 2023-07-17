@@ -262,6 +262,6 @@ class DynamicLists extends Abstract_Render {
 	public function get_js_exclude_files(): array {
 		$lists = $this->providers['defaultlists']->data_manager->get_lists();
 
-		return isset( $lists->js_exclude_files ) ? $lists->js_exclude_files : [];
+		return isset( $lists->exclude_js_files ) ? $lists->exclude_js_files : [];
 	}
 }

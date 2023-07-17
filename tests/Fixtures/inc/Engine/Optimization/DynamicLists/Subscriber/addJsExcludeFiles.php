@@ -4,7 +4,7 @@ return [
 	'shouldReturnUpdatedArrayWhenEmptyOriginal' => [
 		'original' => [],
 		'list' => (object) [
-			'js_exclude_files' => [
+			'exclude_js_files' => [
 				'/test/1',
 			],
 		],
@@ -17,7 +17,7 @@ return [
 			'/test/',
 		],
 		'list' => (object) [
-			'js_exclude_files' => [
+			'exclude_js_files' => [
 				'/test/1',
 			],
 		],

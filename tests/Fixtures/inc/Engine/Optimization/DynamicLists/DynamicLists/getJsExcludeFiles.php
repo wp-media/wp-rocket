@@ -7,7 +7,7 @@ return [
 	],
 	'shouldReturnArrayWhenMatchingProperty' => [
 		'list' => (object) [
-			'js_exclude_files' => [
+			'exclude_js_files' => [
 				'/test/1',
 			],
 		],
