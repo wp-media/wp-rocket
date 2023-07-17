@@ -95,9 +95,15 @@ class Test_insertLazyloadScript extends TestCase {
 
 			return null;
 		});
-		Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
-		Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css', $expected['url'], [], $expected['version'], true);
-		Functions\expect('wp_localize_script')->with('rocket_lazyload_css', 'rocket_lazyload_css_data', $expected['data']);
+
+		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
+
+		if($config['is_allowed']) {
+			Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
+			Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css', $expected['url'], [], $expected['version'], true);
+			Functions\expect('wp_localize_script')->with('rocket_lazyload_css', 'rocket_lazyload_css_data', $expected['data']);
+		}
+
 		$this->subscriber->insert_lazyload_script();
     }
 }

@@ -210,6 +210,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function insert_lazyload_script() {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
 		/**
 		 * Filters the threshold at which lazyload is triggered
 		 *
@@ -330,6 +334,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazy_tag( array $data ): array {
+
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
 			$this->logger::debug(
 				'Add lazy tag bailed out',
