@@ -19,7 +19,7 @@ class Client {
 	/**
 	 * An array of arguments for wp_remote_request()
 	 *
-	 * @var array
+	 * @var mixed[]
 	 */
 	protected $args = [];
 
@@ -50,8 +50,8 @@ class Client {
 	/**
 	 * API call method for sending requests using GET.
 	 *
-	 * @param string $path Path of the endpoint.
-	 * @param array  $data Data to be sent along with the request.
+	 * @param string  $path Path of the endpoint.
+	 * @param mixed[] $data Data to be sent along with the request.
 	 *
 	 * @return object
 	 */
@@ -131,8 +131,16 @@ class Client {
 
 		$content = json_decode( $content );
 
+		if ( ! is_object( $content ) ) {
+			return new WP_Error( 'cloudflare_content_error', __( 'Cloudflare unexpected response', 'rocket' ) );
+		}
+
 		if ( empty( $content->success ) ) {
 			return $this->set_request_error( $content );
+		}
+
+		if ( ! property_exists( $content, 'result' ) ) {
+			return new WP_Error( 'cloudflare_no_reply', __( 'Missing Cloudflare result.', 'rocket' ) );
 		}
 
 		return $content->result;
@@ -147,8 +155,8 @@ class Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	private function do_remote_request( string $path, string $method, array $data ) {
-		$this->args['method'] = isset( $method ) ? strtoupper( $method ) : 'GET';
+	private function do_remote_request( string $path, string $method = 'GET', array $data = [] ) {
+		$this->args['method'] = strtoupper( $method );
 
 		$headers = [
 			'User-Agent'   => 'wp-rocket/' . rocket_get_constant( 'WP_ROCKET_VERSION' ),

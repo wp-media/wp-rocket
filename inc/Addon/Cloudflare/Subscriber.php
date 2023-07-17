@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Addon\Cloudflare;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
@@ -133,6 +134,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Automatically set Cloudflare development mode value to off after 3 hours to reflect Cloudflare behaviour.
+	 *
+	 * @return void
 	 */
 	public function deactivate_devmode() {
 		$this->options->set( 'cloudflare_devmode', 0 );
@@ -177,6 +180,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @param WP_Post $post       The post object.
 	 * @param array   $purge_urls URLs cache files to remove.
 	 * @param string  $lang       The post language.
+	 *
+	 * @return void
 	 */
 	public function auto_purge_by_url( $post, $purge_urls, $lang ) {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
@@ -209,6 +214,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Purge CloudFlare cache.
+	 *
+	 * @return void
 	 */
 	public function purge_cache_no_die() {
 		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
@@ -264,6 +271,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Purge CloudFlare cache.
+	 *
+	 * @return void
 	 */
 	public function purge_cache() {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_purge_cloudflare' ) ) {
@@ -278,6 +287,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Set Real IP from CloudFlare.
+	 *
+	 * @return void
 	 */
 	public function set_real_ip() {
 		Cloudflare::set_ip_rewrite();
@@ -287,6 +298,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Save Cloudflare dev mode admin option.
 	 *
 	 * @param string $value New value for Cloudflare dev mode.
+	 *
+	 * @return string[]
 	 */
 	private function save_cloudflare_devmode( $value ) {
 		$result = $this->cloudflare->set_devmode( $value );
@@ -310,6 +323,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Save Cloudflare cache_level admin option.
 	 *
 	 * @param string $value New value for Cloudflare cache_level.
+	 *
+	 * @return string[]
 	 */
 	private function save_cache_level( $value ) {
 		// Set Cache Level to Aggressive.
@@ -340,6 +355,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Save Cloudflare minify admin option.
 	 *
 	 * @param string $value New value for Cloudflare minify.
+	 *
+	 * @return string[]
 	 */
 	private function save_minify( $value ) {
 		$result = $this->cloudflare->set_minify( $value );
@@ -363,6 +380,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Save Cloudflare rocket loader admin option.
 	 *
 	 * @param string $value New value for Cloudflare rocket loader.
+	 *
+	 * @return string[]
 	 */
 	private function save_rocket_loader( $value ) {
 		$result = $this->cloudflare->set_rocket_loader( $value );
@@ -386,6 +405,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Save Cloudflare browser cache ttl admin option.
 	 *
 	 * @param int $value New value for Cloudflare browser cache ttl.
+	 *
+	 * @return string[]
 	 */
 	private function save_browser_cache_ttl( $value ) {
 		$result = $this->cloudflare->set_browser_cache_ttl( $value );
@@ -410,6 +431,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param int    $auto_settings New value for Cloudflare auto_settings.
 	 * @param string $old_settings Cloudflare cloudflare_old_settings.
+	 *
+	 * @return array<int, array<string>>
 	 */
 	private function save_cloudflare_auto_settings( $auto_settings, $old_settings ) {
 		$cf_old_settings = explode( ',', $old_settings );
