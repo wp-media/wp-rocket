@@ -163,8 +163,8 @@ class InformationSubscriber implements Subscriber_Interface {
 		}
 
 		$plugins = [
-			'imagify'          => 'imagify/imagify.php',
 			'seo-by-rank-math' => 'seo-by-rank-math/rank-math.php',
+			'imagify'          => 'imagify/imagify.php',
 		];
 
 		// grab all slugs from the api results.
@@ -176,6 +176,13 @@ class InformationSubscriber implements Subscriber_Interface {
 			}
 
 			if ( in_array( $slug, $result_slugs, true ) ) {
+				foreach( $result->plugins as $index => $plugin ) {
+					if ( $slug === $plugin->slug ) {
+						$move = $plugin;
+						unset( $result->plugins[ $index ] );
+						array_unshift( $result->plugins, $move );
+					}
+				}
 				continue;
 			}
 
@@ -185,11 +192,7 @@ class InformationSubscriber implements Subscriber_Interface {
 				continue;
 			}
 
-			if ( 'featured' === $args->browse ) {
-				array_push( $result->plugins, $plugin_data );
-			} else {
-				array_unshift( $result->plugins, $plugin_data );
-			}
+			array_unshift( $result->plugins, $plugin_data );
 		}
 
 		return $result;

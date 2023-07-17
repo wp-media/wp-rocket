@@ -92,7 +92,7 @@ return [
 			],
 		],
 	],
-	'testShouldReturnDefaultWhenPluginInArray' => [
+	'testShouldReturnUpdatedWhenPluginInArray' => [
 		'config' => [
 			'wp_error' => false,
 			'result' => (object) [
@@ -100,6 +100,9 @@ return [
 					'page' => 1,
 				],
 				'plugins' => [
+					(object) [
+						'slug' => 'wordpress-seo',
+					],
 					(object) [
 						'slug' => 'imagify',
 					],
@@ -128,6 +131,9 @@ return [
 				],
 				(object) [
 					'slug' => 'seo-by-rank-math',
+				],
+				(object) [
+					'slug' => 'wordpress-seo',
 				],
 			],
 		],
@@ -162,10 +168,10 @@ return [
 			],
 			'plugins' => [
 				(object) [
-					'slug' => 'seo-by-rank-math',
+					'slug' => 'imagify',
 				],
 				(object) [
-					'slug' => 'imagify',
+					'slug' => 'seo-by-rank-math',
 				],
 			],
 		],
