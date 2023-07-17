@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\DomainChange\Subscriber;
 
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\DomainChange\Subscriber;
 use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use Brain\Monkey\Functions;
@@ -19,6 +20,11 @@ class Test_regenerateConfiguration extends TestCase {
      */
     protected $ajax_handler;
 
+	/**
+	 * @var Beacon
+	 */
+	protected $beacon;
+
     /**
      * @var Subscriber
      */
@@ -27,8 +33,9 @@ class Test_regenerateConfiguration extends TestCase {
     public function set_up() {
         parent::set_up();
         $this->ajax_handler = Mockery::mock(AjaxHandler::class);
+		$this->beacon       = Mockery::mock(Beacon::class);
 
-        $this->subscriber = new Subscriber($this->ajax_handler);
+        $this->subscriber = new Subscriber($this->ajax_handler, $this->beacon);
     }
 
     /**
@@ -39,10 +46,7 @@ class Test_regenerateConfiguration extends TestCase {
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('trailingslashit')->returnArg();
 
-		$this->ajax_handler->expects()->validate_referer([
-			'referer'    => 'rocket_regenerate_configuration',
-			'capacities' => 'rocket_manage_options',
-		])->andReturn($config['is_validated']);
+		$this->ajax_handler->expects()->validate_referer('rocket_regenerate_configuration', 'rocket_manage_options')->andReturn($config['is_validated']);
 
 		if( $config['is_validated']) {
 			Functions\expect("get_transient")->with('rocket_domain_changed')->andReturn($config['transient']);

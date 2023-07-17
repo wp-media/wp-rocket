@@ -30,14 +30,14 @@ class Test_validateReferer extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		if(key_exists('referer', $config['args'])) {
+		if('' != $config['action']) {
 			Functions\expect('check_admin_referer')->with($expected['referer']);
 		}
 
-		if(key_exists('capacities', $config['args'])) {
+		if('' != $config['capacities']) {
 			Functions\expect('current_user_can')->with($expected['capacity'])->andReturn($config['user_can']);
 		}
 
-        $this->assertSame($expected['result'], $this->ajaxhandler->validate_referer($config['args']));
+        $this->assertSame($expected['result'], $this->ajaxhandler->validate_referer($config['action'], $config['capacities']));
     }
 }

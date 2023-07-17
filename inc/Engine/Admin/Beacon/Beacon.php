@@ -771,6 +771,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
 				],
 			],
+			'domain_change'              => [
+				'en' => [
+					'id'  => '577578b1903360258a10d8ba',
+					'url' => 'https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket',
+				],
+				'fr' => [
+					'id'  => '57868414c697912dee72a98a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/837-changer-de-domaine-migrer-un-site-avec-wp-rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )

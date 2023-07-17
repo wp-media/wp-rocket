@@ -11,13 +11,13 @@ class AjaxHandler {
 	 *
 	 * @return bool
 	 */
-	public function validate_referer( array $args ) {
+	public function validate_referer( string $action = '', string $capacities = '' ) {
 
-		if ( key_exists( 'referer', $args ) && is_string( $args['referer'] ) ) {
-			check_admin_referer( $args['referer'] );
+		if ( '' !== $action ) {
+			check_admin_referer( $action );
 		}
 
-		if ( key_exists( 'capacities', $args ) && is_string( $args['capacities'] ) && ! current_user_can( $args['capacities'] ) ) {
+		if ( '' !== $capacities && ! current_user_can( $capacities ) ) {
 			return false;
 		}
 

@@ -29,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'ajax_handler', AjaxHandler::class );
 		$this->getContainer()->add( 'domain_change_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'ajax_handler' ) );
+			->addArgument( $this->getContainer()->get( 'ajax_handler' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) );
 	}
 }

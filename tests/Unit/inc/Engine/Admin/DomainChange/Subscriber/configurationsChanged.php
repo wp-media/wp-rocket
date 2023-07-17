@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\DomainChange\Subscriber;
 
 use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\DomainChange\Subscriber;
 
 
@@ -16,6 +17,11 @@ class Test_configurationsChanged extends TestCase {
 
 	protected $ajax_handler;
 
+	/**
+	 * @var Beacon
+	 */
+	protected $beacon;
+
     /**
      * @var Subscriber
      */
@@ -25,8 +31,9 @@ class Test_configurationsChanged extends TestCase {
         parent::set_up();
 
 		$this->ajax_handler = Mockery::mock(AjaxHandler::class);
+		$this->beacon       = Mockery::mock(Beacon::class);
 
-        $this->subscriber = new Subscriber($this->ajax_handler);
+        $this->subscriber = new Subscriber($this->ajax_handler, $this->beacon);
     }
 
     /**

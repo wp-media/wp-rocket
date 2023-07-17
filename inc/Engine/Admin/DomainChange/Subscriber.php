@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Admin\DomainChange;
 
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -13,6 +14,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @var AjaxHandler
 	 */
 	protected $ajax_handler;
+
+	/**
+	 * Beacon instance
+	 *
+	 * @var Beacon
+	 */
+	protected $beacon;
 
 	/**
 	 * Name of the option saving the last base URL.
@@ -27,8 +35,9 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param AjaxHandler $ajax_handler Handle basic ajax operations.
 	 */
-	public function __construct( AjaxHandler $ajax_handler ) {
+	public function __construct( AjaxHandler $ajax_handler, Beacon $beacon ) {
 		$this->ajax_handler = $ajax_handler;
+		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -163,6 +172,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$beacon = $this->beacon->get_suggest( 'domain_change' );
+
 		$args = [
 			'status'         => 'warning',
 			'dismissible'    => '',
@@ -172,7 +183,7 @@ class Subscriber implements Subscriber_Interface {
 				__( '%1$sWP Rocket:%2$s We detected that the website domain has changed. The configuration files must be regenerated for the page cache and all other optimizations to work as intended. %3$sLearn More%4$s', 'rocket' ),
 				'<strong>',
 				'</strong>',
-				'<a href="https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket">',
+				'<a href="' . esc_url( $beacon['url'] ) . '">',
 				'</a>'
 			),
 		];
@@ -212,10 +223,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function regenerate_configuration() {
 		if ( ! $this->ajax_handler->validate_referer(
-			[
-				'referer'    => 'rocket_regenerate_configuration',
-				'capacities' => 'rocket_manage_options',
-			]
+						'rocket_regenerate_configuration',
+					 'rocket_manage_options',
 			) ) {
 			return;
 		}

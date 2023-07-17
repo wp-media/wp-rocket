@@ -2,7 +2,8 @@
 return [
     'EmptyShouldPass' => [
         'config' => [
-              'args' => [],
+              'action' => '',
+              'capacities' => '',
 			  'user_can' => false
         ],
         'expected' => [
@@ -13,9 +14,8 @@ return [
     ],
 	'RefererAndCapacityShouldCheckAndSucceed' => [
 		'config' => [
-			'args' => [
-				'referer' => 'referer_test',
-			],
+			'action' => 'referer_test',
+			'capacities' => '',
 			'user_can' => false
 		],
 		'expected' => [
@@ -26,10 +26,8 @@ return [
 	],
 	'NoCapacityShouldFail' => [
 		'config' => [
-			'args' => [
-				'referer' => 'referer_test',
-				'capacity' => 'capacity_test',
-			],
+			'action' => 'referer_test',
+			'capacities' => 'capacity_test',
 			'user_can' => true
 		],
 		'expected' => [
