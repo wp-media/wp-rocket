@@ -771,7 +771,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
 				],
 			],
-			'rucss_firewall_ips' => [
+			'rucss_firewall_ips'         => [
 				'en' => [
 					'id'  => '6076083ff8c0ef2d98df1f97',
 					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
