@@ -105,7 +105,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 						 *
 						 * @param array $langlinks Array of languages.
 						 */
-						$langlinks = apply_filters( 'rocket_i18n_admin_bar_menu' [] );
+						$langlinks = apply_filters( 'rocket_i18n_admin_bar_menu', [] );
 				}
 
 				if ( $langlinks ) {
