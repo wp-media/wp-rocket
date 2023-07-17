@@ -5,10 +5,10 @@ namespace WP_Rocket\Engine\Common\Ajax;
 class AjaxHandler {
 
 	/**
-	 * Validate the referer before going futher.
+	 * Validate the referer before going further.
 	 *
-	 * @param array $args Arguments to configure the validation.
-	 *
+	 * @param string $action Action to validate.
+	 * @param string $capacities User capacity to verify.
 	 * @return bool
 	 */
 	public function validate_referer( string $action = '', string $capacities = '' ) {

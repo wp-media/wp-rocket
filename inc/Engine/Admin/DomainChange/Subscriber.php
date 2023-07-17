@@ -34,6 +34,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Instantiate the class.
 	 *
 	 * @param AjaxHandler $ajax_handler Handle basic ajax operations.
+	 * @param Beacon      $beacon Beacon instance.
 	 */
 	public function __construct( AjaxHandler $ajax_handler, Beacon $beacon ) {
 		$this->ajax_handler = $ajax_handler;
@@ -223,8 +224,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function regenerate_configuration() {
 		if ( ! $this->ajax_handler->validate_referer(
-						'rocket_regenerate_configuration',
-					 'rocket_manage_options',
+			'rocket_regenerate_configuration',
+			'rocket_manage_options'
 			) ) {
 			return;
 		}
