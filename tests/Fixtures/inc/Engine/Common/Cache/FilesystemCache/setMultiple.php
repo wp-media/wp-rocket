@@ -2,6 +2,7 @@
 return [
     'allSuccessShouldReturnTrue' => [
 		'config' => [
+			'rights' => 777,
 			'values' => [
 				'http://example.org/blog/test/file.css' => 'content',
 				'http://example.org/blog/test/file2.css' => 'content2',
@@ -35,6 +36,7 @@ return [
     ],
 	'oneFailShouldReturnFalse' => [
 		'config' => [
+			'rights' => 777,
 			'values' => [
 				'http://example.org/blog/test/file.css' => 'content',
 				'http://example.org/blog/test/file2.css' => 'content2',

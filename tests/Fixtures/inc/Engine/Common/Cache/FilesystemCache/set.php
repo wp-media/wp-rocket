@@ -2,6 +2,7 @@
 return [
     'shouldSave' => [
         'config' => [
+			  'rights' => 777,
               'key' => 'http://example.org/blog/test/file.css',
               'value' => 'content',
               'ttl' => null,
@@ -21,6 +22,7 @@ return [
     ],
 	'failedSaveSHouldReturnFalse' => [
 		'config' => [
+			'rights' => 777,
 			'key' => 'http://example.org/blog/test/file.css',
 			'value' => 'content',
 			'ttl' => null,

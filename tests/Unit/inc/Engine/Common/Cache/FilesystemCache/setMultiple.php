@@ -42,6 +42,8 @@ class Test_setMultiple extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
+		Functions\when('rocket_get_filesystem_perms')->justReturn($config['rights']);
+
 		Functions\when('get_rocket_parse_url')->alias(function ($url) use ($config) {
 			if(! key_exists($url, $config['parsed_url'])) {
 				return;
@@ -53,7 +55,7 @@ class Test_setMultiple extends TestCase {
 		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
 
 		foreach ($config['saved'] as $path => $saved) {
-			$this->filesystem->expects()->put_contents($path, $saved['content'])->andReturn($saved['output']);
+			$this->filesystem->expects()->put_contents($path, $saved['content'], $config['rights'])->andReturn($saved['output']);
 		}
 
         $this->assertSame($expected['output'], $this->filesystemcache->setMultiple($config['values'], $config['ttl']));

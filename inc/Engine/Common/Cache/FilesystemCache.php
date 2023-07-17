@@ -71,7 +71,7 @@ class FilesystemCache implements CacheInterface {
 		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
-		return $this->filesystem->put_contents( $path, $value );
+		return $this->filesystem->put_contents( $path, $value, rocket_get_filesystem_perms( 'file' ) );
 	}
 
 	/**
@@ -228,7 +228,7 @@ class FilesystemCache implements CacheInterface {
 	public function is_accessible(): bool {
 		$root_path = $this->get_root_path();
 		if ( ! $this->filesystem->exists( $root_path ) ) {
-			rocket_mkdir_p( $root_path );
+			rocket_mkdir_p( $root_path, $this->filesystem );
 		}
 
 		return $this->filesystem->is_writable( $root_path );
