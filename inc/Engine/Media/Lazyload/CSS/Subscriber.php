@@ -256,13 +256,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$html    = $data['html'];
 		$mapping = [];
 
-		/**
-		 * Filters the src used to prevent lazy load from being applied.
-		 *
-		 * @param array $excluded_src An array of excluded src.
-		 */
-		$exclusions = apply_filters( 'rocket_lazyload_excluded_src', [] );
-
 		$css_files = $data['css_files'];
 
 		usort(
@@ -285,7 +278,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		foreach ( $css_files as $url ) {
 
-			if ( $this->is_excluded( $url, $exclusions ) ) {
+			if ( $this->is_excluded( $url ) ) {
 				$this->logger::debug(
 					"Excluded lazy css files $url",
 					[
@@ -486,6 +479,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		foreach ( $data['css_inline'] as $content ) {
+
+			if ( $this->is_excluded( $content ) ) {
+				$this->logger::debug(
+					"Excluded lazy css inline $content",
+					[
+						'type' => 'lazyload_css_bg_images',
+					]
+				);
+				continue;
+			}
+
 			$output = $this->generate_content( $content );
 
 			if ( empty( $output ) ) {
@@ -526,10 +530,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Check of the string is excluded.
 	 *
 	 * @param string $string String to check.
-	 * @param mixed  $excluded_values Excluded values.
 	 * @return bool
 	 */
-	protected function is_excluded( string $string, $excluded_values ) {
+	protected function is_excluded( string $string ) {
+
+		/**
+		 * Filters the src used to prevent lazy load from being applied.
+		 *
+		 * @param array $excluded_src An array of excluded src.
+		 */
+		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
+
 		if ( ! is_array( $excluded_values ) ) {
 			$excluded_values = (array) $excluded_values;
 		}
