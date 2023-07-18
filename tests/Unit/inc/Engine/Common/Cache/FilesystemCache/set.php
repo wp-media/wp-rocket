@@ -31,7 +31,7 @@ class Test_set extends TestCase {
 
     public function set_up() {
         parent::set_up();
-        $this->root_folder = '/background-css/';
+        $this->root_folder = '/background-css';
         $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
 
         $this->filesystemcache = new FilesystemCache($this->root_folder, $this->filesystem);

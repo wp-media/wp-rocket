@@ -217,6 +217,7 @@ class FilesystemCache implements CacheInterface {
 	protected function generate_path( string $url ):string {
 		$root_path  = $this->get_root_path();
 		$parsed_url = get_rocket_parse_url( $url );
+
 		return $root_path . $parsed_url['host'] . $parsed_url['path'];
 	}
 
@@ -240,6 +241,6 @@ class FilesystemCache implements CacheInterface {
 	 * @return string
 	 */
 	public function get_root_path(): string {
-		return _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		return rtrim( _rocket_get_wp_rocket_cache_path() . $this->root_folder, '/' ) . '/';
 	}
 }
