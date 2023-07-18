@@ -10,7 +10,7 @@ return [
 			'args'   => [],
 			'list'   => [],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [],
+			'plugins_api'   => [],
 		],
 		'expected' => $error,
 	],
@@ -23,7 +23,7 @@ return [
 			],
 			'list'   => [],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [],
+			'plugins_api'   => [],
 		],
 		'expected' => (object) [],
 	],
@@ -36,7 +36,7 @@ return [
 			],
 			'list'   => [],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [],
+			'plugins_api'   =>[],
 		],
 		'expected' => (object) [],
 	],
@@ -53,7 +53,7 @@ return [
 			],
 			'list'   => [],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [],
+			'plugins_api'   => [],
 		],
 		'expected' => (object) [
 			'info' => [
@@ -69,7 +69,7 @@ return [
 					'page' => 1,
 				],
 				'plugins' => [
-					(object) [
+					[
 						'slug' => 'wp-rocket',
 					],
 				],
@@ -79,14 +79,14 @@ return [
 			],
 			'list'   => [],
 			'plugin_active' => true,
-			'plugins_api'   => (object) [],
+			'plugins_api'   => [],
 		],
 		'expected' => (object) [
 			'info' => [
 				'page' => 1,
 			],
 			'plugins' => [
-				(object) [
+				[
 					'slug' => 'wp-rocket',
 				],
 			],
@@ -100,13 +100,13 @@ return [
 					'page' => 1,
 				],
 				'plugins' => [
-					(object) [
+					[
 						'slug' => 'wordpress-seo',
 					],
-					(object) [
+					[
 						'slug' => 'imagify',
 					],
-					(object) [
+					[
 						'slug' => 'seo-by-rank-math',
 					],
 				],
@@ -119,20 +119,20 @@ return [
 				'browse' => 'featured',
 			],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [],
+			'plugins_api'   => [],
 		],
 		'expected' => (object) [
 			'info' => [
 				'page' => 1,
 			],
 			'plugins' => [
-				(object) [
+				[
 					'slug' => 'imagify',
 				],
-				(object) [
+				[
 					'slug' => 'seo-by-rank-math',
 				],
-				(object) [
+				[
 					'slug' => 'wordpress-seo',
 				],
 			],
@@ -146,7 +146,7 @@ return [
 					'page' => 1,
 				],
 				'plugins' => [
-					(object) [
+					[
 						'slug' => 'seo-by-rank-math',
 					],
 				],
@@ -158,7 +158,7 @@ return [
 				'seo-by-rank-math',
 			],
 			'plugin_active' => false,
-			'plugins_api'   => (object) [
+			'plugins_api'   => [
 				'slug' => 'imagify',
 			],
 		],
@@ -167,10 +167,10 @@ return [
 				'page' => 1,
 			],
 			'plugins' => [
-				(object) [
+				[
 					'slug' => 'imagify',
 				],
-				(object) [
+				[
 					'slug' => 'seo-by-rank-math',
 				],
 			],
