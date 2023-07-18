@@ -1,4 +1,7 @@
 function rocket_css_lazyload() {
+
+	const pairs = rocket_pairs || [];
+
 	const styleElement = document.querySelector('#wpr-lazyload-bg');
 
 	const threshold = rocket_lazyload_css_data.threshold || 300;
@@ -6,7 +9,7 @@ function rocket_css_lazyload() {
 	const observer = new IntersectionObserver(entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
-				const pair = rocket_pairs.find(s => entry.target.matches(s.selector));
+				const pair = pairs.find(s => entry.target.matches(s.selector));
 				if (pair) {
 					styleElement.innerHTML += pair.style;
 					pair.elements.forEach(el => {
@@ -21,7 +24,7 @@ function rocket_css_lazyload() {
 		rootMargin: threshold + 'px'
 	});
 
-	rocket_pairs.forEach(pair => {
+	pairs.forEach(pair => {
 		const elements = document.querySelectorAll(pair.selector);
 		elements.forEach(el => {
 			observer.observe(el);
