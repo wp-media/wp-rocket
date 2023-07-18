@@ -9,15 +9,17 @@ function rocket_css_lazyload() {
 	const observer = new IntersectionObserver(entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
-				const pair = pairs.find(s => entry.target.matches(s.selector));
-				if (pair) {
-					styleElement.innerHTML += pair.style;
-					pair.elements.forEach(el => {
-						el.setAttribute('data-rocket-lazy-bg', 'loaded');
-						// Stop observing the target element
-						observer.unobserve(el);
-					});
-				}
+				const pairs = rocket_pairs.filter(s => entry.target.matches(s.selector));
+				pairs.map(pair => {
+					if (pair) {
+						styleElement.innerHTML += pair.style;
+						pair.elements.forEach(el => {
+							el.setAttribute('data-rocket-lazy-bg', 'loaded');
+							// Stop observing the target element
+							observer.unobserve(el);
+						});
+					}
+				})
 			}
 		});
 	}, {
