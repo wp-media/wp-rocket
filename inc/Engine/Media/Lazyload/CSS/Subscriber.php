@@ -263,7 +263,24 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 */
 		$exclusions = apply_filters( 'rocket_lazyload_excluded_src', [] );
 
-		foreach ( $data['css_files'] as $url ) {
+		$css_files = $data['css_files'];
+
+		usort($css_files, function ($url1, $url2) {
+			return strlen($url1) < strlen($url2);
+		});
+
+		$css_files_mapping = [];
+
+		foreach ($css_files as $url ) {
+			$placeholder = uniqid("url_bg_css_");
+			$url_key = $this->format_url( $url );
+
+			$html = str_replace($url_key, $placeholder, $html);
+
+			$css_files_mapping[$url_key] = $placeholder;
+		}
+
+		foreach ( $css_files as $url ) {
 
 			if ( $this->is_excluded( $url, $exclusions ) ) {
 				$this->logger::debug(
@@ -283,7 +300,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 						'type' => 'lazyload_css_bg_images',
 					]
 					);
-				$mapping = $this->generate_css_file( $url );
+				$mapping = array_merge( $mapping, $this->generate_css_file( $url ) );
 
 				if ( empty( $mapping ) ) {
 					$this->logger::debug(
@@ -313,7 +330,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'data' => $cached_url,
 				]
 				);
-			$html = str_replace( $url_key, $cached_url, $html );
+			$html = str_replace( $css_files_mapping[$url_key], $cached_url, $html );
 		}
 
 		$data['html'] = $html;
@@ -323,6 +340,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $mapping );
+		$data['lazyloaded_images'] = array_unique($data['lazyloaded_images'], SORT_REGULAR);
 
 		return $data;
 	}

@@ -62,7 +62,6 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
     	foreach($expected['files'] as $path => $content) {
 
 			$this->assertSame($content['exists'], $this->filesystem->exists($path));
-			$this->filesystem->chmod($path, 0777);
 			if(! $content['exists']) {
 				continue;
 			}
