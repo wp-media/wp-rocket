@@ -67,9 +67,9 @@ class Test_ExcludeJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->assertArraySubset(
-			$expected,
-			apply_filters( 'rocket_exclude_js', $config['exclusions'] )
-		);
+		$actual = apply_filters( 'rocket_exclude_js', $config['exclusions'] );
+		foreach ( $expected as $item ) {
+			$this->assertContains( $item, $actual );
+		}
 	}
 }
