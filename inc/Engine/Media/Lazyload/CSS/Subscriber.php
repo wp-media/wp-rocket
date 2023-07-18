@@ -111,6 +111,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'after_rocket_clean_domain'      => 'clear_generated_css',
 			'after_rocket_clean_post'        => 'clear_generate_css_post',
 			'wp_enqueue_scripts'             => 'insert_lazyload_script',
+			'rocket_exclude_js'              => 'add_lazyload_script_exclude_js',
+			'rocket_exclude_defer_js'        => 'add_lazyload_script_rocket_exclude_defer_js',
+			'rocket_delay_js_exclusions'     => 'add_lazyload_script_rocket_delay_js_exclusions',
 		];
 	}
 
@@ -556,5 +559,38 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Add the lazyload script to exclude js exclusions.
+	 *
+	 * @param array $js_files Exclusions.
+	 * @return array
+	 */
+	public function add_lazyload_script_exclude_js( array $js_files ) {
+		$js_files [] = 'wp-rocket/assets/js/lazyload-css.js';
+		return $js_files;
+	}
+
+	/**
+	 * Add the lazyload script to defer js exclusions.
+	 *
+	 * @param array $exclude_defer_js Exclusions.
+	 * @return array
+	 */
+	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
+		$exclude_defer_js [] = 'wp-rocket/assets/js/lazyload-css.js';
+		return $exclude_defer_js;
+	}
+
+	/**
+	 * Add the lazyload script to delay js exclusions.
+	 *
+	 * @param array $js_files Exclusions.
+	 * @return array
+	 */
+	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
+		$js_files [] = 'wp-rocket/assets/js/lazyload-css.js';
+		return $js_files;
 	}
 }
