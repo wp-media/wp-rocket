@@ -27,12 +27,16 @@ function rocket_css_lazyload() {
 	});
 
 	pairs.forEach(pair => {
-		const elements = document.querySelectorAll(pair.selector);
-		elements.forEach(el => {
-			observer.observe(el);
-			// Save el in the pair object (create a new empty array if it doesn't exist)
-			(pair.elements ||= []).push(el);
-		});
+		try {
+			const elements = document.querySelectorAll(pair.selector);
+			elements.forEach(el => {
+				observer.observe(el);
+				// Save el in the pair object (create a new empty array if it doesn't exist)
+				(pair.elements ||= []).push(el);
+			});
+		} catch (error) {
+			console.error(error);
+		}
 	});
 }
 
