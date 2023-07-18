@@ -8,7 +8,7 @@ return [
 			'threshold' => 400,
         ],
 		'expected' => [
-			'url' => 'https://example.org/test/lazyload-css.js',
+			'url' => 'https://example.org/test/lazyload-css.min.js',
 			'version' => '1.0.0',
 			'data' => [
 				'threshold' => 400
@@ -23,7 +23,7 @@ return [
 			'threshold' => 400,
 		],
 		'expected' => [
-			'url' => 'https://example.org/test/lazyload-css.js',
+			'url' => 'https://example.org/test/lazyload-css.min.js',
 			'version' => '1.0.0',
 			'data' => [
 				'threshold' => 400

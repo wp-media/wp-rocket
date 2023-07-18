@@ -6,7 +6,7 @@ return [
 
         ],
         'expected' => [
-			'wp-rocket/assets/js/lazyload-css.js',
+			'wp-rocket/assets/js/lazyload-css.min.js',
         ]
     ],
 

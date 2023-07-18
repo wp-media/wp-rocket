@@ -226,7 +226,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 */
 		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
 
-		wp_enqueue_script( 'rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+		wp_enqueue_script( 'rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.min.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
 
 		wp_localize_script(
 			'rocket_lazyload_css',
@@ -568,7 +568,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_exclude_js( array $js_files ) {
-		$js_files [] = 'wp-rocket/assets/js/lazyload-css.js';
+		$js_files [] = 'wp-rocket/assets/js/lazyload-css.min.js';
 		return $js_files;
 	}
 
@@ -579,7 +579,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
-		$exclude_defer_js [] = 'wp-rocket/assets/js/lazyload-css.js';
+		$exclude_defer_js [] = 'wp-rocket/assets/js/lazyload-css.min.js';
 		return $exclude_defer_js;
 	}
 
@@ -590,7 +590,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
-		$js_files [] = 'wp-rocket/assets/js/lazyload-css.js';
+		$js_files [] = 'wp-rocket/assets/js/lazyload-css.min.js';
 		return $js_files;
 	}
 }
