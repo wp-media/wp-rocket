@@ -44,6 +44,7 @@ class LazyloadCSSContext extends AbstractContext {
 				'logged_in'          => false,
 			]
 			);
+
 		if ( ! $is_allowed ) {
 			return false;
 		}

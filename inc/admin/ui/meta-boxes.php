@@ -195,17 +195,33 @@ function rocket_save_metabox_options() {
 		}
 
 		// Options fields.
+		// Options fields.
 		$fields = [
-			'lazyload',
-			'lazyload_iframes',
-			'minify_css',
-			'minify_js',
-			'cdn',
-			'async_css',
-			'defer_all_js',
-			'delay_js',
-			'remove_unused_css',
+			'lazyload' => '',
+			'lazyload_iframes' => '',
+			'minify_css' => '',
+			'minify_js' => '',
+			'cdn' => '',
+			'async_css' => '',
+			'defer_all_js' => '',
+			'delay_js' => '',
+			'remove_unused_css' => '',
 		];
+
+		$old_fields = $fields;
+
+		/**
+		 * Metaboxes fields.
+		 *
+		 * @param string[] $fields Metaboxes fields.
+		 */
+		$fields = apply_filters( 'rocket_meta_boxes_fields', $fields );
+
+		if( ! is_array( $old_fields ) ) {
+			$fields = $old_fields;
+		}
+
+		$fields = array_keys($fields);
 
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) ) {

@@ -5,7 +5,7 @@ return [
               'fields' => [],
         ],
         'expected' => [
-			'disable_css_bg_img_lazyload' => 'LazyLoad CSS backgrounds'
+			'lazyload_css_bg_img' => 'LazyLoad CSS backgrounds'
         ]
     ],
 
