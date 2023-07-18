@@ -31,6 +31,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		/**
+		 * Background CSS cache folder.
+		 *
+		 * @param string $root Background CSS cache folder.
+		 */
 		$root = apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' );
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( $root );
