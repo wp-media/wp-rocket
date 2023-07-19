@@ -189,9 +189,9 @@ const bundleLazyloadJsWithoutWatch = () => {
 		.pipe(source('lazyload-css.js'))
 		.pipe(buffer())
 		.pipe(uglify())
+		.pipe( rename( { suffix: '.min' } ) )
 		.pipe(sourcemaps.init({loadMaps: false}))
 		.pipe(sourcemaps.write('./'))
-		.pipe( rename( { suffix: '.min' } ) )
 		.pipe(gulp.dest('assets/js'))
 }
 
