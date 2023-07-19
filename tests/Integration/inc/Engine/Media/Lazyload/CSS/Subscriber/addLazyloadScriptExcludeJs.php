@@ -24,7 +24,7 @@ class Test_addLazyloadScriptExcludeJs extends TestCase {
 	public function tear_down()
 	{
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
-		$this->restoreWpFilter('');
+		$this->restoreWpFilter('rocket_exclude_js');
 		parent::tear_down();
 	}
 
