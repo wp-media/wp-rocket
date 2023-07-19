@@ -34,7 +34,7 @@ class Test_addLazyloadScriptRocketDelayJsExclusions extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-        $this->assertSame($expected, $this->subscriber->add_lazyload_script_rocket_delay_js_exclusions($config['js_files']));
-
+		$this->options->expects()->get('lazyload_css_bg_img', false)->andReturn($config['enabled']);
+		$this->assertSame($expected, $this->subscriber->add_lazyload_script_rocket_delay_js_exclusions($config['js_files']));
     }
 }

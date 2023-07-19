@@ -23,7 +23,7 @@ class Test_addLazyloadScriptRocketExcludeDeferJs extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
+		$this->options->expects()->get('lazyload_css_bg_img', false)->andReturn($config['enabled']);
         $this->assertSame($expected, $this->subscriber->add_lazyload_script_rocket_exclude_defer_js($config['exclude_defer_js']));
-
     }
 }

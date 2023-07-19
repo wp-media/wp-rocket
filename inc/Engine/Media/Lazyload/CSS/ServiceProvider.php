@@ -59,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_json_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_tag_generator' ) )
-			->addArgument( $this->getContainer()->get( 'lazyload_css_context' ) );
+			->addArgument( $this->getContainer()->get( 'lazyload_css_context' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
