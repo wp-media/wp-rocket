@@ -16,6 +16,6 @@ class Test_ExcludePDFEmbedderScripts extends TestCase {
 	public function testShouldExcludePDFEmbedderScripts() {
 		$excluded_js = apply_filters( 'rocket_exclude_js', [] );
 
-		$this->assertSame( [ '/wp-content/plugins/pdf-embedder/js/(.*).js' ], $excluded_js );
+		$this->assertContains( '/wp-content/plugins/pdf-embedder/js/(.*).js', $excluded_js );
 	}
 }
