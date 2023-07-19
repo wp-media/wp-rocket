@@ -1,6 +1,6 @@
 function rocket_css_lazyload() {
 
-	const pairs = rocket_pairs || [];
+	const pairs = typeof rocket_pairs !== 'undefined' && rocket_pairs !== null ? rocket_pairs : [];
 
 	const styleElement = document.querySelector('#wpr-lazyload-bg');
 
