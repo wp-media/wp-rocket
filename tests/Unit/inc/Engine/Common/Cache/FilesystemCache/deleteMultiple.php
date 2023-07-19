@@ -42,7 +42,7 @@ class Test_deleteMultiple extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\when('get_rocket_parse_url')->alias(function ($url) use ($config) {
 			if(! key_exists($url, $config['parsed_url'])) {
 				return;

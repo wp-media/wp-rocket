@@ -45,13 +45,12 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function get( $key, $default = null ) {
 		$path = $this->generate_path( $key );
+
 		if ( ! $this->filesystem->exists( $path ) ) {
 			return $default;
 		}
 
-		$content = $this->filesystem->get_contents( $path );
-
-		return $content;
+		return $this->filesystem->get_contents( $path );
 	}
 
 	/**
@@ -84,9 +83,7 @@ class FilesystemCache implements CacheInterface {
 	 * @throws InvalidArgumentException MUST be thrown if the $key string is not a legal value.
 	 */
 	public function delete( $key ) {
-		$root_path  = $this->get_root_path();
-		$parsed_url = get_rocket_parse_url( $key );
-		$path       = $root_path . $parsed_url['host'] . $parsed_url['path'];
+		$path = $this->generate_path( $key );
 		if ( ! $this->filesystem->exists( $path ) ) {
 			return false;
 		}
@@ -215,10 +212,11 @@ class FilesystemCache implements CacheInterface {
 	 * @return string
 	 */
 	protected function generate_path( string $url ):string {
-		$root_path  = $this->get_root_path();
-		$parsed_url = get_rocket_parse_url( $url );
-
-		return $root_path . $parsed_url['host'] . $parsed_url['path'];
+		$root_path       = $this->get_root_path();
+		$root_path       = rtrim( $root_path, '/' );
+		$parsed_url      = get_rocket_parse_url( $url );
+		$parsed_url_path = trim( $parsed_url['path'], '/' );
+		return $root_path . '/' . $parsed_url['host'] . '/' . $parsed_url_path;
 	}
 
 	/**
@@ -241,6 +239,6 @@ class FilesystemCache implements CacheInterface {
 	 * @return string
 	 */
 	public function get_root_path(): string {
-		return rtrim( _rocket_get_wp_rocket_cache_path() . $this->root_folder, '/' ) . '/';
+		return rtrim( _rocket_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) . $this->root_folder, '/' ) . '/';
 	}
 }

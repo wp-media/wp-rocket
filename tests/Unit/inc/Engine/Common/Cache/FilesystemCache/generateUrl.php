@@ -43,7 +43,6 @@ class Test_generateUrl extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
 
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = false) use ($config) {
 			if('WP_CONTENT_URL' === $name) {
@@ -51,6 +50,10 @@ class Test_generateUrl extends TestCase {
 			}
 			if('WP_CONTENT_DIR' === $name) {
 				return $config['WP_CONTENT_DIR'];
+			}
+
+			if('WP_ROCKET_CACHE_ROOT_PATH' === $name) {
+				return $config['root'];
 			}
 
 			return $default;

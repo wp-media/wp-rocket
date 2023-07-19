@@ -43,7 +43,7 @@ class Test_delete extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\expect('get_rocket_parse_url')->with($config['key'])->andReturn($config['parsed_url']);
 		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
 		$this->configureIsDir($config, $expected);

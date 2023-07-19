@@ -19,11 +19,11 @@ return [
 			],
 			'is_dir' => [
 				'/cache/background-css/example.org/blog/test/file.css' => false,
-				'/cache/background-css/example.org/blog/test/' => true,
+				'/cache/background-css/example.org/blog/test' => true,
 			],
 			'exists' => [
 				'/cache/background-css/example.org/blog/test/file.css' => true,
-				'/cache/background-css/example.org/blog/test/' => true,
+				'/cache/background-css/example.org/blog/test' => true,
 			],
 		],
         'expected' => [
@@ -52,7 +52,7 @@ return [
 			],
 			'exists' => [
 				'/cache/background-css/example.org/blog/test/file.css' => true,
-				'/cache/background-css/example.org/blog/test/' => false,
+				'/cache/background-css/example.org/blog/test' => false,
 			],
 		],
 		'expected' => [

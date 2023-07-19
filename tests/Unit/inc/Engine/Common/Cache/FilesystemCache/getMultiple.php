@@ -50,7 +50,7 @@ class Test_getMultiple extends TestCase {
 			return $config['parsed_url'][$url];
 		});
 
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
 		foreach ($config['exists'] as $path => $exist) {
 			$this->filesystem->expects()->exists($path)->andReturn($exist);

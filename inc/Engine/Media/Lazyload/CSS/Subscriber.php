@@ -83,14 +83,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Instantiate class.
 	 *
-	 * @param Extractor $extractor Extract background images from CSS.
-	 * @param RuleFormatter $rule_formatter Format the CSS rule inside the CSS content.
-	 * @param FileResolver $file_resolver Resolves the name from the file from its URL.
-	 * @param CacheInterface $cache Cache instance.
-	 * @param MappingFormatter $mapping_formatter Format data for the Mapping file.
-	 * @param TagGenerator $tag_generator Generate tags from the mapping of lazyloaded images.
-	 * @param ContextInterface $context Context.
-	 * @param Options_Data $options WPR Options.
+	 * @param Extractor                 $extractor Extract background images from CSS.
+	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
+	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
+	 * @param CacheInterface            $cache Cache instance.
+	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
+	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
+	 * @param ContextInterface          $context Context.
+	 * @param Options_Data              $options WPR Options.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
 	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContextInterface $context, Options_Data $options, WP_Filesystem_Direct $filesystem = null ) {
@@ -342,9 +342,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$html = str_replace( $css_files_mapping[ $url_key ], $cached_url, $html );
 		}
 
-
-		foreach ($css_files_mapping as $url => $id) {
-			$html = str_replace($id, $url, $html);
+		foreach ( $css_files_mapping as $url => $id ) {
+			$html = str_replace( $id, $url, $html );
 		}
 
 		$data['html'] = $html;
@@ -583,7 +582,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_exclude_js( array $js_files ) {
-		if( ! $this->is_activated() ) {
+		if ( ! $this->is_activated() ) {
 			return $js_files;
 		}
 
@@ -598,7 +597,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
-		if( ! $this->is_activated() ) {
+		if ( ! $this->is_activated() ) {
 			return $exclude_defer_js;
 		}
 
@@ -613,7 +612,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
-		if( ! $this->is_activated() ) {
+		if ( ! $this->is_activated() ) {
 			return $js_files;
 		}
 
@@ -627,6 +626,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return bool
 	 */
 	protected function is_activated(): bool {
-		return (bool) $this->options->get('lazyload_css_bg_img', false);
+		return (bool) $this->options->get( 'lazyload_css_bg_img', false );
 	}
 }

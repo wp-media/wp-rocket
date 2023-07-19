@@ -52,7 +52,7 @@ class Test_setMultiple extends TestCase {
 		});
 		Functions\when('rocket_mkdir_p')->justReturn();
 
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
 		foreach ($config['saved'] as $path => $saved) {
 			$this->filesystem->expects()->put_contents($path, $saved['content'], $config['rights'])->andReturn($saved['output']);

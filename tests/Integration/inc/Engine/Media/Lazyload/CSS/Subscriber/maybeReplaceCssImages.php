@@ -61,7 +61,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
         $this->assertSame($expected['output'], apply_filters('rocket_buffer', $config['html']));
     	foreach($expected['files'] as $path => $content) {
 
-			$this->assertSame($content['exists'], $this->filesystem->exists($path));
+			$this->assertSame($content['exists'], $this->filesystem->exists($path), "$path is incoherent");
 			if(! $content['exists']) {
 				continue;
 			}

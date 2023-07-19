@@ -43,7 +43,7 @@ class Test_has extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
-		Functions\expect('_rocket_get_wp_rocket_cache_path')->andReturn($config['root']);
+		Functions\when('rocket_get_constant')->justReturn($config['root']);
 
 		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
 

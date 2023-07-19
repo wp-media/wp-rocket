@@ -28,7 +28,7 @@ return [
 			]
 		],
 		'expected' => [
-			'path' => '/cache/background-css/example.org/blog/test/',
+			'path' => '/cache/background-css/example.org/blog/test',
 			'output' => true
 		]
 	],
