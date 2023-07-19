@@ -18,6 +18,7 @@ return [
 			'code' => 400,
 			'message' => 'message',
 			'request_uri' => 'https://api.example.comrucss-job',
+			'errors_count' => 1,
 			'args' => [
 				'body' => [
 					'wpr_email' => 'example@email.com',
@@ -53,6 +54,7 @@ return [
 			'code' => 200,
 			'message' => 'message',
 			'request_uri' => 'https://api.example.com',
+			'errors_count' => 1,
 			'args' => [
 				'body' => [
 					'wpr_email' => 'example@email.com',

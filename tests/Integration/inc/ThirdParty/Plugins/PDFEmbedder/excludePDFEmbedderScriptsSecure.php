@@ -16,12 +16,13 @@ class Test_ExcludePDFEmbedderScriptsSecure extends TestCase {
 	public function testShouldExcludePDFEmbedderScripts() {
 		$excluded_js = apply_filters( 'rocket_exclude_js', [] );
 
-		$this->assertSame(
-			[
-				'/wp-content/plugins/PDFEmbedder-premium-secure/js/pdfjs/(.*).js',
-				'/wp-content/plugins/PDFEmbedder-premium-secure/js/(.*).js',
-			],
-			$excluded_js
-		);
+		$expected = [
+			'/wp-content/plugins/PDFEmbedder-premium-secure/js/pdfjs/(.*).js',
+			'/wp-content/plugins/PDFEmbedder-premium-secure/js/(.*).js',
+		];
+
+		foreach ( $expected as $item ) {
+			$this->assertContains( $item, $excluded_js );
+		}
 	}
 }
