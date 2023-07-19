@@ -37,7 +37,7 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 		}
 
 		if ( ! $config['writable'] ) {
-			$this->filesystem->chmod( '/wp-content/cache/wp-rocket/background-css', 0444 );
+			$this->filesystem->chmod( '/wp-content/cache/background-css', 0444 );
 		}
 
 
