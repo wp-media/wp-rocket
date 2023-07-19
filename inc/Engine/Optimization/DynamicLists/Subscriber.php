@@ -41,6 +41,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_excluded_inline_js_content'  => 'add_combine_js_excluded_inline',
 			'rocket_preload_exclude_urls'        => 'add_preload_exclusions',
 			'rocket_exclude_js'                  => 'add_js_exclude_files',
+			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
 		];
 	}
 
@@ -188,5 +189,20 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return array_merge( $js_files, $this->dynamic_lists->get_js_exclude_files() );
+	}
+
+	/**
+	 * Add incompatible plugins to the array
+	 *
+	 * @param array $plugins Array of $plugins.
+	 *
+	 * @return array
+	 */
+	public function add_incompatible_plugins_to_deactivate( $plugins = [] ): array {
+		if ( ! is_array( $plugins ) ) {
+			$plugins = (array) $plugins;
+		}
+
+		return array_merge( $plugins, $this->dynamic_lists->get_incompatible_plugins() );
 	}
 }

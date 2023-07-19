@@ -7,6 +7,8 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\APIClient as Default
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager as DefaultListsDataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\APIClient as DelayJSListsAPIClient;
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager as DelayJSListsDataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager as IncompatiblePluginsListsDataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\APIClient as IncompatiblePluginsListsAPIClient;
 
 /**
  * Service provider for the WP Rocket DynamicLists
@@ -27,6 +29,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'dynamic_lists_defaultlists_api_client',
 		'dynamic_lists_delayjslists_data_manager',
 		'dynamic_lists_delayjslists_api_client',
+		'dynamic_lists_incompatible_plugins_lists_data_manager',
+		'dynamic_lists_incompatible_plugins_lists_api_client',
 		'dynamic_lists',
 		'dynamic_lists_subscriber',
 	];
@@ -43,19 +47,28 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_data_manager', DelayJSListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_api_client', DelayJSListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_data_manager', IncompatiblePluginsListsDataManager::class );
+		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_api_client', IncompatiblePluginsListsAPIClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$providers = [
-			'defaultlists' =>
+			'defaultlists'         =>
 				(object) [
 					'api_client'   => $this->getContainer()->get( 'dynamic_lists_defaultlists_api_client' ),
 					'data_manager' => $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ),
 					'title'        => __( 'Default Lists', 'rocket' ),
 				],
-			'delayjslists' =>
+			'delayjslists'         =>
 				(object) [
 					'api_client'   => $this->getContainer()->get( 'dynamic_lists_delayjslists_api_client' ),
 					'data_manager' => $this->getContainer()->get( 'dynamic_lists_delayjslists_data_manager' ),
 					'title'        => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
+				],
+			'incompatible_plugins' =>
+				(object) [
+					'api_client'   => $this->getContainer()->get( 'dynamic_lists_incompatible_plugins_lists_api_client' ),
+					'data_manager' => $this->getContainer()->get( 'dynamic_lists_incompatible_plugins_lists_data_manager' ),
+					'title'        => __( 'Incompatible plugins Lists', 'rocket' ),
 				],
 		];
 
