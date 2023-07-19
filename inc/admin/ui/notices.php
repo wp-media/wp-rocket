@@ -149,8 +149,6 @@ function rocket_plugins_to_deactivate() {
 		'page-optimize'                              => 'page-optimize/page-optimize.php',
 		'psn-pagespeed-ninja'                        => 'psn-pagespeed-ninja/pagespeedninja.php',
 		'wp-optimize'                                => 'wp-optimize/wp-optimize.php',
-		'wp-asset-clean-up'                          => 'wp-asset-clean-up/wpacu.php',
-		'wp-asset-clean-up-pro'                      => 'wp-asset-clean-up-pro/wpacu.php',
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {
