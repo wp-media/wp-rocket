@@ -4,7 +4,7 @@
 # Romain • WP Rocket <contact@wp-rocket.me>, 2019
 # Ivica Delic <ivica.delic@gmail.com>, 2020
 # Borko Livić <borkolivic@gmail.com>, 2022
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -604,8 +604,8 @@ msgstr ""
 "je omogućeno Uklanjanje nekorištenog CSS-a."
 
 #: inc/Engine/Admin/Settings/Page.php:665
-msgid "Activate combine CSS"
-msgstr "Aktiviraj kombiniranje CSS-a"
+msgid "Activate CSS"
+msgstr "Aktiviraj CSS-a"
 
 #: inc/Engine/Admin/Settings/Page.php:670 inc/admin/options.php:122
 msgid "Excluded CSS Files"
@@ -2902,8 +2902,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad za iframes/videa"
 
 #: inc/admin/ui/meta-boxes.php:76
-msgid "Minify/combine CSS"
-msgstr "Minificirati/kombinirati CSS"
+msgid "Minify CSS"
+msgstr "Minificirati CSS"
 
 #: inc/admin/ui/meta-boxes.php:77
 msgid "Remove Unused CSS"

@@ -579,7 +579,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:709
 msgid ""
-"Specify URLs of CSS files to be excluded from minification and concatenation "
+"Specify URLs of CSS files to be excluded from minification "
 "(one per line)."
 msgstr ""
 
@@ -2587,7 +2587,7 @@ msgid "LazyLoad for iframes/videos"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
+msgid "Minify CSS"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:107

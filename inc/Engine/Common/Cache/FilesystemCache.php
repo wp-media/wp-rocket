@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\Cache;
 
+use WP_Rocket\Dependencies\Psr\SimpleCache\CacheInterface;
 use WP_Rocket\Dependencies\Psr\SimpleCache\InvalidArgumentException;
 use WP_Filesystem_Direct;
 
@@ -71,6 +72,7 @@ class FilesystemCache implements CacheInterface {
 		$path      = $this->generate_path( $key );
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
+
 		return $this->filesystem->put_contents( $path, $value );
 	}
 
@@ -241,5 +243,9 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function get_root_path(): string {
 		return _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+	}
+		$root_path  = _rocket_get_wp_rocket_cache_path() . $this->root_folder;
+		$parsed_url = get_rocket_parse_url( $url );
+		return $root_path . $parsed_url['host'] . $parsed_url['path'];
 	}
 }

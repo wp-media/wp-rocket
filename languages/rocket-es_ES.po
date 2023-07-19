@@ -4,7 +4,7 @@
 # Alice O., 2019
 # Orizhial <contact@prunier.es>, 2019
 # wpmedia <contact@wp-media.me>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -2363,8 +2363,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad para iframes/vídeos"
 
 #: inc/admin/ui/meta-boxes.php:74
-msgid "Minify/combine CSS"
-msgstr "Minificar/combinar CSS"
+msgid "Minify CSS"
+msgstr "Minificar CSS"
 
 #: inc/admin/ui/meta-boxes.php:75
 msgid "Minify/combine JS"

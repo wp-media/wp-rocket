@@ -4,7 +4,7 @@
 # wpmedia <contact@wp-media.me>, 2019
 # Ciomîrtan Andrei <refuonline@gmail.com>, 2019
 # Dan Caragea <dan_caragea@yahoo.com>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -486,8 +486,8 @@ msgstr ""
 "informații%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:649
-msgid "Activate combine CSS"
-msgstr "Activează combină CSS"
+msgid "Activate CSS"
+msgstr "Activează CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:654 inc/admin/options.php:125
 msgid "Excluded CSS Files"
@@ -2381,8 +2381,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "Încărcare lentă pentru iframe-uri/videouri"
 
 #: inc/admin/ui/meta-boxes.php:74
-msgid "Minify/combine CSS"
-msgstr "Minifică/combină CSS"
+msgid "Minify CSS"
+msgstr "Minifică CSS"
 
 #: inc/admin/ui/meta-boxes.php:75
 msgid "Minify/combine JS"

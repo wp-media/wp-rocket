@@ -7,6 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class Subscriber implements Subscriber_Interface {
 	use RegexTrait;
 
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
