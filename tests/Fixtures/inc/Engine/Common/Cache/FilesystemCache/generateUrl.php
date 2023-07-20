@@ -18,6 +18,24 @@ return [
 			'output' => 'http://example.org/wp-content/cache/background-css/example.org/blog/test/file.css',
 		]
     ],
+	'noDomainShouldReturnValidUrl' => [
+		'config' => [
+			'url' => '/blog/test/file.css',
+			'parsed_url' => [
+				'host' => null,
+				'path' => '/blog/test/file.css',
+			],
+			'root' => '/var/html/wp-content/cache',
+			'WP_CONTENT_URL' => 'http://example.org/wp-content',
+			'WP_CONTENT_DIR' => '/var/html/wp-content',
+			'exists' => true
+		],
+		'expected' => [
+			'url' => '/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/blog/test/file.css',
+			'output' => 'http://example.org/wp-content/cache/background-css/blog/test/file.css',
+		]
+	],
 	'notExistsShouldReturnSameUrl' => [
 		'config' => [
 			'url' => 'http://example.org/blog/test/file.css',
