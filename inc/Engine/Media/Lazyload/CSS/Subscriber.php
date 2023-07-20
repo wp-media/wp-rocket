@@ -269,7 +269,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$html    = $data['html'];
 		$mapping = [];
 
-		$css_files = $data['css_files'];
+		$css_files = array_unique( $data['css_files'] );
 
 		usort(
 			$css_files,
