@@ -29,9 +29,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_meta_boxes_fields' => 'add_meta_box',
-			'admin_notices'            => 'maybe_add_error_notice',
-			'rocket_safe_mode_reset_options' => 'add_option_safemode'
+			'rocket_meta_boxes_fields'       => 'add_meta_box',
+			'admin_notices'                  => 'maybe_add_error_notice',
+			'rocket_safe_mode_reset_options' => 'add_option_safemode',
 		];
 	}
 
@@ -71,8 +71,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string[] $options Safe mode options.
 	 * @return string[]
 	 */
-	public function add_option_safemode(array $options)
-	{
+	public function add_option_safemode( array $options ) {
 		$options['lazyload_css_bg_img'] = 0;
 		return $options;
 	}
