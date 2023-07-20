@@ -31,6 +31,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_meta_boxes_fields' => 'add_meta_box',
 			'admin_notices'            => 'maybe_add_error_notice',
+			'rocket_safe_mode_reset_options' => 'add_option_safemode'
 		];
 	}
 
@@ -62,6 +63,18 @@ class Subscriber implements Subscriber_Interface {
 				'message'     => rocket_notice_writing_permissions( $this->cache->get_root_path() ),
 			]
 			);
+	}
+
+	/**
+	 * Add option to safe mode.
+	 *
+	 * @param string[] $options Safe mode options.
+	 * @return string[]
+	 */
+	public function add_option_safemode(array $options)
+	{
+		$options['lazyload_css_bg_img'] = 0;
+		return $options;
 	}
 
 }
