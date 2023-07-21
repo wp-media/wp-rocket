@@ -5,9 +5,10 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Context;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Engine\Common\Context\AbstractContext;
+use WP_Rocket\Engine\Media\Lazyload\CanLazyloadTrait;
 
 class LazyloadCSSContext extends AbstractContext {
-
+	use CanLazyloadTrait;
 
 	/**
 	 * Cache instance.
@@ -45,7 +46,7 @@ class LazyloadCSSContext extends AbstractContext {
 			]
 			);
 
-		if ( ! $is_allowed ) {
+		if ( ! $is_allowed || ! $this->should_lazyload() ) {
 			return false;
 		}
 
