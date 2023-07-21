@@ -112,18 +112,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_generate_lazyloaded_css' => [
+			'rocket_generate_lazyloaded_css'        => [
 				[ 'create_lazy_css_files', 18 ],
 				[ 'create_lazy_inline_css', 21 ],
 				[ 'add_lazy_tag', 24 ],
 			],
-			'rocket_buffer'                  => [ 'maybe_replace_css_images', 1002 ],
-			'after_rocket_clean_domain'      => 'clear_generated_css',
-			'after_rocket_clean_post'        => 'clear_generate_css_post',
-			'wp_enqueue_scripts'             => 'insert_lazyload_script',
-			'rocket_exclude_js'              => 'add_lazyload_script_exclude_js',
-			'rocket_exclude_defer_js'        => 'add_lazyload_script_rocket_exclude_defer_js',
-			'rocket_delay_js_exclusions'     => 'add_lazyload_script_rocket_delay_js_exclusions',
+			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
+			'after_rocket_clean_domain'             => 'clear_generated_css',
+			'after_rocket_clean_post'               => 'clear_generate_css_post',
+			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
+			'rocket_exclude_js'                     => 'add_lazyload_script_exclude_js',
+			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
+			'rocket_delay_js_exclusions'            => 'add_lazyload_script_rocket_delay_js_exclusions',
+			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
 		];
 	}
 
@@ -377,9 +378,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $data;
 		}
 
-		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [] );
+		$lazyload_images = $data['lazyloaded_images'];
 
-		$tags = $this->tag_generator->generate( $data['lazyloaded_images'], $loaded );
+		/**
+		 * Lazyload background CSS excluded urls.
+		 *
+		 * @param array $excluded Excluded URLs.
+		 * @param array $urls List of Urls processed.
+		 */
+		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [], $lazyload_images );
+
+		$tags = $this->tag_generator->generate( $lazyload_images, $loaded );
 		$this->logger::debug(
 			'Add lazy tag generated',
 			[
@@ -496,16 +505,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		foreach ( $data['css_inline'] as $content ) {
-
-			if ( $this->is_excluded( $content ) ) {
-				$this->logger::debug(
-					"Excluded lazy css inline $content",
-					[
-						'type' => 'lazyload_css_bg_images',
-					]
-				);
-				continue;
-			}
 
 			$output = $this->generate_content( $content );
 
@@ -627,5 +626,41 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	protected function is_activated(): bool {
 		return (bool) $this->options->get( 'lazyload_css_bg_img', false );
+	}
+
+	/**
+	 * Add lazyload_excluded_src to excluded filters.
+	 *
+	 * @param array $excluded Excluded URLs.
+	 * @param array $urls List of Urls processed.
+	 * @return mixed
+	 */
+	public function exclude_rocket_lazyload_excluded_src( $excluded, $urls ) {
+
+		/**
+		 * Filters the src used to prevent lazy load from being applied.
+		 *
+		 * @param array $excluded_src An array of excluded src.
+		 */
+		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
+
+		if ( ! is_array( $excluded_values ) ) {
+			$excluded_values = (array) $excluded_values;
+		}
+
+		if ( empty( $excluded_values ) ) {
+			return $excluded;
+		}
+
+		foreach ( $urls as $url ) {
+			foreach ( $excluded_values as $excluded_value ) {
+				if ( strpos( $url['selector'], $excluded_value ) !== false || strpos( $url['style'], $excluded_value ) !== false ) {
+					$excluded[] = $url;
+					break;
+				}
+			}
+		}
+
+		return $excluded;
 	}
 }
