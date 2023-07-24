@@ -2221,7 +2221,7 @@ class Page extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_mobile_cache_option() : void {
-		if ( (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
+		if ( (bool) $this->options->get( 'cache_mobile', 0 ) ) {
 			return;
 		}
 
@@ -2255,11 +2255,11 @@ class Page extends Abstract_Render {
 	 * @return void
 	 */
 	public function enable_separate_cache_files_mobile() : void {
-		if ( ! (bool) get_rocket_option( 'cache_mobile', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'cache_mobile', 0 ) ) {
 			return;
 		}
 
-		if ( (bool) get_rocket_option( 'do_caching_mobile_files', 0 ) ) {
+		if ( (bool) $this->options->get( 'do_caching_mobile_files', 0 ) ) {
 			return;
 		}
 
