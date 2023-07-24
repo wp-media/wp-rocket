@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists\Incompatible
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager as IncDataManager;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -12,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group DynamicLists
  */
-class test_GetLists extends TestCase
+class test_GetLists extends FilesystemTestCase
 {
 	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/IncompatiblePluginsLists/DataManager/getLists.php';
 
@@ -21,13 +22,13 @@ class test_GetLists extends TestCase
 	 */
 	public function testShouldReturnExpected($config, $expected)
 	{
-		var_dump('xxxxxxxxxxxxxxxx');
-		var_dump($this->filepathx);
 		$data_manager = new IncDataManager();
-		if ($config['condition'] !== "") {
-			Functions\expect('get_rocket_option')
-				->once();
-		}
+		Functions\when('get_transient')->justReturn($config['data_from_json']);
+		Functions\expect('get_rocket_option')
+			->andReturnUsing(
+				function ($arg) use ($config) {
+					return $config['active_options'][$arg];
+				});
 		$this->assertEquals(
 			$expected,
 			$data_manager->get_lists()
