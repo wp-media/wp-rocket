@@ -50,18 +50,18 @@ class Test_EnableSeparateCacheFilesMobile extends TestCase {
 	 * @dataProvider provideTestData
 	 */
 	public function testShouldEnableSeparateCacheFilesMobile( $config ) {
-		Functions\expect( 'get_rocket_option' )
-			->atLeast()
-			->once()
-			->andReturnUsing(function( $option, $value ) use($config) {
-				if ( 'cache_mobile' === $option ) {
-					return $config['cache_mobile'];
-				}
-
-				if ( 'do_caching_mobile_files' === $option ) {
-					return $config['do_caching_mobile_files'];
-				}
-			});
+		$this->options->shouldReceive( 'get' )
+				->atLeast()
+				->times(1)
+				->andReturnUsing(function( $option, $value ) use($config) {
+					if ( 'cache_mobile' === $option ) {
+						return $config['cache_mobile'];
+					}
+	
+					if ( 'do_caching_mobile_files' === $option ) {
+						return $config['do_caching_mobile_files'];
+					}
+				});
 
 		if ( ! $config['cache_mobile'] || $config['do_caching_mobile_files'] ) {
 			$this->shouldBail();
