@@ -84,15 +84,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Instantiate class.
 	 *
-	 * @param Extractor $extractor Extract background images from CSS.
-	 * @param RuleFormatter $rule_formatter Format the CSS rule inside the CSS content.
-	 * @param FileResolver $file_resolver Resolves the name from the file from its URL.
-	 * @param CacheInterface $cache Cache instance.
+	 * @param Extractor        $extractor Extract background images from CSS.
+	 * @param RuleFormatter    $rule_formatter Format the CSS rule inside the CSS content.
+	 * @param FileResolver     $file_resolver Resolves the name from the file from its URL.
+	 * @param CacheInterface   $cache Cache instance.
 	 * @param MappingFormatter $mapping_formatter Format data for the Mapping file.
-	 * @param TagGenerator $tag_generator Generate tags from the mapping of lazy loaded images.
-	 * @param ContentFetcher $fetcher Fetch content.
+	 * @param TagGenerator     $tag_generator Generate tags from the mapping of lazy loaded images.
+	 * @param ContentFetcher   $fetcher Fetch content.
 	 * @param ContextInterface $context Context.
-	 * @param Options_Data $options WPR Options.
+	 * @param Options_Data     $options WPR Options.
 	 */
 	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options ) {
 		$this->extractor         = $extractor;

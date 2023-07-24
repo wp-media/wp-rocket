@@ -38,8 +38,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		var_dump( get_current_blog_id() );
-		var_dump( 'background-css/' . get_current_blog_id() );
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' . get_current_blog_id() ) );
 
