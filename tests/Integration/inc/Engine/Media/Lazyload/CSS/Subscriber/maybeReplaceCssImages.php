@@ -23,12 +23,14 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 1002);
 
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
+		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
 	}
 
 	public function tear_down()
 	{
 		remove_filter('pre_http_request', [$this, 'mock_http']);
+		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		$this->restoreWpFilter('rocket_buffer');
 		parent::tear_down();
@@ -85,5 +87,9 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 			return $response;
 		}
 		return $this->config['response'];
+	}
+
+	public function exclude_lazyload() {
+		return $this->config['excluded'];
 	}
 }
