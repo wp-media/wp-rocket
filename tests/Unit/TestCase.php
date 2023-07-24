@@ -10,7 +10,7 @@ abstract class TestCase extends BaseTestCase {
 	use StubTrait;
 
 	protected $config;
-
+public $filepathx;
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -34,7 +34,7 @@ abstract class TestCase extends BaseTestCase {
 	protected function loadTestDataConfig() {
 		$obj      = new ReflectionObject( $this );
 		$filename = $obj->getFileName();
-
+$this->filepathx = $filename;
 		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
 	}
 }
