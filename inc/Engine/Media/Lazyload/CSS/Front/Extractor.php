@@ -9,12 +9,33 @@ class Extractor {
 	use RegexTrait;
 
 	/**
+	 * Comment mapping.
+	 *
+	 * @var array
+	 */
+	protected $comments_mapping = [];
+
+	/**
 	 * Extract background images from CSS.
 	 *
 	 * @param string $content CSS content.
 	 * @return array
 	 */
 	public function extract( string $content ): array {
+
+		$this->comments_mapping = [];
+
+		$comment_regex = '#/\*[^*]*\*+([^/][^*]*\*+)*/#';
+
+		$content = preg_replace_callback(
+			$comment_regex,
+			function ( $matches ) {
+				$id                            = uniqid( 'bg_css_comment' );
+				$this->comments_mapping[ $id ] = $matches[0];
+				return $id;
+			},
+			$content
+			);
 
 		$old_regex = '(?<selector>[ \-\w.#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}';
 
@@ -50,11 +71,17 @@ class Extractor {
 
 			$urls = $this->extract_urls( $property );
 
+			$block = $match[0];
+
+			foreach ( $this->comments_mapping as $id => $comment ) {
+				$block = str_replace( $id, $comment, $block );
+			}
+
 			foreach ( $urls as $url ) {
 				$results[ $selector ][] = [
 					'selector' => $selector,
 					'url'      => $url,
-					'block'    => $match[0],
+					'block'    => $block,
 				];
 			}
 		}

@@ -1,3 +1,8 @@
+/*
+.my-style-rocks{
+background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');
+}
+*/
 body{
 width:40%;
 margin-left: auto;
@@ -78,6 +83,11 @@ background-color: #4fc1dd;
 }
 
 .external-css-backgroundsvg{
+/*
+.my-style-rocks{
+background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');
+}
+*/
 background: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg') no-repeat;
 background-color: #c63dd8;
 }
