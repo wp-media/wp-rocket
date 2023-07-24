@@ -1,3 +1,14 @@
+ .header-bg-image
+           {
+            background-image:url('http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg') !important;
+           }
+
+.avadanta-title a,
+.avadanta-desc
+{
+color: #011133;
+}
+
 /*
 .my-style-rocks{
 background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');

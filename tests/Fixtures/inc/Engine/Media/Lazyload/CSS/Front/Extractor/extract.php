@@ -16,6 +16,16 @@ return [
 			'content' => $content_with_url,
 		],
 		'expected' => [
+			'.header-bg-image' => [
+ [
+			'selector' => '.header-bg-image',
+            'url' => 'url(\'http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg\')',
+            'block' => ".header-bg-image
+           {
+            background-image:url('http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg') !important;
+           }"
+        ]
+    ],
 			'.internal-css-background-image' => [
 					[
 					'selector' => '.internal-css-background-image',
