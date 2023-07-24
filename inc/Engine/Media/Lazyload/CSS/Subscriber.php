@@ -5,6 +5,7 @@ use WP_Filesystem_Direct;
 use WP_Post;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
@@ -46,13 +47,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	protected $file_resolver;
 
 	/**
-	 * WordPress filesystem.
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
-
-	/**
 	 * Format data for the Mapping file.
 	 *
 	 * @var MappingFormatter
@@ -65,6 +59,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @var TagGenerator
 	 */
 	protected $tag_generator;
+
+	/**
+	 * Fetch content.
+	 *
+	 * @var ContentFetcher
+	 */
+	protected $fetcher;
 
 	/**
 	 * Context.
@@ -83,26 +84,26 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Instantiate class.
 	 *
-	 * @param Extractor                 $extractor Extract background images from CSS.
-	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
-	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
-	 * @param CacheInterface            $cache Cache instance.
-	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
-	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazyloaded images.
-	 * @param ContextInterface          $context Context.
-	 * @param Options_Data              $options WPR Options.
-	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 * @param Extractor $extractor Extract background images from CSS.
+	 * @param RuleFormatter $rule_formatter Format the CSS rule inside the CSS content.
+	 * @param FileResolver $file_resolver Resolves the name from the file from its URL.
+	 * @param CacheInterface $cache Cache instance.
+	 * @param MappingFormatter $mapping_formatter Format data for the Mapping file.
+	 * @param TagGenerator $tag_generator Generate tags from the mapping of lazy loaded images.
+	 * @param ContentFetcher $fetcher Fetch content.
+	 * @param ContextInterface $context Context.
+	 * @param Options_Data $options WPR Options.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContextInterface $context, Options_Data $options, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options ) {
 		$this->extractor         = $extractor;
 		$this->cache             = $cache;
 		$this->rule_formatter    = $rule_formatter;
 		$this->file_resolver     = $file_resolver;
-		$this->filesystem        = $filesystem ?: rocket_direct_filesystem();
 		$this->mapping_formatter = $mapping_formatter;
 		$this->tag_generator     = $tag_generator;
 		$this->context           = $context;
 		$this->options           = $options;
+		$this->fetcher           = $fetcher;
 	}
 
 	/**
@@ -339,7 +340,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'type' => 'lazyload_css_bg_images',
 					'data' => $cached_url,
 				]
-				);
+			);
 			$html = str_replace( $css_files_mapping[ $url_key ], $cached_url, $html );
 		}
 
@@ -409,11 +410,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	protected function generate_css_file( string $url ) {
 		$path = $this->file_resolver->resolve( $url );
+
 		if ( ! $path ) {
-			return [];
+			$path = $url;
 		}
 
-		$content = $this->filesystem->get_contents( $path );
+		$content = $this->fetcher->fetch( $path );
 
 		if ( ! $content ) {
 			return [];

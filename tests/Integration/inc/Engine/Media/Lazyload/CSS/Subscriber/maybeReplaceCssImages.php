@@ -23,10 +23,12 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 1002);
 
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
+		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
 	}
 
 	public function tear_down()
 	{
+		remove_filter('pre_http_request', [$this, 'mock_http']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		$this->restoreWpFilter('rocket_buffer');
 		parent::tear_down();
@@ -58,7 +60,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 			return 'hash';
 		});
 
-        $this->assertSame($expected['output'], apply_filters('rocket_buffer', $config['html']));
+        $this->assertSame($this->format_the_html($expected['output']), $this->format_the_html(apply_filters('rocket_buffer', $config['html'])));
     	foreach($expected['files'] as $path => $content) {
 
 			$this->assertSame($content['exists'], $this->filesystem->exists($path), "$path is incoherent");
@@ -76,5 +78,12 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 
 	public function lazyload_css_bg_img() {
 		return $this->config['lazyload_css_bg_img'];
+	}
+
+	public function mock_http($response, $args, $url) {
+		if($url !== 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css') {
+			return $response;
+		}
+		return $this->config['response'];
 	}
 }

@@ -5,6 +5,7 @@ namespace Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
@@ -55,6 +56,11 @@ trait SubscriberTrait
 	protected $tag_generator;
 
 	/**
+	 * @var ContentFetcher
+	 */
+	protected $fetcher;
+
+	/**
 	 * @var ContextInterface
 	 */
 	protected $context;
@@ -78,10 +84,11 @@ trait SubscriberTrait
 		$this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
+		$this->fetcher = Mockery::mock(ContentFetcher::class);
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->options = Mockery::mock(Options_Data::class);
 
-		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->context, $this->options, $this->filesystem);
+		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->fetcher, $this->context, $this->options, $this->filesystem);
 		$this->set_logger($this->subscriber);
 	}
 }

@@ -34,7 +34,7 @@ class Test_createLazyCssFiles extends TestCase {
 		}
 
 		foreach ($config['content'] as $path => $content) {
-			$this->filesystem->expects()->get_contents($path)->andReturn($content);
+			$this->fetcher->expects()->fetch($path)->andReturn($content);
 		}
 
 		foreach ($config['extract'] as $content => $urls) {

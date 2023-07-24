@@ -202,7 +202,9 @@ class FilesystemCache implements CacheInterface {
 
 		$relative_path = str_replace( $wp_content_dir, '', $path );
 
-		return $wp_content_url . $relative_path;
+		$generated_url = $wp_content_url . $relative_path;
+
+		return (string) apply_filters( 'rocket_css_url', $generated_url );
 	}
 
 	/**

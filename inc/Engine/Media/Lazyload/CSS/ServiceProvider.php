@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Context\LazyloadCSSContext;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
@@ -37,14 +38,18 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		var_dump( get_current_blog_id() );
+		var_dump( 'background-css/' . get_current_blog_id() );
 		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
-			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css' ) );
+			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' . get_current_blog_id() ) );
 
 		$cache = $this->getContainer()->get( 'lazyload_css_cache' );
 
 		$this->getLeagueContainer()->add( 'lazyload_css_context', LazyloadCSSContext::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $cache );
+
+		$this->getLeagueContainer()->add( 'lazyload_css_fetcher', ContentFetcher::class );
 
 		$this->getLeagueContainer()->add( 'lazyload_css_extractor', Extractor::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_file_resolver', FileResolver::class );
@@ -59,6 +64,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $cache )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_json_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_tag_generator' ) )
+			->addArgument( $this->getContainer()->get( 'lazyload_css_fetcher' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_context' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 	}

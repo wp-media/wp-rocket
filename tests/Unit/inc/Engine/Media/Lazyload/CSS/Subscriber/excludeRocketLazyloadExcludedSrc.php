@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
+use Engine\Media\Lazyload\CSS\Subscriber\SubscriberTrait;
 use Mockery;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
@@ -21,6 +22,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::exclude_rocket_lazyload_excluded_src
  */
 class Test_excludeRocketLazyloadExcludedSrc extends TestCase {
+
+	use SubscriberTrait;
 
     /**
      * @var Extractor
@@ -74,18 +77,8 @@ class Test_excludeRocketLazyloadExcludedSrc extends TestCase {
 
     public function set_up() {
         parent::set_up();
-        $this->extractor = Mockery::mock(Extractor::class);
-        $this->rule_formatter = Mockery::mock(RuleFormatter::class);
-        $this->file_resolver = Mockery::mock(FileResolver::class);
-        $this->cache = Mockery::mock(CacheInterface::class);
-        $this->mapping_formatter = Mockery::mock(MappingFormatter::class);
-        $this->tag_generator = Mockery::mock(TagGenerator::class);
-        $this->context = Mockery::mock(ContextInterface::class);
-        $this->options = Mockery::mock(Options_Data::class);
-        $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
-
-        $this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->cache, $this->mapping_formatter, $this->tag_generator, $this->context, $this->options, $this->filesystem);
-    }
+		$this->init_subscriber();
+	}
 
     /**
      * @dataProvider configTestData
