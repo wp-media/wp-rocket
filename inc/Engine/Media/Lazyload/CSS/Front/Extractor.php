@@ -71,7 +71,7 @@ class Extractor {
 
 			$urls = $this->extract_urls( $property );
 
-			$block = trim($match[0]);
+			$block = trim( $match[0] );
 
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
