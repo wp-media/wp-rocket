@@ -30,7 +30,7 @@ class Extractor {
 		$content = preg_replace_callback(
 			$comment_regex,
 			function ( $matches ) {
-				$id                            = uniqid( 'bg_css_comment' );
+				$id                            = '/*' . uniqid( 'bg_css_comment' ) . '*/';
 				$this->comments_mapping[ $id ] = $matches[0];
 				return $id;
 			},
@@ -72,7 +72,6 @@ class Extractor {
 			$urls = $this->extract_urls( $property );
 
 			$block = trim( $match[0] );
-
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
 			}
