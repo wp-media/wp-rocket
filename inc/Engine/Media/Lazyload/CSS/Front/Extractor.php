@@ -37,7 +37,7 @@ class Extractor {
 			$content
 			);
 
-		$old_regex = '(?<selector>[ \-\w.\n#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}';
+		$old_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}';
 
 		/**
 		 * Lazyload property regex.
