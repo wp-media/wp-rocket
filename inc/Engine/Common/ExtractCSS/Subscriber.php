@@ -61,9 +61,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$css_links = [];
 
+		$html = $this->hide_comments( $data['html'] );
+
 		$link_styles = $this->find(
 			'<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?(?<url>[^\'"]+(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>',
-			$data['html'],
+			$html,
 			'Uis'
 		);
 
@@ -124,9 +126,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$css_links = [];
 
+		$html = $this->hide_comments( $data['html'] );
+
 		$inline_styles = $this->find(
 			'<style(?<atts>.*)>(?<content>.*)<\/style\s*>',
-			$data['html']
+			$html
 		);
 
 		foreach ( $inline_styles as $style ) {

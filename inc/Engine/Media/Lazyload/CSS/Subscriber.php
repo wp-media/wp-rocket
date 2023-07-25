@@ -12,12 +12,13 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use LoggerAware;
+	use LoggerAware, RegexTrait;
 	/**
 	 * Extract background images from CSS.
 	 *
@@ -269,6 +270,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$html    = $data['html'];
+		$html    = $this->replace_html_comments( $html );
 		$mapping = [];
 
 		$css_files = array_unique( $data['css_files'] );
@@ -347,6 +349,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		foreach ( $css_files_mapping as $url => $id ) {
 			$html = str_replace( $id, $url, $html );
 		}
+
+		$html = $this->restore_html_comments( $html );
 
 		$data['html'] = $html;
 

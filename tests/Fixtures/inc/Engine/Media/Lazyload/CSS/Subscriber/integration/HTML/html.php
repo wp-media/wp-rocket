@@ -23,7 +23,18 @@
         `;
 		document.head.appendChild(style);
 	</script>
+	<!-- <link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/link404.css"> -->
+	<!-- <link rel="stylesheet" Href='/wp-content/rocket-test-data/styles/lazyload_css_background_images.css'>
+	<link rel="stylesheet" HREF=https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css>
+	 -->
+	<!-- commented
+<style>
 
+.my-style-rocks{
+  background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');
+}
+
+</style> -->
 
 </head>
 <body>

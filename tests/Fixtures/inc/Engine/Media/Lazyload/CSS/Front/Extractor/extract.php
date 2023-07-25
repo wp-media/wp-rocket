@@ -168,6 +168,16 @@ background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)),
 					'url' => "url('/test.png')",
 					'block' => ".external-css-background{
 background: url('/test.png') no-repeat;
+background-image: url('/test2.png');
+background-color: #4fc1dd;
+}"
+				],
+				[
+					'selector' => '.external-css-background',
+					'url' => "url('/test2.png')",
+					'block' => ".external-css-background{
+background: url('/test.png') no-repeat;
+background-image: url('/test2.png');
 background-color: #4fc1dd;
 }"
 				],

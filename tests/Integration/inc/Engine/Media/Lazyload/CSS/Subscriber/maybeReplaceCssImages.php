@@ -73,7 +73,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 			$expected_content = trim($content['content']);
 			$content = trim($this->filesystem->get_contents($path));
 
-			$this->assertSame($expected_content, $content);
+			$this->assertSame($expected_content, $content, "$path");
 
 		}
 	}
