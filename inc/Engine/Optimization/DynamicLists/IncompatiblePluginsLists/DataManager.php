@@ -14,7 +14,7 @@ class DataManager extends AbstractDataManager {
 	 * @return string
 	 */
 	protected function get_cache_transient_name() {
-		return 'wpr_dynamic_lists_incompatible-plugins';
+		return 'wpr_dynamic_lists_incompatible_plugins';
 	}
 
 	/**
