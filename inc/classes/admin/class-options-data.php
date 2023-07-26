@@ -58,37 +58,7 @@ class Options_Data {
 		$value = apply_filters( 'pre_get_rocket_option_' . $key, null, $default ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		if ( null !== $value ) {
-			switch ( $key ) {
-				case 'cache_mobile':
-					if ( rocket_get_config( 'cache_mobile' ) !== $value ) {
-						rocket_generate_config_file( false );
-					}
-
-					break;
-				case 'do_caching_mobile_files':
-					if ( rocket_get_config( 'do_caching_mobile_files' ) !== $value ) {
-						rocket_generate_config_file( false );
-					}
-
-					break;
-			}
-
 			return $value;
-		}
-
-		switch ( $key ) {
-			case 'cache_mobile':
-				if ( isset( $this->options[ $key ] ) && rocket_get_config( 'cache_mobile' ) !== $this->options[ $key ] ) {
-					rocket_generate_config_file();
-				}
-
-				break;
-			case 'do_caching_mobile_files':
-				if ( isset( $this->options[ $key ] ) && rocket_get_config( 'do_caching_mobile_files' ) !== $this->options[ $key ] ) {
-					rocket_generate_config_file();
-				}
-
-				break;
 		}
 
 		if ( 'consumer_key' === $key && rocket_has_constant( 'WP_ROCKET_KEY' ) ) {

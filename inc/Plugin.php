@@ -5,7 +5,6 @@ namespace WP_Rocket;
 use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
-use WP_Rocket\Buffer\Config;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
@@ -105,8 +104,6 @@ class Plugin {
 		add_filter( 'rocket_container', [ $this, 'get_container' ] );
 
 		$this->container->add( 'template_path', $template_path );
-		$this->container->add( 'config', Config::class )
-			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
 	}
 
 	/**
