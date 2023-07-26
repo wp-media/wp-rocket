@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Mockery;
 use Brain\Monkey\Functions;
