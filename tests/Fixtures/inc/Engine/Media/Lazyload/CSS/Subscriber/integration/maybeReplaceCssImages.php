@@ -20,6 +20,7 @@ return [
 		'shouldReturnAsExpected' => [
 			'config' => [
 				'html' => $html,
+				'current_time' => 17895120,
 				'lazyload_css_bg_img' => true,
 				'response' => [ 'body' => file_get_contents(__DIR__ . '/CSS/external.css'), 'response' => ['code' => 200 ] ],
 				'excluded' => []
@@ -49,6 +50,7 @@ return [
 		'exclusionsShouldExclude' => [
 			'config' => [
 				'html' => $html,
+				'current_time' => 17895120,
 				'lazyload_css_bg_img' => true,
 				'response' => [ 'body' => file_get_contents(__DIR__ . '/CSS/external.css'), 'response' => ['code' => 200 ] ],
 				'excluded' => [

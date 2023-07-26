@@ -284,13 +284,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$css_files_mapping = [];
 
+		$time = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+
 		foreach ( $css_files as $url ) {
 			$placeholder = uniqid( 'url_bg_css_' );
-			$url_key     = $this->format_url( $url );
 
-			$html = str_replace( $url_key, $placeholder, $html );
+			$html = str_replace( $url, $placeholder, $html );
 
-			$css_files_mapping[ $url_key ] = $placeholder;
+			$css_files_mapping[ $url ] = $placeholder;
 		}
 
 		foreach ( $css_files as $url ) {
@@ -343,11 +344,22 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					'data' => $cached_url,
 				]
 			);
-			$html = str_replace( $css_files_mapping[ $url_key ], $cached_url, $html );
+
+			$parsed_query = wp_parse_url( $url, PHP_URL_QUERY );
+			$queries      = [];
+
+			if ( $parsed_query ) {
+				parse_str( $parsed_query, $queries );
+			}
+
+			$queries['wpr_t'] = $time;
+			$cached_url       = add_query_arg( $queries, $cached_url );
+
+			$html = str_replace( $css_files_mapping[ $url ], $cached_url, $html );
 		}
 
-		foreach ( $css_files_mapping as $url => $id ) {
-			$html = str_replace( $id, $url, $html );
+		foreach ( $css_files_mapping as $url => $placeholder ) {
+			$html = str_replace( $placeholder, $url, $html );
 		}
 
 		$html = $this->restore_html_comments( $html );

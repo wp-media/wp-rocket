@@ -42,6 +42,9 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		$this->config = $config;
+
+		Functions\when('current_time')->justReturn($config['current_time']);
+
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = null) {
 			if('ABSPATH' === $name) {
 				return $this->filesystem->getUrl('/');

@@ -1,7 +1,6 @@
 <?php
-
-$current_date = 'current_date';
-$old_date = 'old_date';
+$current_date = current_time( 'mysql', true );
+$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 32 days' ) );
 
 
 $used_css = [

@@ -39,6 +39,7 @@ return [
 					'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css',
 				]
 			],
+			'parse_url' => [],
 			'has' => [],
 			'resolve' => [],
 			'content' => [],
@@ -63,6 +64,7 @@ return [
 			'data' => [
 				"html" => $html,
 			],
+			'parse_url' => [],
 			'has' => [],
 			'resolve' => [],
 			'extract' => [],
@@ -88,6 +90,12 @@ return [
 					'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images2.css',
 					'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css',
 				]
+			],
+			'parse_url' => [
+				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => null,
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images2.css' => null,
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => null,
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => null,
 			],
 			'has' => [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => false,

@@ -24,6 +24,12 @@ class Test_createLazyCssFiles extends TestCase {
     {
 
 		Functions\when('wp_generate_uuid4')->justReturn('hash');
+		Functions\when('current_time')->justReturn('time');
+		Functions\when('add_query_arg')->returnArg(2);
+
+		foreach ($config['parse_url'] as $url => $query) {
+			Functions\expect('wp_parse_url')->with($url, PHP_URL_QUERY)->andReturn($query);
+		}
 
 		foreach ($config['has'] as $url => $output) {
 			$this->filesystem_cache->expects()->has($url)->andReturn($output);

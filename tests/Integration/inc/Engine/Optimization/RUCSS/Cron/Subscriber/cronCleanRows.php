@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
+use ReflectionObject;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -14,7 +15,12 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_CronCleanRows extends TestCase {
 	use DBTrait;
 
-	private $input;
+	protected function loadTestDataConfig() {
+		$obj      = new ReflectionObject( $this );
+		$filename = $obj->getFileName();
+
+		$this->config = $this->getTestData( dirname( $filename ) . '/integration/', basename( $filename, '.php' ) );
+	}
 
 	public static function set_up_before_class() {
 		self::installFresh();

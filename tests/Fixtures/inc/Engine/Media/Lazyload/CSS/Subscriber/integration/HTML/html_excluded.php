@@ -7,8 +7,8 @@
 	<title>
 		HTML 5 Boilerplate</title>
 	<!-- external CSS background images here min and non-min file -->
-	<link rel="stylesheet" href="http://example.org/wp-content/cache/background-css//wp-content/rocket-test-data/styles/lazyload_css_background_images.css?test=1">
-	<link rel="stylesheet" href="http://example.org/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css">
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/background-css//wp-content/rocket-test-data/styles/lazyload_css_background_images.css?test=1&wpr_t=17895120">
+	<link rel="stylesheet" href="http://example.org/wp-content/cache/background-css/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css?wpr_t=17895120">
 	<!-- CSS loaded by js, probably won't be processed -->
 	<script>
 		var style = document.createElement('style');
@@ -35,7 +35,6 @@
 }
 
 </style> -->
-	-->
 	<style id="wpr-lazyload-bg">
 		:root{--wpr-bg-hash: url('/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url("/wp-content/rocket-test-data/images/paper.jpeg");}:root{--wpr-bg-hash: url( "/wp-content/rocket-test-data/images/paper.jpeg" );}</style>
 	<noscript>
