@@ -408,7 +408,12 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			}
 	}
 
-	return [];
+	/**
+	 * Filters the list of languages subdomains URLs
+	 *
+	 * @param array $subdomains Array of languages subdomains URLs.
+	 */
+	return apply_filters( 'rocket_i18n_subdomains', [] );
 }
 
 /**
@@ -443,9 +448,15 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
 				return pll_home_url( $lang );
 			}
+		default:
+			/**
+			 * Filters the home URL value for a specific language
+			 *
+			 * @param string $home_url Home URL.
+			 * @param string $lang     The language code.
+			 */
+			return apply_filters( 'rocket_i18n_home_url', home_url(), $lang );
 	}
-
-	return home_url();
 }
 
 /**
@@ -511,15 +522,22 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 				}
 			}
+		default:
+			/**
+			 * Filters the list of translated URLs for a post ID
+			 *
+			 * @param array  $urls Array of translated URLs.
+			 * @param int    $post_id Post ID.
+			 * @param string $post_type Post type.
+			 */
+			$urls = apply_filters( 'rocket_i18n_translated_post_urls', $urls, $post_id, $post_type );
 	}
 
 	if ( trim( $path, '/' ) !== '' ) {
 		$urls[] = $path . $regex;
 	}
 
-	$urls = array_unique( $urls );
-
-	return $urls;
+	return array_unique( $urls );
 }
 
 /**
@@ -576,5 +594,10 @@ function rocket_get_current_language() {
 		return apply_filters( 'wpml_current_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	return false;
+	/**
+	 * Filters the current language value
+	 *
+	 * @param $current_language Current language.
+	 */
+	return apply_filters( 'rocket_i18n_current_language', false );
 }
