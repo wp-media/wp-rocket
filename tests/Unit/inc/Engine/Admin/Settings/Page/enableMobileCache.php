@@ -49,7 +49,7 @@ class Test_EnableMobileCache extends TestCase {
 	}
 
 	/**
-	 * @dataProvider provideTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldEnableMobileCache( $user_auth ) {
 		Functions\when( 'current_user_can' )->justReturn( $user_auth );
