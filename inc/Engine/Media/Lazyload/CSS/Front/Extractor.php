@@ -37,20 +37,28 @@ class Extractor {
 			$content
 			);
 
-		$old_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background(-image)?\s*:(?<property>[^;]*)[^}]*}';
+		$background_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background\s*:(?<property>[^;]*)[^}]*}';
+
+		$background_image_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background-image\s*:(?<property>[^;]*)[^}]*}';
 
 		/**
-		 * Lazyload property regex.
+		 * Lazyload background property regex.
 		 *
-		 * @param string $regex Lazyload property regex.
+		 * @param string $regex Lazyload background property regex.
 		 */
-		$regex = apply_filters( 'rocket_lazyload_css_extract_property_regex', $old_regex );
+		$background_regex = $this->apply_string_filter( 'lazyload_css_extract_bg_property_regex', $background_regex );
 
-		if ( ! is_string( $regex ) ) {
-			$regex = $old_regex;
-		}
+		/**
+		 * Lazyload background property regex.
+		 *
+		 * @param string $regex Lazyload background property regex.
+		 */
+		$background_image_regex = $this->apply_string_filter( 'lazyload_css_extract_bg_img_property_regex', $background_image_regex );
 
-		$matches = $this->find( $regex, $content, 'mi' );
+		$background_matches       = $this->find( $background_regex, $content, 'mi' );
+		$background_image_matches = $this->find( $background_image_regex, $content, 'mi' );
+
+		$matches = array_merge( $background_matches, $background_image_matches );
 
 		if ( empty( $matches ) ) {
 			return [];
@@ -96,17 +104,12 @@ class Extractor {
 	 */
 	protected function extract_urls( string $content ): array {
 
-		$old_regex = '(?<tag>url\([\'"]?(?<url>[^\)]*)[\'"]?\))';
 		/**
 		 * Lazyload URL regex.
 		 *
 		 * @param string $regex Lazyload URL regex.
 		 */
-		$regex = apply_filters( 'rocket_lazyload_css_extract_url_regex', $old_regex );
-
-		if ( ! is_string( $regex ) ) {
-			$regex = $old_regex;
-		}
+		$regex = $this->apply_string_filter( 'lazyload_css_extract_url_regex', '(?<tag>url\([\'"]?(?<url>[^\)]*)[\'"]?\))' );
 
 		$matches = $this->find( $regex, $content, 'mi' );
 
@@ -119,6 +122,24 @@ class Extractor {
 			$url      = $match['tag'];
 			$url      = trim( $url, ' ,' );
 			$output[] = $url;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Apply a string filter.
+	 *
+	 * @param string $name Name from the filter.
+	 * @param string $value Value to pass to the filter that will be returned.
+	 * @param array  ...$args Additional values.
+	 * @return string
+	 */
+	protected function apply_string_filter( string $name, string $value, ...$args ) {
+		$output = apply_filters( 'rocket_' . $name, $value,  ...$args );
+
+		if ( ! is_string( $output ) ) {
+			return $value;
 		}
 
 		return $output;

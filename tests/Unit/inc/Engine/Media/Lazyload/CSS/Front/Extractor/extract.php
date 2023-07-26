@@ -28,6 +28,6 @@ class Test_extract extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-        $this->assertSame($expected, $this->extractor->extract($config['content']));
+        $this->assertEqualsCanonicalizing($expected, $this->extractor->extract($config['content']));
     }
 }
