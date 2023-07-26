@@ -89,7 +89,4 @@ class Test_EnableSeparateCacheFilesMobile extends TestCase {
 		Functions\expect( 'update_option' )->once();
 	}
 
-	public function provideTestData() {
-		return $this->getTestData( __DIR__, 'enableSeparateCacheFilesMobile' );
-	}
 }
