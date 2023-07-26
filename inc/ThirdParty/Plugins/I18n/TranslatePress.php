@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ThirdParty\Plugins\I18n;
 
 use TRP_Translate_Press;
@@ -22,6 +24,7 @@ class TranslatePress implements Subscriber_Interface {
 			'rocket_rucss_is_home_url'   => [ 'detect_homepage', 10, 2 ],
 			'rocket_has_i18n'            => 'is_translatepress',
 			'rocket_i18n_admin_bar_menu' => 'add_langs_to_admin_bar',
+			'rocket_i18n_current_language' => 'set_current_language',
 		];
 	}
 
@@ -88,5 +91,22 @@ class TranslatePress implements Subscriber_Interface {
 		}
 
 		return $langlinks;
+	}
+
+	/**
+	 * Sets the current language value
+	 *
+	 * @param string|bool $current_language Current language.
+	 *
+	 * @return string|bool
+	 */
+	public function set_current_language( $current_language ) {
+		global $TRP_LANGUAGE;
+
+		if ( empty( $TRP_LANGUAGE ) ) {
+			return $current_language;
+		}
+
+		return $TRP_LANGUAGE;
 	}
 }
