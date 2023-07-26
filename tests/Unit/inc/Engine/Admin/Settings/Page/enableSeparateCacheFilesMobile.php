@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Admin\Settings\Page;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 
 /**
