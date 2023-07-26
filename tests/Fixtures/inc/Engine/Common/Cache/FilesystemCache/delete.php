@@ -2,9 +2,10 @@
 return [
     'fileShouldDeleteFile' => [
         'config' => [
-              'key' => '/blog/test/file.css',
-			  'root' => '/cache',
-			  'is_dir' => false,
+			'key' => '/blog/test/file.css',
+			'root' => '/cache',
+			'home_url' => 'http://example.org',
+			'is_dir' => false,
 			  'exists' => true,
 			  'parsed_url' => [
 				  'host' => 'example.org',
@@ -20,6 +21,7 @@ return [
 		'config' => [
 			'key' => '/blog/test/',
 			'root' => '/cache',
+			'home_url' => 'http://example.org',
 			'is_dir' => true,
 			'exists' => true,
 			'parsed_url' => [
@@ -35,6 +37,7 @@ return [
 	'notExistsShouldReturnFalse' => [
 		'config' => [
 			'key' => '/blog/test/file.css',
+			'home_url' => 'http://example.org',
 			'root' => '/cache',
 			'is_dir' => false,
 			'exists' => false,

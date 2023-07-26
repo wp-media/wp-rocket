@@ -42,7 +42,20 @@ class Test_generateUrl extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
+
+		Functions\when('get_rocket_parse_url')->alias(function ($url) use ($config, $expected) {
+
+			if($url == $expected['url']) {
+				return $config['parsed_url'];
+			}
+
+			if($url == $expected['home_url']) {
+				return $config['home_parsed_url'];
+			}
+
+		});
+
+		Functions\when('home_url')->justReturn($config['home_url']);
 
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = false) use ($config) {
 			if('WP_CONTENT_URL' === $name) {

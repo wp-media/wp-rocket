@@ -218,7 +218,12 @@ class FilesystemCache implements CacheInterface {
 		$root_path       = rtrim( $root_path, '/' );
 		$parsed_url      = get_rocket_parse_url( $url );
 		$parsed_url_path = trim( $parsed_url['path'], '/' );
-		$parsed_url_host = null === $parsed_url['host'] ? '' : '/' . $parsed_url['host'];
+
+		$home_url        = home_url();
+		$home_parsed_url = get_rocket_parse_url( $home_url );
+
+		$host            = '' === $parsed_url['host'] || null === $parsed_url['host'] ? $home_parsed_url['host'] : $parsed_url['host'];
+		$parsed_url_host = '/' . $host;
 
 		return $root_path . $parsed_url_host . '/' . $parsed_url_path;
 	}

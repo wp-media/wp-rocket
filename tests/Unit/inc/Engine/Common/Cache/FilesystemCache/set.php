@@ -46,6 +46,7 @@ class Test_set extends TestCase {
 		Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
+		Functions\when('home_url')->justReturn($config['home_url']);
 
 		$this->filesystem->expects()->put_contents($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
 

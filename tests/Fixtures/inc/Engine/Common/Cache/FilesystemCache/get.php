@@ -9,7 +9,8 @@ return [
 					'path' => '/blog/test/file.css',
 			  ],
 			  'root' => '/var/html/wp-content/cache',
-			  'exists' => true,
+			'home_url' => 'http://example.org',
+			'exists' => true,
 			  'content' => 'content'
 		],
         'expected' => [
@@ -27,6 +28,7 @@ return [
 				'path' => '/blog/test/file.css',
 			],
 			'root' => '/var/html/wp-content/cache',
+			'home_url' => 'http://example.org',
 			'exists' => false,
 			'content' => 'content'
 		],

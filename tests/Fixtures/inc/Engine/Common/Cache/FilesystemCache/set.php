@@ -11,6 +11,7 @@ return [
 				'path' => '/blog/test/file.css',
 			],
 			'root' => '/var/html/wp-content/cache',
+			'home_url' => 'http://example.org',
 			'saved' => true,
 		],
         'expected' => [
@@ -31,6 +32,7 @@ return [
 				'path' => '/blog/test/file.css',
 			],
 			'root' => '/var/html/wp-content/cache',
+			'home_url' => 'http://example.org',
 			'saved' => false,
 		],
 		'expected' => [

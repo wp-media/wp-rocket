@@ -43,6 +43,7 @@ class Test_deleteMultiple extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
+		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_rocket_parse_url')->alias(function ($url) use ($config) {
 			if(! key_exists($url, $config['parsed_url'])) {
 				return;

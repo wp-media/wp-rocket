@@ -45,6 +45,7 @@ class Test_delete extends TestCase {
 
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
 		Functions\expect('get_rocket_parse_url')->with($config['key'])->andReturn($config['parsed_url']);
+		Functions\when('home_url')->justReturn($config['home_url']);
 		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
 		$this->configureIsDir($config, $expected);
 		$this->configureDirDelete($config, $expected);

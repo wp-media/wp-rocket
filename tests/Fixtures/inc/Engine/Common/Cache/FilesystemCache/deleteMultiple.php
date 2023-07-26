@@ -6,6 +6,7 @@ return [
 				  '/blog/test/file.css',
 				  '/blog/test/',
 			  ],
+			'home_url' => 'http://example.org',
 			'root' => '/cache',
 			'parsed_url' => [
 				'/blog/test/file.css' =>  [
@@ -36,6 +37,7 @@ return [
 				'/blog/test/file.css',
 				'/blog/test/',
 			],
+			'home_url' => 'http://example.org',
 			'root' => '/cache',
 			'parsed_url' => [
 				'/blog/test/file.css' =>  [

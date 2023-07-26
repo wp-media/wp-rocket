@@ -7,6 +7,7 @@ return [
 				'host' => 'example.org',
 				'path' => '/blog/test/file.css',
 			],
+			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'exists' => true
 		],
@@ -23,6 +24,7 @@ return [
 				'host' => 'example.org',
 				'path' => '/blog/test/file.css',
 			],
+			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'exists' => false
 		],

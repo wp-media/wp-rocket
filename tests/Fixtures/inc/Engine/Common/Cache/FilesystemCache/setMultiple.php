@@ -18,6 +18,7 @@ return [
 					'path' => '/blog/test/file2.css',
 				]
 			],
+			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'saved' => [
 				'/var/html/wp-content/cache/background-css/example.org/blog/test/file.css' => [
@@ -52,6 +53,7 @@ return [
 					'path' => '/blog/test/file2.css',
 				]
 			],
+			'home_url' => 'http://example.org',
 			'root' => '/var/html/wp-content/cache',
 			'saved' => [
 				'/var/html/wp-content/cache/background-css/example.org/blog/test/file.css' => [

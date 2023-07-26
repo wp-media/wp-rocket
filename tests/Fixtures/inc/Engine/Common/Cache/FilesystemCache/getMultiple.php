@@ -18,6 +18,7 @@ return [
 				]
 			],
 			'root' => '/var/html/wp-content/cache',
+			'home_url' => 'http://example.org',
 			'exists' => [
 				'/var/html/wp-content/cache/background-css/example.org/blog/test/file.css' => true,
 				'/var/html/wp-content/cache/background-css/example.org/blog/test/file2.css' => false,
