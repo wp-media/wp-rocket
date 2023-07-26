@@ -20,7 +20,7 @@ class Test_EnableSeparateCacheFilesMobile extends TestCase {
 	private $beacon;
 	private $options;
 
-	public function setUp() : void {
+	protected function setUp() : void {
 		parent::setUp();
 
 		$this->beacon       = Mockery::mock( Beacon::class );
