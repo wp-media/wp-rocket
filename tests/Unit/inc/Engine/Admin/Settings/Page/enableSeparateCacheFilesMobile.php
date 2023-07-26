@@ -47,7 +47,7 @@ class Test_EnableSeparateCacheFilesMobile extends TestCase {
 	}
 
 	/**
-	 * @dataProvider provideTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldEnableSeparateCacheFilesMobile( $config ) {
 		$this->options->shouldReceive( 'get' )
