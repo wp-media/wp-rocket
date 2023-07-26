@@ -223,19 +223,6 @@ function rocket_generate_config_file() {
 }
 
 /**
- * Get a specific config/option value.
- *
- * @param string $config_name Name of a specific config/option.
- * @return mixed
- */
-function rocket_get_config( $config_name ) {
-	$container = apply_filters( 'rocket_container', null );
-	$config    = $container->get( 'config' );
-
-	return $config->get_config( $config_name );
-}
-
-/**
  * Remove the current config domain file
  *
  * @since 2.6
