@@ -82,7 +82,4 @@ class Test_EnableMobileCache extends TestCase {
 		Functions\expect( 'wp_send_json_success' )->once();
 	}
 
-	public function provideTestData() {
-		return $this->getTestData( __DIR__, 'enableMobileCache' );
-	}
 }
