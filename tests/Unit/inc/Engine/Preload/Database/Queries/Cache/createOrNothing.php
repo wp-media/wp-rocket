@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_nothing
@@ -23,7 +24,7 @@ class Test_CreateOrNothing extends TestCase {
 	{
 		parent::setUp();
 		$this->logger = Mockery::mock(Logger::class);
-		$this->query = $this->createPartialMock(Cache::class, ['query','add_item']);
+		$this->query = $this->createPartialMock(Cache::class, ['query','add_item', 'format_url']);
 		$this->setProtectedProperty($this->query, 'logger', $this->logger);
 	}
 
@@ -31,11 +32,20 @@ class Test_CreateOrNothing extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
+		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
+			return parse_url( $url, $component );
+		} );
+		Filters\expectApplied('rocket_preload_query_string')->andReturn($config['filter_query']);
+
+		if($config['filter_query']) {
+			$this->query->expects(self::once())->method('format_url')->with($config['resource']['url'])->willReturn($config['formatted_url']);
+		}
+
 		Functions\when('current_time')->justReturn($config['time']);
 
 		if(! $config['rejected']) {
 			$this->query->expects(self::once())->method('query')->with([
-				'url' => $config['resource']['url'],
+				'url' => $config['query']['url'],
 			])->willReturn($config['rows']);
 
 			$this->configureCreate($config);
@@ -50,7 +60,7 @@ class Test_CreateOrNothing extends TestCase {
 		}
 
 		if(! $config['id']) {
-			$this->logger->expects()->error("Cannot insert {$config['resource']['url']} into wpr_rocket_cache");
+			$this->logger->expects()->error("Cannot insert {$config['query']['url']} into wpr_rocket_cache");
 		}
 
 		$this->query->expects(self::once())->method('add_item')->with($config['save'])->willReturn($config['id']);

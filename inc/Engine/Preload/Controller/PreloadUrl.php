@@ -59,10 +59,29 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function preload_url( string $url ) {
+		if (
+			(
+				! $this->has_cached_query_string( $url )
+				&&
+				$this->can_preload_query_strings()
+			) || (
+				! $this->can_preload_query_strings() &&
+				$this->has_query_string( $url )
+			)
+		) {
+			$this->query->delete_by_url( $url, false );
+			return;
+		}
 
+		$url       = $this->format_url( $url, true );
 		$is_mobile = $this->options->get( 'do_caching_mobile_files', false );
-		if ( $this->is_already_cached( $url ) && ( ! $is_mobile || $this->is_already_cached( $url, true ) ) ) {
+
+		if (
+			$this->is_already_cached( $url )
+			&& ( ! $is_mobile || $this->is_already_cached( $url, true ) )
+		) {
 			$this->query->make_status_complete( $url );
+
 			return;
 		}
 
@@ -137,7 +156,7 @@ class PreloadUrl {
 			}
 
 			wp_safe_remote_get(
-				user_trailingslashit( $request['url'] ),
+				$request['url'],
 				$headers
 			);
 			/**
@@ -206,9 +225,8 @@ class PreloadUrl {
 		}
 		$rows = $this->query->get_pending_jobs( $count );
 		foreach ( $rows as $row ) {
-
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
-				$this->query->delete_by_url( $row->url );
+				$this->query->delete_by_url( $row->url, false );
 				continue;
 			}
 

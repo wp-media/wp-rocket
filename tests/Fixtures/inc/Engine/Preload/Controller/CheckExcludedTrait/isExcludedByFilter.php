@@ -2,6 +2,9 @@
 return [
 	'notMatchingShouldReturnFalse' => [
 		'config' => [
+			'queries' => 'test=1&a=2',
+			'url_with_query' => 'url_with_query',
+			'regex_with_query' => 'regex_with_query',
 			'regexes' => [
 				'test',
 			],
@@ -11,6 +14,9 @@ return [
 	],
 	'emptyFilterShouldReturnFalse' => [
 		'config' => [
+			'queries' => 'test=1&a=2',
+			'url_with_query' => 'url_with_query',
+			'regex_with_query' => 'url_with_query',
 			'regexes' => [],
 			'url' => 'http://example.org/wsf'
 		],
@@ -18,6 +24,9 @@ return [
 	],
 	'matchingShouldReturnTrue' => [
 		'config' => [
+			'queries' => 'test=1&a=2',
+			'url_with_query' => 'url_with_query',
+			'regex_with_query' => 'url_with_query',
 			'regexes' => [
 				'test',
 			],
@@ -25,11 +34,4 @@ return [
 		],
 		'expected' => true
 	],
-	'matchingPaginationShouldReturnTrue' => [
-		'config' => [
-			'regexes' => [],
-			'url' => 'http://example.org/page/22'
-		],
-		'expected' => true
-	]
 ];

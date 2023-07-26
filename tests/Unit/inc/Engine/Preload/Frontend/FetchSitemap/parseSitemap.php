@@ -23,7 +23,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->sitemap_parser = Mockery::mock( SitemapParser::class );
 		$this->queue = Mockery::mock( Queue::class );
 		$this->query = $this->createMock( Cache::class );
-		$this->controller = Mockery::mock( FetchSitemap::class . '[is_excluded_by_filter]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
+		$this->controller = Mockery::mock( FetchSitemap::class . '[is_url_excluded,has_cached_query_string,can_preload_query_strings,has_query_string,is_excluded_by_filter]', [$this->sitemap_parser, $this->queue, $this->query] )->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -61,6 +61,7 @@ class Test_ParseSitemap extends TestCase {
 			return;
 		}
 
+
 		$this->sitemap_parser->expects()
 			->set_content( $config['content'] )
 			->once();
@@ -72,10 +73,11 @@ class Test_ParseSitemap extends TestCase {
 			->andReturn( $config['children'] );
 
 		foreach ( $config['links'] as $index => $link ) {
-			$this->controller->expects()->is_excluded_by_filter( $link )
-					->once()
-					->andReturn( $config['is_excluded'] );
-			
+			$this->controller->shouldReceive('has_cached_query_string')->with($link)->andReturn(false)->atLeast()->once();
+			$this->controller->shouldReceive('can_preload_query_strings')->andReturn(false)->zeroOrMoreTimes();
+			$this->controller->shouldReceive('has_query_string')->with($link)->with($link)->andReturn(false)->atLeast()->once();
+			$this->controller->shouldReceive('is_excluded_by_filter')->with($link)->with($link)->andReturn(false)->zeroOrMoreTimes();
+
 			if ( ! $config['is_excluded'] ) {
 				$this->query->expects( self::any() )->method( 'create_or_nothing' )
 					->withConsecutive( ...$config['jobs'] )

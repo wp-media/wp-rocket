@@ -3,10 +3,10 @@ return [
 	'preloadWithFailUrlShouldContinue' => [
 		'config' => [
 			'existing_job' => [
-				'url' => 'url',
+				'url' => 'http://example.org/',
 				'status' => 'pending',
 			],
-			'url' => 'url',
+			'url' => 'http://example.org/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
@@ -29,17 +29,17 @@ return [
 			]
 		],
 		'expected' => [
-			'url' => 'url',
+			'url' => 'http://example.org',
 			'status' => 'pending',
 		]
 	],
 	'preloadWithSuccessShouldContinue' => [
 		'config' => [
 			'existing_job' => [
-				'url' => 'url',
+				'url' => 'http://example.org/',
 				'status' => 'pending',
 			],
-			'url' => 'url',
+			'url' => 'http://example.org/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
@@ -62,7 +62,7 @@ return [
 			]
 		],
 		'expected' => [
-			'url' => 'url',
+			'url' => 'http://example.org',
 			'status' => 'pending',
 		]
 	]

@@ -114,10 +114,14 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_domain'              => 'clean_full_cache',
 			'delete_post'                            => 'delete_post_preload_cache',
 			'pre_delete_term'                        => 'delete_term_preload_cache',
-			'rocket_preload_format_url'              => 'format_preload_url',
 			'rocket_preload_lock_url'                => 'lock_url',
 			'rocket_preload_unlock_url'              => 'unlock_url',
 			'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
+			'rocket_preload_format_url'              => 'format_preload_url',
+			'rocket_preload_exclude_urls_regexes'    => [
+				[ 'add_cache_reject_uri_to_excluded' ],
+				[ 'add_pagination_to_preload_exclusion_urls' ],
+			],
 			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
@@ -188,19 +192,27 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$url = home_url( add_query_arg( [], $wp->request ) );
+		$params = [];
+
+		if ( ! empty( $_GET ) ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$url = home_url( add_query_arg( $params, $wp->request ) );
+
+		$url = $this->format_url( $url );
 
 		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
 		/**
-		 * Fires when the preload from an URL is completed.
-		 *
-		 * @param string $url URL preladed.
-		 * @param string $device Device from the cache.
-		 */
+			* Fires when the preload from an URL is completed.
+			*
+			* @param string $url URL preloaded.
+			* @param string $device Device from the cache.
+			*/
 		do_action( 'rocket_preload_completed', $url, $detected );
 
-		if ( ! empty( (array) $_GET ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ( ! $this->can_preload_query_strings() && ! empty( $_GET ) && $this->has_query_string( $url ) ) || ( $this->query->is_pending( $url ) && $this->options->get( 'do_caching_mobile_files', false ) ) || ( $this->can_preload_query_strings() && ! $this->has_cached_query_string( $url ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -225,7 +237,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_url_on_not_found() {
 		global $wp;
-		$url = home_url( $wp->request );
+
+		$params = [];
+
+		if ( ! empty( $_GET ) && $this->can_preload_query_strings() ) {// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$params = $_GET;// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$url = home_url( add_query_arg( $params, $wp->request ) );
+
+		$url = $this->format_url( $url );
 		$this->query->delete_by_url( $url );
 	}
 
@@ -456,11 +477,26 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Remove private post from cache.
+	 * Excludes Pagination pages from the preload.
 	 *
-	 * @param string  $new_status New post status.
-	 * @param string  $old_status Old post status.
-	 * @param WP_Post $post Wp post object.
+	 * @param string[] $regexes regexes containing excluded uris.
+	 *
+	 * @return string[]
+	 */
+	public function add_pagination_to_preload_exclusion_urls( array $regexes ) {
+		global $wp_rewrite;
+
+		$regexes[] = "/$wp_rewrite->pagination_base/\d+";
+
+		return $regexes;
+	}
+
+	/**
+	 * Remove private post from cache .
+	 *
+	 * @param string  $new_status new post status() .
+	 * @param string  $old_status Old post status .
+	 * @param WP_Post $post Wp post object .
 	 * @return void
 	 */
 	public function remove_private_post( string $new_status, string $old_status, $post ) {
@@ -483,14 +519,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_private_post_uri( $regexes ) : array {
-		static $private_urls;
 
 		if ( ! is_array( $regexes ) ) {
 			$regexes = (array) $regexes;
-		}
-
-		if ( isset( $private_urls ) ) {
-			return $private_urls;
 		}
 
 		$arg   = [

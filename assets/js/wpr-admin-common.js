@@ -1,5 +1,5 @@
 jQuery( document ).ready( function( $ ){
-var sent = false;
+	var sent = false;
 	$( '.rocket-dismiss' ).on( 'click', function( e ) {
 		e.preventDefault();
 		var url = $( this ).attr( 'href' ).replace( 'admin-post', 'admin-ajax' );

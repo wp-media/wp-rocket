@@ -37,7 +37,6 @@ class SitemapParser {
 		}
 
 		$url_count = count( $this->xml->url );
-
 		for ( $i = 0; $i < $url_count; $i++ ) {
 			$url = (string) $this->xml->url[ $i ]->loc;
 			if ( ! $url ) {

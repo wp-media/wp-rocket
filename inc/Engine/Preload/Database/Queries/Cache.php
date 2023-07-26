@@ -2,12 +2,14 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Preload\FormatUrlTrait;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
 class Cache extends Query {
+	use FormatUrlTrait;
 
 	/**
 	 * Logger instance.
@@ -122,6 +124,9 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_update( array $resource ) {
+		$url = $resource['url'];
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+		$url = untrailingslashit( $url );
 
 		/**
 		 * Format the url.
@@ -129,9 +134,7 @@ class Cache extends Query {
 		 * @param string $url url to format.
 		 * @return string
 		 */
-		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
-
-		$url = untrailingslashit( strtok( $url, '?' ) );
+		$url = apply_filters( 'rocket_preload_format_url', $url );
 
 		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
@@ -197,8 +200,9 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function create_or_nothing( array $resource ) {
+		$url = $resource['url'];
 
-		if ( $this->is_rejected( $resource['url'] ) ) {
+		if ( $this->is_rejected( $url ) ) {
 			return false;
 		}
 
@@ -209,13 +213,13 @@ class Cache extends Query {
 			* @return string
 			*/
 		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+		$url = untrailingslashit( $url );
 
-		$url = strtok( $url, '?' );
-
-		// check the database if those resources added before.
+		// check the database if those resources have been added before.
 		$rows = $this->query(
 			[
-				'url' => untrailingslashit( $url ),
+				'url' => $url,
 			],
 			false
 		);
@@ -247,12 +251,14 @@ class Cache extends Query {
 	 * Get all rows with the same url (desktop and mobile versions).
 	 *
 	 * @param string $url Page url.
+	 * @param bool   $format Format the URL.
 	 *
 	 * @return array|false
 	 */
-	public function get_rows_by_url( string $url ) {
-
-		$url = strtok( $url, '?' );
+	public function get_rows_by_url( string $url, bool $format = true ) {
+		if ( $format ) {
+			$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+		}
 
 		$query = $this->query(
 			[
@@ -271,11 +277,12 @@ class Cache extends Query {
 	 * Delete DB row by url.
 	 *
 	 * @param string $url Page url to be deleted.
+	 * @param bool   $format Format the URL.
 	 *
 	 * @return bool
 	 */
-	public function delete_by_url( string $url ) {
-		$items = $this->get_rows_by_url( $url );
+	public function delete_by_url( string $url, bool $format = true ) {
+		$items = $this->get_rows_by_url( $url, $format );
 
 		if ( ! $items ) {
 			return false;
@@ -405,6 +412,8 @@ class Cache extends Query {
 	 * @return bool
 	 */
 	public function make_status_complete( string $url ) {
+		$url = $this->can_preload_query_strings() ? $this->format_url( $url ) : strtok( $url, '?' );
+
 		$tasks = $this->query(
 			[
 				'url' => $url,

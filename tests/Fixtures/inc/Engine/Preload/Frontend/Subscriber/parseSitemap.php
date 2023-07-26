@@ -26,6 +26,21 @@ $sitemap = <<<XML
         <changefreq>weekly</changefreq>
         <priority>0.3</priority>
     </url>
+    <url>
+        <loc>http://www.photoshoptuto.com/sitemap/2?lang=fr</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>http://www.photoshoptuto.com/sitemap/22?excluded=1</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>http://www.photoshoptuto.com/sitemap/2?test=1</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
     <sitemap>
         <loc>http://www.photoshoptuto.com/sitemap/1</loc>
         <changefreq>weekly</changefreq>
@@ -36,12 +51,17 @@ $sitemap = <<<XML
         <changefreq>weekly</changefreq>
         <priority>0.3</priority>
     </sitemap>
+
 </urlset>
 XML;
 
 return [
 	'errorOnFetchShouldAddNoJob' => [
 		'config' => [
+			'query_enabled' => false,
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'sitemap_url' => 'http://example.com',
 			'process_generate' => [
 				'is_wp_error' => true,
@@ -65,6 +85,10 @@ return [
 	],
 	'fetchSitemapShouldCreateJobs' => [
 		'config' => [
+			'query_enabled' => false,
+			'excluded_params' => [
+				'excluded' => 1,
+			],
 			'sitemap_url' => 'http://example.com',
 			'process_generate' => [
 				'response' => $sitemap
@@ -82,6 +106,35 @@ return [
 				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
 				'http://www.photoshoptuto.com/proposer-un-tuto',
 				'http://www.photoshoptuto.com/tag/35mm',
+				'http://www.photoshoptuto.com/sitemap/22',
+			]
+		]
+	],
+	'fetchSitemapWithQueryParamsShouldCreateJobs' => [
+		'config' => [
+			'query_enabled' => true,
+			'excluded_params' => [
+				'excluded' => 1,
+			],
+			'sitemap_url' => 'http://example.com',
+			'process_generate' => [
+				'response' => $sitemap
+			]
+		],
+		'expected' => [
+			'children_exists' => true,
+			'links_exists' => true,
+			'children' => [
+				'http://www.photoshoptuto.com/sitemap/2',
+				'http://www.photoshoptuto.com/sitemap/2',
+			],
+			'links' => [
+				'http://www.photoshoptuto.com',
+				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
+				'http://www.photoshoptuto.com/proposer-un-tuto',
+				'http://www.photoshoptuto.com/tag/35mm',
+				'http://www.photoshoptuto.com/sitemap/2?lang=fr',
+				'http://www.photoshoptuto.com/sitemap/22',
 			]
 		]
 	]

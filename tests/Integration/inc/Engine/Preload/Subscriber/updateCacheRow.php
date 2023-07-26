@@ -18,22 +18,26 @@ class Test_UpdateCacheRow extends AdminTestCase
 		self::installFresh();
 	}
 
-	public function set_up()
-	{
-		parent::set_up();
-		add_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
-	}
-
 	public static function tear_down_after_class()
 	{
 		parent::tear_down_after_class();
 		self::uninstallAll();
 	}
 
+	public function set_up()
+	{
+		parent::set_up();
+    	add_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
+		add_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+		add_filter('rocket_cache_ignored_parameters', [$this, 'excluded_query_params']);
+	}
+
 	public function tear_down()
 	{
-		remove_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
-		parent::tear_down();
+		remove_filter('rocket_preload_query_string', [$this, 'query_enabled']);
+    	remove_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
+    	remove_filter('rocket_cache_ignored_parameters', [$this, 'excluded_query_params']);
+		unset($GLOBALS['_GET']);
 	}
 
 	/**
@@ -45,6 +49,8 @@ class Test_UpdateCacheRow extends AdminTestCase
 		foreach ($config['links'] as $link) {
 			self::addCache($link);
 		}
+
+		$_GET = $config['params'];
 
 		do_action('rocket_after_process_buffer');
 
@@ -61,7 +67,15 @@ class Test_UpdateCacheRow extends AdminTestCase
 		return $this->getTestData( __DIR__, 'updateCacheRow' );
 	}
 
+	public function query_enabled() {
+		return $this->config['query_enabled'];
+  }
+
 	public function excluded($regexes): array {
 		return array_merge($regexes, $this->config['regexes']);
+	}
+
+	public function excluded_query_params($exclusions) {
+		return  array_merge($exclusions, $this->config['excluded_params']);
 	}
 }
