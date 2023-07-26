@@ -15,13 +15,12 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag.
-		$flag = $sitepress->get_flag( $lang['code'] );
+		$flag     = $sitepress->get_flag( $lang['code'] );
+		$flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
 
 		if ( $flag->from_template ) {
 			$wp_upload_dir = wp_upload_dir();
 			$flag_url      = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
-		} else {
-			$flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
 		}
 
 		$langlinks[] = [
@@ -406,14 +405,14 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
 				return get_rocket_i18n_uri();
 			}
+		default:
+			/**
+			 * Filters the list of languages subdomains URLs
+			 *
+			 * @param array $subdomains Array of languages subdomains URLs.
+			 */
+			return apply_filters( 'rocket_i18n_subdomains', [] );
 	}
-
-	/**
-	 * Filters the list of languages subdomains URLs
-	 *
-	 * @param array $subdomains Array of languages subdomains URLs.
-	 */
-	return apply_filters( 'rocket_i18n_subdomains', [] );
 }
 
 /**
