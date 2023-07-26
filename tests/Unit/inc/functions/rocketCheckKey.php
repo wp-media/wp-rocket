@@ -71,7 +71,9 @@ class Test_RocketCheckKey extends TestCase {
 			->with( 'rocket_check_key_errors' )
 			->andReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->once();
-
+		Functions\expect('update_option')
+			->with('wp_rocket_no_licence', 0)
+			->once();
 		$expected = [
 			'consumer_key'   => 'ABCDEF',
 			'consumer_email' => 'example@example.org',
@@ -99,6 +101,8 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )
 			->never();
+		Functions\expect('update_option')
+			->never();
 
 		$this->assertFalse( rocket_check_key() );
 	}
@@ -114,6 +118,8 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '' );
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
+		Functions\expect('update_option')
+			->never();
 
 		$this->assertFalse( rocket_check_key() );
 	}
@@ -133,6 +139,8 @@ class Test_RocketCheckKey extends TestCase {
 		Functions\when( 'wp_remote_retrieve_body' )->justReturn( '{"success": false, "data":{"consumer_key":"ABCDEF","consumer_email":"example@example.org","reason":"BAD_KEY"}}' );
 		Functions\when( 'set_transient' )->justReturn( true );
 		Functions\expect( 'rocket_delete_licence_data_file' )->never();
+		Functions\expect('update_option')
+			->never();
 
 		$expected = [
 			'consumer_key'   => 'ABCDEF',

@@ -34,6 +34,7 @@ class WPRocketUninstall {
 		'rocketcdn_user_token',
 		'rocketcdn_process',
 		'wp_rocket_hide_deactivation_form',
+		'wp_rocket_no_licence',
 	];
 
 	/**
@@ -61,12 +62,12 @@ class WPRocketUninstall {
 		'rocket_preload_errors',
 		'rocket_database_optimization_process',
 		'rocket_database_optimization_process_complete',
-		'wp_rocket_no_licence',
 		'rocket_hide_deactivation_form',
 		'wpr_preload_running',
 		'rocket_preload_as_tables_count',
 		'wpr_dynamic_lists',
 		'wpr_dynamic_lists_delayjs',
+		'wp_rocket_rucss_errors_count',
 	];
 
 	/**

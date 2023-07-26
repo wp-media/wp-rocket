@@ -645,6 +645,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on',
 				],
 			],
+			'cloudflare_apo'             => [
+				'en' => [
+					'id'  => '602593e90a2dae5b58faee1e',
+					'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6486cb4147772865db893c7c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1757-utiliser-cloudflare-apo-avec-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'sucuri_credentials'         => [
 				'en' => [
 					'id'  => '5bce07be2c7d3a04dd5bf94d',
@@ -759,6 +769,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5edf8a5504286306f804e1dc',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
+				],
+			],
+			'rucss_firewall_ips'         => [
+				'en' => [
+					'id'  => '6076083ff8c0ef2d98df1f97',
+					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
+				],
+				'fr' => [
+					'id'  => '60d499a705ff892e6bc2a89e',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1577-supprimer-les-ressources-css-inutilisees?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
 				],
 			],
 		];

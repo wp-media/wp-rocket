@@ -78,7 +78,6 @@ class Test_CheckJobStatus extends TestCase {
 		if ( isset( $config['is_used_css_file_written'] ) ) {
 			$is_file_written = $config['is_used_css_file_written'];
 		}
-
 		$this->usedCssQuery->expects( self::once() )
 		                   ->method( 'get_item' )
 		                   ->with( $config['job_id'] )
@@ -95,8 +94,16 @@ class Test_CheckJobStatus extends TestCase {
 		$this->api->expects()
 		          ->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $row_details->is_home )
 		          ->andReturn( $job_details );
-
-
+		$min_rucss_size = 150;
+		Filters\expectApplied( 'rocket_min_rucss_size' )->andReturn( $min_rucss_size );
+		if( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size){
+			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
+			$this->usedCssQuery->expects( self::once() )
+			                   ->method( 'make_status_failed' )
+			                   ->with( $config['job_id'], '500', $message );
+			$this->usedCss->check_job_status( $config['job_id'] );
+			return;
+		}
 		if (
 			200 !== $job_details['code']
 			||
@@ -121,6 +128,7 @@ class Test_CheckJobStatus extends TestCase {
 				$this->api->expects()->add_to_queue( $row_details->url, [
 					'treeshake'      => 1,
 					'rucss_safelist' => [],
+					'skip_attr' => [],
 					'is_mobile'      => $row_details->is_mobile,
 					'is_home'        => $row_details->is_home,
 				] )

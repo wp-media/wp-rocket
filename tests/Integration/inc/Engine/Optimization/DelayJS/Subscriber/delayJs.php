@@ -17,6 +17,7 @@ class Test_DelayJs extends TestCase {
 
 	private $delay_js = 0;
 	private $delay_js_exclusions = [];
+	private $post;
 
 	public function set_up() {
 		parent::set_up();
@@ -26,7 +27,7 @@ class Test_DelayJs extends TestCase {
 
 	public function tear_down() {
 		unset( $_GET['nowprocket'] );
-		
+
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
 		delete_transient( 'wpr_dynamic_lists' );

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.13\n"
+"Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-03-24 15:00-0400\n"
+"POT-Creation-Date: 2023-06-12 13:56-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/OneCom.php:137
-#: inc/ThirdParty/Hostings/Savvii.php:50
+#: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47
 #: inc/ThirdParty/Hostings/WPXCloud.php:51 inc/deprecated/3.6.php:697
 #: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
@@ -50,19 +50,19 @@ msgstr ""
 "سایت شما توسط %s میزبانی می‌شود، ما برای سازگاری پاک‌سازی خودکار وارنیش را "
 "فعال کرده‌ایم."
 
-#: inc/Addon/Cloudflare/APIClient.php:309
+#: inc/Addon/Cloudflare/API/Client.php:129
 msgid "Cloudflare did not provide any reply. Please try again later."
 msgstr "Cloudflare هیچ پاسخی نداد. مجدد تلاش کنید."
 
-#: inc/Addon/Cloudflare/APIClient.php:318 inc/deprecated/3.5.php:112
+#: inc/Addon/Cloudflare/API/Client.php:186 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
 msgstr "ایمیل یا کلید API حساب Cloudflare نادرست است."
 
-#: inc/Addon/Cloudflare/APIClient.php:322
-#: inc/Addon/Cloudflare/APIClient.php:335
-#: inc/Addon/Cloudflare/Cloudflare.php:112
-#: inc/Addon/Cloudflare/Cloudflare.php:144
+#: inc/Addon/Cloudflare/API/Client.php:190
+#: inc/Addon/Cloudflare/API/Client.php:204
+#: inc/Addon/Cloudflare/Cloudflare.php:74
+#: inc/Addon/Cloudflare/Cloudflare.php:109
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:157
 #: inc/deprecated/3.5.php:92 inc/deprecated/3.5.php:116
 #: inc/deprecated/3.5.php:129 inc/deprecated/3.5.php:157
@@ -71,11 +71,11 @@ msgstr "ایمیل یا کلید API حساب Cloudflare نادرست است."
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "برای کسب اطلاعات بیشتر این %1$sمستندات%2$s را مطالعه فرمایید."
 
-#: inc/Addon/Cloudflare/APIClient.php:324
-#: inc/Addon/Cloudflare/APIClient.php:337
-#: inc/Addon/Cloudflare/Cloudflare.php:101
-#: inc/Addon/Cloudflare/Cloudflare.php:114
-#: inc/Addon/Cloudflare/Cloudflare.php:146 inc/deprecated/3.5.php:81
+#: inc/Addon/Cloudflare/API/Client.php:192
+#: inc/Addon/Cloudflare/API/Client.php:206
+#: inc/Addon/Cloudflare/Auth/APIKey.php:63
+#: inc/Addon/Cloudflare/Cloudflare.php:76
+#: inc/Addon/Cloudflare/Cloudflare.php:111 inc/deprecated/3.5.php:81
 #: inc/deprecated/3.5.php:94 inc/deprecated/3.5.php:118
 #: inc/deprecated/3.5.php:131 inc/deprecated/3.5.php:159
 #: inc/deprecated/3.5.php:175 inc/deprecated/3.5.php:208
@@ -86,11 +86,11 @@ msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on"
 
-#: inc/Addon/Cloudflare/APIClient.php:331 inc/deprecated/3.5.php:125
+#: inc/Addon/Cloudflare/API/Client.php:200 inc/deprecated/3.5.php:125
 msgid "Incorrect Cloudflare Zone ID."
 msgstr "شناسه ناحیه Cloudflare نامعتبر است."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:99
+#: inc/Addon/Cloudflare/Auth/APIKey.php:61
 #, php-format
 msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
@@ -99,92 +99,114 @@ msgstr ""
 "ایمیل یا کلید API سرویس Cloudflare تنظیم نشده است. مستندات %1$sراهنمای%2$s "
 "آن را بخوانید."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:108 inc/deprecated/3.5.php:88
+#: inc/Addon/Cloudflare/Cloudflare.php:70 inc/deprecated/3.5.php:88
 msgid "Missing Cloudflare Zone ID."
 msgstr "شناسه ناحیه Cloudflare یافت نشد."
 
-#: inc/Addon/Cloudflare/Cloudflare.php:140 inc/deprecated/3.5.php:153
+#: inc/Addon/Cloudflare/Cloudflare.php:105 inc/deprecated/3.5.php:153
 msgid "It looks like your domain is not set up on Cloudflare."
 msgstr "به نظر می رسد دامنه شما در سرویس Cloudflare اضافه نشده است."
 
-#: inc/Addon/Cloudflare/Subscriber.php:215 inc/deprecated/3.5.php:587
+#: inc/Addon/Cloudflare/Cloudflare.php:205
+msgid "days"
+msgstr "روز"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:208
+msgid "seconds"
+msgstr "ثانیه"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:210
+msgid "minutes"
+msgstr "دقیقه"
+
+#: inc/Addon/Cloudflare/Cloudflare.php:212
+msgid "hours"
+msgstr "ساعت"
+
+#: inc/Addon/Cloudflare/Subscriber.php:224
+#: inc/Addon/Cloudflare/Subscriber.php:253
 #, php-format
-msgid "<strong>WP Rocket:</strong> %s"
-msgstr "<strong>راکت وردپرس:</strong> %s"
+msgid "%1$sWP Rocket:%2$s %3$s"
+msgstr "%1$sموشک وردپرس:%2$s%3$s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:220 inc/deprecated/3.5.php:592
-msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
-msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد."
+#: inc/Addon/Cloudflare/Subscriber.php:242
+#, php-format
+msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
+msgstr "%1$sموشک وردپرس:%2$sکش کلادفلیر با موفقیت پاک شد."
 
-#: inc/Addon/Cloudflare/Subscriber.php:364
-#: inc/Addon/Cloudflare/Subscriber.php:370
-#: inc/Addon/Cloudflare/Subscriber.php:390
-#: inc/Addon/Cloudflare/Subscriber.php:401
-#: inc/Addon/Cloudflare/Subscriber.php:420
-#: inc/Addon/Cloudflare/Subscriber.php:426
-#: inc/Addon/Cloudflare/Subscriber.php:445
-#: inc/Addon/Cloudflare/Subscriber.php:451
-#: inc/Addon/Cloudflare/Subscriber.php:470
-#: inc/Addon/Cloudflare/Subscriber.php:476
-#: inc/Addon/Cloudflare/Subscriber.php:558 inc/admin/options.php:184
-#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
-msgid "WP Rocket: "
-msgstr "راکت وردپرس: "
-
-#: inc/Addon/Cloudflare/Subscriber.php:364
+#: inc/Addon/Cloudflare/Subscriber.php:297
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "حالت توسعه CloudFlare با خطا مواجه شد: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:370
+#: inc/Addon/Cloudflare/Subscriber.php:304
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "حالت توسعه CloudFlare %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:390
+#: inc/Addon/Cloudflare/Subscriber.php:321
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "خطای سطح کش CloudFlare: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:395
+#: inc/Addon/Cloudflare/Subscriber.php:328
 msgctxt "Cloudflare caching level"
-msgid "Standard"
-msgstr "Standard"
+msgid "standard"
+msgstr "استاندارد"
 
-#: inc/Addon/Cloudflare/Subscriber.php:401
+#: inc/Addon/Cloudflare/Subscriber.php:334
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "سطح کش CloudFlare به %s تنظیم شد"
 
-#: inc/Addon/Cloudflare/Subscriber.php:420
+#: inc/Addon/Cloudflare/Subscriber.php:350
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "خطای فشرده‌سازی Cloudflare: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:426
+#: inc/Addon/Cloudflare/Subscriber.php:357
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "فشرده سازی %s Cloudflare"
 
-#: inc/Addon/Cloudflare/Subscriber.php:445
+#: inc/Addon/Cloudflare/Subscriber.php:373
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "خطای بارگذار موشک Cloudflare: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:451
+#: inc/Addon/Cloudflare/Subscriber.php:380
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "بارگذار موشک Cloudflare %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:470
+#: inc/Addon/Cloudflare/Subscriber.php:396
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "CloudFlare خطای کش مرورگر: %s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:476
+#: inc/Addon/Cloudflare/Subscriber.php:403
 #, php-format
-msgid "Cloudflare browser cache set to %s seconds"
-msgstr "کش مرورگر Cloudflare به %s ثانیه تنظیم شد"
+msgid "Cloudflare browser cache set to %s"
+msgstr "کش مرورگر کلادفلیر تنظیم شده به%s"
+
+#: inc/Addon/Cloudflare/Subscriber.php:512
+#, php-format
+msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
+msgstr "%1$sموشک وردپرس:%2$sتنظیمات مناسب برای کلادفلیر فعال شد:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:521
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
+"previous settings:"
+msgstr ""
+"%1$sموشک وردپرس:%2$sتنظیمات مناسب برای کلادفلیر غیرفعال شد و به تنظیمات قبلی"
+" بازگشت:"
+
+#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:184
+#: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
+msgid "WP Rocket: "
+msgstr "راکت وردپرس: "
 
 #: inc/Addon/Sucuri/Subscriber.php:95
 #, php-format
@@ -903,21 +925,23 @@ msgstr "موارد استثنا با یک کلیک"
 
 #: inc/Engine/Admin/Settings/Page.php:943
 msgid ""
-"When using this feature you may notice that it takes some time, or user "
-"interaction for specific elements, e.g. a menu, or a form that is located in"
-" the viewport, to appear."
+"When using the Delay JavaScript Execution, you might experience delay "
+"loading elements located in the viewport that need to appear immediately - "
+"e.g. slider, header, menu."
 msgstr ""
-"هنگام استفاده از این ویژگی، ممکن است متوجه شوید که مدتی طول می کشد، یا تعامل"
-" کاربر برای عناصر خاص، به عنوان مثال. یک منو یا فرمی که در پنجره نمایش قرار "
-"دارد، ظاهر شود."
+"هنگام استفاده از اجرای تاخیری جاوا اسکریپت، ممکن است عناصر بارگیری تاخیری "
+"واقع در ویوپورت را تجربه کنید که باید فورا ظاهر شوند - به عنوان مثال: "
+"اسلایدر، سربرگ، فهرست."
 
 #: inc/Engine/Admin/Settings/Page.php:944
 msgid ""
-"If you are using any of the following plugins/themes/services you can "
-"prevent that, by selecting them below."
+"If you need instant visibility, click below on files that should NOT be "
+"delayed. This selection will help users interact with the elements straight "
+"away."
 msgstr ""
-"اگر از هر یک از پلاگین‌ها/موضوعات/سرویس‌های زیر استفاده می‌کنید، می‌توانید "
-"با انتخاب آن‌ها در زیر از آن جلوگیری کنید."
+"اگر به دید فوری نیاز دارید، روی فایل‌هایی که نباید به تأخیر بیفتند، در زیر "
+"کلیک کنید. این انتخاب به کاربران کمک می کند تا فوراً با عناصر تعامل داشته "
+"باشند."
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid ""
@@ -1567,16 +1591,16 @@ msgstr ""
 "افزودنی‌های موشک ویژگی‌های تکمیلی هستند که گزینه‌های موجود فعلی را گسترش "
 "می‌دهند."
 
-#: inc/Engine/Admin/Settings/Page.php:1818
-#: inc/Engine/Admin/Settings/Page.php:1970
+#: inc/Engine/Admin/Settings/Page.php:1817
+#: inc/Engine/Admin/Settings/Page.php:1986
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1824
+#: inc/Engine/Admin/Settings/Page.php:1823
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "حساب کاربری Cloudflare خود را با این افزودنی ادغام کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1825
+#: inc/Engine/Admin/Settings/Page.php:1824
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1586,16 +1610,27 @@ msgstr ""
 " موشک وردپرس آدرس ایمیل حساب کاربری خود، کلید عمومی وب سرویس و دامنه خود را "
 "تعیین کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1859
+#: inc/Engine/Admin/Settings/Page.php:1827
+#, php-format
+msgid ""
+"%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
+"activate the official Cloudflare plugin and configure it. WP Rocket will "
+"automatically enable compatibility."
+msgstr ""
+"%1$sبرنامه ریزی برای استفاده از بهینه سازی پلت فرم خودکار(APO)?%2$sفقط "
+"پلاگین رسمی کلادفلیر را فعال کرده و آن را پیکربندی کنید. موشک وردپرس به طور "
+"خودکار سازگاری را فعال می کند."
+
+#: inc/Engine/Admin/Settings/Page.php:1875
 msgid "Varnish"
 msgstr "وارنیش"
 
-#: inc/Engine/Admin/Settings/Page.php:1865
+#: inc/Engine/Admin/Settings/Page.php:1881
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "اگر بر روی سرور شما وارنیش اجرا شده است، باید این افزودنی را فعال کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1867
+#: inc/Engine/Admin/Settings/Page.php:1883
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1604,15 +1639,15 @@ msgstr ""
 "هر بار که موشک وردپرس کش خود را پاک‌سازی می‌کند، کش وارنیش هم به منظور "
 "اطمینان از به روز بودن محتوا، پاک خواهد شد.<br>%1$sکسب اطلاعات بیشتر%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1902
+#: inc/Engine/Admin/Settings/Page.php:1918
 msgid "WebP Compatibility"
 msgstr "سازگاری WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:1908
+#: inc/Engine/Admin/Settings/Page.php:1924
 msgid "Improve browser compatibility for WebP images."
 msgstr "بهبود سازگاری مرورگر با تصاویر WebP."
 
-#: inc/Engine/Admin/Settings/Page.php:1912
+#: inc/Engine/Admin/Settings/Page.php:1928
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -1625,11 +1660,11 @@ msgstr ""
 "WebP را برای شما ایجاد کند. برای ایجاد تصاویر WebP توصیه می کنیم از "
 "%1$sImagify%2$s استفاده کنید. %3$sراهنمایی%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1932
+#: inc/Engine/Admin/Settings/Page.php:1948
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "کش Sucuri را حذف کن هنگامی که کش موشک وردپرس را حذف می کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1935
+#: inc/Engine/Admin/Settings/Page.php:1951
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1637,48 +1672,48 @@ msgstr ""
 "کلید API خود را برای پاک کردن کش Sucuri هنگام پاک شدن کش موشک وردپرس ارائه "
 "دهید."
 
-#: inc/Engine/Admin/Settings/Page.php:1943
-#: inc/Engine/Admin/Settings/Page.php:2087
+#: inc/Engine/Admin/Settings/Page.php:1959
+#: inc/Engine/Admin/Settings/Page.php:2103
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1949
+#: inc/Engine/Admin/Settings/Page.php:1965
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "با این افزونه کش Sucuri را همگام سازی کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1987
+#: inc/Engine/Admin/Settings/Page.php:2003
 msgid "Cloudflare credentials"
 msgstr "اعتبارهای Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1996
+#: inc/Engine/Admin/Settings/Page.php:2012
 msgid "Cloudflare settings"
 msgstr "تنظیمات Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:2010
+#: inc/Engine/Admin/Settings/Page.php:2026
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "کلید API عمومی:"
 
-#: inc/Engine/Admin/Settings/Page.php:2011
+#: inc/Engine/Admin/Settings/Page.php:2027
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "پیدا کردن کلید API شما"
 
-#: inc/Engine/Admin/Settings/Page.php:2023
+#: inc/Engine/Admin/Settings/Page.php:2039
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "ایمیل حساب کاربری"
 
-#: inc/Engine/Admin/Settings/Page.php:2032
+#: inc/Engine/Admin/Settings/Page.php:2048
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "شناسه ناحیه"
 
-#: inc/Engine/Admin/Settings/Page.php:2042
+#: inc/Engine/Admin/Settings/Page.php:2058
 msgid "Development mode"
 msgstr "حالت توسعه"
 
-#: inc/Engine/Admin/Settings/Page.php:2044
+#: inc/Engine/Admin/Settings/Page.php:2060
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1687,21 +1722,21 @@ msgstr ""
 "حالت توسعه به طور موقت بر روی وبسایت خود فعال کنید. این تنظیم بعد از گذشت 3 "
 "ساعت غیرفعال خواهد شد. %1$sکسب اطلاعات بیشتر%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2052
+#: inc/Engine/Admin/Settings/Page.php:2068
 msgid "Optimal settings"
 msgstr "تنظیمات بهینه‌سازی"
 
-#: inc/Engine/Admin/Settings/Page.php:2053
+#: inc/Engine/Admin/Settings/Page.php:2069
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr "افزایش خودکار تنظیمات Cloudflare جهت سرعت، بهره‌وری و هماهنگی بیشتر."
 
-#: inc/Engine/Admin/Settings/Page.php:2061
+#: inc/Engine/Admin/Settings/Page.php:2077
 msgid "Relative protocol"
 msgstr "پروتکل نسبی"
 
-#: inc/Engine/Admin/Settings/Page.php:2062
+#: inc/Engine/Admin/Settings/Page.php:2078
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1711,20 +1746,20 @@ msgstr ""
 "(CSS, JS, images) جهت استفاده از // به جای http:// یا https:// بازنویسی "
 "خواهند شد."
 
-#: inc/Engine/Admin/Settings/Page.php:2100
+#: inc/Engine/Admin/Settings/Page.php:2116
 msgid "Sucuri credentials"
 msgstr "اعتبارهای Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:2113
+#: inc/Engine/Admin/Settings/Page.php:2129
 msgctxt "Sucuri"
 msgid ""
-"Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
-"characters}</code>:"
+"Firewall API key (for plugin), must be in format {32 characters}/{32 "
+"characters}:"
 msgstr ""
-"شناسه API فایروال (برای افزونه)، باید در فرمت <code>{32 characters}/{32 "
-"characters}</code>:"
+"شناسه API فایروال (برای افزونه)، باید در فرمت {32 characters}/{32 "
+"characters}:"
 
-#: inc/Engine/Admin/Settings/Page.php:2114
+#: inc/Engine/Admin/Settings/Page.php:2130
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "پیدا کردن کلید API شما"
@@ -1733,7 +1768,7 @@ msgstr "پیدا کردن کلید API شما"
 msgid "Upload file and import settings"
 msgstr "بارگذاری فایل و درون‌ریزی تنظیمات"
 
-#: inc/Engine/Admin/Settings/Settings.php:375
+#: inc/Engine/Admin/Settings/Settings.php:362
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1741,12 +1776,12 @@ msgstr ""
 "افزودنی Sucuri : شناسه API فایروال Sucuri باید به فرمت<code>{32 "
 "characters}/{32 characters}</code> باشد."
 
-#: inc/Engine/Admin/Settings/Settings.php:465
+#: inc/Engine/Admin/Settings/Settings.php:452
 #: inc/deprecated/deprecated.php:1245
 msgid "Settings saved."
 msgstr "تنظیمات ذخیره شد."
 
-#: inc/Engine/Admin/Settings/Settings.php:681
+#: inc/Engine/Admin/Settings/Settings.php:668
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -1843,8 +1878,8 @@ msgstr ""
 "برای استفاده از RocketCDN ، بجای CNAME خود از %1$s%2$s%3$s استفاده کنید."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:152
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:226
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:324
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:230
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sراهنمایی%2$s"
@@ -2066,16 +2101,16 @@ msgstr "فعالسازی بارگیری CSS بصورت نابهنگام توسط
 msgid "Enable Load CSS asynchronously in the options above"
 msgstr "فعالسازی بارگیری CSS بصورت نابهنگام در گزینه بالا"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:154
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:176
 msgid "Critical CSS generation is currently running."
 msgstr "ایجاد CSS بحرانی در حال اجرا می باشد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:159
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:181
 #, php-format
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "به %1$sتنظیمات موشک وردپرس%2$s برای رهگیری پیشرفت مراجعه کنید."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:374
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:396
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -2084,18 +2119,31 @@ msgstr ""
 "تولید CSS‌بحرانی در حال اجرا است: %1$d از %2$d نوع صفحه کامل شده است. (برای "
 "مشاهده پیشرفت این صفحه را رفرش کنید)"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:450
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:472
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "تولید CSS‌بحرانی برای %1$d از %2$d نوع صفحه کامل شد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "ایجاد CSS بحرانی یک یا چند خطا دارد."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:457
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
 msgid "Learn more."
 msgstr "اطلاعات بیشتر."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:840
+#, php-format
+msgid ""
+"We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
+"optimization. Load CSS Asynchronously is always available as a back-up."
+msgstr ""
+"به شدت توصیه میشه%1$sحذف CSSهای بلااستفاده را بروزرسانی کنید%2$sبرای بهینه "
+"سازی CSS. بارگیری ناهمزمان CSS همیشه به عنوان پشتیبان در دسترس است."
+
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:845
+msgid "Stay with the old option"
+msgstr "با گزینه قدیمی بمانید"
 
 #: inc/Engine/CriticalPath/DataManager.php:68
 #, php-format
@@ -2336,7 +2384,7 @@ msgstr "اکنون ارتقاء دهید"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:802 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:739 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "نادیده گرفتن این پیام."
 
@@ -2501,8 +2549,8 @@ msgid "Default Lists"
 msgstr "لیست پیشفرض"
 
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
-msgid "Delay JS Exclusion Lists"
-msgstr "لیست مستثنی کردن تاخیر JS"
+msgid "Delay JavaScript Execution Exclusion Lists"
+msgstr "به تأخیر انداختن لیست های لغو اجرای جاوا اسکریپت"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
@@ -2572,13 +2620,17 @@ msgstr "%1$s: قابلیت CSSهای استفاده شده فعال نیست!"
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: کش CSS استفاده شده پاک شد!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:752
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:776
 msgid "Clear Used CSS of this URL"
 msgstr "پاکسازی CSS استفاده شده برای این URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:149
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:160
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "WP Rocket حذف کارهای معلق Unused CSS"
+
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:174
+msgid "WP Rocket clear Remove Unused CSS failed jobs"
+msgstr "WP Rocket پاکسازی حذف کارهای ناموفق CSS های بلااستفاده"
 
 #: inc/Engine/Plugin/UpdaterApiTools.php:32 inc/deprecated/3.3.php:761
 #: inc/deprecated/3.3.php:770
@@ -2592,8 +2644,8 @@ msgstr ""
 "سرور&#8217;s شما باشد. اگر مشکل شما ادامه داشت، <a href=\"%s\">با پشتیبانی "
 "تماس بگیرید</a>."
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:469
-#: inc/Engine/Plugin/UpdaterSubscriber.php:483
+#: inc/Engine/Plugin/UpdaterSubscriber.php:472
+#: inc/Engine/Plugin/UpdaterSubscriber.php:486
 #: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #: inc/deprecated/3.11.php:236 inc/deprecated/3.11.php:251
@@ -2601,7 +2653,7 @@ msgstr ""
 msgid "%s Update Rollback"
 msgstr "%s بازگشتن به نسخه قبلی"
 
-#: inc/Engine/Plugin/UpdaterSubscriber.php:506 inc/deprecated/3.11.php:279
+#: inc/Engine/Plugin/UpdaterSubscriber.php:509 inc/deprecated/3.11.php:279
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sبازگشت به موشک وردپرس%2$sیا %3$s رفتن به برگه افزونه‌ها%2$s"
@@ -2617,11 +2669,11 @@ msgstr ""
 "صفحات شما پاک شوند، به کش کردن آن ها ادامه می دهد. هیچ اقدام دیگری لازم "
 "نیست."
 
-#: inc/Engine/Preload/Cron/Subscriber.php:132
+#: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
 msgstr "کارهای معلق پیش بارگذاری"
 
-#: inc/Engine/Preload/Cron/Subscriber.php:160
+#: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
 msgstr "پیش بارگذاری برگرداندن کارهای ناموفق گیر کرده است"
 
@@ -2647,7 +2699,7 @@ msgstr ""
 "کند. لطفا پشیبانی Kinsta از طرق حساب %1$sMyKinsta%2$s برایحل این مشکل در "
 "ارتباط باشید."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:94
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:114
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -2655,6 +2707,69 @@ msgid ""
 msgstr ""
 "%1$s:Cloudflare's HTTP/2 Server Push هماهنگ نیست با ویژگی حذف فایل های  "
 "Unused CSS و  Combine CSS. پیشنهاد می شود غیرفعال کنید."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:157
+msgid ""
+"Your site is using the official Cloudflare plugin. We have enabled "
+"Cloudflare auto-purge for compatibility. If you have APO activated, it is "
+"also compatible."
+msgstr ""
+"سایت شما از پلاگین رسمی کلادفلیر استفاده می کند. ما پاکسازی خودکار کلادفلیر "
+"را برای سازگاری فعال کرده ایم. اگر APO را فعال کرده اید، سازگار است."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:158
+msgid ""
+"Cloudflare cache will be purged each time WP Rocket clears its cache to "
+"ensure content is always up-to-date."
+msgstr ""
+"کش کلادفلیر هر بار که موشک وردپرس کش خود را پاک می کند پاک می شود تا اطمینان"
+" حاصل شود که محتوا همیشه به روز است."
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:202
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
+"is not yet compatible with that feature."
+msgstr ""
+"%1$sموشک وردپرس:شما از \"Dynamic Cookies Cache\" استفاده می کنید. Cloudflare"
+" APO هنوز با این ویژگی سازگار نیست.%2$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:208
+#, php-format
+msgid ""
+"You should either disable Cloudflare APO or check with the theme/plugin "
+"requiring the use of “Dynamic Cookies Cache” developers for an alternative "
+"way to be page-cache friendly. %1$sMore info%2$s"
+msgstr ""
+"باید Cloudflare APO را غیرفعال کنید یا قالب/افزونه‌ای را بررسی کنید که به "
+"توسعه‌دهندگان «Dynamic Cookies Cache» نیاز دارد تا راهی جایگزین برای سازگاری"
+" با کش صفحه باشد.%1$sاطلاعات بیشتر%2$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:259
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
+"devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
+"Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
+msgstr ""
+"%1$sموشک وردپرس%2$sشما از \"فایل های کش جدا برای دستگاه های تلفن همراه\" "
+"استفاده می کنید. باید «Cache by Device Type» را فعال "
+"کنید%3$sتنظیمات%5$sCloudflare APO برای اینکه نسخه مناسب کش را ارائه "
+"دهید.%4$sاطلاعات بیشتر%5$s"
+
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:280
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
+"APO. If you judge it necessary for the website to have a different cache on "
+"mobile and desktop, we suggest you enable our “Separate Cache Files for "
+"Mobiles Devices” to ensure the generated cache is accurate."
+msgstr ""
+"%1$sموشک وردپرس:%2$sشما «Cache by Device Type» را در Cloudflare APO فعال "
+"کرده‌اید. اگر فکر می‌کنید که لازم است وب‌سایت حافظه پنهان متفاوتی در تلفن "
+"همراه و دسک‌تاپ داشته باشد، پیشنهاد می‌کنیم «فایل‌های کش جداگانه برای "
+"دستگاه‌های موبایل» را فعال کنید تا مطمئن شوید حافظه پنهان تولید شده دقیق "
+"است."
 
 #: inc/ThirdParty/Plugins/ModPagespeed.php:102
 #, php-format
@@ -2860,7 +2975,7 @@ msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:752
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:748
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -2930,15 +3045,7 @@ msgstr ""
 "<strong>%s</strong>: یک یا چند افزونه فعال یا غیرفعال شده‌اند، اگر آن‌ها "
 "ظاهر سایت شما را به هم ریخته‌اند، کش را پاک کنید."
 
-#: inc/admin/ui/notices.php:190
-msgid ""
-"WP Rocket Cloudflare Add-on provides similar functionalities. They can not "
-"be active at the same time."
-msgstr ""
-"افزونه WP Rocket Cloudflare عملکردهای مشابهی را ارائه می دهد. آنها نمی "
-"توانند همزمان فعال باشند."
-
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:218
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -2947,11 +3054,11 @@ msgstr ""
 "<strong>%s</strong>: افزونه‌های زیر با این افزونه سازگار نیستند و ممکن است "
 "باعث نتایج غیرمنتظره شوند:"
 
-#: inc/admin/ui/notices.php:229
+#: inc/admin/ui/notices.php:224
 msgid "Deactivate"
 msgstr "غیرفعال سازی"
 
-#: inc/admin/ui/notices.php:271
+#: inc/admin/ui/notices.php:266
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -2959,7 +3066,7 @@ msgstr ""
 "WP Rocket Footer JS یک افزودنی رسمی نیست. از عملکرد صحیح برخی از گزینه ها در"
 " WP Rocket جلوگیری می کند. لطفاً در صورت بروز مشکل آن را غیرفعال کنید."
 
-#: inc/admin/ui/notices.php:311
+#: inc/admin/ui/notices.php:306
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -2970,7 +3077,7 @@ msgstr ""
 "لطفاً سطح کش Endurance Cache را در حالت Off (سطح 0) در حالت تنظیم کنید "
 "%1$sتنظیمات > عمومی%2$s جلوگیری از هرگونه مشکلی میکند."
 
-#: inc/admin/ui/notices.php:332
+#: inc/admin/ui/notices.php:327
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -2979,18 +3086,18 @@ msgstr ""
 "%1$s: برای درست عمل کردن افزونه نیاز است پیوند‌های یکتا را فعال کنید. %2$s "
 "رفتن به تنظیمات پیوند‌های یکتا%3$s"
 
-#: inc/admin/ui/notices.php:379
+#: inc/admin/ui/notices.php:374
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن .htaccess نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:380 inc/admin/ui/notices.php:843
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "عیب‌یابی: %1$s چگونه فایل‌های سیستمی را قابل نوشتن کنیم%2$s"
 
-#: inc/admin/ui/notices.php:387 inc/admin/ui/notices.php:837
+#: inc/admin/ui/notices.php:382 inc/admin/ui/notices.php:845
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2998,20 +3105,20 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "نگران نباشید ، ذخیره و تنظیمات صفحه WP Rocket همچنان درست کار می کند."
 
-#: inc/admin/ui/notices.php:393
+#: inc/admin/ui/notices.php:388
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
 "برای عملکرد مطلوب ، افزودن خطوط زیر به .htaccess توصیه می شود (لازم نیست):"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:535
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -3020,7 +3127,7 @@ msgstr ""
 "%1$s آماده است! %2$s زمان بارگذاری خود را امتحان کنید%4$s، یا "
 "%3$sتنظیمات%4$s خود را مشاهده کنید."
 
-#: inc/admin/ui/notices.php:581
+#: inc/admin/ui/notices.php:576
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -3028,15 +3135,15 @@ msgstr ""
 "آیا اجاره می‌دهید موشک وردپرس اطلاعات مرتبط غیرحساس را از این وبسایت جمع "
 "آوری کند؟"
 
-#: inc/admin/ui/notices.php:582
+#: inc/admin/ui/notices.php:577
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "این کار به ما کمک خواهد کرد تا در آینده موشک وردپرس را بهبود ببخشیم."
 
-#: inc/admin/ui/notices.php:588
+#: inc/admin/ui/notices.php:583
 msgid "What info will we collect?"
 msgstr "چه اطلاعاتی را جمع آوری می‌کنیم؟"
 
-#: inc/admin/ui/notices.php:593
+#: inc/admin/ui/notices.php:588
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -3048,60 +3155,68 @@ msgstr ""
 "فعال‌سازی لایسنس)، آدرس آی پی یا کلید‌های وب‌سرویس ثانویه را منتقل نخواهد "
 "کرد."
 
-#: inc/admin/ui/notices.php:602
+#: inc/admin/ui/notices.php:597
 msgid "Yes, allow"
 msgstr "بله، اجازه می‌دهم"
 
-#: inc/admin/ui/notices.php:605
+#: inc/admin/ui/notices.php:600
 msgid "No, thanks"
 msgstr "نه، متشکرم"
 
-#: inc/admin/ui/notices.php:644
+#: inc/admin/ui/notices.php:639
 msgid "Thank you!"
 msgstr "متشکریم!"
 
-#: inc/admin/ui/notices.php:649
+#: inc/admin/ui/notices.php:644
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "موشک وردپرس اکنون این معیارها را از وب‌سایت شما جمع‌آوری می‌کند:"
 
-#: inc/admin/ui/notices.php:687
+#: inc/admin/ui/notices.php:682
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: کش پاک شد."
 
-#: inc/admin/ui/notices.php:694
+#: inc/admin/ui/notices.php:689
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: کش نوشته پاک شد."
 
-#: inc/admin/ui/notices.php:701
+#: inc/admin/ui/notices.php:696
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: کش شرط پاک شد."
 
-#: inc/admin/ui/notices.php:708
+#: inc/admin/ui/notices.php:703
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: کش کاربر پاک شد."
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:751
 msgid "Stop Preload"
 msgstr "توقف پیش بارگذاری"
 
-#: inc/admin/ui/notices.php:773
+#: inc/admin/ui/notices.php:757
+msgid "Turn on Remove Unused CSS"
+msgstr "حذف CSS های بدون استفاده را فعال کنید"
+
+#: inc/admin/ui/notices.php:763
+msgid "Enable “Separate Cache Files for Mobile Devices” now"
+msgstr "اکنون\" کش مجزا برای موبایل\" را فعال نمایید"
+
+#: inc/admin/ui/notices.php:781
 msgid "Force deactivation "
 msgstr "غیرفعال سازی اجباری "
 
-#: inc/admin/ui/notices.php:792
+#: inc/admin/ui/notices.php:800
 msgid "The following code should have been written to this file:"
 msgstr "کدهای زیر باید داخل این فایل نوشته شوند:"
 
-#: inc/admin/ui/notices.php:823
+#: inc/admin/ui/notices.php:831
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:837
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "فایل\\فولدرهای مورد نظر: %s"
@@ -3332,6 +3447,15 @@ msgstr ""
 msgid "Connection to Cloudflare failed"
 msgstr "اتصال به Cloudflare انجام نشد"
 
+#: inc/deprecated/3.5.php:587
+#, php-format
+msgid "<strong>WP Rocket:</strong> %s"
+msgstr "<strong>راکت وردپرس:</strong> %s"
+
+#: inc/deprecated/3.5.php:592
+msgid "<strong>WP Rocket:</strong> Cloudflare cache successfully purged."
+msgstr "<strong>WP Rocket:</strong>کش CloudFlare با موفقیت پاک شد."
+
 #: inc/deprecated/DeprecatedClassTrait.php:54
 #, php-format
 msgid ""
@@ -3516,23 +3640,23 @@ msgstr "تنظیمات ناشناس موشک وردپرس:"
 msgid "Which WP Rocket settings are active"
 msgstr "کدام تنظیمات موشک وردپرس فعال هستند"
 
-#: inc/functions/options.php:421
+#: inc/functions/options.php:429
 msgid "The provided license data are not valid."
 msgstr "داده لایسنس شما معتبر نیست."
 
-#: inc/functions/options.php:424
+#: inc/functions/options.php:432
 #, php-format
 msgid "To resolve, please %1$scontact support%2$s."
 msgstr "برای رفع مشکل، لطفا با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:483 inc/functions/options.php:522
+#: inc/functions/options.php:491 inc/functions/options.php:530
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
 msgstr ""
 "اعتبارسنجی لایسنس انجام نشد. سرور ما نتوانست درخواست وب سایت شما را حل کند."
 
-#: inc/functions/options.php:483
+#: inc/functions/options.php:491
 #, php-format
 msgid ""
 "Try clicking %1$sValidate License%2$s below. If the error persists, follow "
@@ -3541,7 +3665,7 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -3549,45 +3673,45 @@ msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. شاید شما از نسخه نال استفاده می کنید. لطفا "
 "موارد زیر را انجام دهید:"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "وارد شدن به %1$sحساب کاربری%2$s موشک وردپرس"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
 msgstr "دانلود فایل فشرده"
 
-#: inc/functions/options.php:499 inc/functions/options.php:541
+#: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Reinstall"
 msgstr "نصب مجدد"
 
-#: inc/functions/options.php:499
+#: inc/functions/options.php:507
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "اگر حساب کاربری موشک وردپرس ندارید، لطفا %1$sخرید کنید%2$s."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری در پایگاه داده ما وجود ندارد."
 
-#: inc/functions/options.php:507
+#: inc/functions/options.php:515
 msgid "To resolve, please contact support."
 msgstr "برای رفع مشکل با پشتیبانی تماس بگیرید."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 msgid "License validation failed. This user account is blocked."
 msgstr "اعتبارسنجی لایسنس شکست خورد. این حساب کاربری بلاک شده است."
 
-#: inc/functions/options.php:515
+#: inc/functions/options.php:523
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "برای کسب اطلاعات بیشتر%1$sراهنمایی%2$s را مطالعه کنید."
 
-#: inc/functions/options.php:522
+#: inc/functions/options.php:530
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -3596,20 +3720,20 @@ msgstr ""
 "سعی کنید روی%1$sذخیره تغییرات%2$s در زیر کلیک کنید. اگر همچنان خطا وجود "
 "داشت، %3$sراهنمایی%4$s را دنبال کنید."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 msgid "Your license is not valid."
 msgstr "لایسنس شما نامعتبر است."
 
-#: inc/functions/options.php:535
+#: inc/functions/options.php:543
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "مطمئن شوید که %1$sلایسنس موشک وردپرس%2$s فعال دارید."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 msgid "You have added as many sites as your current license allows."
 msgstr "شما به اندازه لایسنس فعلی سایت اضافه کرده اید."
 
-#: inc/functions/options.php:537
+#: inc/functions/options.php:545
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -3618,25 +3742,25 @@ msgstr ""
 "حساب کاربری%1$sخودرا%2$sارتقاء دهید یا%3$sلایسنس خود را به دامنه فعلی %2$s "
 "منتقل کنید."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 msgid "This website is not allowed."
 msgstr "این وب سایت مجاز نمی باشد."
 
-#: inc/functions/options.php:539
+#: inc/functions/options.php:547
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "با %1$sپشتیبانی%2$sتماس بگیرید."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 msgid "This license key is not recognized."
 msgstr "این لایسنس شناسایی نشد."
 
-#: inc/functions/options.php:541
+#: inc/functions/options.php:549
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "اگر مشکل همچنان برقرار بود با %1$sپشتیبانی%2$s تماس بگیرید."
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:555
 #, php-format
 msgid "License validation failed: %s"
 msgstr "اعتبارسنجی لایسنس شکست خورد: %s"
@@ -3848,11 +3972,11 @@ msgid "Import settings"
 msgstr "درون ریزی تنظیمات"
 
 #: views/settings/fields/one-click-addon.php:43
-#: views/settings/fields/rocket-addon.php:33
+#: views/settings/fields/rocket-addon.php:43
 msgid "Add-on status"
 msgstr "وضعیت افزودنی"
 
-#: views/settings/fields/rocket-addon.php:56
+#: views/settings/fields/rocket-addon.php:72
 msgid "Modify options"
 msgstr "تغییر تنظیمات"
 
