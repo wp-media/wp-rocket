@@ -75,7 +75,7 @@ class DataManager extends AbstractDataManager {
 		$conditions = explode( '||', $conditions );
 
 		foreach ( $conditions as $condition ) {
-			if ( $this->options->get( trim( $condition ), false )) {
+			if ( $this->options->get( trim( $condition ), false ) ) {
 				return true;
 			}
 		}
