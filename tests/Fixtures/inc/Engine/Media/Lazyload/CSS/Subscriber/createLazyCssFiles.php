@@ -39,6 +39,8 @@ return [
 					'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css',
 				]
 			],
+			'home_url' => 'https://new.rocketlabsqa.ovh',
+			'parse_url_query' => [],
 			'parse_url' => [],
 			'has' => [],
 			'resolve' => [],
@@ -65,6 +67,8 @@ return [
 			'data' => [
 				"html" => $html,
 			],
+			'home_url' => 'https://new.rocketlabsqa.ovh',
+			'parse_url_query' => [],
 			'parse_url' => [],
 			'has' => [],
 			'resolve' => [],
@@ -93,11 +97,18 @@ return [
 					'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css',
 				]
 			],
-			'parse_url' => [
+			'home_url' => 'https://new.rocketlabsqa.ovh',
+			'parse_url_query' => [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => null,
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images2.css' => null,
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => null,
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => null,
+			],
+			'parse_url' => [
+				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => null,
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images2.css' => 'new.rocketlabsqa.ovh',
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'new.rocketlabsqa.ovh',
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => 'new.rocketlabsqa.ovh',
 			],
 			'has' => [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => false,

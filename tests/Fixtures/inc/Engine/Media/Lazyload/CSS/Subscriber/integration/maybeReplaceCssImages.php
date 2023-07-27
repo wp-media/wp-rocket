@@ -11,7 +11,8 @@ return [
 		'wp-content' => [
 			'rocket-test-data' => [
 				'styles' => [
-					'lazyload_css_background_images.css' => file_get_contents(__DIR__ . '/CSS/lazyload_css_background_images.css')
+					'lazyload_css_background_images.css' => file_get_contents(__DIR__ . '/CSS/lazyload_css_background_images.css'),
+					'excluded.css' => file_get_contents(__DIR__ . '/CSS/excluded.css'),
 				]
 			]
 		]
@@ -74,7 +75,8 @@ return [
 					'response' => [ 'body' => file_get_contents(__DIR__ . '/CSS/no_background.css'), 'response' => ['code' => 200 ] ],
 				],
 				'excluded' => [
-					'.external-css-background-images'
+					'.external-css-background-images',
+					'http://example.org/wp-content/rocket-test-data/styles/excluded.css'
 				]
 			],
 			'expected' => [

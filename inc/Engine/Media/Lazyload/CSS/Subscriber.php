@@ -576,6 +576,16 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	protected function is_excluded( string $string ) {
 
+		$values = [
+			$string,
+		];
+
+		$parsed_url_host = wp_parse_url( $string, PHP_URL_HOST );
+
+		if ( ! $parsed_url_host ) {
+			$values [] = home_url() . $string;
+		}
+
 		/**
 		 * Filters the src used to prevent lazy load from being applied.
 		 *
@@ -591,9 +601,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return false;
 		}
 
-		foreach ( $excluded_values as $excluded_value ) {
-			if ( strpos( $string, $excluded_value ) !== false ) {
-				return true;
+		foreach ( $values as $value ) {
+			foreach ( $excluded_values as $excluded_value ) {
+				if ( strpos( $value, $excluded_value ) !== false ) {
+					return true;
+				}
 			}
 		}
 

@@ -7,6 +7,7 @@
 	<title>HTML 5 Boilerplate</title>
 	<!-- external CSS background images here min and non-min file -->
 	<link rel="stylesheet" href="/wp-content/rocket-test-data/styles/lazyload_css_background_images.css?test=1">
+	<link rel="stylesheet" href="/wp-content/rocket-test-data/styles/excluded.css">
 	<link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css">
 	<link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css">
 
