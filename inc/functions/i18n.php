@@ -405,6 +405,7 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
 				return get_rocket_i18n_uri();
 			}
+			break;
 		default:
 			/**
 			 * Filters the list of languages subdomains URLs
@@ -520,6 +521,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 					$urls[] = wp_parse_url( get_permalink( $translation_post_id ), PHP_URL_PATH ) . $regex;
 				}
 			}
+			break;
 		default:
 			/**
 			 * Filters the list of translated URLs for a post ID
