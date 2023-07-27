@@ -1,18 +1,6 @@
 <?php
 return [
-    'EmptyShouldPass' => [
-        'config' => [
-              'action' => '',
-              'capacities' => '',
-			  'user_can' => false
-        ],
-        'expected' => [
-			'referer' => 'referer_test',
-			'capacity' => 'capacity_test',
-			'result' => true,
-        ]
-    ],
-	'RefererAndCapacityShouldCheckAndSucceed' => [
+	'RefererAndCapacityShouldCheckAndFail' => [
 		'config' => [
 			'action' => 'referer_test',
 			'capacities' => '',
@@ -21,10 +9,10 @@ return [
 		'expected' => [
 			'referer' => 'referer_test',
 			'capacity' => 'capacity_test',
-			'result' => true,
+			'result' => false,
 		]
 	],
-	'NoCapacityShouldFail' => [
+	'NoCapacityShouldSucceed' => [
 		'config' => [
 			'action' => 'referer_test',
 			'capacities' => 'capacity_test',

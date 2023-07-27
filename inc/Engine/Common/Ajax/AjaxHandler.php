@@ -11,13 +11,11 @@ class AjaxHandler {
 	 * @param string $capacities User capacity to verify.
 	 * @return bool
 	 */
-	public function validate_referer( string $action = '', string $capacities = '' ) {
+	public function validate_referer( string $action, string $capacities ) {
 
-		if ( '' !== $action ) {
-			check_admin_referer( $action );
-		}
+		check_admin_referer( $action );
 
-		if ( '' !== $capacities && ! current_user_can( $capacities ) ) {
+		if ( ! current_user_can( $capacities ) ) {
 			return false;
 		}
 
