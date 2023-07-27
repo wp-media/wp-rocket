@@ -540,7 +540,14 @@ class Settings {
 			return;
 		}
 
-		$main_message = __( "It seems a security plugin or the server's firewall prevents WP Rocket from accessing the Remove Unused CSS generator. The following IP address 135.125.83.227 should be allowlisted:", 'rocket' );
+		$firewall_beacon = $this->beacon->get_suggest( 'rucss_firewall_ips' );
+
+		$main_message = sprintf(
+			// translators: %1$s = <a> open tag, %2$s = </a> closing tag.
+			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the Remove Unused CSS generator. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
+			'<a href="' . esc_url( $firewall_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $firewall_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
+			'</a>'
+		);
 
 		$security_message = __( '- In the security plugin, if you are using one', 'rocket' );
 		$firewall_message = __( "- In the server's firewall. Your host can help you with this", 'rocket' );

@@ -42,6 +42,9 @@ class Test_DisplaySaasErrorNotice extends FilesystemTestCase
 		$this->options->shouldReceive('get')->with('remove_unused_css', 0)->andReturn($config['has_rights'])
 			->zeroOrMoreTimes();
 		Functions\when('rocket_notice_html')->justEcho();
+		Functions\stubEscapeFunctions();
+		$this->beacon->shouldReceive( 'get_suggest' )->with( 'rucss_firewall_ips' )->andReturn( $config['beacon']['en'] );
+
 		ob_start();
 		$this->settings->display_saas_error_notice();
 		$result = ob_get_clean();
