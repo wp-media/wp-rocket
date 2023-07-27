@@ -103,3 +103,23 @@ background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204
 background: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg') no-repeat;
 background-color: #c63dd8;
 }
+ h1 {
+ background-color: aqua;
+ font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+ }
+ 
+ .exclude-internal-relative-file{
+ display:none;
+ }
+
+ h1[not-existing-attribute-relative]{
+ display:none;
+ }
+
+ h1[not-existing-attribute-relative~=value]{
+ display:none;
+ }
+
+ .test{
+ color:rgb(165, 36, 197);
+ }

@@ -314,9 +314,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 						'type' => 'lazyload_css_bg_images',
 					]
 					);
-				$mapping = array_merge( $mapping, $this->generate_css_file( $url ) );
 
-				if ( empty( $mapping ) ) {
+				$file_mapping = $this->generate_css_file( $url );
+
+				if ( empty( $file_mapping ) ) {
 					$this->logger::debug(
 						"Create lazy css files $url bailed out",
 						[
@@ -325,6 +326,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 						);
 					continue;
 				}
+
+				$mapping = array_merge( $mapping, $file_mapping );
+
 			} else {
 				$this->logger::debug(
 					"Load lazy css files $url",
@@ -440,6 +444,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$url_key = $this->format_url( $url );
 
 		$output = $this->generate_content( $content );
+
+		if ( ! key_exists( 'urls', $output ) || count( $output['urls'] ) === 0 ) {
+			return [];
+		}
 
 		if ( ! $this->cache->set( $url_key, $output['content'] ) ) {
 			return [];

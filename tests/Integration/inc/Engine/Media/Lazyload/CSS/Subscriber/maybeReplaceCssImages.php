@@ -86,10 +86,16 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 	}
 
 	public function mock_http($response, $args, $url) {
-		if($url !== 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css') {
-			return $response;
+
+		if($url === $this->config['no_background']['url']) {
+			return $this->config['no_background']['response'];
 		}
-		return $this->config['response'];
+
+		if($url === $this->config['external']['url']) {
+			return $this->config['external']['response'];
+		}
+
+		return $response;
 	}
 
 	public function exclude_lazyload() {
