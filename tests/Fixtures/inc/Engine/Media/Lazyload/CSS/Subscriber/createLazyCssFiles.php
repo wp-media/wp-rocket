@@ -17,7 +17,7 @@ $html_filtered = <<<HTML
 <html>
 <head>
 	<link rel="stylesheet" href="example.org/css">
-	<link rel="stylesheet" href="example.org/css">
+	<link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css">
 	<link rel="stylesheet" href="example.org/css3">
 	<link rel="stylesheet" href="example.org/css3">
 	<link rel="stylesheet" href="example.org/css2">
@@ -171,7 +171,6 @@ return [
 			],
 			'generate_url' => [
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images2.css' => 'example.org/css3',
-				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'example.org/css',
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'example.org/css',
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => 'example.org/css2',
 			],
