@@ -199,10 +199,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_incompatible_plugins_to_deactivate( $plugins = [] ): array {
-		if ( ! is_array( $plugins ) ) {
-			$plugins = (array) $plugins;
-		}
-
-		return array_merge( $plugins, $this->dynamic_lists->get_incompatible_plugins() );
+		return array_merge( (array) $plugins, $this->dynamic_lists->get_incompatible_plugins() );
 	}
 }
