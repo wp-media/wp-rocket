@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\ThirdParty\Plugins\I18n;
 
 use TRP_Translate_Press;
-use TRP_Url_Converter;
-use TRP_Settings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class TranslatePress implements Subscriber_Interface {
@@ -16,7 +14,7 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'TRP_Url_Converter' ) || ! class_exists( 'TRP_Settings' ) ) {
+		if ( ! class_exists( 'TRP_Translate_Press' ) ) {
 			return [];
 		}
 
