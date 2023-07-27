@@ -468,8 +468,9 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
  * @param  string $regex     Regex to include at the end.
  * @return array
  */
-function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$path = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH );
+function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$url  = get_permalink( $post_id );
+	$path = wp_parse_url( $url, PHP_URL_PATH );
 
 	if ( empty( $path ) ) {
 		return [];
@@ -494,11 +495,9 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		case 'qtranslate-x':
 			$langs  = $GLOBALS['q_config']['enabled_languages'];
 			$langs  = array_diff( $langs, [ $GLOBALS['q_config']['default_language'] ] );
-			$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+			$urls[] = wp_parse_url( $url, PHP_URL_PATH ) . $regex;
 
 			if ( $langs ) {
-				$url = get_permalink( $post_id );
-
 				foreach ( $langs as $lang ) {
 					if ( 'qtranslate' === $i18n_plugin ) {
 						$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
@@ -517,8 +516,8 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 			}
 
 			if ( ! empty( $translations ) ) {
-				foreach ( $translations as $post_id ) {
-					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				foreach ( $translations as $translation_post_id ) {
+					$urls[] = wp_parse_url( get_permalink( $translation_post_id ), PHP_URL_PATH ) . $regex;
 				}
 			}
 		default:
@@ -526,10 +525,11 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 			 * Filters the list of translated URLs for a post ID
 			 *
 			 * @param array  $urls Array of translated URLs.
-			 * @param int    $post_id Post ID.
+			 * @param string $url URL to use.
 			 * @param string $post_type Post type.
+			 * @param string $regex Pattern to include at the end.
 			 */
-			$urls = apply_filters( 'rocket_i18n_translated_post_urls', $urls, $post_id, $post_type );
+			$urls = apply_filters( 'rocket_i18n_translated_post_urls', $urls, $url, $post_type, $regex );
 	}
 
 	if ( trim( $path, '/' ) !== '' ) {
