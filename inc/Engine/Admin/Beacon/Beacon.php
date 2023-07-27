@@ -779,9 +779,9 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '57868414c697912dee72a98a',
 					'url' => 'https://fr.docs.wp-rocket.me/article/837-changer-de-domaine-migrer-un-site-avec-wp-rocket',
-        ],
-       ],
-       'rucss_firewall_ips'         => [
+				],
+			],
+			'rucss_firewall_ips'         => [
 				'en' => [
 					'id'  => '6076083ff8c0ef2d98df1f97',
 					'url' => 'https://docs.wp-rocket.me/article/1529-remove-unused-css?utm_source=wp_plugin&utm_medium=wp_rocket#basic-requirements',
