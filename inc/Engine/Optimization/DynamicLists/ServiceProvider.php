@@ -47,7 +47,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_data_manager', DelayJSListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_delayjslists_api_client', DelayJSListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_data_manager', IncompatiblePluginsListsDataManager::class );
+		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_data_manager', IncompatiblePluginsListsDataManager::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_api_client', IncompatiblePluginsListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 

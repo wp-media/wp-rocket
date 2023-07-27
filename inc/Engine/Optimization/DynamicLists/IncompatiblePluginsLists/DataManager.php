@@ -3,11 +3,27 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DynamicLists\AbstractDataManager;
 
 class DataManager extends AbstractDataManager {
 
+	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
 
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		parent::__construct();
+		$this->options = $options;
+	}
 	/**
 	 * Get cache transient name.
 	 *
@@ -27,7 +43,7 @@ class DataManager extends AbstractDataManager {
 	}
 
 	/**
-	 * Gets the lists content
+	 * Gets the plugins list content
 	 *
 	 * @return array
 	 */
@@ -59,7 +75,7 @@ class DataManager extends AbstractDataManager {
 		$conditions = explode( '||', $conditions );
 
 		foreach ( $conditions as $condition ) {
-			if ( get_rocket_option( trim( $condition ), false ) ) {
+			if ( $this->options->get( trim( $condition ), false )) {
 				return true;
 			}
 		}

@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager as IncDataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
-use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Admin\Options_Data;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists
@@ -22,13 +22,15 @@ class test_GetPluginsList extends FilesystemTestCase
 	 */
 	public function testShouldReturnExpected($config, $expected)
 	{
-		$data_manager = new IncDataManager();
+		$options = Mockery::mock( Options_Data::class );
+		$data_manager = new IncDataManager($options);
 		Functions\when('get_transient')->justReturn($config['data_from_json']);
-		Functions\expect('get_rocket_option')
-			->andReturnUsing(
-				function ($arg) use ($config) {
-					return $config['active_options'][$arg];
-				});
+
+		$options->shouldReceive( 'get' )->andReturnUsing(
+			function ($arg) use ($config) {
+				return $config['active_options'][$arg];
+			});
+
 		$this->assertEquals(
 			$expected,
 			$data_manager->get_plugins_list()
