@@ -55,7 +55,10 @@ class InformationSubscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'plugins_api'              => [ 'exclude_rocket_from_wp_info', 10, 3 ],
-			'plugins_api_result'       => [ 'add_rocket_info', 10, 3 ],
+			'plugins_api_result'       => [
+				[ 'add_rocket_info', 10, 3 ],
+				[ 'add_plugins_to_result', 11, 3 ],
+			],
 			'rocket_wp_tested_version' => 'add_wp_tested_version',
 		];
 	}
@@ -143,5 +146,110 @@ class InformationSubscriber implements Subscriber_Interface {
 		}
 
 		return $res;
+	}
+
+	/**
+	 * Filter plugin fetching API results to inject Imagify
+	 *
+	 * @param object|WP_Error $result Response object or WP_Error.
+	 * @param string          $action The type of information being requested from the Plugin Install API.
+	 * @param object          $args   Plugin API arguments.
+	 *
+	 * @return object|WP_Error
+	 */
+	public function add_plugins_to_result( $result, $action, $args ) {
+		if ( ! $this->can_add_plugins( $result, $args ) ) {
+			return $result;
+		}
+
+		$plugins = [
+			'seo-by-rank-math' => 'seo-by-rank-math/rank-math.php',
+			'imagify'          => 'imagify/imagify.php',
+		];
+
+		// grab all slugs from the api results.
+		$result_slugs = wp_list_pluck( $result->plugins, 'slug' );
+
+		foreach ( $plugins as $slug => $path ) {
+			if ( is_plugin_active( $path ) || is_plugin_active_for_network( $path ) ) {
+				continue;
+			}
+
+			if ( in_array( $slug, $result_slugs, true ) ) {
+				foreach ( $result->plugins as $index => $plugin ) {
+					if ( $slug === $plugin['slug'] ) {
+						$move = $plugin;
+						unset( $result->plugins[ $index ] );
+						array_unshift( $result->plugins, $move );
+					}
+				}
+				continue;
+			}
+
+			$plugin_data = $this->get_plugin_data( $slug );
+
+			if ( empty( $plugin_data ) ) {
+				continue;
+			}
+
+			array_unshift( $result->plugins, $plugin_data );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Checks if we can add plugins to the results
+	 *
+	 * @param object|WP_error $result Response object or WP_Error.
+	 * @param object          $args Plugin API arguments.
+	 *
+	 * @return bool
+	 */
+	private function can_add_plugins( $result, $args ) {
+		if ( is_wp_error( $result ) ) {
+			return false;
+		}
+
+		if ( empty( $args->browse ) ) {
+			return false;
+		}
+
+		if ( 'featured' !== $args->browse && 'recommended' !== $args->browse && 'popular' !== $args->browse ) {
+			return false;
+		}
+
+		if ( ! isset( $result->info['page'] ) || 1 < $result->info['page'] ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Returns plugin data
+	 *
+	 * @param string $slug Plugin slug.
+	 *
+	 * @return array|object
+	 */
+	private function get_plugin_data( string $slug ) {
+		$query_args = [
+			'slug'   => $slug,
+			'fields' => [
+				'icons'             => true,
+				'active_installs'   => true,
+				'short_description' => true,
+				'group'             => true,
+			],
+		];
+
+		$plugin_data = plugins_api( 'plugin_information', $query_args );
+
+		if ( is_wp_error( $plugin_data ) ) {
+			return [];
+		}
+
+		return $plugin_data;
 	}
 }
