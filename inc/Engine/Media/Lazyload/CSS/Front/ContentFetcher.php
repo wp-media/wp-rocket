@@ -3,9 +3,11 @@
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 class ContentFetcher {
 
+	use CSSTrait;
 
 	/**
 	 * WordPress filesystem.
@@ -27,10 +29,10 @@ class ContentFetcher {
 	 * Fetch content from the resource.
 	 *
 	 * @param string $path Path from the resource.
-	 *
+	 * @param string $destination Destination path.
 	 * @return false|string
 	 */
-	public function fetch( string $path ) {
+	public function fetch( string $path, string $destination ) {
 
 		if ( ! wp_http_validate_url( $path ) ) {
 			return $this->filesystem->get_contents( $path );
@@ -41,6 +43,11 @@ class ContentFetcher {
 		if ( ! $content ) {
 			return false;
 		}
+
+		$content = $this->move( $this->get_converter( $path, $destination ), $content, $path );
+		$this->set_cached_import( $path );
+
+		$content = $this->combine_imports( $content, $destination );
 
 		return $content;
 	}

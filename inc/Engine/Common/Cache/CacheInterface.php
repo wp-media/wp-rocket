@@ -25,4 +25,12 @@ interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheIn
 	 * @return string
 	 */
 	public function get_root_path(): string;
+
+	/**
+	 * Generate a path from the URL.
+	 *
+	 * @param string $url URL to change to a path.
+	 * @return string
+	 */
+	public function generate_path( string $url ): string;
 }

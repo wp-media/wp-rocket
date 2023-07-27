@@ -55,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getLeagueContainer()->add( 'lazyload_css_rule_formatter', RuleFormatter::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_tag_generator', TagGenerator::class );
 
-		$this->getLeagueContainer()->add( 'lazyload_css_subscriber', Subscriber::class )
+		$this->getLeagueContainer()->share( 'lazyload_css_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_extractor' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_rule_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_file_resolver' ) )

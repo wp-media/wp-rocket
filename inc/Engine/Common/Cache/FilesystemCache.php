@@ -213,7 +213,7 @@ class FilesystemCache implements CacheInterface {
 	 * @param string $url URL to change to a path.
 	 * @return string
 	 */
-	protected function generate_path( string $url ):string {
+	public function generate_path( string $url ): string {
 		$root_path       = $this->get_root_path();
 		$root_path       = rtrim( $root_path, '/' );
 		$parsed_url      = get_rocket_parse_url( $url );

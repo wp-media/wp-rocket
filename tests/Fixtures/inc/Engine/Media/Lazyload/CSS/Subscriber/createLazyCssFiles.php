@@ -49,6 +49,7 @@ return [
 			'cache_get' => [],
 			'generate_url' => [],
 			'json_set' => [],
+			'generate_path' => []
 		],
         'expected' => [
 			'css_files' => [
@@ -74,6 +75,7 @@ return [
 			'cache_get' => [],
 			'generate_url' => [],
 			'json_set' => [],
+			'generate_path' => [],
 		],
 		'expected' => [
 			"html" => $html,
@@ -134,8 +136,14 @@ return [
 				],
 			],
 			'content' => [
-				'/path/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'content1',
-				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => false,
+				'/path/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
+					'path' => 'path1',
+					'content' => 'content1',
+					],
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
+					'path' => 'path2',
+					'content' => false,
+				],
 			],
 			'cache_set' => [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => [
@@ -167,6 +175,10 @@ return [
 				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'example.org/css',
 				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.min.css' => 'example.org/css2',
 			],
+			'generate_path' => [
+				'/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'path1',
+				'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/lazyload_css_background_images.css' => 'path2',
+			]
 		],
 		'expected' => [
 			"html" => $html_filtered,

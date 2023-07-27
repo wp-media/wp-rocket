@@ -431,7 +431,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$path = $url;
 		}
 
-		$content = $this->fetcher->fetch( $path );
+		$content = $this->fetcher->fetch( $path, $this->cache->generate_path( $url ) );
 
 		if ( ! $content ) {
 			return [];

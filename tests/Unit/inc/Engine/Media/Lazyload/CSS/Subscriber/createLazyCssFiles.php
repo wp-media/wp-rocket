@@ -39,8 +39,8 @@ class Test_createLazyCssFiles extends TestCase {
 			$this->file_resolver->expects()->resolve($url)->andReturn($path);
 		}
 
-		foreach ($config['content'] as $path => $content) {
-			$this->fetcher->expects()->fetch($path)->andReturn($content);
+		foreach ($config['content'] as $path => $data) {
+			$this->fetcher->expects()->fetch($path, $data['path'])->andReturn($data['content']);
 		}
 
 		foreach ($config['extract'] as $content => $urls) {
@@ -66,6 +66,10 @@ class Test_createLazyCssFiles extends TestCase {
 
 		foreach ($config['generate_url'] as $url => $output) {
 			$this->filesystem_cache->expects()->generate_url($url)->andReturn($output);
+		}
+
+		foreach ($config['generate_path'] as $url => $path) {
+			$this->filesystem_cache->expects()->generate_path($url)->andReturn($path);
 		}
 
         $this->assertSame($expected, $this->subscriber->create_lazy_css_files($config['data']));
