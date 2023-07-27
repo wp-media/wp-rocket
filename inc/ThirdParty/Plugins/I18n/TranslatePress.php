@@ -43,8 +43,8 @@ class TranslatePress implements Subscriber_Interface {
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
 
-		$language      = $converter->get_lang_from_url_string( $url );
-		$url_language  = $converter->get_url_for_language( $language, home_url() );
+		$language     = $converter->get_lang_from_url_string( $url );
+		$url_language = $converter->get_url_for_language( $language, home_url() );
 
 		return untrailingslashit( $url ) === untrailingslashit( $url_language ) ? $url : $home_url;
 	}
