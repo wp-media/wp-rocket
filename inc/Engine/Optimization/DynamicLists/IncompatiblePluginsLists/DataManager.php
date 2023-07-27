@@ -31,9 +31,9 @@ class DataManager extends AbstractDataManager {
 	 *
 	 * @return array
 	 */
-	public function get_lists() {
+	public function get_plugins_list() {
 		$lists          = [];
-		$list_from_json = parent::get_lists();
+		$list_from_json = $this->get_lists();
 		foreach ( $list_from_json as $conditions => $list ) {
 			if ( $this->meet_conditions( $conditions ) ) {
 				$list  = array_column( $list, 'file', 'slug' );

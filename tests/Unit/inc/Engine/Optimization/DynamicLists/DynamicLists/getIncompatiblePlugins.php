@@ -30,7 +30,7 @@ class Test_GetIncompatiblePlugins extends TestCase {
 		];
 		$dynamic_lists = new DynamicLists( $providers, Mockery::mock( User::class ), '', Mockery::mock( Beacon::class ) );
 
-		$data_manager->shouldReceive( 'get_lists' )
+		$data_manager->shouldReceive( 'get_plugins_list' )
 			->andReturn( $list );
 
 		$this->assertSame(

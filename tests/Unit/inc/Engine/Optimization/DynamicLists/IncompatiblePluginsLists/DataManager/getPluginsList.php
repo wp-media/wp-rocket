@@ -13,9 +13,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group DynamicLists
  */
-class test_GetLists extends FilesystemTestCase
+class test_GetPluginsList extends FilesystemTestCase
 {
-	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/IncompatiblePluginsLists/DataManager/getLists.php';
+	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/IncompatiblePluginsLists/DataManager/getPluginsList.php';
 
 	/**
 	 * @dataProvider providerTestData
@@ -31,7 +31,7 @@ class test_GetLists extends FilesystemTestCase
 				});
 		$this->assertEquals(
 			$expected,
-			$data_manager->get_lists()
+			$data_manager->get_plugins_list()
 		);
 	}
 }
