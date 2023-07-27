@@ -448,6 +448,7 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
 				return pll_home_url( $lang );
 			}
+			break;
 		default:
 			/**
 			 * Filters the home URL value for a specific language
