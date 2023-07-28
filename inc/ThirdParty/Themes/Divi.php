@@ -72,6 +72,9 @@ class Divi extends ThirdpartyTheme {
 		$events['wp']                = 'disable_dynamic_css_on_rucss';
 		$events['after_setup_theme'] = 'remove_assets_generated';
 		$events['et_save_post']      = 'handle_save_template';
+		$events['admin_notices']     = 'handle_divi_admin_notice';
+
+		$events['rocket_after_clean_used_css'] = 'clear_divi_notice';
 
 		return $events;
 	}
@@ -217,16 +220,16 @@ class Divi extends ThirdpartyTheme {
 		remove_all_actions( 'et_dynamic_late_assets_generated' );
 	}
 
-	public function handle_save_template( $post_id ) {
+	private function get_layout_ids( $template_post_id ) {
 		$allowed_post_types = [
 			'et_header_layout',
 			'et_footer_layout',
 			'et_body_layout'
 		];
-		$current_post_type = get_post_type( $post_id );
+		$current_post_type = get_post_type( $template_post_id );
 
 		if ( ! in_array( $current_post_type, $allowed_post_types ) ) {
-			return;
+			return [];
 		}
 
 		global $wpdb;
@@ -234,9 +237,13 @@ class Divi extends ThirdpartyTheme {
 		$query = $wpdb->prepare(
 			'SELECT post_id from ' . $wpdb->postmeta . ' WHERE meta_key = %s AND meta_value = %d',
 			'_' . $current_post_type . '_id',
-			$post_id
+			$template_post_id
 		);
-		$layout_post_ids = $wpdb->get_col( $query );
+		return $wpdb->get_col( $query );
+	}
+
+	public function handle_save_template( $template_post_id ) {
+		$layout_post_ids = $this->get_layout_ids( $template_post_id );
 		if ( empty( $layout_post_ids ) ) {
 			return;
 		}
@@ -250,6 +257,33 @@ class Divi extends ThirdpartyTheme {
 			if ( empty( $used_on ) ) {
 				continue;
 			}
+
+			set_transient( 'rocket_divi_notice', true );
+			return;
 		}
+	}
+
+	public function handle_divi_admin_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$notice  = get_transient( 'rocket_divi_notice' );
+
+		if ( ! $notice ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'         => 'info',
+				'dismiss_button' => 'divi_notice',
+				'message'        => __( 'You need to clear Used CSS as you changed a template that is attached to post(s).', 'rocket' ),
+			]
+		);
+	}
+
+	public function clear_divi_notice() {
+		delete_transient( 'rocket_divi_notice' );
 	}
 }
