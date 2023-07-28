@@ -1,5 +1,4 @@
 <?php
-use TRP_Url_Converter;
 
 if ( ! class_exists( 'TRP_Translate_Press' ) ) {
     class TRP_Translate_Press {
