@@ -38,6 +38,8 @@
 
 </style> -->
 	<style id="wpr-lazyload-bg">
+	</style>
+	<style id="wpr-lazyload-bg-exclusion">
 		:root{--wpr-bg-hash: url(https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/./wp-content/rocket-test-data/images/test.png);}:root{--wpr-bg-hash: url(/wp-content/rocket-test-data/images/paper.jpeg);}:root{--wpr-bg-hash: url('/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url( "/wp-content/rocket-test-data/images/paper.jpeg" );}</style>
 	<noscript>
 		<style id="wpr-lazyload-bg-nostyle">
