@@ -37,27 +37,27 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getLeagueContainer()->get( 'options' );
+		$options = $this->getContainer()->get( 'options' );
 
-		$this->getLeagueContainer()->add( 'preload_cache_table', CacheTable::class );
-		$this->getLeagueContainer()->get( 'preload_cache_table' );
-		$this->getLeagueContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
+		$this->getContainer()->add( 'preload_cache_table', CacheTable::class );
+		$this->getContainer()->get( 'preload_cache_table' );
+		$this->getContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
 			->addArgument( [] );
-		$this->getLeagueContainer()->add( 'preload_cache_query', CacheQuery::class )
+		$this->getContainer()->add( 'preload_cache_query', CacheQuery::class )
 			->addArgument( new Logger() );
-		$this->getLeagueContainer()->add( 'preload_queue', Queue::class );
+		$this->getContainer()->add( 'preload_queue', Queue::class );
 
-		$cache_query = $this->getLeagueContainer()->get( 'preload_cache_query' );
-		$queue       = $this->getLeagueContainer()->get( 'preload_queue' );
+		$cache_query = $this->getContainer()->get( 'preload_cache_query' );
+		$queue       = $this->getContainer()->get( 'preload_queue' );
 
-		$this->getLeagueContainer()->add( 'preload_url_controller', PreloadUrl::class )
+		$this->getContainer()->add( 'preload_url_controller', PreloadUrl::class )
 			->addArgument( $options )
 			->addArgument( $queue )
 			->addArgument( $cache_query )
-			->addArgument( $this->getLeagueContainer()->get( 'wp_direct_filesystem' ) );
+			->addArgument( $this->getContainer()->get( 'wp_direct_filesystem' ) );
 
-		$this->getLeagueContainer()->add( 'preload_activation', Activation::class )
-			->addArgument( $this->getLeagueContainer()->get( 'preload_url_controller' ) )
+		$this->getContainer()->add( 'preload_activation', Activation::class )
+			->addArgument( $this->getContainer()->get( 'preload_url_controller' ) )
 			->addArgument( $queue )
 			->addArgument( $cache_query )
 			->addArgument( $options );
