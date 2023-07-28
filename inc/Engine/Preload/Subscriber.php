@@ -118,6 +118,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_format_url'              => 'format_preload_url',
 			'rocket_preload_lock_url'                => 'lock_url',
 			'rocket_preload_unlock_url'              => 'unlock_url',
+			'rocket_preload_unlock_all_urls'         => 'unlock_all_urls',
 			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
