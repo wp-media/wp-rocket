@@ -152,7 +152,7 @@ function get_rocket_polylang_langs_for_admin_bar() { // phpcs:ignore WordPress.N
  * @since 2.0
  * @since 3.2.1 Return an identifier on success instead of true.
  *
- * @return string|bool An identifier corresponding to the active plugin. False otherwise.
+ * @return string An identifier corresponding to the active plugin.
  */
 function rocket_has_i18n() {
 	global $sitepress, $q_config, $polylang;
@@ -188,9 +188,9 @@ function rocket_has_i18n() {
 	/**
 	 * Filters the value of i18n plugin detection
 	 *
-	 * @param string|bool $identifier An identifier value, false otherwise.
+	 * @param string $identifier An identifier value.
 	 */
-	return apply_filters( 'rocket_has_i18n', false );
+	return apply_filters( 'rocket_has_i18n', '' );
 }
 
 /**
@@ -430,7 +430,7 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
  */
 function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$i18n_plugin = rocket_has_i18n();
-	$home_url = home_url();
+	$home_url    = home_url();
 
 	if ( ! $i18n_plugin ) {
 		return $home_url;
@@ -587,17 +587,17 @@ function rocket_get_home_url( $path = '' ) {
 }
 
 /**
- * Gets the current language if Polylang or WPML is used
+ * Gets the current language
  *
  * @since 3.3.3
  *
- * @return string|bool
+ * @return string
  */
 function rocket_get_current_language() {
 	$i18n_plugin = rocket_has_i18n();
 
 	if ( ! $i18n_plugin ) {
-		return false;
+		return '';
 	}
 
 	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
@@ -609,7 +609,7 @@ function rocket_get_current_language() {
 	/**
 	 * Filters the current language value
 	 *
-	 * @param $current_language Current language.
+	 * @param string $current_language Current language.
 	 */
-	return apply_filters( 'rocket_i18n_current_language', false );
+	return apply_filters( 'rocket_i18n_current_language', '' );
 }
