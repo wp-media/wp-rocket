@@ -441,19 +441,23 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 		// WPML.
 		case 'wpml':
 			$home_url = $GLOBALS['sitepress']->language_url( $lang );
-		// qTranslate.
+			break;
+			// qTranslate.
 		case 'qtranslate':
 			$home_url = qtrans_convertURL( home_url(), $lang, true );
-		// qTranslate-x.
+			break;
+			// qTranslate-x.
 		case 'qtranslate-x':
 			$home_url = qtranxf_convertURL( home_url(), $lang, true );
-		// Polylang, Polylang Pro.
+			break;
+			// Polylang, Polylang Pro.
 		case 'polylang':
 			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
 				$home_url = pll_home_url( $lang );
 			}
+			break;
 		default:
 			/**
 			 * Filters the home URL value for a specific language
