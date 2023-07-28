@@ -430,12 +430,11 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
  */
 function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$i18n_plugin = rocket_has_i18n();
+	$home_url = home_url();
 
 	if ( ! $i18n_plugin ) {
-		return home_url();
+		return $home_url;
 	}
-
-	$home_url = '';
 
 	switch ( $i18n_plugin ) {
 		// WPML.
