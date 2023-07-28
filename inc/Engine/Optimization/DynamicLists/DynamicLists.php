@@ -264,4 +264,15 @@ class DynamicLists extends Abstract_Render {
 
 		return isset( $lists->exclude_js_files ) ? $lists->exclude_js_files : [];
 	}
+
+	/**
+	 * Get the incompatible plugins list
+	 *
+	 * @return array
+	 */
+	public function get_incompatible_plugins() {
+		$lists = $this->providers['incompatible_plugins']->data_manager->get_plugins_list();
+
+		return isset( $lists ) ? $lists : [];
+	}
 }

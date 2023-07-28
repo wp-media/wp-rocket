@@ -70,3 +70,23 @@ jobs:
         with:
           commit_message: update delay JS dynamic lists
           commit_user_name: WP Media GitHub Actions Bot
+
+      - name: get latest incompatible plugins lists
+        id: getIncompatiblePluginsLists
+        run: |
+          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/incompatible-plugins/list)"
+
+      - name: Save IncompatiblePlugins Lists
+        id: saveIncompatiblePluginsLists
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "dynamic-lists-incompatible-plugins.json"
+          json: ${{ steps.getIncompatiblePluginsLists.outputs.lists }}
+          dir: '/'
+
+      - name: Commit IncompatiblePlugins JSON file
+        if: ${{ steps.saveIncompatiblePluginsLists.outcome == 'success' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update incompatible plugins dynamic lists
+          commit_user_name: WP Media GitHub Actions Bot
