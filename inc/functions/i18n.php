@@ -377,25 +377,27 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 		return [];
 	}
 
+	$urls = [];
+
 	switch ( $i18n_plugin ) {
 		// WPML.
 		case 'wpml':
 			$option = get_option( 'icl_sitepress_settings' );
 
 			if ( 2 === (int) $option['language_negotiation_type'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// qTranslate.
 		case 'qtranslate':
 			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// qTranslate-x.
 		case 'qtranslate-x':
 			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// Polylang, Polylang Pro.
@@ -403,7 +405,7 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		default:
@@ -412,8 +414,10 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			 *
 			 * @param array $subdomains Array of languages subdomains URLs.
 			 */
-			return apply_filters( 'rocket_i18n_subdomains', [] );
+			$urls = apply_filters( 'rocket_i18n_subdomains', [] );
 	}
+
+	return $urls;
 }
 
 /**
@@ -431,24 +435,25 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 		return home_url();
 	}
 
+	$home_url = '';
+
 	switch ( $i18n_plugin ) {
 		// WPML.
 		case 'wpml':
-			return $GLOBALS['sitepress']->language_url( $lang );
+			$home_url = $GLOBALS['sitepress']->language_url( $lang );
 		// qTranslate.
 		case 'qtranslate':
-			return qtrans_convertURL( home_url(), $lang, true );
+			$home_url = qtrans_convertURL( home_url(), $lang, true );
 		// qTranslate-x.
 		case 'qtranslate-x':
-			return qtranxf_convertURL( home_url(), $lang, true );
+			$home_url = qtranxf_convertURL( home_url(), $lang, true );
 		// Polylang, Polylang Pro.
 		case 'polylang':
 			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
-				return pll_home_url( $lang );
+				$home_url = pll_home_url( $lang );
 			}
-			break;
 		default:
 			/**
 			 * Filters the home URL value for a specific language
@@ -456,8 +461,10 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 			 * @param string $home_url Home URL.
 			 * @param string $lang     The language code.
 			 */
-			return apply_filters( 'rocket_i18n_home_url', home_url(), $lang );
+			$home_url = apply_filters( 'rocket_i18n_home_url', home_url(), $lang );
 	}
+
+	return $home_url;
 }
 
 /**
