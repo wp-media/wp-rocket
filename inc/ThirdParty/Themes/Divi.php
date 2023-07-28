@@ -4,6 +4,7 @@ namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Divi extends ThirdpartyTheme {
 	/**
@@ -70,6 +71,7 @@ class Divi extends ThirdpartyTheme {
 
 		$events['wp']                = 'disable_dynamic_css_on_rucss';
 		$events['after_setup_theme'] = 'remove_assets_generated';
+		$events['et_save_post']      = 'handle_save_template';
 
 		return $events;
 	}
@@ -213,5 +215,41 @@ class Divi extends ThirdpartyTheme {
 	 */
 	public function remove_assets_generated() {
 		remove_all_actions( 'et_dynamic_late_assets_generated' );
+	}
+
+	public function handle_save_template( $post_id ) {
+		$allowed_post_types = [
+			'et_header_layout',
+			'et_footer_layout',
+			'et_body_layout'
+		];
+		$current_post_type = get_post_type( $post_id );
+
+		if ( ! in_array( $current_post_type, $allowed_post_types ) ) {
+			return;
+		}
+
+		global $wpdb;
+
+		$query = $wpdb->prepare(
+			'SELECT post_id from ' . $wpdb->postmeta . ' WHERE meta_key = %s AND meta_value = %d',
+			'_' . $current_post_type . '_id',
+			$post_id
+		);
+		$layout_post_ids = $wpdb->get_col( $query );
+		if ( empty( $layout_post_ids ) ) {
+			return;
+		}
+
+		foreach ( $layout_post_ids as $layout_post_id ) {
+			if ( 'publish' !== get_post_status( $layout_post_id ) ) {
+				continue;
+			}
+
+			$used_on = get_post_meta( $layout_post_id, '_et_use_on' );
+			if ( empty( $used_on ) ) {
+				continue;
+			}
+		}
 	}
 }
