@@ -264,7 +264,12 @@ class Divi extends ThirdpartyTheme {
 		 * @param bool $bypass Bypass save template functionality.
 		 * @param int  $template_post_id Currently saved template post id.
 		 */
-		if ( apply_filters( 'rocket_divi_bypass_save_template', empty( $layout_post_ids ), $template_post_id ) ) {
+		if ( apply_filters( 'rocket_divi_bypass_save_template', false, $template_post_id ) ) {
+			return;
+		}
+
+		// If the transient is there, we don't need to do the check again as the admin notice will be there already.
+		if ( false !== get_transient( 'rocket_divi_notice' ) ) {
 			return;
 		}
 
