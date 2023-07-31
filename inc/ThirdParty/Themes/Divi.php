@@ -220,31 +220,54 @@ class Divi extends ThirdpartyTheme {
 		remove_all_actions( 'et_dynamic_late_assets_generated' );
 	}
 
+	/**
+	 * Get layout IDs for a template.
+	 *
+	 * @param int $template_post_id Template post ID.
+	 *
+	 * @return array
+	 */
 	private function get_layout_ids( $template_post_id ) {
 		$allowed_post_types = [
 			'et_header_layout',
 			'et_footer_layout',
-			'et_body_layout'
+			'et_body_layout',
 		];
-		$current_post_type = get_post_type( $template_post_id );
+		$current_post_type  = get_post_type( $template_post_id );
 
-		if ( ! in_array( $current_post_type, $allowed_post_types ) ) {
+		if ( ! in_array( $current_post_type, $allowed_post_types, true ) ) {
 			return [];
 		}
 
 		global $wpdb;
 
-		$query = $wpdb->prepare(
-			'SELECT post_id from ' . $wpdb->postmeta . ' WHERE meta_key = %s AND meta_value = %d',
-			'_' . $current_post_type . '_id',
-			$template_post_id
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		return (array) $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT post_id from ' . $wpdb->postmeta . ' WHERE meta_key = %s AND meta_value = %d',
+				'_' . $current_post_type . '_id',
+				$template_post_id
+			)
 		);
-		return $wpdb->get_col( $query );
 	}
 
+	/**
+	 * Save template handler.
+	 *
+	 * @param int $template_post_id Template post ID.
+	 *
+	 * @return void
+	 */
 	public function handle_save_template( $template_post_id ) {
 		$layout_post_ids = $this->get_layout_ids( $template_post_id );
-		if ( empty( $layout_post_ids ) ) {
+
+		/**
+		 * Filters Bypassing saving template functionality.
+		 *
+		 * @param bool $bypass Bypass save template functionality.
+		 * @param int  $template_post_id Currently saved template post id.
+		 */
+		if ( apply_filters( 'rocket_divi_bypass_save_template', empty( $layout_post_ids ), $template_post_id ) ) {
 			return;
 		}
 
@@ -263,12 +286,17 @@ class Divi extends ThirdpartyTheme {
 		}
 	}
 
+	/**
+	 * Admin notices handler.
+	 *
+	 * @return void
+	 */
 	public function handle_divi_admin_notice() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
-		$notice  = get_transient( 'rocket_divi_notice' );
+		$notice = get_transient( 'rocket_divi_notice' );
 
 		if ( ! $notice ) {
 			return;
@@ -277,12 +305,19 @@ class Divi extends ThirdpartyTheme {
 		rocket_notice_html(
 			[
 				'status'         => 'info',
-				'dismiss_button' => 'divi_notice',
-				'message'        => __( 'You need to clear Used CSS as you changed a template that is attached to post(s).', 'rocket' ),
+				'dismiss_button' => 'rocket_divi_notice',
+				'message'        =>
+					sprintf( '%$1sWP Rocket:%$2s ', '<strong>', '</strong>' ) . // Splitting it because I think the plugin name is not a translatable string.
+					esc_html__( 'Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' ),
 			]
 		);
 	}
 
+	/**
+	 * Clear divi notice.
+	 *
+	 * @return void
+	 */
 	public function clear_divi_notice() {
 		delete_transient( 'rocket_divi_notice' );
 	}
