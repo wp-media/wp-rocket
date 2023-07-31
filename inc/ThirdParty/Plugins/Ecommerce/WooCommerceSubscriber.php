@@ -92,6 +92,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
 			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
+
+			$events['wp_ajax_woocommerce_product_ordering'] = [ 'disallow_rocket_clean_post', 9 ];
+			$events['woocommerce_after_product_ordering']   = [ 'allow_rocket_clean_post' ];
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -591,5 +594,40 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$exclusions_gallery = apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions_gallery );
 
 		return array_merge( $exclusions, $exclusions_gallery );
+	}
+
+	/**
+	 * Disable post cache clearing during product sorting.
+	 *
+	 * @return void
+	 */
+	public function disallow_rocket_clean_post() : void {
+		$this->event_manager->remove_callback( 'clean_post_cache', 'rocket_clean_post' );
+	}
+
+	/**
+	 * Re-enable post cache clearing after product sorting.
+	 *
+	 * @param integer $product_id ID of sorted product.
+	 * @return void
+	 */
+	public function allow_rocket_clean_post( int $product_id ) : void {
+		$urls          = [];
+		$category_list = wc_get_product_category_list( $product_id );
+
+		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
+			$urls = $matches['urls'];
+		}
+
+		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
+
+		if ( empty( $shop_page ) ) {
+			$shop_page = home_url( 'shop' );
+		}
+
+		$urls[] = $shop_page;
+
+		rocket_clean_files( $urls );
+		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }

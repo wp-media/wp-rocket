@@ -42,9 +42,12 @@ class Test_GetQueueJobStatus extends TestCase {
 	protected function configureCheckResponse($config) {
 		Functions\expect('wp_remote_retrieve_response_code')->with($config['response'])->andReturn($config['code']);
 		if(! $config['is_succeed']) {
+			Functions\expect('get_transient')->with('wp_rocket_rucss_errors_count')->andReturn($config['errors_count']);
+			Functions\expect('set_transient')->with('wp_rocket_rucss_errors_count', $config['errors_count'] + 1, 5 * MINUTE_IN_SECONDS);
 			Functions\expect('wp_remote_retrieve_response_message')->with($config['response'])->andReturn($config['message']);
 			return;
 		}
+		Functions\expect('delete_transient')->with('wp_rocket_rucss_errors_count');
 		Functions\expect('wp_remote_retrieve_body')->with($config['response'])->andReturn($config['body']);
 		Functions\expect('wp_parse_args')->with($config['to_merge'], $config['default'])->andReturn($config['merged']);
 	}

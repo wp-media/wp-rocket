@@ -11,14 +11,14 @@ class APIKey implements AuthInterface {
 	 *
 	 * @var string
 	 */
-	private $email;
+	private $email = '';
 
 	/**
 	 * Cloudflare API Key
 	 *
 	 * @var string
 	 */
-	private $api_key;
+	private $api_key = '';
 
 	/**
 	 * Constructor
@@ -26,7 +26,7 @@ class APIKey implements AuthInterface {
 	 * @param string $email Cloudflare email.
 	 * @param string $api_key Cloudflare API key.
 	 */
-	public function __construct( string $email, string $api_key ) {
+	public function __construct( string $email = '', string $api_key = '' ) {
 		$this->email   = $email;
 		$this->api_key = $api_key;
 	}
@@ -66,10 +66,6 @@ class APIKey implements AuthInterface {
 			);
 		}
 
-		return (
-			isset( $this->email, $this->api_key )
-			&&
-			false !== filter_var( $this->email, FILTER_VALIDATE_EMAIL )
-		);
+		return false !== filter_var( $this->email, FILTER_VALIDATE_EMAIL );
 	}
 }

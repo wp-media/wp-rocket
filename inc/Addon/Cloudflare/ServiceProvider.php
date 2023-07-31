@@ -41,21 +41,21 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getLeagueContainer()->add( 'cloudflare_auth_factory', APIKeyFactory::class )->addArgument( $options );
 
-		$this->getContainer()->add( 'cloudflare_client', Client::class )
+		$this->getLeagueContainer()->add( 'cloudflare_client', Client::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' )->create() );
-		$this->getContainer()->add( 'cloudflare_endpoints', Endpoints::class )
+		$this->getLeagueContainer()->add( 'cloudflare_endpoints', Endpoints::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare_client' ) );
 
-		$this->getContainer()->add( 'cloudflare', Cloudflare::class )
+		$this->getLeagueContainer()->add( 'cloudflare', Cloudflare::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cloudflare_endpoints' ) );
-		$this->getContainer()->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
+		$this->getLeagueContainer()->share( 'cloudflare_subscriber', CloudflareSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'cloudflare' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'cloudflare_auth_factory' ) )
 			->addTag( 'cloudflare_subscriber' );
-		$this->getContainer()->share(
+		$this->getLeagueContainer()->share(
 			'cloudflare_admin_subscriber',
 			CloudflareAdminSubscriber::class
 		);
