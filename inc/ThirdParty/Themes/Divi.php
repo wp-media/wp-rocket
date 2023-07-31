@@ -251,6 +251,17 @@ class Divi extends ThirdpartyTheme {
 	}
 
 	/**
+	 * Is allowed for RUCSS notice functionality when saving templates.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed_for_rucss() {
+		return $this->options->get( 'remove_unused_css', 0 )
+			&&
+			current_user_can( 'rocket_manage_options' );
+	}
+
+	/**
 	 * Save template handler.
 	 *
 	 * @param int $template_post_id Template post ID.
@@ -258,6 +269,10 @@ class Divi extends ThirdpartyTheme {
 	 * @return void
 	 */
 	public function handle_save_template( $template_post_id ) {
+		if ( ! $this->is_allowed_for_rucss() ) {
+			return;
+		}
+
 		/**
 		 * Filters Bypassing saving template functionality.
 		 *
@@ -299,7 +314,7 @@ class Divi extends ThirdpartyTheme {
 	 * @return void
 	 */
 	public function handle_divi_admin_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! $this->is_allowed_for_rucss() ) {
 			return;
 		}
 
