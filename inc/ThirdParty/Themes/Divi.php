@@ -259,8 +259,6 @@ class Divi extends ThirdpartyTheme {
 	 * @return void
 	 */
 	public function handle_save_template( $template_post_id ) {
-		$layout_post_ids = $this->get_layout_ids( $template_post_id );
-
 		/**
 		 * Filters Bypassing saving template functionality.
 		 *
@@ -268,6 +266,11 @@ class Divi extends ThirdpartyTheme {
 		 * @param int  $template_post_id Currently saved template post id.
 		 */
 		if ( apply_filters( 'rocket_divi_bypass_save_template', empty( $layout_post_ids ), $template_post_id ) ) {
+			return;
+		}
+
+		$layout_post_ids = $this->get_layout_ids( $template_post_id );
+		if ( empty( $layout_post_ids ) ) {
 			return;
 		}
 
