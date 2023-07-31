@@ -4,7 +4,6 @@ namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Divi extends ThirdpartyTheme {
 	/**
