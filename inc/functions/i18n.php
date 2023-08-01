@@ -185,12 +185,20 @@ function rocket_has_i18n() {
 		}
 	}
 
+	$default = $identifier = '';
+
 	/**
 	 * Filters the value of i18n plugin detection
 	 *
 	 * @param string $identifier An identifier value.
 	 */
-	return apply_filters( 'rocket_has_i18n', '' );
+	$identifier = apply_filters( 'rocket_has_i18n', $identifier );
+
+	if ( ! is_string( $identifier ) ) {
+		$identifier = $default;
+	}
+
+	return $identifier;
 }
 
 /**
@@ -222,12 +230,20 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
 		return pll_languages_list();
 	}
 
+	$default = $codes = [];
+
 	/**
 	 * Filters the active languages codes list
 	 *
-	 * @param array Array of languages codes.
+	 * @param array $codes Array of languages codes.
 	 */
-	return apply_filters( 'rocket_get_i18n_code', [] );
+	$codes = apply_filters( 'rocket_get_i18n_code', $codes );
+
+	if ( ! is_array( $codes ) ) {
+		$codes;
+	}
+
+	return $codes;
 }
 
 /**
@@ -293,7 +309,11 @@ function get_rocket_i18n_uri() { // phpcs:ignore WordPress.NamingConventions.Pre
 	 */
 	$urls = apply_filters( 'rocket_get_i18n_uri', $urls );
 
-	if ( empty( $urls ) ) {
+	if (
+		! is_array( $urls )
+		||
+		empty( $urls )
+	) {
 		$urls[] = home_url();
 	}
 
@@ -377,7 +397,7 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 		return [];
 	}
 
-	$urls = [];
+	$default = $urls = [];
 
 	switch ( $i18n_plugin ) {
 		// WPML.
@@ -412,9 +432,13 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			/**
 			 * Filters the list of languages subdomains URLs
 			 *
-			 * @param array $subdomains Array of languages subdomains URLs.
+			 * @param array $urls Array of languages subdomains URLs.
 			 */
-			$urls = apply_filters( 'rocket_i18n_subdomains', [] );
+			$urls = apply_filters( 'rocket_i18n_subdomains', $urls );
+
+			if ( ! is_array( $urls ) ) {
+				$urls = $default;
+			}
 	}
 
 	return $urls;
@@ -430,7 +454,8 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
  */
 function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$i18n_plugin = rocket_has_i18n();
-	$home_url    = home_url();
+
+	$default = $home_url = home_url();
 
 	if ( ! $i18n_plugin ) {
 		return $home_url;
@@ -464,7 +489,11 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
 			 * @param string $home_url Home URL.
 			 * @param string $lang     The language code.
 			 */
-			$home_url = apply_filters( 'rocket_i18n_home_url', home_url(), $lang );
+			$home_url = apply_filters( 'rocket_i18n_home_url', $home_url, $lang );
+
+			if ( ! is_string( $home_url ) ) {
+				$home_url = $default;
+			}
 	}
 
 	return $home_url;
@@ -489,7 +518,8 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	}
 
 	$i18n_plugin = rocket_has_i18n();
-	$urls        = [];
+
+	$default = $urls = [];
 
 	switch ( $i18n_plugin ) {
 		// WPML.
@@ -543,6 +573,10 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 			 * @param string $regex Pattern to include at the end.
 			 */
 			$urls = apply_filters( 'rocket_i18n_translated_post_urls', $urls, $url, $post_type, $regex );
+
+			if ( ! is_array( $urls ) ) {
+				$urls = $default;
+			}
 	}
 
 	if ( trim( $path, '/' ) !== '' ) {
@@ -600,6 +634,8 @@ function rocket_get_current_language() {
 		return '';
 	}
 
+	$default = $current_language = '';
+
 	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
 		return pll_current_language();
 	} elseif ( 'wpml' === $i18n_plugin ) {
@@ -611,5 +647,11 @@ function rocket_get_current_language() {
 	 *
 	 * @param string $current_language Current language.
 	 */
-	return apply_filters( 'rocket_i18n_current_language', '' );
+	$current_language = apply_filters( 'rocket_i18n_current_language', $current_language );
+
+	if ( ! is_string( $current_language ) ) {
+		$current_language = $default;
+	}
+
+	return $current_language;
 }
