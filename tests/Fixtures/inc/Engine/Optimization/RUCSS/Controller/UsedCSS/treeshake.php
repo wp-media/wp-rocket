@@ -24,6 +24,7 @@ return [
 				'used_css' => null
 			],
 			'create_new_job' => [
+				'create_job' => true,
 				'safelist' => [],
 				'skipped_attr' => [],
 				'config' => [
@@ -59,6 +60,7 @@ return [
 				'used_css' => null
 			],
 			'create_new_job' => [
+				'create_job' => true,
 				'safelist' => [],
 				'skipped_attr' => [],
 				'config' => [
@@ -234,5 +236,108 @@ return [
 		],
 		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original_without_title.php'),
 
+	],
+	'noContentShouldReturnSame' => [
+		'config' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
+		'is_allowed' => true,
+		'home_url' => 'http://example.com',
+		'is_mobile' => [
+			'has_mobile_cache' => false,
+			'is_caching_mobile_files' => false,
+			'is_mobile' => false,
+		],
+		'get_existing_used_css' => [
+			'used_css' => null
+		],
+		'create_new_job' => [
+			'create_job' => false,
+			'safelist' => [],
+			'skipped_attr' => [],
+			'config' => [
+				'treeshake' => 1,
+				'rucss_safelist' => [],
+				'skip_attr' => [],
+				'is_mobile' => false,
+				'is_home' => true,
+			],
+			'is_success_response' => true,
+			'response' => [
+				'code' => 200,
+
+			]
+		]
+	],
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
+	],
+	'noJobIdShouldReturnSame' => [
+		'config' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
+			'is_allowed' => true,
+			'home_url' => 'http://example.com',
+			'is_mobile' => [
+				'has_mobile_cache' => false,
+				'is_caching_mobile_files' => false,
+				'is_mobile' => false,
+			],
+			'get_existing_used_css' => [
+				'used_css' => null
+			],
+			'create_new_job' => [
+				'create_job' => false,
+				'safelist' => [],
+				'skipped_attr' => [],
+				'config' => [
+					'treeshake' => 1,
+					'rucss_safelist' => [],
+					'skip_attr' => [],
+					'is_mobile' => false,
+					'is_home' => true,
+				],
+				'is_success_response' => true,
+				'response' => [
+					'code' => 200,
+					'contents' => [
+						'queueName' => 'name',
+					]
+				]
+			]
+		],
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
+	],
+	'noQueueNameShouldReturnSame' => [
+		'config' => [
+			'html' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
+			'is_allowed' => true,
+			'home_url' => 'http://example.com',
+			'is_mobile' => [
+				'has_mobile_cache' => false,
+				'is_caching_mobile_files' => false,
+				'is_mobile' => false,
+			],
+			'get_existing_used_css' => [
+				'used_css' => null
+			],
+			'create_new_job' => [
+				'create_job' => false,
+				'safelist' => [],
+				'skipped_attr' => [],
+				'config' => [
+					'treeshake' => 1,
+					'rucss_safelist' => [],
+					'skip_attr' => [],
+					'is_mobile' => false,
+					'is_home' => true,
+				],
+				'is_success_response' => true,
+				'response' => [
+					'code' => 200,
+					'contents' => [
+						'jobId' => 'id',
+					]
+				]
+			]
+		],
+		'expected' => file_get_contents(WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Optimization/RUCSS/Controller/UsedCSS/HTML/original.php'),
 	],
 ];

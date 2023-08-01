@@ -215,7 +215,7 @@ class UsedCSS {
 
 		if ( empty( $used_css ) ) {
 			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
-			if ( false === $add_to_queue_response ) {
+			if ( false === $add_to_queue_response || ! isset( $add_to_queue_response['contents'] ) || ! isset( $add_to_queue_response['contents']['jobId'] ) || ! isset( $add_to_queue_response['contents']['queueName'] ) ) {
 				return $html;
 			}
 
