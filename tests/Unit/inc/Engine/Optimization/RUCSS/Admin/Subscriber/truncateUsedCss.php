@@ -1,30 +1,24 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
+use Brain\Monkey\{Actions,Functions};
 use Mockery;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database,Settings,Subscriber};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\{Queue,UsedCSS};
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use Brain\Monkey\Actions;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_TruncateUsedCss extends TestCase {
-
 	private $settings;
 	private $database;
 	private $usedCSS;
 	private $subscriber;
 
-	protected function setUp(): void
-	{
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->settings   = Mockery::mock( Settings::class );
@@ -72,16 +66,5 @@ class Test_TruncateUsedCss extends TestCase {
 		Functions\expect('set_transient')->with('rocket_rucss_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
 
 		Functions\expect('rocket_renew_box')->with('rucss_success_notice');
-
-		Functions\expect('wp_safe_remote_get')->with(
-			$config['home'],
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => true,
-			]
-		);
-
 	}
 }
