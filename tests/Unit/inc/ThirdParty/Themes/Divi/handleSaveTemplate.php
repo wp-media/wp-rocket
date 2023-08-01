@@ -36,7 +36,7 @@ class Test_HandleSaveTemplate extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testHandleSaveTemplate( $config, $expected ) {
 		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
@@ -93,7 +93,4 @@ class Test_HandleSaveTemplate extends TestCase {
 		$divi->handle_save_template( 1 );
 	}
 
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'handleSaveTemplate' )['test_data'];
-	}
 }

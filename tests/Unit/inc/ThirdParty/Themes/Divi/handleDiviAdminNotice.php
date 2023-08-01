@@ -5,8 +5,6 @@ use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
-use wpdb;
-use function Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
@@ -23,7 +21,7 @@ class Test_HandleDiviAdminNotice extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testHandleAdminNotice( $config, $expected ) {
 		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
@@ -59,9 +57,5 @@ class Test_HandleDiviAdminNotice extends TestCase {
 		$divi = new Divi( $options_api, $options, $delayjs_html );
 
 		$divi->handle_divi_admin_notice();
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'handleDiviAdminNotice' )['test_data'];
 	}
 }
