@@ -85,6 +85,8 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					]
 				);
 
+				$langlinks_default = [];
+
 				// Add submenu for each active langs.
 				switch ( $i18n_plugin ) {
 					case 'wpml':
@@ -106,6 +108,10 @@ function rocket_admin_bar( $wp_admin_bar ) {
 						 * @param array $langlinks Array of languages.
 						 */
 						$langlinks = apply_filters( 'rocket_i18n_admin_bar_menu', [] );
+
+						if ( ! is_array( $langlinks ) ) {
+							$langlinks = $langlinks_default;
+						}
 				}
 
 				if ( $langlinks ) {
