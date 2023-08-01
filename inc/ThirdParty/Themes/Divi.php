@@ -330,7 +330,7 @@ class Divi extends ThirdpartyTheme {
 				'status'         => 'info',
 				'dismiss_button' => 'rocket_divi_notice',
 				'message'        =>
-					sprintf( '%$1sWP Rocket:%$2s ', '<strong>', '</strong>' ) . // Splitting it because I think the plugin name is not a translatable string.
+					sprintf( '%1$sWP Rocket:%2$s ', '<strong>', '</strong>' ) . // Splitting it because I think the plugin name is not a translatable string.
 					esc_html__( 'Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' ),
 			]
 		);
