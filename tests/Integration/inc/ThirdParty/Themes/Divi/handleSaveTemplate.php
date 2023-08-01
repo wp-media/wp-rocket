@@ -83,10 +83,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 			add_filter( 'rocket_divi_bypass_save_template', $config['filter_return'] ? '__return_true' : '__return_false' );
 		}
 
-		if ( isset( $config['filter_return'] ) ) {
-			add_filter( 'rocket_divi_bypass_save_template', $config['filter_return'] ? '__return_true' : '__return_false' );
-		}
-
 		if ( isset( $config['transient_return'] ) ) {
 			if ( $config['transient_return'] ) {
 				set_transient( 'rocket_divi_notice', true );

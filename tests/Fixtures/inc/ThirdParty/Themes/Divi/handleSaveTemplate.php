@@ -46,7 +46,7 @@ return [
 		'bailoutWhenTransientIsThere' => [
 			'config'   => [
 				'rucss_option'     => true,
-				'capability'       => false,
+				'capability'       => true,
 				'filter_return'    => false,
 				'transient_return' => true,
 				'template_post' => [
@@ -61,7 +61,7 @@ return [
 		'bailoutWhenAnotherPostType' => [
 			'config'   => [
 				'rucss_option'     => true,
-				'capability'       => false,
+				'capability'       => true,
 				'filter_return'    => false,
 				'transient_return' => false,
 				'template_post' => [
@@ -76,7 +76,7 @@ return [
 		'bailoutWhenPostStatusNotPublish' => [
 			'config'   => [
 				'rucss_option'     => true,
-				'capability'       => false,
+				'capability'       => true,
 				'filter_return'    => false,
 				'transient_return' => false,
 				'template_post' => [
@@ -92,7 +92,7 @@ return [
 		'bailoutWhenNoLayoutInDB' => [
 			'config'   => [
 				'rucss_option'     => true,
-				'capability'       => false,
+				'capability'       => true,
 				'filter_return'    => false,
 				'transient_return' => false,
 				'template_post' => [
@@ -107,7 +107,7 @@ return [
 		'bailoutWhenLayoutIsnotUsedByPages' => [
 			'config'   => [
 				'rucss_option'     => true,
-				'capability'       => false,
+				'capability'       => true,
 				'filter_return'    => false,
 				'transient_return' => false,
 				'template_post' => [

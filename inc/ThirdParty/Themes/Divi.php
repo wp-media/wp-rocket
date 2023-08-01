@@ -289,6 +289,7 @@ class Divi extends ThirdpartyTheme {
 		}
 
 		$layout_post_ids = $this->get_layout_ids( $template_post_id );
+
 		if ( empty( $layout_post_ids ) ) {
 			return;
 		}
