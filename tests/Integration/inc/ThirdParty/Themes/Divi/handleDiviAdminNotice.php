@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 
@@ -9,11 +10,12 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
  *
  * @group  ThirdParty
  * @group  Divi
+ * @group  AdminOnly
  */
-class Test_handleSaveTemplate extends WPThemeTestcase {
+class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	use CapTrait;
 
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleDiviAdminNotice.php';
 
 	private static $container;
 
@@ -38,6 +40,7 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 		self::resetAdminCap();
 
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
+
 	}
 
 	public function set_up() {
@@ -46,10 +49,12 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
 	}
 
 	public function tear_down() : void {
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
+		$this->restoreWpFilter( 'admin_notices' );
 
 		parent::tear_down();
 	}
@@ -61,10 +66,9 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	/**
 	 * @dataProvider ProviderTestData
 	 */
-	public function testTransientSet( $config, $expected ) {
+	public function testAdminNotice( $config, $expected ) {
 		$this->set_theme( 'divi', 'Divi' );
 
-		$post = $this->factory->post->create_and_get( $config['template_post'] );
 
 		if ( isset( $config['rucss_option'] ) ) {
 			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
@@ -78,10 +82,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 			}
 		}
 
-		if ( isset( $config['filter_return'] ) ) {
-			add_filter( 'rocket_divi_bypass_save_template', $config['filter_return'] ? '__return_true' : '__return_false' );
-		}
-
 		if ( isset( $config['transient_return'] ) ) {
 			if ( $config['transient_return'] ) {
 				set_transient( 'rocket_divi_notice', true );
@@ -90,20 +90,24 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 			}
 		}
 
-		if ( isset( $config['layout_post'] ) ) {
-			$layout_post = $this->factory->post->create_and_get( $config['layout_post'] );
-			update_post_meta( $layout_post->ID, '_et_header_layout_id', $post->ID );
-
-			if ( isset( $config['layout_post']['metas'] ) ) {
-				foreach ( $config['layout_post']['metas'] as $meta ) {
-					update_post_meta( $layout_post->ID, $meta['meta_key'], $meta['meta_value'] );
-				}
-			}
+		if ( $expected['notice_show'] && $expected['notice_html'] ) {
+			Functions\expect( 'wp_create_nonce' )
+				->once()
+				->andReturn( '12345' );
+			$this->assertStringContainsStringIgnoringCase(
+				$this->format_the_html( $expected['notice_html'] ),
+				$this->getActualHtml()
+			);
+		} else {
+			$this->assertEmpty( $this->getActualHtml() );
 		}
+	}
 
-		do_action( 'et_save_post', $post->ID );
+	private function getActualHtml() {
+		ob_start();
+		do_action( 'admin_notices' );
 
-		$this->assertEquals( $expected['transient_set'], get_transient( 'rocket_divi_notice' ) );
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 }
