@@ -166,7 +166,7 @@ function rocket_has_i18n() {
 		$languages = pll_languages_list();
 
 		if ( empty( $languages ) ) {
-			return false;
+			return '';
 		}
 
 		// Polylang, Polylang Pro.
@@ -185,7 +185,8 @@ function rocket_has_i18n() {
 		}
 	}
 
-	$default = $identifier = '';
+	$identifier = '';
+	$default    = $identifier;
 
 	/**
 	 * Filters the value of i18n plugin detection
@@ -230,7 +231,8 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
 		return pll_languages_list();
 	}
 
-	$default = $codes = [];
+	$codes   = [];
+	$default = $codes;
 
 	/**
 	 * Filters the active languages codes list
@@ -240,7 +242,7 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
 	$codes = apply_filters( 'rocket_get_i18n_code', $codes );
 
 	if ( ! is_array( $codes ) ) {
-		$codes;
+		$codes = $default;
 	}
 
 	return $codes;
@@ -397,7 +399,8 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 		return [];
 	}
 
-	$default = $urls = [];
+	$urls    = [];
+	$default = $urls;
 
 	switch ( $i18n_plugin ) {
 		// WPML.
@@ -455,7 +458,8 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$i18n_plugin = rocket_has_i18n();
 
-	$default = $home_url = home_url();
+	$home_url = home_url();
+	$default  = $home_url;
 
 	if ( ! $i18n_plugin ) {
 		return $home_url;
@@ -519,7 +523,8 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 	$i18n_plugin = rocket_has_i18n();
 
-	$default = $urls = [];
+	$urls    = [];
+	$default = $urls;
 
 	switch ( $i18n_plugin ) {
 		// WPML.
@@ -634,7 +639,8 @@ function rocket_get_current_language() {
 		return '';
 	}
 
-	$default = $current_language = '';
+	$current_language = '';
+	$default          = $current_language;
 
 	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
 		return pll_current_language();
