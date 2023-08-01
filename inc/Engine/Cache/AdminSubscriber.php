@@ -189,6 +189,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public function regenerate_configs() {
 		rocket_generate_advanced_cache_file();
 		flush_rocket_htaccess();
+		rocket_generate_config_file();
 	}
 
 	/**
@@ -248,6 +249,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_cache( string $current_url, string $old_url ) {
-		rocket_clean_files( [ $old_url ], null, false );
+		rocket_clean_files( [ $old_url, $current_url ], null, false );
 	}
 }
