@@ -825,7 +825,26 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function clear_failed_urls() {
-		$rows = $this->used_css_query->get_failed_rows();
+		/**
+		 * Delay before failed rucss jobs are deleted.
+		 *
+		 * @param string $delay delay before failed rucss jobs are deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
+		$parts = explode( ' ', $delay );
+
+		if ( '' === $delay || '0' === $delay ) {
+			return;
+		}
+
+		$value = 3;
+		$unit  = 'days';
+
+		if ( count( $parts ) === 2 && $parts[0] >= 0 ) {
+			$value = (float) $parts[0];
+			$unit  = $parts[1];
+		}
+		$rows = $this->used_css_query->get_failed_rows( $value , $unit );
 
 		if ( empty( $rows ) ) {
 			return;

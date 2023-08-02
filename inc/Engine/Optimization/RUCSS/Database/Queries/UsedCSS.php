@@ -407,9 +407,11 @@ class UsedCSS extends Query {
 	/**
 	 * Get all failed rows.
 	 *
+	 * @param float  $delay delay before the urls are deleted.
+	 * @param string $unit unit from the delay.
 	 * @return array|false
 	 */
-	public function get_failed_rows() {
+	public function get_failed_rows( float $delay = 3, string $unit = 'days' ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -420,7 +422,7 @@ class UsedCSS extends Query {
 				'date_query' => [
 					[
 						'column'    => 'modified',
-						'before'    => '3 days ago',
+						'before'    => "$delay $unit ago",
 						'inclusive' => true,
 					],
 				],
