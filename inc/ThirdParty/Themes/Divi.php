@@ -333,6 +333,7 @@ class Divi extends ThirdpartyTheme {
 				'status'         => 'warning',
 				'dismissible'    => '',
 				'dismiss_button' => 'rocket_divi_notice',
+				'action'         => 'clear_used_css',
 				'message'        =>
 					sprintf( '%1$sWP Rocket:%2$s ', '<strong>', '</strong>' ) . // Splitting it because I think the plugin name is not a translatable string.
 					esc_html__( 'Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' ),
