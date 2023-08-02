@@ -39,6 +39,7 @@ class Test_processPendingJobs extends TestCase
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 
+		$this->queue->expects()->get_pending_preload_actions()->andReturn([]);
 		Filters\expectApplied('rocket_preload_cache_pending_jobs_cron_rows_count')->with(100)->andReturn($config['rows']);
 		$this->query->expects(self::once())->method( 'get_outdated_in_progress_jobs' )->with()->willReturn($config['outdated_jobs']);
 		$this->query->expects(self::atLeastOnce())->method('make_status_failed')->withConsecutive(...$expected['outdated_jobs_id']);

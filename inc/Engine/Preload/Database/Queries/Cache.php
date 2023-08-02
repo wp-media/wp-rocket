@@ -338,18 +338,6 @@ class Cache extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $total = 45 ) {
-		$inprogress_count = $this->query(
-			[
-				'count'     => true,
-				'status'    => 'in-progress',
-				'is_locked' => false,
-			],
-			false
-		);
-
-		if ( $inprogress_count >= $total ) {
-			return [];
-		}
 
 		$orderby = 'modified';
 
@@ -366,7 +354,7 @@ class Cache extends Query {
 
 		return $this->query(
 			[
-				'number'         => ( $total - $inprogress_count ),
+				'number'         => $total,
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
