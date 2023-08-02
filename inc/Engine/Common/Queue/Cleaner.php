@@ -61,6 +61,7 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 
 		$statuses_to_purge = [
 			\ActionScheduler_Store::STATUS_COMPLETE,
+			\ActionScheduler_Store::STATUS_FAILED,
 			\ActionScheduler_Store::STATUS_CANCELED,
 		];
 		foreach ( $statuses_to_purge as $status ) {
