@@ -25,8 +25,8 @@ class Test_GetPendingJobs extends TestCase {
 	 */
 	public function testShouldReturnPending($config, $expected) {
 
-		$this->query->expects()->method('query')->with([
-			'number'         => $config['total'] - $config['in-progress'],
+		$this->query->expects(self::once())->method('query')->with([
+			'number'         => $config['total'],
 			'status'         => 'pending',
 			'fields'         => [
 				'id',
