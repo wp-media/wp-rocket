@@ -1068,4 +1068,13 @@ class UsedCSS {
 			$items_array
 		);
 	}
+
+	/**
+	 * Check if database has at least one completed row.
+	 *
+	 * @return bool
+	 */
+	public function has_one_completed_row_at_least() {
+		return $this->used_css_query->get_completed_count() > 0;
+	}
 }

@@ -4,6 +4,7 @@ namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 class Divi extends ThirdpartyTheme {
 	/**
@@ -35,16 +36,25 @@ class Divi extends ThirdpartyTheme {
 	private $delayjs_html;
 
 	/**
+	 * Used CSS controller instance.
+	 *
+	 * @var UsedCSS
+	 */
+	private $used_css;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options      $options_api Options API instance.
 	 * @param Options_Data $options     WP Rocket options instance.
 	 * @param HTML         $delayjs_html DelayJS HTML class.
+	 * @param UsedCSS      $used_css Used CSS controller instance.
 	 */
-	public function __construct( Options $options_api, Options_Data $options, HTML $delayjs_html ) {
+	public function __construct( Options $options_api, Options_Data $options, HTML $delayjs_html, UsedCSS $used_css ) {
 		$this->options_api  = $options_api;
 		$this->options      = $options;
 		$this->delayjs_html = $delayjs_html;
+		$this->used_css     = $used_css;
 	}
 
 	/**
@@ -272,10 +282,6 @@ class Divi extends ThirdpartyTheme {
 	 * @return void
 	 */
 	public function handle_save_template( $template_post_id ) {
-		if ( ! $this->is_allowed_for_rucss() ) {
-			return;
-		}
-
 		/**
 		 * Filters Bypassing saving template functionality.
 		 *
@@ -368,6 +374,10 @@ class Divi extends ThirdpartyTheme {
 		}
 
 		if ( ! $new_value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $this->used_css->has_one_completed_row_at_least() ) {
 			return;
 		}
 

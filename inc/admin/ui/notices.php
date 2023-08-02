@@ -754,8 +754,8 @@ function rocket_notice_html( $args ) {
 			];
 
 			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-				$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-				$params[ '_wp_http_referer' ] = rawurlencode( $referer_url );
+				$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+				$params['_wp_http_referer'] = rawurlencode( $referer_url );
 			}
 			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
 			break;
