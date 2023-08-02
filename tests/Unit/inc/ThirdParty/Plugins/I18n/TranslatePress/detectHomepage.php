@@ -30,7 +30,7 @@ class Test_detectHomepage extends TestCase {
 		TRP_Url_Converter::$url = $config['url_language'];
 		TRP_Url_Converter::$lang = $config['language'];
 
-		Functions\when('home_url')->justReturn( $config['home_url'] );
+		Functions\when( 'home_url' )->justReturn( $config['home_url'] );
 
         $this->assertSame(
 			$expected['result'],

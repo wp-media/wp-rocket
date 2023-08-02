@@ -17,7 +17,7 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() {
         if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
-			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Url_Converter.php';
 		}
 
