@@ -749,14 +749,15 @@ function rocket_notice_html( $args ) {
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
 			break;
 		case 'clear_used_css':
-			$referer = '';
-			$action  = 'rocket_clear_usedcss';
+			$params = [
+				'action' => 'rocket_clear_usedcss',
+			];
 
 			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 				$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-				$referer     = '&_wp_http_referer=' . rawurlencode( $referer_url );
+				$params[ '_wp_http_referer' ] = rawurlencode( $referer_url );
 			}
-			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
 			break;
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
