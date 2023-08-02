@@ -3,15 +3,14 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\I18n\TranslatePress;
 
 use Brain\Monkey\Functions;
-use TRP_Url_Converter;
 use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::detect_homepage
+ * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::is_translatepress
  * @group TranslatePress
  */
-class Test_detectHomepage extends TestCase {
+class Test_IsTranslatepress extends TestCase {
     /**
      * @var TranslatePress
      */
@@ -26,14 +25,12 @@ class Test_detectHomepage extends TestCase {
     /**
      * @dataProvider configTestData
      */
-    public function testShouldReturnAsExpected( $config, $expected ) {
-		TRP_Url_Converter::$lang = $config['language'];
-
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+    public function testShouldReturnAsExpected( $config, $identifier, $expected ) {
+		Functions\when( 'trp_get_languages' )->justReturn( $config['languages'] );
 
         $this->assertSame(
 			$expected,
-			$this->translatepress->detect_homepage( $config['home_url'], $config['url'] )
+			$this->translatepress->is_translatepress( $identifier )
 		);
     }
 }

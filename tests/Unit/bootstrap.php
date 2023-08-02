@@ -47,6 +47,9 @@ function load_original_files_before_mocking() {
 		'/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php',
 	  	'/classes/TRP_Url_Converter.php',
 		'/classes/TRP_Translate_Press.php',
+		'/classes/TRP_Settings.php',
+		'/classes/TRP_Languages.php',
+		'/classes/TRP_Language_Switcher.php',
     ];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;

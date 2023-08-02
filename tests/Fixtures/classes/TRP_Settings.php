@@ -4,7 +4,12 @@ if ( ! class_exists( 'TRP_Settings' ) ) {
 
 		public function get_settings()
 		{
-			return [];
+			return [
+				'publish-languages' => [
+					'fr',
+					'us',
+				],
+			];
 		}
 	}
 }

@@ -14,11 +14,10 @@ class Test_detectHomepage extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		TRP_Url_Converter::$url = $config['url_language'];
 		TRP_Url_Converter::$lang = $config['language'];
 
 		$this->assertSame(
-			$expected['result'],
+			$expected,
 			apply_filters( 'rocket_rucss_is_home_url', $config['home_url'], $config['url'] )
 		);
 	}
