@@ -330,7 +330,8 @@ class Divi extends ThirdpartyTheme {
 
 		rocket_notice_html(
 			[
-				'status'         => 'info',
+				'status'         => 'warning',
+				'dismissible'    => '',
 				'dismiss_button' => 'rocket_divi_notice',
 				'message'        =>
 					sprintf( '%1$sWP Rocket:%2$s ', '<strong>', '</strong>' ) . // Splitting it because I think the plugin name is not a translatable string.

@@ -43,7 +43,8 @@ return [
 			'expected' => [
 				'notice_show' => true,
 				'notice_details' => [
-					'status'         => 'info',
+					'status'         => 'warning',
+					'dismissible'    => '',
 					'dismiss_button' => 'rocket_divi_notice',
 					'message'        =>
 						'<strong>WP Rocket:</strong> Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.'
