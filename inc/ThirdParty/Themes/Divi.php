@@ -73,6 +73,9 @@ class Divi extends ThirdpartyTheme {
 		$events['et_save_post']      = 'handle_save_template';
 		$events['admin_notices']     = 'handle_divi_admin_notice';
 
+		$slug                             = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
+		$events['update_option_' . $slug] = [ 'remove_transient_when_enabling_rucss_option', 10, 2 ];
+
 		$events['rocket_after_clean_used_css'] = 'clear_divi_notice';
 
 		return $events;
@@ -343,5 +346,29 @@ class Divi extends ThirdpartyTheme {
 	 */
 	public function clear_divi_notice() {
 		delete_transient( 'rocket_divi_notice' );
+	}
+
+	/**
+	 * Remove notice transient when enabling RUCSS.
+	 *
+	 * @param array $old_value An array of submitted values for the settings.
+	 * @param array $new_value An array of previous values for the settings.
+	 *
+	 * @return void
+	 */
+	public function remove_transient_when_enabling_rucss_option( $old_value, $new_value ) {
+		if ( ! isset( $new_value['remove_unused_css'], $old_value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( $new_value['remove_unused_css'] === $old_value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( ! $new_value['remove_unused_css'] ) {
+			return;
+		}
+
+		$this->clear_divi_notice();
 	}
 }
