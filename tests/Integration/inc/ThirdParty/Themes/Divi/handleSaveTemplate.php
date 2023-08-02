@@ -66,18 +66,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 
 		$post = $this->factory->post->create_and_get( $config['template_post'] );
 
-		if ( isset( $config['rucss_option'] ) ) {
-			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
-		}
-
-		if ( isset( $config['capability'] ) ) {
-			if ( $config['capability'] ) {
-				wp_set_current_user( self::$user_with_permission );
-			} else {
-				wp_set_current_user( self::$user_without_permission );
-			}
-		}
-
 		if ( isset( $config['filter_return'] ) ) {
 			add_filter( 'rocket_divi_bypass_save_template', $config['filter_return'] ? '__return_true' : '__return_false' );
 		}
@@ -93,12 +81,6 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 		if ( isset( $config['layout_post'] ) ) {
 			$layout_post = $this->factory->post->create_and_get( $config['layout_post'] );
 			update_post_meta( $layout_post->ID, '_et_header_layout_id', $post->ID );
-
-			if ( isset( $config['layout_post']['metas'] ) ) {
-				foreach ( $config['layout_post']['metas'] as $meta ) {
-					update_post_meta( $layout_post->ID, $meta['meta_key'], $meta['meta_value'] );
-				}
-			}
 		}
 
 		do_action( 'et_save_post', $post->ID );

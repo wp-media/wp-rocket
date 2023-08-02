@@ -2,6 +2,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
 use Mockery;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
@@ -39,22 +40,10 @@ class Test_HandleSaveTemplate extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testHandleSaveTemplate( $config, $expected ) {
-		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
-		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
-		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
-
-		if ( isset( $config['rucss_option'] ) ) {
-			$options->shouldReceive( 'get' )
-			              ->with( 'remove_unused_css', false )
-			              ->andReturn( $config['rucss_option'] );
-		}
-
-		if ( isset( $config['capability'] ) ) {
-			Functions\expect( 'current_user_can' )
-				->once()
-				->with( 'rocket_manage_options' )
-				->andReturn( $config['capability'] );
-		}
+		$options_api  = Mockery::mock( 'WP_Rocket\Admin\Options' );
+		$options      = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$delayjs_html = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
+		$used_css     = Mockery::mock( UsedCSS::class );
 
 		if ( isset( $config['transient_return'] ) ) {
 			Functions\expect( 'get_transient' )
@@ -75,11 +64,6 @@ class Test_HandleSaveTemplate extends TestCase {
 				Functions\when( 'get_post_status' )
 					->justReturn( $config['layout_post']['post_status'] );
 			}
-
-			Functions\expect( 'get_post_meta' )
-				->once()
-				->andReturn( $config['layout_post']['metas'] ?? [] );
-
 		}
 
 		if ( $expected['transient_set'] && ! $config['transient_return'] ) {
@@ -88,7 +72,7 @@ class Test_HandleSaveTemplate extends TestCase {
 			Functions\expect( 'set_transient' )->with( 'rocket_divi_notice', true )->never();
 		}
 
-		$divi = new Divi( $options_api, $options, $delayjs_html );
+		$divi = new Divi( $options_api, $options, $delayjs_html, $used_css );
 
 		$divi->handle_save_template( 1 );
 	}

@@ -308,11 +308,6 @@ class Divi extends ThirdpartyTheme {
 				continue;
 			}
 
-			$used_on = get_post_meta( $layout_post_id, '_et_use_on' );
-			if ( empty( $used_on ) ) {
-				continue;
-			}
-
 			set_transient( 'rocket_divi_notice', true );
 			return;
 		}

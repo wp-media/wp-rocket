@@ -2,6 +2,7 @@
 namespace WP_Rocket\tests\Unit\inc\ThirdParty\Themes\Divi;
 
 use Mockery;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
@@ -24,9 +25,10 @@ class Test_HandleDiviAdminNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testHandleAdminNotice( $config, $expected ) {
-		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
-		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
-		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
+		$options_api  = Mockery::mock( 'WP_Rocket\Admin\Options' );
+		$options      = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
+		$delayjs_html = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
+		$used_css     = Mockery::mock( UsedCSS::class );
 
 		if ( isset( $config['rucss_option'] ) ) {
 			$options->shouldReceive( 'get' )
@@ -54,7 +56,7 @@ class Test_HandleDiviAdminNotice extends TestCase {
 			Functions\expect( 'rocket_notice_html' )->never()->andReturnNull();
 		}
 
-		$divi = new Divi( $options_api, $options, $delayjs_html );
+		$divi = new Divi( $options_api, $options, $delayjs_html, $used_css );
 
 		$divi->handle_divi_admin_notice();
 	}
