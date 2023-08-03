@@ -169,7 +169,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$notice = get_transient( 'rocket_domain_changed' );
 
-		if ( ! $notice ) {
+		if ( ! $notice || is_multisite() ) {
 			return;
 		}
 
@@ -188,10 +188,6 @@ class Subscriber implements Subscriber_Interface {
 				'</a>'
 			),
 		];
-
-		if ( ! is_multisite() ) {
-			$args['action'] = 'regenerate_configuration';
-		}
 
 		rocket_notice_html( $args );
 	}
