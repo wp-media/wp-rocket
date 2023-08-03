@@ -36,12 +36,12 @@ jobs:
         run: |
           echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/exclusions/list)"
 
-      - name: Save Default Lists
+      - name: Get and Save Default Lists
         id: saveDynamicLists
-        uses: jsdaniell/create-json@1.1.2
+        uses: engahmeds3ed/create-json-url@0.0.1
         with:
           name: "dynamic-lists.json"
-          json: ${{ steps.getDynamicLists.outputs.lists }}
+          url: "https://b.rucss.wp-rocket.me/api/exclusions/list"
           dir: '/'
 
       - name: Commit Default Lists JSON file
@@ -51,17 +51,12 @@ jobs:
           commit_message: update dynamic lists
           commit_user_name: WP Media GitHub Actions Bot
 
-      - name: get latest incompatible plugins lists
-        id: getIncompatiblePluginsLists
-        run: |
-          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/incompatible-plugins/list)"
-
-      - name: Save IncompatiblePlugins Lists
+      - name: Get and save incompatible plugins lists
         id: saveIncompatiblePluginsLists
-        uses: jsdaniell/create-json@1.1.2
+        uses: engahmeds3ed/create-json-url@0.0.1
         with:
           name: "dynamic-lists-incompatible-plugins.json"
-          json: ${{ steps.getIncompatiblePluginsLists.outputs.lists }}
+          url: "https://b.rucss.wp-rocket.me/api/incompatible-plugins/list"
           dir: '/'
 
       - name: Commit IncompatiblePlugins JSON file
@@ -71,17 +66,12 @@ jobs:
           commit_message: update incompatible plugins dynamic lists
           commit_user_name: WP Media GitHub Actions Bot
 
-      - name: get latest DelayJS lists
-        id: getDynamicDelayJSLists
-        run: |
-          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list)"
-
-      - name: Save DelayJS Lists
+      - name: Get and Save DelayJS Lists
         id: saveDynamicDelayJSLists
-        uses: jsdaniell/create-json@1.1.2
+        uses: engahmeds3ed/create-json-url@0.0.1
         with:
           name: "dynamic-lists-delayjs.json"
-          json: ${{ steps.getDynamicDelayJSLists.outputs.lists }}
+          url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
           dir: '/'
 
       - name: Commit DelayJS JSON file
