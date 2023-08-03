@@ -212,16 +212,6 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->delete_used_css_rows();
 		$this->set_notice_transient();
-
-		wp_safe_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 	}
 
 	/**
@@ -332,9 +322,10 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
+		rocket_clean_domain();
+
 		$this->delete_used_css_rows();
 
-		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
 		set_transient(
@@ -350,16 +341,6 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		$this->set_notice_transient();
-
-		wp_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
@@ -580,16 +561,6 @@ class Subscriber implements Subscriber_Interface {
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
 		$this->set_notice_transient();
-
-		wp_safe_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 	}
 
 	/**
