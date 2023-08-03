@@ -32,6 +32,7 @@ return [
 		'analytics_enabled'   => '',
 		'cdn'                 => false,
 		'cdn_cnames'          => false,
+		'version'             => '3.15',
 	],
 
 	// Test data.
@@ -234,5 +235,31 @@ return [
 				'set_transient'               => '1',
 			],
 		],
+
+		'versionShouldNotTriggerClearing' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'analytics_enabled'   => '',
+				'cdn'                 => false,
+				'cdn_cnames'          => false,
+				'version'             => '3.16',
+			],
+			'expected' => [
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+		]
 	],
 ];
