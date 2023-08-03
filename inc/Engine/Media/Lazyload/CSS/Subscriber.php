@@ -5,6 +5,9 @@ use WP_Filesystem_Direct;
 use WP_Post;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadedContent;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Data\ProtectedContent;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
@@ -19,6 +22,7 @@ use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	use LoggerAware, RegexTrait;
+
 	/**
 	 * Extract background images from CSS.
 	 *
@@ -83,28 +87,37 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	protected $options;
 
 	/**
+	 * Make LazyloadedContent instance.
+	 *
+	 * @var LazyloadCSSContentFactory
+	 */
+	protected $lazyloaded_content_factory;
+
+	/**
 	 * Instantiate class.
 	 *
-	 * @param Extractor        $extractor Extract background images from CSS.
-	 * @param RuleFormatter    $rule_formatter Format the CSS rule inside the CSS content.
-	 * @param FileResolver     $file_resolver Resolves the name from the file from its URL.
-	 * @param CacheInterface   $cache Cache instance.
-	 * @param MappingFormatter $mapping_formatter Format data for the Mapping file.
-	 * @param TagGenerator     $tag_generator Generate tags from the mapping of lazy loaded images.
-	 * @param ContentFetcher   $fetcher Fetch content.
-	 * @param ContextInterface $context Context.
-	 * @param Options_Data     $options WPR Options.
+	 * @param Extractor                 $extractor Extract background images from CSS.
+	 * @param RuleFormatter             $rule_formatter Format the CSS rule inside the CSS content.
+	 * @param FileResolver              $file_resolver Resolves the name from the file from its URL.
+	 * @param CacheInterface            $cache Cache instance.
+	 * @param MappingFormatter          $mapping_formatter Format data for the Mapping file.
+	 * @param TagGenerator              $tag_generator Generate tags from the mapping of lazy loaded images.
+	 * @param ContentFetcher            $fetcher Fetch content.
+	 * @param ContextInterface          $context Context.
+	 * @param Options_Data              $options WPR Options.
+	 * @param LazyloadCSSContentFactory $lazyloaded_content_factory Make LazyloadedContent instance.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options ) {
-		$this->extractor         = $extractor;
-		$this->cache             = $cache;
-		$this->rule_formatter    = $rule_formatter;
-		$this->file_resolver     = $file_resolver;
-		$this->mapping_formatter = $mapping_formatter;
-		$this->tag_generator     = $tag_generator;
-		$this->context           = $context;
-		$this->options           = $options;
-		$this->fetcher           = $fetcher;
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory ) {
+		$this->extractor                  = $extractor;
+		$this->cache                      = $cache;
+		$this->rule_formatter             = $rule_formatter;
+		$this->file_resolver              = $file_resolver;
+		$this->mapping_formatter          = $mapping_formatter;
+		$this->tag_generator              = $tag_generator;
+		$this->context                    = $context;
+		$this->options                    = $options;
+		$this->fetcher                    = $fetcher;
+		$this->lazyloaded_content_factory = $lazyloaded_content_factory;
 	}
 
 	/**
@@ -144,10 +157,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->logger::debug(
 			'Starting lazyload',
-			[
-				'type' => 'lazyload_css_bg_images',
-				'data' => $html,
-			]
+			$this->generate_log_context(
+				[
+					'data' => $html,
+				]
+				)
 			);
 
 		$output = apply_filters(
@@ -160,20 +174,22 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! is_array( $output ) || ! key_exists( 'html', $output ) ) {
 			$this->logger::debug(
 				'Lazyload bailed out',
-				[
-					'type' => 'lazyload_css_bg_images',
-					'data' => $html,
-				]
+				$this->generate_log_context(
+					[
+						'data' => $html,
+					]
+					)
 				);
 			return $html;
 		}
 
 		$this->logger::debug(
 			'Ending lazyload',
-			[
-				'type' => 'lazyload_css_bg_images',
-				'data' => $html,
-			]
+			$this->generate_log_context(
+				[
+					'data' => $html,
+				]
+				)
 			);
 
 		return $output['html'];
@@ -187,10 +203,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function clear_generated_css() {
 		$this->logger::debug(
 			'Clear lazy CSS',
-			[
-				'type' => 'lazyload_css_bg_images',
-			]
-			);
+			$this->generate_log_context()
+		);
 		$this->cache->clear();
 	}
 
@@ -204,17 +218,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$url = get_post_permalink( $post->ID );
 		$this->logger::debug(
 			"Clear lazy CSS for $url",
-			[
-				'type' => 'lazyload_css_bg_images',
-			]
-			);
+			$this->generate_log_context()
+		);
 		if ( ! $url ) {
 			$this->logger::debug(
 				"Clear lazy CSS for $url",
-				[
-					'type' => 'lazyload_css_bg_images',
-				]
-				);
+				$this->generate_log_context()
+			);
 			return;
 		}
 			$this->cache->delete( $this->format_url( $url ) );
@@ -261,11 +271,12 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_files', $data ) ) {
 			$this->logger::debug(
 				'Create lazy css files bailed out',
-				[
-					'type' => 'lazyload_css_bg_images',
-					'data' => $data,
-				]
-				);
+				$this->generate_log_context(
+					[
+						'data' => $data,
+					]
+					)
+			);
 			return $data;
 		}
 
@@ -275,31 +286,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$css_files = array_unique( $data['css_files'] );
 
-		usort(
-			$css_files,
-			function ( $url1, $url2 ) {
-				return strlen( $url1 ) < strlen( $url2 ) ? 1 : -1;
-			}
-			);
+		$protected_content = $this->protect_css_urls( $html, $css_files );
 
-		$css_files_mapping = [];
-
-		foreach ( $css_files as $url ) {
-			$placeholder = uniqid( 'url_bg_css_' );
-
-			$html = str_replace( $url, $placeholder, $html );
-
-			$css_files_mapping[ $url ] = $placeholder;
-		}
+		$html              = $protected_content->get_content();
+		$css_files_mapping = $protected_content->get_protected_files_mapping();
 
 		foreach ( $css_files as $url ) {
 
 			if ( $this->is_excluded( $url ) ) {
 				$this->logger::debug(
 					"Excluded lazy css files $url",
-					[
-						'type' => 'lazyload_css_bg_images',
-					]
+					$this->generate_log_context()
 				);
 				continue;
 			}
@@ -308,9 +305,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			if ( ! $this->cache->has( $url_key ) ) {
 				$this->logger::debug(
 					"Generate lazy css files $url",
-					[
-						'type' => 'lazyload_css_bg_images',
-					]
+					$this->generate_log_context()
 					);
 
 				$file_mapping = $this->generate_css_file( $url );
@@ -318,9 +313,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				if ( empty( $file_mapping ) ) {
 					$this->logger::debug(
 						"Create lazy css files $url bailed out",
-						[
-							'type' => 'lazyload_css_bg_images',
-						]
+						$this->generate_log_context()
 						);
 					continue;
 				}
@@ -330,9 +323,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			} else {
 				$this->logger::debug(
 					"Load lazy css files $url",
-					[
-						'type' => 'lazyload_css_bg_images',
-					]
+					$this->generate_log_context()
 					);
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
@@ -371,10 +362,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
 			$this->logger::debug(
 				'Add lazy tag bailed out',
-				[
-					'type' => 'lazyload_css_bg_images',
-					'data' => $data,
-				]
+				$this->generate_log_context(
+					[
+						'data' => $data,
+					]
+					)
 				);
 			return $data;
 		}
@@ -392,10 +384,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$tags = $this->tag_generator->generate( $lazyload_images, $loaded );
 		$this->logger::debug(
 			'Add lazy tag generated',
-			[
-				'type' => 'lazyload_css_bg_images',
-				'data' => $tags,
-			]
+			$this->generate_log_context(
+				[
+					'data' => $tags,
+				]
+				)
 			);
 		$data['html'] = str_replace( '</head>', "$tags</head>", $data['html'] );
 
@@ -423,26 +416,26 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$output = $this->generate_content( $content );
 
-		if ( ! key_exists( 'urls', $output ) || count( $output['urls'] ) === 0 ) {
+		if ( count( $output->get_urls() ) === 0 ) {
 			return [];
 		}
 
-		if ( ! $this->cache->set( $this->format_url( $url ), $output['content'] ) ) {
+		if ( ! $this->cache->set( $this->format_url( $url ), $output->get_content() ) ) {
 			return [];
 		}
 
-		$this->cache->set( $this->get_mapping_file_url( $url ), json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+		$this->cache->set( $this->get_mapping_file_url( $url ), json_encode( $output->get_urls() ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
-		return $output['urls'];
+		return $output->get_urls();
 	}
 
 	/**
 	 * Generate lazy content for a certain content.
 	 *
 	 * @param string $content Content to generate lazy for.
-	 * @return array
+	 * @return LazyloadedContent
 	 */
-	protected function generate_content( string $content ): array {
+	protected function generate_content( string $content ): LazyloadedContent {
 		$urls           = $this->extractor->extract( $content );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
@@ -451,10 +444,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$formatted_urls = array_merge( $formatted_urls, $this->mapping_formatter->format( $url_tags ) );
 		}
 
-		return [
-			'urls'    => $formatted_urls,
-			'content' => $content,
-		];
+		return $this->lazyloaded_content_factory->make_lazyloaded_content( $formatted_urls, $content );
 	}
 
 	/**
@@ -483,10 +473,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_inline', $data ) ) {
 			$this->logger::debug(
 				'Create lazy css inline bailed out',
-				[
-					'type' => 'lazyload_css_bg_images',
-					'data' => $data,
-				]
+				$this->generate_log_context(
+					[
+						'data' => $data,
+					]
+					)
 				);
 			return $data;
 		}
@@ -501,23 +492,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 			$output = $this->generate_content( $content );
 
-			if ( empty( $output ) ) {
-				$this->logger::debug(
-					"Create lazy css inline $content bailed out",
-					[
-						'type' => 'lazyload_css_bg_images',
-						'data' => [
-							'content' => $content,
-							'output'  => $output,
-						],
-					]
-					);
-				continue;
-			}
+			$html = str_replace( $content, $output->get_content(), $html );
 
-			$html = str_replace( $content, $output['content'], $html );
-
-			$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output['urls'] );
+			$data['lazyloaded_images'] = array_merge( $data['lazyloaded_images'], $output->get_urls() );
 		}
 
 		$data['html'] = $html;
@@ -721,12 +698,56 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$this->logger::debug(
 			"Generated url lazy css files $url",
-			[
-				'type' => 'lazyload_css_bg_images',
-				'data' => $cached_url,
-			]
+			$this->generate_log_context(
+				[
+					'data' => $cached_url,
+				]
+				)
 		);
 
 		return add_query_arg( $queries, $cached_url );
+	}
+
+	/**
+	 * Generate the context for logs.
+	 *
+	 * @param array $data Data to pass to logs.
+	 * @return array
+	 */
+	protected function generate_log_context( array $data = [] ): array {
+		return array_merge(
+			$data,
+			[
+				'type' => 'lazyload_css_bg_images',
+			]
+			);
+	}
+
+	/**
+	 * Protect URL inside the content.
+	 *
+	 * @param string $content Content to protect.
+	 * @param array  $css_files CSS files from the content.
+	 * @return ProtectedContent
+	 */
+	protected function protect_css_urls( string $content, array $css_files ): ProtectedContent {
+		usort(
+			$css_files,
+			function ( $url1, $url2 ) {
+				return strlen( $url1 ) < strlen( $url2 ) ? 1 : -1;
+			}
+		);
+
+		$css_files_mapping = [];
+
+		foreach ( $css_files as $url ) {
+			$placeholder = uniqid( 'url_bg_css_' );
+
+			$content = str_replace( $url, $placeholder, $content );
+
+			$css_files_mapping[ $url ] = $placeholder;
+		}
+
+		return $this->lazyloaded_content_factory->make_protected_content( $css_files_mapping, $content );
 	}
 }

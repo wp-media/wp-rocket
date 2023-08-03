@@ -5,6 +5,7 @@ namespace Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
@@ -14,7 +15,6 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use Mockery;
-use WP_Filesystem_Direct;
 
 trait SubscriberTrait
 {
@@ -39,11 +39,6 @@ trait SubscriberTrait
 	 * @var FilesystemCache
 	 */
 	protected $filesystem_cache;
-
-	/**
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
 
 	/**
 	 * @var MappingFormatter
@@ -71,6 +66,11 @@ trait SubscriberTrait
 	protected $options;
 
 	/**
+	 * @var LazyloadCSSContentFactory
+	 */
+	protected $lazyload_content_factory;
+
+	/**
 	 * @var Subscriber
 	 */
 	protected $subscriber;
@@ -81,14 +81,14 @@ trait SubscriberTrait
 		$this->rule_formatter = Mockery::mock(RuleFormatter::class);
 		$this->file_resolver = Mockery::mock(FileResolver::class);
 		$this->filesystem_cache = Mockery::mock(FilesystemCache::class);
-		$this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
 		$this->json_formatter = Mockery::mock(MappingFormatter::class);
 		$this->tag_generator = Mockery::mock(TagGenerator::class);
 		$this->fetcher = Mockery::mock(ContentFetcher::class);
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->options = Mockery::mock(Options_Data::class);
+		$this->lazyload_content_factory = new LazyloadCSSContentFactory();
 
-		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->fetcher, $this->context, $this->options, $this->filesystem);
+		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->fetcher, $this->context, $this->options, $this->lazyload_content_factory);
 		$this->set_logger($this->subscriber);
 	}
 }

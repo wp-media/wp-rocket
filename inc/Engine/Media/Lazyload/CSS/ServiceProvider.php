@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Context\LazyloadCSSContext;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
@@ -55,6 +56,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getLeagueContainer()->add( 'lazyload_css_rule_formatter', RuleFormatter::class );
 		$this->getLeagueContainer()->add( 'lazyload_css_tag_generator', TagGenerator::class );
 
+		$this->getLeagueContainer()->add( 'lazyload_css_factory', LazyloadCSSContentFactory::class );
+
 		$this->getLeagueContainer()->share( 'lazyload_css_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_extractor' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_rule_formatter' ) )
@@ -64,6 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'lazyload_css_tag_generator' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_fetcher' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_context' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'lazyload_css_factory' ) );
 	}
 }
