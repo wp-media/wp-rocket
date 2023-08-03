@@ -133,8 +133,9 @@ class Queue extends AbstractASQueue {
 	public function get_pending_preload_actions(): array {
 		return $this->search(
 			[
-				'hook'   => 'rocket_preload_job_preload_url',
-				'status' => ActionScheduler_Store::STATUS_PENDING,
+				'hook'     => 'rocket_preload_job_preload_url',
+				'status'   => ActionScheduler_Store::STATUS_PENDING,
+				'per_page' => -1,
 			]
 		);
 	}
