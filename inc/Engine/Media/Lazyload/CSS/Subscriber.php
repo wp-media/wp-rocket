@@ -284,8 +284,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$css_files_mapping = [];
 
-		$time = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
-
 		foreach ( $css_files as $url ) {
 			$placeholder = uniqid( 'url_bg_css_' );
 
@@ -339,25 +337,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
-			$cached_url = $this->cache->generate_url( $url_key );
-
-			$this->logger::debug(
-				"Generated url lazy css files $url",
-				[
-					'type' => 'lazyload_css_bg_images',
-					'data' => $cached_url,
-				]
-			);
-
-			$parsed_query = wp_parse_url( $url, PHP_URL_QUERY );
-			$queries      = [];
-
-			if ( $parsed_query ) {
-				parse_str( $parsed_query, $queries );
-			}
-
-			$queries['wpr_t'] = $time;
-			$cached_url       = add_query_arg( $queries, $cached_url );
+			$cached_url = $this->generate_asset_url( $url );
 
 			$html = str_replace( $css_files_mapping[ $url ], $cached_url, $html );
 		}
@@ -441,19 +421,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return [];
 		}
 
-		$url_key = $this->format_url( $url );
-
 		$output = $this->generate_content( $content );
 
 		if ( ! key_exists( 'urls', $output ) || count( $output['urls'] ) === 0 ) {
 			return [];
 		}
 
-		if ( ! $this->cache->set( $url_key, $output['content'] ) ) {
+		if ( ! $this->cache->set( $this->format_url( $url ), $output['content'] ) ) {
 			return [];
 		}
 
-		$this->cache->set( $url_key . '.json', json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+		$this->cache->set( $this->get_mapping_file_url( $url ), json_encode( $output['urls'] ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 
 		return $output['urls'];
 	}
@@ -468,18 +446,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$urls           = $this->extractor->extract( $content );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
-			$url_tags       = array_map(
-				function ( $url_tag ) {
-					/**
-					 * Lazyload CSS hash.
-					 *
-					 * @param string $hash Lazyload CSS hash.
-					 */
-					$url_tag['hash'] = apply_filters( 'rocket_lazyload_css_hash',  wp_generate_uuid4(), $url_tag );
-					return $url_tag;
-				},
-				$url_tags
-				);
+			$url_tags       = $this->add_hashes( $url_tags );
 			$content        = $this->rule_formatter->format( $content, $url_tags );
 			$formatted_urls = array_merge( $formatted_urls, $this->mapping_formatter->format( $url_tags ) );
 		}
@@ -497,7 +464,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	protected function load_existing_mapping( string $url ) {
-		$content = $this->cache->get( $this->format_url( $url ) . '.json' );
+		$content = $this->cache->get( $this->get_mapping_file_url( $url ) );
 		$urls    = json_decode( $content, true );
 		if ( ! $urls ) {
 			return [];
@@ -700,5 +667,66 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return $excluded;
+	}
+
+	/**
+	 * Add hashes.
+	 *
+	 * @param array $tags Tags.
+	 * @return array
+	 */
+	protected function add_hashes( array $tags ): array {
+		return array_map(
+			function ( $url_tag ) {
+				/**
+				 * Lazyload CSS hash.
+				 *
+				 * @param string $hash Lazyload CSS hash.
+				 */
+				$url_tag['hash'] = apply_filters( 'rocket_lazyload_css_hash',  wp_generate_uuid4(), $url_tag );
+				return $url_tag;
+			},
+			$tags
+		);
+	}
+
+	/**
+	 * Return mapping file URL.
+	 *
+	 * @param string $url Resource URL.
+	 * @return string
+	 */
+	protected function get_mapping_file_url( string $url ): string {
+		return $this->format_url( $url ) . '.json';
+	}
+
+	/**
+	 * Add timestamp to URL.
+	 *
+	 * @param string $url Asset Url.
+	 *
+	 * @return string
+	 */
+	protected function generate_asset_url( string $url ): string {
+		$parsed_query = wp_parse_url( $url, PHP_URL_QUERY );
+		$queries      = [];
+
+		if ( $parsed_query ) {
+			parse_str( $parsed_query, $queries );
+		}
+
+		$queries['wpr_t'] = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
+
+		$cached_url = $this->cache->generate_url( $this->format_url( $url ) );
+
+		$this->logger::debug(
+			"Generated url lazy css files $url",
+			[
+				'type' => 'lazyload_css_bg_images',
+				'data' => $cached_url,
+			]
+		);
+
+		return add_query_arg( $queries, $cached_url );
 	}
 }
