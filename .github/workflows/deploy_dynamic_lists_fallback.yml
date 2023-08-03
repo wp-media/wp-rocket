@@ -6,9 +6,9 @@ name: Dynamic lists fallback update
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "trunk" ]
+    branches: [ "trunk", "prototype/github-action-for-json" ]
   pull_request:
-    branches: [ "trunk" ]
+    branches: [ "trunk", "prototype/github-action-for-json" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
