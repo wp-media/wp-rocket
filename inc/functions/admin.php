@@ -517,6 +517,7 @@ function rocket_create_options_hash( $value ) {
 		'manual_preload'              => true,
 		'preload_excluded_uri'        => true,
 		'cache_reject_uri'            => true,
+		'version'                     => true,
 	];
 
 	// Create 2 arrays to compare.
