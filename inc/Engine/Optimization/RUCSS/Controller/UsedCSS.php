@@ -844,7 +844,7 @@ class UsedCSS {
 			$value = (float) $parts[0];
 			$unit  = $parts[1];
 		}
-		$rows = $this->used_css_query->get_failed_rows( $value , $unit );
+		$rows = $this->used_css_query->get_failed_rows( $value, $unit );
 
 		if ( empty( $rows ) ) {
 			return;
