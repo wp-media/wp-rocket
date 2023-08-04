@@ -339,6 +339,10 @@ class Cache extends Query {
 	 */
 	public function get_pending_jobs( int $total = 45 ) {
 
+		if ( $total <= 0 ) {
+			return [];
+		}
+
 		$orderby = 'modified';
 
 		/**

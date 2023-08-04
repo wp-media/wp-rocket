@@ -25,21 +25,22 @@ class Test_GetPendingJobs extends TestCase {
 	 */
 	public function testShouldReturnPending($config, $expected) {
 
-		$this->query->expects(self::once())->method('query')->with([
-			'number'         => $config['total'],
-			'status'         => 'pending',
-			'fields'         => [
-				'id',
-				'url',
-			],
-			'job_id__not_in' => [
-				'not_in' => '',
-			],
-			'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
-			'order'          => 'asc',
-			'is_locked' => false
-		])->willReturn($config['results']);
-
+		if($config['total'] > 0) {
+			$this->query->expects(self::once())->method('query')->with([
+				'number'         => $config['total'],
+				'status'         => 'pending',
+				'fields'         => [
+					'id',
+					'url',
+				],
+				'job_id__not_in' => [
+					'not_in' => '',
+				],
+				'orderby'        => Filters\applied( 'rocket_preload_order' ) > 0 ? 'id' : 'modified',
+				'order'          => 'asc',
+				'is_locked' => false
+			])->willReturn($config['results']);
+		}
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}

@@ -16,4 +16,14 @@ return [
 			$cache
 		]
 	],
+	'negativeCountShouldReturnEmpty' => [
+		'config' => [
+			'total' => -10,
+			'results' => [
+				$cache,
+			]
+		],
+		'expected' => [
+		]
+	],
 ];
