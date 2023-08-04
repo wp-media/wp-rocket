@@ -50,7 +50,6 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'admin_init'                                 => 'maybe_launch_domain_changed',
 			'admin_notices'                              => 'maybe_display_domain_change_notice',
-			'rocket_configurations_changed'              => 'configurations_changed',
 			'rocket_domain_changed'                      => 'maybe_clean_cache_domain_change',
 			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
 			'rocket_notice_args'                         => 'add_regenerate_configuration_action',
@@ -94,22 +93,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Check if wp rocket options have been changed.
-	 *
-	 * @return bool
-	 */
-	public function configurations_changed() {
-		if ( ! get_option( self::LAST_OPTION_HASH ) || ! get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) ) ) {
-			return true;
-		}
-
-		$last_option_hash = get_option( self::LAST_OPTION_HASH );
-
-		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
-		return rocket_create_options_hash( $options ) !== $last_option_hash;
-	}
-
-	/**
 	 * Save the hash when options are saved.
 	 *
 	 * @param array $oldvalue old options.
@@ -132,15 +115,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_clean_cache_domain_change() {
-		/**
-		 * Has Rocket configurations changed.
-		 *
-		 * @param bool $changed Has Rocket configurations changed.
-		 * @return bool
-		 */
-		if ( apply_filters( 'rocket_configurations_changed', false ) ) {
-			return;
-		}
 
 		$options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
 
