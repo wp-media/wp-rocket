@@ -86,7 +86,8 @@ class Divi extends ThirdpartyTheme {
 		$slug                               = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 		$events[ 'update_option_' . $slug ] = [ 'remove_transient_when_enabling_rucss_option', 10, 2 ];
 
-		$events['rocket_after_clean_used_css'] = 'clear_divi_notice';
+		$events['rocket_after_clean_used_css']       = 'clear_divi_notice';
+		$events['wp_ajax_et_theme_builder_api_save'] = [ 'show_rucss_notice_with_save_changes', 20 ];
 
 		return $events;
 	}
@@ -377,5 +378,14 @@ class Divi extends ThirdpartyTheme {
 		}
 
 		$this->clear_divi_notice();
+	}
+
+	/**
+	 * Set the transient when save changes button is clicked.
+	 *
+	 * @return void
+	 */
+	public function show_rucss_notice_with_save_changes() {
+		set_transient( 'rocket_divi_notice', true );
 	}
 }
