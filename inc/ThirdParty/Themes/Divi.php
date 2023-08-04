@@ -87,7 +87,7 @@ class Divi extends ThirdpartyTheme {
 		$events[ 'update_option_' . $slug ] = [ 'remove_transient_when_enabling_rucss_option', 10, 2 ];
 
 		$events['rocket_after_clean_used_css']       = 'clear_divi_notice';
-		$events['wp_ajax_et_theme_builder_api_save'] = [ 'show_rucss_notice_with_save_changes', 20 ];
+		$events['wp_ajax_et_theme_builder_api_save'] = [ 'show_rucss_notice_with_save_changes', 9 ];
 
 		return $events;
 	}
