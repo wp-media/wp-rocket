@@ -187,6 +187,7 @@ class Subscriber implements Subscriber_Interface {
 				'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 			),
+			'action'         => 'regenerate_configuration',
 		];
 
 		rocket_notice_html( $args );
