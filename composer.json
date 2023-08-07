@@ -74,8 +74,7 @@
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
 		"wpackagist-plugin/woocommerce": "^7",
-		"wpackagist-plugin/wp-smushit": "^3",
-    "psr/simple-cache": "^1.0"
+		"wpackagist-plugin/wp-smushit": "^3"
 	},
 	"autoload": {
 		"classmap": [
