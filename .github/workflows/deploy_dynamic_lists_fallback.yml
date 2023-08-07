@@ -38,7 +38,7 @@ jobs:
 
       - name: Get and Save Default Lists
         id: saveDynamicLists
-        uses: engahmeds3ed/create-json-url@v0.0.1.1
+        uses: engahmeds3ed/create-json-url@v0.0.2
         with:
           name: "dynamic-lists.json"
           url: "https://b.rucss.wp-rocket.me/api/exclusions/list"
@@ -53,7 +53,7 @@ jobs:
 
       - name: Get and save incompatible plugins lists
         id: saveIncompatiblePluginsLists
-        uses: engahmeds3ed/create-json-url@v0.0.1.1
+        uses: engahmeds3ed/create-json-url@v0.0.2
         with:
           name: "dynamic-lists-incompatible-plugins.json"
           url: "https://b.rucss.wp-rocket.me/api/incompatible-plugins/list"
@@ -68,7 +68,7 @@ jobs:
 
       - name: Get and Save DelayJS Lists
         id: saveDynamicDelayJSLists
-        uses: engahmeds3ed/create-json-url@v0.0.1.1
+        uses: engahmeds3ed/create-json-url@v0.0.2
         with:
           name: "dynamic-lists-delayjs.json"
           url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
