@@ -69,9 +69,11 @@ class Subscriber implements Subscriber_Interface {
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
 				[ 'maybe_unlock_preload', 9, 2 ],
+				[ 'maybe_delete_transient', 10, 2 ],
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
+			'rocket_options_changed'                  => 'truncate_used_css',
 			'wp_trash_post'                           => 'delete_used_css_on_update_or_delete',
 			'delete_post'                             => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                        => 'delete_used_css_on_update_or_delete',
@@ -85,6 +87,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
+				[ 'display_saas_error_notice' ],
 				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
 			],
@@ -208,16 +211,6 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->delete_used_css_rows();
 		$this->set_notice_transient();
-
-		wp_safe_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 	}
 
 	/**
@@ -328,9 +321,10 @@ class Subscriber implements Subscriber_Interface {
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 
+		rocket_clean_domain();
+
 		$this->delete_used_css_rows();
 
-		rocket_clean_domain();
 		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
 		set_transient(
@@ -346,16 +340,6 @@ class Subscriber implements Subscriber_Interface {
 		);
 
 		$this->set_notice_transient();
-
-		wp_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
@@ -464,6 +448,37 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Display error notice when connection to SAAS fails
+	 *
+	 * @return void
+	 */
+	public function display_saas_error_notice() {
+		$this->settings->display_saas_error_notice();
+	}
+
+
+	/**
+	 * Display admin notice when detecting any missed Action scheduler tables.
+	 *
+	 * @since 3.11.0.3
+	 *
+	 * @return void
+	 */
+	public function display_as_missed_tables_notice() {
+		$screen = get_current_screen();
+
+		if ( isset( $screen->id ) && 'tools_page_action-scheduler' === $screen->id ) {
+			return;
+		}
+
+		if ( $this->is_valid_as_tables() ) {
+			return;
+		}
+
+		$this->settings->display_as_missed_tables_notice();
+	}
+
+	/**
 	 * Adds the notice end time to WP Rocket localize script data
 	 *
 	 * @since 3.11
@@ -531,16 +546,6 @@ class Subscriber implements Subscriber_Interface {
 		$this->database->truncate_used_css_table();
 		rocket_clean_domain();
 		$this->set_notice_transient();
-
-		wp_safe_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
 	}
 
 	/**
@@ -739,6 +744,30 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_no_table_notice() {
 		$this->settings->display_no_table_notice();
+	}
+
+	/**
+	 * Maybe delete transient.
+	 *
+	 * @param mixed $old_value Option old value.
+	 * @param mixed $value     Option new value.
+	 *
+	 * @return void
+	 */
+	public function maybe_delete_transient( $old_value, $value ) {
+		if ( ! isset( $old_value['remove_unused_css'], $value['remove_unused_css'] ) ) {
+			return;
+		}
+
+		if ( 1 === (int) $value['remove_unused_css'] ) {
+			return;
+		}
+
+		if ( $old_value['remove_unused_css'] === $value['remove_unused_css'] ) {
+			return;
+		}
+
+		delete_transient( 'wp_rocket_no_licence' );
 	}
 
 	/**
