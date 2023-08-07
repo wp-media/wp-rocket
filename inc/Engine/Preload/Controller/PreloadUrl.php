@@ -180,8 +180,10 @@ class PreloadUrl {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		$count = apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 );
 
+		$pending_actions = $this->queue->get_pending_preload_actions();
+
+		$count = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
 		/**
 		 * Set the delay before an in-progress row is considered as outdated.
 		 *
@@ -200,6 +202,18 @@ class PreloadUrl {
 		);
 
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
+
+		$stuck_rows = array_filter(
+			$stuck_rows,
+			function ( $row ) use ( $pending_actions ) {
+				foreach ( $pending_actions as $action ) {
+					if ( count( $action->get_args() ) > 0 && $row->url === $action->get_args()[0] ) {
+						return false;
+					}
+				}
+				return true;
+			}
+			);
 
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
