@@ -542,8 +542,9 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  *
  * @param string|array              $urls       URLs of cache files to be deleted.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
+ * @param bool                      $run_actions Run actions.
  */
-function rocket_clean_files( $urls, $filesystem = null ) {
+function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
 		return;
@@ -562,24 +563,27 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 		$filesystem = rocket_direct_filesystem();
 	}
 
-	/**
-	 * Fires before all cache files are deleted.
-	 *
-	 * @since  3.2.2
-	 *
-	 * @param array $urls The URLs corresponding to the deleted cache files.
-	 */
-	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( $run_actions ) {
+		/**
+		 * Fires before all cache files are deleted.
+		 *
+		 * @since  3.2.2
+		 *
+		 * @param array $urls The URLs corresponding to the deleted cache files.
+		 */
+		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	}
 
 	foreach ( $urls as $url ) {
-		/**
-		 * Fires before the cache file is deleted.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $url The URL that the cache file to be deleted.
-		 */
-		do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		if ( $run_actions ) {
+			/**
+			 * Fires before the cache file is deleted.
+			 *
+			 * @param string $url The URL that the cache file to be deleted.
+			 * @since 1.0
+			 */
+			do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		}
 
 		if ( $url_no_dots ) {
 			$url = str_replace( '.', '_', $url );
@@ -620,15 +624,19 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 				}
 			}
 		}
+		if ( $run_actions ) {
+			/**
+			 * Fires after the cache file is deleted.
+			 *
+			 * @param string $url The URL that the cache file was deleted.
+			 * @since 1.0
+			 */
+			do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		}
+	}
 
-		/**
-		 * Fires after the cache file is deleted.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $url The URL that the cache file was deleted.
-		 */
-		do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( ! $run_actions ) {
+		return;
 	}
 
 	/**

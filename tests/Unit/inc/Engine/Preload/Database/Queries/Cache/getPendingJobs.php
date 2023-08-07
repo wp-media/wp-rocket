@@ -24,15 +24,10 @@ class Test_GetPendingJobs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnPending($config, $expected) {
-		$this->query->expects($this->at(0))->method('query')->with( [
-			'count'  => true,
-			'status' => 'in-progress',
-			'is_locked' => false,
-		] )->willReturn( $config['in-progress'] );
 
-		if ( $config['total'] > $config['in-progress'] ) {
-			$this->query->expects($this->at(1))->method('query')->with([
-				'number'         => $config['total'] - $config['in-progress'],
+		if($config['total'] > 0) {
+			$this->query->expects(self::once())->method('query')->with([
+				'number'         => $config['total'],
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -46,7 +41,6 @@ class Test_GetPendingJobs extends TestCase {
 				'is_locked' => false
 			])->willReturn($config['results']);
 		}
-
 
 		$this->assertSame($expected, $this->query->get_pending_jobs($config['total']));
 	}

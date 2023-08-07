@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Filesystem_Direct;
@@ -6,12 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
-use WP_Rocket\Engine\Preload\Controller\CheckFinished;
-use WP_Rocket\Engine\Preload\Controller\ClearCache;
-use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
-use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
-use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
-use WP_Rocket\Engine\Preload\Controller\Queue;
+use WP_Rocket\Engine\Preload\Controller\{CheckFinished,ClearCache,CrawlHomepage,LoadInitialSitemap,PreloadUrl,Queue};
 use WP_Rocket\Engine\Preload\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
@@ -108,6 +105,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $crawl_homepage );
 
 		$this->getContainer()->add( 'preload_activation', Activation::class )
+			->addArgument( $preload_url_controller )
 			->addArgument( $queue )
 			->addArgument( $cache_query )
 			->addArgument( $options );

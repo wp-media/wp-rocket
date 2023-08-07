@@ -27,6 +27,7 @@ function load_original_files_before_mocking() {
 		'inc/functions/options.php',
 		'inc/functions/posts.php',
 		'inc/functions/htaccess.php',
+		'inc/functions/admin.php',
 	];
 	foreach ( $originals as $file ) {
 		require_once WP_ROCKET_PLUGIN_ROOT . $file;
