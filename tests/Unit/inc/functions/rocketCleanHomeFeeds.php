@@ -42,6 +42,8 @@ class Test_RocketCleanHomeFeeds extends FilesystemTestCase {
 
 			Functions\when( 'wp_parse_url' )->justReturn( null );
 
+			Functions\expect('rocket_clean_files');
+
 			Actions\expectDone( 'before_rocket_clean_home_feeds' )
 				->once()->with( true );
 			Actions\expectDone( 'after_rocket_clean_home_feeds' )
