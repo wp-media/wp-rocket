@@ -19,14 +19,16 @@ class TranslatePress implements Subscriber_Interface {
 		}
 
 		return [
-			'rocket_rucss_is_home_url'         => [ 'detect_homepage', 10, 2 ],
-			'rocket_has_i18n'                  => 'is_translatepress',
-			'rocket_i18n_admin_bar_menu'       => 'add_langs_to_admin_bar',
-			'rocket_i18n_current_language'     => 'set_current_language',
-			'rocket_get_i18n_uri'              => 'get_active_languages_uri',
-			'rocket_i18n_subdomains'           => 'get_active_languages_uri',
-			'rocket_i18n_home_url'             => [ 'get_home_url_for_lang', 10, 2 ],
-			'rocket_i18n_translated_post_urls' => [ 'get_translated_post_urls', 10, 4 ],
+			'rocket_rucss_is_home_url'                     => [ 'detect_homepage', 10, 2 ],
+			'rocket_has_i18n'                              => 'is_translatepress',
+			'rocket_i18n_admin_bar_menu'                   => 'add_langs_to_admin_bar',
+			'rocket_i18n_current_language'                 => 'set_current_language',
+			'rocket_get_i18n_uri'                          => 'get_active_languages_uri',
+			'rocket_i18n_subdomains'                       => 'get_active_languages_uri',
+			'rocket_i18n_home_url'                         => [ 'get_home_url_for_lang', 10, 2 ],
+			'rocket_i18n_translated_post_urls'             => [ 'get_translated_post_urls', 10, 4 ],
+			'post_updated'                                 => 'clear_post_languages',
+			'trp_save_editor_translations_regular_strings' => [ 'clear_post_after_updating_translation', 10, 2 ],
 		];
 	}
 
@@ -190,5 +192,67 @@ class TranslatePress implements Subscriber_Interface {
 		}
 
 		return $urls;
+	}
+
+	/**
+	 * Clear all languages of a specific post
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return void
+	 */
+	public function clear_post_languages( $post_id ) {
+		$translatepress = TRP_Translate_Press::get_trp_instance();
+
+		$converter    = $translatepress->get_component( 'url_converter' );
+		$settings     = $translatepress->get_component( 'settings' );
+		$trp_settings = $settings->get_settings();
+
+		add_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+
+		$clear_urls = [];
+
+		$default_permalink = get_permalink( $post_id );
+
+		foreach ( $trp_settings['translation-languages'] as $language ) {
+			if ( $language === $trp_settings['default-language'] ) {
+				continue;
+			}
+
+			$clear_urls[] = $converter->get_url_for_language( $language, $default_permalink, '' );
+		}
+
+		remove_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+
+		if ( empty ( $clear_urls ) ) {
+			return;
+		}
+
+		rocket_clean_files( $clear_urls );
+	}
+
+	/**
+	 * Clear the post cache when the translation is updated
+	 *
+	 * @param array $update_strings Array of updated strings.
+	 * @param array $settings Array of settings.
+	 *
+	 * @return void
+	 */
+	public function clear_post_after_updating_translation( $update_strings, $settings ) {
+		$translatepress = TRP_Translate_Press::get_trp_instance();
+
+		$converter    = $translatepress->get_component( 'url_converter' );
+
+		$clear_urls  = [];
+		$current_url = remove_query_arg( 'trp-edit-translation', esc_url( $_POST['url'] ) );
+
+		foreach ( $settings['translation-languages'] as $language ) {
+			if ( ! empty( $update_strings[ $language ] ) ) {
+				$clear_urls[] = $converter->get_url_for_language( $language, $current_url, '' );
+			}
+		}
+
+		rocket_clean_files( $clear_urls );
 	}
 }
