@@ -1,13 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Activation;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Preload\Controller\Queue;
-use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Activation\ActivationInterface;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Preload\Controller\{PreloadUrl,Queue};
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class Activation implements ActivationInterface {
+	/**
+	 * Preload controller
+	 *
+	 * @var PreloadUrl
+	 */
+	private $preload_url;
 
 	/**
 	 * Preload queue.
@@ -33,14 +40,16 @@ class Activation implements ActivationInterface {
 	/**
 	 * Instantiate class.
 	 *
+	 * @param PreloadUrl   $preload_url PreloadUrl instance.
 	 * @param Queue        $queue Preload queue.
 	 * @param Cache        $query DB query.
 	 * @param Options_Data $options Options.
 	 */
-	public function __construct( Queue $queue, Cache $query, Options_Data $options ) {
-		$this->queue   = $queue;
-		$this->query   = $query;
-		$this->options = $options;
+	public function __construct( PreloadUrl $preload_url, Queue $queue, Cache $query, Options_Data $options ) {
+		$this->preload_url = $preload_url;
+		$this->queue       = $queue;
+		$this->query       = $query;
+		$this->options     = $options;
 	}
 
 	/**
@@ -48,6 +57,7 @@ class Activation implements ActivationInterface {
 	 */
 	public function activate() {
 		add_action( 'rocket_activation', [ $this, 'preload_activation' ], 15 );
+		add_action( 'rocket_after_activation', [ $this, 'preload_homepage' ] );
 	}
 
 	/**
@@ -66,6 +76,15 @@ class Activation implements ActivationInterface {
 		do_action( 'rocket_preload_activation' );
 
 		$this->queue->add_job_preload_job_load_initial_sitemap_async();
+	}
+
+	/**
+	 * Preloads the homepage on activation
+	 *
+	 * @return void
+	 */
+	public function preload_homepage() {
+		$this->preload_url->preload_url( home_url() );
 	}
 
 	/**
