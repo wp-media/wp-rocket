@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-07-17 09:09-0400\n"
+"POT-Creation-Date: 2023-08-07 15:45-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -211,7 +211,7 @@ msgstr ""
 "%1$sموشک وردپرس:%2$sتنظیمات مناسب برای کلادفلیر غیرفعال شد و به تنظیمات قبلی"
 " بازگشت:"
 
-#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:184
+#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:144
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "راکت وردپرس: "
@@ -399,6 +399,21 @@ msgstr ""
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s  بهینه شد."
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:158
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s We detected that the website domain has changed. The "
+"configuration files must be regenerated for the page cache and all other "
+"optimizations to work as intended. %3$sLearn More%4$s"
+msgstr ""
+"%1$sموشک وردپرس:%2$s ما متوجه شدیم که دامنه وب سایت تغییر کرده است. فایل های"
+" پیکربندی باید دوباره تولید شوند تا کش صفحه و همه بهینه سازی های دیگر "
+"همانطور که در نظر گرفته شده کار کنند.%3$s اطلاعات بیشتر%4$s"
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:186
+msgid "Regenerate WP Rocket configuration files now"
+msgstr "بازسازی مجدد تنظیمات پرونده های راکت وردپرس"
 
 #: inc/Engine/Admin/Settings/Page.php:201
 msgid "Save Changes"
@@ -673,7 +688,7 @@ msgstr ""
 msgid "Activate combine CSS"
 msgstr "فعال‌سازی ادغام CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:708 inc/admin/options.php:124
+#: inc/Engine/Admin/Settings/Page.php:708 inc/admin/options.php:84
 msgid "Excluded CSS Files"
 msgstr "فایل‌های CSS مستثنی شده"
 
@@ -846,7 +861,7 @@ msgstr ""
 msgid "Activate combine JavaScript"
 msgstr "فعال‌سازی ادغام جاوا اسکریپت"
 
-#: inc/Engine/Admin/Settings/Page.php:862 inc/admin/options.php:125
+#: inc/Engine/Admin/Settings/Page.php:862 inc/admin/options.php:85
 msgid "Excluded Inline JavaScript"
 msgstr "حذف جاوا اسکریپت داخلی"
 
@@ -861,7 +876,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:880
 #: inc/Engine/Admin/Settings/Page.php:913
-#: inc/Engine/Admin/Settings/Page.php:960 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:960 inc/admin/options.php:86
 msgid "Excluded JavaScript Files"
 msgstr "مستثنی کردن فایل‌های جاوا اسکریپت"
 
@@ -1223,7 +1238,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> تعیین شده‌اند تشخیص داده خواهند شد و به صورت "
 "پیش‌فرض هرگز کش نخواهند شد."
 
-#: inc/Engine/Admin/Settings/Page.php:1329 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1329 inc/admin/options.php:89
 msgid "Never Cache URL(s)"
 msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 
@@ -1231,11 +1246,11 @@ msgstr "آدرس‌(هایی) که هرگز کش نخواهند شد"
 msgid "Never Cache Cookies"
 msgstr "کوکی‌هایی که هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1343 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1343 inc/admin/options.php:90
 msgid "Never Cache User Agent(s)"
 msgstr "عامل‌(های) کاربری هرگز کش نخواهند شد"
 
-#: inc/Engine/Admin/Settings/Page.php:1349 inc/admin/options.php:131
+#: inc/Engine/Admin/Settings/Page.php:1349 inc/admin/options.php:91
 msgid "Always Purge URL(s)"
 msgstr "URL (هایی) که همیشه پاک‌سازی شوند"
 
@@ -1455,7 +1470,7 @@ msgstr ""
 "برای سرویس هایی مانند Cloudflare و Sucuri ضروری نیست. لطفا "
 "%1$sافزودنی‌های%2$s موجود ما را مشاهده کنید."
 
-#: inc/Engine/Admin/Settings/Page.php:1616 inc/admin/options.php:132
+#: inc/Engine/Admin/Settings/Page.php:1616 inc/admin/options.php:92
 msgid "Exclude files from CDN"
 msgstr "مستثنی کردن فایل‌ها از CDN"
 
@@ -1985,7 +2000,7 @@ msgid ""
 msgstr ""
 "با RocketCDN، شبکه تحویل محتوای WP Rocket سرعت سایت خود را افزایش دهید!"
 
-#: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:96
+#: inc/Engine/Cache/AdminSubscriber.php:133 inc/admin/admin.php:96
 #: inc/admin/admin.php:118 inc/deprecated/3.5.php:898
 msgid "Clear this cache"
 msgstr "خالی کردن این کش"
@@ -2392,7 +2407,7 @@ msgstr "اکنون ارتقاء دهید"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:742 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:662 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "نادیده گرفتن این پیام."
 
@@ -2552,13 +2567,17 @@ msgstr "لیست‌ها به‌روزرسانی نشد."
 msgid "Lists are successfully updated."
 msgstr "لیست ها با موفقیت به روز شدند."
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:52
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:60
 msgid "Default Lists"
 msgstr "لیست پیشفرض"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:66
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "به تأخیر انداختن لیست های لغو اجرای جاوا اسکریپت"
+
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+msgid "Incompatible plugins Lists"
+msgstr "لیست افزونه های ناهماهنگ"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
@@ -2638,12 +2657,12 @@ msgstr ""
 "های بلا استفاده برای کارکرد صحیح آن. لطفا برای اطلاعات بیشتر%3$sپشتیبانی "
 "ما%4$sتماس بگیرید."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:315
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: قابلیت CSSهای استفاده شده فعال نیست!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:345
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:337
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: کش CSS استفاده شده پاک شد!"
@@ -2727,7 +2746,7 @@ msgstr ""
 "کند. لطفا پشیبانی Kinsta از طرق حساب %1$sMyKinsta%2$s برایحل این مشکل در "
 "ارتباط باشید."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:126
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:125
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -2736,7 +2755,7 @@ msgstr ""
 "%1$s:Cloudflare's HTTP/2 Server Push هماهنگ نیست با ویژگی حذف فایل های  "
 "Unused CSS و  Combine CSS. پیشنهاد می شود غیرفعال کنید."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:168
 msgid ""
 "Your site is using the official Cloudflare plugin. We have enabled "
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
@@ -2745,7 +2764,7 @@ msgstr ""
 "سایت شما از پلاگین رسمی کلادفلیر استفاده می کند. ما پاکسازی خودکار کلادفلیر "
 "را برای سازگاری فعال کرده ایم. اگر APO را فعال کرده اید، سازگار است."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
 msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
@@ -2753,7 +2772,7 @@ msgstr ""
 "کش کلادفلیر هر بار که موشک وردپرس کش خود را پاک می کند پاک می شود تا اطمینان"
 " حاصل شود که محتوا همیشه به روز است."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:214
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:213
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
@@ -2762,7 +2781,7 @@ msgstr ""
 "%1$sموشک وردپرس:شما از \"Dynamic Cookies Cache\" استفاده می کنید. Cloudflare"
 " APO هنوز با این ویژگی سازگار نیست.%2$s"
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:220
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:219
 #, php-format
 msgid ""
 "You should either disable Cloudflare APO or check with the theme/plugin "
@@ -2773,7 +2792,7 @@ msgstr ""
 "توسعه‌دهندگان «Dynamic Cookies Cache» نیاز دارد تا راهی جایگزین برای سازگاری"
 " با کش صفحه باشد.%1$sاطلاعات بیشتر%2$s"
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:271
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:270
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
@@ -2785,7 +2804,7 @@ msgstr ""
 "کنید%3$sتنظیمات%5$sCloudflare APO برای اینکه نسخه مناسب کش را ارائه "
 "دهید.%4$sاطلاعات بیشتر%5$s"
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:292
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:291
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
@@ -2951,59 +2970,59 @@ msgstr "سوالات متداول"
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: inc/admin/admin.php:458
+#: inc/admin/admin.php:397
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 "درون‌ریزی تنظیمات ناموفق بود: شما دسترسی کافی برای انجام این کار را ندارید."
 
-#: inc/admin/admin.php:462
+#: inc/admin/admin.php:401
 msgid "Settings import failed: no file uploaded."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: فایلی بارگذاری نشد."
 
-#: inc/admin/admin.php:466
+#: inc/admin/admin.php:405
 msgid "Settings import failed: incorrect filename."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: نام فایل اشتباه است."
 
-#: inc/admin/admin.php:477
+#: inc/admin/admin.php:416
 msgid "Settings import failed: incorrect filetype."
 msgstr "درون‌ریزی تنظیمات ناموفق بود: نوع فایل اشتباه است."
 
-#: inc/admin/admin.php:487
+#: inc/admin/admin.php:426
 msgid "Settings import failed: "
 msgstr "درون‌ریزی تنظیمات ناموفق بود: "
 
-#: inc/admin/admin.php:503
+#: inc/admin/admin.php:442
 msgid "Settings import failed: unexpected file content."
 msgstr "درون ریزی تنظیمات انجام نشد: محتوای فایل غیر منتظره بود."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:472
 msgid "Settings imported and saved."
 msgstr "تنظیمات درون‌ریزی و ذخیره شد."
 
-#: inc/admin/options.php:127
+#: inc/admin/options.php:87
 msgid "Defer JavaScript Files"
 msgstr "به تعویق انداختن فایل های جاوا اسکریپت"
 
-#: inc/admin/options.php:128
+#: inc/admin/options.php:88
 msgid "Excluded Delay JavaScript Files"
 msgstr "فایل‌های جاوا اسکریپت تاخیری حذف شدند"
 
-#: inc/admin/options.php:150
+#: inc/admin/options.php:110
 #, php-format
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:160
+#: inc/admin/options.php:120
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 
-#: inc/admin/options.php:176
+#: inc/admin/options.php:136
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:751
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -3073,7 +3092,7 @@ msgstr ""
 "<strong>%s</strong>: یک یا چند افزونه فعال یا غیرفعال شده‌اند، اگر آن‌ها "
 "ظاهر سایت شما را به هم ریخته‌اند، کش را پاک کنید."
 
-#: inc/admin/ui/notices.php:221
+#: inc/admin/ui/notices.php:141
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -3082,11 +3101,11 @@ msgstr ""
 "<strong>%s</strong>: افزونه‌های زیر با این افزونه سازگار نیستند و ممکن است "
 "باعث نتایج غیرمنتظره شوند:"
 
-#: inc/admin/ui/notices.php:227
+#: inc/admin/ui/notices.php:147
 msgid "Deactivate"
 msgstr "غیرفعال سازی"
 
-#: inc/admin/ui/notices.php:269
+#: inc/admin/ui/notices.php:189
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -3094,7 +3113,7 @@ msgstr ""
 "WP Rocket Footer JS یک افزودنی رسمی نیست. از عملکرد صحیح برخی از گزینه ها در"
 " WP Rocket جلوگیری می کند. لطفاً در صورت بروز مشکل آن را غیرفعال کنید."
 
-#: inc/admin/ui/notices.php:309
+#: inc/admin/ui/notices.php:229
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -3105,7 +3124,7 @@ msgstr ""
 "لطفاً سطح کش Endurance Cache را در حالت Off (سطح 0) در حالت تنظیم کنید "
 "%1$sتنظیمات > عمومی%2$s جلوگیری از هرگونه مشکلی میکند."
 
-#: inc/admin/ui/notices.php:330
+#: inc/admin/ui/notices.php:250
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -3114,18 +3133,18 @@ msgstr ""
 "%1$s: برای درست عمل کردن افزونه نیاز است پیوند‌های یکتا را فعال کنید. %2$s "
 "رفتن به تنظیمات پیوند‌های یکتا%3$s"
 
-#: inc/admin/ui/notices.php:377
+#: inc/admin/ui/notices.php:297
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن .htaccess نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:383 inc/admin/ui/notices.php:846
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:777
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "عیب‌یابی: %1$s چگونه فایل‌های سیستمی را قابل نوشتن کنیم%2$s"
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:779
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3133,20 +3152,20 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:391
+#: inc/admin/ui/notices.php:311
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr "نگران نباشید ، ذخیره و تنظیمات صفحه WP Rocket همچنان درست کار می کند."
 
-#: inc/admin/ui/notices.php:391
+#: inc/admin/ui/notices.php:311
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
 "برای عملکرد مطلوب ، افزودن خطوط زیر به .htaccess توصیه می شود (لازم نیست):"
 
-#: inc/admin/ui/notices.php:538
+#: inc/admin/ui/notices.php:458
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -3155,7 +3174,7 @@ msgstr ""
 "%1$s آماده است! %2$s زمان بارگذاری خود را امتحان کنید%4$s، یا "
 "%3$sتنظیمات%4$s خود را مشاهده کنید."
 
-#: inc/admin/ui/notices.php:579
+#: inc/admin/ui/notices.php:499
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -3163,15 +3182,15 @@ msgstr ""
 "آیا اجاره می‌دهید موشک وردپرس اطلاعات مرتبط غیرحساس را از این وبسایت جمع "
 "آوری کند؟"
 
-#: inc/admin/ui/notices.php:580
+#: inc/admin/ui/notices.php:500
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "این کار به ما کمک خواهد کرد تا در آینده موشک وردپرس را بهبود ببخشیم."
 
-#: inc/admin/ui/notices.php:586
+#: inc/admin/ui/notices.php:506
 msgid "What info will we collect?"
 msgstr "چه اطلاعاتی را جمع آوری می‌کنیم؟"
 
-#: inc/admin/ui/notices.php:591
+#: inc/admin/ui/notices.php:511
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -3183,68 +3202,68 @@ msgstr ""
 "فعال‌سازی لایسنس)، آدرس آی پی یا کلید‌های وب‌سرویس ثانویه را منتقل نخواهد "
 "کرد."
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:520
 msgid "Yes, allow"
 msgstr "بله، اجازه می‌دهم"
 
-#: inc/admin/ui/notices.php:603
+#: inc/admin/ui/notices.php:523
 msgid "No, thanks"
 msgstr "نه، متشکرم"
 
-#: inc/admin/ui/notices.php:642
+#: inc/admin/ui/notices.php:562
 msgid "Thank you!"
 msgstr "متشکریم!"
 
-#: inc/admin/ui/notices.php:647
+#: inc/admin/ui/notices.php:567
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "موشک وردپرس اکنون این معیارها را از وب‌سایت شما جمع‌آوری می‌کند:"
 
-#: inc/admin/ui/notices.php:685
+#: inc/admin/ui/notices.php:605
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: کش پاک شد."
 
-#: inc/admin/ui/notices.php:692
+#: inc/admin/ui/notices.php:612
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: کش نوشته پاک شد."
 
-#: inc/admin/ui/notices.php:699
+#: inc/admin/ui/notices.php:619
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: کش شرط پاک شد."
 
-#: inc/admin/ui/notices.php:706
+#: inc/admin/ui/notices.php:626
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: کش کاربر پاک شد."
 
-#: inc/admin/ui/notices.php:754
+#: inc/admin/ui/notices.php:674
 msgid "Stop Preload"
 msgstr "توقف پیش بارگذاری"
 
-#: inc/admin/ui/notices.php:760
+#: inc/admin/ui/notices.php:680
 msgid "Turn on Remove Unused CSS"
 msgstr "حذف CSS های بدون استفاده را فعال کنید"
 
-#: inc/admin/ui/notices.php:766
+#: inc/admin/ui/notices.php:686
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
 msgstr "اکنون\" کش مجزا برای موبایل\" را فعال نمایید"
 
-#: inc/admin/ui/notices.php:784
+#: inc/admin/ui/notices.php:704
 msgid "Force deactivation "
 msgstr "غیرفعال سازی اجباری "
 
-#: inc/admin/ui/notices.php:803
+#: inc/admin/ui/notices.php:734
 msgid "The following code should have been written to this file:"
 msgstr "کدهای زیر باید داخل این فایل نوشته شوند:"
 
-#: inc/admin/ui/notices.php:834
+#: inc/admin/ui/notices.php:765
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن نمی‌تواند خود را تنظیم کند."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:771
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "فایل\\فولدرهای مورد نظر: %s"
