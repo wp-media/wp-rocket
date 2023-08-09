@@ -271,7 +271,14 @@ function get_rocket_i18n_uri() { // phpcs:ignore WordPress.NamingConventions.Pre
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( ! empty( $pll ) && is_object( $pll ) ) {
-			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
+			if ( ! defined( 'POLYLANG_VERSION' ) || version_compare( POLYLANG_VERSION, '3.4', '<' ) ) {
+				$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
+			}else {
+				$languages = $pll->model->get_languages_list();
+				foreach ( $languages as $language ) {
+					$urls[] = $language->get_home_url();
+				}
+			}
 		}
 	}
 
