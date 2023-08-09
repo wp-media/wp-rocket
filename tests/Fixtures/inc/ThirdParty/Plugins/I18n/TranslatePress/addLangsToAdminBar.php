@@ -3,14 +3,14 @@ return [
     'shouldReturnUpdatedLangsLinks' => [
 		'langlinks' => [],
 		'expected' => [
-			'fr' => [
+			'fr_FR' => [
 				'code' => 'fr',
-				'flag' => '<img class="trp-flag-image" src="http://example.org/wp-content/translatepress-multilingual/assets/images/flags/fr.png" width="18" height="12" alt="fr" title="french">',
+				'flag' => '<img class="trp-flag-image" src="http://example.org/wp-content/translatepress-multilingual/assets/images/flags/fr_FR.png" width="18" height="12" alt="fr_FR" title="french">',
 				'anchor' => 'french',
 			],
-			'us' => [
-				'code' => 'us',
-				'flag' => '<img class="trp-flag-image" src="http://example.org/wp-content/translatepress-multilingual/assets/images/flags/us.png" width="18" height="12" alt="us" title="english">',
+			'en_US' => [
+				'code' => 'en',
+				'flag' => '<img class="trp-flag-image" src="http://example.org/wp-content/translatepress-multilingual/assets/images/flags/en_US.png" width="18" height="12" alt="en_US" title="english">',
 				'anchor' => 'english',
 			],
 		],

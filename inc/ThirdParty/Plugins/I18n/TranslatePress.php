@@ -24,6 +24,7 @@ class TranslatePress implements Subscriber_Interface {
 			'rocket_i18n_admin_bar_menu'                   => 'add_langs_to_admin_bar',
 			'rocket_i18n_current_language'                 => 'set_current_language',
 			'rocket_get_i18n_uri'                          => 'get_active_languages_uri',
+			'rocket_get_i18n_code'                         => 'get_active_languages_codes',
 			'rocket_i18n_subdomains'                       => 'get_active_languages_uri',
 			'rocket_i18n_home_url'                         => [ 'get_home_url_for_lang', 10, 2 ],
 			'rocket_i18n_translated_post_urls'             => [ 'get_translated_post_urls', 10, 4 ],
@@ -88,7 +89,7 @@ class TranslatePress implements Subscriber_Interface {
 
 		foreach ( $published_languages as $code => $name ) {
 			$langlinks[ $code ] = [
-				'code'   => $code,
+				'code'   => $trp_settings['url-slugs'][$code],
 				'flag'   => $language_switcher->add_flag( $code, $name ),
 				'anchor' => $name,
 			];
@@ -144,6 +145,34 @@ class TranslatePress implements Subscriber_Interface {
 	}
 
 	/**
+	 * Gets the active languages slugs
+	 *
+	 * @param Array $codes Array of languages codes.
+	 *
+	 * @return array
+	 */
+	public function get_active_languages_codes( $codes ) {
+		if ( ! is_array( $codes ) ) {
+			$codes = (array) $codes;
+		}
+
+		$translatepress = TRP_Translate_Press::get_trp_instance();
+
+		$settings     = $translatepress->get_component( 'settings' );
+		$languages    = $translatepress->get_component( 'languages' );
+		$trp_settings = $settings->get_settings();
+
+		$languages_to_display = $trp_settings['publish-languages'];
+		$published_languages  = $languages->get_language_names( $languages_to_display );
+
+		foreach ( $published_languages as $code => $name ) {
+			$codes[] = $trp_settings['url-slugs'][$code];
+		}
+
+		return $codes;
+	}
+
+	/**
 	 * Gets home URL in given language
 	 *
 	 * @param string $home_url Home URL.
@@ -158,8 +187,25 @@ class TranslatePress implements Subscriber_Interface {
 
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 		$converter      = $translatepress->get_component( 'url_converter' );
+		$settings       = $translatepress->get_component( 'settings' );
+		$trp_settings   = $settings->get_settings();
 
-		return $converter->get_url_for_language( $lang, $home_url );
+		$code = '';
+
+		add_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+
+		foreach ( $trp_settings['url-slugs'] as $index => $slug ) {
+			if ( $lang === $slug ) {
+				$code = $index;
+				break;
+			}
+		}
+
+		$url = $converter->get_url_for_language( $code, $home_url );
+
+		remove_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+
+		return $url;
 	}
 
 	/**

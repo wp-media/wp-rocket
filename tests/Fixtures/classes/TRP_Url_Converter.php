@@ -13,8 +13,9 @@ if ( ! class_exists( 'TRP_Url_Converter' ) ) {
 		public function get_url_for_language( $code, $url ) {
 			$parts = parse_url( $url );
 			$path = isset( $parts['path'] ) ? $parts['path'] : '';
+			$code = explode( '_', $code );
 
-			return $parts['scheme'] . '://' . $parts['host'] . '/' . $code . $path;
+			return $parts['scheme'] . '://' . $parts['host'] . '/' . $code[0] . $path;
 		}
     }
 }

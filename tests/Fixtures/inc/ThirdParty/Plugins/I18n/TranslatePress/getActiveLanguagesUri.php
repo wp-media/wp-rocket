@@ -4,7 +4,7 @@ return [
 		'urls' => [],
 		'expected' => [
 			'http://example.org/fr',
-			'http://example.org/us',
+			'http://example.org/en',
 		],
     ],
 ];

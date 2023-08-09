@@ -6,8 +6,12 @@ if ( ! class_exists( 'TRP_Settings' ) ) {
 		{
 			return [
 				'publish-languages' => [
-					'fr',
-					'us',
+					'fr_FR',
+					'en_US',
+				],
+				'url-slugs' => [
+					'fr_FR' => 'fr',
+					'en_US' => 'en',
 				],
 			];
 		}

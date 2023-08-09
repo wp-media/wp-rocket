@@ -9,7 +9,7 @@ return [
 		],
 		'expected' => [
 			'/fr/about(.*)',
-			'/us/about(.*)',
+			'/en/about(.*)',
 		],
 	],
 ];
