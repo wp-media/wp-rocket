@@ -89,7 +89,7 @@ class TranslatePress implements Subscriber_Interface {
 
 		foreach ( $published_languages as $code => $name ) {
 			$langlinks[ $code ] = [
-				'code'   => $trp_settings['url-slugs'][$code],
+				'code'   => $trp_settings['url-slugs'][ $code ],
 				'flag'   => $language_switcher->add_flag( $code, $name ),
 				'anchor' => $name,
 			];
@@ -166,7 +166,7 @@ class TranslatePress implements Subscriber_Interface {
 		$published_languages  = $languages->get_language_names( $languages_to_display );
 
 		foreach ( $published_languages as $code => $name ) {
-			$codes[] = $trp_settings['url-slugs'][$code];
+			$codes[] = $trp_settings['url-slugs'][ $code ];
 		}
 
 		return $codes;
@@ -192,7 +192,7 @@ class TranslatePress implements Subscriber_Interface {
 
 		$code = '';
 
-		add_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		foreach ( $trp_settings['url-slugs'] as $index => $slug ) {
 			if ( $lang === $slug ) {
@@ -203,7 +203,7 @@ class TranslatePress implements Subscriber_Interface {
 
 		$url = $converter->get_url_for_language( $code, $home_url );
 
-		remove_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		return $url;
 	}
@@ -254,7 +254,7 @@ class TranslatePress implements Subscriber_Interface {
 		$settings     = $translatepress->get_component( 'settings' );
 		$trp_settings = $settings->get_settings();
 
-		add_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		$clear_urls = [];
 
@@ -268,9 +268,9 @@ class TranslatePress implements Subscriber_Interface {
 			$clear_urls[] = $converter->get_url_for_language( $language, $default_permalink, '' );
 		}
 
-		remove_filter('trp_add_language_to_home_url_check_for_admin', '__return_false');
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
-		if ( empty ( $clear_urls ) ) {
+		if ( empty( $clear_urls ) ) {
 			return;
 		}
 
@@ -288,10 +288,16 @@ class TranslatePress implements Subscriber_Interface {
 	public function clear_post_after_updating_translation( $update_strings, $settings ) {
 		$translatepress = TRP_Translate_Press::get_trp_instance();
 
-		$converter    = $translatepress->get_component( 'url_converter' );
+		$converter = $translatepress->get_component( 'url_converter' );
+
+		if ( empty( $_POST['url'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return;
+		}
+
+		$url = esc_url_raw( wp_unslash( $_POST['url'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$clear_urls  = [];
-		$current_url = remove_query_arg( 'trp-edit-translation', esc_url( $_POST['url'] ) );
+		$current_url = remove_query_arg( 'trp-edit-translation', $url );
 
 		foreach ( $settings['translation-languages'] as $language ) {
 			if ( ! empty( $update_strings[ $language ] ) ) {
