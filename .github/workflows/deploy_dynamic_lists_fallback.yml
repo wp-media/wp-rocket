@@ -36,7 +36,7 @@ jobs:
         uses: engahmeds3ed/create-json-url@v0.0.1
         with:
           name: "dynamic-lists.json"
-          url: "https://staging-sass-backend.wp-rocket.me/api/exclusions/list"
+          url: "https://b.rucss.wp-rocket.me/api/exclusions/list"
           dir: '/'
 
       - name: Get and save incompatible plugins lists
@@ -44,7 +44,7 @@ jobs:
         uses: engahmeds3ed/create-json-url@v0.0.1
         with:
           name: "dynamic-lists-incompatible-plugins.json"
-          url: "https://staging-sass-backend.wp-rocket.me/api/incompatible-plugins/list"
+          url: "https://b.rucss.wp-rocket.me/api/incompatible-plugins/list"
           dir: '/'
 
       - name: Get and Save DelayJS Lists
@@ -52,7 +52,7 @@ jobs:
         uses: engahmeds3ed/create-json-url@v0.0.1
         with:
           name: "dynamic-lists-delayjs.json"
-          url: "https://staging-sass-backend.wp-rocket.me/api/delay-js-exclusions/list"
+          url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
           dir: '/'
 
       - name: Commit All lists JSON files
