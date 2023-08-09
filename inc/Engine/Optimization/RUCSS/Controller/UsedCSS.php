@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
@@ -678,12 +679,11 @@ class UsedCSS {
 
 			// on timeout errors with code 408 create new job.
 			switch ( $job_details['code'] ) {
+				case 400:
+					$this->recreate_job( $row_details, $id );
+					break;
 				case 408:
-					$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-					if ( false !== $add_to_queue_response ) {
-						$new_job_id = $add_to_queue_response['contents']['jobId'];
-						$this->used_css_query->update_job_id( $id, $new_job_id );
-					}
+					$this->recreate_job( $row_details, $id );
 					break;
 			}
 
@@ -1085,5 +1085,22 @@ class UsedCSS {
 			},
 			$items_array
 		);
+	}
+
+	/**
+	 * Recreate job on failure.
+	 *
+	 * @param UsedCSSRow $row_details Details from the row.
+	 * @param int        $id ID from the job.
+	 * @return void
+	 */
+	protected function recreate_job( UsedCSSRow $row_details, int $id ): void {
+		$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
+		if ( false === $add_to_queue_response ) {
+			return;
+		}
+
+		$new_job_id = $add_to_queue_response['contents']['jobId'];
+		$this->used_css_query->update_job_id( $id, $new_job_id );
 	}
 }
