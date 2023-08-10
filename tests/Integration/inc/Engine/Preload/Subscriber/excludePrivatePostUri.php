@@ -43,6 +43,6 @@ class Test_ExcludePrivatePostUri extends AdminTestCase
             wp_insert_post( [ 'post_title' => 'test 4', 'post_status' => 'private' ] );
         }
 
-        $this->assertSame( $expected, apply_filters( 'rocket_preload_exclude_urls', $config['regex'] ) );
+        $this->assertSame( $expected, apply_filters( 'rocket_preload_exclude_urls', $config['regex'], $config['url'] ) );
 	}
 }
