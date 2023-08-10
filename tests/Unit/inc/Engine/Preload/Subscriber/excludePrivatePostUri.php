@@ -15,7 +15,9 @@ use WP_Rocket_Mobile_Detect;
 use WP_Query;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri 
+ * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
+ *
+ * @runTestsInSeparateProcesses
  *
  * @group  Preload
  */
@@ -58,15 +60,18 @@ class Test_ExcludePrivatePostUri extends TestCase
         WP_Query::$have_posts = $config['have_posts'];
         WP_Query::$set_posts = $config['posts'];
 
+		Functions\expect( 'get_post_types' )
+			->once()
+			->andReturn( $config['post_types'] );
+
         if ( ! $config['have_posts'] ) {
             Functions\expect( 'get_permalink' )->never();
-        }
-        else {
+        } else {
             Functions\expect( 'get_permalink' )
             ->once()
             ->andReturnValues( $config['get_permalink'] );
         }
 
-        $this->assertSame( $expected, $this->subscriber->exclude_private_post_uri( $config['regex'] ) );
+        $this->assertSame( $expected, $this->subscriber->exclude_private_post_uri( $config['regex'], $config['url'] ) );
 	}
 }
