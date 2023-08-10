@@ -17,8 +17,6 @@ use WP_Query;
 /**
  * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
  *
- * @runTestsInSeparateProcesses
- *
  * @group  Preload
  */
 class Test_ExcludePrivatePostUri extends TestCase

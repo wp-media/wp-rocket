@@ -485,6 +485,10 @@ class Subscriber implements Subscriber_Interface {
 	private function get_all_private_urls() {
 		static $private_urls;
 
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+			$private_urls = null;
+		}
+
 		if ( isset( $private_urls ) ) {
 			return $private_urls;
 		}
