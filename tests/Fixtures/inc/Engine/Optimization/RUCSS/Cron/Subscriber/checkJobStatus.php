@@ -142,7 +142,7 @@ return [
 				]
 			]
 		],
-		'400ShouldRecreateJob' => [
+		'408ShouldRecreateJob' => [
 			'config' => [
 				'hash' => 'hash',
 				'row' => [
@@ -155,7 +155,7 @@ return [
 					'method' => 'GET',
 					'response' => [
 						'response' => [
-							'code' => 400,
+							'code' => 408,
 							'message' => 'bad json'
 						],
 						'body' => $error_response
