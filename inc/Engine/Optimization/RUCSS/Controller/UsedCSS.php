@@ -703,7 +703,14 @@ class UsedCSS {
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
-		$hash = md5( $css );
+		/**
+		 * RUCSS hash.
+		 *
+		 * @param string $hash RUCSS hash.
+		 * @param string $css RUCSS content.
+		 * @param UsedCSSRow $row_details Job details.
+		 */
+		$hash = (string) apply_filters( 'rocket_rucss_hash',  md5( $css ), $css, $row_details );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
