@@ -508,7 +508,7 @@ class Subscriber implements Subscriber_Interface {
 		foreach ( $query->posts as $post ) {
 			// Temporarily cast publish status to get pretty url.
 			$post->post_status = 'publish';
-			$private_post_url  = untrailingslashit( get_permalink( $post ) );
+			$private_post_url  = get_permalink( $post );
 
 			$private_urls[ md5( $private_post_url ) ] = $private_post_url;
 		}
@@ -533,7 +533,6 @@ class Subscriber implements Subscriber_Interface {
 			return $regexes;
 		}
 
-		$url = untrailingslashit( $url );
 		if ( ! isset( $private_urls[ md5( $url ) ] ) ) {
 			return $regexes;
 		}
