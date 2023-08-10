@@ -46,6 +46,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->go_to( admin_url( 'options-general.php' ) );
+
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
@@ -69,7 +71,6 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 	public function testAdminNotice( $config, $expected ) {
 		$this->set_theme( 'divi', 'Divi' );
 
-
 		if ( isset( $config['rucss_option'] ) ) {
 			add_filter( 'pre_get_rocket_option_remove_unused_css', $config['rucss_option'] ? '__return_true' : '__return_false' );
 		}
@@ -92,7 +93,7 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 		if ( $expected['notice_show'] && $expected['notice_html'] ) {
 			Functions\expect( 'wp_create_nonce' )
-				->once()
+				->twice()
 				->andReturn( '12345' );
 			$this->assertStringContainsStringIgnoringCase(
 				$this->format_the_html( $expected['notice_html'] ),
