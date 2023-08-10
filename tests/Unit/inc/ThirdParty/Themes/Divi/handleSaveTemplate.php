@@ -7,6 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
 use wpdb;
+use Brain\Monkey\Filters;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
@@ -51,6 +52,8 @@ class Test_HandleSaveTemplate extends TestCase {
 				->with( 'rocket_divi_notice' )
 				->andReturn( $config['transient_return'] );
 		}
+
+		Filters\expectApplied( 'rocket_divi_bypass_save_template' )->andReturn( $config['filter_return'] );
 
 		if ( isset( $config['template_post'] ) ) {
 			Functions\when( 'get_post_type' )

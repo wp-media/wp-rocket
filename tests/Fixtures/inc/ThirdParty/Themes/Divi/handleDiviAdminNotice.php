@@ -46,6 +46,7 @@ return [
 					'status'         => 'warning',
 					'dismissible'    => '',
 					'dismiss_button' => 'rocket_divi_notice',
+					'action'         => 'clear_used_css',
 					'message'        =>
 						'<strong>WP Rocket:</strong> Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.'
 				],
