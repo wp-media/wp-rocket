@@ -51,12 +51,15 @@ return [
 						'<strong>WP Rocket:</strong> Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.'
 				],
 				'notice_html' => <<<HTML
-<div class="notice notice-info is-dismissible">
+<div class="notice notice-warning">
 	<p>
 		<strong>WP Rocket:</strong>
 		Your Divi template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.
 	</p>
 	<p>
+		<a class="wp-core-ui button" href="http://example.org/wp-admin/admin-post.php?_wpnonce=12345&action=rocket_clear_usedcss&_wp_http_referer=http%3A%2F%2Fexample.com%2Fwp-admin%2Foptions-general.php">
+			Clear Used CSS
+		</a>
 		<a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_divi_notice&amp;_wpnonce=12345">
 			Dismiss this notice
 		</a>
