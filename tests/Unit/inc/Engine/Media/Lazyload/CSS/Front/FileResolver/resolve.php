@@ -29,10 +29,7 @@ class Test_resolve extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
-		Functions\when('site_url')->justReturn($config['home_url']);
-		Functions\when('get_home_path')->justReturn($config['home_path']);
-		Functions\expect('wp_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
-		Functions\expect('wp_parse_url')->with($expected['home_url'], PHP_URL_HOST)->andReturn($config['host_url']);
+		Functions\expect('rocket_url_to_path')->with($expected['stripped_url'], PHP_URL_HOST)->andReturn($config['path']);
         $this->assertSame($expected['output'], $this->fileresolver->resolve($config['url']));
     }
 }

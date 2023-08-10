@@ -1,55 +1,23 @@
 <?php
 return [
-    'noHostShouldAddHomeOne' => [
+    'ShouldReturnPAth' => [
         'config' => [
-              'url' => 'https://example.org/test',
-              'home_url' => 'https://example.org',
-              'home_path' => '/root/path',
-              'parsed_url' => [
-				  'host' => 'example.org',
-				  'path' => '/test'
-			  ],
-              'host_url' => 'example.org',
+              'url' => 'https://example.org/test?test=1',
+              'path' => '/root/path',
         ],
         'expected' => [
-			'url' => 'https://example.org/test',
-			'home_url' => 'https://example.org',
-			'output' => ''
+			'stripped_url' => 'https://example.org/test',
+			'output' => '/root/path'
 		]
     ],
-	'differentHostsShouldReturnEmpty' => [
+	'InvalidShouldReturnEmpty' => [
 		'config' => [
-			'url' => 'https://example.org/test',
-			'home_url' => 'https://example2.org',
-			'home_path' => '/root/path',
-			'parsed_url' => [
-				'host' => 'example.org',
-				'path' => '/test'
-			],
-			'host_url' => 'example2.org',
+			'url' => 'https://example.org/test?test=1',
+			'path' => false,
 		],
 		'expected' => [
-			'url' => 'https://example.org/test',
-			'home_url' => 'https://example.org',
+			'stripped_url' => 'https://example.org/test',
 			'output' => ''
 		]
 	],
-	'hostShouldReturnRightPath' => [
-		'config' => [
-			'url' => 'https://example.org/test',
-			'home_url' => 'https://example.org',
-			'home_path' => '/root/path',
-			'parsed_url' => [
-				'host' => 'example.org',
-				'path' => '/test'
-			],
-			'host_url' => 'example.org',
-		],
-		'expected' => [
-			'url' => 'https://example.org/test',
-			'home_url' => 'https://example.org',
-			'output' => ''
-		]
-	],
-
 ];

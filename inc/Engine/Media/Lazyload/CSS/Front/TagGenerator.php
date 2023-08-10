@@ -26,7 +26,7 @@ class TagGenerator {
 <style id=\"wpr-lazyload-bg-nostyle\">$nostyle_content</style>
 </noscript>";
 
-		$mapping_json = json_encode( $mapping ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+		$mapping_json = wp_json_encode( $mapping );
 
 		$script_content = "const rocket_pairs = $mapping_json;";
 

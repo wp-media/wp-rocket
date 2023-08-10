@@ -6,12 +6,12 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Context\LazyloadCSSContext;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
+	Extractor,
+	FileResolver,
+	MappingFormatter,
+	RuleFormatter,
+	TagGenerator};
 
 
 /**

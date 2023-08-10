@@ -8,12 +8,12 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadedContent;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Data\LazyloadCSSContentFactory;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Data\ProtectedContent;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\ContentFetcher;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\FileResolver;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\MappingFormatter;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\RuleFormatter;
-use WP_Rocket\Engine\Media\Lazyload\CSS\Front\TagGenerator;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
+	Extractor,
+	FileResolver,
+	MappingFormatter,
+	RuleFormatter,
+	TagGenerator};
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -215,7 +215,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function clear_generate_css_post( WP_Post $post ) {
-		$url = get_post_permalink( $post->ID );
+		$url = get_permalink( $post );
 		$this->logger::debug(
 			"Clear lazy CSS for $url",
 			$this->generate_log_context()
