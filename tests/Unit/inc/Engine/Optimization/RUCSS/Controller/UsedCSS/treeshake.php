@@ -155,7 +155,7 @@ class Test_Treeshake extends TestCase {
 
 		$this->api->expects()->add_to_queue($config['home_url'], $config['create_new_job']['config'])->andReturn
 		($config['create_new_job']['response']);
-		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response']){
+		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response'] || ! $config['create_new_job']['create_job']){
 			return;
 		}
 
