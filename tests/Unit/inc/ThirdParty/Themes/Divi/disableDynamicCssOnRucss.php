@@ -5,6 +5,7 @@ use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -26,9 +27,10 @@ class Test_DisableDynamicCssOnRucss extends TestCase {
 		$options_api = Mockery::mock( Options::class );
 		$this->options     = Mockery::mock( Options_Data::class );
 		$delayjs_html     = Mockery::mock( HTML::class );
+		$used_css     = Mockery::mock( UsedCSS::class );
 		$theme       = new WP_Theme( 'Divi', 'wp-content/themes/' );
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
-		$this->subscriber = new Divi($options_api, $this->options, $delayjs_html);
+		$this->subscriber = new Divi($options_api, $this->options, $delayjs_html, $used_css );
 	}
 
 	/**
