@@ -41,8 +41,9 @@ class Test_DisableDynamicCssOnRucss extends WPThemeTestcase {
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
 		$delayjs_html = self::$container->get( 'delay_js_html' );
+		$used_css = self::$container->get( 'rucss_used_css_controller' );
 		$options_api->set( 'settings', [] );
-		$divi        = new Divi( $options_api, $options, $delayjs_html );
+		$divi        = new Divi( $options_api, $options, $delayjs_html, $used_css );
 		$divi->disable_dynamic_css_on_rucss();
 		$this->assertSame($expected, has_filter( 'et_use_dynamic_css', '__return_false' ));
 	}
