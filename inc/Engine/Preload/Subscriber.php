@@ -122,7 +122,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
-				[ 'exclude_private_post_uri' ],
+				[ 'exclude_private_post_uri', 10, 2 ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
@@ -478,42 +478,70 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Exclude private urls.
+	 * Get all private urls for public post types.
 	 *
-	 * @param array $regexes regexes containing excluded uris.
 	 * @return array
 	 */
-	public function exclude_private_post_uri( $regexes ) : array {
+	private function get_all_private_urls() {
 		static $private_urls;
 
-		if ( ! is_array( $regexes ) ) {
-			$regexes = (array) $regexes;
+		if ( rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ) {
+			$private_urls = null;
 		}
 
 		if ( isset( $private_urls ) ) {
 			return $private_urls;
 		}
 
+		$private_urls = [];
+
+		$public_post_types = get_post_types( [ 'public' => true ] );
+		unset( $public_post_types['attachment'] );
+
 		$arg   = [
-			'post_type'      => 'any',
+			'post_type'      => $public_post_types,
 			'post_status'    => 'private',
 			'posts_per_page' => -1,
 		];
 		$query = new \WP_Query( $arg );
 
 		if ( ! $query->have_posts() ) {
+			return [];
+		}
+
+		foreach ( $query->posts as $post ) {
+			// Temporarily cast publish status to get pretty url.
+			$post->post_status = 'publish';
+			$private_post_url  = get_permalink( $post );
+
+			$private_urls[ md5( $private_post_url ) ] = $private_post_url;
+		}
+
+		return $private_urls;
+	}
+
+	/**
+	 * Exclude private urls.
+	 *
+	 * @param array  $regexes regexes containing excluded uris.
+	 * @param string $url Current url to test against.
+	 * @return array
+	 */
+	public function exclude_private_post_uri( $regexes, $url ) : array {
+		if ( ! is_array( $regexes ) ) {
+			$regexes = (array) $regexes;
+		}
+
+		$private_urls = $this->get_all_private_urls();
+		if ( empty( $private_urls ) ) {
 			return $regexes;
 		}
 
-		$private_post_urls = [];
-		foreach ( $query->posts as $post ) {
-			// Temporarily cast publish status to get pretty url.
-			$post->post_status   = 'publish';
-			$private_post_urls[] = get_permalink( $post );
+		if ( ! isset( $private_urls[ md5( $url ) ] ) ) {
+			return $regexes;
 		}
 
-		$private_urls = array_merge( $regexes, $private_post_urls );
-
-		return $private_urls;
+		$regexes[] = $url;
+		return $regexes;
 	}
 }
