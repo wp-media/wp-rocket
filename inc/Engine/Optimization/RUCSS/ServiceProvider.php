@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_queue',
 		'rucss_filesystem',
 		'rucss_cron_subscriber',
+		'rucss_used_css_controller',
 	];
 
 	/**

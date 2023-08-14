@@ -15,13 +15,12 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag.
-		$flag = $sitepress->get_flag( $lang['code'] );
+		$flag     = $sitepress->get_flag( $lang['code'] );
+		$flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
 
 		if ( $flag->from_template ) {
 			$wp_upload_dir = wp_upload_dir();
 			$flag_url      = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
-		} else {
-			$flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
 		}
 
 		$langlinks[] = [
@@ -153,7 +152,7 @@ function get_rocket_polylang_langs_for_admin_bar() { // phpcs:ignore WordPress.N
  * @since 2.0
  * @since 3.2.1 Return an identifier on success instead of true.
  *
- * @return string|bool An identifier corresponding to the active plugin. False otherwize.
+ * @return string An identifier corresponding to the active plugin.
  */
 function rocket_has_i18n() {
 	global $sitepress, $q_config, $polylang;
@@ -167,7 +166,7 @@ function rocket_has_i18n() {
 		$languages = pll_languages_list();
 
 		if ( empty( $languages ) ) {
-			return false;
+			return '';
 		}
 
 		// Polylang, Polylang Pro.
@@ -186,7 +185,21 @@ function rocket_has_i18n() {
 		}
 	}
 
-	return false;
+	$identifier = '';
+	$default    = $identifier;
+
+	/**
+	 * Filters the value of i18n plugin detection
+	 *
+	 * @param string $identifier An identifier value.
+	 */
+	$identifier = apply_filters( 'rocket_has_i18n', $identifier );
+
+	if ( ! is_string( $identifier ) ) {
+		$identifier = $default;
+	}
+
+	return $identifier;
 }
 
 /**
@@ -200,7 +213,7 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
 	$i18n_plugin = rocket_has_i18n();
 
 	if ( ! $i18n_plugin ) {
-		return false;
+		return [];
 	}
 
 	if ( 'wpml' === $i18n_plugin ) {
@@ -218,7 +231,21 @@ function get_rocket_i18n_code() { // phpcs:ignore WordPress.NamingConventions.Pr
 		return pll_languages_list();
 	}
 
-	return false;
+	$codes   = [];
+	$default = $codes;
+
+	/**
+	 * Filters the active languages codes list
+	 *
+	 * @param array $codes Array of languages codes.
+	 */
+	$codes = apply_filters( 'rocket_get_i18n_code', $codes );
+
+	if ( ! is_array( $codes ) ) {
+		$codes = $default;
+	}
+
+	return $codes;
 }
 
 /**
@@ -232,10 +259,12 @@ function get_rocket_i18n_host() { // phpcs:ignore WordPress.NamingConventions.Pr
 	$langs_host = [];
 	$langs      = get_rocket_i18n_uri();
 
-	if ( $langs ) {
-		foreach ( $langs as $lang ) {
-			$langs_host[] = rocket_extract_url_component( $lang, PHP_URL_HOST );
-		}
+	if ( empty( $langs ) ) {
+		return $langs_host;
+	}
+
+	foreach ( $langs as $lang ) {
+		$langs_host[] = wp_parse_url( $lang, PHP_URL_HOST );
 	}
 
 	return $langs_host;
@@ -271,11 +300,29 @@ function get_rocket_i18n_uri() { // phpcs:ignore WordPress.NamingConventions.Pre
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( ! empty( $pll ) && is_object( $pll ) ) {
-			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
+			if ( ! defined( 'POLYLANG_VERSION' ) || version_compare( POLYLANG_VERSION, '3.4', '<' ) ) {
+				$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
+			}else {
+				$languages = $pll->model->get_languages_list();
+				foreach ( $languages as $language ) {
+					$urls[] = $language->get_home_url();
+				}
+			}
 		}
 	}
 
-	if ( empty( $urls ) ) {
+	/**
+	 * Filters the value of all active languages URI
+	 *
+	 * @param array Array of active languages URI.
+	 */
+	$urls = apply_filters( 'rocket_get_i18n_uri', $urls );
+
+	if (
+		! is_array( $urls )
+		||
+		empty( $urls )
+	) {
 		$urls[] = home_url();
 	}
 
@@ -359,25 +406,28 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 		return [];
 	}
 
+	$urls    = [];
+	$default = $urls;
+
 	switch ( $i18n_plugin ) {
 		// WPML.
 		case 'wpml':
 			$option = get_option( 'icl_sitepress_settings' );
 
 			if ( 2 === (int) $option['language_negotiation_type'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// qTranslate.
 		case 'qtranslate':
 			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// qTranslate-x.
 		case 'qtranslate-x':
 			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
 			}
 			break;
 		// Polylang, Polylang Pro.
@@ -385,11 +435,23 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
-				return get_rocket_i18n_uri();
+				$urls = get_rocket_i18n_uri();
+			}
+			break;
+		default:
+			/**
+			 * Filters the list of languages subdomains URLs
+			 *
+			 * @param array $urls Array of languages subdomains URLs.
+			 */
+			$urls = apply_filters( 'rocket_i18n_subdomains', $urls );
+
+			if ( ! is_array( $urls ) ) {
+				$urls = $default;
 			}
 	}
 
-	return [];
+	return $urls;
 }
 
 /**
@@ -403,30 +465,49 @@ function get_rocket_i18n_subdomains() { // phpcs:ignore WordPress.NamingConventi
 function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$i18n_plugin = rocket_has_i18n();
 
+	$home_url = home_url();
+	$default  = $home_url;
+
 	if ( ! $i18n_plugin ) {
-		return home_url();
+		return $home_url;
 	}
 
 	switch ( $i18n_plugin ) {
 		// WPML.
 		case 'wpml':
-			return $GLOBALS['sitepress']->language_url( $lang );
-		// qTranslate.
+			$home_url = $GLOBALS['sitepress']->language_url( $lang );
+			break;
+			// qTranslate.
 		case 'qtranslate':
-			return qtrans_convertURL( home_url(), $lang, true );
-		// qTranslate-x.
+			$home_url = qtrans_convertURL( home_url(), $lang, true );
+			break;
+			// qTranslate-x.
 		case 'qtranslate-x':
-			return qtranxf_convertURL( home_url(), $lang, true );
-		// Polylang, Polylang Pro.
+			$home_url = qtranxf_convertURL( home_url(), $lang, true );
+			break;
+			// Polylang, Polylang Pro.
 		case 'polylang':
 			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
-				return pll_home_url( $lang );
+				$home_url = pll_home_url( $lang );
+			}
+			break;
+		default:
+			/**
+			 * Filters the home URL value for a specific language
+			 *
+			 * @param string $home_url Home URL.
+			 * @param string $lang     The language code.
+			 */
+			$home_url = apply_filters( 'rocket_i18n_home_url', $home_url, $lang );
+
+			if ( ! is_string( $home_url ) ) {
+				$home_url = $default;
 			}
 	}
 
-	return home_url();
+	return $home_url;
 }
 
 /**
@@ -439,15 +520,18 @@ function get_rocket_i18n_home_url( $lang = '' ) { // phpcs:ignore WordPress.Nami
  * @param  string $regex     Regex to include at the end.
  * @return array
  */
-function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$path = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH );
+function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = '' ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$url  = get_permalink( $post_id );
+	$path = wp_parse_url( $url, PHP_URL_PATH );
 
 	if ( empty( $path ) ) {
 		return [];
 	}
 
 	$i18n_plugin = rocket_has_i18n();
-	$urls        = [];
+
+	$urls    = [];
+	$default = $urls;
 
 	switch ( $i18n_plugin ) {
 		// WPML.
@@ -465,11 +549,9 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		case 'qtranslate-x':
 			$langs  = $GLOBALS['q_config']['enabled_languages'];
 			$langs  = array_diff( $langs, [ $GLOBALS['q_config']['default_language'] ] );
-			$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+			$urls[] = wp_parse_url( $url, PHP_URL_PATH ) . $regex;
 
 			if ( $langs ) {
-				$url = get_permalink( $post_id );
-
 				foreach ( $langs as $lang ) {
 					if ( 'qtranslate' === $i18n_plugin ) {
 						$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
@@ -488,9 +570,24 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 			}
 
 			if ( ! empty( $translations ) ) {
-				foreach ( $translations as $post_id ) {
-					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				foreach ( $translations as $translation_post_id ) {
+					$urls[] = wp_parse_url( get_permalink( $translation_post_id ), PHP_URL_PATH ) . $regex;
 				}
+			}
+			break;
+		default:
+			/**
+			 * Filters the list of translated URLs for a post ID
+			 *
+			 * @param array  $urls Array of translated URLs.
+			 * @param string $url URL to use.
+			 * @param string $post_type Post type.
+			 * @param string $regex Pattern to include at the end.
+			 */
+			$urls = apply_filters( 'rocket_i18n_translated_post_urls', $urls, $url, $post_type, $regex );
+
+			if ( ! is_array( $urls ) ) {
+				$urls = $default;
 			}
 	}
 
@@ -498,16 +595,13 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		$urls[] = $path . $regex;
 	}
 
-	$urls = array_unique( $urls );
-
-	return $urls;
+	return array_unique( $urls );
 }
 
 /**
  * Returns the home URL, without WPML filters if the plugin is active
  *
  * @since 3.2.4
- * @author Remy Perona
  *
  * @param string $path Path to add to the home URL.
  * @return string
@@ -539,19 +633,21 @@ function rocket_get_home_url( $path = '' ) {
 }
 
 /**
- * Gets the current language if Polylang or WPML is used
+ * Gets the current language
  *
  * @since 3.3.3
- * @author Remy Perona
  *
- * @return string|bool
+ * @return string
  */
 function rocket_get_current_language() {
 	$i18n_plugin = rocket_has_i18n();
 
 	if ( ! $i18n_plugin ) {
-		return false;
+		return '';
 	}
+
+	$current_language = '';
+	$default          = $current_language;
 
 	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
 		return pll_current_language();
@@ -559,5 +655,16 @@ function rocket_get_current_language() {
 		return apply_filters( 'wpml_current_language', null ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	return false;
+	/**
+	 * Filters the current language value
+	 *
+	 * @param string $current_language Current language.
+	 */
+	$current_language = apply_filters( 'rocket_i18n_current_language', $current_language );
+
+	if ( ! is_string( $current_language ) ) {
+		$current_language = $default;
+	}
+
+	return $current_language;
 }
