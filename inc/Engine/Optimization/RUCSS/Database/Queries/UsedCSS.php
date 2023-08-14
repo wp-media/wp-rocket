@@ -405,6 +405,24 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Get the count of completed rows.
+	 *
+	 * @return int
+	 */
+	public function get_completed_count() {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return 0;
+		}
+
+		return $this->query(
+			[
+				'count'  => true,
+				'status' => 'completed',
+			]
+		);
+	}
+
+	/**
 	 * Get all failed rows.
 	 *
 	 * @return array|false

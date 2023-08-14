@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.13.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-07-17 09:09-0400\n"
+"POT-Creation-Date: 2023-08-07 15:45-0400\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -212,7 +212,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s Opções ideais desactivadas para a Cloudflare, foram "
 "revertidas as opções anteriores:"
 
-#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:184
+#: inc/Addon/Cloudflare/Subscriber.php:661 inc/admin/options.php:144
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -415,6 +415,22 @@ msgstr ""
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s."
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:158
+#, php-format
+msgid ""
+"%1$sWP Rocket:%2$s We detected that the website domain has changed. The "
+"configuration files must be regenerated for the page cache and all other "
+"optimizations to work as intended. %3$sLearn More%4$s"
+msgstr ""
+"%1$sWP Rocket:%2$s Foi detectado que o domínio do seu site foi alterado. Os "
+"ficheiros de configuração têm de ser regenerados para que a cache das "
+"páginas e as restantes optimizações funcionem como pretendido. %3$sSaiba "
+"mais%4$s"
+
+#: inc/Engine/Admin/DomainChange/Subscriber.php:186
+msgid "Regenerate WP Rocket configuration files now"
+msgstr "Regenere agora os ficheiros de configuração do WP Rocket"
 
 #: inc/Engine/Admin/Settings/Page.php:201
 msgid "Save Changes"
@@ -691,7 +707,7 @@ msgstr ""
 msgid "Activate combine CSS"
 msgstr "Activar combinação do CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:708 inc/admin/options.php:124
+#: inc/Engine/Admin/Settings/Page.php:708 inc/admin/options.php:84
 msgid "Excluded CSS Files"
 msgstr "Ficheiros de CSS excluídos"
 
@@ -867,7 +883,7 @@ msgstr ""
 msgid "Activate combine JavaScript"
 msgstr "Activar combinação do JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:862 inc/admin/options.php:125
+#: inc/Engine/Admin/Settings/Page.php:862 inc/admin/options.php:85
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript em linha excluído"
 
@@ -882,7 +898,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:880
 #: inc/Engine/Admin/Settings/Page.php:913
-#: inc/Engine/Admin/Settings/Page.php:960 inc/admin/options.php:126
+#: inc/Engine/Admin/Settings/Page.php:960 inc/admin/options.php:86
 msgid "Excluded JavaScript Files"
 msgstr "Ficheiros de JavaScript excluídos"
 
@@ -1253,7 +1269,7 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> serão detectadas e por omissão nunca serão "
 "armazenadas em cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1329 inc/admin/options.php:129
+#: inc/Engine/Admin/Settings/Page.php:1329 inc/admin/options.php:89
 msgid "Never Cache URL(s)"
 msgstr "Nunca criar cache dos URL"
 
@@ -1261,11 +1277,11 @@ msgstr "Nunca criar cache dos URL"
 msgid "Never Cache Cookies"
 msgstr "Nunca criar cache de cookies"
 
-#: inc/Engine/Admin/Settings/Page.php:1343 inc/admin/options.php:130
+#: inc/Engine/Admin/Settings/Page.php:1343 inc/admin/options.php:90
 msgid "Never Cache User Agent(s)"
 msgstr "Nunca criar cache de agentes de utilizador"
 
-#: inc/Engine/Admin/Settings/Page.php:1349 inc/admin/options.php:131
+#: inc/Engine/Admin/Settings/Page.php:1349 inc/admin/options.php:91
 msgid "Always Purge URL(s)"
 msgstr "Limpar sempre os URL"
 
@@ -1495,7 +1511,7 @@ msgstr ""
 "Não é necessário para serviços como a Cloudflare e Sucuri. Por favor "
 "consulte os nossos %1$smódulos%2$s disponíveis."
 
-#: inc/Engine/Admin/Settings/Page.php:1616 inc/admin/options.php:132
+#: inc/Engine/Admin/Settings/Page.php:1616 inc/admin/options.php:92
 msgid "Exclude files from CDN"
 msgstr "Excluir ficheiros da CDN"
 
@@ -2040,7 +2056,7 @@ msgid ""
 msgstr ""
 "Acelere o seu site com a RocketCDN, a Content Delivery Network do WP Rocket!"
 
-#: inc/Engine/Cache/AdminSubscriber.php:118 inc/admin/admin.php:96
+#: inc/Engine/Cache/AdminSubscriber.php:133 inc/admin/admin.php:96
 #: inc/admin/admin.php:118 inc/deprecated/3.5.php:898
 msgid "Clear this cache"
 msgstr "Limpar esta cache"
@@ -2471,7 +2487,7 @@ msgstr "Actualize agora"
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:42
 #: inc/Engine/License/views/renewal-expired-banner.php:30
-#: inc/admin/ui/notices.php:742 views/settings/page-sections/dashboard.php:46
+#: inc/admin/ui/notices.php:662 views/settings/page-sections/dashboard.php:46
 msgid "Dismiss this notice"
 msgstr "Descartar esta notificação"
 
@@ -2635,13 +2651,17 @@ msgstr "Não foi possível actualizar as listas."
 msgid "Lists are successfully updated."
 msgstr "As listas foram actualizadas com sucesso."
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:52
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:60
 msgid "Default Lists"
 msgstr "Listas por omissão"
 
-#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:58
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:66
 msgid "Delay JavaScript Execution Exclusion Lists"
 msgstr "Listas de exclusão do diferimento da execução de JavaScript"
+
+#: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
+msgid "Incompatible plugins Lists"
+msgstr "Listas de plugins incompatíveis"
 
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
@@ -2728,12 +2748,12 @@ msgstr ""
 " o funcionamento da opção de Remover CSS não utilizado. Por favor contacte o"
 " %3$snosso suporte%4$s."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:324
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:315
 #, php-format
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: A opção do CSS utilizado não está activa!"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:345
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:337
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: A cache do CSS utilizado foi limpa!"
@@ -2818,7 +2838,7 @@ msgstr ""
 "Kinsta e do WP Rocket. Para corrigir o problema, por favor entre em contacto"
 " com o suporte do Kinsta através da sua conta %1$sMyKinsta%2$s."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:126
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:125
 #, php-format
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
@@ -2828,7 +2848,7 @@ msgstr ""
 " de Remover CSS não utilizado e de Combinar ficheiros de CSS. Recomendamos "
 "vivamente a sua desactivação."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:168
 msgid ""
 "Your site is using the official Cloudflare plugin. We have enabled "
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
@@ -2838,7 +2858,7 @@ msgstr ""
 "limpeza automática da Cloudflare para compatibilidade. Se tiver activado a "
 "APO, também é compatível."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
 msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
@@ -2846,7 +2866,7 @@ msgstr ""
 "A cache da Cloudflare será limpa sempre que limpar a cache do WP Rocket para"
 " garantir que o conteúdo está sempre actualizado."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:214
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:213
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
@@ -2855,7 +2875,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s Está a usar \"Cache de cookies dinâmicos\". A Cloudflare "
 "APO ainda não é compatível com esta funcionalidade."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:220
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:219
 #, php-format
 msgid ""
 "You should either disable Cloudflare APO or check with the theme/plugin "
@@ -2867,7 +2887,7 @@ msgstr ""
 "existe uma forma alternativa para criar cache de páginas facilmente. "
 "%1$sMais informações%2$s"
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:271
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:270
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
@@ -2879,7 +2899,7 @@ msgstr ""
 " na Cloudflare APO para fornecer a versão correcta da cache. %4$sMais "
 "informações%5$s"
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:292
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:291
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
@@ -3059,59 +3079,59 @@ msgstr "Perguntas frequentes"
 msgid "Settings"
 msgstr "Opções"
 
-#: inc/admin/admin.php:458
+#: inc/admin/admin.php:397
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Falhou ao importar as opções: Não tem permissões para fazer isto."
 
-#: inc/admin/admin.php:462
+#: inc/admin/admin.php:401
 msgid "Settings import failed: no file uploaded."
 msgstr "Falhou ao importar as opções: Nenhum ficheiro carregado."
 
-#: inc/admin/admin.php:466
+#: inc/admin/admin.php:405
 msgid "Settings import failed: incorrect filename."
 msgstr "Falhou ao importar as opções: Nome de ficheiro incorrecto."
 
-#: inc/admin/admin.php:477
+#: inc/admin/admin.php:416
 msgid "Settings import failed: incorrect filetype."
 msgstr "Falhou ao importar as opções: Tipo de ficheiro incorrecto."
 
-#: inc/admin/admin.php:487
+#: inc/admin/admin.php:426
 msgid "Settings import failed: "
 msgstr "Falhou ao importar as opções: "
 
-#: inc/admin/admin.php:503
+#: inc/admin/admin.php:442
 msgid "Settings import failed: unexpected file content."
 msgstr "Falhou ao importar as opções: Ficheiro com conteúdo inesperado."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:472
 msgid "Settings imported and saved."
 msgstr "As opções foram importadas e guardadas."
 
-#: inc/admin/options.php:127
+#: inc/admin/options.php:87
 msgid "Defer JavaScript Files"
 msgstr "Diferir ficheiros de JavaScript"
 
-#: inc/admin/options.php:128
+#: inc/admin/options.php:88
 msgid "Excluded Delay JavaScript Files"
 msgstr "Ficheiros de JavaScript excluídos do diferimento"
 
-#: inc/admin/options.php:150
+#: inc/admin/options.php:110
 #, php-format
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:160
+#: inc/admin/options.php:120
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Este padrão é inválido e foi removido:"
 msgstr[1] "Estes padrões são inválidos e foram removidos:"
 msgstr[2] "Estes padrões são inválidos e foram removidos:"
 
-#: inc/admin/options.php:176
+#: inc/admin/options.php:136
 msgid "More info"
 msgstr "Mais informações"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:751
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
 #: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
@@ -3181,7 +3201,7 @@ msgstr ""
 "<strong>%s</strong>: Um ou mais plugins foram activados ou desactivados, "
 "caso afectem a interface do seu site, deve limpar a cache."
 
-#: inc/admin/ui/notices.php:221
+#: inc/admin/ui/notices.php:141
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -3190,11 +3210,11 @@ msgstr ""
 "<strong>%s</strong>: Os seguintes plugins não são compatíveis com este "
 "plugin e poderão causar resultados inesperados:"
 
-#: inc/admin/ui/notices.php:227
+#: inc/admin/ui/notices.php:147
 msgid "Deactivate"
 msgstr "Desactivar"
 
-#: inc/admin/ui/notices.php:269
+#: inc/admin/ui/notices.php:189
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -3203,7 +3223,7 @@ msgstr ""
 "correcto de algumas opções do WP Rocket. Deverá ser desactivado caso tenha "
 "algum problema."
 
-#: inc/admin/ui/notices.php:309
+#: inc/admin/ui/notices.php:229
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -3215,7 +3235,7 @@ msgstr ""
 "Cache para Inactivo (Level 0) na página %1$sConfigurações > Geral%2$s para "
 "evitar quaisquer problemas."
 
-#: inc/admin/ui/notices.php:330
+#: inc/admin/ui/notices.php:250
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -3225,7 +3245,7 @@ msgstr ""
 " o plugin funcionar correctamente. %2$sVá para as opções das ligações "
 "permanentes%3$s"
 
-#: inc/admin/ui/notices.php:377
+#: inc/admin/ui/notices.php:297
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -3233,14 +3253,14 @@ msgstr ""
 "O %s não pôde modificar o ficheiro .htaccess devido à falta de permissões de"
 " escrita."
 
-#: inc/admin/ui/notices.php:383 inc/admin/ui/notices.php:846
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:777
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Resolução de problemas: %1$sComo activar a permissão escrita nos ficheiros "
 "do sistema%2$s"
 
-#: inc/admin/ui/notices.php:385 inc/admin/ui/notices.php:848
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:779
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3248,7 +3268,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:391
+#: inc/admin/ui/notices.php:311
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -3256,7 +3276,7 @@ msgstr ""
 "Não se preocupe, a cache de páginas e as opções do WP Rocket continuarão a "
 "funcionar correctamente."
 
-#: inc/admin/ui/notices.php:391
+#: inc/admin/ui/notices.php:311
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -3264,7 +3284,7 @@ msgstr ""
 "Para um óptimo desempenho, é recomendado adicionar estas linhas ao seu "
 "ficheiro .htaccess (não obrigatório):"
 
-#: inc/admin/ui/notices.php:538
+#: inc/admin/ui/notices.php:458
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -3273,7 +3293,7 @@ msgstr ""
 "O %1$s está pronto! %2$sTeste o tempo de carregamento%4$s ou consulte as "
 "suas %3$sopções%4$s."
 
-#: inc/admin/ui/notices.php:579
+#: inc/admin/ui/notices.php:499
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -3281,15 +3301,15 @@ msgstr ""
 "Permite que o WP Rocket recolha dados não sensíveis de diagnóstico deste "
 "site?"
 
-#: inc/admin/ui/notices.php:580
+#: inc/admin/ui/notices.php:500
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Isto ajuda-nos a melhorar o WP Rocket no futuro."
 
-#: inc/admin/ui/notices.php:586
+#: inc/admin/ui/notices.php:506
 msgid "What info will we collect?"
 msgstr "Que informação vamos recolher?"
 
-#: inc/admin/ui/notices.php:591
+#: inc/admin/ui/notices.php:511
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -3301,69 +3321,69 @@ msgstr ""
 " de domínio ou endereços de email (excepto para validação de licença), "
 "endereços de IP ou chaves de API de terceiros."
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:520
 msgid "Yes, allow"
 msgstr "Sim, permitir"
 
-#: inc/admin/ui/notices.php:603
+#: inc/admin/ui/notices.php:523
 msgid "No, thanks"
 msgstr "Não, obrigado"
 
-#: inc/admin/ui/notices.php:642
+#: inc/admin/ui/notices.php:562
 msgid "Thank you!"
 msgstr "Obrigado!"
 
-#: inc/admin/ui/notices.php:647
+#: inc/admin/ui/notices.php:567
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "O WP Rocket agora recolhe as seguintes métricas do seu site:"
 
-#: inc/admin/ui/notices.php:685
+#: inc/admin/ui/notices.php:605
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: A cache foi limpa."
 
-#: inc/admin/ui/notices.php:692
+#: inc/admin/ui/notices.php:612
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: A cache do conteúdo foi limpa."
 
-#: inc/admin/ui/notices.php:699
+#: inc/admin/ui/notices.php:619
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: A cache do termo foi limpa."
 
-#: inc/admin/ui/notices.php:706
+#: inc/admin/ui/notices.php:626
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: A cache do utilizador foi limpa."
 
-#: inc/admin/ui/notices.php:754
+#: inc/admin/ui/notices.php:674
 msgid "Stop Preload"
 msgstr "Parar pré-carregamento"
 
-#: inc/admin/ui/notices.php:760
+#: inc/admin/ui/notices.php:680
 msgid "Turn on Remove Unused CSS"
 msgstr "Ligar a remoção de CSS não utilizado"
 
-#: inc/admin/ui/notices.php:766
+#: inc/admin/ui/notices.php:686
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
 msgstr "Active agora os \"Ficheiros de cache separados para dispositivos móveis\""
 
-#: inc/admin/ui/notices.php:784
+#: inc/admin/ui/notices.php:704
 msgid "Force deactivation "
 msgstr "Forçar desactivação "
 
-#: inc/admin/ui/notices.php:803
+#: inc/admin/ui/notices.php:734
 msgid "The following code should have been written to this file:"
 msgstr "Deveria ter sido escrito neste ficheiro o seguinte código:"
 
-#: inc/admin/ui/notices.php:834
+#: inc/admin/ui/notices.php:765
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "Não é possível configurar o %s devido à falta de permissões de escrita."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:771
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Ficheiro/pasta afectados: %s"

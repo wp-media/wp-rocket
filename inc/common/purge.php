@@ -209,7 +209,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 
 	// Get the post language.
 	$i18n_plugin = rocket_has_i18n();
-	$lang        = false;
+	$lang        = '';
 
 	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
 		// WPML.
