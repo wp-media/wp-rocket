@@ -35,7 +35,7 @@ class Test_clearGenerateCssPost extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-		Functions\expect('get_post_permalink')->with($expected['post'])->andReturn($config['url']);
+		Functions\expect('get_permalink')->with($expected['post'])->andReturn($config['url']);
 		if($config['should_delete']) {
 			$this->filesystem_cache->expects()->delete($expected['url']);
 		} else {
