@@ -18,8 +18,11 @@ tests_add_filter(
 	function() {
 
         if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
-			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Url_Converter.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Languages.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Language_Switcher.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {

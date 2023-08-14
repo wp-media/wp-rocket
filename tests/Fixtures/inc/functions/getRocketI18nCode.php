@@ -6,12 +6,12 @@ return [
 	'shouldReturnFalseWhenNoI18nPlugin'                => [
 		'i18n_plugin' => false,
 		'codes'       => [],
-		'expected'    => false,
+		'expected'    => [],
 	],
 	'shouldReturnFalseWhenNotWpmlQTranslateOrPolyLang' => [
 		'i18n_plugin' => 'baz',
 		'codes'       => [ 'de', 'en', 'fr' ],
-		'expected'    => false,
+		'expected'    => [],
 	],
 	'wpml_ShouldReturnLangCodes'                       => [
 		'i18n_plugin' => 'wpml',
@@ -41,7 +41,7 @@ return [
 	'polylang_ShouldReturnEmptyArrayWhenNoCodes'       => [
 		'i18n_plugin' => 'polylang',
 		'codes'       => [],
-		'expected'    => false,
+		'expected'    => [],
 	],
 	'polylang_ShouldReturnLangCodes'                   => [
 		'i18n_plugin' => 'polylang',
