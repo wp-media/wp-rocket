@@ -1,0 +1,61 @@
+name: Transifex translations
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "trunk" ]
+  pull_request:
+    branches: [ "trunk" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+
+      - name: Get and Save Default Lists
+        id: saveDynamicLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists.json"
+          url: "https://b.rucss.wp-rocket.me/api/exclusions/list"
+          dir: '/'
+
+      - name: Get and save incompatible plugins lists
+        id: saveIncompatiblePluginsLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists-incompatible-plugins.json"
+          url: "https://b.rucss.wp-rocket.me/api/incompatible-plugins/list"
+          dir: '/'
+
+      - name: Get and Save DelayJS Lists
+        id: saveDynamicDelayJSLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists-delayjs.json"
+          url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
+          dir: '/'
+
+      - name: Commit All lists JSON files
+        if: ${{ steps.saveDynamicLists.outcome == 'success' || steps.saveDynamicDelayJSLists.outcome == 'success' || steps.saveIncompatiblePluginsLists.outcome == 'success' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update dynamic lists
+          commit_user_name: WP Media GitHub Actions Bot
