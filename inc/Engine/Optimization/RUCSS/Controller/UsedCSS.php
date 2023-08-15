@@ -860,7 +860,11 @@ class UsedCSS {
 				continue;
 			}
 
-			$this->used_css_query->revert_to_pending( $id );
+			$add_to_queue_response = $this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
+			if ( false !== $add_to_queue_response ) {
+				$new_job_id = $add_to_queue_response['contents']['jobId'];
+				$this->used_css_query->reset_job( $id, $new_job_id );
+			}
 		}
 
 		/**
