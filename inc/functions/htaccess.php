@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  * @since 1.1.0 Remove empty spacings when .htaccess is generated.
  *
- * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
- * @return bool               True on success, false otherwise.
+ * @param bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
+ *
+ * @return bool
  */
 function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $is_apache;
@@ -29,39 +30,19 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
+	if ( ! function_exists( 'insert_with_markers' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/misc.php';
+	}
+
 	$htaccess_file = get_home_path() . '.htaccess';
-
-	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
-		// The file is not writable or does not exist.
-		return false;
-	}
-
-	// Get content of .htaccess file.
-	$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
-
-	if ( false === $ftmp ) {
-		// Could not get the file contents.
-		return false;
-	}
-
-	// Check if the file contains the WP rules, before modifying anything.
-	$has_wp_rules = rocket_has_wp_htaccess_rules( $ftmp );
-
-	// Remove the WP Rocket marker.
-	$ftmp = preg_replace( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', PHP_EOL . PHP_EOL, $ftmp );
-	$ftmp = ltrim( $ftmp );
+	$insertion     = '';
 
 	if ( ! $remove_rules ) {
-		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
+		$insertion = get_rocket_htaccess_marker();
 	}
 
-	// Make sure the WP rules are still there.
-	if ( $has_wp_rules && ! rocket_has_wp_htaccess_rules( $ftmp ) ) {
-		return false;
-	}
-
-	// Update the .htacces file.
-	return rocket_put_content( $htaccess_file, $ftmp );
+	// Update the .htaccess file.
+	return insert_with_markers( $htaccess_file, 'WP Rocket', $insertion );
 }
 
 /**
@@ -112,9 +93,6 @@ function rocket_htaccess_rules_test( $rules_name ) {
  * @return string $marker Rules that will be printed
  */
 function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	// Recreate WP Rocket marker.
-	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-
 	/**
 	 * Add custom rules before rules added by WP Rocket
 	 *
@@ -122,7 +100,7 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 *
 	 * @param string $before_marker The content of all rules.
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$marker = apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -143,8 +121,6 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 * @param string $after_marker The content of all rules.
 	*/
 	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-
-	$marker .= '# END WP Rocket' . PHP_EOL;
 
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
