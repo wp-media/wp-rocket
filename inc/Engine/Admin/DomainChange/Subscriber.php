@@ -47,6 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string[]
 	 */
 	public static function get_subscribed_events() {
+
 		return [
 			'admin_init'                                 => 'maybe_launch_domain_changed',
 			'admin_notices'                              => 'maybe_display_domain_change_notice',
@@ -63,6 +64,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_domain_changed() {
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+
 		$base_url         = trailingslashit( home_url() );
 		$base_url_encoded = base64_encode( $base_url ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
