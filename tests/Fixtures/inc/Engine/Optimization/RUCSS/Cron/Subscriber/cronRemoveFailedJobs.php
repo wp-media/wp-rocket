@@ -72,7 +72,31 @@ return [
     'shouldDeleteFailedJobs' => [
         'input' => [
             'used_css' => $failed_used_css,
+			'add_job_to_queue_response'=> [
+				'headers'=>[],
+				'response' => array('code' => 200),
+				'body'=>'{"code": 200,
+				"message": "Added to Queue successfully.",
+				"contents": {
+					"jobId": "OVH_EU--496540278",
+					"queueName": "EU",
+					"isHome": false,
+					"queueFullName": "rucssJob_EU"
+					}
+				}'
+			]
         ],
         'expected' => $pending_used_css,
     ],
+	'shouldNotDeleteFailedJobsNoResponse' => [
+		'input' => [
+			'used_css' => $failed_used_css,
+			'add_job_to_queue_response'=> [
+				'headers'=>[],
+				'response' => array('code' => 404,'message'=> "error."),
+				'body'=>''
+			]
+		],
+		'expected' => [],
+	],
 ];

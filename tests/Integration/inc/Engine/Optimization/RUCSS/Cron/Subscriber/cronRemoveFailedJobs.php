@@ -14,6 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_CronRemoveFailedJobs extends TestCase {
 	use DBTrait;
 
+	private $add_to_queue_response;
 	public static function set_up_before_class() {
 		self::installFresh();
 
@@ -35,6 +36,7 @@ class Test_CronRemoveFailedJobs extends TestCase {
 	 */
 	public function testShouldDoExpected( $input, $expected ){
 		add_filter('pre_http_request', [$this, 'edit_http_request'], 10, 3);
+		$this->add_to_queue_response = $input['add_job_to_queue_response'];
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
@@ -53,18 +55,6 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		$this->assertCount( count( $expected ), $resultUsedCssAfterClean );
 	}
 	public function edit_http_request($response, $args, $url) {
-		return [
-			'headers'=>[],
-			'response' => array('code' => 200),
-			'body'=>'{"code": 200,
-			"message": "Added to Queue successfully.",
-			"contents": {
-				"jobId": "OVH_EU--496540278",
-				"queueName": "EU",
-				"isHome": false,
-				"queueFullName": "rucssJob_EU"
-				}
-			}'
-		];
+		return $this->add_to_queue_response;
 	}
 }
