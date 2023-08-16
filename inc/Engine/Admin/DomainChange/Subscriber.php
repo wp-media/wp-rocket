@@ -25,7 +25,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Name of the option saving the last base URL.
 	 *
-	 * @string
+	 * @var string
 	 */
 	const LAST_BASE_URL_OPTION = 'wp_rocket_last_base_url';
 
