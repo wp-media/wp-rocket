@@ -19,15 +19,14 @@ class Test_CronRemoveFailedJobs extends TestCase {
 
 		parent::set_up_before_class();
 	}
-
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tear_down() : void {
-
+	public function tear_down(){
+		remove_filter('pre_http_request', [$this, 'edit_http_request']);
 		parent::tear_down();
 	}
 
@@ -35,7 +34,7 @@ class Test_CronRemoveFailedJobs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $input, $expected ){
-		$this->markTestSkipped('We cannot reach the Saas servers. Need to revisit.');
+		add_filter('pre_http_request', [$this, 'edit_http_request'], 10, 3);
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
@@ -52,5 +51,20 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		$resultUsedCssAfterClean = $rucss_usedcss_query->query( [ 'status'  => 'pending' ] );
 
 		$this->assertCount( count( $expected ), $resultUsedCssAfterClean );
+	}
+	public function edit_http_request($response, $args, $url) {
+		return [
+			'headers'=>[],
+			'response' => array('code' => 200),
+			'body'=>'{"code": 200,
+			"message": "Added to Queue successfully.",
+			"contents": {
+				"jobId": "OVH_EU--496540278",
+				"queueName": "EU",
+				"isHome": false,
+				"queueFullName": "rucssJob_EU"
+				}
+			}'
+		];
 	}
 }

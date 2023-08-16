@@ -67,7 +67,6 @@ class Test_ClearFailedUrls extends TestCase {
                                 ->method( 'reset_job' );
             }
             else {
-				//var_dump($config['is_int']);
                 foreach ( $config['rows'] as $row ) {
 					$this->options->expects()
 						->get( 'remove_unused_css_safelist', [] )
