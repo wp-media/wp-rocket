@@ -51,7 +51,6 @@ class Subscriber implements Subscriber_Interface {
 			'admin_init'                                 => 'maybe_launch_domain_changed',
 			'admin_notices'                              => 'maybe_display_domain_change_notice',
 			'rocket_domain_changed'                      => 'maybe_clean_cache_domain_change',
-			'update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG' ) => [ 'save_hash_on_update_options', 10, 2 ],
 			'rocket_notice_args'                         => 'add_regenerate_configuration_action',
 			'admin_post_rocket_regenerate_configuration' => 'regenerate_configuration',
 		];
