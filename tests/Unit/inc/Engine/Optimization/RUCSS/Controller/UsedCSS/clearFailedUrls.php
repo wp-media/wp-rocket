@@ -64,14 +64,27 @@ class Test_ClearFailedUrls extends TestCase {
         if ( isset( $config['is_int'] ) ) {
             if ( ! $config['is_int'] ) {
                 $this->usedCssQuery->expects( self::never() )
-                                ->method( 'revert_to_pending' );
+                                ->method( 'reset_job' );
             }
             else {
+				//var_dump($config['is_int']);
                 foreach ( $config['rows'] as $row ) {
+					$this->options->expects()
+						->get( 'remove_unused_css_safelist', [] )
+						->andReturn( [] );
+					Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+					$this->api->expects()->add_to_queue( $row->url, [
+						'treeshake'      => 1,
+						'rucss_safelist' => [],
+						'skip_attr' => [],
+						'is_mobile'      => $row->is_mobile,
+						'is_home'        => false,
+					] )
+						->andReturn( $config['add_to_queue_response']);
                     $this->usedCssQuery->expects( self::any() )
-                                ->method( 'revert_to_pending' )
+                                ->method( 'reset_job' )
                                 ->with($this->anything())
-                                ->will($this->returnCallback( 
+                                ->will($this->returnCallback(
                                     function ( $value ) use ($row) {
                                         return $value === $row->id;
                                     }

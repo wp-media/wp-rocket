@@ -1,5 +1,8 @@
 <?php
-
+$add_to_queue_response = [
+	'code'     => 200,
+	'contents' => [ 'jobId' => '2' ]
+];
 return [
 	'testShouldBailOutWithEmptyRows' => [
 		'config' => [
@@ -58,6 +61,7 @@ return [
                 ],
             ],
             'is_int' => true,
+			'add_to_queue_response' => $add_to_queue_response,
 		],
         'expected' => [
             'failed_urls' => [
@@ -87,6 +91,7 @@ return [
                 ],
             ],
             'is_int' => true,
+			'add_to_queue_response' => $add_to_queue_response,
 		],
         'expected' => [
             'failed_urls' => [
