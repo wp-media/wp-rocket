@@ -41,7 +41,7 @@ class LazyloadCSSContext extends AbstractContext {
 				'bypass'             => false,
 				'option'             => 'lazyload_css_bg_img',
 				'password_protected' => false,
-				'post_excluded'      => 'disable_css_bg_img_lazyload',
+				'post_excluded'      => 'lazyload_css_bg_img',
 				'logged_in'          => false,
 			]
 			);
