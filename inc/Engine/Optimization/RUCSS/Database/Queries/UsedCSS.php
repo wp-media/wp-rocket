@@ -199,7 +199,7 @@ class UsedCSS extends Query {
 	}
 
 	/**
-	 * Reset th job and add new job_id pending.
+	 * Reset the job and add new job_id pending.
 	 *
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
