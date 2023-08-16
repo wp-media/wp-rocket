@@ -28,7 +28,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @string
 	 */
 	const LAST_BASE_URL_OPTION = 'wp_rocket_last_base_url';
-	const LAST_OPTION_HASH     = 'wp_rocket_last_option_hash';
 
 	/**
 	 * Instantiate the class.
@@ -95,23 +94,6 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string $old_url old URL from the website.
 		 */
 		do_action( 'rocket_detected_domain_changed', $base_url, $last_base_url );
-	}
-
-	/**
-	 * Save the hash when options are saved.
-	 *
-	 * @param array $oldvalue old options.
-	 * @param array $value new options.
-	 * @return array|void
-	 */
-	public function save_hash_on_update_options( $oldvalue, $value ) {
-		if ( ! is_array( $value ) ) {
-			return;
-		}
-
-		$hash = rocket_create_options_hash( $value );
-
-		update_option( self::LAST_OPTION_HASH, $hash );
 	}
 
 	/**
