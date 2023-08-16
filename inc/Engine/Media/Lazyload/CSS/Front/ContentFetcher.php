@@ -33,22 +33,32 @@ class ContentFetcher {
 	 * @return false|string
 	 */
 	public function fetch( string $path, string $destination ) {
-
-		if ( ! wp_http_validate_url( $path ) ) {
-			return $this->filesystem->get_contents( $path );
-		}
-
-		$content = wp_remote_retrieve_body( wp_remote_get( $path ) );
+		$content = $this->fetch_content( $path );
 
 		if ( ! $content ) {
 			return false;
 		}
 
 		$content = $this->move( $this->get_converter( $path, $destination ), $content, $path );
+
 		$this->set_cached_import( $path );
 
 		$content = $this->combine_imports( $content, $destination );
 
 		return $content;
+	}
+
+	/**
+	 * Fetch the content from the file.
+	 *
+	 * @param string $path Path to fetch.
+	 *
+	 * @return false|string
+	 */
+	protected function fetch_content( string $path ) {
+		if ( ! wp_http_validate_url( $path ) ) {
+			return $this->filesystem->get_contents( $path );
+		}
+		return wp_remote_retrieve_body( wp_remote_get( $path ) );
 	}
 }

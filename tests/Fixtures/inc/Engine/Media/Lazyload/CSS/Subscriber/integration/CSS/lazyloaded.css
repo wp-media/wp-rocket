@@ -1,6 +1,7 @@
+@font-face{font-family:'mfn-icons';src:url(vfs://public/wp-content/rocket-test-data/styles/../fonts/mfn/icons.eot?31690507);src:url(vfs://public/wp-content/rocket-test-data/styles/../fonts/mfn/icons.eot?31690507#iefix) format("embedded-opentype"),url(vfs://public/wp-content/rocket-test-data/styles/../fonts/mfn/icons.woff?31690507) format("woff"),url(vfs://public/wp-content/rocket-test-data/styles/../fonts/mfn/icons.ttf?31690507) format("truetype"),url(vfs://public/wp-content/rocket-test-data/styles/../fonts/mfn/icons.svg?31690507#mfn) format("svg");font-weight:400;font-style:normal;font-display:swap}
 /*
 .my-style-rocks{
-  background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');
+  background-image:url(https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg);
 }
 */
 .external-css-background-image{
@@ -28,7 +29,7 @@
 .external-css-backgroundsvg{
 	/*
 		.my-style-rocks{
-  			background-image:url('https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg');
+  			background-image:url(https://wprocketest.test/wp-content/uploads/2015/05/132204857.jpg);
 		}
 	*/
 	background: var(--wpr-bg-hash) no-repeat;
