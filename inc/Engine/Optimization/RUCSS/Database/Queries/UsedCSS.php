@@ -219,6 +219,7 @@ class UsedCSS extends Query {
 				'error_code'    => '',
 				'error_message' => '',
 				'retries'       => 0,
+				'modified'      => current_time( 'mysql', true ),
 			]
 		);
 	}
