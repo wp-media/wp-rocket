@@ -830,12 +830,9 @@ class UsedCSS {
 		 *
 		 * @param string $delay delay before failed rucss jobs are deleted.
 		 */
-		$delay = apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
+		$delay = (string) apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
 
-		if ( !is_array( $delay ) ){
-			$delay = (string) $delay;
-		}
-		if ( '' === $delay || '0' === $delay || is_array( $delay ) ) {
+		if ( '' === $delay || '0' === $delay ) {
 			$delay = '3 days';
 		}
 		$parts = explode( ' ', $delay );
