@@ -41,11 +41,13 @@ class Test_MaybeLaunchDomainChanged extends TestCase
 		Functions\expect('home_url')->andReturn($config['base_url']);
 		Functions\expect('get_option')->with(Subscriber::LAST_BASE_URL_OPTION)->andReturn($config['last_base_url']);
 
-		if($config['is_base_url_different'] || ! $config['base_url_exist']) {
+		if(!$config['ajax_request'] && ($config['is_base_url_different'] || ! $config['base_url_exist'])) {
 			Functions\expect('update_option')->with(Subscriber::LAST_BASE_URL_OPTION, $expected['encrypted_old_url']);
 		}
 
-		if($config['is_base_url_different']) {
+		Functions\expect('wp_doing_ajax')->once()->andReturn( $config['ajax_request'] );
+
+		if(!$config['ajax_request'] && $config['is_base_url_different']) {
 			Actions\expectDone('rocket_detected_domain_changed')->with($expected['url'], $expected['old_url']);
 			Functions\expect('set_transient')->with('rocket_domain_changed', $config['last_base_url'], 1209600);
 		} else {
