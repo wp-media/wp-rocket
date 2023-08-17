@@ -60,7 +60,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
-
 		return [
 			'admin_init'            => [
 				[ 'register_terms_row_action' ],
@@ -78,6 +77,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
 			],
+			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 		];
 	}
 
