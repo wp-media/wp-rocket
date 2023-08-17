@@ -16,7 +16,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 	/**
 	 * @var int Increment this value to trigger a schema update.
 	 */
-	protected $schema_version = 6;
+	protected $schema_version = 7;
 
 	public function __construct() {
 		$this->tables = [
@@ -49,6 +49,7 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        status varchar(20) NOT NULL,
 				        scheduled_date_gmt datetime NULL default '{$default_date}',
 				        scheduled_date_local datetime NULL default '{$default_date}',
+				        priority tinyint unsigned NOT NULL default '10',
 				        args varchar($max_index_length),
 				        schedule longtext,
 				        group_id bigint(20) unsigned NOT NULL default '0',

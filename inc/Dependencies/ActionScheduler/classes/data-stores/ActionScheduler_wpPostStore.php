@@ -936,6 +936,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Log Execution.
 	 *
+	 * @throws Exception If the action status cannot be updated to self::STATUS_RUNNING ('in-progress').
+	 *
 	 * @param string $action_id Action ID.
 	 */
 	public function log_execution( $action_id ) {
@@ -947,7 +949,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->query(
+		$status_updated = $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$wpdb->posts} SET menu_order = menu_order+1, post_status=%s, post_modified_gmt = %s, post_modified = %s WHERE ID = %d AND post_type = %s",
 				self::STATUS_RUNNING,
@@ -957,6 +959,17 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				self::POST_TYPE
 			)
 		);
+
+		if ( ! $status_updated ) {
+			throw new Exception(
+				sprintf(
+					/* translators: 1: action ID. 2: status slug. */
+					__( 'Unable to update the status of action %1$d to %2$s.', 'action-scheduler' ),
+					$action_id,
+					self::STATUS_RUNNING
+				)
+			);
+		}
 	}
 
 	/**

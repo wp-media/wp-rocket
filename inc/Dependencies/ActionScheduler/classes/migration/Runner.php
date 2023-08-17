@@ -79,7 +79,7 @@ class Runner {
 
 		if ( $this->progress_bar ) {
 			/* translators: %d: amount of actions */
-			$this->progress_bar->set_message( sprintf( _n( 'Migrating %d action', 'Migrating %d actions', $batch_size, 'action-scheduler' ), number_format_i18n( $batch_size ) ) );
+			$this->progress_bar->set_message( sprintf( _n( 'Migrating %d action', 'Migrating %d actions', $batch_size, 'action-scheduler' ), $batch_size ) );
 			$this->progress_bar->set_count( $batch_size );
 		}
 

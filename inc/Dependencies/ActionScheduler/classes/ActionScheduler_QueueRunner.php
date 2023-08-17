@@ -103,9 +103,12 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) ) {
-			// Only start an async queue at most once every 60 seconds
-			ActionScheduler::lock()->set( 'async-request-runner' );
+		// Only start an async queue at most once every 60 seconds.
+		if (
+			is_admin()
+			&& ! ActionScheduler::lock()->is_locked( 'async-request-runner' )
+			&& ActionScheduler::lock()->set( 'async-request-runner' )
+		) {
 			$this->async_request->maybe_dispatch();
 		}
 	}
@@ -185,9 +188,15 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	protected function clear_caches() {
 		/*
 		 * Calling wp_cache_flush_runtime() lets us clear the runtime cache without invalidating the external object
-		 * cache, so we will always prefer this when it is available (but it was only introduced in WordPress 6.0).
+		 * cache, so we will always prefer this method (as compared to calling wp_cache_flush()) when it is available.
+		 *
+		 * However, this function was only introduced in WordPress 6.0. Additionally, the preferred way of detecting if
+		 * it is supported changed in WordPress 6.1 so we use two different methods to decide if we should utilize it.
 		 */
-		if ( function_exists( 'wp_cache_flush_runtime' ) ) {
+		$flushing_runtime_cache_explicitly_supported = function_exists( 'wp_cache_supports' ) && wp_cache_supports( 'flush_runtime' );
+		$flushing_runtime_cache_implicitly_supported = ! function_exists( 'wp_cache_supports' ) && function_exists( 'wp_cache_flush_runtime' );
+
+		if ( $flushing_runtime_cache_explicitly_supported || $flushing_runtime_cache_implicitly_supported ) {
 			wp_cache_flush_runtime();
 		} elseif (
 			! wp_using_ext_object_cache()

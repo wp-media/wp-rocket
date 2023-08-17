@@ -71,6 +71,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 			'site_status_tests'     => 'add_wp_cache_status_test',
+			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 			'rocket_domain_changed' => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
@@ -214,9 +215,9 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		foreach ( $contents as $content ) {
 			$content = WP_ROCKET_CONFIG_PATH . $content['name'];
 			if ( ! preg_match( '#\.php$#', $content ) || ! $this->filesystem->is_file( $content ) || in_array(
-				$content,
+					$content,
 					$configs,
-				true
+					true
 				) ) {
 				continue;
 			}

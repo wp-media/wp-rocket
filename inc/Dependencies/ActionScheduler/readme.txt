@@ -1,11 +1,9 @@
 === Action Scheduler ===
 Contributors: Automattic, wpmuguru, claudiosanches, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, royho, barryhughes-1
 Tags: scheduler, cron
-Requires at least: 5.2
-Tested up to: 6.0
-Stable tag: 3.5.4
+Stable tag: 3.6.2
 License: GPLv3
-Requires PHP: 5.6
+Tested up to: 6.3
 
 Action Scheduler - Job Queue for WordPress
 
@@ -46,6 +44,44 @@ Action Scheduler is developed and maintained by [Automattic](http://automattic.c
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/woocommerce/action-scheduler/pulls) welcome.
 
 == Changelog ==
+
+= 3.6.2 - 2023-08-09 =
+* Add guidance about passing arguments.
+* Atomic option locking.
+* Improve bulk delete handling.
+* Include database error in the exception message.
+* Tweak - WP 6.3 compatibility.
+
+= 3.6.1 - 2023-06-14 =
+* Document new optional `$priority` arg for various API functions.
+* Document the new `--exclude-groups` WP CLI option.
+* Document the new `action_scheduler_init` hook.
+* Ensure actions within each claim are executed in the expected order.
+* Fix incorrect text domain.
+* Remove SHOW TABLES usage when checking if tables exist.
+
+= 3.6.0 - 2023-05-10 =
+* Add $unique parameter to function signatures.
+* Add a cast-to-int for extra safety before forming new DateTime object.
+* Add a hook allowing exceptions for consistently failing recurring actions.
+* Add action priorities.
+* Add init hook.
+* Always raise the time limit.
+* Bump minimatch from 3.0.4 to 3.0.8.
+* Bump yaml from 2.2.1 to 2.2.2.
+* Defensive coding relating to gaps in declared schedule types.
+* Do not process an action if it cannot be set to `in-progress`.
+* Filter view labels (status names) should be translatable | #919.
+* Fix WPCLI progress messages.
+* Improve data-store initialization flow.
+* Improve error handling across all supported PHP versions.
+* Improve logic for flushing the runtime cache.
+* Support exclusion of multiple groups.
+* Update lint-staged and Node/NPM requirements.
+* add CLI clean command.
+* add CLI exclude-group filter.
+* exclude past-due from list table all filter count.
+* throwing an exception if as_schedule_recurring_action interval param is not of type integer.
 
 = 3.5.4 - 2023-01-17 =
 * Add pre filters during action registration.
