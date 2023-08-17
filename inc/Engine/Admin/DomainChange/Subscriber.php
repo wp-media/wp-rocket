@@ -66,7 +66,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$base_url         = trailingslashit( home_url() );
+		$base_url         = trailingslashit( get_option( 'home' ) );
 		$base_url_encoded = base64_encode( $base_url ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
 		if ( ! get_option( self::LAST_BASE_URL_OPTION ) ) {
@@ -194,7 +194,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
-		$base_url      = trailingslashit( home_url() );
+		$base_url      = trailingslashit( get_option( 'home' ) );
 
 		/**
 		 * Fires when the domain of the website has been changed and user clicked on notice.
