@@ -66,21 +66,20 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$base_url         = trailingslashit( get_option( 'home' ) );
-		$base_url_encoded = base64_encode( $base_url ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		$base_url              = trailingslashit( get_option( 'home' ) );
+		$base_url_encoded      = base64_encode( $base_url ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		$last_base_url_encoded = get_option( self::LAST_BASE_URL_OPTION );
 
-		if ( ! get_option( self::LAST_BASE_URL_OPTION ) ) {
-			update_option( self::LAST_BASE_URL_OPTION, $base_url_encoded );
+		if ( ! $last_base_url_encoded ) {
+			update_option( self::LAST_BASE_URL_OPTION, $base_url_encoded, true );
 			return;
 		}
-
-		$last_base_url_encoded = get_option( self::LAST_BASE_URL_OPTION );
 
 		if ( $base_url_encoded === $last_base_url_encoded ) {
 			return;
 		}
 
-		update_option( self::LAST_BASE_URL_OPTION, $base_url_encoded );
+		update_option( self::LAST_BASE_URL_OPTION, $base_url_encoded, true );
 
 		$last_base_url = base64_decode( $last_base_url_encoded ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 
