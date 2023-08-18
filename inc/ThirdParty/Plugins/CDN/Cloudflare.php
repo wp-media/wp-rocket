@@ -75,6 +75,7 @@ class Cloudflare implements Subscriber_Interface {
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 			'rocket_cdn_helper_addons'            => 'add_cdn_helper_message',
+			'init'                                => 'unregister_cloudflare_clean_on_post',
 		];
 	}
 
@@ -447,5 +448,33 @@ class Cloudflare implements Subscriber_Interface {
 		}
 		$addons[] = 'Cloudflare';
 		return $addons;
+	}
+
+	/**
+	 * Unregister Call on clean posts.
+	 *
+	 * @return void
+	 */
+	public function unregister_cloudflare_clean_on_post() {
+		global $wp_filter;
+
+		if ( ! key_exists( 'deleted_post', $wp_filter ) ) {
+			return;
+		}
+
+		$original_wp_filter = $wp_filter['deleted_post']->callbacks;
+
+		if ( ! key_exists( 10, $original_wp_filter ) ) {
+			return;
+		}
+
+		foreach ( $original_wp_filter[10] as $key => $config ) {
+
+			if ( substr( $key, - strlen( 'purgeCacheByRelevantURLs' ) ) !== 'purgeCacheByRelevantURLs' ) {
+				continue;
+			}
+
+			unset( $wp_filter['deleted_post']->callbacks[ $key ] );
+		}
 	}
 }
