@@ -26,8 +26,6 @@ abstract class ActionScheduler_Lock {
 	/**
 	 * Set a lock.
 	 *
-	 * To prevent race conditions, implementations should avoid setting the lock if the lock is already held.
-	 *
 	 * @param string $lock_type A string to identify different lock types.
 	 * @return bool
 	 */
