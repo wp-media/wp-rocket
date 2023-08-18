@@ -1,1 +1,7 @@
 .external-css-background-image{width:100%;height:400px;background-image:url("https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/paper.jpeg");background-color:#ccc}.external-css-background-images{width:100%;height:400px;background-image:url('./wp-content/rocket-test-data/images/test.png'),url("/wp-content/rocket-test-data/images/paper.jpeg");background-color:#3dd83d}.external-css-background-image-gradient{width:100%;height:400px;background-image:linear-gradient(rgba(0,0,255,.5),rgba(255,255,0,.5)),url(/wp-content/rocket-test-data/images/paper.jpeg)}.external-css-background{background:url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg') no-repeat #c63dd8}
+.external-css-background-image-space{
+	width: 100%;
+	height: 400px;
+	background-image: url("https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/papertest.jpeg");
+	background-color: #cccccc;
+}

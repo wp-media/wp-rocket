@@ -267,7 +267,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function create_lazy_css_files( array $data ): array {
-
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'css_files', $data ) ) {
 			$this->logger::debug(
 				'Create lazy css files bailed out',
@@ -309,7 +308,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 					);
 
 				$file_mapping = $this->generate_css_file( $url );
-
 				if ( empty( $file_mapping ) ) {
 					$this->logger::debug(
 						"Create lazy css files $url bailed out",

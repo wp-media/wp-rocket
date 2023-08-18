@@ -1,1 +1,7 @@
-.external-css-background-image{width:100%;height:400px;background-image:var(--wpr-bg-hash);background-color:#ccc}.external-css-background-images{width:100%;height:400px;background-image:var(--wpr-bg-hash),var(--wpr-bg-hash);background-color:#3dd83d}.external-css-background-image-gradient{width:100%;height:400px;background-image:linear-gradient(rgba(0,0,255,.5),rgba(255,255,0,.5)),url(/wp-content/rocket-test-data/images/paper.jpeg)}.external-css-background{background:var(--wpr-bg-hash) no-repeat #c63dd8}
+.external-css-background-image{width:100%;height:400px;background-image:var(--wpr-bg-hash);background-color:#ccc}.external-css-background-images{width:100%;height:400px;background-image:var(--wpr-bg-hash),var(--wpr-bg-hash);background-color:#3dd83d}.external-css-background-image-gradient{width:100%;height:400px;background-image:linear-gradient(rgba(0,0,255,.5),rgba(255,255,0,.5)),var(--wpr-bg-hash)}.external-css-background{background:var(--wpr-bg-hash) no-repeat #c63dd8}
+.external-css-background-image-space{
+	width: 100%;
+	height: 400px;
+	background-image: var(--wpr-bg-hash);
+	background-color: #cccccc;
+}
