@@ -40,7 +40,7 @@ $end = <<<ENDING_CONTENTS
 
 
 spl_autoload_register(
-	function( \$class ) use ( \$rocket_path ) {
+	function ( \$class ) use ( \$rocket_path ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound
 		\$rocket_classes = [
 			'WP_Rocket\\\Buffer\\\Abstract_Buffer' => \$rocket_path . 'inc/classes/Buffer/class-abstract-buffer.php',
 			'WP_Rocket\\\Buffer\\\Cache'           => \$rocket_path . 'inc/classes/Buffer/class-cache.php',
