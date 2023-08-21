@@ -1,7 +1,5 @@
 <?php
-namespace WP_Rocket\Views\Settings\Fields\CategorizedMultiselect;
-
-use stdClass;/**
+/**
  * Select field template.
  *
  * @param array $data {

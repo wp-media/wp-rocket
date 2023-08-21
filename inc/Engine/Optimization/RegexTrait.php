@@ -146,7 +146,7 @@ trait RegexTrait {
 	 * @param array $match svg tag.
 	 * @return string
 	 */
-	protected function replace_svg( $match ) {
+	protected function replace_svg( $match ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound
 		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_SVG_' ) );
 		$this->svg_replace[ $key ] = $match[0];
 		return $key;
@@ -160,7 +160,7 @@ trait RegexTrait {
 	 * @param array $match xmp tag.
 	 * @return string
 	 */
-	protected function replace_xmp( $match ) {
+	protected function replace_xmp( $match ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound
 		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_XMP_' ) );
 		$this->xmp_replace[ $key ] = $match[0];
 		return $key;

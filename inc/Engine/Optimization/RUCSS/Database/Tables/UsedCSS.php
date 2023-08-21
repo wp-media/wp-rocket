@@ -119,7 +119,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return array
 	 */
-	public function get_old_used_css() : array {
+	public function get_old_used_css(): array {
 		// Get the database interface.
 		$db = $this->get_db();
 

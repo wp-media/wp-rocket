@@ -166,10 +166,8 @@ function rocket_save_metabox_options() {
 				if ( ! isset( $rejected_uris[ $path ] ) ) {
 					array_push( $new_cache_reject_uri, $path );
 				}
-			} else {
-				if ( isset( $rejected_uris[ $path ] ) ) {
-					unset( $new_cache_reject_uri[ $rejected_uris[ $path ] ] );
-				}
+			} elseif ( isset( $rejected_uris[ $path ] ) ) {
+				unset( $new_cache_reject_uri[ $rejected_uris[ $path ] ] );
 			}
 
 			if ( $new_cache_reject_uri !== $cache_reject_uri ) {
@@ -198,10 +196,8 @@ function rocket_save_metabox_options() {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) ) {
 				if ( isset( $_POST['rocket_post_exclude'][ $field ] ) ) {
 					delete_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field );
-				} else {
-					if ( get_rocket_option( $field ) ) {
-						update_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field, true );
-					}
+				} elseif ( get_rocket_option( $field ) ) {
+					update_post_meta( (int) $_POST['post_ID'], '_rocket_exclude_' . $field, true );
 				}
 			}
 		}

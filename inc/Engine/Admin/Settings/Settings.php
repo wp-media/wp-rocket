@@ -437,7 +437,7 @@ class Settings {
 			$notices = array_merge( (array) $wp_settings_errors, (array) get_transient( 'settings_errors' ) );
 			$notices = array_filter(
 				$notices,
-				function( $error ) {
+				function ( $error ) {
 					if ( ! $error || ! is_array( $error ) ) {
 						return false;
 					}
@@ -473,7 +473,7 @@ class Settings {
 	 * @param string $key   Array key to check.
 	 * @return int
 	 */
-	public function sanitize_checkbox( $array, $key ) {
+	public function sanitize_checkbox( $array, $key ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.arrayFound
 		return isset( $array[ $key ] ) && ! empty( $array[ $key ] ) ? 1 : 0;
 	}
 
@@ -521,7 +521,7 @@ class Settings {
 
 		return array_unique(
 			array_map(
-				function( $url ) {
+				function ( $url ) {
 					return '//' . wp_parse_url( $url, PHP_URL_HOST );
 				},
 				$urls
@@ -679,7 +679,7 @@ class Settings {
 	 */
 	private function sanitize_cdn_cnames( array $cnames ) {
 		$cnames = array_map(
-			function( $cname ) {
+			function ( $cname ) {
 				$cname = trim( $cname );
 
 				if ( empty( $cname ) ) {

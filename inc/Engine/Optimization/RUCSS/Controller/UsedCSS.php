@@ -14,7 +14,8 @@ use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class UsedCSS {
-	use RegexTrait, CSSTrait;
+	use RegexTrait;
+	use CSSTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -1017,7 +1018,6 @@ class UsedCSS {
 		$wpr_dynamic_lists               = $this->data_manager->get_lists();
 		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->rucss_inline_atts_exclusions ) ? $wpr_dynamic_lists->rucss_inline_atts_exclusions : [];
 		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->rucss_inline_content_exclusions ) ? $wpr_dynamic_lists->rucss_inline_content_exclusions : [];
-
 	}
 
 	/**

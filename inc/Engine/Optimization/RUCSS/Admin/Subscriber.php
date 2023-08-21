@@ -59,7 +59,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
@@ -247,7 +247,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_options_first_time( $options ) : array {
+	public function add_options_first_time( $options ): array {
 		return $this->settings->add_options( $options );
 	}
 
@@ -261,7 +261,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input, AdminSettings $settings ) : array {
+	public function sanitize_options( $input, AdminSettings $settings ): array {
 		return $this->settings->sanitize_options( $input, $settings );
 	}
 

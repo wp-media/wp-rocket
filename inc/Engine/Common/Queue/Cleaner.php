@@ -99,5 +99,4 @@ class Cleaner extends \ActionScheduler_QueueCleaner {
 			}
 		}
 	}
-
 }

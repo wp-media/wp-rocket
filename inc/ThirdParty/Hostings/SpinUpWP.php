@@ -52,5 +52,4 @@ class SpinUpWP extends NullSubscriber implements Subscriber_Interface {
 	public function remove_actions() {
 		remove_action( 'switch_theme', 'rocket_clean_domain' );
 	}
-
 }

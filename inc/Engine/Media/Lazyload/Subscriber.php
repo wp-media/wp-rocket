@@ -507,7 +507,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( array $exclusions ) : array {
+	public function add_exclusions( array $exclusions ): array {
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

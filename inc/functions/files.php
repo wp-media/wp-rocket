@@ -603,7 +603,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
-					$cb_encode_non_latin = function( $non_latin ) {
+					$cb_encode_non_latin = function ( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
@@ -1338,7 +1338,6 @@ function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPr
 	} catch ( Exception $e ) {
 		return [];
 	}
-
 }
 
 /**

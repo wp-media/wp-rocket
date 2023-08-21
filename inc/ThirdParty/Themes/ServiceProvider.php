@@ -72,6 +72,5 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'themify', Themify::class )
 			->addArgument( $options );
-
 	}
 }

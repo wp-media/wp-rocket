@@ -34,7 +34,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param array $old An array of previous settings.
 	 * @param array $new An array of submitted settings.
 	 */
-	public function clean_minify( $old, $new ) {
+	public function clean_minify( $old, $new ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
 			return;
 		}
@@ -56,7 +56,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array Updates 'minify_css_key' setting when regenerated; else, original submitted settings.
 	 */
-	public function regenerate_minify_css_key( $new, $old ) {
+	public function regenerate_minify_css_key( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
 			return $new;
 		}
@@ -80,7 +80,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return bool true when should regenerate; else false.
 	 */
-	protected function maybe_minify_regenerate( array $new, array $old ) {
+	protected function maybe_minify_regenerate( array $new, array $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		$settings_to_check = [
 			'minify_css',
 			'exclude_css',
@@ -113,13 +113,13 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	protected function did_setting_change( $setting, array $new, array $old ) {
+	protected function did_setting_change( $setting, array $new, array $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		return (
 			array_key_exists( $setting, $old )
 			&&
 			array_key_exists( $setting, $new )
 			&&
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			$old[ $setting ] != $new[ $setting ]
 		);
 	}

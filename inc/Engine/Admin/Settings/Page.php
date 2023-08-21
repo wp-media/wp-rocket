@@ -2188,7 +2188,7 @@ class Page {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) {
+	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
 		if ( ! is_array( $list ) || empty( $list ) ) {
 			return [];
 		}

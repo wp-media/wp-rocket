@@ -13,7 +13,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Combine extends AbstractCSSOptimization implements ProcessorInterface {
-	use CSSTrait, RegexTrait;
+	use CSSTrait;
+	use RegexTrait;
 
 	/**
 	 * Array of styles
@@ -200,7 +201,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 	 */
 	protected function combine() {
 		if ( empty( $this->styles ) ) {
-			return false;
+			return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$file_hash      = implode( ',', array_column( $this->styles, 'url' ) );
@@ -217,7 +218,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 				]
 			);
 
-			return true;
+			return true; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$combined_content = $this->get_content( $combined_file );
@@ -231,7 +232,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 					'path' => $combined_file,
 				]
 			);
-			return false;
+			return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		if ( ! $this->write_file( $combined_content, $combined_file ) ) {
@@ -242,7 +243,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 					'path' => $combined_file,
 				]
 			);
-			return false;
+			return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		Logger::debug(
@@ -253,7 +254,7 @@ class Combine extends AbstractCSSOptimization implements ProcessorInterface {
 			]
 		);
 
-		return true;
+		return true; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

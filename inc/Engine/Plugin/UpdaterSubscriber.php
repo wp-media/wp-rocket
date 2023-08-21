@@ -4,7 +4,7 @@ namespace WP_Rocket\Engine\Plugin;
 use Plugin_Upgrader;
 use Plugin_Upgrader_Skin;
 use WP_Error;
-use WP_Rocket\Event_Management\{Event_Manager,Event_Manager_Aware_Subscriber_Interface};
+use WP_Rocket\Event_Management\{Event_Manager, Event_Manager_Aware_Subscriber_Interface};
 
 /**
  * Manages the plugin updates.
@@ -534,7 +534,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|WP_Error
 	 */
-	public function upgrade_pre_install_option( $return, $plugin = [] ) {
+	public function upgrade_pre_install_option( $return, $plugin = [] ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
 
 		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
@@ -559,7 +559,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 *
 	 * @return mixed|string|WP_Error
 	 */
-	public function upgrade_post_install_option( $return, $plugin = [] ) {
+	public function upgrade_post_install_option( $return, $plugin = [] ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound
 		if ( is_wp_error( $return ) || ! $plugin ) {
 			return $return;
 		}
