@@ -61,7 +61,7 @@
         "roave/security-advisories": "dev-master",
         "szepeviktor/phpstan-wordpress": "^1.3",
         "woocommerce/action-scheduler": "^3.4",
-        "wp-coding-standards/wpcs": "^2",
+        "wp-coding-standards/wpcs": "^3",
         "wp-media/background-processing": "^1.3",
         "wp-media/phpunit": "^3",
         "wp-media/rocket-lazyload-common": "^3.0.11",
