@@ -43,7 +43,7 @@ class Test_regenerateConfiguration extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-		Functions\when('home_url')->justReturn($config['home_url']);
+	    Functions\expect('get_option')->with('home')->andReturn($config['home_url']);
 		Functions\when('trailingslashit')->returnArg();
 
 		$this->ajax_handler->expects()->validate_referer('rocket_regenerate_configuration', 'rocket_manage_options')->andReturn($config['is_validated']);
