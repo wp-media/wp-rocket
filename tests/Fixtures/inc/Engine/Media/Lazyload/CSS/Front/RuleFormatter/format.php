@@ -57,6 +57,7 @@ return [
 				  [
 					  'selector' => '.internal-css-background',
 					  'url' => "url('/wp-content/rocket-test-data/images/test.png')",
+					  'original' => "url('/wp-content/rocket-test-data/images/test.png')",
 					  'block' => "	.internal-css-background{
 		background: url('/wp-content/rocket-test-data/images/test.png');
 	}",

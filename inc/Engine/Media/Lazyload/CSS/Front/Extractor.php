@@ -87,7 +87,8 @@ class Extractor {
 			foreach ( $urls as $url ) {
 				$results[ $selector ][] = [
 					'selector' => $selector,
-					'url'      => $url,
+					'url'      => $url['url'],
+					'original' => $url['original'],
 					'block'    => $block,
 				];
 			}
@@ -115,13 +116,28 @@ class Extractor {
 
 		$output = [];
 
+		/**
+		 * Lazyload ignored URLs.
+		 *
+		 * @param string[] $urls Ignored URLs.
+		 */
+		$ignored_urls = (array) apply_filters( 'rocket_lazyload_css_ignored_urls', [] );
+
 		foreach ( $matches as $match ) {
-			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) ) {
+			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || $this->is_url_ignored( $match['url'], $ignored_urls ) ) {
 				continue;
 			}
-			$url      = $match['tag'];
-			$url      = trim( $url, ' ,' );
-			$output[] = $url;
+			$url          = $match['url'];
+			$url          = str_replace( '"', '', $url );
+			$url          = str_replace( "'", '', $url );
+			$url          = trim( $url );
+			$url          = $this->apply_string_filter( 'css_url', $url );
+			$url          = "url('$url')";
+			$original_url = trim( $match['tag'], ' ,' );
+			$output[]     = [
+				'url'      => $url,
+				'original' => $original_url,
+			];
 		}
 
 		return $output;
@@ -143,5 +159,22 @@ class Extractor {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Check if the URLs is ignored.
+	 *
+	 * @param string $url URL to check.
+	 * @param array  $ignored_urls List of ignored URLs.
+	 *
+	 * @return bool
+	 */
+	protected function is_url_ignored( string $url, array $ignored_urls ): bool {
+		foreach ( $ignored_urls as $ignored_url ) {
+			if ( strpos( $url, $ignored_url ) !== false ) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

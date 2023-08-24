@@ -999,17 +999,14 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
-		$disable_css_bg_img_lazyload = [];
+		$disable_css_bg_img_lazyload = false;
 
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality for bg css.
 		 *
-		 * @since 3.5.5
-		 *
-		 * @param array $disable_css_bg_img_lazyload Will return the array with all plugin names which should disable LazyLoad
+		 * @param bool $disable_css_bg_img_lazyload Should the lazyload CSS be disabled.
 		 */
-		$disable_css_bg_img_lazyload = (array) apply_filters( 'rocket_maybe_disable_css_bg_img_lazyload_helper', $disable_css_bg_img_lazyload );
-		$disable_css_bg_img_lazyload = $this->sanitize_and_format_list( $disable_css_bg_img_lazyload );
+		$disable_css_bg_img_lazyload = (bool) apply_filters( 'rocket_maybe_disable_css_bg_img_lazyload_helper', $disable_css_bg_img_lazyload );
 
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
@@ -1084,7 +1081,7 @@ class Page {
 				],
 				'lazyload_css_bg_img' => [
 					'container_class'   => [
-						! empty( $disable_css_bg_img_lazyload ) ? 'wpr-isDisabled' : '',
+						$disable_css_bg_img_lazyload ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'type'              => 'checkbox',
@@ -1094,7 +1091,7 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! empty( $disable_css_bg_img_lazyload ) ? 1 : 0,
+						'disabled' => $disable_css_bg_img_lazyload ? 1 : 0,
 					],
 				],
 				'lazyload_iframes'    => [

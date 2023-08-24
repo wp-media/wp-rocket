@@ -71,8 +71,6 @@ abstract class AbstractContext implements ContextInterface {
 			return false;
 		}
 
-		$post = get_post();
-
-		return ! empty( $post->post_password );
+		return post_password_required();
 	}
 }

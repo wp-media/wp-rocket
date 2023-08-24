@@ -44,7 +44,7 @@ class LazyloadCSSContext extends AbstractContext {
 				'post_excluded'      => 'lazyload_css_bg_img',
 				'logged_in'          => false,
 			]
-			);
+		);
 
 		if ( ! $is_allowed || ! $this->should_lazyload() ) {
 			return false;

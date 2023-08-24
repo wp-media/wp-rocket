@@ -140,6 +140,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
 			'rocket_delay_js_exclusions'            => 'add_lazyload_script_rocket_delay_js_exclusions',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
+			'rocket_lazyload_css_ignored_urls'      => 'remove_svg_from_lazyload_css',
 		];
 	}
 
@@ -164,6 +165,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				)
 			);
 
+		/**
+		 * Generate lazyload CSS for the page.
+		 *
+		 * @param array $data Data passed to generate the lazyload CSS.
+		 */
 		$output = apply_filters(
 			'rocket_generate_lazyloaded_css',
 			[
@@ -747,5 +753,17 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return $this->lazyloaded_content_factory->make_protected_content( $css_files_mapping, $content );
+	}
+
+	/**
+	 * Exclude SVG from lazy loaded images.
+	 *
+	 * @param array $urls URLs to exclude.
+	 * @return array
+	 */
+	public function remove_svg_from_lazyload_css( array $urls ): array {
+		$urls[] = 'data:image/svg+xml';
+
+		return $urls;
 	}
 }

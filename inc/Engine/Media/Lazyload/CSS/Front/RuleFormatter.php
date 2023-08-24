@@ -21,13 +21,13 @@ class RuleFormatter {
 		$replaced_block = null;
 
 		foreach ( $data as $datum ) {
-			if ( ! key_exists( 'selector', $datum ) || ! key_exists( 'url', $datum ) || ! key_exists( 'block', $datum ) || ! key_exists( 'hash', $datum ) ) {
+			if ( ! key_exists( 'selector', $datum ) || ! key_exists( 'original', $datum ) || ! key_exists( 'block', $datum ) || ! key_exists( 'hash', $datum ) ) {
 				return $css;
 			}
 
 			$block          = $datum['block'];
 			$replaced_block = $replaced_block ?: $datum['block'];
-			$url            = $datum['url'];
+			$url            = $datum['original'];
 
 			$hash = $datum['hash'];
 
