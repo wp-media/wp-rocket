@@ -37,9 +37,9 @@ class Extractor {
 			$content
 			);
 
-		$background_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background\s*:(?<property>[^;}]*)[^}]*}';
+		$background_regex = '(?<selector>[ \-,:\w.\n\r^[*"\'=\]#]+)\s?{[^}]*background\s*:(?<property>[^;}]*)[^}]*}';
 
-		$background_image_regex = '(?<selector>[ \-\w.\n\r#]+)\s?{[^}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
+		$background_image_regex = '(?<selector>[ \-,:\w.\n\r^[*"\'=\]#]+)\s?{[^}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
 
 		/**
 		 * Lazyload background property regex.
@@ -124,7 +124,7 @@ class Extractor {
 		$ignored_urls = (array) apply_filters( 'rocket_lazyload_css_ignored_urls', [] );
 
 		foreach ( $matches as $match ) {
-			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || $this->is_url_ignored( $match['url'], $ignored_urls ) ) {
+			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $match['url'] || $this->is_url_ignored( $match['url'], $ignored_urls ) ) {
 				continue;
 			}
 			$url          = $match['url'];

@@ -134,7 +134,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			],
 			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
 			'after_rocket_clean_domain'             => 'clear_generated_css',
-			'after_rocket_clean_post'               => 'clear_generate_css_post',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
 			'rocket_exclude_js'                     => 'add_lazyload_script_exclude_js',
 			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
@@ -212,28 +211,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$this->generate_log_context()
 		);
 		$this->cache->clear();
-	}
-
-	/**
-	 * Clear the lazyload CSS linked with a post.
-	 *
-	 * @param WP_Post $post post cleared.
-	 * @return void
-	 */
-	public function clear_generate_css_post( WP_Post $post ) {
-		$url = get_permalink( $post );
-		$this->logger::debug(
-			"Clear lazy CSS for $url",
-			$this->generate_log_context()
-		);
-		if ( ! $url ) {
-			$this->logger::debug(
-				"Clear lazy CSS for $url",
-				$this->generate_log_context()
-			);
-			return;
-		}
-			$this->cache->delete( $this->format_url( $url ) );
 	}
 
 	/**
