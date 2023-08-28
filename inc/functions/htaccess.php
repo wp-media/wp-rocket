@@ -34,15 +34,126 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		require_once ABSPATH . 'wp-admin/includes/misc.php';
 	}
 
-	$htaccess_file = get_home_path() . '.htaccess';
-	$insertion     = '';
+	$filename  = get_home_path() . '.htaccess';
+	$insertion = '';
 
 	if ( ! $remove_rules ) {
 		$insertion = get_rocket_htaccess_marker();
 	}
 
-	// Update the .htaccess file.
-	return insert_with_markers( $htaccess_file, 'WP Rocket', $insertion );
+	if ( ! file_exists( $filename ) ) {
+		if ( ! is_writable( dirname( $filename ) ) ) {
+			return false;
+		}
+
+		if ( ! touch( $filename ) ) {
+			return false;
+		}
+
+		// Make sure the file is created with a minimum set of permissions.
+		$perms = fileperms( $filename );
+
+		if ( $perms ) {
+			chmod( $filename, $perms | 0644 );
+		}
+	} elseif ( ! is_writable( $filename ) ) {
+		return false;
+	}
+
+	if ( ! is_array( $insertion ) ) {
+		$insertion = explode( "\n", $insertion );
+	}
+
+	$start_marker = '# BEGIN WP Rocket';
+	$end_marker   = '# END WP Rocket';
+
+	$pointer = fopen( $filename, 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+
+	if ( ! $pointer ) {
+		return false;
+	}
+
+	// Attempt to get a lock. If the filesystem supports locking, this will block until the lock is acquired.
+	flock( $pointer, LOCK_EX );
+
+	$lines = [];
+
+	while ( ! feof( $pointer ) ) {
+		$lines[] = rtrim( fgets( $pointer ), "\r\n" );
+	}
+
+	// Split out the existing file into the preceding lines, and those that appear after the marker.
+	$pre_lines        = [];
+	$post_lines       = [];
+	$existing_lines   = [];
+	$found_marker     = false;
+	$found_end_marker = false;
+
+	foreach ( $lines as $line ) {
+		if ( ! $found_marker && str_contains( $line, $start_marker ) ) {
+			$found_marker = true;
+			continue;
+		} elseif ( ! $found_end_marker && str_contains( $line, $end_marker ) ) {
+			$found_end_marker = true;
+			continue;
+		}
+
+		if ( ! $found_marker ) {
+			$pre_lines[] = $line;
+		} elseif ( $found_marker && $found_end_marker ) {
+			$post_lines[] = $line;
+		} else {
+			$existing_lines[] = $line;
+		}
+	}
+
+	// Check to see if there was a change.
+	if ( $existing_lines === $insertion ) {
+		flock( $pointer, LOCK_UN );
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+
+		return true;
+	}
+
+	if ( ! $found_marker ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$pre_lines,
+				$post_lines
+			)
+		);
+	} else {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$post_lines
+			)
+		);
+	}
+
+	// Write to the start of the file, and truncate it to that length.
+	fseek( $pointer, 0 );
+	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+
+	if ( $bytes ) {
+		ftruncate( $pointer, ftell( $pointer ) );
+	}
+
+	fflush( $pointer );
+	flock( $pointer, LOCK_UN );
+	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+
+	return (bool) $bytes;
 }
 
 /**
