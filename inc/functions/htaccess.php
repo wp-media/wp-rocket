@@ -30,10 +30,6 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
-	if ( ! function_exists( 'insert_with_markers' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/misc.php';
-	}
-
 	$filename  = get_home_path() . '.htaccess';
 	$insertion = '';
 
