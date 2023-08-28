@@ -192,6 +192,7 @@ $end = <<<HTACCESS
 
 # Random
 # add a trailing slash to /wp-admin# BEGIN WordPress
+
 HTACCESS;
 
 return [
