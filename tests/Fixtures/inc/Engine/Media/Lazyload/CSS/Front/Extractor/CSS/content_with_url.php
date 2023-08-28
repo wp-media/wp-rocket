@@ -107,7 +107,7 @@ background-color: #c63dd8;
  background-color: aqua;
  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
  }
- 
+
  .exclude-internal-relative-file{
  display:none;
  }
@@ -122,4 +122,17 @@ background-color: #c63dd8;
 
  .test{
  color:rgb(165, 36, 197);
+ }
+
+ [class^="icon-"], [class*=" icon-"] {
+ display: inline-block;
+ width: 14px;
+ height: 14px;
+ margin-top: 1px;
+ *margin-right: .3em;
+ line-height: 14px;
+ vertical-align: text-top;
+ background-image: url("../img/glyphicons-halflings.png");
+ background-position: 14px 14px;
+ background-repeat: no-repeat
  }

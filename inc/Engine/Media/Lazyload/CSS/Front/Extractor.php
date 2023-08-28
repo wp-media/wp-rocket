@@ -77,8 +77,7 @@ class Extractor {
 			$property = trim( $property );
 			$selector = trim( $selector );
 
-			$urls = $this->extract_urls( $property );
-
+			$urls  = $this->extract_urls( $property );
 			$block = trim( $match[0] );
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
@@ -124,10 +123,12 @@ class Extractor {
 		$ignored_urls = (array) apply_filters( 'rocket_lazyload_css_ignored_urls', [] );
 
 		foreach ( $matches as $match ) {
-			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $match['url'] || $this->is_url_ignored( $match['url'], $ignored_urls ) ) {
+
+			$url = $match['url'] ?: '';
+			$url = $this->make_url_complete( $url );
+			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $url || $this->is_url_ignored( $url, $ignored_urls ) ) {
 				continue;
 			}
-			$url          = $match['url'];
 			$url          = str_replace( '"', '', $url );
 			$url          = str_replace( "'", '', $url );
 			$url          = trim( $url );
@@ -176,5 +177,15 @@ class Extractor {
 			}
 		}
 		return false;
+	}
+
+	protected function make_url_complete( string $url ): string {
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( $host ) {
+			return $url;
+		}
+
+		return home_url() . '/' . trim( $url, '/' );
 	}
 }

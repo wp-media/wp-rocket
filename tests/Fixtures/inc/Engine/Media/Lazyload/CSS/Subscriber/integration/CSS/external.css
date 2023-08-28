@@ -2,6 +2,12 @@
 .external-css-background-image-space{
 	width: 100%;
 	height: 400px;
+	background-image: url("../rocket-test-data/images/papertest.jpeg");
+	background-color: #cccccc;
+}
+.external-css-background-image-space{
+	width: 100%;
+	height: 400px;
 	background-image: url("https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/papertest.jpeg");
 	background-color: #cccccc;
 }

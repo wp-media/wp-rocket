@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 
 
 use WP_Rocket\Tests\Unit\TestCase;
-
+use Brain\Monkey\Functions;
 /**
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor::extract
  */
@@ -28,6 +28,7 @@ class Test_extract extends TestCase {
      */
     public function testShouldReturnAsExpected( $config, $expected )
     {
+		Functions\when('wp_parse_url')->justReturn('example.org');
         $this->assertEqualsCanonicalizing($expected, $this->extractor->extract($config['content']));
     }
 }
