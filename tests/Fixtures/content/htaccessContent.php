@@ -4,9 +4,6 @@ $rocket_version = rocket_get_constant( 'WP_ROCKET_VERSION' );
 
 $start = <<<HTACCESS
 # BEGIN WP Rocket
-# The directives (lines) between "BEGIN WP Rocket" and "END WP Rocket" are
-# dynamically generated, and should only be modified via WordPress filters.
-# Any changes to the directives between these markers will be overwritten.
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset UTF-8
 # Force UTF-8 for a number of file formats
@@ -192,6 +189,9 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
+
+# Random
+# add a trailing slash to /wp-admin# BEGIN WordPress
 HTACCESS;
 
 return [
