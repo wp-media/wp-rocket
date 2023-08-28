@@ -129,10 +129,14 @@ class Extractor {
 			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $url || $this->is_url_ignored( $url, $ignored_urls ) ) {
 				continue;
 			}
-			$url          = str_replace( '"', '', $url );
-			$url          = str_replace( "'", '', $url );
-			$url          = trim( $url );
-			$url          = $this->apply_string_filter( 'css_url', $url );
+			$url = str_replace( '"', '', $url );
+			$url = str_replace( "'", '', $url );
+			$url = trim( $url );
+
+			if ( ! $this->is_url_external( $url ) ) {
+				$url = $this->apply_string_filter( 'css_url', $url );
+			}
+
 			$url          = "url('$url')";
 			$original_url = trim( $match['tag'], ' ,' );
 			$output[]     = [
@@ -179,6 +183,13 @@ class Extractor {
 		return false;
 	}
 
+	/**
+	 * Complete the URL if necessary.
+	 *
+	 * @param string $url URL to complete.
+	 *
+	 * @return string
+	 */
 	protected function make_url_complete( string $url ): string {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
@@ -187,5 +198,23 @@ class Extractor {
 		}
 
 		return home_url() . '/' . trim( $url, '/' );
+	}
+
+	/**
+	 * Check if the URL is external.
+	 *
+	 * @param string $url URL to check.
+	 *
+	 * @return bool
+	 */
+	protected function is_url_external( string $url ): bool {
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+		if ( ! $host ) {
+			return false;
+		}
+
+		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
+
+		return $host != $home_host;
 	}
 }

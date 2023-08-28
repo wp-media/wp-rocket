@@ -29,6 +29,7 @@ class Test_extract extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\when('wp_parse_url')->justReturn('example.org');
+		Functions\when('home_url')->justReturn('http://example.org');
         $this->assertEqualsCanonicalizing($expected, $this->extractor->extract($config['content']));
     }
 }
