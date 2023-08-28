@@ -515,7 +515,7 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 	 * Task
 	 *
 	 * Override this method to perform any actions required on each
-	 * queue item. Return the modified item for further processing
+	 * queue item. Return the modified item WP_Rocket_for further processing
 	 * in the next pass through. Or, return false to remove the
 	 * item from the queue.
 	 *

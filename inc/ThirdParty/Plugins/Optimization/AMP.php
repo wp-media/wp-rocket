@@ -134,6 +134,7 @@ class AMP implements Subscriber_Interface {
 		add_filter( 'pre_get_rocket_option_preload_links', '__return_false' );
 		add_filter( 'pre_get_rocket_option_minify_js', '__return_false' );
 		add_filter( 'pre_get_rocket_option_minify_google_fonts', '__return_false' );
+		add_filter( 'pre_get_rocket_option_lazyload_css_bg_img', '__return_false' );
 		add_filter( 'pre_get_cloudflare_protocol_rewrite', '__return_false' );
 		add_filter( 'do_rocket_protocol_rewrite', '__return_false' );
 

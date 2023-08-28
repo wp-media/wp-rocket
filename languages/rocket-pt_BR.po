@@ -7,7 +7,7 @@
 # Deblyn Prado, 2019
 # Romain • WP Rocket <contact@wp-rocket.me>, 2022
 # Fabio Fava <go@fabiofava.com>, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.14.4\n"

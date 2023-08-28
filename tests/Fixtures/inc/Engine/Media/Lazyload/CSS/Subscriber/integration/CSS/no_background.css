@@ -1,0 +1,20 @@
+h1 {
+	background-color: aqua;
+	font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+​
+.exclude-internal-relative-file{
+	display:none;
+}
+​
+h1[not-existing-attribute-relative]{
+	display:none;
+}
+​
+h1[not-existing-attribute-relative~=value]{
+	display:none;
+}
+​
+.test{
+	color:rgb(165, 36, 197);
+}

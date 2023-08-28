@@ -1165,15 +1165,17 @@ function rocket_mkdir( $dir ) {
 /**
  * Recursive directory creation based on full path.
  *
+ * @param string                    $target path to the directory we want to create.
+ * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+ * @return bool True if directory is created/exists, false otherwise
  * @since 1.3.4
  *
  * @source wp_mkdir_p() in /wp-includes/functions.php
- *
- * @param string $target path to the directory we want to create.
- * @return bool True if directory is created/exists, false otherwise
  */
-function rocket_mkdir_p( $target ) {
+function rocket_mkdir_p( $target, $filesystem = null ) {
 	$wrapper = null;
+
+	$filesystem = $filesystem ?: rocket_direct_filesystem();
 
 	if ( rocket_is_stream( $target ) ) {
 		list( $wrapper, $target ) = explode( '://', $target, 2 );
@@ -1193,20 +1195,20 @@ function rocket_mkdir_p( $target ) {
 		$target = '/';
 	}
 
-	if ( rocket_direct_filesystem()->exists( $target ) ) {
-		return rocket_direct_filesystem()->is_dir( $target );
+	if ( $filesystem->exists( $target ) ) {
+		return $filesystem->is_dir( $target );
 	}
 
 	// Attempting to create the directory may clutter up our display.
 	if ( rocket_mkdir( $target ) ) {
 		return true;
-	} elseif ( rocket_direct_filesystem()->is_dir( dirname( $target ) ) ) {
+	} elseif ( $filesystem->is_dir( dirname( $target ) ) ) {
 		return false;
 	}
 
 	// If the above failed, attempt to create the parent node, then try again.
-	if ( ( '/' !== $target ) && ( rocket_mkdir_p( dirname( $target ) ) ) ) {
-		return rocket_mkdir_p( $target );
+	if ( ( '/' !== $target ) && ( rocket_mkdir_p( dirname( $target ), $filesystem ) ) ) {
+		return rocket_mkdir_p( $target, $filesystem );
 	}
 
 	return false;
