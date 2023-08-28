@@ -25,7 +25,7 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification' ] );
+		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification', 'rocket_activation_notice' ] );
 
 		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
