@@ -215,6 +215,6 @@ class Extractor {
 
 		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 
-		return $host != $home_host;
+		return $host !== $home_host;
 	}
 }
