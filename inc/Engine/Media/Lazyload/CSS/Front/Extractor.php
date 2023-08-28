@@ -125,13 +125,13 @@ class Extractor {
 		foreach ( $matches as $match ) {
 
 			$url = $match['url'] ?: '';
+			$url = str_replace( '"', '', $url );
+			$url = str_replace( "'", '', $url );
+			$url = trim( $url );
 			$url = $this->make_url_complete( $url );
 			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $url || $this->is_url_ignored( $url, $ignored_urls ) ) {
 				continue;
 			}
-			$url = str_replace( '"', '', $url );
-			$url = str_replace( "'", '', $url );
-			$url = trim( $url );
 
 			if ( ! $this->is_url_external( $url ) ) {
 				$url = $this->apply_string_filter( 'css_url', $url );
@@ -197,7 +197,7 @@ class Extractor {
 			return $url;
 		}
 
-		return home_url() . '/' . trim( $url, '/' );
+		return home_url() . '/' . trim( $url, '/ ' );
 	}
 
 	/**
