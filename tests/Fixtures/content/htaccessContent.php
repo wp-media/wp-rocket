@@ -189,10 +189,10 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
-
 # Random
-# add a trailing slash to /wp-admin# BEGIN WordPress
-
+# add a trailing slash to /wp-admin
+# BEGIN WordPress
+# END WordPress
 HTACCESS;
 
 return [
