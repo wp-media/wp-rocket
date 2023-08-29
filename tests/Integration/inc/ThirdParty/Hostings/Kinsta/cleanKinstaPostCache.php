@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Post;
+use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -16,6 +17,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_CleanKinstaPostCache extends TestCase
 {
+	use FilterTrait;
+
 	protected $cache;
 	protected $cache_purge;
 
@@ -26,10 +29,12 @@ class Test_CleanKinstaPostCache extends TestCase
 		$this->cache = new Kinsta_Cache();
 		$this->cache->kinsta_cache_purge = $this->cache_purge;
 		$GLOBALS['kinsta_cache'] = $this->cache;
+		$this->unregisterAllCallbacksExcept('after_rocket_clean_post', 'clean_kinsta_post_cache');
 	}
 
 	public function tearDown(): void
 	{
+		$this->restoreWpFilter('after_rocket_clean_post');
 		unset($GLOBALS['kinsta_cache']);
 		parent::tearDown();
 	}
