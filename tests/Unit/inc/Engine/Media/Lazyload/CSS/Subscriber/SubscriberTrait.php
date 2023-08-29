@@ -2,6 +2,7 @@
 
 namespace Engine\Media\Lazyload\CSS\Subscriber;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
@@ -75,6 +76,11 @@ trait SubscriberTrait
 	 */
 	protected $subscriber;
 
+	/**
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
 	protected function init_subscriber() {
 		parent::set_up();
 		$this->extractor = Mockery::mock(Extractor::class);
@@ -87,8 +93,9 @@ trait SubscriberTrait
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->lazyload_content_factory = new LazyloadCSSContentFactory();
+		$this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
 
-		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->fetcher, $this->context, $this->options, $this->lazyload_content_factory);
+		$this->subscriber = new Subscriber($this->extractor, $this->rule_formatter, $this->file_resolver, $this->filesystem_cache, $this->json_formatter, $this->tag_generator, $this->fetcher, $this->context, $this->options, $this->lazyload_content_factory, $this->filesystem);
 		$this->set_logger($this->subscriber);
 	}
 }

@@ -94,6 +94,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	protected $lazyloaded_content_factory;
 
 	/**
+	 * WordPress filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Instantiate class.
 	 *
 	 * @param Extractor                 $extractor Extract background images from CSS.
@@ -106,8 +113,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param ContextInterface          $context Context.
 	 * @param Options_Data              $options WPR Options.
 	 * @param LazyloadCSSContentFactory $lazyloaded_content_factory Make LazyloadedContent instance.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor                  = $extractor;
 		$this->cache                      = $cache;
 		$this->rule_formatter             = $rule_formatter;
@@ -118,6 +126,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$this->options                    = $options;
 		$this->fetcher                    = $fetcher;
 		$this->lazyloaded_content_factory = $lazyloaded_content_factory;
+		$this->filesystem                 = $filesystem ?: rocket_direct_filesystem();
 	}
 
 	/**
@@ -232,8 +241,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 */
 		$threshold = (int) apply_filters( 'rocket_lazyload_threshold', 300 );
 
-		wp_enqueue_script( 'rocket_lazyload_css', rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lazyload-css.min.js', [], rocket_get_constant( 'WP_ROCKET_VERSION' ), true );
+		$script_path = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lazyload-css.min.js';
 
+		if ( ! $this->filesystem->exists( $script_path ) ) {
+			return;
+		}
+
+		$content = $this->filesystem->get_contents( $script_path );
+
+		if ( ! $content ) {
+			return;
+		}
+
+		wp_add_inline_script( 'rocket_lazyload_css', $content, true );
 		wp_localize_script(
 			'rocket_lazyload_css',
 			'rocket_lazyload_css_data',
@@ -548,7 +568,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $js_files;
 		}
 
-		$js_files [] = 'wp-rocket/assets/js/lazyload-css.min.js';
+		$js_files [] = '#rocket_lazyload_css-js';
 		return $js_files;
 	}
 
@@ -563,7 +583,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $exclude_defer_js;
 		}
 
-		$exclude_defer_js [] = 'wp-rocket/assets/js/lazyload-css.min.js';
+		$exclude_defer_js [] = '#rocket_lazyload_css-js';
 		return $exclude_defer_js;
 	}
 
@@ -578,7 +598,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $js_files;
 		}
 
-		$js_files [] = 'wp-rocket/assets/js/lazyload-css.min.js';
+		$js_files [] = '#rocket_lazyload_css-js';
 		return $js_files;
 	}
 

@@ -31,14 +31,25 @@ class Test_insertLazyloadScript extends TestCase {
 				return $config['WP_ROCKET_ASSETS_JS_URL'];
 			}
 
+			if('WP_ROCKET_ASSETS_JS_PATH' === $name) {
+				return $config['WP_ROCKET_ASSETS_JS_PATH'];
+			}
+
 			return null;
 		});
+
+
+
 
 		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
 
 		if($config['is_allowed']) {
+
+			$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
+
+			$this->filesystem->expects()->get_contents($expected['path'])->andReturn($config['script_data']);
 			Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
-			Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css', $expected['url'], [], $expected['version'], true);
+			Functions\expect('wp_add_inline_script')->with('rocket_lazyload_css', $expected['script_data'], true);
 			Functions\expect('wp_localize_script')->with('rocket_lazyload_css', 'rocket_lazyload_css_data', $expected['data']);
 		}
 

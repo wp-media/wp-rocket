@@ -6,7 +6,7 @@ return [
 			  'enabled' => true,
         ],
         'expected' => [
-			'wp-rocket/assets/js/lazyload-css.min.js',
+			'#rocket_lazyload_css-js',
         ]
     ],
 	'disactivatedShouldReturnSame' => [
