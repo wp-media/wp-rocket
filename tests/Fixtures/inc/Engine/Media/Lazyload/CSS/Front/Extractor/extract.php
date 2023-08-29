@@ -128,6 +128,25 @@ padding: 15px;
 					'block' => '#internal-BG-images{background:url(/wp-content/rocket-test-data/images/butterfly.avif) right bottom no-repeat, url(/wp-content/rocket-test-data/images/file_example_TIFF_1MB.tiff) left top repeat;padding:15px;}'
 				],
 			],
+			'[class^="icon-"], [class*=" icon-"]' => [
+				[
+					'selector' => '[class^="icon-"], [class*=" icon-"]',
+					'url' => "url('../img/glyphicons-halflings.png')",
+					'original' => 'url("../img/glyphicons-halflings.png")',
+					'block' => '[class^="icon-"], [class*=" icon-"] {
+ display: inline-block;
+ width: 14px;
+ height: 14px;
+ margin-top: 1px;
+ *margin-right: .3em;
+ line-height: 14px;
+ vertical-align: text-top;
+ background-image: url("../img/glyphicons-halflings.png");
+ background-position: 14px 14px;
+ background-repeat: no-repeat
+ }'
+				]
+			],
 			'.external-css-background-image' => [
 				[
 					'selector' => '.external-css-background-image',
