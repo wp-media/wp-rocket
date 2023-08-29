@@ -16,6 +16,7 @@ class MappingFormatter {
 			$hash = $datum['hash'];
 
 			$selector = $datum['selector'];
+			$selector = $this->remove_pseudo_classes( $selector );
 			$url      = $datum['url'];
 
 			$placeholder          = "--wpr-bg-$hash";
@@ -27,5 +28,20 @@ class MappingFormatter {
 		}
 
 		return $formatted_urls;
+	}
+
+	/**
+	 * Remove pseudo classes.
+	 *
+	 * @param string $selector Selector to clean.
+	 *
+	 * @return string
+	 */
+	protected function remove_pseudo_classes( string $selector ): string {
+		$result = preg_replace( '/::[\w\-]+/', '', $selector );
+		if ( ! $result ) {
+			return 'body';
+		}
+		return (string) $result;
 	}
 }
