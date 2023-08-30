@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\Subscriber;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
+use WP_Rocket\Tests\Integration\DynamicListsTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DeferJS
  */
 class Test_ExcludeJqueryCombine extends TestCase {
-	use ContentTrait;
+	use ContentTrait, DynamicListsTrait;
 
 	private $defer_js;
 	private $combine_js;
@@ -20,15 +21,14 @@ class Test_ExcludeJqueryCombine extends TestCase {
 		parent::set_up();
 
 		set_current_screen( 'front' );
-		add_filter( 'pre_transient_wpr_dynamic_lists', '__return_empty_array' );
-
+		$this->setup_lists();
 	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, 'set_minify_concatenate_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
-		remove_filter( 'pre_transient_wpr_dynamic_lists', '__return_empty_array' );
+		$this->teardown_lists();
 
 		parent::tear_down();
 	}
