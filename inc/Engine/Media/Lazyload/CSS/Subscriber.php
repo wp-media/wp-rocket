@@ -253,7 +253,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		wp_register_script( 'rocket_lazyload_css', '', [], false, true );
+		wp_register_script( 'rocket_lazyload_css', '', [], false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		wp_enqueue_script( 'rocket_lazyload_css' );
 		wp_add_inline_script( 'rocket_lazyload_css', $content, 'after' );
 		wp_localize_script(

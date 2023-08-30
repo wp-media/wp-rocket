@@ -6,7 +6,7 @@ function rocket_css_lazyload_launch() {
 
 	const threshold = rocket_lazyload_css_data.threshold || 300;
 
-	const observer = rocket_lazyload_css_observer = new IntersectionObserver(entries => {
+	const observer = new IntersectionObserver(entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
 				const pairs = rocket_pairs.filter(s => entry.target.matches(s.selector));
@@ -16,7 +16,7 @@ function rocket_css_lazyload_launch() {
 						pair.elements.forEach(el => {
 							el.setAttribute('data-rocket-lazy-bg', 'loaded');
 							// Stop observing the target element
-							rocket_lazyload_css_observer.unobserve(el);
+							observer.unobserve(el);
 						});
 					}
 				})
