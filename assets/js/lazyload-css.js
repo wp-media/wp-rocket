@@ -56,7 +56,7 @@ function rocket_css_lazyload_launch() {
 				const mutationObserver = new MutationObserver(callback);
 
 				// have the observer observe for changes in children
-				mutationObserver.observe( obj, { childList:true, subtree:true })
+				mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true })
 				return mutationObserver
 			}
 
@@ -64,6 +64,7 @@ function rocket_css_lazyload_launch() {
 			else if( window.addEventListener ){
 				obj.addEventListener('DOMNodeInserted', callback, false)
 				obj.addEventListener('DOMNodeRemoved', callback, false)
+				obj.addEventListener('DOMSubtreeModified', callback, false)
 			}
 		}
 	})()
@@ -71,8 +72,6 @@ function rocket_css_lazyload_launch() {
 	const body = document.querySelector('body');
 
 	observe_DOM(body, lazyload)
-	body.addEventListener('DOMSubtreeModified', lazyload, false)
-
 }
 
 rocket_css_lazyload_launch();
