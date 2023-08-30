@@ -65,12 +65,14 @@ function rocket_css_lazyload_launch() {
 				obj.addEventListener('DOMNodeInserted', callback, false)
 				obj.addEventListener('DOMNodeRemoved', callback, false)
 			}
-
-			obj.addEventListener('DOMSubtreeModified', callback, false)
 		}
 	})()
 
-	observe_DOM(document.querySelector('body'), lazyload)
+	const body = document.querySelector('body');
+
+	observe_DOM(body, lazyload)
+	body.addEventListener('DOMSubtreeModified', lazyload, false)
+
 }
 
 rocket_css_lazyload_launch();
