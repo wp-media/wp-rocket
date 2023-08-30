@@ -64,6 +64,16 @@ background-color: #cccccc;
 }'
 				],
 			],
+			'.fl-node-reyn24wd18os > .fl-row-content-wrap' => [
+				[
+				'selector' => '.fl-node-reyn24wd18os > .fl-row-content-wrap',
+				'url' => "url('https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg')",
+				'original' => 'url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg)',
+				'block' => '.fl-node-reyn24wd18os > .fl-row-content-wrap {
+ background-image: url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg);
+ }'
+				],
+			],
 			'.internal-css-background-image-gradient' => [
 				[
 					'selector' => '.internal-css-background-image-gradient',
