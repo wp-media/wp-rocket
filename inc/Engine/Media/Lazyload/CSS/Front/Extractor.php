@@ -41,6 +41,7 @@ class Extractor {
 
 		$background_image_regex = '(?<selector>[ \-,:\w.()\n\r>^[*"\'=\]#]+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
 
+
 		/**
 		 * Lazyload background property regex.
 		 *
