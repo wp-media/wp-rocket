@@ -6,7 +6,7 @@ return [
 			  'enabled' => true,
         ],
         'expected' => [
-			'#rocket_lazyload_css-js',
+			'#rocket_lazyload_css-js-after',
         ]
     ],
 	'disabledShouldReturnSame' => [

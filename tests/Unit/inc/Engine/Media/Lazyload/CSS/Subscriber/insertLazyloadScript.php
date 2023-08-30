@@ -49,7 +49,9 @@ class Test_insertLazyloadScript extends TestCase {
 
 			$this->filesystem->expects()->get_contents($expected['path'])->andReturn($config['script_data']);
 			Filters\expectApplied('rocket_lazyload_threshold')->with(300)->andReturn($config['threshold']);
-			Functions\expect('wp_add_inline_script')->with('rocket_lazyload_css', $expected['script_data'], true);
+			Functions\expect('wp_register_script')->with('rocket_lazyload_css', '', [], false, true);
+			Functions\expect('wp_enqueue_script')->with('rocket_lazyload_css');
+			Functions\expect('wp_add_inline_script')->with('rocket_lazyload_css', $expected['script_data'], 'after');
 			Functions\expect('wp_localize_script')->with('rocket_lazyload_css', 'rocket_lazyload_css_data', $expected['data']);
 		}
 

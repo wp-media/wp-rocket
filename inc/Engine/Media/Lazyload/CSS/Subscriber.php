@@ -253,7 +253,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		wp_add_inline_script( 'rocket_lazyload_css', $content, true );
+		wp_register_script( 'rocket_lazyload_css', '', [], false, true );
+		wp_enqueue_script( 'rocket_lazyload_css' );
+		wp_add_inline_script( 'rocket_lazyload_css', $content, 'after' );
 		wp_localize_script(
 			'rocket_lazyload_css',
 			'rocket_lazyload_css_data',
@@ -568,7 +570,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $js_files;
 		}
 
-		$js_files [] = '#rocket_lazyload_css-js';
+		$js_files [] = '#rocket_lazyload_css-js-after';
 		return $js_files;
 	}
 
@@ -583,7 +585,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $exclude_defer_js;
 		}
 
-		$exclude_defer_js [] = '#rocket_lazyload_css-js';
+		$exclude_defer_js [] = '#rocket_lazyload_css-js-after';
 		return $exclude_defer_js;
 	}
 
@@ -598,7 +600,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return $js_files;
 		}
 
-		$js_files [] = '#rocket_lazyload_css-js';
+		$js_files [] = '#rocket_lazyload_css-js-after';
 		return $js_files;
 	}
 
