@@ -20,12 +20,15 @@ class Test_ExcludeJqueryCombine extends TestCase {
 		parent::set_up();
 
 		set_current_screen( 'front' );
+		add_filter( 'pre_transient_wpr_dynamic_lists', '__return_empty_array' );
+
 	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, 'set_minify_concatenate_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
+		remove_filter( 'pre_transient_wpr_dynamic_lists', '__return_empty_array' );
 
 		parent::tear_down();
 	}
