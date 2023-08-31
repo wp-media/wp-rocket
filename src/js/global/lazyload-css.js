@@ -75,6 +75,7 @@ function rocket_css_lazyload_launch() {
 			return mutationObserver
 
 		}
+
 	})()
 
 	const body = document.querySelector('body');
