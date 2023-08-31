@@ -55,14 +55,15 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
 		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+		$is_not_cached_page = true;
 
 		Functions\when( 'is_admin' )->justReturn( $is_admin );
 		Functions\when( 'is_feed' )->justReturn( $is_feed );
 		Functions\when( 'is_preview' )->justReturn( $is_preview );
 		Functions\when( 'is_search' )->justReturn( $is_search );
 		Functions\expect( 'rocket_get_constant' )
-			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL')
-			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
+			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL', 'DONOTCACHEPAGE')
+			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, ! $is_not_cached_page);
 
 		foreach ( $options as $key => $value ) {
 			$this->options->shouldReceive( 'get' )

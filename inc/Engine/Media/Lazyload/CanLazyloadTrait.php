@@ -17,6 +17,8 @@ trait CanLazyloadTrait {
 			rocket_get_constant( 'DONOTLAZYLOAD', false )
 			||
 			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
+			||
+			rocket_get_constant( 'DONOTCACHEPAGE', false )
 		) {
 			return false;
 		}

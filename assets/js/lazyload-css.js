@@ -15,6 +15,11 @@ function rocket_css_lazyload_launch() {
 				pairs.map(pair => {
 					if (pair) {
 						styleElement.innerHTML += pair.style;
+
+						if(pair.elements === undefined) {
+							return;
+						}
+
 						pair.elements.forEach(el => {
 							el.setAttribute('data-rocket-lazy-bg', 'loaded');
 							// Stop observing the target element
