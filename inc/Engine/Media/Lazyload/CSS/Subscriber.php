@@ -458,6 +458,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	protected function load_existing_mapping( string $url ) {
 		$content = $this->cache->get( $this->get_mapping_file_url( $url ) );
+		if( ! $content) {
+			return [];
+		}
 		$urls    = json_decode( $content, true );
 		if ( ! $urls ) {
 			return [];
