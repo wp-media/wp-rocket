@@ -57,14 +57,18 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
 		$is_not_cached_page = true;
 
+
+
 		Functions\when( 'is_admin' )->justReturn( $is_admin );
 		Functions\when( 'is_feed' )->justReturn( $is_feed );
 		Functions\when( 'is_preview' )->justReturn( $is_preview );
 		Functions\when( 'is_search' )->justReturn( $is_search );
 		Functions\expect( 'rocket_get_constant' )
-			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL', 'DONOTCACHEPAGE')
-			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, ! $is_not_cached_page);
-
+			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL', 'SCRIPT_DEBUG' )
+			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, true);
+		Functions\expect( 'rocket_get_constant' )
+			->with('DONOTCACHEPAGE')
+			->andReturn(! $is_not_cached_page);
 		foreach ( $options as $key => $value ) {
 			$this->options->shouldReceive( 'get' )
 				->with( $key, 0 )
