@@ -57,12 +57,10 @@ class MappingFormatter {
 			$pseudo_elements_to_remove = $original_pseudo_elements;
 		}
 
-
-
 		$result = preg_replace( '/::[\w\-]+/', '', $selector );
 
 		foreach ( $pseudo_elements_to_remove as $element ) {
-			$selector = str_replace( $element, '', $selector );
+			$result = str_replace( $element, '', $result );
 		}
 
 		if ( ! $result ) {
