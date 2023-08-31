@@ -6,7 +6,11 @@ use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
+use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
@@ -131,6 +135,10 @@ class Plugin {
 		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
 
+		$this->container->addServiceProvider( LoggerServiceProvider::class );
+
+		$this->container->get( 'logger' );
+
 		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
 		$this->container->addServiceProvider( SupportServiceProvider::class );
 		$this->container->addServiceProvider( BeaconServiceProvider::class );
@@ -194,6 +202,7 @@ class Plugin {
 		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
 		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
 		$this->container->addServiceProvider( DomainChangeServiceProvider::class );
+		$this->container->addServiceProvider( AdminLazyloadCSSServiceProvider::class );
 
 		return [
 			'beacon',
@@ -216,6 +225,7 @@ class Plugin {
 			'action_scheduler_check',
 			'actionscheduler_admin_subscriber',
 			'domain_change_subscriber',
+			'lazyload_css_admin_subscriber',
 		];
 	}
 
@@ -276,12 +286,15 @@ class Plugin {
 		$this->container->addServiceProvider( LicenseServiceProvider::class );
 		$this->container->addServiceProvider( ThemesServiceProvider::class );
 		$this->container->addServiceProvider( APIServiceProvider::class );
+		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
+		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
 			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
+			'common_extractcss_subscriber',
 			'expired_cache_purge_subscriber',
 			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
@@ -362,6 +375,7 @@ class Plugin {
 			'translatepress',
 			'themify',
 			'wpgeotargeting',
+			'lazyload_css_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

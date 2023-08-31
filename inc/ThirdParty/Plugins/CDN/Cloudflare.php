@@ -109,7 +109,7 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		// If RUCSS is enabled.
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) && ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 

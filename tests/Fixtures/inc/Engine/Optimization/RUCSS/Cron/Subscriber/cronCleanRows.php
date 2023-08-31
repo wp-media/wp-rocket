@@ -1,11 +1,8 @@
 <?php
-if(function_exists('current_time')) {
-	$current_date = current_time( 'mysql', true );
-	$old_date     = date('Y-m-d H:i:s', strtotime( $current_date. ' - 32 days' ) );
-} else {
-	$current_date = 'current_date';
-	$old_date = 'old_date';
-}
+
+$current_date = 'current_date';
+$old_date = 'old_date';
+
 
 $used_css = [
 	[
