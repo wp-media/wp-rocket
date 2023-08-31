@@ -59,6 +59,13 @@ class ContentFetcher {
 		if ( ! wp_http_validate_url( $path ) ) {
 			return $this->filesystem->get_contents( $path );
 		}
-		return wp_remote_retrieve_body( wp_remote_get( $path ) );
+
+		$response = wp_remote_get( $path );
+
+		if ( wp_remote_retrieve_response_code( $response ) === 404 ) {
+			return false;
+		}
+
+		return wp_remote_retrieve_body( $response );
 	}
 }

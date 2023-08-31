@@ -43,6 +43,16 @@ return [
 					'hash' => 'a122ad12df3',
 					'selector' => '::after',
 					'url' => 'http://example.org/test',
+				],
+				[
+					'hash' => 'a122ad12df3',
+					'selector' => ':after',
+					'url' => 'http://example.org/test',
+				],
+				[
+					'hash' => 'a122ad12df3',
+					'selector' => ':last',
+					'url' => 'http://example.org/test',
 				]
 			],
 		],
@@ -57,6 +67,14 @@ return [
 			],
 			[
 				'selector' => 'body',
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
+			],
+			[
+				'selector' => 'body',
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
+			],
+			[
+				'selector' => ':last',
 				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
 			]
 		]
