@@ -133,7 +133,7 @@ class Extractor {
 				continue;
 			}
 
-			if ( ! $this->is_url_external( $url ) ) {
+			if ( ! $this->is_url_external( $url ) && ! $this->is_relative( $url ) ) {
 				$url = $this->apply_string_filter( 'css_url', $url );
 			}
 
@@ -193,7 +193,7 @@ class Extractor {
 	protected function make_url_complete( string $url ): string {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
-		if ( $host ) {
+		if ( $host || $this->is_relative( $url ) ) {
 			return $url;
 		}
 
@@ -216,5 +216,15 @@ class Extractor {
 		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
 
 		return $host !== $home_host;
+	}
+
+	/**
+	 * Check if the URL is relative.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool
+	 */
+	protected function is_relative( string $url ): bool {
+		return preg_match( '/^\./', $url );
 	}
 }

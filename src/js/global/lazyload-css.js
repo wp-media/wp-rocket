@@ -1,6 +1,7 @@
 function rocket_css_lazyload_launch() {
 
-	const pairs = rocket_pairs || [];
+	const usable_pairs = typeof rocket_pairs === 'undefined' ? [] : rocket_pairs;
+
 
 	const styleElement = document.querySelector('#wpr-lazyload-bg');
 
@@ -9,7 +10,7 @@ function rocket_css_lazyload_launch() {
 	const observer = new IntersectionObserver(entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
-				const pairs = rocket_pairs.filter(s => entry.target.matches(s.selector));
+				const pairs = usable_pairs.filter(s => entry.target.matches(s.selector));
 				pairs.map(pair => {
 					if (pair) {
 						styleElement.innerHTML += pair.style;
@@ -26,13 +27,22 @@ function rocket_css_lazyload_launch() {
 		rootMargin: threshold + 'px'
 	});
 
-	function lazyload() {
+	function lazyload(e = []) {
 
+		const pass = e.length === 0 || e.find(e =>  e.type !== 'attributes' || e.attributeName === 'class');
 
-		pairs.forEach(pair => {
+		if(! pass ) {
+			return;
+		}
+
+		usable_pairs.forEach(pair => {
 			try {
+
 				const elements = document.querySelectorAll(pair.selector);
 				elements.forEach(el => {
+					if(el.getAttribute('data-rocket-lazy-bg') === 'loaded') {
+						return;
+					}
 					observer.observe(el);
 					// Save el in the pair object (create a new empty array if it doesn't exist)
 					(pair.elements ||= []).push(el);
@@ -46,27 +56,20 @@ function rocket_css_lazyload_launch() {
 	lazyload();
 
 	const observe_DOM = (function(){
-		const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+		const MutationObserver = window.MutationObserver;
 
 		return function( obj, callback ){
 			if( !obj || obj.nodeType !== 1 ) return;
 
-			if( MutationObserver ){
-				// define a new observer
-				const mutationObserver = new MutationObserver(callback);
+			// define a new observer
+			const mutationObserver = new MutationObserver(callback);
 
-				// have the observer observe for changes in children
-				mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true })
-				return mutationObserver
-			}
+			// have the observer observe for changes in children
+			mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true })
+			return mutationObserver
 
-			// browser support fallback
-			else if( window.addEventListener ){
-				obj.addEventListener('DOMNodeInserted', callback, false)
-				obj.addEventListener('DOMNodeRemoved', callback, false)
-				obj.addEventListener('DOMSubtreeModified', callback, false)
-			}
 		}
+
 	})()
 
 	const body = document.querySelector('body');
