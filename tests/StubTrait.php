@@ -17,6 +17,7 @@ trait StubTrait {
 	protected $wp_rocket_advanced_cache = true;
 	protected $disable_wp_cron = false;
 	protected $donotrocketoptimize = null;
+	protected $is_not_cached_page = null;
 	protected $white_label = false;
 	protected $white_label_footprint = null;
 	protected $plugin_name = 'WP Rocket';
@@ -69,6 +70,9 @@ trait StubTrait {
 
 			case 'DONOTROCKETOPTIMIZE' :
 				return $this->donotrocketoptimize;
+
+			case 'DONOTCACHEPAGE' :
+				return $this->is_not_cached_page;
 
 			case 'FS_CHMOD_DIR':
 				return 0777;

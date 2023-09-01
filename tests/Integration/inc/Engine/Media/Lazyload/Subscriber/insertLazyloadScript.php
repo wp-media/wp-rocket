@@ -75,6 +75,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
 		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+		$is_not_cached_page = isset( $config['is_not_cached_page'] ) ? $config['is_not_cached_page'] : true;
 
 		set_current_screen( $is_admin ? 'settings_page_wprocket' : 'front' );
 
@@ -87,6 +88,7 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->constants['REST_REQUEST']  = $is_rest_request;
 		$this->constants['DONOTLAZYLOAD'] = ! $is_lazy_load;
 		$this->donotrocketoptimize        = ! $is_rocket_optimize;
+		$this->is_not_cached_page         = ! $is_not_cached_page;
 		$this->constants['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
