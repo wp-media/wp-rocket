@@ -89,6 +89,23 @@ return [
 			'integration' => '',
 		],
 	],
+	'testShouldReturnNothingWhenPageNotCached' => [
+		'config' => [
+			'is_not_cached_page' => false,
+			'options'  => [
+				'lazyload'         => 1,
+				'lazyload_iframes' => 0,
+			],
+		],
+		'expected' => [
+			'unit' => [
+				'inline_script' => '',
+				'script'        => '',
+				'result'        => '',
+			],
+			'integration' => '',
+		],
+	],
 	'testShouldReturnNothingWhenIsNotRocketOptimize' => [
 		'config' => [
 			'is_rocket_optimize' => false,

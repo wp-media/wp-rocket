@@ -55,20 +55,34 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
 		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
-		$is_not_cached_page = true;
-
-
+		$is_not_cached_page = isset( $config['is_not_cached_page'] ) ? $config['is_not_cached_page'] : true;
 
 		Functions\when( 'is_admin' )->justReturn( $is_admin );
 		Functions\when( 'is_feed' )->justReturn( $is_feed );
 		Functions\when( 'is_preview' )->justReturn( $is_preview );
 		Functions\when( 'is_search' )->justReturn( $is_search );
-		Functions\expect( 'rocket_get_constant' )
-			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL', 'SCRIPT_DEBUG' )
-			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, true);
-		Functions\expect( 'rocket_get_constant' )
-			->with('DONOTCACHEPAGE')
-			->andReturn(! $is_not_cached_page);
+		Functions\when('rocket_get_constant')->alias(function ($name, $default = false) use ($is_rest_request, $is_lazy_load, $is_rocket_optimize, $is_not_cached_page) {
+			if($name == 'REST_REQUEST') {
+				return $is_rest_request;
+			}
+			if($name == 'DONOTLAZYLOAD') {
+				return !$is_lazy_load;
+			}
+			if($name == 'DONOTROCKETOPTIMIZE') {
+				return !$is_rocket_optimize;
+			}
+			if($name == 'WP_ROCKET_ASSETS_JS_URL') {
+				return !$is_rocket_optimize;
+			}
+			if($name == 'SCRIPT_DEBUG') {
+				return true;
+			}
+			if($name == 'DONOTCACHEPAGE') {
+				return !$is_not_cached_page;
+			}
+			return $default;
+		});
+
 		foreach ( $options as $key => $value ) {
 			$this->options->shouldReceive( 'get' )
 				->with( $key, 0 )
