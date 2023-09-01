@@ -5,7 +5,8 @@ return [
               'path' => '/my/file',
 			  'is_url' => false,
 			  'content' => 'content',
-			  'destination' => '/path/new'
+			  'destination' => '/path/new',
+			  'code' => 200
         ],
         'expected' => 'content'
     ],
@@ -16,7 +17,8 @@ return [
 			'content' => 'content',
 			'response' => 'response',
 			'body' => 'body',
-			'destination' => '/path/new'
+			'destination' => '/path/new',
+			'code' => 200
 		],
 		'expected' => 'body'
 	],
@@ -27,7 +29,8 @@ return [
 			'content' => 'content',
 			'response' => 'response',
 			'body' => null,
-			'destination' => '/path/new'
+			'destination' => '/path/new',
+			'code' => 200
 		],
 		'expected' => false
 	],

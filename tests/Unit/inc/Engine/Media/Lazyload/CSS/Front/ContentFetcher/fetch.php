@@ -56,6 +56,7 @@ class Test_fetch extends TestCase {
 			return;
 		}
 		Functions\expect('wp_remote_get')->with($config['path'])->andReturn($config['response']);
+		Functions\expect('wp_remote_retrieve_response_code')->with($config['response'])->andReturn($config['code']);
 		Functions\expect('wp_remote_retrieve_body')->with($config['response'])->andReturn($config['body']);
 	}
 }
