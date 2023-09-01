@@ -456,25 +456,38 @@ class Cloudflare implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function unregister_cloudflare_clean_on_post() {
+		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs' );
+		$this->unregister_callback( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
+	}
+
+	/**
+	 * Unregister a callback.
+	 *
+	 * @param string $hook Hook on which to unregister.
+	 * @param string $method The callback to unregister.
+	 * @param int    $priority the priority from the callback.
+	 * @return void
+	 */
+	protected function unregister_callback( string $hook, string $method, int $priority = 10 ) {
 		global $wp_filter;
 
-		if ( ! key_exists( 'deleted_post', $wp_filter ) ) {
+		if ( ! key_exists( $hook, $wp_filter ) ) {
 			return;
 		}
 
-		$original_wp_filter = $wp_filter['deleted_post']->callbacks;
+		$original_wp_filter = $wp_filter[ $hook ]->callbacks;
 
-		if ( ! key_exists( 10, $original_wp_filter ) ) {
+		if ( ! key_exists( $priority, $original_wp_filter ) ) {
 			return;
 		}
 
-		foreach ( $original_wp_filter[10] as $key => $config ) {
+		foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
 
-			if ( substr( $key, - strlen( 'purgeCacheByRelevantURLs' ) ) !== 'purgeCacheByRelevantURLs' ) {
+			if ( substr( $key, - strlen( $method ) ) !== $method ) {
 				continue;
 			}
 
-			unset( $wp_filter['deleted_post']->callbacks[ $key ] );
+			unset( $wp_filter[ $hook ]->callbacks[ $priority ][ $key ] );
 		}
 	}
 }
