@@ -77,7 +77,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
 			],
-			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 		];
 	}
 

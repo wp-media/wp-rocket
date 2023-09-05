@@ -55,5 +55,4 @@ class LazyloadedContent {
 	public function set_content( string $content ): void {
 		$this->content = $content;
 	}
-
 }

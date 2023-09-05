@@ -88,20 +88,20 @@ class StreamHandler extends MonoStreamHandler {
 
 		set_error_handler( [ $this, 'custom_error_handler' ] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 
-		$file_resource = fopen( $file_path, 'a' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+		$file_resource = fopen( $file_path, 'a' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 
 		restore_error_handler();
 
 		if ( ! is_resource( $file_resource ) ) {
 			$this->has_error = true;
-			throw new UnexpectedValueException( sprintf( 'The file "%s" could not be opened: ' . $this->error_message, $file_path ) );
+			throw new UnexpectedValueException( sprintf( 'The file "%s" could not be opened: ' . $this->error_message, $file_path ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		$new_content = "<Files ~ \"\.log$\">\nOrder allow,deny\nDeny from all\n</Files>\nOptions -Indexes";
 
-		fwrite( $file_resource, $new_content );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
-		fclose( $file_resource );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
-		@chmod( $file_path, 0644 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		fwrite( $file_resource, $new_content );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		fclose( $file_resource );  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		@chmod( $file_path, 0644 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_chmod
 
 		$this->htaccess_exists = true;
 
