@@ -15,6 +15,7 @@ class Deactivation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -30,6 +31,7 @@ class Deactivation {
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$container->addServiceProvider( 'WP_Rocket\Engine\Deactivation\ServiceProvider' );
 		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+		$container->addServiceProvider( 'WP_Rocket\ThirdParty\ServiceProvider' );
 
 		$host_type = HostResolver::get_host_service();
 
