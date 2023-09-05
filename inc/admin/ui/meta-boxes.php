@@ -102,7 +102,7 @@ function rocket_display_cache_options_meta_boxes() {
 			$fields = [
 				'lazyload'          => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes'  => __( 'LazyLoad for iframes/videos', 'rocket' ),
-				'minify_css'        => __( 'Minify/combine CSS', 'rocket' ),
+				'minify_css'        => __( 'Minify CSS', 'rocket' ),
 				'remove_unused_css' => __( 'Remove Unused CSS', 'rocket' ),
 				'minify_js'         => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'               => __( 'CDN', 'rocket' ),
@@ -110,6 +110,19 @@ function rocket_display_cache_options_meta_boxes() {
 				'defer_all_js'      => __( 'Defer JS', 'rocket' ),
 				'delay_js'          => __( 'Delay JavaScript execution', 'rocket' ),
 			];
+
+			$old_fields = $fields;
+
+			/**
+			 * Metaboxes fields.
+			 *
+			 * @param string[] $fields Metaboxes fields.
+			 */
+			$fields = apply_filters( 'rocket_meta_boxes_fields', $fields );
+
+			if ( ! is_array( $fields ) ) {
+				$fields = $old_fields;
+			}
 
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
@@ -180,17 +193,33 @@ function rocket_save_metabox_options() {
 		}
 
 		// Options fields.
+		// Options fields.
 		$fields = [
-			'lazyload',
-			'lazyload_iframes',
-			'minify_css',
-			'minify_js',
-			'cdn',
-			'async_css',
-			'defer_all_js',
-			'delay_js',
-			'remove_unused_css',
+			'lazyload'          => '',
+			'lazyload_iframes'  => '',
+			'minify_css'        => '',
+			'minify_js'         => '',
+			'cdn'               => '',
+			'async_css'         => '',
+			'defer_all_js'      => '',
+			'delay_js'          => '',
+			'remove_unused_css' => '',
 		];
+
+		$old_fields = $fields;
+
+		/**
+		 * Metaboxes fields.
+		 *
+		 * @param string[] $fields Metaboxes fields.
+		 */
+		$fields = apply_filters( 'rocket_meta_boxes_fields', $fields );
+
+		if ( ! is_array( $old_fields ) ) {
+			$fields = $old_fields;
+		}
+
+		$fields = array_keys( $fields );
 
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) ) {

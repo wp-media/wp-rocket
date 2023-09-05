@@ -73,7 +73,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
-			'rocket_options_changed'                  => 'truncate_used_css',
+			'rocket_domain_options_changed'           => 'truncate_used_css',
 			'wp_trash_post'                           => 'delete_used_css_on_update_or_delete',
 			'delete_post'                             => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                        => 'delete_used_css_on_update_or_delete',
@@ -100,7 +100,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
@@ -525,20 +524,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
-	}
-
-	/**
-	 * Disable combine CSS option when RUCSS is enabled
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $value     The new, unserialized option value.
-	 * @param array $old_value The old option value.
-	 *
-	 * @return array
-	 */
-	public function maybe_disable_combine_css( $value, $old_value ): array {
-		return $this->settings->maybe_disable_combine_css( $value, $old_value );
 	}
 
 	/**

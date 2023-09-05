@@ -60,7 +60,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
-
 		return [
 			'admin_init'            => [
 				[ 'register_terms_row_action' ],
@@ -72,11 +71,13 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			],
 			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
 			'site_status_tests'     => 'add_wp_cache_status_test',
+			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 			'rocket_domain_changed' => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
 			],
+			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 		];
 	}
 
@@ -214,9 +215,9 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		foreach ( $contents as $content ) {
 			$content = WP_ROCKET_CONFIG_PATH . $content['name'];
 			if ( ! preg_match( '#\.php$#', $content ) || ! $this->filesystem->is_file( $content ) || in_array(
-				$content,
+					$content,
 					$configs,
-				true
+					true
 				) ) {
 				continue;
 			}
@@ -250,5 +251,20 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 */
 	public function clear_cache( string $current_url, string $old_url ) {
 		rocket_clean_files( [ $old_url, $current_url ], null, false );
+	}
+
+	/**
+	 * Regenerate the advanced cache file on update
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.15', '>=' ) ) {
+			return;
+		}
+		rocket_generate_advanced_cache_file();
 	}
 }

@@ -23,6 +23,7 @@ class AdminSubscriber implements Subscriber_Interface {
 		return [
 			"update_option_{$slug}"     => [ 'clean_minify', 10, 2 ],
 			"pre_update_option_{$slug}" => [ 'regenerate_minify_css_key', 10, 2 ],
+			'wp_rocket_upgrade'         => [ 'on_update', 16, 2 ],
 		];
 	}
 
@@ -122,5 +123,19 @@ class AdminSubscriber implements Subscriber_Interface {
 			// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			$old[ $setting ] != $new[ $setting ]
 		);
+	}
+
+	/**
+	 * Clean cache on update.
+	 *
+	 * @param string $new_version new version from the plugin.
+	 * @param string $old_version old version from the plugin.
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.15', '>=' ) ) {
+			return;
+		}
+		rocket_clean_domain();
 	}
 }

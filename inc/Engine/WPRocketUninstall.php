@@ -116,6 +116,7 @@ class WPRocketUninstall {
 		'defer_all_js',
 		'delay_js',
 		'remove_unused_css',
+		'lazyload_css_bg_img',
 	];
 
 	/**
