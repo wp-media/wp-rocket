@@ -123,6 +123,15 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 				$post_lines
 			)
 		);
+	} elseif ( $remove_rules ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				$post_lines
+			)
+		);
 	} else {
 		// Generate the new file data.
 		$new_file_data = implode(
