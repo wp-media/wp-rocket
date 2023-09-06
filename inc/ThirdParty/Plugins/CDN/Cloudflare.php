@@ -455,8 +455,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 *
 	 * @return void
 	 */
-	public function deactivate()
-	{
+	public function deactivate() {
 		$this->purge_cloudflare();
 	}
 }
