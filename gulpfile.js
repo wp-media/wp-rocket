@@ -178,10 +178,27 @@ const bundleJsWithoutWatch = () => {
                 .pipe(gulp.dest('assets/js'))
 }
 
-exports.bundleJsWithoutWatch = bundleJsWithoutWatch;
+// Bundle script without watching.
+const bundleLazyloadJsWithoutWatch = () => {
+	var bundle = browserify({
+		entries: './src/js/global/lazyload-css.js',
+		debug: true
+	}).transform(babel);
+
+	return bundle.bundle()
+		.pipe(source('lazyload-css.js'))
+		.pipe(buffer())
+		.pipe(uglify())
+		.pipe( rename( { suffix: '.min' } ) )
+		.pipe(sourcemaps.init({loadMaps: false}))
+		.pipe(sourcemaps.write('./'))
+		.pipe(gulp.dest('assets/js'))
+}
+
+exports.bundleLazyloadJsWithoutWatch = bundleLazyloadJsWithoutWatch;
 
 // Run build without watching: watching keeps git actions stuck on 'build'
-gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, 'run:build:sass'));
+gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, bundleLazyloadJsWithoutWatch, 'run:build:sass'));
 
 /**
  * Compiles a standalone script file.
