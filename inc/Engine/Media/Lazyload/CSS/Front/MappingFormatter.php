@@ -68,7 +68,7 @@ class MappingFormatter {
 		usort(
 			$pseudo_elements_to_remove,
 			static function ( $first, $second ) {
-				if ( strlen( $first ) == strlen( $second ) ) {
+				if ( strlen( $first ) === strlen( $second ) ) {
 					return 0;
 				}
 				return ( strlen( $first ) > strlen( $second ) ) ? -1 : 1;
@@ -85,7 +85,7 @@ class MappingFormatter {
 				foreach ( $pseudo_elements_to_remove as $element ) {
 					$selector = str_replace( $element, '', $selector );
 				}
-				if ( in_array( substr( $selector, -1 ), [ '&', '~', '+', '>' ] ) ) {
+				if ( in_array( substr( $selector, -1 ), [ '&', '~', '+', '>' ], true ) ) {
 					$selector .= '*';
 				}
 
