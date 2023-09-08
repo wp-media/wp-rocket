@@ -3368,7 +3368,7 @@ msgstr ""
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:45
 msgid "LazyLoad CSS backgrounds"
-msgstr "LazyLoad d'arrière-plans CSS"
+msgstr "LazyLoad background CSS"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"
