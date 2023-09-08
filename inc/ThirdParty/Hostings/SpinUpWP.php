@@ -74,7 +74,7 @@ class SpinUpWP extends NullSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		spinupwp_purge_url( $url );
+		spinupwp_purge_url( trailingslashit( $url ) );
 	}
 
 	/**
