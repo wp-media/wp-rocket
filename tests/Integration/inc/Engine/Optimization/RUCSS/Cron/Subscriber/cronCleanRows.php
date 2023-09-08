@@ -15,6 +15,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_CronCleanRows extends TestCase {
 	use DBTrait;
 
+	private $input;
+
 	protected function loadTestDataConfig() {
 		$obj      = new ReflectionObject( $this );
 		$filename = $obj->getFileName();
@@ -34,7 +36,7 @@ class Test_CronCleanRows extends TestCase {
 		self::uninstallAll();
 	}
 
-	public function tear_down() : void {
+	public function tear_down() {
 		remove_filter( 'rocket_rucss_delete_interval', [ $this, 'set_rucss_delay' ] );
 
 		parent::tear_down();
@@ -43,11 +45,11 @@ class Test_CronCleanRows extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $input ){
+	public function testShouldDoExpected( $input ) {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$current_date        = current_time( 'mysql', true );
-		$old_date            = strtotime( $current_date. ' - 32 days' );
+		$old_date            = strtotime( $current_date . ' - 32 days' );
 
 		$this->input = $input;
 
@@ -55,9 +57,10 @@ class Test_CronCleanRows extends TestCase {
 		$this->set_permalink_structure( "/%postname%/" );
 
 		$count_remain_used_css = 0;
+
 		foreach ( $input['used_css'] as $used_css ) {
-			if ( $old_date <  strtotime( $used_css['last_accessed']) ) {
-				$count_remain_used_css ++;
+			if ( $old_date <  strtotime( $used_css['last_accessed'] ) ) {
+				++$count_remain_used_css;
 			}
 			$rucss_usedcss_query->add_item( $used_css );
 		}
@@ -72,7 +75,7 @@ class Test_CronCleanRows extends TestCase {
 
 
 		if ( $this->input['delay'] ) {
-			$this->assertCount( $count_remain_used_css,$resultUsedCssAfterClean );
+			$this->assertCount( $count_remain_used_css, $resultUsedCssAfterClean );
 		} else {
 			$this->assertCount( count( $input['used_css'] ), $resultUsedCssAfterClean );
 		}
