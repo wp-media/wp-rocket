@@ -670,6 +670,17 @@ function rocket_notice_html( $args ) {
 		case 'clear_cache':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
 			break;
+		case 'clear_used_css':
+			$params = [
+				'action' => 'rocket_clear_usedcss',
+			];
+
+			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+				$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+				$params['_wp_http_referer'] = rawurlencode( $referer_url );
+			}
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
+			break;
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
 			break;
@@ -704,6 +715,17 @@ function rocket_notice_html( $args ) {
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
 			break;
+	}
+	/**
+	 * Notice arguments.
+	 *
+	 * @param array $args arguments from the notice.
+	 * @return array
+	 */
+	$filtered_args = apply_filters( 'rocket_notice_args', $args );
+
+	if ( is_array( $filtered_args ) ) {
+		$args = wp_parse_args( $filtered_args, $defaults );
 	}
 
 	$notice_id = '';

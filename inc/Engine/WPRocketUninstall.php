@@ -34,7 +34,9 @@ class WPRocketUninstall {
 		'rocketcdn_user_token',
 		'rocketcdn_process',
 		'wp_rocket_hide_deactivation_form',
+		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',
+		'wp_rocket_last_option_hash',
 	];
 
 	/**
@@ -67,8 +69,10 @@ class WPRocketUninstall {
 		'rocket_preload_as_tables_count',
 		'wpr_dynamic_lists',
 		'wpr_dynamic_lists_delayjs',
+		'rocket_domain_changed',
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
+		'rocket_divi_notice',
 	];
 
 	/**
@@ -112,6 +116,7 @@ class WPRocketUninstall {
 		'defer_all_js',
 		'delay_js',
 		'remove_unused_css',
+		'lazyload_css_bg_img',
 	];
 
 	/**
