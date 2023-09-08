@@ -1,10 +1,12 @@
 <?php
 
-$post = new WP_Post();
-$post->post_type = 'elementor_library';
+$post = new WP_Post((object) [
+	'post_type' => 'elementor_library'
+]);
 
-$wrong_post = new WP_Post();
-$post->post_type = 'wrong';
+$wrong_post = new WP_Post((object) [
+	'post_type' => 'wrong'
+]);
 
 return [
     'ShouldSkipAdminBar' => [

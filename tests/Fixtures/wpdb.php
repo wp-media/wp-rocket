@@ -9,7 +9,7 @@ if ( ! class_exists( 'wpdb' ) ) {
 		public $terms_results = [];
 		public $prefix        = 'wp_';
 		public $as_table_rows = [];
-		public $postmeta = 'postmeta';
+
 		public $starts_with = false;
 
 		public function get_results( $sql ) {
