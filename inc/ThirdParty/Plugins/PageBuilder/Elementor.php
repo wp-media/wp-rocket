@@ -81,6 +81,8 @@ class Elementor implements Subscriber_Interface {
 			'rocket_skip_admin_bar_clear_used_css_option' => [ 'skip_admin_bar_option', 1, 2 ],
 			'rocket_pre_clean_post'                       => [ 'exclude_post_type_cache_clearing', 10, 2 ],
 			'elementor/editor/after_save'                 => 'clear_related_post_cache',
+			'admin_notices'                 => 'maybe_clear_cache_change_notice',
+			'update_elementor_library_metadata'                 => ['setup_transient', 10, 5],
 		];
 	}
 
