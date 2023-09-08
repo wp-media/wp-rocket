@@ -50,7 +50,7 @@ class Shoptimizer extends ThirdpartyTheme {
 			return $exclusions;
 		}
 
-		$exclusions[] = '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js';
+		$exclusions[] = '\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)';
 		return $exclusions;
 	}
 }
