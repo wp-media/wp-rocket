@@ -7,16 +7,16 @@
 
 	<!-- ** WHAT TO SCAN ** -->
 
-	<file>.</file>
+	<file>inc</file>
+	<file>views</file>
+	<file>uninstall.php</file>
+	<file>wp-rocket.php</file>
 	<!-- Ignoring Files and Folders: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/Engine/Container/*</exclude-pattern>
 	<exclude-pattern>/inc/Dependencies/*</exclude-pattern>
 	<exclude-pattern>/inc/classes/dependencies/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
-	<exclude-pattern>/tests/*</exclude-pattern>
-	<exclude-pattern>/vendor/*</exclude-pattern>
-	<exclude-pattern>/node_modules/*</exclude-pattern>
 
 	<!-- ** HOW TO SCAN ** -->
 
@@ -27,8 +27,8 @@
 
 	<!-- Rules: Check PHP version compatibility - see https://github.com/PHPCompatibility/PHPCompatibilityWP -->
 	<rule ref="PHPCompatibility"/>
-	<config name="testVersion" value="7.2-"/>
-	<config name="minimum_supported_wp_version" value="5.6"/>
+	<config name="testVersion" value="7.3-"/>
+	<config name="minimum_supported_wp_version" value="5.8"/>
 
 	<rule ref="WordPress">
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>

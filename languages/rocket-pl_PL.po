@@ -2182,8 +2182,8 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad dla iframe/wideo"
 
 #: inc/admin/ui/meta-boxes.php:105
-msgid "Minify/combine CSS"
-msgstr "Minifikuj/łącz CSS"
+msgid "Minify CSS"
+msgstr "Minifikuj CSS"
 
 #: inc/admin/ui/meta-boxes.php:107
 msgid "Minify/combine JS"

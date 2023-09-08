@@ -5,19 +5,19 @@ require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 return [
 	[
 		'globals'     => [],
-		'expected'    => false,
+		'expected'    => '',
 	],
 	[
 		'globals'  => [
 			'sitepress' => 'not object',
 		],
-		'expected' => false,
+		'expected' => '',
 	],
 	[
 		'globals'  => [
 			'sitepress' => (object) [],
 		],
-		'expected' => false,
+		'expected' => '',
 	],
 	[
 		'globals'  => [
@@ -29,7 +29,7 @@ return [
 		'globals'  => [
 			'polylang' => 'en',
 		],
-		'expected' => false,
+		'expected' => '',
 		'config' => [
 			'pll_languages_list' => null,
 		],
@@ -47,7 +47,7 @@ return [
 		'globals'  => [
 			'q_config' => 'not-an-array',
 		],
-		'expected' => false,
+		'expected' => '',
 	],
 	[
 		'globals'  => [

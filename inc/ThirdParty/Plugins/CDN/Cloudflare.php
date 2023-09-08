@@ -70,7 +70,6 @@ class Cloudflare implements Subscriber_Interface {
 			'rocket_cloudflare_field_settings'    => 'update_addon_field',
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'after_rocket_clean_domain'           => 'purge_cloudflare',
-			'after_rocket_clean_post'             => 'purge_cloudflare_post',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
 			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
@@ -110,7 +109,7 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		// If RUCSS is enabled.
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) && ! (bool) $this->options->get( 'minify_concatenate_css', 0 ) ) {
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
 
@@ -338,21 +337,6 @@ class Cloudflare implements Subscriber_Interface {
 		}
 
 		$this->facade->purge_everything();
-	}
-
-	/**
-	 * Purges post and related URLs on Cloudflare
-	 *
-	 * @param int $post_id Post ID.
-	 *
-	 * @return void
-	 */
-	public function purge_cloudflare_post( $post_id ) {
-		if ( ! $this->is_plugin_active() ) {
-			return;
-		}
-
-		$this->facade->purge_urls( $post_id );
 	}
 
 	/**

@@ -215,7 +215,7 @@ class UsedCSS {
 
 		if ( empty( $used_css ) ) {
 			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
-			if ( false === $add_to_queue_response ) {
+			if ( false === $add_to_queue_response || ! isset( $add_to_queue_response['contents'], $add_to_queue_response['contents']['jobId'], $add_to_queue_response['contents']['queueName'] ) ) {
 				return $html;
 			}
 
@@ -1067,5 +1067,14 @@ class UsedCSS {
 			},
 			$items_array
 		);
+	}
+
+	/**
+	 * Check if database has at least one completed row.
+	 *
+	 * @return bool
+	 */
+	public function has_one_completed_row_at_least() {
+		return $this->used_css_query->get_completed_count() > 0;
 	}
 }

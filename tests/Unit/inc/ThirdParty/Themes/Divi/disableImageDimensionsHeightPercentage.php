@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Themes\Divi;
@@ -24,6 +25,7 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 		$options_api = Mockery::mock( Options::class );
 		$options     = Mockery::mock( Options_Data::class );
 		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
+		$used_css     = Mockery::mock( UsedCSS::class );
 		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
 		$theme->set_name( $config['theme-name'] );
 
@@ -33,7 +35,7 @@ class Test_DisableImageDimensionsHeightPercentage extends TestCase {
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
-		$divi = new Divi( $options_api, $options, $delayjs_html );
+		$divi = new Divi( $options_api, $options, $delayjs_html, $used_css );
 
 		$this->assertSame( $expected, array_values( $divi->disable_image_dimensions_height_percentage( $config['images'] ) ) );
 	}

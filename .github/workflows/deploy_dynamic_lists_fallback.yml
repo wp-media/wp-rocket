@@ -31,42 +31,33 @@ jobs:
         with:
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
-      - name: get latest dynamic lists
-        id: getDynamicLists
-        run: |
-          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/exclusions/list)"
-
-      - name: Save Default Lists
+      - name: Get and Save Default Lists
         id: saveDynamicLists
-        uses: jsdaniell/create-json@1.1.2
+        uses: engahmeds3ed/create-json-url@v0.0.1
         with:
           name: "dynamic-lists.json"
-          json: ${{ steps.getDynamicLists.outputs.lists }}
+          url: "https://b.rucss.wp-rocket.me/api/exclusions/list"
           dir: '/'
 
-      - name: Commit Default Lists JSON file
-        if: ${{ steps.saveDynamicLists.outcome == 'success' }}
+      - name: Get and save incompatible plugins lists
+        id: saveIncompatiblePluginsLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists-incompatible-plugins.json"
+          url: "https://b.rucss.wp-rocket.me/api/incompatible-plugins/list"
+          dir: '/'
+
+      - name: Get and Save DelayJS Lists
+        id: saveDynamicDelayJSLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists-delayjs.json"
+          url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
+          dir: '/'
+
+      - name: Commit All lists JSON files
+        if: ${{ steps.saveDynamicLists.outcome == 'success' || steps.saveDynamicDelayJSLists.outcome == 'success' || steps.saveIncompatiblePluginsLists.outcome == 'success' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update dynamic lists
-          commit_user_name: WP Media GitHub Actions Bot
-
-      - name: get latest DelayJS lists
-        id: getDynamicDelayJSLists
-        run: |
-          echo "::set-output name=lists::$(curl -s https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list)"
-
-      - name: Save DelayJS Lists
-        id: saveDynamicDelayJSLists
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "dynamic-lists-delayjs.json"
-          json: ${{ steps.getDynamicDelayJSLists.outputs.lists }}
-          dir: '/'
-
-      - name: Commit DelayJS JSON file
-        if: ${{ steps.saveDynamicDelayJSLists.outcome == 'success' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update delay JS dynamic lists
           commit_user_name: WP Media GitHub Actions Bot
