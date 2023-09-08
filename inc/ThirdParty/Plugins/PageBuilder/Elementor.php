@@ -267,4 +267,64 @@ class Elementor implements Subscriber_Interface {
 			}
 		}
 	}
+
+	/**
+	 * Display a notice when clear is needed.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_cache_change_notice() {
+
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$notice = get_transient( 'wpr_elementor_need_purge' );
+
+		if ( ! $notice ) {
+			return;
+		}
+
+		$args = [
+			'status'         => 'warning',
+			'dismissible'    => '',
+			'dismiss_button' => __FUNCTION__,
+			'message'        => sprintf(
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+				__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				'</a>'
+			),
+			'action'         => 'clear_cache',
+		];
+
+		rocket_notice_html( $args );
+	}
+
+	/**
+	 * Set up the transient when needed.
+	 *
+	 * @param bool   $check Check the filed.
+	 * @param int    $object_id Id from the object.
+	 * @param string $meta_key Key from the meta.
+	 * @param string $meta_value Current value from the meta.
+	 * @param string $prev_value Previous value from the meta.
+	 * @return void
+	 */
+	public function setup_transient( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+		if ( '_elementor_conditions' !== $meta_key || $meta_value === $prev_value || ! $this->options->get( 'remove_unused_css', false ) ) {
+			return;
+		}
+		set_transient( 'wpr_elementor_need_purge', true );
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+		unset( $boxes['maybe_clear_cache_change_notice'] );
+		update_user_meta( get_current_user_id(), 'rocket_boxes', $boxes );
+	}
 }
