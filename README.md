@@ -44,7 +44,7 @@ Check out our [support page](https://wp-rocket.me/support/?utm_source=github&utm
   
 ### Reporting Security Bugs  
   
-Please report security bugs found in the site-reviews plugin's source code through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-rocket). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
+You can report any security bugs found in the source code of the site-reviews plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-rocket). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 ## Contributions
 

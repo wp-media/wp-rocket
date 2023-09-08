@@ -72,6 +72,7 @@ class WPRocketUninstall {
 		'rocket_domain_changed',
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
+		'rocket_divi_notice',
 	];
 
 	/**
@@ -115,6 +116,7 @@ class WPRocketUninstall {
 		'defer_all_js',
 		'delay_js',
 		'remove_unused_css',
+		'lazyload_css_bg_img',
 	];
 
 	/**
