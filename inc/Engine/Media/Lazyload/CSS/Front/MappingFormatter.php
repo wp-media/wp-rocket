@@ -32,15 +32,11 @@ class MappingFormatter {
 	}
 
 	/**
-	 * Remove pseudo classes.
+	 * Get pseudo elements to remove.
 	 *
-	 * @param string $selector Selector to clean.
-	 *
-	 * @return string
+	 * @return string[]
 	 */
-	protected function remove_pseudo_classes( string $selector ): string {
-		$result = preg_replace( '/::[\w\-]+/', '', $selector );
-
+	private function get_pseudo_elements_to_remove() {
 		$original_pseudo_elements = [
 			':before',
 			':after',
@@ -75,28 +71,44 @@ class MappingFormatter {
 			}
 		);
 
+		return $pseudo_elements_to_remove;
+	}
+
+	/**
+	 * Remove pseudo classes from the selector while mapping on each selector.
+	 *
+	 * @param string $selector Selector to clean.
+	 * @return string
+	 */
+	public function remove_pseudo_classes_for_selector( string $selector ): string {
+		$selector = preg_replace( '/::[\w-]+/', '', $selector );
+
+		$pseudo_elements_to_remove = $this->get_pseudo_elements_to_remove();
+		foreach ( $pseudo_elements_to_remove as $element ) {
+			$selector = str_replace( $element, '', $selector );
+		}
+		if ( in_array( substr( $selector, -1 ), [ '&', '~', '+', '>' ], true ) ) {
+			$selector .= '*';
+		}
+
+		if ( ! $selector ) {
+			return 'body';
+		}
+
+		return $selector;
+	}
+
+
+	/**
+	 * Remove pseudo classes from the selector.
+	 *
+	 * @param string $selector Selector to clean.
+	 * @return string
+	 */
+	protected function remove_pseudo_classes( string $selector ): string {
 		$selectors = explode( ',', $selector );
 
-		$selectors = array_map(
-			static function( $selector ) use ( $pseudo_elements_to_remove ) {
-
-				$selector = preg_replace( '/::[\w-]+/', '', $selector );
-
-				foreach ( $pseudo_elements_to_remove as $element ) {
-					$selector = str_replace( $element, '', $selector );
-				}
-				if ( in_array( substr( $selector, -1 ), [ '&', '~', '+', '>' ], true ) ) {
-					$selector .= '*';
-				}
-
-				if ( ! $selector ) {
-					return 'body';
-				}
-
-				return $selector;
-			},
-			$selectors
-			);
+		$selectors = array_map( [ $this, 'remove_pseudo_classes_for_selector' ], $selectors );
 
 		$selectors = array_unique( $selectors );
 
