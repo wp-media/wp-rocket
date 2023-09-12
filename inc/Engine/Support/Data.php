@@ -26,6 +26,7 @@ class Data {
 		'delay_js'                => 'Delay JS',
 		'async_css'               => 'Load CSS asynchronously',
 		'lazyload'                => 'Lazyload Images',
+		'lazyload_css_bg_img'     => 'Lazyload CSS Background Images',
 		'lazyload_iframes'        => 'Lazyload Iframes',
 		'lazyload_youtube'        => 'Lazyload Youtube',
 		'cache_webp'              => 'WebP Cache',
