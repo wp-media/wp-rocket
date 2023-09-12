@@ -213,11 +213,11 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$this->store->release_claim( $claim );
 			$this->monitor->detach();
 			$this->clear_caches();
-                        $this->store->set_claim_filter( 'group', '' );
+			$this->store->set_claim_filter( 'group', '' );
 			return $processed_actions;
 		} catch ( \Exception $exception ) {
 			Logger::debug( $exception->getMessage() );
-                        $this->store->set_claim_filter( 'group', '' );
+			$this->store->set_claim_filter( 'group', '' );
 			return 0;
 		}
 	}
