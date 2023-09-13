@@ -259,14 +259,18 @@ class Elementor implements Subscriber_Interface {
 		}
 
 		foreach ( $results as $result ) {
-			if ( 'publish' === get_post_status( $result->post_id ) ) {
-				rocket_clean_post( $result->post_id );
-
-				if ( $this->options->get( 'remove_unused_css', 0 ) ) {
-					$url = get_permalink( $result->post_id );
-					$this->used_css->delete_used_css( $url );
-				}
+			if ( 'publish' !== get_post_status( $result->post_id ) ) {
+				continue;
 			}
+
+			rocket_clean_post( $result->post_id );
+
+			if ( ! $this->options->get( 'remove_unused_css', 0 ) ) {
+				continue;
+			}
+
+			$url = get_permalink( $result->post_id );
+			$this->used_css->delete_used_css( $url );
 		}
 	}
 
