@@ -99,22 +99,12 @@ function rocket_display_cache_options_meta_boxes() {
 		<div class="misc-pub-section">
 			<p><?php esc_html_e( 'Activate these options on this post:', 'rocket' ); ?></p>
 			<?php
-			$fields = [
-				'lazyload'          => __( 'LazyLoad for images', 'rocket' ),
-				'lazyload_iframes'  => __( 'LazyLoad for iframes/videos', 'rocket' ),
-				'minify_css'        => __( 'Minify CSS', 'rocket' ),
-				'remove_unused_css' => __( 'Remove Unused CSS', 'rocket' ),
-				'minify_js'         => __( 'Minify/combine JS', 'rocket' ),
-				'cdn'               => __( 'CDN', 'rocket' ),
-				'async_css'         => __( 'Load CSS asynchronously', 'rocket' ),
-				'defer_all_js'      => __( 'Defer JS', 'rocket' ),
-				'delay_js'          => __( 'Delay JavaScript execution', 'rocket' ),
-			];
+			$fields = [];
 
 			$old_fields = $fields;
 
 			/**
-			 * Metaboxes fields.
+			 * WP Rocket Metabox fields on post edit page.
 			 *
 			 * @param string[] $fields Metaboxes fields.
 			 */
@@ -195,18 +185,7 @@ function rocket_save_metabox_options() {
 		}
 
 		// Options fields.
-		// Options fields.
-		$fields = [
-			'lazyload'          => '',
-			'lazyload_iframes'  => '',
-			'minify_css'        => '',
-			'minify_js'         => '',
-			'cdn'               => '',
-			'async_css'         => '',
-			'defer_all_js'      => '',
-			'delay_js'          => '',
-			'remove_unused_css' => '',
-		];
+		$fields = [];
 
 		$old_fields = $fields;
 
