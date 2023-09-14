@@ -226,6 +226,7 @@ class Plugin {
 			'actionscheduler_admin_subscriber',
 			'domain_change_subscriber',
 			'lazyload_css_admin_subscriber',
+			'post_edit_options_subscriber',
 		];
 	}
 

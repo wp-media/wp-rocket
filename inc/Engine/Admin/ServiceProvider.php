@@ -2,8 +2,8 @@
 namespace WP_Rocket\Engine\Admin;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
-use WP_Rocket\Engine\Admin\Deactivation\Subscriber;
+use WP_Rocket\Engine\Admin\Deactivation\{DeactivationIntent, Subscriber};
+use WP_Rocket\Engine\Admin\Metaboxes\PostEditOptionsSubscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
 
 /**
@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'deactivation_intent_subscriber',
 		'hummingbird_subscriber',
 		'actionscheduler_admin_subscriber',
+		'post_edit_options_subscriber',
 	];
 
 	/**
@@ -48,5 +49,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->share( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
+		$this->getContainer()->share( 'post_edit_options_subscriber', PostEditOptionsSubscriber::class )
+			->addArgument( $options )
+			->addTag( 'admin_subscriber' );
 	}
 }
