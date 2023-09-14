@@ -1,14 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-/**
- * Minify/Combine CSS Admin subscriber
- *
- * @since 3.5.4
- */
 class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
@@ -24,6 +20,7 @@ class AdminSubscriber implements Subscriber_Interface {
 			"update_option_{$slug}"     => [ 'clean_minify', 10, 2 ],
 			"pre_update_option_{$slug}" => [ 'regenerate_minify_css_key', 10, 2 ],
 			'wp_rocket_upgrade'         => [ 'on_update', 16, 2 ],
+			'rocket_meta_boxes_fields'  => [ 'add_meta_box', 1 ],
 		];
 	}
 
@@ -34,6 +31,8 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @param array $old An array of previous settings.
 	 * @param array $new An array of submitted settings.
+	 *
+	 * @return void
 	 */
 	public function clean_minify( $old, $new ) {
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
@@ -130,6 +129,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @param string $new_version new version from the plugin.
 	 * @param string $old_version old version from the plugin.
+	 *
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
@@ -137,5 +137,18 @@ class AdminSubscriber implements Subscriber_Interface {
 			return;
 		}
 		rocket_clean_domain();
+	}
+
+	/**
+	 * Add the field to the WP Rocket metabox on the post edit page.
+	 *
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_meta_box( array $fields ) {
+		$fields['minify_css'] = __( 'Minify CSS', 'rocket' );
+
+		return $fields;
 	}
 }

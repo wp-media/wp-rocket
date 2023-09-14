@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Admin;
 
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
@@ -29,17 +31,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_meta_boxes_fields'       => 'add_meta_box',
+			'rocket_meta_boxes_fields'       => [ 'add_meta_box', 8 ],
 			'admin_notices'                  => 'maybe_add_error_notice',
 			'rocket_safe_mode_reset_options' => 'add_option_safemode',
 		];
 	}
 
 	/**
-	 * Add the field to the metaboxes.
+	 * Add the field to the WP Rocket metabox on the post edit page.
 	 *
-	 * @param array $fields Metaboxes fields.
-	 * @return array
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
 	 */
 	public function add_meta_box( array $fields ) {
 		$fields['lazyload_css_bg_img'] = __( 'LazyLoad CSS backgrounds', 'rocket' );
