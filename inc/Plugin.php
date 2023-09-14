@@ -292,6 +292,7 @@ class Plugin {
 		$common_subscribers = [
 			'license_subscriber',
 			'cdn_subscriber',
+			'cdn_admin_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'common_extractcss_subscriber',
@@ -323,6 +324,7 @@ class Plugin {
 			'pdfembedder',
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
+			'rucss_option_subscriber',
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
