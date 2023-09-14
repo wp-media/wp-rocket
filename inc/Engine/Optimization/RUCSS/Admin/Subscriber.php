@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -237,32 +236,7 @@ class Subscriber implements Subscriber_Interface {
 		do_action( 'rocket_after_clean_used_css' );
 	}
 
-	/**
-	 * Add the RUCSS options to the WP Rocket options array.
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $options WP Rocket options array.
-	 *
-	 * @return array
-	 */
-	public function add_options_first_time( $options ) : array {
-		return $this->settings->add_options( $options );
-	}
 
-	/**
-	 * Sanitizes RUCSS options values when the settings form is submitted
-	 *
-	 * @since 3.9
-	 *
-	 * @param array         $input    Array of values submitted from the form.
-	 * @param AdminSettings $settings Settings class instance.
-	 *
-	 * @return array
-	 */
-	public function sanitize_options( $input, AdminSettings $settings ) : array {
-		return $this->settings->sanitize_options( $input, $settings );
-	}
 
 	/**
 	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
