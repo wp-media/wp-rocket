@@ -130,6 +130,11 @@ return [
 				'hash' => 'a122ad12df3',
 			],
 			[
+				'selector' => 'body',
+        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+				'hash' => 'a122ad12df3',
+			],
+			[
 				'selector' => 'dd:nth-last-of-type(3n)',
 				'style' => ':root{--wpr-bg-a21ss2: images/underline.png;}',
 				'hash' => 'a21ss2',
@@ -142,12 +147,12 @@ return [
 			[
 				'selector' => '.background-image>*',
 				'style' => ':root{--wpr-bg-a21ss8: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
-				'hash' => 'a21ss4',
+				'hash' => 'a21ss8',
 			],
 			[
 				'selector' => '.background-image>*',
 				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
-				'hash' => 'a21ss8',
+				'hash' => 'a21ss18',
 			],
 			[
 				'selector' => '.background-image>*',
