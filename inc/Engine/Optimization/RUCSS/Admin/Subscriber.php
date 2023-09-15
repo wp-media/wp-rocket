@@ -62,8 +62,6 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'            => 'add_options_first_time',
-			'rocket_input_sanitize'                   => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
