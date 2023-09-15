@@ -199,15 +199,14 @@ class UsedCSS extends Query {
 	}
 
 	/**
-	 * Change the status to be pending.
+	 * Reset the job and add new job_id pending.
 	 *
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
-	 * @param string $queue_name API Queue name.
 	 *
 	 * @return bool
 	 */
-	public function make_status_pending( int $id, string $job_id, string $queue_name ) {
+	public function reset_job( int $id, string $job_id ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -215,9 +214,12 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'job_id'     => $job_id,
-				'queue_name' => $queue_name,
-				'status'     => 'pending',
+				'job_id'        => $job_id,
+				'status'        => 'pending',
+				'error_code'    => '',
+				'error_message' => '',
+				'retries'       => 0,
+				'modified'      => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -425,9 +427,11 @@ class UsedCSS extends Query {
 	/**
 	 * Get all failed rows.
 	 *
+	 * @param float  $delay delay before the urls are deleted.
+	 * @param string $unit unit from the delay.
 	 * @return array|false
 	 */
-	public function get_failed_rows() {
+	public function get_failed_rows( float $delay = 3, string $unit = 'days' ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -438,7 +442,7 @@ class UsedCSS extends Query {
 				'date_query' => [
 					[
 						'column'    => 'modified',
-						'before'    => '3 days ago',
+						'before'    => "$delay $unit ago",
 						'inclusive' => true,
 					],
 				],
