@@ -32,7 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'rucss_settings',
 		'rucss_database',
-		'rucss_options_subscriber',
+		'rucss_option_subscriber',
 		'rucss_admin_subscriber',
 		'rucss_frontend_api_client',
 		'rucss_used_css',
