@@ -24,10 +24,10 @@ class MappingFormatter {
 			$formatted_urls[]     = [
 				'selector' => $selector,
 				'style'    => $variable_placeholder,
-				'hash'	=> $hash,
+				'hash'     => $hash,
 			];
 		}
-		
+
 		return $formatted_urls;
 	}
 
