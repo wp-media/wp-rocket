@@ -18,11 +18,13 @@ return [
         'expected' => [
 			[
 				'selector' => '#first_id',
-        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}'
+        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => '#second_id',
-        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}'
+        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+				'hash' => 'a122ad12df2',
 			]
         ]
     ],
@@ -49,15 +51,18 @@ return [
 		'expected' => [
 			[
 				'selector' => '#first_id',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}'
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => '#second_id, #test',
-				'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}'
+				'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+				'hash' => 'a122ad12df2',
 			],
 			[
 				'selector' => 'body',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+				'hash' => 'a122ad12df3',
 			]
 		]
 	],
