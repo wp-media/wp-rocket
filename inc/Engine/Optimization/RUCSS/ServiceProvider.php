@@ -52,7 +52,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 
-		$this->getContainer()->add( 'rucss_usedcss_table', UsedCSSTable::class );
+		$this->getContainer()->share( 'rucss_usedcss_table', UsedCSSTable::class );
 		$this->getContainer()->add( 'rucss_database', Database::class )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
