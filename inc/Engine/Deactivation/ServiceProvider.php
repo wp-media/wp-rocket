@@ -6,6 +6,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProvi
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Engine\Capabilities\Manager;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 
 /**
  * Service Provider for the activation process.
@@ -27,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -45,6 +48,15 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 */
 	public function register() {
 		$filesystem = rocket_direct_filesystem();
+
+		$this->getContainer()->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
+		$this->getContainer()
+			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addArgument( $this->getContainer()->get( 'cloudflare_plugin_facade' ) )
+			->addTag( 'common_subscriber' );
 
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )

@@ -5,12 +5,13 @@ namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
 use WP_Rocket\Admin\{Options,Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility class for cloudflare.
  */
-class Cloudflare implements Subscriber_Interface {
+class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	/**
 	 * Options instance.
 	 *
@@ -450,6 +451,15 @@ class Cloudflare implements Subscriber_Interface {
 		return $addons;
 	}
 
+	/**
+	 * Purge Cloudflare on deactivate.
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		$this->purge_cloudflare();
+  }
+  
 	/**
 	 * Unregister Call on clean posts.
 	 *
