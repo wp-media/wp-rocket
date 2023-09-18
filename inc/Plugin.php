@@ -376,6 +376,7 @@ class Plugin {
 			'themify',
 			'wpgeotargeting',
 			'lazyload_css_subscriber',
+			'shoptimizer',
 		];
 
 		$host_type = HostResolver::get_host_service();

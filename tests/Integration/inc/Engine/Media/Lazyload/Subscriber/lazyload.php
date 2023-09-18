@@ -54,7 +54,7 @@ class Test_Lazyload extends TestCase {
 		$wp_query->is_search  = $config['is_search'];
 
 		//Constants.
-		$this->constants['REST_REQUEST']  = $config['is_rest_request'];
+		$this->rest_request  = $config['is_rest_request'];
 		$this->constants['DONOTLAZYLOAD'] = $config['is_not_lazy_load'];
 		$this->donotrocketoptimize        = $config['is_rocket_optimize'];
 
