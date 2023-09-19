@@ -94,7 +94,7 @@ class StreamHandler extends MonoStreamHandler {
 
 		if ( ! is_resource( $file_resource ) ) {
 			$this->has_error = true;
-			throw new UnexpectedValueException( sprintf( 'The file "%s" could not be opened: ' . $this->error_message, $file_path ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			throw new UnexpectedValueException( sprintf( 'The file "%s" could not be opened: ' . $this->error_message, $file_path ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		$new_content = "<Files ~ \"\.log$\">\nOrder allow,deny\nDeny from all\n</Files>\nOptions -Indexes";
