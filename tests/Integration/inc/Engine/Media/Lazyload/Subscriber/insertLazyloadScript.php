@@ -48,20 +48,13 @@ class Test_InsertLazyloadScript extends TestCase {
 		parent::tear_down();
 	}
 
-	private function getActualHtml() {
-		ob_start();
-		do_action( 'wp_footer' );
-
-		return $this->format_the_html( ob_get_clean() );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldInsertLazyloadScript( $config, $expected ) {
 		$GLOBALS['wp'] = (object) [
-            'query_vars' => [],
-            'request'    => 'http://example.org',
+			'query_vars' => [],
+			'request'    => 'http://example.org',
 		];
 
 		$options        = $config['options'];
@@ -74,7 +67,8 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
 		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
-		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+		$is_not_rocket_optimize = isset( $config['is_not_rocket_optimize'] ) ? $config['is_not_rocket_optimize'] : false;
+		$donotcachepage     = isset( $config['donotcachepage'] ) ? $config['donotcachepage'] : false;
 
 		set_current_screen( $is_admin ? 'settings_page_wprocket' : 'front' );
 
@@ -84,9 +78,10 @@ class Test_InsertLazyloadScript extends TestCase {
 		$wp_query->is_search  = $is_search;
 
 		//Constants.
-		$this->constants['REST_REQUEST']  = $is_rest_request;
+		$this->rest_request  = $is_rest_request;
 		$this->constants['DONOTLAZYLOAD'] = ! $is_lazy_load;
-		$this->donotrocketoptimize        = ! $is_rocket_optimize;
+		$this->donotrocketoptimize        = $is_not_rocket_optimize;
+		$this->constants['DONOTCACHEPAGE'] = $donotcachepage;
 		$this->constants['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
@@ -130,6 +125,13 @@ class Test_InsertLazyloadScript extends TestCase {
 				$this->getActualHtml()
 			);
 		}
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		do_action( 'wp_footer' );
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	public function setLazyload() {

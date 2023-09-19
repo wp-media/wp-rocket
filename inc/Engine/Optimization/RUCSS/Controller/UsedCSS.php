@@ -826,7 +826,26 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function clear_failed_urls() {
-		$rows = $this->used_css_query->get_failed_rows();
+		/**
+		 * Delay before failed rucss jobs are deleted.
+		 *
+		 * @param string $delay delay before failed rucss jobs are deleted.
+		 */
+		$delay = (string) apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
+
+		if ( '' === $delay || '0' === $delay ) {
+			$delay = '3 days';
+		}
+		$parts = explode( ' ', $delay );
+
+		$value = 3;
+		$unit  = 'days';
+
+		if ( count( $parts ) === 2 && $parts[0] >= 0 ) {
+			$value = (float) $parts[0];
+			$unit  = $parts[1];
+		}
+		$rows = $this->used_css_query->get_failed_rows( $value, $unit );
 
 		if ( empty( $rows ) ) {
 			return;
@@ -843,7 +862,11 @@ class UsedCSS {
 				continue;
 			}
 
-			$this->used_css_query->revert_to_pending( $id );
+			$add_to_queue_response = $this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
+			if ( false !== $add_to_queue_response ) {
+				$new_job_id = $add_to_queue_response['contents']['jobId'];
+				$this->used_css_query->reset_job( $id, $new_job_id );
+			}
 		}
 
 		/**
