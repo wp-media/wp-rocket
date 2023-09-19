@@ -18,12 +18,20 @@ class Test_CronCleanRows extends TestCase {
 	private $usedCSS;
 	private $subscriber;
 
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		Functions\when('current_time')->justReturn('current_date');
+	}
+
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->database   = Mockery::mock( Database::class );
 		$this->usedCSS    = Mockery::mock( UsedCSS::class );
 		$this->subscriber = new Subscriber( $this->usedCSS, $this->database );
+
+
 	}
 
 	/**
