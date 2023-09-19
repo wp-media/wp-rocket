@@ -458,8 +458,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 */
 	public function deactivate() {
 		$this->purge_cloudflare();
-  }
-  
+	}
+
 	/**
 	 * Unregister Call on clean posts.
 	 *
