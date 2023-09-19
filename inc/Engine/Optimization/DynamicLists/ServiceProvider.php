@@ -70,7 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'api_client'   => $this->getContainer()->get( 'dynamic_lists_incompatible_plugins_lists_api_client' ),
 					'data_manager' => $this->getContainer()->get( 'dynamic_lists_incompatible_plugins_lists_data_manager' ),
 					'title'        => __( 'Incompatible plugins Lists', 'rocket' ),
-					'clear_cache'  => true,
+					'clear_cache'  => false,
 				],
 		];
 
