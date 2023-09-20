@@ -467,9 +467,26 @@ function rocket_handle_settings_import() {
 			$settings['cache_webp'] = 0;
 		}
 
+		if ( rocket_should_enable_caching_mobile_files( $settings ) ) {
+			$settings['do_caching_mobile_files'] = 1;
+		}
+
 		$options_api->set( 'settings', $settings );
+
+		/**
+		 * Fires after imported settings have been saved.
+		 *
+		 * @since 3.16
+		 *
+		 * @param array $settings Imported settings.
+		 */
+		do_action( 'rocket_after_save_import', $settings );
 
 		rocket_settings_import_redirect( __( 'Settings imported and saved.', 'rocket' ), 'updated' );
 	}
 }
 add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );
+
+function rocket_should_enable_caching_mobile_files( $settings ) {
+	return version_compare( $settings['version'], '3.16', '>=' ) && $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'];
+}
