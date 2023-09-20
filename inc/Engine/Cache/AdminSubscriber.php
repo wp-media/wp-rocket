@@ -78,6 +78,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'clear_cache', 10, 2 ],
 			],
 			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
+			'rocket_after_save_import' => 'maybe_regenerate_advanced_cache',
 		];
 	}
 
@@ -266,5 +267,23 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
+	}
+
+	/**
+	 * Regenerate the advanced cache file after imported settings if do_caching_mobile_files is disabled and cach_mobile is enabled.
+	 *
+	 * @param array $settings
+	 * @return void
+	 */
+	public function maybe_regenerate_advanced_cache( array $settings ) : void {
+		if ( ! version_compare( $settings['version'], '3.16', '>=' ) ) {
+			return;
+		}
+
+		if ( ! $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'] ) {
+			return;
+		}
+
+		$this->regenerate_configs();
 	}
 }
