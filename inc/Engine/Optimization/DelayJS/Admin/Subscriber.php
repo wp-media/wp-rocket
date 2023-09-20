@@ -1,11 +1,13 @@
 <?php
+declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
-use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Theme;
 
-class Subscriber extends Abstract_Render implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface {
 	/**
 	 * Settings instance
 	 *
@@ -14,15 +16,21 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	private $settings;
 
 	/**
+	 * Site List instance.
+	 *
+	 * @var SiteList
+	 */
+	private $site_list;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param Settings $settings      Settings instance.
-	 * @param string   $template_path Template path.
+	 * @param Settings $settings Settings instance.
+	 * @param SiteList $site_list DelayJS Site List instance.
 	 */
-	public function __construct( Settings $settings, $template_path ) {
-		parent::__construct( $template_path );
-
-		$this->settings = $settings;
+	public function __construct( Settings $settings, SiteList $site_list ) {
+		$this->settings  = $settings;
+		$this->site_list = $site_list;
 	}
 
 	/**
@@ -32,122 +40,161 @@ class Subscriber extends Abstract_Render implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_first_install_options'                 => 'add_options',
-			'rocket_after_textarea_field_delay_js_scripts' => 'display_restore_defaults_button',
-			'wp_rocket_upgrade'                            => [
-				[ 'set_option_on_update', 13, 2 ],
-				[ 'option_update_3_7_2', 13, 2 ],
-				[ 'option_update_3_7_4', 13, 2 ],
-				[ 'option_update_3_7_6_1', 13, 2 ],
+			'rocket_first_install_options'         => [
+				[ 'add_options' ],
+				[ 'add_default_exclusions_options' ],
 			],
-			'wp_ajax_rocket_restore_delay_js_defaults'     => 'restore_defaults',
+			'wp_rocket_upgrade'                    => [ 'set_option_on_update', 13, 2 ],
+			'rocket_input_sanitize'                => [
+				[ 'sanitize_options', 13, 2 ],
+				[ 'sanitize_selected_exclusions', 14 ],
+			],
+			'pre_update_option_wp_rocket_settings' => [ 'maybe_disable_combine_js', 11, 2 ],
+			'rocket_after_save_dynamic_lists'      => 'refresh_exclusions_option',
+			'activate_plugin'                      => 'add_plugin_exclusions',
+			'deactivate_plugin'                    => 'remove_plugin_exclusions',
+			'switch_theme'                         => [ 'handle_switch_theme_exclusions', 10, 3 ],
 		];
 	}
 
 	/**
 	 * Add the delay JS options to the WP Rocket options array
 	 *
-	 * @since 3.7
-	 *
 	 * @param array $options WP Rocket options array.
 	 *
 	 * @return array
+	 * @since 3.7
 	 */
-	public function add_options( $options ) {
+	public function add_options( $options ): array {
 		return $this->settings->add_options( $options );
 	}
 
 	/**
-	 * Displays the restore defaults button under the textarea field
+	 * Add the delay JS  exclusions options to the WP Rocket options array
+	 * based on the default items in the list.
 	 *
-	 * @since 3.7
+	 * @param array $options WP Rocket options array.
 	 *
-	 * @return void
+	 * @return array
+	 * @since 3.13
 	 */
-	public function display_restore_defaults_button() {
-		$data = $this->settings->get_button_data();
+	public function add_default_exclusions_options( $options ): array {
+		$default_exclusions = $this->site_list->get_default_exclusions();
 
-		$this->render_action_button(
-			$data['type'],
-			$data['action'],
-			$data['attributes']
-		);
+		if ( empty( $default_exclusions ) ) {
+			$options['delay_js_exclusions_selected']            = [];
+			$options['delay_js_exclusions_selected_exclusions'] = [];
+
+			return $options;
+		}
+
+		$options['delay_js_exclusions_selected']            = array_keys( $default_exclusions );
+		$options['delay_js_exclusions_selected_exclusions'] = array_merge( ...array_values( $default_exclusions ) );
+
+		return $options;
 	}
 
 	/**
-	 * Sets the delay_js option to zero when updating to 3.7
-	 *
-	 * @since 3.7
+	 * Sets the delay_js_exclusions default value for users with delay JS enabled on upgrade
 	 *
 	 * @param string $new_version New plugin version.
 	 * @param string $old_version Previous plugin version.
 	 *
 	 * @return void
+	 * @since 3.7
+	 *
+	 * @since 3.9 Sets the delay_js_exclusions default value if delay_js is 1
 	 */
 	public function set_option_on_update( $new_version, $old_version ) {
 		$this->settings->set_option_on_update( $old_version );
 	}
 
 	/**
-	 * Update the delay_js options when updating to 3.7.2.
+	 * Sanitizes Delay JS options values when the settings form is submitted
 	 *
-	 * @since 3.7.2
+	 * @param array         $input    Array of values submitted from the form.
+	 * @param AdminSettings $settings Settings class instance.
 	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Old plugin version.
-	 *
-	 * @return void
+	 * @return array
+	 * @since 3.9
 	 */
-	public function option_update_3_7_2( $new_version, $old_version ) {
-		$this->settings->option_update_3_7_2( $old_version );
+	public function sanitize_options( $input, AdminSettings $settings ): array {
+		return $this->settings->sanitize_options( $input, $settings );
 	}
 
 	/**
-	 * Update the delay_js options when updating to 3.7.4
+	 * Sanitizes delay JS selected exclusions options when saving the settings.
 	 *
-	 * @since 3.7.4
+	 * @since 3.13
 	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Old plugin version.
+	 * @param array $input Array of values submitted from the form.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function option_update_3_7_4( $new_version, $old_version ) {
-		$this->settings->option_update_3_7_4( $old_version );
+	public function sanitize_selected_exclusions( $input ) {
+		return $this->site_list->sanitize_options( $input );
 	}
 
 	/**
-	 * Restore the delay_js options to default when updating from 3.7.6.
+	 * Disable combine JS option when delay JS is enabled
 	 *
-	 * @since 3.7.6.1
+	 * @param array $value     The new, unserialized option value.
+	 * @param array $old_value The old option value.
 	 *
-	 * @param string $new_version New plugin version.
-	 * @param string $old_version Old plugin version.
-	 *
-	 * @return void
+	 * @return array
+	 * @since 3.9
 	 */
-	public function option_update_3_7_6_1( $new_version, $old_version ) {
-		$this->settings->option_update_3_7_6_1( $old_version );
+	public function maybe_disable_combine_js( $value, $old_value ): array {
+		return $this->settings->maybe_disable_combine_js( $value, $old_value );
 	}
 
 	/**
-	 * AJAX callback to restore the default value for the delay JS scripts
-	 *
-	 * @since 3.7
+	 * Refresh exclusions option when the dynamic list is updated weekly or manually.
 	 *
 	 * @return void
 	 */
-	public function restore_defaults() {
-		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+	public function refresh_exclusions_option() {
+		$this->site_list->refresh_exclusions_option();
+	}
 
-		$result = $this->settings->restore_defaults();
-
-		if ( false === $result ) {
-			wp_send_json_error();
-
+	/**
+	 * Remove plugin from exclusions list once deactivated.
+	 *
+	 * @param string $plugin Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function remove_plugin_exclusions( string $plugin ) {
+		if ( plugin_basename( WP_ROCKET_FILE ) === $plugin ) {
 			return;
 		}
+		$this->site_list->remove_plugin_selection( $plugin );
+	}
 
-		wp_send_json_success( $result );
+	/**
+	 * Handle switch theme exclusions, remove the old theme exclusions and add the new one.
+	 *
+	 * @param string   $new_name  Name of the new theme.
+	 * @param WP_Theme $new_theme WP_Theme instance of the new theme.
+	 * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+	 *
+	 * @return void
+	 */
+	public function handle_switch_theme_exclusions( string $new_name, WP_Theme $new_theme, WP_Theme $old_theme ) {
+		$this->site_list->replace_theme_selection( $new_theme, $old_theme );
+	}
+
+	/**
+	 * Add plugin exclusions with plugin activation for default checked plugins.
+	 *
+	 * @param string $plugin Plugin basename.
+	 *
+	 * @return void
+	 */
+	public function add_plugin_exclusions( string $plugin ) {
+		if ( plugin_basename( WP_ROCKET_FILE ) === $plugin ) {
+			return;
+		}
+		$this->site_list->add_default_plugin_exclusions( $plugin );
 	}
 }

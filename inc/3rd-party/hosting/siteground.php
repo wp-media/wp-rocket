@@ -60,8 +60,29 @@ function rocket_clean_supercacher() {
 	}
 }
 
+/**
+ * Clean WP Rocket cache when cleaning SG cache
+ *
+ * @return void
+ */
+function rocket_sg_clear_cache() {
+	if ( empty( $_GET['_wpnonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'sg-cachepress-purge' ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'rocket_purge_cache' ) ) {
+		return;
+	}
+
+	rocket_clean_domain();
+}
+
 if ( rocket_is_supercacher_active() ) {
-	add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
+	add_action( 'admin_post_sg-cachepress-purge', 'rocket_sg_clear_cache', 0 );
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
@@ -80,8 +101,8 @@ if ( rocket_is_supercacher_active() ) {
 	}
 
 	if ( version_compare( rocket_get_sg_optimizer_version(), '5.0' ) < 0 ) {
-		add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', 0 );
+		add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_sg_clear_cache', 0 );
 	} else {
-		add_action( 'wp_ajax_admin_bar_purge_cache', 'rocket_clean_domain', 0 );
+		add_action( 'wp_ajax_admin_bar_purge_cache', 'rocket_sg_clear_cache', 0 );
 	}
 }

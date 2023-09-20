@@ -26,14 +26,14 @@ class GetPricingData extends TestCase {
 
 		Functions\when( 'wp_remote_retrieve_response_code' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['code'] )
-					? $config['response']['code']
+				is_array( $config['response'] )
+					? $config['response']['response']['code']
 					: ''
 			);
 
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['body'] )
+				is_array( $config['response'] )
 					? $config['response']['body']
 					: ''
 			);
@@ -53,8 +53,8 @@ class GetPricingData extends TestCase {
 
 			if (
 				! is_array( $config['response'] ) ||
-				200 !== $config['response']['code'] ||
-				! isset( $config['response']['body'] )
+				200 !== $config['response']['response']['code'] ||
+				empty( $config['response']['body'] )
 			) {
 				Functions\expect( 'get_transient' )
 					->once()

@@ -58,7 +58,10 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
-		return;
+		return [
+			[],
+			'',
+		];
 	}
 
 	$buffer  = "<?php\n";
@@ -116,11 +119,11 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 		}
 
 		if ( 'secret_cache_key' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . $value . "';\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . sanitize_key( $value ) . "';\n";
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . "';\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri( true ) . "';\n";
 		}
 
 		if ( 'cache_query_strings' === $option ) {
@@ -151,6 +154,8 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
 
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
+
+	$buffer .= '$rocket_permalink_structure = \'' . wp_slash( get_option( 'permalink_structure' ) ) . "';\n";
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
@@ -228,6 +233,34 @@ function rocket_delete_config_file() {
 	list( $config_files_path ) = get_rocket_config_file();
 	foreach ( $config_files_path as $config_file ) {
 		rocket_direct_filesystem()->delete( $config_file );
+	}
+
+	// Bail out if WP Rocket is multisite.
+	if ( is_multisite() ) {
+		return;
+	}
+
+	try {
+		$config_dir = new FilesystemIterator( (string) rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) );
+	} catch ( Exception $e ) {
+		return;
+	}
+
+	// Remove all files with php extension in the config folder.
+	foreach ( $config_dir as $file ) {
+		if ( ! $file->isFile() || 'php' !== strtolower( $file->getExtension() ) ) {
+			continue;
+		}
+
+		if ( 1 === substr_count( $file->getFilename(), '.' ) ) {
+			continue;
+		}
+
+		if ( false === strpos( rocket_direct_filesystem()->get_contents( $file->getPathname() ), '$rocket_cookie_hash' ) ) {
+			continue;
+		}
+
+		rocket_direct_filesystem()->delete( $file->getPathname() );
 	}
 }
 
@@ -331,6 +364,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	$min_cache_path = rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' );
 	$min_path       = $min_cache_path . get_current_blog_id() . '/';
 	$iterator       = _rocket_get_cache_path_iterator( $min_path );
+
 	if ( false === $iterator ) {
 		return;
 	}
@@ -399,9 +433,23 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
-	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	if ( empty( $extensions ) ) {
+		return;
+	}
 
-	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
+	if ( is_string( $extensions ) ) {
+		$extensions = (array) $extensions;
+	}
+
+	$cache_busting_path = rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) . get_current_blog_id() . '/';
+	$iterator           = _rocket_get_cache_path_iterator( $cache_busting_path );
+
+	if ( false === $iterator ) {
+		return;
+	}
+
+	$filesystem         = rocket_direct_filesystem();
+	$busting_path_regex = str_replace( '/', '\/', $cache_busting_path );
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
 		rocket_mkdir_p( $cache_busting_path );
@@ -417,20 +465,6 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		return;
 	}
 
-	try {
-		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
-	} catch ( UnexpectedValueException $e ) {
-		// No logging yet.
-		return;
-	}
-
-	try {
-		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( Exception $e ) {
-		// No logging yet.
-		return;
-	}
-
 	foreach ( $extensions as $ext ) {
 		/**
 		 * Fires before the cache busting files are deleted
@@ -442,13 +476,13 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'before_rocket_clean_busting', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		try {
-			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
-			foreach ( $files as $file ) {
-				rocket_direct_filesystem()->delete( $file[0] );
-			}
-		} catch ( InvalidArgumentException $e ) {
-			// No logging yet.
+			$entries = new RegexIterator( $iterator, "/{$busting_path_regex}.*\.{$ext}/" );
+		} catch ( Exception $e ) {
 			return;
+		}
+
+		foreach ( $entries as $entry ) {
+			$filesystem->delete( $entry->getPathname() );
 		}
 
 		/**
@@ -461,22 +495,39 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	try {
-		foreach ( $iterator as $item ) {
-			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-				rocket_direct_filesystem()->delete( $item );
-			}
+	foreach ( $iterator as $item ) {
+		if ( $filesystem->is_dir( $item ) ) {
+			$filesystem->delete( $item );
 		}
-	} catch ( UnexpectedValueException $e ) {
-		// Log the error.
-		Logger::debug(
-			'Cache Busting folder structure contains a directory we cannot recurse into.',
-			[
-				'Full error',
-				'UnexpectedValueException' => $e->getMessage(),
-			]
-		);
 	}
+}
+
+/**
+ * Returns the right path when the post is trashed.
+ *
+ * @param array $parsed_url current parsed url.
+ * @param int   $post_id      ID from the post.
+ *
+ * @return array
+ */
+function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
+
+	$post = get_post( $post_id );
+
+	if ( ! $post || 'trash' !== $post->post_status ) {
+		return $parsed_url;
+	}
+
+	$post->post_status = 'publish';
+
+	$permalink = get_permalink( $post );
+
+	if ( ! $permalink ) {
+		return $parsed_url;
+	}
+
+	$new_permalink = str_replace( '__trashed', '', $permalink );
+	return get_rocket_parse_url( $new_permalink );
 }
 
 /**
@@ -491,8 +542,9 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
  *
  * @param string|array              $urls       URLs of cache files to be deleted.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
+ * @param bool                      $run_actions Run actions.
  */
-function rocket_clean_files( $urls, $filesystem = null ) {
+function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
 		return;
@@ -511,25 +563,27 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 		$filesystem = rocket_direct_filesystem();
 	}
 
-	/**
-	 * Fires before all cache files are deleted.
-	 *
-	 * @since  3.2.2
-	 *
-	 * @param array $urls The URLs corresponding to the deleted cache files.
-	 */
-	do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( $run_actions ) {
+		/**
+		 * Fires before all cache files are deleted.
+		 *
+		 * @since  3.2.2
+		 *
+		 * @param array $urls The URLs corresponding to the deleted cache files.
+		 */
+		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	}
 
 	foreach ( $urls as $url ) {
-
-		/**
-		 * Fires before the cache file is deleted.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $url The URL that the cache file to be deleted.
-		 */
-		do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		if ( $run_actions ) {
+			/**
+			 * Fires before the cache file is deleted.
+			 *
+			 * @param string $url The URL that the cache file to be deleted.
+			 * @since 1.0
+			 */
+			do_action( 'before_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		}
 
 		if ( $url_no_dots ) {
 			$url = str_replace( '.', '_', $url );
@@ -539,7 +593,25 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
+				// Decode url path.
+				$url_chunks = explode( '/', $parsed_url['path'] );
+				$matches    = preg_grep( '/%/', $url_chunks );
+
+				if ( ! empty( $matches ) ) {
+					$parsed_url['path'] = rawurldecode( $parsed_url['path'] );
+				}
+
+				// Encode Non-latin characters if found in url path.
+				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
+					$cb_encode_non_latin = function( $non_latin ) {
+						return strtolower( rawurlencode( $non_latin ) );
+					};
+
+					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
+				}
+
 				$entry = $dir . $parsed_url['path'];
+
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
 					continue;
@@ -552,15 +624,19 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 				}
 			}
 		}
+		if ( $run_actions ) {
+			/**
+			 * Fires after the cache file is deleted.
+			 *
+			 * @param string $url The URL that the cache file was deleted.
+			 * @since 1.0
+			 */
+			do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+		}
+	}
 
-		/**
-		 * Fires after the cache file is deleted.
-		 *
-		 * @since 1.0
-		 *
-		 * @param string $url The URL that the cache file was deleted.
-		 */
-		do_action( 'after_rocket_clean_file', $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	if ( ! $run_actions ) {
+		return;
 	}
 
 	/**
@@ -615,10 +691,13 @@ function rocket_clean_home( $lang = '' ) {
 	do_action( 'before_rocket_clean_home', $root, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Delete homepage.
-	$files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT );
+	$files = glob( $root . '/*', GLOB_NOSORT );
+
 	if ( $files ) {
-		foreach ( $files as $file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $file );
+		foreach ( $files as $file ) {
+			if ( preg_match( '#/index(?:-.+\.|\.)html(?:_gzip)?$#', $file ) ) {
+				rocket_direct_filesystem()->delete( $file );
+			}
 		}
 	}
 
@@ -631,7 +710,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE | GLOB_NOSORT );
+	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_NOSORT );
 	if ( $nginx_mobile_detect_files ) {
 		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
@@ -639,7 +718,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for webp.
-	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_NOSORT );
 	if ( $nowebp_detect_files ) {
 		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nowebp_detect_file );
@@ -665,6 +744,10 @@ function rocket_clean_home( $lang = '' ) {
  * @return void
  */
 function rocket_clean_home_feeds() {
+
+	if ( ! has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) ) {
+		return;
+	}
 
 	$urls   = [];
 	$urls[] = get_feed_link();
@@ -882,7 +965,7 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 		return;
 	}
 
-	$user_key = $user->user_login . '-' . get_rocket_option( 'secret_cache_key' );
+	$user_key = rawurlencode( $user->user_login ) . '-' . get_rocket_option( 'secret_cache_key' );
 
 	foreach ( $urls as $url ) {
 		$parse_url = get_rocket_parse_url( $url );
@@ -892,7 +975,9 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
-		$root = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
+		$cache_dir = $parse_url['host'] . '-' . strtolower( $user_key );
+		$cache_dir = $cache_dir . $parse_url['path'];
+		$root      = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $cache_dir;
 
 		/**
 		 * Fires before all caching files are deleted for a specific user
@@ -1056,7 +1141,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
  *
  * @since 2.10
  *
- * @return object WP_Filesystem_Direct instance
+ * @return WP_Filesystem_Direct WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
@@ -1080,15 +1165,17 @@ function rocket_mkdir( $dir ) {
 /**
  * Recursive directory creation based on full path.
  *
+ * @param string                    $target path to the directory we want to create.
+ * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+ * @return bool True if directory is created/exists, false otherwise
  * @since 1.3.4
  *
  * @source wp_mkdir_p() in /wp-includes/functions.php
- *
- * @param string $target path to the directory we want to create.
- * @return bool True if directory is created/exists, false otherwise
  */
-function rocket_mkdir_p( $target ) {
+function rocket_mkdir_p( $target, $filesystem = null ) {
 	$wrapper = null;
+
+	$filesystem = $filesystem ?: rocket_direct_filesystem();
 
 	if ( rocket_is_stream( $target ) ) {
 		list( $wrapper, $target ) = explode( '://', $target, 2 );
@@ -1108,20 +1195,20 @@ function rocket_mkdir_p( $target ) {
 		$target = '/';
 	}
 
-	if ( rocket_direct_filesystem()->exists( $target ) ) {
-		return rocket_direct_filesystem()->is_dir( $target );
+	if ( $filesystem->exists( $target ) ) {
+		return $filesystem->is_dir( $target );
 	}
 
 	// Attempting to create the directory may clutter up our display.
 	if ( rocket_mkdir( $target ) ) {
 		return true;
-	} elseif ( rocket_direct_filesystem()->is_dir( dirname( $target ) ) ) {
+	} elseif ( $filesystem->is_dir( dirname( $target ) ) ) {
 		return false;
 	}
 
 	// If the above failed, attempt to create the parent node, then try again.
-	if ( ( '/' !== $target ) && ( rocket_mkdir_p( dirname( $target ) ) ) ) {
-		return rocket_mkdir_p( $target );
+	if ( ( '/' !== $target ) && ( rocket_mkdir_p( dirname( $target ), $filesystem ) ) ) {
+		return rocket_mkdir_p( $target, $filesystem );
 	}
 
 	return false;

@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -16,22 +15,23 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	use ProviderTrait;
+
 	protected static $provider_class = 'Admin';
-
 	private static $user_id;
+	private $async_css;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -39,6 +39,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
 		wp_set_current_user( static::$user_id );
+		set_current_screen( 'post.php' );
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_cpcss_heartbeat_nonce' );
 

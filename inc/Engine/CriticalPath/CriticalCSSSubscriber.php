@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
 
@@ -12,7 +15,7 @@ use WP_Filesystem_Direct;
  * @since 3.3
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
-
+	use RegexTrait;
 	/**
 	 * Instance of Critical CSS.
 	 *
@@ -26,6 +29,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @var Options_Data
 	 */
 	protected $options;
+
+	/**
+	 * WordPress options.
+	 *
+	 * @var Options
+	 */
+	protected $options_api;
 
 	/**
 	 * Instance of the filesystem handler.
@@ -42,17 +52,28 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private $cpcss_service;
 
 	/**
+	 * User instance.
+	 *
+	 * @var User
+	 */
+	protected $user;
+
+	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param CriticalCSS          $critical_css  Critical CSS instance.
+	 * @param CriticalCSS          $critical_css Critical CSS instance.
 	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
-	 * @param Options_Data         $options       WP Rocket options.
-	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
+	 * @param Options_Data         $options WP Rocket options.
+	 * @param Options              $options_api WordPress options.
+	 * @param User                 $user User instance.
+	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem ) {
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, Options $options_api, User $user, $filesystem ) {
 		$this->critical_css  = $critical_css;
 		$this->cpcss_service = $cpcss_service;
 		$this->options       = $options;
+		$this->options_api   = $options_api;
+		$this->user          = $user;
 		$this->filesystem    = $filesystem;
 	}
 
@@ -79,6 +100,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
+				[ 'switch_to_rucss_notice', 9 ],
 			],
 
 			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
@@ -91,7 +113,9 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
-			'rocket_disable_preload_fonts'      => 'maybe_disable_preload_fonts',
+			'rocket_before_rollback' => [ 'stop_critical_css_generation', 9 ],
+			'wp_rocket_upgrade' => [ 'stop_critical_css_generation', 9 ],
+			'admin_post_switch_to_rucss' => 'switch_to_rucss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -136,6 +160,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' === $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -301,10 +329,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			&&
 			0 === (int) $value['async_css']
 		) {
-			$this->critical_css->stop_generation();
-
-			delete_transient( 'rocket_critical_css_generation_process_running' );
-			delete_transient( 'rocket_critical_css_generation_process_complete' );
+			$this->stop_critical_css_generation();
 		}
 	}
 
@@ -321,6 +346,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -390,6 +419,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -643,8 +676,12 @@ JS;
 			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU'
 		);
 
+		// Remove comments from the buffer.
+		$clean_buffer = $this->hide_comments( $buffer );
+		$clean_buffer = $this->hide_noscripts( $clean_buffer );
+
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer, $tags_match );
+		preg_match_all( $css_pattern, $clean_buffer, $tags_match );
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
@@ -660,8 +697,12 @@ JS;
 				continue;
 			}
 
+			if ( preg_match( '/media\s*=\s*[\'"]print[\'"]/i', $tags_match[0][ $i ] ) ) {
+				continue;
+			}
+
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload="" onerror="this.removeAttribute(\'data-rocket-async\')" ' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
@@ -679,33 +720,19 @@ JS;
 	/**
 	 * Regenerates the CPCSS when switching theme if the option is active.
 	 *
-	 * @since  3.3
+	 * @since 3.3
 	 */
 	public function maybe_regenerate_cpcss() {
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return;
 		}
 
-		$this->critical_css->process_handler();
-	}
-
-	/**
-	 * Maybe disable adding the preload fonts links
-	 *
-	 * @since 3.8.8
-	 *
-	 * @return bool
-	 */
-	public function maybe_disable_preload_fonts() : bool {
-		if ( ! $this->should_async_css() ) {
-			return false;
+		if ( ! $this->is_mobile_cpcss_active() ) {
+			$this->critical_css->process_handler( 'default', 'all' );
+			return;
 		}
 
-		return (
-			! empty( $this->options->get( 'critical_css', '' ) )
-			||
-			! empty( $this->critical_css->get_current_page_critical_css() )
-		);
+		$this->critical_css->process_handler( 'all' );
 	}
 
 	/**
@@ -744,5 +771,104 @@ JS;
 		}
 
 		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
+	 * Stops the critical CSS generation.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_critical_css_generation() {
+
+		$this->critical_css->stop_generation();
+		delete_transient( 'rocket_critical_css_generation_process_running' );
+		delete_transient( 'rocket_critical_css_generation_process_complete' );
+	}
+
+	/**
+	 * Display a notice to pass from CPCSS to RUCSS.
+	 *
+	 * @return void
+	 */
+	public function switch_to_rucss_notice() {
+		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
+		if ( $this->user->is_license_expired() ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( isset( $screen->id ) && 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		/**
+		 * Filters the status of the RUCSS option.
+		 *
+		 * @param array $should_disable will return array with disable status and text.
+		 */
+		$rucss_status = apply_filters(
+			'rocket_disable_rucss_setting',
+			[
+				'disable' => false,
+				'text'    => '',
+			]
+		);
+
+		if ( is_array( $rucss_status ) && key_exists( 'disable', $rucss_status ) && $rucss_status['disable'] ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'                 => 'wpr-warning',
+				'dismissible'            => '',
+				'dismiss_button'         => __FUNCTION__,
+				'message'                => sprintf(
+					// translators: %1$ = opening bold tag, %2$ = closing bold tag.
+					__( 'We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
+					'<b>',
+							'</b>'
+				),
+				'action'                 => 'switch_to_rucss',
+				'dismiss_button_message' => __( 'Stay with the old option', 'rocket' ),
+			]
+		);
+
+	}
+
+	/**
+	 * Switch to RUCSS.
+	 *
+	 * @return void
+	 */
+	public function switch_to_rucss() {
+		check_admin_referer( 'rucss_switch' );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_safe_redirect( wp_get_referer() );
+			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
+		}
+
+		$this->options->set( 'async_css', false );
+		$this->options->set( 'remove_unused_css', true );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		rocket_dismiss_box( 'switch_to_rucss_notice' );
+
+		wp_safe_redirect( wp_get_referer() );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }

@@ -56,34 +56,41 @@
 
             &:before {
                 content: "\2715";
-                font-size: 2rem;
-                line-height: 0.5;
+			    font-weight: 700;
+			    @include font-size(24,32);
             }
         }
 
         &:before {
             content: "\2715";
-            font-size: 2rem;
-            line-height: 0.5;
+		    color: $cBlack;
+		    font-weight: 700;
+		    @include font-size(24,32);
         }
     }
 
     .wpr-rocketcdn-promo {
-        background: $cOrange;
+        background: $brightSun;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
-        color: $cWhite;
         padding: $space *2 $space *6 $space *2 $space *2;
+
+	  &-title {
+		font-weight: 700;
+		@include font-size(24,32);
+	  }
 
         &-date {
             margin: 0;
+		    font-weight: 500;
+		    @include font-size(16,24);
         }
     }
 
     &-subtitle {
         color: $cGreyDark1;
         margin-top: 0;
-        @include font-size(16,24);
+        @include font-size(14,24);
     }
 
     &-content {
@@ -103,7 +110,7 @@
             padding: $space * 2;
         }
     }
-    
+
     .wpr-flex{
         display: flex;
         justify-content: space-between;
@@ -116,7 +123,6 @@
     }
 
     .wpr-rocketcdn-features {
-        border-right: 2px solid #cdd1d5;
         margin: 0;
         padding-right: $space *2;
 
@@ -126,11 +132,14 @@
     }
 
     .wpr-rocketcdn-pricing {
+	    background-color: $cWhite;
         align-items: center;
         display: flex;
         flex-direction: column;
-        padding: $space $space * 2;
+        padding: $space * 2;
+	    padding-bottom: $space * 4;
         width: calc( 100% / 3 );
+	    max-width: 219px;
 
         @include respond-to('xs') {
             width: auto;
@@ -141,13 +150,28 @@
             margin-bottom: $space;
         }
 
-        &-current {
-            margin-bottom: $space *2;
-        }
+	    .wpr-rocketcdn-cta-billing-detail {
+		  margin-bottom: $space * 2;
+		  @include font-size(16,22);
+		}
+
+	    .wpr-rocketcdn-cta-currency {
+
+		    &-major {
+			  font-weight: 700;
+			  @include font-size(48,56);
+			}
+
+		    &-minor {
+			  font-weight: 700;
+			  vertical-align: top;
+			  @include font-size(24,32);
+			}
+		}
     }
 
     .wpr-rocketcdn-feature{
-        margin: $space * 2 0;
+        margin: $space * 3 0;
         min-height: 30px;
         padding-left: 62px;
         position: relative;
@@ -155,7 +179,7 @@
         &:before {
             position: absolute;
             top: 50%;
-            left: 16px;
+            left: 5px;
             transform: translateY(-50%);
         }
     }
@@ -173,38 +197,37 @@
     }
 
     &-footer {
-        background: $cGreyDark3;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-        color: $cWhite;
-        font-weight: 700;
-        padding: $space;
-        text-align: center;
-        text-transform: uppercase;
-        @include font-size(11,20);
+	    color: $cGreyDark4;
+        font-weight: 600;
+        padding: $space * 2 $space $space;
+	    @include font-size(14,22);
 
         & a {
-            text-decoration: none;
+		  	position: relative;
+		  	padding-left: 22px;
 
             &:before {
-                content:"\00a1";
-                border: 1px solid $cWhite;
-                color: $cWhite;
-                margin-right: $space;
-                width: 18px;
-                height: 18px;
-                display: inline-block;
-                border-radius: 18px;
-                @include font-size(14,16);
-                font-style: italic;
+                content: '';
+			  	position: absolute;
+				width: 14px;
+				height: 15px;
+			  	background: url("../img/icon-i-circle.svg") no-repeat center center;
+				top: 3px;
+				left: 0;
             }
         }
     }
+
+    &-promo-footer {
+	    color: $cGreyDark4;
+	    padding: $space * 2 $space $space;
+	    @include font-size(14,22);
+	}
 }
 
 .wpr-rocketcdn-subscription {
     text-align: end;
-    
+
     .wpr-rocketcdn-open {
         color: $cGreyDark2;
         text-decoration: underline;

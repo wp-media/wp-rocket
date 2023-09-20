@@ -10,10 +10,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  PreloadLinks
  */
 class Test_AddIncompatiblePlugins extends TestCase {
-    public function tearDown() {
-        parent::tearDown();
+	private $preload_value;
+
+    public function tear_down() {
+        parent::tear_down();
 
         remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_value' ] );
+
+		$this->restoreWpFilter( 'rocket_plugins_to_deactivate' );
     }
 
 	/**
@@ -21,6 +25,8 @@ class Test_AddIncompatiblePlugins extends TestCase {
 	 */
 	public function testShouldDoExpected( $option, $plugins, $expected ) {
         $this->preload_value = $option;
+
+		$this->unregisterAllCallbacksExcept( 'rocket_plugins_to_deactivate', 'add_incompatible_plugins' );
 
         add_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_value' ] );
 

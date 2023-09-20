@@ -36,9 +36,19 @@ class Test_CpcssActions extends FilesystemTestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['post'] );
 		parent::tearDown();
+	}
+
+	public function testShouldReturnNullWhenCurrentUserCannot() {
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( false );
+
+		$this->assertNull(
+			$this->post->cpcss_actions()
+		);
 	}
 
 	/**
@@ -47,6 +57,10 @@ class Test_CpcssActions extends FilesystemTestCase {
 	public function testShouldDisplayCPCSSSActions( $config, $expected ) {
 		$this->setUpTest( $config );
 
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( true );
+
 		$this->beacon->shouldReceive( 'get_suggest' )
 		             ->once()
 		             ->andReturn( $expected['data']['beacon'] );
@@ -54,6 +68,15 @@ class Test_CpcssActions extends FilesystemTestCase {
 		$this->post->shouldReceive( 'generate' )
 				   ->with( 'metabox/generate', $expected['data'] )
 				   ->andReturn( '' );
+
+		Functions\expect( 'get_post_type' )
+			->once()
+			->andReturn( $config['post']->post_type );
+
+		Functions\expect( 'is_post_type_viewable' )
+			->once()
+			->with( $config['post']->post_type )
+			->andReturn( true );
 
 		ob_start();
 		$this->post->cpcss_actions();

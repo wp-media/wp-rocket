@@ -6,35 +6,35 @@ $(document).ready(function(){
     * Check parent / show children
     ***/
 
-    function wprShowChildren(aElem){
-        var parentId, $children;
+	function wprShowChildren(aElem){
+		var parentId, $children;
 
-        aElem     = $( aElem );
-        parentId  = aElem.attr('id');
-        $children = $('[data-parent="' + parentId + '"]');
+		aElem     = $( aElem );
+		parentId  = aElem.attr('id');
+		$children = $('[data-parent="' + parentId + '"]');
 
-            // Test check for switch
-            if(aElem.is(':checked')){
-                $children.addClass('wpr-isOpen');
+		// Test check for switch
+		if(aElem.is(':checked')){
+			$children.addClass('wpr-isOpen');
 
-                $children.each(function() {
-                    if ( $(this).find('input[type=checkbox]').is(':checked')) {
-                        var id = $(this).find('input[type=checkbox]').attr('id');
+			$children.each(function() {
+				if ( $(this).find('input[type=checkbox]').is(':checked')) {
+					var id = $(this).find('input[type=checkbox]').attr('id');
 
-                        $('[data-parent="' + id + '"]').addClass('wpr-isOpen');
-                    }
-                });
-            }
-            else{
-                $children.removeClass('wpr-isOpen');
+					$('[data-parent="' + id + '"]').addClass('wpr-isOpen');
+				}
+			});
+		}
+		else{
+			$children.removeClass('wpr-isOpen');
 
-                $children.each(function() {
-                    var id = $(this).find('input[type=checkbox]').attr('id');
+			$children.each(function() {
+				var id = $(this).find('input[type=checkbox]').attr('id');
 
-                    $('[data-parent="' + id + '"]').removeClass('wpr-isOpen');
-                });
-            }
-    }
+				$('[data-parent="' + id + '"]').removeClass('wpr-isOpen');
+			});
+		}
+	}
 
     /**
      * Tell if the given child field has an active parent field.
@@ -71,11 +71,15 @@ $(document).ready(function(){
             return false;
         }
 
-        if ( ! $parent.is( ':checked' ) ) {
-            // This field's parent is not checked: don't display the field then.
+        if ( ! $parent.is( ':checked' ) && $parent.is('input')) {
+            // This field's parent is checkbox and not checked: don't display the field then.
             return false;
         }
 
+		if ( !$parent.hasClass('radio-active') && $parent.is('button')) {
+			// This field's parent button and is not active: don't display the field then.
+			return false;
+		}
         // Go recursive to the last parent.
         return wprIsParentActive( $parent.closest( '.wpr-field' ) );
     }
@@ -167,5 +171,125 @@ $(document).ready(function(){
         $($('#wpr-cname-model').html()).appendTo('#wpr-cnames-list');
     });
 
+	/***
+	 * Wpr Radio button
+	 ***/
+	var disable_radio_warning = false;
 
+	$(document).on('click', '.wpr-radio-buttons-container button', function(e) {
+		e.preventDefault();
+		if($(this).hasClass('radio-active')){
+			return false;
+		}
+		var $parent = $(this).parents('.wpr-radio-buttons');
+		$parent.find('.wpr-radio-buttons-container button').removeClass('radio-active');
+		$parent.find('.wpr-extra-fields-container').removeClass('wpr-isOpen');
+		$parent.find('.wpr-fieldWarning').removeClass('wpr-isOpen');
+		$(this).addClass('radio-active');
+		wprShowRadioWarning($(this));
+
+	} );
+
+
+	function wprShowRadioWarning($elm){
+		disable_radio_warning = false;
+		$elm.trigger( "before_show_radio_warning", [ $elm ] );
+		if (!$elm.hasClass('has-warning') || disable_radio_warning) {
+			wprShowRadioButtonChildren($elm);
+			$elm.trigger( "radio_button_selected", [ $elm ] );
+			return false;
+		}
+		var $warningField = $('[data-parent="' + $elm.attr('id') + '"].wpr-fieldWarning');
+		$warningField.addClass('wpr-isOpen');
+		var $warningButton = $warningField.find('.wpr-button');
+
+		// Validate the warning
+		$warningButton.on('click', function(){
+			$warningField.removeClass('wpr-isOpen');
+			wprShowRadioButtonChildren($elm);
+			$elm.trigger( "radio_button_selected", [ $elm ] );
+			return false;
+		});
+	}
+
+	function wprShowRadioButtonChildren($elm) {
+		var $parent = $elm.parents('.wpr-radio-buttons');
+		var $children = $('.wpr-extra-fields-container[data-parent="' + $elm.attr('id') + '"]');
+		$children.addClass('wpr-isOpen');
+	}
+
+	/***
+	 * Wpr Optimize Css Delivery Field
+	 ***/
+	var rucssActive = parseInt($('#remove_unused_css').val());
+
+	$( "#optimize_css_delivery_method .wpr-radio-buttons-container button" )
+		.on( "radio_button_selected", function( event, $elm ) {
+			toggleActiveOptimizeCssDeliveryMethod($elm);
+		});
+
+	$("#optimize_css_delivery").on("change", function(){
+		if( $(this).is(":not(:checked)") ){
+			disableOptimizeCssDelivery();
+		}else{
+			var default_radio_button_id = '#'+$('#optimize_css_delivery_method').data( 'default' );
+			$(default_radio_button_id).trigger('click');
+		}
+	});
+
+	function toggleActiveOptimizeCssDeliveryMethod($elm) {
+		var optimize_method = $elm.data('value');
+		if('remove_unused_css' === optimize_method){
+			$('#remove_unused_css').val(1);
+			$('#async_css').val(0);
+		}else{
+			$('#remove_unused_css').val(0);
+			$('#async_css').val(1);
+		}
+
+	}
+
+	function disableOptimizeCssDelivery() {
+		$('#remove_unused_css').val(0);
+		$('#async_css').val(0);
+	}
+
+	$( "#optimize_css_delivery_method .wpr-radio-buttons-container button" )
+		.on( "before_show_radio_warning", function( event, $elm ) {
+			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
+		});
+
+	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
+	});
+
+	$('.wpr-multiple-select .wpr-checkbox').click(function (e) {
+		const checkbox = $(this).find('input');
+		const is_checked = checkbox.attr('checked') !== undefined;
+		checkbox.attr('checked', is_checked ? null : 'checked' );
+		const sub_checkboxes = $(checkbox).closest('.wpr-list').find('.wpr-list-body input[type="checkbox"]');
+		if(checkbox.hasClass('wpr-main-checkbox')) {
+			$.map(sub_checkboxes, checkbox => {
+				$(checkbox).attr('checked', is_checked ? null : 'checked' );
+			});
+			return;
+		}
+		const main_checkbox = $(checkbox).closest('.wpr-list').find('.wpr-main-checkbox');
+
+		const sub_checked =  $.map(sub_checkboxes, checkbox => {
+			if($(checkbox).attr('checked') === undefined) {
+				return ;
+			}
+			return checkbox;
+		});
+		main_checkbox.attr('checked', sub_checked.length === sub_checkboxes.length ? 'checked' : null );
+	});
+
+	if ( $( '.wpr-main-checkbox' ).length > 0 ) {
+		$('.wpr-main-checkbox').each((checkbox_key, checkbox) => {
+			let parent_list = $(checkbox).parents('.wpr-list');
+			let not_checked = parent_list.find( '.wpr-list-body input[type=checkbox]:not(:checked)' ).length;
+			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
+		});
+	}
 });

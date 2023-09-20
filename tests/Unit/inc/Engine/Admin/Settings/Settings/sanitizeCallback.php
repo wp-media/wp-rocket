@@ -20,12 +20,12 @@ class Test_SanitizeCallback extends TestCase {
 	private $options;
 	private $settings;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->options->shouldReceive( 'get' )
-			->withAnyArgs();
+		              ->withAnyArgs();
 
 		$this->settings = new Settings( $this->options );
 	}
@@ -34,7 +34,7 @@ class Test_SanitizeCallback extends TestCase {
 	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
-		Functions\when( 'wp_strip_all_tags' )->alias( function( $string, $remove_breaks ) {
+		Functions\when( 'wp_strip_all_tags' )->alias( function ( $string, $remove_breaks ) {
 			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
 			$string = strip_tags( $string );
 
@@ -63,7 +63,7 @@ class Test_SanitizeCallback extends TestCase {
 	 * @dataProvider addDNSPrefetchProvider
 	 */
 	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
-		Functions\when( 'esc_url_raw' )->alias( function( $url ) {
+		Functions\when( 'esc_url_raw' )->alias( function ( $url ) {
 			if ( false === strpos( $url, ':' ) ) {
 				$url = 'http:' . $url;
 			}
@@ -106,7 +106,7 @@ class Test_SanitizeCallback extends TestCase {
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
 		$this->stubWpParseUrl();
 
-		Functions\when( 'rocket_validate_css' )->alias( function( $url ) {
+		Functions\when( 'rocket_validate_css' )->alias( function ( $url ) {
 			$file_host = parse_url( $url, PHP_URL_HOST );
 			if ( 'example.org' === $file_host ) {
 				return parse_url( trim( $url ), PHP_URL_PATH );

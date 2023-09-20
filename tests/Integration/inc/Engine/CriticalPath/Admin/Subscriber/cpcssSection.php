@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -16,21 +15,22 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_CpcssSection extends TestCase {
 	use ProviderTrait;
-	protected static $provider_class = 'Post';
 
-	private        $async_css_mobile;
-	private        $post_id;
+	protected static $provider_class = 'Post';
+	private $async_css_mobile;
+	private $async_css;
+	private $post_id;
 	private static $user_id;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->set_permalink_structure( '/%postname%/' );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
@@ -40,10 +40,10 @@ class Test_CpcssSection extends TestCase {
 		set_current_screen( 'edit-post' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $GLOBALS['post'] );
 
-		parent::tearDown();
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );

@@ -348,6 +348,8 @@ class Mobile_Subscriber implements Subscriber_Interface {
 			'device-theme-switcher/dts_controller.php' => [],
 			'wp-mobile-detect/wp-mobile-detect.php'    => [],
 			'easy-social-share-buttons3/easy-social-share-buttons3.php' => [],
+			'jet-menu/jet-menu.php'                    => [],
+			'wpdiscuz/class.WpdiscuzCore.php'          => [],
 		];
 	}
 

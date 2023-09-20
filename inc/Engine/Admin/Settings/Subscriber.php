@@ -45,9 +45,29 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
 			],
-			'admin_enqueue_scripts'                => 'enqueue_rocket_scripts',
+			'admin_enqueue_scripts'                => [
+				[ 'enqueue_rocket_scripts' ],
+				[ 'enqueue_url' ],
+			],
 			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
+			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
+
 		];
+	}
+
+	/**
+	 * Enqueue the URL for option exporting.
+	 *
+	 * @return void
+	 */
+	public function enqueue_url() {
+		wp_localize_script(
+			'wpr-admin-common',
+			'rocket_option_export',
+			[
+				'rest_url_option_export' => rest_url( 'wp-rocket/v1/options/export/' ),
+			]
+		);
 	}
 
 	/**
@@ -161,7 +181,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_imagify_page( $navigation ) {
-		if ( Imagify_Partner::has_imagify_api_key() ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+			||
+			Imagify_Partner::has_imagify_api_key()
+		) {
 			return $navigation;
 		}
 
@@ -190,5 +214,21 @@ class Subscriber implements Subscriber_Interface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Displays the radio option sub fields
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $option_data array of option_id and sub_fields of the option.
+	 *
+	 * @return void
+	 */
+	public function display_radio_options_sub_fields( $option_data ) {
+		if ( empty( $option_data['sub_fields'] ) ) {
+			return;
+		}
+		$this->page->display_radio_options_sub_fields( $option_data['sub_fields'] );
 	}
 }

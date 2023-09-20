@@ -106,6 +106,7 @@ class Iframe {
 				'loading="eager"',
 				'data-skip-lazy',
 				'skip-lazy',
+				'google_ads_iframe_',
 			]
 		);
 	}
@@ -163,6 +164,10 @@ class Iframe {
 
 		$youtube_url = $this->changeYoutubeUrlForYoutuDotBe( $iframe['src'] );
 		$youtube_url = $this->cleanYoutubeUrl( $iframe['src'] );
+
+		preg_match( '@\s*title\s*=\s*(\'|")(?<title>.*)\1@iUs', $iframe['atts'], $atts );
+
+		$title = $atts['title'] ?? '';
 		/**
 		 * Filter the LazyLoad HTML output on Youtube iframes
 		 *
@@ -170,7 +175,7 @@ class Iframe {
 		 *
 		 * @param array $html Output that will be printed.
 		 */
-		$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-src="' . esc_attr( $youtube_url ) . '" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '"></div>' );
+		$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-src="' . esc_attr( $youtube_url ) . '" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '" data-alt="' . esc_attr( $title ) . '"></div>' );
 		$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
 
 		return $youtube_lazyload;

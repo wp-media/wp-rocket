@@ -13,8 +13,8 @@ use AMP_Options_Manager;
 class Test_IsAmpCompatibleCallback extends TestCase {
 	protected $path_to_test_data = 'isAmpCompatibleCallback.php';
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Updating the AMP settings will trigger this to run.
 		Functions\when( 'rocket_generate_config_file' )->justReturn();

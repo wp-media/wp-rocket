@@ -144,11 +144,20 @@
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
+        margin-bottom: $space*2;
     }
 
-    &.wpr-Delayjs {
-        margin-top: 16px;
+    &.wpr-Delayjs{
+        margin-top: $space*2;
     }
+
+    &.wpr-RemoveUnUsedCss{
+	  margin-bottom: 0;
+    }
+
+    &.wpr-NoPaddingBottom{
+	  padding-bottom: 0;
+	}
 
     &.wpr-isLastElem{
         margin-top: $space*2;
@@ -170,7 +179,6 @@
 
         &.wpr-isOpen{
             display: block;
-            margin-top: $space*2;
         }
 
         &.wpr-field--textarea{
@@ -184,8 +192,10 @@
                 padding-right: 0;
             }
         }
+	  &.no-space{
+		padding-left:0;
+	  }
     }
-
     // Checkbox
     &--checkbox{
         .wpr-field-description{
@@ -271,4 +281,25 @@
             color: $cBlack;
         }
     }
+
+  	&--textarea {
+	  .wpr-field-description {
+		pre {
+		  background: rgba(0, 0, 0, .07);
+		  padding: 1em;
+		  margin: 1em 0 0;
+		  white-space: normal;
+		  code {
+			background: transparent;
+			-webkit-touch-callout: all;
+			-webkit-user-select: all;
+			-khtml-user-select: all;
+			-moz-user-select: all;
+			-ms-user-select: all;
+			user-select: all;
+			color: $cBlack;
+		  }
+		}
+	  }
+	}
 }

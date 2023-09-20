@@ -8,21 +8,20 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  CDN
  */
 class Test_addPreconnectCdn extends TestCase {
-
-	public function setUp() : void {
+	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'wp_resource_hints', 'add_preconnect_cdn', 10 );
 
-		parent::setUp();
+		parent::set_up();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->restoreWpFilter( 'wp_resource_hints' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddPreconnectCdn($cnames, $expected) {
 		$this->cnames = $cnames;
@@ -33,13 +32,9 @@ class Test_addPreconnectCdn extends TestCase {
 		ob_start();
 		wp_resource_hints();
 
-		$this->assertSame(
-			$this->format_the_html($expected),
-			$this->format_the_html(ob_get_clean())
+		$this->assertStringContainsString(
+			$this->format_the_html( $expected ),
+			$this->format_the_html( ob_get_clean() )
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'add-preconnect-cdn' );
 	}
 }

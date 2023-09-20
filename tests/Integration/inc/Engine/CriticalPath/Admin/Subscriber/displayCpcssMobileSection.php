@@ -21,10 +21,10 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 
 	private $options = [];
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -32,15 +32,15 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_cpcss_mobile_section', 10 );
 
 		set_current_screen( 'settings_page_wprocket' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->restoreWpFilter( 'rocket_settings_tools_content' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setAsyncCssOption' ] );
@@ -48,7 +48,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'setDoCachingMobileFilesOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setAsyncCssMobileOption' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

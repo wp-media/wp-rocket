@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddExclusions extends TestCase {
 	private $options;
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_exclude_lazyload', [ $this, 'set_option_exclusions'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

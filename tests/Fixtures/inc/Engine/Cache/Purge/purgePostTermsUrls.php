@@ -31,6 +31,10 @@ return [
 						'cat2' => [
 							'index.html'      => '',
 						],
+						'producttag' => [
+							'index.html'      => '',
+							'ups.html'        => '',
+						],
 					],
 				],
 			],
@@ -119,6 +123,7 @@ return [
 			],
 			'expected'  => [
 				'vfs://wp-content/cache/wp-rocket/example.org/producttag/index.html' => null,
+				'vfs://wp-content/cache/wp-rocket/example.org/producttag/ups.html' => null,
 			],
 		],
 		// Non-public taxonomy.

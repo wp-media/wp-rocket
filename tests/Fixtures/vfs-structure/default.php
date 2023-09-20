@@ -8,6 +8,10 @@ return [
 			'busting'      => [
 				'1' => [
 					'ga-123456.js' => '',
+					'test.css'     => '',
+					'test.css.gz'  => '',
+					'test.js'      => '',
+					'test.js.gz'   => '',
 				],
 			],
 			// CPCSS cache.

@@ -5,30 +5,39 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 abstract class TestCase extends FilesystemTestCase {
+	use DBTrait;
+
 	protected static $rocketcdn_user_token;
 
-	public static function setUpBeforeClass() : void {
+	public static function set_up_before_class() {
 		static::$use_settings_trait = true;
 		static::$transients         = [
 			'rocketcdn_status' => null,
 		];
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
+
+		self::installFresh();
 
 		static::$rocketcdn_user_token = get_option( 'rocketcdn_user_token', null );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		set_transient( 'rocketcdn_status', [ 'transient' ], MINUTE_IN_SECONDS );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
 
 		if ( empty( static::$rocketcdn_user_token ) ) {
@@ -38,6 +47,8 @@ abstract class TestCase extends FilesystemTestCase {
 		}
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		parent::tear_down();
 	}
 
 	protected function getCDNOptionsManager() {

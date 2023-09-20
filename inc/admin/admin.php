@@ -63,7 +63,32 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  * @return array Updated array of row action links
  */
 function rocket_post_row_actions( $actions, $post ) {
+
+	if ( ! rocket_can_display_options() ) {
+		return $actions;
+	}
+
 	if ( ! current_user_can( 'rocket_purge_posts' ) ) {
+		return $actions;
+	}
+
+	$cpts = get_post_types(
+		[
+			'public' => true,
+		],
+		'objects'
+	);
+
+	/**
+	 * Filters the post type on row actions.
+	 *
+	 * @since 3.11.4
+	 *
+	 * @param array $cpts Post Types.
+	 */
+	$cpts = apply_filters( 'rocket_skip_post_row_actions', $cpts );
+
+	if ( ! isset( $cpts[ $post->post_type ] ) ) {
 		return $actions;
 	}
 
@@ -71,6 +96,7 @@ function rocket_post_row_actions( $actions, $post ) {
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
+
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -123,6 +149,10 @@ function rocket_dismiss_boxes( $args = [] ) {
 		return;
 	}
 
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
 	rocket_dismiss_box( $args['box'] );
 
 	if ( 'admin-post.php' === $pagenow ) {
@@ -165,6 +195,10 @@ function rocket_deactivate_plugin() {
 		wp_nonce_ays( '' );
 	}
 
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
 	deactivate_plugins( sanitize_text_field( wp_unslash( $_GET['plugin'] ) ) );
 
 	wp_safe_redirect( wp_get_referer() );
@@ -182,9 +216,11 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.json', date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	$gz       = 'gz' . strrev( 'etalfed' );
-	$options  = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	list( $filename, $options ) = rocket_export_options();
 	nocache_headers();
 	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -195,82 +231,6 @@ function rocket_do_options_export() {
 	exit();
 }
 add_action( 'admin_post_rocket_export', 'rocket_do_options_export' );
-
-/**
- * Do the rollback
- *
- * @since 2.4
- */
-function rocket_rollback() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_rollback' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	$plugin_transient = get_site_transient( 'update_plugins' );
-	$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin           = $plugin_folder . '/' . basename( WP_ROCKET_FILE );
-
-	$plugin_transient->response[ $plugin ] = (object) [
-		'slug'        => $plugin_folder,
-		'new_version' => WP_ROCKET_LASTVERSION,
-		'url'         => 'https://wp-rocket.me',
-		'package'     => sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
-	];
-
-	set_site_transient( 'update_plugins', $plugin_transient );
-
-	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-
-	// translators: %s is the plugin name.
-	$title         = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
-	$nonce         = 'upgrade-plugin_' . $plugin;
-	$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
-	$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
-	$upgrader      = new Plugin_Upgrader( $upgrader_skin );
-
-	remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
-	add_filter( 'update_plugin_complete_actions', 'rocket_rollback_add_return_link' );
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
-
-	$upgrader->upgrade( $plugin );
-
-	wp_die(
-		'',
-		// translators: %s is the plugin name.
-		esc_html( sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) ),
-		[
-			'response' => 200,
-		]
-	);
-}
-add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
-
-/**
- * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
- * A link to the plugins page is kept in case the plugin is not reactivated correctly.
- *
- * @since  3.2.4
- * @author Grégory Viguier
- * @author Arun Basil Lal
- *
- * @param  array $update_actions Array of plugin action links.
- * @return array                 The array of links where the "return to" link has been replaced.
- */
-function rocket_rollback_add_return_link( $update_actions ) {
-	if ( ! isset( $update_actions['plugins_page'] ) ) {
-		return $update_actions;
-	}
-
-	$update_actions['plugins_page'] = sprintf(
-		/* translators: 1 and 3 are link openings, 2 is a link closing. */
-		__( '%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s', 'rocket' ),
-		'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#tools' ) . '" target="_parent">',
-		'</a>',
-		'<a href="' . esc_url( admin_url( 'plugins.php' ) ) . '" target="_parent">'
-	);
-
-	return $update_actions;
-}
 
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );
@@ -303,67 +263,6 @@ function rocket_maybe_generate_config_files() {
 		rocket_generate_config_file();
 	}
 }
-
-/**
- * Filter plugin fetching API results to inject Imagify
- *
- * @since 2.10.7
- * @author Remy Perona
- *
- * @param object|WP_Error $result Response object or WP_Error.
- * @param string          $action The type of information being requested from the Plugin Install API.
- * @param object          $args   Plugin API arguments.
- *
- * @return array Updated array of results
- */
-function rocket_add_imagify_api_result( $result, $action, $args ) {
-	if ( empty( $args->browse ) ) {
-		return $result;
-	}
-
-	if ( 'featured' !== $args->browse && 'recommended' !== $args->browse && 'popular' !== $args->browse ) {
-		return $result;
-	}
-
-	if ( ! isset( $result->info['page'] ) || 1 < $result->info['page'] ) {
-		return $result;
-	}
-
-	if ( is_plugin_active( 'imagify/imagify.php' ) || is_plugin_active_for_network( 'imagify/imagify.php' ) ) {
-		return $result;
-	}
-
-	// grab all slugs from the api results.
-	$result_slugs = wp_list_pluck( $result->plugins, 'slug' );
-
-	if ( in_array( 'imagify', $result_slugs, true ) ) {
-		return $result;
-	}
-
-	$query_args   = [
-		'slug'   => 'imagify',
-		'fields' => [
-			'icons'             => true,
-			'active_installs'   => true,
-			'short_description' => true,
-			'group'             => true,
-		],
-	];
-	$imagify_data = plugins_api( 'plugin_information', $query_args );
-
-	if ( is_wp_error( $imagify_data ) ) {
-		return $result;
-	}
-
-	if ( 'featured' === $args->browse ) {
-		array_push( $result->plugins, $imagify_data );
-	} else {
-		array_unshift( $result->plugins, $imagify_data );
-	}
-
-	return $result;
-}
-add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
 
 /**
  * Gets all data to send to the analytics system
@@ -425,12 +324,6 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
-	if ( ! empty( $data['sitemaps'] ) && is_array( $data['sitemaps'] ) ) {
-		$data['sitemaps'] = array_map( 'rocket_clean_exclude_file', $data['sitemaps'] );
-	} else {
-		$data['sitemaps'] = [];
-	}
-
 	return $data;
 }
 
@@ -490,6 +383,7 @@ add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
 /**
  * Handle WP Rocket settings import.
  *
+ * @since 3.10 disable async_css if both async_css and remove_unused_css are enabled
  * @since 3.0 Hooked on admin_post now
  * @since 2.10.7
  * @author Remy Perona
@@ -507,7 +401,7 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
-	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
@@ -563,6 +457,15 @@ function rocket_handle_settings_import() {
 		$settings['minify_css_key']   = $current_options['minify_css_key'];
 		$settings['minify_js_key']    = $current_options['minify_js_key'];
 		$settings['version']          = $current_options['version'];
+		if (
+			isset( $settings['async_css'] ) && $settings['async_css'] &&
+			isset( $settings['remove_unused_css'] ) && $settings['remove_unused_css']
+		) {
+			$settings['async_css'] = 0;
+		}
+		if ( ! empty( $settings['cache_webp'] ) && apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			$settings['cache_webp'] = 0;
+		}
 
 		$options_api->set( 'settings', $settings );
 

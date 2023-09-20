@@ -1,19 +1,19 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
-use WooCommerce;
-use WC_API;
+use WP_Rocket\Logger\Logger;
+use WP_Rocket\Traits\Config_Updater;
 
 /**
  * WooCommerce compatibility
  *
  * @since 3.1
- * @author Remy Perona
  */
 class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface {
-	use \WP_Rocket\Traits\Config_Updater;
+	use Config_Updater;
 
 	/**
 	 * The WordPress Event Manager
@@ -21,6 +21,22 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @var Event_Manager;
 	 */
 	protected $event_manager;
+
+	/**
+	 * Delay JS HTML class.
+	 *
+	 * @var HTML
+	 */
+	private $delayjs_html;
+
+	/**
+	 * WooCommerceSubscriber constructor.
+	 *
+	 * @param HTML $delayjs_html DelayJS HTML class.
+	 */
+	public function __construct( HTML $delayjs_html ) {
+		$this->delayjs_html = $delayjs_html;
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -52,9 +68,14 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_reject_uri']            = [
 				[ 'exclude_pages' ],
 			];
+			$events['rocket_preload_exclude_urls']        = [
+				[ 'exclude_pages' ],
+			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
-			$events['nonce_user_logged_out']              = [ 'maybe_revert_uid_for_nonce_actions', PHP_INT_MAX, 2 ];
+			$events['after_rocket_clean_post_urls']       = [ 'reformat_shop_url_for_preload', 10, 2 ];
+
+			$events['rocket_exclude_post_taxonomy'] = 'exclude_product_shipping_taxonomy';
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -64,10 +85,16 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			 * @param bool true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
-				$events['after_setup_theme'] = [ 'serve_cache_empty_cart', 11 ];
+				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
+
+			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
+			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
+
+			$events['wp_ajax_woocommerce_product_ordering'] = [ 'disallow_rocket_clean_post', 9 ];
+			$events['woocommerce_after_product_ordering']   = [ 'allow_rocket_clean_post' ];
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -75,6 +102,43 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Reformat Shop URL to prevent error on preload.
+	 *
+	 * @param array   $urls urls cleared.
+	 * @param WP_Post $object post object.
+	 * @return array
+	 */
+	public function reformat_shop_url_for_preload( array $urls, $object ) {
+		$post_type = $object->post_type;
+		if ( 'product' !== $post_type ) {
+			return $urls;
+		}
+		$post_type_archive = get_post_type_archive_link( $post_type );
+		if ( ! $post_type_archive ) {
+			return $urls;
+		}
+
+		// Rename the caching filename for SSL URLs.
+		$filename = 'index';
+		if ( is_ssl() ) {
+			$filename .= '-https';
+		}
+
+		$post_type_archive = trailingslashit( $post_type_archive );
+		$index_url         = $post_type_archive . $filename . '.html';
+		$index_url_gzip    = $post_type_archive . $filename . '.html_gzip';
+		$pagination_url    = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
+
+		foreach ( $urls as $index => $url ) {
+			if ( in_array( $url, [ $index_url, $index_url_gzip, $pagination_url ], true ) ) {
+				$urls[ $index ] = $post_type_archive;
+			}
+		}
+
+		return array_unique( $urls );
 	}
 
 	/**
@@ -181,10 +245,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		if ( ! function_exists( 'wc_get_page_id' ) ) {
 			return $urls;
 		}
-		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
-		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
-		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 
+		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '?(.*)' );
+		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
+		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '?(.*)' );
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}
 
@@ -200,6 +264,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return array
 	 */
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
+		global $wp_rewrite;
 		$urls = [];
 
 		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
@@ -208,6 +273,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 		if ( 'publish' !== get_post_status( $page_id ) ) {
 			return $urls;
+		}
+
+		if ( $wp_rewrite->use_trailing_slashes ) {
+			$pattern = "?$pattern";
 		}
 
 		$urls = get_rocket_i18n_translated_post_urls( $page_id, $post_type, $pattern );
@@ -419,68 +488,146 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		return array_merge( $excluded_taxonomies, wc_get_attribute_taxonomy_names() );
 	}
 
+
 	/**
-	 * Set $user_id to 0 for certain nonce actions.
+	 * Exclude product_shipping_class taxonomy from post purge
 	 *
-	 * WooCommerce core changes how nonces are used for non-logged customers.
-	 * When a user is logged out, but has items in their cart, WC core sets the $uid as a random string customer id.
-	 * This is going to mess out nonce validation with WP Rocket and third party plugins which do not bypass WC nonce changes.
-	 * WP Rocket caches the page so the nonce $uid will be always different than the session customer $uid.
-	 * This function will check the nonce against a UID of 0 because this is how WP Rocket generated the cached page.
+	 * @since 3.9.1
 	 *
-	 * @since  3.5.1
-	 * @author Soponar Cristina
+	 * @param array $excluded_taxonomies Array of excluded taxonomies names.
 	 *
-	 * @param string|int $user_id ID of the nonce-owning user.
-	 * @param string|int $action  The nonce action.
-	 *
-	 * @return int $uid      ID of the nonce-owning user.
+	 * @return array
 	 */
-	public function maybe_revert_uid_for_nonce_actions( $user_id, $action ) {
-		// User ID is invalid.
-		if ( empty( $user_id ) || 0 === $user_id ) {
-			return $user_id;
-		}
+	public function exclude_product_shipping_taxonomy( $excluded_taxonomies ) {
+		$excluded_taxonomies[] = 'product_shipping_class';
 
-		// The nonce action is not in the list.
-		if ( ! $action || ! in_array( $action, $this->get_nonce_actions(), true ) ) {
-			return $user_id;
-		}
-
-		return 0;
+		return $excluded_taxonomies;
 	}
 
 	/**
-	 * List with nonce actions which needs to revert the $uid.
+	 * Check if current product page has images in gallery.
 	 *
-	 * @since  3.5.1
-	 * @author Soponar Cristina
+	 * @since 3.9.1
 	 *
-	 * @return array $nonce_actions List with all nonce actions.
+	 * @return bool
 	 */
-	private function get_nonce_actions() {
-		return [
-			'wcmd-subscribe-secret', // WooCommerce MailChimp Discount.
-			'td-block', // "Load more" AJAX functionality of the Newspaper theme.
-			'codevz_selective_refresh', // xtra theme.
-			'xtra_quick_view', // xtra theme quick view.
-			'ajax_search_nonce', // xtra theme AJAX search.
-			'xtra_wishlist_content', // xtra theme wishlist feature.
-			'ajax-login-security', // OneSocial theme pop-up login.
-			'dokan_pageview', // Dokan related pageview.
-			'dokan_report_abuse', // Dokan report abuse popup.
-			'uabb_subscribe_form_submit', // Ultimate Addons for Beaver Builder - MailChimp signup form.
-			'konte-add-to-cart', // Add to cart feature of the Konte theme.
-			'wpuf_form_add', // WP User Frontend Pro.
-			'everest_forms_ajax_form_submission', // Everest forms AJAX submission.
-			'everest-forms_process_submit', // Everest forms submission.
-			'ajax-login-nonce', // Rehub theme login modal.
-			'filter-nonce', // Rehub theme filter.
-			'log-out', // WordPress's log-out action (wp_nonce_ays() function).
-			'ybws123456', // Custom Bookly form.
-			'_wc_additional_variation_images_nonce', // WooCommerce Additional Variation Images.
-			'get_price_table', // Tiered Pricing Table for WooCommerce.
-			'wccs_single_product_nonce', // Discount Rules and Dynamic Pricing for WooCommerce.
+	private function product_has_gallery_images() {
+		$product = wc_get_product( get_the_ID() );
+		if ( empty( $product ) ) {
+			return false;
+		}
+		return ! empty( $product->get_gallery_image_ids() );
+	}
+
+	/**
+	 * Show product gallery main image directly when delay JS is enabled.
+	 *
+	 * @since 3.9.1
+	 */
+	public function show_empty_product_gallery_with_delayJS() {
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return;
+		}
+
+		if ( ! is_product() ) {
+			return;
+		}
+
+		if ( $this->product_has_gallery_images() ) {
+			return;
+		}
+
+		echo '<style>.woocommerce-product-gallery{ opacity: 1 !important; }</style>';
+	}
+
+	/**
+	 * Exclude some JS files from delay JS when product gallery has images.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @param array $exclusions Exclusions array.
+	 *
+	 * @return array
+	 */
+	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
+		global $wp_version;
+
+		if ( ! is_array( $exclusions ) ) {
+			$exclusions = (array) $exclusions;
+		}
+
+		if ( ! $this->delayjs_html->is_allowed() ) {
+			return $exclusions;
+		}
+
+		if ( ! is_product() ) {
+			return $exclusions;
+		}
+
+		if ( ! $this->product_has_gallery_images() ) {
+			return $exclusions;
+		}
+
+		$exclusions_gallery = [
+			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
+			'/woocommerce/assets/js/zoom/jquery.zoom(.min)?.js',
+			'/woocommerce/assets/js/photoswipe/',
+			'/woocommerce/assets/js/flexslider/jquery.flexslider(.min)?.js',
+			'/woocommerce/assets/js/frontend/single-product(.min)?.js',
 		];
+
+		if (
+			isset( $wp_version )
+			&&
+			version_compare( $wp_version, '5.7', '<' )
+		) {
+			$exclusions_gallery[] = '/jquery-migrate(.min)?.js';
+		}
+
+		/**
+		 * Filters the JS files excluded from delay JS when WC product gallery has images.
+		 *
+		 * @since 3.10.2
+		 *
+		 * @param array $exclusions_gallery Array of excluded filepaths.
+		 */
+		$exclusions_gallery = apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions_gallery );
+
+		return array_merge( $exclusions, $exclusions_gallery );
+	}
+
+	/**
+	 * Disable post cache clearing during product sorting.
+	 *
+	 * @return void
+	 */
+	public function disallow_rocket_clean_post() : void {
+		$this->event_manager->remove_callback( 'clean_post_cache', 'rocket_clean_post' );
+	}
+
+	/**
+	 * Re-enable post cache clearing after product sorting.
+	 *
+	 * @param integer $product_id ID of sorted product.
+	 * @return void
+	 */
+	public function allow_rocket_clean_post( int $product_id ) : void {
+		$urls          = [];
+		$category_list = wc_get_product_category_list( $product_id );
+
+		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
+			$urls = $matches['urls'];
+		}
+
+		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
+
+		if ( empty( $shop_page ) ) {
+			$shop_page = home_url( 'shop' );
+		}
+
+		$urls[] = $shop_page;
+
+		rocket_clean_files( $urls );
+		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }

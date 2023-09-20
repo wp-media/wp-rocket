@@ -46,9 +46,14 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => false,
-			'response'          => [
-				'code' => 404,
-				'body' => false,
+			'response'  => [
+				'headers' => [],
+				'body' => 'error 404',
+				'response' => [
+					'code' => 404,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => [
@@ -61,8 +66,14 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => false,
-			'response'          => [
-				'code' => 200,
+			'response'  => [
+				'headers' => [],
+				'body' => '',
+				'response' => [
+					'code' => 200,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => [
@@ -75,9 +86,14 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => false,
-			'response'          => [
-				'code' => 200,
+			'response'  => [
+				'headers' => [],
 				'body' => $json,
+				'response' => [
+					'code' => 200,
+				],
+				'cookies' => [],
+				'filename' => '',
 			],
 		],
 		'expected' => [
@@ -90,7 +106,15 @@ return [
 			'pricing-transient' => false,
 			'timeout-active'    => false,
 			'timeout-duration'  => 300,
-			'response'          => [ 'code' => 404 ],
+			'response'  => [
+				'headers' => [],
+				'body' => 'error 404',
+				'response' => [
+					'code' => 404,
+				],
+				'cookies' => [],
+				'filename' => '',
+			],
 		],
 		'expected' => [
 			'result'           => false,
@@ -104,7 +128,15 @@ return [
 			'timeout-active'    => false,
 			'timeout-duration'  => rocket_get_constant( 'DAY_IN_SECONDS' )
 								   - rocket_get_constant( 'HOUR_IN_SECONDS' ),
-			'response'          => [ 'code' => 404 ],
+			'response'  => [
+				'headers' => [],
+				'body' => 'error 404',
+				'response' => [
+					'code' => 404,
+				],
+				'cookies' => [],
+				'filename' => '',
+			],
 		],
 		'expected' => [
 			'result'           => false,

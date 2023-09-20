@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 			</h2>
 				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket automatically applies 80% of web performance best practices.', 'rocket' ); ?><br> <?php esc_html_e( 'We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
-				<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
+				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
 	<?php endif; ?>
@@ -80,7 +80,14 @@ defined( 'ABSPATH' ) || exit;
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
 							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span><br>
+						</span>
+						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
+							<span>
+								<?php esc_html_e( 'with', 'rocket' ); ?>
+								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
+							</span>
+						<?php endif; ?>
+						<br>
 						<?php
 						/**
 						 * Fires when displaying the license information
@@ -140,7 +147,7 @@ defined( 'ABSPATH' ) || exit;
 							'link',
 							'purge_cache',
 							[
-								'label'      => __( 'Clear cache', 'rocket' ),
+								'label'      => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and preload cache', 'rocket' ) : __( 'Clear cache', 'rocket' ),
 								'parameters' => [
 									'type' => 'all',
 								],
@@ -152,50 +159,7 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</div>
 					<?php endif; ?>
-					<?php if ( get_rocket_option( 'manual_preload' ) && current_user_can( 'rocket_preload_cache' ) ) : ?>
-					<div class="wpr-field">
-						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
-						<?php
-						$this->render_action_button(
-							'link',
-							'preload',
-							[
-								'label'      => __( 'Preload cache', 'rocket' ),
-								'attributes' => [
-									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
-								],
-							]
-						);
-						?>
-					</div>
-					<?php endif; ?>
-
-					<?php
-					$opcache_enabled  = filter_var( ini_get( 'opcache.enable' ), FILTER_VALIDATE_BOOLEAN ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					$restrict_api     = ini_get( 'opcache.restrict_api' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					$can_restrict_api = true; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					if ( $restrict_api && strpos( __FILE__, $restrict_api ) !== 0 ) {
-						$can_restrict_api = false; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-					}
-					if ( function_exists( 'opcache_reset' ) && $opcache_enabled && current_user_can( 'rocket_purge_opcache' ) && $can_restrict_api ) :
-						?>
-					<div class="wpr-field">
-						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
-						<?php
-						$this->render_action_button(
-							'link',
-							'rocket_purge_opcache',
-							[
-								'label'      => __( 'Purge OPCache', 'rocket' ),
-								'attributes' => [
-									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
-								],
-							]
-						);
-						?>
-					</div>
-					<?php endif; ?>
-					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
+					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
 						<?php
@@ -211,6 +175,24 @@ defined( 'ABSPATH' ) || exit;
 						);
 						?>
 					</div>
+					<?php endif; ?>
+
+					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
+						<div class="wpr-field">
+							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
+							<?php
+							$this->render_action_button(
+									'link',
+									'rocket_clear_usedcss',
+									[
+										'label'      => __( 'Clear Used CSS', 'rocket' ),
+										'attributes' => [
+											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+										],
+									]
+							);
+							?>
+						</div>
 					<?php endif; ?>
 				</fieldset>
 			</div>
@@ -230,29 +212,31 @@ defined( 'ABSPATH' ) || exit;
 					<?php endforeach; ?>
 					</ul>
 				</div>
-				<div class="wpr-field">
-					<div class="wpr-flex wpr-flex--egal">
-						<div>
-							<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
-							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-						</div>
-						<div>
-							<?php
-							$this->render_action_button(
-								'link',
-								'ask_support',
-								[
-									'label'      => __( 'Ask support', 'rocket' ),
-									'attributes' => [
-										'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
-										'target' => '_blank',
-									],
-								]
-							);
-							?>
+				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
+					<div class="wpr-field">
+						<div class="wpr-flex wpr-flex--egal">
+							<div>
+								<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
+								<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
+							</div>
+							<div>
+								<?php
+								$this->render_action_button(
+									'link',
+									'ask_support',
+									[
+										'label'      => __( 'Ask support', 'rocket' ),
+										'attributes' => [
+											'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+											'target' => '_blank',
+										],
+									]
+								);
+								?>
+							</div>
 						</div>
 					</div>
-				</div>
+				<?php } ?>
 			</div>
 		</div>
 

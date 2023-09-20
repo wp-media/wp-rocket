@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -14,7 +15,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
-	use ContentTrait;
+	use ContentTrait, DBTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
@@ -27,8 +28,9 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 	private $fallback_css;
 	private $is_mobile;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installFresh();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
@@ -41,8 +43,14 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
@@ -53,13 +61,13 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		set_current_screen( 'front' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

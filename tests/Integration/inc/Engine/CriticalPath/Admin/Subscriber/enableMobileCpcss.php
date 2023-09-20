@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
@@ -14,7 +15,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
-	use ProviderTrait;
+	use ProviderTrait, DBTrait;
 	protected static $provider_class = 'Settings';
 
 	protected static $use_settings_trait = true;
@@ -22,10 +23,12 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::installFresh();
+
+		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -33,8 +36,14 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function tear_down_after_class()
+	{
+		parent::tear_down_after_class();
+		self::uninstallAll();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		$this->action = 'rocket_enable_mobile_cpcss';
 	}

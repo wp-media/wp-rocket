@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::rocket_first_install
@@ -20,7 +20,7 @@ class Test_RocketFirstInstall extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [
@@ -45,9 +45,5 @@ class Test_RocketFirstInstall extends TestCase {
 		rocket_first_install();
 
 		$this->assertSame( 1, Filters\applied( 'rocket_first_install_options' ) );
-	}
-
-	public function addProvider() {
-		return $this->getTestData( __DIR__, 'rocketFirstInstall' );
 	}
 }

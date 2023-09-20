@@ -12,10 +12,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  GoogleFonts
  */
 class Test_DisplayGoogleFontsEnabler extends TestCase {
+	public function set_up() {
+		parent::set_up();
 
-	public function tearDown() {
+		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_google_fonts_enabler' );
+	}
+
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'setGoogleFontsOption' ] );
-		parent::tearDown();
+
+		$this->restoreWpFilter( 'rocket_settings_tools_content' );
+
+		parent::tear_down();
 	}
 
 	/**

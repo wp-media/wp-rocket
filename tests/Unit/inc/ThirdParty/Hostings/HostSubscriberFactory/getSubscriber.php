@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetSubscriber extends TestCase {
 	private $factory;
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->factory = new HostSubscriberFactory(
@@ -26,11 +26,11 @@ class Test_GetSubscriber extends TestCase {
 		);
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -47,10 +47,6 @@ class Test_GetSubscriber extends TestCase {
 			case 'spinupwp':
 				putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
 				break;
-			case 'wpengine':
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
-				break;
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
@@ -59,6 +55,6 @@ class Test_GetSubscriber extends TestCase {
 				break;
 		}
 
-		$this->assertTrue( $this->factory->get_subscriber() instanceof $expected );
+		$this->assertInstanceOf( $expected, $this->factory->get_subscriber());
 	}
 }

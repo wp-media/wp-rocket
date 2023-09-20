@@ -31,6 +31,19 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( isset( $_SERVER['GROUPONE_BRAND_NAME'] ) ) {
+			$group_one_brand_name = strtolower( sanitize_text_field( wp_unslash( $_SERVER['GROUPONE_BRAND_NAME'] ) ) );
+
+			switch ( $group_one_brand_name ) {
+				case 'one.com':
+					self::$hostname = 'onecom';
+					return 'onecom';
+				case 'proisp.no':
+					self::$hostname = 'proisp';
+					return 'proisp';
+			}
+		}
+
 		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
 			self::$hostname = 'cloudways';
 
@@ -83,6 +96,26 @@ class HostResolver {
 
 		if ( self::is_dreampress() ) {
 			return 'dreampress';
+		}
+
+		if ( isset( $_SERVER['HTTP_WPXCLOUD'] ) ) {
+			self::$hostname = 'wpxcloud';
+			return 'wpxcloud';
+		}
+
+		if ( isset( $_SERVER['X-LSCACHE'] ) ) {
+			self::$hostname = 'litespeed';
+			return 'litespeed';
+		}
+
+		if ( class_exists( '\WPaas\Plugin' ) ) {
+			self::$hostname = 'godaddy';
+			return 'godaddy';
+		}
+
+		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+			self::$hostname = 'kinsta';
+			return 'kinsta';
 		}
 
 		return '';

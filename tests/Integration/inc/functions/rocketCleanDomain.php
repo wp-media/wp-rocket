@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -21,12 +22,23 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Clean
  */
 class Test_RocketCleanDomain extends FilesystemTestCase {
-	use i18nTrait;
+	use i18nTrait, DBTrait;
 
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

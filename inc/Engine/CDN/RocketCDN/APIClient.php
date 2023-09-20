@@ -104,7 +104,7 @@ class APIClient {
 	 *
 	 * @since 3.5
 	 *
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	public function get_pricing_data() {
 		$pricing = get_transient( 'rocketcdn_pricing' );
@@ -126,14 +126,18 @@ class APIClient {
 	private function get_remote_pricing_data() {
 		$response = wp_remote_get( self::ROCKETCDN_API . 'pricing' );
 
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return $this->get_wp_error();
+			return $this->get_wp_error( __( 'We could not fetch the current price because RocketCDN API returned an unexpected error code.', 'rocket' ) );
 		}
 
 		$data = wp_remote_retrieve_body( $response );
 
 		if ( empty( $data ) ) {
-			return $this->get_wp_error();
+			return $this->get_wp_error( __( 'RocketCDN is not available at the moment. Please retry later.', 'rocket' ) );
 		}
 
 		$data = json_decode( $data, true );
@@ -148,10 +152,12 @@ class APIClient {
 	 *
 	 * @since 3.5
 	 *
+	 * @param string $message Error message.
+	 *
 	 * @return WP_Error
 	 */
-	private function get_wp_error() {
-		return new WP_Error( 'rocketcdn_error', __( 'RocketCDN is not available at the moment. Please retry later', 'rocket' ) );
+	private function get_wp_error( string $message ) {
+		return new WP_Error( 'rocketcdn_error', $message );
 	}
 
 	/**
@@ -193,6 +199,13 @@ class APIClient {
 			$args
 		);
 
+		if ( is_wp_error( $response ) ) {
+			return [
+				'status'  => $status,
+				'message' => $response->get_error_message(),
+			];
+		}
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return [
 				'status'  => $status,
@@ -224,7 +237,7 @@ class APIClient {
 				'message' => sprintf(
 					// translators: %s = message returned by the API.
 					__( 'RocketCDN cache purge failed: %s.', 'rocket' ),
-					$data->message
+					isset( $data->message ) ? $data->message : ''
 				),
 			];
 		}

@@ -1,14 +1,13 @@
 <?php
 namespace WP_Rocket\Addon;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
+use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
+use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for WP Rocket addons.
- *
- * @since 3.3
- * @since 3.5 - renamed and moved into this module.
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -22,67 +21,32 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'busting_factory',
-		'facebook_tracking',
-		'google_tracking',
 		'sucuri_subscriber',
+		'webp_subscriber',
+		'webp_admin_subscriber',
 	];
 
 	/**
-	 * Registers the subscribers in the container.
-	 *
-	 * @since 3.3
+	 * Registers items with the container
 	 */
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		// Busting Factory.
-		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Addon\Busting\BustingFactory' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH' ) )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL' ) );
-
-		// Facebook Tracking Subscriber.
-		$this->getContainer()->share( 'facebook_tracking', 'WP_Rocket\Addon\FacebookTracking\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $options );
-
-		// Google Tracking Subscriber.
-		$this->getContainer()->share( 'google_tracking', 'WP_Rocket\Addon\GoogleTracking\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
-			->withArgument( $options );
-
 		// Sucuri Addon.
-		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
-			->withArgument( $options );
+		$this->getContainer()->share( 'sucuri_subscriber', SucuriSubscriber::class )
+			->addArgument( $options )
+			->addTag( 'common_subscriber' );
 
-		// Cloudflare Addon.
-		$this->addon_cloudflare( $options );
-	}
+		$this->getContainer()->share( 'webp_admin_subscriber', WebPAdminSubscriber::class )
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addTag( 'common_subscriber' );
 
-	/**
-	 * Adds Cloudflare Addon into the Container when the addon is enabled.
-	 *
-	 * @since 3.5
-	 *
-	 * @param Options_Data $options Instance of options.
-	 */
-	protected function addon_cloudflare( Options_Data $options ) {
-		// If the addon is not enabled, delete the transient and bail out. Don't load the addon.
-		if ( ! (bool) $options->get( 'do_cloudflare', false ) ) {
-			delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-			return;
-		}
-
-		$this->provides[] = 'cloudflare_subscriber';
-
-		$this->getContainer()->add( 'cloudflare_api', 'WPMedia\Cloudflare\APIClient' )
-			->withArgument( rocket_get_constant( 'WP_ROCKET_VERSION' ) );
-		$this->getContainer()->add( 'cloudflare', 'WPMedia\Cloudflare\Cloudflare' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'cloudflare_api' ) );
-		$this->getContainer()->share( 'cloudflare_subscriber', 'WPMedia\Cloudflare\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'cloudflare' ) )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'options_api' ) );
+		$this->getContainer()->share( 'webp_subscriber', WebPSubscriber::class )
+			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
-use WP_Rocket\Engine\Container\Container;
+use WP_Rocket\Addon\Cloudflare\Cloudflare;
+use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
 defined( 'ABSPATH' ) || exit;
@@ -12,16 +13,9 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
-/**
- * Fix Cloudflare Flexible SSL redirect first
- *
- * @since  3.4.1
- * @author Soponar Cristina
- */
-require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
-require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
+Cloudflare::fix_cf_flexible_ssl();
 
-rocket_fix_cf_flexible_ssl();
+require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'ActionScheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
 
 /**
  * Tell WP what to do when plugin is loaded.
@@ -51,7 +45,6 @@ function rocket_init() {
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
-	require WP_ROCKET_INC_PATH . '/API/preload.php';
 	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
@@ -64,6 +57,12 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.6.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.7.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.8.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.9.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.11.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.12.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.13.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.14.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 
@@ -85,7 +84,6 @@ function rocket_init() {
 	} elseif ( rocket_valid_key() ) {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
-		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.

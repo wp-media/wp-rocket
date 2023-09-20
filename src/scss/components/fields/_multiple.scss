@@ -61,7 +61,7 @@
 
         li{
             margin-bottom: 0;
-            padding: $space/2 $space*2;
+            padding: calc($space/2) $space*2;
             @include font-size(13,16);
             font-family: Monaco;
 

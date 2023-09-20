@@ -31,8 +31,8 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->api_client = Mockery::mock( APIClient::class );
 		$this->processor  = new ProcessorService( self::$container->get( 'cpcss_data_manager' ), $this->api_client );
@@ -90,7 +90,7 @@ class Test_ProcessGenerate extends FilesystemTestCase {
 			: false;
 		$no_fontface                    = isset( $config['no_fontface'] )
 			? $config['no_fontface']
-			: true;
+			: false;
 		$item_type                    = isset( $config['type'] )
 			? $config['type']
 			: 'custom';

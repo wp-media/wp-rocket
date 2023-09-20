@@ -69,6 +69,10 @@ class WPEngine extends AbstractNoCacheHost {
 			return;
 		}
 
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
+			return;
+		}
+
 		// Preload cache.
 		run_rocket_bot();
 		run_rocket_sitemap_preload();

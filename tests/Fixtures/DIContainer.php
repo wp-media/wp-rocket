@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 class DIContainer implements ArrayAccess {
 	private $container = [];
 
-	public function setUp() : void {
+	public function setUp() {
 		add_filter( 'rocket_container', [ $this, 'getContainer' ] );
 	}
 
@@ -38,20 +38,20 @@ class DIContainer implements ArrayAccess {
 		unset( $this->container[ $key ] );
 	}
 
-	public function offsetExists( $key ) {
+	public function offsetExists( $key ): bool {
 		return $this->has( $key );
 	}
 
-	public function offsetGet( $key ) {
+	public function offsetGet( $key ): mixed {
 		return $this->get( $key );
 	}
 
-	public function offsetSet( $key, $concrete ) {
+	public function offsetSet( $key, $concrete ): void {
 		$this->add( $key, $concrete );
 	}
 
-	public function offsetUnset( $key ) {
-		return $this->remove( $key );
+	public function offsetUnset( $key ): void {
+		$this->remove( $key );
 	}
 
 	/********************************************************

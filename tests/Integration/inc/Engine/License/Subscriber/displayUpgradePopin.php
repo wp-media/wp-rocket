@@ -16,16 +16,16 @@ class DisplayUpgradePopin extends TestCase {
 	private $original_user;
 	private $original_pricing;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container     = apply_filters( 'rocket_container', null );
 		self::$user    = $container->get( 'user' );
 		self::$pricing = $container->get( 'pricing' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_page_footer', 'display_upgrade_popin' );
 
@@ -33,12 +33,12 @@ class DisplayUpgradePopin extends TestCase {
 		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->restoreWpFilter( 'rocket_settings_page_footer' );
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

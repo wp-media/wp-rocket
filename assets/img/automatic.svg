@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="20px" viewBox="0 0 24 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 59 (86127) - https://sketch.com -->
-    <title>streamline-icon-fitness-biceps@24x24</title>
-    <desc>Created with Sketch.</desc>
-    <g id="CDN" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="CDN-(promo)Rocket-CDN-(full)-Copy" transform="translate(-470.000000, -491.000000)" stroke-width="1.5">
-            <g id="streamline-icon-fitness-biceps@24x24" transform="translate(470.000000, 492.000000)">
-                <path d="M8.25,6 C7.422,5.171 7.422,3.829 8.25,3" id="Path" stroke="#121116"></path>
-                <path d="M22.005,13.754 C17.225,19.374 6.092,17.9999925 1.592,14.9999925 C-0.149,13.839 1.159,9.162 2.392,5.81 C3.02,4.093 3.936,2.495 5.1,1.085 C5.671,0.396 6.52,-0.002 7.415,-7.501704e-06 L10.5,-7.501704e-06 C12.157,-7.501704e-06 13.5,1.343 13.5,2.9999925 C13.5,4.657 12.157,5.9999925 10.5,5.9999925 L8.25,5.9999925 C7.13,7.217 6.584,8.855 6.75,10.4999925 C8.531,8.648 10.859,7.75 13.5,10.4999925 C13.497,7.808 15.677,5.622 18.369,5.619 C21.061,5.616 23.247,7.796 23.2500017,10.488 C23.251,11.694 22.806,12.857 22,13.753 L22.005,13.753 L22.005,13.754 Z" id="Path" stroke="#121116"></path>
-                <line x1="18.75" y1="9" x2="18.75" y2="12" id="Path" stroke="#F56640"></line>
-                <line x1="17.25" y1="10.5" x2="20.25" y2="10.5" id="Path" stroke="#F56640"></line>
-            </g>
-        </g>
-    </g>
+<svg width="42" height="33" viewBox="0 0 42 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="22.1094" height="4" rx="2" transform="matrix(-0.707107 0.707107 0.707107 0.707107 23.2783 13.0117)" fill="#172153"/>
+<rect width="10.1496" height="4" rx="2" transform="matrix(-0.707107 0.707107 0.707107 0.707107 27.5952 8.69043)" fill="#F26B32"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.5983 16.3442C26.3011 15.5589 26.2753 14.3519 25.521 13.5975C24.7399 12.8165 23.4736 12.8165 22.6925 13.5975L21.7248 14.5653C21.022 15.3506 21.0477 16.5576 21.8021 17.312C22.5831 18.093 23.8495 18.093 24.6305 17.312L25.5983 16.3442Z" fill="#FFD147"/>
+<rect x="21.1978" y="3.41895" width="5.92515" height="2" rx="1" transform="rotate(75 21.1978 3.41895)" fill="#172153"/>
+<rect x="17.8779" y="6.34082" width="5.92514" height="2" rx="1" transform="rotate(-15 17.8779 6.34082)" fill="#172153"/>
+<rect width="5.92514" height="2" rx="1" transform="matrix(-0.991692 -0.128634 -0.128634 0.991692 37.3389 11.8994)" fill="#172153"/>
+<rect width="5.92514" height="2" rx="0.999999" transform="matrix(0.106286 -0.994336 -0.994336 -0.106286 34.9521 15.5615)" fill="#172153"/>
+<rect x="36.4912" y="3.05176" width="5.92514" height="2" rx="1" transform="rotate(135 36.4912 3.05176)" fill="#172153"/>
+<rect x="35.0771" y="7.24121" width="5.92514" height="2" rx="1" transform="rotate(-135 35.0771 7.24121)" fill="#172153"/>
 </svg>

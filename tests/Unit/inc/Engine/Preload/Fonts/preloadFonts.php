@@ -34,7 +34,7 @@ class Test_PreloadFonts extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldAddPreloadTagsWhenValidFonts( $bypass, $filter, $rocket_options, $expected ) {
+	public function testShouldAddPreloadTagsWhenValidFonts( $buffer, $bypass, $filter, $rocket_options, $expected ) {
 		Functions\when( 'rocket_bypass' )->justReturn( $bypass );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
@@ -59,9 +59,10 @@ class Test_PreloadFonts extends TestCase {
 				} );
 		}
 
-		$this->expectOutputContains( $expected );
-	
-		$this->fonts->preload_fonts();
+		$this->assertSame(
+			$expected,
+			$this->fonts->preload_fonts( $buffer )
+		);
 	}
 
 	public function providerTestData() {

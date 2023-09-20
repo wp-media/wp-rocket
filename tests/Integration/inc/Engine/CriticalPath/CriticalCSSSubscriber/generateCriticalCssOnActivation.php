@@ -37,8 +37,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		self::$container = apply_filters( 'rocket_container', null );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->switchedBlog = false;
 		$this->did_filter   = [
@@ -47,8 +47,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'return_true' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'return_true' ] );

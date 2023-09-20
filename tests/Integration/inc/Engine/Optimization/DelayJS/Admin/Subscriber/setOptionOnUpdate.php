@@ -11,35 +11,39 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  AdminOnly
  */
 class Test_SetOptionOnUpdate extends TestCase{
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update' );
+		$this->setUpSettings();
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_option_on_update', 13 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
+		$this->tearDownSettings();
 		$this->restoreWpFilter( 'wp_rocket_upgrade' );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoExpected( $old_version, $valid_version ) {
+	public function testShouldDoExpected( $options, $old_version, $expected ) {
+		$this->mergeExistingSettingsAndUpdate( $options );
+
 		do_action( 'wp_rocket_upgrade', '', $old_version );
 
-		$options = get_option( 'wp_rocket_settings' );
+		$updated = get_option( 'wp_rocket_settings' );
 
-		if ( $valid_version ) {
+		$this->assertSame(
+			(bool) $expected['delay_js'],
+			isset( $updated['delay_js'] ) && $updated['delay_js']
+		);
+
+		if ( isset( $updated['delay_js'] ) && $updated['delay_js'] ) {
 			$this->assertSame(
-				0,
-				$options['delay_js']
-			);
-		} else {
-			$this->assertSame(
-				1,
-				$options['delay_js']
+				$expected['delay_js_exclusions'],
+				$updated['delay_js_exclusions']
 			);
 		}
 	}

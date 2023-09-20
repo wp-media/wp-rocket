@@ -1,12 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization;
 
 use WP_Rocket\Dependencies\PathConverter\ConverterInterface;
 use WP_Rocket\Dependencies\PathConverter\Converter;
-use WP_Rocket\Logger\Logger;
 
 trait CSSTrait {
+
+	/**
+	 * Currently imported files.
+	 *
+	 * @var array
+	 */
+	private $imports = [];
+
+	/**
+	 * Found charset on CSS.
+	 *
+	 * @var null|string
+	 */
+	private $found_charset = null;
+
 	/**
 	 * Rewrites the paths inside the CSS file content
 	 *
@@ -37,6 +52,8 @@ trait CSSTrait {
 		$target = apply_filters( 'rocket_css_asset_target_path', $target );
 
 		$content = $this->move( $this->get_converter( $source, $target ), $content, $source );
+
+		$this->set_cached_import( $source );
 
 		$content = $this->combine_imports( $content, $target );
 
@@ -153,6 +170,11 @@ trait CSSTrait {
 			$type = ( strpos( $match[0], '@import' ) === 0 ? 'import' : 'url' );
 
 			$url = $match['path'];
+
+			if ( preg_match( '/^#/', $url ) ) {
+				continue;
+			}
+
 			if ( ! preg_match( '/^(data:|https?:|\\/)/', $url ) ) {
 				// attempting to interpret GET-params makes no sense, so let's discard them for awhile.
 				$params = strrchr( $url, '?' );
@@ -314,6 +336,15 @@ trait CSSTrait {
 				continue;
 			}
 
+			if ( $this->check_cached_import( $import_path ) ) {
+				$search[]  = $match[0];
+				$replace[] = '';
+
+				continue;
+			}
+
+			$this->set_cached_import( $import_path );
+
 			// check if this is only valid for certain media.
 			if ( ! empty( $match['media'] ) ) {
 				$import_content = '@media ' . $match['media'] . '{' . $import_content . '}';
@@ -347,14 +378,16 @@ trait CSSTrait {
 			'/(?:@font-face)\s*{(?<value>[^}]+)}/i',
 			function ( $matches ) {
 				if ( preg_match( '/font-display:\s*(?<swap_value>\w*);?/i', $matches['value'], $attribute ) ) {
-					return 'swap' === strtolower( $attribute['swap_value'] )
-						? $matches[0]
-						: str_replace( $attribute['swap_value'], 'swap', $matches[0] );
-				} else {
-					$swap = "font-display:swap;{$matches['value']}";
+					if ( 'swap' === strtolower( $attribute['swap_value'] ) ) {
+						return $matches[0];
+					}
+
+					$swap = str_replace( $attribute['swap_value'], 'swap', $attribute[0] );
+
+					return preg_replace( '/font-display:\s*(?<swap_value>\w*);?/i', $swap, $matches[0] );
 				}
 
-				return str_replace( $matches['value'], $swap, $matches[0] );
+				return str_replace( $matches['value'], "font-display:swap;{$matches['value']}", $matches[0] );
 			},
 			$css_file_content
 		);
@@ -498,6 +531,64 @@ trait CSSTrait {
 		$site_url_components = wp_parse_url( site_url( '/' ) );
 
 		return $site_url_components['scheme'] . '://' . $site_url_components['host'] . '/' . $relative_url;
+	}
+
+	/**
+	 * Set cached import locally not to imported again.
+	 *
+	 * @param string $path Path to be cached.
+	 */
+	private function set_cached_import( string $path ) {
+		$real_path                          = rocket_realpath( $path );
+		$this->imports[ md5( $real_path ) ] = $real_path;
+	}
+
+	/**
+	 * Check if path imported before.
+	 *
+	 * @param string $path Path to be checked.
+	 *
+	 * @return bool
+	 */
+	private function check_cached_import( string $path ) : bool {
+		return isset( $this->imports[ md5( rocket_realpath( $path ) ) ] );
+	}
+
+	/**
+	 * Move charset to top of CSS file OR remove all charsets for internal CSS.
+	 *
+	 * @param string $content CSS content.
+	 * @param bool   $keep_first_charset Keep first charset if true, otherwise remove all charsets.
+	 *
+	 * @return string
+	 */
+	public function handle_charsets( string $content, bool $keep_first_charset = true ) : string {
+		$new_content = preg_replace_callback( '/@charset\s+["|\'](.*?)["|\'];?/i', [ $this, 'match_charsets' ], $content );
+
+		if ( ! $keep_first_charset ) {
+			return $new_content;
+		}
+
+		if ( is_null( $this->found_charset ) ) {
+			return $content;
+		}
+
+		return "@charset \"{$this->found_charset}\";" . $new_content;
+	}
+
+	/**
+	 * Match each charset on the CSS file.
+	 *
+	 * @param array $match Match array.
+	 *
+	 * @return string
+	 */
+	private function match_charsets( array $match ) : string {
+		if ( is_null( $this->found_charset ) ) {
+			$this->found_charset = $match[1];
+		}
+
+		return '';
 	}
 
 }

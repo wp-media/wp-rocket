@@ -20,22 +20,24 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	private        $post_id;
 	private static $user_id;
+	private $async_css;
+	private $async_css_mobile;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
 		unset( $GLOBALS['pagenow'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

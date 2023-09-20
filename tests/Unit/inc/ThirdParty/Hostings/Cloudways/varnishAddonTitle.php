@@ -1,9 +1,8 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Cloudways;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\Cloudways;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_addon_title
@@ -11,21 +10,22 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishAddonTitle extends TestCase {
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
-		Functions\stubTranslationFunctions();
+
+		$this->stubTranslationFunctions();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		// Reset after each test.
 		unset( $_SERVER['HTTP_X_VARNISH'] );
 		unset( $_SERVER['HTTP_X_APPLICATION'] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayVarnishTitleWithCloudways( $settings, $config_server,$expected ) {
 		if ( isset( $config_server['HTTP_X_VARNISH'] ) ) {
@@ -41,9 +41,5 @@ class Test_VarnishAddonTitle extends TestCase {
 			$expected,
 			$cloudways->varnish_addon_title( $settings )
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'varnishAddonTitle' );
 	}
 }

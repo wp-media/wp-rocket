@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the WP Rocket settings.
@@ -28,23 +28,25 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container.
+	 * Registers items with the container
 	 *
-	 * @since 3.3
+	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
-		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
-			->withArgument( $this->getContainer()->get( 'settings_page_config' ) )
-			->withArgument( $this->getContainer()->get( 'settings' ) )
-			->withArgument( $this->getContainer()->get( 'settings_render' ) )
-			->withArgument( $this->getContainer()->get( 'beacon' ) )
-			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->withArgument( $this->getContainer()->get( 'user_client' ) );
-		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'settings_page' ) );
+		$this->getContainer()->add( 'settings', Settings::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->add( 'settings_render', Render::class )
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
+		$this->getContainer()->add( 'settings_page', Page::class )
+			->addArgument( $this->getContainer()->get( 'settings_page_config' ) )
+			->addArgument( $this->getContainer()->get( 'settings' ) )
+			->addArgument( $this->getContainer()->get( 'settings_render' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
+			->addArgument( $this->getContainer()->get( 'user_client' ) )
+			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) );
+		$this->getContainer()->share( 'settings_page_subscriber', Subscriber::class )
+			->addArgument( $this->getContainer()->get( 'settings_page' ) )
+			->addTag( 'admin_subscriber' );
 	}
 }

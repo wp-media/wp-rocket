@@ -15,16 +15,16 @@ abstract class WPThemeTestcase extends FilesystemTestCase {
 
 	protected $child_theme;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

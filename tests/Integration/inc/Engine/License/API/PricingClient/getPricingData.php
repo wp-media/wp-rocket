@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\PricingClient;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -18,20 +17,24 @@ class GetPricingData extends TestCase {
 		'wp_rocket_pricing_timeout_active'
 	];
 
-	public function setUp() : void {
-		parent::setUp();
+	private $response;
+
+	public function set_up() {
+		parent::set_up();
 
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 
-		parent::tearDown();
+		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -39,6 +42,10 @@ class GetPricingData extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 		$client = new PricingClient();
+
+		$this->response = $config['response'];
+
+		add_filter( 'pre_http_request', [ $this, 'set_response' ] );
 
 		if ( true === $config['pricing-transient'] ) {
 			set_transient( 'wp_rocket_pricing', $expected['result'] );
@@ -52,26 +59,10 @@ class GetPricingData extends TestCase {
 			set_transient( 'wp_rocket_pricing_timeout_active', true, WEEK_IN_SECONDS );
 		}
 
-		if ( false === $config['timeout-active'] && false === $expected['result'] ) {
-			Functions\expect( 'wp_safe_remote_get' )
-				->once()
-				->with( PricingClient::PRICING_ENDPOINT )
-				->andReturn( $config['response'] );
-
-			$this->assertFalse( $client->get_pricing_data() );
-		} else {
-			$this->assertEquals(
-				array_keys( (array) $expected['result'] ),
-				array_keys( (array) $client->get_pricing_data() )
-			);
-
-			if ( false === $config['pricing-transient'] ) {
-				$this->assertEquals(
-					array_keys( (array) $expected['result'] ),
-					array_keys( (array) get_transient( 'wp_rocket_pricing' ) )
-				);
-			}
-		}
+		$this->assertEquals(
+			$expected['result'],
+			$client->get_pricing_data()
+		);
 
 		if ( false !== $config['timeout-duration'] ) {
 			$this->assertEquals(
@@ -79,5 +70,9 @@ class GetPricingData extends TestCase {
 				get_transient( 'wp_rocket_pricing_timeout' )
 			);
 		}
+	}
+
+	public function set_response() {
+		return $this->response;
 	}
 }

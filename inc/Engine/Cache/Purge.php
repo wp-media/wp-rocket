@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use DirectoryIterator;
 use Exception;
 use WP_Term;
@@ -19,12 +20,21 @@ class Purge {
 	private $filesystem;
 
 	/**
-	 * Initialize the class
+	 * Cache Query
+	 *
+	 * @var Cache
+	 */
+	protected $query;
+
+	/**
+	 * Initialize the class.
 	 *
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
+	 * @param Cache                $query Cache query instance.
 	 */
-	public function __construct( $filesystem ) {
+	public function __construct( $filesystem, Cache $query ) {
 		$this->filesystem = $filesystem;
+		$this->query      = $query;
 	}
 
 	/**
@@ -46,7 +56,11 @@ class Purge {
 	 * @param boolean $pagination Purge also pagination.
 	 * @return void
 	 */
-	private function purge_url( $url, $pagination = false ) {
+	public function purge_url( $url, $pagination = false ) {
+		if ( ! is_string( $url ) ) {
+			return;
+		}
+
 		global $wp_rewrite;
 
 		$parsed_url = $this->parse_url( $url );
@@ -160,10 +174,16 @@ class Purge {
 	 * @param WP_Post $post Post object.
 	 */
 	public function purge_post_terms_urls( WP_Post $post ) {
-		foreach ( $this->get_post_terms_urls( $post ) as $url ) {
-			$this->purge_url( $url );
+		$urls = $this->get_post_terms_urls( $post );
+		foreach ( $urls as $url ) {
+			$this->purge_url( $url, true );
 		}
-
+		/**
+		 * Action to preload urls after cleaning cache.
+		 *
+		 * @param array urls to preload.
+		 */
+		do_action( 'rocket_after_clean_terms', $urls );
 	}
 
 	/**
@@ -178,9 +198,21 @@ class Purge {
 	private function get_post_terms_urls( WP_Post $post ) {
 		$urls       = [];
 		$taxonomies = get_object_taxonomies( get_post_type( $post->ID ), 'objects' );
+		/**
+		 * Filters the taxonomies excluded from post purge
+		 *
+		 * @since 3.9.1
+		 *
+		 * @param array $excluded_taxonomies Array of excluded taxonomies names.
+		 */
+		$excluded_taxonomies = apply_filters( 'rocket_exclude_post_taxonomy', [] );
 
 		foreach ( $taxonomies as $taxonomy ) {
-			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			if (
+				! $taxonomy->public
+				||
+				in_array( $taxonomy->name, $excluded_taxonomies, true )
+			) {
 				continue;
 			}
 
@@ -211,6 +243,10 @@ class Purge {
 				}
 			}
 		}
+
+		// Remove entries with empty values in array.
+		$urls = array_filter( $urls, 'is_string' );
+
 		/**
 		 * Filter the list of taxonomies URLs
 		 *
@@ -219,5 +255,53 @@ class Purge {
 		 * @param array $urls List of taxonomies URLs
 		*/
 		return apply_filters( 'rocket_post_terms_urls', $urls );
+	}
+
+	/**
+	 * Purge single cache file(s) added in the Never Cache URL(s).
+	 *
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value An array of submitted values for the settings.
+	 * @return void
+	 */
+	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
+		// Bail out if cache_reject_uri key is not in the settings array.
+		if ( ! array_key_exists( 'cache_reject_uri', $old_value ) || ! array_key_exists( 'cache_reject_uri', $value ) ) {
+			return;
+		}
+
+		// Get change in uris.
+		$diff = array_diff( $value['cache_reject_uri'], $old_value['cache_reject_uri'] );
+
+		// Bail out if values has not changed.
+		if ( empty( $diff ) ) {
+			return;
+		}
+
+		$urls     = [];
+		$wildcard = '(.*)';
+		foreach ( $diff as $path ) {
+			// Check if string is a path or pattern.
+			if ( strpos( $path, $wildcard ) !== false ) {
+				$pattern = preg_replace( '#\(\.\*\).*#', '*', $path );
+				$results = $this->query->query(
+					[
+						'search'         => $pattern,
+						'search_columns' => [ 'url' ],
+						'status'         => 'completed',
+					]
+				);
+
+				foreach ( $results as $result ) {
+					$urls[] = $result->url;
+				}
+
+				continue;
+			}
+
+			// Get full url of never cache path.
+			$urls[] = home_url( $path );
+		}
+		rocket_clean_files( array_unique( $urls ) );
 	}
 }

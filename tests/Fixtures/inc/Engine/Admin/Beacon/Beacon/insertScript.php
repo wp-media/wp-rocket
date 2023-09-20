@@ -2,11 +2,13 @@
 
 return [
 	'test_data' => [
-		'testShouldEchoDefaultWithNulledLicense' => [
+		'testShouldEchoDefaultWithNulledLicense'      => [
 			'config'   => [
-				'locale'        => 'en_US',
-				'rtl'           => false,
-				'customer_data' => false,
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'en_US',
+				'rtl'              => false,
+				'customer_data'    => false,
 			],
 			'expected' => [
 				'data'   => [
@@ -14,7 +16,7 @@ return [
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108003}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -32,9 +34,11 @@ SCRIPT
 		],
 		'testShouldEchoDefaultWithUnavailableLicense' => [
 			'config'   => [
-				'locale'        => 'en_US',
-				'rtl'           => false,
-				'customer_data' => (object) [
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'en_US',
+				'rtl'              => false,
+				'customer_data'    => (object) [
 					'licence_account' => 'Unavailable',
 				],
 			],
@@ -44,7 +48,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108003}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -60,11 +64,13 @@ SCRIPT
 				,
 			],
 		],
-		'testShouldEchoDefaultWithSingleLicense' => [
+		'testShouldEchoDefaultWithSingleLicense'      => [
 			'config'   => [
-				'locale'        => 'en_US',
-				'rtl'           => false,
-				'customer_data' => (object) [
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'en_US',
+				'rtl'              => false,
+				'customer_data'    => (object) [
 					'licence_account' => 'Single',
 				],
 			],
@@ -74,7 +80,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108000}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -90,11 +96,13 @@ SCRIPT
 				,
 			],
 		],
-		'testShouldEchoDefaultWithPlusLicense' => [
+		'testShouldEchoDefaultWithPlusLicense'        => [
 			'config'   => [
-				'locale'        => 'en_US',
-				'rtl'           => false,
-				'customer_data' => (object) [
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'en_US',
+				'rtl'              => false,
+				'customer_data'    => (object) [
 					'licence_account' => 'Plus',
 				],
 			],
@@ -104,7 +112,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108001}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -120,11 +128,13 @@ SCRIPT
 				,
 			],
 		],
-		'testShouldEchoDefaultWithInfiniteLicense' => [
+		'testShouldEchoDefaultWithInfiniteLicense'    => [
 			'config'   => [
-				'locale'        => 'en_US',
-				'rtl'           => false,
-				'customer_data' => (object) [
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'en_US',
+				'rtl'              => false,
+				'customer_data'    => (object) [
 					'licence_account' => 'Infinite',
 				],
 			],
@@ -134,7 +144,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108002}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -150,11 +160,13 @@ SCRIPT
 				,
 			],
 		],
-		'testShouldEchoFR' => [
+		'testShouldEchoFR'                            => [
 			'config'   => [
-				'locale'        => 'fr_FR',
-				'rtl'           => false,
-				'customer_data' => false,
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'fr_FR',
+				'rtl'              => false,
+				'customer_data'    => false,
 			],
 			'expected' => [
 				'data'   => [
@@ -162,7 +174,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108003}]}',
-					'config' => '{"display":{"position":"right"}}',
+					'config'   => '{"display":{"position":"right"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -178,11 +190,13 @@ SCRIPT
 				,
 			],
 		],
-		'testShouldEchoBeaconOnLeftSide' => [
+		'testShouldEchoBeaconOnLeftSide'              => [
 			'config'   => [
-				'locale'        => 'ar',
-				'rtl'           => true,
-				'customer_data' => false,
+				'current_user_can' => true,
+				'white_label'      => false,
+				'locale'           => 'ar',
+				'rtl'              => true,
+				'customer_data'    => false,
 			],
 			'expected' => [
 				'data'   => [
@@ -190,7 +204,7 @@ SCRIPT
 					'identify' => '{"email":"dummy@wp-rocket.me","Website":"http:\/\/example.org"}',
 					'session'  => '{"Website":"http:\/\/example.org","WordPress Version":"5.4","WP Rocket Version":"3.6","Theme":"WordPress Default","Plugins Enabled":"","WP Rocket Active Options":""}',
 					'prefill'  => '{"fields":[{"id":21728,"value":108003}]}',
-					'config' => '{"display":{"position":"left"}}',
+					'config'   => '{"display":{"position":"left"}}',
 				],
 				'script' => <<<SCRIPT
 <script>!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});
@@ -205,6 +219,26 @@ window.addEventListener("hashchange", function () {
 SCRIPT
 				,
 			],
+		],
+		'testShouldNotEchoBeaconWhiteLabelAccount'              => [
+			'config'   => [
+				'current_user_can' => true,
+				'white_label'      => true,
+				'locale'           => 'ar',
+				'rtl'              => true,
+				'customer_data'    => false,
+			],
+			'expected' => null,
+		],
+		'testShouldNotEchoBeaconCurrentUserCantManage'              => [
+			'config'   => [
+				'current_user_can' => false,
+				'white_label'      => false,
+				'locale'           => 'ar',
+				'rtl'              => true,
+				'customer_data'    => false,
+			],
+			'expected' => null,
 		],
 	],
 ];

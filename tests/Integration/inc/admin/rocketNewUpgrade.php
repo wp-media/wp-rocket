@@ -1,9 +1,10 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\admin;
+namespace WP_Rocket\Tests\Integration\Inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers ::rocket_new_upgrade
@@ -12,6 +13,20 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group AdminOnly
  */
 class Test_RocketNewUpgrade extends TestCase {
+	use DBTrait;
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
 	public function testShouldRegenerateAdvancedCacheFile() {
 		Functions\expect( 'rocket_generate_advanced_cache_file' )
 			->atLeast()

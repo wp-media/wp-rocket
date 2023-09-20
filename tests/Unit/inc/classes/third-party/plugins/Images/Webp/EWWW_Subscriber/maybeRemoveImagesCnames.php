@@ -10,7 +10,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::::maybe_remove_images_cnames
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_cnames
  * @group  ThirdParty
  * @group  Webp
  */
@@ -112,7 +112,7 @@ class Test_MaybeRemoveImagesCnames extends TestCase {
 			->shouldReceive( 'get' )
 			->with( 'cdn_cnames', [] )
 			->andReturn( [ 'dns.example.com, all.example.com', 'evil.example.com' ] );
-		
+
 		$optionsData
 			->shouldReceive( 'get' )
 			->with( 'cdn_zone', [] )

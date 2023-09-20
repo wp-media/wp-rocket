@@ -11,10 +11,6 @@ abstract class SmushSubscriberTestCase extends TestCase {
 	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_SMUSH_PREFIX' )
-			->andReturn( 'wp-smush-' );
-
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Smush/SmushCoreSettings.php';
 	}
 

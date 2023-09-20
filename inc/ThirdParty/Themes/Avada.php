@@ -2,12 +2,18 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility class for Avada theme
  */
-class Avada implements Subscriber_Interface {
+class Avada extends ThirdpartyTheme {
+	/**
+	 * Theme name
+	 *
+	 * @var string
+	 */
+	protected static $theme_name = 'avada';
+
 	/**
 	 * Options instance
 	 *
@@ -23,27 +29,19 @@ class Avada implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_avada() ) {
+		if ( ! self::is_current_theme() ) {
 			return [];
 		}
-
 		return [
 			'avada_clear_dynamic_css_cache'        => 'clean_domain',
 			'rocket_exclude_defer_js'              => 'exclude_defer_js',
 			'rocket_maybe_disable_lazyload_helper' => 'maybe_disable_lazyload',
 			'fusion_cache_reset_after'             => 'clean_domain',
 			'update_option_fusion_options'         => [ 'maybe_deactivate_lazyload', 10, 2 ],
+			'rocket_wc_product_gallery_delay_js_exclusions' => 'exclude_delay_js',
+			'init'                                 => 'disable_compilers',
+			'rocket_lazyload_bg_images_regex'      => 'fix_regex_lazyload_bg_images',
 		];
-	}
-
-	/**
-	 * Check if is Avada theme.
-	 *
-	 * @return boolean
-	 */
-	private static function is_avada() {
-		$current_theme = wp_get_theme();
-		return 'avada' === strtolower( $current_theme->get( 'Name' ) ) || 'avada' === strtolower( $current_theme->get_template() );
 	}
 
 	/**
@@ -117,5 +115,47 @@ class Avada implements Subscriber_Interface {
 
 		$disable_images_lazyload[] = __( 'Avada', 'rocket' );
 		return $disable_images_lazyload;
+	}
+
+	/**
+	 * Excludes some Avada JS from delay JS execution  when WC product gallery has images
+	 *
+	 * @since 3.10.2
+	 *
+	 * @param array $exclusions Array of exclusion patterns.
+	 *
+	 * @return array
+	 */
+	public function exclude_delay_js( $exclusions ): array {
+		$base_path = wp_parse_url( get_stylesheet_directory_uri(), PHP_URL_PATH );
+
+		if ( empty( $base_path ) ) {
+			return $exclusions;
+		}
+
+		$exclusions[] = $base_path . '/includes/lib/assets/min/js/library/jquery.flexslider.js';
+		$exclusions[] = $base_path . '/assets/min/js/general/avada-woo-product-images.js';
+
+		return $exclusions;
+	}
+
+	/**
+	 * Disable CSS and JS combine file from Avada.
+	 */
+	public function disable_compilers() {
+		if ( $this->options->get( 'remove_unused_css', false ) && ! defined( 'FUSION_DISABLE_COMPILERS' ) ) {
+			define( 'FUSION_DISABLE_COMPILERS', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+		}
+	}
+
+	/**
+	 * Add a fix to the lazyload regex on background images.
+	 *
+	 * @param string $regex regex used to deleted background images.
+	 *
+	 * @return string
+	 */
+	public function fix_regex_lazyload_bg_images( $regex ) {
+		return '(--awb-)?' . $regex;
 	}
 }

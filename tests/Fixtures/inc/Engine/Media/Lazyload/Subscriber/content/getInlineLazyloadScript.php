@@ -52,7 +52,7 @@ $observer = 'window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 }, false);';
 
 $script_image = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload",
+	elements_selector: ".rocket-lazyload",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -94,7 +94,7 @@ $script_iframe = 'window.lazyLoadOptions = {
 };';
 
 $script_both = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
+	elements_selector: ".rocket-lazyload,iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -115,7 +115,7 @@ $script_both = 'window.lazyLoadOptions = {
 };';
 
 $script_custom_threshold = 'window.lazyLoadOptions = {
-	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
+	elements_selector: ".rocket-lazyload,iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -132,10 +132,11 @@ $script_custom_threshold = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	};';
+	}
+};';
 
-$script_native_lazyload = 'window.lazyLoadOptions = {
-	elements_selector: "[loading=lazy],img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
+$script_no_native_lazyload = 'window.lazyLoadOptions = {
+	elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",
 	data_src: "lazy-src",
 	data_srcset: "lazy-srcset",
 	data_sizes: "lazy-sizes",
@@ -152,14 +153,12 @@ $script_native_lazyload = 'window.lazyLoadOptions = {
 				}
 			}
 		}
-	},
-	use_native: true
-};';
+	};';
 
 return [
-	'script_image'            => "{$script_image}{$observer}",
-	'script_iframe'           => "{$script_iframe}{$observer}",
-	'script_both'             => "{$script_both}{$observer}",
-	'script_custom_threshold' => "{$script_custom_threshold}{$observer}",
-	'script_native_lazyload'  => "{$script_native_lazyload}{$observer}",
+	'script_image'              => "{$script_image}{$observer}",
+	'script_iframe'             => "{$script_iframe}{$observer}",
+	'script_both'               => "{$script_both}{$observer}",
+	'script_custom_threshold'   => "{$script_custom_threshold}{$observer}",
+	'script_no_native_lazyload' => "{$script_no_native_lazyload}{$observer}",
 ];

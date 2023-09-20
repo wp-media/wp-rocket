@@ -3,14 +3,11 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 
 use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
-use Mockery;
 use ReflectionMethod;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::find_wp_config_path
  * @uses   ::rocket_get_constant
  *
  * @group  WPCache

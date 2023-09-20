@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Capabilities;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service Provider for capabilities
@@ -25,13 +25,14 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Engine\Capabilities\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'capabilities_manager' ) );
+		$this->getContainer()->add( 'capabilities_manager', Manager::class );
+		$this->getContainer()->share( 'capabilities_subscriber', Subscriber::class )
+			->addArgument( $this->getContainer()->get( 'capabilities_manager' ) )
+			->addTag( 'common_subscriber' );
 	}
 }

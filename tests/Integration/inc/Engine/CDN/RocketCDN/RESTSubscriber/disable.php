@@ -34,8 +34,13 @@ class Test_Disable extends ApiTestCase {
 			],
 		];
 
+		$body_params = [
+			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+		];
+
 		// Request the "disable" endpoint.
-		$this->assertSame( $expected_response, $this->requestDisableEndpoint() );
+		$this->assertSame( $expected_response, $this->requestDisableEndpoint( $body_params ) );
 
 		$options = get_option( 'wp_rocket_settings' );
 		$expected = [

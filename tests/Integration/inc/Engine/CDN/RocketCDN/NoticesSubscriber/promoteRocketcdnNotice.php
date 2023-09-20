@@ -16,8 +16,8 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 class Test_PromoteRocketcdnNotice extends TestCase {
 	private $notice;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->notice ) ) {
 			$this->notice = $this->format_the_html( $this->config['notice'] );
@@ -61,7 +61,7 @@ class Test_PromoteRocketcdnNotice extends TestCase {
 		if ( $expected['should_display'] ) {
 			$this->assertContains( $this->notice, $actual );
 		} else {
-			$this->assertNotContains( $this->notice, $actual );
+			$this->assertStringNotContainsString( $this->notice, $actual );
 		}
 	}
 

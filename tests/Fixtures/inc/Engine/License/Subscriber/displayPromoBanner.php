@@ -6,6 +6,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => -1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -22,6 +23,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'last month' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -38,6 +40,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next week' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -54,6 +57,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -70,6 +74,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -81,11 +86,29 @@ return [
 		],
 		'expected' => '',
 	],
+	'testShouldReturnNullWhenLicenceBoughtLessThan14daysAgo' => [
+		'config' => [
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last week' ),
+			] ) ),
+			'pricing' => json_decode( json_encode( [
+				'promo' => [
+					'start_date' => strtotime( 'last week' ),
+					'end_date'   => strtotime( 'next week' ),
+				],
+			] ) ),
+			'transient' => false,
+		],
+		'expected' => '',
+	],
 	'testShouldDisplayBannerForSingleWhenPromoNotDismissed' => [
 		'config' => [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'licenses' => [
@@ -99,7 +122,7 @@ return [
 							],
 						],
 						'websites'    => 3,
-						
+
 					],
 					'infinite' => [
 						'prices'       => [
@@ -159,7 +182,7 @@ return [
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
-		Dismiss this notice.</span>
+		Dismiss this notice</span>
 		</button>
 		</div>',
 	],
@@ -168,6 +191,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 3,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'licenses' => [
@@ -181,7 +205,7 @@ return [
 							],
 						],
 						'websites'    => 3,
-						
+
 					],
 					'infinite' => [
 						'prices'       => [
@@ -241,7 +265,7 @@ return [
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
-		Dismiss this notice.</span>
+		Dismiss this notice</span>
 		</button>
 		</div>',
 	],

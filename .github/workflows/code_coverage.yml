@@ -1,0 +1,74 @@
+name: PHPUnit Code Coverage
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.4']
+        wp-versions: ['latest']
+
+    name: Code Coverage.
+
+    env:
+      WP_TESTS_DIR: "/tmp/tests/phpunit"
+      WP_CORE_DIR: "/tmp/wordpress-develop"
+      ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
+      ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
+      ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
+      ROCKETCDN_URL: ${{ secrets.ROCKETCDN_URL }}
+      ROCKETCDN_WEBSITE_ID: ${{ secrets.ROCKETCDN_WEBSITE_ID }}
+      ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
+      ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
+      ROCKET_CLOUDFLARE_API_KEY: ${{ secrets.ROCKET_CLOUDFLARE_API_KEY }}
+      ROCKET_CLOUDFLARE_EMAIL: ${{ secrets.ROCKET_CLOUDFLARE_EMAIL }}
+      ROCKET_CLOUDFLARE_SITE_URL: ${{ secrets.ROCKET_CLOUDFLARE_SITE_URL }}
+      ROCKET_CLOUDFLARE_ZONE_ID: ${{ secrets.ROCKET_CLOUDFLARE_ZONE_ID }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug
+        tools: composer:v2, phpunit
+
+    - name: Setup problem matchers for PHP
+      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+    - name: Setup problem matchers for PHPUnit
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Get composer cache directory
+      id: composercache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composercache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer install --no-interaction --no-scripts
+
+    - name: Code Coverage
+      run: composer code-coverage
+
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: tests/report/coverage.clover

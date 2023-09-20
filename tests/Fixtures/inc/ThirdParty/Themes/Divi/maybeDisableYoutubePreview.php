@@ -8,8 +8,7 @@ return [
 		'shouldNotDisableSettingWhenThemeNotDivi' => [
 			'config'   => [
 				'stylesheet' => 'twentytwenty',
-				'theme-name' => 'Twenty Twenty',
-				'is-child'   => '',
+				'template' => 'Twenty Twenty',
 				'set-lazy'   => 0,
 			],
 			'expected' => [
@@ -20,9 +19,7 @@ return [
 		'shouldNotDisableSettingWhenChildThemeNotDiviParent' => [
 			'config'   => [
 				'stylesheet'  => 'child-of-twentytwenty',
-				'theme-name'  => 'Child of Twenty Twenty',
-				'is-child'    => 'twentytwenty',
-				'parent-name' => 'Twenty Twenty',
+				'template'  => 'Child of Twenty Twenty',
 				'set-lazy'    => 0,
 			],
 			'expected' => [
@@ -33,8 +30,7 @@ return [
 		'shouldDisableSettingWhenThemeDivi' => [
 			'config'   => [
 				'stylesheet' => 'divi',
-				'theme-name' => 'Divi',
-				'is-child'   => '',
+				'template' => 'Divi',
 				'set-lazy'   => 1,
 			],
 			'expected' => [
@@ -47,9 +43,7 @@ return [
 		'shouldDisableSettingWhenChildThemeDiviParent' => [
 			'config'   => [
 				'stylesheet'  => 'divi-child',
-				'theme-name'  => 'Divi Child',
-				'is-child'    => 'divi',
-				'parent-name' => 'Divi',
+				'template'  => 'Divi',
 				'set-lazy'    => 1,
 			],
 			'expected' => [

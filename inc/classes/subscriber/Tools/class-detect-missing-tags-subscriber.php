@@ -147,18 +147,18 @@ class Detect_Missing_Tags_Subscriber implements Subscriber_Interface {
 
 		$msg  = '<b>' . __( 'WP Rocket: ', 'rocket' ) . '</b>';
 		$msg .= sprintf(
-			/* translators: %1$s = missing tags; */
+		/* translators: %1$s = missing tags; */
 			esc_html( _n( 'Failed to detect the following requirement in your theme: closing %1$s.', 'Failed to detect the following requirements in your theme: closing %1$s.', count( $notice ), 'rocket' ) ),
 			// translators: Documentation exists in EN, FR.
 			wp_sprintf_l( '%l', $notice )
 		);
 		$msg .= ' ' . sprintf(
 			/* translators: %1$s = opening link; %2$s = closing link */
-			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-			// translators: Documentation exists in EN, FR; use localized URL if applicable.
-			'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
-			'</a>'
-		);
+				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+				// translators: Documentation exists in EN, FR; use localized URL if applicable.
+				'<a href="' . esc_url( __( 'https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme', 'rocket' ) ) . '" rel="noopener noreferrer" target="_blank">',
+				'</a>'
+			);
 
 		\rocket_notice_html(
 			[

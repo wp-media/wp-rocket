@@ -61,6 +61,12 @@ class HeartbeatSubscriber implements Subscriber_Interface {
 		}
 
 		wp_deregister_script( 'heartbeat' );
+
+		/**
+		 * Enqueue an empty heartbeat script to prevent query monitor error
+		 * Added to the footer
+		 */
+		wp_enqueue_script( 'heartbeat', WP_ROCKET_ASSETS_JS_URL . 'heartbeat.js', null, WP_ROCKET_VERSION, true );
 	}
 
 	/**

@@ -41,6 +41,11 @@
             margin-top: 5px;
             @include font-size(36,36);
             color: $cOrange;
+
+			@include respond-to('xs') {
+				display: block;
+				position: initial;
+			}
         }
     }
 
@@ -51,6 +56,12 @@
             padding-left: $space*9;
             padding-right: $space*3;
             min-width: 340px;
+
+			@include respond-to('xs') {
+				padding-left: 0;
+				padding-right: 0;
+				min-width: auto;
+            }
         }
 
         &:last-child{
@@ -71,5 +82,7 @@
         font-style: normal;
         color: $cGreyDark2;
     }
-
+  	#wpr-update-exclusion-msg{
+		min-height: 20px;
+    }
 }

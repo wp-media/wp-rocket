@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
@@ -44,7 +44,9 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
-			$this->getContainer()->share( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() );
+			$this->getContainer()
+				->share( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() )
+				->addTag( 'hosting_subscriber' );
 		}
 	}
 }

@@ -12,8 +12,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_RocketIsPluginActiveForNetwork extends TestCase {
 	private $config;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();

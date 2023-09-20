@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -21,7 +22,7 @@ class Test_ExcludeJqueryCombine extends TestCase {
 		$this->donotrocketoptimize = $config['donotrocketoptimize'];
 
 		$options  = Mockery::mock( Options_Data::class );
-		$defer_js = new DeferJS( $options );
+		$defer_js = new DeferJS( $options, Mockery::mock( DataManager::class ) );
 
 		$options->shouldReceive( 'get' )
 			->atMost()

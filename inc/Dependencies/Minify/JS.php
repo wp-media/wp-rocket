@@ -124,7 +124,7 @@ class JS extends Minify
 	 */
 	public function __construct()
 	{
-		call_user_func_array(array('parent', '__construct'), func_get_args());
+		call_user_func_array(array('\\WP_Rocket\Dependencies\Minify\\Minify', '__construct'), func_get_args());
 
 		$dataDir = __DIR__.'/data/js/';
 		$options = FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES;
@@ -198,15 +198,25 @@ class JS extends Minify
 		// PHP only supports $this inside anonymous functions since 5.4
 		$minifier = $this;
 		$callback = function ($match) use ($minifier) {
-			$count = count($minifier->extracted);
-			$placeholder = '/*'.$count.'*/';
-			$minifier->extracted[$placeholder] = $match[0];
+			if (
+				substr($match[1], 0, 1) === '!' ||
+				strpos($match[1], '@license') !== false ||
+				strpos($match[1], '@preserve') !== false
+			) {
+				// preserve multi-line comments that start with /*!
+				// or contain @license or @preserve annotations
+				$count = count($minifier->extracted);
+				$placeholder = '/*'.$count.'*/';
+				$minifier->extracted[$placeholder] = $match[0];
 
-			return $placeholder;
+				return $placeholder;
+			}
+
+			return '';
 		};
+
 		// multi-line comments
-		$this->registerPattern('/\n?\/\*(!|.*?@license|.*?@preserve).*?\*\/\n?/s', $callback);
-		$this->registerPattern('/\/\*.*?\*\//s', '');
+		$this->registerPattern('/\n?\/\*(.*?)\*\/\n?/s', $callback);
 
 		// single-line comments
 		$this->registerPattern('/\/\/.*$/m', '');
@@ -254,7 +264,7 @@ class JS extends Minify
 		// of the RegExp methods (a `\` followed by a variable or value is
 		// likely part of a division, not a regex)
 		$keywords = array('do', 'in', 'new', 'else', 'throw', 'yield', 'delete', 'return',  'typeof');
-		$before = '([=:,;\+\-\*\/\}\(\{\[&\|!]|^|'.implode('|', $keywords).')\s*';
+		$before = '(^|[=:,;\+\-\*\/\}\(\{\[&\|!]|'.implode('|', $keywords).')\s*';
 		$propertiesAndMethods = array(
 			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Properties_2
 			'constructor',

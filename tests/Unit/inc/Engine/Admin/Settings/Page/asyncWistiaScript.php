@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Mockery;
-use Brain\Monkey\Functions;
-use WP_Rocket\Admin\Database\Optimization;
+use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Settings\Page;
 use WP_Rocket\Engine\Admin\Settings\Settings;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
@@ -33,7 +33,8 @@ class Test_AsyncWistiaScript extends TestCase {
 			Mockery::mock( 'WP_Rocket\Interfaces\Render_Interface'),
 			Mockery::mock( Beacon::class),
 			Mockery::mock( Optimization::class ),
-			Mockery::mock( UserClient::class )
+			Mockery::mock( UserClient::class ),
+			Mockery::mock( SiteList::class )
 		);
 
         $this->assertSame(

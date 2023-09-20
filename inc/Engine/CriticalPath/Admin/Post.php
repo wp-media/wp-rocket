@@ -59,6 +59,10 @@ class Post extends Abstract_Render {
 	 * @return void
 	 */
 	public function cpcss_section() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
 		];
@@ -74,6 +78,10 @@ class Post extends Abstract_Render {
 	 * @return void
 	 */
 	public function cpcss_actions() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		$data = [
 			'disabled'     => $this->is_enabled(),
 			'beacon'       => $this->beacon->get_suggest( 'async' ),
@@ -98,6 +106,10 @@ class Post extends Abstract_Render {
 	 */
 	public function enqueue_admin_edit_script( $page ) {
 		global $post, $pagenow;
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
 
 		// Bailout if the page is not Post / Page.
 		if ( ! in_array( $page, [ 'edit.php', 'post.php' ], true ) ) {
@@ -166,6 +178,10 @@ class Post extends Abstract_Render {
 			$this->disabled_data['option_excluded'] = 1;
 		}
 
+		if ( ! is_post_type_viewable( get_post_type( $post ) ) ) {
+			$this->disabled_data['not_viewable'] = 1;
+		}
+
 		return $this->disabled_data;
 	}
 
@@ -196,12 +212,16 @@ class Post extends Abstract_Render {
 			return '';
 		}
 
+		if ( isset( $disabled_data['not_viewable'] ) ) {
+			return __( 'This feature is not available for non-public post types.', 'rocket' );
+		}
+
 		$notice = __( '%l to use this feature.', 'rocket' );
 		$list   = [
 			// translators: %s = post type.
 			'not_published'   => sprintf( __( 'Publish the %s', 'rocket' ), $post->post_type ),
-			'option_disabled' => __( 'Enable Optimize CSS delivery in WP Rocket settings', 'rocket' ),
-			'option_excluded' => __( 'Enable Optimize CSS delivery in the options above', 'rocket' ),
+			'option_disabled' => __( 'Enable Load CSS asynchronously in WP Rocket settings', 'rocket' ),
+			'option_excluded' => __( 'Enable Load CSS asynchronously in the options above', 'rocket' ),
 		];
 
 		return wp_sprintf_l( $notice, array_intersect_key( $list, $disabled_data ) );

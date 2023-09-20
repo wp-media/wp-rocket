@@ -7,8 +7,8 @@
 //*/
 
 @mixin font-size($size, $line){
-    font-size: ($size / 16) + rem;
-    line-height: $line / $size;
+    font-size: calc($size / 16) + rem;
+    line-height: calc($line / $size);
 }
 
 

@@ -24,13 +24,13 @@ class Test_ProcessHandler extends FilesystemTestCase {
 	private $expected_items = [];
 	private $wpdb;
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
 	}
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->expected_items = [
@@ -48,7 +48,7 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['wpdb'] );
 
 		parent::tearDown();

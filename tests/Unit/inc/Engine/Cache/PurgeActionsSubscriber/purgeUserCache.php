@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
+ * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber::purge_user_cache
  * @group  purge_actions
  */
 class Test_PurgeUserCache extends TestCase {
@@ -56,7 +56,7 @@ class Test_PurgeUserCache extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->with( 'cache_logged_user', 0 )
 			->andReturn( 1 );
-	
+
 		$this->subscriber->purge_user_cache( 1 );
 	}
 }

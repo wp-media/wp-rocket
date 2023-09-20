@@ -31,7 +31,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 		$actual = $this->requestDisableEndpoint(
 			[
 				'email' => 'nulled@wp-rocket.me',
-				'key'   => '',
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 			]
 		);
 
@@ -46,7 +46,18 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	/**
@@ -55,7 +66,7 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 	public function testShouldReturnErrorWhenIncorrectKeyProvided() {
 		$actual = $this->requestDisableEndpoint(
 			[
-				'email' => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
 				'key'   => '0123456',
 			]
 		);
@@ -71,7 +82,18 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	/**
@@ -96,7 +118,18 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 			],
 		];
 
-		$this->assertArraySubset( $expected, $actual );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	/**
@@ -105,8 +138,8 @@ class Test_RegisterDisableRoute extends ApiTestCase {
 	public function testShouldReturnSuccessWhenCorrectDataProvided() {
 		$actual   = $this->requestDisableEndpoint(
 			[
-				'email' => '',
-				'key'   => '',
+				'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
+				'key'   => self::getApiCredential( 'ROCKET_KEY' ),
 			]
 		);
 		$expected = [

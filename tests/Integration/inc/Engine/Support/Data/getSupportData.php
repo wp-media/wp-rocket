@@ -14,20 +14,20 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_GetSupportData extends TestCase {
 	private $wp_version;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		global $wp_version;
 
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_version;
 
 		$wp_version = $this->wp_version;
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

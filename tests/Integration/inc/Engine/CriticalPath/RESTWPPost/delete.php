@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
@@ -14,6 +15,8 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  * @group  vfs
  */
 class Test_Delete extends RESTVfsTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
 
 	protected static $use_settings_trait = true;
@@ -25,24 +28,28 @@ class Test_Delete extends RESTVfsTestCase {
 	private $files;
 	private $options;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installFresh();
+
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tear_down_after_class() {
 		$admin = get_role( 'administrator' );
 		if ( ! static::$had_cap ) {
 			$admin->remove_cap( 'rocket_regenerate_critical_css' );
 		}
-		parent::tearDownAfterClass();
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
 	}

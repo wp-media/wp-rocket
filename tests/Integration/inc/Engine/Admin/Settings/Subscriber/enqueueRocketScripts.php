@@ -10,18 +10,18 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  SettingsPage
  */
 class Test_EnqueueRocketScripts extends AdminTestCase {
-    public function setUp() : void {
-        parent::setUp();
+    public function set_up() {
+        parent::set_up();
 
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );
     }
 
-    public function tearDown() {
-        parent::tearDown();
-
+    public function tear_down() {
         set_current_screen( 'front' );
 
         $this->removeRoleCap( 'administrator', 'rocket_manage_options' );
+
+		parent::tear_down();
     }
 
 	/**

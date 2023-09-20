@@ -1,8 +1,13 @@
 <?php
 namespace WP_Rocket\Engine\Deactivation;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Engine\Cache\AdvancedCache;
+use WP_Rocket\Engine\Cache\WPCache;
+use WP_Rocket\Engine\Capabilities\Manager;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 
 /**
  * Service Provider for the activation process.
@@ -24,6 +29,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -33,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 */
 	public function boot() {
 		$this->getContainer()
-			->inflector( 'WP_Rocket\Engine\Deactivation\DeactivationInterface' )
+			->inflector( DeactivationInterface::class )
 			->invokeMethod( 'deactivate', [] );
 	}
 
@@ -43,11 +49,20 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	public function register() {
 		$filesystem = rocket_direct_filesystem();
 
-		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->withArgument( $filesystem );
-		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
-			->withArgument( $filesystem );
+		$this->getContainer()->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
+		$this->getContainer()
+			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) )
+			->addArgument( $this->getContainer()->get( 'beacon' ) )
+			->addArgument( $this->getContainer()->get( 'cloudflare_plugin_facade' ) )
+			->addTag( 'common_subscriber' );
+
+		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
+			->addArgument( $filesystem );
+		$this->getContainer()->add( 'capabilities_manager', Manager::class );
+		$this->getContainer()->add( 'wp_cache', WPCache::class )
+			->addArgument( $filesystem );
 	}
 }

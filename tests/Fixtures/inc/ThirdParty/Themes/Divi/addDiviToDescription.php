@@ -4,7 +4,7 @@ return [
 	'shouldAddWhenDivi' => [
 		'config'   => [
 			'theme-name'     => 'Divi',
-			'theme-template' => '',
+			'theme-template' => 'Divi',
 			'disabled-items' => [
 				'Thing 1',
 				'Thing 2',
@@ -36,7 +36,7 @@ return [
 	'shouldNotAddWhenNotDivi' => [
 		'config'   => [
 			'theme-name'     => 'TwentyTwenty',
-			'theme-template' => '',
+			'theme-template' => 'TwentyTwenty',
 			'disabled-items' => [
 				'Thing 1',
 				'Thing 2',

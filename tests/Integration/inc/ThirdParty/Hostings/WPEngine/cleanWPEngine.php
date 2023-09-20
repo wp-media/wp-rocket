@@ -13,14 +13,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_CleanWPEngine extends TestCase {
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		WpeCommon::resetCounters();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		WpeCommon::resetCounters();
 	}

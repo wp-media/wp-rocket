@@ -7,7 +7,7 @@ $(document).ready(function(){
 	***/
 
 	var $notice = $('.wpr-notice');
-	var $noticeClose = $('.wpr-notice-close');
+	var $noticeClose = $('#wpr-congratulations-notice');
 
 	$noticeClose.on('click', function() {
 		wprCloseDashboardNotice();

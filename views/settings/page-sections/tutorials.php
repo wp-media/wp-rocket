@@ -16,20 +16,23 @@ $rocket_tutorials = [
 			'fj42vucf99' => __( 'Finding the Best Settings for Your Site', 'rocket' ),
 			'z1qxl7s2zn' => __( 'How to Check if WP Rocket is Caching Your Site', 'rocket' ),
 			'j042jylrre' => __( 'How to Measure the Speed of Your Site', 'rocket' ),
+			'803tlui8oi' => __( 'How Preloading Works', 'rocket' ),
 		],
 	],
 	[
-		'title'     => __( 'File Optimization', 'rocket' ),
+		'title'     => __( 'Passing the Core Web vitals', 'rocket' ),
+		'tutorials' => [
+			'fj7gs031q6' => __( 'How to improve LCP with WP Rocket', 'rocket' ),
+			'krqb7ckugp' => __( 'How to improve FID with WP Rocket', 'rocket' ),
+			'5wrdzcmj90' => __( 'How to improve CLS with WP Rocket', 'rocket' ),
+		],
+	],
+	[
+		'title'     => __( 'Troubleshooting', 'rocket' ),
 		'tutorials' => [
 			'frwm2xrksl' => __( 'Troubleshooting Display Issues with File Optimization', 'rocket' ),
 			'95z0cb0yxb' => __( 'How to Find the Right JavaScript to Exclude', 'rocket' ),
 			'9m1zg8p5wc' => __( 'How External Content Slows Your Site', 'rocket' ),
-		],
-	],
-	[
-		'title'     => __( 'Preload', 'rocket' ),
-		'tutorials' => [
-			'803tlui8oi' => __( 'How Preloading Works', 'rocket' ),
 		],
 	],
 	[

@@ -2,7 +2,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Cloudways;
 
 use WP_Rocket\ThirdParty\Hostings\Cloudways;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_ip
@@ -10,15 +10,15 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_VarnishIP extends TestCase {
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		// Reset after each test.
 		unset( $_SERVER['HTTP_X_VARNISH'] );
 		unset( $_SERVER['HTTP_X_APPLICATION'] );
+
+		parent::tearDown();
 	}
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnCloudwaysVarnishIP( $varnish_ip, $config_server, $expected ) {
 		if ( isset( $config_server['HTTP_X_VARNISH'] ) ) {
@@ -34,9 +34,5 @@ class Test_VarnishIP extends TestCase {
 			$expected,
 			$cloudways->varnish_ip( $varnish_ip )
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'varnishIP' );
 	}
 }

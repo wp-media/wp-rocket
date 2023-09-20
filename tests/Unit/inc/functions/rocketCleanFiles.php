@@ -24,30 +24,30 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketCleanFiles extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanFiles.php';
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass():  void {
 		parent::tearDownAfterClass();
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $GLOBALS['debug_fs'] );
+
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $config, $expected ) {
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
 			$GLOBALS['debug_fs'] = true;
 		}
@@ -55,7 +55,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
-			$this->doCleanFilesTest( $urls, $expected );
+			$this->doCleanFilesTest( $urls, $config, $expected );
 		}
 
 		// Run it.
@@ -71,7 +71,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		Functions\expect( 'rocket_rrmdir' )->never();
 	}
 
-	private function doCleanFilesTest( $urls, $expected ) {
+	private function doCleanFilesTest( $urls, $config, $expected ) {
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )

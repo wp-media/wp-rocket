@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -13,17 +14,24 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  ThirdParty
  */
 class Test_GetHostResolver extends TestCase {
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
+		unset( $_SERVER['GROUPONE_BRAND_NAME'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
+
+		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
+		Functions\when( 'wp_unslash' )
+			->returnArg();
+
+		Functions\when( 'sanitize_text_field' )
+			->returnArg();
+
 		switch ( $expected ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -34,13 +42,12 @@ class Test_GetHostResolver extends TestCase {
 			case 'spinupwp':
 				putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
 				break;
-			case 'wpengine':
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
-				break;
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'onecom':
+				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
 				break;
 			default:
 				break;

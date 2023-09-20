@@ -125,7 +125,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 *
 	 * @param \WP_REST_Request $request the WP REST Request object.
 	 *
-	 * @return string
+	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function enable( \WP_REST_Request $request ) {
 		$params = $request->get_body_params();
@@ -150,7 +150,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 *
 	 * @param \WP_REST_Request $request the WP Rest Request object.
 	 *
-	 * @return string
+	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function disable( \WP_REST_Request $request ) {
 		$this->cdn_options->disable();
@@ -176,7 +176,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
-		return $param === $this->options->get( 'consumer_email' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_email' );
 	}
 
 	/**
@@ -189,6 +189,6 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
-		return $param === $this->options->get( 'consumer_key' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
 	}
 }

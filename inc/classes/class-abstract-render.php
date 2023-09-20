@@ -118,14 +118,23 @@ abstract class Abstract_Render implements Render_Interface {
 				break;
 			case 'purge_cache':
 			case 'preload':
-			case 'rocket_purge_opcache':
 			case 'rocket_purge_cloudflare':
 			case 'rocket_purge_sucuri':
 			case 'rocket_rollback':
 			case 'rocket_export':
 			case 'rocket_generate_critical_css':
 			case 'rocket_purge_rocketcdn':
+			case 'rocket_clear_usedcss':
+				$referer = '';
+
+				if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+					$referer = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+					$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
+				}
+
 				$url = admin_url( 'admin-post.php?action=' . $action );
+
+				$url .= $referer;
 
 				if ( ! empty( $args['parameters'] ) ) {
 					$url = add_query_arg( $args['parameters'], $url );

@@ -15,24 +15,24 @@ class Test_FindWpconfigPath extends FilesystemTestCase {
 	private static $wp_cache;
 	private $config_file_name = null;
 
-	public static function setUpBeforeClass() : void {
+	public static function set_up_before_class() {
 		$container = apply_filters( 'rocket_container', null );
 
 		self::$wp_cache = $container->get( 'wp_cache' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->abspath = $this->filesystem->getUrl( $this->config['vfs_dir'] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if( ! is_null( $this->config_file_name ) ){
 			remove_filter( 'rocket_wp_config_name', [$this, 'changeWpconfigFileName'] );
 		}
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Test_FindWpconfigPath extends FilesystemTestCase {
 		$find_wpconfig_path->setAccessible( true );
 
         $actual = $find_wpconfig_path->invoke( self::$wp_cache );
-	
+
 		if ( false !== $actual ) {
 			$actual = $this->filesystem->getUrl( $actual );
 		}

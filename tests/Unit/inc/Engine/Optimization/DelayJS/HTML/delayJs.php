@@ -6,6 +6,8 @@ use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -13,23 +15,28 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group  Optimize
  * @group  DelayJS
  *
- * @uses   rocket_get_constant()
+ * @uses   ::rocket_get_constant()
  */
 class Test_DelayJs extends TestCase {
 	private $options;
+	private $data_manager;
+	protected $logger;
 
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
+		$this->data_manager = Mockery::mock( DataManager::class );
+		$this->logger = Mockery::mock(Logger::class);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldProcessScriptHTML( $config, $html, $expected ) {
-		$allowed_scripts           = isset( $config['allowed-scripts'] ) ? $config['allowed-scripts'] : [];
-		$this->donotrocketoptimize = isset( $config['donotoptimize'] ) ? $config['donotoptimize'] : false;
+		$this->donotrocketoptimize = $config['donotoptimize'];
+
+		$this->logger->allows()->debug(Mockery::any());
 
 		Functions\expect( 'rocket_bypass' )
 			->atMost()
@@ -42,26 +49,31 @@ class Test_DelayJs extends TestCase {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->never();
-
-			$this->options->shouldReceive( 'get' )
-				->with( 'delay_js_scripts', [] )
-				->never();
 		} else {
 			$this->options->shouldReceive( 'get' )
 				->with( 'delay_js', 0 )
 				->once()
-				->andReturn( $config['do-not-delay-setting'] );
+				->andReturn( $config['delay_js'] );
 
-			if ( $config['do-not-delay-setting'] ) {
-				$this->options->shouldReceive( 'get' )
-					->with( 'delay_js_scripts', [] )
-					->once()
-					->andReturn( $allowed_scripts );
-			}
+			$this->options->shouldReceive( 'get' )
+				->with( 'delay_js_exclusions', [] )
+				->atMost()
+				->once()
+				->andReturn( $config['delay_js_exclusions'] );
 
+			$this->options->shouldReceive( 'get' )
+				->with( 'delay_js_exclusions_selected_exclusions', [] )
+				->atMost()
+				->once()
+				->andReturn( [] );
+
+			$this->data_manager->shouldReceive( 'get_lists' )
+				->atMost()
+				->once()
+				->andReturn( $config['exclusions_list'] );
 		}
 
-		$delay_js_html = new HTML( $this->options );
+		$delay_js_html = new HTML( $this->options, $this->data_manager, $this->logger );
 
 		$this->assertSame(
 			$expected,

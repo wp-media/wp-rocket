@@ -4,9 +4,10 @@ $pricing = [
 	'single'=> json_decode( json_encode( [
 		'prices'=> [
 			'renewal'=> [
-				'is_grandfather'=> 24.5,
-				'not_grandfather'=> 34.3,
-				'is_expired'=> 39.2
+				'is_grandfather'=> 39.2,
+				'is_grandmother'=> 49,
+				'not_grandfather'=> 59,
+				'is_expired'=> 59
 			]
 		],
 		'websites'=> 1
@@ -14,9 +15,10 @@ $pricing = [
 	'plus'=> json_decode( json_encode( [
 		'prices'=> [
 			'renewal'=> [
-				'is_grandfather'=> 49.5,
-				'not_grandfather'=> 69.3,
-				'is_expired'=> 79.2
+				'is_grandfather'=> 79.2,
+				'is_grandmother'=> 99,
+				'not_grandfather'=> 119,
+				'is_expired'=> 119
 			]
 		],
 		'websites'=> 3
@@ -24,206 +26,438 @@ $pricing = [
 	'infinite'=> json_decode( json_encode( [
 		'prices'=> [
 			'renewal'=> [
-				'is_grandfather'=> 124.5,
-				'not_grandfather'=> 174.3,
-				'is_expired'=> 199.2
+				'is_grandfather'=> 199.2,
+				'is_grandmother'=> 249,
+				'not_grandfather'=> 299,
+				'is_expired'=> 299
 			]
 		],
 	] ) ),
 	'renewals' => json_decode( json_encode( [
-		'extra_days'=> 90,
-		'grandfather_date'=> 1567296000,
+		'extra_days'=> 15,
+		'grandfather_date'=> 1640995200,
+		'grandmother_date'=> 1672531200,
 		'discount_percent'=> [
-			'is_grandfather' => 50,
-			'not_grandfather'=> 30,
-			'is_expired'     => 20,
+			'is_grandfather' => 20,
+			'not_grandfather'=> 0,
+			'is_expired'     => 0,
 		],
 	] ) ),
 ];
 
 return [
-	'testShouldReturnNullWhenLicenseIsNotExpired' => [
+	'shouldReturnNullWhenLicenseIsNotExpired' => [
 		'config'   => [
 			'user' => [
 				'licence_account'    => 1,
 				'licence_expired'    => false,
 				'licence_expiration' => strtotime( 'next year' ),
+				'auto_renew' => false,
 			],
+			'ocd' => false,
 			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => null,
 	],
-	'testShouldReturnNullWhenBannerDismissed' => [
+	'shouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
 			'user' => [
 				'licence_account'    => 1,
 				'licence_expired'    => true,
 				'licence_expiration' => strtotime( 'last year' ),
+				'auto_renew' => false,
 			],
+			'ocd' => false,
 			'transient' => true,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => null,
 	],
-	'testShouldReturnDataWhenLicenseExpiredForMoreThan90DaysAndSingleAndNotGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceLessThan15DaysAndGrandfathered' => [
 		'config'   => [
-			'user' => [
+			'user'      => [
 				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last year' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => false,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => strtotime( 'now + 5 days' ),
 		],
 		'expected' => [
-			'discount_percent' => 20,
-			'discount_price'   => 39.2,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'disabled_date' => strtotime( 'now + 5 days' ),
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndSingleAndNotGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceLessThan15DaysAndGrandmothered' => [
 		'config'   => [
-			'user' => [
+			'user'      => [
 				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2022-01-10' ),
+				'auto_renew' => false,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => strtotime( 'now + 5 days' ),
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 34.3,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$10 OFF</strong> immediately: you will only pay <strong>$49</strong>!',
+				'disabled_date' => strtotime( 'now + 5 days' ),
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndSingleAndGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceLessThan15DaysAndNotGrandfathered' => [
 		'config'   => [
-			'user' => [
+			'user'      => [
 				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( '2019/08/01' ),
+				'creation_date'      => strtotime( 'next year' ),
+				'auto_renew' => false,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => strtotime( 'now + 5 days' ),
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 24.5,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+				'disabled_date' => strtotime( 'now + 5 days' ),
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForMoreThan90DaysAndPlusAndNotGrandfathered' => [
+	'testShouldReturnNullWhenOCDEnabledAndLicenseExpiredSinceLessThan4AndAutoRenewEnabled' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => 3,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last year' ),
+				'licence_expiration' => strtotime( 'now - 3 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => true,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => null,
+	],
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceLessThan15DaysAndGrandfatheredAndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 10 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => true,
+			],
+			'ocd' => true,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => strtotime( 'now + 5 days' ),
 		],
 		'expected' => [
-			'discount_percent' => 20,
-			'discount_price'   => 79.2,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+				'disabled_date' => strtotime( 'now + 5 days' ),
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndPlusAndNotGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceLessThan15DaysAndNotGrandfatheredAndAutoRenewEnabled' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => 3,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( 'next year' ),
+				'auto_renew' => true,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => strtotime( 'now + 5 days' ),
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 69.3,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+				'disabled_date' => strtotime( 'now + 5 days' ),
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndPlusAndGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceMoreThan15Days' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => 3,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 20 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( '2019/08/01' ),
+				'creation_date'      => strtotime( '2021-01-10' ),
+				'auto_renew' => true,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 49.5,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner-ocd-disabled',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForMoreThan90DaysAndInfiniteAndNotGrandfathered' => [
+	'testShouldReturnDataWhenOCDEnabledAndLicenseExpiredSinceMoreThan90Days' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => -1,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last year' ),
+				'licence_expiration' => strtotime( 'now - 100 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2021-01-10' ),
+				'auto_renew' => true,
 			],
+			'ocd' => true,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => [
-			'discount_percent' => 20,
-			'discount_price'   => 199.2,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndInfiniteAndNotGrandfathered' => [
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndGrandfathered' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => -1,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => false,
 			],
+			'ocd' => false,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 174.3,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+			],
 		],
 	],
-	'testShouldReturnDataWhenLicenseExpiredForLessThan90DaysAndInfiniteAndGrandfathered' => [
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndGrandmothered' => [
 		'config'   => [
-			'user' => [
-				'licence_account'    => -1,
+			'user'      => [
+				'licence_account'    => 1,
 				'licence_expired'    => true,
-				'licence_expiration' => strtotime( 'last week' ),
+				'licence_expiration' => strtotime( 'now - 10 days' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( '2019/08/01' ),
+				'creation_date'      => strtotime( '2022-01-10' ),
+				'auto_renew' => false,
 			],
+			'ocd' => false,
 			'transient' => false,
-			'pricing'   => $pricing,
+			'pricing' => $pricing,
+			'disabled_date' => '',
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 124.5,
-			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$10 OFF</strong> immediately: you will only pay <strong>$49</strong>!',
+			],
+		],
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndNotGrandfathered' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 10 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'next year' ),
+				'auto_renew' => false,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
+		],
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceMoreThan15Days' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 20 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-12-10' ),
+				'auto_renew' => false,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
+		],
+	],
+	'testShouldReturnNullWhenOCDDisabledAndLicenseExpiredSinceLessThan4AndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 3 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => null,
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndGrandfatheredAndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 10 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-01-01' ),
+				'auto_renew' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$19.8 OFF</strong> immediately: you will only pay <strong>$39.2</strong>!',
+			],
+		],
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndGrandmotheredAndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 10 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2022-01-10' ),
+				'auto_renew' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now and get <strong>$10 OFF</strong> immediately: you will only pay <strong>$49</strong>!',
+			],
+		],
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceLessThan15DaysAndNotGrandfatheredAndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 10 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'next year' ),
+				'auto_renew' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
+		],
+	],
+	'testShouldReturnDataWhenOCDDisabledAndLicenseExpiredSinceMoreThan15DaysAndAutoRenewEnabled' => [
+		'config'   => [
+			'user'      => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'now - 20 days' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-01-10' ),
+				'auto_renew' => true,
+			],
+			'ocd' => false,
+			'transient' => false,
+			'pricing' => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'renewal-expired-banner',
+			'data' => [
+				'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'message' => 'Renew your license for 1 year now at <strong>$59</strong>.',
+			],
 		],
 	],
 ];

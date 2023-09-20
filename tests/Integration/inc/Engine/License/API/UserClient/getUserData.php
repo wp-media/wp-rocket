@@ -2,9 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\UserClient;
 
-use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\ApiTrait;
-use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -13,14 +11,15 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group License
  * @group AdminOnly
  */
-class GetUserData extends TestCase {
+class Test_GetUserData extends TestCase {
 	use ApiTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
 	private static $client;
+	private $response;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 
@@ -29,19 +28,20 @@ class GetUserData extends TestCase {
 		self::$client = $container->get( 'user_client' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'wp_rocket_customer_data' );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
+		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -52,31 +52,14 @@ class GetUserData extends TestCase {
 			set_transient( 'wp_rocket_customer_data', $expected );
 		}
 
-		if ( false === $expected ) {
-			Functions\expect( 'wp_safe_remote_post' )
-			->once()
-			->with(
-				UserClient::USER_ENDPOINT,
-				[
-					'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
-				]
-			)
-			->andReturn( $config['response'] );
+		$this->response = $config['response'];
 
-			$this->assertFalse( self::$client->get_user_data() );
-		} else {
-			$this->assertEquals(
-				array_keys( (array) $expected ),
-				array_keys( (array) self::$client->get_user_data() )
-			);
+		add_filter( 'pre_http_request', [ $this, 'set_response' ] );
 
-			if ( false === $config['transient'] ) {
-				$this->assertEquals(
-					array_keys( (array) $expected ),
-					array_keys( (array) get_transient( 'wp_rocket_customer_data' ) )
-				);
-			}
-		}
+		$this->assertEquals(
+			$expected,
+			self::$client->get_user_data()
+		);
 	}
 
 	public function set_consumer_email() {
@@ -85,5 +68,9 @@ class GetUserData extends TestCase {
 
 	public function set_consumer_key() {
 		return self::getApiCredential( 'ROCKET_KEY' );
+	}
+
+	public function set_response() {
+		return $this->response;
 	}
 }

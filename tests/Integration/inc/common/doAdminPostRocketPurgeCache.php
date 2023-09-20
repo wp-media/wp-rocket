@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\Inc\Common;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -26,6 +27,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AdminOnly
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
+	use DBTrait;
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 	protected static $original_transients = [];
 	protected static $user_id;
@@ -44,22 +46,30 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		foreach ( self::$original_transients as $transient => $value ) {
 			set_transient( $transient, $value, HOUR_IN_SECONDS );
 		}
+
+		self::uninstallAll();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->set_permalink_structure( '/%postname%/' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['tonya'] );
 

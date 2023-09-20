@@ -1,20 +1,37 @@
 <?php
+
 return [
-	'settings' => [
-		'delay_js' => 1,
+	'testShouldNotUpdateOptionWhenVersionAbove3.9' => [
+		'options'       => [
+			'delay_js'            => 1,
+			'delay_js_exclusions' => [],
+		],
+		'old_version'   => '3.10',
+		'expected'      => [
+			'delay_js'            => 1,
+			'delay_js_exclusions' => [],
+		],
 	],
-	'test_data' => [
-		'ShouldUpdateOptionWithVersion3_7' => [
-			'old_version' => '3.7',
-			'valid_version' => true
+	'testShouldNotUpdateOptionWhenDelayJSEquals0'  => [
+		'options'       => [
+			'delay_js' => 0,
 		],
-		'ShouldUpdateOptionWithVersionAbove3_7' => [
-			'old_version' => '3.9',
-			'valid_version' => false
+		'old_version'   => '3.8',
+		'expected'      => [
+			'delay_js'            => 0,
+			'delay_js_exclusions' => [],
 		],
-		'ShouldNotUpdateOptionWithVersionBelow3_7' => [
-			'old_version' => '3.5',
-			'valid_version' => true
+	],
+	'testShouldUpdateOptionWhenVersionBelow3.9AndDelayJSEquals1' => [
+		'options'       => [
+			'delay_js'              => 1,
+			'minify_concatenate_js' => 1,
 		],
-	],	
+		'old_version'   => '3.8',
+		'expected'      => [
+			'delay_js'              => 1,
+			'minify_concatenate_js' => 0,
+			'delay_js_exclusions'   => [],
+		],
+	],
 ];

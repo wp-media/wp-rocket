@@ -14,11 +14,11 @@ class Test_CleanHome extends TestCase {
 	private $filter;
 	private $option;
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option' ] );
 		remove_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

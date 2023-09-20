@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\Renewal;
@@ -29,9 +30,13 @@ class DisplayRenewalSoonBanner extends TestCase {
 			[
 				$this->pricing,
 				$this->user,
+				Mockery::mock( Options_Data::class ),
 				'views',
 			]
 		);
+
+		$this->stubEscapeFunctions();
+		$this->stubTranslationFunctions();
 	}
 
 	/**
@@ -42,55 +47,43 @@ class DisplayRenewalSoonBanner extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['user']['licence_expired'] );
-		
+
 		$this->user->shouldReceive( 'is_auto_renew' )
 			->atMost()
 			->once()
 			->andReturn( $config['user']['auto_renew'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->andReturn( $config['user']['licence_expiration'] );
 
 		if ( ! is_null( $expected ) ) {
 			$this->user->shouldReceive( 'get_license_type' )
-				->atMost()
-				->once()
 				->andReturn( $config['user']['licence_account'] );
 
 			$this->user->shouldReceive( 'get_renewal_url' )
 				->atMost()
 				->once()
 				->andReturn( $config['user']['renewal_url'] );
-			
+
 			$this->user->shouldReceive( 'get_creation_date' )
 				->andReturn( $config['user']['creation_date'] );
-			
+
 			$this->pricing->shouldReceive( 'get_renewals_data' )
 				->andReturn( $config['pricing']['renewals'] );
 
 			$this->pricing->shouldReceive( 'get_single_websites_count' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['single']->websites );
 
 			$this->pricing->shouldReceive( 'get_plus_websites_count' )
-				->atMost()
-				->twice()
 				->andReturn( $config['pricing']['plus']->websites );
-			
+
 			$this->pricing->shouldReceive( 'get_single_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['single'] );
 
 			$this->pricing->shouldReceive( 'get_plus_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['plus'] );
 
 			$this->pricing->shouldReceive( 'get_infinite_pricing' )
-				->atMost()
-				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
 			Functions\when( 'number_format_i18n' )->returnArg();

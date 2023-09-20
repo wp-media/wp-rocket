@@ -2,16 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\EwwwSubscriber;
 
-use Brain\Monkey\Actions;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
+use Brain\Monkey\{Actions, Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::::load_hooks
+ * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::load_hooks
  * @group  ThirdParty
  * @group  Webp
  */
@@ -19,10 +17,9 @@ class Test_LoadHooks extends TestCase {
 
 	public function testShouldRegisterHooksWhenCacheIsDisabledByOption() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$optionsData
-			->shouldReceive( 'get' )
-			->with( 'cache_webp' )
-			->andReturn( 0 );
+		$optionsData->expects()->get( 'cache_webp' )
+			->once()
+			->andReturns( 0 );
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
 
@@ -33,9 +30,8 @@ class Test_LoadHooks extends TestCase {
 
 	public function testShouldRegisterHooksWhenPluginNotAvailable() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$optionsData
-			->shouldReceive( 'get' )
-			->with( 'cache_webp' )
+		$optionsData->expects()->get( 'cache_webp' )
+			->once()
 			->andReturn( 1 );
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
@@ -59,9 +55,8 @@ class Test_LoadHooks extends TestCase {
 
 	public function testShouldCallCallbacksWhenDidAction() {
 		$optionsData = Mockery::mock( Options_Data::class );
-		$optionsData
-			->shouldReceive( 'get' )
-			->with( 'cache_webp' )
+		$optionsData->expects()->get( 'cache_webp' )
+			->once()
 			->andReturn( 1 );
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
@@ -80,9 +75,8 @@ class Test_LoadHooks extends TestCase {
 		global $ewww_get_option;
 
 		$optionsData = Mockery::mock( Options_Data::class );
-		$optionsData
-			->shouldReceive( 'get' )
-			->with( 'cache_webp' )
+		$optionsData->expects()->get( 'cache_webp' )
+			->once()
 			->andReturn( 1 );
 
 		Functions\When( 'plugin_basename' )->justReturn( 'ewww-image-optimizer/ewww-image-optimizer.php' );

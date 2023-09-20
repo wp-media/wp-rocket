@@ -5,6 +5,7 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 24.5,
+				'is_grandmother'=> 24.5,
 				'not_grandfather'=> 34.3,
 				'is_expired'=> 39.2
 			]
@@ -15,6 +16,7 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 49.5,
+				'is_grandmother'=> 49.5,
 				'not_grandfather'=> 69.3,
 				'is_expired'=> 79.2
 			]
@@ -25,6 +27,7 @@ $pricing = [
 		'prices'=> [
 			'renewal'=> [
 				'is_grandfather'=> 124.5,
+				'is_grandmother'=> 124.5,
 				'not_grandfather'=> 174.3,
 				'is_expired'=> 199.2
 			]
@@ -33,10 +36,11 @@ $pricing = [
 	'renewals' => json_decode( json_encode( [
 		'extra_days'=> 90,
 		'grandfather_date'=> 1567296000,
+		'grandmother_date'=> 1672389000,
 		'discount_percent'=> [
-			'is_grandfather' => 50,
-			'not_grandfather'=> 30,
-			'is_expired'     => 20,
+			'is_grandfather' => 20,
+			'not_grandfather'=> 0,
+			'is_expired'     => 0,
 		],
 	] ) ),
 ];
@@ -90,14 +94,31 @@ return [
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( 'this year' ),
 			],
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 34.3,
 			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will only pay <strong>$34.3</strong>!',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+		],
+	],
+	'testShouldReturnDataWhenLicenseAndSingleAndGrandmothered' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2022-05-12' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew with a <strong>$9.8 discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -114,8 +135,8 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 24.5,
+			'message' => 'Renew with a <strong>$9.8 discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
+
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
@@ -128,14 +149,13 @@ return [
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( 'this year' ),
 			],
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 69.3,
 			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will only pay <strong>$69.3</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -152,9 +172,26 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 49.5,
 			'countdown'        => $countdown,
+			'message' => 'Renew with a <strong>$19.8 discount</strong> before it is too late, you will only pay <strong>$49.5</strong>!',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+		],
+	],
+	'testShouldReturnDataWhenLicenseInfiniteAndGrandmothered' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => -1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2022-05-12' ),
+			],
+			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew with a <strong>$49.8 discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -166,14 +203,13 @@ return [
 				'auto_renew'         => false,
 				'licence_expiration' => strtotime( 'next week' ),
 				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-				'creation_date'      => strtotime( 'last year' ),
+				'creation_date'      => strtotime( 'this year' ),
 			],
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 30,
-			'discount_price'   => 174.3,
 			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will only pay <strong>$174.3</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -190,9 +226,8 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'discount_percent' => 50,
-			'discount_price'   => 124.5,
 			'countdown'        => $countdown,
+			'message' => 'Renew with a <strong>$49.8 discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],

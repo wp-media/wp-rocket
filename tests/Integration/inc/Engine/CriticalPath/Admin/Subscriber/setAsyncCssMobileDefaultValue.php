@@ -15,16 +15,17 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
     use ProviderTrait;
 	protected static $provider_class = 'Settings';
 
-    public function setUp() : void {
-        parent::setUp();
+    public function set_up() {
+        parent::set_up();
 
-        remove_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+	    $this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'set_async_css_mobile_default_value', 12 );
     }
 
-    public function tearDown() {
-        parent::tearDown();
+    public function tear_down() {
 
-        add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade' );
+		parent::tear_down();
+
+	    $this->restoreWpFilter( 'wp_rocket_upgrade' );
     }
 
 	/**

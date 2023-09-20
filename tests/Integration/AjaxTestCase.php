@@ -13,19 +13,22 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $transients         = [];
 
 	protected $config;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
+
+		self::installFresh();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -35,13 +38,13 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
+	public static function tear_down_after_class() {
+		self::resetAdminCap();
 
-		CapTrait::resetAdminCap();
+		self::uninstallAll();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {
@@ -51,32 +54,36 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
-		$this->stubRocketGetConstant();
+		self::removeDBHooks();
 
-		parent::setUp();
+		$this->stubRocketGetConstant();
 
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $_POST['action'], $_POST['nonce'] );
 		$this->action = null;
-		CapTrait::resetAdminCap();
-
-		parent::tearDown();
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
 	}
 
 	public function configTestData() {
