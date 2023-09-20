@@ -51,6 +51,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'actionscheduler_admin_subscriber', ActionSchedulerSubscriber::class );
 		$this->getContainer()->share( 'post_edit_options_subscriber', PostEditOptionsSubscriber::class )
 			->addArgument( $options )
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/metaboxes' )
 			->addTag( 'admin_subscriber' );
 	}
 }

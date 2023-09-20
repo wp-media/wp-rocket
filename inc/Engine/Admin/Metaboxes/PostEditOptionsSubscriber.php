@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\Metaboxes;
 
+use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class PostEditOptionsSubscriber implements Subscriber_Interface {
+class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_Interface {
 	/**
 	 * Options instance
 	 *
@@ -18,8 +19,11 @@ class PostEditOptionsSubscriber implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param Options_Data $options Options instance.
+	 * @param string       $template_path Path to the views.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->options = $options;
 	}
 
@@ -82,70 +86,51 @@ class PostEditOptionsSubscriber implements Subscriber_Interface {
 		}
 
 		global $post, $pagenow;
-		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
-		?>
 
-		<div class="misc-pub-section">
-			<?php
-				$reject_current_uri = false;
-			if ( 'post-new.php' !== $pagenow ) {
-				$path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
+		$excluded_url = false;
 
-				if ( in_array( $path, $this->options->get( 'cache_reject_uri', [] ), true ) ) {
-					$reject_current_uri = true;
-				}
+		if ( 'post-new.php' !== $pagenow ) {
+			$path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
+
+			if ( in_array( $path, $this->options->get( 'cache_reject_uri', [] ), true ) ) {
+				$excluded_url = true;
 			}
-			?>
-			<input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php esc_html_e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php esc_html_e( 'Never cache this page', 'rocket' ); ?></label>
-		</div>
+		}
 
-		<div class="misc-pub-section">
-			<p><?php esc_html_e( 'Activate these options on this post:', 'rocket' ); ?></p>
-			<?php
-			$original_fields = [];
+		$original_fields = [];
 
-			/**
-			 * WP Rocket Metabox fields on post edit page.
-			 *
-			 * @param string[] $original_fields Metaboxes fields.
-			 */
-			$fields = apply_filters( 'rocket_meta_boxes_fields', $original_fields );
-
-			if ( ! is_array( $fields ) ) {
-				$fields = $original_fields;
-			}
-
-			foreach ( $fields as $field => $label ) {
-				$disabled = disabled( ! $this->options->get( $field ), true, false );
-				// translators: %s is the name of the option.
-				$title   = $disabled ? ' title="' . esc_attr( sprintf( __( 'Activate first the %s option.', 'rocket' ), $label ) ) . '"' : '';
-				$class   = $disabled ? ' class="rkt-disabled"' : '';
-				$checked = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';
-				?>
-
-				<input name="rocket_post_exclude_hidden[<?php echo esc_attr( $field ); ?>]" type="hidden" value="on">
-				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>>
-				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo $title; ?><?php echo $class; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>><?php echo esc_html( $label ); ?></label><br>
-
-				<?php
-			}
-			?>
-
-			<p class="rkt-note">
-			<?php
-			// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-			printf( esc_html__( '%1$sNote:%2$s None of these options will be applied if this post has been excluded from cache in the global cache settings.', 'rocket' ), '<strong>', '</strong>' );
-			?>
-			</p>
-		</div>
-
-		<?php
 		/**
-		 * Fires after WP Rocket’s metabox.
+		 * WP Rocket Metabox fields on post edit page.
 		 *
-		 * @since 3.6
+		 * @param string[] $original_fields Metaboxes fields.
 		 */
-		do_action( 'rocket_after_options_metabox' );
+		$fields = apply_filters( 'rocket_meta_boxes_fields', $original_fields );
+
+		if ( ! is_array( $fields ) ) {
+			$fields = $original_fields;
+		}
+
+		$fields_attributes = [];
+
+		foreach ( $fields as $field => $label ) {
+			$disabled = disabled( ! $this->options->get( $field ), true, false );
+
+			$fields_attributes[ $field ]['id']    = $field;
+			$fields_attributes[ $field ]['label'] = $label;
+			// translators: %s is the name of the option.
+			$fields_attributes[ $field ]['title']    = $disabled ? ' title="' . esc_attr( sprintf( __( 'Activate first the %s option.', 'rocket' ), $label ) ) . '"' : '';
+			$fields_attributes[ $field ]['class']    = $disabled ? ' class="rkt-disabled"' : '';
+			$fields_attributes[ $field ]['checked']  = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';
+			$fields_attributes[ $field ]['disabled'] = $disabled;
+		}
+
+		echo $this->generate(  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			'post_edit_options',
+			[
+				'excluded_url' => $excluded_url,  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				'fields'       => $fields_attributes,  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			]
+		);
 	}
 
 	/**
