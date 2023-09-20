@@ -53,7 +53,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
-			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 14, 2 ],
+			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 		];
 	}
 
