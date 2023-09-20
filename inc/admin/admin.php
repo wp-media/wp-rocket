@@ -467,7 +467,7 @@ function rocket_handle_settings_import() {
 			$settings['cache_webp'] = 0;
 		}
 
-		if ( rocket_should_enable_caching_mobile_files( $settings ) ) {
+		if ( version_compare( $settings['version'], '3.16', '>=' ) && $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'] ) {
 			$settings['do_caching_mobile_files'] = 1;
 		}
 
@@ -486,13 +486,3 @@ function rocket_handle_settings_import() {
 	}
 }
 add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );
-
-/**
- * Returns whether separate files for mobile cache should be enabled.
- *
- * @param array $settings Imported settings.
- * @return boolean
- */
-function rocket_should_enable_caching_mobile_files( $settings ) : bool {
-	return version_compare( $settings['version'], '3.16', '>=' ) && $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'];
-}
