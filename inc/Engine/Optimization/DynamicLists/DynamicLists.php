@@ -151,6 +151,8 @@ class DynamicLists extends Abstract_Render {
 			 * Fires after saving all dynamic lists files.
 			 *
 			 * @since 3.12.1
+			 *
+			 * @param bool $should_purge Should purge status based on the updated providers.
 			 */
 			do_action( 'rocket_after_save_dynamic_lists', $should_purge );
 		}
