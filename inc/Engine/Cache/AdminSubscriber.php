@@ -77,7 +77,6 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
 			],
-			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
 			'rocket_after_save_import' => 'maybe_regenerate_advanced_cache',
 		];
 	}
@@ -263,7 +262,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.15', '>=' ) ) {
+		if ( version_compare( $old_version, '3.16', '>=' ) ) {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
