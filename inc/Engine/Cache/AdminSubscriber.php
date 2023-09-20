@@ -61,18 +61,18 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	public static function get_subscribed_events() {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		return [
-			'admin_init'            => [
+			'admin_init'               => [
 				[ 'register_terms_row_action' ],
 				[ 'maybe_set_wp_cache' ],
 			],
-			'admin_notices'         => [
+			'admin_notices'            => [
 				[ 'notice_advanced_cache_permissions' ],
 				[ 'notice_wp_config_permissions' ],
 			],
-			"update_option_{$slug}" => [ 'maybe_set_wp_cache', 12 ],
-			'site_status_tests'     => 'add_wp_cache_status_test',
-			'wp_rocket_upgrade'     => [ 'on_update', 10, 2 ],
-			'rocket_domain_changed' => [
+			"update_option_{$slug}"    => [ 'maybe_set_wp_cache', 12 ],
+			'site_status_tests'        => 'add_wp_cache_status_test',
+			'wp_rocket_upgrade'        => [ 'on_update', 10, 2 ],
+			'rocket_domain_changed'    => [
 				[ 'regenerate_configs' ],
 				[ 'delete_old_configs' ],
 				[ 'clear_cache', 10, 2 ],
@@ -271,7 +271,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	/**
 	 * Regenerate the advanced cache file after imported settings if do_caching_mobile_files is disabled and cach_mobile is enabled.
 	 *
-	 * @param array $settings
+	 * @param array $settings Imported settings.
 	 * @return void
 	 */
 	public function maybe_regenerate_advanced_cache( array $settings ) : void {
