@@ -2,8 +2,7 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, OptionSubscriber, Settings};
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
@@ -33,6 +32,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	protected $provides = [
 		'rucss_settings',
 		'rucss_database',
+		'rucss_option_subscriber',
 		'rucss_admin_subscriber',
 		'rucss_frontend_api_client',
 		'rucss_used_css',
@@ -75,6 +75,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
 
+		$this->getContainer()->share( 'rucss_option_subscriber', OptionSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );
 		$this->getContainer()->share( 'rucss_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )

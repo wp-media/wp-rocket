@@ -31,6 +31,7 @@ class AdminSubscriber implements Subscriber_Interface {
 		return [
 			'rocket_first_install_options' => 'add_defer_js_option',
 			'wp_rocket_upgrade'            => [ 'exclude_jquery_defer', 14, 2 ],
+			'rocket_meta_boxes_fields'     => [ 'add_meta_box', 5 ],
 		];
 	}
 
@@ -62,5 +63,18 @@ class AdminSubscriber implements Subscriber_Interface {
 		}
 
 		$this->defer_js->exclude_jquery_upgrade();
+	}
+
+	/**
+	 * Add the field to the WP Rocket metabox on the post edit page.
+	 *
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_meta_box( array $fields ) {
+		$fields['defer_all_js'] = __( 'Load JavaScript deferred', 'rocket' );
+
+		return $fields;
 	}
 }

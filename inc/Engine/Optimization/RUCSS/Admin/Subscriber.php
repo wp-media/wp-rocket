@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -63,8 +62,6 @@ class Subscriber implements Subscriber_Interface {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'            => 'add_options_first_time',
-			'rocket_input_sanitize'                   => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
@@ -235,33 +232,6 @@ class Subscriber implements Subscriber_Interface {
 		 * @since 3.11
 		 */
 		do_action( 'rocket_after_clean_used_css' );
-	}
-
-	/**
-	 * Add the RUCSS options to the WP Rocket options array.
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $options WP Rocket options array.
-	 *
-	 * @return array
-	 */
-	public function add_options_first_time( $options ): array {
-		return $this->settings->add_options( $options );
-	}
-
-	/**
-	 * Sanitizes RUCSS options values when the settings form is submitted
-	 *
-	 * @since 3.9
-	 *
-	 * @param array         $input    Array of values submitted from the form.
-	 * @param AdminSettings $settings Settings class instance.
-	 *
-	 * @return array
-	 */
-	public function sanitize_options( $input, AdminSettings $settings ): array {
-		return $this->settings->sanitize_options( $input, $settings );
 	}
 
 	/**
