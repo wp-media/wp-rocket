@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CriticalPath\Admin;
 
@@ -59,6 +60,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'enqueue_admin_cpcss_heartbeat_script' ],
 			],
 			'rocket_admin_bar_items'             => 'add_regenerate_menu_item',
+			'rocket_meta_boxes_fields'           => [ 'add_meta_box', 3 ],
 		];
 	}
 
@@ -185,5 +187,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_regenerate_menu_item( $wp_admin_bar ) {
 		$this->admin->add_regenerate_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Add the field to the WP Rocket metabox on the post edit page.
+	 *
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_meta_box( array $fields ) {
+		$fields['async_css'] = __( 'Load CSS asynchronously', 'rocket' );
+
+		return $fields;
 	}
 }
