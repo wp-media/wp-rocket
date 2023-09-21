@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'uncode',
 		'xstore',
 		'themify',
+		'shoptimizer',
 	];
 
 	/**
@@ -73,5 +74,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'themify', Themify::class )
 			->addArgument( $options );
 
+		$this->getContainer()->share( 'shoptimizer', Shoptimizer::class );
 	}
 }

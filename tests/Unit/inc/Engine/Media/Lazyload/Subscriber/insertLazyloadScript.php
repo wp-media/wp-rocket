@@ -3,14 +3,11 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Lazyload\Subscriber;
 
 use Mockery;
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
-use WP_Rocket\Dependencies\RocketLazyload\Assets;
-use WP_Rocket\Dependencies\RocketLazyload\Image;
-use WP_Rocket\Dependencies\RocketLazyload\Iframe;
+use Brain\Monkey\{Filters, Functions};
+use WP_Rocket\Dependencies\RocketLazyload\{Assets, Image, Iframe};
 use WP_Rocket\Admin\Options_Data;
-use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Engine\Media\Lazyload\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
@@ -23,7 +20,7 @@ class Test_InsertLazyloadScript extends TestCase {
 	private $options;
 	private $subscriber;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->assets  = Mockery::mock( Assets::class );
@@ -44,25 +41,28 @@ class Test_InsertLazyloadScript extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldInsertLazyloadScript( $config, $expected ) {
+		$this->script_debug = true;
+		$this->donotrocketoptimize = isset( $config['is_not_rocket_optimize'] ) ? $config['is_not_rocket_optimize'] : false;
+		$this->rest_request = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
+
 		$options = $config['options'];
 		$is_admin           = isset( $config['is_admin'] )           ? $config['is_admin']           : false;
 		$is_feed            = isset( $config['is_feed'] )            ? $config['is_feed']            : false;
 		$is_preview         = isset( $config['is_preview'] )         ? $config['is_preview']         : false;
 		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
-		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
-		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+		$donotcachepage     = isset( $config['donotcachepage'] ) ? $config['donotcachepage'] : false;
 
 		Functions\when( 'is_admin' )->justReturn( $is_admin );
 		Functions\when( 'is_feed' )->justReturn( $is_feed );
 		Functions\when( 'is_preview' )->justReturn( $is_preview );
 		Functions\when( 'is_search' )->justReturn( $is_search );
 		Functions\expect( 'rocket_get_constant' )
-			->with('REST_REQUEST', 'DONOTLAZYLOAD', 'DONOTROCKETOPTIMIZE', 'WP_ROCKET_ASSETS_JS_URL')
-			->andReturn( $is_rest_request, !$is_lazy_load, !$is_rocket_optimize, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
+			->with( 'DONOTLAZYLOAD', 'DONOTCACHEPAGE', 'WP_ROCKET_ASSETS_JS_URL' )
+			->andReturn(! $is_lazy_load, $donotcachepage, 'http://example.org/wp-content/plugins/wp-rocket/assets/' );
 
 		foreach ( $options as $key => $value ) {
 			$this->options->shouldReceive( 'get' )
@@ -76,7 +76,7 @@ class Test_InsertLazyloadScript extends TestCase {
 
 		$this->assets->shouldReceive( 'insertLazyloadScript' )
 			->zeroOrMoreTimes()
-			->andReturnUsing( function() use ( $expected ) {
+			->andReturnUsing( function () use ( $expected ) {
 				echo $expected['unit']['script'];
 			} );
 
@@ -103,9 +103,5 @@ class Test_InsertLazyloadScript extends TestCase {
 			$this->format_the_html( $expected['unit']['result'] ),
 			$this->getActualHtml()
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'insertLazyloadScript' );
 	}
 }
