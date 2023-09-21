@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use ThirdParty\Plugins\PageBuilder\Elementor\ElementorTestTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
@@ -15,10 +16,7 @@ use wpdb;
  * @group  HealthCheck
  */
 class Test_ClearRelatedPostCache extends TestCase {
-    private $elementor;
-	private $wpdb;
-    private $options;
-    private $used_css;
+	use ElementorTestTrait;
 
 	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
@@ -36,9 +34,6 @@ class Test_ClearRelatedPostCache extends TestCase {
 			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 		}
 
-        $this->options = Mockery::mock( Options_Data::class );
-        $this->used_css = Mockery::mock( UsedCSS::class );
-		$this->elementor = new Elementor( $this->options, null, Mockery::mock( HTML::class ), $this->used_css );
 		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
 	}
 
@@ -64,7 +59,7 @@ class Test_ClearRelatedPostCache extends TestCase {
             Functions\expect( 'get_post_status' )
                 ->twice()
                 ->andReturn( $config['post_status'] );
-                
+
             foreach ( $config['results'] as $result ) {
                 if ( 'publish' === $config['post_status'] ) {
                     $this->options->shouldReceive( 'get' )

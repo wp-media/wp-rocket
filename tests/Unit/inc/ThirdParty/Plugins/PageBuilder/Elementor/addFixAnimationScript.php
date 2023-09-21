@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
 use Mockery;
+use ThirdParty\Plugins\PageBuilder\Elementor\ElementorTestTrait;
 use WP_Filesystem_Direct;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Admin\Options_Data;
@@ -18,37 +19,7 @@ use Brain\Monkey\Functions;
  */
 class Test_addFixAnimationScript extends TestCase {
 
-    /**
-     * @var Options_Data
-     */
-    protected $options;
-
-    protected $filesystem;
-
-    /**
-     * @var HTML
-     */
-    protected $delayjs_html;
-
-    /**
-     * @var UsedCSS
-     */
-    protected $used_css;
-
-    /**
-     * @var Elementor
-     */
-    protected $elementor;
-
-    public function set_up() {
-        parent::set_up();
-        $this->options = Mockery::mock(Options_Data::class);
-        $this->filesystem = Mockery::mock(WP_Filesystem_Direct::class);
-        $this->delayjs_html = Mockery::mock(HTML::class);
-        $this->used_css = Mockery::mock(UsedCSS::class);
-
-        $this->elementor = new Elementor($this->options, $this->filesystem, $this->delayjs_html, $this->used_css);
-    }
+   use ElementorTestTrait;
 
     /**
      * @dataProvider configTestData

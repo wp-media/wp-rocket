@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PageBuilder\Elementor;
 
 use Mockery;
 use Brain\Monkey\Functions;
+use ThirdParty\Plugins\PageBuilder\Elementor\ElementorTestTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
@@ -16,15 +17,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
  * @group ThirdParty
  */
 class Test_ExcludeJs extends TestCase {
-	private $options;
-	private $elementor;
-
-	public function setUp(): void {
-		parent::setUp();
-
-		$this->options   = Mockery::mock( Options_Data::class );
-		$this->elementor = new Elementor( $this->options, null, Mockery::mock( HTML::class ), Mockery::mock( UsedCSS::class ) );
-	}
+	use ElementorTestTrait;
 
 	/**
 	 * @dataProvider configTestData

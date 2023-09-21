@@ -10,7 +10,7 @@ return [
 			'remove_unused_css' => true,
 			'user_id' => 10,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			],
 			'change' => true,
 		],
@@ -31,7 +31,7 @@ return [
 			'remove_unused_css' => true,
 			'user_id' => 10,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			],
 			'change' => false,
 		],
@@ -39,7 +39,7 @@ return [
 			'user_id' => 10,
 			'transient' => false,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			]
 		]
     ],
@@ -53,7 +53,7 @@ return [
 			'remove_unused_css' => false,
 			'user_id' => 10,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			],
 			'change' => false,
 		],
@@ -61,7 +61,7 @@ return [
 			'user_id' => 10,
 			'transient' => false,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			]
 		]
 	],
@@ -75,7 +75,7 @@ return [
 			'remove_unused_css' => true,
 			'user_id' => 10,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			],
 			'change' => false,
 		],
@@ -83,7 +83,7 @@ return [
 			'user_id' => 10,
 			'transient' => false,
 			'boxes' => [
-				'maybe_clear_cache_change_notice' => true
+				'maybe_clear_cache_change_notice'
 			]
 		]
 	],
