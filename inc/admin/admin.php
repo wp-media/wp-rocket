@@ -447,8 +447,8 @@ function rocket_handle_settings_import() {
 	rocket_direct_filesystem()->delete( $file['file'] );
 
 	if ( is_array( $settings ) ) {
-		$options_api     = new WP_Rocket\Admin\Options( 'wp_rocket_' );
-		$current_options = $options_api->get( 'settings', [] );
+		$options_api        = new WP_Rocket\Admin\Options( 'wp_rocket_' );
+		$current_options    = $options_api->get( 'settings', [] );
 		$regenerate_configs = false;
 
 		$settings['consumer_key']     = $current_options['consumer_key'];
@@ -470,7 +470,7 @@ function rocket_handle_settings_import() {
 
 		if ( $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'] ) {
 			$settings['do_caching_mobile_files'] = 1;
-			$regenerate_configs = true;
+			$regenerate_configs                  = true;
 		}
 
 		$options_api->set( 'settings', $settings );
