@@ -1,32 +1,22 @@
 <?php
-
-$input = file_get_contents(__DIR__ . '/HTML/input.html');
-$output = file_get_contents(__DIR__ . '/HTML/output.html');
-$output_added = file_get_contents(__DIR__ . '/HTML/output_added.html');
 return [
-	'AddScript' => [
+	'shouldDisplayNotice' => [
 		'config' => [
-			'html' => $input,
-			'script' => 'script',
-			'is_allowed' => true,
+			'boxes' => [],
+			'user_id' => 10,
+			'can' => true,
+			'transient' => true,
+			'notice' => true,
 		],
-		'expected' => $output_added
-	],
-	'NotAllowedShouldReturnSame' => [
-		'config' => [
-			'html' => $input,
-			'script' => 'script',
-			'is_allowed' => false,
-		],
-		'expected' => $output
-	],
-	'NoScriptShould' => [
-		'config' => [
-			'html' => $input,
-			'script' => false,
-			'is_allowed' => true,
-		],
-		'expected' => $output
+		'expected' => [
+			'notice' => [
+				'status'         => 'warning',
+				'dismissible'    => '',
+				'dismiss_button' => 'maybe_clear_cache_change_notice',
+				'message'        => '<strong>WP Rocket:</strong> Your Elementor template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.',
+				'action'         => 'elementor_clear_usedcss',
+			]
+		]
 	],
 
 ];
