@@ -2,18 +2,37 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15\n"
+"Project-Id-Version: WP Rocket 3.15.1-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
-"Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) "
-"<contact@wp-media.me>\n"
+"Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-28T12:32:53+03:00\n"
+"POT-Creation-Date: 2023-09-25T14:39:29+03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: rocket\n"
+
+#. Plugin Name of the plugin
+msgid "WP Rocket"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wp-rocket.me"
+msgstr ""
+
+#. Description of the plugin
+msgid "The best WordPress performance plugin."
+msgstr ""
+
+#. Author of the plugin
+msgid "WP Media"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://wp-media.me"
+msgstr ""
 
 #. Translators: %s = Hosting name.
 #: inc/3rd-party/hosting/flywheel.php:18
@@ -398,70 +417,6 @@ msgstr ""
 #: inc/common/admin-bar.php:147
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:67
-msgid "WP Rocket Options"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:96
-msgid "Never cache this page"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:100
-msgid "Activate these options on this post:"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:103
-msgid "LazyLoad for images"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:104
-msgid "LazyLoad for iframes/videos"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:105
-msgid "Minify CSS"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:106
-#: inc/Engine/Admin/Settings/Page.php:736
-msgid "Remove Unused CSS"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:107
-msgid "Minify/combine JS"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:108
-#: inc/deprecated/deprecated.php:1773
-#: inc/Engine/Admin/Settings/Page.php:1586
-#: inc/Engine/Admin/Settings/Page.php:1597
-msgid "CDN"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:109
-#: inc/Engine/Admin/Settings/Page.php:765
-msgid "Load CSS asynchronously"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:110
-msgid "Defer JS"
-msgstr ""
-
-#: inc/admin/ui/meta-boxes.php:111
-#: inc/Engine/Admin/Settings/Page.php:907
-msgid "Delay JavaScript execution"
-msgstr ""
-
-#. translators: %s is the name of the option.
-#: inc/admin/ui/meta-boxes.php:130
-msgid "Activate first the %s option."
-msgstr ""
-
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/admin/ui/meta-boxes.php:146
-msgid "%1$sNote:%2$s None of these options will be applied if this post has been excluded from cache in the global cache settings."
 msgstr ""
 
 #. translators: %1$s WP Rocket plugin name; %2$s = file name.
@@ -850,6 +805,33 @@ msgstr ""
 msgid "Preload the sitemap from the Jetpack plugin"
 msgstr ""
 
+#: inc/deprecated/3.15.php:28
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
+msgid "WP Rocket Options"
+msgstr ""
+
+#: inc/deprecated/3.15.php:57
+#: views/metaboxes/post_edit_options.php:19
+msgid "Never cache this page"
+msgstr ""
+
+#: inc/deprecated/3.15.php:61
+#: views/metaboxes/post_edit_options.php:23
+msgid "Activate these options on this post:"
+msgstr ""
+
+#. translators: %s is the name of the option.
+#: inc/deprecated/3.15.php:81
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:121
+msgid "Activate first the %s option."
+msgstr ""
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/deprecated/3.15.php:97
+#: views/metaboxes/post_edit_options.php:38
+msgid "%1$sNote:%2$s None of these options will be applied if this post has been excluded from cache in the global cache settings."
+msgstr ""
+
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
 msgstr ""
@@ -968,6 +950,13 @@ msgstr ""
 
 #: inc/deprecated/deprecated.php:1772
 msgid "Static Files"
+msgstr ""
+
+#: inc/deprecated/deprecated.php:1773
+#: inc/Engine/Admin/Settings/Page.php:1586
+#: inc/Engine/Admin/Settings/Page.php:1597
+#: inc/Engine/CDN/Admin/Subscriber.php:28
+msgid "CDN"
 msgstr ""
 
 #: inc/deprecated/deprecated.php:1774
@@ -1301,6 +1290,11 @@ msgstr ""
 msgid "Optimize CSS Delivery features are disabled on local environments. %1$sLearn more%2$s"
 msgstr ""
 
+#: inc/Engine/Admin/Settings/Page.php:736
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr ""
+
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:739
 msgid "Removes unused CSS per page and helps to reduce page size and HTTP requests. Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
@@ -1316,6 +1310,11 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:750
 msgid "Specify CSS filenames, IDs or classes that should not be removed (one per line)."
+msgstr ""
+
+#: inc/Engine/Admin/Settings/Page.php:765
+#: inc/Engine/CriticalPath/Admin/Subscriber.php:200
+msgid "Load CSS asynchronously"
 msgstr ""
 
 #. translators: %1$s = plugin name.
@@ -1387,6 +1386,7 @@ msgid "<strong>3rd Party:</strong> Use either the full URL path or only the doma
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:876
+#: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr ""
 
@@ -1398,6 +1398,11 @@ msgstr ""
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:891
 msgid "Specify URLs or keywords of JavaScript files to be excluded from defer (one per line). %1$sMore info%2$s"
+msgstr ""
+
+#: inc/Engine/Admin/Settings/Page.php:907
+#: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
+msgid "Delay JavaScript execution"
 msgstr ""
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -2141,10 +2146,14 @@ msgid "RocketCDN cache purge successful."
 msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerEnableRoute.php:302
 msgid "RocketCDN enabled"
 msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php:31
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerDisableRoute.php:147
 msgid "RocketCDN disabled"
 msgstr ""
 
@@ -2218,7 +2227,7 @@ msgstr ""
 msgid "Speed up your website with RocketCDN, WP Rocket’s Content Delivery Network!"
 msgstr ""
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:265
 msgid "Every minute"
 msgstr ""
 
@@ -2602,7 +2611,15 @@ msgstr ""
 msgid "You can use WP Rocket on more websites by upgrading your license (you will only pay the price difference between your current and new licenses)."
 msgstr ""
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:45
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
+msgid "LazyLoad for images"
+msgstr ""
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:63
+msgid "LazyLoad for iframes/videos"
+msgstr ""
+
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
 msgid "LazyLoad CSS backgrounds"
 msgstr ""
 
@@ -2622,19 +2639,19 @@ msgstr ""
 msgid "You need an active license to get the latest version of the lists from our server."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:115
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
 msgid "Could not get updated lists from server."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:125
 msgid "Lists are up to date."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:133
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
 msgid "Could not update lists."
 msgstr ""
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:142
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
 msgid "Lists are successfully updated."
 msgstr ""
 
@@ -2648,6 +2665,14 @@ msgstr ""
 
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
 msgid "Incompatible plugins Lists"
+msgstr ""
+
+#: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
+msgid "Minify/combine JavaScript"
+msgstr ""
+
+#: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:150
+msgid "Minify CSS"
 msgstr ""
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
@@ -2698,12 +2723,12 @@ msgid "%1$s: Could not create the %2$s table in the database which is necessary 
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:314
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:336
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:308
 msgid "%1$s: Used CSS cache cleared!"
 msgstr ""
 
@@ -2921,35 +2946,35 @@ msgid "Your installation seems to be missing core Kinsta files managing Cache cl
 msgstr ""
 
 #. translators: %1$s = plugin name.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:125
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:127
 msgid "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:168
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
 msgid "Your site is using the official Cloudflare plugin. We have enabled Cloudflare auto-purge for compatibility. If you have APO activated, it is also compatible."
 msgstr ""
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
 msgid "Cloudflare cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date."
 msgstr ""
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:213
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
 msgid "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO is not yet compatible with that feature."
 msgstr ""
 
 #. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:219
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:221
 msgid "You should either disable Cloudflare APO or check with the theme/plugin requiring the use of “Dynamic Cookies Cache” developers for an alternative way to be page-cache friendly. %1$sMore info%2$s"
 msgstr ""
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s = opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:270
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:272
 msgid "%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
 msgstr ""
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:291
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
 msgid "%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare APO. If you judge it necessary for the website to have a different cache on mobile and desktop, we suggest you enable our “Separate Cache Files for Mobiles Devices” to ensure the generated cache is accurate."
 msgstr ""
 
