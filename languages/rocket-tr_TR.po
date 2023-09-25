@@ -36,7 +36,7 @@ msgstr "En iyi WordPress performans eklentisi."
 
 #. Author of the plugin
 msgid "WP Media"
-msgstr "WP Ortamı"
+msgstr "WP Media"
 
 #. Author URI of the plugin
 msgid "https://wp-media.me"
