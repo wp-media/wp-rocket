@@ -102,8 +102,9 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		$response = [];
-		$success  = false;
+		$response     = [];
+		$success      = false;
+		$should_purge = false;
 
 		foreach ( $this->providers as $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
@@ -141,6 +142,8 @@ class DynamicLists extends Abstract_Render {
 				'data'    => '',
 				'message' => __( 'Lists are successfully updated.', 'rocket' ),
 			];
+
+			$should_purge |= $provider->clear_cache ?? true;
 		}
 
 		if ( $success ) {
@@ -148,8 +151,10 @@ class DynamicLists extends Abstract_Render {
 			 * Fires after saving all dynamic lists files.
 			 *
 			 * @since 3.12.1
+			 *
+			 * @param bool $should_purge Should purge status based on the updated providers.
 			 */
-			do_action( 'rocket_after_save_dynamic_lists' );
+			do_action( 'rocket_after_save_dynamic_lists', $should_purge );
 		}
 
 		return $response;

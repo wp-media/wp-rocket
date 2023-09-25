@@ -24,6 +24,7 @@ return [
 			'async_css'                   => 0,
 			'critical_css'                => '',
 			'lazyload'                    => 0,
+			'lazyload_css_bg_img'         => 0,
 			'lazyload_iframes'            => 0,
 			'lazyload_youtube'            => 0,
 			'minify_css'                  => 0,
