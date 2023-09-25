@@ -6,7 +6,8 @@
   "scripts": {
 	"test": "echo \"Error: no test specified\" && exit 1",
 	"build": "gulp watch",
-	"prod": "gulp run:build && gulp sass_all_unmin"
+	"prod": "gulp run:build && gulp sass_all_unmin",
+	"makepot": "wp i18n make-pot . languages/rocket.pot --headers='{\"Report-Msgid-Bugs-To\":\"http://wp-rocket.me/\",\"Last-Translator\": \"WP Media (http://wp-rocket.me/)\", \"Language-Team\": \"WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\"}'"
   },
   "author": "",
   "license": "ISC",

@@ -1862,7 +1862,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1088
 msgid "Enable for CSS background images"
-msgstr "Activer pour les images de backgrounds CSS"
+msgstr "Activer pour les images background CSS"
 
 #: inc/Engine/Admin/Settings/Page.php:1103
 msgid "Enable for iframes and videos"
@@ -3368,7 +3368,7 @@ msgstr ""
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:45
 msgid "LazyLoad CSS backgrounds"
-msgstr "LazyLoad des backgrounds CSS"
+msgstr "LazyLoad background CSS"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"

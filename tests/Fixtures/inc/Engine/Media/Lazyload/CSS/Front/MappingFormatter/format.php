@@ -18,11 +18,13 @@ return [
         'expected' => [
 			[
 				'selector' => '#first_id',
-        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}'
+        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => '#second_id',
-        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}'
+        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+				'hash' => 'a122ad12df2',
 			]
         ]
     ],
@@ -114,67 +116,83 @@ return [
 		'expected' => [
 			[
 				'selector' => '#first_id',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}'
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => '#second_id, #test',
-				'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}'
+				'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+				'hash' => 'a122ad12df2',
 			],
 			[
 				'selector' => 'body',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
+				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => 'body',
-        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}'
+        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+				'hash' => 'a122ad12df3',
 			],
 			[
 				'selector' => 'dd:nth-last-of-type(3n)',
-				'style' => ':root{--wpr-bg-a21ss2: images/underline.png;}'
+				'style' => ':root{--wpr-bg-a21ss2: images/underline.png;}',
+				'hash' => 'a21ss2',
 			],
 			[
 				'selector' => '.background-image~*',
-				'style' => ':root{--wpr-bg-a21ss4: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss4: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss4',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss8: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss8: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss8',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss18',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss18',
 			],
 			[
 				'selector' => '.background-image',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => 'a',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}'
+				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'hash' => 'a21ss25',
 			],
 		]
 	],
