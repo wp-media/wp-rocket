@@ -182,7 +182,6 @@ class Divi extends ThirdpartyTheme {
 
 			add_filter( 'et_builder_enable_jquery_body', '__return_false' );
 		}
-
 	}
 
 	/**
@@ -195,7 +194,6 @@ class Divi extends ThirdpartyTheme {
 			return;
 		}
 		add_filter( 'et_use_dynamic_css', '__return_false' );
-
 	}
 
 	/**

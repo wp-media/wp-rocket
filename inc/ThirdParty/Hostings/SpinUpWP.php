@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\ThirdParty\Hostings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\ThirdParty\{NullSubscriber,ReturnTypesTrait};
+use WP_Rocket\ThirdParty\{NullSubscriber, ReturnTypesTrait};
 
 /**
  * Compatibility class for SpinUpWP

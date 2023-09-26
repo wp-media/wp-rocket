@@ -269,7 +269,7 @@ class SiteList {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input ) : array {
+	public function sanitize_options( $input ): array {
 		if ( empty( $input['delay_js_exclusions_selected'] ) ) {
 			$input['delay_js_exclusions_selected']            = [];
 			$input['delay_js_exclusions_selected_exclusions'] = [];

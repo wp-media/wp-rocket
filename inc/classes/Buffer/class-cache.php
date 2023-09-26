@@ -188,7 +188,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $cache_filepath );
+		readfile( $cache_filepath ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
 
 		$this->log(
 			'Serving cache file.',

@@ -7,6 +7,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Kinsta implements Subscriber_Interface {
 	use ReturnTypesTrait;
+
 	/**
 	 * Subscribed events for Kinsta.
 	 *
@@ -125,7 +126,7 @@ class Kinsta implements Subscriber_Interface {
 
 		// Remove rocket_clean_post() from core action hooks.
 		array_map(
-			function( $hook ) {
+			function ( $hook ) {
 				remove_action( $hook, 'rocket_clean_post' );
 			},
 			$clean_post_hooks

@@ -295,7 +295,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string   $lang lang from the website.
 	 * @return void
 	 */
-	public function clean_partial_cache( $object, array $urls, $lang ) {
+	public function clean_partial_cache( $object, array $urls, $lang ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
 		// Add Homepage URL to $purge_urls for preload.
 		$urls[] = get_rocket_i18n_home_url( $lang );
 
@@ -527,7 +527,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $url Current url to test against.
 	 * @return array
 	 */
-	public function exclude_private_post_uri( $regexes, $url ) : array {
+	public function exclude_private_post_uri( $regexes, $url ): array {
 		if ( ! is_array( $regexes ) ) {
 			$regexes = (array) $regexes;
 		}

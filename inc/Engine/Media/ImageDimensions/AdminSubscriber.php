@@ -27,7 +27,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_first_install_options' => [ 'add_option', 14 ],
 			'rocket_input_sanitize'        => [ 'sanitize_option', 10, 2 ],
@@ -40,7 +40,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param array $options WP Rocket options array.
 	 * @return array
 	 */
-	public function add_option( array $options ) : array {
+	public function add_option( array $options ): array {
 		return $this->dimensions->add_option( $options );
 	}
 
@@ -53,7 +53,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param Settings $settings Settings class instance.
 	 * @return array
 	 */
-	public function sanitize_option( array $input, Settings $settings ) : array {
+	public function sanitize_option( array $input, Settings $settings ): array {
 		return $this->dimensions->sanitize_option_value( $input, $settings );
 	}
 }

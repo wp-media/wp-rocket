@@ -152,7 +152,7 @@ class Fonts implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	private function is_allowed() : bool {
+	private function is_allowed(): bool {
 		if ( rocket_bypass() ) {
 			return false;
 		}

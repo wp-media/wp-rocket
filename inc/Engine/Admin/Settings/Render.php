@@ -84,7 +84,7 @@ class Render extends Abstract_render {
 		];
 
 		$navigation = array_map(
-			function( array $item ) use ( $default ) {
+			function ( array $item ) use ( $default ) {
 				$item = wp_parse_args( $item, $default );
 
 				if ( ! empty( $item['class'] ) ) {

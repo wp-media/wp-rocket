@@ -127,5 +127,4 @@ trait UrlTrait {
 		}
 		return rocket_direct_filesystem()->get_contents( $file );
 	}
-
 }
