@@ -108,14 +108,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		}
 
 		if ( $expected['truncated'] ) {
-			$this->used_css->shouldReceive( 'delete_all_used_css' )->once();
-			$this->used_css->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
-
-			if ( $input['not_completed_count'] > 0 ) {
-				$this->database->shouldReceive( 'remove_all_completed_rows' )->once();
-			} else {
-				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
-			}
+			$this->used_css->shouldReceive( 'delete_used_css_rows' );
 
 			Functions\expect( 'set_transient' )
 				->once()

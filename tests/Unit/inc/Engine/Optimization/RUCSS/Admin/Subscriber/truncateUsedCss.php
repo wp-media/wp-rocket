@@ -53,14 +53,9 @@ class Test_TruncateUsedCss extends TestCase {
 		if(! array_key_exists('delete_used_css_row', $config)) {
 			return;
 		}
-		$this->usedCSS->expects()->delete_all_used_css();
 
-		$this->usedCSS->expects()->get_not_completed_count()->andReturn($config['used_css_count']);
-		if(0 < $config['used_css_count']) {
-			$this->database->expects()->remove_all_completed_rows();
-		} else {
-			$this->database->expects()->truncate_used_css_table();
-		}
+		$this->usedCSS->expects()->delete_used_css_rows();
+
 		Actions\expectDone('rocket_after_clean_used_css');
 
 		Functions\expect('set_transient')->with('rocket_rucss_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
