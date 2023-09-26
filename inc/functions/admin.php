@@ -428,6 +428,15 @@ function rocket_data_collection_preview_table() {
 	$html .= '</td>';
 	$html .= '</tr>';
 
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['license_type'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
 	$html .= '</tbody>';
 	$html .= '</table>';
 
@@ -525,4 +534,30 @@ function rocket_create_options_hash( $value ) {
 	ksort( $value_diff );
 
 	return md5( wp_json_encode( $value_diff ) );
+}
+
+/**
+ * This function returns the license type for a customer.
+ *
+ * @param object $customer_data customer data as an object.
+ * @return string the type of the license the user has.
+ */
+function rocket_get_license_type( $customer_data ) {
+	if ( false === $customer_data
+		||
+		! isset( $customer_data->licence_account )
+	) {
+		return __( 'Unavailable', 'rocket' );
+	}
+
+	if ( 1 <= $customer_data->licence_account
+		&&
+		$customer_data->licence_account < 3
+	) {
+		return 'Single';
+	} elseif ( -1 === (int) $customer_data->licence_account ) {
+		return 'Infinite';
+	}
+
+	return 'Plus';
 }
