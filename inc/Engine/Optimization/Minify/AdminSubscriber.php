@@ -30,7 +30,8 @@ class AdminSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'switch_theme' => 'clean_minify_all',
+			'switch_theme'             => 'clean_minify_all',
+			'rocket_meta_boxes_fields' => [ 'add_meta_box', 4 ],
 		];
 	}
 
@@ -51,5 +52,17 @@ class AdminSubscriber implements Subscriber_Interface {
 
 		// Delete all minify cache files.
 		rocket_clean_minify();
+	}
+
+	/**
+	 * Add the field to the WP Rocket metabox on the post edit page.
+	 *
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_meta_box( array $fields ) {
+		$fields['minify_js'] = __( 'Minify/combine JavaScript', 'rocket' );
+		return $fields;
 	}
 }

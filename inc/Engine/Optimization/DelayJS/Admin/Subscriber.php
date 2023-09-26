@@ -1,5 +1,5 @@
 <?php
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
@@ -54,6 +54,7 @@ class Subscriber implements Subscriber_Interface {
 			'activate_plugin'                      => 'add_plugin_exclusions',
 			'deactivate_plugin'                    => 'remove_plugin_exclusions',
 			'switch_theme'                         => [ 'handle_switch_theme_exclusions', 10, 3 ],
+			'rocket_meta_boxes_fields'             => [ 'add_meta_box', 6 ],
 		];
 	}
 
@@ -196,5 +197,18 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->site_list->add_default_plugin_exclusions( $plugin );
+	}
+
+	/**
+	 * Add the field to the WP Rocket metabox on the post edit page.
+	 *
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_meta_box( array $fields ) {
+		$fields['delay_js'] = __( 'Delay JavaScript execution', 'rocket' );
+
+		return $fields;
 	}
 }
