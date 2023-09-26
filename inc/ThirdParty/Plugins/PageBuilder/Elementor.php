@@ -389,14 +389,8 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
-		$url = wp_get_referer();
-
-		if ( 0 !== strpos( $url, 'http' ) ) {
-			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
-			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
-		}
-
-		$this->used_css->clear_url_usedcss( $url );
+		$this->used_css->delete_all_used_css();
+		$this->used_css->delete_used_css_rows();
 
 		rocket_clean_domain();
 

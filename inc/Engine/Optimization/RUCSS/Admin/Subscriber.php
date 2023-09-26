@@ -218,13 +218,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function delete_used_css_rows() {
-		$this->used_css->delete_all_used_css();
-
-		if ( 0 < $this->used_css->get_not_completed_count() ) {
-			$this->database->remove_all_completed_rows();
-		} else {
-			$this->database->truncate_used_css_table();
-		}
+		$this->used_css->delete_used_css_rows();
 
 		/**
 		 * Fires after the used CSS has been cleaned in the database
