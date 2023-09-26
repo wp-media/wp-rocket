@@ -91,13 +91,13 @@ class UsedCSS {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param UsedCSS_Query $used_css_query Usedcss Query instance.
-	 * @param APIClient $api APIClient instance.
+	 * @param Options_Data   $options Options instance.
+	 * @param UsedCSS_Query  $used_css_query Usedcss Query instance.
+	 * @param APIClient      $api APIClient instance.
 	 * @param QueueInterface $queue Queue instance.
-	 * @param DataManager $data_manager DataManager instance.
-	 * @param Filesystem $filesystem Filesystem instance.
-	 * @param Database $database Database instance.
+	 * @param DataManager    $data_manager DataManager instance.
+	 * @param Filesystem     $filesystem Filesystem instance.
+	 * @param Database       $database Database instance.
 	 */
 	public function __construct(
 		Options_Data $options,
