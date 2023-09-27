@@ -36,6 +36,7 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
+use WP_Rocket\ThirdParty\Plugins\ContactForm7;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
@@ -101,6 +102,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rapidload',
 		'translatepress',
 		'wpgeotargeting',
+		'contactform7'
 	];
 
 	/**
@@ -257,5 +259,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'rapidload', RapidLoad::class );
 		$this->getContainer()->share( 'translatepress', TranslatePress::class );
 		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
+		$this->getContainer()->share( 'contactform7', ContactForm7::class );
 	}
 }

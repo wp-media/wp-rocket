@@ -378,6 +378,7 @@ class Plugin {
 			'translatepress',
 			'themify',
 			'wpgeotargeting',
+			'contactform7',
 			'lazyload_css_subscriber',
 			'shoptimizer',
 		];
