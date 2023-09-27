@@ -530,7 +530,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$parsed_url_host = wp_parse_url( $string, PHP_URL_HOST );
 
 		if ( ! $parsed_url_host ) {
-			$values [] = home_url() . $string;
+			$values [] = rocket_get_home_url() . $string;
 		}
 
 		/**
