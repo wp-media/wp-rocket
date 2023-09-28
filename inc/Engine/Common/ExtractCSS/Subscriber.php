@@ -7,7 +7,8 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use RegexTrait, LoggerAware;
+	use RegexTrait;
+	use LoggerAware;
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.

@@ -21,7 +21,8 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use LoggerAware, RegexTrait;
+	use LoggerAware;
+	use RegexTrait;
 
 	/**
 	 * Extract background images from CSS.
@@ -521,7 +522,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param string $string String to check.
 	 * @return bool
 	 */
-	protected function is_excluded( string $string ) {
+	protected function is_excluded( string $string ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.stringFound
 
 		$values = [
 			$string,

@@ -31,6 +31,9 @@
 	<config name="minimum_supported_wp_version" value="5.8"/>
 
 	<rule ref="WordPress">
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
+		<exclude name="Universal.Operators.DisallowShortTernary.Found"/>
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound"/>
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
@@ -57,6 +60,11 @@
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
             <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
+        </properties>
+    </rule>
+	<rule ref="WordPress.WP.Capabilities">
+        <properties>
+            <property name="custom_capabilities" type="array" value="rocket_manage_options,rocket_remove_unused_css,rocket_purge_sucuri_cache,rocket_preload_cache,rocket_purge_cache,rocket_purge_cloudflare_cache,rocket_purge_posts,rocket_regenerate_critical_css,rocket_purge_terms,rocket_purge_users" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -111,15 +119,6 @@
 		<exclude name="Squiz.Commenting.FileComment.Missing"/>
 		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
 	</rule>
-
-	<!-- Rules: WordPress Coding Standards - see
-		https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
-		WordPress-Extra includes WordPress-Core -->
-	<rule ref="WordPress-Extra">
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
-		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
-	</rule>
-
 	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
 </ruleset>

@@ -72,5 +72,4 @@ class Queue extends AbstractASQueue {
 			]
 		);
 	}
-
 }
