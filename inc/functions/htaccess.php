@@ -356,6 +356,12 @@ function rocket_get_webp_rewritecond( $cache_dir_path ) {
 	$rules  = 'RewriteCond %{HTTP_ACCEPT} image/webp' . PHP_EOL;
 	$rules .= 'RewriteCond "' . $cache_dir_path . '/.no-webp" !-f' . PHP_EOL;
 	$rules .= 'RewriteRule .* - [E=WPR_WEBP:-webp]' . PHP_EOL;
+	// Check if an image was requested.
+	$rules .='RewriteCond %{REQUEST_FILENAME} (.*)\.(jpe?g|png|gif|bmp)$';
+	// Check if WebP replacement image exists.
+	$rules .= 'RewriteCond %{REQUEST_FILENAME}.webp -f';
+	// Serve WebP image instead.
+	$rules .= 'RewriteRule (.+)\.(jpe?g|png|gif)$ $1.$2.webp [T=image/webp,E=accept:1]';
 
 	/**
 	 * Filter rules for webp.
