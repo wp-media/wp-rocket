@@ -1123,8 +1123,9 @@ class UsedCSS {
 
 		if ( 0 < $this->get_not_completed_count() ) {
 			$this->database->remove_all_completed_rows();
-		} else {
-			$this->database->truncate_used_css_table();
+			return;
 		}
+
+		$this->database->truncate_used_css_table();
 	}
 }
