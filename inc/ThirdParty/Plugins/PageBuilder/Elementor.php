@@ -389,7 +389,6 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
-		$this->used_css->delete_all_used_css();
 		$this->used_css->delete_used_css_rows();
 
 		rocket_clean_domain();
