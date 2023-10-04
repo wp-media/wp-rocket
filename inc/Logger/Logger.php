@@ -6,10 +6,7 @@ use WP_Rocket\Dependencies\Monolog\Registry;
 use WP_Rocket\Dependencies\Monolog\Processor\IntrospectionProcessor;
 use WP_Rocket\Dependencies\Monolog\Handler\StreamHandler as MonoStreamHandler;
 use WP_Rocket\Dependencies\Monolog\Formatter\LineFormatter;
-use WP_Rocket\Logger\HTMLFormatter as HtmlFormatter;
-use WP_Rocket\Logger\StreamHandler as StreamHandler;
-
-defined( 'ABSPATH' ) || exit;
+use WP_Rocket\Logger\{HTMLFormatter, StreamHandler};
 
 /**
  * Class used to log events.
@@ -19,32 +16,24 @@ defined( 'ABSPATH' ) || exit;
  * @author Grégory Viguier
  */
 class Logger {
-
 	/**
 	 * Logger name.
 	 *
-	 * @var    string
-	 * @since  3.1.4
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	const LOGGER_NAME = 'wp_rocket';
 
 	/**
 	 * Name of the logs file.
 	 *
-	 * @var    string
-	 * @since  3.1.4
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	const LOG_FILE_NAME = 'wp-rocket-debug.log.html';
 
 	/**
 	 * A unique ID given to the current thread.
 	 *
-	 * @var    string
-	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var string
 	 */
 	private static $thread_id;
 
@@ -56,9 +45,7 @@ class Logger {
 	/**
 	 * Adds a log record at the DEBUG level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -71,9 +58,7 @@ class Logger {
 	/**
 	 * Adds a log record at the INFO level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -86,9 +71,7 @@ class Logger {
 	/**
 	 * Adds a log record at the NOTICE level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -101,9 +84,7 @@ class Logger {
 	/**
 	 * Adds a log record at the WARNING level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -116,9 +97,7 @@ class Logger {
 	/**
 	 * Adds a log record at the ERROR level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -131,9 +110,7 @@ class Logger {
 	/**
 	 * Adds a log record at the CRITICAL level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -146,9 +123,7 @@ class Logger {
 	/**
 	 * Adds a log record at the ALERT level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -161,9 +136,7 @@ class Logger {
 	/**
 	 * Adds a log record at the EMERGENCY level.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  string $message The log message.
 	 * @param  array  $context The log context.
@@ -176,9 +149,7 @@ class Logger {
 	/**
 	 * Get the logger instance.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return Logger A Logger instance.
 	 */
@@ -222,9 +193,7 @@ class Logger {
 	/**
 	 * Get the path to the log file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return string
 	 */
@@ -246,9 +215,7 @@ class Logger {
 	/**
 	 * Get the log file contents.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return string|object The file contents on success. A WP_Error object on failure.
 	 */
@@ -272,9 +239,7 @@ class Logger {
 	/**
 	 * Get the log file size and number of entries.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return array|object An array of statistics on success. A WP_Error object on failure.
 	 */
@@ -318,9 +283,7 @@ class Logger {
 	/**
 	 * Get the log file extension related to the formatter in use. This can be used when the file is downloaded.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return string The corresponding file extension with the heading dot.
 	 */
@@ -345,9 +308,7 @@ class Logger {
 	/**
 	 * Delete the log file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return bool True on success. False on failure.
 	 */
@@ -368,9 +329,7 @@ class Logger {
 	/**
 	 * Get the handler used for the log file.
 	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.2
 	 *
 	 * @return object|bool The formatter object on success. False on failure.
 	 */
@@ -398,9 +357,7 @@ class Logger {
 	/**
 	 * Get the formatter used for the log file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return object|bool The formatter object on success. False on failure.
 	 */
@@ -422,9 +379,7 @@ class Logger {
 	/**
 	 * Tell if debug is enabled.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @return bool
 	 */
@@ -435,9 +390,7 @@ class Logger {
 	/**
 	 * Enable debug mode by adding a constant in the `wp-config.php` file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 */
 	public static function enable_debug() {
 		static::define_debug( true );
@@ -446,9 +399,7 @@ class Logger {
 	/**
 	 * Disable debug mode by removing the constant in the `wp-config.php` file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 */
 	public static function disable_debug() {
 		static::define_debug( false );
@@ -457,9 +408,7 @@ class Logger {
 	/**
 	 * Enable or disable debug mode by adding or removing a constant in the `wp-config.php` file.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param bool $enable True to enable debug, false to disable.
 	 */
@@ -515,9 +464,7 @@ class Logger {
 	/**
 	 * Get the thread identifier.
 	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.3
 	 *
 	 * @return string
 	 */
@@ -532,9 +479,7 @@ class Logger {
 	/**
 	 * Remove cookies related to WP auth.
 	 *
-	 * @since  3.1.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.1.4
 	 *
 	 * @param  array $cookies An array of cookies.
 	 * @return array

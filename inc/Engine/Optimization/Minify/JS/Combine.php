@@ -161,7 +161,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	protected function parse( $scripts ) {
 		$excluded_externals = implode( '|', $this->get_excluded_external_file_path() );
 		$scripts            = array_map(
-			function( $script ) use ( $excluded_externals ) {
+			function ( $script ) use ( $excluded_externals ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
 				if ( isset( $matches['url'] ) ) {
@@ -350,7 +350,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 */
 	protected function combine( $content ) {
 		if ( empty( $content ) ) {
-			return false;
+			return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$filename      = md5( $content . $this->minify_key ) . '.js';
@@ -359,17 +359,17 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			$minified_content = $this->minify();
 
 			if ( ! $minified_content ) {
-				return false;
+				return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 			}
 
 			$minify_filepath = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
-				return false;
+				return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 			}
 		}
 
-		return $this->get_minify_url( $filename );
+		return $this->get_minify_url( $filename ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**
@@ -489,7 +489,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @param string $url URL to check.
 	 * @return boolean
 	 */
-	private function is_defer_excluded( string $url ) : bool {
+	private function is_defer_excluded( string $url ): bool {
 		if (
 			! empty( $this->excluded_defer_js )
 			&&

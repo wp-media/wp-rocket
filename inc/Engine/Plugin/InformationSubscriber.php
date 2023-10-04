@@ -71,7 +71,7 @@ class InformationSubscriber implements Subscriber_Interface {
 	 * @param  object             $args   Plugin API arguments.
 	 * @return false|object|array         Empty object if slug is WP Rocket, default value otherwise.
 	 */
-	public function exclude_rocket_from_wp_info( $bool, $action, $args ) {
+	public function exclude_rocket_from_wp_info( $bool, $action, $args ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.boolFound
 		if ( ! $this->is_requesting_rocket_info( $action, $args ) ) {
 			return $bool;
 		}

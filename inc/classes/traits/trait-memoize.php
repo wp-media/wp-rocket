@@ -62,7 +62,7 @@ trait Memoize {
 		}
 
 		self::$memoized[ $method ][ $hash ] = $value;
-		return self::$memoized[ $method ][ $hash ];
+		return self::$memoized[ $method ][ $hash ]; //phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

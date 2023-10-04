@@ -62,7 +62,7 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
  * @param int    $uid User ID.
  * @return void
  */
-function rocket_renew_box( $function, $uid = 0 ) {
+function rocket_renew_box( $function, $uid = 0 ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	global $current_user;
 	$uid    = 0 === $uid ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
@@ -81,7 +81,7 @@ function rocket_renew_box( $function, $uid = 0 ) {
  *
  * @param string $function Function (box) name.
  */
-function rocket_dismiss_box( $function ) {
+function rocket_dismiss_box( $function ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	$actual = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$actual = array_merge( (array) $actual, [ $function ] );
 	$actual = array_filter( $actual );

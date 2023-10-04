@@ -16,7 +16,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface {
-	use RegexTrait, CanLazyloadTrait;
+	use RegexTrait;
+	use CanLazyloadTrait;
 
 	const SCRIPT_VERSION = '17.8.3';
 
@@ -454,7 +455,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( array $exclusions ) : array {
+	public function add_exclusions( array $exclusions ): array {
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

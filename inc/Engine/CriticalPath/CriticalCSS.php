@@ -281,7 +281,7 @@ class CriticalCSS {
 
 		foreach ( $this->items as $item ) {
 			if ( ! isset( $item['mobile'] ) ) {
-				$total ++;
+				++$total;
 				continue;
 			}
 
@@ -289,7 +289,7 @@ class CriticalCSS {
 				continue;
 			}
 
-			$total ++;
+			++$total;
 		}
 
 		$transient = [

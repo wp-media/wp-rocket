@@ -34,7 +34,7 @@ use WP_Rocket\ThirdParty\Plugins\Smush;
 use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
-use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
+use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare, CloudflareFacade};
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;

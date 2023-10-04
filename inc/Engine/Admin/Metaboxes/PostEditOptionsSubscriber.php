@@ -159,10 +159,8 @@ class PostEditOptionsSubscriber extends Abstract_Render implements Subscriber_In
 				if ( ! isset( $rejected_uris[ $path ] ) ) {
 					array_push( $new_cache_reject_uri, $path );
 				}
-			} else {
-				if ( isset( $rejected_uris[ $path ] ) ) {
-					unset( $new_cache_reject_uri[ $rejected_uris[ $path ] ] );
-				}
+			} elseif ( isset( $rejected_uris[ $path ] ) ) {
+				unset( $new_cache_reject_uri[ $rejected_uris[ $path ] ] );
 			}
 
 			if ( $new_cache_reject_uri !== $cache_reject_uri ) {

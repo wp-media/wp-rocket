@@ -52,7 +52,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) : array {
+	public function add_options( $options ): array {
 		$options = (array) $options;
 
 		$options['remove_unused_css']          = 0;
@@ -68,7 +68,7 @@ class Settings {
 	 *
 	 * @return boolean
 	 */
-	public function is_enabled() : bool {
+	public function is_enabled(): bool {
 
 		return (bool) $this->options->get( 'remove_unused_css', 0 );
 	}
@@ -83,7 +83,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( array $input, AdminSettings $settings ) : array {
+	public function sanitize_options( array $input, AdminSettings $settings ): array {
 		$input['remove_unused_css']          = $settings->sanitize_checkbox( $input, 'remove_unused_css' );
 		$input['remove_unused_css_safelist'] = ! empty( $input['remove_unused_css_safelist'] ) ? rocket_sanitize_textarea_field( 'remove_unused_css_safelist', $input['remove_unused_css_safelist'] ) : [];
 
