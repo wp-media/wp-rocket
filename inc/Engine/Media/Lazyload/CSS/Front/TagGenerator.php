@@ -12,15 +12,18 @@ class TagGenerator {
 	 * @return string
 	 */
 	public function generate( array $mapping, array $loaded = [] ): string {
-		$mapping = array_filter($mapping, function ($mappingItem) use ($loaded) {
-			foreach ($loaded as $excludeItem) {
-				if ($excludeItem['style'] === $mappingItem['style']) {
-					return false; // Exclude matching elements
+		$mapping        = array_filter(
+			$mapping,
+			function ( $mapping_item ) use ( $loaded ) {
+				foreach ( $loaded as $exclude_item ) {
+					if ( $exclude_item['style'] === $mapping_item['style'] ) {
+						return false; // Exclude matching elements.
+					}
 				}
+				return true; // Include non-matching elements.
 			}
-			return true; // Include non-matching elements
-		});
-		$mapping = array_values($mapping);
+			);
+		$mapping        = array_values( $mapping );
 		$loaded_content = '';
 		foreach ( $loaded as $item ) {
 			$loaded_content .= $item['style'];
@@ -36,7 +39,7 @@ class TagGenerator {
 </noscript>";
 
 		$mapping_json = wp_json_encode( $mapping );
-		$loaded_json = wp_json_encode( $loaded );
+		$loaded_json  = wp_json_encode( $loaded );
 
 		$script_content = "const rocket_pairs = $mapping_json; const rocket_excluded_pairs = $loaded_json;";
 
