@@ -323,7 +323,8 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
-	$customer_data = get_transient( 'wp_rocket_customer_data' );
+	$customer_data        = get_transient( 'wp_rocket_customer_data' );
+	$data['license_type'] = '';
 	if ( false !== $customer_data ) {
 		$data['license_type'] = rocket_get_license_type( $customer_data );
 	}
