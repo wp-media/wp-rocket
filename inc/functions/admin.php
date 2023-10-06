@@ -361,7 +361,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= sprintf( '<em>%s</em>', $data['web_server'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -370,7 +370,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['php_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -379,7 +379,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['wordpress_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -388,7 +388,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['multisite'] ? 'true' : 'false' );
+	$html .= sprintf( '<em>%s</em>', $data['multisite'] ? 'true' : 'false' );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -397,7 +397,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= sprintf( '<em>%s</em>', $data['current_theme'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -406,7 +406,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= sprintf( '<em>%s</em>', $data['locale'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -433,7 +433,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['license_type'] );
+	$html .= sprintf( '<em>%s</em>', $data['license_type'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
