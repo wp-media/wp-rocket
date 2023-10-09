@@ -1,6 +1,16 @@
 function rocket_css_lazyload_launch() {
 
 	const usable_pairs = typeof rocket_pairs === 'undefined' ? [] : rocket_pairs;
+	const excluded_pairs = typeof rocket_excluded_pairs === 'undefined' ? [] : rocket_excluded_pairs;
+
+	excluded_pairs.map(pair => {
+		const selector = pair.selector;
+		const nodes = document.querySelectorAll(selector);
+		nodes.forEach(el => {
+			el.setAttribute(`data-rocket-lazy-bg-${pair.hash}`, 'excluded');
+		});
+	});
+
 
 
 	const styleElement = document.querySelector('#wpr-lazyload-bg');
@@ -40,7 +50,9 @@ function rocket_css_lazyload_launch() {
 
 				const elements = document.querySelectorAll(pair.selector);
 				elements.forEach(el => {
-					if(el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'loaded') {
+					if(	el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'loaded' ||
+						el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'excluded')
+					{
 						return;
 					}
 					observer.observe(el);
