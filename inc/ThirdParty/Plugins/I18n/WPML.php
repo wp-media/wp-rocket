@@ -25,9 +25,8 @@ class WPML implements Subscriber_Interface {
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
 	public function __construct( WP_Filesystem_Direct $filesystem = null ) {
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+		$this->filesystem = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
 	}
-
 
 	/**
 	 * Events for subscriber to listen to.
@@ -157,7 +156,7 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function on_change_directory_for_default_language_clean_cache( $new, $old ) {
+	public function on_change_directory_for_default_language_clean_cache( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
 			return $new;
 		}

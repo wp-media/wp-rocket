@@ -10,5 +10,5 @@ interface LoggerAwareInterface {
 	 * @param Logger $logger Logger instance.
 	 * @return void
 	 */
-	public function set_logger( Logger $logger);
+	public function set_logger( Logger $logger );
 }

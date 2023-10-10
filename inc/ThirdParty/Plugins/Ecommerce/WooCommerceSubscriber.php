@@ -111,7 +111,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @param WP_Post $object post object.
 	 * @return array
 	 */
-	public function reformat_shop_url_for_preload( array $urls, $object ) {
+	public function reformat_shop_url_for_preload( array $urls, $object ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
 		$post_type = $object->post_type;
 		if ( 'product' !== $post_type ) {
 			return $urls;
@@ -601,7 +601,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 *
 	 * @return void
 	 */
-	public function disallow_rocket_clean_post() : void {
+	public function disallow_rocket_clean_post(): void {
 		$this->event_manager->remove_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 
@@ -611,7 +611,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @param integer $product_id ID of sorted product.
 	 * @return void
 	 */
-	public function allow_rocket_clean_post( int $product_id ) : void {
+	public function allow_rocket_clean_post( int $product_id ): void {
 		$urls          = [];
 		$category_list = wc_get_product_category_list( $product_id );
 

@@ -230,7 +230,7 @@ class APIClient {
 	 *
 	 * @return string response code.
 	 */
-	private function get_response_code( $response ) {
+	private function get_response_code( $response ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// Todo: we can return code based on the response status number, for example 404 not_found.
 		return 'cpcss_generation_failed';
 	}

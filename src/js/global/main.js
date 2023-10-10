@@ -109,6 +109,11 @@ $(document).ready(function(){
 		$('#analytics_enabled').trigger('change');
 	}
 
+	// Display CTA within the popin `What info will we collect?`
+	$('#analytics_enabled').on('change', function () {
+		$('.wpr-rocket-analytics-cta').toggleClass('wpr-isHidden');
+	});
+
 	/***
 	* Show popin upgrade
 	***/

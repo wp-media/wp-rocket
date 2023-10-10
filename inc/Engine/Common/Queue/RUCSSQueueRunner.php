@@ -204,7 +204,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 					break;
 				}
 				$this->process_action( $action_id, $context );
-				$processed_actions++;
+				++$processed_actions;
 
 				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
 					break;
@@ -276,5 +276,4 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	public function get_allowed_concurrent_batches() {
 		return 2;
 	}
-
 }
