@@ -174,6 +174,7 @@ class UsedCSS extends Query {
 			'status'        => 'pending',
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
+            'submitted_at'  => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}
@@ -220,6 +221,7 @@ class UsedCSS extends Query {
 				'error_message' => '',
 				'retries'       => 0,
 				'modified'      => current_time( 'mysql', true ),
+                'submitted_at'  => current_time( 'mysql', true ),
 			]
 		);
 	}
