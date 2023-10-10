@@ -28,6 +28,7 @@ use WP_Rocket\Engine\HealthCheck\ServiceProvider as HealthCheckServiceProvider;
 use WP_Rocket\Engine\Heartbeat\ServiceProvider as HeartbeatServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\ServiceProvider as ATFServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
 use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
@@ -289,6 +290,7 @@ class Plugin {
 		$this->container->addServiceProvider( APIServiceProvider::class );
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
+		$this->container->addServiceProvider( ATFServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
