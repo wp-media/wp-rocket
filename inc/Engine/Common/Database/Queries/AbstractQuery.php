@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\Database\Queries;
 
@@ -13,7 +14,7 @@ class AbstractQuery extends Query {
 	public static $table_exists = false;
 
 	/**
-	 * Get Used CSS for specific url.
+	 * Get row for specific url.
 	 *
 	 * @param string $url Page Url.
 	 * @param bool   $is_mobile if the request is for mobile page.
@@ -239,7 +240,7 @@ class AbstractQuery extends Query {
 	}
 
 	/**
-	 * Update UsedCSS Row last_accessed date to current date.
+	 * Update row last_accessed date to current date.
 	 *
 	 * @param int $id Used CSS id.
 	 *
