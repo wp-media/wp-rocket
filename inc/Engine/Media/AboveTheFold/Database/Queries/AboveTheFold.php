@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 
-class AboveTheFold extends Query {
+class AboveTheFold extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.
