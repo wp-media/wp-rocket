@@ -377,7 +377,10 @@ class Elementor implements Subscriber_Interface {
 			$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 			$params['_wp_http_referer'] = rawurlencode( $referer_url );
 		}
-		$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
+
+		$message = $this->options->get('remove_unused_css', false) ? __( 'Clear Used CSS', 'rocket' ) : __( 'Clear cache', 'rocket' );
+
+		$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . $message . '</a>';
 
 		return $args;
 	}
