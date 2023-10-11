@@ -174,7 +174,7 @@ class UsedCSS extends Query {
 			'status'        => 'pending',
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
-            'submitted_at'  => current_time( 'mysql', true ),
+			'submitted_at'  => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}
@@ -221,7 +221,7 @@ class UsedCSS extends Query {
 				'error_message' => '',
 				'retries'       => 0,
 				'modified'      => current_time( 'mysql', true ),
-                'submitted_at'  => current_time( 'mysql', true ),
+				'submitted_at'  => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -245,7 +245,7 @@ class UsedCSS extends Query {
 			[
 				'status'        => 'failed',
 				'error_code'    => $error_code,
-				'error_message' => $error_message,
+				'error_message' => current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 			]
 		);
 	}
@@ -515,5 +515,24 @@ class UsedCSS extends Query {
 		}
 
 		return $exists;
+	}
+
+	/**
+	 * Update the error message.
+	 *
+	 * @param int    $job_id Job ID.
+	 * @param int    $code Response code.
+	 * @param string $message Response message.
+	 * @param string $previous_message Previous saved message.
+	 *
+	 * @return bool
+	 */
+	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
+		return $this->update_item(
+			$job_id,
+			[
+				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
+			]
+		);
 	}
 }
