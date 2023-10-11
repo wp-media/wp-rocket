@@ -43,13 +43,13 @@ class Test_checkJobStatus extends FilesystemTestCase {
 	}
 
 	/**
-     * @dataProvider providerTestData
-     */
-    public function testShouldDoAsExpected( $config, $expected )
-    {
+	* @dataProvider providerTestData
+	*/
+	public function testShouldDoAsExpected( $config, $expected )
+	{
 		$this->config = $config;
 		$id = self::addResource($config['row']);
-        do_action('rocket_rucss_job_check_status', $id);
+		do_action('rocket_rucss_job_check_status', $id);
 
 		foreach ($expected['rows'] as $row) {
 			self::assertTrue(self::resourceFound($row));
@@ -57,7 +57,7 @@ class Test_checkJobStatus extends FilesystemTestCase {
 		foreach ($expected['files'] as $path => $file) {
 			self::assertSame($file['exists'], $this->filesystem->exists($path));
 		}
-    }
+	}
 
 
 	public function mock_http($response, $args, $url) {
@@ -74,6 +74,5 @@ class Test_checkJobStatus extends FilesystemTestCase {
 	public function rucss_hash() {
 		return $this->config['hash'];
 	}
-
 }
 
