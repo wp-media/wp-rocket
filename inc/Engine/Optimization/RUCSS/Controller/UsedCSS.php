@@ -14,7 +14,8 @@ use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
 
 class UsedCSS {
-	use RegexTrait, CSSTrait;
+	use RegexTrait;
+	use CSSTrait;
 
 	/**
 	 * UsedCss Query instance.
@@ -215,7 +216,7 @@ class UsedCSS {
 
 		if ( empty( $used_css ) ) {
 			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
-			if ( false === $add_to_queue_response ) {
+			if ( false === $add_to_queue_response || ! isset( $add_to_queue_response['contents'], $add_to_queue_response['contents']['jobId'], $add_to_queue_response['contents']['queueName'] ) ) {
 				return $html;
 			}
 
@@ -838,6 +839,7 @@ class UsedCSS {
 		 * @param string $delay delay before failed rucss jobs are deleted.
 		 */
 		$delay = (string) apply_filters( 'rocket_delay_remove_rucss_failed_jobs', '3 days' );
+
 		if ( '' === $delay || '0' === $delay ) {
 			$delay = '3 days';
 		}
@@ -867,7 +869,11 @@ class UsedCSS {
 				continue;
 			}
 
-			$this->used_css_query->revert_to_pending( $id );
+			$add_to_queue_response = $this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
+			if ( false !== $add_to_queue_response ) {
+				$new_job_id = $add_to_queue_response['contents']['jobId'];
+				$this->used_css_query->reset_job( $id, $new_job_id );
+			}
 		}
 
 		/**
@@ -1042,7 +1048,6 @@ class UsedCSS {
 		$wpr_dynamic_lists               = $this->data_manager->get_lists();
 		$this->inline_atts_exclusions    = isset( $wpr_dynamic_lists->rucss_inline_atts_exclusions ) ? $wpr_dynamic_lists->rucss_inline_atts_exclusions : [];
 		$this->inline_content_exclusions = isset( $wpr_dynamic_lists->rucss_inline_content_exclusions ) ? $wpr_dynamic_lists->rucss_inline_content_exclusions : [];
-
 	}
 
 	/**
@@ -1092,5 +1097,14 @@ class UsedCSS {
 			},
 			$items_array
 		);
+	}
+
+	/**
+	 * Check if database has at least one completed row.
+	 *
+	 * @return bool
+	 */
+	public function has_one_completed_row_at_least() {
+		return $this->used_css_query->get_completed_count() > 0;
 	}
 }

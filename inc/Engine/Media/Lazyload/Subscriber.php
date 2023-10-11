@@ -17,6 +17,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Subscriber implements Subscriber_Interface {
 	use RegexTrait;
+	use CanLazyloadTrait;
 
 	const SCRIPT_VERSION = '17.8.3';
 
@@ -307,59 +308,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if lazyload should be applied
-	 *
-	 * @since 3.3
-	 *
-	 * @return bool
-	 */
-	private function should_lazyload() {
-		if (
-			rocket_get_constant( 'REST_REQUEST', false )
-			||
-			rocket_get_constant( 'DONOTLAZYLOAD', false )
-			||
-			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
-		) {
-			return false;
-		}
-
-		if (
-			is_admin()
-			||
-			is_feed()
-			||
-			is_preview()
-		) {
-			return false;
-		}
-
-		if (
-			is_search()
-			&&
-			// This filter is documented in inc/classes/Buffer/class-tests.php.
-			! (bool) apply_filters( 'rocket_cache_search', false )
-		) {
-			return false;
-		}
-
-		// Exclude Page Builders editors.
-		$excluded_parameters = [
-			'fl_builder',
-			'et_fb',
-			'ct_builder',
-		];
-
-		foreach ( $excluded_parameters as $excluded ) {
-			if ( isset( $_GET[ $excluded ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * Applies lazyload on the provided content
 	 *
 	 * @since 3.3
@@ -507,7 +455,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $exclusions Array of excluded patterns.
 	 * @return array
 	 */
-	public function add_exclusions( array $exclusions ) : array {
+	public function add_exclusions( array $exclusions ): array {
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {

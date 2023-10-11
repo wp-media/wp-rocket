@@ -45,7 +45,7 @@ function rocket_pl_clean_post( $post = false, $permalink = false ) {
  *
  * @return void
  */
-function rocket_pl_clean_home( $root = false, $lang = false ) {
+function rocket_pl_clean_home( $root = false, $lang = false ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	if ( ! $post || ! $permalink ) {
 		return;
 	}
@@ -72,7 +72,7 @@ function rocket_pl_remove_partial_purge_hooks() {
 	];
 	// Remove rocket_clean_post() from core action hooks.
 	array_map(
-		function( $hook ) {
+		function ( $hook ) {
 			remove_action( $hook, 'rocket_clean_post' );
 		},
 		$clean_post_hooks

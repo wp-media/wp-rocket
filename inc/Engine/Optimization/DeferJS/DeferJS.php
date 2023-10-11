@@ -40,7 +40,7 @@ class DeferJS {
 	 * @param array $options WP Rocket options array.
 	 * @return array
 	 */
-	public function add_option( array $options ) : array {
+	public function add_option( array $options ): array {
 		$options['exclude_defer_js'] = [];
 
 		return $options;
@@ -54,7 +54,7 @@ class DeferJS {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_js( string $html ) : string {
+	public function defer_js( string $html ): string {
 		if ( ! $this->can_defer_js() ) {
 			return $html;
 		}
@@ -97,7 +97,7 @@ class DeferJS {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_inline_js( string $html ) : string {
+	public function defer_inline_js( string $html ): string {
 		if ( ! $this->can_defer_js() ) {
 			return $html;
 		}
@@ -159,7 +159,7 @@ class DeferJS {
 	 * @param string $content Inline JS content.
 	 * @return string
 	 */
-	private function inline_js_wrapper( string $content ) : string {
+	private function inline_js_wrapper( string $content ): string {
 		return "window.addEventListener('DOMContentLoaded', function() {" . $content . '});';
 	}
 
@@ -170,7 +170,7 @@ class DeferJS {
 	 *
 	 * @return boolean
 	 */
-	private function can_defer_js() : bool {
+	private function can_defer_js(): bool {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -189,7 +189,7 @@ class DeferJS {
 	 *
 	 * @return array
 	 */
-	public function get_excluded() : array {
+	public function get_excluded(): array {
 		if ( ! $this->can_defer_js() ) {
 			return [];
 		}
@@ -220,7 +220,7 @@ class DeferJS {
 	 * @param array $excluded_files Array of excluded files from combine JS.
 	 * @return array
 	 */
-	public function exclude_jquery_combine( array $excluded_files ) : array {
+	public function exclude_jquery_combine( array $excluded_files ): array {
 		if ( ! $this->can_defer_js() ) {
 			return $excluded_files;
 		}

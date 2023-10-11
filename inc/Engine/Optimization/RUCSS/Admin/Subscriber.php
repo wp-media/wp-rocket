@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -59,12 +58,10 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
-			'rocket_first_install_options'            => 'add_options_first_time',
-			'rocket_input_sanitize'                   => [ 'sanitize_options', 14, 2 ],
 			'update_option_' . $slug                  => [
 				[ 'clean_used_css_and_cache', 9, 2 ],
 				[ 'maybe_set_processing_transient', 50, 2 ],
@@ -73,6 +70,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'switch_theme'                            => 'truncate_used_css',
 			'permalink_structure_changed'             => 'truncate_used_css',
+			'rocket_domain_options_changed'           => 'truncate_used_css',
 			'wp_trash_post'                           => 'delete_used_css_on_update_or_delete',
 			'delete_post'                             => 'delete_used_css_on_update_or_delete',
 			'clean_post_cache'                        => 'delete_used_css_on_update_or_delete',
@@ -99,7 +97,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
 			'rocket_localize_admin_script'            => 'add_localize_script_data',
-			'pre_update_option_wp_rocket_settings'    => [ 'maybe_disable_combine_css', 11, 2 ],
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
@@ -235,33 +232,6 @@ class Subscriber implements Subscriber_Interface {
 		 * @since 3.11
 		 */
 		do_action( 'rocket_after_clean_used_css' );
-	}
-
-	/**
-	 * Add the RUCSS options to the WP Rocket options array.
-	 *
-	 * @since 3.9
-	 *
-	 * @param array $options WP Rocket options array.
-	 *
-	 * @return array
-	 */
-	public function add_options_first_time( $options ) : array {
-		return $this->settings->add_options( $options );
-	}
-
-	/**
-	 * Sanitizes RUCSS options values when the settings form is submitted
-	 *
-	 * @since 3.9
-	 *
-	 * @param array         $input    Array of values submitted from the form.
-	 * @param AdminSettings $settings Settings class instance.
-	 *
-	 * @return array
-	 */
-	public function sanitize_options( $input, AdminSettings $settings ) : array {
-		return $this->settings->sanitize_options( $input, $settings );
 	}
 
 	/**
@@ -524,20 +494,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
-	}
-
-	/**
-	 * Disable combine CSS option when RUCSS is enabled
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $value     The new, unserialized option value.
-	 * @param array $old_value The old option value.
-	 *
-	 * @return array
-	 */
-	public function maybe_disable_combine_css( $value, $old_value ): array {
-		return $this->settings->maybe_disable_combine_css( $value, $old_value );
 	}
 
 	/**

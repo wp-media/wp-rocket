@@ -121,7 +121,7 @@ class Cache extends Query {
 	 *
 	 * @return bool
 	 */
-	public function create_or_update( array $resource ) {
+	public function create_or_update( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
 		/**
 		 * Format the url.
@@ -196,7 +196,7 @@ class Cache extends Query {
 	 *
 	 * @return bool
 	 */
-	public function create_or_nothing( array $resource ) {
+	public function create_or_nothing( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
 		if ( $this->is_rejected( $resource['url'] ) ) {
 			return false;
@@ -298,7 +298,7 @@ class Cache extends Query {
 	 * @param string $unit unit from the delay.
 	 * @return array
 	 */
-	public function get_old_cache( float $delay = 1, string $unit = 'month' ) : array {
+	public function get_old_cache( float $delay = 1, string $unit = 'month' ): array {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -338,16 +338,8 @@ class Cache extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $total = 45 ) {
-		$inprogress_count = $this->query(
-			[
-				'count'     => true,
-				'status'    => 'in-progress',
-				'is_locked' => false,
-			],
-			false
-		);
 
-		if ( $inprogress_count >= $total ) {
+		if ( $total <= 0 ) {
 			return [];
 		}
 
@@ -366,7 +358,7 @@ class Cache extends Query {
 
 		return $this->query(
 			[
-				'number'         => ( $total - $inprogress_count ),
+				'number'         => $total,
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -699,6 +691,5 @@ class Cache extends Query {
 			],
 			false
 		);
-
 	}
 }

@@ -12,6 +12,12 @@ trait RegexTrait {
 	 */
 	private $xmp_replace = [];
 
+	/**
+	 * Array of replaced html tags.
+	 *
+	 * @var array
+	 */
+	private $html_replace = [];
 
 	/**
 	 * Array of replaced svg tags
@@ -98,6 +104,53 @@ trait RegexTrait {
 		return $replace;
 	}
 
+
+	/**
+	 * Replace HTML comments.
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	protected function replace_html_comments( string $html ): string {
+		$this->html_replace = [];
+
+		$regex         = '#<!--.*-->#iUs';
+		$replaced_html = preg_replace_callback( $regex, [ $this, 'replace_html_comment' ], $html );
+
+		if ( empty( $replaced_html ) ) {
+			return $html;
+		}
+
+		return $replaced_html;
+	}
+
+	/**
+	 * Replace html with comment
+	 *
+	 * @param array $match HTML comment.
+	 * @return string
+	 */
+	protected function replace_html_comment( $match ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound
+		$key                        = sprintf( '<!-- %s -->', uniqid( 'WPR_HTML_COMMENT_' ) );
+		$this->html_replace[ $key ] = $match[0];
+		return $key;
+	}
+
+	/**
+	 * Restore html with comment
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	protected function restore_html_comments( $html ) {
+		if ( empty( $this->html_replace ) ) {
+			return $html;
+		}
+
+		return str_replace( array_keys( $this->html_replace ), array_values( $this->html_replace ), $html );
+	}
+
 	/**
 	 * Replace <xmp> tags in the HTML with comment
 	 *
@@ -146,7 +199,7 @@ trait RegexTrait {
 	 * @param array $match svg tag.
 	 * @return string
 	 */
-	protected function replace_svg( $match ) {
+	protected function replace_svg( $match ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound
 		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_SVG_' ) );
 		$this->svg_replace[ $key ] = $match[0];
 		return $key;
@@ -160,7 +213,7 @@ trait RegexTrait {
 	 * @param array $match xmp tag.
 	 * @return string
 	 */
-	protected function replace_xmp( $match ) {
+	protected function replace_xmp( $match ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.matchFound
 		$key                       = sprintf( '<!-- %s -->', uniqid( 'WPR_XMP_' ) );
 		$this->xmp_replace[ $key ] = $match[0];
 		return $key;

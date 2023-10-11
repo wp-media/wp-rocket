@@ -1,5 +1,4 @@
 <?php
-use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,43 +19,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! is_array( $oldvalue ) || ! is_array( $value ) ) {
 		return;
 	}
-
-	// These values do not need to clean the cache domain.
-	$removed = [
-		'cache_mobile'                => true,
-		'purge_cron_interval'         => true,
-		'purge_cron_unit'             => true,
-		'database_revisions'          => true,
-		'database_auto_drafts'        => true,
-		'database_trashed_posts'      => true,
-		'database_spam_comments'      => true,
-		'database_trashed_comments'   => true,
-		'database_all_transients'     => true,
-		'database_optimize_tables'    => true,
-		'schedule_automatic_cleanup'  => true,
-		'automatic_cleanup_frequency' => true,
-		'do_cloudflare'               => true,
-		'cloudflare_email'            => true,
-		'cloudflare_api_key'          => true,
-		'cloudflare_zone_id'          => true,
-		'cloudflare_devmode'          => true,
-		'cloudflare_auto_settings'    => true,
-		'cloudflare_old_settings'     => true,
-		'heartbeat_admin_behavior'    => true,
-		'heartbeat_editor_behavior'   => true,
-		'varnish_auto_purge'          => true,
-		'analytics_enabled'           => true,
-		'sucury_waf_cache_sync'       => true,
-		'sucury_waf_api_key'          => true,
-		'manual_preload'              => true,
-		'preload_excluded_uri'        => true,
-		'cache_reject_uri'            => true,
-		'version'                     => true,
-	];
-
-	// Create 2 arrays to compare.
-	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
-	$value_diff    = array_diff_key( $value, $removed );
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
@@ -85,11 +47,8 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
-	ksort( $oldvalue_diff );
-	ksort( $value_diff );
-
 	// If it's different, clean the domain.
-	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
+	if ( rocket_create_options_hash( $value ) !== rocket_create_options_hash( $oldvalue ) ) {
 		// Purge all cache files.
 		rocket_clean_domain();
 
@@ -145,7 +104,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		// Validate.
 		$newvalue[ $pattern_field ] = array_filter(
 			$newvalue[ $pattern_field ],
-			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+			function ( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
 					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
@@ -195,7 +154,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Regenerate the minify key if JS files have been modified.
-	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
 		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )

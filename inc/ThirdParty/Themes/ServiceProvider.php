@@ -26,6 +26,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'uncode',
 		'xstore',
 		'themify',
+		'shoptimizer',
 	];
 
 	/**
@@ -49,6 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'flatsome', Flatsome::class )
@@ -72,5 +74,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'themify', Themify::class )
 			->addArgument( $options );
 
+		$this->getContainer()->share( 'shoptimizer', Shoptimizer::class );
 	}
 }

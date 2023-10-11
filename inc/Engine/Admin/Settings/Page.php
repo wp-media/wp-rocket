@@ -260,25 +260,7 @@ class Page {
 			'is_from_one_dot_com' => false,
 		];
 
-		if (
-			false === $user
-			||
-			! isset( $user->licence_account, $user->licence_expiration )
-		) {
-			return $data;
-		}
-
-		if (
-			1 <= $user->licence_account
-			&&
-			$user->licence_account < 3
-		) {
-			$data['license_type'] = 'Single';
-		} elseif ( -1 === (int) $user->licence_account ) {
-			$data['license_type'] = 'Infinite';
-		} else {
-			$data['license_type'] = 'Plus';
-		}
+		$data['license_type'] = rocket_get_license_type( $user );
 
 		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
 		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
@@ -608,7 +590,7 @@ class Page {
 
 		if ( rocket_maybe_disable_minify_css() ) {
 			// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
-			$css_section_helper[] = sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME );
+			$css_section_helper[] = sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable this option in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME );
 		}
 
 		if ( $rucss_status['disable'] ) {
@@ -679,34 +661,10 @@ class Page {
 						'button_label' => __( 'Activate minify CSS', 'rocket' ),
 					],
 				],
-				'minify_concatenate_css'       => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'helper'            => get_rocket_option( 'remove_unused_css' ) ? __( 'For compatibility and best results, this option is disabled when Remove unused CSS is enabled.', 'rocket' ) : '',
-					'container_class'   => [
-						$disable_combine_css ? 'wpr-isDisabled' : '',
-						'wpr-field--parent',
-						'wpr-NoPaddingBottom',
-					],
-					'section'           => 'css',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => $disable_combine_css ? 1 : 0,
-					],
-					'warning'           => [
-						'title'        => __( 'This could break things!', 'rocket' ),
-						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
-						'button_label' => __( 'Activate combine CSS', 'rocket' ),
-					],
-				],
 				'exclude_css'                  => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
+					'description'       => __( 'Specify URLs of CSS files to be excluded from minification (one per line).', 'rocket' ),
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ) . '<br>' .
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external CSS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_css_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_css_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
@@ -1023,6 +981,15 @@ class Page {
 		$disable_iframes_lazyload = (array) apply_filters( 'rocket_maybe_disable_iframes_lazyload_helper', $disable_iframes_lazyload );
 		$disable_iframes_lazyload = $this->sanitize_and_format_list( $disable_iframes_lazyload );
 
+		$disable_css_bg_img_lazyload = false;
+
+		/**
+		 * Lazyload Helper filter which disables WPR lazyload functionality for bg css.
+		 *
+		 * @param bool $disable_css_bg_img_lazyload Should the lazyload CSS be disabled.
+		 */
+		$disable_css_bg_img_lazyload = (bool) apply_filters( 'rocket_maybe_disable_css_bg_img_lazyload_helper', $disable_css_bg_img_lazyload );
+
 		/**
 		 * Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.
 		 *
@@ -1078,7 +1045,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'lazyload'         => [
+				'lazyload'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -1094,7 +1061,22 @@ class Page {
 					// translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
 					'description'       => ! empty( $disable_images_lazyload ) ? sprintf( __( 'LazyLoad for images is currently activated in %2$s. If you want to use %1$s’s LazyLoad, disable this option in %2$s.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, $disable_images_lazyload ) : '',
 				],
-				'lazyload_iframes' => [
+				'lazyload_css_bg_img' => [
+					'container_class'   => [
+						$disable_css_bg_img_lazyload ? 'wpr-isDisabled' : '',
+						'wpr-isParent',
+					],
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable for CSS background images', 'rocket' ),
+					'section'           => 'lazyload_section',
+					'page'              => 'media',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => $disable_css_bg_img_lazyload ? 1 : 0,
+					],
+				],
+				'lazyload_iframes'    => [
 					'container_class'   => [
 						! empty( $disable_iframes_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
@@ -1109,7 +1091,7 @@ class Page {
 						'disabled' => ! empty( $disable_iframes_lazyload ) ? 1 : 0,
 					],
 				],
-				'lazyload_youtube' => [
+				'lazyload_youtube'    => [
 					'container_class'   => [
 						! empty( $disable_youtube_lazyload ) ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
@@ -1127,20 +1109,20 @@ class Page {
 						'disabled' => ! empty( $disable_youtube_lazyload ) ? 1 : 0,
 					],
 				],
-				'exclude_lazyload' => [
+				'exclude_lazyload'    => [
 					'container_class' => [
 						'wpr-Delayjs',
 					],
 					'type'            => 'textarea',
 					'label'           => __( 'Excluded images or iframes', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
+					'description'     => sprintf( __( 'Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from the image or iframe code to be excluded (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_lazyload['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_lazyload['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'section'         => 'lazyload_section',
 					'page'            => 'media',
 					'default'         => [],
-					'placeholder'     => "example-image.jpg\nslider-image",
+					'placeholder'     => "example-image.jpg\nslider-image\nbackground-image-style.css",
 				],
-				'image_dimensions' => [
+				'image_dimensions'    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Add missing image dimensions', 'rocket' ),
 					'section'           => 'dimensions_section',
@@ -2174,6 +2156,7 @@ class Page {
 					'emoji',
 					'remove_unused_css',
 					'async_css',
+					'minify_concatenate_css',
 				]
 			)
 		);
@@ -2188,7 +2171,7 @@ class Page {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) {
+	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
 		if ( ! is_array( $list ) || empty( $list ) ) {
 			return [];
 		}

@@ -44,7 +44,7 @@ endif;
  * @param string $path Unused.
  * @return $root Path to the cache
  */
-function rocket_clean_home_root_for_domain_mapping_siteurl( $root, $host, $path ) {
+function rocket_clean_home_root_for_domain_mapping_siteurl( $root, $host, $path ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	$original_siteurl_host       = rocket_extract_url_component( get_original_url( 'siteurl' ), PHP_URL_HOST );
 	$domain_mapping_siteurl_host = rocket_extract_url_component( domain_mapping_siteurl( false ), PHP_URL_HOST );
 

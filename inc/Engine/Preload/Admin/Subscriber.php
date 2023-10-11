@@ -44,14 +44,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'               => [
+			'admin_notices'                 => [
 				[ 'maybe_display_preload_notice' ],
 			],
-			'rocket_options_changed'      => 'preload_homepage',
-			'switch_theme'                => 'preload_homepage',
-			'rocket_after_clean_used_css' => 'preload_homepage',
-			'rocket_input_sanitize'       => 'sanitize_options',
-			'wp_rocket_upgrade'           => [ 'maybe_clean_cron', 15, 2 ],
+			'rocket_options_changed'        => 'preload_homepage',
+			'switch_theme'                  => 'preload_homepage',
+			'rocket_after_clean_used_css'   => 'preload_homepage',
+			'rocket_domain_options_changed' => 'preload_homepage',
+			'rocket_input_sanitize'         => 'sanitize_options',
+			'wp_rocket_upgrade'             => [ 'maybe_clean_cron', 15, 2 ],
 		];
 	}
 
@@ -80,7 +81,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input ) : array {
+	public function sanitize_options( $input ): array {
 		if ( empty( $input['preload_excluded_uri'] ) ) {
 			$input['preload_excluded_uri'] = [];
 
