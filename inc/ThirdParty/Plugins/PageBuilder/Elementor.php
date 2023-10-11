@@ -309,9 +309,11 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
-		$message = $this->options->get('remove_unused_css', false) ?
+		$message = $this->options->get( 'remove_unused_css', false ) ?
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
 			__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' )
 			:
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
 			__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the cache if the display conditions were changed.', 'rocket' );
 
 		$args = [
@@ -319,7 +321,6 @@ class Elementor implements Subscriber_Interface {
 			'dismissible'    => '',
 			'dismiss_button' => __FUNCTION__,
 			'message'        => sprintf(
-				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
 				$message,
 				'<strong>',
 				'</strong>',
@@ -394,10 +395,9 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
-		if ( $this->options->get('remove_unused_css', false) ) {
+		if ( $this->options->get( 'remove_unused_css', false ) ) {
 			$this->used_css->delete_used_css_rows();
 		}
-
 
 		rocket_clean_domain();
 
