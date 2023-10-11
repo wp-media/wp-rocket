@@ -43,7 +43,7 @@ return [
 			]
 		]
     ],
-	'DisabledRUCSSSHouldDoNothing' => [
+	'DisabledRUCSSSetupTransient' => [
 		'config' => [
 			'check'     => null,
 			'object_id' => null,
@@ -55,13 +55,12 @@ return [
 			'boxes' => [
 				'maybe_clear_cache_change_notice'
 			],
-			'change' => false,
+			'change' => true,
 		],
 		'expected' => [
 			'user_id' => 10,
-			'transient' => false,
+			'transient' => true,
 			'boxes' => [
-				'maybe_clear_cache_change_notice'
 			]
 		]
 	],

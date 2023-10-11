@@ -31,6 +31,8 @@ class Test_maybeClearCacheChangeNotice extends TestCase {
 		Functions\when('current_user_can')->justReturn($config['can']);
 		Functions\when('get_transient')->justReturn($config['transient']);
 
+		$this->options->allows()->get('remove_unused_css', false)->andReturn($config['rucss']);
+
 		if($config['notice']) {
 			Functions\expect('rocket_notice_html')->with($expected['notice']);
 		} else {

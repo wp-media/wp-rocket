@@ -309,13 +309,18 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
+		$message = $this->options->get('remove_unused_css', false) ?
+			__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' )
+			:
+			__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the cache if the display conditions were changed.', 'rocket' );
+
 		$args = [
 			'status'         => 'warning',
 			'dismissible'    => '',
 			'dismiss_button' => __FUNCTION__,
 			'message'        => sprintf(
-			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
-				__( '%1$sWP Rocket:%2$s Your Elementor template was updated. Clear the Used CSS if the layout, design or CSS styles were changed.', 'rocket' ),
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = <a>, %4$s = </a>.
+				$message,
 				'<strong>',
 				'</strong>',
 				'</a>'
@@ -337,7 +342,7 @@ class Elementor implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function setup_transient( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
-		if ( '_elementor_conditions' !== $meta_key || $meta_value === $prev_value || ! $this->options->get( 'remove_unused_css', false ) ) {
+		if ( '_elementor_conditions' !== $meta_key || $meta_value === $prev_value ) {
 			return;
 		}
 		set_transient( 'wpr_elementor_need_purge', true );
@@ -389,7 +394,10 @@ class Elementor implements Subscriber_Interface {
 			return;
 		}
 
-		$this->used_css->delete_used_css_rows();
+		if ( $this->options->get('remove_unused_css', false) ) {
+			$this->used_css->delete_used_css_rows();
+		}
+
 
 		rocket_clean_domain();
 
