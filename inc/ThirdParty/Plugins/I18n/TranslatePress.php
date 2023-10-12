@@ -8,18 +8,29 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class TranslatePress implements Subscriber_Interface {
 	/**
+	 * Translate Press Instance
+	 *
 	 * @var TRP_Translate_Press|null
 	 */
 	protected $translatepress;
 
 	/**
+	 * URL Converter component from TranslatePress
+	 *
 	 * @var mixed|\TRP_Language_Switcher|\TRP_Languages|\TRP_Settings|\TRP_Url_Converter|null
 	 */
 	protected $url_converter;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
+		if ( ! class_exists( 'TRP_Translate_Press' ) ) {
+			return;
+		}
+
 		$this->translatepress = TRP_Translate_Press::get_trp_instance();
-		$this->url_converter = $this->translatepress->get_component( 'url_converter' );
+		$this->url_converter  = $this->translatepress->get_component( 'url_converter' );
 	}
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -54,9 +65,10 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function detect_homepage( $home_url, $url ) {
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 		$language     = $this->url_converter->get_lang_from_url_string( $url );
 		$url_language = $this->url_converter->get_url_for_language( $language, home_url() );
-
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 		return untrailingslashit( $url ) === untrailingslashit( $url_language ) ? $url : $home_url;
 	}
 
@@ -141,10 +153,12 @@ class TranslatePress implements Subscriber_Interface {
 
 		$languages_to_display = $trp_settings['publish-languages'];
 		$published_languages  = $languages->get_language_names( $languages_to_display );
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		foreach ( $published_languages as $code => $name ) {
 			$urls[] = $this->url_converter->get_url_for_language( $code, $home_url );
 		}
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		return $urls;
 	}
@@ -188,22 +202,19 @@ class TranslatePress implements Subscriber_Interface {
 			return $home_url;
 		}
 
-		$settings       = $this->translatepress->get_component( 'settings' );
-		$trp_settings   = $settings->get_settings();
+		$settings     = $this->translatepress->get_component( 'settings' );
+		$trp_settings = $settings->get_settings();
 
 		$code = '';
 
 		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
-
 		foreach ( $trp_settings['url-slugs'] as $index => $slug ) {
 			if ( $lang === $slug ) {
 				$code = $index;
 				break;
 			}
 		}
-
 		$url = $this->url_converter->get_url_for_language( $code, $home_url );
-
 		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		return $url;
@@ -230,10 +241,12 @@ class TranslatePress implements Subscriber_Interface {
 
 		$languages_to_display = $trp_settings['publish-languages'];
 		$published_languages  = $languages->get_language_names( $languages_to_display );
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		foreach ( $published_languages as $code => $name ) {
 			$urls[] = wp_parse_url( $this->url_converter->get_url_for_language( $code, $url ), PHP_URL_PATH ) . $regex;
 		}
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		return $urls;
 	}
@@ -290,11 +303,13 @@ class TranslatePress implements Subscriber_Interface {
 		$clear_urls  = [];
 		$current_url = remove_query_arg( 'trp-edit-translation', $url );
 
+		add_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 		foreach ( $settings['translation-languages'] as $language ) {
 			if ( ! empty( $update_strings[ $language ] ) ) {
 				$clear_urls[] = $this->url_converter->get_url_for_language( $language, $current_url, '' );
 			}
 		}
+		remove_filter( 'trp_add_language_to_home_url_check_for_admin', '__return_false' );
 
 		rocket_clean_files( $clear_urls );
 	}
