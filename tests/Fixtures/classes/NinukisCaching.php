@@ -9,8 +9,12 @@ if ( ! class_exists( 'NinukisCaching' ) ) {
 
 		}
 
-		public function purge_cache( $url ) {
-
+		/**
+		 * Purge the cache for the given paths.
+		 *
+		 * @param array $paths Paths that need to be purged.
+*/
+		public function purge_cache( $urls ) {
 		}
 
 		public function purge_page_cache( $id ) {

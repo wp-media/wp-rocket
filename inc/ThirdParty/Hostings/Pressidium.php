@@ -62,8 +62,6 @@ class Pressidium extends AbstractNoCacheHost {
 		if ( isset( $_POST['purge-all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( WP_NINUKIS_WP_NAME . '-caching' ) ) {
 			// Clear all caching files.
 			rocket_clean_domain();
-
-			run_rocket_sitemap_preload();
 		}
 	}
 
@@ -80,50 +78,60 @@ class Pressidium extends AbstractNoCacheHost {
 	}
 
 	/**
-	 * Returns the path of URLs..
+	 * Returns the path of URLs.
 	 *
 	 * @param array|string $urls Urls we want to get paths.
 	 * @return array|void the path.
 	 */
 	private function get_paths( $urls ) {
-		$urls  = (array) $urls;
+		if ( ! is_array( $urls ) ) {
+			$urls = (array) $urls;
+		}
+
 		$paths = [];
 
 		foreach ( $urls as $url ) {
 			$parsed_url = get_rocket_parse_url( $url );
 			$paths[]    = $parsed_url['path'];
 
-			return $paths;
 		}
+		return $paths;
+	}
+
+	/**
+	 * Purge the cache of Pressidium from paths.
+	 *
+	 * @param array $paths Paths of pages we are going to purge cache.
+	 *
+	 * @return void
+	 */
+	private function purge_cache( $paths ) {
+		NinukisCaching::get_instance()->purge_cache( $paths );
 	}
 
 	/**
 	 * Purge the cache for the given URL.
 	 *
-	 * @param string $url URL we want to purge.
+	 * @param string|array $url URL we want to purge.
 	 *
 	 * @return void
 	 */
 	public function purge_url( $url ) {
 		$paths = $this->get_paths( $url );
-
-		NinukisCaching::get_instance()->purge_cache( $paths );
+		$this->purge_cache( $paths );
 	}
 
 	/**
 	 * Clean cache of post.
 	 *
-	 * @param object $post Post/page to purge.
-	 * @param array  $purge_urls URLs that need to be purged.
+	 * @param WP_Post $post Post that need to be cleaned.
+	 * @param array   $purge_urls URLs that need to be purged.
 	 *
 	 * @return void
 	 */
 	public function clean_post( $post, $purge_urls ) {
-		$cache = NinukisCaching::get_instance();
-		$cache->purge_page_cache( $post->ID );
-
 		// Purge related urls.
 		$paths = $this->get_paths( $purge_urls );
-		$cache->purge_cache( $paths );
+		$this->purge_cache( $paths );
 	}
 }

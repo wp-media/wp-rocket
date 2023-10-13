@@ -31,7 +31,6 @@ class Test_clearCacheAfterPressidium extends TestCase {
 		Functions\expect('current_user_can')->with('manage_options')->andReturn(true);
 		Functions\expect('check_admin_referer')->with(WP_NINUKIS_WP_NAME . '-caching' )->andReturn(true);
 		Functions\expect('rocket_clean_domain');
-		Functions\expect('run_rocket_sitemap_preload');
 		$this->subscriber->clear_cache_after_pressidium();
 	}
 }

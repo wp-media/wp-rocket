@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Pressidium;
 
 use Mockery;
-use Ninukis_Plugin;
+use NinukisCaching;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Pressidium;
 
@@ -26,7 +26,7 @@ class Test_cleanPressidium extends TestCase {
 
 	public function testShouldReturnExpected()
 	{
-		$ninukis_plugin = Mockery::mock('overload:' . Ninukis_Plugin::class);
+		$ninukis_plugin = Mockery::mock('overload:' . NinukisCaching::class);
 		$ninukis_plugin->expects()->get_instance()->andReturn($ninukis_plugin);
 		$ninukis_plugin->expects()->purgeAllCaches();
 		$this->subscriber->clean_pressidium();
