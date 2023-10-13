@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
-use Ninukis_Plugin;
+use NinukisCaching;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Pressidium extends AbstractNoCacheHost {
@@ -25,10 +25,10 @@ class Pressidium extends AbstractNoCacheHost {
 			$events['admin_init']                              = 'clear_cache_after_pressidium';
 		}
 
-		if ( class_exists( 'Ninukis_Plugin' ) ) {
+		if ( class_exists( 'NinukisCaching' ) ) {
 			$events['after_rocket_clean_domain'] = 'clean_pressidium';
-			$events['after_rocket_clean_file'] = ['purge_url', 10, 1];
-			$events['after_rocket_clean_post'] = ['clean_post', 10, 2];
+			$events['after_rocket_clean_file']   = [ 'purge_url', 10, 1 ];
+			$events['after_rocket_clean_post']   = [ 'clean_post', 10, 2 ];
 		}
 
 		return $events;
@@ -75,49 +75,55 @@ class Pressidium extends AbstractNoCacheHost {
 	 * @return void
 	 */
 	public function clean_pressidium() {
-		$plugin = Ninukis_Plugin::get_instance();
+		$plugin = NinukisCaching::get_instance();
 		$plugin->purgeAllCaches();
 	}
 
 	/**
 	 * Returns the path of URLs..
 	 *
-	 * @param array $urls Urls we want to get paths.
+	 * @param array|string $urls Urls we want to get paths.
 	 * @return array|void the path.
 	 */
 	private function get_paths( $urls ) {
-		$urls = (array) $urls;
+		$urls  = (array) $urls;
 		$paths = [];
 
-		foreach( $urls as $url ) {
+		foreach ( $urls as $url ) {
 			$parsed_url = get_rocket_parse_url( $url );
-			$paths[] = $parsed_url['path'];
+			$paths[]    = $parsed_url['path'];
 
 			return $paths;
 		}
 	}
 
+	/**
+	 * Purge the cache for the given URL.
+	 *
+	 * @param string $url URL we want to purge.
+	 *
+	 * @return void
+	 */
 	public function purge_url( $url ) {
 		$paths = $this->get_paths( $url );
 
-		Ninukis_Plugin::get_instance()->purge_cache($paths);
+		NinukisCaching::get_instance()->purge_cache( $paths );
 	}
 
 	/**
 	 * Clean cache of post.
 	 *
-	 * @param $post Post we clear cache.
-	 * @param array $purge_urls URLs we also want to clear the cache.
+	 * @param object $post Post/page to purge.
+	 * @param array  $purge_urls URLs that need to be purged.
 	 *
 	 * @return void
 	 */
 	public function clean_post( $post, $purge_urls ) {
 		$cache = NinukisCaching::get_instance();
-		$cache->purge_page_cache($post->ID);
+		$cache->purge_page_cache( $post->ID );
 
-		// Purge related urls
+		// Purge related urls.
 		$paths = $this->get_paths( $purge_urls );
 		$cache->purge_cache( $paths );
 	}
-
 }

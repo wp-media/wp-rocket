@@ -118,7 +118,7 @@ class HostResolver {
 			return 'kinsta';
 		}
 
-		if ( defined( 'WP_NINUKIS_WP_NAME' ) || class_exists( 'Ninukis_Plugin' ) ) {
+		if ( defined( 'WP_NINUKIS_WP_NAME' ) || class_exists( 'NinukisCaching' ) ) {
 			self::$hostname = 'pressidium';
 			return self::$hostname;
 		}
