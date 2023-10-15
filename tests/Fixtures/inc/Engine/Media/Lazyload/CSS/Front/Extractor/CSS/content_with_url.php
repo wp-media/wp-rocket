@@ -142,3 +142,7 @@ background-color: #c63dd8;
  background-image: url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg);
  }
  }
+
+ [title~="wp-rocket"] {
+ background: url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat;
+ }
