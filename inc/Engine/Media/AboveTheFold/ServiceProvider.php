@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -16,6 +17,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'atf_subscriber',
 	];
 
 	/**
@@ -24,5 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->share( 'atf_subscriber', Subscriber::class );
 	}
 }

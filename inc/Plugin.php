@@ -380,6 +380,7 @@ class Plugin {
 			'wpgeotargeting',
 			'lazyload_css_subscriber',
 			'shoptimizer',
+			'atf_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
