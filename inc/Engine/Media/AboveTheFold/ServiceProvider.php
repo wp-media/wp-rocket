@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -16,6 +18,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'atf_table',
+		'atf_query',
 	];
 
 	/**
@@ -24,5 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->share( 'atf_table', ATFTable::class );
+		$this->getContainer()->add( 'atf_query', ATFQuery::class );
 	}
 }

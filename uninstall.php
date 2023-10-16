@@ -23,15 +23,18 @@ require_once __DIR__ . '/inc/Dependencies/Database/Queries/Meta.php';
 require_once __DIR__ . '/inc/Dependencies/Database/Queries/Date.php';
 require_once __DIR__ . '/inc/Dependencies/Database/Queries/Compare.php';
 require_once __DIR__ . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
-
 require_once __DIR__ . '/inc/Engine/Preload/Database/Tables/Cache.php';
+require_once __DIR__ . '/inc/Engine/Media/AboveTheFold/Database/Tables/AboveTheFold.php';
+
 $rocket_rucss_usedcss_table = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
-$rocket_cache_table         = new \WP_Rocket\Engine\Preload\Database\Tables\Cache();
+$rocket_cache_table         = new WP_Rocket\Engine\Preload\Database\Tables\Cache();
+$rocket_atf_table           = new WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold();
 $rocket_uninstall           = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
 	WP_ROCKET_CONFIG_PATH,
 	$rocket_rucss_usedcss_table,
-	$rocket_cache_table
+	$rocket_cache_table,
+	$rocket_atf_table
 	);
 
 $rocket_uninstall->uninstall();
