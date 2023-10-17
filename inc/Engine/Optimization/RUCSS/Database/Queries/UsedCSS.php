@@ -582,7 +582,7 @@ class UsedCSS extends Query {
 	 * @param int    $id DB row ID.
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
-	 *
+	 * @param bool   $is_mobile if the request is for mobile page.
 	 * @return bool
 	 */
 	public function make_status_pending( int $id, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {

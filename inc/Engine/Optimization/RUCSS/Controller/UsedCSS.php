@@ -1047,6 +1047,11 @@ class UsedCSS {
 		return $this->used_css_query->get_completed_count() > 0;
 	}
 
+	/**
+	 * Process on submit jobs.
+	 *
+	 * @return void
+	 */
 	public function process_on_submit_jobs() {
 		$pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
 

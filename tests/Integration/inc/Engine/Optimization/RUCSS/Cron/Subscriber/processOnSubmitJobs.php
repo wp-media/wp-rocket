@@ -52,7 +52,7 @@ class Test_processOnSubmitJobs extends TestCase {
 			self::addResource($row);
 		}
 
-        do_action('rocket_rucss_submit_jobs');
+        do_action('rocket_rucss_on_submit_jobs');
 
 		foreach ($expected['rows'] as $row) {
 			$this->assertTrue(self::resourceFound($row), json_encode($row) . ' not found');
