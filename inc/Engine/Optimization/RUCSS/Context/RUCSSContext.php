@@ -20,7 +20,8 @@ class RUCSSContext extends AbstractContext {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Filesystem $filesystem Filesystem instance.
+	 * @param Options_Data $options Options.
+	 * @param Filesystem   $filesystem Filesystem instance.
 	 */
 	public function __construct( Options_Data $options, Filesystem $filesystem ) {
 		parent::__construct( $options );
