@@ -4,18 +4,21 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
-use WP_Rocket\Logger\Logger;
 use WP_Admin_Bar;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class UsedCSS {
+class UsedCSS implements LoggerAwareInterface {
 	use RegexTrait;
 	use CSSTrait;
+	use LoggerAware;
 
 	/**
 	 * UsedCss Query instance.
@@ -60,6 +63,20 @@ class UsedCSS {
 	private $filesystem;
 
 	/**
+	 * RUCSS context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $context;
+
+	/**
+	 * RUCSS optimize url context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $optimize_url_context;
+
+	/**
 	 * External exclusions list, can be urls or attributes.
 	 *
 	 * @var array
@@ -83,12 +100,14 @@ class UsedCSS {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data   $options Options instance.
-	 * @param UsedCSS_Query  $used_css_query Usedcss Query instance.
-	 * @param APIClient      $api APIClient instance.
-	 * @param QueueInterface $queue Queue instance.
-	 * @param DataManager    $data_manager DataManager instance.
-	 * @param Filesystem     $filesystem Filesystem instance.
+	 * @param Options_Data     $options Options instance.
+	 * @param UsedCSS_Query    $used_css_query Usedcss Query instance.
+	 * @param APIClient        $api APIClient instance.
+	 * @param QueueInterface   $queue Queue instance.
+	 * @param DataManager      $data_manager DataManager instance.
+	 * @param Filesystem       $filesystem Filesystem instance.
+	 * @param ContextInterface $context RUCSS context.
+	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -96,53 +115,18 @@ class UsedCSS {
 		APIClient $api,
 		QueueInterface $queue,
 		DataManager $data_manager,
-		Filesystem $filesystem
+		Filesystem $filesystem,
+		ContextInterface $context,
+		ContextInterface $optimize_url_context
 	) {
-		$this->options        = $options;
-		$this->used_css_query = $used_css_query;
-		$this->api            = $api;
-		$this->queue          = $queue;
-		$this->data_manager   = $data_manager;
-		$this->filesystem     = $filesystem;
-	}
-
-	/**
-	 * Determines if we treeshake the CSS.
-	 *
-	 * @return boolean
-	 */
-	public function is_allowed(): bool {
-		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
-			return false;
-		}
-
-		if ( rocket_bypass() ) {
-			return false;
-		}
-
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
-		if ( $this->is_password_protected() ) {
-			return false;
-		}
-
-		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
-
-			return false;
-		}
-
-		// Bailout if user is logged in.
-		if ( is_user_logged_in() ) {
-			return false;
-		}
-
-		if ( ! $this->filesystem->is_writable_folder() ) {
-			return false;
-		}
-
-		return true;
+		$this->options              = $options;
+		$this->used_css_query       = $used_css_query;
+		$this->api                  = $api;
+		$this->queue                = $queue;
+		$this->data_manager         = $data_manager;
+		$this->filesystem           = $filesystem;
+		$this->context              = $context;
+		$this->optimize_url_context = $optimize_url_context;
 	}
 
 	/**
@@ -157,40 +141,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Can optimize url.
-	 *
-	 * @return bool
-	 */
-	private function can_optimize_url() {
-		if ( rocket_bypass() ) {
-			return false;
-		}
-
-		if ( ! $this->is_enabled() ) {
-			return false;
-		}
-
-		return ! is_rocket_post_excluded_option( 'remove_unused_css' );
-	}
-
-	/**
-	 * Checks if on a single post and if it is password protected
-	 *
-	 * @since 3.11
-	 *
-	 * @return bool
-	 */
-	private function is_password_protected(): bool {
-		if ( ! is_singular() ) {
-			return false;
-		}
-
-		$post = get_post();
-
-		return ! empty( $post->post_password );
-	}
-
-	/**
 	 * Start treeshaking the current page.
 	 *
 	 * @param string $html Buffet HTML for current page.
@@ -198,7 +148,7 @@ class UsedCSS {
 	 * @return string
 	 */
 	public function treeshake( string $html ): string {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
 
@@ -521,10 +471,10 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
-		Logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
+		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
 		if ( ! $this->is_enabled() ) {
-			Logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
+			$this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
 			return;
 		}
@@ -540,17 +490,17 @@ class UsedCSS {
 		 */
 		$rows = apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
 
-		Logger::debug( "RUCSS: Start getting number of {$rows} pending jobs." );
+		$this->logger::debug( "RUCSS: Start getting number of {$rows} pending jobs." );
 
 		$pending_jobs = $this->used_css_query->get_pending_jobs( $rows );
 		if ( ! $pending_jobs ) {
-			Logger::debug( 'RUCSS: No pending jobs are there.' );
+			$this->logger::debug( 'RUCSS: No pending jobs are there.' );
 
 			return;
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
-			Logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
+			$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
 			// Change status to in-progress.
 			$this->used_css_query->make_status_inprogress( (int) $used_css_row->id );
@@ -567,11 +517,11 @@ class UsedCSS {
 	 * @return void
 	 */
 	public function check_job_status( int $id ) {
-		Logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
+		$this->logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
 		$new_job_id  = false;
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
-			Logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
+			$this->logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
 
 			// Nothing in DB, bailout.
 			return;
@@ -594,7 +544,7 @@ class UsedCSS {
 
 		if ( isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
 			$message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
-			Logger::error( $message );
+			$this->logger::error( $message );
 			$this->used_css_query->make_status_failed( $id, '500', $message );
 			return;
 		}
@@ -606,11 +556,11 @@ class UsedCSS {
 			||
 			! isset( $job_details['contents']['shakedCSS'] )
 		) {
-			Logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
+			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
 
 			// Failure, check the retries number.
 			if ( $row_details->retries >= 3 ) {
-				Logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
+				$this->logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
 				/**
 				 * Unlock preload URL.
 				 *
@@ -658,14 +608,14 @@ class UsedCSS {
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
-			Logger::error( $message );
+			$this->logger::error( $message );
 			$this->used_css_query->make_status_failed( $id, '', $message );
 
 			return;
 		}
 
 		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
-		Logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
+		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$this->used_css_query->make_status_completed( $id, $hash );
 
@@ -688,23 +638,7 @@ class UsedCSS {
 	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
 		global $post;
 
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
-		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
-			return;
-		}
-
-		if ( is_admin() ) {
-			return;
-		}
-
-		if ( ! $this->can_optimize_url() ) {
-			return;
-		}
-
-		if ( ! rocket_can_display_options() ) {
+		if ( ! $this->optimize_url_context->is_allowed() ) {
 			return;
 		}
 
@@ -1116,7 +1050,7 @@ class UsedCSS {
 
 		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
 		if ( 200 !== $add_to_queue_response['code'] ) {
-			Logger::error(
+			$this->logger::error(
 				'Error when contacting the RUCSS API.',
 				[
 					'rucss error',
