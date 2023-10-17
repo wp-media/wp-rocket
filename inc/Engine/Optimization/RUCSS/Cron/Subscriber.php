@@ -225,7 +225,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		wp_schedule_event( time(), 'rocket_rucss_on_submit_jobs', 'rocket_rucss_on_submit_jobs' );
-
 	}
 
 	/**
