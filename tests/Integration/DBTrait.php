@@ -12,7 +12,14 @@ trait DBTrait {
 	public static function addResource(array $resource) {
 		$container = apply_filters( 'rocket_container', null );
 		$resource_query = $container->get( 'rucss_used_css_query' );
-		return $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
+		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
+		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
+			$resource_query->make_status_inprogress($job_id);
+		}
+		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
+			$resource_query->make_status_pending($job_id);
+		}
+		return $job_id;
 	}
 
 	public static function cacheFound( array $cache): bool {

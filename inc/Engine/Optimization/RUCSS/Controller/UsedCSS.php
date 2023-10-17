@@ -129,6 +129,7 @@ class UsedCSS {
 		}
 
 		if ( is_rocket_post_excluded_option( 'remove_unused_css' ) ) {
+
 			return false;
 		}
 
@@ -215,25 +216,7 @@ class UsedCSS {
 		$used_css  = $this->used_css_query->get_row( $url, $is_mobile );
 
 		if ( empty( $used_css ) ) {
-			$add_to_queue_response = $this->add_url_to_the_queue( $url, $is_mobile );
-			if ( false === $add_to_queue_response || ! isset( $add_to_queue_response['contents'], $add_to_queue_response['contents']['jobId'], $add_to_queue_response['contents']['queueName'] ) ) {
-				return $html;
-			}
-
-			/**
-			 * Lock preload URL.
-			 *
-			 * @param string $url URL to lock
-			 */
-			do_action( 'rocket_preload_lock_url', $url );
-
-			// We got jobid and queue name so save them into the DB and change status to be pending.
-			$this->used_css_query->create_new_job(
-				$url,
-				$add_to_queue_response['contents']['jobId'],
-				$add_to_queue_response['contents']['queueName'],
-				$is_mobile
-			);
+			$this->add_url_to_the_queue( $url, $is_mobile );
 			return $html;
 		}
 
@@ -245,7 +228,6 @@ class UsedCSS {
 
 		if ( empty( $used_css_content ) ) {
 			$this->used_css_query->delete_by_url( $url );
-
 			return $html;
 		}
 
@@ -264,51 +246,15 @@ class UsedCSS {
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
 	 *
-	 * @return array|bool An array of response data, or false.
+	 * @return void
 	 */
 	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
-		/**
-		 * Filters the RUCSS safelist
-		 *
-		 * @since 3.11
-		 *
-		 * @param array $safelist Array of safelist values.
-		 */
-		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
-
-		/**
-		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
-		 *
-		 * @since 3.14
-		 *
-		 * @param array $skipped_attr Array of safelist values.
-		 */
-		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
-		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
-
-		$config = [
-			'treeshake'      => 1,
-			'rucss_safelist' => $safelist,
-			'skip_attr'      => $skipped_attr,
-			'is_mobile'      => $is_mobile,
-			'is_home'        => $this->is_home( $url ),
-		];
-
-		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
-		if ( 200 !== $add_to_queue_response['code'] ) {
-			Logger::error(
-				'Error when contacting the RUCSS API.',
-				[
-					'rucss error',
-					'url'     => $url,
-					'code'    => $add_to_queue_response['code'],
-					'message' => $add_to_queue_response['message'],
-				]
-			);
-
-			return false;
+		$used_css_row = $this->used_css_query->get_row( $url, $is_mobile );
+		if ( empty( $used_css_row ) ) {
+			$this->used_css_query->create_new_job( $url, '', '', $is_mobile );
+			return;
 		}
-		return $add_to_queue_response;
+		$this->used_css_query->reset_job( $used_css_row->id );
 	}
 	/**
 	 * Delete used css based on URL.
@@ -680,12 +626,8 @@ class UsedCSS {
 			// on timeout errors with code 408 create new job.
 			switch ( $job_details['code'] ) {
 				case 408:
-					$add_to_queue_response = $this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-					if ( false !== $add_to_queue_response ) {
-						$new_job_id = $add_to_queue_response['contents']['jobId'];
-						$this->used_css_query->update_job_id( $id, $new_job_id );
-					}
-					break;
+					$this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
+					return;
 			}
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
@@ -870,11 +812,7 @@ class UsedCSS {
 				continue;
 			}
 
-			$add_to_queue_response = $this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
-			if ( false !== $add_to_queue_response ) {
-				$new_job_id = $add_to_queue_response['contents']['jobId'];
-				$this->used_css_query->reset_job( $id, $new_job_id );
-			}
+			$this->add_url_to_the_queue( $row->url, (bool) $row->is_mobile );
 		}
 
 		/**
@@ -1107,5 +1045,85 @@ class UsedCSS {
 	 */
 	public function has_one_completed_row_at_least() {
 		return $this->used_css_query->get_completed_count() > 0;
+	}
+
+	public function process_on_submit_jobs() {
+		$pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
+
+		$max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
+		$rows             = $this->used_css_query->get_on_submit_jobs( $max_pending_rows );
+		foreach ( $rows as $row ) {
+			$response = $this->send_api( $row->url, $row->is_mobile );
+			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
+				continue;
+			}
+
+			/**
+			 * Lock preload URL.
+			 *
+			 * @param string $url URL to lock
+			 */
+			do_action( 'rocket_preload_lock_url', $row->url );
+
+			$this->used_css_query->make_status_pending(
+				(int) $row->id,
+				$response['contents']['jobId'],
+				$response['contents']['queueName'],
+				$row->is_mobile
+			);
+		}
+	}
+
+	/**
+	 * Send the job to the API.
+	 *
+	 * @param string $url URL to work on.
+	 * @param bool   $is_mobile Is the page for mobile.
+	 * @return array|false
+	 */
+	protected function send_api( string $url, bool $is_mobile ) {
+		/**
+		 * Filters the RUCSS safelist
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $safelist Array of safelist values.
+		 */
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+
+		/**
+		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
+		 *
+		 * @since 3.14
+		 *
+		 * @param array $skipped_attr Array of safelist values.
+		 */
+		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
+		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
+
+		$config = [
+			'treeshake'      => 1,
+			'rucss_safelist' => $safelist,
+			'skip_attr'      => $skipped_attr,
+			'is_mobile'      => $is_mobile,
+			'is_home'        => $this->is_home( $url ),
+		];
+
+		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+		if ( 200 !== $add_to_queue_response['code'] ) {
+			Logger::error(
+				'Error when contacting the RUCSS API.',
+				[
+					'rucss error',
+					'url'     => $url,
+					'code'    => $add_to_queue_response['code'],
+					'message' => $add_to_queue_response['message'],
+				]
+			);
+
+			return false;
+		}
+
+		return $add_to_queue_response;
 	}
 }

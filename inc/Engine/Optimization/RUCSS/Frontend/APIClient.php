@@ -50,7 +50,7 @@ class APIClient extends AbstractAPIClient {
 			'code'     => 400,
 			'message'  => 'No message. Defaulted in add_to_queue',
 			'contents' => [
-				'jobId'     => 0,
+				'jobId'     => '0',
 				'queueName' => '',
 			],
 		];

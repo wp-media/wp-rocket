@@ -37,18 +37,18 @@ $success_response = json_encode( [
 		"contents" => [
 			"success" => true,
 			"shakedCSS" => "body{background-color:#f0f0f2;margin:0;padding:0;font-family:-apple-system,system-ui,BlinkMacSystemFont,\"Segoe UI\",\"Open Sans\", \"Helvetica Neue\",Helvetica,Arial,sans-serif}div{width:600px;margin:5em auto;padding:2em;background-color:#fdfdff;border-radius:.5em;box-shadow:2px 3px 7px 2px rgba(0,0,0,.02)}a:link,a:visited{color:#38488f;text-decoration:none}@media (max-width:700px){div{margin:0 auto;width:auto}}",
-			"shakedCSS_size" => 409,
-			"orginalCSS_size" => 650
-		],
-		"server_ip" => "51.178.134.82"
-	],
-	"stacktrace" => [
-	],
-	"attemptsMade" => 1,
-	"delay" => 0,
-	"timestamp" => 1691650637819,
-	"finishedOn" => 1691650638313,
-	"processedOn" => 1691650637834
+                              "shakedCSS_size" => 409,
+                              "orginalCSS_size" => 650
+                           ],
+                           "server_ip" => "51.178.134.82"
+                        ],
+   "stacktrace" => [
+],
+   "attemptsMade" => 1,
+   "delay" => 0,
+   "timestamp" => 1691650637819,
+   "finishedOn" => 1691650638313,
+   "processedOn" => 1691650637834
 ]);
 
 $error_response = json_encode([
@@ -93,31 +93,18 @@ $error_response = json_encode([
 	"processedOn" => 1691650390781
 ]);
 
-$success_response_create = json_encode( [
-	"code" => 200,
-	"message" => "Added to Queue successfully.",
-	"contents" => [
-		"jobId" => "OVH_EU--6026944",
-		"queueName" => "EU",
-		"isHome" => true,
-		"queueFullName" => "rucssJob_EU_Home"
-	]
-]);
-
 return [
 	'structure' => [],
 	'test_data' => [
 		'rowShouldShouldReturnCss' => [
 			'config' => [
-				'hash' => 'hash',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
-					'method' => 'GET',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'response' => [
 						'response' => [
 							'code' => 200,
@@ -128,62 +115,15 @@ return [
 			],
 			'expected' => [
 				'rows' => [
-					[
-						'status' => 'completed',
-						'job_id' => '123',
-						'queue_name' => 'queue',
-						'hash' => 'hash',
-					]
+					'hash' => '1234',
+					'status' => 'completed',
+					'id' => 1,
+					'css' => '',
 				],
 				'files' => [
-					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+					'rucss' => [
 						'exists' => true,
-					]
-				]
-			]
-		],
-		'408ShouldRecreateJob' => [
-			'config' => [
-				'hash' => 'hash',
-				'row' => [
-					'url' => 'https://example.org',
-					'job_id' => '123',
-					'queue_name' => 'queue',
-				],
-				'request' => [
-					'url' => 'http://localhostrucss-job',
-					'method' => 'GET',
-					'response' => [
-						'response' => [
-							'code' => 408,
-							'message' => 'bad json'
-						],
-						'body' => $error_response
-					]
-				],
-				'create' => [
-					'url' => 'http://localhostrucss-job',
-					'method' => 'POST',
-					'response' => [
-						'response' => [
-							'code' => 200,
-						],
-						'body' => $success_response_create
-					]
-				]
-			],
-			'expected' => [
-				'rows' => [
-					[
-						'status' => 'to-submit',
-						'job_id' => '',
-						'queue_name' => 'queue',
-						'hash' => '',
-					]
-				],
-				'files' => [
-					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
-						'exists' => false,
+						'content' => file_get_contents(__DIR__ . '/CSS/rucss.css')
 					]
 				]
 			]

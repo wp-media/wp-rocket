@@ -42,6 +42,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_rucss_pending_jobs'          => 'process_pending_jobs',
+			'rocket_rucss_submit_jobs'           => 'process_on_submit_jobs',
 			'rocket_rucss_job_check_status'      => 'check_job_status',
 			'rocket_rucss_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
@@ -52,6 +53,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'schedule_pending_jobs' ],
 				[ 'initialize_rucss_queue_runner' ],
 				[ 'schedule_removing_failed_jobs' ],
+				[ 'schedule_on_submit_jobs' ],
 			],
 		];
 	}
@@ -95,6 +97,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function process_pending_jobs() {
 		$this->used_css->process_pending_jobs();
+	}
+
+	/**
+	 * Process on submit jobs with Cron iteration.
+	 *
+	 * @return void
+	 */
+	public function process_on_submit_jobs() {
+		$this->used_css->process_on_submit_jobs();
 	}
 
 	/**
@@ -174,7 +185,47 @@ class Subscriber implements Subscriber_Interface {
 			'display'  => esc_html__( 'WP Rocket clear Remove Unused CSS failed jobs', 'rocket' ),
 		];
 
+		/**
+		 * Filters the cron interval for clearing failed jobs.
+		 *
+		 * @param int $interval Interval in seconds.
+		 */
+		$interval = (int) apply_filters( 'rocket_remove_rucss_failed_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+
+		$schedules['rocket_rucss_on_submit_jobs'] = [
+			'interval' => $interval,
+			'display'  => esc_html__( 'WP Rocket procees on submit jobs', 'rocket' ),
+		];
+
 		return $schedules;
+	}
+
+	/**
+	 * Schedule on submit jobs.
+	 *
+	 * @return void
+	 */
+	public function schedule_on_submit_jobs() {
+		if (
+			! $this->used_css->is_enabled()
+			&&
+			wp_next_scheduled( 'rocket_rucss_on_submit_jobs' )
+		) {
+			wp_clear_scheduled_hook( 'rocket_rucss_on_submit_jobs' );
+
+			return;
+		}
+
+		if ( ! $this->used_css->is_enabled() ) {
+			return;
+		}
+
+		if ( wp_next_scheduled( 'rocket_rucss_on_submit_jobs' ) ) {
+			return;
+		}
+
+		wp_schedule_event( time(), 'rocket_rucss_on_submit_jobs', 'rocket_rucss_on_submit_jobs' );
+
 	}
 
 	/**
