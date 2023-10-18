@@ -117,6 +117,13 @@ class Controller implements ContextInterface {
 			case 'picture':
 				break;
 			case 'bg-img-set':
+				$sources = [];
+
+				foreach ( $lcp->bg_set as $set ) {
+					$sources[] = $set->src;
+				}
+
+				$tag .= 'imagesrcset="' . implode( ',', $sources ) . '"';
 				break;
 		}
 
