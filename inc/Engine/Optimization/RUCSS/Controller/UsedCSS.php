@@ -987,8 +987,18 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
+		/**
+		 * Pending rows cont.
+		 *
+		 * @param int $count Number of rows.
+		 */
 		$pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
 
+		/**
+		 * Maximum processing rows.
+		 *
+		 * @param int $max Max processing rows.
+		 */
 		$max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
 		$rows             = $this->used_css_query->get_on_submit_jobs( $max_pending_rows );
 		foreach ( $rows as $row ) {
