@@ -33,5 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'atf_table', ATFTable::class );
 		$this->getContainer()->add( 'atf_query', ATFQuery::class );
 		$this->getContainer()->share( 'atf_subscriber', Subscriber::class );
+
+		$this->getContainer()->get( 'atf_table' );
 	}
 }
