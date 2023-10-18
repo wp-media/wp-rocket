@@ -1,6 +1,7 @@
 <?php
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -21,6 +22,8 @@ use Brain\Monkey\Actions;
  * @group  RUCSS
  */
 class Test_CheckJobStatus extends TestCase {
+	use \WP_Rocket\Tests\Unit\HasLoggerTrait;
+
 	protected $options;
 	protected $usedCssQuery;
 	protected $api;
@@ -37,6 +40,8 @@ class Test_CheckJobStatus extends TestCase {
 		$this->queue        = Mockery::mock( QueueInterface::class );
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem   = Mockery::mock( Filesystem::class );
+		$this->context = Mockery::mock(ContextInterface::class);
+		$this->optimisedContext = Mockery::mock(ContextInterface::class);
 		$this->usedCss      = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
@@ -45,9 +50,13 @@ class Test_CheckJobStatus extends TestCase {
 				$this->api,
 				$this->queue,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->context,
+				$this->optimisedContext,
 			]
 		);
+
+		$this->set_logger($this->usedCss);
 	}
 
 	protected function tearDown(): void {
@@ -58,7 +67,7 @@ class Test_CheckJobStatus extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		Logger::disable_debug();
+		$this->logger->allows()->error(Mockery::any());
 		$new_job_id = false;
 		if ( $config['row_details'] ) {
 			$row_details = new UsedCSS_Row( $config['row_details'] );

@@ -1,6 +1,7 @@
 <?php
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -25,7 +26,9 @@ class Test_Treeshake extends TestCase {
 	protected $usedCss;
 	protected $data_manager;
 	protected $filesystem;
+	protected $context;
 
+	protected $optimisedContext;
 	protected function setUp(): void
 	{
 		parent::setUp();
@@ -35,6 +38,9 @@ class Test_Treeshake extends TestCase {
 		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem = Mockery::mock( Filesystem::class );
+		$this->context = Mockery::mock(ContextInterface::class);
+		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
@@ -42,7 +48,9 @@ class Test_Treeshake extends TestCase {
 				$this->api,
 				$this->queue,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->context,
+				$this->optimisedContext,
 			]
 		);
 	}
@@ -66,7 +74,7 @@ class Test_Treeshake extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $config['home_url'] );
 
-		$this->usedCss->expects()->is_allowed()->andReturn($config['is_allowed']);
+		$this->context->expects()->is_allowed()->andReturn($config['is_allowed']);
 
 		$this->configureIsMobile($config);
 
@@ -147,17 +155,6 @@ class Test_Treeshake extends TestCase {
 		if(!key_exists('create_new_job', $config) || !$config['create_new_job']) {
 			return;
 		}
-
-		//$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn($config['create_new_job']['safelist']);
-
-		//Brain\Monkey\Filters\expectApplied('rocket_rucss_safelist')->with($config['create_new_job']['safelist'])->andReturn($config['create_new_job']['safelist']);
-		//Brain\Monkey\Filters\expectApplied('rocket_rucss_skip_styles_with_attr')->with($config['create_new_job']['skipped_attr'])->andReturn($config['create_new_job']['skipped_attr']);
-
-		/*$this->api->expects()->add_to_queue($config['home_url'], $config['create_new_job']['config'])->andReturn
-		($config['create_new_job']['response']);
-		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response'] || ! $config['create_new_job']['create_job']){
-			return;
-		}*/
 
 		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
 	}

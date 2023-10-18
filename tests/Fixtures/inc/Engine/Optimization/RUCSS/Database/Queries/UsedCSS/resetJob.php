@@ -11,7 +11,7 @@ return [
 			'id' => 0,
 			'data' => [
 				'job_id'        => 'EU-1',
-				'status'        => 'to_submit',
+				'status'        => 'to-submit',
 				'error_code'    => '',
 				'error_message' => '',
 				'retries'       => 0,
@@ -32,7 +32,7 @@ return [
 			'id' => 0,
 			'data' => [
 				'job_id'        => '',
-				'status'        => 'to_submit',
+				'status'        => 'to-submit',
 				'error_code'    => '',
 				'error_message' => '',
 				'retries'       => 0,

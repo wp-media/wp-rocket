@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Frontend\Subscriber;
 
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber;
 use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -20,6 +21,8 @@ class Test_onUpdate extends TestCase {
      */
     protected $used_css;
 
+	protected $context;
+
     /**
      * @var Subscriber
      */
@@ -29,7 +32,9 @@ class Test_onUpdate extends TestCase {
         parent::set_up();
         $this->used_css = Mockery::mock(UsedCSS::class);
 
-        $this->subscriber = new Subscriber($this->used_css);
+		$this->context = Mockery::mock(ContextInterface::class);
+
+        $this->subscriber = new Subscriber($this->used_css, $this->context);
     }
 
     /**
