@@ -73,8 +73,9 @@ class Purge {
 			}
 
 			foreach ( $this->get_iterator( $path ) as $item ) {
-				if ( $item->isFile() ) {
-					$this->filesystem->delete( $item->getPathname() );
+
+				if ( $item->isFile() || str_contains($item->getPathname(), '#' ) ) {
+					$this->filesystem->delete( $item->getPathname(), true );
 				}
 			}
 
