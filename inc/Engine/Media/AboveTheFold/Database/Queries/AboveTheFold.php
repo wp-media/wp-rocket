@@ -30,7 +30,7 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Schemas\\UsedCSS';
+	protected $table_schema = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Schemas\\AboveTheFold';
 
 	/** Item ******************************************************************/
 
@@ -63,7 +63,7 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Row\\UsedCSS';
+	protected $item_shape = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Row\\AboveTheFold';
 
 	/**
 	 * Table status.
