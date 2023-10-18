@@ -58,7 +58,71 @@ class Controller implements ContextInterface {
 			return $html;
 		}
 
+		global $wp;
+
+		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+
+		$row = $this->query->get_row( $url, $this->is_mobile() );
+
+		$html = $this->preload_lcp( $html, $row );
+
 		return $html;
+	}
+
+	/**
+	 * Preload the LCP image
+	 *
+	 * @param string $html HTML content.
+	 * @param object $row Corresponding DB row.
+	 *
+	 * @return string
+	 */
+	private function preload_lcp( $html, $row ) {
+		$pattern = '<head(?:[^>])>';
+		$nodes   = $this->find( $pattern, $html );
+
+		if ( empty( $nodes ) ) {
+			return $html;
+		}
+
+		$preload = $this->preload_tag( $row->lcp );
+
+		$replace = preg_replace( $pattern, $pattern . $preload, $html, 1 );
+
+		if ( ! $replace ) {
+			return $html;
+		}
+
+		return $replace;
+	}
+
+	/**
+	 * Builds the preload tag
+	 *
+	 * @param object $lcp LCP object.
+	 *
+	 * @return string
+	 */
+	private function preload_tag( $lcp ): string {
+		$tag = '<link rel="preload" as="image" ';
+
+		switch ( $lcp->type ) {
+			case 'img':
+			case 'bg-img':
+				$tag .= 'href="' . $lcp->src . '"';
+				break;
+			case 'img-srcset':
+				$tag .= 'href="' . $lcp->src . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"';
+				break;
+			case 'picture':
+				break;
+			case 'bg-img-set':
+				break;
+		}
+
+		$tag .= ' fetchpriority="high">';
+
+		return $tag;
 	}
 
 	/**
@@ -78,6 +142,9 @@ class Controller implements ContextInterface {
 		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 
 		$row = $this->query->get_row( $url, $this->is_mobile() );
+
+		$lcp      = $row->lcp;
+		$viewport = $row->viewport;
 
 		return $exclusions;
 	}
