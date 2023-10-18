@@ -40,7 +40,7 @@ class Test_ClearFailedUrls extends TestCase {
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
 		$this->usedCss      = Mockery::mock(
-			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',
 			[
 				$this->options,
 				$this->usedCssQuery,
@@ -73,26 +73,9 @@ class Test_ClearFailedUrls extends TestCase {
             }
             else {
                 foreach ( $config['rows'] as $row ) {
-					$this->options->expects()
-						->get( 'remove_unused_css_safelist', [] )
-						->andReturn( [] );
 					Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-					$this->api->expects()->add_to_queue( $row->url, [
-						'treeshake'      => 1,
-						'rucss_safelist' => [],
-						'skip_attr' => [],
-						'is_mobile'      => $row->is_mobile,
-						'is_home'        => false,
-					] )
-						->andReturn( $config['add_to_queue_response']);
-                    $this->usedCssQuery->expects( self::any() )
-                                ->method( 'reset_job' )
-                                ->with($this->anything())
-                                ->will($this->returnCallback(
-                                    function ( $value ) use ($row) {
-                                        return $value === $row->id;
-                                    }
-                                 ) );
+
+					$this->usedCss->expects()->add_url_to_the_queue($row->url, $row->is_mobile);
                 }
             }
 

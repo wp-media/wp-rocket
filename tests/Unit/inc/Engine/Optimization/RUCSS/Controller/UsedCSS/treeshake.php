@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Quer
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
@@ -19,6 +20,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
  * @group  RUCSS
  */
 class Test_Treeshake extends TestCase {
+	use HasLoggerTrait;
 	protected $options;
 	protected $usedCssQuery;
 	protected $api;
@@ -53,6 +55,8 @@ class Test_Treeshake extends TestCase {
 				$this->optimisedContext,
 			]
 		);
+
+		$this->set_logger($this->usedCss);
 	}
 
 	protected function tearDown(): void
@@ -65,7 +69,6 @@ class Test_Treeshake extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Logger::disable_debug();
 		$wp = new WP();
 		$GLOBALS['wp'] = $wp;
 
