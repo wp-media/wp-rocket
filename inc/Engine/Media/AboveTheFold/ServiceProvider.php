@@ -33,8 +33,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->share( 'atf_table', ATFTable::class );
 		$this->getContainer()->add( 'atf_query', ATFQuery::class );
-		$this->getContainer()->add( 'atf_controller', Controller::class );
+		$this->getContainer()->add( 'atf_controller', Controller::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'atf_query' ) );
 		$this->getContainer()->share( 'atf_subscriber', Subscriber::class )
-			->addArgument( 'atf_controller' );
+			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
 	}
 }
