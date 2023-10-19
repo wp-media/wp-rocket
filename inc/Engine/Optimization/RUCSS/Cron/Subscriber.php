@@ -186,11 +186,11 @@ class Subscriber implements Subscriber_Interface {
 		];
 
 		/**
-		 * Filters the cron interval for clearing failed jobs.
+		 * Filters the cron interval for processing on submit jobs.
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = (int) apply_filters( 'rocket_remove_rucss_failed_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = (int) apply_filters( 'rocket_remove_rucss_on_submit_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
 		$schedules['rocket_rucss_on_submit_jobs'] = [
 			'interval' => $interval,
