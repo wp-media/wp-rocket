@@ -690,7 +690,6 @@ class UsedCSS {
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
 			$this->used_css_query->increment_retries( $id, $row_details->retries );
-			$this->used_css_query->update_message( $id, $job_details['code'], $job_details['message'], $row_details->error_message );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
@@ -705,14 +704,7 @@ class UsedCSS {
 
 		$css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
-		/**
-		 * RUCSS hash.
-		 *
-		 * @param string $hash RUCSS hash.
-		 * @param string $css RUCSS content.
-		 * @param UsedCSSRow $row_details Job details.
-		 */
-		$hash = (string) apply_filters( 'rocket_rucss_hash',  md5( $css ), $css, $row_details );
+		$hash = md5( $css );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
 			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;

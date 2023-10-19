@@ -48,7 +48,7 @@ class APIClient extends AbstractAPIClient {
 
 		$default = [
 			'code'     => 400,
-			'message'  => 'No message. Defaulted in add_to_queue',
+			'message'  => 'Bad json',
 			'contents' => [
 				'jobId'     => 0,
 				'queueName' => '',
@@ -93,7 +93,7 @@ class APIClient extends AbstractAPIClient {
 		$default = [
 			'code'     => 400,
 			'status'   => 'failed',
-			'message'  => 'No message. Defaulted in get_queue_job_status',
+			'message'  => 'Bad json',
 			'contents' => [
 				'success'   => false,
 				'shakedCSS' => '',

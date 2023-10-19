@@ -144,10 +144,6 @@ class Test_CheckJobStatus extends TestCase {
 			                   ->method( 'increment_retries' )
 			                   ->with( $config['job_id'], $row_details->retries );
 
-			$this->usedCssQuery->expects(self::once())
-				->method('update_message')
-				->with($config['job_id'], $job_details['code'], $job_details['message']);
-
 			$this->usedCss->check_job_status( $config['job_id'] );
 
 			return;
