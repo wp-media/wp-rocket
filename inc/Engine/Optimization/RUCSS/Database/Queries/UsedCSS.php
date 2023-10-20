@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
 
 /**
  * RUCSS UsedCSS Query.
@@ -32,7 +34,7 @@ class UsedCSS extends Query {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Schemas\\UsedCSS';
+	protected $table_schema = UsedCSSSchema::class;
 
 	/** Item ******************************************************************/
 
@@ -65,7 +67,7 @@ class UsedCSS extends Query {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
+	protected $item_shape = UsedCSSRow::class;
 
 	/**
 	 * Table status.
@@ -140,18 +142,21 @@ class UsedCSS extends Query {
 
 		$processing_count = $in_progress_count + $pending_count;
 
-		if ( $processing_count >= $count ) {
+		if ( 0 !== $count && $processing_count >= $count ) {
 			return [];
 		}
 
-		return $this->query(
-			[
-				'number'  => ( $count - $processing_count ),
-				'status'  => 'to-submit',
-				'orderby' => 'modified',
-				'order'   => 'asc',
-			]
-		);
+		$query_params = [
+			'status'  => 'to-submit',
+			'orderby' => 'modified',
+			'order'   => 'asc',
+		];
+
+		if(0 !== $count) {
+			$query_params['number'] = ( $count - $processing_count );
+		}
+
+		return $this->query($query_params);
 	}
 
 	/**

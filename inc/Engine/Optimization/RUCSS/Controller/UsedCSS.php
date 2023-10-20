@@ -1001,6 +1001,7 @@ class UsedCSS implements LoggerAwareInterface {
 		 */
 		$max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
 		$rows             = $this->used_css_query->get_on_submit_jobs( $max_pending_rows );
+
 		foreach ( $rows as $row ) {
 			$response = $this->send_api( $row->url, (bool) $row->is_mobile );
 			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
