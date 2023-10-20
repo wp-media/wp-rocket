@@ -152,11 +152,11 @@ class UsedCSS extends Query {
 			'order'   => 'asc',
 		];
 
-		if(0 !== $count) {
+		if ( 0 !== $count ) {
 			$query_params['number'] = ( $count - $processing_count );
 		}
 
-		return $this->query($query_params);
+		return $this->query( $query_params );
 	}
 
 	/**
