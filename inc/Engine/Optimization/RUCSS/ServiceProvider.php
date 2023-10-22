@@ -37,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_frontend_api_client',
 		'rucss_used_css',
 		'rucss_used_css_query',
+		'rucss_used_css_controller',
 		'rucss_frontend_subscriber',
 		'rucss_queue',
 		'rucss_filesystem',
@@ -73,7 +74,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_frontend_api_client' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) )
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_database' ) );
 
 		$this->getContainer()->share( 'rucss_option_subscriber', OptionSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );

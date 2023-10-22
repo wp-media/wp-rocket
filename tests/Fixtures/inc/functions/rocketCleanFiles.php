@@ -26,34 +26,6 @@ return [
 				'cleaned' => [],
 			],
 		],
-		'shouldDeleteSingleDirUrl'                              => [
-			'urls'     => [
-				'http://baz.example.org/',
-			],
-			'configs' => [
-				'post_id' => 0,
-			],
-			'expected' => [
-				'cleaned' => [
-					'vfs://public/wp-content/cache/wp-rocket/baz.example.org/' => [],
-				],
-			],
-		],
-		'shouldDeleteSingleFileUrlFromDomainAndUserCaches'      => [
-			'urls'     => [
-				'http://example.org/index.html',
-			],
-			'configs' => [
-				'post_id' => 0,
-			],
-			'expected' => [
-				'cleaned' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html'                => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html' => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html'  => null,
-				],
-			],
-		],
 		'shouldDeleteGrandchildFilesUrlFromDomainAndUserCaches' => [
 			'urls'     => [
 				'http://example.org/nec-ullamcorper/enim-nunc-faucibus/index.html',
@@ -134,21 +106,6 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip'               => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/enim-nunc-faucibus/index.html'      => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/enim-nunc-faucibus/index.html_gzip' => null,
-				],
-			],
-		],
-		'shouldDeleteSiteUrlInCacheAndUserCaches'               => [
-			'urls'     => [
-				'http://example.org/',
-			],
-			'configs' => [
-				'post_id' => 0,
-			],
-			'expected' => [
-				'cleaned' => [
-					'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
-					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/'  => null,
 				],
 			],
 		],

@@ -2,6 +2,7 @@
 namespace WP_Rocket\ThirdParty;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Common\Ajax\AjaxHandler;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
@@ -113,6 +114,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getContainer()->add( 'ajax_handler', AjaxHandler::class );
+
 		$this->getContainer()
 			->share( 'mobile_subscriber', Mobile_Subscriber::class )
 			->addTag( 'common_subscriber' );
@@ -121,6 +124,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->addArgument( $this->getContainer()->get( 'ajax_handler' ) )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'woocommerce_subscriber', WooCommerceSubscriber::class )

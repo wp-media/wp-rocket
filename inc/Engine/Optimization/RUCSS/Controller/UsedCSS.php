@@ -8,6 +8,7 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Logger\Logger;
@@ -60,6 +61,14 @@ class UsedCSS {
 	private $filesystem;
 
 	/**
+	 * Database instance
+	 *
+	 * @var Database
+	 */
+	private $database;
+
+
+	/**
 	 * External exclusions list, can be urls or attributes.
 	 *
 	 * @var array
@@ -89,6 +98,7 @@ class UsedCSS {
 	 * @param QueueInterface $queue Queue instance.
 	 * @param DataManager    $data_manager DataManager instance.
 	 * @param Filesystem     $filesystem Filesystem instance.
+	 * @param Database       $database Database instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -96,7 +106,8 @@ class UsedCSS {
 		APIClient $api,
 		QueueInterface $queue,
 		DataManager $data_manager,
-		Filesystem $filesystem
+		Filesystem $filesystem,
+		Database $database
 	) {
 		$this->options        = $options;
 		$this->used_css_query = $used_css_query;
@@ -104,6 +115,7 @@ class UsedCSS {
 		$this->queue          = $queue;
 		$this->data_manager   = $data_manager;
 		$this->filesystem     = $filesystem;
+		$this->database       = $database;
 	}
 
 	/**
@@ -1099,5 +1111,21 @@ class UsedCSS {
 	 */
 	public function has_one_completed_row_at_least() {
 		return $this->used_css_query->get_completed_count() > 0;
+	}
+
+	/**
+	 * Delete RUCSS rows.
+	 *
+	 * @return void
+	 */
+	public function delete_used_css_rows() {
+		$this->delete_all_used_css();
+
+		if ( 0 < $this->get_not_completed_count() ) {
+			$this->database->remove_all_completed_rows();
+			return;
+		}
+
+		$this->database->truncate_used_css_table();
 	}
 }

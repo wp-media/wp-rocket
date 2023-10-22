@@ -196,6 +196,18 @@ function rocket_clean_post( $post_id, $post = null ) {
 		return false;
 	}
 
+	/**
+	 * Filters the preemptive return value of clean post
+	 *
+	 * @param mixed $clear_post $clear_post A preemptive return value. Default null.
+	 * @param  $post Post Object.
+	 */
+	$pre = apply_filters( 'rocket_pre_clean_post', null, $post );
+
+	if ( null !== $pre ) {
+		return $pre;
+	}
+
 	// No purge for specific conditions.
 	if ( 'auto-draft' === $post->post_status || 'draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
 		return false;

@@ -43,6 +43,7 @@ class Test_Generate extends RESTVfsTestCase {
 	}
 
 	protected function doTest( $site_id, $config, $expected ) {
+
 		$orig_post_id = isset( $config['post_data']['ID'] )
 			? $config['post_data']['ID']
 			: 0;
@@ -148,6 +149,10 @@ class Test_Generate extends RESTVfsTestCase {
 
 		$this->assertSame( $expected, $this->doRestRequest( 'POST', "/wp-rocket/v1/cpcss/post/{$post_id}", $body_param ) );
 		$this->assertSame( $config['cpcss_exists_after'], $this->filesystem->exists( $file ) );
+
+		if ( $expected['success'] ) {
+			$this->set_permalink_structure( '/%postname%/' );
+		}
 
 		if ( $expected['success'] ) {
 			$this->assertFalse( $this->filesystem->exists( $cache_file_path ) );

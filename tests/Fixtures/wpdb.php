@@ -10,7 +10,13 @@ if ( ! class_exists( 'wpdb' ) ) {
 		public $prefix        = 'wp_';
 		public $as_table_rows = [];
 
+		public $starts_with = false;
+
 		public function get_results( $sql ) {
+			if ( $this->starts_with ) {
+				return $this->posts_results;
+			}
+
 			if ( $this->is_post( $sql ) ) {
 				return $this->posts_results;
 			}
@@ -61,6 +67,10 @@ if ( ! class_exists( 'wpdb' ) ) {
 
 		public function setTableRows( $rows ) {
 			$this->as_table_rows = $rows;
+		}
+
+		public function esc_like( $like ) {
+			return $like;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -27,6 +28,7 @@ class Test_ClearFailedUrls extends TestCase {
 	protected $usedCss;
 	protected $data_manager;
 	protected $filesystem;
+	protected $database;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -36,6 +38,7 @@ class Test_ClearFailedUrls extends TestCase {
 		$this->queue        = Mockery::mock( QueueInterface::class );
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem   = Mockery::mock( Filesystem::class );
+		$this->database = Mockery::mock( Database::class );
 		$this->usedCss      = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
@@ -44,7 +47,8 @@ class Test_ClearFailedUrls extends TestCase {
 				$this->api,
 				$this->queue,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->database
 			]
 		);
 	}
