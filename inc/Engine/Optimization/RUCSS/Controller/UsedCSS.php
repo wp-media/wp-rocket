@@ -518,7 +518,6 @@ class UsedCSS implements LoggerAwareInterface {
 	 */
 	public function check_job_status( int $id ) {
 		$this->logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
-		$new_job_id  = false;
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
 			$this->logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
@@ -581,7 +580,7 @@ class UsedCSS implements LoggerAwareInterface {
 			}
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
-			$this->used_css_query->increment_retries( $id, $row_details->retries );
+			$this->used_css_query->increment_retries( $id, (int) $row_details->retries );
 			$this->used_css_query->update_message( $id, $job_details['code'], $job_details['message'], $row_details->error_message );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
