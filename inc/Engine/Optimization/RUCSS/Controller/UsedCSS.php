@@ -204,7 +204,7 @@ class UsedCSS implements LoggerAwareInterface {
 			$this->used_css_query->create_new_job( $url, '', '', $is_mobile );
 			return;
 		}
-		$this->used_css_query->reset_job( $used_css_row->id );
+		$this->used_css_query->reset_job( (int) $used_css_row->id );
 	}
 	/**
 	 * Delete used css based on URL.
