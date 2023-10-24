@@ -3,6 +3,8 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
 use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
 
 /**
  * RUCSS UsedCSS Query.
@@ -32,7 +34,7 @@ class UsedCSS extends Query {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Schemas\\UsedCSS';
+	protected $table_schema = UsedCSSSchema::class;
 
 	/** Item ******************************************************************/
 
@@ -65,7 +67,7 @@ class UsedCSS extends Query {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
+	protected $item_shape = UsedCSSRow::class;
 
 	/**
 	 * Table status.
@@ -115,6 +117,49 @@ class UsedCSS extends Query {
 	}
 
 	/**
+	 * Fetch on submit jobs.
+	 *
+	 * @param int $count Number of jobs to fetch.
+	 * @return array|int
+	 */
+	public function get_on_submit_jobs( int $count = 100 ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return [];
+		}
+
+		$in_progress_count = $this->query(
+			[
+				'count'  => true,
+				'status' => [ 'in-progress' ],
+			]
+		);
+		$pending_count     = $this->query(
+			[
+				'count'  => true,
+				'status' => [ 'pending' ],
+			]
+		);
+
+		$processing_count = $in_progress_count + $pending_count;
+
+		if ( 0 !== $count && $processing_count >= $count ) {
+			return [];
+		}
+
+		$query_params = [
+			'status'  => 'to-submit',
+			'orderby' => 'modified',
+			'order'   => 'asc',
+		];
+
+		if ( 0 !== $count ) {
+			$query_params['number'] = ( $count - $processing_count );
+		}
+
+		return $this->query( $query_params );
+	}
+
+	/**
 	 * Increment retries number and change status back to pending.
 	 *
 	 * @param int $id DB row ID.
@@ -161,7 +206,7 @@ class UsedCSS extends Query {
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id, string $queue_name, bool $is_mobile = false ) {
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -171,9 +216,10 @@ class UsedCSS extends Query {
 			'is_mobile'     => $is_mobile,
 			'job_id'        => $job_id,
 			'queue_name'    => $queue_name,
-			'status'        => 'pending',
+			'status'        => 'to-submit',
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
+			'submitted_at'  => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}
@@ -206,7 +252,7 @@ class UsedCSS extends Query {
 	 *
 	 * @return bool
 	 */
-	public function reset_job( int $id, string $job_id ) {
+	public function reset_job( int $id, string $job_id = '' ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -215,11 +261,12 @@ class UsedCSS extends Query {
 			$id,
 			[
 				'job_id'        => $job_id,
-				'status'        => 'pending',
+				'status'        => 'to-submit',
 				'error_code'    => '',
 				'error_message' => '',
 				'retries'       => 0,
 				'modified'      => current_time( 'mysql', true ),
+				'submitted_at'  => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -243,7 +290,7 @@ class UsedCSS extends Query {
 			[
 				'status'        => 'failed',
 				'error_code'    => $error_code,
-				'error_message' => $error_message,
+				'error_message' => current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 			]
 		);
 	}
@@ -513,5 +560,49 @@ class UsedCSS extends Query {
 		}
 
 		return $exists;
+	}
+
+	/**
+	 * Update the error message.
+	 *
+	 * @param int    $job_id Job ID.
+	 * @param int    $code Response code.
+	 * @param string $message Response message.
+	 * @param string $previous_message Previous saved message.
+	 *
+	 * @return bool
+	 */
+	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
+		return $this->update_item(
+			$job_id,
+			[
+				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
+			]
+		);
+	}
+
+	/**
+	 * Change the status to be pending.
+	 *
+	 * @param int    $id DB row ID.
+	 * @param string $job_id API job_id.
+	 * @param string $queue_name API Queue name.
+	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @return bool
+	 */
+	public function make_status_pending( int $id, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		return $this->update_item(
+			$id,
+			[
+				'job_id'     => $job_id,
+				'queue_name' => $queue_name,
+				'status'     => 'pending',
+				'is_mobile'  => $is_mobile,
+			]
+		);
 	}
 }

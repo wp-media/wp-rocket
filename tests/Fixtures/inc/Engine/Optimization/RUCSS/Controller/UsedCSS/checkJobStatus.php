@@ -101,10 +101,6 @@ return [
 				'code'     => 408,
 				'message' => 'timeout'
 			],
-			'add_to_queue_response' => [
-				'code'     => 200,
-				'contents' => [ 'jobId' => 2 ]
-			],
 		],
 		'expected' => '',
 
