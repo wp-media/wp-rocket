@@ -109,7 +109,7 @@ class Controller implements ContextInterface {
 	/**
 	 * Alters the preload element tag(img|img-srcset)
 	 *
-	 * @param object $lcp LCP object.
+	 * @param object        $lcp LCP object.
 	 * @param string string $html HTML content.
 	 * @return string
 	 */
@@ -118,8 +118,8 @@ class Controller implements ContextInterface {
 			return $html;
 		}
 
-		$url = preg_quote( $lcp->src, '/' );
-		$html = preg_replace('/(<img[^>]*\s+src="'.$url.'+")/', '$1 fetchpriority="high"', $html, 1);
+		$url  = preg_quote( $lcp->src, '/' );
+		$html = preg_replace( '/(<img[^>]*\s+src="' . $url . '+")/', '$1 fetchpriority="high"', $html, 1 );
 
 		return $html;
 	}
@@ -142,7 +142,7 @@ class Controller implements ContextInterface {
 
 		$row = $this->query->get_row( $url, $this->is_mobile() );
 
-		if( ! $row ) {
+		if ( ! $row ) {
 			return $exclusions;
 		}
 
@@ -151,7 +151,7 @@ class Controller implements ContextInterface {
 
 		$exclusions = array_merge( $exclusions, $lcp['sources'], $atf );
 
-		// Remove lcp candidate from the atf array;
+		// Remove lcp candidate from the atf array.
 		$exclusions = array_unique( $exclusions );
 
 		return $exclusions;
@@ -160,24 +160,24 @@ class Controller implements ContextInterface {
 	/**
 	 * Generate preload link tags with sources for LCP.
 	 *
-	 * @param $lcp LCP object.
+	 * @param object $lcp LCP Object.
 	 * @return array
 	 */
 	private function generate_lcp_link_tag_with_sources( $lcp ): array {
-		$tag = '';
+		$tag       = '';
 		$start_tag = '<link rel="preload" as="image" ';
-		$end_tag = ' fetchpriority="high">';
+		$end_tag   = ' fetchpriority="high">';
 
 		$sources = [];
 
 		switch ( $lcp->type ) {
 			case 'img':
 				$sources[] = $lcp->src;
-				$tag .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
 				break;
 			case 'img-srcset':
 				$sources[] = $lcp->src;
-				$tag .= $start_tag . 'href="' . $lcp->src . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . $lcp->src . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"' . $end_tag;
 				break;
 			case 'bg-img-set':
 				foreach ( $lcp->bg_set as $set ) {
@@ -197,16 +197,16 @@ class Controller implements ContextInterface {
 				if ( ! empty( $lcp->sources ) ) {
 					foreach ( $lcp->sources as $source ) {
 						$sources[] = $source->srcset;
-						$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $source->media . '"' . $end_tag;
+						$tag      .= $start_tag . 'href="' . $source->srcset . '" media="' . $source->media . '"' . $end_tag;
 					}
 				}
 				$sources[] = $lcp->src;
-				$tag .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
 				break;
 		}
 
 		return [
-			'tags' => $tag,
+			'tags'    => $tag,
 			'sources' => $sources,
 		];
 	}
@@ -214,7 +214,7 @@ class Controller implements ContextInterface {
 	/**
 	 * Get above the fold images sources.
 	 *
-	 * @param array $atfs
+	 * @param array $atfs Above the fold object.
 	 * @return array
 	 */
 	private function get_atf_sources( array $atfs ): array {
