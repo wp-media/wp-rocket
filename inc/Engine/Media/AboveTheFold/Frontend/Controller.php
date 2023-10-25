@@ -218,6 +218,12 @@ class Controller implements ContextInterface {
 	 * @return array
 	 */
 	private function get_atf_sources( array $atfs ): array {
+		if ( ! is_array( $atfs ) ) {
+			return [];
+		}
+
+		$sources = [];
+
 		foreach ( $atfs as $atf ) {
 			switch ( $atf->type ) {
 				case 'img':
