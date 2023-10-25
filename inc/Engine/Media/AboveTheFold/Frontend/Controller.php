@@ -43,6 +43,11 @@ class Controller implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
+		/**
+		 * Filters to manage above the fold optimization
+		 *
+		 * @param bool $allow True to allow, false otherwise.
+		 */
 		return apply_filters( 'rocket_above_the_fold_optimization', true );
 	}
 
@@ -107,19 +112,25 @@ class Controller implements ContextInterface {
 	}
 
 	/**
-	 * Alters the preload element tag(img|img-srcset)
+	 * Alters the preload element tag (img|img-srcset)
 	 *
-	 * @param object        $lcp LCP object.
-	 * @param string string $html HTML content.
+	 * @param object $lcp LCP object.
+	 * @param string $html HTML content.
 	 * @return string
 	 */
 	private function set_fetchpriority( $lcp, string $html ): string {
-		if ( 'img' !== $lcp->type && 'img-srcset' !== $lcp->type && 'picture' !== $lcp->type ) {
+		$allowed_types = [
+			'img',
+			'img-srcset',
+			'picture',
+		];
+
+		if ( ! in_array( $lcp->type, $allowed_types, true ) ) {
 			return $html;
 		}
 
 		$url  = preg_quote( $lcp->src, '/' );
-		$html = preg_replace( '/(<img[^>]*\s+src="' . $url . '+")/', '$1 fetchpriority="high"', $html, 1 );
+		$html = preg_replace( '/(<img[^>]*\s+src=[\'"]' . $url . '+[\'"])/', '$1 fetchpriority="high"', $html, 1 );
 
 		return $html;
 	}
@@ -227,16 +238,10 @@ class Controller implements ContextInterface {
 		foreach ( $atfs as $atf ) {
 			switch ( $atf->type ) {
 				case 'img':
-					$sources[] = $atf->src;
-					break;
 				case 'img-srcset':
 					$sources[] = $atf->src;
 					break;
 				case 'bg-img-set':
-					foreach ( $atf->bg_set as $set ) {
-						$sources[] = $set->src;
-					}
-					break;
 				case 'bg-img':
 					foreach ( $atf->bg_set as $set ) {
 						$sources[] = $set->src;
@@ -259,7 +264,7 @@ class Controller implements ContextInterface {
 	/**
 	 * Determines if the page is mobile and separate cache for mobile files is enabled.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function is_mobile(): bool {
 		return $this->options->get( 'cache_mobile', 0 )
