@@ -383,6 +383,7 @@ class Plugin {
 			'lazyload_css_subscriber',
 			'shoptimizer',
 			'atf_subscriber',
+			'atf_admin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
