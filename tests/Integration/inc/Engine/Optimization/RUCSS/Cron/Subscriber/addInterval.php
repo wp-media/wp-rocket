@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
+use WP_Rocket\Tests\Integration\FilterTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,13 +12,16 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  RUCSS
  */
 class Test_AddInterval extends TestCase {
+
 	private $rucss;
 	private $interval;
+
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_rucss_pending_jobs_cron_interval', [ $this, 'set_interval'] );
 		remove_filter( 'rocket_remove_rucss_failed_jobs_cron_interval', [ $this, 'set_interval'] );
+
 
 		parent::tear_down();
 	}
@@ -41,9 +45,11 @@ class Test_AddInterval extends TestCase {
 		if ( null === $expected ) {
 			$this->assertArrayNotHasKey( 'rocket_rucss_pending_jobs', $schedules );
 			$this->assertArrayNotHasKey( 'rocket_remove_rucss_failed_jobs', $schedules );
+			$this->assertArrayNotHasKey( 'rocket_rucss_on_submit_jobs', $schedules );
 		} else {
 			$this->assertArrayHasKey( 'rocket_rucss_pending_jobs', $schedules );
 			$this->assertArrayHasKey( 'rocket_remove_rucss_failed_jobs', $schedules );
+			$this->assertArrayHasKey( 'rocket_rucss_on_submit_jobs', $schedules );
 			$this->assertContains(
 				$expected,
 				$schedules

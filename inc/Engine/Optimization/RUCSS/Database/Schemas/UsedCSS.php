@@ -154,5 +154,15 @@ class UsedCSS extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 		],
+
+		// SUBMITTED_AT column.
+		[
+			'name'       => 'submitted_at',
+			'type'       => 'timestamp',
+			'default'    => null,
+			'created'    => true,
+			'date_query' => true,
+			'sortable'   => true,
+		],
 	];
 }
