@@ -597,11 +597,11 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'job_id'     => $job_id,
-				'queue_name' => $queue_name,
-				'status'     => 'pending',
-				'is_mobile'  => $is_mobile,
-				'submitted_at'  => current_time( 'mysql', true ),
+				'job_id'       => $job_id,
+				'queue_name'   => $queue_name,
+				'status'       => 'pending',
+				'is_mobile'    => $is_mobile,
+				'submitted_at' => current_time( 'mysql', true ),
 			]
 		);
 	}
