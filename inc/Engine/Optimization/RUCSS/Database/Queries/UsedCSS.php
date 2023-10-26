@@ -162,20 +162,29 @@ class UsedCSS extends Query {
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
-	 * @param int $id DB row ID.
-	 * @param int $retries Current number of retries.
+	 * @param int    $id DB row ID.
+	 * @param int    $error_code error code.
+	 * @param string $error_message error message.
 	 *
 	 * @return bool
 	 */
-	public function increment_retries( $id, $retries = 0 ) {
+	public function increment_retries( $id, int $error_code, string $error_message ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
+		$old = $this->get_item( $id );
+
+		if ( ! $old ) {
+			return false;
+		}
+
 		$update_data = [
-			'retries' => $retries + 1,
-			'status'  => 'pending',
+			'retries'       => $old->retries + 1,
+			'status'        => 'pending',
+			'error_message' => $old->error_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
+
 		return $this->update_item( $id, $update_data );
 	}
 
@@ -284,7 +293,7 @@ class UsedCSS extends Query {
 			return false;
 		}
 
-		$old = $this->get_item($id);
+		$old = $this->get_item( $id );
 
 		$previous_message = $old ? $old->error_message : '';
 
@@ -566,25 +575,6 @@ class UsedCSS extends Query {
 	}
 
 	/**
-	 * Update the error message.
-	 *
-	 * @param int    $job_id Job ID.
-	 * @param int    $code Response code.
-	 * @param string $message Response message.
-	 * @param string $previous_message Previous saved message.
-	 *
-	 * @return bool
-	 */
-	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
-		return $this->update_item(
-			$job_id,
-			[
-				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
-			]
-		);
-	}
-
-	/**
 	 * Change the status to be pending.
 	 *
 	 * @param int    $id DB row ID.
@@ -601,11 +591,11 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'job_id'     => $job_id,
-				'queue_name' => $queue_name,
-				'status'     => 'pending',
-				'is_mobile'  => $is_mobile,
-				'submitted_at'  => current_time( 'mysql', true ),
+				'job_id'       => $job_id,
+				'queue_name'   => $queue_name,
+				'status'       => 'pending',
+				'is_mobile'    => $is_mobile,
+				'submitted_at' => current_time( 'mysql', true ),
 			]
 		);
 	}
