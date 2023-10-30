@@ -580,7 +580,7 @@ class UsedCSS implements LoggerAwareInterface {
 			}
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
-			$this->used_css_query->increment_retries( $id, $job_details['code'], $job_details['message'] );
+			$this->used_css_query->increment_retries( $id, (int) $job_details['code'], $job_details['message'] );
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
