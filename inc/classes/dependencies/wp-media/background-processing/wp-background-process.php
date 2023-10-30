@@ -310,19 +310,20 @@ abstract class WP_Rocket_WP_Background_Process extends WP_Rocket_WP_Async_Reques
 
 		do {
 			$batch = $this->get_batch();
+			if ( is_array( $batch->data ) {
+				foreach ( $batch->data as $key => $value ) {
+					$task = $this->task( $value );
 
-			foreach ( $batch->data as $key => $value ) {
-				$task = $this->task( $value );
+					if ( false !== $task ) {
+						$batch->data[ $key ] = $task;
+					} else {
+						unset( $batch->data[ $key ] );
+					}
 
-				if ( false !== $task ) {
-					$batch->data[ $key ] = $task;
-				} else {
-					unset( $batch->data[ $key ] );
-				}
-
-				if ( $this->time_exceeded() || $this->memory_exceeded() || $this->is_process_cancelled() ) {
-					// Batch limits reached.
-					break;
+					if ( $this->time_exceeded() || $this->memory_exceeded() || $this->is_process_cancelled() ) {
+						// Batch limits reached.
+						break;
+					}
 				}
 			}
 
