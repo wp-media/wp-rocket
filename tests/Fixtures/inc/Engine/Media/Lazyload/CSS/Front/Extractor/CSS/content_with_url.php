@@ -146,3 +146,7 @@ background-color: #c63dd8;
  [title~="wp-rocket"] {
  background: url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat;
  }
+
+ [title~="wp-rocket-image"] {
+ background-image: url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat;
+ }
