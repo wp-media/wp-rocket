@@ -164,5 +164,15 @@ class UsedCSS extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 		],
+
+		// NOT_PROCEED_BEFORE column.
+		[
+			'name'       => 'not_proceed_before',
+			'type'       => 'timestamp',
+			'default'    => null,
+			'created'    => true,
+			'date_query' => true,
+			'sortable'   => true,
+		],
 	];
 }

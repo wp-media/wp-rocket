@@ -114,6 +114,13 @@ class UsedCSS extends Row {
 	public $submitted_at;
 
 	/**
+	 * Tells when the retry has to be processed
+	 *
+	 * @var int
+	 */
+	public $not_proceed_before;
+
+	/**
 	 * UsedCSS constructor.
 	 *
 	 * @param mixed $item Object Row.
@@ -136,5 +143,6 @@ class UsedCSS extends Row {
 		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
 		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( $this->last_accessed );
 		$this->submitted_at  = empty( $this->submitted_at ) ? 0 : strtotime( $this->submitted_at );
+		$this->not_proceed_before  = empty( $this->not_proceed_before ) ? 0 : strtotime( $this->not_proceed_before );
 	}
 }
