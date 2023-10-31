@@ -14,6 +14,11 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobFoundNoResult;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobNotFound;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess;
 
 /**
  * Service provider for the WP Rocket RUCSS
@@ -44,6 +49,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_filesystem',
 		'rucss_cron_subscriber',
 		'rucss_used_css_controller',
+		'rucss_retry_strategy_factory',
+		'rucss_retry_strategy_job_found_no_result',
+		'rucss_retry_strategy_job_not_found',
+		'rucss_retry_strategy_reset_retry',
+		'rucss_retry_strategy_context',
 	];
 
 	/**
@@ -86,6 +96,20 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_job_found_no_result', JobFoundNoResult::class )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_job_not_found', JobNotFound::class )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_reset_retry', ResetRetryProcess::class )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_context', RetryContext::class );
 
 		$this->getContainer()->share( 'rucss_option_subscriber', OptionSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );

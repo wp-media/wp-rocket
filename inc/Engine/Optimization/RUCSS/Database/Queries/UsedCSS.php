@@ -5,11 +5,15 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
+
 
 /**
  * RUCSS UsedCSS Query.
  */
-class UsedCSS extends Query {
+class UsedCSS extends Query implements LoggerAwareInterface {
+	use LoggerAware;
 
 	/**
 	 * Name of the database table to query.
@@ -576,6 +580,27 @@ class UsedCSS extends Query {
 			$job_id,
 			[
 				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
+			]
+		);
+	}
+
+	/**
+	 * Updates the not_processed_before field
+	 *
+	 * @param mixed      $job_id the job id.
+	 * @param string|int $not_processed_before timestamp or mysql format date.
+	 *
+	 * @return bool either it is save or not.
+	 */
+	public function update_not_processed_before( $job_id, $not_processed_before ): bool {
+		if ( is_numeric( $not_processed_before ) ) {
+			$not_processed_before = gmdate( 'Y-m-d H:i:s', $not_processed_before );
+		}
+
+		return $this->update_item(
+			$job_id,
+			[
+				'not_proceed_before' => $not_processed_before,
 			]
 		);
 	}

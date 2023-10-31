@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Admin_Bar;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -96,6 +97,13 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @var string[]
 	 */
 	private $inline_content_exclusions = [];
+
+	/**
+	 * Retry Strategy Factory
+	 *
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
 
 	/**
 	 * Instantiate the class.
@@ -500,6 +508,9 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
+			$current_time = current_time( 'timestamp' );
+			// $this->logger::debug('GaelCron '. $used_css_row->not_proceed_before); Need to debug
+			// if ($used_css_row->not_proceed_before < $current_time)
 			$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
 			// Change status to in-progress.
@@ -555,6 +566,8 @@ class UsedCSS implements LoggerAwareInterface {
 			||
 			! isset( $job_details['contents']['shakedCSS'] )
 		) {
+			$this->strategy_factory->manage( $row_details, $job_details );
+
 			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
 
 			// Failure, check the retries number.
