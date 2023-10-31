@@ -18,7 +18,6 @@ return [
 				'status'        => 'to-submit',
 				'retries'       => 0,
 				'last_accessed' => '2023-10-11 20:21:00',
-				'submitted_at'  => '2023-10-11 20:21:00',
 			],
 			'result' => true
         ]
@@ -41,7 +40,6 @@ return [
 				'status'        => 'to-submit',
 				'retries'       => 0,
 				'last_accessed' => '2023-10-11 20:21:00',
-				'submitted_at'  => '2023-10-11 20:21:00',
 			],
 			'result' => true
 		]
