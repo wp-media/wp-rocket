@@ -177,6 +177,9 @@ class InformationSubscriber implements Subscriber_Interface {
 
 			if ( in_array( $slug, $result_slugs, true ) ) {
 				foreach ( $result->plugins as $index => $plugin ) {
+					if ( is_object( $plugin ) ) {
+						$plugin = (array) $plugin;
+					}
 					if ( $slug === $plugin['slug'] ) {
 						$move = $plugin;
 						unset( $result->plugins[ $index ] );

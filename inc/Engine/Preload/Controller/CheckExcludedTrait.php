@@ -41,6 +41,18 @@ trait CheckExcludedTrait {
 		$url              = user_trailingslashit( $url );
 
 		/**
+		 * Check if the url is excluded or not.
+		 *
+		 * @param bool $isExcluded Default excluded or not.
+		 * @param string $url URL to check.
+		 */
+		$is_excluded = apply_filters( 'rocket_preload_exclude', false, $url );
+
+		if ( $is_excluded ) {
+			return true;
+		}
+
+		/**
 		 * Regex to exclude URI from preload.
 		 *
 		 * @param string[] $regexes Regexes to check.

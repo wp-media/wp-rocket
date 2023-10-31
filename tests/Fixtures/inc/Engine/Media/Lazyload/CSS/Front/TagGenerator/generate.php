@@ -1,11 +1,11 @@
 <?php
 
 $tags = <<<TAG
-<style id="wpr-lazyload-bg"></style><style id="wpr-lazyload-bg-exclusion">:root{--wpr-bg-`.internal-css-background-image`: url(https://domain.ext/path/to/background.ext); }</style>
+<style id="wpr-lazyload-bg"></style><style id="wpr-lazyload-bg-exclusion">:root{--wpr-bg-15ef8: url(https://domain.ext/path/to/background.ext); }</style>
 <noscript>
-<style id="wpr-lazyload-bg-nostyle">:root{--wpr-bg-`.internal-css-background-image`: url(https://domain.ext/path/to/background.ext); }:root{--wpr-bg-`#section_2_hash`: url(https://domain.ext/path/to/background2.ext); }</style>
+<style id="wpr-lazyload-bg-nostyle">:root{--wpr-bg-16ef9: url(https://domain.ext/path/to/background2.ext); }</style>
 </noscript>
-<script type="application/javascript">const rocket_pairs = [{"selector":".internal-css-background-image","style":":root{--wpr-bg-`.internal-css-background-image`: url(https:\/\/domain.ext\/path\/to\/background.ext); }"},{"selector":"#section_2_hash","style":":root{--wpr-bg-`#section_2_hash`: url(https:\/\/domain.ext\/path\/to\/background2.ext); }"}];</script>
+<script type="application/javascript">const rocket_pairs = [{"selector":"#section_2_hash","style":":root{--wpr-bg-16ef9: url(https:\/\/domain.ext\/path\/to\/background2.ext); }"}]; const rocket_excluded_pairs = [{"selector":".internal-css-background-image","style":":root{--wpr-bg-15ef8: url(https:\/\/domain.ext\/path\/to\/background.ext); }"}];</script>
 TAG;
 
 
@@ -15,17 +15,17 @@ return [
               'mapping' => [
 				  [
 					  'selector' => '.internal-css-background-image',
-					  'style' => ':root{--wpr-bg-`.internal-css-background-image`: url(https://domain.ext/path/to/background.ext); }'
+					  'style' => ':root{--wpr-bg-15ef8: url(https://domain.ext/path/to/background.ext); }'
 				  ],
 				  [
 					  'selector' => '#section_2_hash',
-					  'style' => ":root{--wpr-bg-`#section_2_hash`: url(https://domain.ext/path/to/background2.ext); }"
+					  'style' => ":root{--wpr-bg-16ef9: url(https://domain.ext/path/to/background2.ext); }"
 				  ],
 			  ],
               'loaded' => [
 				  [
 					  'selector' => '.internal-css-background-image',
-					  'style' => ':root{--wpr-bg-`.internal-css-background-image`: url(https://domain.ext/path/to/background.ext); }'
+					  'style' => ':root{--wpr-bg-15ef8: url(https://domain.ext/path/to/background.ext); }'
 				  ],
 			  ],
         ],
