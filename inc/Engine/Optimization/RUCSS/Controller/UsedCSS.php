@@ -1004,7 +1004,6 @@ class UsedCSS implements LoggerAwareInterface {
 		foreach ( $rows as $row ) {
 			$response = $this->send_api( $row->url, (bool) $row->is_mobile );
 			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
-				error_log(json_encode($response) . "\n", 3, WP_CONTENT_DIR . '/error_log');
 				continue;
 			}
 
