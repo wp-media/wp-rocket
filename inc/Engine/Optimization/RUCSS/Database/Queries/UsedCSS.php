@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
 
