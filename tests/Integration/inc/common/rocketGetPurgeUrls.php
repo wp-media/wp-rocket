@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * @covers ::rocket_get_purge_urls
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

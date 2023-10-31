@@ -119,6 +119,10 @@ tests_add_filter(
 			$_SERVER[ 'DH_USER'] = 'wp_74cgrq';
 		}
 
+		if ( BootstrapManager::isGroup( 'Pressidium' ) ) {
+			define('WP_NINUKIS_WP_NAME', 'WP_NINUKIS_WP_NAME');
+		}
+
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
 		}

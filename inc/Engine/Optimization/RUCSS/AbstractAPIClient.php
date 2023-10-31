@@ -80,8 +80,7 @@ abstract class AbstractAPIClient {
 		];
 
 		$args['method'] = strtoupper( $type );
-
-		$response = wp_remote_request(
+		$response       = wp_remote_request(
 			$api_url . $this->request_path,
 			$args
 		);
