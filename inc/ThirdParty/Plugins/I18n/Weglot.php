@@ -31,21 +31,10 @@ class Weglot implements Subscriber_Interface {
 	 * @return string The modified referer URL with the language as a prefix.
 	 */
 	public function add_langs_to_referer( $referer ) {
-		if ( ! function_exists( 'weglot_get_current_language' ) ) {
+		if ( ! function_exists( 'weglot_get_request_url_service' ) || ! function_exists( 'weglot_get_current_full_url' ) ) {
 			return $referer;
 		}
-		$current_language = weglot_get_current_language();
 
-		// Check if the referer URL contains query parameters.
-		$parsed_url = wp_parse_url( $referer );
-		// Append the language as a prefix to the path.
-		$new_path = user_trailingslashit( '/' . $current_language . $parsed_url['path'] );
-
-		if ( isset( $parsed_url['query'] ) ) {
-			// If there are query parameters, append them to the modified path.
-			return $new_path . '?' . $parsed_url['query'];
-		}
-
-		return $new_path;
+		return weglot_get_request_url_service()->url_to_relative( weglot_get_current_full_url() );
 	}
 }
