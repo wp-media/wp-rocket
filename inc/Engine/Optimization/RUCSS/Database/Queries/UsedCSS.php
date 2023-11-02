@@ -176,17 +176,17 @@ class UsedCSS extends Query {
 		$old = $this->get_item( $id );
 
 		$retries       = 0;
-		$error_message = '';
+		$previous_message = '';
 
 		if ( $old ) {
 			$retries       = $old->retries;
-			$error_message = $old->error_message;
+			$previous_message = $old->error_message;
 		}
 
 		$update_data = [
 			'retries'       => $retries + 1,
 			'status'        => 'pending',
-			'error_message' => $error_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
+			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
 		return $this->update_item( $id, $update_data );
