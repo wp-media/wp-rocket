@@ -157,6 +157,26 @@ padding: 15px;
  }'
 				]
 			],
+			'[title~="wp-rocket"]' => [
+				[
+					'selector' => '[title~="wp-rocket"]',
+					'url' => "url('/wp-content/rocket-test-data/images/wp-rocket.svg')",
+					'original' => 'url("/wp-content/rocket-test-data/images/wp-rocket.svg")',
+					'block' => '[title~="wp-rocket"] {
+ background: url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat;
+ }'
+				]
+			],
+			'[title~="wp-rocket-image"]' => [
+				[
+					'selector' => '[title~="wp-rocket-image"]',
+					'url' => "url('/wp-content/rocket-test-data/images/wp-rocket.svg')",
+					'original' => 'url("/wp-content/rocket-test-data/images/wp-rocket.svg")',
+					'block' => '[title~="wp-rocket-image"] {
+ background-image: url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat;
+ }'
+				]
+			],
 			'.external-css-background-image' => [
 				[
 					'selector' => '.external-css-background-image',
