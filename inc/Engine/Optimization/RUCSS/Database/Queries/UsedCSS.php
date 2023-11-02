@@ -175,11 +175,11 @@ class UsedCSS extends Query {
 
 		$old = $this->get_item( $id );
 
-		$retries       = 0;
+		$retries          = 0;
 		$previous_message = '';
 
 		if ( $old ) {
-			$retries       = $old->retries;
+			$retries          = $old->retries;
 			$previous_message = $old->error_message;
 		}
 
