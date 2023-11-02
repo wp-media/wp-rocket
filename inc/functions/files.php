@@ -709,6 +709,14 @@ function rocket_clean_home( $lang = '' ) {
 		}
 	}
 
+	$param_dirs = glob( $root . '/#*', GLOB_NOSORT );
+
+	if ( $param_dirs ) {
+		foreach ( $param_dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_NOSORT );
 	if ( $nginx_mobile_detect_files ) {

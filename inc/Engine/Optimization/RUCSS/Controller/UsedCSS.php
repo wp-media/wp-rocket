@@ -549,7 +549,7 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		if (
-			200 !== $job_details['code']
+			200 !== (int) $job_details['code']
 			||
 			empty( $job_details['contents'] )
 			||
@@ -581,6 +581,7 @@ class UsedCSS implements LoggerAwareInterface {
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
 			$this->used_css_query->increment_retries( $id, (int) $job_details['code'], $job_details['message'] );
+
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
 			return;
