@@ -219,7 +219,6 @@ class UsedCSS extends Query {
 			'status'        => 'to-submit',
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
-			'submitted_at'  => current_time( 'mysql', true ),
 		];
 		return $this->add_item( $item );
 	}
@@ -598,10 +597,11 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$id,
 			[
-				'job_id'     => $job_id,
-				'queue_name' => $queue_name,
-				'status'     => 'pending',
-				'is_mobile'  => $is_mobile,
+				'job_id'       => $job_id,
+				'queue_name'   => $queue_name,
+				'status'       => 'pending',
+				'is_mobile'    => $is_mobile,
+				'submitted_at' => current_time( 'mysql', true ),
 			]
 		);
 	}
