@@ -19,7 +19,7 @@ class RetryContext {
 	 *
 	 * @return void
 	 */
-	public function set_strategy( $strategy ) {
+	public function set_strategy( StrategyInterface $strategy ) {
 		$this->strategy = $strategy;
 	}
 
