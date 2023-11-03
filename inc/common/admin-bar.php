@@ -16,7 +16,13 @@ function rocket_admin_bar( $wp_admin_bar ) {
 	global $pagenow, $post;
 
 	if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-		$referer = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+		$uri = filter_var( wp_unslash( $_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL ) );
+		/**
+		 * Filters to act on the referer url for the admin bar.
+		 *
+		 * @param string $uri Current uri
+		 */
+		$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $uri ) );
 		$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
 	} else {
 		$referer = '';

@@ -658,7 +658,14 @@ class UsedCSS implements LoggerAwareInterface {
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
+
+			/**
+			 * Filters to act on the referer url for the admin bar.
+			 *
+			 * @param string $uri Current uri
+			 */
+			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
+			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
 		}
 
 		/**
