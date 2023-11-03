@@ -23,6 +23,5 @@ class Test_JobNotFound_Execute extends TestCase {
 	 */
 	public function testShouldBehaveAsExpected( $config, $expected )
 	{
-//		Functions\expect('add_url_to_the_queue')->with($config['row_details'], $config['job_details']);
 	}
 }

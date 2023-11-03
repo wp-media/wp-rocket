@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies;
 
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 
 /**
  * Class managing the retry process of RUCSS whenever a Job is found without any results yet.
@@ -14,6 +15,13 @@ class JobFoundNoResult implements StrategyInterface {
 	 * @var UsedCSS_Query
 	 */
 	protected $used_css_query;
+
+	/**
+	 * Clock Object.
+	 *
+	 * @var WPRClock
+	 */
+	protected $clock;
 
 	/**
 	 * Represents a timetable which shows how long to wait after for a new retry depending on how many retries have been made already.
@@ -37,6 +45,7 @@ class JobFoundNoResult implements StrategyInterface {
 	 */
 	public function __construct( UsedCSS_Query $used_css_query ) {
 		$this->used_css_query = $used_css_query;
+		$this->clock = new WPRClock();
 	}
 
 	/**
@@ -59,7 +68,7 @@ class JobFoundNoResult implements StrategyInterface {
 		$rucss_retry_duration = apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
 
 		// update the `not_proceed_before` column.
-		$not_proceed_before = current_time( 'timestamp' ) + $rucss_retry_duration;
+		$not_proceed_before = $this->clock->current_time( 'timestamp' ) + $rucss_retry_duration;
 
 		$this->used_css_query->update_not_processed_before( $row_details->job_id, $not_proceed_before );
 	}

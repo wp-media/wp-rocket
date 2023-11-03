@@ -528,6 +528,7 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function check_job_status( int $id ) {
+		$this->logger::alert('Hello world - Check_Job_Status with ID ' . $id);
 		$this->logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
@@ -561,40 +562,40 @@ class UsedCSS implements LoggerAwareInterface {
 
 		if (
 			200 !== $job_details['code']
-			||
-			empty( $job_details['contents'] )
-			||
-			! isset( $job_details['contents']['shakedCSS'] )
 		) {
+			$this->logger::debug('Gael Test');
+			$this->logger::debug(print_r($row_details, true));
+			$this->logger::debug(print_r($job_details, true));
+			$this->strategy_factory = new StrategyFactory($this->used_css_query);
 			$this->strategy_factory->manage( $row_details, $job_details );
 
-			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
-
-			// Failure, check the retries number.
-			if ( $row_details->retries >= 3 ) {
-				$this->logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
-				/**
-				 * Unlock preload URL.
-				 *
-				 * @param string $url URL to unlock
-				 */
-				do_action( 'rocket_preload_unlock_url', $row_details->url );
-
-				$this->used_css_query->make_status_failed( $id, strval( $job_details['code'] ), $job_details['message'] );
-
-				return;
-			}
-
-			// on timeout errors with code 408 create new job.
-			switch ( $job_details['code'] ) {
-				case 408:
-					$this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-					return;
-			}
-
-			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
-			$this->used_css_query->increment_retries( $id, (int) $row_details->retries );
-			$this->used_css_query->update_message( $id, $job_details['code'], $job_details['message'], $row_details->error_message );
+//			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
+//
+//			// Failure, check the retries number.
+//			if ( $row_details->retries >= 3 ) {
+//				$this->logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
+//				/**
+//				 * Unlock preload URL.
+//				 *
+//				 * @param string $url URL to unlock
+//				 */
+//				do_action( 'rocket_preload_unlock_url', $row_details->url );
+//
+//				$this->used_css_query->make_status_failed( $id, strval( $job_details['code'] ), $job_details['message'] );
+//
+//				return;
+//			}
+//
+////			 on timeout errors with code 408 create new job.
+//			switch ( $job_details['code'] ) {
+//				case 408:
+//					$this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
+//					return;
+//			}
+//
+//			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
+//			$this->used_css_query->increment_retries( $id, (int) $row_details->retries );
+//			$this->used_css_query->update_message( $id, $job_details['code'], $job_details['message'], $row_details->error_message );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
