@@ -5,15 +5,11 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
-use WP_Rocket\Logger\LoggerAware;
-use WP_Rocket\Logger\LoggerAwareInterface;
-
 
 /**
  * RUCSS UsedCSS Query.
  */
-class UsedCSS extends Query implements LoggerAwareInterface {
-	use LoggerAware;
+class UsedCSS extends Query {
 
 	/**
 	 * Name of the database table to query.
@@ -110,6 +106,7 @@ class UsedCSS extends Query implements LoggerAwareInterface {
 				'fields'         => [
 					'id',
 					'url',
+					'not_proceed_before',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',

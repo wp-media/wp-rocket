@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\Clock;
 
-class WPRClock implements ClockInterface  {
+class WPRClock implements ClockInterface {
 
 	/**
 	 * Retrieves the current time based on specified type.
@@ -25,7 +25,6 @@ class WPRClock implements ClockInterface  {
 	 * @return int|string Integer if `$type` is 'timestamp' or 'U', string otherwise.
 	 */
 	public function current_time( string $type, $gmt = 0 ) {
-		return apply_filters('rocket_current_time', current_time($type, $gmt));
+		return apply_filters( 'rocket_current_time', current_time( $type, $gmt ) );
 	}
-
 }

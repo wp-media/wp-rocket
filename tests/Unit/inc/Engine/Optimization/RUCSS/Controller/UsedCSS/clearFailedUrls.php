@@ -8,6 +8,8 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
@@ -29,6 +31,16 @@ class Test_ClearFailedUrls extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 
+	/**
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->options      = Mockery::mock( Options_Data::class );
@@ -39,6 +51,8 @@ class Test_ClearFailedUrls extends TestCase {
 		$this->filesystem   = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
+		$this->wpr_clock = Mockery::mock(WPRClock::class);
 		$this->usedCss      = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',
 			[
@@ -50,6 +64,8 @@ class Test_ClearFailedUrls extends TestCase {
 				$this->filesystem,
 				$this->context,
 				$this->optimisedContext,
+				$this->strategy_factory,
+				$this->wpr_clock,
 			]
 		);
 	}

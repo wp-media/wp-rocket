@@ -33,21 +33,9 @@ class ResetRetryProcess implements StrategyInterface {
 	 * @return void
 	 */
 	public function execute( object $row_details, array $job_details ): void {
-		$this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-	}
-
-	/**
-	 * Send the request to add url into the queue.
-	 *
-	 * @param string $url page URL.
-	 * @param bool   $is_mobile page is for mobile.
-	 *
-	 * @return void
-	 */
-	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
-		$used_css_row = $this->used_css_query->get_row( $url, $is_mobile );
+		$used_css_row = $this->used_css_query->get_row( $row_details->url, (bool) $row_details->is_mobile );
 		if ( empty( $used_css_row ) ) {
-			$this->used_css_query->create_new_job( $url, '', '', $is_mobile );
+			$this->used_css_query->create_new_job( $row_details->url, '', '', $row_details->is_mobile );
 			return;
 		}
 		$this->used_css_query->reset_job( (int) $used_css_row->id );

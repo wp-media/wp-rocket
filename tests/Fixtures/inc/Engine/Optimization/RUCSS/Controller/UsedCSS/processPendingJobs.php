@@ -29,7 +29,8 @@ return [
 			'rows' => [
 				(object) [
 					'id' => 10,
-					'url' => 'http://example.org'
+					'url' => 'http://example.org',
+					'not_proceed_before' => 123,
 				]
 			]
 		],

@@ -7,6 +7,7 @@ $row1 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example1',
 	'status' => 'pending',
+	'not_proceed_before' => 123
 ]);
 
 $row2 = new CacheRow([
@@ -14,6 +15,8 @@ $row2 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example2',
 	'status' => 'pending',
+	'not_proceed_before' => 123
+
 ]);
 
 $row3 = new CacheRow([
@@ -21,6 +24,8 @@ $row3 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example3',
 	'status' => 'pending',
+	'not_proceed_before' => 123
+
 ]);
 
 $outdated_row = new CacheRow([
@@ -28,6 +33,8 @@ $outdated_row = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example3',
 	'status' => 'in-progress',
+	'not_proceed_before' => 123
+
 ]);
 
 return [

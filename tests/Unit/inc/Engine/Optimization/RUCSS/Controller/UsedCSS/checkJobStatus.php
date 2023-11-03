@@ -14,6 +14,8 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Actions;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 
 
 /**
@@ -32,6 +34,13 @@ class Test_CheckJobStatus extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->options      = Mockery::mock( Options_Data::class );
@@ -42,6 +51,9 @@ class Test_CheckJobStatus extends TestCase {
 		$this->filesystem   = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class, [$this->usedCssQuery]);
+		$this->wpr_clock = Mockery::mock(WPRClock::class);
+
 		$this->usedCss      = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',
 			[
@@ -53,8 +65,11 @@ class Test_CheckJobStatus extends TestCase {
 				$this->filesystem,
 				$this->context,
 				$this->optimisedContext,
+				$this->strategy_factory,
+				$this->wpr_clock,
 			]
 		);
+
 
 		$this->set_logger($this->usedCss);
 	}
@@ -110,43 +125,12 @@ class Test_CheckJobStatus extends TestCase {
 		}
 		if (
 			200 !== $job_details['code']
-			||
-			empty( $job_details['contents'] )
-			||
-			! isset( $job_details['contents']['shakedCSS'] )
 		) {
-			if ( $row_details->retries >= 3 ) {
-				Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']['url']);
-				$this->usedCssQuery->expects( self::once() )
-				                   ->method( 'make_status_failed' )
-				                   ->with( $config['job_id'], $job_details['code'], $job_details['message'] );
 
-				$this->usedCss->check_job_status( $config['job_id'] );
-
-				return;
-			}
-
-			// on timeout errors with code 408 create new job.
-			if ( 408 === $job_details['code'] ) {
-
-				$this->usedCss->expects()->add_url_to_the_queue( $config['row_details']['url'], (bool) $config['row_details']['is_mobile'] );
-
-				$this->usedCss->check_job_status( $config['job_id'] );
-				return;
-			}
-			$this->usedCssQuery->expects( self::once() )
-			                   ->method( 'increment_retries' )
-			                   ->with( $config['job_id'], $row_details->retries );
-
-			$this->usedCssQuery->expects(self::once())
-				->method('update_message')
-				->with($config['job_id'], $job_details['code'], $job_details['message']);
+			$this->strategy_factory->expects( 'manage' )->with( $row_details, $job_details );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
-
 			return;
-		}  else {
-			Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']['url']);
 		}
 
 
@@ -175,19 +159,4 @@ class Test_CheckJobStatus extends TestCase {
 		$this->usedCss->check_job_status( $config['job_id'] );
 	}
 
-	protected function configureCreateNewJob( $url, $is_mobile, $add_to_queue_response ) {
-
-		$this->options->expects()->get( 'remove_unused_css_safelist', [] )->andReturn( [] );
-
-		Filters\expectApplied( 'rocket_rucss_safelist' )->with( [] )->andReturn( [] );
-		$create_new_job_config = [
-			'treeshake'      => 1,
-			'rucss_safelist' => [],
-			'is_mobile'      => $is_mobile,
-			'is_home'        => $url,
-		];
-		$this->api->expects()
-		          ->add_to_queue( $url, $create_new_job_config )
-		          ->andReturn( $add_to_queue_response );
-	}
 }

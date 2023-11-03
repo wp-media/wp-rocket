@@ -5,6 +5,7 @@ namespace Engine\Optimization\RUCSS\Controller\UsedCSS;
 use _PHPStan_7c8075089\Nette\Schema\Context;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
@@ -13,6 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 
 trait UsedCSSTrait
@@ -63,6 +65,9 @@ trait UsedCSSTrait
 
 	protected $optimisedContext;
 
+	protected $strategy_factory;
+	protected $clock;
+
 	public function set_up() {
 		parent::set_up();
 		$this->options = Mockery::mock(Options_Data::class);
@@ -74,8 +79,10 @@ trait UsedCSSTrait
 		$this->database = Mockery::mock(Database::class);
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
+		$this->clock = Mockery::mock(WPRClock::class);
 
-		$this->usedcss = new UsedCSS($this->options, $this->used_css_query, $this->api, $this->queue, $this->data_manager, $this->filesystem, $this->context, $this->optimisedContext);
+		$this->usedcss = new UsedCSS($this->options, $this->used_css_query, $this->api, $this->queue, $this->data_manager, $this->filesystem, $this->context, $this->optimisedContext, $this->strategy_factory, $this->clock);
 		$this->set_logger($this->usedcss);
 	}
 }

@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database, OptionSubscriber, Settings};
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSOptimizeContext;
@@ -16,8 +17,8 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobFoundNoResult;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobNotFound;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess;
 
 /**
@@ -87,6 +88,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rucss_optimize_context', RUCSSOptimizeContext::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
+		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
+
+		$this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
+			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
+			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+
+
+
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
@@ -95,15 +104,14 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) );
+			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory') )
+			->addArgument( $this->getContainer()->get( 'wpr_clock') );
 
-		$this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
+		$this->getContainer()->add( 'rucss_retry_strategy_default_process', DefaultProcess::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
 
-		$this->getContainer()->add( 'rucss_retry_strategy_job_found_no_result', JobFoundNoResult::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
-
-		$this->getContainer()->add( 'rucss_retry_strategy_job_not_found', JobNotFound::class )
+		$this->getContainer()->add( 'rucss_retry_strategy_job_set_fail', JobSetFail::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
 
 		$this->getContainer()->add( 'rucss_retry_strategy_reset_retry', ResetRetryProcess::class )
