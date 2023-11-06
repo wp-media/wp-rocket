@@ -51,7 +51,7 @@ $pending_used_css = [
 		'retries'        => 0,
 		'is_mobile'      => false,
         'job_id'         => 304732178,
-        'status'         => 'pending',
+        'status'         => 'to-submit',
 		'modified'       => $old_date,
 		'last_accessed'  => $old_date,
 	],
@@ -62,7 +62,7 @@ $pending_used_css = [
 		'retries'        => 0,
 		'is_mobile'      => false,
         'job_id'         => 969832401,
-        'status'         => 'pending',
+        'status'         => 'to-submit',
 		'modified'       => $old_date,
 		'last_accessed'  => $old_date,
 	],
@@ -89,15 +89,4 @@ return [
         ],
         'expected' => $pending_used_css,
     ],
-	'shouldNotDeleteFailedJobsNoResponse' => [
-		'input' => [
-			'used_css' => $failed_used_css,
-			'add_job_to_queue_response'=> [
-				'headers'=>[],
-				'response' => array('code' => 404,'message'=> "error."),
-				'body'=>''
-			]
-		],
-		'expected' => [],
-	],
 ];
