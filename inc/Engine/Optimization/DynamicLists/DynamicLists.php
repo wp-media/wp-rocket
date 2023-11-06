@@ -280,4 +280,15 @@ class DynamicLists extends Abstract_Render {
 
 		return isset( $lists ) ? $lists : [];
 	}
+
+	/**
+	 * Get the staging list
+	 *
+	 * @return array
+	 */
+	public function get_stagings() {
+		$lists = $this->providers['staging']->data_manager->get_lists();
+
+		return isset( $lists ) ? $lists : [];
+	}
 }

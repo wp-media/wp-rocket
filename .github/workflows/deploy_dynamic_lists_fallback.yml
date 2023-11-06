@@ -55,6 +55,14 @@ jobs:
           url: "https://b.rucss.wp-rocket.me/api/delay-js-exclusions/list"
           dir: '/'
 
+      - name: Get and Save Staging Exclusions Lists
+        id: saveDynamicStagingExclusionLists
+        uses: engahmeds3ed/create-json-url@v0.0.1
+        with:
+          name: "dynamic-lists-staging-exclusions.json"
+          url: "https://b.rucss.wp-rocket.me/api/staging-exclusions/list"
+          dir: '/'
+
       - name: Commit All lists JSON files
         if: ${{ steps.saveDynamicLists.outcome == 'success' || steps.saveDynamicDelayJSLists.outcome == 'success' || steps.saveIncompatiblePluginsLists.outcome == 'success' }}
         uses: stefanzweifel/git-auto-commit-action@v4

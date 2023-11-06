@@ -35,6 +35,7 @@ class Test_RocketIsLiveSite extends TestCase {
 	public function testShouldReturnFalseWhenLocalOrStaging() {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
 
+		add_filter( 'rocket_staging_list', [$this, 'getLocalStagingDomains']);
 		foreach ( $this->getLocalStagingSites() as $domain ) {
 			$callback = function() use ( $domain ) {
 				return 'http://' . $domain;
@@ -44,6 +45,8 @@ class Test_RocketIsLiveSite extends TestCase {
 			$this->assertFalse( rocket_is_live_site() );
 			remove_filter( 'home_url', $callback );
 		}
+
+		remove_filter('rocket_staging_list', [$this, 'getLocalStagingSites']);
 	}
 
 	public function testShouldReturnTrueWhenLiveSite() {
@@ -71,33 +74,59 @@ class Test_RocketIsLiveSite extends TestCase {
 
 	private function getLocalStagingSites() {
 		return [
-			'127.0.0.1',
-			'localhost',
-			'example.localhost',
-			'example.local',
-			'example.test',
-			'example.dev.cc',
-			'example.docksal',
-			'example.docksal.site',
-			'example.lndo.site',
-			'example.wpengine.com',
-			'example.wpenginepowered.com',
-			'example.pantheonsite.io',
-			'example.flywheelsites.com',
-			'example.flywheelstaging.com',
-			'example.kinsta.com',
-			'example.kinsta.cloud',
-			'example.cloudwaysapps.com',
-			'example.azurewebsites.net',
-			'example.wpserveur.net',
-			'example-liquidwebsites.com',
-			'example.myftpupload.com',
-			'example.wpstage.net',
-			'example.wpsc.site',
-			'example.runcloud.link',
-			'example.onrocket.site',
-			'example.bigscoots-staging.com',
-			'example.singlestaging.com',
+				'127.0.0.1',
+				'localhost',
+				'example.localhost',
+				'example.local',
+				'example.test',
+				'example.dev.cc',
+				'example.docksal',
+				'example.docksal.site',
+				'example.lndo.site',
+				'example.wpengine.com',
+				'example.wpenginepowered.com',
+				'example.pantheonsite.io',
+				'example.flywheelsites.com',
+				'example.flywheelstaging.com',
+				'example.kinsta.com',
+				'example.kinsta.cloud',
+				'example.cloudwaysapps.com',
+				'example.azurewebsites.net',
+				'example.wpserveur.net',
+				'example-liquidwebsites.com',
+				'example.myftpupload.com',
+				'example.wpstage.net',
+				'example.wpsc.site',
+				'example.runcloud.link',
+				'example.onrocket.site',
+				'example.bigscoots-staging.com',
+				'example.singlestaging.com',
+			];
+	}
+	public function getLocalStagingDomains() {
+		return [
+			'.wpengine.com',
+			'.wpenginepowered.com',
+			'.pantheonsite.io',
+			'.flywheelsites.com',
+			'.flywheelstaging.com',
+			'.kinsta.com',
+			'.kinsta.cloud',
+			'.cloudwaysapps.com',
+			'.azurewebsites.net',
+			'.wpserveur.net',
+			'-liquidwebsites.com',
+			'.myftpupload.com',
+			'.dream.press',
+			'.sg-host.com',
+			'.platformsh.site',
+			'.wpstage.net',
+			'.bigscoots-staging.com',
+			'.wpsc.site',
+			'.runcloud.link',
+			'.onrocket.site',
+			'.singlestaging.com',
+			'.myraidbox.de',
 		];
 	}
 }
