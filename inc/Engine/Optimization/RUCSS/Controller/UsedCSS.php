@@ -549,7 +549,7 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		if (
-			200 !== $job_details['code']
+			200 !== (int) $job_details['code']
 			||
 			empty( $job_details['contents'] )
 			||
@@ -580,8 +580,7 @@ class UsedCSS implements LoggerAwareInterface {
 			}
 
 			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
-			$this->used_css_query->increment_retries( $id, (int) $row_details->retries );
-			$this->used_css_query->update_message( $id, $job_details['code'], $job_details['message'], $row_details->error_message );
+			$this->used_css_query->increment_retries( $id, (int) $job_details['code'], $job_details['message'] );
 
 			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
 
@@ -658,7 +657,14 @@ class UsedCSS implements LoggerAwareInterface {
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
+
+			/**
+			 * Filters to act on the referer url for the admin bar.
+			 *
+			 * @param string $uri Current uri
+			 */
+			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
+			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
 		}
 
 		/**
