@@ -9,8 +9,6 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\APIClient as DelayJS
 use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager as DelayJSListsDataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager as IncompatiblePluginsListsDataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\APIClient as IncompatiblePluginsListsAPIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\StagingLists\APIClient as StagingListsAPIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\StagingLists\DataManager as StagingListsDataManager;
 
 /**
  * Service provider for the WP Rocket DynamicLists
@@ -53,8 +51,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_api_client', IncompatiblePluginsListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'dynamic_lists_staging_data_manager', StagingListsDataManager::class );
-		$this->getContainer()->add( 'dynamic_lists_staging_api_client', StagingListsAPIClient::class )
+		$this->getContainer()->add( 'dynamic_lists_staging_data_manager', DefaultListsDataManager::class );
+		$this->getContainer()->add( 'dynamic_lists_staging_api_client', DefaultListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$providers = [
@@ -76,12 +74,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'data_manager' => $this->getContainer()->get( 'dynamic_lists_incompatible_plugins_lists_data_manager' ),
 					'title'        => __( 'Incompatible plugins Lists', 'rocket' ),
 					'clear_cache'  => false,
-				],
-			'staging'              =>
-				(object) [
-					'api_client'   => $this->getContainer()->get( 'dynamic_lists_staging_api_client' ),
-					'data_manager' => $this->getContainer()->get( 'dynamic_lists_staging_data_manager' ),
-					'title'        => __( 'Staging Lists', 'rocket' ),
 				],
 		];
 

@@ -2,11 +2,19 @@
 
 return [
 	'shouldReturnArray' => [
-		'list' => [
-			'.example.com',
+		'config' => [
+			'lists' => (object) [
+				'staging_domains' => [
+					'.example.com',
+				],
+			]
 		],
 		'expected' => [
-			'.example.com',
+			'lists' => (object) [
+				'staging_domains' => [
+					'.example.com',
+				],
+			],
 		],
 	],
 ];

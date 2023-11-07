@@ -5,8 +5,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DynamicLists;
 use Mockery;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\APIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\APIClient;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -19,10 +19,12 @@ class Test_GetStagings extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $list, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		$data_manager  = Mockery::mock( DataManager::class );
+		$data_manager->shouldReceive( 'get_lists' )
+			->andReturn( $config['lists'] );
 		$providers = [
-			'staging' =>
+			'defaultlists' =>
 				(object) [
 					'api_client' => Mockery::mock( APIClient::class ),
 					'data_manager' => $data_manager,
@@ -30,11 +32,8 @@ class Test_GetStagings extends TestCase {
 		];
 		$dynamic_lists = new DynamicLists( $providers, Mockery::mock( User::class ), '', Mockery::mock( Beacon::class ) );
 
-		$data_manager->shouldReceive( 'get_lists' )
-			->andReturn( $list );
-
 		$this->assertSame(
-			$expected,
+			$expected['lists']->staging_domains,
 			$dynamic_lists->get_stagings()
 		);
 	}
