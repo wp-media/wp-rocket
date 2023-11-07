@@ -10,15 +10,15 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  DynamicLists
  */
 class Test_AddStagingExclusions extends TestCase {
+	protected $dynamic_list;
 
 	public function set_up() {
 		parent::set_up();
-
 		$this->unregisterAllCallbacksExcept( 'rocket_staging_list', 'add_staging_exclusions', 10 );
 	}
 
 	public function tear_down() {
-		delete_transient( 'wpr_dynamic_lists_staging' );
+		remove_filter( 'pre_transient_wpr_dynamic_lists', [$this, 'set_dynamic_list'] );
 
 		$this->restoreWpFilter( 'rocket_staging_list' );
 
@@ -29,11 +29,16 @@ class Test_AddStagingExclusions extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $original, $list, $expected ) {
-		set_transient( 'wpr_dynamic_lists_staging', $list, HOUR_IN_SECONDS );
+		$this->dynamic_list = $list;
+		add_filter( 'pre_transient_wpr_dynamic_lists', [$this, 'set_dynamic_list'], 12 );
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_staging_list', $original )
+			apply_filters( 'rocket_staging_list' , $original)
 		);
+	}
+
+	public function set_dynamic_list() {
+		return $this->dynamic_list;
 	}
 }

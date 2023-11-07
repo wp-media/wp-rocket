@@ -3,8 +3,10 @@
 return [
 	'shouldReturnUpdatedArrayWhenEmptyOriginal' => [
 		'original' => [],
-		'list' => [
-			'.example.com',
+		'list' => (object) [
+			'staging_domains' => [
+				'.example.com',
+			]
 		],
 		'expected' => [
 			'.example.com',
@@ -14,9 +16,12 @@ return [
 		'original' => [
 			'.example.com',
 		],
-		'list' =>[
-			'.example.com',
-			'.example2.com',
+		'list' => (object) [
+			'staging_domains' => [
+				'.example.com',
+				'.example2.com',
+			]
+
 		],
 		'expected' => [
 			'.example.com',
