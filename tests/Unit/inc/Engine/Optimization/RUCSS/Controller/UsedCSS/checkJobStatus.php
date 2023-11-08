@@ -51,8 +51,8 @@ class Test_CheckJobStatus extends TestCase {
 		$this->filesystem   = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
-		$this->strategy_factory = Mockery::mock(StrategyFactory::class, [$this->usedCssQuery]);
 		$this->wpr_clock = Mockery::mock(WPRClock::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class, [$this->usedCssQuery, $this->wpr_clock]);
 
 		$this->usedCss      = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',

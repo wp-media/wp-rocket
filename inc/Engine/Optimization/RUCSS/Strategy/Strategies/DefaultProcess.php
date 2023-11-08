@@ -70,7 +70,7 @@ class DefaultProcess implements StrategyInterface {
 			return;
 		}
 
-		$this->used_css_query->increment_retries( $row_details->id, (int) $row_details->retries );
+		$this->used_css_query->increment_retries( $row_details->id, (int) $row_details->retries, $job_details['message'] );
 
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? 1800; // Default to 30 minutes.
 

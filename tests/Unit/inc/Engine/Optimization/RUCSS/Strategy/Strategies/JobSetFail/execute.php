@@ -18,7 +18,7 @@ class Test_JobSetFail_Execute extends TestCase {
 	 *
 	 * @var UsedCSS_Query
 	 */
-	protected $used_css_query;
+	protected $usedCssQuery;
 
 	public function setUp():void {
 		parent::setUp();
