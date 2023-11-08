@@ -126,7 +126,6 @@ class Test_CheckJobStatus extends TestCase {
 		if (
 			200 !== $job_details['code']
 		) {
-
 			$this->strategy_factory->expects( 'manage' )->with( $row_details, $job_details );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
