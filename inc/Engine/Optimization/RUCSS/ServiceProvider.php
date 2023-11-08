@@ -94,8 +94,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
-
-
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
@@ -105,8 +103,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory') )
-			->addArgument( $this->getContainer()->get( 'wpr_clock') );
+			->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
+			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
 		$this->getContainer()->add( 'rucss_retry_strategy_default_process', DefaultProcess::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );

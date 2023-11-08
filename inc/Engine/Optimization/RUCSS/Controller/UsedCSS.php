@@ -107,6 +107,8 @@ class UsedCSS implements LoggerAwareInterface {
 	protected $strategy_factory;
 
 	/**
+	 * Clock instance.
+	 *
 	 * @var WPRClock
 	 */
 	protected $wpr_clock;

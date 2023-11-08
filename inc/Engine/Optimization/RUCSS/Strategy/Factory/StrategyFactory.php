@@ -35,10 +35,11 @@ class StrategyFactory implements LoggerAwareInterface {
 	 * Constructor.
 	 *
 	 * @param UsedCSS_Query $used_css_query query table.
+	 * @param WPRClock      $clock Clock instance.
 	 */
-	public function __construct( UsedCSS_Query $used_css_query, WPRClock $clock) {
+	public function __construct( UsedCSS_Query $used_css_query, WPRClock $clock ) {
 		$this->used_css_query = $used_css_query;
-		$this->clock = $clock;
+		$this->clock          = $clock;
 	}
 	/**
 	 * Manage the whole process, to determine which strategy to adopt..
@@ -72,7 +73,5 @@ class StrategyFactory implements LoggerAwareInterface {
 		$context = new RetryContext();
 		$context->set_strategy( $strategy );
 		$context->execute( $row_details, $job_details );
-
-		return;
 	}
 }

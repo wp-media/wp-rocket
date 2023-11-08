@@ -86,7 +86,5 @@ class DefaultProcess implements StrategyInterface {
 
 		$this->used_css_query->update_message( $row_details->id, $job_details['code'], $job_details['message'], $row_details->error_message );
 		$this->used_css_query->update_not_processed_before( $row_details->job_id, $not_proceed_before );
-
-		return;
 	}
 }
