@@ -4,12 +4,8 @@ namespace WP_Rocket\Tests\Integration;
 
 use ReflectionClass;
 use ReflectionException;
-use ReflectionObject;
-use WP_Rocket\Tests\SettingsTrait;
-use WP_Rocket\Tests\StubTrait;
-use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
-Trait FilterTrait {
+Trait IsolateHookTrait {
 
 	protected $original_wp_filter;
 
@@ -56,7 +52,7 @@ Trait FilterTrait {
 		$property->setValue($wp_hooks, $priorities);
 	}
 
-	protected function restoreWpFilter( $event_name ) {
+	protected function restoreWpHook($event_name ) {
 		global $wp_filter;
 		$wp_filter[ $event_name ]->callbacks = $this->original_wp_filter;
 		if (! $this->original_wp_priorities) {

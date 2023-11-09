@@ -19,7 +19,7 @@ class Test_AddOptionsFirstTime extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'rocket_first_install_options' );
+		$this->restoreWpHook( 'rocket_first_install_options' );
 	}
 
 	/**

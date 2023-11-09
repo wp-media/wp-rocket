@@ -13,7 +13,7 @@ class Test_AddCombineJsExcludedInline extends TestCase {
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists' );
 
-		$this->restoreWpFilter( 'rocket_excluded_inline_js_content' );
+		$this->restoreWpHook( 'rocket_excluded_inline_js_content' );
 
 		parent::tear_down();
 	}

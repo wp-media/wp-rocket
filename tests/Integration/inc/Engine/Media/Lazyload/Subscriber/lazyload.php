@@ -34,7 +34,7 @@ class Test_Lazyload extends TestCase {
 		$wp_query->is_preview = false;
 		$wp_query->is_search  = false;
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}

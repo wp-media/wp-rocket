@@ -36,7 +36,7 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'admin_notices' );
+		$this->restoreWpHook( 'admin_notices' );
 		parent::tear_down();
 	}
 

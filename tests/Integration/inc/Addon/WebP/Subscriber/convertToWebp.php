@@ -30,7 +30,7 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		remove_filter( 'rocket_attributes_for_webp', [ $this, 'set_attributes_webp' ] );
 		remove_filter( 'rocket_cdn_cnames', [ $this, 'set_cdn_cnames'] );
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}
