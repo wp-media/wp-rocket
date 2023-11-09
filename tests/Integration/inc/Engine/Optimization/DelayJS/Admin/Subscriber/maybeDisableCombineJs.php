@@ -20,7 +20,7 @@ class Test_MaybeDisableCombineJs extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'pre_update_option_wp_rocket_settings' );
+		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 	}
 
 	/**

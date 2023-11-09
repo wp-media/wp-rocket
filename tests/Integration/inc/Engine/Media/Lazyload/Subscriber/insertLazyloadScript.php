@@ -43,7 +43,7 @@ class Test_InsertLazyloadScript extends TestCase {
 
 		unset( $GLOBALS['wp'] );
 
-		$this->restoreWpFilter( 'wp_footer' );
+		$this->restoreWpHook( 'wp_footer' );
 
 		parent::tear_down();
 	}
