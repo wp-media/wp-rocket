@@ -42,6 +42,7 @@ class UsedCSS extends Table {
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20221104 => 'add_error_columns',
 		20231010 => 'add_submitted_at_column',
+		20231110 => 'add_home_url',
 	];
 
 	/**
@@ -72,6 +73,7 @@ class UsedCSS extends Table {
 			job_id           varchar(255)        NOT NULL default '',
 			queue_name       varchar(255)        NOT NULL default '',
 			status           varchar(255)        NOT NULL default '',
+			is_home          tinyint(1)          NOT NULL default 0,
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
 			submitted_at     timestamp           NULL,
@@ -338,6 +340,23 @@ class UsedCSS extends Table {
 
 		if ( ! $submitted_at_column_exists ) {
 			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN submitted_at timestamp NULL AFTER last_accessed" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Adds the is_home column.
+	 *
+	 * @return bool
+	 */
+	protected function add_home_url() {
+		$home_url_exists = $this->column_exists( 'home_url' );
+
+		$created = true;
+
+		if ( ! $home_url_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN home_url tinyint(1) DEFAULT 0 AFTER status" );
 		}
 
 		return $this->is_success( $created );

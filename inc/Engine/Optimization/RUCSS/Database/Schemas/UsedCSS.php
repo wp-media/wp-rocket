@@ -164,5 +164,16 @@ class UsedCSS extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 		],
+
+		// IS_HOME column.
+		[
+			'name'	=> 'is_home',
+			'type' => 'tinyint',
+			'length'     => '1',
+			'default'    => 0,
+			'cache_key'  => true,
+			'searchable' => true,
+			'sortable'   => true,
+		],
 	];
 }
