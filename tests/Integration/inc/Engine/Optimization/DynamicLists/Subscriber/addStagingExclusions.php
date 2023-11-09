@@ -20,7 +20,7 @@ class Test_AddStagingExclusions extends TestCase {
 	public function tear_down() {
 		remove_filter( 'pre_transient_wpr_dynamic_lists', [$this, 'set_dynamic_list'] );
 
-		$this->restoreWpFilter( 'rocket_staging_list' );
+		$this->restoreWpHook( 'rocket_staging_list' );
 
 		parent::tear_down();
 	}
