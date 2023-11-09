@@ -36,7 +36,7 @@ class Test_DelayJs extends TestCase {
             delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
         }
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}

@@ -15,7 +15,7 @@ class Test_addPreconnectCdn extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'wp_resource_hints' );
+		$this->restoreWpHook( 'wp_resource_hints' );
 
 		parent::tear_down();
 	}

@@ -41,7 +41,7 @@ class Test_SetDashboardSeenTransient extends TestCase {
 	public function tear_down() {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
-		$this->restoreWpFilter( 'admin_footer-settings_page_wprocket' );
+		$this->restoreWpHook( 'admin_footer-settings_page_wprocket' );
 
 		remove_filter( 'pre_get_rocket_option_optimize_css_delivery', [ $this, 'set_ocd'] );
 		delete_transient( 'wpr_dashboard_seen_' . self::$user_id );

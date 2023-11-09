@@ -42,7 +42,7 @@ class Test_ShowEmptyProductGalleryWithDelayJS extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 
-		$this->restoreWpFilter( 'wp_head' );
+		$this->restoreWpHook( 'wp_head' );
 	}
 
 	/**

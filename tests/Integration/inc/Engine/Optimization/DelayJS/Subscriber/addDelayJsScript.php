@@ -23,7 +23,7 @@ class Test_AddDelayJsScript extends TestCase {
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
 		$this->delay_js = false;
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}

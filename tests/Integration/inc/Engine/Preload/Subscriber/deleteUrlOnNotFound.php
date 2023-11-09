@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Subscriber::delete_url_on_not_found
