@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\TheEventsCalendar;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
  */
 class Test_ExcludeFromPreloadCalendars extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	public function set_up()
 	{
@@ -22,7 +22,7 @@ class Test_ExcludeFromPreloadCalendars extends TestCase
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_preload_exclude_urls' );
+		$this->restoreWpHook( 'rocket_preload_exclude_urls' );
 
 		parent::tear_down();
 	}

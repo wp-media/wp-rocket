@@ -20,7 +20,7 @@ class Test_AddIncompatiblePluginsToDeactivate extends TestCase {
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists_incompatible_plugins' );
 
-		$this->restoreWpFilter( 'rocket_plugins_to_deactivate' );
+		$this->restoreWpHook( 'rocket_plugins_to_deactivate' );
 
 		parent::tear_down();
 	}

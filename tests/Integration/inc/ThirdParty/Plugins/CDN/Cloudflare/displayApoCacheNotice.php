@@ -52,7 +52,7 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		remove_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 
-		$this->restoreWpFilter( 'admin_notices' );
+		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 	}

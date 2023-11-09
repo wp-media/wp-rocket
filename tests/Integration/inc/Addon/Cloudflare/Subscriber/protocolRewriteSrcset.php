@@ -25,7 +25,7 @@ class TestProtocolRewriteSrcset extends TestCase {
 		remove_filter( 'pre_get_rocket_option_cloudflare_protocol_rewrite', [ $this, 'set_rewrite'] );
 		remove_filter( 'do_rocket_protocol_rewrite', [ $this, 'set_filter'] );
 
-		$this->restoreWpFilter( 'wp_calculate_image_srcset' );
+		$this->restoreWpHook( 'wp_calculate_image_srcset' );
 
 		parent::tear_down();
 	}
