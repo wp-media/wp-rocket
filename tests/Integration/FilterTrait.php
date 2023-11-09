@@ -18,17 +18,6 @@ Trait FilterTrait {
 	protected function unregisterAllCallbacksExcept( $event_name, $method_name, $priority = 10 ) {
 		global $wp_filter;
 		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
-		$wp_hooks = $wp_filter[ $event_name ];
-		$reflection = new ReflectionClass($wp_hooks);
-		try {
-			$property = $reflection->getProperty('priorities');
-			$property->setAccessible(true);
-			$this->original_wp_priorities = $property->getValue($wp_hooks);
-			$priorities = $property->getValue($wp_hooks);
-		} catch (ReflectionException $e) {
-
-		}
-
 
 		foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
 
@@ -42,7 +31,14 @@ Trait FilterTrait {
 			];
 		}
 
-		if (! $this->original_wp_priorities) {
+		try {
+			$wp_hooks = $wp_filter[ $event_name ];
+			$reflection = new ReflectionClass($wp_hooks);
+			$property = $reflection->getProperty('priorities');
+			$property->setAccessible(true);
+			$this->original_wp_priorities = $property->getValue($wp_hooks);
+			$priorities = $property->getValue($wp_hooks);
+		} catch (ReflectionException $e) {
 			return;
 		}
 
