@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use Brain\Monkey\Functions;
 
 /**
@@ -11,7 +11,7 @@ use Brain\Monkey\Functions;
  */
 class Test_maybeReplaceCssImages extends FilesystemTestCase {
 
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Subscriber/integration/maybeReplaceCssImages.php';
 
@@ -34,7 +34,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		remove_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash']);
-		$this->restoreWpFilter('rocket_buffer');
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 

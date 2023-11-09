@@ -19,7 +19,7 @@ class Test_ExcludePrivatePostUri extends TestCase {
 	}
 
     public function tear_down() {
-		$this->restoreWpFilter( 'rocket_preload_exclude_urls' );
+		$this->restoreWpHook( 'rocket_preload_exclude_urls' );
 
 		parent::tear_down();
 	}

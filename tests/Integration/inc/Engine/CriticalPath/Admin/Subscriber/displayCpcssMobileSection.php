@@ -41,7 +41,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'rocket_settings_tools_content' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setAsyncCssOption' ] );
 		remove_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'setCacheMobileOption' ] );

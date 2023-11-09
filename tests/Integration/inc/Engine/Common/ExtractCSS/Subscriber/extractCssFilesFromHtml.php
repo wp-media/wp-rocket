@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\ExtractCSS\Subscriber;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_extractCssFilesFromHtml extends TestCase {
 
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	public function set_up()
 	{
@@ -20,7 +20,7 @@ class Test_extractCssFilesFromHtml extends TestCase {
 
 	public function tear_down()
 	{
-		$this->restoreWpFilter('rocket_generate_lazyloaded_css');
+		$this->restoreWpHook('rocket_generate_lazyloaded_css');
 		parent::tear_down();
 	}
 

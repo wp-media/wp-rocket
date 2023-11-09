@@ -56,7 +56,7 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 
 	public function tear_down() : void {
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
-		$this->restoreWpFilter( 'admin_notices' );
+		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 	}

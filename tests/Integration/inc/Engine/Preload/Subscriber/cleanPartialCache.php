@@ -3,14 +3,14 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Subscriber::clean_partial_cache
  */
 class Test_CleanPartialCache extends AdminTestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $manual_preload;
 
@@ -36,7 +36,7 @@ class Test_CleanPartialCache extends AdminTestCase
 
 	public function tear_down()
 	{
-		$this->restoreWpFilter('after_rocket_clean_post');
+		$this->restoreWpHook('after_rocket_clean_post');
 		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 		parent::tear_down();
 	}

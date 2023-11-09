@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddAllInOneSeoSitemap extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $aioseop_options;
 	private $aioseo;
@@ -26,7 +26,7 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_sitemap_preload_list');
+		$this->restoreWpHook('rocket_sitemap_preload_list');
 		remove_filter('pre_option_aioseop_options', [$this, 'aioseop_options']);
 		parent::tearDown();
 	}
