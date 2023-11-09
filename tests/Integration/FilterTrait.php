@@ -21,12 +21,12 @@ Trait FilterTrait {
 		$wp_hooks = $wp_filter[ $event_name ];
 		$reflection = new ReflectionClass($wp_hooks);
 		try {
-
-		} catch (ReflectionException $e) {
 			$property = $reflection->getProperty('priorities');
 			$property->setAccessible(true);
 			$this->original_wp_priorities = $property->getValue($wp_hooks);
 			$priorities = $property->getValue($wp_hooks);
+		} catch (ReflectionException $e) {
+
 		}
 
 
