@@ -39,7 +39,7 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		global $current_screen;
 
 		unset ($current_screen);
-		$this->restoreWpFilter( 'admin_notices' );
+		$this->restoreWpHook( 'admin_notices' );
 		parent::tear_down();
 	}
 

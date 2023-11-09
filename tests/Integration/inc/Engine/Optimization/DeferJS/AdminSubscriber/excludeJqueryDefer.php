@@ -20,7 +20,7 @@ class Test_ExcludeJqueryDefer extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 
 		delete_option( 'wp_rocket_settings' );
 	}
