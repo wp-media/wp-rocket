@@ -117,6 +117,11 @@ function rocket_is_live_site() {
 
 	$default_staging = [];
 
+	/**
+	 * Get the list of staging domains from SaaS
+	 *
+	 * @param array $default_staging default result in case there isn't.
+	 */
 	$staging = apply_filters( 'rocket_staging_list', $default_staging );
 
 	if ( ! is_array( $staging ) ) {

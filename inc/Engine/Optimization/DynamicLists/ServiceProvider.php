@@ -51,9 +51,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'dynamic_lists_incompatible_plugins_lists_api_client', IncompatiblePluginsListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'dynamic_lists_staging_data_manager', DefaultListsDataManager::class );
-		$this->getContainer()->add( 'dynamic_lists_staging_api_client', DefaultListsAPIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$providers = [
 			'defaultlists'         =>

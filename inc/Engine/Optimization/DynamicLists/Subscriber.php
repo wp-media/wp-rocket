@@ -211,10 +211,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_staging_exclusions( $stagings = [] ): array {
-		if ( ! is_array( $stagings ) ) {
-			$stagings = (array) $stagings;
-		}
-
-		return array_merge( $stagings, (array) $this->dynamic_lists->get_stagings() );
+		return array_merge( (array) $stagings, (array) $this->dynamic_lists->get_stagings() );
 	}
 }
