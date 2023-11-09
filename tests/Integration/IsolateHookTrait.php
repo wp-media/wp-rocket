@@ -30,10 +30,10 @@ Trait IsolateHookTrait {
 		try {
 			$wp_hooks = $wp_filter[ $event_name ];
 			$reflection = new ReflectionClass($wp_hooks);
-			$property = $reflection->getProperty('priorities');
-			$property->setAccessible(true);
-			$this->original_wp_priorities = $property->getValue($wp_hooks);
-			$priorities = $property->getValue($wp_hooks);
+			$priorities_property = $reflection->getProperty('priorities');
+			$priorities_property->setAccessible(true);
+			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
+			$priorities = $priorities_property->getValue($wp_hooks);
 		} catch (ReflectionException $e) {
 			return;
 		}
@@ -49,7 +49,7 @@ Trait IsolateHookTrait {
 
 		}
 
-		$property->setValue($wp_hooks, $priorities);
+		$priorities_property->setValue($wp_hooks, $priorities);
 	}
 
 	protected function restoreWpHook($event_name ) {
@@ -60,8 +60,8 @@ Trait IsolateHookTrait {
 		}
 		$wp_hooks = $wp_filter[ $event_name ];
 		$reflection = new ReflectionClass($wp_hooks);
-		$property = $reflection->getProperty('priorities');
-		$property->setAccessible(true);
-		$property->setValue($wp_hooks, $this->original_wp_priorities);
+		$priorities_property = $reflection->getProperty('priorities');
+		$priorities_property->setAccessible(true);
+		$priorities_property->setValue($wp_hooks, $this->original_wp_priorities);
 	}
 }
