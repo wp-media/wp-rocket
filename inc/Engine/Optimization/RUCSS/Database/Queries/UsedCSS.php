@@ -216,10 +216,11 @@ class UsedCSS extends Query {
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @param bool   $is_home if the url is home url.
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, bool $is_home = false) {
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, bool $is_home = false ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -230,7 +231,7 @@ class UsedCSS extends Query {
 			'job_id'        => $job_id,
 			'queue_name'    => $queue_name,
 			'status'        => 'to-submit',
-			'is_home'		=> $is_home,
+			'is_home'       => $is_home,
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
 		];

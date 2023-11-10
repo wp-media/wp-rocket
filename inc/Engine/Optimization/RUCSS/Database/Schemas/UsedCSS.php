@@ -167,8 +167,8 @@ class UsedCSS extends Schema {
 
 		// IS_HOME column.
 		[
-			'name'	=> 'is_home',
-			'type' => 'tinyint',
+			'name'       => 'is_home',
+			'type'       => 'tinyint',
 			'length'     => '1',
 			'default'    => 0,
 			'cache_key'  => true,

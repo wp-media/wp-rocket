@@ -201,7 +201,7 @@ class UsedCSS implements LoggerAwareInterface {
 	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
 		$used_css_row = $this->used_css_query->get_row( $url, $is_mobile );
 		if ( empty( $used_css_row ) ) {
-			$this->used_css_query->create_new_job( $url, '', '', $is_mobile, $this->is_home($url) );
+			$this->used_css_query->create_new_job( $url, '', '', $is_mobile, $this->is_home( $url ) );
 			return;
 		}
 		$this->used_css_query->reset_job( (int) $used_css_row->id );

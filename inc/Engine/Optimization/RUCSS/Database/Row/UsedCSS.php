@@ -143,6 +143,6 @@ class UsedCSS extends Row {
 		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
 		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( $this->last_accessed );
 		$this->submitted_at  = empty( $this->submitted_at ) ? 0 : strtotime( $this->submitted_at );
-		$this->is_home	     = (bool) $this->is_home;
+		$this->is_home       = (bool) $this->is_home;
 	}
 }
