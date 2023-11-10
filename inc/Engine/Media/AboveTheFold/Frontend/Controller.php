@@ -73,6 +73,10 @@ class Controller implements ContextInterface {
 			return $html;
 		}
 
+		if ( ! $row->lcp ) {
+			return $html;
+		}
+
 		$html = $this->preload_lcp( $html, $row );
 
 		return $html;
@@ -147,6 +151,8 @@ class Controller implements ContextInterface {
 			return $exclusions;
 		}
 
+		list($atf, $lcp) = array([], []);
+
 		global $wp;
 
 		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
@@ -157,10 +163,16 @@ class Controller implements ContextInterface {
 			return $exclusions;
 		}
 
-		$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
-		$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+		if ( $row->lcp ) {
+			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
+			$lcp = $lcp['sources'];
+		}
 
-		$exclusions = array_merge( $exclusions, $lcp['sources'], $atf );
+		if ( $row->viewport ) {
+			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+		}
+
+		$exclusions = array_merge( $exclusions, $lcp, $atf );
 
 		// Remove lcp candidate from the atf array.
 		$exclusions = array_unique( $exclusions );
@@ -175,6 +187,15 @@ class Controller implements ContextInterface {
 	 * @return array
 	 */
 	private function generate_lcp_link_tag_with_sources( $lcp ): array {
+		$pairs = [
+			'tags'    => '',
+			'sources' => [],
+		];
+
+		if ( ! $lcp && ! is_object( $lcp ) ) {
+			return $pairs;
+		}
+
 		$tag       = '';
 		$start_tag = '<link rel="preload" as="image" ';
 		$end_tag   = ' fetchpriority="high">';
@@ -216,10 +237,10 @@ class Controller implements ContextInterface {
 				break;
 		}
 
-		return [
-			'tags'    => $tag,
-			'sources' => $sources,
-		];
+		$pairs['tags'] = $tag;
+		$pairs['sources'] = $sources;
+
+		return $pairs;
 	}
 
 	/**
@@ -229,7 +250,7 @@ class Controller implements ContextInterface {
 	 * @return array
 	 */
 	private function get_atf_sources( array $atfs ): array {
-		if ( ! is_array( $atfs ) ) {
+		if (! $atfs && ! is_array( $atfs ) ) {
 			return [];
 		}
 
