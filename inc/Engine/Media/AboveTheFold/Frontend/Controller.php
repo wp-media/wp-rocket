@@ -134,7 +134,19 @@ class Controller implements ContextInterface {
 		}
 
 		$url  = preg_quote( $lcp->src, '/' );
-		$html = preg_replace( '/(<img[^>]*\s+src=[\'"]' . $url . '+[\'"])/', '$1 fetchpriority="high"', $html, 1 );
+		$html = preg_replace_callback( '/<img[^>]*\s+src=[\'"]' . $url . '[\'"].+>$/', function ( $matches ) {
+				// Check if the fetchpriority attribute already exists
+				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
+					// If it exists, don't modify the tag
+					return $matches[0];
+				}
+
+				// If it doesn't exist, add the fetchpriority attribute
+				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+			},
+			$html,
+			1 
+		);
 
 		return $html;
 	}
