@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**

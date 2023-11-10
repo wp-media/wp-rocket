@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\RankMathSEO;
 
 use RankMath\Sitemap\Router;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_RocketSitemap extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	public function setUp(): void
 	{
@@ -24,7 +24,7 @@ class Test_RocketSitemap extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_sitemap_preload_list');
+		$this->restoreWpHook('rocket_sitemap_preload_list');
 		parent::tearDown();
 	}
 

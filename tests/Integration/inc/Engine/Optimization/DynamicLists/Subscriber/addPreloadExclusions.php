@@ -20,7 +20,7 @@ class Test_AddPreloadExclusions extends TestCase {
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists' );
 
-		$this->restoreWpFilter( 'rocket_preload_exclude_urls' );
+		$this->restoreWpHook( 'rocket_preload_exclude_urls' );
 
 		parent::tear_down();
 	}

@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\TheSEOFramework;
 
 use The_SEO_Framework\Bridges\Sitemap;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
@@ -15,7 +15,7 @@ use Brain\Monkey\Functions;
  */
 class Test_AddTsfSitemapToPreload extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $is_disabled;
 
@@ -27,7 +27,7 @@ class Test_AddTsfSitemapToPreload extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_sitemap_preload_list');
+		$this->restoreWpHook('rocket_sitemap_preload_list');
 		remove_filter('pre_get_rocket_option_tsf_xml_sitemap', [$this, 'is_disabled']);
 		parent::tearDown();
 	}
