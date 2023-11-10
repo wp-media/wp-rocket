@@ -42,7 +42,7 @@ class UsedCSS extends Table {
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20221104 => 'add_error_columns',
 		20231010 => 'add_submitted_at_column',
-		20231110 => 'add_home_url',
+		20231110 => 'add_is_home',
 	];
 
 	/**
@@ -350,13 +350,13 @@ class UsedCSS extends Table {
 	 *
 	 * @return bool
 	 */
-	protected function add_home_url() {
-		$home_url_exists = $this->column_exists( 'home_url' );
+	protected function add_is_home() {
+		$is_home_exists = $this->column_exists( 'is_home' );
 
 		$created = true;
 
-		if ( ! $home_url_exists ) {
-			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN home_url tinyint(1) DEFAULT 0 AFTER status" );
+		if ( ! $is_home_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN is_home tinyint(1) DEFAULT 0 AFTER status" );
 		}
 
 		return $this->is_success( $created );
