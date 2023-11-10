@@ -6,6 +6,7 @@ return [
               'job_id' => 'EU-1',
               'queue_name' => 'EU',
               'is_mobile' => false,
+			  'is_home' => true,
 			  'now' => '2023-10-11 20:21:00',
 			  'result' => true
 		],
@@ -16,6 +17,7 @@ return [
 				'queue_name' => 'EU',
 				'is_mobile' => false,
 				'status'        => 'to-submit',
+				'is_home' => true,
 				'retries'       => 0,
 				'last_accessed' => '2023-10-11 20:21:00',
 			],
@@ -28,6 +30,7 @@ return [
 			'job_id' => '',
 			'queue_name' => '',
 			'is_mobile' => false,
+			'is_home' => true,
 			'now' => '2023-10-11 20:21:00',
 			'result' => true
 		],
@@ -38,6 +41,7 @@ return [
 				'queue_name' => '',
 				'is_mobile' => false,
 				'status'        => 'to-submit',
+				'is_home' => true,
 				'retries'       => 0,
 				'last_accessed' => '2023-10-11 20:21:00',
 			],

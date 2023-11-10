@@ -219,7 +219,7 @@ class UsedCSS extends Query {
 	 *
 	 * @return bool
 	 */
-	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+	public function create_new_job( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false, bool $is_home = false) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -230,6 +230,7 @@ class UsedCSS extends Query {
 			'job_id'        => $job_id,
 			'queue_name'    => $queue_name,
 			'status'        => 'to-submit',
+			'is_home'		=> $is_home,
 			'retries'       => 0,
 			'last_accessed' => current_time( 'mysql', true ),
 		];

@@ -34,6 +34,6 @@ class Test_createNewJob extends TestCase {
 
 		$this->usedcss->expects(self::once())->method('add_item')->with($expected['item'])->willReturn($config['result']);
 
-        $this->assertSame($expected['result'], $this->usedcss->create_new_job($config['url'], $config['job_id'], $config['queue_name'], $config['is_mobile']));
+        $this->assertSame($expected['result'], $this->usedcss->create_new_job($config['url'], $config['job_id'], $config['queue_name'], $config['is_mobile'], $config['is_home']));
     }
 }
