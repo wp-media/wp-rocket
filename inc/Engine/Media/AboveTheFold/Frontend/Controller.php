@@ -134,18 +134,20 @@ class Controller implements ContextInterface {
 		}
 
 		$url  = preg_quote( $lcp->src, '/' );
-		$html = preg_replace_callback( '/<img[^>]*\s+src=[\'"]' . $url . '[\'"].+>$/', function ( $matches ) {
-				// Check if the fetchpriority attribute already exists
+		$html = preg_replace_callback(
+			'/<img[^>]*\s+src=[\'"]' . $url . '[\'"].+>$/',
+			function ( $matches ) {
+				// Check if the fetchpriority attribute already exists.
 				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
-					// If it exists, don't modify the tag
+					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
 
-				// If it doesn't exist, add the fetchpriority attribute
+				// If it doesn't exist, add the fetchpriority attribute.
 				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
 			},
 			$html,
-			1 
+			1
 		);
 
 		return $html;
@@ -163,7 +165,7 @@ class Controller implements ContextInterface {
 			return $exclusions;
 		}
 
-		list($atf, $lcp) = array([], []);
+		list($atf, $lcp) = [ [], [] ];
 
 		global $wp;
 
@@ -249,7 +251,7 @@ class Controller implements ContextInterface {
 				break;
 		}
 
-		$pairs['tags'] = $tag;
+		$pairs['tags']    = $tag;
 		$pairs['sources'] = $sources;
 
 		return $pairs;
@@ -262,7 +264,7 @@ class Controller implements ContextInterface {
 	 * @return array
 	 */
 	private function get_atf_sources( array $atfs ): array {
-		if (! $atfs && ! is_array( $atfs ) ) {
+		if ( ! $atfs && ! is_array( $atfs ) ) {
 			return [];
 		}
 
