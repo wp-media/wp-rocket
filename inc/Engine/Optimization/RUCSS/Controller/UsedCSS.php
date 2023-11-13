@@ -527,7 +527,7 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $row_details->is_home );
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, (bool) $row_details->is_home );
 
 		/**
 		 * Filters the rocket min rucss css result size.
