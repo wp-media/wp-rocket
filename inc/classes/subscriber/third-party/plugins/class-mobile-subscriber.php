@@ -331,7 +331,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	public static function get_mobile_plugins() {
 		return [
 			'jetpack/jetpack.php'                      => [
-				'is_active_callback' => function() {
+				'is_active_callback' => function () {
 					if ( ! class_exists( 'Jetpack' ) ) {
 						return false;
 					}

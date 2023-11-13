@@ -1,7 +1,7 @@
 
 
 spl_autoload_register(
-	function( $class ) use ( $rocket_path ) {
+	function ( $class ) use ( $rocket_path ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.classFound
 		$rocket_classes = [
 			'WP_Rocket\\Buffer\\Abstract_Buffer' => [ $rocket_path . 'inc/classes/Buffer/class-abstract-buffer.php' ],
 			'WP_Rocket\\Buffer\\Cache'           => [ $rocket_path . 'inc/classes/Buffer/class-cache.php' ],
@@ -33,11 +33,15 @@ spl_autoload_register(
 				}
 			}
 		} elseif ( strpos( $class, 'WP_Rocket\\Dependencies\\Monolog\\' ) === 0 ) {
+			$class = str_replace( 'WP_Rocket\\Dependencies\\Monolog\\', '', $class );
+
 			$file = $rocket_path . 'inc/Dependencies/Monolog/' . str_replace( '\\', '/', $class ) . '.php';
 			if ( ! file_exists( $file ) ) {
 				$file = $rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\', '/', $class ) . '.php';
 			}
 		} elseif ( strpos( $class, 'WP_Rocket\\Dependencies\\Psr\\Log\\' ) === 0 ) {
+			$class = str_replace( 'WP_Rocket\\Dependencies\\Psr\\Log\\', '', $class );
+
 			$file = $rocket_path . 'inc/Dependencies/Psr/Log/' . str_replace( '\\', '/', $class ) . '.php';
 			if ( ! file_exists( $file ) ) {
 				$file = $rocket_path . 'vendor/psr/log/' . str_replace( '\\', '/', $class ) . '.php';

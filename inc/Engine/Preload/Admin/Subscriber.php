@@ -81,7 +81,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input ) : array {
+	public function sanitize_options( $input ): array {
 		if ( empty( $input['preload_excluded_uri'] ) ) {
 			$input['preload_excluded_uri'] = [];
 

@@ -148,5 +148,4 @@ class OptimizationProcess extends WP_Rocket_WP_Background_Process {
 
 		parent::complete();
 	}
-
 }

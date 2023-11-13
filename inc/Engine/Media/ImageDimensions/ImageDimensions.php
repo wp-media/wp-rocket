@@ -12,6 +12,7 @@ use WP_Rocket\Logger\Logger;
 
 class ImageDimensions {
 	use RegexTrait;
+
 	/**
 	 * Options_Data instance
 	 *
@@ -398,7 +399,6 @@ class ImageDimensions {
 		}
 
 		return $src_match['url'];
-
 	}
 
 	/**

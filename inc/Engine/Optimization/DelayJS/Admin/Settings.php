@@ -34,7 +34,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) : array {
+	public function add_options( $options ): array {
 		$options = (array) $options;
 
 		$options['delay_js']            = 0;
@@ -83,7 +83,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input, $settings ) : array {
+	public function sanitize_options( $input, $settings ): array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
 		$input['delay_js_exclusions'] =
 			! empty( $input['delay_js_exclusions'] )
@@ -198,5 +198,4 @@ class Settings {
 		}
 		return true;
 	}
-
 }

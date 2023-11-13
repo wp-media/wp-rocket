@@ -260,25 +260,7 @@ class Page {
 			'is_from_one_dot_com' => false,
 		];
 
-		if (
-			false === $user
-			||
-			! isset( $user->licence_account, $user->licence_expiration )
-		) {
-			return $data;
-		}
-
-		if (
-			1 <= $user->licence_account
-			&&
-			$user->licence_account < 3
-		) {
-			$data['license_type'] = 'Single';
-		} elseif ( -1 === (int) $user->licence_account ) {
-			$data['license_type'] = 'Infinite';
-		} else {
-			$data['license_type'] = 'Plus';
-		}
+		$data['license_type'] = rocket_get_license_type( $user );
 
 		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
 		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
@@ -2189,7 +2171,7 @@ class Page {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) {
+	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
 		if ( ! is_array( $list ) || empty( $list ) ) {
 			return [];
 		}

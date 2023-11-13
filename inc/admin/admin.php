@@ -96,7 +96,6 @@ function rocket_post_row_actions( $actions, $post ) {
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
-
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -324,6 +323,12 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
+	$customer_data        = get_transient( 'wp_rocket_customer_data' );
+	$data['license_type'] = '';
+	if ( false !== $customer_data ) {
+		$data['license_type'] = rocket_get_license_type( $customer_data );
+	}
+
 	return $data;
 }
 
@@ -340,7 +345,7 @@ function rocket_send_analytics_data() {
 		return false;
 	}
 
-	if ( ! current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return false;
 	}
 
@@ -363,7 +368,7 @@ function rocket_analytics_optin() {
 		wp_nonce_ays( '' );
 	}
 
-	if ( ! current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}

@@ -23,7 +23,7 @@ endif;
  * @param array $old_value Previous values for the plugin options.
  * @param array $value New values for the plugin options.
  */
-function rocket_after_update_wp_cookie_allow_options( $old_value, $value ) {
+function rocket_after_update_wp_cookie_allow_options( $old_value, $value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	// clear the cache because WeePie Cookie Allow plugin settings might have been changed.
 	rocket_clean_domain();
 }

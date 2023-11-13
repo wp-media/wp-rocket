@@ -8,7 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
-use WP_Rocket\Engine\Preload\Controller\{CheckFinished,ClearCache,CrawlHomepage,LoadInitialSitemap,PreloadUrl,Queue};
+use WP_Rocket\Engine\Preload\Controller\{CheckFinished, ClearCache, CrawlHomepage, LoadInitialSitemap, PreloadUrl, Queue};
 use WP_Rocket\Engine\Preload\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
@@ -160,6 +160,5 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options )
 			->addArgument( $preload_settings )
 			->addTag( 'common_subscriber' );
-
 	}
 }

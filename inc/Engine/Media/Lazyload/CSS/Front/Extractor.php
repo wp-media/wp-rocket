@@ -37,9 +37,9 @@ class Extractor {
 			$content
 			);
 
-		$background_regex = '(?<selector>[ \-,:\w.()\n\r^>[*"\'=\]#]+)\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
+		$background_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
 
-		$background_image_regex = '(?<selector>[ \-,:\w.()\n\r>^[*"\'=\]#]+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
+		$background_image_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
 
 		/**
 		 * Lazyload background property regex.
@@ -197,7 +197,7 @@ class Extractor {
 			return $url;
 		}
 
-		return home_url() . '/' . trim( $url, '/ ' );
+		return rocket_get_home_url() . '/' . trim( $url, '/ ' );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Extractor {
 			return false;
 		}
 
-		$home_host = wp_parse_url( home_url(), PHP_URL_HOST );
+		$home_host = wp_parse_url( rocket_get_home_url(), PHP_URL_HOST );
 
 		return $host !== $home_host;
 	}

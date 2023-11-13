@@ -332,10 +332,10 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$minified_content = $minifier->minify();
 
 		if ( empty( $minified_content ) ) {
-			return '';
+			return ''; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
-		return $minified_content;
+		return $minified_content; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

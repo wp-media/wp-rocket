@@ -603,7 +603,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
-					$cb_encode_non_latin = function( $non_latin ) {
+					$cb_encode_non_latin = function ( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
@@ -705,6 +705,14 @@ function rocket_clean_home( $lang = '' ) {
 	$dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base, GLOB_NOSORT );
 	if ( $dirs ) {
 		foreach ( $dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+
+	$param_dirs = glob( $root . '/#*', GLOB_NOSORT );
+
+	if ( $param_dirs ) {
+		foreach ( $param_dirs as $dir ) {
 			rocket_rrmdir( $dir );
 		}
 	}
@@ -1340,7 +1348,6 @@ function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPr
 	} catch ( Exception $e ) {
 		return [];
 	}
-
 }
 
 /**

@@ -11,7 +11,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_first_install_options' => [ 'add_option', 15 ],
 			'rocket_input_sanitize'        => 'sanitize_exclude_lazyload',
@@ -27,7 +27,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param array $options WP Rocket options array.
 	 * @return array
 	 */
-	public function add_option( array $options ) : array {
+	public function add_option( array $options ): array {
 		$options['exclude_lazyload'] = [];
 
 		return $options;
@@ -41,7 +41,7 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @param array $input Input array.
 	 * @return array
 	 */
-	public function sanitize_exclude_lazyload( array $input ) : array {
+	public function sanitize_exclude_lazyload( array $input ): array {
 		if ( empty( $input['exclude_lazyload'] ) ) {
 			$input['exclude_lazyload'] = [];
 		}

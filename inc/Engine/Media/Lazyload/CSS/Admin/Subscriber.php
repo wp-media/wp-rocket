@@ -78,5 +78,4 @@ class Subscriber implements Subscriber_Interface {
 		$options['lazyload_css_bg_img'] = 0;
 		return $options;
 	}
-
 }

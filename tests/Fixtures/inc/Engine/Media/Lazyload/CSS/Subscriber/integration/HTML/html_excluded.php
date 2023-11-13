@@ -40,13 +40,13 @@
 	<style id="wpr-lazyload-bg">
 	</style>
 	<style id="wpr-lazyload-bg-exclusion">
-		:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/./wp-content/rocket-test-data/images/test.png');}</style>
+		:root{--wpr-bg-15ef8: url('http://example.org/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-25ef18: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-19ef12: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/./wp-content/rocket-test-data/images/test.png');}</style>
 	<noscript>
 		<style id="wpr-lazyload-bg-nostyle">
-			:root{--wpr-bg-hash: url('http://example.org/test.png');}:root{--wpr-bg-hash: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/./wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/../rocket-test-data/images/papertest.jpeg');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/papertest.jpeg');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/testnotExist.png');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/butterfly.avif');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/file_example_TIFF_1MB.tiff');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-hash: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}</style>
+			:root{--wpr-bg-16ef9: url('http://example.org/test.png');}:root{--wpr-bg-17ef10: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg');}:root{--wpr-bg-18ef11: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/paper.jpeg');}:root{--wpr-bg-17ef10: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg');}:root{--wpr-bg-20ef13: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/../rocket-test-data/images/papertest.jpeg');}:root{--wpr-bg-21ef14: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/papertest.jpeg');}:root{--wpr-bg-22ef15: url('http://example.org/wp-content/rocket-test-data/images/testnotExist.png');}:root{--wpr-bg-23ef16: url('http://example.org/wp-content/rocket-test-data/images/butterfly.avif');}:root{--wpr-bg-24ef17: url('http://example.org/wp-content/rocket-test-data/images/file_example_TIFF_1MB.tiff');}:root{--wpr-bg-26ef19: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png');}</style>
 	</noscript>
 	<script type="application/javascript">
-		const rocket_pairs = [{"selector":".external-css-background","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/test.png');}","hash":"hash"},{"selector":".external-css-backgroundsvg","style":":root{--wpr-bg-hash: url('https:\/\/upload.wikimedia.org\/wikipedia\/commons\/1\/11\/Test-Logo.svg');}","hash":"hash"},{"selector":".external-css-background-image","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"},{"selector":".external-css-background-images","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"hash"},{"selector":".external-css-background-images","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"},{"selector":".external-css-background-image-gradient","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"},{"selector":".external-css-background","style":":root{--wpr-bg-hash: url('https:\/\/upload.wikimedia.org\/wikipedia\/commons\/1\/11\/Test-Logo.svg');}","hash":"hash"},{"selector":".external-css-background-images","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/styles\/.\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"hash"},{"selector":".external-css-background-image-space","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/styles\/..\/rocket-test-data\/images\/papertest.jpeg');}","hash":"hash"},{"selector":".external-css-background-image-space","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/papertest.jpeg');}","hash":"hash"},{"selector":".internal-css-background","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"hash"},{"selector":".internal-css-background404","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/testnotExist.png');}","hash":"hash"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/butterfly.avif');}","hash":"hash"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/file_example_TIFF_1MB.tiff');}","hash":"hash"},{"selector":".internal-css-background-image","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"},{"selector":".internal-css-background-images","style":":root{--wpr-bg-hash: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"hash"},{"selector":".internal-css-background-images","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"},{"selector":".internal-css-background-image-gradient","style":":root{--wpr-bg-hash: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"hash"}];</script>
+		const rocket_pairs = [{"selector":".external-css-background","style":":root{--wpr-bg-16ef9: url('http:\/\/example.org\/test.png');}","hash":"16ef9"},{"selector":".external-css-backgroundsvg","style":":root{--wpr-bg-17ef10: url('https:\/\/upload.wikimedia.org\/wikipedia\/commons\/1\/11\/Test-Logo.svg');}","hash":"17ef10"},{"selector":".external-css-background-image","style":":root{--wpr-bg-18ef11: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"18ef11"},{"selector":".external-css-background","style":":root{--wpr-bg-17ef10: url('https:\/\/upload.wikimedia.org\/wikipedia\/commons\/1\/11\/Test-Logo.svg');}","hash":"17ef10"},{"selector":".external-css-background-image-space","style":":root{--wpr-bg-20ef13: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/styles\/..\/rocket-test-data\/images\/papertest.jpeg');}","hash":"20ef13"},{"selector":".external-css-background-image-space","style":":root{--wpr-bg-21ef14: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/papertest.jpeg');}","hash":"21ef14"},{"selector":".internal-css-background404","style":":root{--wpr-bg-22ef15: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/testnotExist.png');}","hash":"22ef15"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-23ef16: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/butterfly.avif');}","hash":"23ef16"},{"selector":"#internal-BG-images","style":":root{--wpr-bg-24ef17: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/file_example_TIFF_1MB.tiff');}","hash":"24ef17"},{"selector":".internal-css-background-images","style":":root{--wpr-bg-26ef19: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"26ef19"}]; const rocket_excluded_pairs = [{"selector":".external-css-background-images","style":":root{--wpr-bg-15ef8: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"15ef8"},{"selector":".external-css-background-images","style":":root{--wpr-bg-25ef18: url('http:\/\/example.org\/wp-content\/rocket-test-data\/images\/paper.jpeg');}","hash":"25ef18"},{"selector":".external-css-background-images","style":":root{--wpr-bg-19ef12: url('https:\/\/new.rocketlabsqa.ovh\/wp-content\/rocket-test-data\/styles\/.\/wp-content\/rocket-test-data\/images\/test.png');}","hash":"19ef12"}];</script>
 </head>
 <body>
 <div>
@@ -175,25 +175,25 @@
 	.internal-css-background-image{
 		width: 100%;
 		height: 400px;
-		background-image: var(--wpr-bg-hash);
+		background-image: var(--wpr-bg-25ef18);
 		background-color: #cccccc;
 	}
 	.internal-css-background-images{
 		width: 100%;
 		height: 400px;
-		background-image: var(--wpr-bg-hash), var(--wpr-bg-hash);
+		background-image: var(--wpr-bg-26ef19), var(--wpr-bg-25ef18);
 		background-color: #cccccc;
 	}
 	.internal-css-background-image-gradient{
 		width: 100%;
 		height: 400px;
-		background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), var(--wpr-bg-hash);
+		background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), var(--wpr-bg-25ef18);
 	}
 	.internal-css-background{
-		background: var(--wpr-bg-hash);
+		background: var(--wpr-bg-15ef8);
 	}
 	.internal-css-background404{
-		background: var(--wpr-bg-hash);
+		background: var(--wpr-bg-22ef15);
 	}
 	.background-no-repeat{
 		background-repeat: no-repeat;
@@ -208,7 +208,7 @@
 	}
 
 	#internal-BG-images {
-		background: var(--wpr-bg-hash) right bottom no-repeat, var(--wpr-bg-hash) left top repeat;
+		background: var(--wpr-bg-23ef16) right bottom no-repeat, var(--wpr-bg-24ef17) left top repeat;
 		padding: 15px;
 	}</style>
 <!-- inline background images -->

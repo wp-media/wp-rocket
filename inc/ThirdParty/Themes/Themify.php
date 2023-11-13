@@ -89,7 +89,7 @@ class Themify extends ThirdpartyTheme {
 	 *
 	 * @return void
 	 */
-	public function disabling_concat_on_rucss( $old, $new ) {
+	public function disabling_concat_on_rucss( $old, $new ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 
 		if ( ! key_exists( 'remove_unused_css', $old ) || ! key_exists( 'remove_unused_css', $new ) || $old['remove_unused_css'] === $new['remove_unused_css'] ) {
 			return;

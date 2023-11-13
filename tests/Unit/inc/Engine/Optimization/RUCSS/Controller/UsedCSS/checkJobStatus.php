@@ -1,6 +1,7 @@
 <?php
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
@@ -21,6 +22,8 @@ use Brain\Monkey\Actions;
  * @group  RUCSS
  */
 class Test_CheckJobStatus extends TestCase {
+	use \WP_Rocket\Tests\Unit\HasLoggerTrait;
+
 	protected $options;
 	protected $usedCssQuery;
 	protected $api;
@@ -37,17 +40,23 @@ class Test_CheckJobStatus extends TestCase {
 		$this->queue        = Mockery::mock( QueueInterface::class );
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem   = Mockery::mock( Filesystem::class );
+		$this->context = Mockery::mock(ContextInterface::class);
+		$this->optimisedContext = Mockery::mock(ContextInterface::class);
 		$this->usedCss      = Mockery::mock(
-			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',
 			[
 				$this->options,
 				$this->usedCssQuery,
 				$this->api,
 				$this->queue,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->context,
+				$this->optimisedContext,
 			]
 		);
+
+		$this->set_logger($this->usedCss);
 	}
 
 	protected function tearDown(): void {
@@ -58,8 +67,7 @@ class Test_CheckJobStatus extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		Logger::disable_debug();
-		$new_job_id = false;
+		$this->logger->allows()->error(Mockery::any());
 		if ( $config['row_details'] ) {
 			$row_details = new UsedCSS_Row( $config['row_details'] );
 		} else {
@@ -67,9 +75,6 @@ class Test_CheckJobStatus extends TestCase {
 		}
 		if ( isset( $config['job_details'] ) ) {
 			$job_details = $config['job_details'];
-		}
-		if ( isset( $config['add_to_queue_response'] ) ) {
-			$add_to_queue_response = $config['add_to_queue_response'];
 		}
 		if ( isset( $job_details['contents']['shakedCSS'] ) ) {
 			$css  = $job_details['contents']['shakedCSS'];
@@ -85,7 +90,6 @@ class Test_CheckJobStatus extends TestCase {
 		if ( ! $row_details ) {
 			return;
 		}
-		//$this->usedCss->expects()->is_home( $row_details->url);
 		Functions\expect( 'home_url' )
 			->with()
 			->zeroOrMoreTimes()
@@ -124,25 +128,15 @@ class Test_CheckJobStatus extends TestCase {
 
 			// on timeout errors with code 408 create new job.
 			if ( 408 === $job_details['code'] ) {
-				$this->options->expects()->get( 'remove_unused_css_safelist', [] )->andReturn( [] );
-				$this->api->expects()->add_to_queue( $row_details->url, [
-					'treeshake'      => 1,
-					'rucss_safelist' => [],
-					'skip_attr' => [],
-					'is_mobile'      => $row_details->is_mobile,
-					'is_home'        => $row_details->is_home,
-				] )
-				          ->andReturn( $add_to_queue_response );
-				if ( false !== $add_to_queue_response ) {
-					$new_job_id = $add_to_queue_response['contents']['jobId'];
-					$this->usedCssQuery->expects( self::once() )
-					                   ->method( 'update_job_id' )
-					                   ->with( $config['job_id'], $new_job_id );
-				}
+
+				$this->usedCss->expects()->add_url_to_the_queue( $config['row_details']['url'], (bool) $config['row_details']['is_mobile'] );
+
+				$this->usedCss->check_job_status( $config['job_id'] );
+				return;
 			}
 			$this->usedCssQuery->expects( self::once() )
 			                   ->method( 'increment_retries' )
-			                   ->with( $config['job_id'], $row_details->retries );
+			                   ->with( $config['job_id'], $job_details['code'], $job_details['message'] );
 
 			$this->usedCss->check_job_status( $config['job_id'] );
 

@@ -39,7 +39,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function truncate_used_css_table() : bool {
+	public function truncate_used_css_table(): bool {
 		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return false;
 		}
@@ -64,7 +64,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function get_old_used_css() : array {
+	public function get_old_used_css(): array {
 		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return [];
 		}

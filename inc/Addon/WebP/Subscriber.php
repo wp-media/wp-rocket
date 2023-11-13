@@ -305,7 +305,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$extensions = apply_filters( 'rocket_file_extensions_for_webp', $extensions );
 		$extensions = array_filter(
 			(array) $extensions,
-			function( $extension ) {
+			function ( $extension ) {
 				return $extension && is_string( $extension );
 			}
 		);
@@ -334,7 +334,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$attributes = apply_filters( 'rocket_attributes_for_webp', $attributes );
 		$attributes = array_filter(
 			(array) $attributes,
-			function( $attributes ) {
+			function ( $attributes ) {
 				return $attributes && is_string( $attributes );
 			}
 		);
@@ -539,7 +539,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		$list = apply_filters( 'rocket_url_to_path_associations', $list );
 		$list = array_filter(
 			$list,
-			function( $path, $url ) {
+			function ( $path, $url ) {
 				return $path && $url && is_string( $path ) && is_string( $url );
 			},
 			ARRAY_FILTER_USE_BOTH
@@ -595,5 +595,4 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 		}
 		return 'webp';
 	}
-
 }

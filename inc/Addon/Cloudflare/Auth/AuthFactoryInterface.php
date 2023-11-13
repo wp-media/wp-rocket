@@ -12,5 +12,5 @@ interface AuthFactoryInterface {
 	 * @param array $data Data to inject into the  client.
 	 * @return AuthInterface
 	 */
-	public function create( array $data = []): AuthInterface;
+	public function create( array $data = [] ): AuthInterface;
 }

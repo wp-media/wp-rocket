@@ -381,6 +381,7 @@ class Plugin {
 			'contactform7',
 			'lazyload_css_subscriber',
 			'shoptimizer',
+			'weglot',
 		];
 
 		$host_type = HostResolver::get_host_service();
