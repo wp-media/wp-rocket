@@ -73,7 +73,7 @@ class Controller implements ContextInterface {
 			return $html;
 		}
 
-		if ( ! $row->lcp ) {
+		if ( empty( $row->lcp ) ) {
 			return $html;
 		}
 
