@@ -882,7 +882,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 	 * @since 3.15.5
 	 *
 	 * @param string $lang The current lang to purge.
-	 * @param string $url  All urls to clean.
+	 * @param array|string[] $urls  All urls to clean.
 	 */
 	do_action( 'rocket_after_clean_domain', $lang, $urls );
 
