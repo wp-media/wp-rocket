@@ -14,7 +14,6 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Admin_Bar;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use function _PHPStan_c6b09fbdf\RingCentral\Psr7\str;
 
 class UsedCSS implements LoggerAwareInterface {
 	use RegexTrait;
