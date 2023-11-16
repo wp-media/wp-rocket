@@ -1,7 +1,80 @@
 <?php
 return [
+	'RUCSSDisabledShouldNotRun' => [
+		'config' => [
+			'rucss_enabled' => false,
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/3',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			],
+			'max_rows' => 100,
+			'http' => [
+				'http://localhostrucss-job' => [
+					'body' => json_encode([
+						'code' => 200,
+						'contents' => [
+							'jobId'     => 'job_id',
+							'queueName' => 'queue_name',
+						],
+					]),
+					'response' => ['code' => 200 ]
+				]
+			]
+		],
+		'expected' => [
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/3',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			]
+		]
+	],
 	'ShouldAddPending' => [
 		'config' => [
+			'rucss_enabled' => true,
 			'rows' => [
 				[
 					'url' => 'http://example.org',
@@ -73,6 +146,7 @@ return [
 	],
     'ShouldAddRightNumberOfPending' => [
         'config' => [
+			'rucss_enabled' => true,
 			'rows' => [
 				[
 					'url' => 'http://example.org',
@@ -144,6 +218,7 @@ return [
     ],
 	'ShouldAddRightNumberOfPendingWithExisting' => [
 		'config' => [
+			'rucss_enabled' => true,
 			'rows' => [
 				[
 					'url' => 'http://example.org',
@@ -231,6 +306,7 @@ return [
 	],
 	'MaxZeroShouldLoadAll' => [
 		'config' => [
+			'rucss_enabled' => true,
 			'rows' => [
 				[
 					'url' => 'http://example.org',

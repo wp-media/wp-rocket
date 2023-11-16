@@ -992,6 +992,13 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
+
+		if ( ! $this->is_enabled() ) {
+			$this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
+
+			return;
+		}
+
 		/**
 		 * Pending rows cont.
 		 *
