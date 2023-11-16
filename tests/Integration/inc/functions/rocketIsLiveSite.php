@@ -46,7 +46,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			remove_filter( 'home_url', $callback );
 		}
 
-		remove_filter('rocket_staging_list', [$this, 'getLocalStagingSites']);
+		remove_filter('rocket_staging_list', [$this, 'getLocalStagingDomains']);
 	}
 
 	public function testShouldReturnTrueWhenLiveSite() {
