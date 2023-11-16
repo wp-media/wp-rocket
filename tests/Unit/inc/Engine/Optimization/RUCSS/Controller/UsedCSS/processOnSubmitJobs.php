@@ -90,12 +90,11 @@ class Test_processOnSubmitJobs extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-		$this->logger->expects()->error(Mockery::any(), Mockery::any())->zeroOrMoreTimes();
-		$this->logger->expects()->debug(Mockery::any(), Mockery::any())->zeroOrMoreTimes();
 
 		$this->options->expects()->get( 'remove_unused_css', 0 )->andReturn($config['rucss_enabled']);
 
 		if($config['rucss_enabled']) {
+			$this->logger->expects()->error(Mockery::any(), Mockery::any());
 			$this->options->allows()->get( 'remove_unused_css_safelist', [] )->andReturn([]);
 
 			Functions\when('home_url')->justReturn($config['home_url']);
@@ -116,6 +115,8 @@ class Test_processOnSubmitJobs extends TestCase {
 			foreach ($config['make_status_failed'] as $failed) {
 				$this->used_css_query->expects(self::once())->method('make_status_failed')->with($failed['id'], $failed['code'], $failed['message']);
 			}
+		} else {
+			$this->logger->expects()->debug(Mockery::any());
 		}
 
 		$this->usedcss->process_on_submit_jobs();
