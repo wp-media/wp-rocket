@@ -112,6 +112,10 @@ class Test_processOnSubmitJobs extends TestCase {
 			foreach ($config['make_status_pending'] as $pending) {
 				$this->used_css_query->expects(self::once())->method('make_status_pending')->with($pending['id'], $pending['jobId'], $pending['queueName'], $pending['mobile']);
 			}
+
+			foreach ($config['make_status_failed'] as $failed) {
+				$this->used_css_query->expects(self::once())->method('make_status_failed')->with($failed['id'], $failed['code'], $failed['message']);
+			}
 		}
 
 		$this->usedcss->process_on_submit_jobs();

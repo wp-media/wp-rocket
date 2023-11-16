@@ -14,6 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Admin_Bar;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
+use function _PHPStan_c6b09fbdf\RingCentral\Psr7\str;
 
 class UsedCSS implements LoggerAwareInterface {
 	use RegexTrait;
@@ -1017,6 +1018,8 @@ class UsedCSS implements LoggerAwareInterface {
 		foreach ( $rows as $row ) {
 			$response = $this->send_api( $row->url, (bool) $row->is_mobile );
 			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
+
+				$this->used_css_query->make_status_failed( (int) $row->id, '',  '' );
 				continue;
 			}
 

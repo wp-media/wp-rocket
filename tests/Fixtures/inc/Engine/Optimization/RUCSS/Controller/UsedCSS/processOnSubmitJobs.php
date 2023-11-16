@@ -125,12 +125,61 @@ return [
 					'queueName' => 'queueName',
 					'mobile' => false,
 				]
-			]
+			],
+			'make_status_failed' => []
         ],
 		'expected' => [
 			'pending_count' => 100,
 			'max_processing' => 300
 		]
     ],
+	'shouldFailWhenNot200' => [
+		'config' => [
+			'home_url' => 'http://example.org',
+			'rucss_enabled' => true,
+			'pending_count' => 100,
+			'max_processing' => 300,
+			'rows' => [
+				(object) [
+					'id' => 1,
+					'url' => 'http://example.org',
+					'is_mobile' => false,
+				]
+			],
+			'add_to_queue' => [
+				[
+					'url' => 'http://example.org',
+					'configs' => [
+						'treeshake'      => 1,
+						'rucss_safelist' => [],
+						'skip_attr'      => [],
+						'is_mobile'      => false,
+						'is_home'        => true,
+					],
+					'response' => [
+						'code' => 401,
+						'message' => 'message',
+						'contents' => [
+							'jobId' => 'jobId',
+							'queueName' => 'queueName',
+						]
+					]
+				]
+			],
+			'make_status_pending' => [
 
+			],
+			'make_status_failed' => [
+				[
+					'id' => 1,
+					'code' => '',
+					'message' => '',
+				]
+			]
+		],
+		'expected' => [
+			'pending_count' => 100,
+			'max_processing' => 300
+		]
+	],
 ];
