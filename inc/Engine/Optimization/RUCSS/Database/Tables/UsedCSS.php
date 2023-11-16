@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20231010;
+	protected $version = 20231110;
 
 	/**
 	 * Key => value array of versions => methods.
