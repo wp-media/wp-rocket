@@ -608,10 +608,10 @@ class UsedCSS extends Query {
 	 */
 	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
 		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
-			// If $next_retry_time is a valid date string, convert it to a timestamp
+			// If $next_retry_time is a valid date string, convert it to a timestamp.
 			$next_retry_time = strtotime( $next_retry_time );
 		} elseif ( ! is_numeric( $next_retry_time ) ) {
-			// If it's not numeric and not a valid date string, return false
+			// If it's not numeric and not a valid date string, return false.
 			return false;
 		}
 
