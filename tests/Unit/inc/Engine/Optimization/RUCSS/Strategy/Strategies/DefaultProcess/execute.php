@@ -53,10 +53,10 @@ class Test_DefaultProcess_Execute extends TestCase {
 		Filters\expectApplied('rocket_rucss_retry_duration')->andReturn($config['duration_retry']);
 
 		$this->wpr_clock->expects('current_time')->with('timestamp')->andReturn(0);
-		// update the `not_proceed_before` column.
+		// update the `next_retry_time` column.
 
 		$this->used_css_query->expects(self::once())->method('update_message')->with($config['row_details']->id, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message);
-		$this->used_css_query->expects(self::once())->method('update_not_processed_before')->with($config['job_id'], $config['duration_retry']);
+		$this->used_css_query->expects(self::once())->method('update_next_retry_time')->with($config['job_id'], $config['duration_retry']);
 
 		$this->strategy->execute($config['row_details'], $config['job_details']);
 		return;

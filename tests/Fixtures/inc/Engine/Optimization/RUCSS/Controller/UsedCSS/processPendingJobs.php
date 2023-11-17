@@ -30,7 +30,7 @@ return [
 				(object) [
 					'id' => 10,
 					'url' => 'http://example.org',
-					'not_proceed_before' => 123,
+					'next_retry_time' => 123,
 				]
 			]
 		],

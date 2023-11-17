@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20231010;
+	protected $version = 20231031;
 
 	/**
 	 * Key => value array of versions => methods.
@@ -42,7 +42,7 @@ class UsedCSS extends Table {
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20221104 => 'add_error_columns',
 		20231010 => 'add_submitted_at_column',
-		20231031 => 'add_not_proceed_before_column',
+		20231031 => 'add_next_retry_time_column',
 	];
 
 	/**
@@ -76,7 +76,7 @@ class UsedCSS extends Table {
 			modified         		timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    		timestamp           NOT NULL default '0000-00-00 00:00:00',
 			submitted_at     		timestamp           NULL,
-			not_proceed_before     	timestamp           NULL,
+			next_retry_time     	timestamp           NULL,
 			PRIMARY KEY (id),
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
@@ -346,17 +346,17 @@ class UsedCSS extends Table {
 	}
 
 	/**
-	 * Adds the not_proceed_before column
+	 * Adds the next_retry_time column
 	 *
 	 * @return bool
 	 */
-	protected function add_not_proceed_before_column() {
-		$not_proceed_before_exists = $this->column_exists( 'not_proceed_before' );
+	protected function add_next_retry_time_column() {
+		$next_retry_time_exists = $this->column_exists( 'next_retry_time' );
 
 		$created = true;
 
-		if ( ! $not_proceed_before_exists ) {
-			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN not_proceed_before timestamp NULL AFTER submitted_at" );
+		if ( ! $next_retry_time_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN next_retry_time timestamp NULL AFTER submitted_at" );
 		}
 
 		return $this->is_success( $created );

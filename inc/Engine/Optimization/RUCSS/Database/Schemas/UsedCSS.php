@@ -165,9 +165,9 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
-		// NOT_PROCEED_BEFORE column.
+		// NEXT_RETRY_TIME column.
 		[
-			'name'       => 'not_proceed_before',
+			'name'       => 'next_retry_time',
 			'type'       => 'timestamp',
 			'default'    => null,
 			'created'    => true,

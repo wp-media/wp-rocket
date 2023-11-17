@@ -523,7 +523,7 @@ class UsedCSS implements LoggerAwareInterface {
 
 		foreach ( $pending_jobs as $used_css_row ) {
 			$current_time = $this->wpr_clock->current_time( 'timestamp' );
-			if ( $used_css_row->not_proceed_before < $current_time ) {
+			if ( $used_css_row->next_retry_time < $current_time ) {
 				$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
 				// Change status to in-progress.

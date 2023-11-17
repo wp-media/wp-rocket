@@ -106,7 +106,7 @@ class UsedCSS extends Query {
 				'fields'         => [
 					'id',
 					'url',
-					'not_proceed_before',
+					' next_retry_time',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
@@ -599,22 +599,22 @@ class UsedCSS extends Query {
 	}
 
 	/**
-	 * Updates the not_processed_before field
+	 * Updates the next_retry_time field
 	 *
 	 * @param mixed      $job_id the job id.
-	 * @param string|int $not_processed_before timestamp or mysql format date.
+	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
 	 * @return bool either it is save or not.
 	 */
-	public function update_not_processed_before( $job_id, $not_processed_before ): bool {
-		if ( is_numeric( $not_processed_before ) ) {
-			$not_processed_before = gmdate( 'Y-m-d H:i:s', $not_processed_before );
+	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
+		if ( is_numeric( $next_retry_time ) ) {
+			$next_retry_time = gmdate( 'Y-m-d H:i:s', $next_retry_time );
 		}
 
 		return $this->update_item(
 			$job_id,
 			[
-				'not_proceed_before' => $not_processed_before,
+				'next_retry_time' => $next_retry_time,
 			]
 		);
 	}
