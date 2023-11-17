@@ -80,7 +80,7 @@ class DefaultProcess implements StrategyInterface {
 		 *
 		 * @param int $duration Duration between each retry in seconds.
 		 */
-		$rucss_retry_duration = apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
+		$rucss_retry_duration = (int) apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
 
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp' ) + $rucss_retry_duration;
