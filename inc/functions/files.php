@@ -805,7 +805,7 @@ function rocket_clean_home_feeds() {
 function rocket_clean_domain( $lang = '', $filesystem = null ) {
 
 	/**
-	 * Filter use to determine if we are currently importing data into the Wordpress.
+	 * Filter use to determine if we are currently importing data into the WordPress.
 	 * Bails out if this filter returns true.
 	 *
 	 * @param boolean Tells if we are importing or not.

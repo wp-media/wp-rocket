@@ -173,7 +173,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  */
 function rocket_clean_post( $post_id, $post = null ) {
 	/**
-	 * Filter use to determine if we are currently importing data into the Wordpress.
+	 * Filter use to determine if we are currently importing data into the WordPress.
 	 * Bails out if this filter returns true.
 	 *
 	 * @param boolean Tells if we are importing or not.
@@ -299,7 +299,7 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  */
 function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	/**
-	 * Filter use to determine if we are currently importing data into the Wordpress.
+	 * Filter use to determine if we are currently importing data into the WordPress.
 	 * Bails out if this filter returns true.
 	 *
 	 * @param boolean Tells if we are importing or not.
@@ -596,7 +596,7 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 	/**
-	 * Filter use to determine if we are currently importing data into the Wordpress.
+	 * Filter use to determine if we are currently importing data into the WordPress.
 	 * Bails out if this filter returns true.
 	 *
 	 * @param boolean Tells if we are importing or not.
@@ -642,7 +642,7 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	/**
-	 * Filter use to determine if we are currently importing data into the Wordpress.
+	 * Filter use to determine if we are currently importing data into the WordPress.
 	 * Bails out if this filter returns true.
 	 *
 	 * @param boolean Tells if we are importing or not.
