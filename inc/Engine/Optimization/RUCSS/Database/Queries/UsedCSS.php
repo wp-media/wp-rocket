@@ -604,11 +604,15 @@ class UsedCSS extends Query {
 	 * @param mixed      $job_id the job id.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
-	 * @return bool either it is save or not.
+	 * @return bool either it is saved or not.
 	 */
 	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
-		if ( is_numeric( $next_retry_time ) ) {
-			$next_retry_time = gmdate( 'Y-m-d H:i:s', $next_retry_time );
+		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
+			// If $next_retry_time is a valid date string, convert it to a timestamp
+			$next_retry_time = strtotime( $next_retry_time );
+		} elseif ( ! is_numeric( $next_retry_time ) ) {
+			// If it's not numeric and not a valid date string, return false
+			return false;
 		}
 
 		return $this->update_item(
