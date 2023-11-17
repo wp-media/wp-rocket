@@ -51,11 +51,8 @@ class StrategyFactory implements LoggerAwareInterface {
 	 */
 	public function manage( $row_details, $job_details ): void {
 
-		// $this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
-
 		switch ( $job_details['code'] ) {
 			case 408:
-				// $this->logger::debug('Strategy Factory -> Error 408 -> ResetRetryProcess');
 				$strategy = new ResetRetryProcess( $this->used_css_query );
 				break;
 			case 500:
@@ -65,8 +62,6 @@ class StrategyFactory implements LoggerAwareInterface {
 				break;
 			default:
 				$strategy = new DefaultProcess( $this->used_css_query, $this->clock );
-
-				// $this->logger::debug('Strategy Factory -> Other -> DefaultProcess');
 				break;
 		}
 
