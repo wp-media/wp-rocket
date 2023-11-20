@@ -58,6 +58,7 @@ class StrategyFactory implements LoggerAwareInterface {
 			case 500:
 			case 422:
 			case 404:
+			case 401:
 				$strategy = new JobSetFail( $this->used_css_query );
 				break;
 			default:
