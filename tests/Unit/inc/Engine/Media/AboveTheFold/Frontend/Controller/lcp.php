@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\Frontend\Controller
 use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -19,14 +20,16 @@ class Test_lcp extends TestCase {
 	private $options;
 	private $query;
 	private $controller;
+	private $context;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
+		$this->context = Mockery::mock( Context::class );
 
-		$this->controller = new Controller( $this->options, $this->query );
+		$this->controller = new Controller( $this->options, $this->query, $this->context );
 	}
 
 	protected function tearDown(): void {
@@ -39,7 +42,9 @@ class Test_lcp extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $html, $expected ) {
-		Filters\expectApplied( 'rocket_above_the_fold_optimization' )
+		$this->context->shouldReceive( 'is_allowed' )
+			->atMost()
+			->once()
 			->andReturn( $config['filter'] );
 
 		$GLOBALS['wp'] = $config['wp'];

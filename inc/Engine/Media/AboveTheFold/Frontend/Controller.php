@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
+use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
-class Controller implements ContextInterface {
+class Controller {
 	use RegexTrait;
 
 	/**
@@ -26,29 +26,23 @@ class Controller implements ContextInterface {
 	private $query;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options Options instance.
 	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query ) {
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
 		$this->options = $options;
 		$this->query   = $query;
-	}
-
-	/**
-	 * Determine if the action is allowed.
-	 *
-	 * @param array $data Data to pass to the context.
-	 * @return bool
-	 */
-	public function is_allowed( array $data = [] ): bool {
-		/**
-		 * Filters to manage above the fold optimization
-		 *
-		 * @param bool $allow True to allow, false otherwise.
-		 */
-		return apply_filters( 'rocket_above_the_fold_optimization', true );
+		$this->context = $context;
 	}
 
 	/**
@@ -59,7 +53,7 @@ class Controller implements ContextInterface {
 	 * @return string
 	 */
 	public function lcp( $html ): string {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
 
@@ -161,7 +155,7 @@ class Controller implements ContextInterface {
 	 * @return array
 	 */
 	public function add_exclusions( $exclusions ): array {
-		if ( ! $this->is_allowed() ) {
+		if ( ! $this->context->is_allowed() ) {
 			return $exclusions;
 		}
 
