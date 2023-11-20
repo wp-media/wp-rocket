@@ -172,13 +172,7 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  * @param WP_Post $post    WP_Post object.
  */
 function rocket_clean_post( $post_id, $post = null ) {
-	/**
-	 * Filter use to determine if we are currently importing data into the WordPress.
-	 * Bails out if this filter returns true.
-	 *
-	 * @param boolean Tells if we are importing or not.
-	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 
@@ -298,13 +292,7 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
-	/**
-	 * Filter use to determine if we are currently importing data into the WordPress.
-	 * Bails out if this filter returns true.
-	 *
-	 * @param boolean Tells if we are importing or not.
-	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 
@@ -595,13 +583,7 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  * @param array       $hook_extra  Array of bulk item update data.
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
-	/**
-	 * Filter use to determine if we are currently importing data into the WordPress.
-	 * Bails out if this filter returns true.
-	 *
-	 * @param boolean Tells if we are importing or not.
-	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 
@@ -641,13 +623,7 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
-	/**
-	 * Filter use to determine if we are currently importing data into the WordPress.
-	 * Bails out if this filter returns true.
-	 *
-	 * @param boolean Tells if we are importing or not.
-	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 

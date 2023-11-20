@@ -803,14 +803,7 @@ function rocket_clean_home_feeds() {
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
 function rocket_clean_domain( $lang = '', $filesystem = null ) {
-
-	/**
-	 * Filter use to determine if we are currently importing data into the WordPress.
-	 * Bails out if this filter returns true.
-	 *
-	 * @param boolean Tells if we are importing or not.
-	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 

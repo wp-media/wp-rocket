@@ -89,13 +89,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
-		/**
-		 * Filter use to determine if we are currently importing data into the WordPress.
-		 * Bails out if this filter returns true.
-		 *
-		 * @param boolean Tells if we are importing or not.
-		 */
-		if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+		if ( rocket_is_importing() ) {
 			return;
 		}
 

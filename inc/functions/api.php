@@ -148,3 +148,18 @@ function rocket_is_live_site() {
 
 	return true;
 }
+
+/**
+ * Checks if importing
+ *
+ * @return bool
+ */
+function rocket_is_importing() {
+	/**
+	* Filter use to determine if we are currently importing data into the WordPress.
+	* Bails out if this filter returns true.
+	*
+	* @param boolean Tells if we are importing or not.
+	*/
+	return ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) );
+}
