@@ -143,7 +143,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'add_lazy_tag', 24 ],
 			],
 			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
-			'after_rocket_clean_domain'             => 'clear_generated_css',
+			'rocket_after_clean_domain'             => 'clear_generated_css',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
 			'rocket_lazyload_css_ignored_urls'      => 'remove_svg_from_lazyload_css',

@@ -83,7 +83,7 @@ function rocket_sg_clear_cache() {
 
 if ( rocket_is_supercacher_active() ) {
 	add_action( 'admin_post_sg-cachepress-purge', 'rocket_sg_clear_cache', 0 );
-	add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
+	add_action( 'rocket_after_clean_domain', 'rocket_clean_supercacher' );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );

@@ -26,7 +26,7 @@ class Pressidium extends AbstractNoCacheHost {
 		}
 
 		if ( class_exists( 'NinukisCaching' ) ) {
-			$events['after_rocket_clean_domain'] = 'clean_pressidium';
+			$events['rocket_after_clean_domain'] = 'clean_pressidium';
 			$events['after_rocket_clean_file']   = [ 'purge_url', 10, 1 ];
 			$events['after_rocket_clean_post']   = [ 'clean_post', 10, 2 ];
 		}
