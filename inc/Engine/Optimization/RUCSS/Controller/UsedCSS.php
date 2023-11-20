@@ -574,7 +574,7 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		if (
-			200 !== $job_details['code']
+			200 !== (int) $job_details['code']
 		) {
 			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
 			$this->strategy_factory->manage( $row_details, $job_details );
