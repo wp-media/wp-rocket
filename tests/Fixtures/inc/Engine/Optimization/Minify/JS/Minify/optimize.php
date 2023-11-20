@@ -7,6 +7,7 @@ $original_html = <<<ORIGINAL_HTML
 		<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+		<script type="module" src="http://example.org/wp-content/module.js"></script>
 	</head>
 	<body>
 	</body>
