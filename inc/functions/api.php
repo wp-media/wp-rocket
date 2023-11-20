@@ -161,5 +161,5 @@ function rocket_is_importing() {
 	*
 	* @param boolean Tells if we are importing or not.
 	*/
-	return ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) );
+	return (bool) apply_filters( 'rocket_is_importing', rocket_get_constant( 'WP_IMPORTING' ) );
 }
