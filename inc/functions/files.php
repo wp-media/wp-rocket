@@ -810,7 +810,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 	 *
 	 * @param boolean Tells if we are importing or not.
 	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) ) {
+	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
 		return;
 	}
 

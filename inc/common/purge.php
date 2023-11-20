@@ -178,7 +178,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 *
 	 * @param boolean Tells if we are importing or not.
 	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) ) {
+	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
 		return;
 	}
 
@@ -304,7 +304,7 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 	 *
 	 * @param boolean Tells if we are importing or not.
 	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) ) {
+	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
 		return;
 	}
 
@@ -601,7 +601,7 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 	 *
 	 * @param boolean Tells if we are importing or not.
 	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) ) {
+	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
 		return;
 	}
 
@@ -647,7 +647,7 @@ function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	 *
 	 * @param boolean Tells if we are importing or not.
 	 */
-	if ( (bool) apply_filters( 'rocket_importing_mode', false ) ) {
+	if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
 		return;
 	}
 
