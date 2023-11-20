@@ -201,7 +201,7 @@ class UsedCSS implements LoggerAwareInterface {
 	public function add_url_to_the_queue( string $url, bool $is_mobile ) {
 		$used_css_row = $this->used_css_query->get_row( $url, $is_mobile );
 		if ( empty( $used_css_row ) ) {
-			$this->used_css_query->create_new_job( $url, '', '', $is_mobile );
+			$this->used_css_query->create_new_job( $url, '', '', $is_mobile, $this->is_home( $url ) );
 			return;
 		}
 		$this->used_css_query->reset_job( (int) $used_css_row->id );
@@ -527,7 +527,7 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, (bool) $row_details->is_home );
 
 		/**
 		 * Filters the rocket min rucss css result size.
