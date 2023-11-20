@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
@@ -88,6 +89,16 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
+		/**
+		 * Filter use to determine if we are currently importing data into the WordPress.
+		 * Bails out if this filter returns true.
+		 *
+		 * @param boolean Tells if we are importing or not.
+		 */
+		if ( (bool) apply_filters( 'rocket_importing_mode', false ) || defined( 'WP_IMPORTING' ) ) {
+			return;
+		}
+
 		if ( ! $this->is_taxonomy_public( $taxonomy ) ) {
 			return;
 		}
