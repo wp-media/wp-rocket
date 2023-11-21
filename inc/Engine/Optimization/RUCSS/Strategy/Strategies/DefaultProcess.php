@@ -83,7 +83,7 @@ class DefaultProcess implements StrategyInterface {
 		$rucss_retry_duration = (int) apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
 
 		// update the `next_retry_time` column.
-		$next_retry_time = $this->clock->current_time( 'timestamp' ) + $rucss_retry_duration;
+		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;
 
 		$this->used_css_query->update_message( $row_details->id, $job_details['code'], $job_details['message'], $row_details->error_message );
 		$this->used_css_query->update_next_retry_time( (int) $row_details->id, $next_retry_time );
