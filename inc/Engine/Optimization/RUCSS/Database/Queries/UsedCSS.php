@@ -618,7 +618,7 @@ class UsedCSS extends Query {
 		return $this->update_item(
 			$job_id,
 			[
-				'next_retry_time' => $next_retry_time,
+				'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ),
 			]
 		);
 	}

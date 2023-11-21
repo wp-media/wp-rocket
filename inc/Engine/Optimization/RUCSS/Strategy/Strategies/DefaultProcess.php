@@ -29,12 +29,12 @@ class DefaultProcess implements StrategyInterface {
 	 * @var int[]
 	 */
 	private $time_table_retry = [
-		1 => 60,   // 1 minutes
-		2 => 120,  // 2 minutes
-		3 => 300,  // 5 minutes
-		4 => 600,  // 10 minutes.
-		5 => 1200, // 20 minutes.
-		6 => 1800, // 30 minutes.
+		0 => 60,   // 1 minutes
+		1 => 120,  // 2 minutes
+		2 => 300,  // 5 minutes
+		3 => 600,  // 10 minutes.
+		4 => 1200, // 20 minutes.
+		5 => 1800, // 30 minutes.
 	];
 
 	/**
@@ -86,6 +86,6 @@ class DefaultProcess implements StrategyInterface {
 		$next_retry_time = $this->clock->current_time( 'timestamp' ) + $rucss_retry_duration;
 
 		$this->used_css_query->update_message( $row_details->id, $job_details['code'], $job_details['message'], $row_details->error_message );
-		$this->used_css_query->update_next_retry_time( $row_details->job_id, $next_retry_time );
+		$this->used_css_query->update_next_retry_time( (int) $row_details->id, $next_retry_time );
 	}
 }
