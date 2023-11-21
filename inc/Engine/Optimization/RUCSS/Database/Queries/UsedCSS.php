@@ -106,7 +106,7 @@ class UsedCSS extends Query {
 				'fields'         => [
 					'id',
 					'url',
-					' next_retry_time',
+					'next_retry_time',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
