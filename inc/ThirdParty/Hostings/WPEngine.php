@@ -25,7 +25,7 @@ class WPEngine extends AbstractNoCacheHost {
 			'admin_init'                              => 'run_rocket_bot_after_wpengine',
 			'rocket_set_wp_cache_constant'            => 'return_false',
 			'do_rocket_generate_caching_files'        => 'return_false',
-			'after_rocket_clean_domain'               => 'clean_wpengine',
+			'rocket_after_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'return_true',
 			'rocket_generate_advanced_cache_file'     => 'return_false',

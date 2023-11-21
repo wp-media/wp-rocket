@@ -31,6 +31,7 @@ class Test_processOnSubmitJobs extends TestCase {
 	{
 		parent::set_up();
 		add_filter('rocket_rucss_max_pending_jobs', [$this, 'max_rows']);
+		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss_enabled']);
 		$this->setup_http();
 	}
 
@@ -38,6 +39,7 @@ class Test_processOnSubmitJobs extends TestCase {
 	{
 		$this->tear_down_http();
 		remove_filter('rocket_rucss_max_pending_jobs', [$this, 'max_rows']);
+		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss_enabled']);
 		parent::tear_down();
 	}
 
@@ -61,6 +63,10 @@ class Test_processOnSubmitJobs extends TestCase {
 
 	public function max_rows() {
 		return $this->config['max_rows'];
+	}
+
+	public function rucss_enabled() {
+		return $this->config['rucss_enabled'];
 	}
 
 

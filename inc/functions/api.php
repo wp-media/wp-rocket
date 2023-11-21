@@ -115,31 +115,19 @@ function rocket_is_live_site() {
 		}
 	}
 
-	// Check for staging sites.
-	$staging = [
-		'.wpengine.com',
-		'.wpenginepowered.com',
-		'.pantheonsite.io',
-		'.flywheelsites.com',
-		'.flywheelstaging.com',
-		'.kinsta.com',
-		'.kinsta.cloud',
-		'.cloudwaysapps.com',
-		'.azurewebsites.net',
-		'.wpserveur.net',
-		'-liquidwebsites.com',
-		'.myftpupload.com',
-		'.dream.press',
-		'.sg-host.com',
-		'.platformsh.site',
-		'.wpstage.net',
-		'.bigscoots-staging.com',
-		'.wpsc.site',
-		'.runcloud.link',
-		'.onrocket.site',
-		'.singlestaging.com',
-		'.myraidbox.de',
-	];
+	$default_staging = [];
+
+	/**
+	 * Get the list of staging domains from SaaS
+	 *
+	 * @param array $default_staging default result in case there isn't.
+	 */
+	$staging = apply_filters( 'rocket_staging_list', $default_staging );
+
+	if ( ! is_array( $staging ) ) {
+		$staging = $default_staging;
+	}
+
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
 			return false;

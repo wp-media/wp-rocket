@@ -48,7 +48,7 @@ class WPML implements Subscriber_Interface {
 		$events['rocket_preload_all_to_pending_condition']  = 'clean_only_right_domain';
 		$events['rocket_preload_sitemap_before_queue']      = 'add_languages_sitemaps';
 		$events['after_rocket_clean_home']                  = 'remove_root_cached_files';
-		$events['after_rocket_clean_domain']                = 'remove_root_cached_files';
+		$events['rocket_after_clean_domain']                = 'remove_root_cached_files';
 		$events['pre_update_option_icl_sitepress_settings'] = [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ];
 
 		return $events;
