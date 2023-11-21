@@ -48,11 +48,11 @@ spl_autoload_register(
 				$rocket_path . 'inc/classes/logger/class-stream-handler.php',
 			],
 			'WP_Rocket\\Traits\\Memoize'         => [ $rocket_path . 'inc/classes/traits/trait-memoize.php' ],
-			'WP_Rocket\\Dependencies\\Psr\\Log' => [
+			'WP_Rocket\\Dependencies\\Psr\\Log'  => [
 				$rocket_path . 'inc/Dependencies/Psr/Log/' . str_replace( '\\', '/', $class ) . '.php',
-				$rocket_path . 'vendor/psr/log/src/' . str_replace('\\', '/', $class) . '.php',
+				$rocket_path . 'vendor/psr/log/src/' . str_replace( '\\', '/', $class ) . '.php',
 			],
-			'WP_Rocket\\Dependencies\\Monolog' => [
+			'WP_Rocket\\Dependencies\\Monolog'   => [
 				$rocket_path . 'inc/Dependencies/Monolog/' . str_replace( '\\', '/', $class ) . '.php',
 				$rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\', '/', $class ) . '.php',
 			],
