@@ -48,7 +48,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
 		$this->getContainer()->add( 'atf_admin_controller', AdminController::class )
-			->addArgument( $this->getContainer()->get( 'atf_query' ) );
+			->addArgument( $this->getContainer()->get( 'atf_table' ) )
+			->addArgument( $this->getContainer()->get( 'atf_query' ) )
+			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 		$this->getContainer()->share( 'atf_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 	}
