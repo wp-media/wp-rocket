@@ -105,10 +105,10 @@ class Test_processPendingJobs extends TestCase {
 		$this->configureDisabled($config, $expected);
 		$this->configureEnabled($config, $expected);
 		$this->wpr_clock->shouldReceive( 'current_time' )
-			->with( 'timestamp' )
+			->with( 'timestamp', true )
 			->atMost()
 			->once()
-			->andReturn( 123123 );
+			->andReturn( 1700999999 );
 
 		$this->usedcss->process_pending_jobs();
     }

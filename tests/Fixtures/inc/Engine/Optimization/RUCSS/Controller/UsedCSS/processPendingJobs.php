@@ -20,6 +20,7 @@ return [
 		'expected' => [
 			'rows_count' => 100,
 			'in_progress' => null,
+			'next_retry_time' => '2023-11-22 02:00:00',
 		]
 	],
 	'pendingShouldPassInProgress' => [
@@ -30,7 +31,7 @@ return [
 				(object) [
 					'id' => 10,
 					'url' => 'http://example.org',
-					'next_retry_time' => 123,
+					'next_retry_time' => '2023-11-22 02:00:00',
 				]
 			]
 		],

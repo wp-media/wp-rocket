@@ -44,8 +44,32 @@ class DefaultProcess implements StrategyInterface {
 	 * @param WPRClock      $clock Clock object.
 	 */
 	public function __construct( UsedCSS_Query $used_css_query, WPRClock $clock ) {
-		$this->used_css_query   = $used_css_query;
-		$this->clock            = $clock;
+		$this->used_css_query = $used_css_query;
+		$this->clock          = $clock;
+
+		/**
+		 * Add a validation layer to the filter.
+		 *
+		 * @param mixed $time_table_retry should be an array to return its value, otherwise it will return an empty array.
+		 */
+		add_filter(
+			'rocket_rucss_retry_table',
+			function ( $time_table_retry ) {
+				// Validate $time_table_retry here
+				if ( ! is_array( $time_table_retry ) ) {
+					// Provide a default value if the filter returns an invalid type
+					$time_table_retry = [];
+				}
+
+				return $time_table_retry;
+			}
+			);
+
+		/**
+		 * Filter the array containing the time needed to wait for each retry.
+		 *
+		 * @param array $time_table_entry contains the number of retry and how long we have to wait.
+		 */
 		$this->time_table_retry = apply_filters( 'rocket_rucss_retry_table', $this->time_table_retry );
 	}
 

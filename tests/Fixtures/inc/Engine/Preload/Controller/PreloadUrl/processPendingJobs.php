@@ -7,7 +7,7 @@ $row1 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example1',
 	'status' => 'pending',
-	'next_retry_time' => 123
+	'next_retry_time' => '2023-11-22 02:00:00'
 ]);
 
 $row2 = new CacheRow([
@@ -15,7 +15,7 @@ $row2 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example2',
 	'status' => 'pending',
-	'next_retry_time' => 123
+	'next_retry_time' => '2023-11-22 02:00:00'
 
 ]);
 
@@ -24,7 +24,7 @@ $row3 = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example3',
 	'status' => 'pending',
-	'next_retry_time' => 123
+	'next_retry_time' => '2023-11-22 02:00:00'
 
 ]);
 
@@ -33,7 +33,7 @@ $outdated_row = new CacheRow([
 	'is_mobile' => false,
 	'url' => 'http://example3',
 	'status' => 'in-progress',
-	'next_retry_time' => 123
+	'next_retry_time' => '2023-11-22 02:00:00'
 
 ]);
 

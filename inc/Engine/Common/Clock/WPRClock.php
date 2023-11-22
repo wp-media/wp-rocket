@@ -25,6 +25,10 @@ class WPRClock implements ClockInterface {
 	 * @return int|string Integer if `$type` is 'timestamp' or 'U', string otherwise.
 	 */
 	public function current_time( string $type, $gmt = 0 ) {
-		return apply_filters( 'rocket_current_time', current_time( $type, $gmt ) );
+		$current_time = current_time( $type, $gmt );
+		if ( ( is_string( $current_time ) && strtotime( $current_time ) ) || is_int( $current_time ) ) {
+			return apply_filters( 'rocket_current_time', $current_time );
+		}
+		return apply_filters( 'rocket_current_time', 0 );
 	}
 }
