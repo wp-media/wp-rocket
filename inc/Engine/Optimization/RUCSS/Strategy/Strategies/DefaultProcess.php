@@ -55,9 +55,9 @@ class DefaultProcess implements StrategyInterface {
 		add_filter(
 			'rocket_rucss_retry_table',
 			function ( $time_table_retry ) {
-				// Validate $time_table_retry here
+				// Validate $time_table_retry.
 				if ( ! is_array( $time_table_retry ) ) {
-					// Provide a default value if the filter returns an invalid type
+					// Provide a default value if the filter returns an invalid type.
 					$time_table_retry = [];
 				}
 
@@ -107,7 +107,7 @@ class DefaultProcess implements StrategyInterface {
 		add_filter(
 			'rocket_rucss_retry_duration',
 			function ( $rucss_retry_duration ) {
-				// Validate $rucss_retry_duration
+				// Validate $rucss_retry_duration.
 				if ( ! is_int( $rucss_retry_duration ) || $rucss_retry_duration <= 0 ) {
 					$rucss_retry_duration = 1800;
 				}
