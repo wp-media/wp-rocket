@@ -76,7 +76,7 @@ class UsedCSS extends Table {
 			modified         		timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    		timestamp           NOT NULL default '0000-00-00 00:00:00',
 			submitted_at     		timestamp           NULL,
-			next_retry_time     	timestamp           NULL,
+			next_retry_time     	timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
@@ -356,7 +356,7 @@ class UsedCSS extends Table {
 		$created = true;
 
 		if ( ! $next_retry_time_exists ) {
-			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN next_retry_time timestamp NULL AFTER submitted_at" );
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN next_retry_time timestamp NOT NULL default '0000-00-00 00:00:00' AFTER submitted_at" );
 		}
 
 		return $this->is_success( $created );

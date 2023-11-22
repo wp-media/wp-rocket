@@ -168,7 +168,7 @@ class UsedCSS extends Schema {
 		[
 			'name'       => 'next_retry_time',
 			'type'       => 'timestamp',
-			'default'    => null,
+			'default'    => '0000-00-00 00:00:00',
 			'created'    => true,
 			'date_query' => true,
 			'sortable'   => true,
