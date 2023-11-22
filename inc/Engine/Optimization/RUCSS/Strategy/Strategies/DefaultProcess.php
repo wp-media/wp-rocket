@@ -100,6 +100,23 @@ class DefaultProcess implements StrategyInterface {
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? 1800; // Default to 30 minutes.
 
 		/**
+		 * Adds a validation layer to the filter.
+		 *
+		 * @param mixed $rucss_retry_duration should be type int otherwise it will return a default value.
+		 */
+		add_filter(
+			'rocket_rucss_retry_duration',
+			function ( $rucss_retry_duration ) {
+				// Validate $rucss_retry_duration
+				if ( ! is_int( $rucss_retry_duration ) || $rucss_retry_duration <= 0 ) {
+					$rucss_retry_duration = 1800;
+				}
+
+				return $rucss_retry_duration;
+			}
+			);
+
+		/**
 		 * Filter used css retry duration.
 		 *
 		 * @param int $duration Duration between each retry in seconds.
