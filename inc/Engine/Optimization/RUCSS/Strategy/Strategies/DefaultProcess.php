@@ -38,6 +38,13 @@ class DefaultProcess implements StrategyInterface {
 	];
 
 	/**
+	 * Default value to wait before a retry.
+	 *
+	 * @var int
+	 */
+	private $default_waiting_retry = 1800;
+
+	/**
 	 * Strategy Constructor.
 	 *
 	 * @param UsedCSS_Query $used_css_query DB Table.
@@ -48,29 +55,15 @@ class DefaultProcess implements StrategyInterface {
 		$this->clock          = $clock;
 
 		/**
-		 * Add a validation layer to the filter.
-		 *
-		 * @param mixed $time_table_retry should be an array to return its value, otherwise it will return an empty array.
-		 */
-		add_filter(
-			'rocket_rucss_retry_table',
-			function ( $time_table_retry ) {
-				// Validate $time_table_retry.
-				if ( ! is_array( $time_table_retry ) ) {
-					// Provide a default value if the filter returns an invalid type.
-					$time_table_retry = [];
-				}
-
-				return $time_table_retry;
-			}
-			);
-
-		/**
 		 * Filter the array containing the time needed to wait for each retry.
 		 *
 		 * @param array $time_table_entry contains the number of retry and how long we have to wait.
 		 */
-		$this->time_table_retry = apply_filters( 'rocket_rucss_retry_table', $this->time_table_retry );
+		$time_table_retry = apply_filters( 'rocket_rucss_retry_table', $this->time_table_retry );
+
+		if ( is_array( $time_table_retry ) ) {
+			$this->time_table_retry = $time_table_retry;
+		}
 	}
 
 	/**
@@ -97,24 +90,7 @@ class DefaultProcess implements StrategyInterface {
 
 		$this->used_css_query->increment_retries( $row_details->id, (int) $row_details->retries, $job_details['message'] );
 
-		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? 1800; // Default to 30 minutes.
-
-		/**
-		 * Adds a validation layer to the filter.
-		 *
-		 * @param mixed $rucss_retry_duration should be type int otherwise it will return a default value.
-		 */
-		add_filter(
-			'rocket_rucss_retry_duration',
-			function ( $rucss_retry_duration ) {
-				// Validate $rucss_retry_duration.
-				if ( ! is_int( $rucss_retry_duration ) || $rucss_retry_duration <= 0 ) {
-					$rucss_retry_duration = 1800;
-				}
-
-				return $rucss_retry_duration;
-			}
-			);
+		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
 
 		/**
 		 * Filter used css retry duration.
@@ -122,6 +98,9 @@ class DefaultProcess implements StrategyInterface {
 		 * @param int $duration Duration between each retry in seconds.
 		 */
 		$rucss_retry_duration = (int) apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
+		if ( $rucss_retry_duration < 0 ) {
+			$rucss_retry_duration = $this->default_waiting_retry;
+		}
 
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;

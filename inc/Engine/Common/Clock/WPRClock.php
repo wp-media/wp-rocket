@@ -26,9 +26,10 @@ class WPRClock implements ClockInterface {
 	 */
 	public function current_time( string $type, $gmt = 0 ) {
 		$current_time = current_time( $type, $gmt );
-		if ( ( is_string( $current_time ) && strtotime( $current_time ) ) || is_int( $current_time ) ) {
-			return apply_filters( 'rocket_current_time', $current_time );
+		$output       = apply_filters( 'rocket_current_time', $current_time );
+		if ( ( is_string( $current_time ) && strtotime( $current_time ) ) || ( is_int( $current_time ) && $current_time >= 0 ) ) {
+			return $output;
 		}
-		return apply_filters( 'rocket_current_time', 0 );
+		return $current_time;
 	}
 }
