@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 use Mockery;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
@@ -13,6 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use Brain\Monkey\Filters;
 
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -69,6 +71,16 @@ class Test_processOnSubmitJobs extends TestCase {
      */
     protected $usedcss;
 
+	/**
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
     public function set_up() {
         parent::set_up();
         $this->options = Mockery::mock(Options_Data::class);
@@ -79,8 +91,10 @@ class Test_processOnSubmitJobs extends TestCase {
         $this->filesystem = Mockery::mock(Filesystem::class);
         $this->context = Mockery::mock(ContextInterface::class);
         $this->optimize_url_context = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
+		$this->wpr_clock = Mockery::mock(WPRClock::class);
 
-        $this->usedcss = new UsedCSS($this->options, $this->used_css_query, $this->api, $this->queue, $this->data_manager, $this->filesystem, $this->context, $this->optimize_url_context);
+        $this->usedcss = new UsedCSS($this->options, $this->used_css_query, $this->api, $this->queue, $this->data_manager, $this->filesystem, $this->context, $this->optimize_url_context, $this->strategy_factory, $this->wpr_clock);
 
 		$this->set_logger($this->usedcss);
 	}

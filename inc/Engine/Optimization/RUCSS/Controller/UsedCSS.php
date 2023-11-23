@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
@@ -12,6 +13,7 @@ use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
 use WP_Admin_Bar;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -98,6 +100,20 @@ class UsedCSS implements LoggerAwareInterface {
 	private $inline_content_exclusions = [];
 
 	/**
+	 * Retry Strategy Factory
+	 *
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * Clock instance.
+	 *
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
+	/**
 	 * Instantiate the class.
 	 *
 	 * @param Options_Data     $options Options instance.
@@ -108,6 +124,8 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
 	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
+	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
+	 * @param WPRClock         $clock Clock object instance.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -117,7 +135,9 @@ class UsedCSS implements LoggerAwareInterface {
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ContextInterface $optimize_url_context
+		ContextInterface $optimize_url_context,
+		StrategyFactory $strategy_factory,
+		WPRClock $clock
 	) {
 		$this->options              = $options;
 		$this->used_css_query       = $used_css_query;
@@ -127,6 +147,8 @@ class UsedCSS implements LoggerAwareInterface {
 		$this->filesystem           = $filesystem;
 		$this->context              = $context;
 		$this->optimize_url_context = $optimize_url_context;
+		$this->strategy_factory     = $strategy_factory;
+		$this->wpr_clock            = $clock;
 	}
 
 	/**
@@ -500,12 +522,14 @@ class UsedCSS implements LoggerAwareInterface {
 		}
 
 		foreach ( $pending_jobs as $used_css_row ) {
-			$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
+			$current_time = $this->wpr_clock->current_time( 'timestamp', true );
+			if ( strtotime( $used_css_row->next_retry_time ) < $current_time ) {
+				$this->logger::debug( "RUCSS: Send the job for url {$used_css_row->url} to Async task to check its job status." );
 
-			// Change status to in-progress.
-			$this->used_css_query->make_status_inprogress( (int) $used_css_row->id );
-
-			$this->queue->add_job_status_check_async( (int) $used_css_row->id );
+				// Change status to in-progress.
+				$this->used_css_query->make_status_inprogress( (int) $used_css_row->id );
+				$this->queue->add_job_status_check_async( (int) $used_css_row->id );
+			}
 		}
 	}
 
@@ -518,6 +542,7 @@ class UsedCSS implements LoggerAwareInterface {
 	 */
 	public function check_job_status( int $id ) {
 		$this->logger::debug( 'RUCSS: Start checking job status for row ID: ' . $id );
+
 		$row_details = $this->used_css_query->get_item( $id );
 		if ( ! $row_details ) {
 			$this->logger::debug( 'RUCSS: Row ID not found ', compact( 'id' ) );
@@ -550,39 +575,9 @@ class UsedCSS implements LoggerAwareInterface {
 
 		if (
 			200 !== (int) $job_details['code']
-			||
-			empty( $job_details['contents'] )
-			||
-			! isset( $job_details['contents']['shakedCSS'] )
 		) {
 			$this->logger::debug( 'RUCSS: Job status failed for url: ' . $row_details->url, $job_details );
-
-			// Failure, check the retries number.
-			if ( $row_details->retries >= 3 ) {
-				$this->logger::debug( 'RUCSS: Job failed 3 times for url: ' . $row_details->url );
-				/**
-				 * Unlock preload URL.
-				 *
-				 * @param string $url URL to unlock
-				 */
-				do_action( 'rocket_preload_unlock_url', $row_details->url );
-
-				$this->used_css_query->make_status_failed( $id, strval( $job_details['code'] ), $job_details['message'] );
-
-				return;
-			}
-
-			// on timeout errors with code 408 create new job.
-			switch ( $job_details['code'] ) {
-				case 408:
-					$this->add_url_to_the_queue( $row_details->url, (bool) $row_details->is_mobile );
-					return;
-			}
-
-			// Increment the retries number with 1 , Change status to pending again and change job id on timeout.
-			$this->used_css_query->increment_retries( $id, (int) $job_details['code'], $job_details['message'] );
-
-			// @Todo: Maybe we can add this row to the async job to get the status before the next cron
+			$this->strategy_factory->manage( $row_details, $job_details );
 
 			return;
 		}
