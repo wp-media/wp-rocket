@@ -26,7 +26,7 @@ class SpinUpWP extends NullSubscriber implements Subscriber_Interface {
 			'do_rocket_generate_caching_files'    => 'return_false',
 			'rocket_display_varnish_options_tab'  => 'return_false',
 			'rocket_cache_mandatory_cookies'      => 'return_empty_array',
-			'after_rocket_clean_domain'           => 'purge_site',
+			'rocket_after_clean_domain'           => 'purge_site',
 			'wp_rocket_loaded'                    => 'remove_actions',
 			'after_rocket_clean_file'             => 'purge_url',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url',

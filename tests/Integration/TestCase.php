@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
-	use FilterTrait;
+	use IsolateHookTrait;
 	use DBTrait;
 
 	protected static $use_settings_trait = true;

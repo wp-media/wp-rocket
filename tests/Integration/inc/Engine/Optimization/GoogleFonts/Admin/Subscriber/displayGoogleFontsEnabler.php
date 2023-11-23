@@ -21,7 +21,7 @@ class Test_DisplayGoogleFontsEnabler extends TestCase {
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'setGoogleFontsOption' ] );
 
-		$this->restoreWpFilter( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'rocket_settings_tools_content' );
 
 		parent::tear_down();
 	}

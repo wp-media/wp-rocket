@@ -37,7 +37,7 @@ class Test_UpdateSafelistItems extends TestCase {
 		parent::tear_down();
 
 		$this->tearDownSettings();
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 
 	/**

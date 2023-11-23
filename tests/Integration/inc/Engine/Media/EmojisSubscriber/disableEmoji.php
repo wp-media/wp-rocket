@@ -18,7 +18,7 @@ class disableEmoji extends TestCase {
 
         unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_emoji', [ $this, 'set_emoji_value' ] );
-		$this->restoreWpFilter( 'init' );
+		$this->restoreWpHook( 'init' );
 	}
 
 	/**

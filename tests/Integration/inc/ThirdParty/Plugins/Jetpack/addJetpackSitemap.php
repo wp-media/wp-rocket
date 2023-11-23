@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Jetpack;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddJetpackSitemap extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $jetpack_xml_sitemap;
 
@@ -25,7 +25,7 @@ class Test_AddJetpackSitemap extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_first_install_options');
+		$this->restoreWpHook('rocket_first_install_options');
 		parent::tearDown();
 	}
 
