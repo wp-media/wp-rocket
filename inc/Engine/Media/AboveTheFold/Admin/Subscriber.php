@@ -32,10 +32,12 @@ class Subscriber implements Subscriber_Interface {
 			'switch_theme'                  => 'truncate_atf',
 			'permalink_structure_changed'   => 'truncate_atf',
 			'rocket_domain_options_changed' => 'truncate_atf',
-			'wp_trash_post'                 => 'delete_atf',
-			'delete_post'                   => 'delete_atf',
-			'clean_post_cache'              => 'delete_atf',
-			'wp_update_comment_count'       => 'delete_atf',
+			'wp_trash_post'                 => 'delete_post_atf',
+			'delete_post'                   => 'delete_post_atf',
+			'clean_post_cache'              => 'delete_post_atf',
+			'wp_update_comment_count'       => 'delete_post_atf',
+			'edit_term'                     => 'delete_term_atf',
+			'pre_delete_term'               => 'delete_term_atf',
 		];
 	}
 
@@ -57,5 +59,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function delete_post_atf( $post_id ) {
 		$this->controller->delete_post_atf( $post_id );
+	}
+
+	/**
+	 * Delete ATF row on update or delete term.
+	 *
+	 * @param int $term_id the term ID.
+	 *
+	 * @return void
+	 */
+	public function delete_term_atf( $term_id ) {
+		$this->controller->delete_term_atf( $term_id );
 	}
 }

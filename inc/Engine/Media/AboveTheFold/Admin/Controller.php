@@ -89,4 +89,25 @@ class Controller {
 
 		$this->query->delete_by_url( untrailingslashit( $url ) );
 	}
+
+	/**
+	 * Deletes the ATF when updating a term
+	 *
+	 * @param int $term_id the term ID.
+	 *
+	 * @return void
+	 */
+	public function delete_term_used_css( $term_id ) {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$url = get_term_link( (int) $term_id );
+
+		if ( is_wp_error( $url ) ) {
+			return;
+		}
+
+		$this->query->delete_by_url( untrailingslashit( $url ) );
+	}
 }
