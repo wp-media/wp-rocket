@@ -34,7 +34,7 @@ class DefaultProcess implements StrategyInterface {
 		2 => 300,  // 5 minutes
 		3 => 600,  // 10 minutes.
 		4 => 1200, // 20 minutes.
-		5 => 1800, // 30 minutes.
+		5 => 1500, // 25 minutes.
 	];
 
 	/**
@@ -42,7 +42,7 @@ class DefaultProcess implements StrategyInterface {
 	 *
 	 * @var int
 	 */
-	private $default_waiting_retry = 1800;
+	private $default_waiting_retry = 1500;
 
 	/**
 	 * Strategy Constructor.
