@@ -351,7 +351,7 @@ if (typeof rocket_ajax_data.license_expiration !== 'undefined') {
   initializeClock('rocket-renew-countdown', rocket_ajax_data.license_expiration);
 }
 
-if (typeof rocket_ajax_data.notice_end_time !== 'undefined') {
+if (typeof rocket_ajax_data.notice_end_time !== 'undefined' && rocket_ajax_data.cron_disabled) {
   rucssTimer('rocket-rucss-timer', rocket_ajax_data.notice_end_time);
 }
 
