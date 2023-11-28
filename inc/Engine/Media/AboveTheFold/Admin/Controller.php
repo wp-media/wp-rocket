@@ -97,7 +97,7 @@ class Controller {
 	 *
 	 * @return void
 	 */
-	public function delete_term_used_css( $term_id ) {
+	public function delete_term_atf( $term_id ) {
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
