@@ -177,6 +177,192 @@ return [
 					[
 						'status' => 'to-submit',
 						'job_id' => '',
+						'retries' => 0,
+						'queue_name' => 'queue',
+						'hash' => '',
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
+		'400ShouldRetry' =>[
+			'config' => [
+				'hash' => 'hash',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 400,
+							'message' => 'bad json'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'pending',
+						'job_id' => '123',
+						'queue_name' => 'queue',
+						'hash' => '',
+						'retries' => 1
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
+		'404ShouldFail' =>[
+			'config' => [
+				'hash' => 'hash',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 404,
+							'message' => 'Job not found'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'failed',
+						'job_id' => '123',
+						'queue_name' => 'queue',
+						'hash' => '',
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
+		'500ShouldFail' =>[
+			'config' => [
+				'hash' => 'hash',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 500,
+							'message' => 'error'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'failed',
+						'job_id' => '123',
+						'queue_name' => 'queue',
+						'hash' => '',
+					]
+				],
+				'files' => [
+					'/wp-content/cache/used-css/1/h/a/s/h.css.gz' => [
+						'exists' => false,
+					]
+				]
+			]
+		],
+		'422ShouldFail' =>[
+			'config' => [
+				'hash' => 'hash',
+				'row' => [
+					'url' => 'https://example.org',
+					'job_id' => '123',
+					'queue_name' => 'queue',
+				],
+				'request' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'GET',
+					'response' => [
+						'response' => [
+							'code' => 422,
+							'message' => 'error'
+						],
+						'body' => $error_response
+					]
+				],
+				'create' => [
+					'url' => 'http://localhostrucss-job',
+					'method' => 'POST',
+					'response' => [
+						'response' => [
+							'code' => 200,
+						],
+						'body' => $success_response_create
+					]
+				]
+			],
+			'expected' => [
+				'rows' => [
+					[
+						'status' => 'failed',
+						'job_id' => '123',
 						'queue_name' => 'queue',
 						'hash' => '',
 					]

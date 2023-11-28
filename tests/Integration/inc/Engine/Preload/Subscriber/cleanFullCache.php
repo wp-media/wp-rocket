@@ -45,7 +45,7 @@ class Test_CleanFullCache extends AdminTestCase
 		foreach ($config['data'] as $cache) {
 			self::addCache($cache);
 		}
-		do_action('after_rocket_clean_domain', 'whatever','whatever', []);
+		do_action('rocket_after_clean_domain', 'whatever',[]);
 
 		foreach ($expected['data'] as $cache) {
 			$this->assertSame($expected['exists'], self::cacheFound($cache));
