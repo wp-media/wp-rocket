@@ -36,7 +36,7 @@ class Test_RocketIsLiveSite extends TestCase {
 	public function testShouldReturnFalseWhenLocalOrStaging() {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-
+		Filters\expectApplied('rocket_staging_list')->andReturn($this->getLocalStagingDomains());
 		$urls   = $this->getLocalStagingSites();
 		foreach ( $urls as $domain ) {
 			Functions\when( 'wp_parse_url' )->justReturn( $domain );
@@ -94,6 +94,33 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.onrocket.site',
 			'example.bigscoots-staging.com',
 			'example.singlestaging.com',
+		];
+	}
+
+	public function getLocalStagingDomains() {
+		return [
+			'.wpengine.com',
+			'.wpenginepowered.com',
+			'.pantheonsite.io',
+			'.flywheelsites.com',
+			'.flywheelstaging.com',
+			'.kinsta.com',
+			'.kinsta.cloud',
+			'.cloudwaysapps.com',
+			'.azurewebsites.net',
+			'.wpserveur.net',
+			'-liquidwebsites.com',
+			'.myftpupload.com',
+			'.dream.press',
+			'.sg-host.com',
+			'.platformsh.site',
+			'.wpstage.net',
+			'.bigscoots-staging.com',
+			'.wpsc.site',
+			'.runcloud.link',
+			'.onrocket.site',
+			'.singlestaging.com',
+			'.myraidbox.de',
 		];
 	}
 }

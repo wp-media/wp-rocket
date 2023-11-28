@@ -45,6 +45,6 @@ class Test_CleanKinstaCache extends TestCase {
 		} else {
 			$this->cache_purge->shouldReceive('purge_complete_caches')->never();
 		}
-		do_action('after_rocket_clean_domain');
+		do_action('rocket_after_clean_domain');
 	}
 }

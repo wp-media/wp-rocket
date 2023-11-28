@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
@@ -88,6 +89,10 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
+		if ( rocket_is_importing() ) {
+			return;
+		}
+
 		if ( ! $this->is_taxonomy_public( $taxonomy ) ) {
 			return;
 		}
