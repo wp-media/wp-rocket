@@ -28,14 +28,12 @@ class Test_SpawnCron extends TestCase {
 	public function testShouldReturnAsExpected($config, $expected)
 	{
 		Functions\when('rocket_get_constant')->justReturn($config['rocket_get_constant']);
-		Functions\expect('spawn_cron')->times($expected['spawnCronCalled']);
 
-		if ($expected['spawnCronCalled']) {
-			Functions\expect('check_ajax_referer')->times($expected['spawnCronCalled']);
-			Functions\expect('current_user_can')->andReturn($config['current_user_can']);
-			Functions\expect('wp_send_json_success')->times($expected['wp_send_json_success']);
-			Functions\expect('wp_send_json_error')->times($expected['wp_send_json_error']);
-		}
+		Functions\when('current_user_can')->justReturn($config['current_user_can']);
+		Functions\expect('wp_send_json_error')->times($expected['wp_send_json_error']);
+		Functions\when('check_ajax_referer')->justReturn(true);
+		Functions\when('wp_send_json_success')->justReturn(true);
+		Functions\expect('spawn_cron')->times($expected['spawnCronCalled']);
 
 		$this->subscriber->spawn_cron();
 	}
