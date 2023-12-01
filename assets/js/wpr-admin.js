@@ -319,6 +319,10 @@ function rucssTimer(id, endtime) {
         success.classList.remove('hidden');
       }
 
+	  if ( rocket_ajax_data.cron_disabled ) {
+		  return;
+	  }
+
       const data = new FormData();
       data.append('action', 'rocket_spawn_cron');
       data.append('nonce', rocket_ajax_data.nonce);
@@ -351,7 +355,7 @@ if (typeof rocket_ajax_data.license_expiration !== 'undefined') {
   initializeClock('rocket-renew-countdown', rocket_ajax_data.license_expiration);
 }
 
-if (typeof rocket_ajax_data.notice_end_time !== 'undefined' && ! rocket_ajax_data.cron_disabled) {
+if (typeof rocket_ajax_data.notice_end_time !== 'undefined') {
   rucssTimer('rocket-rucss-timer', rocket_ajax_data.notice_end_time);
 }
 
