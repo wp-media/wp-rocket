@@ -1,7 +1,7 @@
 <?php
 
 $tags = <<<TAG
-<style id="wpr-lazyload-bg"></style><style id="wpr-lazyload-bg-exclusion">:root{--wpr-bg-15ef8: url(https://domain.ext/path/to/background.ext); }</style>
+<div id="wpr-lazyload-bg"></div><style id="wpr-lazyload-bg-exclusion">:root{--wpr-bg-15ef8: url(https://domain.ext/path/to/background.ext); }</style>
 <noscript>
 <style id="wpr-lazyload-bg-nostyle">:root{--wpr-bg-16ef9: url(https://domain.ext/path/to/background2.ext); }:root{--wpr-bg-17ef6: url(https://domain.ext/path/to/background3.ext); }:root{--wpr-bg-18ef6: url(https://domain.ext/path/to/background3.ext); }</style>
 </noscript>
