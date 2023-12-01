@@ -26,7 +26,7 @@ class MappingFormatter {
 				'selector' => $selector,
 				'style'    => $variable_placeholder,
 				'hash'     => $hash,
-				'url'	   => $url,
+				'url'      => $url,
 			];
 		}
 
