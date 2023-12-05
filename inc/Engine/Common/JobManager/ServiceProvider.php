@@ -8,16 +8,17 @@ use WP_Rocket\Engine\Common\JobManager\Managers\RUCSSManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\AtfManager;
 use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\JobManager\Context\RUCSSContext;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Common\JobManager\Queue;
-use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
+
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -87,17 +88,18 @@ class ServiceProvider extends AbstractServiceProvider {
 
         $this->getContainer()->add( 'queue', Queue::class );
 
+        $this->getContainer()->add( 'api_client', APIClient::class )
+            ->addArgument( $this->getContainer()->get( 'options' ) )
+            ->addArgument( $this->getContainer()->get( 'rucss_context' ) )
+            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
+
         $this->getContainer()->add( 'job_processor', JobProcessor::class )
             ->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
             ->addArgument( $this->getContainer()->get( 'atf_manager' ) )
             ->addArgument( $this->getContainer()->get( 'queue' ) )
             ->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
-            ->addArgument( $this->getContainer()->get( 'options' ) );
-
-        $this->getContainer()->add( 'api_client', APIClient::class )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) );
+            ->addArgument( $this->getContainer()->get( 'options' ) )
+            ->addArgument( $this->getContainer()->get( 'api_client' ) );
 
         $this->getContainer()->share( 'cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'job_processor' ) )
