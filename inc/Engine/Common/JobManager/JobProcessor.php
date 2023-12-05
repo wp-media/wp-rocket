@@ -4,8 +4,9 @@ namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 
 class JobProcessor implements LoggerAwareInterface {
     use LoggerAware;
@@ -45,25 +46,38 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	protected $options;
 
+	/**
+	 * APIClient instance
+	 *
+	 * @var APIClient
+	 */
+	private $api;
+
 
     /**
      * Instantiate the class.
      *
      * @param ManagerInterface $rucss_manager RUCSS Job Manager.
      * @param ManagerInterface $lcp_manager LCP Job Manager.
+	 * @param QueueInterface   $queue Queue instance.
+	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
+	 * @param Options_Data     $options Options instance.
+	 * @param APIClient        $api APIClient instance.
      */
     public function __construct(
         ManagerInterface $rucss_manager,
         ManagerInterface $atf_manager,
         QueueInterface $queue,
         StrategyFactory $strategy_factory,
-		Options_Data $options
+		Options_Data $options,
+		APIClient $api
     ) {
         $this->rucss_manager = $rucss_manager;
         $this->atf_manager = $atf_manager;
         $this->queue = $queue;
         $this->strategy_factory = $strategy_factory;
 		$this->options = $options;
+		$this->api = $api;
     }
 
 	/**
@@ -395,16 +409,14 @@ class JobProcessor implements LoggerAwareInterface {
         if ( $context['rucss'] ) {
             $this->logger::debug( "RUCSS: Send the job for url {$url} to Async task to check its job status." );
 
-            $this->rucss_manager
-                ->query()
+            $this->rucss_manager->query
                 ->make_status_inprogress( $url, $is_mobile );
         }
 
         if ( $context['atf'] ) {
             $this->logger::debug( "ATF: Send the job for url {$url} to Async task to check its job status." );
 
-            $this->atf_manager
-                ->query()
+            $this->atf_manager->query
                 ->make_status_inprogress( $url, $is_mobile );
         }
     }
@@ -421,14 +433,12 @@ class JobProcessor implements LoggerAwareInterface {
         if ( ! $context['rucss'] && $context['atf'] ) {
             $this->logger::debug( 'ATF: Start checking job status for url: ' . $url );
 
-            return $this->atf_manager
-                    ->query()
+            return $this->atf_manager->query
                     ->get_row( $url, $is_mobile );
         }
 
         $this->logger::debug( 'RUCSS: Start checking job status for url: ' . $url );
-        return $this->rucss_manager
-                ->query()
+        return $this->rucss_manager->query
                 ->get_row( $url, $is_mobile );
     }
 
@@ -459,14 +469,12 @@ class JobProcessor implements LoggerAwareInterface {
      */
     private function make_status_failed( array $context, string $url, bool $is_mobile, string $error_code, string $error_message ): void {
         if ( $context['rucss'] ) {
-            $this->rucss_manager
-                ->query()
+            $this->rucss_manager->query
                 ->make_status_failed( $url, $is_mobile, $error_code, $error_message );
         }
 
         if ( $context['atf'] ) {
-            $this->atf_manager
-                ->query()
+            $this->atf_manager->query
                 ->make_status_failed( $url, $is_mobile, $error_code, $error_message );
         }
     }
@@ -481,16 +489,14 @@ class JobProcessor implements LoggerAwareInterface {
      * @param boolean $is_mobile if the request is for mobile page.
      * @return void
      */
-    private function make_status_pending(array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
+    private function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
         if ( $context['rucss'] ) {
-                $this->rucss_manager
-                    ->query()
+                $this->rucss_manager->query
                     ->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
         }
 
         if ( $context['atf'] ) {
-            $this->atf_manager
-                    ->query()
+            $this->atf_manager->query
                     ->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
         }
     }
