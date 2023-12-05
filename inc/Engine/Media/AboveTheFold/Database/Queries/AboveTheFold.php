@@ -66,9 +66,27 @@ class AboveTheFold extends AbstractQuery {
 	protected $item_shape = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Row\\AboveTheFold';
 
 	/**
-	 * Table status.
+	 * Complete a job.
 	 *
-	 * @var boolean
+	 * @param integer $id DB row ID.
+	 * @param array Associative array of data to save:
+     *                       - 'lcp': LCP.
+     *                       - 'viewport': Array of above the fold images.
+	 * 
+	 * @return boolean
 	 */
-	public static $table_exists = false;
+	public function make_job_completed( int $id, array $data ): bool {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		return $this->update_item(
+			$id,
+			[
+				'status' => 'completed',
+				'lcp' => $data['lcp'],
+				'viewport' => $data['viewport'],
+			]
+		);
+	}
 }
