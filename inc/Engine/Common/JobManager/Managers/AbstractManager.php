@@ -46,7 +46,7 @@ class AbstractManager {
 	 * @return void
 	 */
     public function add_url_to_the_queue( string $url, bool $is_mobile ) {
-		$row = $this->query->get_row( $url, $is_mobile );
+		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
 			$this->query->create_new_job( $url, '', '', $is_mobile );
@@ -140,7 +140,35 @@ class AbstractManager {
      * @param boolean $is_mobile if the request is for mobile page.
      * @return void
      */
-    public function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
+    public function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
         $this->query->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
+    }
+
+    /**
+	 * Update the error message.
+	 *
+ 	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param int    $error_code error code.
+	 * @param string $error_message error message.
+     * @param string $previous_message Previous saved message.
+	 *
+	 * @return void
+	 */
+	public function update_message( string $url, bool $is_mobile, string $error_code, string $error_message, string $previous_message ): void {
+        $this->query->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
+    }
+
+    /**
+	 * Increment retries number and change status back to pending.
+	 *
+ 	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string|int $next_retry_time timestamp or mysql format date.
+	 *
+	 * @return void
+	 */
+	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ): void {
+        $this->query->update_next_retry_time( $url, $is_mobile, $next_retry_time );
     }
 }
