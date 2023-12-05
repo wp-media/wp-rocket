@@ -45,7 +45,11 @@ class AbstractManager {
 	 *
 	 * @return void
 	 */
-    public function add_url_to_the_queue( string $url, bool $is_mobile ) {
+    public function add_url_to_the_queue( string $url, bool $is_mobile ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
 		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
@@ -94,6 +98,10 @@ class AbstractManager {
      * @return void
      */
     public function make_status_inprogress( string $url, bool $is_mobile ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
         $this->query->make_status_inprogress( $url, $is_mobile );
     }
 
@@ -128,6 +136,10 @@ class AbstractManager {
      * @return void
      */
     public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
         $this->query->make_status_failed( $url, $is_mobile, $error_code, $error_message );
     }
 
@@ -141,6 +153,10 @@ class AbstractManager {
      * @return void
      */
     public function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
         $this->query->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
     }
 
@@ -156,6 +172,10 @@ class AbstractManager {
 	 * @return void
 	 */
 	public function update_message( string $url, bool $is_mobile, string $error_code, string $error_message, string $previous_message ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
         $this->query->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
     }
 
@@ -169,6 +189,10 @@ class AbstractManager {
 	 * @return void
 	 */
 	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
         $this->query->update_next_retry_time( $url, $is_mobile, $next_retry_time );
     }
 }

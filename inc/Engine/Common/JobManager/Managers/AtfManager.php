@@ -28,11 +28,11 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 	 * Instantiate the class.
 	 *
 	 * @param ATFQuery    $query AboveTheFold Query instance.
-     * @param ContextInterface $atf_context Above The Fold Context.
+     * @param ContextInterface $context Above The Fold Context.
 	 */
-    public function __construct( ATFQuery $query, ContextInterface $atf_context ) {
+    public function __construct( ATFQuery $query, ContextInterface $context ) {
         $this->query = $query;
-        $this->atf_context = $atf_context;
+        $this->context = $context;
     }
 
      /**
@@ -68,27 +68,25 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
     }
 
     /**
-     * Check SaaS response.
-     *
-     * @param array Associative array of data required to perform actions:
-     *                       - 'id': Row ID of job.
-     *                       - 'job_details': Details related to the job.
-     *                       - 'row_details': Details related to the row.
-     * @return void
-     */
-    public function process( array $data ) {
+	  * Process SaaS response.
+	  *
+	  * @param array $job_details Details related to the job..
+	  * @param object $row_details Details related to the row.
+	  * @return void
+	  */
+    public function process( array $job_details, $row_details ) {
         if ( ! $this->is_allowed() ) {
             return;
         }
 
 		// Everything is fine, save LCP & ATF into DB, change status to completed and reset queue_name and job_id.
-		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $data['row_details']->url );
+		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $row_details->url );
 
         $lcp_atf = [
-            'lcp' => $data['job_details']['contents']['above_the_fold_result']['lcp'],
-            'viewport' => $data['job_details']['contents']['above_the_fold_result']['images_above_fold'],
+            'lcp' => $job_details['contents']['above_the_fold_result']['lcp'],
+            'viewport' => $job_details['contents']['above_the_fold_result']['images_above_fold'],
         ];
 
-		$this->query->make_job_completed( $data['id'], $lcp_atf );
+		$this->query->make_job_completed( $row_details->url, $row_details->is_mobile, $lcp_atf );
     }
 }

@@ -43,11 +43,11 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
     public function __construct(
 		UsedCSS_Query $query,
 		Filesystem $filesystem,
-		ContextInterface $rucss_context
+		ContextInterface $context
 	) {
         $this->query = $query;
         $this->filesystem = $filesystem;
-		$this->rucss_context = $rucss_context;
+		$this->context = $context;
     }
 
 	 /**
@@ -83,21 +83,19 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 		}
     }
 
-    /**
-     * Check SaaS response.
-     *
-     * @param array Associative array of data required to perform actions:
-     *                       - 'id': Row ID of job.
-     *                       - 'job_details': Details related to the job.
-     *                       - 'row_details': Details related to the row.
-     * @return void
-     */
-    public function process( array $data ) {
+	 /**
+	  * Process SaaS response.
+	  *
+	  * @param array $job_details Details related to the job..
+	  * @param object $row_details Details related to the row.
+	  * @return void
+	  */
+    public function process( array $job_details, $row_details ): void {
 		if ( ! $this->is_allowed() ) {
 			return;
 		}
 
-        $css = $this->apply_font_display_swap( $data['job_details']['contents']['rucss_result']['shakedCSS'] );
+        $css = $this->apply_font_display_swap( $job_details['contents']['rucss_result']['shakedCSS'] );
 
 		/**
 		 * RUCSS hash.
@@ -106,20 +104,19 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 		 * @param string $css RUCSS content.
 		 * @param UsedCSSRow $row_details Job details.
 		 */
-		$hash = (string) apply_filters( 'rocket_rucss_hash',  md5( $css ), $css, $data['row_details'] );
+		$hash = (string) apply_filters( 'rocket_rucss_hash',  md5( $css ), $css, $row_details );
 
 		if ( ! $this->filesystem->write_used_css( $hash, $css ) ) {
-			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $data['row_details']->url;
+			$message = 'RUCSS: Could not write used CSS to the filesystem: ' . $row_details->url;
 			$this->logger::error( $message );
-			$this->query->make_status_failed( $data['id'], '', $message );
+			$this->query->make_status_failed( $row_details->url, $row_details->is_mobile, '', $job_details['message'] );
 
 			return;
 		}
 
 		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
-		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $data['row_details']->url );
-
-		$this->query->make_status_completed( $data['id'], $hash );
+		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
+		$this->query->make_status_completed( $row_details->url, $row_details->is_mobile, $hash );
 
 		/**
 		 * Fires after successfully saving the used CSS for an URL
@@ -127,6 +124,6 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 		 * @param string $url URL used to generated the used CSS.
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
-		do_action( 'rocket_rucss_complete_job_status', $data['row_details']->url, $data['job_details'] );
+		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
     }
 }
