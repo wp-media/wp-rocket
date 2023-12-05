@@ -449,11 +449,13 @@ class Subscriber implements Subscriber_Interface {
 	public function add_preload_excluded_uri( $regexes ): array {
 		$preload_excluded_uri = (array) $this->options->get( 'preload_excluded_uri', [] );
 
-		$request_uri = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+			$request_uri = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 
-		if( (bool) !get_rocket_option( 'manual_preload', true ) ) {
-			// add the currently visited URL to the exclusions array
-			$regexes[] = $request_uri;
+			if ( (bool) ! get_rocket_option( 'manual_preload', true ) ) {
+				// add the currently visited URL to the exclusions array.
+				$regexes[] = $request_uri;
+			}
 		}
 
 		if ( empty( $preload_excluded_uri ) ) {
