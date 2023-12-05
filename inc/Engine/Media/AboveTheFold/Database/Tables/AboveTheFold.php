@@ -60,13 +60,4 @@ class AboveTheFold extends AbstractTable {
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191)),
 			INDEX `error_code_index` (`error_code`(32))";
-
-	/**
-	 * Instantiate class.
-	 */
-	public function __construct() {
-		parent::__construct();
-		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
-		add_action( 'init',  [ $this, 'maybe_upgrade' ] );
-	}
 }
