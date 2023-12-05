@@ -387,11 +387,9 @@ class JobProcessor implements LoggerAwareInterface {
      */
     private function get_pending_jobs( array $context, int $num_rows ): array {
         if ( ! $context['rucss'] && $context['atf'] ) {
-            $this->logger::debug( "ATF: Start getting number of {$rows} pending jobs." );
             return $this->atf_manager->get_pending_jobs( $num_rows );
         }
-
-        $this->logger::debug( "RUCSS: Start getting number of {$rows} pending jobs." );
+		
         return $this->rucss_manager->get_pending_jobs( $num_rows );
     }
 	
@@ -408,17 +406,13 @@ class JobProcessor implements LoggerAwareInterface {
         if ( $context['rucss'] ) {
             $this->logger::debug( "RUCSS: Send the job for url {$url} to Async task to check its job status." );
 
-            $this->rucss_manager
-				->query()
-                ->make_status_inprogress( $url, $is_mobile );
+            $this->rucss_manager->make_status_inprogress( $url, $is_mobile );
         }
 
         if ( $context['atf'] ) {
             $this->logger::debug( "ATF: Send the job for url {$url} to Async task to check its job status." );
 
-            $this->atf_manager
-				->query()
-                ->make_status_inprogress( $url, $is_mobile );
+            $this->atf_manager->make_status_inprogress( $url, $is_mobile );
         }
     }
 
@@ -434,15 +428,11 @@ class JobProcessor implements LoggerAwareInterface {
         if ( ! $context['rucss'] && $context['atf'] ) {
             $this->logger::debug( 'ATF: Start checking job status for url: ' . $url );
 
-            return $this->atf_manager
-					->query()
-                    ->get_row( $url, $is_mobile );
+            return $this->atf_manager->get_row( $url, $is_mobile );
         }
 
         $this->logger::debug( 'RUCSS: Start checking job status for url: ' . $url );
-        return $this->rucss_manager
-				->query()
-                ->get_row( $url, $is_mobile );
+        return $this->rucss_manager->get_row( $url, $is_mobile );
     }
 
 	/**
@@ -472,15 +462,11 @@ class JobProcessor implements LoggerAwareInterface {
      */
     private function make_status_failed( array $context, string $url, bool $is_mobile, string $error_code, string $error_message ): void {
         if ( $context['rucss'] ) {
-            $this->rucss_manager
-				->query()
-                ->make_status_failed( $url, $is_mobile, $error_code, $error_message );
+            $this->rucss_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
         }
 
         if ( $context['atf'] ) {
-            $this->atf_manager
-				->query()
-                ->make_status_failed( $url, $is_mobile, $error_code, $error_message );
+            $this->atf_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
         }
     }
 
@@ -496,15 +482,11 @@ class JobProcessor implements LoggerAwareInterface {
      */
     private function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
         if ( $context['rucss'] ) {
-                $this->rucss_manager
-					->query()
-                    ->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
+                $this->rucss_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
         }
 
         if ( $context['atf'] ) {
-            $this->atf_manager
-				->query()
-                ->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
+            $this->atf_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
         }
     }
 }

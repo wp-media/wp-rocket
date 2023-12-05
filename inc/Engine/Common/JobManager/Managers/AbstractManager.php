@@ -85,4 +85,62 @@ class AbstractManager {
 
         return $failed_urls;
     }
+
+     /**
+     * Change the status to be in-progress.
+     *
+     * @param string $url Url from DB row.
+     * @param boolean $is_mobile Is mobile from DB row.
+     * @return void
+     */
+    public function make_status_inprogress( string $url, bool $is_mobile ): void {
+        $this->query->make_status_inprogress( $url, $is_mobile );
+    }
+
+    /**
+     * Get single job.
+     *
+     * @param string $url Url from DB row.
+     * @param boolean $is_mobile Is mobile from DB row.
+     * @return bool|object
+     */
+    public function get_single_job( string $url, bool $is_mobile ) {
+        return $this->query->get_row( $url, $is_mobile );
+    }
+
+    /**
+     * Get on submit jobs based on enabled option.
+     *
+     * @param integer $num_rows Number of rows to grab with each CRON iteration.
+     * @return array
+     */
+    public function get_on_submit_jobs( int $num_rows ): array {
+        return $this->query->get_on_submit_jobs( $num_rows );
+    }
+
+    /**
+     * Change the job status to be failed.
+     *
+     * @param string $url Url from DB row.
+     * @param boolean $is_mobile Is mobile from DB row.
+     * @param string $error_code error code.
+     * @param string $error_message error message.
+     * @return void
+     */
+    public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+        $this->query->make_status_failed( $url, $is_mobile, $error_code, $error_message );
+    }
+
+    /**
+     * Change the job status to be pending.
+     *
+     * @param string $url Url from DB row.
+     * @param string $job_id API job_id.
+     * @param string $queue_name API Queue name.
+     * @param boolean $is_mobile if the request is for mobile page.
+     * @return void
+     */
+    public function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
+        $this->query->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
+    }
 }
