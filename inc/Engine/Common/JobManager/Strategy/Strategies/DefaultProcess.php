@@ -84,10 +84,6 @@ class DefaultProcess implements StrategyInterface {
 	 * @return void
 	 */
 	public function execute( object $row_details, array $job_details ): void {
-		$context = [
-			'rucss' => $this->rucss_manager->is_allowed(),
-			'atf' => $this->atf_manager->is_allowed(),
-		];
 
 		if ( $row_details->retries >= count( $this->time_table_retry ) ) {
 			/**
@@ -97,12 +93,12 @@ class DefaultProcess implements StrategyInterface {
 			 */
 			do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-			$this->make_status_failed( $context, $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
+			$this->make_status_failed( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 			return;
 		}
 
-		$this->increment_retries( $context, $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
+		$this->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
 
@@ -120,7 +116,6 @@ class DefaultProcess implements StrategyInterface {
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;
 
 		$this->update_message_with_next_retry_time(
-			$context,
 			$row_details->url,
 			$row_details->is_mobile,
 			$job_details['code'],
@@ -133,47 +128,34 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Change the status to be failed.
 	 *
-	 * @param array $context Context.
 	 * @param string $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string $error_code error code.
 	 * @param string $error_message error message.
 	 * @return void
 	 */
-	private function make_status_failed( array $context, string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-		if ( $context['rucss'] ) {
-			$this->rucss_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
-		}
-
-		if ( $context['atf'] ) {
-			$this->atf_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
-		}
+	private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+		$this->rucss_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
+		$this->atf_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
 	}
 
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
-	 * @param array $context Context.
 	 * @param string $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string $error_code error code.
 	 * @param string $error_message error message.
 	 * @return void
 	 */
-	private function increment_retries( array $context, string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-		if ( $context['rucss'] ) {
-			$this->rucss_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
-		}
-
-		if ( $context['atf'] ) {
-			$this->atf_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
-		}
+	private function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+		$this->rucss_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
+		$this->atf_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
 	}
 
 	/**
 	 * Update message and next retry time.
 	 *
-	 * @param array $context Context
 	 * @param string $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param int    $error_code error code.
@@ -183,7 +165,6 @@ class DefaultProcess implements StrategyInterface {
 	 * @return void
 	 */
 	private function update_message_with_next_retry_time(
-		array $context,
 		string $url,
 		bool $is_mobile,
 		string $error_code,
@@ -191,14 +172,10 @@ class DefaultProcess implements StrategyInterface {
 		string $previous_message,
 		$next_retry_time
 	) {
-		if ( $context['rucss'] ) {
-			$this->rucss_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
-			$this->rucss_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
-		}
+		$this->rucss_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
+		$this->rucss_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
 
-		if ( $context['atf'] ) {
-			$this->atf_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
-			$this->atf_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
-		}
+		$this->atf_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
+		$this->atf_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
 	}
 }

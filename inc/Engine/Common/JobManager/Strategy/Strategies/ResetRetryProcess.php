@@ -43,12 +43,7 @@ class ResetRetryProcess implements StrategyInterface {
 	 * @return void
 	 */
 	public function execute( object $row_details, array $job_details ): void {
-		if ( $this->rucss_manager->is_allowed() ) {
-			$this->rucss_manager->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
-		}
-
-		if ( $this->atf_manager->is_allowed() ) {
-			$this->atf_manager->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
-		}
+		$this->rucss_manager->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
+		$this->atf_manager->add_url_to_the_queue( $row_details->url, $row_details->is_mobile );
 	}
 }

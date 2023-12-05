@@ -49,12 +49,7 @@ class JobSetFail implements StrategyInterface {
 		 */
 		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-		if ( $this->rucss_manager->is_allowed() ) {
-			$this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
-		}
-
-		if ( $this->atf_manager->is_allowed() ) {
-			$this->atf_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
-		}
+		$this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
+		$this->atf_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
 	}
 }
