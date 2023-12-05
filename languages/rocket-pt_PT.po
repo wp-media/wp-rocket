@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15.1-alpha1\n"
+"Project-Id-Version: WP Rocket 3.15.6-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-09-25T14:39:29+03:00\n"
+"POT-Creation-Date: 2023-12-05T09:26:37+02:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Portugal) (https://app.transifex.com/wp-media/teams/18133/pt_PT/)\n"
@@ -41,7 +41,6 @@ msgstr "https://wp-media.me"
 
 #. Translators: %s = Hosting name.
 #: inc/3rd-party/hosting/flywheel.php:18
-#: inc/3rd-party/hosting/pressidium.php:18
 #: inc/3rd-party/hosting/wp-serveur.php:27 inc/deprecated/3.6.php:697
 #: inc/deprecated/3.6.php:997 inc/deprecated/3.9.php:22
 #: inc/ThirdParty/Hostings/Cloudways.php:90
@@ -49,6 +48,7 @@ msgstr "https://wp-media.me"
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
 #: inc/ThirdParty/Hostings/OneCom.php:137
+#: inc/ThirdParty/Hostings/Pressidium.php:49
 #: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:47
 #: inc/ThirdParty/Hostings/WPXCloud.php:51
@@ -365,7 +365,7 @@ msgstr ""
 "O WP Rocket irá criar ficheiros separados de cache para servir as suas "
 "imagens WebP."
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:266
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:272
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr "Suporte"
@@ -374,58 +374,58 @@ msgstr "Suporte"
 msgid "Docs"
 msgstr "Documentação"
 
-#: inc/admin/admin.php:22 inc/common/admin-bar.php:254
+#: inc/admin/admin.php:22 inc/common/admin-bar.php:260
 msgid "FAQ"
 msgstr "Perguntas frequentes"
 
-#: inc/admin/admin.php:24 inc/common/admin-bar.php:63
+#: inc/admin/admin.php:24 inc/common/admin-bar.php:69
 msgid "Settings"
 msgstr "Opções"
 
-#: inc/admin/admin.php:96 inc/admin/admin.php:118 inc/deprecated/3.5.php:898
-#: inc/Engine/Cache/AdminSubscriber.php:134
+#: inc/admin/admin.php:96 inc/admin/admin.php:117 inc/deprecated/3.5.php:898
+#: inc/Engine/Cache/AdminSubscriber.php:133
 msgid "Clear this cache"
 msgstr "Limpar esta cache"
 
-#: inc/admin/admin.php:397
+#: inc/admin/admin.php:402
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Falhou ao importar as opções: Não tem permissões para fazer isto."
 
-#: inc/admin/admin.php:401
+#: inc/admin/admin.php:406
 msgid "Settings import failed: no file uploaded."
 msgstr "Falhou ao importar as opções: Nenhum ficheiro carregado."
 
-#: inc/admin/admin.php:405
+#: inc/admin/admin.php:410
 msgid "Settings import failed: incorrect filename."
 msgstr "Falhou ao importar as opções: Nome de ficheiro incorrecto."
 
-#: inc/admin/admin.php:416
+#: inc/admin/admin.php:421
 msgid "Settings import failed: incorrect filetype."
 msgstr "Falhou ao importar as opções: Tipo de ficheiro incorrecto."
 
-#: inc/admin/admin.php:426
+#: inc/admin/admin.php:431
 msgid "Settings import failed: "
 msgstr "Falhou ao importar as opções: "
 
-#: inc/admin/admin.php:442
+#: inc/admin/admin.php:447
 msgid "Settings import failed: unexpected file content."
 msgstr "Falhou ao importar as opções: Ficheiro com conteúdo inesperado."
 
-#: inc/admin/admin.php:472
+#: inc/admin/admin.php:477
 msgid "Settings imported and saved."
 msgstr "As opções foram importadas e guardadas."
 
-#: inc/admin/options.php:84 inc/Engine/Admin/Settings/Page.php:684
+#: inc/admin/options.php:84 inc/Engine/Admin/Settings/Page.php:666
 msgid "Excluded CSS Files"
 msgstr "Ficheiros de CSS excluídos"
 
-#: inc/admin/options.php:85 inc/Engine/Admin/Settings/Page.php:838
+#: inc/admin/options.php:85 inc/Engine/Admin/Settings/Page.php:820
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript em linha excluído"
 
-#: inc/admin/options.php:86 inc/Engine/Admin/Settings/Page.php:856
-#: inc/Engine/Admin/Settings/Page.php:889
-#: inc/Engine/Admin/Settings/Page.php:936
+#: inc/admin/options.php:86 inc/Engine/Admin/Settings/Page.php:838
+#: inc/Engine/Admin/Settings/Page.php:871
+#: inc/Engine/Admin/Settings/Page.php:918
 msgid "Excluded JavaScript Files"
 msgstr "Ficheiros de JavaScript excluídos"
 
@@ -437,19 +437,19 @@ msgstr "Diferir ficheiros de JavaScript"
 msgid "Excluded Delay JavaScript Files"
 msgstr "Ficheiros de JavaScript excluídos do diferimento"
 
-#: inc/admin/options.php:89 inc/Engine/Admin/Settings/Page.php:1329
+#: inc/admin/options.php:89 inc/Engine/Admin/Settings/Page.php:1311
 msgid "Never Cache URL(s)"
 msgstr "Nunca criar cache dos URL"
 
-#: inc/admin/options.php:90 inc/Engine/Admin/Settings/Page.php:1343
+#: inc/admin/options.php:90 inc/Engine/Admin/Settings/Page.php:1325
 msgid "Never Cache User Agent(s)"
 msgstr "Nunca criar cache de agentes de utilizador"
 
-#: inc/admin/options.php:91 inc/Engine/Admin/Settings/Page.php:1349
+#: inc/admin/options.php:91 inc/Engine/Admin/Settings/Page.php:1331
 msgid "Always Purge URL(s)"
 msgstr "Limpar sempre os URL"
 
-#: inc/admin/options.php:92 inc/Engine/Admin/Settings/Page.php:1616
+#: inc/admin/options.php:92 inc/Engine/Admin/Settings/Page.php:1598
 msgid "Exclude files from CDN"
 msgstr "Excluir ficheiros da CDN"
 
@@ -470,7 +470,7 @@ msgid "More info"
 msgstr "Mais informações"
 
 #: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:671
-#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:147
+#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:153
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
 msgstr "Limpar cache"
@@ -775,33 +775,33 @@ msgstr ""
 "https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-"
 "working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 
-#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:147
+#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:153
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear and preload cache"
 msgstr "Limpar e pré-carregar cache"
 
-#: inc/common/admin-bar.php:135 inc/functions/i18n.php:40
+#: inc/common/admin-bar.php:141 inc/functions/i18n.php:40
 #: inc/functions/i18n.php:50
 msgid "All languages"
 msgstr "Todos os idiomas"
 
-#: inc/common/admin-bar.php:171
+#: inc/common/admin-bar.php:177
 msgid "Clear this post"
 msgstr "Limpar este conteúdo"
 
-#: inc/common/admin-bar.php:185
+#: inc/common/admin-bar.php:191
 msgid "Purge this URL"
 msgstr "Limpar este URL"
 
-#: inc/common/admin-bar.php:205
+#: inc/common/admin-bar.php:211
 msgid "Purge Sucuri cache"
 msgstr "Limpar cache do Sucuri"
 
-#: inc/common/admin-bar.php:229 views/settings/fields/rocket-cdn.php:55
+#: inc/common/admin-bar.php:235 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr "Limpar a cache da RocketCDN"
 
-#: inc/common/admin-bar.php:242 views/settings/partials/documentation.php:14
+#: inc/common/admin-bar.php:248 views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr "Documentação"
 
@@ -1118,8 +1118,8 @@ msgstr "Básico"
 msgid "Static Files"
 msgstr "Ficheiros estáticos"
 
-#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1586
-#: inc/Engine/Admin/Settings/Page.php:1597
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1568
+#: inc/Engine/Admin/Settings/Page.php:1579
 #: inc/Engine/CDN/Admin/Subscriber.php:28
 msgid "CDN"
 msgstr "CDN"
@@ -1128,11 +1128,11 @@ msgstr "CDN"
 msgid "Advanced"
 msgstr "Avançado"
 
-#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1431
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1413
 msgid "Database"
 msgstr "Base de dados"
 
-#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1164
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1146
 msgid "Preload"
 msgstr "Pré-carregamento"
 
@@ -1142,7 +1142,7 @@ msgstr "Pré-carregamento"
 msgid "Tools"
 msgstr "Ferramentas"
 
-#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:352
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:334
 #: views/settings/page-sections/dashboard.php:80
 msgid "License"
 msgstr "Licença"
@@ -1185,27 +1185,27 @@ msgid "weekly"
 msgstr "semanalmente"
 
 #: inc/Engine/Admin/Database/Optimization.php:30
-#: inc/Engine/Admin/Settings/Page.php:1475
+#: inc/Engine/Admin/Settings/Page.php:1457
 msgid "Revisions"
 msgstr "Revisões"
 
 #: inc/Engine/Admin/Database/Optimization.php:31
-#: inc/Engine/Admin/Settings/Page.php:1485
+#: inc/Engine/Admin/Settings/Page.php:1467
 msgid "Auto Drafts"
 msgstr "Rascunhos automáticos"
 
 #: inc/Engine/Admin/Database/Optimization.php:32
-#: inc/Engine/Admin/Settings/Page.php:1495
+#: inc/Engine/Admin/Settings/Page.php:1477
 msgid "Trashed Posts"
 msgstr "Conteúdos no lixo"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
-#: inc/Engine/Admin/Settings/Page.php:1505
+#: inc/Engine/Admin/Settings/Page.php:1487
 msgid "Spam Comments"
 msgstr "Comentários de spam"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
-#: inc/Engine/Admin/Settings/Page.php:1515
+#: inc/Engine/Admin/Settings/Page.php:1497
 msgid "Trashed Comments"
 msgstr "Comentários no lixo"
 
@@ -1269,36 +1269,36 @@ msgid "Validate License"
 msgstr "Validar licença"
 
 #: inc/Engine/Admin/Settings/Page.php:257
-#: inc/Engine/Admin/Settings/Page.php:258
+#: inc/Engine/Admin/Settings/Page.php:258 inc/functions/admin.php:550
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: inc/Engine/Admin/Settings/Page.php:369
+#: inc/Engine/Admin/Settings/Page.php:351
 msgid "API key"
 msgstr "Chave de API"
 
-#: inc/Engine/Admin/Settings/Page.php:384
+#: inc/Engine/Admin/Settings/Page.php:366
 msgid "Email address"
 msgstr "Endereço de email"
 
-#: inc/Engine/Admin/Settings/Page.php:410
+#: inc/Engine/Admin/Settings/Page.php:392
 msgid "Dashboard"
 msgstr "Painel"
 
-#: inc/Engine/Admin/Settings/Page.php:411
+#: inc/Engine/Admin/Settings/Page.php:393
 msgid "Get help, account info"
 msgstr "Obter ajuda, informações da conta"
 
-#: inc/Engine/Admin/Settings/Page.php:420
+#: inc/Engine/Admin/Settings/Page.php:402
 msgid "My Status"
 msgstr "O meu estado"
 
-#: inc/Engine/Admin/Settings/Page.php:430 views/settings/page.php:75
+#: inc/Engine/Admin/Settings/Page.php:412 views/settings/page.php:75
 msgid "Rocket Analytics"
 msgstr "Rocket Analytics"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:432
+#: inc/Engine/Admin/Settings/Page.php:414
 msgid ""
 "I agree to share anonymous data with the development team to help improve WP"
 " Rocket. %1$sWhat info will we collect?%2$s"
@@ -1306,23 +1306,23 @@ msgstr ""
 "Concordo em partilhar informações anónimas com a equipa de desenvolvimento "
 "para ajudar a melhorar o WP Rocket. %1$sQue informações recolhemos?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:456 inc/Engine/Cache/WPCache.php:354
+#: inc/Engine/Admin/Settings/Page.php:438 inc/Engine/Cache/WPCache.php:354
 msgid "Cache"
 msgstr "Cache"
 
-#: inc/Engine/Admin/Settings/Page.php:457
+#: inc/Engine/Admin/Settings/Page.php:439
 msgid "Basic cache options"
 msgstr "Opções básicas de cache"
 
-#: inc/Engine/Admin/Settings/Page.php:464
+#: inc/Engine/Admin/Settings/Page.php:446
 msgid "Mobile Cache"
 msgstr "Cache de dispositivos móveis"
 
-#: inc/Engine/Admin/Settings/Page.php:466
+#: inc/Engine/Admin/Settings/Page.php:448
 msgid "Speed up your site for mobile visitors."
 msgstr "Acelere o seu site em dispositivos móveis."
 
-#: inc/Engine/Admin/Settings/Page.php:471
+#: inc/Engine/Admin/Settings/Page.php:453
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -1331,12 +1331,12 @@ msgstr ""
 "dispositivos móveis, e foi activada esta opção para garantir a "
 "compatibilidade."
 
-#: inc/Engine/Admin/Settings/Page.php:475
+#: inc/Engine/Admin/Settings/Page.php:457
 msgid "User Cache"
 msgstr "Cache de utilizadores"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:478
+#: inc/Engine/Admin/Settings/Page.php:460
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
 "content on your website."
@@ -1344,12 +1344,12 @@ msgstr ""
 "A %1$scache de utilizadores%2$s é óptima quando tem conteúdos específicos "
 "para utilizadores ou conteúdos restritos no seu site."
 
-#: inc/Engine/Admin/Settings/Page.php:486
+#: inc/Engine/Admin/Settings/Page.php:468
 msgid "Cache Lifespan"
 msgstr "Expiração da cache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:489
+#: inc/Engine/Admin/Settings/Page.php:471
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
 "%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
@@ -1359,20 +1359,20 @@ msgstr ""
 "especificada.<br>Active o %1$spré-carregamento%2$s para a cache ser "
 "reconstruída automaticamente após a sua expiração."
 
-#: inc/Engine/Admin/Settings/Page.php:503
+#: inc/Engine/Admin/Settings/Page.php:485
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Activar cache para utilizadores do WordPress com sessão iniciada"
 
-#: inc/Engine/Admin/Settings/Page.php:511
+#: inc/Engine/Admin/Settings/Page.php:493
 msgid "Enable caching for mobile devices"
 msgstr "Activar cache para dispositivos móveis"
 
-#: inc/Engine/Admin/Settings/Page.php:526
+#: inc/Engine/Admin/Settings/Page.php:508
 msgid "Separate cache files for mobile devices"
 msgstr "Ficheiros de cache separados para dispositivos móveis"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:528
+#: inc/Engine/Admin/Settings/Page.php:510
 msgid ""
 "Most modern themes are responsive and should work without a separate cache. "
 "Enable this only if you have a dedicated mobile theme or plugin. %1$sMore "
@@ -1382,14 +1382,14 @@ msgstr ""
 "separada. Active isto apenas se tiver um tema ou plugin dedicado a "
 "dispositivos móveis. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:544
+#: inc/Engine/Admin/Settings/Page.php:526
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Especifique o tempo após o qual a cache global é limpa<br>(0 = ilimitado)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:546
+#: inc/Engine/Admin/Settings/Page.php:528
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically. %1$sWhy?%2$s"
@@ -1397,29 +1397,29 @@ msgstr ""
 "Reduza a expiração para 10 horas ou menos se notar erros que parecem surgir "
 "periodicamente. %1$sPorquê?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:552
+#: inc/Engine/Admin/Settings/Page.php:534
 #: inc/Engine/License/views/promo-banner.php:30
 #: inc/Engine/License/views/renewal-soon-banner.php:13
 msgid "Hours"
 msgstr "Horas"
 
-#: inc/Engine/Admin/Settings/Page.php:553
+#: inc/Engine/Admin/Settings/Page.php:535
 #: inc/Engine/License/views/promo-banner.php:29
 #: inc/Engine/License/views/renewal-soon-banner.php:12
 msgid "Days"
 msgstr "Dias"
 
-#: inc/Engine/Admin/Settings/Page.php:602
+#: inc/Engine/Admin/Settings/Page.php:584
 msgid "File Optimization"
 msgstr "Optimizar ficheiros"
 
-#: inc/Engine/Admin/Settings/Page.php:603
+#: inc/Engine/Admin/Settings/Page.php:585
 msgid "Optimize CSS & JS"
 msgstr "Optimize o CSS e JS"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:611
+#: inc/Engine/Admin/Settings/Page.php:593
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable this option in Autoptimize."
@@ -1428,17 +1428,17 @@ msgstr ""
 "<strong>Autoptimize</strong>. Se quiser usar a minificação do %2$s, "
 "desactive esta opção no Autoptimize."
 
-#: inc/Engine/Admin/Settings/Page.php:621
+#: inc/Engine/Admin/Settings/Page.php:603
 msgid "CSS Files"
 msgstr "Ficheiros de CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:630
+#: inc/Engine/Admin/Settings/Page.php:612
 msgid "JavaScript Files"
 msgstr "Ficheiros de JavaScript"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:637
+#: inc/Engine/Admin/Settings/Page.php:619
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
 " you want to use %2$s’s minification, disable those options in Autoptimize."
@@ -1447,7 +1447,7 @@ msgstr ""
 "<strong>Autoptimize</strong>. Se quiser usar a minificação do %2$s, "
 "desactive esta opção no Autoptimize."
 
-#: inc/Engine/Admin/Settings/Page.php:642
+#: inc/Engine/Admin/Settings/Page.php:624
 msgid ""
 "If you have problems after activating this option, copy and paste the "
 "default exclusions to quickly resolve issues:"
@@ -1456,7 +1456,7 @@ msgstr ""
 "exclusões por omissão para corrigir os erros rapidamente:"
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:646
+#: inc/Engine/Admin/Settings/Page.php:628
 msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
 "exclusions."
@@ -1464,7 +1464,7 @@ msgstr ""
 "Além disto, por favor consulte a nossa %1$sdocumentação%2$s para uma lista "
 "de exclusões compatíveis."
 
-#: inc/Engine/Admin/Settings/Page.php:651
+#: inc/Engine/Admin/Settings/Page.php:633
 msgid ""
 "Internal scripts are excluded by default to prevent issues. Remove them to "
 "take full advantage of this option."
@@ -1473,33 +1473,33 @@ msgstr ""
 "Remova-os para tirar total partido desta opção."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:654
+#: inc/Engine/Admin/Settings/Page.php:636
 msgid ""
 "If this causes trouble, restore the default exclusions, found %1$shere%2$s"
 msgstr ""
 "Se isto criar algum problema, recupere as exclusões por omissão %1$saqui%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:663
+#: inc/Engine/Admin/Settings/Page.php:645
 msgid "Minify CSS files"
 msgstr "Minificar ficheiros de CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:664
+#: inc/Engine/Admin/Settings/Page.php:646
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "A minificação do CSS remove espaços em branco e comentários para reduzir o "
 "tamanho do ficheiro."
 
-#: inc/Engine/Admin/Settings/Page.php:677
-#: inc/Engine/Admin/Settings/Page.php:741
-#: inc/Engine/Admin/Settings/Page.php:807
-#: inc/Engine/Admin/Settings/Page.php:831
+#: inc/Engine/Admin/Settings/Page.php:659
+#: inc/Engine/Admin/Settings/Page.php:723
+#: inc/Engine/Admin/Settings/Page.php:789
+#: inc/Engine/Admin/Settings/Page.php:813
 msgid "This could break things!"
 msgstr "Isto poderá danificar alguma coisa!"
 
-#: inc/Engine/Admin/Settings/Page.php:678
-#: inc/Engine/Admin/Settings/Page.php:742
-#: inc/Engine/Admin/Settings/Page.php:808
-#: inc/Engine/Admin/Settings/Page.php:832
+#: inc/Engine/Admin/Settings/Page.php:660
+#: inc/Engine/Admin/Settings/Page.php:724
+#: inc/Engine/Admin/Settings/Page.php:790
+#: inc/Engine/Admin/Settings/Page.php:814
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -1507,18 +1507,18 @@ msgstr ""
 "Se notar quaisquer erros no seu site depois de activar esta opção, basta "
 "desactivar de novo para o seu site voltar ao normal."
 
-#: inc/Engine/Admin/Settings/Page.php:679
+#: inc/Engine/Admin/Settings/Page.php:661
 msgid "Activate minify CSS"
 msgstr "Activar minificação do CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:685
+#: inc/Engine/Admin/Settings/Page.php:667
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
 "Especifique os URL de ficheiros de CSS a excluir da minificação (um por "
 "linha)."
 
-#: inc/Engine/Admin/Settings/Page.php:686
+#: inc/Engine/Admin/Settings/Page.php:668
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
@@ -1529,7 +1529,7 @@ msgstr ""
 "num caminho específico."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:688
+#: inc/Engine/Admin/Settings/Page.php:670
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external CSS. %1$sMore info%2$s"
@@ -1537,12 +1537,12 @@ msgstr ""
 "<strong>Terceiros:</strong> Use o caminho completo do URL ou apenas o nome "
 "do domínio, para excluir CSS externo. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:701
-#: inc/Engine/Admin/Settings/Page.php:723
+#: inc/Engine/Admin/Settings/Page.php:683
+#: inc/Engine/Admin/Settings/Page.php:705
 msgid "Optimize CSS delivery"
 msgstr "Optimizar entrega do CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:706
+#: inc/Engine/Admin/Settings/Page.php:688
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1553,7 +1553,7 @@ msgstr ""
 "recomendado Remover CSS não utilizado, mas apenas para utilizadores com uma "
 "licença activa."
 
-#: inc/Engine/Admin/Settings/Page.php:706
+#: inc/Engine/Admin/Settings/Page.php:688
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1564,7 +1564,7 @@ msgstr ""
 "recomendado Remover CSS não utilizado."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:716
+#: inc/Engine/Admin/Settings/Page.php:698
 msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
 " more%2$s"
@@ -1572,13 +1572,13 @@ msgstr ""
 "As funcionalidades de optimizar entrega do CSS estão desactivadas em "
 "ambientes locais. %1$sSaiba mais%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:736
+#: inc/Engine/Admin/Settings/Page.php:718
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
 msgid "Remove Unused CSS"
 msgstr "Remover CSS não utilizado"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:739
+#: inc/Engine/Admin/Settings/Page.php:721
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
 " Recommended for best performance. Test thoroughly! %1$sMore info%2$s"
@@ -1587,15 +1587,15 @@ msgstr ""
 "página e os pedidos HTTP. Recomendado para um melhor desempenho. Teste com "
 "cuidado! %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:743
+#: inc/Engine/Admin/Settings/Page.php:725
 msgid "Activate Remove Unused CSS"
 msgstr "Activar a remoção de CSS não utilizado"
 
-#: inc/Engine/Admin/Settings/Page.php:749
+#: inc/Engine/Admin/Settings/Page.php:731
 msgid "CSS safelist"
 msgstr "CSS a não remover"
 
-#: inc/Engine/Admin/Settings/Page.php:750
+#: inc/Engine/Admin/Settings/Page.php:732
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
@@ -1603,13 +1603,13 @@ msgstr ""
 "Especifique os ficheiros, ID ou classes CSS que não devem ser removidos (um "
 "por linha)."
 
-#: inc/Engine/Admin/Settings/Page.php:765
+#: inc/Engine/Admin/Settings/Page.php:747
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:200
 msgid "Load CSS asynchronously"
 msgstr "Carregamento assíncrono de CSS"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Admin/Settings/Page.php:768
+#: inc/Engine/Admin/Settings/Page.php:750
 msgctxt "WP Critical CSS compatibility"
 msgid ""
 "Load CSS asynchronously is currently handled by the %1$s plugin. If you want"
@@ -1619,19 +1619,19 @@ msgstr ""
 "usar o carregamento assíncrono de CSS do WP Rocket, desactive o plugin %1$s."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:770
+#: inc/Engine/Admin/Settings/Page.php:752
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
 msgstr ""
 "Gera CSS do caminho crítico e carrega o CSS de modo assíncrono. %1$sMais "
 "informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:776
+#: inc/Engine/Admin/Settings/Page.php:758
 msgid "Fallback critical CSS"
 msgstr "Alternativa ao CSS crítico"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:778
+#: inc/Engine/Admin/Settings/Page.php:760
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
 "%1$sMore info%2$s"
@@ -1639,22 +1639,22 @@ msgstr ""
 "Fornece uma alternativa caso o CSS do caminho crítico gerado automaticamente"
 " esteja incompleto. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:793
+#: inc/Engine/Admin/Settings/Page.php:775
 msgid "Minify JavaScript files"
 msgstr "Minificar ficheiros de JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:794
+#: inc/Engine/Admin/Settings/Page.php:776
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "A minificação do JavaScript remove espaços em branco e comentários para "
 "reduzir o tamanho do ficheiro."
 
-#: inc/Engine/Admin/Settings/Page.php:809
+#: inc/Engine/Admin/Settings/Page.php:791
 msgid "Activate minify JavaScript"
 msgstr "Activar minificação do JavaScript"
 
-#: inc/Engine/Admin/Settings/Page.php:814
+#: inc/Engine/Admin/Settings/Page.php:796
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
@@ -1662,7 +1662,7 @@ msgstr ""
 "JavaScript para poder seleccionar)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:816
+#: inc/Engine/Admin/Settings/Page.php:798
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
@@ -1673,7 +1673,7 @@ msgstr ""
 "utilizar HTTP/2. %1$sMais informações%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:817
+#: inc/Engine/Admin/Settings/Page.php:799
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
@@ -1681,12 +1681,12 @@ msgstr ""
 "Para compatibilidade e melhores resultados, esta opção é desactivada ao "
 "activar a opção de diferir a execução de JavaScript."
 
-#: inc/Engine/Admin/Settings/Page.php:833
+#: inc/Engine/Admin/Settings/Page.php:815
 msgid "Activate combine JavaScript"
 msgstr "Activar combinação do JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:840
+#: inc/Engine/Admin/Settings/Page.php:822
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
 " per line). %1$sMore info%2$s"
@@ -1694,7 +1694,7 @@ msgstr ""
 "Especifique padrões de JavaScript em linha a excluir da concatenação (um por"
 " linha). %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:857
+#: inc/Engine/Admin/Settings/Page.php:839
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -1702,7 +1702,7 @@ msgstr ""
 "Especifique os URL de ficheiros de JavaScript a excluir da minificação e "
 "concatenação (um por linha)."
 
-#: inc/Engine/Admin/Settings/Page.php:858
+#: inc/Engine/Admin/Settings/Page.php:840
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -1713,7 +1713,7 @@ msgstr ""
 "caminho específico."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:860
+#: inc/Engine/Admin/Settings/Page.php:842
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
@@ -1721,13 +1721,13 @@ msgstr ""
 "<strong>Terceiros:</strong> Use o caminho completo do URL ou apenas o nome "
 "do domínio, para excluir JS externo. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:876
+#: inc/Engine/Admin/Settings/Page.php:858
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr "Diferir carregamento de JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:878
+#: inc/Engine/Admin/Settings/Page.php:860
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
@@ -1737,7 +1737,7 @@ msgstr ""
 "informações%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:891
+#: inc/Engine/Admin/Settings/Page.php:873
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
 "per line). %1$sMore info%2$s"
@@ -1745,13 +1745,13 @@ msgstr ""
 "Especifique os URL ou palavras-chave de ficheiros de JavaScript a excluir do"
 " diferimento (um por linha). %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:907
+#: inc/Engine/Admin/Settings/Page.php:889
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
 msgid "Delay JavaScript execution"
 msgstr "Diferir execução de JavaScript"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:909
+#: inc/Engine/Admin/Settings/Page.php:891
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
 "interaction (e.g. scroll, click). %1$sMore info%2$s"
@@ -1760,11 +1760,11 @@ msgstr ""
 "até interacção do utilizador (como scroll ou clique). %1$sMais "
 "informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:918
+#: inc/Engine/Admin/Settings/Page.php:900
 msgid "One-click exclusions"
 msgstr "Exclusões com um clique"
 
-#: inc/Engine/Admin/Settings/Page.php:919
+#: inc/Engine/Admin/Settings/Page.php:901
 msgid ""
 "When using the Delay JavaScript Execution, you might experience delay "
 "loading elements located in the viewport that need to appear immediately - "
@@ -1774,7 +1774,7 @@ msgstr ""
 " no carregamento de elementos localizados na área visível do ecrã que devam "
 "ser mostrados de imediato, como por exemplo, slider, cabeçalho ou menu."
 
-#: inc/Engine/Admin/Settings/Page.php:920
+#: inc/Engine/Admin/Settings/Page.php:902
 msgid ""
 "If you need instant visibility, click below on files that should NOT be "
 "delayed. This selection will help users interact with the elements straight "
@@ -1784,7 +1784,7 @@ msgstr ""
 "devem ser diferidos. Esta selecção ajudará os utilizadores a interagir de "
 "imediato com os elementos."
 
-#: inc/Engine/Admin/Settings/Page.php:937
+#: inc/Engine/Admin/Settings/Page.php:919
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
@@ -1792,24 +1792,24 @@ msgstr ""
 "Especifique os URL ou palavras-chave que possam identificar o JavaScript em "
 "linha ou em ficheiros a excluir da execução em diferido (um por linha)."
 
-#: inc/Engine/Admin/Settings/Page.php:969
+#: inc/Engine/Admin/Settings/Page.php:951
 msgid "Media"
 msgstr "Multimédia"
 
-#: inc/Engine/Admin/Settings/Page.php:970
+#: inc/Engine/Admin/Settings/Page.php:952
 msgid "LazyLoad, image dimensions"
 msgstr "Carregamento diferido, dimensões de imagens"
 
-#: inc/Engine/Admin/Settings/Page.php:979
+#: inc/Engine/Admin/Settings/Page.php:961
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:1033
+#: inc/Engine/Admin/Settings/Page.php:1015
 msgid "LazyLoad"
 msgstr "Carregamento diferido"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1036
+#: inc/Engine/Admin/Settings/Page.php:1018
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
 "videos will be loaded only as they enter (or about to enter) the viewport "
@@ -1821,7 +1821,7 @@ msgstr ""
 "informações%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:1043
+#: inc/Engine/Admin/Settings/Page.php:1025
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
@@ -1829,12 +1829,12 @@ msgstr ""
 "De momento o carregamento diferido está activado em %2$s. Se quiser usar o "
 "carregamento diferido do WP Rocket, desactive esta opção em %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1046
+#: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Image Dimensions"
 msgstr "Dimensões das imagens"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1049
+#: inc/Engine/Admin/Settings/Page.php:1031
 msgid ""
 "Add missing width and height attributes to images. Helps prevent layout "
 "shifts and improve the reading experience for your visitors. %1$sMore "
@@ -1844,12 +1844,12 @@ msgstr ""
 "evitar alterações de layout e melhora a experiência de leitura dos seus "
 "visitantes. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1068
+#: inc/Engine/Admin/Settings/Page.php:1050
 msgid "Enable for images"
 msgstr "Activar para imagens"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:1080
+#: inc/Engine/Admin/Settings/Page.php:1062
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
@@ -1857,27 +1857,27 @@ msgstr ""
 "De momento o carregamento diferido de imagens está activado em %2$s. Se "
 "quiser usar o carregamento diferido do %1$s, desactive esta opção em %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1088
+#: inc/Engine/Admin/Settings/Page.php:1070
 msgid "Enable for CSS background images"
 msgstr "Activar para imagens de fundo CSS"
 
-#: inc/Engine/Admin/Settings/Page.php:1103
+#: inc/Engine/Admin/Settings/Page.php:1085
 msgid "Enable for iframes and videos"
 msgstr "Activar para iframes e vídeos"
 
-#: inc/Engine/Admin/Settings/Page.php:1118
+#: inc/Engine/Admin/Settings/Page.php:1100
 msgid "Replace YouTube iframe with preview image"
 msgstr "Substituir iframes do YouTube por imagens de pré-visualização"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1120
+#: inc/Engine/Admin/Settings/Page.php:1102
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
 "A substituição de iframes do YouTube por imagens de pré-visualização não é "
 "compatível com %2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1120
+#: inc/Engine/Admin/Settings/Page.php:1102
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1885,12 +1885,12 @@ msgstr ""
 "Isto pode melhorar significativamente o tempo de carregamento se tiver "
 "muitos vídeos do YouTube numa só página."
 
-#: inc/Engine/Admin/Settings/Page.php:1135
+#: inc/Engine/Admin/Settings/Page.php:1117
 msgid "Excluded images or iframes"
 msgstr "Imagens ou iframes excluídos"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1137
+#: inc/Engine/Admin/Settings/Page.php:1119
 msgid ""
 "Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
 " the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
@@ -1899,20 +1899,20 @@ msgstr ""
 "ficheiro CSS, classe CSS, domínio) das imagens ou dos códigos de iframe a "
 "excluir (uma por linha). %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1145
+#: inc/Engine/Admin/Settings/Page.php:1127
 msgid "Add missing image dimensions"
 msgstr "Adicionar dimensões em falta das imagens"
 
-#: inc/Engine/Admin/Settings/Page.php:1165
+#: inc/Engine/Admin/Settings/Page.php:1147
 msgid "Generate cache files, preload fonts"
 msgstr "Crie ficheiros de cache, pré-carregue tipos de letra"
 
-#: inc/Engine/Admin/Settings/Page.php:1177
+#: inc/Engine/Admin/Settings/Page.php:1159
 msgid "Preload Cache"
 msgstr "Pré-carregamento da cache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1180
+#: inc/Engine/Admin/Settings/Page.php:1162
 msgid ""
 "When you enable preloading WP Rocket will automatically detect your sitemaps"
 " and save all URLs to the database. The plugin will make sure that your "
@@ -1922,12 +1922,12 @@ msgstr ""
 "seus sitemaps e guardar todos os URL na base de dados. O plugin assegura que"
 " a sua cache seja sempre pré-carregada."
 
-#: inc/Engine/Admin/Settings/Page.php:1188
+#: inc/Engine/Admin/Settings/Page.php:1170
 msgid "Preload Links"
 msgstr "Pré-carregamento das ligações"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1191
+#: inc/Engine/Admin/Settings/Page.php:1173
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
 "a user hovers over the link. %1$sMore info%2$s"
@@ -1936,11 +1936,11 @@ msgstr ""
 "através de descarregar a página assim que o utilizador passa com o rato "
 "sobre a respectiva ligação. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1199
+#: inc/Engine/Admin/Settings/Page.php:1181
 msgid "Prefetch DNS Requests"
 msgstr "Antecipar pedidos de DNS"
 
-#: inc/Engine/Admin/Settings/Page.php:1201
+#: inc/Engine/Admin/Settings/Page.php:1183
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1948,12 +1948,12 @@ msgstr ""
 "A antecipação do pedido de DNS pode acelerar o carregamento de ficheiros "
 "externos, especialmente em redes móveis"
 
-#: inc/Engine/Admin/Settings/Page.php:1206
+#: inc/Engine/Admin/Settings/Page.php:1188
 msgid "Preload Fonts"
 msgstr "Pré-carregar tipos de letra"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1209
+#: inc/Engine/Admin/Settings/Page.php:1191
 msgid ""
 "Improves performance by helping browsers discover fonts in CSS files. "
 "%1$sMore info%2$s"
@@ -1961,16 +1961,16 @@ msgstr ""
 "Melhora o desempenho ao ajudar os navegadores a descobrir tipos de letra em "
 "ficheiros de CSS. %1$sMais informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1223
+#: inc/Engine/Admin/Settings/Page.php:1205
 msgid "Activate Preloading"
 msgstr "Activar pré-carregamento"
 
-#: inc/Engine/Admin/Settings/Page.php:1234
+#: inc/Engine/Admin/Settings/Page.php:1216
 msgid "Exclude URLs"
 msgstr "Excluir estes URL"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1239
+#: inc/Engine/Admin/Settings/Page.php:1221
 msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
@@ -1978,11 +1978,11 @@ msgstr ""
 "Especifique os URL a excluir do pré-carregamento (um por linha). %1$sMais "
 "informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1250
+#: inc/Engine/Admin/Settings/Page.php:1232
 msgid "URLs to prefetch"
 msgstr "Os URL dos pedidos a antecipar"
 
-#: inc/Engine/Admin/Settings/Page.php:1251
+#: inc/Engine/Admin/Settings/Page.php:1233
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1990,11 +1990,11 @@ msgstr ""
 "Especifique os servidores externos a antecipar os pedidos (sem "
 "<code>http:</code>, um por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1260
+#: inc/Engine/Admin/Settings/Page.php:1242
 msgid "Fonts to preload"
 msgstr "Tipos de letra a pré-carregar"
 
-#: inc/Engine/Admin/Settings/Page.php:1261
+#: inc/Engine/Admin/Settings/Page.php:1243
 msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
@@ -2003,7 +2003,7 @@ msgstr ""
 "linha). Os tipos de letra devem ser alojados no seu domínio, ou no domínio "
 "especificado no separador da CDN."
 
-#: inc/Engine/Admin/Settings/Page.php:1262
+#: inc/Engine/Admin/Settings/Page.php:1244
 msgid ""
 "The domain part of the URL will be stripped automatically.<br/>Allowed font "
 "extensions: otf, ttf, svg, woff, woff2."
@@ -2011,53 +2011,53 @@ msgstr ""
 "O domínio será removido automaticamente do URL.<br/>Extensões permitidas "
 "para tipos de letra: otf, ttf, svg, woff, woff2."
 
-#: inc/Engine/Admin/Settings/Page.php:1271
+#: inc/Engine/Admin/Settings/Page.php:1253
 msgid "Enable link preloading"
 msgstr "Activar o pré-carregamento de ligações"
 
-#: inc/Engine/Admin/Settings/Page.php:1290
+#: inc/Engine/Admin/Settings/Page.php:1272
 msgid "Advanced Rules"
 msgstr "Regras avançadas"
 
-#: inc/Engine/Admin/Settings/Page.php:1291
+#: inc/Engine/Admin/Settings/Page.php:1273
 msgid "Fine-tune cache rules"
 msgstr "Configure as regras de cache em pormenor"
 
-#: inc/Engine/Admin/Settings/Page.php:1302
+#: inc/Engine/Admin/Settings/Page.php:1284
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Devem excluir-se da cache os URL personalizados de páginas dinâmicas como as"
 " de início e terminar sessão."
 
-#: inc/Engine/Admin/Settings/Page.php:1305
+#: inc/Engine/Admin/Settings/Page.php:1287
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1307
+#: inc/Engine/Admin/Settings/Page.php:1289
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/Engine/Admin/Settings/Page.php:1309
+#: inc/Engine/Admin/Settings/Page.php:1291
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1311
+#: inc/Engine/Admin/Settings/Page.php:1293
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1313
+#: inc/Engine/Admin/Settings/Page.php:1295
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
 #. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
 #. tag.
-#: inc/Engine/Admin/Settings/Page.php:1319
+#: inc/Engine/Admin/Settings/Page.php:1301
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
 "<strong>%1$s%2$s%3$s</strong> will be detected and never cached by default."
@@ -2066,16 +2066,16 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> serão detectadas e por omissão nunca serão "
 "armazenadas em cache."
 
-#: inc/Engine/Admin/Settings/Page.php:1337
+#: inc/Engine/Admin/Settings/Page.php:1319
 msgid "Never Cache Cookies"
 msgstr "Nunca criar cache de cookies"
 
-#: inc/Engine/Admin/Settings/Page.php:1355
+#: inc/Engine/Admin/Settings/Page.php:1337
 msgid "Cache Query String(s)"
 msgstr "Cache de parâmetros de consulta"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1358
+#: inc/Engine/Admin/Settings/Page.php:1340
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
 "GET parameters."
@@ -2083,15 +2083,15 @@ msgstr ""
 "A %1$scache de parâmetros de consulta%2$s permite forçar a cache de "
 "parâmetros GET específicos."
 
-#: inc/Engine/Admin/Settings/Page.php:1369
+#: inc/Engine/Admin/Settings/Page.php:1351
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Especifique os URL de páginas ou conteúdos que nunca deverão ser guardados "
 "em cache (um por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1370
-#: inc/Engine/Admin/Settings/Page.php:1398
+#: inc/Engine/Admin/Settings/Page.php:1352
+#: inc/Engine/Admin/Settings/Page.php:1380
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -2099,7 +2099,7 @@ msgstr ""
 "O domínio será removido automaticamente do URL.<br>Utilize wildcards (.*) "
 "para incluir múltiplos URL num determinado caminho."
 
-#: inc/Engine/Admin/Settings/Page.php:1379
+#: inc/Engine/Admin/Settings/Page.php:1361
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
@@ -2108,20 +2108,20 @@ msgstr ""
 " navegador do visitante, deverão impedir uma página de ser guardada em cache"
 " (um por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1387
+#: inc/Engine/Admin/Settings/Page.php:1369
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Especifique strings de agentes de utilizador que nunca devem obter páginas "
 "em cache (uma por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1388
+#: inc/Engine/Admin/Settings/Page.php:1370
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr ""
 "Utilize wildcards (.*) para detectar partes de strings de agentes de "
 "utilizador."
 
-#: inc/Engine/Admin/Settings/Page.php:1397
+#: inc/Engine/Admin/Settings/Page.php:1379
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -2129,19 +2129,19 @@ msgstr ""
 "Especifique os URL a limpar da cache sempre que actualizar qualquer conteúdo"
 " ou página (um por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1406
+#: inc/Engine/Admin/Settings/Page.php:1388
 msgid "Specify query strings for caching (one per line)"
 msgstr "Especifique parâmetros de consulta a adicionar à cache (um por linha)"
 
-#: inc/Engine/Admin/Settings/Page.php:1432
+#: inc/Engine/Admin/Settings/Page.php:1414
 msgid "Optimize, reduce bloat"
 msgstr "Optimize, reduza a sobrecarga"
 
-#: inc/Engine/Admin/Settings/Page.php:1439
+#: inc/Engine/Admin/Settings/Page.php:1421
 msgid "Post Cleanup"
 msgstr "Limpeza de conteúdos"
 
-#: inc/Engine/Admin/Settings/Page.php:1441
+#: inc/Engine/Admin/Settings/Page.php:1423
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -2149,19 +2149,19 @@ msgstr ""
 "As revisões e rascunhos de conteúdos serão eliminados permanentemente. Não "
 "use esta opção se precisar das revisões e dos rascunhos."
 
-#: inc/Engine/Admin/Settings/Page.php:1446
+#: inc/Engine/Admin/Settings/Page.php:1428
 msgid "Comments Cleanup"
 msgstr "Limpeza de comentários"
 
-#: inc/Engine/Admin/Settings/Page.php:1448
+#: inc/Engine/Admin/Settings/Page.php:1430
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Os comentários de spam e no lixo serão eliminados permanentemente."
 
-#: inc/Engine/Admin/Settings/Page.php:1452
+#: inc/Engine/Admin/Settings/Page.php:1434
 msgid "Transients Cleanup"
 msgstr "Limpeza de transientes"
 
-#: inc/Engine/Admin/Settings/Page.php:1454
+#: inc/Engine/Admin/Settings/Page.php:1436
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -2169,21 +2169,21 @@ msgstr ""
 "Os transientes são opções temporárias, é seguro removê-los. Serão "
 "regenerados automaticamente quando os seus plugins precisarem."
 
-#: inc/Engine/Admin/Settings/Page.php:1458
+#: inc/Engine/Admin/Settings/Page.php:1440
 msgid "Database Cleanup"
 msgstr "Limpeza da base de dados"
 
-#: inc/Engine/Admin/Settings/Page.php:1460
+#: inc/Engine/Admin/Settings/Page.php:1442
 msgid "Reduces overhead of database tables"
 msgstr "Reduz a sobrecarga das tabelas da base de dados"
 
-#: inc/Engine/Admin/Settings/Page.php:1464
+#: inc/Engine/Admin/Settings/Page.php:1446
 msgid "Automatic Cleanup"
 msgstr "Limpeza automática"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1477
+#: inc/Engine/Admin/Settings/Page.php:1459
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s revisão na sua base de dados."
@@ -2192,7 +2192,7 @@ msgstr[2] "%s revisões na sua base de dados."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1487
+#: inc/Engine/Admin/Settings/Page.php:1469
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s rascunho na sua base de dados."
@@ -2201,7 +2201,7 @@ msgstr[2] "%s rascunhos na sua base de dados."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1497
+#: inc/Engine/Admin/Settings/Page.php:1479
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
 msgstr[0] "%s conteúdo no lixo na sua base de dados."
@@ -2210,7 +2210,7 @@ msgstr[2] "%s conteúdos no lixo na sua base de dados."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1507
+#: inc/Engine/Admin/Settings/Page.php:1489
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
 msgstr[0] "%s comentário de spam na sua base de dados."
@@ -2219,64 +2219,64 @@ msgstr[2] "%s comentários de spam na sua base de dados."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1517
+#: inc/Engine/Admin/Settings/Page.php:1499
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%s comentário no lixo na sua base de dados."
 msgstr[1] "%s comentários no lixo na sua base de dados."
 msgstr[2] "%s comentários no lixo na sua base de dados."
 
-#: inc/Engine/Admin/Settings/Page.php:1525
+#: inc/Engine/Admin/Settings/Page.php:1507
 msgid "All transients"
 msgstr "Todos os transientes"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1527
+#: inc/Engine/Admin/Settings/Page.php:1509
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "%s transiente na sua base de dados."
 msgstr[1] "%s transientes na sua base de dados."
 msgstr[2] "%s transientes na sua base de dados."
 
-#: inc/Engine/Admin/Settings/Page.php:1535
+#: inc/Engine/Admin/Settings/Page.php:1517
 msgid "Optimize Tables"
 msgstr "Optimizar tabelas"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1537
+#: inc/Engine/Admin/Settings/Page.php:1519
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s tabela a optimizar na sua base de dados."
 msgstr[1] "%s tabelas a optimizar na sua base de dados."
 msgstr[2] "%s tabelas a optimizar na sua base de dados."
 
-#: inc/Engine/Admin/Settings/Page.php:1548
+#: inc/Engine/Admin/Settings/Page.php:1530
 msgid "Schedule Automatic Cleanup"
 msgstr "Agendar limpeza automática"
 
-#: inc/Engine/Admin/Settings/Page.php:1560
+#: inc/Engine/Admin/Settings/Page.php:1542
 msgid "Frequency"
 msgstr "Frequência"
 
-#: inc/Engine/Admin/Settings/Page.php:1568
+#: inc/Engine/Admin/Settings/Page.php:1550
 msgid "Daily"
 msgstr "Diariamente"
 
-#: inc/Engine/Admin/Settings/Page.php:1569
+#: inc/Engine/Admin/Settings/Page.php:1551
 msgid "Weekly"
 msgstr "Semanalmente"
 
-#: inc/Engine/Admin/Settings/Page.php:1570
+#: inc/Engine/Admin/Settings/Page.php:1552
 msgid "Monthly"
 msgstr "Mensalmente"
 
-#: inc/Engine/Admin/Settings/Page.php:1587
+#: inc/Engine/Admin/Settings/Page.php:1569
 msgid "Integrate your CDN"
 msgstr "Integre a sua CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1599
+#: inc/Engine/Admin/Settings/Page.php:1581
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -2285,7 +2285,7 @@ msgstr ""
 "no(s) CNAME(s) que fornecer."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/Admin/Settings/Page.php:1601
+#: inc/Engine/Admin/Settings/Page.php:1583
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
 "available %1$sAdd-ons%2$s."
@@ -2295,7 +2295,7 @@ msgstr ""
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
-#: inc/Engine/Admin/Settings/Page.php:1647
+#: inc/Engine/Admin/Settings/Page.php:1629
 msgid ""
 "%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
 "is not required for %2$l to work on your site."
@@ -2312,28 +2312,28 @@ msgstr[2] ""
 "Os %1$smódulos %2$l%3$s estão activos de momento. Não é necessário "
 "configurar a CDN para os módulos %2$l funcionarem no seu site."
 
-#: inc/Engine/Admin/Settings/Page.php:1673
+#: inc/Engine/Admin/Settings/Page.php:1655
 msgid "Enable Content Delivery Network"
 msgstr "Activar CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1682
+#: inc/Engine/Admin/Settings/Page.php:1664
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:159
 msgid "CDN CNAME(s)"
 msgstr "CNAME(s) da CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1683
+#: inc/Engine/Admin/Settings/Page.php:1665
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:160
 msgid "Specify the CNAME(s) below"
 msgstr "Especifique o(s) CNAME(s) abaixo"
 
-#: inc/Engine/Admin/Settings/Page.php:1690
+#: inc/Engine/Admin/Settings/Page.php:1672
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Especifique os URL dos ficheiros que não devem ser servidos pela CDN (um por"
 " linha)."
 
-#: inc/Engine/Admin/Settings/Page.php:1691
+#: inc/Engine/Admin/Settings/Page.php:1673
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -2343,16 +2343,16 @@ msgstr ""
 "para excluir todos os ficheiros de um determinado tipo, localizados num "
 "caminho específico."
 
-#: inc/Engine/Admin/Settings/Page.php:1714
-#: inc/Engine/Admin/Settings/Page.php:1722
+#: inc/Engine/Admin/Settings/Page.php:1696
+#: inc/Engine/Admin/Settings/Page.php:1704
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1715
+#: inc/Engine/Admin/Settings/Page.php:1697
 msgid "Control WordPress Heartbeat API"
 msgstr "Controle a Heartbeat API do WordPress"
 
-#: inc/Engine/Admin/Settings/Page.php:1723
+#: inc/Engine/Admin/Settings/Page.php:1705
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -2360,11 +2360,11 @@ msgstr ""
 "Reduzir ou desactivar a actividade da Hartbeat API pode economizar alguns "
 "recursos do seu servidor."
 
-#: inc/Engine/Admin/Settings/Page.php:1729
+#: inc/Engine/Admin/Settings/Page.php:1711
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Reduzir ou desactivar a actividade do Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1730
+#: inc/Engine/Admin/Settings/Page.php:1712
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -2372,55 +2372,55 @@ msgstr ""
 "A redução de actividade altera a frequência do Heartbeat de um acesso por "
 "minuto para um acesso a cada 2 minutos."
 
-#: inc/Engine/Admin/Settings/Page.php:1730
+#: inc/Engine/Admin/Settings/Page.php:1712
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Desactivar completamente o Heartbeat pode prejudicar os plugins e temas que "
 "usem esta API."
 
-#: inc/Engine/Admin/Settings/Page.php:1744
+#: inc/Engine/Admin/Settings/Page.php:1726
 msgid "Do not limit"
 msgstr "Não limitar"
 
-#: inc/Engine/Admin/Settings/Page.php:1745
+#: inc/Engine/Admin/Settings/Page.php:1727
 msgid "Reduce activity"
 msgstr "Reduzir actividade"
 
-#: inc/Engine/Admin/Settings/Page.php:1746
+#: inc/Engine/Admin/Settings/Page.php:1728
 msgid "Disable"
 msgstr "Desactivar"
 
-#: inc/Engine/Admin/Settings/Page.php:1754
+#: inc/Engine/Admin/Settings/Page.php:1736
 msgid "Control Heartbeat"
 msgstr "Controlar Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1763
+#: inc/Engine/Admin/Settings/Page.php:1745
 msgid "Behavior in backend"
 msgstr "Comportamento no painel de administração"
 
-#: inc/Engine/Admin/Settings/Page.php:1770
+#: inc/Engine/Admin/Settings/Page.php:1752
 msgid "Behavior in post editor"
 msgstr "Comportamento no editor de conteúdos"
 
-#: inc/Engine/Admin/Settings/Page.php:1776
+#: inc/Engine/Admin/Settings/Page.php:1758
 msgid "Behavior in frontend"
 msgstr "Comportamento na interface do site"
 
-#: inc/Engine/Admin/Settings/Page.php:1793
+#: inc/Engine/Admin/Settings/Page.php:1775
 #: views/settings/page-sections/tutorials.php:39
 msgid "Add-ons"
 msgstr "Módulos"
 
-#: inc/Engine/Admin/Settings/Page.php:1794
+#: inc/Engine/Admin/Settings/Page.php:1776
 msgid "Add more features"
 msgstr "Adicione mais funcionalidades"
 
-#: inc/Engine/Admin/Settings/Page.php:1801
+#: inc/Engine/Admin/Settings/Page.php:1783
 msgid "One-click Rocket Add-ons"
 msgstr "Módulos do Rocket com um clique"
 
-#: inc/Engine/Admin/Settings/Page.php:1802
+#: inc/Engine/Admin/Settings/Page.php:1784
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -2429,26 +2429,26 @@ msgstr ""
 "opções disponíveis sem necessidade de configuração. Ligue as opções para "
 "activar os módulos neste mesmo ecrã."
 
-#: inc/Engine/Admin/Settings/Page.php:1812
+#: inc/Engine/Admin/Settings/Page.php:1794
 msgid "Rocket Add-ons"
 msgstr "Módulos do Rocket"
 
-#: inc/Engine/Admin/Settings/Page.php:1813
+#: inc/Engine/Admin/Settings/Page.php:1795
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Os módulos do Rocket são funcionalidades complementares que aumentam as "
 "opções disponíveis."
 
-#: inc/Engine/Admin/Settings/Page.php:1823
-#: inc/Engine/Admin/Settings/Page.php:1992
+#: inc/Engine/Admin/Settings/Page.php:1805
+#: inc/Engine/Admin/Settings/Page.php:1974
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1829
+#: inc/Engine/Admin/Settings/Page.php:1811
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integre a sua conta da Cloudflare com este módulo."
 
-#: inc/Engine/Admin/Settings/Page.php:1830
+#: inc/Engine/Admin/Settings/Page.php:1812
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -2459,7 +2459,7 @@ msgstr ""
 "ideal com o WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
-#: inc/Engine/Admin/Settings/Page.php:1833
+#: inc/Engine/Admin/Settings/Page.php:1815
 msgid ""
 "%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
@@ -2469,16 +2469,16 @@ msgstr ""
 "activar e o plugin oficial da Cloudflare e configurar. O WP Rocket activará "
 "a compatibilidade automaticamente."
 
-#: inc/Engine/Admin/Settings/Page.php:1881
+#: inc/Engine/Admin/Settings/Page.php:1863
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1887
+#: inc/Engine/Admin/Settings/Page.php:1869
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr "Se utilizar o Varnish no seu servidor, deve activar este módulo."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1889
+#: inc/Engine/Admin/Settings/Page.php:1871
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
@@ -2486,16 +2486,16 @@ msgstr ""
 "O cache do Varnish será limpa sempre que limpar a cache do WP Rocket para "
 "garantir que o conteúdo está sempre actualizado.<br>%1$sSaiba mais%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1924
+#: inc/Engine/Admin/Settings/Page.php:1906
 msgid "WebP Compatibility"
 msgstr "Compatibilidade com WebP"
 
-#: inc/Engine/Admin/Settings/Page.php:1930
+#: inc/Engine/Admin/Settings/Page.php:1912
 msgid "Improve browser compatibility for WebP images."
 msgstr "Melhorar a compatibilidade dos navegadores para imagens WebP."
 
 #. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1934
+#: inc/Engine/Admin/Settings/Page.php:1916
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
 "compatible browsers. Please note that WP Rocket cannot create WebP images "
@@ -2507,11 +2507,11 @@ msgstr ""
 " por si. Para criar imagens WebP recomendamos o %1$sImagify%2$s. %3$sMais "
 "informações%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1954
+#: inc/Engine/Admin/Settings/Page.php:1936
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Limpar a cache do Sucuri ao limpar a cache do WP Rocket."
 
-#: inc/Engine/Admin/Settings/Page.php:1957
+#: inc/Engine/Admin/Settings/Page.php:1939
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -2519,49 +2519,49 @@ msgstr ""
 "Forneça a sua chave de API para limpar a cache do Sucuri ao limpar a cache "
 "do WP Rocket."
 
-#: inc/Engine/Admin/Settings/Page.php:1965
-#: inc/Engine/Admin/Settings/Page.php:2109
+#: inc/Engine/Admin/Settings/Page.php:1947
+#: inc/Engine/Admin/Settings/Page.php:2091
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:1971
+#: inc/Engine/Admin/Settings/Page.php:1953
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sincronize a cache do Sucuri com este módulo."
 
-#: inc/Engine/Admin/Settings/Page.php:2009
+#: inc/Engine/Admin/Settings/Page.php:1991
 msgid "Cloudflare credentials"
 msgstr "Credenciais da Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:2018
+#: inc/Engine/Admin/Settings/Page.php:2000
 msgid "Cloudflare settings"
 msgstr "Opções da Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:2032
+#: inc/Engine/Admin/Settings/Page.php:2014
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Chave global de API:"
 
-#: inc/Engine/Admin/Settings/Page.php:2033
+#: inc/Engine/Admin/Settings/Page.php:2015
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Consulte a sua chave de API"
 
-#: inc/Engine/Admin/Settings/Page.php:2045
+#: inc/Engine/Admin/Settings/Page.php:2027
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Email da conta"
 
-#: inc/Engine/Admin/Settings/Page.php:2054
+#: inc/Engine/Admin/Settings/Page.php:2036
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "ID da zona"
 
-#: inc/Engine/Admin/Settings/Page.php:2064
+#: inc/Engine/Admin/Settings/Page.php:2046
 msgid "Development mode"
 msgstr "Modo de desenvolvimento"
 
 #. translators: %1$s = link opening tag, %2$s = link closing tag.
-#: inc/Engine/Admin/Settings/Page.php:2066
+#: inc/Engine/Admin/Settings/Page.php:2048
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
@@ -2569,11 +2569,11 @@ msgstr ""
 "Active temporariamente o modo de desenvolvimento no seu site. Esta opção "
 "desactiva-se automaticamente após 3 horas. %1$sSaiba mais%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2074
+#: inc/Engine/Admin/Settings/Page.php:2056
 msgid "Optimal settings"
 msgstr "Configuração ideal"
 
-#: inc/Engine/Admin/Settings/Page.php:2075
+#: inc/Engine/Admin/Settings/Page.php:2057
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -2581,11 +2581,11 @@ msgstr ""
 "Melhore automaticamente a sua configuração da Cloudflare para melhor "
 "velocidade, grau de desempenho e compatibilidade."
 
-#: inc/Engine/Admin/Settings/Page.php:2083
+#: inc/Engine/Admin/Settings/Page.php:2065
 msgid "Relative protocol"
 msgstr "Protocolo relativo"
 
-#: inc/Engine/Admin/Settings/Page.php:2084
+#: inc/Engine/Admin/Settings/Page.php:2066
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -2595,11 +2595,11 @@ msgstr ""
 "ficheiros estáticos (CSS, JS, imagens) serão reescritos para usar // em vez "
 "de http:// ou https://."
 
-#: inc/Engine/Admin/Settings/Page.php:2122
+#: inc/Engine/Admin/Settings/Page.php:2104
 msgid "Sucuri credentials"
 msgstr "Credenciais do Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:2135
+#: inc/Engine/Admin/Settings/Page.php:2117
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
@@ -2608,7 +2608,7 @@ msgstr ""
 "A chave de API da firewall (do plugin) tem de estar no formato {32 "
 "caracteres}/{32 caracteres}:"
 
-#: inc/Engine/Admin/Settings/Page.php:2136
+#: inc/Engine/Admin/Settings/Page.php:2118
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Consulte a sua chave de API"
@@ -2955,18 +2955,18 @@ msgstr ""
 msgid "Error: %1$s"
 msgstr "Erro: %1$s"
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:176
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:177
 msgid "Critical CSS generation is currently running."
 msgstr "A geração do CSS crítico está em curso."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:181
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:182
 msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
 msgstr "Vá às %1$sopções do WP Rocket%2$s para acompanhar o progresso."
 
 #. Translators: %1$d = number of critical CSS generated, %2$d = total number
 #. of critical CSS to generate.
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:396
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:397
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
@@ -2976,20 +2976,20 @@ msgstr ""
 
 #. Translators: %1$d = number of critical CSS generated, %2$d = total number
 #. of critical CSS to generate.
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:472
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:473
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "A geração de CSS crítico foi concluída para %1$d de %2$d páginas."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:480
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Foram encontrados um ou mais erros ao gerar o CSS crítico."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:479
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:480
 msgid "Learn more."
 msgstr "Saiba mais."
 
 #. translators: %1$ = opening bold tag, %2$ = closing bold tag.
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:840
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:841
 msgid ""
 "We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
 "optimization. Load CSS Asynchronously is always available as a back-up."
@@ -2998,7 +2998,7 @@ msgstr ""
 "não utilizado%2$s para uma melhor optimização do CSS. Em alternativa, o "
 "carregamento assíncrono de CSS está sempre disponível."
 
-#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:845
+#: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:846
 msgid "Stay with the old option"
 msgstr "Manter a opção antiga"
 
@@ -3452,7 +3452,7 @@ msgid "To learn more about the process check our %1$sdocumentation%2$s."
 msgstr ""
 "Para saber mais sobre o processo consulte a nossa %1$sdocumentação%2$s."
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:443
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:444
 msgid ""
 "We couldn't generate the used CSS because you're using a nulled version of "
 "WP Rocket. You need an active license to use the Remove Unused CSS feature "
@@ -3464,13 +3464,13 @@ msgstr ""
 "desempenho do seu site."
 
 #. translators: %1$s = promo percentage.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:446
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:447
 msgid "Click here to get a WP Rocket single license at %1$s off!"
 msgstr ""
 "Clique aqui para obter uma licença Single do WP Rocket com %1$s de desconto!"
 
 #. translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:499
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:500
 msgid ""
 "It seems a security plugin or the server's firewall prevents WP Rocket from "
 "accessing the Remove Unused CSS generator. IPs listed %1$shere in our "
@@ -3481,11 +3481,11 @@ msgstr ""
 "listados %1$saqui na nossa documentação%2$s devem ser adicionados às suas "
 "listas de permissões:"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:504
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:505
 msgid "- In the security plugin, if you are using one"
 msgstr "- No plugin de segurança, se estiver a utilizar algum"
 
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:505
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:506
 msgid "- In the server's firewall. Your host can help you with this"
 msgstr ""
 "- Na firewall do servidor. O seu serviço de alojamento pode ajudar nesta "
@@ -3493,7 +3493,7 @@ msgstr ""
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
-#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:545
+#: inc/Engine/Optimization/RUCSS/Admin/Settings.php:546
 msgid ""
 "%1$s: Could not create the %2$s table in the database which is necessary for"
 " the Remove Unused CSS feature to work. Please reach out to %3$sour "
@@ -3504,26 +3504,30 @@ msgstr ""
 " %3$snosso suporte%4$s."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:284
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: A opção do CSS utilizado não está activa!"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:308
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: A cache do CSS utilizado foi limpa!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:787
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:672
 msgid "Clear Used CSS of this URL"
 msgstr "Limpar CSS utilizado deste URL"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:160
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:171
 msgid "WP Rocket Remove Unused CSS pending jobs"
 msgstr "Tarefas pendentes do WP Rocket de remoção de CSS não utilizado"
 
-#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:174
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:185
 msgid "WP Rocket clear Remove Unused CSS failed jobs"
 msgstr "Limpar tarefas falhadas do WP Rocket de remoção de CSS não utilizado"
+
+#: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:197
+msgid "WP Rocket procees on submit jobs"
+msgstr "Processo do WP Rocket ao submeter tarefas"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:57
@@ -3601,6 +3605,10 @@ msgstr "Opções do WP Rocket anonimizadas:"
 #: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
 msgstr "Quais as opções activadas no WP Rocket"
+
+#: inc/functions/admin.php:433
+msgid "WP Rocket license type"
+msgstr "Tipo de licença do WP Rocket"
 
 #: inc/functions/options.php:429
 msgid "The provided license data are not valid."
@@ -3745,15 +3753,15 @@ msgstr "Se o problema persistir, %1$scontacte o suporte%2$s."
 msgid "License validation failed: %s"
 msgstr "A validação da licença falhou: %s"
 
-#: inc/Logger/Logger.php:260 inc/Logger/Logger.php:292
+#: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
 msgid "The log file does not exist."
 msgstr "O ficheiro de registo não existe."
 
-#: inc/Logger/Logger.php:266 inc/Logger/Logger.php:298
+#: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
 msgid "The log file could not be read."
 msgstr "Não foi possível ler o ficheiro de registo."
 
-#: inc/Logger/Logger.php:285
+#: inc/Logger/Logger.php:250
 msgid "The logs are not saved into a file."
 msgstr "Os registos não foram guardados num ficheiro."
 
@@ -3767,7 +3775,7 @@ msgstr ""
 "Varnish no seu servidor %s."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
-#: inc/ThirdParty/Hostings/Kinsta.php:158
+#: inc/ThirdParty/Hostings/Kinsta.php:159
 msgid ""
 "Your installation seems to be missing core Kinsta files managing Cache "
 "clearing, which will prevent your Kinsta installation and WP Rocket from "
@@ -4007,7 +4015,7 @@ msgstr "Smush"
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/ThirdParty/Themes/Divi.php:315
+#: inc/ThirdParty/Themes/Divi.php:313
 msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
@@ -4595,7 +4603,7 @@ msgstr ""
 "Abaixo está uma lista detalhada de todos os dados que o WP Rocket irá "
 "recolher %1$scaso dê permissão.%2$s"
 
-#: views/settings/page.php:87
+#: views/settings/page.php:88
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -4604,7 +4612,7 @@ msgstr ""
 "email (excepto para validação de licença), endereços de IP ou chaves de API "
 "de terceiros."
 
-#: views/settings/page.php:89
+#: views/settings/page.php:90
 msgid "Activate Rocket analytics"
 msgstr "Activar Rocket Analytics"
 
