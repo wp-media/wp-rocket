@@ -61,8 +61,18 @@ class ServiceProvider extends AbstractServiceProvider {
         $this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
         $this->getContainer()->add( 'wpr_clock', WPRClock::class );
 
+        $this->getContainer()->add( 'rucss_manager', RUCSSManager::class )
+            ->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
+            ->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
+            ->addArgument( $this->getContainer()->get( 'rucss_context' ) );
+
+        $this->getContainer()->add( 'atf_manager', AtfManager::class )
+            ->addArgument( $this->getContainer()->get( 'atf_query' ) )
+            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
+
         $this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
+			->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
+			->addArgument( $this->getContainer()->get( 'atf_manager' ) )
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
         $this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
@@ -76,15 +86,6 @@ class ServiceProvider extends AbstractServiceProvider {
             ->addArgument( $this->getContainer()->get( 'options' ) );
 
         $this->getContainer()->add( 'atf_context', Context::class );
-
-        $this->getContainer()->add( 'rucss_manager', RUCSSManager::class )
-            ->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_context' ) );
-
-        $this->getContainer()->add( 'atf_manager', AtfManager::class )
-            ->addArgument( $this->getContainer()->get( 'atf_query' ) )
-            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
         $this->getContainer()->add( 'queue', Queue::class );
 
