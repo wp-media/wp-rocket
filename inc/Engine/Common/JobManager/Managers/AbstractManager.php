@@ -29,15 +29,6 @@ class AbstractManager {
 	}
 
     /**
-	 * Query object.
-	 *
-	 * @return object
-	 */
-	public function query() {
-		return $this->query;
-	}
-
-    /**
 	 * Send the request to add url into the queue.
 	 *
 	 * @param string $url page URL.
