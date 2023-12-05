@@ -229,21 +229,30 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be in-progress.
 	 *
-	 * @param int $id DB row ID.
-	 *
-	 * @return bool
+	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @return int/boolean
 	 */
-	public function make_status_inprogress( int $id ) {
+	public function make_status_inprogress( string $url, bool $is_mobile ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'status' => 'in-progress',
-			]
-		);
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, [ 'status' => 'in-progress' ], $where );
 	}
 
 	/**
@@ -276,29 +285,44 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be failed.
 	 *
-	 * @param int    $id DB row ID.
+	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string $error_code error code.
 	 * @param string $error_message error message.
-	 *
-	 * @return bool
+	 * 
+	 * @return int/boolean
 	 */
-	public function make_status_failed( int $id, string $error_code, string $error_message ) {
+	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		$old = $this->get_item( $id );
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$old = $this->get_row( $url, $is_mobile );
 
 		$previous_message = $old ? $old->error_message : '';
 
-		return $this->update_item(
-			$id,
-			[
-				'status'        => 'failed',
-				'error_code'    => $error_code,
-				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
-			]
-		);
+		$data = [
+			'status'        => 'failed',
+			'error_code'    => $error_code,
+			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
+		];
+
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
@@ -476,27 +500,40 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be pending.
 	 *
-	 * @param int    $id DB row ID.
+	 * @param string $url DB row url.
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
 	 * @return bool
 	 */
-	public function make_status_pending( int $id, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+	public function make_status_pending( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'job_id'       => $job_id,
-				'queue_name'   => $queue_name,
-				'status'       => 'pending',
-				'is_mobile'    => $is_mobile,
-				'submitted_at' => current_time( 'mysql', true ),
-			]
-		);
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$data = [
+			'job_id'       => $job_id,
+			'queue_name'   => $queue_name,
+			'status'       => 'pending',
+			'is_mobile'    => $is_mobile,
+			'submitted_at' => current_time( 'mysql', true ),
+		];
+
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
