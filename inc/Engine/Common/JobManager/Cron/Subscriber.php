@@ -235,7 +235,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$schedules['rocket_rucss_atf_on_submit_jobs'] = [
 			'interval' => $interval,
-			'display'  => esc_html__( 'WP Rocket procees on submit jobs', 'rocket' ),
+			'display'  => esc_html__( 'WP Rocket process on submit jobs', 'rocket' ),
 		];
 
 		return $schedules;
