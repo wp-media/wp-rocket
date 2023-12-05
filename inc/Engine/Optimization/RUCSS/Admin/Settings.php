@@ -366,6 +366,7 @@ class Settings {
 		}
 
 		$data['notice_end_time'] = $transient;
+		$data['cron_disabled']   = rocket_get_constant( 'DISABLE_WP_CRON', false );
 
 		return $data;
 	}

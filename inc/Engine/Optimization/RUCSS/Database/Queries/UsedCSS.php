@@ -106,6 +106,7 @@ class UsedCSS extends Query {
 				'fields'         => [
 					'id',
 					'url',
+					'next_retry_time',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
@@ -576,6 +577,50 @@ class UsedCSS extends Query {
 		}
 
 		return $exists;
+	}
+
+	/**
+	 * Update the error message.
+	 *
+	 * @param int    $job_id Job ID.
+	 * @param int    $code Response code.
+	 * @param string $message Response message.
+	 * @param string $previous_message Previous saved message.
+	 *
+	 * @return bool
+	 */
+	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
+		return $this->update_item(
+			$job_id,
+			[
+				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
+			]
+		);
+	}
+
+	/**
+	 * Updates the next_retry_time field
+	 *
+	 * @param mixed      $job_id the job id.
+	 * @param string|int $next_retry_time timestamp or mysql format date.
+	 *
+	 * @return bool either it is saved or not.
+	 */
+	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
+		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
+			// If $next_retry_time is a valid date string, convert it to a timestamp.
+			$next_retry_time = strtotime( $next_retry_time );
+		} elseif ( ! is_numeric( $next_retry_time ) ) {
+			// If it's not numeric and not a valid date string, return false.
+			return false;
+		}
+
+		return $this->update_item(
+			$job_id,
+			[
+				'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ),
+			]
+		);
 	}
 
 	/**
