@@ -146,6 +146,8 @@ class JobProcessor implements LoggerAwareInterface {
      * @return void
      */
     public function check_job_status( string $url, bool $is_mobile ) {
+
+		$is_shakedCSS_valid = true;
 		$context = $this->context();
 
         $row_details = $this->get_single_job( $context, $url, $is_mobile );
@@ -174,8 +176,9 @@ class JobProcessor implements LoggerAwareInterface {
         if ( $this->rucss_manager->is_allowed() && isset( $job_details['contents']['shakedCSS_size'] ) && intval( $job_details['contents']['shakedCSS_size'] ) < $min_rucss_size ) {
             $message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
             $this->logger::error( $message );
-            $this->used_css_query->make_status_failed( $id, '500', $message );
-            return;
+            $this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, '500', $message );
+			
+			$is_shakedCSS_valid = false;
         }
 
         if (
@@ -193,14 +196,11 @@ class JobProcessor implements LoggerAwareInterface {
          */
         do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-        $job_data = [
-            'id' => $row_details->id,
-            'job_details' => $job_details,
-            'row_details' => $row_details,
-        ];
-
-        $this->rucss_manager->process( $job_data );
-        $this->lcp_manager->process( $job_data );
+		if ( $is_shakedCSS_valid ) {
+			$this->rucss_manager->process( $job_details, $row_details );
+		}
+        
+        $this->lcp_manager->process( $job_details, $row_details );
     }
 
     /**
@@ -236,7 +236,7 @@ class JobProcessor implements LoggerAwareInterface {
             $response = $this->send_api( $row->url, (bool) $row->is_mobile );
             if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
 
-                $this->make_status_failed( $context, $row->url, $row->is_mobile, '', '' );
+                $this->make_status_failed( $row->url, $row->is_mobile, '', '' );
                 continue;
             }
 
@@ -389,7 +389,7 @@ class JobProcessor implements LoggerAwareInterface {
         if ( ! $context['rucss'] && $context['atf'] ) {
             return $this->atf_manager->get_pending_jobs( $num_rows );
         }
-		
+
         return $this->rucss_manager->get_pending_jobs( $num_rows );
     }
 	
@@ -453,21 +453,15 @@ class JobProcessor implements LoggerAwareInterface {
     /**
      * Change the job status to be failed.
      *
-     * @param array $context Context.
      * @param string $url Url from DB row.
      * @param boolean $is_mobile Is mobile from DB row.
      * @param string $error_code error code.
      * @param string $error_message error message.
      * @return void
      */
-    private function make_status_failed( array $context, string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-        if ( $context['rucss'] ) {
-            $this->rucss_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
-        }
-
-        if ( $context['atf'] ) {
-            $this->atf_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
-        }
+    private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+		$this->rucss_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
+		$this->atf_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message );
     }
 
     /**
@@ -481,12 +475,7 @@ class JobProcessor implements LoggerAwareInterface {
      * @return void
      */
     private function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
-        if ( $context['rucss'] ) {
-                $this->rucss_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
-        }
-
-        if ( $context['atf'] ) {
-            $this->atf_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
-        }
+        $this->rucss_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
+		$this->atf_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
     }
 }
