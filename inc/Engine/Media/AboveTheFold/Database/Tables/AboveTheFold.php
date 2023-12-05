@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Tables;
 
-use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 
-class AboveTheFold extends Table {
+class AboveTheFold extends AbstractTable {
 	/**
 	 * Table name
 	 *
@@ -35,21 +35,11 @@ class AboveTheFold extends Table {
 	protected $upgrades = [];
 
 	/**
-	 * Instantiate class.
-	 */
-	public function __construct() {
-		parent::__construct();
-		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
-		add_action( 'init',  [ $this, 'maybe_upgrade' ] );
-	}
-
-	/**
-	 * Setup the database schema
+	 * Table schema data.
 	 *
-	 * @return void
+	 * @var   string
 	 */
-	protected function set_schema() {
-		$this->schema = "
+	protected $schema_data = "
 			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			url              varchar(2000)       NOT NULL default '',
 			is_mobile        tinyint(1)          NOT NULL default 0,
@@ -70,18 +60,13 @@ class AboveTheFold extends Table {
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191)),
 			INDEX `error_code_index` (`error_code`(32))";
-	}
 
 	/**
-	 * Trigger recreation of cache table if not exist.
-	 *
-	 * @return void
+	 * Instantiate class.
 	 */
-	public function maybe_trigger_recreate_table() {
-		if ( $this->exists() ) {
-			return;
-		}
-
-		delete_option( $this->db_version_key );
+	public function __construct() {
+		parent::__construct();
+		add_action( 'admin_init', [ $this, 'maybe_trigger_recreate_table' ], 9 );
+		add_action( 'init',  [ $this, 'maybe_upgrade' ] );
 	}
 }
