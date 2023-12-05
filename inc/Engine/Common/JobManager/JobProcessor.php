@@ -373,7 +373,6 @@ class JobProcessor implements LoggerAwareInterface {
 		if ( $context['atf'] ) {
 			$config['optimization_list'][] = 'lcp';
 			$config['optimization_list'][] = 'above_fold';
-			$config['above_fold_time'] = 500;
 		}
 
 		return $config;
