@@ -179,18 +179,29 @@ class AbstractQuery extends Query {
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
-	 * @param int    $id DB row ID.
+ 	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param int    $error_code error code.
 	 * @param string $error_message error message.
 	 *
 	 * @return bool
 	 */
-	public function increment_retries( $id, int $error_code, string $error_message ) {
+	public function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		$old = $this->get_item( $id );
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$old = $this->get_row( $url, $is_mobile );
 
 		$retries          = 0;
 		$previous_message = '';
@@ -200,13 +211,18 @@ class AbstractQuery extends Query {
 			$previous_message = $old->error_message;
 		}
 
-		$update_data = [
+		$data = [
 			'retries'       => $retries + 1,
-			'status'        => 'pending',
+			'status'    	=> 'pending',
 			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
-		return $this->update_item( $id, $update_data );
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
@@ -539,31 +555,63 @@ class AbstractQuery extends Query {
 	/**
 	 * Update the error message.
 	 *
-	 * @param int    $job_id Job ID.
+	 * @param string $url DB row url.
+	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param int    $code Response code.
 	 * @param string $message Response message.
 	 * @param string $previous_message Previous saved message.
 	 *
 	 * @return bool
 	 */
-	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
-		return $this->update_item(
-			$job_id,
-			[
-				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
-			]
-		);
+	public function update_message( string $url, bool $is_mobile, int $code, string $message, string $previous_message = '' ): bool {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$data = [ 'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}" ];
+
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
 	 * Updates the next_retry_time field
 	 *
-	 * @param mixed      $job_id the job id.
+ 	 * @param string $url DB row url.
+	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
 	 * @return bool either it is saved or not.
 	 */
-	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
+	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ): bool {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
 		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
 			// If $next_retry_time is a valid date string, convert it to a timestamp.
 			$next_retry_time = strtotime( $next_retry_time );
@@ -572,11 +620,13 @@ class AbstractQuery extends Query {
 			return false;
 		}
 
-		return $this->update_item(
-			$job_id,
-			[
-				'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ),
-			]
-		);
+		$data = [ 'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ) ];
+
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 }
