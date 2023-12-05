@@ -128,6 +128,6 @@ abstract class AbstractMinifySubscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		return str_replace( $url_host, sanitize_text_field( $_SERVER['HTTP_HOST'] ), $url ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		return preg_replace( '/' . preg_quote( $url_host, '/' ) . '/', sanitize_text_field( $_SERVER['HTTP_HOST'] ), $url, 1 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	}
 }
