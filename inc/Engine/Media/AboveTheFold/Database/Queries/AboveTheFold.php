@@ -68,25 +68,38 @@ class AboveTheFold extends AbstractQuery {
 	/**
 	 * Complete a job.
 	 *
-	 * @param integer $id DB row ID.
-	 * @param array Associative array of data to save:
-     *                       - 'lcp': LCP.
-     *                       - 'viewport': Array of above the fold images.
-	 * 
+	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param array $data LCP & Above the fold data.
+	 *
 	 * @return boolean
 	 */
-	public function make_job_completed( int $id, array $data ): bool {
+	public function make_job_completed( string $url, bool $is_mobile, array $data ): bool {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'status' => 'completed',
-				'lcp' => $data['lcp'],
-				'viewport' => $data['viewport'],
-			]
-		);
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$data = [
+			'status' => 'completed',
+			'lcp' => $data['lcp'],
+			'viewport' => $data['viewport'],
+		];
+
+		$where = [
+			'url' => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 }
