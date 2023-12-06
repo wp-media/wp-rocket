@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
@@ -291,6 +292,7 @@ class Plugin {
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
 		$this->container->addServiceProvider( ATFServiceProvider::class );
+		$this->container->addServiceProvider( JobManagerServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -329,7 +331,6 @@ class Plugin {
 			'rucss_admin_subscriber',
 			'rucss_option_subscriber',
 			'rucss_frontend_subscriber',
-			'rucss_cron_subscriber',
 			'divi',
 			'preload_subscriber',
 			'preload_front_subscriber',
@@ -384,6 +385,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'atf_subscriber',
+			'cron_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
