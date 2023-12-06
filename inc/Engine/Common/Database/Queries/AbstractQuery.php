@@ -187,17 +187,11 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
@@ -250,17 +244,11 @@ class AbstractQuery extends Query {
 	 * @return int/boolean
 	 */
 	public function make_status_inprogress( string $url, bool $is_mobile ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$where = [
@@ -309,17 +297,11 @@ class AbstractQuery extends Query {
 	 * @return int/boolean
 	 */
 	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
@@ -523,17 +505,11 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function make_status_pending( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 		$data = [
@@ -564,17 +540,11 @@ class AbstractQuery extends Query {
 	 * @return bool
 	 */
 	public function update_message( string $url, bool $is_mobile, int $code, string $message, string $previous_message = '' ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
@@ -598,17 +568,11 @@ class AbstractQuery extends Query {
 	 * @return bool either it is saved or not.
 	 */
 	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ): bool {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		// Get the database interface.
 		$db = $this->get_db();
-
-		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
-			return false;
-		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
@@ -628,5 +592,23 @@ class AbstractQuery extends Query {
 		];
 
 		return $db->update( $prefixed_table_name, $data, $where );
+	}
+
+	/**
+	 * Check if db action can be processed.
+	 *
+	 * @return boolean
+	 */
+	private function is_allowed() {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		// Bail if no database interface is available.
+		if ( empty( $this->get_db() ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }
