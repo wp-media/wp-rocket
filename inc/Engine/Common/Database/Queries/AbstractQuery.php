@@ -481,9 +481,9 @@ class AbstractQuery extends Query {
 	 * @param string $message Response message.
 	 * @param string $previous_message Previous saved message.
 	 *
-	 * @return bool
+	 * @return int|bool
 	 */
-	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ): bool {
+	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ) {
 		return $this->update_item(
 			$job_id,
 			[
