@@ -356,9 +356,7 @@ class JobProcessor implements LoggerAwareInterface {
 			do_action( 'rocket_rucss_after_clearing_failed_url', $failed_urls );
 		}
 		
-		if ( $context['atf'] ) {
-			$this->atf_manager->clear_failed_jobs( $value, $unit );
-		}
+		$this->atf_manager->clear_failed_jobs( $value, $unit );
 	}
 
 	/**

@@ -67,6 +67,10 @@ class AbstractManager {
 	 * @return array
 	 */
     public function clear_failed_jobs( float $delay, string $unit ): array {
+        if ( ! $this->is_allowed() ) {
+            return[];
+        }
+
         $rows = $this->query->get_failed_rows( $delay, $unit );
 
         if ( empty( $rows ) ) {
