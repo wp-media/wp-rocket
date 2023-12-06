@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Common\JobManager;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Common\JobManager\Managers\RUCSSManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\AtfManager;
-use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
@@ -68,7 +67,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
         $this->getContainer()->share( 'rucss_usedcss_table', UsedCSSTable::class );
-        
+
 		$this->getContainer()->add( 'rucss_database', Database::class )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
