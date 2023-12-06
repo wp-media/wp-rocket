@@ -178,6 +178,10 @@ class JobProcessor implements LoggerAwareInterface {
             $this->logger::error( $message );
             $this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, '500', $message );
 
+			if ( ! $context['atf'] ) {
+				return;
+			}
+
 			$is_shakedCSS_valid = false;
         }
 
