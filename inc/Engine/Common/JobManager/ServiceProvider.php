@@ -22,6 +22,7 @@ use WP_Rocket\Engine\Common\JobManager\Queue;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -57,6 +58,7 @@ class ServiceProvider extends AbstractServiceProvider {
         'rucss_usedcss_table',
         'rucss_database',
         'cron_subscriber',
+        'atf_table',
 	];
 
 	/**
@@ -66,6 +68,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
         $this->getContainer()->share( 'rucss_usedcss_table', UsedCSSTable::class );
+        
 		$this->getContainer()->add( 'rucss_database', Database::class )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
@@ -80,13 +83,17 @@ class ServiceProvider extends AbstractServiceProvider {
         $this->getContainer()->add( 'atf_context', Context::class );
 
         $this->getContainer()->add( 'rucss_manager', RUCSSManager::class )
-            ->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
-            ->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
-            ->addArgument( $this->getContainer()->get( 'rucss_context' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'rucss_used_css_query' ),
+                $this->getContainer()->get( 'rucss_filesystem' ),
+                $this->getContainer()->get( 'rucss_context' )
+            ]);
 
         $this->getContainer()->add( 'atf_manager', AtfManager::class )
-            ->addArgument( $this->getContainer()->get( 'atf_query' ) )
-            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'atf_query' ),
+                $this->getContainer()->get( 'atf_context' )
+            ]);
 
         $this->getContainer()->add( 'retry_strategy_context', RetryContext::class );
 
@@ -94,12 +101,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
         $this->getContainer()->add( 'rucss_retry_strategy_default_process', DefaultProcess::class )
-            ->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
-            ->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'rucss_manager' ),
+                $this->getContainer()->get( 'wpr_clock' )
+            ]);
 
         $this->getContainer()->add( 'atf_retry_strategy_default_process', DefaultProcess::class )
-            ->addArgument( $this->getContainer()->get( 'atf_manager' ) )
-            ->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'atf_manager' ),
+                $this->getContainer()->get( 'wpr_clock' )
+            ]);
 
         $this->getContainer()->add( 'rucss_retry_strategy_job_set_fail', JobSetFail::class )
             ->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
@@ -114,28 +125,36 @@ class ServiceProvider extends AbstractServiceProvider {
             ->addArgument( $this->getContainer()->get( 'atf_manager' ) );
 
         $this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
-			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
-			->addArgument( rocket_direct_filesystem() );
+			->addArguments([
+                rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ),
+                rocket_direct_filesystem()
+            ]);
 
         $this->getContainer()->add( 'queue', Queue::class );
 
         $this->getContainer()->add( 'job_processor', JobProcessor::class )
-            ->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
-            ->addArgument( $this->getContainer()->get( 'atf_manager' ) )
-            ->addArgument( $this->getContainer()->get( 'queue' ) )
-            ->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
-            ->addArgument( $this->getContainer()->get( 'options' ) )
-            ->addArgument( $this->getContainer()->get( 'api_client' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'rucss_manager' ),
+                $this->getContainer()->get( 'atf_manager' ),
+                $this->getContainer()->get( 'queue' ),
+                $this->getContainer()->get( 'rucss_retry_strategy_factory' ),
+                $this->getContainer()->get( 'options' ),
+                $this->getContainer()->get( 'api_client' )
+            ]);
 
         $this->getContainer()->add( 'api_client', APIClient::class )
-            ->addArgument( $this->getContainer()->get( 'options' ) )
-            ->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'options' ),
+                $this->getContainer()->get( 'rucss_context' ),
+                $this->getContainer()->get( 'atf_context' )
+            ]);
 
         $this->getContainer()->share( 'cron_subscriber', CronSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'job_processor' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'atf_context' ) );
+            ->addArguments([
+                $this->getContainer()->get( 'job_processor' ),
+                $this->getContainer()->get( 'rucss_database' ),
+                $this->getContainer()->get( 'rucss_context' ),
+                $this->getContainer()->get( 'atf_context' )
+            ]);
 	}
 }
