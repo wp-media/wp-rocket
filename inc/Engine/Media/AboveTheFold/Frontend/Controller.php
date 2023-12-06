@@ -7,7 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
 	use RegexTrait;
