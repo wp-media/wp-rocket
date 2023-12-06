@@ -253,7 +253,6 @@ class JobProcessor implements LoggerAwareInterface {
             do_action( 'rocket_preload_lock_url', $row->url );
 
             $this->make_status_pending(
-                $context, 
                 $row->url,
                 $response['contents']['jobId'], 
                 $response['contents']['queueName'], 
@@ -472,14 +471,13 @@ class JobProcessor implements LoggerAwareInterface {
     /**
      * Change the job status to be pending.
      *
-     * @param array $context Context.
      * @param string $url Url from DB row.
      * @param string $job_id API job_id.
      * @param string $queue_name API Queue name.
      * @param boolean $is_mobile if the request is for mobile page.
      * @return void
      */
-    private function make_status_pending( array $context, string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
+    private function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
         $this->rucss_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
 		$this->atf_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile );
     }
