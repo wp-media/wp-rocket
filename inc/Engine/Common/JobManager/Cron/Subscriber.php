@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Cron;
+namespace WP_Rocket\Engine\Common\JobManager\Cron;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;

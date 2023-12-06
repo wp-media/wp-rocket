@@ -76,7 +76,7 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 	  * @param object $row_details Details related to the row.
 	  * @return void
 	  */
-    public function process( array $job_details, $row_details ) {
+    public function process( array $job_details, $row_details ): void {
         if ( ! $this->is_allowed() ) {
             return;
         }

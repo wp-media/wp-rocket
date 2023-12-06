@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies;
+namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
 interface StrategyInterface {
 	/**

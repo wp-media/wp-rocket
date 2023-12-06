@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Engine\Common\JobManager;
 
-use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Admin\Options_Data;
@@ -235,7 +237,7 @@ class JobProcessor implements LoggerAwareInterface {
          * @param int $max Max processing rows.
          */
         $max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
-        $rows             = $this->get_on_submit_jobs( $max_pending_rows );
+        $rows             = $this->get_on_submit_jobs( $context, $max_pending_rows );
 
         foreach ( $rows as $row ) {
             $response = $this->send_api( $row->url, (bool) $row->is_mobile );

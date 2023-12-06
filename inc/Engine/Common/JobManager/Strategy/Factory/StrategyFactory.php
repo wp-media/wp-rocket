@@ -1,7 +1,7 @@
 <?php
 
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory;
+namespace WP_Rocket\Engine\Common\JobManager\Strategy\Factory;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext;

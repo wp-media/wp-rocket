@@ -1,9 +1,9 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies;
+namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 /**
  * Class managing the default error for retry process
