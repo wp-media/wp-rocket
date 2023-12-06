@@ -120,7 +120,7 @@ class AbstractManager {
      * Get on submit jobs based on enabled option.
      *
      * @param integer $num_rows Number of rows to grab with each CRON iteration.
-     * @return array
+     * @return array|int
      */
     public function get_on_submit_jobs( int $num_rows ): array {
         return $this->query->get_on_submit_jobs( $num_rows );

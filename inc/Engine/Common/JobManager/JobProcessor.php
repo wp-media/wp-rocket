@@ -441,9 +441,9 @@ class JobProcessor implements LoggerAwareInterface {
      *
 	 * @param array $context Context.
      * @param integer $num_rows Number of rows to grab with each CRON iteration.
-     * @return array
+     * @return array|int
      */
-    private function get_on_submit_jobs( array $context, int $num_rows ): array {
+    private function get_on_submit_jobs( array $context, int $num_rows ) {
         if ( ! $context['rucss'] && $context['atf'] ) {
             return $this->atf_manager->get_on_submit_jobs( $num_rows );
         }
