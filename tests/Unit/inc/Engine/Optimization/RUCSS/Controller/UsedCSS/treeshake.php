@@ -8,6 +8,8 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -30,6 +32,16 @@ class Test_Treeshake extends TestCase {
 	protected $filesystem;
 	protected $context;
 
+	/**
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
 	protected $optimisedContext;
 	protected function setUp(): void
 	{
@@ -42,6 +54,8 @@ class Test_Treeshake extends TestCase {
 		$this->filesystem = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
 		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
+		$this->wpr_clock = Mockery::mock(WPRClock::class);
 
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
@@ -53,6 +67,8 @@ class Test_Treeshake extends TestCase {
 				$this->filesystem,
 				$this->context,
 				$this->optimisedContext,
+				$this->strategy_factory,
+				$this->wpr_clock,
 			]
 		);
 

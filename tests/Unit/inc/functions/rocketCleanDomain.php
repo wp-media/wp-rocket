@@ -105,6 +105,9 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		Actions\expectDone( 'after_rocket_clean_domain' )
 			->once()
 			->with( $config['root'], $lang, $url );
+		Actions\expectDone( 'rocket_after_clean_domain' )
+			->once()
+			->with( $lang, $expected['rocket_clean_domain_urls'] );
 
 		// Run it.
 		rocket_clean_domain( $lang );

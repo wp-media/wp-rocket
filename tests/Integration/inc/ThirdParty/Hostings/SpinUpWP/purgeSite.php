@@ -15,7 +15,7 @@ class Test_PurgeSite extends TestCase {
 	public function testShouldCallSpinUpPurgeSite( ) {
 		Functions\expect( 'spinupwp_purge_site' )->once();
 
-		do_action( 'after_rocket_clean_domain' );
+		do_action( 'rocket_after_clean_domain' );
 	}
 
 }

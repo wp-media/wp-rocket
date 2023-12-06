@@ -22,7 +22,7 @@ class WordPressCom extends AbstractNoCacheHost {
 			'rocket_display_varnish_options_tab'  => 'return_false',
 			'rocket_set_wp_cache_constant'        => 'return_false',
 			'rocket_generate_advanced_cache_file' => 'return_false',
-			'after_rocket_clean_domain'           => 'purge_wpcom_cache',
+			'rocket_after_clean_domain'           => 'purge_wpcom_cache',
 		];
 	}
 
