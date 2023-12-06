@@ -7,6 +7,7 @@ use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Optimization\CSSTrait;
 
 class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAwareInterface {
     use LoggerAware;
