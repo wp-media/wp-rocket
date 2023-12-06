@@ -5,32 +5,23 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies;
 use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
 
 /**
- * Class managing the retry process of RUCSS whenever a job isn't found in the SaaS.
+ * Class managing the retry process whenever a job isn't found in the SaaS.
  */
 class JobSetFail implements StrategyInterface {
 	/**
-     * RUCSS Job Manager.
+     * Job Manager.
      *
      * @var ManagerInterface
      */
-    private $rucss_manager;
-
-    /**
-     * LCP Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $atf_manager;
+    private $manager;
 
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param ManagerInterface $rucss_manager RUCSS Job Manager.
-     * @param ManagerInterface $lcp_manager LCP Job Manager.
+	 * @param ManagerInterface $manager Job Manager.
 	 */
-	public function __construct( ManagerInterface $rucss_manager, ManagerInterface $atf_manager ) {
-		$this->rucss_manager = $rucss_manager;
-        $this->atf_manager = $atf_manager;
+	public function __construct( ManagerInterface $manager ) {
+		$this->manager = $manager;
 	}
 
 	/**
@@ -49,7 +40,6 @@ class JobSetFail implements StrategyInterface {
 		 */
 		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-		$this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
-		$this->atf_manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
+		$this->manager->make_status_failed( $row_details->url, $row_details->is_mobile, strval( $job_details['code'] ), $job_details['message'] );
 	}
 }

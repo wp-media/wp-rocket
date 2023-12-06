@@ -18,20 +18,6 @@ class StrategyFactory implements LoggerAwareInterface {
 	use LoggerAware;
 
 	/**
-     * RUCSS Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $rucss_manager;
-
-    /**
-     * LCP Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $atf_manager;
-
-	/**
 	 * Clock instance.
 	 *
 	 * @var WPRClock
@@ -41,13 +27,9 @@ class StrategyFactory implements LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-     * @param ManagerInterface $rucss_manager RUCSS Job Manager.
-     * @param ManagerInterface $lcp_manager LCP Job Manager.
 	 * @param WPRClock      $clock Clock instance.
 	 */
-	public function __construct( ManagerInterface $rucss_manager, ManagerInterface $atf_manager, WPRClock $clock ) {
-		$this->rucss_manager = $rucss_manager;
-        $this->atf_manager = $atf_manager;
+	public function __construct( WPRClock $clock ) {
 		$this->clock          = $clock;
 	}
 	/**
@@ -58,20 +40,20 @@ class StrategyFactory implements LoggerAwareInterface {
 	 *
 	 * @return void
 	 */
-	public function manage( $row_details, $job_details ): void {
+	public function manage( $row_details, $job_details, ManagerInterface $manager ): void {
 
 		switch ( $job_details['code'] ) {
 			case 408:
-				$strategy = new ResetRetryProcess( $this->rucss_manager, $this->atf_manager );
+				$strategy = new ResetRetryProcess( $manager );
 				break;
 			case 500:
 			case 422:
 			case 404:
 			case 401:
-				$strategy = new JobSetFail( $this->rucss_manager, $this->atf_manager );
+				$strategy = new JobSetFail( $manager );
 				break;
 			default:
-				$strategy = new DefaultProcess( $this->rucss_manager, $this->atf_manager, $this->clock );
+				$strategy = new DefaultProcess( $manager, $this->clock );
 				break;
 		}
 

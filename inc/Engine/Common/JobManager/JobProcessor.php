@@ -177,7 +177,7 @@ class JobProcessor implements LoggerAwareInterface {
             $message = 'RUCSS: shakedCSS size is less than ' . $min_rucss_size;
             $this->logger::error( $message );
             $this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, '500', $message );
-			
+
 			$is_shakedCSS_valid = false;
         }
 
@@ -185,7 +185,8 @@ class JobProcessor implements LoggerAwareInterface {
             200 !== (int) $job_details['code']
         ) {
             $this->logger::debug( 'RUCSS/ATF: Job status failed for url: ' . $row_details->url, $job_details );
-            $this->strategy_factory->manage( $row_details, $job_details );
+            $this->strategy_factory->manage( $row_details, $job_details, $this->rucss_manager );
+            $this->strategy_factory->manage( $row_details, $job_details, $this->atf_manager );
 
             return;
         }

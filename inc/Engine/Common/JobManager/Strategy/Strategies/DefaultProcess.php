@@ -6,22 +6,16 @@ use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
 
 /**
- * Class managing the default error for retry process of RUCSS
+ * Class managing the default error for retry process
  */
 class DefaultProcess implements StrategyInterface {
-	/**
-     * RUCSS Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $rucss_manager;
 
     /**
-     * LCP Job Manager.
+     * Job Manager.
      *
      * @var ManagerInterface
      */
-    private $atf_manager;
+    private $manager;
 
 	/**
 	 * Clock Object.
@@ -54,14 +48,11 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Strategy Constructor.
 	 *
-     * @param ManagerInterface $rucss_manager RUCSS Job Manager.
-     * @param ManagerInterface $lcp_manager LCP Job Manager.
-	 * @param WPRClock      $clock Clock object.
+	 * @param WPRClock $clock Clock object.
 	 */
-	public function __construct( ManagerInterface $rucss_manager, ManagerInterface $atf_manager, WPRClock $clock ) {
-		$this->rucss_manager = $rucss_manager;
-        $this->atf_manager = $atf_manager;
-		$this->clock          = $clock;
+	public function __construct( ManagerInterface $manager, WPRClock $clock ) {
+		$this->manager = $manager;
+		$this->clock = $clock;
 
 		/**
 		 * Filter the array containing the time needed to wait for each retry.
@@ -93,12 +84,12 @@ class DefaultProcess implements StrategyInterface {
 			 */
 			do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-			$this->make_status_failed( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
+			$this->manager->make_status_failed( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 			return;
 		}
-
-		$this->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
+		
+		$this->manager->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
 
@@ -115,67 +106,7 @@ class DefaultProcess implements StrategyInterface {
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;
 
-		$this->update_message_with_next_retry_time(
-			$row_details->url,
-			$row_details->is_mobile,
-			$job_details['code'],
-			$job_details['message'],
-			$row_details->error_message,
-			$next_retry_time
-		);
-	}
-
-	/**
-	 * Change the status to be failed.
-	 *
-	 * @param string $url Url from DB row.
-	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $error_code error code.
-	 * @param string $error_message error message.
-	 * @return void
-	 */
-	private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-		$this->rucss_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
-		$this->atf_manager->make_status_failed( $url, $is_mobile, strval( $error_code ), $error_message );
-	}
-
-	/**
-	 * Increment retries number and change status back to pending.
-	 *
-	 * @param string $url Url from DB row.
-	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $error_code error code.
-	 * @param string $error_message error message.
-	 * @return void
-	 */
-	private function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-		$this->rucss_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
-		$this->atf_manager->increment_retries( $url, $is_mobile, strval( $error_code ), $error_message );
-	}
-
-	/**
-	 * Update message and next retry time.
-	 *
-	 * @param string $url Url from DB row.
-	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param int    $error_code error code.
-	 * @param string $error_message error message.
-     * @param string $previous_message Previous saved message.
-	 * @param string|int $next_retry_time timestamp or mysql format date.
-	 * @return void
-	 */
-	private function update_message_with_next_retry_time(
-		string $url,
-		bool $is_mobile,
-		string $error_code,
-		string $error_message,
-		string $previous_message,
-		$next_retry_time
-	) {
-		$this->rucss_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
-		$this->rucss_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
-
-		$this->atf_manager->update_message( $url, $is_mobile, $error_code, $error_message, $previous_message );
-		$this->atf_manager->update_next_retry_time( $url, $is_mobile, $next_retry_time );
+		$this->manager->update_message( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'], $row_details->error_message );
+		$this->manager->update_next_retry_time( $row_details->url, $row_details->is_mobile, $next_retry_time );
 	}
 }

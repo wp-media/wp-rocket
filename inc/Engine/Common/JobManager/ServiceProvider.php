@@ -8,7 +8,11 @@ use WP_Rocket\Engine\Common\JobManager\Managers\RUCSSManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\AtfManager;
 use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
@@ -36,7 +40,14 @@ class ServiceProvider extends AbstractServiceProvider {
         'rucss_manager',
         'atf_manager',
         'wpr_clock',
-        'rucss_retry_strategy_factory',
+        'retry_strategy_factory',
+        'rucss_retry_strategy_default_process',
+        'rucss_retry_strategy_job_set_fail',
+        'rucss_retry_strategy_reset_retry',
+        'atf_retry_strategy_default_process',
+        'atf_retry_strategy_job_set_fail',
+        'atf_retry_strategy_reset_retry',
+        'retry_strategy_context',
         'rucss_filesystem',
         'job_processor',
         'rucss_context',
@@ -61,6 +72,13 @@ class ServiceProvider extends AbstractServiceProvider {
         $this->getContainer()->add( 'rucss_used_css_query', UsedCSSQuery::class );
         $this->getContainer()->add( 'wpr_clock', WPRClock::class );
 
+        $this->getContainer()->add( 'atf_query', ATFQuery::class );
+
+        $this->getContainer()->add( 'rucss_context', RUCSSContext::class )
+            ->addArgument( $this->getContainer()->get( 'options' ) );
+
+        $this->getContainer()->add( 'atf_context', Context::class );
+
         $this->getContainer()->add( 'rucss_manager', RUCSSManager::class )
             ->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) )
             ->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
@@ -70,29 +88,36 @@ class ServiceProvider extends AbstractServiceProvider {
             ->addArgument( $this->getContainer()->get( 'atf_query' ) )
             ->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
-        $this->getContainer()->add( 'rucss_retry_strategy_factory', StrategyFactory::class )
-			->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
-			->addArgument( $this->getContainer()->get( 'atf_manager' ) )
+        $this->getContainer()->add( 'retry_strategy_context', RetryContext::class );
+
+        $this->getContainer()->add( 'retry_strategy_factory', StrategyFactory::class )
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+
+        $this->getContainer()->add( 'rucss_retry_strategy_default_process', DefaultProcess::class )
+            ->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
+            ->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+
+        $this->getContainer()->add( 'atf_retry_strategy_default_process', DefaultProcess::class )
+            ->addArgument( $this->getContainer()->get( 'atf_manager' ) )
+            ->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
+
+        $this->getContainer()->add( 'rucss_retry_strategy_job_set_fail', JobSetFail::class )
+            ->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
+
+        $this->getContainer()->add( 'atf_retry_strategy_job_set_fail', JobSetFail::class )
+            ->addArgument( $this->getContainer()->get( 'atf_manager' ) );
+
+        $this->getContainer()->add( 'rucss_retry_strategy_reset_retry', ResetRetryProcess::class )
+            ->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
+
+        $this->getContainer()->add( 'atf_retry_strategy_reset_retry', ResetRetryProcess::class )
+            ->addArgument( $this->getContainer()->get( 'atf_manager' ) );
 
         $this->getContainer()->add( 'rucss_filesystem', Filesystem::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_USED_CSS_PATH' ) )
 			->addArgument( rocket_direct_filesystem() );
 
-		$this->getContainer()->add( 'atf_query', ATFQuery::class );
-		$this->getContainer()->add( 'RUCSSContext', RUCSSContext::class );
-
-        $this->getContainer()->add( 'rucss_context', RUCSSContext::class )
-            ->addArgument( $this->getContainer()->get( 'options' ) );
-
-        $this->getContainer()->add( 'atf_context', Context::class );
-
         $this->getContainer()->add( 'queue', Queue::class );
-
-        $this->getContainer()->add( 'api_client', APIClient::class )
-            ->addArgument( $this->getContainer()->get( 'options' ) )
-            ->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
         $this->getContainer()->add( 'job_processor', JobProcessor::class )
             ->addArgument( $this->getContainer()->get( 'rucss_manager' ) )
@@ -101,6 +126,11 @@ class ServiceProvider extends AbstractServiceProvider {
             ->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
             ->addArgument( $this->getContainer()->get( 'options' ) )
             ->addArgument( $this->getContainer()->get( 'api_client' ) );
+
+        $this->getContainer()->add( 'api_client', APIClient::class )
+            ->addArgument( $this->getContainer()->get( 'options' ) )
+            ->addArgument( $this->getContainer()->get( 'rucss_context' ) )
+            ->addArgument( $this->getContainer()->get( 'atf_context' ) );
 
         $this->getContainer()->share( 'cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'job_processor' ) )
