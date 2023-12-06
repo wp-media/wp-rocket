@@ -4,7 +4,6 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
@@ -81,13 +80,6 @@ class UsedCSS {
 	private $inline_content_exclusions = [];
 
 	/**
-	 * Clock instance.
-	 *
-	 * @var WPRClock
-	 */
-	protected $wpr_clock;
-
-	/**
      * Above the fold Job Manager.
      *
      * @var ManagerInterface
@@ -103,7 +95,6 @@ class UsedCSS {
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
 	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
-	 * @param WPRClock         $clock Clock object instance.
 	 * @param ManagerInterface $manager RUCSS manager.
 	 */
 	public function __construct(
@@ -113,7 +104,6 @@ class UsedCSS {
 		Filesystem $filesystem,
 		ContextInterface $context,
 		ContextInterface $optimize_url_context,
-		WPRClock $clock,
 		ManagerInterface $manager
 	) {
 		$this->options              = $options;
@@ -122,7 +112,6 @@ class UsedCSS {
 		$this->filesystem           = $filesystem;
 		$this->context              = $context;
 		$this->optimize_url_context = $optimize_url_context;
-		$this->wpr_clock            = $clock;
 		$this->manager = $manager;
 	}
 
