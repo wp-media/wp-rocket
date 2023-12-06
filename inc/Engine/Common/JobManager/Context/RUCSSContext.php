@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\Context;
 
+use WP_Rocket\Engine\Common\Context\AbstractContext;
+
 class RUCSSContext extends AbstractContext {
 	/**
 	 * Check if the operation is allowed.
