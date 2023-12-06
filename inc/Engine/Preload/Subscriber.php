@@ -189,6 +189,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( (bool) ! $this->options->get( 'manual_preload', true ) ) {
+			return; // Bail out if preload is disabled.
+		}
+
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
@@ -448,10 +452,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_preload_excluded_uri( $regexes ): array {
 		$preload_excluded_uri = (array) $this->options->get( 'preload_excluded_uri', [] );
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) && (bool) ! $this->options->get( 'manual_preload', true ) ) {
-			$regexes[] = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-		}
 
 		if ( empty( $preload_excluded_uri ) ) {
 			return $regexes;
