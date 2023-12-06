@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
+namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
@@ -13,6 +13,27 @@ class APIClient extends AbstractAPIClient {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
+
+    /**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+    /**
+     * RUCSS Context.
+     *
+     * @var ContextInterface
+     */
+    protected $rucss_context;
+
+    /**
+     * LCP Context.
+     *
+     * @var ContextInterface
+     */
+    protected $atf_context;
 
 	/**
 	 * Calls Central SaaS API.
