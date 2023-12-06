@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
