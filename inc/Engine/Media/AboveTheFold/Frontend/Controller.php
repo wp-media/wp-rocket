@@ -67,6 +67,10 @@ class Controller {
 			return $html;
 		}
 
+		if ( empty( $row->lcp ) ) {
+			return $html;
+		}
+
 		$html = $this->preload_lcp( $html, $row );
 
 		return $html;
@@ -124,7 +128,21 @@ class Controller {
 		}
 
 		$url  = preg_quote( $lcp->src, '/' );
-		$html = preg_replace( '/(<img[^>]*\s+src=[\'"]' . $url . '+[\'"])/', '$1 fetchpriority="high"', $html, 1 );
+		$html = preg_replace_callback(
+			'/<img[^>]*\s+src=[\'"]' . $url . '[\'"].+>$/',
+			function ( $matches ) {
+				// Check if the fetchpriority attribute already exists.
+				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
+					// If it exists, don't modify the tag.
+					return $matches[0];
+				}
+
+				// If it doesn't exist, add the fetchpriority attribute.
+				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
+			},
+			$html,
+			1
+		);
 
 		return $html;
 	}
@@ -141,6 +159,8 @@ class Controller {
 			return $exclusions;
 		}
 
+		list($atf, $lcp) = [ [], [] ];
+
 		global $wp;
 
 		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
@@ -151,10 +171,16 @@ class Controller {
 			return $exclusions;
 		}
 
-		$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
-		$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+		if ( $row->lcp ) {
+			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
+			$lcp = $lcp['sources'];
+		}
 
-		$exclusions = array_merge( $exclusions, $lcp['sources'], $atf );
+		if ( $row->viewport ) {
+			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+		}
+
+		$exclusions = array_merge( $exclusions, $lcp, $atf );
 
 		// Remove lcp candidate from the atf array.
 		$exclusions = array_unique( $exclusions );
@@ -169,6 +195,15 @@ class Controller {
 	 * @return array
 	 */
 	private function generate_lcp_link_tag_with_sources( $lcp ): array {
+		$pairs = [
+			'tags'    => '',
+			'sources' => [],
+		];
+
+		if ( ! $lcp && ! is_object( $lcp ) ) {
+			return $pairs;
+		}
+
 		$tag       = '';
 		$start_tag = '<link rel="preload" as="image" ';
 		$end_tag   = ' fetchpriority="high">';
@@ -210,10 +245,10 @@ class Controller {
 				break;
 		}
 
-		return [
-			'tags'    => $tag,
-			'sources' => $sources,
-		];
+		$pairs['tags']    = $tag;
+		$pairs['sources'] = $sources;
+
+		return $pairs;
 	}
 
 	/**
@@ -223,7 +258,7 @@ class Controller {
 	 * @return array
 	 */
 	private function get_atf_sources( array $atfs ): array {
-		if ( ! is_array( $atfs ) ) {
+		if ( ! $atfs && ! is_array( $atfs ) ) {
 			return [];
 		}
 

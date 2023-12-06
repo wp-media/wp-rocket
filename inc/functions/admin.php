@@ -361,7 +361,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= sprintf( '<em>%s</em>', $data['web_server'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -370,7 +370,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['php_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -379,7 +379,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['wordpress_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -388,7 +388,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['multisite'] ? 'true' : 'false' );
+	$html .= sprintf( '<em>%s</em>', $data['multisite'] ? 'true' : 'false' );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -397,7 +397,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= sprintf( '<em>%s</em>', $data['current_theme'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -406,7 +406,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= sprintf( '<em>%s</em>', $data['locale'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -425,6 +425,15 @@ function rocket_data_collection_preview_table() {
 	$html .= '</td>';
 	$html .= '<td>';
 	$html .= sprintf( '<em>%s</em>', __( 'Which WP Rocket settings are active', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', $data['license_type'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -525,4 +534,30 @@ function rocket_create_options_hash( $value ) {
 	ksort( $value_diff );
 
 	return md5( wp_json_encode( $value_diff ) );
+}
+
+/**
+ * This function returns the license type for a customer.
+ *
+ * @param object $customer_data customer data as an object.
+ * @return string the type of the license the user has.
+ */
+function rocket_get_license_type( $customer_data ) {
+	if ( false === $customer_data
+		||
+		! isset( $customer_data->licence_account )
+	) {
+		return __( 'Unavailable', 'rocket' );
+	}
+
+	if ( 1 <= $customer_data->licence_account
+		&&
+		$customer_data->licence_account < 3
+	) {
+		return 'Single';
+	} elseif ( -1 === (int) $customer_data->licence_account ) {
+		return 'Infinite';
+	}
+
+	return 'Plus';
 }

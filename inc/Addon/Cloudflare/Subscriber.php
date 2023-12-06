@@ -64,7 +64,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_varnish_ip'                         => 'set_varnish_localhost',
 			'rocket_varnish_purge_request_host'         => 'set_varnish_purge_request_host',
 			'rocket_cron_deactivate_cloudflare_devmode' => 'deactivate_devmode',
-			'after_rocket_clean_domain'                 => 'auto_purge',
+			'rocket_after_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],

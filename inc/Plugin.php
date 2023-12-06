@@ -382,6 +382,7 @@ class Plugin {
 			'wpgeotargeting',
 			'lazyload_css_subscriber',
 			'shoptimizer',
+			'weglot',
 			'atf_subscriber',
 			'atf_admin_subscriber',
 		];

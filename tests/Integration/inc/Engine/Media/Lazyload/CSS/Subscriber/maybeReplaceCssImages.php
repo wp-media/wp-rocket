@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use Brain\Monkey\Functions;
 
 /**
@@ -11,7 +11,7 @@ use Brain\Monkey\Functions;
  */
 class Test_maybeReplaceCssImages extends FilesystemTestCase {
 
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Subscriber/integration/maybeReplaceCssImages.php';
 
@@ -25,6 +25,7 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
+		add_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash'], 10, 2);
 	}
 
 	public function tear_down()
@@ -32,7 +33,8 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 		remove_filter('pre_http_request', [$this, 'mock_http']);
 		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
-		$this->restoreWpFilter('rocket_buffer');
+		remove_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash']);
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 
@@ -83,6 +85,13 @@ class Test_maybeReplaceCssImages extends FilesystemTestCase {
 
 	public function lazyload_css_bg_img() {
 		return $this->config['lazyload_css_bg_img'];
+	}
+
+	public function rocket_lazyload_css_hash($hash, $url_tag) {
+		if ($this->config && array_key_exists($url_tag['url'], $this->config['hash_mapping'])) {
+			return $this->config['hash_mapping'][$url_tag['url']];
+		}
+		return $hash;
 	}
 
 	public function mock_http($response, $args, $url) {

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestSaveCloudflareOldSettings extends TestCase {
-	use FilterTrait;
+	use IsolateHookTrait;
 	private $response;
 
 	public function set_up()
@@ -22,7 +22,7 @@ class TestSaveCloudflareOldSettings extends TestCase {
 
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
-		$this->restoreWpFilter('pre_update_option_wp_rocket_settings');
+		$this->restoreWpHook('pre_update_option_wp_rocket_settings');
 
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
 

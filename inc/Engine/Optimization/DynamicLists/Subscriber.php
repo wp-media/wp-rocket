@@ -42,6 +42,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_exclude_urls'        => 'add_preload_exclusions',
 			'rocket_exclude_js'                  => 'add_js_exclude_files',
 			'rocket_plugins_to_deactivate'       => 'add_incompatible_plugins_to_deactivate',
+			'rocket_staging_list'                => 'add_staging_exclusions',
 		];
 	}
 
@@ -200,5 +201,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_incompatible_plugins_to_deactivate( $plugins = [] ): array {
 		return array_merge( (array) $plugins, $this->dynamic_lists->get_incompatible_plugins() );
+	}
+
+	/**
+	 * Add the staging exclusions to the array
+	 *
+	 * @param array $stagings Array of staging urls.
+	 *
+	 * @return array
+	 */
+	public function add_staging_exclusions( $stagings = [] ): array {
+		return array_merge( (array) $stagings, (array) $this->dynamic_lists->get_stagings() );
 	}
 }

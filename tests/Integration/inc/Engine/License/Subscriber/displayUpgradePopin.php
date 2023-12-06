@@ -34,7 +34,7 @@ class DisplayUpgradePopin extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_settings_page_footer' );
+		$this->restoreWpHook( 'rocket_settings_page_footer' );
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 

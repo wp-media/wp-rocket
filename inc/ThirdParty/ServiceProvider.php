@@ -43,6 +43,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
+use WP_Rocket\ThirdParty\Plugins\I18n\Weglot;
 
 /**
  * Service provider for WP Rocket third party compatibility
@@ -101,6 +102,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rapidload',
 		'translatepress',
 		'wpgeotargeting',
+		'weglot',
 	];
 
 	/**
@@ -255,6 +257,8 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'rapidload', RapidLoad::class );
+		$this->getContainer()
+			->share( 'weglot', Weglot::class );
 		$this->getContainer()->share( 'translatepress', TranslatePress::class );
 		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
 	}

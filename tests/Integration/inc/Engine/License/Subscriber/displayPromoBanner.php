@@ -41,7 +41,7 @@ class DisplayPromoBanner extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'rocket_before_dashboard_content' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );

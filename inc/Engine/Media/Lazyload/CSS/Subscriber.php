@@ -143,11 +143,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'add_lazy_tag', 24 ],
 			],
 			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
-			'after_rocket_clean_domain'             => 'clear_generated_css',
+			'rocket_after_clean_domain'             => 'clear_generated_css',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
-			'rocket_exclude_js'                     => 'add_lazyload_script_exclude_js',
-			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
-			'rocket_delay_js_exclusions'            => 'add_lazyload_script_rocket_delay_js_exclusions',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
 			'rocket_lazyload_css_ignored_urls'      => 'remove_svg_from_lazyload_css',
 		];
@@ -558,51 +555,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Add the lazyload script to exclude js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_exclude_js( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
-	}
-
-	/**
-	 * Add the lazyload script to defer js exclusions.
-	 *
-	 * @param array $exclude_defer_js Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
-		if ( ! $this->is_activated() ) {
-			return $exclude_defer_js;
-		}
-
-		$exclude_defer_js [] = '#rocket_lazyload_css-js-after';
-		return $exclude_defer_js;
-	}
-
-	/**
-	 * Add the lazyload script to delay js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
 	}
 
 	/**

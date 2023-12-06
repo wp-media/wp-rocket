@@ -35,7 +35,7 @@ class Test_MaybeDisableOcd extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_optimize_css_delivery', [ $this, 'set_ocd' ] );
 
-		$this->restoreWpFilter( 'rocket_before_add_field_to_settings' );
+		$this->restoreWpHook( 'rocket_before_add_field_to_settings' );
 
 		parent::tear_down();
 	}

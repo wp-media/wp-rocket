@@ -112,7 +112,7 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_file'                => 'clean_url',
 			'set_404'                                => 'delete_url_on_not_found',
 			'rocket_after_clean_terms'               => 'clean_urls',
-			'after_rocket_clean_domain'              => 'clean_full_cache',
+			'rocket_after_clean_domain'              => 'clean_full_cache',
 			'delete_post'                            => 'delete_post_preload_cache',
 			'pre_delete_term'                        => 'delete_term_preload_cache',
 			'rocket_preload_format_url'              => 'format_preload_url',
@@ -122,10 +122,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_preload_exclude_urls'            => [
 				[ 'add_preload_excluded_uri' ],
 				[ 'add_cache_reject_uri_to_excluded' ],
-				[ 'exclude_private_post_uri', 10, 2 ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
+			'rocket_preload_exclude'                 => [ 'exclude_private_url', 10, 2 ],
 		];
 	}
 
@@ -523,25 +523,22 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Exclude private urls.
 	 *
-	 * @param array  $regexes regexes containing excluded uris.
-	 * @param string $url Current url to test against.
-	 * @return array
+	 * @param bool   $excluded In case we want to exclude that url.
+	 * @param string $url Current URL to test..
+	 *
+	 * @return bool Tells if it's excluded or not.
 	 */
-	public function exclude_private_post_uri( $regexes, $url ): array {
-		if ( ! is_array( $regexes ) ) {
-			$regexes = (array) $regexes;
+	public function exclude_private_url( $excluded, string $url ): bool {
+		if ( $excluded ) {
+			return true;
 		}
 
-		$private_urls = $this->get_all_private_urls();
-		if ( empty( $private_urls ) ) {
-			return $regexes;
-		}
+		$post_id = rocket_url_to_postid( $url );
 
-		if ( ! isset( $private_urls[ md5( $url ) ] ) ) {
-			return $regexes;
+		$post = get_post( $post_id );
+		if ( $post ) {
+			return 'private' === $post->post_status;
 		}
-
-		$regexes[] = $url;
-		return $regexes;
+		return false;
 	}
 }
