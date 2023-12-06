@@ -498,9 +498,9 @@ class AbstractQuery extends Query {
 	 * @param mixed      $job_id the job id.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
-	 * @return bool either it is saved or not.
+	 * @return int|bool either it is saved or not.
 	 */
-	public function update_next_retry_time( $job_id, $next_retry_time ): bool {
+	public function update_next_retry_time( $job_id, $next_retry_time ) {
 		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
 			// If $next_retry_time is a valid date string, convert it to a timestamp.
 			$next_retry_time = strtotime( $next_retry_time );
