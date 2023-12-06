@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Admin_Bar;
-use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class UsedCSS {
 	use RegexTrait;
