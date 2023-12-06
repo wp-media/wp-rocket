@@ -7,12 +7,13 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSOptimizeContext;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
-use WP_Rocket\Engine\Common\JobManager\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS as UsedCSSController;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Common\JobManager\Managers\RUCSSManager;
+use WP_Rocket\Engine\Common\JobManager\Context\RUCSSContext as JobRUCSSContext;
 /**
  * Service provider for the WP Rocket RUCSS
  *
@@ -41,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_filesystem',
 		'rucss_used_css_controller',
 		'rucss_manager',
+		'job_rucss_context',
 	];
 
 	/**
@@ -71,6 +73,16 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'rucss_optimize_context', RUCSSOptimizeContext::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
+
+		$this->getContainer()->add( 'job_rucss_context', JobRUCSSContext::class )
+            ->addArgument( $this->getContainer()->get( 'options' ) );
+
+		$this->getContainer()->add( 'rucss_manager', RUCSSManager::class )
+            ->addArguments([
+                $this->getContainer()->get( 'rucss_used_css_query' ),
+                $this->getContainer()->get( 'rucss_filesystem' ),
+                $this->getContainer()->get( 'job_rucss_context' )
+            ]);
 
 		$this->getContainer()->add( 'rucss_used_css_controller', UsedCSSController::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
