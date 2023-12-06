@@ -54,6 +54,7 @@ class AboveTheFold extends AbstractTable {
 			submitted_at     timestamp           NOT NULL default '0000-00-00 00:00:00',
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
+			next_retry_time     	timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
