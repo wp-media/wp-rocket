@@ -22,7 +22,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		 *
 		 * @param string $uri Current uri
 		 */
-		$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url_raw( $uri ) );
+		$referer = (string) esc_url_raw( apply_filters( 'rocket_admin_bar_referer', $uri ) );
 		$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
 	} else {
 		$referer = '';
