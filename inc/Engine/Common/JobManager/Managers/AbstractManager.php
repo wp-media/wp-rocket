@@ -161,6 +161,24 @@ class AbstractManager {
     }
 
     /**
+	 * Increment retries number and change status back to pending.
+	 *
+ 	 * @param string $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string    $error_code error code.
+	 * @param string $error_message error message.
+	 *
+	 * @return void
+	 */
+    public function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
+        if ( ! $this->is_allowed() ) {
+            return;
+        }
+
+        $this->query->increment_retries( $url, $is_mobile, $error_code, $error_message );
+    }
+
+    /**
 	 * Update the error message.
 	 *
  	 * @param string $url Url from DB row.
@@ -180,7 +198,7 @@ class AbstractManager {
     }
 
     /**
-	 * Increment retries number and change status back to pending.
+	 * Updates the next_retry_time field
 	 *
  	 * @param string $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
