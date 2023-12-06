@@ -81,6 +81,8 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 
 			return [];
 		}
+
+		return $pending_jobs;
     }
 
 	 /**

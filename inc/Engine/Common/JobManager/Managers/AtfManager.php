@@ -65,6 +65,8 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 
 			return [];
 		}
+
+        return $pending_jobs;
     }
 
     /**
