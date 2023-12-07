@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Common\JobManager\Interfaces\ManagerInterface;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 
 class StrategyFactory implements LoggerAwareInterface {
