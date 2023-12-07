@@ -70,7 +70,7 @@ return [
 			]
 		]
 	],
-	'testShouldBailOut' => [
+	'testShouldBailOutWHenPreloadDisabled' => [
 		'config' => [
 			'regexes' => [],
 			'manual_preload' => false,
