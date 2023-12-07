@@ -3108,7 +3108,7 @@ msgstr ""
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = price.
 #: inc/Engine/License/Renewal.php:139
 msgid "Renew your license for 1 year now at %1$s%3$s%2$s."
-msgstr "Lisansınızı şimdi %1$s%3$s%2$s adresinden 1 yıllığına yenileyin."
+msgstr "Lisansınızı şimdi %1$s%3$s%2$s ücretle 1 yıllığına yenileyin."
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount percentage,
 #. %4$s = price.
