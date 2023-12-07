@@ -166,6 +166,7 @@ class AbstractQuery extends Query {
 					'id',
 					'url',
 					'next_retry_time',
+					'is_mobile',
 				],
 				'job_id__not_in' => [
 					'not_in' => '',
