@@ -145,7 +145,8 @@ class ServiceProvider extends AbstractServiceProvider {
                 $this->getContainer()->get( 'queue' ),
                 $this->getContainer()->get( 'retry_strategy_factory' ),
                 $this->getContainer()->get( 'options' ),
-                $this->getContainer()->get( 'api_client' )
+                $this->getContainer()->get( 'api_client' ),
+                $this->getContainer()->get( 'wpr_clock' )
             ]);
 
         $this->getContainer()->share( 'cron_subscriber', CronSubscriber::class )
