@@ -77,7 +77,9 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_rucss_atf_pending_jobs'          => 'process_pending_jobs',
 			'rocket_rucss_atf_on_submit_jobs'        => 'process_on_submit_jobs',
-			'rocket_rucss_job_check_status'      => 'check_job_status',
+			'rocket_rucss_job_check_status'      => [
+                [ 'check_job_status', 2 ],
+            ],
 			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
 			'rocket_deactivation'                => 'on_deactivation',
