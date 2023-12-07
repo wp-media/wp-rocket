@@ -137,7 +137,6 @@ class Extractor {
 				$url = $this->apply_string_filter( 'css_url', $url );
 			}
 
-			$url          = "url('$url')";
 			$original_url = trim( $match['tag'], ' ,' );
 			$output[]     = [
 				'url'      => $url,
