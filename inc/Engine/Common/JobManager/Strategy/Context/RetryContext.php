@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\Strategy\Context;
 
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\StrategyInterface;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\StrategyInterface;
 
 class RetryContext {
 	/**

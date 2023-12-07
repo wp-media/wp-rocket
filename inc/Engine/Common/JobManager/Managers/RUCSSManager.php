@@ -98,7 +98,7 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 			return;
 		}
 
-        $css = $this->apply_font_display_swap( $job_details['contents']['rucss_result']['shakedCSS'] );
+        $css = $this->apply_font_display_swap( $job_details['contents']['shakedCSS'] );
 
 		/**
 		 * RUCSS hash.

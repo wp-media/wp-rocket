@@ -4,11 +4,10 @@
 namespace WP_Rocket\Engine\Common\JobManager\Strategy\Factory;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobNotFound404;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Context\RetryContext;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;

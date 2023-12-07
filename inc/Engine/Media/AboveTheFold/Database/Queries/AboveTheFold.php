@@ -72,9 +72,9 @@ class AboveTheFold extends AbstractQuery {
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param array $data LCP & Above the fold data.
 	 *
-	 * @return boolean
+	 * @return boolean|int
 	 */
-	public function make_job_completed( string $url, bool $is_mobile, array $data ): bool {
+	public function make_job_completed( string $url, bool $is_mobile, array $data ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}

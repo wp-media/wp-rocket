@@ -185,7 +185,7 @@ class AbstractQuery extends Query {
 	 * @param string    $error_code error code.
 	 * @param string $error_message error message.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ) {
 		if ( ! $this->is_allowed() ) {
@@ -503,7 +503,7 @@ class AbstractQuery extends Query {
 	 * @param string $job_id API job_id.
 	 * @param string $queue_name API Queue name.
 	 * @param bool   $is_mobile if the request is for mobile page.
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function make_status_pending( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
 		if ( ! $this->is_allowed() ) {
@@ -538,9 +538,9 @@ class AbstractQuery extends Query {
 	 * @param string $message Response message.
 	 * @param string $previous_message Previous saved message.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function update_message( string $url, bool $is_mobile, int $code, string $message, string $previous_message = '' ): bool {
+	public function update_message( string $url, bool $is_mobile, int $code, string $message, string $previous_message = '' ) {
 		if ( ! $this->is_allowed() ) {
 			return false;
 		}
@@ -566,9 +566,9 @@ class AbstractQuery extends Query {
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
-	 * @return bool either it is saved or not.
+	 * @return bool|int either it is saved or not.
 	 */
-	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ): bool {
+	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ) {
 		if ( ! $this->is_allowed() ) {
 			return false;
 		}

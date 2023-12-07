@@ -218,7 +218,7 @@ class JobProcessor implements LoggerAwareInterface {
 			$this->rucss_manager->process( $job_details, $row_details );
 		}
         
-        $this->lcp_manager->process( $job_details, $row_details );
+        $this->atf_manager->process( $job_details, $row_details );
     }
 
     /**
