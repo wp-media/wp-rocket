@@ -17,5 +17,7 @@ class RUCSSContext extends AbstractContext {
 		if ( ! $is_allowed ) {
 			return false;
 		}
+
+        return true;
 	}
 }
