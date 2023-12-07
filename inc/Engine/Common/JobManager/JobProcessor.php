@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 
 class JobProcessor implements LoggerAwareInterface {
     use LoggerAware;
@@ -55,6 +56,13 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	private $api;
 
+	/**
+	 * Clock instance.
+	 *
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
 
     /**
      * Instantiate the class.
@@ -65,6 +73,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
 	 * @param Options_Data     $options Options instance.
 	 * @param APIClient        $api APIClient instance.
+	 * @param WPRClock         $clock Clock object instance.
      */
     public function __construct(
         ManagerInterface $rucss_manager,
@@ -72,7 +81,8 @@ class JobProcessor implements LoggerAwareInterface {
         QueueInterface $queue,
         StrategyFactory $strategy_factory,
 		Options_Data $options,
-		APIClient $api
+		APIClient $api,
+		WPRClock $clock
     ) {
         $this->rucss_manager = $rucss_manager;
         $this->atf_manager = $atf_manager;
@@ -80,6 +90,7 @@ class JobProcessor implements LoggerAwareInterface {
         $this->strategy_factory = $strategy_factory;
 		$this->options = $options;
 		$this->api = $api;
+		$this->wpr_clock = $clock;
     }
 
 	/**
