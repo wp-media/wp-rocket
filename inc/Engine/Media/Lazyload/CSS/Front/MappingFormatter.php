@@ -22,7 +22,7 @@ class MappingFormatter {
 
 			$placeholder          = "--wpr-bg-$hash";
 			$img_url              = "url('$url')";
-			$variable_placeholder = $datum['selector'] . '{' . $placeholder . ': ' . $img_url . ');}';
+			$variable_placeholder = $datum['selector'] . '{' . $placeholder . ': ' . $img_url . ';}';
 			$formatted_urls[]     = [
 				'selector' => $selector,
 				'style'    => $variable_placeholder,
