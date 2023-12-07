@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15\n"
+"Project-Id-Version: WP Rocket 3.15.1-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2023-08-28T12:32:53+03:00\n"
+"POT-Creation-Date: 2023-09-25T14:39:29+03:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2023\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -18,6 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: rocket\n"
 "X-Generator: WP-CLI 2.7.1\n"
+
+#. Plugin Name of the plugin
+msgid "WP Rocket"
+msgstr "راکت وردپرس: "
+
+#. Plugin URI of the plugin
+msgid "https://wp-rocket.me"
+msgstr "https://wp-rocket.me"
+
+#. Description of the plugin
+msgid "The best WordPress performance plugin."
+msgstr "بهترین افزونه افزایش سرعت وردپرس"
+
+#. Author of the plugin
+msgid "WP Media"
+msgstr "سرویس WP Media"
+
+#. Author URI of the plugin
+msgid "https://wp-media.me"
+msgstr "https://wp-media.me"
 
 #. Translators: %s = Hosting name.
 #: inc/3rd-party/hosting/flywheel.php:18
@@ -440,70 +460,6 @@ msgstr "اطلاعات بیشتر"
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
 msgstr "پاک کردن کش"
-
-#: inc/admin/ui/meta-boxes.php:67
-msgid "WP Rocket Options"
-msgstr "تنظیمات موشک وردپرس"
-
-#: inc/admin/ui/meta-boxes.php:96
-msgid "Never cache this page"
-msgstr "هرگز این برگه را کش نکن"
-
-#: inc/admin/ui/meta-boxes.php:100
-msgid "Activate these options on this post:"
-msgstr "فعال کردن این گزینه‌ها برای این نوشته:"
-
-#: inc/admin/ui/meta-boxes.php:103
-msgid "LazyLoad for images"
-msgstr "باگذاری با تاخیر تصاویر"
-
-#: inc/admin/ui/meta-boxes.php:104
-msgid "LazyLoad for iframes/videos"
-msgstr "بارگذاری با تاخیر آی‌‌فریم‌ها\\ویدیوها"
-
-#: inc/admin/ui/meta-boxes.php:105
-msgid "Minify CSS"
-msgstr "فشرده‌سازی CSS"
-
-#: inc/admin/ui/meta-boxes.php:106 inc/Engine/Admin/Settings/Page.php:736
-msgid "Remove Unused CSS"
-msgstr "حذف CSS بدون استفاده"
-
-#: inc/admin/ui/meta-boxes.php:107
-msgid "Minify/combine JS"
-msgstr "فشرده‌سازی\\ترکیب JS"
-
-#: inc/admin/ui/meta-boxes.php:108 inc/deprecated/deprecated.php:1773
-#: inc/Engine/Admin/Settings/Page.php:1586
-#: inc/Engine/Admin/Settings/Page.php:1597
-msgid "CDN"
-msgstr "شبکه تحویل محتوا CDN"
-
-#: inc/admin/ui/meta-boxes.php:109 inc/Engine/Admin/Settings/Page.php:765
-msgid "Load CSS asynchronously"
-msgstr "CSS را به صورت غیر همزمان بارگذاری کنید"
-
-#: inc/admin/ui/meta-boxes.php:110
-msgid "Defer JS"
-msgstr "تعویق جاوا اسکریپت"
-
-#: inc/admin/ui/meta-boxes.php:111 inc/Engine/Admin/Settings/Page.php:907
-msgid "Delay JavaScript execution"
-msgstr "تاخیر اجرای جاوا اسکریپت"
-
-#. translators: %s is the name of the option.
-#: inc/admin/ui/meta-boxes.php:130
-msgid "Activate first the %s option."
-msgstr "ابتدا گزینه %s را فعال کنید."
-
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/admin/ui/meta-boxes.php:146
-msgid ""
-"%1$sNote:%2$s None of these options will be applied if this post has been "
-"excluded from cache in the global cache settings."
-msgstr ""
-"%1$sنکته:%2$s هیچکدام از این گزینه ها اعمال نمی شود اگر این نوشته از کش شدن "
-"مستثنی شده باشد در تنظیمات کش کلی."
 
 #. translators: %1$s WP Rocket plugin name; %2$s = file name.
 #: inc/admin/ui/notices.php:30 inc/admin/ui/notices.php:43
@@ -987,6 +943,34 @@ msgstr "نقشه سایت جت‌پک"
 msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "پیش‌بارگذاری نقشه سایت از افزونه جت‌پک"
 
+#: inc/deprecated/3.15.php:28
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
+msgid "WP Rocket Options"
+msgstr "تنظیمات موشک وردپرس"
+
+#: inc/deprecated/3.15.php:57 views/metaboxes/post_edit_options.php:19
+msgid "Never cache this page"
+msgstr "هرگز این برگه را کش نکن"
+
+#: inc/deprecated/3.15.php:61 views/metaboxes/post_edit_options.php:23
+msgid "Activate these options on this post:"
+msgstr "فعال کردن این گزینه‌ها برای این نوشته:"
+
+#. translators: %s is the name of the option.
+#: inc/deprecated/3.15.php:81
+#: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:121
+msgid "Activate first the %s option."
+msgstr "ابتدا گزینه %s را فعال کنید."
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/deprecated/3.15.php:97 views/metaboxes/post_edit_options.php:38
+msgid ""
+"%1$sNote:%2$s None of these options will be applied if this post has been "
+"excluded from cache in the global cache settings."
+msgstr ""
+"%1$sنکته:%2$s هیچکدام از این گزینه ها اعمال نمی شود اگر این نوشته از کش شدن "
+"مستثنی شده باشد در تنظیمات کش کلی."
+
 #: inc/deprecated/deprecated.php:240
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
 msgstr "<strong>JS </strong>فایل‌های با بارگذاری تاخیری جاوا اسکریپت"
@@ -1093,6 +1077,12 @@ msgstr "پایه"
 #: inc/deprecated/deprecated.php:1772
 msgid "Static Files"
 msgstr "فایل‌های استاتیک"
+
+#: inc/deprecated/deprecated.php:1773 inc/Engine/Admin/Settings/Page.php:1586
+#: inc/Engine/Admin/Settings/Page.php:1597
+#: inc/Engine/CDN/Admin/Subscriber.php:28
+msgid "CDN"
+msgstr "شبکه تحویل محتوا CDN"
 
 #: inc/deprecated/deprecated.php:1774
 msgid "Advanced"
@@ -1533,6 +1523,11 @@ msgid ""
 msgstr ""
 "ویژگی بهینه سازی تحویل CSS در محیط محلی غیرفعال است.%1$sبیشتر بخوانید%2$s"
 
+#: inc/Engine/Admin/Settings/Page.php:736
+#: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
+msgid "Remove Unused CSS"
+msgstr "حذف CSS بدون استفاده"
+
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:739
 msgid ""
@@ -1557,6 +1552,11 @@ msgid ""
 msgstr ""
 "نام فایل های CSS ، شناسه ها یا کلاس هایی را که نباید حذف شوند (یکی در هر خط)"
 " مشخص کنید."
+
+#: inc/Engine/Admin/Settings/Page.php:765
+#: inc/Engine/CriticalPath/Admin/Subscriber.php:200
+msgid "Load CSS asynchronously"
+msgstr "CSS را به صورت غیر همزمان بارگذاری کنید"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Admin/Settings/Page.php:768
@@ -1672,6 +1672,7 @@ msgstr ""
 "دامنه استفاده کنید.%1$sراهنمایی%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:876
+#: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr "بارگذاری جاوا اسکریپت به صورت تاخیری"
 
@@ -1693,6 +1694,11 @@ msgid ""
 msgstr ""
 "برای مستثنی کردن فایل‌های جاوا اسکریپت از تعویق، آدرس آن را اینجا وارد "
 "کنید(هرخط یک آدرس).%1$sاطلاعات بیشتر%2$s"
+
+#: inc/Engine/Admin/Settings/Page.php:907
+#: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
+msgid "Delay JavaScript execution"
+msgstr "تاخیر اجرای جاوا اسکریپت"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:909
@@ -2667,10 +2673,14 @@ msgid "RocketCDN cache purge successful."
 msgstr "حذف کش RocketCDN موفق بود."
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerEnableRoute.php:302
 msgid "RocketCDN enabled"
 msgstr "RocketCDN فعال شد"
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:160
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php:31
+#: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/registerDisableRoute.php:147
 msgid "RocketCDN disabled"
 msgstr "RocketCDN غیرفعال شد"
 
@@ -2760,7 +2770,7 @@ msgid ""
 msgstr ""
 "با RocketCDN، شبکه تحویل محتوای WP Rocket سرعت سایت خود را افزایش دهید!"
 
-#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:253
+#: inc/Engine/Common/Queue/RUCSSQueueRunner.php:265
 msgid "Every minute"
 msgstr "هر دقیقه"
 
@@ -3239,7 +3249,15 @@ msgstr ""
 "می توانید با ارتقاء لایسنس از موشک وردپرس در وب سایت های بیشتری استفاده کنید"
 " (فقط تفاوت قیمت بین لایسنس های فعلی و جدید خود را پرداخت خواهید کرد)."
 
-#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:45
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
+msgid "LazyLoad for images"
+msgstr "باگذاری با تاخیر تصاویر"
+
+#: inc/Engine/Media/Lazyload/AdminSubscriber.php:63
+msgid "LazyLoad for iframes/videos"
+msgstr "بارگذاری با تاخیر آی‌‌فریم‌ها\\ویدیوها"
+
+#: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
 msgid "LazyLoad CSS backgrounds"
 msgstr "بارگذاری تنبل پس ضمینه CSS"
 
@@ -3262,19 +3280,19 @@ msgid ""
 msgstr ""
 "برای دریافت آخرین نسخه لیست ها از سرور ما به یک لایسنس فعال نیاز دارید."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:115
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:116
 msgid "Could not get updated lists from server."
 msgstr "نمی توان لیست های به روز شده را از سرور دریافت کرد."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:124
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:125
 msgid "Lists are up to date."
 msgstr "لیست ها به روز هستند."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:133
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
 msgid "Could not update lists."
 msgstr "لیست‌ها به‌روزرسانی نشد."
 
-#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:142
+#: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
 msgid "Lists are successfully updated."
 msgstr "لیست ها با موفقیت به روز شدند."
 
@@ -3289,6 +3307,14 @@ msgstr "به تأخیر انداختن لیست های لغو اجرای جاو�
 #: inc/Engine/Optimization/DynamicLists/ServiceProvider.php:72
 msgid "Incompatible plugins Lists"
 msgstr "لیست افزونه های ناهماهنگ"
+
+#: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
+msgid "Minify/combine JavaScript"
+msgstr "فشرده کردن/ترکیب جاوا اسکریپت"
+
+#: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:150
+msgid "Minify CSS"
+msgstr "فشرده‌سازی CSS"
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:224
@@ -3366,12 +3392,12 @@ msgstr ""
 "ما%4$sتماس بگیرید."
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:314
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:286
 msgid "%1$s: Used CSS option is not enabled!"
 msgstr "%1$s: قابلیت CSSهای استفاده شده فعال نیست!"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:336
+#: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:308
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: کش CSS استفاده شده پاک شد!"
 
@@ -3636,7 +3662,7 @@ msgstr ""
 "ارتباط باشید."
 
 #. translators: %1$s = plugin name.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:125
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:127
 msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
@@ -3644,7 +3670,7 @@ msgstr ""
 "%1$s:Cloudflare's HTTP/2 Server Push هماهنگ نیست با ویژگی حذف فایل های  "
 "Unused CSS و  Combine CSS. پیشنهاد می شود غیرفعال کنید."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:168
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:170
 msgid ""
 "Your site is using the official Cloudflare plugin. We have enabled "
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
@@ -3653,7 +3679,7 @@ msgstr ""
 "سایت شما از پلاگین رسمی کلادفلیر استفاده می کند. ما پاکسازی خودکار کلادفلیر "
 "را برای سازگاری فعال کرده ایم. اگر APO را فعال کرده اید، سازگار است."
 
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:169
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:171
 msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
@@ -3662,7 +3688,7 @@ msgstr ""
 " حاصل شود که محتوا همیشه به روز است."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:213
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:215
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
 "is not yet compatible with that feature."
@@ -3671,7 +3697,7 @@ msgstr ""
 " APO هنوز با این ویژگی سازگار نیست.%2$s"
 
 #. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:219
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:221
 msgid ""
 "You should either disable Cloudflare APO or check with the theme/plugin "
 "requiring the use of “Dynamic Cookies Cache” developers for an alternative "
@@ -3683,7 +3709,7 @@ msgstr ""
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
 #. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:270
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:272
 msgid ""
 "%1$sWP Rocket:%2$s You are using \"Separate cache files for mobile "
 "devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
@@ -3695,7 +3721,7 @@ msgstr ""
 "دهید.%4$sاطلاعات بیشتر%5$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:291
+#: inc/ThirdParty/Plugins/CDN/Cloudflare.php:293
 msgid ""
 "%1$sWP Rocket:%2$s You have \"Cache by Device Type\" enabled on Cloudflare "
 "APO. If you judge it necessary for the website to have a different cache on "

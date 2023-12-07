@@ -384,6 +384,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'atf_subscriber',
+			'contactform7',
 		];
 
 		$host_type = HostResolver::get_host_service();
