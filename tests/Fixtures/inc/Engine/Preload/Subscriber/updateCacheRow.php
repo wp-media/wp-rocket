@@ -3,6 +3,7 @@ return [
 	'testCallActionWhenPreloaded' => [
 		'config' => [
 			'regexes' => [],
+			'manual_preload' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -25,6 +26,7 @@ return [
 	'testNoCallActionWhenNotPreloaded' => [
 		'config' => [
 			'regexes' => [],
+			'manual_preload' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -49,6 +51,7 @@ return [
 			'regexes' => [
 				'(.*)example.org(.*)'
 			],
+			'manual_preload' => true,
 			'links' => [
 				[
 					'url' => 'http://example.org',
@@ -66,5 +69,23 @@ return [
 				],
 			]
 		]
-	]
+	],
+	'testShouldBailOut' => [
+		'config' => [
+			'regexes' => [],
+			'manual_preload' => false,
+			'links' => [
+			],
+			'is_preloaded' => false,
+		],
+		'expected' => [
+			'url' => 'http://example.org',
+			'exists' => false,
+			'links' => [
+				[
+					'url' => 'http://example.org',
+				],
+			],
+		],
+	],
 ];
