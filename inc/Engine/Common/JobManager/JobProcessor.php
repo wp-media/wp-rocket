@@ -463,11 +463,11 @@ class JobProcessor implements LoggerAwareInterface {
         if ( ! $context['rucss'] && $context['atf'] ) {
             $this->logger::debug( 'ATF: Start checking job status for url: ' . $url );
 
-            return $this->atf_manager->get_row( $url, $is_mobile );
+            return $this->atf_manager->get_single_job( $url, $is_mobile );
         }
 
         $this->logger::debug( 'RUCSS: Start checking job status for url: ' . $url );
-        return $this->rucss_manager->get_row( $url, $is_mobile );
+        return $this->rucss_manager->get_single_job( $url, $is_mobile );
     }
 
 	/**
