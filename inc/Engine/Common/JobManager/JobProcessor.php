@@ -250,8 +250,18 @@ class JobProcessor implements LoggerAwareInterface {
         $max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
         $rows             = $this->get_on_submit_jobs( $context, $max_pending_rows );
 
+		if ( ! $rows ) {
+			return;
+		}
+
         foreach ( $rows as $row ) {
-            $response = $this->send_api( $row->url, (bool) $row->is_mobile );
+			$optimization_type = '';
+
+			if ( ! isset( $row->is_common ) ) {
+				$optimization_type = isset( $row->lcp ) ? 'atf' : 'rucss';
+			}
+
+            $response = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
             if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
 
                 $this->make_status_failed( $row->url, $row->is_mobile, '', '' );
@@ -279,9 +289,10 @@ class JobProcessor implements LoggerAwareInterface {
      *
      * @param string $url URL to work on.
      * @param bool   $is_mobile Is the page for mobile.
+     * @param string $optimization_type The type of optimization request to send.
      * @return array|false
      */
-    protected function send_api( string $url, bool $is_mobile ) {
+    protected function send_api( string $url, bool $is_mobile, string $optimization_type ) {
         /**
          * Filters the RUCSS safelist
          *
@@ -309,7 +320,7 @@ class JobProcessor implements LoggerAwareInterface {
             'is_home'        => $this->is_home( $url ),
         ];
 
-		$config = $this->set_request_params( $config );
+		$config = $this->set_request_params( $config, $optimization_type );
 
         $add_to_queue_response = $this->api->add_to_queue( $url, $config );
         if ( 200 !== $add_to_queue_response['code'] ) {
@@ -376,18 +387,22 @@ class JobProcessor implements LoggerAwareInterface {
 	 * Set request parameters
 	 *
 	 * @param array $config Array of request parameters.
+	 * @param string $optimization_type The type of optimization request to send.
 	 * @return array
 	 */
-	private function set_request_params( array $config ): array {
-		$context = $this->context();
-
-		if ( $context['rucss'] ) {
-			$config['optimization_list'][] = 'rucss';
-		}
-
-		if ( $context['atf'] ) {
-			$config['optimization_list'][] = 'lcp';
-			$config['optimization_list'][] = 'above_fold';
+	private function set_request_params( array $config, string $optimization_type ): array {
+		switch ( $optimization_type ) {
+			case 'rucss':
+				$config['optimization_list'][] = 'rucss';
+				break;
+			case 'atf':
+				$config['optimization_list'][] = 'lcp';
+				$config['optimization_list'][] = 'above_fold';
+				break;
+			default:
+				$config['optimization_list'][] = 'rucss';
+				$config['optimization_list'][] = 'lcp';
+				$config['optimization_list'][] = 'above_fold';
 		}
 
 		return $config;
@@ -477,13 +492,87 @@ class JobProcessor implements LoggerAwareInterface {
      * @param integer $num_rows Number of rows to grab with each CRON iteration.
      * @return array|int
      */
-    private function get_on_submit_jobs( array $context, int $num_rows ) {
-        if ( ! $context['rucss'] && $context['atf'] ) {
-            return $this->atf_manager->get_on_submit_jobs( $num_rows );
+    public function get_on_submit_jobs( array $context, int $num_rows ) {
+		$rucss_jobs = $atf_jobs = [];
+
+		if ( $context['rucss'] ) {
+			$rucss_jobs = $this->rucss_manager->get_on_submit_jobs( $num_rows );
+		}
+
+        if ( $context['atf'] ) {
+        	$atf_jobs = $this->atf_manager->get_on_submit_jobs( $num_rows );
         }
 
-        return $this->rucss_manager->get_on_submit_jobs( $num_rows );
+        $rows = array_merge( $rucss_jobs, $atf_jobs );
+
+		if ( ! $rows ) {
+			return [];
+		}
+
+		// Get jobs common to both optimizations.
+		$common_rows = $this->get_common_jobs( $rows );
+
+		if ( ! $common_rows ) {
+			return $rows;
+		}
+
+		// Get distinct rows.
+		return $this->get_distinct( $rows, $common_rows );
     }
+
+	/**
+	 * Get rows common to rucss & atf.
+	 *
+	 * @param array $rows Merged DB Rows of rucss & atf.
+	 * @return array
+	 */
+	private function get_common_jobs( array $rows ): array {
+		$occurrences = $duplicates = [];
+
+		foreach ( $rows as $row ) {
+			$key = $row->url . '|' . ( $row->is_mobile ?? 'null' );
+		
+			if ( ! isset( $occurrences[ $key ] ) ) {
+				$occurrences[ $key ] = 1;
+				
+				continue;
+			}
+			
+			$occurrences[ $key ]++;
+		
+			if ( $occurrences[ $key ] === 2 ) {
+				// Add new is_common property to the object and add object to duplicate.
+				$row->is_common = true;
+				$duplicates[] = $row;
+			}
+		}
+
+		return $duplicates;
+	}
+
+	/**
+	 * Get distinct rows merged from both rucss & atf.
+	 *
+	 * @param array $rows Merged DB Rows of rucss & atf.
+	 * @param array $common_rows Rows common to rucss & atf.
+	 * @return array
+	 */
+	private function get_distinct( array $rows, array $common_rows ): array {
+		$index = 0;
+
+		foreach ( $rows as $row ) {
+			foreach( $common_rows as $common_row ){
+				if ( $row->url === $common_row->url && $row->is_mobile === $common_row->is_mobile ) {
+					// Remove the common row that is without the new is_common property.
+					unset( $row[ $index ] );
+				}
+			}
+			
+			$index++;
+		}
+
+		return array_merge( $rows, $common_rows );
+	}
 
     /**
      * Change the job status to be failed.
