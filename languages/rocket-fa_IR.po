@@ -21,7 +21,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 msgid "WP Rocket"
-msgstr "راکت وردپرس: "
+msgstr "راکت وردپرس"
 
 #. Plugin URI of the plugin
 msgid "https://wp-rocket.me"
