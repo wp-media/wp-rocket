@@ -20,11 +20,4 @@ interface ManagerInterface {
 	  * @return void
 	  */
     public function process( array $job_details, $row_details ): void;
-
-    /**
-     * Log start process of jobs.
-     *
-     * @return void
-     */
-    public function log_start_process(): void;
 }
