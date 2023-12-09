@@ -34,6 +34,13 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
      */
     protected $context;
 
+	/**
+     * The type of optimization applied for the current job.
+     *
+     * @var string
+     */
+    protected $optimization_type = 'rucss';
+
     /**
 	 * Instantiate the class.
 	 *
@@ -49,21 +56,6 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
         $this->query = $query;
         $this->filesystem = $filesystem;
 		$this->context = $context;
-    }
-
-	 /**
-     * Log start process of job.
-     *
-     * @return void
-     */
-	public function log_start_process(): void {
-        if ( ! $this->is_allowed() ) {
-            $this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
-
-			return;
-        }
-
-		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
     }
 
     /**
@@ -96,11 +88,7 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 	  * @return void
 	  */
     public function process( array $job_details, $row_details, string $optimization_type ): void {
-		if ( ! $this->is_allowed() ) {
-			return;
-		}
-		
-		if ( 'atf' === $optimization_type ) {
+		if ( ! $this->is_allowed( $optimization_type ) ) {
 			return;
 		}
 

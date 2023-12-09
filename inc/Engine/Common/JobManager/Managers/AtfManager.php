@@ -23,6 +23,13 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
      * @var ContextInterface
      */
     protected $context;
+
+    /**
+     * The type of optimization applied for the current job.
+     *
+     * @var string
+     */
+    protected $optimization_type = 'atf';
     
     /**
 	 * Instantiate the class.
@@ -33,20 +40,6 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
     public function __construct( ATFQuery $query, ContextInterface $context ) {
         $this->query = $query;
         $this->context = $context;
-    }
-
-     /**
-     * Log start process of job.
-     *
-     * @return void
-     */
-    public function log_start_process(): void {
-        if ( ! $this->is_allowed() ) {
-            $this->logger::debug( 'ATF: Stop processing cron iteration because option is disabled.' );
-			return;
-        }
-
-		$this->logger::debug( 'ATF: Start processing pending jobs inside cron.' );
     }
 
     /**
@@ -78,13 +71,9 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 	  * @return void
 	  */
     public function process( array $job_details, $row_details, string $optimization_type ): void {
-        if ( ! $this->is_allowed() ) {
+        if ( ! $this->is_allowed( $optimization_type ) ) {
             return;
         }
-
-        if ( 'rucss' === $optimization_type ) {
-			return;
-		}
 
 		// Everything is fine, save LCP & ATF into DB, change status to completed and reset queue_name and job_id.
 		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $row_details->url );
