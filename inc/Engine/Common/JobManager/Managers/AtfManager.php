@@ -74,12 +74,17 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 	  *
 	  * @param array $job_details Details related to the job..
 	  * @param object $row_details Details related to the row.
+      * @param string $optimization_type The type of optimization applied for the current job.
 	  * @return void
 	  */
-    public function process( array $job_details, $row_details ): void {
+    public function process( array $job_details, $row_details, string $optimization_type ): void {
         if ( ! $this->is_allowed() ) {
             return;
         }
+
+        if ( 'rucss' === $optimization_type ) {
+			return;
+		}
 
 		// Everything is fine, save LCP & ATF into DB, change status to completed and reset queue_name and job_id.
 		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $row_details->url );
