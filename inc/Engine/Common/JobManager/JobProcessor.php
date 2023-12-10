@@ -140,7 +140,7 @@ class JobProcessor implements LoggerAwareInterface {
 
         foreach ( $pending_jobs as $row ) {
             $current_time = $this->wpr_clock->current_time( 'timestamp', true );
-            if ( strtotime( $row->next_retry_time ) < $current_time ) {
+            if (  $row->next_retry_time < $current_time ) {
                 $optimization_type = $this->get_optimization_type( $row );
                 // Change status to in-progress.
                 $this->make_status_inprogress( $row->url, $row->is_mobile, $optimization_type );
