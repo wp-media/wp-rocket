@@ -79,8 +79,8 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $row_details->url );
 
         $lcp_atf = [
-            'lcp' => $job_details['contents']['above_the_fold_result']['lcp'],
-            'viewport' => $job_details['contents']['above_the_fold_result']['images_above_fold'],
+            'lcp' => json_encode( $job_details['contents']['above_the_fold_result']['lcp'], JSON_UNESCAPED_SLASHES ),
+            'viewport' =>json_encode( $job_details['contents']['above_the_fold_result']['images_above_fold'], JSON_UNESCAPED_SLASHES ),
         ];
 
 		$this->query->make_job_completed( $row_details->url, $row_details->is_mobile, $lcp_atf );
