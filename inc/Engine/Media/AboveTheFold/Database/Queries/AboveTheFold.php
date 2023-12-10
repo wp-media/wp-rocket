@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
 
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas\AboveTheFold as AboveTheFoldSchema;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as AboveTheFoldRow;
 
 class AboveTheFold extends AbstractQuery {
 
@@ -30,7 +32,7 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Schemas\\AboveTheFold';
+	protected $table_schema = AboveTheFoldSchema::class;
 
 	/** Item ******************************************************************/
 
@@ -63,7 +65,7 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Row\\AboveTheFold';
+	protected $item_shape = AboveTheFoldRow::class;
 
 	/**
 	 * Complete a job.
