@@ -77,9 +77,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_rucss_atf_pending_jobs'          => 'process_pending_jobs',
 			'rocket_rucss_atf_on_submit_jobs'        => 'process_on_submit_jobs',
-			'rocket_rucss_atf_job_check_status'      => [
-                [ 'check_job_status', 10, 3 ],
-            ],
+			'rocket_rucss_atf_job_check_status'      => [ 'check_job_status', 10, 3 ],
             'rocket_rucss_job_check_status' => 'rucss_check_job_status',
 			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
@@ -92,6 +90,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'schedule_removing_failed_jobs' ],
 				[ 'schedule_on_submit_jobs' ],
 			],
+            'wp_rocket_upgrade' => [ 'unschedule_rucss_cron', 13, 2 ],
 		];
 	}
 
@@ -366,5 +365,26 @@ class Subscriber implements Subscriber_Interface {
 		 * @param bool $delete_rucss True to enable deletion, false otherwise.
 		 */
 		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
+	}
+
+    /**
+	 * Unschedule old rucss crons.
+	 *
+	 * @since 3.16
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function unschedule_rucss_cron( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.16', '>=' ) ) {
+			return;
+		}
+
+		wp_clear_scheduled_hook( 'rocket_rucss_on_submit_jobs' );
+		wp_clear_scheduled_hook( 'rocket_rucss_pending_jobs' );
+		wp_clear_scheduled_hook( 'rocket_remove_rucss_failed_jobs' );
+		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
 	}
 }
