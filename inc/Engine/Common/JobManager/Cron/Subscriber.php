@@ -77,8 +77,8 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_rucss_atf_pending_jobs'          => 'process_pending_jobs',
 			'rocket_rucss_atf_on_submit_jobs'        => 'process_on_submit_jobs',
-			'rocket_rucss_job_check_status'      => [
-                [ 'check_job_status', 2 ],
+			'rocket_rucss_atf_job_check_status'      => [
+                [ 'check_job_status', 10, 3 ],
             ],
 			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
@@ -179,11 +179,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param string $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
+     * @param string $optimization_type The type of optimization request to send.
 	 *
 	 * @return void
 	 */
-	public function check_job_status( string $url, bool $is_mobile ) {
-		$this->job_processor->check_job_status( $url, $is_mobile );
+	public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
+		$this->job_processor->check_job_status( $url, $is_mobile, $optimization_type );
 	}
 
 	/**
