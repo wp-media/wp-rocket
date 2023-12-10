@@ -223,6 +223,22 @@ class JobProcessor implements LoggerAwareInterface {
         $this->atf_manager->process( $job_details, $row_details, $optimization_type );
     }
 
+	/**
+	 * Handle job status by DB row ID during upgrade from versions < 3.16.
+	 *
+	 * @param integer $row_id DB Row ID.
+	 * @return void
+	 */
+	public function handle_old_rucss_job( int $row_id ): void {
+		$row = $this->rucss_manager->query()->get_row_by_id( $row_id );
+
+		if ( ! $row ) {
+			return;
+		}
+
+		$this->check_job_status( $row->url, $row->is_mobile, 'rucss' );
+	}
+
     /**
      * Process on submit jobs.
      *
