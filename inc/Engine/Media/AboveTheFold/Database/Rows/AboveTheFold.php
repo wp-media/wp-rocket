@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Row;
+namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Rows;
 
 use WP_Rocket\Dependencies\Database\Row;
 
@@ -105,6 +105,13 @@ class AboveTheFold extends Row {
 	public $last_accessed;
 
 	/**
+	 * Tells when the retry has to be processed
+	 *
+	 * @var int
+	 */
+	public $next_retry_time;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param mixed $item Object Row.
@@ -127,5 +134,6 @@ class AboveTheFold extends Row {
 		$this->submitted_at  = empty( $this->submitted_at ) ? 0 : strtotime( $this->submitted_at );
 		$this->modified      = empty( $this->modified ) ? 0 : strtotime( $this->modified );
 		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( $this->last_accessed );
+		$this->next_retry_time = empty( $this->next_retry_time ) ? 0 : strtotime( $this->next_retry_time );
 	}
 }
