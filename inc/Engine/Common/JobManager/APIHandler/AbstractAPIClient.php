@@ -12,7 +12,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://saas.wp-rocket.me/';
+	const API_URL = 'https://rucss-director-staging.public-default.live2-k8s-cph3.one.com/';
 
 	/**
 	 * Part of request Url after the main API_URL.
