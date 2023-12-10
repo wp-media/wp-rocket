@@ -80,6 +80,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_atf_job_check_status'      => [
                 [ 'check_job_status', 10, 3 ],
             ],
+            'rocket_rucss_job_check_status' => 'rucss_check_job_status',
 			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                     => 'add_interval',
 			'rocket_deactivation'                => 'on_deactivation',
@@ -173,6 +174,17 @@ class Subscriber implements Subscriber_Interface {
 	public function cron_remove_failed_jobs() {
 		$this->job_processor->clear_failed_urls();
 	}
+
+    /**
+	 * Handle job status by DB row ID during upgrade from versions < 3.16.
+	 *
+	 * @param integer $row_id DB Row ID.
+	 *
+	 * @return void
+	 */
+    public function rucss_check_job_status( int $row_id ): void {
+        $this->job_processor->handle_old_rucss_job( $row_id );
+    }
 
 	/**
 	 * Handle job status by DB url and is_mobile.
