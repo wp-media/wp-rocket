@@ -20,12 +20,28 @@ class AbstractManager {
     protected $context;
 
     /**
+     * The type of optimization applied for the current job.
+     *
+     * @var string
+     */
+    protected $optimization_type;
+
+    /**
 	 * Determine if the action is allowed.
+     * @param string $optimization_type The type of optimization applied for the current job.
 	 *
 	 * @return boolean
 	 */
-	public function is_allowed(): bool {
-		return $this->context->is_allowed();
+	public function is_allowed( $optimization_type = '' ): bool {
+		if ( ! $this->context->is_allowed() ) {
+            return false;
+        }
+
+        if ( ! $optimization_type ) {
+            return true;
+        }
+
+        return in_array( $optimization_type, [ 'all', $this->optimization_type ], true );
 	}
 
     /**
@@ -99,10 +115,11 @@ class AbstractManager {
      *
      * @param string $url Url from DB row.
      * @param boolean $is_mobile Is mobile from DB row.
+     * @param string $optimization_type The type of optimization applied for the current job.
      * @return void
      */
-    public function make_status_inprogress( string $url, bool $is_mobile ): void {
-        if ( ! $this->is_allowed() ) {
+    public function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
+        if ( ! $this->is_allowed( $optimization_type )  ) {
             return;
         }
 
@@ -137,10 +154,11 @@ class AbstractManager {
      * @param boolean $is_mobile Is mobile from DB row.
      * @param string $error_code error code.
      * @param string $error_message error message.
+     * @param string $optimization_type The type of optimization applied for the current job.
      * @return void
      */
-    public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ): void {
-        if ( ! $this->is_allowed() ) {
+    public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, string $optimization_type = '' ): void {
+        if ( ! $this->is_allowed( $optimization_type )  ) {
             return;
         }
 
@@ -154,10 +172,11 @@ class AbstractManager {
      * @param string $job_id API job_id.
      * @param string $queue_name API Queue name.
      * @param boolean $is_mobile if the request is for mobile page.
+     * @param string $optimization_type The type of optimization applied for the current job.
      * @return void
      */
-    public function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile ): void {
-        if ( ! $this->is_allowed() ) {
+    public function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile, string $optimization_type ): void {
+        if ( ! $this->is_allowed( $optimization_type )  ) {
             return;
         }
 
