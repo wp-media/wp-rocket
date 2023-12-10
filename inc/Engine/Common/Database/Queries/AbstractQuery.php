@@ -41,6 +41,31 @@ class AbstractQuery extends Query {
 	}
 
 	/**
+	 * Get single row by ID.
+	 *
+	 * @param int $row_id DB Row ID.
+	 *
+	 * @return array|false
+	 */
+	public function get_row_by_id( int $id ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		$query = $this->query(
+			[
+				'id' => $id,
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Get all rows with the same url (desktop and mobile versions).
 	 *
 	 * @param string $url Page url.
