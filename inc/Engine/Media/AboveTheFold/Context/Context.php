@@ -13,11 +13,19 @@ class Context implements ContextInterface {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
+		$default = true;
+
 		/**
 		 * Filters to manage above the fold optimization
 		 *
 		 * @param bool $allow True to allow, false otherwise.
 		 */
-		return apply_filters( 'rocket_above_the_fold_optimization', true );
+		$allow = apply_filters( 'rocket_above_the_fold_optimization', true );
+
+		if ( ! is_bool( $allow ) ) {
+			$allow = $default;
+		}
+
+		return $allow;
 	}
 }
