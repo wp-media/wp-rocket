@@ -114,13 +114,5 @@ class RUCSSManager extends AbstractManager implements ManagerInterface, LoggerAw
 		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
 		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 		$this->query->make_status_completed( $row_details->url, $row_details->is_mobile, $hash );
-
-		/**
-		 * Fires after successfully saving the used CSS for an URL
-		 *
-		 * @param string $url URL used to generated the used CSS.
-		 * @param array  $job_details Result of the request to get the job status from SaaS.
-		 */
-		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
     }
 }
