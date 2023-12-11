@@ -78,9 +78,15 @@ class AtfManager extends AbstractManager implements ManagerInterface, LoggerAwar
 		// Everything is fine, save LCP & ATF into DB, change status to completed and reset queue_name and job_id.
 		$this->logger::debug( 'ATF: Save LCP and ATF for url: ' . $row_details->url );
 
+        $lcp = $job_details['contents']['above_the_fold_result']['lcp'];
+        $viewport = $job_details['contents']['above_the_fold_result']['images_above_fold'];
+
+        $lcp = $lcp ? json_encode( $lcp, JSON_UNESCAPED_SLASHES ) : 'not found';
+        $viewport = $viewport ? json_encode( $viewport, JSON_UNESCAPED_SLASHES ) : 'not found';
+
         $lcp_atf = [
-            'lcp' => json_encode( $job_details['contents']['above_the_fold_result']['lcp'], JSON_UNESCAPED_SLASHES ),
-            'viewport' =>json_encode( $job_details['contents']['above_the_fold_result']['images_above_fold'], JSON_UNESCAPED_SLASHES ),
+            'lcp' => $lcp,
+            'viewport' => $viewport,
         ];
 
 		$this->query->make_job_completed( $row_details->url, $row_details->is_mobile, $lcp_atf );
