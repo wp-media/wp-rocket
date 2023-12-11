@@ -221,6 +221,14 @@ class JobProcessor implements LoggerAwareInterface {
 		}
         
         $this->atf_manager->process( $job_details, $row_details, $optimization_type );
+
+		/**
+		 * Fires after successfully saving the used CSS for an URL
+		 *
+		 * @param string $url URL used to generated the used CSS.
+		 * @param array  $job_details Result of the request to get the job status from SaaS.
+		 */
+		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
     }
 
 	/**
