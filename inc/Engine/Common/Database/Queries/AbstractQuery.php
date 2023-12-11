@@ -47,7 +47,7 @@ class AbstractQuery extends Query {
 	 *
 	 * @return array|false
 	 */
-	public function get_row_by_id( int $id ) {
+	public function get_row_by_id( int $row_id ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
@@ -199,10 +199,10 @@ class AbstractQuery extends Query {
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
- 	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string    $error_code error code.
-	 * @param string $error_message error message.
+	 * @param string  $error_code error code.
+	 * @param string  $error_message error message.
 	 *
 	 * @return bool|int
 	 */
@@ -227,12 +227,12 @@ class AbstractQuery extends Query {
 
 		$data = [
 			'retries'       => $retries + 1,
-			'status'    	=> 'pending',
+			'status'        => 'pending',
 			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 
@@ -259,7 +259,7 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be in-progress.
 	 *
-	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
 	 * @return int/boolean
 	 */
@@ -271,8 +271,8 @@ class AbstractQuery extends Query {
 		$db = $this->get_db();
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$where = [
-			'url' => untrailingslashit( $url ),
+		$where               = [
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 
@@ -309,11 +309,11 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be failed.
 	 *
-	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $error_code error code.
-	 * @param string $error_message error message.
-	 * 
+	 * @param string  $error_code error code.
+	 * @param string  $error_message error message.
+	 *
 	 * @return int/boolean
 	 */
 	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ) {
@@ -336,7 +336,7 @@ class AbstractQuery extends Query {
 		];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 
@@ -532,7 +532,7 @@ class AbstractQuery extends Query {
 		$db = $this->get_db();
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$data = [
+		$data                = [
 			'job_id'       => $job_id,
 			'queue_name'   => $queue_name,
 			'status'       => 'pending',
@@ -541,7 +541,7 @@ class AbstractQuery extends Query {
 		];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 
@@ -551,11 +551,11 @@ class AbstractQuery extends Query {
 	/**
 	 * Update the error message.
 	 *
-	 * @param string $url DB row url.
+	 * @param string  $url DB row url.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param int    $code Response code.
-	 * @param string $message Response message.
-	 * @param string $previous_message Previous saved message.
+	 * @param int     $code Response code.
+	 * @param string  $message Response message.
+	 * @param string  $previous_message Previous saved message.
 	 *
 	 * @return bool|int
 	 */
@@ -571,7 +571,7 @@ class AbstractQuery extends Query {
 		$data = [ 'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}" ];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 
@@ -581,8 +581,8 @@ class AbstractQuery extends Query {
 	/**
 	 * Updates the next_retry_time field
 	 *
- 	 * @param string $url DB row url.
-	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string     $url DB row url.
+	 * @param boolean    $is_mobile Is mobile from DB row.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
 	 * @return bool|int either it is saved or not.
@@ -607,7 +607,7 @@ class AbstractQuery extends Query {
 		$data = [ 'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ) ];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 

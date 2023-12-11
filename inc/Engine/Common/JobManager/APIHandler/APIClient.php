@@ -14,26 +14,26 @@ class APIClient extends AbstractAPIClient {
 	 */
 	protected $request_path = 'rucss-job';
 
-    /**
+	/**
 	 * Plugin options instance.
 	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
-    /**
-     * RUCSS Context.
-     *
-     * @var ContextInterface
-     */
-    protected $rucss_context;
+	/**
+	 * RUCSS Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $rucss_context;
 
-    /**
-     * LCP Context.
-     *
-     * @var ContextInterface
-     */
-    protected $atf_context;
+	/**
+	 * LCP Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $atf_context;
 
 	/**
 	 * Calls Central SaaS API.
@@ -116,18 +116,18 @@ class APIClient extends AbstractAPIClient {
 			'status'   => 'failed',
 			'message'  => 'No message. Defaulted in get_queue_job_status',
 			'contents' => [
-				'success'   => false,
+				'success' => false,
 			],
 		];
 
-        if ( $this->rucss_context->is_allowed() ) {
-            $default['contents']['rucss_result']['shakedCSS'] = '';
-        }
+		if ( $this->rucss_context->is_allowed() ) {
+			$default['contents']['rucss_result']['shakedCSS'] = '';
+		}
 
-        if ( $this->atf_context->is_allowed() ) {
-            $default['contents']['above_the_fold_result']['lcp'] = [];
-            $default['contents']['above_the_fold_result']['images_above_fold'] = [];
-        }
+		if ( $this->atf_context->is_allowed() ) {
+			$default['contents']['above_the_fold_result']['lcp']               = [];
+			$default['contents']['above_the_fold_result']['images_above_fold'] = [];
+		}
 
 		$result = json_decode( $this->response_body, true );
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );

@@ -49,34 +49,35 @@ abstract class AbstractAPIClient {
 	 */
 	protected $options;
 
-    /**
-     * RUCSS Context.
-     *
-     * @var ContextInterface
-     */
-    protected $rucss_context;
+	/**
+	 * RUCSS Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $rucss_context;
 
-    /**
-     * LCP Context.
-     *
-     * @var ContextInterface
-     */
-    protected $atf_context;
+	/**
+	 * LCP Context.
+	 *
+	 * @var ContextInterface
+	 */
+	protected $atf_context;
 
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data $options Options instance.
-     * @param ContextInterface $atf_context Above The Fold Context.
+	 * @param Options_Data     $options Options instance.
+	 * @param ContextInterface $rucss_context RUCSS Context.
+	 * @param ContextInterface $atf_context Above The Fold Context.
 	 */
 	public function __construct(
-        Options_Data $options,
-        ContextInterface $rucss_context,
-        ContextInterface $atf_context
-    ) {
-		$this->options = $options;
-        $this->rucss_context = $rucss_context;
-        $this->atf_context = $atf_context;
+		Options_Data $options,
+		ContextInterface $rucss_context,
+		ContextInterface $atf_context
+	) {
+		$this->options       = $options;
+		$this->rucss_context = $rucss_context;
+		$this->atf_context   = $atf_context;
 	}
 
 	/**

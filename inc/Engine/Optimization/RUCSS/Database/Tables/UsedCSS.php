@@ -45,7 +45,7 @@ class UsedCSS extends AbstractTable {
 		20231031 => 'add_next_retry_time_column',
 	];
 
-	 /**
+	/**
 	 * Table schema data.
 	 *
 	 * @var   string

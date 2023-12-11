@@ -72,9 +72,9 @@ class UsedCSS extends AbstractQuery {
 	/**
 	 * Complete a job.
 	 *
-	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $hash Hash.
+	 * @param string  $hash Hash.
 	 *
 	 * @return bool
 	 */
@@ -99,7 +99,7 @@ class UsedCSS extends AbstractQuery {
 		];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 

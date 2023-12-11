@@ -60,9 +60,9 @@ class Queue extends AbstractASQueue {
 	/**
 	 * Add Async job with DB row ID.
 	 *
-     * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $optimization_type The type of optimization request to send.
+	 * @param string  $optimization_type The type of optimization request to send.
 	 *
 	 * @return int
 	 */
@@ -71,8 +71,8 @@ class Queue extends AbstractASQueue {
 			'rocket_rucss_atf_job_check_status',
 			[
 				$url,
-                $is_mobile,
-				$optimization_type
+				$is_mobile,
+				$optimization_type,
 			]
 		);
 	}

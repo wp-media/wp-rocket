@@ -70,9 +70,9 @@ class AboveTheFold extends AbstractQuery {
 	/**
 	 * Complete a job.
 	 *
-	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param array $data LCP & Above the fold data.
+	 * @param array   $data LCP & Above the fold data.
 	 *
 	 * @return boolean|int
 	 */
@@ -92,13 +92,13 @@ class AboveTheFold extends AbstractQuery {
 		$prefixed_table_name = $db->prefix . $this->table_name;
 
 		$data = [
-			'status' => 'completed',
-			'lcp' => $data['lcp'],
+			'status'   => 'completed',
+			'lcp'      => $data['lcp'],
 			'viewport' => $data['viewport'],
 		];
 
 		$where = [
-			'url' => untrailingslashit( $url ),
+			'url'       => untrailingslashit( $url ),
 			'is_mobile' => $is_mobile,
 		];
 

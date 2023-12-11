@@ -80,11 +80,11 @@ class UsedCSS {
 	private $inline_content_exclusions = [];
 
 	/**
-     * Above the fold Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $manager;
+	 * Above the fold Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
 
 	/**
 	 * Instantiate the class.
@@ -112,7 +112,7 @@ class UsedCSS {
 		$this->filesystem           = $filesystem;
 		$this->context              = $context;
 		$this->optimize_url_context = $optimize_url_context;
-		$this->manager = $manager;
+		$this->manager              = $manager;
 	}
 
 	/**
@@ -175,7 +175,7 @@ class UsedCSS {
 
 		return $html;
 	}
-	
+
 	/**
 	 * Delete used css based on URL.
 	 *

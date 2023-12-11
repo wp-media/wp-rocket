@@ -26,16 +26,17 @@ class StrategyFactory implements LoggerAwareInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param WPRClock      $clock Clock instance.
+	 * @param WPRClock $clock Clock instance.
 	 */
 	public function __construct( WPRClock $clock ) {
-		$this->clock          = $clock;
+		$this->clock = $clock;
 	}
 	/**
 	 * Manage the whole process, to determine which strategy to adopt..
 	 *
-	 * @param object $row_details DB Row of a job.
-	 * @param array  $job_details Job information from the API.
+	 * @param object           $row_details DB Row of a job.
+	 * @param array            $job_details Job information from the API.
+	 * @param ManagerInterface $manager Job Manager.
 	 *
 	 * @return void
 	 */

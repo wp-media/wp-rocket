@@ -10,12 +10,12 @@ use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
  */
 class DefaultProcess implements StrategyInterface {
 
-    /**
-     * Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $manager;
+	/**
+	 * Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
 
 	/**
 	 * Clock Object.
@@ -48,11 +48,12 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param WPRClock $clock Clock object.
+	 * @param ManagerInterface $manager Job Manager.
+	 * @param WPRClock         $clock Clock object.
 	 */
 	public function __construct( ManagerInterface $manager, WPRClock $clock ) {
 		$this->manager = $manager;
-		$this->clock = $clock;
+		$this->clock   = $clock;
 
 		/**
 		 * Filter the array containing the time needed to wait for each retry.
@@ -88,7 +89,7 @@ class DefaultProcess implements StrategyInterface {
 
 			return;
 		}
-		
+
 		$this->manager->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.

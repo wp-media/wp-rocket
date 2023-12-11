@@ -34,18 +34,18 @@ class Controller {
 	private $context;
 
 	/**
-     * Above the fold Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $manager;
+	 * Above the fold Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
 
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param ATFQuery     $query Queries instance.
-	 * @param Context      $context Context instance.
+	 * @param Options_Data     $options Options instance.
+	 * @param ATFQuery         $query Queries instance.
+	 * @param Context          $context Context instance.
 	 * @param ManagerInterface $manager Above the fold Job Manager.
 	 */
 	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager ) {
@@ -69,9 +69,9 @@ class Controller {
 
 		global $wp;
 
-		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
 		$is_mobile = $this->is_mobile();
-		$row = $this->query->get_row( $url, $is_mobile );
+		$row       = $this->query->get_row( $url, $is_mobile );
 
 		if ( empty( $row ) ) {
 			$this->manager->add_url_to_the_queue( $url, $is_mobile );
@@ -141,15 +141,15 @@ class Controller {
 		$url  = preg_quote( $lcp->src, '/' );
 		$html = preg_replace_callback(
 			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
-			function ($matches) {
+			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if (preg_match('/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0])) {
+				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
-		
+
 				// If it doesn't exist, add the fetchpriority attribute.
-				return preg_replace('/<img/', '<img fetchpriority="high"', $matches[0]);
+				return preg_replace( '/<img/', '<img fetchpriority="high"', $matches[0] );
 			},
 			$html,
 			1

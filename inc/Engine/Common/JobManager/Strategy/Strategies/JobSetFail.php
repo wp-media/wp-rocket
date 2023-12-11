@@ -9,11 +9,11 @@ use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
  */
 class JobSetFail implements StrategyInterface {
 	/**
-     * Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $manager;
+	 * Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
 
 	/**
 	 * Strategy Constructor.

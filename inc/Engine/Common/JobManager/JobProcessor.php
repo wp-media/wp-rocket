@@ -12,35 +12,35 @@ use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 
 class JobProcessor implements LoggerAwareInterface {
-    use LoggerAware;
+	use LoggerAware;
 
-    /**
-     * RUCSS Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $rucss_manager;
+	/**
+	 * RUCSS Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $rucss_manager;
 
-    /**
-     * LCP Job Manager.
-     *
-     * @var ManagerInterface
-     */
-    private $atf_manager;
+	/**
+	 * LCP Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $atf_manager;
 
-    /**
-     * Queue instance.
-     *
-     * @var QueueInterface
-     */
-    private $queue;
+	/**
+	 * Queue instance.
+	 *
+	 * @var QueueInterface
+	 */
+	private $queue;
 
-    /**
-     * Retry Strategy Factory
-     *
-     * @var StrategyFactory
-     */
-    protected $strategy_factory;
+	/**
+	 * Retry Strategy Factory
+	 *
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
 
 	/**
 	 * Plugin options instance.
@@ -64,115 +64,115 @@ class JobProcessor implements LoggerAwareInterface {
 	protected $wpr_clock;
 
 
-    /**
-     * Instantiate the class.
-     *
-     * @param ManagerInterface $rucss_manager RUCSS Job Manager.
-     * @param ManagerInterface $lcp_manager LCP Job Manager.
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param ManagerInterface $rucss_manager RUCSS Job Manager.
+	 * @param ManagerInterface $atf_manager LCP Job Manager.
 	 * @param QueueInterface   $queue Queue instance.
 	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
 	 * @param Options_Data     $options Options instance.
 	 * @param APIClient        $api APIClient instance.
 	 * @param WPRClock         $clock Clock object instance.
-     */
-    public function __construct(
-        ManagerInterface $rucss_manager,
-        ManagerInterface $atf_manager,
-        QueueInterface $queue,
-        StrategyFactory $strategy_factory,
+	 */
+	public function __construct(
+		ManagerInterface $rucss_manager,
+		ManagerInterface $atf_manager,
+		QueueInterface $queue,
+		StrategyFactory $strategy_factory,
 		Options_Data $options,
 		APIClient $api,
 		WPRClock $clock
-    ) {
-        $this->rucss_manager = $rucss_manager;
-        $this->atf_manager = $atf_manager;
-        $this->queue = $queue;
-        $this->strategy_factory = $strategy_factory;
-		$this->options = $options;
-		$this->api = $api;
-		$this->wpr_clock = $clock;
-    }
+	) {
+		$this->rucss_manager    = $rucss_manager;
+		$this->atf_manager      = $atf_manager;
+		$this->queue            = $queue;
+		$this->strategy_factory = $strategy_factory;
+		$this->options          = $options;
+		$this->api              = $api;
+		$this->wpr_clock        = $clock;
+	}
 
 	/**
-     * Option contexts.
-     *
-     * @return array
-     */
-    public function context(): array {
-        return $context = [
-            'rucss' => $this->rucss_manager->is_allowed(),
-            'atf' => $this->atf_manager->is_allowed(),
-        ];
-    }
+	 * Option contexts.
+	 *
+	 * @return array
+	 */
+	public function context(): array {
+		return [
+			'rucss' => $this->rucss_manager->is_allowed(),
+			'atf'   => $this->atf_manager->is_allowed(),
+		];
+	}
 
-    /**
-     * Process pending jobs inside cron iteration.
-     *
-     * @return void
-     */
-    public function process_pending_jobs() {
+	/**
+	 * Process pending jobs inside cron iteration.
+	 *
+	 * @return void
+	 */
+	public function process_pending_jobs() {
 		$context = $this->context();
 
-        if ( ! $context['rucss'] && ! $context['atf'] ) {
-            $this->logger::debug( 'RUCSS/ATF: Stop processing cron iteration because both options are disabled.' );
+		if ( ! $context['rucss'] && ! $context['atf'] ) {
+			$this->logger::debug( 'RUCSS/ATF: Stop processing cron iteration because both options are disabled.' );
 
-            return;
-        }
+			return;
+		}
 
-        $this->logger::debug( 'Start processing pending jobs inside cron.' );
+		$this->logger::debug( 'Start processing pending jobs inside cron.' );
 
-        // Get some items from the DB with status=pending & job_id isn't empty.
+		// Get some items from the DB with status=pending & job_id isn't empty.
 
-        /**
-         * Filters the pending jobs count.
-         *
-         * @since 3.11
-         *
-         * @param int $rows Number of rows to grab with each CRON iteration.
-         */
-        $rows = apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
+		/**
+		 * Filters the pending jobs count.
+		 *
+		 * @since 3.11
+		 *
+		 * @param int $rows Number of rows to grab with each CRON iteration.
+		 */
+		$rows = apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
 
-        $pending_jobs = $this->get_jobs( $context, $rows, 'pending' );
+		$pending_jobs = $this->get_jobs( $context, $rows, 'pending' );
 
-        if ( ! $pending_jobs ) {
-            return;
-        }
+		if ( ! $pending_jobs ) {
+			return;
+		}
 
-        foreach ( $pending_jobs as $row ) {
-            $current_time = $this->wpr_clock->current_time( 'timestamp', true );
-            if (  $row->next_retry_time < $current_time ) {
-                $optimization_type = $this->get_optimization_type( $row );
-                // Change status to in-progress.
-                $this->make_status_inprogress( $row->url, $row->is_mobile, $optimization_type );
-                $this->queue->add_job_status_check_async( $row->url, $row->is_mobile, $optimization_type );
-            }
-        }
-    }
+		foreach ( $pending_jobs as $row ) {
+			$current_time = $this->wpr_clock->current_time( 'timestamp', true );
+			if ( $row->next_retry_time < $current_time ) {
+				$optimization_type = $this->get_optimization_type( $row );
+				// Change status to in-progress.
+				$this->make_status_inprogress( $row->url, $row->is_mobile, $optimization_type );
+				$this->queue->add_job_status_check_async( $row->url, $row->is_mobile, $optimization_type );
+			}
+		}
+	}
 
-    /**
-     * Check job status by DB row ID.
-     *
-     * @param string $url Url from DB row.
+	/**
+	 * Check job status by DB row ID.
+	 *
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $optimization_type The type of optimization request to send.
-     *
-     * @return void
-     */
-    public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
+	 * @param string  $optimization_type The type of optimization request to send.
+	 *
+	 * @return void
+	 */
+	public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
 
-		$is_shakedCSS_valid = true;
-		$context = $this->context();
+		$is_shakedcss_valid = true;
+		$context            = $this->context();
 
-        $row_details = $this->get_single_job( $url, $is_mobile, $optimization_type );
-        if ( ! $row_details ) {
-            $this->logger::debug( 'RUCSS/ATF: Url not found for is_mobile -  ' . (int) $is_mobile );
+		$row_details = $this->get_single_job( $url, $is_mobile, $optimization_type );
+		if ( ! $row_details ) {
+			$this->logger::debug( 'RUCSS/ATF: Url not found for is_mobile -  ' . (int) $is_mobile );
 
-            // Nothing in DB, bailout.
-            return;
-        }
+			// Nothing in DB, bailout.
+			return;
+		}
 
-        // Send the request to get the job status from SaaS.
-        $job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
+		// Send the request to get the job status from SaaS.
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
 
 		// If optimization type is for both rucss and atf or exclusive to only rucss.
 		if ( 'all' === $optimization_type || 'rucss' === $optimization_type ) {
@@ -197,30 +197,30 @@ class JobProcessor implements LoggerAwareInterface {
 					return;
 				}
 
-				$is_shakedCSS_valid = false;
+				$is_shakedcss_valid = false;
 			}
 		}
-        
-        if (
-            200 !== (int) $job_details['code']
-        ) {
-            $this->logger::debug( 'RUCSS/ATF: Job status failed for url: ' . $row_details->url, $job_details );
+
+		if (
+			200 !== (int) $job_details['code']
+		) {
+			$this->logger::debug( 'RUCSS/ATF: Job status failed for url: ' . $row_details->url, $job_details );
 			$this->decide_strategy( $row_details, $job_details, $optimization_type );
 
-            return;
-        }
-        /**
-         * Unlock preload URL.
-         *
-         * @param string $url URL to unlock
-         */
-        do_action( 'rocket_preload_unlock_url', $row_details->url );
+			return;
+		}
+		/**
+		 * Unlock preload URL.
+		 *
+		 * @param string $url URL to unlock
+		 */
+		do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-		if ( $is_shakedCSS_valid ) {
+		if ( $is_shakedcss_valid ) {
 			$this->rucss_manager->process( $job_details, $row_details, $optimization_type );
 		}
-        
-        $this->atf_manager->process( $job_details, $row_details, $optimization_type );
+
+		$this->atf_manager->process( $job_details, $row_details, $optimization_type );
 
 		/**
 		 * Fires after successfully saving the used CSS for an URL
@@ -229,7 +229,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-    }
+	}
 
 	/**
 	 * Handle job status by DB row ID during upgrade from versions < 3.16.
@@ -247,124 +247,124 @@ class JobProcessor implements LoggerAwareInterface {
 		$this->check_job_status( $row->url, $row->is_mobile, 'rucss' );
 	}
 
-    /**
-     * Process on submit jobs.
-     *
-     * @return void
-     */
-    public function process_on_submit_jobs() {
+	/**
+	 * Process on submit jobs.
+	 *
+	 * @return void
+	 */
+	public function process_on_submit_jobs() {
 		$context = $this->context();
 
-        if ( ! $context['rucss'] && ! $context['atf'] ) {
-            $this->logger::debug( 'RUCSS/ATF: Stop processing cron iteration because both options are disabled.' );
+		if ( ! $context['rucss'] && ! $context['atf'] ) {
+			$this->logger::debug( 'RUCSS/ATF: Stop processing cron iteration because both options are disabled.' );
 
-            return;
-        }
+			return;
+		}
 
-        /**
-         * Pending rows cont.
-         *
-         * @param int $count Number of rows.
-         */
-        $pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
+		/**
+		 * Pending rows cont.
+		 *
+		 * @param int $count Number of rows.
+		 */
+		$pending_job = (int) apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 );
 
-        /**
-         * Maximum processing rows.
-         *
-         * @param int $max Max processing rows.
-         */
-        $max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
-        $rows             = $this->get_jobs( $context, $max_pending_rows, 'submit' );
+		/**
+		 * Maximum processing rows.
+		 *
+		 * @param int $max Max processing rows.
+		 */
+		$max_pending_rows = (int) apply_filters( 'rocket_rucss_max_pending_jobs', 3 * $pending_job, $pending_job );
+		$rows             = $this->get_jobs( $context, $max_pending_rows, 'submit' );
 
 		if ( ! $rows ) {
 			return;
 		}
 
-        foreach ( $rows as $row ) {
+		foreach ( $rows as $row ) {
 			$optimization_type = $this->get_optimization_type( $row );
-            $response = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
+			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
 
-            if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
+			if ( false === $response || ! isset( $response['contents'], $response['contents']['jobId'], $response['contents']['queueName'] ) ) {
 
-                $this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
-                continue;
-            }
+				$this->make_status_failed( $row->url, $row->is_mobile, '', '', $optimization_type );
+				continue;
+			}
 
-            /**
-             * Lock preload URL.
-             *
-             * @param string $url URL to lock
-             */
-            do_action( 'rocket_preload_lock_url', $row->url );
+			/**
+			 * Lock preload URL.
+			 *
+			 * @param string $url URL to lock
+			 */
+			do_action( 'rocket_preload_lock_url', $row->url );
 
-            $this->make_status_pending(
-                $row->url,
-                $response['contents']['jobId'], 
-                $response['contents']['queueName'], 
-                (bool) $row->is_mobile,
+			$this->make_status_pending(
+				$row->url,
+				$response['contents']['jobId'],
+				$response['contents']['queueName'],
+				(bool) $row->is_mobile,
 				$optimization_type
-            );
-        }
-    }
+			);
+		}
+	}
 
-    /**
-     * Send the job to the API.
-     *
-     * @param string $url URL to work on.
-     * @param bool   $is_mobile Is the page for mobile.
-     * @param string $optimization_type The type of optimization request to send.
-     * @return array|false
-     */
-    protected function send_api( string $url, bool $is_mobile, string $optimization_type ) {
-        /**
-         * Filters the RUCSS safelist
-         *
-         * @since 3.11
-         *
-         * @param array $safelist Array of safelist values.
-         */
-        $safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
+	/**
+	 * Send the job to the API.
+	 *
+	 * @param string $url URL to work on.
+	 * @param bool   $is_mobile Is the page for mobile.
+	 * @param string $optimization_type The type of optimization request to send.
+	 * @return array|false
+	 */
+	protected function send_api( string $url, bool $is_mobile, string $optimization_type ) {
+		/**
+		 * Filters the RUCSS safelist
+		 *
+		 * @since 3.11
+		 *
+		 * @param array $safelist Array of safelist values.
+		 */
+		$safelist = apply_filters( 'rocket_rucss_safelist', $this->options->get( 'remove_unused_css_safelist', [] ) );
 
-        /**
-         * Filters the styles attributes to be skipped (blocked) by RUCSS.
-         *
-         * @since 3.14
-         *
-         * @param array $skipped_attr Array of safelist values.
-         */
-        $skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
-        $skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
+		/**
+		 * Filters the styles attributes to be skipped (blocked) by RUCSS.
+		 *
+		 * @since 3.14
+		 *
+		 * @param array $skipped_attr Array of safelist values.
+		 */
+		$skipped_attr = apply_filters( 'rocket_rucss_skip_styles_with_attr', [] );
+		$skipped_attr = ( is_array( $skipped_attr ) ) ? $skipped_attr : [];
 
-        $config = [
-            'treeshake'      => 1,
-            'rucss_safelist' => $safelist,
-            'skip_attr'      => $skipped_attr,
-            'is_mobile'      => $is_mobile,
-            'is_home'        => $this->is_home( $url ),
-        ];
+		$config = [
+			'treeshake'      => 1,
+			'rucss_safelist' => $safelist,
+			'skip_attr'      => $skipped_attr,
+			'is_mobile'      => $is_mobile,
+			'is_home'        => $this->is_home( $url ),
+		];
 
 		$config = $this->set_request_params( $config, $optimization_type );
 
-        $add_to_queue_response = $this->api->add_to_queue( $url, $config );
-        if ( 200 !== $add_to_queue_response['code'] ) {
-            $this->logger::error(
-                'Error when contacting the RUCSS API.',
-                [
-                    'rucss error',
-                    'url'     => $url,
-                    'code'    => $add_to_queue_response['code'],
-                    'message' => $add_to_queue_response['message'],
-                ]
-            );
+		$add_to_queue_response = $this->api->add_to_queue( $url, $config );
+		if ( 200 !== $add_to_queue_response['code'] ) {
+			$this->logger::error(
+				'Error when contacting the RUCSS API.',
+				[
+					'rucss error',
+					'url'     => $url,
+					'code'    => $add_to_queue_response['code'],
+					'message' => $add_to_queue_response['message'],
+				]
+			);
 
-            return false;
-        }
+			return false;
+		}
 
-        return $add_to_queue_response;
-    }
+		return $add_to_queue_response;
+	}
 
 
-    /**
+	/**
 	 * Clear failed urls.
 	 *
 	 * @return void
@@ -402,14 +402,14 @@ class JobProcessor implements LoggerAwareInterface {
 			 */
 			do_action( 'rocket_rucss_after_clearing_failed_url', $failed_urls );
 		}
-		
+
 		$this->atf_manager->clear_failed_jobs( $value, $unit );
 	}
 
 	/**
 	 * Set request parameters
 	 *
-	 * @param array $config Array of request parameters.
+	 * @param array  $config Array of request parameters.
 	 * @param string $optimization_type The type of optimization applied for the current job.
 	 * @return array
 	 */
@@ -450,31 +450,31 @@ class JobProcessor implements LoggerAwareInterface {
 		$home_url = apply_filters( 'rocket_rucss_is_home_url', home_url(), $url );
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
-	
 
-    /**
-     * Change the status to be in-progress.
-     *
-     * @param string $url Url from DB row.
-     * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $optimization_type The type of optimization applied for the current job.
-     * @return void
-     */
-    private function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
-		$this->rucss_manager->make_status_inprogress( $url, $is_mobile, $optimization_type );
-		$this->atf_manager->make_status_inprogress( $url, $is_mobile, $optimization_type );
-    }
 
 	/**
-     * Get single job.
-     *
-     * @param string $url Url from DB row.
-     * @param boolean $is_mobile Is mobile from DB row.
-	 * @param string $optimization_type The type of optimization applied for the current job.
-	 * 
-     * @return bool|object
-     */
-    private function get_single_job( string $url, bool $is_mobile, string $optimization_type ) {
+	 * Change the status to be in-progress.
+	 *
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $optimization_type The type of optimization applied for the current job.
+	 * @return void
+	 */
+	private function make_status_inprogress( string $url, bool $is_mobile, string $optimization_type ): void {
+		$this->rucss_manager->make_status_inprogress( $url, $is_mobile, $optimization_type );
+		$this->atf_manager->make_status_inprogress( $url, $is_mobile, $optimization_type );
+	}
+
+	/**
+	 * Get single job.
+	 *
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $optimization_type The type of optimization applied for the current job.
+	 *
+	 * @return bool|object
+	 */
+	private function get_single_job( string $url, bool $is_mobile, string $optimization_type ) {
 		$job = [];
 
 		switch ( $optimization_type ) {
@@ -484,7 +484,7 @@ class JobProcessor implements LoggerAwareInterface {
 				break;
 			case $this->atf_manager->get_optimization_type():
 				$this->logger::debug( 'ATF: Start checking job status for url: ' . $url );
-            	$job = $this->atf_manager->get_single_job( $url, $is_mobile );
+				$job = $this->atf_manager->get_single_job( $url, $is_mobile );
 				break;
 			default:
 				$this->logger::debug( 'RUCSS/ATF: Start checking job status for url: ' . $url );
@@ -496,31 +496,31 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		return $job;
-    }
+	}
 
 	/**
 	 * Decide jobs to get.
 	 *
-	 * @param array $context Context.
+	 * @param array   $context Context.
 	 * @param integer $num_rows Number of rows to grab with each CRON iteration.
-	 * @param string $type Type of job to get.
+	 * @param string  $type Type of job to get.
 	 * @return array
 	 */
 	public function get_jobs( array $context, int $num_rows, string $type ): array {
 		$allowed_types = [ 'pending', 'submit' ];
 
-		if ( ! in_array( $type, $allowed_types ) ) {
+		if ( ! in_array( $type, $allowed_types, true ) ) {
 			return [];
 		}
 
-		$rucss_jobs = $atf_jobs = [];
+		list($rucss_jobs, $atf_jobs) = [ [], [] ];
 
 		switch ( $type ) {
 			case 'pending':
 				if ( $context['rucss'] ) {
 					$rucss_jobs = $this->rucss_manager->get_pending_jobs( $num_rows );
 				}
-		
+
 				if ( $context['atf'] ) {
 					$atf_jobs = $this->atf_manager->get_pending_jobs( $num_rows );
 				}
@@ -529,7 +529,7 @@ class JobProcessor implements LoggerAwareInterface {
 				if ( $context['rucss'] ) {
 					$rucss_jobs = $this->rucss_manager->get_on_submit_jobs( $num_rows );
 				}
-		
+
 				if ( $context['atf'] ) {
 					$atf_jobs = $this->atf_manager->get_on_submit_jobs( $num_rows );
 				}
@@ -553,23 +553,23 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return array
 	 */
 	private function get_common_jobs( array $rows ): array {
-		$occurrences = $duplicates = [];
+		list($occurrences, $duplicates) = [ [], [] ];
 
 		foreach ( $rows as $row ) {
 			$key = $row->url . '|' . ( (bool) $row->is_mobile ?? 'null' );
-		
+
 			if ( ! isset( $occurrences[ $key ] ) ) {
 				$occurrences[ $key ] = 1;
-				
+
 				continue;
 			}
-			
-			$occurrences[ $key ]++;
-		
-			if ( $occurrences[ $key ] === 2 ) {
+
+			++$occurrences[ $key ];
+
+			if ( 2 === $occurrences[ $key ] ) {
 				// Add new is_common property to the object and add object to duplicate.
 				$row->is_common = true;
-				$duplicates[] = $row;
+				$duplicates[]   = $row;
 			}
 		}
 
@@ -593,14 +593,14 @@ class JobProcessor implements LoggerAwareInterface {
 		$index = 0;
 
 		foreach ( $rows as $row ) {
-			foreach( $common_rows as $common_row ){
+			foreach ( $common_rows as $common_row ) {
 				if ( $row->url === $common_row->url && (bool) $row->is_mobile === (bool) $common_row->is_mobile ) {
 					// Remove the common row that is without the new is_common property.
 					unset( $rows[ $index ] );
 				}
 			}
-			
-			$index++;
+
+			++$index;
 		}
 
 		return array_merge( $rows, $common_rows );
@@ -626,7 +626,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 * Decide with job strategy to apply based on the optimization type.
 	 *
 	 * @param object $row_details DB Row of job.
-	 * @param array $job_details Job details from the API.
+	 * @param array  $job_details Job details from the API.
 	 * @param string $optimization_type The type of optimization applied for the current job.
 	 * @return void
 	 */
@@ -644,33 +644,33 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 	}
 
-    /**
-     * Change the job status to be failed.
-     *
-     * @param string $url Url from DB row.
-     * @param boolean $is_mobile Is mobile from DB row.
-     * @param string $error_code error code.
-     * @param string $error_message error message.
-	 * @param string $optimization_type The type of optimization applied for the current job.
-     * @return void
-     */
-    private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, $optimization_type ): void {
+	/**
+	 * Change the job status to be failed.
+	 *
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $error_code error code.
+	 * @param string  $error_message error message.
+	 * @param string  $optimization_type The type of optimization applied for the current job.
+	 * @return void
+	 */
+	private function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message, $optimization_type ): void {
 		$this->rucss_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
 		$this->atf_manager->make_status_failed( $url, $is_mobile, $error_code, $error_message, $optimization_type );
-    }
+	}
 
-    /**
-     * Change the job status to be pending.
-     *
-     * @param string $url Url from DB row.
-     * @param string $job_id API job_id.
-     * @param string $queue_name API Queue name.
-     * @param boolean $is_mobile if the request is for mobile page.
-	 * @param string $optimization_type The type of optimization applied for the current job.
-     * @return void
-     */
-    private function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile, string $optimization_type ): void {
+	/**
+	 * Change the job status to be pending.
+	 *
+	 * @param string  $url Url from DB row.
+	 * @param string  $job_id API job_id.
+	 * @param string  $queue_name API Queue name.
+	 * @param boolean $is_mobile if the request is for mobile page.
+	 * @param string  $optimization_type The type of optimization applied for the current job.
+	 * @return void
+	 */
+	private function make_status_pending( string $url, string $job_id, string $queue_name, bool $is_mobile, string $optimization_type ): void {
 		$this->rucss_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
 		$this->atf_manager->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
-    }
+	}
 }

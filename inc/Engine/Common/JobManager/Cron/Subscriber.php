@@ -32,40 +32,41 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $atf_table;
 
-    /**
-     * RUCSS Context.
-     *
-     * @var ContextInterface
-     */
-    private $rucss_context;
+	/**
+	 * RUCSS Context.
+	 *
+	 * @var ContextInterface
+	 */
+	private $rucss_context;
 
-    /**
-     * LCP Context.
-     *
-     * @var ContextInterface
-     */
-    private $atf_context;
+	/**
+	 * LCP Context.
+	 *
+	 * @var ContextInterface
+	 */
+	private $atf_context;
 
 	/**
 	 * Instantiate the class
 	 *
-	 * @param JobProcessor  $job_processor JobProcessor instance.
-	 * @param Database $database Database instance.
+	 * @param JobProcessor     $job_processor JobProcessor instance.
+	 * @param Database         $database Database instance.
+	 * @param ATFTable         $atf_table Abov The Fold Table instance.
 	 * @param ContextInterface $rucss_context RUCSS Context.
 	 * @param ContextInterface $atf_context Above The Fold Context.
 	 */
 	public function __construct(
-        JobProcessor $job_processor,
-        Database $database,
-        ATFTable $atf_table,
-        ContextInterface $rucss_context,
-        ContextInterface $atf_context
-    ) {
+		JobProcessor $job_processor,
+		Database $database,
+		ATFTable $atf_table,
+		ContextInterface $rucss_context,
+		ContextInterface $atf_context
+	) {
 		$this->job_processor = $job_processor;
-		$this->database = $database;
-        $this->atf_table = $atf_table;
-        $this->rucss_context = $rucss_context;
-        $this->atf_context = $atf_context;
+		$this->database      = $database;
+		$this->atf_table     = $atf_table;
+		$this->rucss_context = $rucss_context;
+		$this->atf_context   = $atf_context;
 	}
 
 	/**
@@ -78,19 +79,19 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rucss_atf_pending_jobs'          => 'process_pending_jobs',
 			'rocket_rucss_atf_on_submit_jobs'        => 'process_on_submit_jobs',
 			'rocket_rucss_atf_job_check_status'      => [ 'check_job_status', 10, 3 ],
-            'rocket_rucss_job_check_status' => 'rucss_check_job_status',
+			'rocket_rucss_job_check_status'          => 'rucss_check_job_status',
 			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
-			'cron_schedules'                     => 'add_interval',
-			'rocket_deactivation'                => 'on_deactivation',
+			'cron_schedules'                         => 'add_interval',
+			'rocket_deactivation'                    => 'on_deactivation',
 			'rocket_remove_rucss_atf_failed_jobs'    => 'cron_remove_failed_jobs',
-			'init'                               => [
+			'init'                                   => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
 				[ 'initialize_rucss_queue_runner' ],
 				[ 'schedule_removing_failed_jobs' ],
 				[ 'schedule_on_submit_jobs' ],
 			],
-            'wp_rocket_upgrade' => [ 'unschedule_rucss_cron', 13, 2 ],
+			'wp_rocket_upgrade'                      => [ 'unschedule_rucss_cron', 13, 2 ],
 		];
 	}
 
@@ -156,13 +157,13 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-        if ( $this->rucss_context->is_allowed() ) {
-            $this->database->delete_old_rows();
-        }
+		if ( $this->rucss_context->is_allowed() ) {
+			$this->database->delete_old_rows();
+		}
 
-        if ( $this->atf_context->is_allowed() ) {
-            $this->atf_table->delete_old_rows();
-        }
+		if ( $this->atf_context->is_allowed() ) {
+			$this->atf_table->delete_old_rows();
+		}
 	}
 
 	/**
@@ -174,23 +175,23 @@ class Subscriber implements Subscriber_Interface {
 		$this->job_processor->clear_failed_urls();
 	}
 
-    /**
+	/**
 	 * Handle job status by DB row ID during upgrade from versions < 3.16.
 	 *
 	 * @param integer $row_id DB Row ID.
 	 *
 	 * @return void
 	 */
-    public function rucss_check_job_status( int $row_id ): void {
-        $this->job_processor->handle_old_rucss_job( $row_id );
-    }
+	public function rucss_check_job_status( int $row_id ): void {
+		$this->job_processor->handle_old_rucss_job( $row_id );
+	}
 
 	/**
 	 * Handle job status by DB url and is_mobile.
 	 *
-	 * @param string $url Url from DB row.
+	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-     * @param string $optimization_type The type of optimization request to send.
+	 * @param string  $optimization_type The type of optimization request to send.
 	 *
 	 * @return void
 	 */
@@ -263,9 +264,9 @@ class Subscriber implements Subscriber_Interface {
 	public function schedule_on_submit_jobs() {
 		if (
 			! $this->rucss_context->is_allowed()
-			&& 
-            ! $this->atf_context->is_allowed()
-            &&
+			&&
+			! $this->atf_context->is_allowed()
+			&&
 			wp_next_scheduled( 'rocket_rucss_atf_on_submit_jobs' )
 		) {
 			wp_clear_scheduled_hook( 'rocket_rucss_atf_on_submit_jobs' );
@@ -294,9 +295,9 @@ class Subscriber implements Subscriber_Interface {
 	public function schedule_pending_jobs() {
 		if (
 			! $this->rucss_context->is_allowed()
-			&& 
-            ! $this->atf_context->is_allowed()
-            &&
+			&&
+			! $this->atf_context->is_allowed()
+			&&
 			wp_next_scheduled( 'rocket_rucss_atf_pending_jobs' )
 		) {
 			wp_clear_scheduled_hook( 'rocket_rucss_atf_pending_jobs' );
@@ -323,9 +324,9 @@ class Subscriber implements Subscriber_Interface {
 	public function schedule_removing_failed_jobs() {
 		if (
 			! $this->rucss_context->is_allowed()
-			&& 
-            ! $this->atf_context->is_allowed()
-            &&
+			&&
+			! $this->atf_context->is_allowed()
+			&&
 			wp_next_scheduled( 'rocket_remove_rucss_atf_failed_jobs' )
 		) {
 			wp_clear_scheduled_hook( 'rocket_remove_rucss_atf_failed_jobs' );
@@ -367,7 +368,7 @@ class Subscriber implements Subscriber_Interface {
 		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
 	}
 
-    /**
+	/**
 	 * Unschedule old rucss crons.
 	 *
 	 * @since 3.16

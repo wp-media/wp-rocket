@@ -12,12 +12,12 @@ class RUCSSContext extends AbstractContext {
 	 * @return bool
 	 */
 	public function is_allowed( array $data = [] ): bool {
-		$is_allowed = $this->run_common_checks( ['option' => 'remove_unused_css' ] );
+		$is_allowed = $this->run_common_checks( [ 'option' => 'remove_unused_css' ] );
 
 		if ( ! $is_allowed ) {
 			return false;
 		}
 
-        return true;
+		return true;
 	}
 }

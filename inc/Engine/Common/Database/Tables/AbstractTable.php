@@ -6,12 +6,12 @@ use WP_Rocket\Dependencies\Database\Table;
 
 class AbstractTable extends Table {
 
-    /**
+	/**
 	 * Table schema data.
 	 *
 	 * @var   string
 	 */
-    protected $schema_data;
+	protected $schema_data;
 
 	/**
 	 * Instantiate class.
@@ -22,16 +22,16 @@ class AbstractTable extends Table {
 		add_action( 'init',  [ $this, 'maybe_upgrade' ] );
 	}
 
-    /**
+	/**
 	 * Setup the database schema
 	 *
 	 * @return void
 	 */
 	protected function set_schema() {
-        if ( ! $this->schema_data ) {
-            return;
-        }
-        
+		if ( ! $this->schema_data ) {
+			return;
+		}
+
 		$this->schema = $this->schema_data;
 	}
 
@@ -41,7 +41,7 @@ class AbstractTable extends Table {
 	 * @return bool|int
 	 */
 	public function delete_old_rows() {
-        if ( ! $this->exists() ) {
+		if ( ! $this->exists() ) {
 			return false;
 		}
 		// Get the database interface.
@@ -76,7 +76,7 @@ class AbstractTable extends Table {
 	 * @return array
 	 */
 	public function get_old_rows(): array {
-        if ( ! $this->exists() ) {
+		if ( ! $this->exists() ) {
 			return false;
 		}
 		// Get the database interface.
@@ -100,7 +100,7 @@ class AbstractTable extends Table {
 	 * @return bool|int
 	 */
 	public function remove_all_completed_rows() {
-        if ( ! $this->exists() ) {
+		if ( ! $this->exists() ) {
 			return false;
 		}
 		// Get the database interface.
