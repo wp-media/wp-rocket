@@ -54,6 +54,15 @@ class AbstractManager {
 	}
 
     /**
+     * Return type of optimization.
+     *
+     * @return string
+     */
+    public function get_optimization_type(): string {
+        return $this->optimization_type;
+    }
+
+    /**
 	 * Send the request to add url into the queue.
 	 *
 	 * @param string $url page URL.
