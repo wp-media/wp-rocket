@@ -193,7 +193,7 @@ class JobProcessor implements LoggerAwareInterface {
 				$this->logger::error( $message );
 				$this->rucss_manager->make_status_failed( $row_details->url, $row_details->is_mobile, '500', $message );
 
-				if ( 'rucss' === $optimization_type ) {
+				if ( $this->rucss_manager->get_optimization_type() === $optimization_type ) {
 					return;
 				}
 
@@ -407,10 +407,10 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	private function set_request_params( array $config, string $optimization_type ): array {
 		switch ( $optimization_type ) {
-			case 'rucss':
+			case $this->rucss_manager->get_optimization_type():
 				$config['optimization_list'][] = 'rucss';
 				break;
-			case 'atf':
+			case $this->atf_manager->get_optimization_type():
 				$config['optimization_list'][] = 'lcp';
 				$config['optimization_list'][] = 'above_fold';
 				break;
@@ -470,11 +470,11 @@ class JobProcessor implements LoggerAwareInterface {
 		$job = [];
 
 		switch ( $optimization_type ) {
-			case 'rucss':
+			case $this->rucss_manager->get_optimization_type():
 				$this->logger::debug( 'RUCSS: Start checking job status for url: ' . $url );
 				$job = $this->rucss_manager->get_single_job( $url, $is_mobile );
 				break;
-			case 'atf':
+			case $this->atf_manager->get_optimization_type():
 				$this->logger::debug( 'ATF: Start checking job status for url: ' . $url );
             	$job = $this->atf_manager->get_single_job( $url, $is_mobile );
 				break;
@@ -624,10 +624,10 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	private function decide_strategy( $row_details, array $job_details, string $optimization_type ): void {
 		switch ( $optimization_type ) {
-			case 'rucss':
+			case $this->rucss_manager->get_optimization_type():
 				$this->strategy_factory->manage( $row_details, $job_details, $this->rucss_manager );
 				break;
-			case 'atf':
+			case $this->atf_manager->get_optimization_type():
 				$this->strategy_factory->manage( $row_details, $job_details, $this->atf_manager );
 				break;
 			default:
