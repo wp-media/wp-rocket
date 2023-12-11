@@ -78,7 +78,7 @@ class Controller {
 			return $html;
 		}
 
-		if ( 'completed' !== $row->status || empty( $row->lcp ) ) {
+		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp ) {
 			return $html;
 		}
 
@@ -182,12 +182,12 @@ class Controller {
 			return $exclusions;
 		}
 
-		if ( $row->lcp ) {
+		if ( $row->lcp && 'not found' === $row->lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
 		}
 
-		if ( $row->viewport ) {
+		if ( $row->viewport && 'not found' === $row->viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
 		}
 
