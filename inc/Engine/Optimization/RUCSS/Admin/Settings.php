@@ -91,50 +91,6 @@ class Settings {
 	}
 
 	/**
-	 * Add Clean used CSS link to WP Rocket admin bar item
-	 *
-	 * @since 3.9
-	 *
-	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
-	 *
-	 * @return void
-	 */
-	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
-		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
-			return;
-		}
-
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		if ( ! $this->is_enabled() ) {
-			return;
-		}
-
-		$referer = '';
-		$action  = 'rocket_clear_usedcss';
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-			$referer     = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer_url ) );
-		}
-
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clean-used-css',
-				'title'  => __( 'Clear Used CSS', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( "admin-post.php?action={$action}{$referer}" ), $action ),
-			]
-		);
-	}
-
-	/**
 	 * Set optimize css delivery value
 	 *
 	 * @since 3.10
