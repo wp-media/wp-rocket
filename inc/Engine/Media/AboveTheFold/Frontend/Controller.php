@@ -85,11 +85,11 @@ class Controller {
 	 * @return string
 	 */
 	private function preload_lcp( $html, $row ) {
-		if ( ! preg_match('#</title\s*>#', $html, $matches) ) {
+		if ( ! preg_match( '#</title\s*>#', $html, $matches ) ) {
 			return $html;
 		}
 
-		$title = $matches[0];
+		$title   = $matches[0];
 		$preload = $title;
 
 		$lcp = json_decode( $row->lcp );
