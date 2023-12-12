@@ -38,6 +38,7 @@ use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
 use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
 use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
+use WP_Rocket\Engine\Saas\ServiceProvider as SaasAdminServiceProvider;
 use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
@@ -291,6 +292,7 @@ class Plugin {
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
 		$this->container->addServiceProvider( ATFServiceProvider::class );
+		$this->container->addServiceProvider( SaasAdminServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -385,6 +387,7 @@ class Plugin {
 			'weglot',
 			'atf_subscriber',
 			'contactform7',
+			'saas_admin_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
