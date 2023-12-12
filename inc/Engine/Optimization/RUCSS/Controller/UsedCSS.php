@@ -12,7 +12,6 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
-use WP_Admin_Bar;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -72,13 +71,6 @@ class UsedCSS implements LoggerAwareInterface {
 	protected $context;
 
 	/**
-	 * RUCSS optimize url context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $optimize_url_context;
-
-	/**
 	 * External exclusions list, can be urls or attributes.
 	 *
 	 * @var array
@@ -123,7 +115,6 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @param DataManager      $data_manager DataManager instance.
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
-	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
 	 * @param StrategyFactory  $strategy_factory Strategy Factory used for RUCSS retry process.
 	 * @param WPRClock         $clock Clock object instance.
 	 */
@@ -135,20 +126,18 @@ class UsedCSS implements LoggerAwareInterface {
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ContextInterface $optimize_url_context,
 		StrategyFactory $strategy_factory,
 		WPRClock $clock
 	) {
-		$this->options              = $options;
-		$this->used_css_query       = $used_css_query;
-		$this->api                  = $api;
-		$this->queue                = $queue;
-		$this->data_manager         = $data_manager;
-		$this->filesystem           = $filesystem;
-		$this->context              = $context;
-		$this->optimize_url_context = $optimize_url_context;
-		$this->strategy_factory     = $strategy_factory;
-		$this->wpr_clock            = $clock;
+		$this->options          = $options;
+		$this->used_css_query   = $used_css_query;
+		$this->api              = $api;
+		$this->queue            = $queue;
+		$this->data_manager     = $data_manager;
+		$this->filesystem       = $filesystem;
+		$this->context          = $context;
+		$this->strategy_factory = $strategy_factory;
+		$this->wpr_clock        = $clock;
 	}
 
 	/**
@@ -619,60 +608,6 @@ class UsedCSS implements LoggerAwareInterface {
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
 		do_action( 'rocket_rucss_complete_job_status', $row_details->url, $job_details );
-	}
-
-	/**
-	 * Add clear UsedCSS adminbar item.
-	 *
-	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
-	 *
-	 * @return void
-	 */
-	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
-		global $post;
-
-		if ( ! $this->optimize_url_context->is_allowed() ) {
-			return;
-		}
-
-		/**
-		 * Filters the rocket `clear used css of this url` option on admin bar menu.
-		 *
-		 * @since 3.12.1
-		 *
-		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
-		 * @param type  $post Post object.
-		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
-			return;
-		}
-
-		$referer = '';
-		$action  = 'rocket_clear_usedcss_url';
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-
-			/**
-			 * Filters to act on the referer url for the admin bar.
-			 *
-			 * @param string $uri Current uri
-			 */
-			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
-			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
-		}
-
-		/**
-		 * Clear usedCSS for this URL (frontend).
-		 */
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clear-usedcss-url',
-				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-			]
-		);
 	}
 
 	/**
