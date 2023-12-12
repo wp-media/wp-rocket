@@ -386,6 +386,7 @@ class Plugin {
 			'weglot',
 			'atf_subscriber',
 			'cron_subscriber',
+			'contactform7',
 		];
 
 		$host_type = HostResolver::get_host_service();

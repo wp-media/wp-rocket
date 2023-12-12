@@ -606,6 +606,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function spawn_cron() {
+		if ( rocket_get_constant( 'DISABLE_WP_CRON', false ) ) {
+			return;// Bailout and don't fire the CRON.
+		}
+
 		check_ajax_referer( 'rocket-ajax', 'nonce' );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
