@@ -55,6 +55,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_retry_strategy_job_not_found',
 		'rucss_retry_strategy_reset_retry',
 		'rucss_retry_strategy_context',
+		'rucss_context',
+		'rucss_optimize_context',
 	];
 
 	/**
@@ -102,7 +104,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_retry_strategy_factory' ) )
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
