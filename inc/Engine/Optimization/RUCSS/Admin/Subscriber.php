@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\{Queue, UsedCSS};
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Admin_Bar;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -87,10 +85,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_saas_error_notice' ],
 				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
-			],
-			'rocket_admin_bar_items'                  => [
-				[ 'add_clean_used_css_menu_item' ],
-				[ 'add_clear_usedcss_bar_item' ],
 			],
 			'rocket_before_add_field_to_settings'     => [
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
@@ -342,19 +336,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add Clean used CSS link to WP Rocket admin bar item
-	 *
-	 * @since 3.9
-	 *
-	 * @param \WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
-	 *
-	 * @return void
-	 */
-	public function add_clean_used_css_menu_item( $wp_admin_bar ) {
-		$this->settings->add_clean_used_css_menu_item( $wp_admin_bar );
-	}
-
-	/**
 	 * Set optimize css delivery value
 	 *
 	 * @since 3.10
@@ -483,17 +464,6 @@ class Subscriber implements Subscriber_Interface {
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-	}
-
-	/**
-	 * Add clear UsedCSS adminbar item.
-	 *
-	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
-	 *
-	 * @return void
-	 */
-	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
-		$this->used_css->add_clear_usedcss_bar_item( $wp_admin_bar );
 	}
 
 	/**
