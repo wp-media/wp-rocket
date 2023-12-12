@@ -161,7 +161,6 @@ class JobProcessor implements LoggerAwareInterface {
 	public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
 
 		$is_shakedcss_valid = true;
-		$context            = $this->context();
 
 		$row_details = $this->get_single_job( $url, $is_mobile, $optimization_type );
 		if ( ! $row_details ) {
