@@ -54,7 +54,7 @@ class AbstractQuery extends Query {
 
 		$query = $this->query(
 			[
-				'id' => $id,
+				'id' => $row_id,
 			]
 		);
 
