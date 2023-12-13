@@ -68,7 +68,7 @@ class Queue extends AbstractASQueue {
 	 */
 	public function add_job_status_check_async( string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->add_async(
-			'rocket_rucss_atf_job_check_status',
+			'rocket_saas_job_check_status',
 			[
 				$url,
 				$is_mobile,
