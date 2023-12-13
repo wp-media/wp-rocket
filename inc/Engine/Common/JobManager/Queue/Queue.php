@@ -26,7 +26,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @var string
 	 */
-	private $pending_job_cron = 'rocket_rucss_atf_pending_jobs_cron';
+	private $pending_job_cron = 'rocket_saas_pending_jobs_cron';
 
 	/**
 	 * Check if pending jobs cron is scheduled.

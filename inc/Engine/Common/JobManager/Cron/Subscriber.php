@@ -76,14 +76,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_rucss_atf_pending_jobs'          => 'process_pending_jobs',
-			'rocket_rucss_atf_on_submit_jobs'        => 'process_on_submit_jobs',
-			'rocket_rucss_atf_job_check_status'      => [ 'check_job_status', 10, 3 ],
+			'rocket_saas_pending_jobs'          => 'process_pending_jobs',
+			'rocket_saas_on_submit_jobs'        => 'process_on_submit_jobs',
+			'rocket_saas_job_check_status'      => [ 'check_job_status', 10, 3 ],
 			'rocket_rucss_job_check_status'          => 'rucss_check_job_status',
-			'rocket_rucss_atf_clean_rows_time_event' => 'cron_clean_rows',
+			'rocket_saas_clean_rows_time_event' => 'cron_clean_rows',
 			'cron_schedules'                         => 'add_interval',
 			'rocket_deactivation'                    => 'on_deactivation',
-			'rocket_remove_rucss_atf_failed_jobs'    => 'cron_remove_failed_jobs',
+			'rocket_remove_saas_failed_jobs'    => 'cron_remove_failed_jobs',
 			'init'                                   => [
 				[ 'schedule_clean_not_commonly_used_rows' ],
 				[ 'schedule_pending_jobs' ],
@@ -107,11 +107,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_rucss_atf_clean_rows_time_event' ) ) {
+		if ( wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'weekly', 'rocket_rucss_atf_clean_rows_time_event' );
+		wp_schedule_event( time(), 'weekly', 'rocket_saas_clean_rows_time_event' );
 	}
 
 	/**
@@ -220,9 +220,9 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_rucss_atf_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = apply_filters( 'rocket_saas_pending_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-		$schedules['rocket_rucss_atf_pending_jobs'] = [
+		$schedules['rocket_saas_pending_jobs'] = [
 			'interval' => $interval,
 			'display'  => esc_html__( 'WP Rocket process pending jobs', 'rocket' ),
 		];
@@ -233,10 +233,10 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = apply_filters( 'rocket_remove_rucss_atf_failed_jobs_cron_interval', $default_interval );
+		$interval = apply_filters( 'rocket_remove_saas_failed_jobs_cron_interval', $default_interval );
 		$interval = (bool) $interval ? $interval : $default_interval;
 
-		$schedules['rocket_remove_rucss_atf_failed_jobs'] = [
+		$schedules['rocket_remove_saas_failed_jobs'] = [
 			'interval' => $interval,
 			'display'  => esc_html__( 'WP Rocket clear failed jobs', 'rocket' ),
 		];
@@ -246,9 +246,9 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = (int) apply_filters( 'rocket_remove_rucss_atf_on_submit_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
+		$interval = (int) apply_filters( 'rocket_remove_saas_on_submit_jobs_cron_interval', 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) );
 
-		$schedules['rocket_rucss_atf_on_submit_jobs'] = [
+		$schedules['rocket_saas_on_submit_jobs'] = [
 			'interval' => $interval,
 			'display'  => esc_html__( 'WP Rocket process on submit jobs', 'rocket' ),
 		];
@@ -267,9 +267,9 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			! $this->atf_context->is_allowed()
 			&&
-			wp_next_scheduled( 'rocket_rucss_atf_on_submit_jobs' )
+			wp_next_scheduled( 'rocket_saas_on_submit_jobs' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_atf_on_submit_jobs' );
+			wp_clear_scheduled_hook( 'rocket_saas_on_submit_jobs' );
 
 			return;
 		}
@@ -278,11 +278,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_rucss_atf_on_submit_jobs' ) ) {
+		if ( wp_next_scheduled( 'rocket_saas_on_submit_jobs' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_rucss_atf_on_submit_jobs', 'rocket_rucss_atf_on_submit_jobs' );
+		wp_schedule_event( time(), 'rocket_saas_on_submit_jobs', 'rocket_saas_on_submit_jobs' );
 	}
 
 	/**
@@ -298,9 +298,9 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			! $this->atf_context->is_allowed()
 			&&
-			wp_next_scheduled( 'rocket_rucss_atf_pending_jobs' )
+			wp_next_scheduled( 'rocket_saas_pending_jobs' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_rucss_atf_pending_jobs' );
+			wp_clear_scheduled_hook( 'rocket_saas_pending_jobs' );
 
 			return;
 		}
@@ -309,11 +309,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_rucss_atf_pending_jobs' ) ) {
+		if ( wp_next_scheduled( 'rocket_saas_pending_jobs' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_rucss_atf_pending_jobs', 'rocket_rucss_atf_pending_jobs' );
+		wp_schedule_event( time(), 'rocket_saas_pending_jobs', 'rocket_saas_pending_jobs' );
 	}
 
 	/**
@@ -327,9 +327,9 @@ class Subscriber implements Subscriber_Interface {
 			&&
 			! $this->atf_context->is_allowed()
 			&&
-			wp_next_scheduled( 'rocket_remove_rucss_atf_failed_jobs' )
+			wp_next_scheduled( 'rocket_remove_saas_failed_jobs' )
 		) {
-			wp_clear_scheduled_hook( 'rocket_remove_rucss_atf_failed_jobs' );
+			wp_clear_scheduled_hook( 'rocket_remove_saas_failed_jobs' );
 
 			return;
 		}
@@ -338,11 +338,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( wp_next_scheduled( 'rocket_remove_rucss_atf_failed_jobs' ) ) {
+		if ( wp_next_scheduled( 'rocket_remove_saas_failed_jobs' ) ) {
 			return;
 		}
 
-		wp_schedule_event( time(), 'rocket_remove_rucss_atf_failed_jobs', 'rocket_remove_rucss_atf_failed_jobs' );
+		wp_schedule_event( time(), 'rocket_remove_saas_failed_jobs', 'rocket_remove_saas_failed_jobs' );
 	}
 
 	/**
