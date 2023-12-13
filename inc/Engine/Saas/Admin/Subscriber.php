@@ -15,12 +15,21 @@ class Subscriber implements Subscriber_Interface {
 	private $admin_bar;
 
 	/**
+	 * Clean instance
+	 *
+	 * @var Clean
+	 */
+	private $clean;
+
+	/**
 	 * Constructor
 	 *
 	 * @param AdminBar $admin_bar AdminBar instance.
+	 * @param Clean    $clean Clean instance.
 	 */
-	public function __construct( $admin_bar ) {
+	public function __construct( $admin_bar, $clean ) {
 		$this->admin_bar = $admin_bar;
+		$this->clean     = $clean;
 	}
 
 	/**
@@ -30,10 +39,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_admin_bar_items' => [
+			'rocket_admin_bar_items'           => [
 				[ 'add_clean_saas_menu_item' ],
 				[ 'add_clean_url_menu_item' ],
 			],
+			'admin_post_rocket_clean_saas'     => 'clean_saas',
+			'admin_post_rocket_clean_saas_url' => 'clean_url_saas',
 		];
 	}
 
@@ -57,5 +68,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->admin_bar->add_clean_url_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Truncate SaaS tables when clicking on the dashboard button
+	 *
+	 * @return void
+	 */
+	public function clean_saas() {
+		$this->clean->clean_saas();
+	}
+
+	/**
+	 * Clean SaaS for the current URL.
+	 *
+	 * @return void
+	 */
+	public function clean_url_saas() {
+		$this->clean->clean_url_saas();
 	}
 }
