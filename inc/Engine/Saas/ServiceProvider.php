@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Saas;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Saas\Admin\{AdminBar, Subscriber};
+use WP_Rocket\Engine\Saas\Admin\{AdminBar, Clean, Subscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -18,6 +18,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'saas_admin_bar',
+		'saas_clean',
 		'saas_admin_subscriber',
 	];
 
@@ -31,7 +32,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) );
+		$this->getContainer()->add( 'sass_clean', Clean::class );
 		$this->getContainer()->add( 'saas_admin_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'sass_admin_bar' ) );
+			->addArgument( $this->getContainer()->get( 'sass_admin_bar' ) )
+			->addArgument( $this->getContainer()->get( 'sass_clean' ) );
 	}
 }
