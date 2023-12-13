@@ -75,8 +75,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'                 => 'delete_used_css_on_update_or_delete',
 			'edit_term'                               => 'delete_term_used_css',
 			'pre_delete_term'                         => 'delete_term_used_css',
-			'admin_post_rocket_clear_usedcss'         => 'truncate_used_css_handler',
-			'admin_post_rocket_clear_usedcss_url'     => 'clear_url_usedcss',
 			'admin_notices'                           => [
 				[ 'clear_usedcss_result' ],
 				[ 'display_processing_notice' ],
@@ -103,6 +101,8 @@ class Subscriber implements Subscriber_Interface {
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
+			'rocket_saas_clean_all'                   => 'truncate',
+			'rocket_saas_clean_url'                   => 'clean_url',
 		];
 	}
 
@@ -252,61 +252,34 @@ class Subscriber implements Subscriber_Interface {
 		$this->set_notice_transient();
 	}
 
-	/**
-	 * Truncate used_css table when clicking on the dashboard button.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function truncate_used_css_handler() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_clear_usedcss' ) ) {
-			wp_nonce_ays( '' );
-		}
-
+	public function truncate() {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
-			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+			return [
+				'status' => 'die',
+			];
 		}
 
 		if ( ! $this->settings->is_enabled() ) {
-			set_transient(
-				'rocket_clear_usedcss_response',
-				[
-					'status'  => 'error',
-					'message' => sprintf(
-						// translators: %1$s = plugin name.
-						__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
-						'<strong>WP Rocket</strong>'
-					),
-				]
-			);
-
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+			return [
+				'status'  => 'error',
+				'message' => sprintf(
+					// translators: %1$s = plugin name.
+					__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
+					'<strong>WP Rocket</strong>'
+				),
+			];
 		}
-
-		rocket_clean_domain();
 
 		$this->delete_used_css_rows();
 
-		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-
-		set_transient(
-			'rocket_clear_usedcss_response',
-			[
-				'status'  => 'success',
-				'message' => sprintf(
-					// translators: %1$s = plugin name.
-					__( '%1$s: Used CSS cache cleared!', 'rocket' ),
-					'<strong>WP Rocket</strong>'
-				),
-			]
-		);
-
-		$this->set_notice_transient();
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+		return [
+			'status'  => 'success',
+			'message' => sprintf(
+				// translators: %1$s = plugin name.
+				__( '%1$s: Used CSS cache cleared!', 'rocket' ),
+				'<strong>WP Rocket</strong>'
+			),
+		];
 	}
 
 	/**
@@ -442,13 +415,11 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clear UsedCSS for the current URL.
+	 * Clean UsedCSS for the current URL.
 	 *
 	 * @return void
 	 */
-	public function clear_url_usedcss() {
-		check_admin_referer( 'rocket_clear_usedcss_url' );
-
+	public function clean_url() {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			wp_nonce_ays( '' );
 		}
@@ -461,9 +432,6 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->used_css->clear_url_usedcss( $url );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
