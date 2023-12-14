@@ -29,7 +29,7 @@ class Factory implements SaasFactory {
 	 * @param ManagerInterface $manager ATF Manager.
 	 * @param TableInterface   $table ATF Table.
 	 */
-	public function __construct( ManagerInterface $manager, Table $table ) {
+	public function __construct( ManagerInterface $manager, TableInterface $table ) {
 		$this->manager = $manager;
 		$this->table   = $table;
 	}
