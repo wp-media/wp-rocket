@@ -48,7 +48,7 @@ class Factory implements SaasFactory {
 	 *
 	 * @return TableInterface
 	 */
-	public function table(): Table {
+	public function table(): TableInterface {
 		return $this->table;
 	}
 }
