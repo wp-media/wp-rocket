@@ -84,4 +84,38 @@ class AboveTheFold extends Table {
 
 		delete_option( $this->db_version_key );
 	}
+
+	/**
+	 * Remove all completed rows.
+	 *
+	 * @return bool|int
+	 */
+	public function remove_all_completed_rows() {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		return $db->query( "DELETE FROM `$prefixed_table_name` WHERE status IN ( 'failed', 'completed' )" );
+	}
+
+	/**
+	 * Truncate DB table.
+	 *
+	 * @return bool
+	 */
+	public function truncate(): bool {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+		return $this->truncate();
+	}
 }

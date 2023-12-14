@@ -386,6 +386,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'atf_subscriber',
+			'atf_admin_subscriber',
 			'contactform7',
 			'saas_admin_subscriber',
 		];
