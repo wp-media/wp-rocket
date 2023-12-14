@@ -62,7 +62,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Schedules cron to clean not commonly used RUCSS/ATF rows.
+	 * Schedules cron to clean not commonly used rows.
 	 *
 	 * @since 3.9
 	 *
@@ -81,7 +81,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Initialize the queue runner for our RUCSS.
+	 * Initialize the queue runner for our SaaS.
 	 *
 	 * @return void
 	 */
@@ -153,7 +153,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds new interval for RUCSS pending jobs cron
+	 * Adds new interval for SaaS pending jobs cron
 	 *
 	 * @since 3.11.3
 	 *
@@ -237,7 +237,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Schedules cron to get RUCSS pendings jobs.
+	 * Schedules cron to get SaaS pendings jobs.
 	 *
 	 * @since 3.11.3
 	 *
@@ -293,7 +293,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clear schedule of RUCSS CRONs on deactivation.
+	 * Clear schedule of SaaS CRONs on deactivation.
 	 *
 	 * @return void
 	 */
@@ -302,17 +302,17 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if the RUCSS deletion is enabled.
+	 * Checks if the SaaS deletion is enabled.
 	 *
 	 * @return bool
 	 */
 	protected function is_deletion_enabled(): bool {
 		/**
-		 * Filters the enable RUCSS deletion value
+		 * Filters the enable SaaS job deletion value
 		 *
-		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 * @param bool $delete_saas_jobs True to enable deletion, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
+		return (bool) apply_filters( 'rocket_saas_deletion_enabled', true );
 	}
 
 	/**

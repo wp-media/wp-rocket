@@ -745,16 +745,16 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks if the RUCSS deletion is enabled.
+	 * Checks if the SaaS deletion is enabled.
 	 *
 	 * @return bool
 	 */
 	protected function is_deletion_enabled(): bool {
 		/**
-		 * Filters the enable RUCSS deletion value
+		 * Filters the enable SaaS deletion value
 		 *
-		 * @param bool $delete_rucss True to enable deletion, false otherwise.
+		 * @param bool $delete_saas_jobs True to enable deletion, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_rucss_deletion_enabled', true );
+		return (bool) apply_filters( 'rocket_saas_deletion_enabled', true );
 	}
 }
