@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\Jobs;
 
 use WP_Rocket\Engine\Common\JobManager\AbstractFactory\SaasFactory;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
-use WP_Rocket\Engine\Common\Database\Table;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 
 class Factory implements SaasFactory {
 
