@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Common\Database;
 
-interface Table {
+interface TableInterface {
 	/**
 	 * Delete all rows which were not accessed in the last month.
 	 *
