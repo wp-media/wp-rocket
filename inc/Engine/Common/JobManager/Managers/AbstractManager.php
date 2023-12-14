@@ -2,30 +2,8 @@
 
 namespace WP_Rocket\Engine\Common\JobManager\Managers;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
-
-class AbstractManager {
-	/**
-	 * Query instance.
-	 *
-	 * @var object
-	 */
-	protected $query;
-
-	/**
-	 * Context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $context;
-
-	/**
-	 * The type of optimization applied for the current job.
-	 *
-	 * @var string
-	 */
-	protected $optimization_type;
-
+trait AbstractManager {
+    
 	/**
 	 * Determine if the action is allowed.
 	 *

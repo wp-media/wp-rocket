@@ -9,8 +9,8 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
-class Manager extends AbstractManager implements ManagerInterface, LoggerAwareInterface {
-	use LoggerAware;
+class Manager implements ManagerInterface, LoggerAwareInterface {
+	use LoggerAware, AbstractManager;
 
 	/**
 	 * AboveTheFold Query instance.

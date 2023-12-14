@@ -12,9 +12,8 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
-class Manager extends AbstractManager implements ManagerInterface, LoggerAwareInterface {
-	use LoggerAware;
-	use CSSTrait;
+class Manager implements ManagerInterface, LoggerAwareInterface {
+	use LoggerAware, CSSTrait, AbstractManager;
 
 	/**
 	 * UsedCss Query instance.
