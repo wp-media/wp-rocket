@@ -22,14 +22,23 @@ class Subscriber implements Subscriber_Interface {
 	private $clean;
 
 	/**
+	 * Notices instance
+	 *
+	 * @var Notices
+	 */
+	private $notices;
+
+	/**
 	 * Constructor
 	 *
 	 * @param AdminBar $admin_bar AdminBar instance.
 	 * @param Clean    $clean Clean instance.
+	 * @param Notices  $notices Notices instance.
 	 */
-	public function __construct( $admin_bar, $clean ) {
+	public function __construct( $admin_bar, $clean, $notices ) {
 		$this->admin_bar = $admin_bar;
 		$this->clean     = $clean;
+		$this->notices   = $notices;
 	}
 
 	/**
@@ -45,6 +54,15 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_clean_saas'     => 'clean_saas',
 			'admin_post_rocket_clean_saas_url' => 'clean_url_saas',
+			'admin_notices'                    => [
+				[ 'clear_usedcss_result' ],
+				[ 'display_processing_notice' ],
+				[ 'display_success_notice' ],
+				[ 'display_wrong_license_notice' ],
+				[ 'display_saas_error_notice' ],
+				[ 'display_no_table_notice' ],
+				[ 'notice_write_permissions' ],
+			],
 		];
 	}
 
