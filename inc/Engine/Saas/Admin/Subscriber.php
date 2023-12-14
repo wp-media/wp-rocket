@@ -55,14 +55,13 @@ class Subscriber implements Subscriber_Interface {
 			'admin_post_rocket_clean_saas'     => 'clean_saas',
 			'admin_post_rocket_clean_saas_url' => 'clean_url_saas',
 			'admin_notices'                    => [
-				[ 'clear_usedcss_result' ],
+				[ 'clean_saas_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
 				[ 'display_saas_error_notice' ],
-				[ 'display_no_table_notice' ],
-				[ 'notice_write_permissions' ],
 			],
+			'rocket_localize_admin_script'     => 'add_localize_script_data',
 		];
 	}
 
@@ -104,5 +103,61 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function clean_url_saas() {
 		$this->clean->clean_url_saas();
+	}
+
+	/**
+	 * Show admin notice after clearing SaaS tables.
+	 *
+	 * @return void
+	 */
+	public function clean_saas_result() {
+		$this->notices->clean_saas_result();
+	}
+
+	/**
+	 * Displays the SaaS currently processing notice
+	 *
+	 * @return void
+	 */
+	public function display_processing_notice() {
+		$this->notices->display_processing_notice();
+	}
+
+	/**
+	 * Displays the SaaS success notice
+	 *
+	 * @return void
+	 */
+	public function display_success_notice() {
+		$this->notices->display_success_notice();
+	}
+
+	/**
+	 * Display a notification on wrong license.
+	 *
+	 * @return void
+	 */
+	public function display_wrong_license_notice() {
+		$this->notices->display_wrong_license_notice();
+	}
+
+	/**
+	 * Display an error notice when the connection to the server fails
+	 *
+	 * @return void
+	 */
+	public function display_saas_error_notice() {
+		$this->notices->display_saas_error_notice();
+	}
+
+	/**
+	 * Adds the notice end time to WP Rocket localize script data
+	 *
+	 * @param array $data Localize script data.
+	 *
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		return $this->notices->add_localize_script_data( $data );
 	}
 }
