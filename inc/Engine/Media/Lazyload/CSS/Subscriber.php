@@ -415,7 +415,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return [];
 		}
 
-		$output = $this->generate_content( $content );
+		$output = $this->generate_content( $content, $this->cache->generate_url( $url ) );
 
 		if ( count( $output->get_urls() ) === 0 ) {
 			return [];
@@ -434,10 +434,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Generate lazy content for a certain content.
 	 *
 	 * @param string $content Content to generate lazy for.
+	 * @param string $url URL of the file we are extracting content from.
 	 * @return LazyloadedContent
 	 */
-	protected function generate_content( string $content ): LazyloadedContent {
-		$urls           = $this->extractor->extract( $content );
+	protected function generate_content( string $content, string $url = '' ): LazyloadedContent {
+		$urls           = $this->extractor->extract( $content, $url );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
 			$url_tags       = $this->add_hashes( $url_tags );

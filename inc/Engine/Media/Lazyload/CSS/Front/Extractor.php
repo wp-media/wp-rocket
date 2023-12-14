@@ -19,9 +19,10 @@ class Extractor {
 	 * Extract background images from CSS.
 	 *
 	 * @param string $content CSS content.
+	 * @param string $file_url File we are extracting css from.
 	 * @return array
 	 */
-	public function extract( string $content ): array {
+	public function extract( string $content, string $file_url = '' ): array {
 
 		$this->comments_mapping = [];
 
@@ -77,7 +78,7 @@ class Extractor {
 			$property = trim( $property );
 			$selector = trim( $selector );
 
-			$urls  = $this->extract_urls( $property );
+			$urls  = $this->extract_urls( $property, $file_url );
 			$block = trim( $match[0] );
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
@@ -100,9 +101,10 @@ class Extractor {
 	 * Extract URLS from a CSS property.
 	 *
 	 * @param string $content Content from the CSS property.
+	 * @param string $file_url URL of the css file.
 	 * @return array
 	 */
-	protected function extract_urls( string $content ): array {
+	protected function extract_urls( string $content, string $file_url = '' ): array {
 
 		/**
 		 * Lazyload URL regex.
@@ -128,7 +130,7 @@ class Extractor {
 			$url = str_replace( '"', '', $url );
 			$url = str_replace( "'", '', $url );
 			$url = trim( $url );
-			$url = $this->make_url_complete( $url );
+			$url = $this->make_url_complete( $url, $file_url );
 			if ( ! key_exists( 'tag', $match ) || ! key_exists( 'url', $match ) || ! $url || $this->is_url_ignored( $url, $ignored_urls ) ) {
 				continue;
 			}
@@ -186,18 +188,67 @@ class Extractor {
 	 * Complete the URL if necessary.
 	 *
 	 * @param string $url URL to complete.
+	 * @param string $file_url URL of the CSS File.
 	 *
 	 * @return string
 	 */
-	protected function make_url_complete( string $url ): string {
+	protected function make_url_complete( string $url, string $file_url ): string {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
-		if ( $host || $this->is_relative( $url ) ) {
+		if ( $host || $this->is_relative( $url ) && ! empty( $file_url ) ) {
+			return $this->transform_relative_to_absolute( $url, $file_url );
+		} elseif ( empty( $file_url ) ) {
 			return $url;
 		}
 
 		return rocket_get_home_url() . '/' . trim( $url, '/ ' );
 	}
+
+
+	/**
+	 * Transform a relative URL to an absolute URL based on the base URL.
+	 *
+	 * @param string $rel  Relative URL to transform.
+	 * @param string $base Base URL.
+	 *
+	 * @return string
+	 */
+	protected function transform_relative_to_absolute( string $rel, string $base = '' ): string {
+		if ( ! is_null( wp_parse_url( $rel, PHP_URL_SCHEME ) ) ) {
+			return $rel;
+		}
+
+		if ( '#' === $rel[0] || '?' === $rel[0] ) {
+			return $base . $rel;
+		}
+
+		$base_url_parts = wp_parse_url( $base );
+		$path           = ! empty( $base_url_parts['path'] ) ? $base_url_parts['path'] : '/';
+
+		$path = preg_replace( '#/[^/]*$#', '', $path );
+
+		if ( '/' === $rel[0] ) {
+			$path = '';
+		}
+
+		$abs = "$path/$rel";
+
+		$re = [ '#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#' ];
+
+		$dots_count = substr_count( $rel, '..' );
+
+		foreach ( range( 1, $dots_count ) as $n ) {
+			$abs_before = $abs;
+			$abs        = preg_replace( $re, '/', $abs, -1, $n );
+
+			if ( $abs_before === $abs ) {
+				break;
+			}
+		}
+
+		return trailingslashit( rocket_get_home_url() ) . ltrim( $abs, '/' );
+	}
+
 
 	/**
 	 * Check if the URL is external.
