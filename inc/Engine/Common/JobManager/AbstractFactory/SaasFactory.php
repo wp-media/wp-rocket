@@ -17,7 +17,7 @@ interface SaasFactory {
 	/**
 	 * Job table.
 	 *
-	 * @return Table
+	 * @return TableInterface
 	 */
 	public function table(): Table;
 }
