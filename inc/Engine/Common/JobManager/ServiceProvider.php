@@ -54,24 +54,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'retry_strategy_factory', StrategyFactory::class )
 			->addArgument( $this->getContainer()->get( 'wpr_clock' ) );
 
-		foreach ( $factories as $factory ) {
-			$optimization = $factory->manager()->get_optimization_type();
-
-			$this->getContainer()->add( $optimization . '_retry_strategy_default_process', DefaultProcess::class )
-				->addArguments(
-					[
-						$factory->manager(),
-						$this->getContainer()->get( 'wpr_clock' ),
-					]
-					);
-
-			$this->getContainer()->add( $optimization . '_retry_strategy_job_set_fail', JobSetFail::class )
-				->addArgument( $factory->manager() );
-
-			$this->getContainer()->add( $optimization . '_retry_strategy_reset_retry', ResetRetryProcess::class )
-				->addArgument( $factory->manager() );
-		}
-
 		$this->getContainer()->add( 'queue', Queue::class );
 
 		$this->getContainer()->add( 'api_client', APIClient::class )
