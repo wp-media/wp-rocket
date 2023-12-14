@@ -387,6 +387,7 @@ class Plugin {
 			'atf_subscriber',
 			'cron_subscriber',
 			'contactform7',
+			'rucss_cron_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
