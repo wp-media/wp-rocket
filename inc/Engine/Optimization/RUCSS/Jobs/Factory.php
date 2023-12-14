@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Jobs;
 
 use WP_Rocket\Engine\Common\JobManager\AbstractFactory\SaasFactory;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
-use WP_Rocket\Engine\Common\Database\Table;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 
 class Factory implements SaasFactory {
 
@@ -19,7 +19,7 @@ class Factory implements SaasFactory {
 	/**
 	 * RUCSS Table.
 	 *
-	 * @var Table
+	 * @var TableInterface
 	 */
 	private $table;
 
@@ -27,9 +27,9 @@ class Factory implements SaasFactory {
 	 * Instatiate the class.
 	 *
 	 * @param ManagerInterface $manager RUCSS Manager.
-	 * @param Table            $table RUCSS Table.
+	 * @param TableInterface            $table RUCSS Table.
 	 */
-	public function __construct( ManagerInterface $manager, Table $table ) {
+	public function __construct( ManagerInterface $manager, TableInterface $table ) {
 		$this->manager = $manager;
 		$this->table   = $table;
 	}
@@ -46,9 +46,9 @@ class Factory implements SaasFactory {
 	/**
 	 * RUCSS Table.
 	 *
-	 * @return Table
+	 * @return TableInterface
 	 */
-	public function table(): Table {
+	public function table(): TableInterface {
 		return $this->table;
 	}
 }
