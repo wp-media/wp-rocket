@@ -19,7 +19,7 @@ class Factory implements SaasFactory {
 	/**
 	 * ATF Table.
 	 *
-	 * @var Table
+	 * @var TableInterface
 	 */
 	private $table;
 
