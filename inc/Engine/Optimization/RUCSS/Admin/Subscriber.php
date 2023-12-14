@@ -76,11 +76,6 @@ class Subscriber implements Subscriber_Interface {
 			'edit_term'                               => 'delete_term_used_css',
 			'pre_delete_term'                         => 'delete_term_used_css',
 			'admin_notices'                           => [
-				[ 'clear_usedcss_result' ],
-				[ 'display_processing_notice' ],
-				[ 'display_success_notice' ],
-				[ 'display_wrong_license_notice' ],
-				[ 'display_saas_error_notice' ],
 				[ 'display_no_table_notice' ],
 				[ 'notice_write_permissions' ],
 			],
@@ -88,7 +83,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'set_optimize_css_delivery_value', 10, 1 ],
 				[ 'set_optimize_css_delivery_method_value', 10, 1 ],
 			],
-			'rocket_localize_admin_script'            => 'add_localize_script_data',
 			'wp_rocket_upgrade'                       => [
 				[ 'set_option_on_update', 14, 2 ],
 				[ 'update_safelist_items', 15, 2 ],
@@ -288,32 +282,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Show admin notice after clearing used_css table.
-	 *
-	 * @since 3.9
-	 *
-	 * @return void
-	 */
-	public function clear_usedcss_result() {
-		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
-			return;
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return;
-		}
-
-		$response = get_transient( 'rocket_clear_usedcss_response' );
-		if ( ! $response ) {
-			return;
-		}
-
-		delete_transient( 'rocket_clear_usedcss_response' );
-
-		rocket_notice_html( $response );
-	}
-
-	/**
 	 * Set optimize css delivery value
 	 *
 	 * @since 3.10
@@ -359,52 +327,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function display_success_notice() {
 		$this->settings->display_success_notice();
-	}
-
-	/**
-	 * Display a notification on wrong license.
-	 *
-	 * @return void
-	 */
-	public function display_wrong_license_notice() {
-		$transient = get_option( 'wp_rocket_no_licence' );
-
-		if ( ! $transient ) {
-			return;
-		}
-
-		$this->settings->display_wrong_license_notice();
-	}
-
-	/**
-	 * Display error notice when connection to SAAS fails
-	 *
-	 * @return void
-	 */
-	public function display_saas_error_notice() {
-		$this->settings->display_saas_error_notice();
-	}
-
-
-	/**
-	 * Display admin notice when detecting any missed Action scheduler tables.
-	 *
-	 * @since 3.11.0.3
-	 *
-	 * @return void
-	 */
-	public function display_as_missed_tables_notice() {
-		$screen = get_current_screen();
-
-		if ( isset( $screen->id ) && 'tools_page_action-scheduler' === $screen->id ) {
-			return;
-		}
-
-		if ( $this->is_valid_as_tables() ) {
-			return;
-		}
-
-		$this->settings->display_as_missed_tables_notice();
 	}
 
 	/**
