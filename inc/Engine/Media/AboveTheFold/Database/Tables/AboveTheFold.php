@@ -61,4 +61,16 @@ class AboveTheFold extends AbstractTable {
 			KEY last_accessed (last_accessed),
 			INDEX `status_index` (`status`(191)),
 			INDEX `error_code_index` (`error_code`(32))";
+
+	/**
+	 * Truncate DB table.
+	 *
+	 * @return bool
+	 */
+	public function truncate(): bool {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+		return $this->truncate();
+	}
 }

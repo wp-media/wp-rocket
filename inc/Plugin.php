@@ -386,6 +386,7 @@ class Plugin {
 			'weglot',
 			'atf_subscriber',
 			'cron_subscriber',
+			'atf_admin_subscriber',
 			'contactform7',
 			'rucss_cron_subscriber',
 		];
