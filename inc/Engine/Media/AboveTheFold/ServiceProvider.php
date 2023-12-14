@@ -7,8 +7,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller as FrontController;
-use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber as FrontSubscriber;
+use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
+use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -26,6 +26,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_context',
 		'atf_controller',
 		'atf_subscriber',
+		'atf_admin_controller',
+		'atf_admin_subscriber',
 	];
 
 	/**
@@ -45,5 +47,11 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 		$this->getContainer()->share( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
+		$this->getContainer()->add( 'atf_admin_controller', AdminController::class )
+			->addArgument( $this->getContainer()->get( 'atf_table' ) )
+			->addArgument( $this->getContainer()->get( 'atf_query' ) )
+			->addArgument( $this->getContainer()->get( 'atf_context' ) );
+		$this->getContainer()->share( 'atf_admin_subscriber', AdminSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 	}
 }
