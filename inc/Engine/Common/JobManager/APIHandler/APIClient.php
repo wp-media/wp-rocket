@@ -22,18 +22,11 @@ class APIClient extends AbstractAPIClient {
 	protected $options;
 
 	/**
-	 * RUCSS Context.
+	 * Array of Factories.
 	 *
-	 * @var ContextInterface
+	 * @var array
 	 */
-	protected $rucss_context;
-
-	/**
-	 * LCP Context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $atf_context;
+	protected $factories;
 
 	/**
 	 * Calls Central SaaS API.
@@ -116,18 +109,14 @@ class APIClient extends AbstractAPIClient {
 			'status'   => 'failed',
 			'message'  => 'No message. Defaulted in get_queue_job_status',
 			'contents' => [
-				'success' => false,
+				'success'               => false,
+				'shakedCSS'             => '',
+				'above_the_fold_result' => [
+					'lcp'               => [],
+					'images_above_fold' => [],
+				],
 			],
 		];
-
-		if ( $this->rucss_context->is_allowed() ) {
-			$default['contents']['rucss_result']['shakedCSS'] = '';
-		}
-
-		if ( $this->atf_context->is_allowed() ) {
-			$default['contents']['above_the_fold_result']['lcp']               = [];
-			$default['contents']['above_the_fold_result']['images_above_fold'] = [];
-		}
 
 		$result = json_decode( $this->response_body, true );
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );

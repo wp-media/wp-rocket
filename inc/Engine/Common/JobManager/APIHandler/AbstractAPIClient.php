@@ -12,7 +12,7 @@ abstract class AbstractAPIClient {
 	/**
 	 * API URL.
 	 */
-	const API_URL = 'https://rucss-director-staging.public-default.live2-k8s-cph3.one.com/';
+	const API_URL = 'https://saas.wp-rocket.me/';
 
 	/**
 	 * Part of request Url after the main API_URL.
@@ -50,34 +50,12 @@ abstract class AbstractAPIClient {
 	protected $options;
 
 	/**
-	 * RUCSS Context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $rucss_context;
-
-	/**
-	 * LCP Context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $atf_context;
-
-	/**
 	 * Instantiate the class.
 	 *
-	 * @param Options_Data     $options Options instance.
-	 * @param ContextInterface $rucss_context RUCSS Context.
-	 * @param ContextInterface $atf_context Above The Fold Context.
+	 * @param Options_Data $options Options instance.
 	 */
-	public function __construct(
-		Options_Data $options,
-		ContextInterface $rucss_context,
-		ContextInterface $atf_context
-	) {
-		$this->options       = $options;
-		$this->rucss_context = $rucss_context;
-		$this->atf_context   = $atf_context;
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
 	}
 
 	/**
