@@ -46,7 +46,7 @@ class Factory implements SaasFactory {
 	/**
 	 * ATF Table.
 	 *
-	 * @return Table
+	 * @return TableInterface
 	 */
 	public function table(): Table {
 		return $this->table;
