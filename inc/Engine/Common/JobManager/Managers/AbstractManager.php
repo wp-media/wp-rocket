@@ -3,7 +3,7 @@
 namespace WP_Rocket\Engine\Common\JobManager\Managers;
 
 trait AbstractManager {
-    
+
 	/**
 	 * Determine if the action is allowed.
 	 *
