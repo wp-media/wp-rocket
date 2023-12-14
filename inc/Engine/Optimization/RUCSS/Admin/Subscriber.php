@@ -101,8 +101,8 @@ class Subscriber implements Subscriber_Interface {
 			'admin_head-tools_page_action-scheduler'  => 'delete_as_tables_transient_on_tools_page',
 			'pre_get_rocket_option_remove_unused_css' => 'disable_russ_on_wrong_license',
 			'rocket_before_rollback'                  => 'cancel_queues',
-			'rocket_saas_clean_all'                   => 'truncate',
-			'rocket_saas_clean_url'                   => 'clean_url',
+			'rocket_saas_clean_all'                   => [ 'truncate', 11 ],
+			'rocket_saas_clean_url'                   => [ 'clean_url', 11 ],
 		];
 	}
 
@@ -252,6 +252,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->set_notice_transient();
 	}
 
+	/**
+	 * Deletes rows when triggering clean from admin
+	 *
+	 * @return array
+	 */
 	public function truncate() {
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return [
