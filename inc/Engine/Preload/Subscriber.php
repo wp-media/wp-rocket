@@ -104,7 +104,7 @@ class Subscriber implements Subscriber_Interface {
 			'permalink_structure_changed'            => 'on_permalink_changed',
 			'rocket_domain_changed'                  => 'on_permalink_changed',
 			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
-			'rocket_rucss_complete_job_status'       => 'clean_url',
+			'rocket_saas_complete_job_status'        => 'clean_url',
 			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url', 20 ],
 			'rocket_after_automatic_cache_purge'     => 'preload_after_automatic_cache_purge',
 			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
@@ -124,6 +124,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_cache_reject_uri_to_excluded' ],
 			],
 			'rocket_rucss_after_clearing_failed_url' => [ 'clean_urls', 20 ],
+			'rocket_atf_after_clearing_failed_url'   => [ 'clean_urls', 20 ],
 			'transition_post_status'                 => [ 'remove_private_post', 10, 3 ],
 			'rocket_preload_exclude'                 => [ 'exclude_private_url', 10, 2 ],
 		];
