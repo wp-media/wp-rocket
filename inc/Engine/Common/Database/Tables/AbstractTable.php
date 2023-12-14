@@ -3,8 +3,9 @@
 namespace WP_Rocket\Engine\Common\Database\Tables;
 
 use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Engine\Common\Database\Table as TableInterface;
 
-class AbstractTable extends Table {
+class AbstractTable extends Table implements TableInterface {
 
 	/**
 	 * Table schema data.
