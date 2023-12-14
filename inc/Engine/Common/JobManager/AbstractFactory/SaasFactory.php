@@ -4,7 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Common\JobManager\AbstractFactory;
 
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
-use WP_Rocket\Engine\Common\Database\Table;
+use WP_Rocket\Engine\Common\Database\TableInterface;
 
 interface SaasFactory {
 	/**
