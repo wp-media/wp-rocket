@@ -261,7 +261,7 @@ class AbstractQuery extends Query {
 	 *
 	 * @param string  $url Url from DB row.
 	 * @param boolean $is_mobile Is mobile from DB row.
-	 * @return int/boolean
+	 * @return bool|int
 	 */
 	public function make_status_inprogress( string $url, bool $is_mobile ) {
 		if ( ! $this->is_allowed() ) {
@@ -314,7 +314,7 @@ class AbstractQuery extends Query {
 	 * @param string  $error_code error code.
 	 * @param string  $error_message error message.
 	 *
-	 * @return int/boolean
+	 * @return bool|int
 	 */
 	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ) {
 		if ( ! $this->is_allowed() ) {
