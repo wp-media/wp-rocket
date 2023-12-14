@@ -27,7 +27,7 @@ class Factory implements SaasFactory {
 	 * Instatiate the class.
 	 *
 	 * @param ManagerInterface $manager RUCSS Manager.
-	 * @param TableInterface            $table RUCSS Table.
+	 * @param TableInterface   $table RUCSS Table.
 	 */
 	public function __construct( ManagerInterface $manager, TableInterface $table ) {
 		$this->manager = $manager;

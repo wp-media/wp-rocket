@@ -57,7 +57,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'queue', Queue::class );
 
 		$this->getContainer()->add( 'api_client', APIClient::class )
-		    ->addArgument( $this->getContainer()->get( 'options' ) );
+			->addArgument( $this->getContainer()->get( 'options' ) );
 
 		$this->getContainer()->share( 'job_processor', JobProcessor::class )
 			->addArguments(
