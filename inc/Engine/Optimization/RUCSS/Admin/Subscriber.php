@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Optimization\RUCSS\Admin;
 
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\{Queue, UsedCSS};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -306,40 +306,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function set_optimize_css_delivery_method_value( $field_args ): array {
 		return $this->settings->set_optimize_css_delivery_method_value( $field_args );
-	}
-
-	/**
-	 * Displays the RUCSS currently processing notice
-	 *
-	 * @since 3.11
-	 *
-	 * @return void
-	 */
-	public function display_processing_notice() {
-		$this->settings->display_processing_notice();
-	}
-
-	/**
-	 * Displays the RUCSS success notice
-	 *
-	 * @since 3.11
-	 *
-	 * @return void
-	 */
-	public function display_success_notice() {
-		$this->settings->display_success_notice();
-	}
-
-	/**
-	 * Adds the notice end time to WP Rocket localize script data
-	 *
-	 * @since 3.11
-	 *
-	 * @param array $data Localize script data.
-	 * @return array
-	 */
-	public function add_localize_script_data( $data ): array {
-		return $this->settings->add_localize_script_data( $data );
 	}
 
 	/**
