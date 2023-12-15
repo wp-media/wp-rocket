@@ -197,8 +197,6 @@ class Extractor {
 
 		if ( $host || $this->is_relative( $url ) && ! empty( $file_url ) ) {
 			return $this->transform_relative_to_absolute( $url, $file_url );
-		} elseif ( empty( $file_url ) ) {
-			return $url;
 		}
 
 		return rocket_get_home_url() . '/' . trim( $url, '/ ' );
