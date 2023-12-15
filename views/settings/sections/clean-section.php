@@ -1,0 +1,29 @@
+<?php
+/**
+ * Clean section template.
+ *
+ * @data array {
+ *     Data to populate the template.
+ *
+ *     @type string $title      Section title.
+ *     @type string $label      Button label.
+ * }
+ */
+
+defined( 'ABSPATH' ) || exit;
+?>
+<div class="wpr-field">
+	<h4 class="wpr-title3"><?php echo esc_html( $data['title'] ); ?></h4>
+	<?php
+	$this->render_action_button(
+			'link',
+			'rocket_clear_usedcss',
+			[
+				'label'      => $data['label'],
+				'attributes' => [
+					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+				],
+			]
+	);
+	?>
+</div>
