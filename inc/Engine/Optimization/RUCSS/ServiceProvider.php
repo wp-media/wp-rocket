@@ -47,6 +47,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_context_saas',
 		'rucss_factory',
 		'rucss_cron_subscriber',
+		'rucss_context',
+		'rucss_optimize_context',
 	];
 
 	/**
