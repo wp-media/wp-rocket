@@ -22,7 +22,7 @@ require_once __DIR__ . '/inc/Dependencies/Database/Table.php';
 require_once __DIR__ . '/inc/Dependencies/Database/Queries/Meta.php';
 require_once __DIR__ . '/inc/Dependencies/Database/Queries/Date.php';
 require_once __DIR__ . '/inc/Dependencies/Database/Queries/Compare.php';
-require_once __DIR__ . '/inc/Engine/Common/Database/Table.php';
+require_once __DIR__ . '/inc/Engine/Common/Database/TableInterface.php';
 require_once __DIR__ . '/inc/Engine/Common/Database/Tables/AbstractTable.php';
 require_once __DIR__ . '/inc/Engine/Optimization/RUCSS/Database/Tables/UsedCSS.php';
 require_once __DIR__ . '/inc/Engine/Preload/Database/Tables/Cache.php';
