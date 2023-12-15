@@ -41,6 +41,31 @@ class AbstractQuery extends Query {
 	}
 
 	/**
+	 * Get single row by ID.
+	 *
+	 * @param int $row_id DB Row ID.
+	 *
+	 * @return array|false
+	 */
+	public function get_row_by_id( int $row_id ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		$query = $this->query(
+			[
+				'id' => $row_id,
+			]
+		);
+
+		if ( empty( $query ) ) {
+			return false;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Get all rows with the same url (desktop and mobile versions).
 	 *
 	 * @param string $url Page url.
@@ -162,11 +187,6 @@ class AbstractQuery extends Query {
 			[
 				'number'         => ( $count - $inprogress_count ),
 				'status'         => 'pending',
-				'fields'         => [
-					'id',
-					'url',
-					'next_retry_time',
-				],
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
@@ -179,18 +199,23 @@ class AbstractQuery extends Query {
 	/**
 	 * Increment retries number and change status back to pending.
 	 *
-	 * @param int    $id DB row ID.
-	 * @param int    $error_code error code.
-	 * @param string $error_message error message.
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $error_code error code.
+	 * @param string  $error_message error message.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function increment_retries( $id, int $error_code, string $error_message ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+	public function increment_retries( string $url, bool $is_mobile, string $error_code, string $error_message ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		$old = $this->get_item( $id );
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$old = $this->get_row( $url, $is_mobile );
 
 		$retries          = 0;
 		$previous_message = '';
@@ -200,13 +225,18 @@ class AbstractQuery extends Query {
 			$previous_message = $old->error_message;
 		}
 
-		$update_data = [
+		$data = [
 			'retries'       => $retries + 1,
 			'status'        => 'pending',
 			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
-		return $this->update_item( $id, $update_data );
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
@@ -229,21 +259,24 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be in-progress.
 	 *
-	 * @param int $id DB row ID.
-	 *
-	 * @return bool
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @return bool|int
 	 */
-	public function make_status_inprogress( int $id ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+	public function make_status_inprogress( string $url, bool $is_mobile ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'status' => 'in-progress',
-			]
-		);
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$where               = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, [ 'status' => 'in-progress' ], $where );
 	}
 
 	/**
@@ -276,29 +309,38 @@ class AbstractQuery extends Query {
 	/**
 	 * Change the status to be failed.
 	 *
-	 * @param int    $id DB row ID.
-	 * @param string $error_code error code.
-	 * @param string $error_message error message.
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $error_code error code.
+	 * @param string  $error_message error message.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function make_status_failed( int $id, string $error_code, string $error_message ) {
-		if ( ! self::$table_exists && ! $this->table_exists() ) {
+	public function make_status_failed( string $url, bool $is_mobile, string $error_code, string $error_message ) {
+		if ( ! $this->is_allowed() ) {
 			return false;
 		}
 
-		$old = $this->get_item( $id );
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$old = $this->get_row( $url, $is_mobile );
 
 		$previous_message = $old ? $old->error_message : '';
 
-		return $this->update_item(
-			$id,
-			[
-				'status'        => 'failed',
-				'error_code'    => $error_code,
-				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
-			]
-		);
+		$data = [
+			'status'        => 'failed',
+			'error_code'    => $error_code,
+			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
+		];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
@@ -474,33 +516,86 @@ class AbstractQuery extends Query {
 	}
 
 	/**
+	 * Change the status to be pending.
+	 *
+	 * @param string $url DB row url.
+	 * @param string $job_id API job_id.
+	 * @param string $queue_name API Queue name.
+	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @return bool|int
+	 */
+	public function make_status_pending( string $url, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+		if ( ! $this->is_allowed() ) {
+			return false;
+		}
+
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		$data                = [
+			'job_id'       => $job_id,
+			'queue_name'   => $queue_name,
+			'status'       => 'pending',
+			'is_mobile'    => $is_mobile,
+			'submitted_at' => current_time( 'mysql', true ),
+		];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
+	}
+
+	/**
 	 * Update the error message.
 	 *
-	 * @param int    $job_id Job ID.
-	 * @param int    $code Response code.
-	 * @param string $message Response message.
-	 * @param string $previous_message Previous saved message.
+	 * @param string  $url DB row url.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param int     $code Response code.
+	 * @param string  $message Response message.
+	 * @param string  $previous_message Previous saved message.
 	 *
-	 * @return int|bool
+	 * @return bool|int
 	 */
-	public function update_message( int $job_id, int $code, string $message, string $previous_message = '' ) {
-		return $this->update_item(
-			$job_id,
-			[
-				'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}",
-			]
-		);
+	public function update_message( string $url, bool $is_mobile, int $code, string $message, string $previous_message = '' ) {
+		if ( ! $this->is_allowed() ) {
+			return false;
+		}
+
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$data = [ 'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}" ];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
 	 * Updates the next_retry_time field
 	 *
-	 * @param mixed      $job_id the job id.
+	 * @param string     $url DB row url.
+	 * @param boolean    $is_mobile Is mobile from DB row.
 	 * @param string|int $next_retry_time timestamp or mysql format date.
 	 *
-	 * @return int|bool either it is saved or not.
+	 * @return bool|int either it is saved or not.
 	 */
-	public function update_next_retry_time( $job_id, $next_retry_time ) {
+	public function update_next_retry_time( string $url, bool $is_mobile, $next_retry_time ) {
+		if ( ! $this->is_allowed() ) {
+			return false;
+		}
+
+		$db = $this->get_db();
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
 		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
 			// If $next_retry_time is a valid date string, convert it to a timestamp.
 			$next_retry_time = strtotime( $next_retry_time );
@@ -509,37 +604,31 @@ class AbstractQuery extends Query {
 			return false;
 		}
 
-		return $this->update_item(
-			$job_id,
-			[
-				'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ),
-			]
-		);
+		$data = [ 'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ) ];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**
-	 * Change the status to be pending.
+	 * Check if db action can be processed.
 	 *
-	 * @param int    $id DB row ID.
-	 * @param string $job_id API job_id.
-	 * @param string $queue_name API Queue name.
-	 * @param bool   $is_mobile if the request is for mobile page.
-	 * @return bool
+	 * @return boolean
 	 */
-	public function make_status_pending( int $id, string $job_id = '', string $queue_name = '', bool $is_mobile = false ) {
+	private function is_allowed() {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'job_id'       => $job_id,
-				'queue_name'   => $queue_name,
-				'status'       => 'pending',
-				'is_mobile'    => $is_mobile,
-				'submitted_at' => current_time( 'mysql', true ),
-			]
-		);
+		// Bail if no database interface is available.
+		if ( empty( $this->get_db() ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
 	use RegexTrait;
@@ -33,16 +34,25 @@ class Controller {
 	private $context;
 
 	/**
+	 * Above the fold Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param ATFQuery     $query Queries instance.
-	 * @param Context      $context Context instance.
+	 * @param Options_Data     $options Options instance.
+	 * @param ATFQuery         $query Queries instance.
+	 * @param Context          $context Context instance.
+	 * @param ManagerInterface $manager Above the fold Job Manager.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager ) {
 		$this->options = $options;
 		$this->query   = $query;
 		$this->context = $context;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -59,15 +69,16 @@ class Controller {
 
 		global $wp;
 
-		$url = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
-
-		$row = $this->query->get_row( $url, $this->is_mobile() );
+		$url       = untrailingslashit( home_url( add_query_arg( [], $wp->request ) ) );
+		$is_mobile = $this->is_mobile();
+		$row       = $this->query->get_row( $url, $is_mobile );
 
 		if ( empty( $row ) ) {
+			$this->manager->add_url_to_the_queue( $url, $is_mobile );
 			return $html;
 		}
 
-		if ( empty( $row->lcp ) ) {
+		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp ) {
 			return $html;
 		}
 
@@ -85,13 +96,18 @@ class Controller {
 	 * @return string
 	 */
 	private function preload_lcp( $html, $row ) {
-		$preload = '</title>';
+		if ( ! preg_match( '#</title\s*>#', $html, $matches ) ) {
+			return $html;
+		}
+
+		$title   = $matches[0];
+		$preload = $title;
 
 		$lcp = json_decode( $row->lcp );
 
 		$preload .= $this->preload_tag( $lcp );
 
-		$replace = preg_replace( '#</title>#', $preload, $html, 1 );
+		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
 		$replace = $this->set_fetchpriority( $lcp, $replace );
 
 		return $replace;
@@ -129,7 +145,7 @@ class Controller {
 
 		$url  = preg_quote( $lcp->src, '/' );
 		$html = preg_replace_callback(
-			'/<img[^>]*\s+src=[\'"]' . $url . '[\'"].+>$/',
+			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
 				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
@@ -171,12 +187,12 @@ class Controller {
 			return $exclusions;
 		}
 
-		if ( $row->lcp ) {
+		if ( $row->lcp && 'not found' !== $row->lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
 		}
 
-		if ( $row->viewport ) {
+		if ( $row->viewport && 'not found' !== $row->viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
 		}
 

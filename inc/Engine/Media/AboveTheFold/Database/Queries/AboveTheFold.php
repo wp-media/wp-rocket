@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Database\Queries;
 
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Schemas\AboveTheFold as AboveTheFoldSchema;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as AboveTheFoldRow;
 
 class AboveTheFold extends AbstractQuery {
 
@@ -30,7 +32,7 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Schemas\\AboveTheFold';
+	protected $table_schema = AboveTheFoldSchema::class;
 
 	/** Item ******************************************************************/
 
@@ -63,12 +65,43 @@ class AboveTheFold extends AbstractQuery {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Media\\AboveTheFold\\Database\\Row\\AboveTheFold';
+	protected $item_shape = AboveTheFoldRow::class;
 
 	/**
-	 * Table status.
+	 * Complete a job.
 	 *
-	 * @var boolean
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param array   $data LCP & Above the fold data.
+	 *
+	 * @return boolean|int
 	 */
-	public static $table_exists = false;
+	public function make_job_completed( string $url, bool $is_mobile, array $data ) {
+		if ( ! self::$table_exists && ! $this->table_exists() ) {
+			return false;
+		}
+
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$data = [
+			'status'   => 'completed',
+			'lcp'      => $data['lcp'],
+			'viewport' => $data['viewport'],
+		];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
+	}
 }

@@ -1,20 +1,21 @@
 <?php
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies;
+namespace WP_Rocket\Engine\Common\JobManager\Strategy\Strategies;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 /**
- * Class managing the default error for retry process of RUCSS
+ * Class managing the default error for retry process
  */
 class DefaultProcess implements StrategyInterface {
+
 	/**
-	 * UsedCss Query instance.
+	 * Job Manager.
 	 *
-	 * @var UsedCSS_Query
+	 * @var ManagerInterface
 	 */
-	protected $used_css_query;
+	private $manager;
 
 	/**
 	 * Clock Object.
@@ -47,12 +48,12 @@ class DefaultProcess implements StrategyInterface {
 	/**
 	 * Strategy Constructor.
 	 *
-	 * @param UsedCSS_Query $used_css_query DB Table.
-	 * @param WPRClock      $clock Clock object.
+	 * @param ManagerInterface $manager Job Manager.
+	 * @param WPRClock         $clock Clock object.
 	 */
-	public function __construct( UsedCSS_Query $used_css_query, WPRClock $clock ) {
-		$this->used_css_query = $used_css_query;
-		$this->clock          = $clock;
+	public function __construct( ManagerInterface $manager, WPRClock $clock ) {
+		$this->manager = $manager;
+		$this->clock   = $clock;
 
 		/**
 		 * Filter the array containing the time needed to wait for each retry.
@@ -75,6 +76,7 @@ class DefaultProcess implements StrategyInterface {
 	 * @return void
 	 */
 	public function execute( object $row_details, array $job_details ): void {
+
 		if ( $row_details->retries >= count( $this->time_table_retry ) ) {
 			/**
 			 * Unlock preload URL.
@@ -83,12 +85,12 @@ class DefaultProcess implements StrategyInterface {
 			 */
 			do_action( 'rocket_preload_unlock_url', $row_details->url );
 
-			$this->used_css_query->make_status_failed( $row_details->id, strval( $job_details['code'] ), $job_details['message'] );
+			$this->manager->make_status_failed( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 			return;
 		}
 
-		$this->used_css_query->increment_retries( $row_details->id, (int) $row_details->retries, $job_details['message'] );
+		$this->manager->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
 		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
 
@@ -105,7 +107,7 @@ class DefaultProcess implements StrategyInterface {
 		// update the `next_retry_time` column.
 		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;
 
-		$this->used_css_query->update_message( $row_details->id, $job_details['code'], $job_details['message'], $row_details->error_message );
-		$this->used_css_query->update_next_retry_time( (int) $row_details->id, $next_retry_time );
+		$this->manager->update_message( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'], $row_details->error_message );
+		$this->manager->update_next_retry_time( $row_details->url, $row_details->is_mobile, $next_retry_time );
 	}
 }

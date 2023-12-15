@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Frontend;
+namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
-use WP_Rocket\Engine\Optimization\RUCSS\AbstractAPIClient;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class APIClient extends AbstractAPIClient {
 
@@ -13,6 +13,20 @@ class APIClient extends AbstractAPIClient {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
+
+	/**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
+
+	/**
+	 * Array of Factories.
+	 *
+	 * @var array
+	 */
+	protected $factories;
 
 	/**
 	 * Calls Central SaaS API.
@@ -95,8 +109,12 @@ class APIClient extends AbstractAPIClient {
 			'status'   => 'failed',
 			'message'  => 'No message. Defaulted in get_queue_job_status',
 			'contents' => [
-				'success'   => false,
-				'shakedCSS' => '',
+				'success'               => false,
+				'shakedCSS'             => '',
+				'above_the_fold_result' => [
+					'lcp'               => [],
+					'images_above_fold' => [],
+				],
 			],
 		];
 
