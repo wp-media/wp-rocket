@@ -72,23 +72,38 @@ class UsedCSS extends AbstractQuery {
 	/**
 	 * Complete a job.
 	 *
-	 * @param int    $id DB row ID.
-	 * @param string $hash Hash.
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $hash Hash.
 	 *
 	 * @return bool
 	 */
-	public function make_status_completed( int $id, string $hash = '' ) {
+	public function make_status_completed( string $url, bool $is_mobile, string $hash = '' ) {
 		if ( ! self::$table_exists && ! $this->table_exists() ) {
 			return false;
 		}
 
-		return $this->update_item(
-			$id,
-			[
-				'hash'   => $hash,
-				'status' => 'completed',
-			]
-		);
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$data = [
+			'hash'   => $hash,
+			'status' => 'completed',
+		];
+
+		$where = [
+			'url'       => untrailingslashit( $url ),
+			'is_mobile' => $is_mobile,
+		];
+
+		return $db->update( $prefixed_table_name, $data, $where );
 	}
 
 	/**

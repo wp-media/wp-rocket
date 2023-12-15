@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Engine\Optimization\RUCSS\Controller;
+namespace WP_Rocket\Engine\Common\JobManager\Queue;
 
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
@@ -26,7 +26,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @var string
 	 */
-	private $pending_job_cron = 'rocket_rucss_pending_jobs_cron';
+	private $pending_job_cron = 'rocket_saas_pending_jobs_cron';
 
 	/**
 	 * Check if pending jobs cron is scheduled.
@@ -60,15 +60,19 @@ class Queue extends AbstractASQueue {
 	/**
 	 * Add Async job with DB row ID.
 	 *
-	 * @param int $usedcss_row_id DB row ID.
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $optimization_type The type of optimization request to send.
 	 *
-	 * @return string
+	 * @return int
 	 */
-	public function add_job_status_check_async( int $usedcss_row_id ) {
+	public function add_job_status_check_async( string $url, bool $is_mobile, string $optimization_type ) {
 		return $this->add_async(
-			'rocket_rucss_job_check_status',
+			'rocket_saas_job_check_status',
 			[
-				$usedcss_row_id,
+				$url,
+				$is_mobile,
+				$optimization_type,
 			]
 		);
 	}

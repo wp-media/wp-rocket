@@ -1,11 +1,12 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Engine\Optimization\RUCSS;
+namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 abstract class AbstractAPIClient {
 	/**
