@@ -213,10 +213,13 @@ class Controller {
 	 * @return array
 	 */
 	private function get_path_for_exclusion( array $exclusions ): array {
-		$exclusions = array_map( function ( $exclusion ) {
-			$exclusion = wp_parse_url( $exclusion );
-		    return $exclusion['path'];
-		}, $exclusions );
+		$exclusions = array_map(
+				function ( $exclusion ) {
+					$exclusion = wp_parse_url( $exclusion );
+					return $exclusion['path'];
+				},
+			$exclusions
+			);
 
 		return $exclusions;
 	}
