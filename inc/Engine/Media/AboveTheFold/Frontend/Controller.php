@@ -190,16 +190,36 @@ class Controller {
 		if ( $row->lcp && 'not found' !== $row->lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
+			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
 		if ( $row->viewport && 'not found' !== $row->viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+			$atf = $this->get_path_for_exclusion( $atf );
 		}
 
 		$exclusions = array_merge( $exclusions, $lcp, $atf );
 
 		// Remove lcp candidate from the atf array.
 		$exclusions = array_unique( $exclusions );
+
+		return $exclusions;
+	}
+
+	/**
+	 * Get only the url path to exclude.
+	 *
+	 * @param array $exclusions Array of exclusions.
+	 * @return array
+	 */
+	private function get_path_for_exclusion( array $exclusions ): array {
+		$exclusions = array_map(
+				function ( $exclusion ) {
+					$exclusion = wp_parse_url( $exclusion );
+					return $exclusion['path'];
+				},
+			$exclusions
+			);
 
 		return $exclusions;
 	}
