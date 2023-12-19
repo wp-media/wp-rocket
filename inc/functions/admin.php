@@ -565,14 +565,14 @@ function rocket_get_license_type( $customer_data ) {
 /**
  * Fires callback attached to a deprecated filter hook.
  *
- * @param string $old_hook    Name of the original filter hook.
+ * @param string $new_hook    The hook that should have been used.
  * @param array  $args        Array of additional function arguments to be passed.
  * @param string $version     The version of WPR that deprecated the hook.
- * @param string $new_hook    The hook that should have been used.
+ * @param string $old_hook    Name of the original filter hook.
  *
  * @return mixed The filtered value after all hooked functions are applied to it.
  */
-function rocket_deprecate_filter( string $old_hook, array $args, string $version, string $new_hook ) {
+function rocket_deprecate_filter( string $new_hook, array $args, string $version, string $old_hook ) {
 	$filtered_value = apply_filters_deprecated( $old_hook, $args, $version, $new_hook );
 	$args[0]        = $filtered_value;
 
@@ -582,14 +582,14 @@ function rocket_deprecate_filter( string $old_hook, array $args, string $version
 /**
  * Fires callback attached to a deprecated action hook.
  *
- * @param string $old_hook    The name of the action hook.
+ * @param string $new_hook    The hook that should have been used.
  * @param array  $args        Array of additional function arguments to be passed.
  * @param string $version     The version of WPR that deprecated the hook.
- * @param string $new_hook    The hook that should have been used.
+ * @param string $old_hook    The name of the action hook.
  *
  * @return void
  */
-function rocket_deprecate_action( string $old_hook, array $args, string $version, string $new_hook ): void {
+function rocket_deprecate_action( string $new_hook, array $args, string $version, string $old_hook ): void {
 	do_action_deprecated( $old_hook, $args, $version, $new_hook );
 	do_action_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
