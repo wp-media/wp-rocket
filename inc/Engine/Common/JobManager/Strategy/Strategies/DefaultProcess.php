@@ -60,7 +60,12 @@ class DefaultProcess implements StrategyInterface {
 		 *
 		 * @param array $time_table_entry contains the number of retry and how long we have to wait.
 		 */
-		$time_table_retry = apply_filters( 'rocket_rucss_retry_table', $this->time_table_retry );
+		$time_table_retry = rocket_deprecate_filter( 
+			'rocket_rucss_retry_table',
+			[ $this->time_table_retry ],
+			'3.16',
+			'rocket_saas_retry_table'
+		);
 
 		if ( is_array( $time_table_retry ) ) {
 			$this->time_table_retry = $time_table_retry;
@@ -92,20 +97,25 @@ class DefaultProcess implements StrategyInterface {
 
 		$this->manager->increment_retries( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'] );
 
-		$rucss_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
+		$saas_retry_duration = $this->time_table_retry[ $row_details->retries ] ?? $this->default_waiting_retry; // Default to 30 minutes.
 
 		/**
-		 * Filter used css retry duration.
+		 * Filter SaaS retry duration.
 		 *
 		 * @param int $duration Duration between each retry in seconds.
 		 */
-		$rucss_retry_duration = (int) apply_filters( 'rocket_rucss_retry_duration', $rucss_retry_duration );
-		if ( $rucss_retry_duration < 0 ) {
-			$rucss_retry_duration = $this->default_waiting_retry;
+		$saas_retry_duration = (int) rocket_deprecate_filter( 
+			'rocket_rucss_retry_duration',
+			[ $saas_retry_duration ],
+			'3.16',
+			'rocket_saas_retry_duration'
+		);
+		if ( $saas_retry_duration < 0 ) {
+			$saas_retry_duration = $this->default_waiting_retry;
 		}
 
 		// update the `next_retry_time` column.
-		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $rucss_retry_duration;
+		$next_retry_time = $this->clock->current_time( 'timestamp', true ) + $saas_retry_duration;
 
 		$this->manager->update_message( $row_details->url, $row_details->is_mobile, $job_details['code'], $job_details['message'], $row_details->error_message );
 		$this->manager->update_next_retry_time( $row_details->url, $row_details->is_mobile, $next_retry_time );

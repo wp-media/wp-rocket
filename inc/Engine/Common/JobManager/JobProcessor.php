@@ -113,7 +113,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $rows Number of rows to grab with each CRON iteration.
 		 */
-		$rows = apply_filters( 'rocket_saas_pending_jobs_cron_rows_count', 100 );
+		$rows = rocket_deprecate_filter( 
+			'rocket_rucss_pending_jobs_cron_rows_count',
+			[ 100 ],
+			'3.16',
+			'rocket_saas_pending_jobs_cron_rows_count'
+		);
 
 		$pending_jobs = $this->get_jobs( $rows, 'pending' );
 
@@ -182,7 +187,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 * @param string $url Optimized Url.
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
-		do_action( 'rocket_saas_complete_job_status', $row_details->url, $job_details );
+		rocket_deprecate_action( 
+			'rocket_rucss_complete_job_status',
+			[ $row_details->url, $job_details ],
+			'3.16',
+			'rocket_saas_complete_job_status'
+		);
 	}
 
 	/**
@@ -203,15 +213,26 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $count Number of rows.
 		 */
-		$pending_job = (int) apply_filters( 'rocket_saas_pending_jobs_cron_rows_count', 100 );
+		$pending_job = rocket_deprecate_filter( 
+			'rocket_rucss_pending_jobs_cron_rows_count',
+			[ 100 ],
+			'3.16',
+			'rocket_saas_pending_jobs_cron_rows_count'
+		);
 
 		/**
 		 * Maximum processing rows.
 		 *
 		 * @param int $max Max processing rows.
 		 */
-		$max_pending_rows = (int) apply_filters( 'rocket_saas_max_pending_jobs', 3 * $pending_job, $pending_job );
-		$rows             = $this->get_jobs( $max_pending_rows, 'submit' );
+		$max_pending_rows = (int) rocket_deprecate_filter( 
+			'rocket_rucss_max_pending_jobs',
+			[ 3 * $pending_job, $pending_job ],
+			'3.16',
+			'rocket_saas_max_pending_jobs'
+		);
+
+		$rows = $this->get_jobs( $max_pending_rows, 'submit' );
 
 		if ( ! $rows ) {
 			return;
@@ -321,7 +342,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $delay delay before failed saas jobs are deleted.
 		 */
-		$delay = (string) apply_filters( 'rocket_delay_remove_saas_failed_jobs', '3 days' );
+		$delay = (string) rocket_deprecate_filter( 
+			'rocket_delay_remove_rucss_failed_jobs',
+			[ '3 days' ],
+			'3.16',
+			'rocket_delay_remove_saas_failed_jobs'
+		);
 
 		if ( '' === $delay || '0' === $delay ) {
 			$delay = '3 days';
@@ -368,7 +394,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 * @param string  $home_url home url.
 		 * @param string  $url url of current page.
 		 */
-		$home_url = apply_filters( 'rocket_saas_is_home_url', home_url(), $url );
+		$home_url = rocket_deprecate_filter( 
+			'rocket_rucss_is_home_url',
+			[ home_url(), $url ],
+			'3.16',
+			'rocket_saas_is_home_url'
+		);
 		return untrailingslashit( $url ) === untrailingslashit( $home_url );
 	}
 
