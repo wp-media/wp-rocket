@@ -276,7 +276,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_url( string $url ) {
-
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
 		$this->clear_cache->partial_clean( [ $url ] );
 	}
 
@@ -300,6 +302,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_partial_cache( $object, array $urls, $lang ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
+		if ( ! $this->options->get( 'manual_preload', false ) ) {
+			return;
+		}
+
 		// Add Homepage URL to $purge_urls for preload.
 		$urls[] = get_rocket_i18n_home_url( $lang );
 
@@ -314,6 +320,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_urls( array $urls ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
 
 		$this->clear_cache->partial_clean( $urls );
 	}
@@ -469,7 +478,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_private_post( string $new_status, string $old_status, $post ) {
-
 		if ( $new_status === $old_status ) {
 			return;
 		}
