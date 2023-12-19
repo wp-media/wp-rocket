@@ -569,14 +569,14 @@ function rocket_get_license_type( $customer_data ) {
  * @param array  $args        Array of additional function arguments to be passed.
  * @param string $version     The version of WPR that deprecated the hook.
  * @param string $new_hook    The hook that should have been used.
- * 
+ *
  * @return mixed The filtered value after all hooked functions are applied to it.
  */
 function rocket_deprecate_filter( string $old_hook, array $args, string $version, string $new_hook ) {
 	$filtered_value = apply_filters_deprecated( $old_hook, $args, $version, $new_hook );
-	$args[ 0 ] = $filtered_value;
+	$args[0]        = $filtered_value;
 
-	return apply_filters_ref_array( $new_hook, $args );
+	return apply_filters_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 
 /**
@@ -586,10 +586,10 @@ function rocket_deprecate_filter( string $old_hook, array $args, string $version
  * @param array  $args        Array of additional function arguments to be passed.
  * @param string $version     The version of WPR that deprecated the hook.
  * @param string $new_hook    The hook that should have been used.
- * 
+ *
  * @return void
  */
 function rocket_deprecate_action( string $old_hook, array $args, string $version, string $new_hook ): void {
 	do_action_deprecated( $old_hook, $args, $version, $new_hook );
-	do_action_ref_array( $new_hook, $args );
+	do_action_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }

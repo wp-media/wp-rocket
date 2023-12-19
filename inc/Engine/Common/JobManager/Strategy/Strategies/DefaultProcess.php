@@ -60,7 +60,7 @@ class DefaultProcess implements StrategyInterface {
 		 *
 		 * @param array $time_table_entry contains the number of retry and how long we have to wait.
 		 */
-		$time_table_retry = rocket_deprecate_filter( 
+		$time_table_retry = rocket_deprecate_filter(
 			'rocket_rucss_retry_table',
 			[ $this->time_table_retry ],
 			'3.16',
@@ -104,7 +104,7 @@ class DefaultProcess implements StrategyInterface {
 		 *
 		 * @param int $duration Duration between each retry in seconds.
 		 */
-		$saas_retry_duration = (int) rocket_deprecate_filter( 
+		$saas_retry_duration = (int) rocket_deprecate_filter(
 			'rocket_rucss_retry_duration',
 			[ $saas_retry_duration ],
 			'3.16',
