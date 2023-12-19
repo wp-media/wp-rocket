@@ -19,7 +19,7 @@ class ContactForm7 implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'template_redirect' => [ 'maybe_optimize_contact_form_7' ],
+			'template_redirect' => 'maybe_optimize_contact_form_7',
 		];
 	}
 
@@ -48,6 +48,10 @@ class ContactForm7 implements Subscriber_Interface {
 		if ( did_action( 'wpcf7_enqueue_scripts' ) ) { // Prevent double-enqueueing when multiple forms present.
 			return;
 		}
+		if ( did_action( 'wp_enqueue_scripts' ) ) {
+			wpcf7_enqueue_scripts();
+			return;
+		}
 		add_filter( 'wpcf7_load_js', '__return_true', 11 );
 	}
 
@@ -58,6 +62,10 @@ class ContactForm7 implements Subscriber_Interface {
 		if ( did_action( 'wpcf7_enqueue_styles' ) ) { // Prevent double-enqueueing when multiple forms present.
 			return;
 		}
-		add_filter( 'wpcf7_load_css', '__return_true' );
+		if ( did_action( 'wp_enqueue_scripts' ) ) {
+			wpcf7_enqueue_styles();
+			return;
+		}
+		add_filter( 'wpcf7_load_css', '__return_true', 11 );
 	}
 }
