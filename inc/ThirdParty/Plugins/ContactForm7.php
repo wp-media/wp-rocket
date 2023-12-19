@@ -19,7 +19,7 @@ class ContactForm7 implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'template_redirect' => [ 'maybe_optimize_contact_form_7', 10 ],
+			'template_redirect' => [ 'maybe_optimize_contact_form_7' ],
 		];
 	}
 
@@ -33,8 +33,8 @@ class ContactForm7 implements Subscriber_Interface {
 		}
 
 		// Force scripts and styles to not load by default.
-		add_filter( 'wpcf7_load_js', '__return_false', PHP_INT_MAX );
-		add_filter( 'wpcf7_load_css', '__return_false', PHP_INT_MAX );
+		add_filter( 'wpcf7_load_js', '__return_false' );
+		add_filter( 'wpcf7_load_css', '__return_false' );
 
 		// Conditionally enqueue scripts.
 		add_action( 'wpcf7_shortcode_callback', [ $this, 'conditionally_enqueue_scripts' ] );
@@ -45,17 +45,19 @@ class ContactForm7 implements Subscriber_Interface {
 	 * Enqueue scripts if not already enqueued.
 	 */
 	public function conditionally_enqueue_scripts() {
-		if ( ! did_action( 'wpcf7_enqueue_scripts' ) ) { // Prevent double-enqueueing when multiple forms present.
-			wpcf7_enqueue_scripts();
+		if ( did_action( 'wpcf7_enqueue_scripts' ) ) { // Prevent double-enqueueing when multiple forms present.
+			return;
 		}
+		add_filter( 'wpcf7_load_js', '__return_true', 11 );
 	}
 
 	/**
 	 * Enqueue styles if not already enqueued.
 	 */
 	public function conditionally_enqueue_styles() {
-		if ( ! did_action( 'wpcf7_enqueue_styles' ) ) { // Prevent double-enqueueing when multiple forms present.
-			wpcf7_enqueue_styles();
+		if ( did_action( 'wpcf7_enqueue_styles' ) ) { // Prevent double-enqueueing when multiple forms present.
+			return;
 		}
+		add_filter( 'wpcf7_load_css', '__return_true' );
 	}
 }
