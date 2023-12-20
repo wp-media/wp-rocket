@@ -107,7 +107,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_filesystem' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
 
 		$this->getContainer()->share( 'rucss_option_subscriber', OptionSubscriber::class )

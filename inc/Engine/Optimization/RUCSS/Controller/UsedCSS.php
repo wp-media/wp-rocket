@@ -86,7 +86,6 @@ class UsedCSS {
 	 * @param DataManager      $data_manager DataManager instance.
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
-	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
 	 * @param ManagerInterface $manager RUCSS manager.
 	 */
 	public function __construct(
@@ -95,16 +94,14 @@ class UsedCSS {
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ContextInterface $optimize_url_context,
 		ManagerInterface $manager
 	) {
-		$this->options              = $options;
-		$this->used_css_query       = $used_css_query;
-		$this->data_manager         = $data_manager;
-		$this->filesystem           = $filesystem;
-		$this->context              = $context;
-		$this->optimize_url_context = $optimize_url_context;
-		$this->manager              = $manager;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->data_manager   = $data_manager;
+		$this->filesystem     = $filesystem;
+		$this->context        = $context;
+		$this->manager        = $manager;
 	}
 
 	/**
