@@ -112,6 +112,10 @@ class AdminBar extends Abstract_Render {
 			return;
 		}
 
+		if ( ! rocket_can_display_options() ) {
+			return;
+		}
+
 		if ( ! $this->atf_context->is_allowed()
 			&&
 			! $this->rucss_url_context->is_allowed()
