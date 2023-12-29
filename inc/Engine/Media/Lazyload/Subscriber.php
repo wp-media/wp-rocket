@@ -431,7 +431,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return bool
 	 */
-	public function maybe_disable_core_lazyload( $value, $tag_name ) {
+	public function maybe_disable_core_lazyload( $value, $tag_name = 'img' ) {
 		if ( false === $value ) {
 			return $value;
 		}
