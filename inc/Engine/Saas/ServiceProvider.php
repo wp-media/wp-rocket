@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_optimize_context' ) )
-			->addArgument( $this->getContainer()->get( 'template_path' ) );
+			->addArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
 		$this->getContainer()->add( 'sass_clean', Clean::class );
 		$this->getContainer()->add( 'sass_notices', Notices::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )

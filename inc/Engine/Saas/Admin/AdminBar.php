@@ -191,10 +191,11 @@ class AdminBar extends Abstract_Render {
 		}
 
 		$data = [
-			'title' => $title,
-			'label' => $label,
+			'action' => 'rocket_clean_saas',
+			'title'  => $title,
+			'label'  => $label,
 		];
 
-		echo $this->generate( 'settings/sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
