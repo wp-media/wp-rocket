@@ -5,8 +5,9 @@
  * @data array {
  *     Data to populate the template.
  *
- *     @type string $title      Section title.
- *     @type string $label      Button label.
+ *     @type string $action Link action.
+ *     @type string $title  Section title.
+ *     @type string $label  Button label.
  * }
  */
 
@@ -17,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php
 	$this->render_action_button(
 			'link',
-			'rocket_clear_usedcss',
+			$data['action'],
 			[
 				'label'      => $data['label'],
 				'attributes' => [
