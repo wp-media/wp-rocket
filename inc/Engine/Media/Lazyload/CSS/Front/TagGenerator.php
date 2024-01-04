@@ -28,7 +28,7 @@ class TagGenerator {
 		foreach ( $loaded as $item ) {
 			$loaded_content .= $item['style'];
 		}
-		$loaded_tag = "<div id=\"wpr-lazyload-bg\"></div><style id=\"wpr-lazyload-bg-exclusion\">$loaded_content</style>";
+		$loaded_tag = "<style id=\"wpr-lazyload-bg-container\"></style><style id=\"wpr-lazyload-bg-exclusion\">$loaded_content</style>";
 
 		$nostyle_content = '';
 		foreach ( $mapping as $item ) {

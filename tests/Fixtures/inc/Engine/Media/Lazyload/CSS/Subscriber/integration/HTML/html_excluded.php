@@ -37,8 +37,8 @@
 }
 
 </style> -->
-	<div id="wpr-lazyload-bg">
-	</div>
+	<style id="wpr-lazyload-bg-container">
+	</style>
 	<style id="wpr-lazyload-bg-exclusion">
 		.external-css-background-images{--wpr-bg-15ef8: url('http://example.org/wp-content/rocket-test-data/images/test.png');}.external-css-background-images{--wpr-bg-25ef18: url('http://example.org/wp-content/rocket-test-data/images/paper.jpeg');}.external-css-background-images{--wpr-bg-19ef12: url('https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/./wp-content/rocket-test-data/images/test.png');}</style>
 	<noscript>
