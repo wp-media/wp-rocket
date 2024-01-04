@@ -66,7 +66,7 @@ class Controller {
 			return;
 		}
 
-		$this->table->truncate();
+		$this->table->truncate_atf_table();
 	}
 
 	/**
