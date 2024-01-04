@@ -113,11 +113,15 @@ class AdminBar extends Abstract_Render {
 		}
 
 		if (
-			! $post
-			||
-			'post.php' !== $pagenow
-			||
-			! isset( $_GET['action'], $_GET['post'] )  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			is_admin()
+			&&
+			(
+				! $post
+				||
+				'post.php' !== $pagenow
+				||
+				! isset( $_GET['action'], $_GET['post'] )  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			)
 		) {
 			return;
 		}
