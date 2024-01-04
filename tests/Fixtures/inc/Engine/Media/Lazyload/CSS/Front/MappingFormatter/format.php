@@ -18,13 +18,15 @@ return [
         'expected' => [
 			[
 				'selector' => '#first_id',
-        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+        		'style' => '#first_id{--wpr-bg-a122ad12df3: url(\'http://example.org\');}',
 				'hash' => 'a122ad12df3',
+				'url' => 'http://example.org',
 			],
 			[
 				'selector' => '#second_id',
-        		'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+        		'style' => '#second_id{--wpr-bg-a122ad12df2: url(\'http://example.org/test\');}',
 				'hash' => 'a122ad12df2',
+				'url' => 'http://example.org/test',
 			]
         ]
     ],
@@ -116,83 +118,99 @@ return [
 		'expected' => [
 			[
 				'selector' => '#first_id',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org;}',
+				'style' => '#first_id::before{--wpr-bg-a122ad12df3: url(\'http://example.org\');}',
 				'hash' => 'a122ad12df3',
+				'url' => 'http://example.org',
 			],
 			[
 				'selector' => '#second_id, #test',
-				'style' => ':root{--wpr-bg-a122ad12df2: http://example.org/test;}',
+				'style' => '#second_id::after, #test{--wpr-bg-a122ad12df2: url(\'http://example.org/test\');}',
 				'hash' => 'a122ad12df2',
+				'url' => 'http://example.org/test',
 			],
 			[
 				'selector' => 'body',
-				'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+				'style' => '::after{--wpr-bg-a122ad12df3: url(\'http://example.org/test\');}',
 				'hash' => 'a122ad12df3',
+				'url' => 'http://example.org/test',
 			],
 			[
 				'selector' => 'body',
-        		'style' => ':root{--wpr-bg-a122ad12df3: http://example.org/test;}',
+        		'style' => '::after{--wpr-bg-a122ad12df3: url(\'http://example.org/test\');}',
 				'hash' => 'a122ad12df3',
+				'url' => 'http://example.org/test',
 			],
 			[
 				'selector' => 'dd:nth-last-of-type(3n)',
-				'style' => ':root{--wpr-bg-a21ss2: images/underline.png;}',
+				'style' => 'dd:nth-last-of-type(3n){--wpr-bg-a21ss2: url(\'images/underline.png\');}',
 				'hash' => 'a21ss2',
+				'url' => 'images/underline.png',
 			],
 			[
 				'selector' => '.background-image~*',
-				'style' => ':root{--wpr-bg-a21ss4: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.background-image~:after{--wpr-bg-a21ss4: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss4',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss8: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.background-image>:before,.background-image>:after{--wpr-bg-a21ss8: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss8',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.background-image>::before,.background-image>::after{--wpr-bg-a21ss18: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss18',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.background-image>*',
-				'style' => ':root{--wpr-bg-a21ss18: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.background-image>::before{--wpr-bg-a21ss18: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss18',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.background-image',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.background-image::first-letter{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.subscribe:active{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.subscribe:focus{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.subscribe:hover{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => 'a',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => 'a:visited{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg'
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.subscribe:focus-within{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 			[
 				'selector' => '.subscribe',
-				'style' => ':root{--wpr-bg-a21ss25: images/maxime-lebrun-6g3Akg708E0-unsplash.jpg;}',
+				'style' => '.subscribe:focus-visible{--wpr-bg-a21ss25: url(\'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg\');}',
 				'hash' => 'a21ss25',
+				'url' => 'images/maxime-lebrun-6g3Akg708E0-unsplash.jpg',
 			],
 		]
 	],
