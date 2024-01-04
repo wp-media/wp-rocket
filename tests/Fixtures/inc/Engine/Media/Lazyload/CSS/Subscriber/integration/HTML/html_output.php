@@ -38,8 +38,8 @@
 }
 
 </style> -->
-	<div id="wpr-lazyload-bg">
-	</div>
+	<style id="wpr-lazyload-bg-container">
+	</style>
 	<style id="wpr-lazyload-bg-exclusion">
 	</style>
 	<noscript>
