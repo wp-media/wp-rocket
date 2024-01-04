@@ -3,7 +3,7 @@ function rocket_css_lazyload_launch() {
 	const usable_pairs = typeof rocket_pairs === 'undefined' ? [] : rocket_pairs;
 
 
-	const styleElement = document.querySelector('#wpr-lazyload-bg');
+	const styleElement = document.querySelector('#wpr-lazyload-bg-container');
 
 	const threshold = rocket_lazyload_css_data.threshold || 300;
 
