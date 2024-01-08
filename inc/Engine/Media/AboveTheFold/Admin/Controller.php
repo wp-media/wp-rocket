@@ -114,23 +114,18 @@ class Controller {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
+	 * @param array $clean An array containing the status and message.
+	 *
 	 * @return array
 	 */
-	public function truncate() {
+	public function truncate( $clean ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $clean;
+		}
+
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return [
 				'status' => 'die',
-			];
-		}
-
-		if ( ! $this->context->is_allowed() ) {
-			return [
-				'status'  => 'error',
-				'message' => sprintf(
-					// translators: %1$s = plugin name.
-					__( '%1$s: Critical images optimization is not enabled!', 'rocket' ),
-					'<strong>WP Rocket</strong>'
-				),
 			];
 		}
 

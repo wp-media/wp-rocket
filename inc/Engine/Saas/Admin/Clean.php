@@ -21,7 +21,7 @@ class Clean {
 		 *
 		 * @since 3.16
 		 *
-		 * @param array An array containing the status and message.
+		 * @param array $clean An array containing the status and message.
 		 */
 		$clean = apply_filters( 'rocket_saas_clean_all', [] );
 
