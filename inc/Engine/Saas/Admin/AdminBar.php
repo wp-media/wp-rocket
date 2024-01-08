@@ -108,10 +108,6 @@ class AdminBar extends Abstract_Render {
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		global $pagenow, $post;
 
-		if ( 'local' === wp_get_environment_type() ) {
-			return;
-		}
-
 		if (
 			is_admin()
 			&&
@@ -122,6 +118,14 @@ class AdminBar extends Abstract_Render {
 				||
 				! isset( $_GET['action'], $_GET['post'] )  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			)
+		) {
+			return;
+		}
+
+		if (
+			$post
+			&&
+			! rocket_can_display_options()
 		) {
 			return;
 		}
