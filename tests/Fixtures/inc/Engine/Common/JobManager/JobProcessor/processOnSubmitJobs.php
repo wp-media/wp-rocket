@@ -3,7 +3,8 @@ return [
 	'disabledShouldBailOut' => [
 		'config' => [
 			'home_url' => 'http://example.org',
-			'rucss_enabled' => false,
+			'is_allowed' => false,
+			'optimization_type' => 'rucss',
 			'pending_count' => 100,
 			'max_processing' => 300,
 			'rows' => [
@@ -12,11 +13,6 @@ return [
 					'url' => 'http://example.org',
 					'is_mobile' => false,
 				],
-				(object) [
-					'id' => 2,
-					'url' => 'http://example.org/2',
-					'is_mobile' => false,
-				]
 			],
 			'add_to_queue' => [
 				[
@@ -24,9 +20,14 @@ return [
 					'configs' => [
 						'treeshake'      => 1,
 						'rucss_safelist' => [],
-						'skip_attr'      => [],
+						'skip_attr'      => [], 
 						'is_mobile'      => false,
 						'is_home'        => true,
+						'optimization_list' => [
+							'rucss',
+							'lcp',
+							'above_fold',
+						],
 					],
 					'response' => [
 						'code' => 200,
@@ -37,24 +38,10 @@ return [
 						]
 					]
 				],
-				[
-					'url' => 'http://example.org/2',
-					'configs' => [
-						'treeshake'      => 1,
-						'rucss_safelist' => [],
-						'skip_attr'      => [],
-						'is_mobile'      => false,
-						'is_home'        => false,
-					],
-					'response' => [
-						'code' => 400,
-						'message' => 'message',
-					]
-				]
 			],
 			'make_status_pending' => [
 				[
-					'id' => 1,
+					'url' => 'http://example.org',
 					'jobId' => 'jobId',
 					'queueName' => 'queueName',
 					'mobile' => false,
@@ -69,7 +56,8 @@ return [
     'shouldPassPending' => [
         'config' => [
 			'home_url' => 'http://example.org',
-			'rucss_enabled' => true,
+			'is_allowed' => true,
+			'optimization_type' => 'rucss',
 			'pending_count' => 100,
 			'max_processing' => 300,
 			'rows' => [
@@ -78,11 +66,6 @@ return [
 					'url' => 'http://example.org',
 					'is_mobile' => false,
 				],
-				(object) [
-					'id' => 2,
-					'url' => 'http://example.org/2',
-					'is_mobile' => false,
-				]
 			],
 			'add_to_queue' => [
 				[
@@ -93,6 +76,11 @@ return [
 						'skip_attr'      => [],
 						'is_mobile'      => false,
 						'is_home'        => true,
+						'optimization_list' => [
+							'rucss',
+							'lcp',
+							'above_fold',
+						],
 					],
 					'response' => [
 						'code' => 200,
@@ -103,24 +91,10 @@ return [
 						]
 					]
 				],
-				[
-					'url' => 'http://example.org/2',
-					'configs' => [
-						'treeshake'      => 1,
-						'rucss_safelist' => [],
-						'skip_attr'      => [],
-						'is_mobile'      => false,
-						'is_home'        => false,
-					],
-					'response' => [
-						'code' => 400,
-						'message' => 'message',
-					]
-				]
 			],
 			'make_status_pending' => [
 				[
-					'id' => 1,
+					'url' => 'http://example.org',
 					'jobId' => 'jobId',
 					'queueName' => 'queueName',
 					'mobile' => false,
@@ -136,7 +110,8 @@ return [
 	'shouldFailWhenNot200' => [
 		'config' => [
 			'home_url' => 'http://example.org',
-			'rucss_enabled' => true,
+			'is_allowed' => true,
+			'optimization_type' => 'rucss',
 			'pending_count' => 100,
 			'max_processing' => 300,
 			'rows' => [
@@ -155,6 +130,11 @@ return [
 						'skip_attr'      => [],
 						'is_mobile'      => false,
 						'is_home'        => true,
+						'optimization_list' => [
+							'rucss',
+							'lcp',
+							'above_fold',
+						],
 					],
 					'response' => [
 						'code' => 401,
@@ -171,9 +151,19 @@ return [
 			],
 			'make_status_failed' => [
 				[
-					'id' => 1,
+					'url' => 'http://example.org',
+					'is_mobile' => false,
 					'code' => '',
 					'message' => '',
+				]
+			],
+			'logger' => [
+				'message' => 'Error when contacting the SaaS API.',
+				'details' => [
+					'SaaS error',
+					'url'     => 'http://example.org',
+					'code'    => 401,
+					'message' => 'message',
 				]
 			]
 		],

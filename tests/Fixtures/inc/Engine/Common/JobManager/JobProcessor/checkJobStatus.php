@@ -1,9 +1,8 @@
 <?php
 
 return [
-	'expectStatusCompleted' => [
+	'expectStatusCompletedRUCSS' => [
 		'config'   => [
-			'job_id'                => 1,
 			'row_details'           => [
 				'job_id'     => 1,
 				'url'        => 'http://example.com',
@@ -11,23 +10,19 @@ return [
 				'is_home'    => 1,
 				'is_mobile'  => 0,
 				'retries'    => 0,
+				'css'		 => '',
 			],
 			'job_details'           => [
 				'code'     => 200,
-				'contents' => [
-					'shakedCSS' => '.test{color:red}.test_1{color:blue}.test_2{color:black}.test_3{color:red}.test_4{color:blue}.test_5{color:black}.test_6{color:black}.test_7{color:red}.test_8{color:blue}.test_9{color:black}',
-					'shakedCSS_size' => '150'
-				],
+				'contents' => [],
 				'is_home'  => 1,
 			],
-			'is_used_css_file_written'       => 1
+			'optimization_type' => 'rucss',
 		],
 		'expected' => '',
-
 	],
-	'expectStatusFaildMinCSS_Size' => [
+	'expectStatusCompletedATF' => [
 		'config'   => [
-			'job_id'                => 1,
 			'row_details'           => [
 				'job_id'     => 1,
 				'url'        => 'http://example.com',
@@ -35,22 +30,19 @@ return [
 				'is_home'    => 1,
 				'is_mobile'  => 0,
 				'retries'    => 0,
+				'lcp'		 => '',
 			],
 			'job_details'           => [
 				'code'     => 200,
-				'contents' => [
-					'shakedCSS' => '.test{color:red}',
-					'shakedCSS_size' => '16'
-				],
+				'contents' => [],
 				'is_home'  => 1,
 			],
+			'optimization_type' => 'atf',
 		],
 		'expected' => '',
-
 	],
 	'expectStatusFailedNoRetries' => [
 		'config'   => [
-			'job_id'                => 1,
 			'row_details'           => [
 				'job_id'     => 1,
 				'url'        => 'http://example.com',
@@ -63,13 +55,12 @@ return [
 				'code'     => 500,
 				'message' => 'ERROR'
 			],
+			'optimization_type' => 'all',
 		],
 		'expected' => '',
-
 	],
 	'expectStatusFailedWithRetries' => [
 		'config'   => [
-			'job_id'                => 1,
 			'row_details'           => [
 				'job_id'     => 1,
 				'url'        => 'http://example.com',
@@ -82,13 +73,12 @@ return [
 				'code'     => 500,
 				'message' => 'ERROR'
 			],
+			'optimization_type' => 'all',
 		],
 		'expected' => '',
-
 	],
 	'expectStatusTimeoutWithRetries' => [
 		'config'   => [
-			'job_id'                => 1,
 			'row_details'           => [
 				'job_id'     => 1,
 				'url'        => 'http://example.com',
@@ -101,8 +91,8 @@ return [
 				'code'     => 408,
 				'message' => 'timeout'
 			],
+			'optimization_type' => 'all',
 		],
 		'expected' => '',
-
 	],
 ];

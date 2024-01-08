@@ -31,6 +31,7 @@ return [
 				'has_delay' => true,
 				'delay' => 1,
 				'deletion_activated' => true,
+				'is_allowed' => true,
 			]
 		],
 		'shouldNotDeleteOnDisabled' => [
@@ -39,7 +40,17 @@ return [
 				'has_delay' => true,
 				'delay' => 0,
 				'deletion_activated' => false,
+				'is_allowed' => true,
 			]
-		]
+		],
+		'shouldNotDeleteIfNotAllowed' => [
+			'input' => [
+				'used_css' => $used_css,
+				'has_delay' => true,
+				'delay' => 1,
+				'deletion_activated' => true,
+				'is_allowed' => false,
+			]
+		],
 	],
 ];

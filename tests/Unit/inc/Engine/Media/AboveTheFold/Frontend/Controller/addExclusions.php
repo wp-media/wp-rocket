@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::add_exclusions
@@ -28,8 +29,9 @@ class Test_addExclusions extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
 		$this->context = Mockery::mock( Context::class );
+		$manager = Mockery::mock( Manager::class );
 
-		$this->controller = new Controller( $this->options, $this->query, $this->context );
+		$this->controller = new Controller( $this->options, $this->query, $this->context, $manager );
 	}
 
 	protected function tearDown(): void {
@@ -51,6 +53,11 @@ class Test_addExclusions extends TestCase {
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'add_query_arg' )->returnArg( 2 );
+		Functions\when('wp_parse_url')->alias(function($value) {
+			return [
+				'path' => $value,
+			];
+		});
 
 		$this->query->method( 'get_row' )
 			->with( $config['url'], $config['is_mobile'] )

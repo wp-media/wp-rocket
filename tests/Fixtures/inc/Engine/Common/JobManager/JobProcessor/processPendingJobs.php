@@ -32,6 +32,7 @@ return [
 					'id' => 10,
 					'url' => 'http://example.org',
 					'next_retry_time' => '2023-11-22 02:00:00',
+					'is_mobile' => false,
 				]
 			]
 		],

@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::lcp
@@ -21,6 +22,7 @@ class Test_lcp extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
+	private $manager;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -28,8 +30,9 @@ class Test_lcp extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
 		$this->context = Mockery::mock( Context::class );
+		$this->manager = Mockery::mock( Manager::class );
 
-		$this->controller = new Controller( $this->options, $this->query, $this->context );
+		$this->controller = new Controller( $this->options, $this->query, $this->context, $this->manager );
 	}
 
 	protected function tearDown(): void {
@@ -55,6 +58,9 @@ class Test_lcp extends TestCase {
 		$this->query->method( 'get_row' )
 			->with( $config['url'], $config['is_mobile'] )
 			->willReturn( $config['row'] );
+		
+		$this->manager->shouldReceive( 'add_url_to_the_queue' )
+			->withArgs([$config['url'], $config['is_mobile']]);
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cache_mobile', 0 )

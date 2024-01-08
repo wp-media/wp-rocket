@@ -58,6 +58,7 @@ return [
 			'is_mobile'               => false,
 			'row'                     => (object) [
 				'viewport' => '',
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
@@ -78,6 +79,7 @@ return [
 				'lcp'      => json_encode( (object) [
 					'type' => 'img',
 					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
+					
 				] ),
 				'viewport' => json_encode( [
 					0 => (object) [
@@ -85,6 +87,7 @@ return [
 						'src'  => 'http://example.org/wp-content/uploads/image.jpg',
 					],
 				] ),
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
@@ -109,6 +112,7 @@ return [
 					'sizes' => '50vw',
 				] ),
 				'viewport' => json_encode( [] ),
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
@@ -137,6 +141,7 @@ return [
 					],
 				] ),
 				'viewport' => json_encode( [] ),
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
@@ -163,6 +168,7 @@ return [
 					],
 				] ),
 				'viewport' => json_encode( [] ),
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
@@ -192,6 +198,7 @@ return [
 					],
 				] ),
 				'viewport' => json_encode( [] ),
+				'status' => 'completed'
 			],
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,

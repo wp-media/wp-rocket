@@ -25,6 +25,7 @@ return [
 				'retries'		=> 0,
 				'url'	=> 'https://example.org/page',
 				'error_message' => '',
+				'is_mobile' => false,
 			],
 			'time_table' => $time_table,
 			'duration_retry' => 180
@@ -52,7 +53,8 @@ return [
 				'status' 		 => 'in-progress',
 				'url'	=> 'https://example.org/page',
 				'error_message' => '',
-				'retries' => 10
+				'retries' => 10,
+				'is_mobile' => false,
 			],
 			'duration_retry' => 180,
 			'time_table' => $time_table,

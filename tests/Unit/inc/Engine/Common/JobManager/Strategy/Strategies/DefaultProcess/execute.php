@@ -5,29 +5,27 @@ use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Actions;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
-use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
+use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\DefaultProcess::execute
- *
- * @group  RUCSS
+ * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess::execute
  */
 class Test_DefaultProcess_Execute extends TestCase {
 	protected $used_css_query;
 	protected $wpr_clock;
+	protected $manager;
 
 	protected $strategy;
 
 	public function setUp():void {
 		parent::setUp();
-		$this->used_css_query = $this->createMock( UsedCSS_Query::class );
 		$this->wpr_clock = Mockery::mock(WPRClock::class);
+		$this->manager = Mockery::mock( Manager::class );
 
-		$this->strategy = new DefaultProcess($this->used_css_query, $this->wpr_clock);
-
-
+		$this->strategy = new DefaultProcess($this->manager, $this->wpr_clock);
 	}
 
 	public function tearDown(): void {
@@ -42,21 +40,26 @@ class Test_DefaultProcess_Execute extends TestCase {
 		if ( $config['row_details']->retries >= count( $config['time_table'] ) ) {
 			Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']->url);
 
+			$this->manager->shouldReceive( 'make_status_failed' )
+				->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
 
-			$this->used_css_query->expects(self::once())->method('make_status_failed')->with($config['row_details']->id, strval($config['job_details']['code']), $config['job_details']['message']);
 			$this->strategy->execute($config['row_details'], $config['job_details']);
 			return;
 		}
 
-		$this->used_css_query->expects(self::once())->method('increment_retries')->with( $config['row_details']->id, (int) $config['row_details']->retries);
+		$this->manager->shouldReceive( 'increment_retries' )
+			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
 
 		Filters\expectApplied('rocket_rucss_retry_duration')->andReturn($config['duration_retry']);
 
 		$this->wpr_clock->expects('current_time')->with('timestamp', true)->andReturn(0);
 		// update the `next_retry_time` column.
 
-		$this->used_css_query->expects(self::once())->method('update_message')->with($config['row_details']->id, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message);
-		$this->used_css_query->expects(self::once())->method('update_next_retry_time')->with($config['job_id'], $config['duration_retry']);
+		$this->manager->shouldReceive( 'update_message' )
+			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['job_details']['code'], $config['job_details']['message'], $config['row_details']->error_message]);
+		
+		$this->manager->shouldReceive( 'update_next_retry_time' )
+			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['duration_retry']]);
 
 		$this->strategy->execute($config['row_details'], $config['job_details']);
 		return;

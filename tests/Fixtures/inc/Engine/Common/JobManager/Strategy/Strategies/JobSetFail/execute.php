@@ -12,6 +12,8 @@ return [
 			'row_details' => [
 				'id' 			 => 1,
 				'status' 		 => 'in-progress',
+				'url' => 'https://example.org',
+				'is_mobile' => false,
 			],
 		],
 		'expected' => [],
@@ -27,6 +29,8 @@ return [
 			'row_details' => [
 				'id' 			 => 2,
 				'status' 		 => 'in-progress',
+				'url' => 'https://example.org',
+				'is_mobile' => false,
 			],
 		],
 		'expected' => []
@@ -42,6 +46,8 @@ return [
 			'row_details' => [
 				'id'			 => 3,
 				'status' 		 => 'in-progress',
+				'url' => 'https://example.org',
+				'is_mobile' => false,
 			]
 		],
 		'expected' => [],
