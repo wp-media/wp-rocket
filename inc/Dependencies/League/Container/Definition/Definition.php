@@ -186,7 +186,7 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(bool $new = false)
+    public function resolve(bool $new = false, bool $lazy = false)
     {
         $concrete = $this->concrete;
 
@@ -209,7 +209,7 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
         }
 
         if (is_string($concrete) && class_exists($concrete)) {
-            $concrete = $this->resolveClass($concrete);
+            $concrete = $this->resolveClass($concrete, $lazy);
         }
 
         if (is_object($concrete)) {
@@ -248,13 +248,38 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
      *
      * @throws ReflectionException
      */
-    protected function resolveClass(string $concrete)
+    protected function resolveClass(string $concrete, bool $lazy = false)
     {
+		//error_log($concrete);
         $resolved   = $this->resolveArguments($this->arguments);
-        $reflection = new ReflectionClass($concrete);
+		if ( ! $lazy ) {
+			return $this->createInstance($concrete, $resolved);
+		}
 
-        return $reflection->newInstanceArgs($resolved);
+		// for lazyload
+		return $this->createProxy( $concrete, $resolved );
     }
+
+	private function createInstance( $concrete, $resolved )
+	{
+		$reflection = new ReflectionClass($concrete);
+
+		return $reflection->newInstanceArgs($resolved);
+	}
+
+	private function createProxy( $concrete, $resolved )
+	{
+		$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
+		return $factory->createProxy(
+			$concrete,
+			function (& $wrappedObject, $proxy, $method, $params, & $initializer) use ($concrete, $resolved) {
+				$wrappedObject = $this->createInstance($concrete, $resolved);
+				$initializer = null; // turning off further lazy initialization
+
+				return true;
+			}
+	);
+	}
 
     /**
      * Invoke methods on resolved instance.

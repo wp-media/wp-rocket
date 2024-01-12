@@ -151,10 +151,11 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($id, bool $new = false)
+    public function get($id, bool $new = false, bool $lazy = false)
     {
+		//error_log( 'ASA Get: ' . $id );
         if ($this->definitions->has($id)) {
-            $resolved = $this->definitions->resolve($id, $new);
+            $resolved = $this->definitions->resolve($id, $new, $lazy);
             return $this->inflectors->inflect($resolved);
         }
 

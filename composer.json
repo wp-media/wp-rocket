@@ -49,6 +49,7 @@
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"friendsofphp/proxy-manager-lts": "^1.0",
 		"league/container": "^3.3",
 		"mikey179/vfsstream": "1.6.11",
 		"mnsami/composer-custom-directory-installer": "^2.0",
@@ -62,6 +63,7 @@
 		"woocommerce/action-scheduler": "^3.4",
 		"wp-coding-standards/wpcs": "^3",
 		"wp-media/background-processing": "^1.3",
+		"wp-media/monolog": "^0.0",
 		"wp-media/phpunit": "^3",
 		"wp-media/rocket-lazyload-common": "^3.0.11",
 		"wp-media/wp-imagify-partner": "^1.0",
@@ -72,8 +74,7 @@
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
 		"wpackagist-plugin/woocommerce": "^7",
-		"wpackagist-plugin/wp-smushit": "^3",
-		"wp-media/monolog": "^0.0"
+		"wpackagist-plugin/wp-smushit": "^3"
 	},
 	"autoload": {
 		"classmap": [

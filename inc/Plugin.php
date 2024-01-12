@@ -289,6 +289,7 @@ class Plugin {
 		$this->container->addServiceProvider( APIServiceProvider::class );
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
+		$this->container->addServiceProvider( \WP_Rocket\Engine\TestLazyload\ServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -382,6 +383,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'contactform7',
+			'test_lazyload_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
