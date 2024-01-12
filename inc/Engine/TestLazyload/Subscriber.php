@@ -13,11 +13,11 @@ class Subscriber implements Subscriber_Interface {
 
 	public static function get_subscribed_events() {
 		return [
-			'admin_init' => 'log_message',
+			'wp_dashboard_setup' => 'log_message_in_dashboard_only',
 		];
 	}
 
-	public function log_message()
+	public function log_message_in_dashboard_only()
 	{
 		$this->test_class->test1();
 	}
