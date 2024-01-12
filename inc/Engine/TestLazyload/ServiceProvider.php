@@ -27,7 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()
-			->share( 'test_lazyload_class', TestClass::class );
+			->add( 'test_lazyload_class', TestClass::class );
 
 		$this->getContainer()
 			->share( 'test_lazyload_subscriber', Subscriber::class )
