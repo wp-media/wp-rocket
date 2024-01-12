@@ -32,7 +32,5 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()
 			->share( 'test_lazyload_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'test_lazyload_class', true, true ) );
-
-
 	}
 }
