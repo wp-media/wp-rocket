@@ -250,23 +250,18 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
+	 * @param array $clean An array containing the status and message.
+	 *
 	 * @return array
 	 */
-	public function truncate() {
+	public function truncate( $clean ) {
+		if ( ! $this->settings->is_enabled() ) {
+			return $clean;
+		}
+
 		if ( ! current_user_can( 'rocket_remove_unused_css' ) ) {
 			return [
 				'status' => 'die',
-			];
-		}
-
-		if ( ! $this->settings->is_enabled() ) {
-			return [
-				'status'  => 'error',
-				'message' => sprintf(
-					// translators: %1$s = plugin name.
-					__( '%1$s: Used CSS option is not enabled!', 'rocket' ),
-					'<strong>WP Rocket</strong>'
-				),
 			];
 		}
 

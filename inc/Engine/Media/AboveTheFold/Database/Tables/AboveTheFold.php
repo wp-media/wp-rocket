@@ -67,10 +67,11 @@ class AboveTheFold extends AbstractTable {
 	 *
 	 * @return bool
 	 */
-	public function truncate(): bool {
+	public function truncate_atf_table(): bool {
 		if ( ! $this->exists() ) {
 			return false;
 		}
+
 		return $this->truncate();
 	}
 }

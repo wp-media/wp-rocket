@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Saas\Admin;
 
 use WP_Admin_Bar;
+use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 
-class AdminBar {
+class AdminBar extends Abstract_Render {
 	/**
 	 * Options data instance.
 	 *
@@ -35,8 +36,11 @@ class AdminBar {
 	 * @param Options_Data     $options Options data instance.
 	 * @param ContextInterface $atf_context ATF context.
 	 * @param ContextInterface $rucss_url_context RUCSS optimize url context.
+	 * @param string           $template_path Template path.
 	 */
-	public function __construct( Options_Data $options, ContextInterface $atf_context, ContextInterface $rucss_url_context ) {
+	public function __construct( Options_Data $options, ContextInterface $atf_context, ContextInterface $rucss_url_context, $template_path ) {
+		parent::__construct( $template_path );
+
 		$this->options           = $options;
 		$this->atf_context       = $atf_context;
 		$this->rucss_url_context = $rucss_url_context;
@@ -102,9 +106,31 @@ class AdminBar {
 	 * @return void
 	 */
 	public function add_clean_url_menu_item( WP_Admin_Bar $wp_admin_bar ) {
-		global $post;
+		global $pagenow, $post;
 
 		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
+		if (
+			is_admin()
+			&&
+			(
+				! $post
+				||
+				'post.php' !== $pagenow
+				||
+				! isset( $_GET['action'], $_GET['post'] )  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			)
+		) {
+			return;
+		}
+
+		if (
+			$post
+			&&
+			! rocket_can_display_options()
+		) {
 			return;
 		}
 
@@ -155,5 +181,39 @@ class AdminBar {
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			]
 		);
+	}
+
+	/**
+	 * Display the dashboard button to clean SaaS features
+	 *
+	 * @return void
+	 */
+	public function display_dashboard_button() {
+		if ( 'local' === wp_get_environment_type() ) {
+			return;
+		}
+
+		if ( ! $this->atf_context->is_allowed()
+			&&
+			! $this->rucss_url_context->is_allowed()
+		) {
+			return;
+		}
+
+		$title = __( 'Critical Images Cache', 'rocket' );
+		$label = esc_html__( 'Clean Critical Images', 'rocket' );
+
+		if ( $this->rucss_url_context->is_allowed() ) {
+			$title = __( 'Remove Used CSS Cache', 'rocket' );
+			$label = esc_html__( 'Clear Used CSS', 'rocket' );
+		}
+
+		$data = [
+			'action' => 'rocket_clean_saas',
+			'title'  => $title,
+			'label'  => $label,
+		];
+
+		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

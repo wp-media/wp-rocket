@@ -77,10 +77,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Deletes rows when triggering clean from admin
 	 *
+	 * @param array $clean An array containing the status and message.
+	 *
 	 * @return array
 	 */
-	public function truncate() {
-		return $this->controller->truncate();
+	public function truncate( $clean ) {
+		return $this->controller->truncate( $clean );
 	}
 
 	/**
