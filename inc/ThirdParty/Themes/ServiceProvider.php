@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use ProxyManager\Proxy\LazyLoadingInterface;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -45,12 +47,26 @@ class ServiceProvider extends AbstractServiceProvider {
 			->share( 'bridge_subscriber', Bridge::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
+
+		$factory   = new LazyLoadingValueHolderFactory();
+		$container = $this->getContainer();
+		$proxy     = $factory->createProxy(
+			Divi::class,
+			function ( &$wrapped_object, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer ) use ( $container ) {
+				$initializer    = null; // disable initialization.
+				$wrapped_object = new Divi(
+					$container->get( 'options_api' ),
+					$container->get( 'options' ),
+					$container->get( 'delay_js_html' ),
+					$container->get( 'rucss_used_css_controller' )
+				);
+
+				return true; // confirm that initialization occurred correctly.
+			}
+		);
+
 		$this->getContainer()
-			->share( 'divi', Divi::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
+			->share( 'divi', $proxy )
 			->addTag( 'common_subscriber' );
 		$this->getContainer()
 			->share( 'flatsome', Flatsome::class )
