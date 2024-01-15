@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
+use WP_Rocket\Logger\Logger;
 
 class PreloadUrl {
 	use CheckExcludedTrait;
@@ -181,9 +182,21 @@ class PreloadUrl {
 	 */
 	public function process_pending_jobs() {
 
-		$pending_actions = $this->queue->get_pending_preload_actions();
+		// Retrieve previous batch size information
+		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) );
+		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
-		$count = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+		$previous_batch_size = get_transient( 'rocket_preload_batch_size' );
+		if ( ! $previous_batch_size ){
+			$previous_batch_size = $max_batch_size;
+		}
+
+		$last_batch_size_with_failures = get_transient( 'rocket_preload_batch_size_with_failures' );
+		if ( ! $last_batch_size_with_failures ){
+			$last_batch_size_with_failures = $max_batch_size;
+		}
+
+		// Get all in-progress jobs with request sent and no results.
 		/**
 		 * Set the delay before an in-progress row is considered as outdated.
 		 *
@@ -198,11 +211,12 @@ class PreloadUrl {
 			 * @param int $count number of rows in batches.
 			 * @return int
 			 */
-			(int) ( $count / 15 )
+			0
 		);
-
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
+		// Make sure the request has been sent for those jobs
+		$pending_actions = $this->queue->get_pending_preload_actions();
 		$stuck_rows = array_filter(
 			$stuck_rows,
 			function ( $row ) use ( $pending_actions ) {
@@ -215,10 +229,36 @@ class PreloadUrl {
 			}
 			);
 
+		$n_failed_jobs = count( $stuck_rows );
+		
+		// Make those hanging jobs failed.
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
 		}
-		$rows = $this->query->get_pending_jobs( $count );
+
+		// Define the new batch size
+		if ( $n_failed_jobs > 0 ){ // Errors, reduce batch size
+			$next_batch_size = $previous_batch_size - $n_failed_jobs ;
+		}
+		else { // No errors, try to increase batch size
+			$next_batch_size =  ($previous_batch_size + $last_batch_size_with_failures ) / 2;
+		}
+
+		// Limit next_batch_size
+		$next_batch_size = min( $next_batch_size, $max_batch_size); //Not higher than 45
+		$next_batch_size = max( $next_batch_size, $min_batch_size); //Not lower than 5
+
+		// Save the new transients
+		if ( $n_failed_jobs > 0 ){ // Errors, keep track
+			set_transient( 'rocket_preload_batch_size_with_failures', $previous_batch_size, HOUR_IN_SECONDS );
+		}
+		set_transient( 'rocket_preload_batch_size', $next_batch_size, HOUR_IN_SECONDS );
+
+		// Apply a rate-limit at ActionScheduler level: no more than 45 pending actions.
+		$jobs_to_add = max( $next_batch_size - count( $pending_actions ), 0);
+
+		//Add new jobs in progress
+		$rows = $this->query->get_pending_jobs( $jobs_to_add );
 		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
@@ -230,6 +270,24 @@ class PreloadUrl {
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 
 		}
+
+		//Logs
+		$log_file = ABSPATH . "/MLT_preload_batch.log";
+		error_log( "Preload - process_pendings_jobs", 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "previous_batch_size = " . $previous_batch_size, 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "last_batch_size_with_failures = " . $last_batch_size_with_failures, 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "n_failed_jobs = " . $n_failed_jobs, 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "next_batch_size = " . $next_batch_size, 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "pending_actions = " . count( $pending_actions ), 3, $log_file );
+		error_log( '\n', 3, $log_file );
+		error_log( "jobs_to_add = " . $jobs_to_add, 3, $log_file );
+		error_log( '\n', 3, $log_file );
+
 	}
 
 	/**
