@@ -269,7 +269,18 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
 
 	private function createProxy( $concrete, $resolved )
 	{
-		$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
+		$config = new \ProxyManager\Configuration();
+
+		$cache_dir = __DIR__ . '/../Cache';
+
+		$fileLocator = new \ProxyManager\FileLocator\FileLocator( $cache_dir );
+		$config->setGeneratorStrategy(new \ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy($fileLocator));
+
+		$config->setProxiesTargetDir( $cache_dir );
+
+		spl_autoload_register($config->getProxyAutoloader());
+
+		$factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory($config);
 		return $factory->createProxy(
 			$concrete,
 			function (& $wrappedObject, $proxy, $method, $params, & $initializer) use ($concrete, $resolved) {
