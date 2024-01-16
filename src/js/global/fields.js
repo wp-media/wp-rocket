@@ -95,7 +95,7 @@ $(document).ready(function(){
 	 * maskField('creditCardInput');
 	 * // Result: Updates the input field value to '************3456'.
 	 */
-	function maskField(proxy_selector, concrete_selector){
+	function maskField(proxy_selector, concrete_selector) {
 		var concrete = {
 			'val': concrete_selector.val(),
 			'length': concrete_selector.val().length
@@ -112,12 +112,17 @@ $(document).ready(function(){
 			proxy_selector.val(maskedValue);
 		}
 
-		proxy_selector.on('input', function() {
-			concrete_selector.val(proxy_selector.val());
+		proxy_selector.on('input', function () {
+			var proxyValue = proxy_selector.val();
+
+			// Check if the proxy value contains '*' before updating the concrete field
+			if (proxyValue.indexOf('*') === -1) {
+				concrete_selector.val(proxyValue);
+			}
 		});
 	}
 
-	// Update the concrete field when the proxy is updated.
+		// Update the concrete field when the proxy is updated.
 
 
 	maskField($('#cloudflare_api_key_mask'), $('#cloudflare_api_key'));
