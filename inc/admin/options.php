@@ -93,7 +93,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	];
 
 	// unset the *_mask value as we don't need to save them.
-	unset($newvalue['cloudflare_api_key_mask'], $newvalue['cloudflare_zone_id_mask']);
+	unset( $newvalue['cloudflare_api_key_mask'], $newvalue['cloudflare_zone_id_mask'] );
 
 	foreach ( $pattern_labels as $pattern_field => $label ) {
 		if ( empty( $newvalue[ $pattern_field ] ) ) {

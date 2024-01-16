@@ -2032,7 +2032,7 @@ class Page {
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
-				'cloudflare_zone_id_mask'          => [
+				'cloudflare_zone_id_mask'     => [
 					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
 					'default'         => '',
 					'container_class' => [
