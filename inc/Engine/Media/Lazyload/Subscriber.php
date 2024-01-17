@@ -432,7 +432,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_core_lazyload( $value, $tag_name ) {
-		if ( false === $value ) {
+		if ( false === $value || rocket_bypass() ) {
 			return $value;
 		}
 
