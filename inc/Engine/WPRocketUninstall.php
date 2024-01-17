@@ -73,6 +73,20 @@ class WPRocketUninstall {
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
 		'rocket_divi_notice',
+		'rocket_rucss_processing',
+		'rocket_mod_pagespeed_enabled',
+		'wp_rocket_pricing',
+		'rocket_get_refreshed_fragments_cache',
+	];
+
+	/**
+	 * WP Rocket transients (with dynamic names).
+	 *
+	 * @var array
+	 */
+	private $dynamic_transients = [
+		'_cloudflare_update_settings',
+		'wpr_dashboard_seen_',
 	];
 
 	/**
@@ -204,6 +218,8 @@ class WPRocketUninstall {
 	 * @return void
 	 */
 	private function delete_plugin_data() {
+		global $wpdb;
+
 		delete_site_transient( 'wp_rocket_update_data' );
 
 		// Delete all user meta related to WP Rocket.
@@ -216,6 +232,12 @@ class WPRocketUninstall {
 
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->options, 'delete_option' );
+
+		foreach ( $this->dynamic_transients as $transient ) {
+			$wpdb->query(
+				$wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", '%' . $transient . '%' )
+			);
+		}
 
 		foreach ( $this->events as $event ) {
 			wp_clear_scheduled_hook( $event );
