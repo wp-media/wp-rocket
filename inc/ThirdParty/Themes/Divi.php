@@ -57,7 +57,7 @@ class Divi {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX ],
 			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 
@@ -106,12 +106,9 @@ class Divi {
 	 *
 	 * @since 3.6.3
 	 *
-	 * @param string   $name  Name of the new theme.
-	 * @param WP_Theme $theme instance of the new theme.
-	 *
 	 * @return void
 	 */
-	public function maybe_disable_youtube_preview( $name, $theme ) {
+	public function maybe_disable_youtube_preview() {
 		$this->options->set( 'lazyload_youtube', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
