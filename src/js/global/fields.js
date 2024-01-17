@@ -103,7 +103,7 @@ $(document).ready(function(){
 
 		if (concrete.length > 4) {
 
-			var hiddenPart = '*'.repeat(Math.max(0, concrete.length - 4));
+			var hiddenPart = '\u2022'.repeat(Math.max(0, concrete.length - 4));
 			var visiblePart = concrete.val.slice(-4);
 
 			// Combine the hidden and visible parts
@@ -116,7 +116,7 @@ $(document).ready(function(){
 			var proxyValue = proxy_selector.val();
 
 			// Check if the proxy value contains '*' before updating the concrete field
-			if (proxyValue.indexOf('*') === -1) {
+			if (proxyValue.indexOf('\u2022') === -1) {
 				concrete_selector.val(proxyValue);
 			}
 		});
