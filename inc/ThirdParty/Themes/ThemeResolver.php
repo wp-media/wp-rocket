@@ -11,6 +11,11 @@ class ThemeResolver {
 	 */
 	private static $theme_name = '';
 
+	/**
+	 * Array of themes names with compatibility classes
+	 *
+	 * @var array
+	 */
 	private static $compatibilities = [
 		'avada',
 		'bridge',
