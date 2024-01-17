@@ -241,6 +241,14 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 
 				$query['post_status'] = [ 'publish', 'private' ];
 
+				/**
+				 * Filters WP_Query class passed args.
+				 *
+				 * @param array $query WP_Query passed args.
+				 * @param string $url The URL to derive the post ID from.
+				 */
+				$query = (array) apply_filters( 'rocket_url_to_postid_query_args', $query, $url );
+
 				// Do the query.
 				$query = new WP_Query( $query );
 				if ( ! empty( $query->posts ) && $query->is_singular ) {
