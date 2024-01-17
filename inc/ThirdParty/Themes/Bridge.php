@@ -4,15 +4,8 @@ namespace WP_Rocket\ThirdParty\Themes;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Bridge extends ThirdpartyTheme {
+class Bridge {
 	use ReturnTypesTrait;
-
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'bridge';
 
 	/**
 	 * Options instance
@@ -29,10 +22,6 @@ class Bridge extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
-
 		return [
 			'rocket_lazyload_background_images' => 'return_false',
 			'update_option_qode_options_proya'  => [ 'maybe_clear_cache', 10, 2 ],

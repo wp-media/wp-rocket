@@ -6,14 +6,7 @@ use WP_Rocket\Admin\Options_Data;
 /**
  * Compatibility class for Avada theme
  */
-class Avada extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'avada';
-
+class Avada {
 	/**
 	 * Options instance
 	 *
@@ -29,9 +22,6 @@ class Avada extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
 		return [
 			'avada_clear_dynamic_css_cache'        => 'clean_domain',
 			'rocket_exclude_defer_js'              => 'exclude_defer_js',

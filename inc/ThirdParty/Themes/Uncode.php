@@ -3,23 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Uncode extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'uncode';
-
+class Uncode {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
 		return [
 			'rocket_exclude_js'                 => 'exclude_js',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',

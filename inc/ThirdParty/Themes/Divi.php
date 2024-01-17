@@ -6,14 +6,7 @@ use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
-class Divi extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'divi';
-
+class Divi {
 	/**
 	 * Options API instance.
 	 *
@@ -68,9 +61,6 @@ class Divi extends ThirdpartyTheme {
 			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 
-		if ( ! self::is_current_theme() ) {
-			return $events;
-		}
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
@@ -122,10 +112,6 @@ class Divi extends ThirdpartyTheme {
 	 * @return void
 	 */
 	public function maybe_disable_youtube_preview( $name, $theme ) {
-		if ( ! self::is_current_theme( $theme ) ) {
-			return;
-		}
-
 		$this->options->set( 'lazyload_youtube', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
@@ -140,10 +126,6 @@ class Divi extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public function add_divi_to_description( $disable_youtube_lazyload ) {
-		if ( ! self::is_current_theme() ) {
-			return $disable_youtube_lazyload;
-		}
-
 		$disable_youtube_lazyload[] = 'Divi';
 
 		return $disable_youtube_lazyload;
