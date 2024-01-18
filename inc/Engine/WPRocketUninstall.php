@@ -234,8 +234,9 @@ class WPRocketUninstall {
 		array_walk( $this->options, 'delete_option' );
 
 		foreach ( $this->dynamic_transients as $transient ) {
-			$wpdb->query(
-				$wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", '%' . $transient . '%' )
+			$transient_like = '%' . $wpdb->esc_like( $transient ) . '%';
+			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $transient_like )
 			);
 		}
 
