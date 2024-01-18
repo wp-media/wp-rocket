@@ -111,15 +111,31 @@ $(document).ready(function(){
 
 			proxy_selector.val(maskedValue);
 		}
+		// Ensure events are not added more than once
+		if (!proxy_selector.data('eventsAttached')) {
+			proxy_selector.on('input', handleInput);
+			proxy_selector.on('focus', handleFocus);
+			proxy_selector.data('eventsAttached', true);
+		}
 
-		proxy_selector.on('input', function () {
+		/**
+		 * Handle the input event
+		 */
+		function handleInput() {
 			var proxyValue = proxy_selector.val();
-
-			// Check if the proxy value contains '*' before updating the concrete field
 			if (proxyValue.indexOf('\u2022') === -1) {
 				concrete_selector.val(proxyValue);
 			}
-		});
+		}
+
+		/**
+		 * Handle the focus event
+		 */
+		function handleFocus() {
+			var concrete_value = concrete_selector.val();
+			proxy_selector.val(concrete_value);
+		}
+
 	}
 
 		// Update the concrete field when the proxy is updated.
