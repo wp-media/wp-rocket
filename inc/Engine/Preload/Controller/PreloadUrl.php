@@ -203,6 +203,8 @@ class PreloadUrl {
 	 */
 	public function process_pending_jobs() {
 
+		$pending_actions = $this->queue->get_pending_preload_actions();
+
 		// Retrieve previous batch size information
 		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) );
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
@@ -239,7 +241,6 @@ class PreloadUrl {
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
 		// Make sure the request has been sent for those jobs
-		$pending_actions = $this->queue->get_pending_preload_actions();
 		$stuck_rows = array_filter(
 			$stuck_rows,
 			function ( $row ) use ( $pending_actions ) {
