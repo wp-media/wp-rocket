@@ -159,7 +159,7 @@ class PreloadUrl {
 
 			if ( $check_duration ) {
 				$duration = (microtime(true) - $start);
-				set_transient('rocket_preload_request_duration', $duration);
+				set_transient('rocket_preload_request_duration', $duration, 5 * 60);
 				$check_duration = false;
 			}
 			/**
