@@ -3,12 +3,21 @@
 namespace WP_Rocket;
 
 use Imagify_Partner;
+use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
+use WP_Rocket\Addon\WebP\AdminSubscriber as WebPAdminSubscriber;
+use WP_Rocket\Addon\WebP\Subscriber as WebPSubscriber;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
 use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommmonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber;
+use WP_Rocket\Engine\License\Subscriber;
 use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
 use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
+use WP_Rocket\Engine\Preload\Cron\Subscriber as CronSubscriber;
+use WP_Rocket\Engine\Preload\Fonts;
+use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
+use WP_Rocket\Engine\Preload\Links\AdminSubscriber;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
@@ -41,6 +50,7 @@ use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
 use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServiceProvider;
@@ -127,7 +137,7 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
-		$this->event_manager = new Event_Manager();
+		$this->event_manager = new Event_Manager($this->container);
 		$this->container->share( 'event_manager', $this->event_manager );
 
 		$this->options_api = new Options( 'wp_rocket_' );
@@ -151,8 +161,8 @@ class Plugin {
 
 		$this->is_valid_key = rocket_valid_key();
 
-		foreach ( $this->get_subscribers() as $subscriber ) {
-			$this->event_manager->add_subscriber( $this->container->get( $subscriber ) );
+		foreach ( $this->get_subscribers() as $class => $subscriber ) {
+			$this->event_manager->add_subscriber( $subscriber, $class );
 		}
 	}
 
@@ -220,7 +230,7 @@ class Plugin {
 			'image_dimensions_admin_subscriber',
 			'defer_js_admin_subscriber',
 			'lazyload_admin_subscriber',
-			'preload_admin_subscriber',
+			\WP_Rocket\Engine\Preload\Admin\Subscriber::class => 'preload_admin_subscriber',
 			'minify_admin_subscriber',
 			'action_scheduler_check',
 			'actionscheduler_admin_subscriber',
@@ -291,16 +301,16 @@ class Plugin {
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
 
 		$common_subscribers = [
-			'license_subscriber',
-			'cdn_subscriber',
-			'cdn_admin_subscriber',
+			Subscriber::class => 'license_subscriber',
+			\WP_Rocket\Engine\CDN\Subscriber::class=> 'cdn_subscriber',
+			\WP_Rocket\Engine\CDN\Admin\Subscriber::class=> 'cdn_admin_subscriber',
 			'critical_css_subscriber',
-			'sucuri_subscriber',
-			'common_extractcss_subscriber',
+			SucuriSubscriber::class => 'sucuri_subscriber',
+			\WP_Rocket\Engine\Common\ExtractCSS\Subscriber::class => 'common_extractcss_subscriber',
 			'expired_cache_purge_subscriber',
-			'fonts_preload_subscriber',
-			'heartbeat_subscriber',
-			'db_optimization_subscriber',
+			Fonts::class => 'fonts_preload_subscriber',
+			HeartbeatSubscriber::class => 'heartbeat_subscriber',
+			\WP_Rocket\Engine\Admin\Database\Subscriber::class => 'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'bigcommerce_subscriber',
@@ -329,16 +339,16 @@ class Plugin {
 			'rucss_frontend_subscriber',
 			'rucss_cron_subscriber',
 			'divi',
-			'preload_subscriber',
-			'preload_front_subscriber',
+			\WP_Rocket\Engine\Preload\Subscriber::class => 'preload_subscriber',
+			FrontEndSubscriber::class => 'preload_front_subscriber',
 			'polygon',
-			'preload_links_admin_subscriber',
-			'preload_links_subscriber',
-			'preload_cron_subscriber',
-			'support_subscriber',
+			AdminSubscriber::class => 'preload_links_admin_subscriber',
+			\WP_Rocket\Engine\Preload\Links\Subscriber::class => 'preload_links_subscriber',
+			CronSubscriber::class => 'preload_cron_subscriber',
+			\WP_Rocket\Engine\Support\Subscriber::class => 'support_subscriber',
 			'mod_pagespeed',
-			'webp_subscriber',
-			'webp_admin_subscriber',
+			WebPSubscriber::class => 'webp_subscriber',
+			WebPAdminSubscriber::class => 'webp_admin_subscriber',
 			'imagify_webp_subscriber',
 			'shortpixel_webp_subscriber',
 			'ewww_webp_subscriber',
@@ -366,7 +376,7 @@ class Plugin {
 			'the_seo_framework',
 			'wpml',
 			'xstore',
-			'cloudflare_plugin_subscriber',
+			Cloudflare::class => 'cloudflare_plugin_subscriber',
 			'cache_config',
 			'uncode',
 			'rocket_lazy_load',

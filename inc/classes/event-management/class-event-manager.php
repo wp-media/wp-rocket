@@ -1,6 +1,9 @@
 <?php
 namespace WP_Rocket\Event_Management;
 
+use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
+use WP_Rocket\ProxySubscriber;
+
 /**
  * The event manager manages events using the WordPress plugin API.
  *
@@ -8,6 +11,21 @@ namespace WP_Rocket\Event_Management;
  * @author Carl Alexander <contact@carlalexander.ca>
  */
 class Event_Manager {
+
+	/**
+	 * @var ContainerInterface
+	 */
+	protected $container;
+
+	/**
+	 * @param ContainerInterface $container
+	 */
+	public function __construct(ContainerInterface $container)
+	{
+		$this->container = $container;
+	}
+
+
 	/**
 	 * Adds a callback to a specific hook of the WordPress plugin API.
 	 *
@@ -30,19 +48,26 @@ class Event_Manager {
 	 *
 	 * @param Subscriber_Interface $subscriber Subscriber_Interface implementation.
 	 */
-	public function add_subscriber( Subscriber_Interface $subscriber ) {
+	public function add_subscriber( string $subscriber, $class ) {
 		if ( $subscriber instanceof Event_Manager_Aware_Subscriber_Interface ) {
 			$subscriber->set_event_manager( $this );
 		}
 
-		$events = $subscriber->get_subscribed_events();
+		if(class_exists($class)) {
+			$events = $class::get_subscribed_events();
+		} else {
+			$events = $this->container->get($subscriber)->get_subscribed_events();
+		}
+
 
 		if ( empty( $events ) ) {
 			return;
 		}
 
-		foreach ( $subscriber->get_subscribed_events() as $hook_name => $parameters ) {
-			$this->add_subscriber_callback( $subscriber, $hook_name, $parameters );
+		$subscriber_proxy = new ProxySubscriber($this->container, $subscriber);
+
+		foreach ( $events as $hook_name => $parameters ) {
+			$this->add_subscriber_callback( $subscriber_proxy, $hook_name, $parameters );
 		}
 	}
 
