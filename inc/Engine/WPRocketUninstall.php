@@ -233,10 +233,11 @@ class WPRocketUninstall {
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->options, 'delete_option' );
 
-		foreach ( $this->dynamic_transients as $transient ) {
-			$transient_like = '%' . $wpdb->esc_like( $transient ) . '%';
+		if ( ! empty( $this->dynamic_transients ) ) {
+			$transients_pattern = implode( '|', array_map( [ $wpdb, 'esc_like' ], $this->dynamic_transients ) );
+
 			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-				$wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE %s", $transient_like )
+				$wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name REGEXP %s", $transients_pattern )
 			);
 		}
 
