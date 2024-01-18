@@ -67,6 +67,12 @@ class PreloadUrl {
 			return;
 		}
 
+		// Do we need to compute the duration transient?
+		$check_duration = false;
+		if( ! get_transient( 'rocket_preload_request_duration' ) ) {
+			$check_duration = true;
+		}
+
 		$requests = [
 			[
 				'url'       => $url,
@@ -121,7 +127,12 @@ class PreloadUrl {
 					 */
 					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
-				);
+			);
+			
+			if ( $check_duration ) {
+				$requests['headers']['blocking'] = true;
+				$requests['headers']['timeout'] = 20;
+			}
 
 			/**
 			 * Filters the arguments for the preload request.
@@ -137,10 +148,20 @@ class PreloadUrl {
 				return;
 			}
 
+			if ( $check_duration ) {
+				$start = microtime(true); 
+			}
+
 			wp_safe_remote_get(
 				user_trailingslashit( $request['url'] ),
 				$headers
 			);
+
+			if ( $check_duration ) {
+				$duration = (microtime(true) - $start);
+				set_transient('rocket_preload_request_duration', $duration);
+				$check_duration = false;
+			}
 			/**
 			 * Filter the delay between each preload request.
 			 *
@@ -186,15 +207,17 @@ class PreloadUrl {
 		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) );
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
-		$previous_batch_size = get_transient( 'rocket_preload_batch_size' );
-		if ( ! $previous_batch_size ){
-			$previous_batch_size = $max_batch_size;
+		$preload_request_duration = get_transient( 'rocket_preload_request_duration' );
+		if ( ! $preload_request_duration || $preload_request_duration <= 0 ){
+			$next_batch_size = $max_batch_size;
+		}
+		else{ // jobs per second / seconds per minute -> jobs per minute
+			$next_batch_size = (1/$preload_request_duration) / 2 * 60; // /2 for mobile/desktop
 		}
 
-		$last_batch_size_with_failures = get_transient( 'rocket_preload_batch_size_with_failures' );
-		if ( ! $last_batch_size_with_failures ){
-			$last_batch_size_with_failures = $max_batch_size;
-		}
+		// Limit next_batch_size
+		$next_batch_size = min( $next_batch_size, $max_batch_size); //Not higher than 45
+		$next_batch_size = max( $next_batch_size, $min_batch_size); //Not lower than 5
 
 		// Get all in-progress jobs with request sent and no results.
 		/**
@@ -211,7 +234,7 @@ class PreloadUrl {
 			 * @param int $count number of rows in batches.
 			 * @return int
 			 */
-			0
+			(int) ( $max_batch_size / 15 )
 		);
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
@@ -229,36 +252,13 @@ class PreloadUrl {
 			}
 			);
 
-		$n_failed_jobs = count( $stuck_rows );
-		
 		// Make those hanging jobs failed.
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
 		}
 
-		// Define the new batch size
-		if ( $n_failed_jobs > 0 ){ // Errors, reduce batch size
-			$next_batch_size = $previous_batch_size - $n_failed_jobs ;
-		}
-		else { // No errors, try to increase batch size
-			$next_batch_size =  ($previous_batch_size + $last_batch_size_with_failures ) / 2;
-		}
-
-		// Limit next_batch_size
-		$next_batch_size = min( $next_batch_size, $max_batch_size); //Not higher than 45
-		$next_batch_size = max( $next_batch_size, $min_batch_size); //Not lower than 5
-
-		// Save the new transients
-		if ( $n_failed_jobs > 0 ){ // Errors, keep track
-			set_transient( 'rocket_preload_batch_size_with_failures', $previous_batch_size, HOUR_IN_SECONDS );
-		}
-		set_transient( 'rocket_preload_batch_size', $next_batch_size, HOUR_IN_SECONDS );
-
-		// Apply a rate-limit at ActionScheduler level: no more than 45 pending actions.
-		$jobs_to_add = max( $next_batch_size - count( $pending_actions ), 0);
-
 		//Add new jobs in progress
-		$rows = $this->query->get_pending_jobs( $jobs_to_add );
+		$rows = $this->query->get_pending_jobs( $next_batch_size );
 		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
@@ -270,24 +270,6 @@ class PreloadUrl {
 			$this->queue->add_job_preload_job_preload_url_async( $row->url );
 
 		}
-
-		//Logs
-		$log_file = ABSPATH . "/MLT_preload_batch.log";
-		error_log( "Preload - process_pendings_jobs", 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "previous_batch_size = " . $previous_batch_size, 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "last_batch_size_with_failures = " . $last_batch_size_with_failures, 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "n_failed_jobs = " . $n_failed_jobs, 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "next_batch_size = " . $next_batch_size, 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "pending_actions = " . count( $pending_actions ), 3, $log_file );
-		error_log( '\n', 3, $log_file );
-		error_log( "jobs_to_add = " . $jobs_to_add, 3, $log_file );
-		error_log( '\n', 3, $log_file );
-
 	}
 
 	/**
