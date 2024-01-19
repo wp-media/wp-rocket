@@ -8,25 +8,16 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
-	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features', 'rocket' ); ?></h3>
+	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to product updates, support and features relying on our optimization servers', 'rocket' ); ?></h3>
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
-			<?php
-				printf(
-					// translators: %1$s = <strong>, %2$s = </strong>.
-					esc_html__( 'You need an %1$sactive license to continue optimizing your CSS delivery%2$s.', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				);
-				?>
-				<br>
-				<?php esc_html_e( 'The Remove Unused CSS and Load CSS asynchronously features are great options to address the PageSpeed Insights recommendations and improve your website performance.', 'rocket' ); ?>
+				<?php esc_html_e( 'Some features essential to address key PageSpeed Insights recommendations and improve your website performance, such as Remove Unused CSS, Auto-optimize LCP and images above the fold, are processed remotely and require an active license to work.', 'rocket' ); ?>
 				<br>
 				<?php
 				printf(
 					// translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-					esc_html__( 'They will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
+					esc_html__( 'These features will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
 					'<strong>',
 					'</strong>',
 					esc_html( $data['disabled_date'] )
