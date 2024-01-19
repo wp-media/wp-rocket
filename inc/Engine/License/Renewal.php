@@ -329,7 +329,8 @@ class Renewal extends Abstract_Render {
 		}
 
 		if ( $renewals['not_grandfather'] ) {
-			return $renewals['discount_percent']->not_grandfather;;
+			return $renewals['discount_percent']->not_grandfather;
+
 		}
 
 		return 0;
