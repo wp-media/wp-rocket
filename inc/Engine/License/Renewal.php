@@ -325,11 +325,11 @@ class Renewal extends Abstract_Render {
 		$prices = $prices->prices;
 
 		if ( $renewals['is_grandfather'] ) {
-			return isset( $prices->renewal->is_grandfather, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandfather : 0;
+			return $renewals['discount_percent']->is_grandfather;
 		}
 
-		if ( $renewals['is_grandmother'] ) {
-			return isset( $prices->renewal->is_grandmother, $prices->renewal->not_grandfather ) ? $prices->renewal->not_grandfather - $prices->renewal->is_grandmother : 0;
+		if ( $renewals['not_grandfather'] ) {
+			return $renewals['discount_percent']->not_grandfather;;
 		}
 
 		return 0;
