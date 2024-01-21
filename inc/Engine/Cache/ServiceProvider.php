@@ -46,7 +46,7 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
 			->addArgument( new Logger() );
-		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+		$cache_query = $this->getContainer()->defaultToLazy( false )->get( 'preload_caches_query' );
 
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
 			->addArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )

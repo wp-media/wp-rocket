@@ -89,9 +89,10 @@ class DefinitionAggregate implements DefinitionAggregateInterface
     /**
      * {@inheritdoc}
      */
-    public function resolve(string $id, bool $new = false)
+    public function resolve(string $id, bool $new = false, bool $lazy = false)
     {
-        return $this->getDefinition($id)->resolve($new);
+		//error_log( var_export( gettype( $this->getDefinition($id) ), true ) );
+        return $this->getDefinition($id)->resolve($new, $lazy);
     }
 
     /**

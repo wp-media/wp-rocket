@@ -73,7 +73,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( new Logger() );
 		$this->getContainer()->get( 'preload_caches_table' );
 
-		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
+		$cache_query = $this->getContainer()->defaultToLazy( false )->get( 'preload_caches_query' );
 
 		$this->getContainer()->add( 'preload_queue', Queue::class );
 		$queue = $this->getContainer()->get( 'preload_queue' );

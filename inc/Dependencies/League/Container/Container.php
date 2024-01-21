@@ -14,10 +14,15 @@ use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
 {
-    /**
-     * @var boolean
-     */
-    protected $defaultToShared = false;
+	/**
+	 * @var boolean
+	 */
+	protected $defaultToShared = false;
+
+	/**
+	 * @var boolean
+	 */
+	protected $defaultToLazy = false;
 
     /**
      * @var DefinitionAggregateInterface
@@ -98,19 +103,32 @@ class Container implements ContainerInterface
         return $this->add($id, $concrete, true);
     }
 
-    /**
-     * Whether the container should default to defining shared definitions.
-     *
-     * @param boolean $shared
-     *
-     * @return self
-     */
-    public function defaultToShared(bool $shared = true) : ContainerInterface
-    {
-        $this->defaultToShared = $shared;
+	/**
+	 * Whether the container should default to defining shared definitions.
+	 *
+	 * @param boolean $shared
+	 *
+	 * @return self
+	 */
+	public function defaultToShared(bool $shared = true) : ContainerInterface
+	{
+		$this->defaultToShared = $shared;
 
-        return $this;
-    }
+		return $this;
+	}
+
+	/**
+	 * Whether the container should default to defining shared definitions.
+	 *
+	 * @param boolean $lazy
+	 *
+	 * @return self
+	 */
+		public function defaultToLazy(bool $lazy = true) : ContainerInterface
+	{
+		$this->defaultToLazy = $lazy;
+		return $this;
+	}
 
     /**
      * Get a definition to extend.
@@ -151,10 +169,12 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($id, bool $new = false)
+    public function get($id, bool $new = false, bool $lazy = false)
     {
+		$lazy = $lazy ?: $this->defaultToLazy;
+
         if ($this->definitions->has($id)) {
-            $resolved = $this->definitions->resolve($id, $new);
+            $resolved = $this->definitions->resolve($id, $new, $lazy);
             return $this->inflectors->inflect($resolved);
         }
 
