@@ -250,7 +250,15 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 				$query = (array) apply_filters( 'rocket_url_to_postid_query_args', $query, $url );
 
 				// Do the query.
-				$query = new WP_Query( $query );
+				$query = new WP_Query(
+					$query,
+					[
+						'no_found_rows'          => true,
+						'update_post_term_cache' => false,
+						'update_post_meta_cache' => false,
+					]
+				);
+
 				if ( ! empty( $query->posts ) && $query->is_singular ) {
 					return $query->post->ID;
 				} else {
