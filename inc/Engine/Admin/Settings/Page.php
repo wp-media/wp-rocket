@@ -2147,12 +2147,9 @@ class Page {
 			'remove_unused_css',
 			'async_css',
 			'minify_concatenate_css',
+			'cloudflare_api_key',
+			'cloudflare_zone_id',
 		];
-
-		if ( ! defined( 'WP_ROCKET_CF_API_KEY' ) || ! rocket_get_constant( 'WP_ROCKET_CF_API_KEY', false ) ) {
-			$hidden_fields[] = 'cloudflare_api_key';
-			$hidden_fields[] = 'cloudflare_zone_id';
-		}
 
 		$this->settings->add_hidden_settings_fields(
 			/**
