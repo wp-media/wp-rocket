@@ -249,6 +249,10 @@ class Iframe {
 		 */
 		$excluded_patterns = apply_filters( 'rocket_lazyload_exclude_youtube_thumbnail', [] );
 
+		if ( ! is_array( $excluded_patterns ) ) {
+			return false;
+		}
+
 		foreach ( $excluded_patterns as $excluded_pattern ) {
 			if ( strpos( $iframe[0], $excluded_pattern ) !== false ) {
 				return true;
