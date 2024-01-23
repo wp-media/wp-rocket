@@ -141,7 +141,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 	}
 
-
 	// Checked the SSL option if the whole website is on SSL.
 	if ( rocket_is_ssl_website() ) {
 		$newvalue['cache_ssl'] = 1;
