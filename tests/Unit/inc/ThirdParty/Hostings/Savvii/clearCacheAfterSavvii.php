@@ -3,7 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Savvii;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\Savvii;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Hostings\Savvii::clear_cache_after_savvii
@@ -11,22 +11,24 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group ThirdParty
  */
 class Test_ClearCacheAfterSavvii extends TestCase {
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Savvii/CacheFlusherPlugin.php';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_REQUEST['warpdrive_flush_now'] );
 		unset( $_REQUEST['warpdrive_domainflush_now'] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$savvii = new Savvii();
+
+		Functions\when( 'current_user_can' )->justReturn( true );
 
 		if ( isset( $config['warpdrive_flush_now'] ) ) {
 			$_REQUEST['warpdrive_flush_now'] = true;
@@ -63,9 +65,5 @@ class Test_ClearCacheAfterSavvii extends TestCase {
 		}
 
 		$savvii->clear_cache_after_savvii();
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'clearCacheAfterSavvii' );
 	}
 }

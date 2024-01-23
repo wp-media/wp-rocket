@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Database;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 /**
@@ -14,7 +13,6 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
  * @group  RUCSS
  */
 class Test_DeleteOldUsedCss extends TestCase{
-	private $resources;
 	private $usedCSS;
 	private $database;
 
@@ -25,14 +23,10 @@ class Test_DeleteOldUsedCss extends TestCase{
 			return;
 		}
 
-		$this->resources = $this->getMockBuilder('WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\Resources')
+		$this->usedCSS = $this->getMockBuilder( UsedCSS::class )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->usedCSS = $this->getMockBuilder('WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->database  = new Database( $this->resources, $this->usedCSS );
+		$this->database  = new Database( $this->usedCSS );
 	}
 
 	/**

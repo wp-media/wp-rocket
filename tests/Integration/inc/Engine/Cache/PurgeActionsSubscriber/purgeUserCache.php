@@ -23,15 +23,15 @@ class Test_PurgeUserCache extends FilesystemTestCase {
 	protected        $path_to_test_data  = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeUserCache.php';
 	protected static $use_settings_trait = true;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Unhook WooCommerce, as it throws wpdb::prepare errors.
 		remove_action( 'delete_user', 'wc_delete_user_data' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		// Rewire WooCommerce.
 		add_action( 'delete_user', 'wc_delete_user_data' );

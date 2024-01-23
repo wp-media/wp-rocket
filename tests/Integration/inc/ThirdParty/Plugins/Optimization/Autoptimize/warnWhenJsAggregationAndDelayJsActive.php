@@ -16,14 +16,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 	use CapTrait;
 
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 	}
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept(
 			'admin_notices',
@@ -35,12 +35,12 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 			->andReturn( '123456' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $current_screen;
 
 		unset ($current_screen);
-		$this->restoreWpFilter( 'admin_notices' );
-		parent::tearDown();
+		$this->restoreWpHook( 'admin_notices' );
+		parent::tear_down();
 	}
 
 	/**

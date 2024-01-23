@@ -66,6 +66,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_delay_js', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_preload_links', '__return_false' ) );
 			$this->assertFalse( has_filter( 'pre_get_rocket_option_minify_js', '__return_false' ) );
+			$this->assertFalse( has_filter( 'pre_get_rocket_option_lazyload_css_bg_img', '__return_false' ) );
 
 			$this->assertSame(
 				PHP_INT_MAX,
@@ -78,25 +79,6 @@ class Test_DisableOptionsOnAmp extends TestCase {
 				->once()
 				->with( 'amp-options', [] )
 				->andReturn( $config[ 'amp_options' ]  );
-
-			$this->options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'do_cloudflare', 0 )
-					  ->andReturn( $config[ 'do_cloudflare' ] );
-
-			if ( -1 === $config[ 'cloudflare_protocol_rewrite' ] ) {
-				$this->options->shouldReceive( 'get' )->with( 'cloudflare_protocol_rewrite', 0 )->never();
-			} else {
-				$this->options->shouldReceive( 'get' )
-		              ->once()
-		              ->with( 'cloudflare_protocol_rewrite', 0 )
-		              ->andReturn( $config[ 'cloudflare_protocol_rewrite' ] );
-			}
-			if ( -1 === $config[ 'do_rocket_protocol_rewrite' ] ) {
-				Filters\expectApplied( 'do_rocket_protocol_rewrite' )->with( false )->never();
-			} else {
-				Filters\expectApplied( 'do_rocket_protocol_rewrite' )->once()->with( false )->andReturn( true );
-			}
 		}
 
 		$this->amp->disable_options_on_amp();
@@ -112,16 +94,15 @@ class Test_DisableOptionsOnAmp extends TestCase {
 				10,
 				has_filter( 'do_rocket_lazyload_iframes', '__return_false' )
 			);
+			$this->assertSame(
+				10,
+				has_filter( 'pre_get_cloudflare_protocol_rewrite', '__return_false' )
+			);
+			$this->assertSame(
+				10,
+				has_filter( 'do_rocket_protocol_rewrite', '__return_false' )
+			);
 			$this->assertEmpty( $wp_filter );
-
-			if ( $expected[ 'remove_filter' ] ) {
-				$this->assertFalse( has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX ) );
-			} else {
-				$this->assertSame(
-					PHP_INT_MAX,
-					has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX )
-				);
-			}
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertSame(

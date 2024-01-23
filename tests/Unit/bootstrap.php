@@ -27,6 +27,7 @@ function load_original_files_before_mocking() {
 		'inc/functions/options.php',
 		'inc/functions/posts.php',
 		'inc/functions/htaccess.php',
+		'inc/functions/admin.php',
 	];
 	foreach ( $originals as $file ) {
 		require_once WP_ROCKET_PLUGIN_ROOT . $file;
@@ -34,9 +35,24 @@ function load_original_files_before_mocking() {
 
 	$fixtures = [
 		'/WP_Error.php',
+		'/WP.php',
+		'/WP_Post.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
-	];
+		'/WP_Sitemaps_Index.php',
+		'/WP_Sitemaps.php',
+		'/WP_Filesystem_Direct.php',
+		'/Action_Scheduler/ActionScheduler_Abstract_QueueRunner.php',
+		'/Kinsta_Cache.php',
+		'/WP_Rewrite.php',
+		'/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php',
+		'/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php',
+	  	'/classes/TRP_Url_Converter.php',
+		'/classes/TRP_Translate_Press.php',
+		'/classes/TRP_Settings.php',
+		'/classes/TRP_Languages.php',
+		'/classes/TRP_Language_Switcher.php',
+    ];
 	foreach ( $fixtures as $file ) {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . $file;
 	}

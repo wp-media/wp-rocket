@@ -1,17 +1,20 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\common;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * @covers ::rocket_get_purge_urls
  * @uses   ::rocket_clean_domain
  *
  * @group  Common
  * @group  Purge
  */
 class Test_RocketGetPurgeUrls extends FilesystemTestCase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/common/rocketGetPurgeUrls.php';
 
 	private $site_options = [
@@ -23,9 +26,21 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	private $authors_map = [];
 	private $post_data   = [];
 
-	public function setUp() : void {
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
 		$this->set_permalink_structure( "/%postname%/" );
-		parent::setUp();
+		parent::set_up();
 
 		$this->create_posts( $this->config['urls']['posts'] );
 
@@ -34,8 +49,8 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		foreach ( $this->site_options as $option_name => $option_value ) {
 			remove_filter( 'pre_option_'.$option_name, [$this, 'prepare_option'], 10 );
 		}

@@ -18,8 +18,29 @@ class ActionScheduler_Action {
 		$this->set_group($group);
 	}
 
+	/**
+	 * Executes the action.
+	 *
+	 * If no callbacks are registered, an exception will be thrown and the action will not be
+	 * fired. This is useful to help detect cases where the code responsible for setting up
+	 * a scheduled action no longer exists.
+	 *
+	 * @throws Exception If no callbacks are registered for this action.
+	 */
 	public function execute() {
-		return do_action_ref_array( $this->get_hook(), array_values( $this->get_args() ) );
+		$hook = $this->get_hook();
+
+		if ( ! has_action( $hook ) ) {
+			throw new Exception(
+				sprintf(
+					/* translators: 1: action hook. */
+					__( 'Scheduled action for %1$s will not be executed as no callbacks are registered.', 'action-scheduler' ),
+					$hook
+				)
+			);
+		}
+
+		do_action_ref_array( $hook, array_values( $this->get_args() ) );
 	}
 
 	/**

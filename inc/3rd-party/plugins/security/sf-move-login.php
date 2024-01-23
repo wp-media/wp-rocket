@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( defined( 'SFML_VERSION' ) ) :
-	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages', 2, 2 );
 	add_action( 'update_option_sfml', 'rocket_after_update_single_options', 10, 2 );
 endif;
 
@@ -14,9 +14,13 @@ endif;
  * @since 2.6
  *
  * @param array $urls An array of URLs to exclude from cache.
+ * @param bool  $show_safe_content show sensitive uris.
  * @return array Updated array of URLs
  */
-function rocket_add_sfml_exclude_pages( $urls ) {
+function rocket_add_sfml_exclude_pages( $urls, $show_safe_content = true ) {
+	if ( ! $show_safe_content ) {
+		return $urls;
+	}
 	if ( ! function_exists( 'sfml_get_slugs' ) ) {
 		if ( file_exists( SFML_PLUGIN_DIR . 'inc/utilities.php' ) ) {
 			include SFML_PLUGIN_DIR . 'inc/utilities.php';
@@ -52,7 +56,7 @@ function rocket_add_sfml_exclude_pages( $urls ) {
  */
 function rocket_activate_sfml() {
 	if ( defined( 'SFML_VERSION' ) ) {
-		add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
+		add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages', 2, 2 );
 
 		// Update the WP Rocket rules on the .htaccess.
 		flush_rocket_htaccess();

@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 
 /**
@@ -9,34 +10,39 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
  * @group  ThirdParty
  */
 class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
+	use DBTrait;
+
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/disableImageDimensionsHeightPercentage.php';
 
 	private static $container;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installFresh();
 
 		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
 
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		unset( $GLOBALS['wp'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

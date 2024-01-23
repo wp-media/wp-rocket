@@ -33,10 +33,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'db_optimization_process', 'WP_Rocket\Engine\Admin\Database\OptimizationProcess' );
-		$this->getContainer()->add( 'db_optimization', 'WP_Rocket\Engine\Admin\Database\Optimization' )
+		$this->getContainer()->add( 'db_optimization_process', OptimizationProcess::class );
+		$this->getContainer()->add( 'db_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'db_optimization_process' ) );
-		$this->getContainer()->share( 'db_optimization_subscriber', 'WP_Rocket\Engine\Admin\Database\Subscriber' )
+		$this->getContainer()->share( 'db_optimization_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'db_optimization' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'common_subscriber' );

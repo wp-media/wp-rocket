@@ -2,6 +2,10 @@
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
+use WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Service provider for the WP Rocket Delay JS
@@ -24,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'delay_js_admin_subscriber',
 		'delay_js_html',
 		'delay_js_subscriber',
+		'delay_js_sitelist',
 	];
 
 	/**
@@ -32,13 +37,21 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'delay_js_settings', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings' );
-		$this->getContainer()->share( 'delay_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber' )
+		$this->getContainer()->add( 'delay_js_sitelist', SiteList::class )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
+		$this->getContainer()->add( 'delay_js_settings', Settings::class )
+			->addArgument( $this->getContainer()->get( 'options_api' ) );
+		$this->getContainer()->share( 'delay_js_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_settings' ) )
+			->addArgument( $this->getContainer()->get( 'delay_js_sitelist' ) )
 			->addTag( 'admin_subscriber' );
-		$this->getContainer()->add( 'delay_js_html', 'WP_Rocket\Engine\Optimization\DelayJS\HTML' )
-			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'delay_js_subscriber', 'WP_Rocket\Engine\Optimization\DelayJS\Subscriber' )
+		$this->getContainer()->add( 'delay_js_html', HTML::class )
+			->addArgument( $this->getContainer()->get( 'options' ) )
+			->addArgument( $this->getContainer()->get( 'dynamic_lists_defaultlists_data_manager' ) )
+			->addArgument( new Logger() );
+		$this->getContainer()->share( 'delay_js_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
 			->addArgument( rocket_direct_filesystem() )
 			->addArgument( $this->getContainer()->get( 'options' ) )

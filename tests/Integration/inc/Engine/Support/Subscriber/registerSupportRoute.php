@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
@@ -14,20 +15,29 @@ use WP_Rocket\Tests\StubTrait;
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	use ApiTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
 	private $consumer_key;
 	private $consumer_email;
+	private $wp_version;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installFresh();
 
 		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
@@ -43,7 +53,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_version;
 
 		$wp_version = $this->wp_version;
@@ -53,7 +63,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		$this->resetStubProperties();
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testShouldRegisterRoute() {
@@ -74,10 +84,20 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
 		];
 
-		$this->assertArraySubset(
-			$expected,
-			$this->requestSupportEndpoint( $body )
-		);
+		$actual = $this->requestSupportEndpoint( $body );
+
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	protected function requestSupportEndpoint(  array $body_params = [] ) {

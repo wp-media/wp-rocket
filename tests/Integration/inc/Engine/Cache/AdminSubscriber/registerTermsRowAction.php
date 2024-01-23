@@ -13,8 +13,8 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_RegisterTermsRowAction extends AdminTestCase {
 	private static $container;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$container = apply_filters( 'rocket_container', '' );
 	}

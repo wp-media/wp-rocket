@@ -18,8 +18,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_GetRocketI18nToPreserve extends TestCase {
 	use i18nTrait;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

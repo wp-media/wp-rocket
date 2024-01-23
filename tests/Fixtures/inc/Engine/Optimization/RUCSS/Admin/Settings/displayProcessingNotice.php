@@ -1,70 +1,112 @@
 <?php
 
 return [
-	'shouldDoNothingWhenNotWPRSettingsPage' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'dashboard',
+	'vfs_dir' => 'wp-content/',
+
+	'test_data' => [
+		'shouldDoNothingWhenNotWPRSettingsPage' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'dashboard',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => false,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => true,
-			'remove_unused_css' => 1,
-			'transient'         => false,
+			'expected' => false,
 		],
-		'expected' => false,
-	],
-	'shouldDoNothingWhenNoCapability' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'settings_page_wprocket',
+		'shouldDoNothingWhenNoCapability' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => false,
+				'remove_unused_css' => 1,
+				'transient'         => false,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => false,
-			'remove_unused_css' => 1,
-			'transient'         => false,
+			'expected' => false,
 		],
-		'expected' => false,
-	],
-	'shouldDoNothingWhenRUCSSDisabled' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'settings_page_wprocket',
+		'shouldDoNothingWhenRUCSSDisabled' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 0,
+				'transient'         => false,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => true,
-			'remove_unused_css' => 0,
-			'transient'         => false,
+			'expected' => false,
 		],
-		'expected' => false,
-	],
-	'shouldDoNothingWhenTransientTimeLessThanCurrentTime' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'settings_page_wprocket',
+		'shouldDoNothingWhenTransientTimeLessThanCurrentTime' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => time() - 60,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => true,
-			'remove_unused_css' => 1,
-			'transient'         => time() - 60,
+			'expected' => false,
 		],
-		'expected' => false,
-	],
-	'shouldDoNothingWhenNoTransient' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'settings_page_wprocket',
+		'shouldDoNothingWhenNoTransient' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => false,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => true,
-			'remove_unused_css' => 1,
-			'transient'         => false,
+			'expected' => false,
 		],
-		'expected' => false,
-	],
-	'shouldShowNoticeWhenTransient' => [
-		'config' => [
-			'current_screen'    => (object) [
-				'id' => 'settings_page_wprocket',
+		'shouldShowNoticeWhenTransient' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => time() + 3600,
+				'exists'         => true,
+				'saas_transient'         => false,
 			],
-			'capability'        => true,
-			'remove_unused_css' => 1,
-			'transient'         => time() + 3600,
+			'expected' => true,
 		],
-		'expected' => true,
+		'shouldShowNoNoticeWhenNoTable' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => time() + 3600,
+				'exists'         => false,
+				'saas_transient'         => false,
+			],
+			'expected' => false,
+		],
+		'shouldShowNoNoticeWhenSaasError' => [
+			'config' => [
+				'current_screen'    => (object) [
+					'id' => 'settings_page_wprocket',
+				],
+				'capability'        => true,
+				'remove_unused_css' => 1,
+				'transient'         => time() + 3600,
+				'exists'         => false,
+				'saas_transient'         => true,
+			],
+			'expected' => false,
+		],
 	],
 ];

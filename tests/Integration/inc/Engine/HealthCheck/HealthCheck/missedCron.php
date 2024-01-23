@@ -20,8 +20,8 @@ class Test_MissedCron extends TestCase {
 	private $manual_preload;
 	private $schedule_automatic_cleanup;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'missed_cron', 10 );
 		Functions\expect( 'wp_create_nonce' )
@@ -29,10 +29,10 @@ class Test_MissedCron extends TestCase {
 			->andReturn( '123456' );
 	}
 
-	public function tearDown() {
-		$this->restoreWpFilter( 'admin_notices' );
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_notices' );
 
-		parent::tearDown();
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_purge_cron_interval', [ $this, 'purge_cron' ] );
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
@@ -74,7 +74,7 @@ class Test_MissedCron extends TestCase {
 
 	protected function configUser( $config ) {
 		if ( $config['cap'] ) {
-			CapTrait::setAdminCap();
+			self::setAdminCap();
 			$role = 'administrator';
 		} else {
 			$role = 'editor';

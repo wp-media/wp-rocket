@@ -9,7 +9,7 @@
  * @param  array  $zone (default: array( 'all' )). Deprecated.
  * @return string
  */
-function get_rocket_cdn_url( $url, $zone = [ 'all' ] ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_cdn_url( $url, $zone = [ 'all' ] ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals, Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	$container = apply_filters( 'rocket_container', '' );
 	$cdn       = $container->get( 'cdn' );
 
@@ -115,30 +115,19 @@ function rocket_is_live_site() {
 		}
 	}
 
-	// Check for staging sites.
-	$staging = [
-		'.wpengine.com',
-		'.wpenginepowered.com',
-		'.pantheonsite.io',
-		'.flywheelsites.com',
-		'.flywheelstaging.com',
-		'.kinsta.com',
-		'.kinsta.cloud',
-		'.cloudwaysapps.com',
-		'.azurewebsites.net',
-		'.wpserveur.net',
-		'-liquidwebsites.com',
-		'.myftpupload.com',
-		'.dream.press',
-		'.sg-host.com',
-		'.platformsh.site',
-		'.wpstage.net',
-		'.bigscoots-staging.com',
-		'.wpsc.site',
-		'.runcloud.link',
-		'.onrocket.site',
-		'.singlestaging.com',
-	];
+	$default_staging = [];
+
+	/**
+	 * Get the list of staging domains from SaaS
+	 *
+	 * @param array $default_staging default result in case there isn't.
+	 */
+	$staging = apply_filters( 'rocket_staging_list', $default_staging );
+
+	if ( ! is_array( $staging ) ) {
+		$staging = $default_staging;
+	}
+
 	foreach ( $staging as $partial_host ) {
 		if ( strpos( $host, $partial_host ) ) {
 			return false;
@@ -146,4 +135,19 @@ function rocket_is_live_site() {
 	}
 
 	return true;
+}
+
+/**
+ * Checks if importing
+ *
+ * @return bool
+ */
+function rocket_is_importing() {
+	/**
+	* Filter use to determine if we are currently importing data into the WordPress.
+	* Bails out if this filter returns true.
+	*
+	* @param boolean Tells if we are importing or not.
+	*/
+	return (bool) apply_filters( 'rocket_is_importing', rocket_get_constant( 'WP_IMPORTING' ) );
 }

@@ -17,25 +17,28 @@ class Test_DelayJs extends TestCase {
 
 	private $delay_js = 0;
 	private $delay_js_exclusions = [];
+	private $post;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'delay_js', 26 );
 	}
 
-	public function tearDown() {
-		unset( $GLOBALS['wp'] );
+	public function tear_down() {
+		unset( $_GET['nowprocket'] );
+
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
 		remove_filter( 'pre_get_rocket_option_delay_js_exclusions', [ $this, 'set_delay_js_exclusions' ] );
+		delete_transient( 'wpr_dynamic_lists' );
 
 		if ( isset( $this->post->ID ) ) {
             delete_post_meta( $this->post->ID, '_rocket_exclude_delay_js', 1, true );
         }
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -54,16 +57,10 @@ class Test_DelayJs extends TestCase {
 		add_filter( 'pre_get_rocket_option_delay_js'         , [ $this, 'set_delay_js' ] );
 		add_filter( 'pre_get_rocket_option_delay_js_exclusions' , [ $this, 'set_delay_js_exclusions' ] );
 
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-			'public_query_vars' => [
-				'embed',
-			],
-		];
+		set_transient( 'wpr_dynamic_lists', $config['exclusions'], HOUR_IN_SECONDS );
 
 		if ( $config['bypass'] ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->assertSame(

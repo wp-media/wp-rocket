@@ -29,7 +29,9 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-radio-buttons-container">
 		<?php foreach ( $data['options'] as $value => $option ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
 			<button id ="wpr-radio-<?php echo esc_attr( $value ); ?>" class="wpr-button wpr-button--gray <?php echo ( $value === $data['value'] ? 'radio-active' : '' ); ?> <?php echo ( ! empty( $option['warning'] ) ? 'has-warning' : '' ); ?>"
-					data-value="<?php echo esc_attr( $value ); ?>" <?php echo ( ! empty( $data['disabled'] ) ? esc_attr( $data['disabled'] ) : '' ); ?>>
+					data-value="<?php echo esc_attr( $value ); ?>"
+					<?php echo ( ! empty( $option['disabled'] ) ? 'disabled=' . esc_attr( $option['disabled'] ) : '' ); ?>
+					>
 				<?php echo esc_html( $option['label'] ); ?>
 			</button>
 		<?php endforeach; ?>

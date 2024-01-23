@@ -4,8 +4,8 @@
  *
  * @package     Database
  * @subpackage  Meta
- * @copyright   Copyright (c) 2020
- * @license     https://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @copyright   Copyright (c) 2021
+ * @license     https://opensource.org/licenses/MIT MIT
  * @since       1.1.0
  */
 namespace WP_Rocket\Dependencies\Database\Queries;

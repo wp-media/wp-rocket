@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_upgrader() {
 	// Grab some infos.
-	$actual_version = get_rocket_option( 'version' );
+	$actual_version = (string) get_rocket_option( 'version' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded.
 	// first install.
 	if ( ! $actual_version ) {
@@ -25,8 +25,6 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification' ] );
-
 		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
 
@@ -38,7 +36,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+	$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if (
 		'wprocket' === $page
@@ -106,15 +104,11 @@ function rocket_first_install() {
 				'lazyload_youtube'            => 0,
 				'minify_css'                  => 0,
 				'minify_css_key'              => $minify_css_key,
-				'minify_concatenate_css'      => 0,
 				'minify_js'                   => 0,
 				'minify_js_key'               => $minify_js_key,
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
 				'manual_preload'              => 1,
-				'sitemap_preload'             => 0,
-				'sitemap_preload_url_crawl'   => '500000',
-				'sitemaps'                    => [],
 				'dns_prefetch'                => 0,
 				'preload_fonts'               => [],
 				'database_revisions'          => 0,
@@ -246,6 +240,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		wp_safe_remote_get( esc_url( home_url() ) );
 	}
 
+	if ( version_compare( $actual_version, '3.12.6', '<' ) ) {
+		do_action( 'rocket_preload_unlock_all_urls' );
+	}
+
 	if ( version_compare( $actual_version, '3.3.6', '<' ) ) {
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
@@ -306,8 +304,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.10.8', '<' ) ) {
+	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
 		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
+		delete_transient( 'wp_rocket_pricing' );
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -15,6 +16,20 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 	private static $user_id      = 0;
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
+	use DBTrait;
+
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create(
 			[
@@ -24,8 +39,8 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );

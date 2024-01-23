@@ -7,6 +7,7 @@ on:
       - develop
       - branch-*
       - feature/*
+      - enhancement/*
 
 jobs:
   run:
@@ -21,7 +22,7 @@ jobs:
     name: WPRocket lint with PHPCS. PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -34,7 +35,5 @@ jobs:
       run: composer install --prefer-dist --no-interaction --no-scripts
 
     - name: Lint with phpcs
-      run: |
-        vendor/bin/phpcs --config-set installed_paths ../../phpcompatibility/phpcompatibility-paragonie,../../phpcompatibility/phpcompatibility-wp,../../wp-coding-standards/wpcs,../../phpcompatibility/php-compatibility
-        composer phpcs
+      run: composer phpcs
 

@@ -16,27 +16,27 @@ class Test_disableDiviJqueryBody extends WPThemeTestcase {
 
 	private static $container;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
 		define( 'ET_CORE_VERSION','4.10');
 	}
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 		$this->delay_js = false;
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		unset( $GLOBALS['ET_CORE_VERSION'] );
@@ -55,8 +55,9 @@ class Test_disableDiviJqueryBody extends WPThemeTestcase {
 		$options     = self::$container->get( 'options' );
 		$options_api = self::$container->get( 'options_api' );
 		$delayjs_html = self::$container->get( 'delay_js_html' );
+		$used_css = self::$container->get( 'rucss_used_css_controller' );
 		$options_api->set( 'settings', [] );
-		$divi        = new Divi( $options_api, $options, $delayjs_html );
+		$divi        = new Divi( $options_api, $options, $delayjs_html, $used_css );
 		$divi->disable_divi_jquery_body();
 		$this->assertSame( $expected['filter_priority'], has_filter( 'et_builder_enable_jquery_body', '__return_false' ) );
 	}

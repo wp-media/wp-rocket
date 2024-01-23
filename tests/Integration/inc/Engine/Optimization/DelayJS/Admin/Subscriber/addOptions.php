@@ -11,16 +11,16 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class Test_AddOptions extends TestCase {
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_options' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
-		$this->restoreWpFilter( 'rocket_first_install_options' );
+		$this->restoreWpHook( 'rocket_first_install_options' );
 	}
 
 	/**

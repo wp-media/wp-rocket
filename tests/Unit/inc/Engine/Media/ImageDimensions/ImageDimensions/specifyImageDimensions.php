@@ -110,7 +110,6 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 					->andReturn( $config['rocket_specify_image_dimensions_for_distant_filter'] );
 			}
 		}
-
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->format_the_html( $this->image_dimensions->specify_image_dimensions( $input ) )

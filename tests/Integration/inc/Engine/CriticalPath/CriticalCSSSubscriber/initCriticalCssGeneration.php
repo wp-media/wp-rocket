@@ -22,8 +22,8 @@ class Test_InitCriticalCssGeneration extends TestCase {
 	];
 	protected $user_id = 0;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_regenerate_critical_css' );
@@ -31,7 +31,7 @@ class Test_InitCriticalCssGeneration extends TestCase {
 		unset( $_GET['_wpnonce'] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( $this->user_id > 0 ) {
 			wp_delete_user( $this->user_id );
 		}
@@ -45,7 +45,7 @@ class Test_InitCriticalCssGeneration extends TestCase {
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'return_true' ] );
 		remove_filter( 'wp_safe_redirect', [ $this, 'return_empty_string' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

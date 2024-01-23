@@ -14,18 +14,18 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddDelayJsScript extends TestCase {
 	private $delay_js = false;
 
-	public function setUp(): void {
+	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_delay_js_script', 26 );
 	}
 
-	public function tearDown() {
-		unset( $GLOBALS['wp'] );
+	public function tear_down() {
+		unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
 		$this->delay_js = false;
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -37,16 +37,8 @@ class Test_AddDelayJsScript extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-			'public_query_vars' => [
-				'embed',
-			],
-		];
-
 		if ( $config['bypass'] ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->assertSame(

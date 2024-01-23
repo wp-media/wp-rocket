@@ -16,13 +16,13 @@ class Test_MaybeDisableCoreLazyload extends TestCase {
 	private $lazyload_filter;
 	private $lazyload_iframes_filter;
 
-	public function tearDown(): void {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'set_lazyload'] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'set_lazyload_iframes'] );
 		remove_filter( 'do_rocket_lazyload', [ $this, 'set_lazyload_filter'] );
 		remove_filter( 'do_rocket_lazyload_iframes', [ $this, 'set_lazyload_filter_iframes'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 	/**
 	 * @dataProvider configTestData

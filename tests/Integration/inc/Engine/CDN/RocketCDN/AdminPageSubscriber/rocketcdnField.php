@@ -17,19 +17,18 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group  RocketCDNAdminPage
  */
 class Test_RocketcdnField extends TestCase {
-
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'cdn_names_cb' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'cdn_names_cb' ] );
 
-		parent::tearDown();
-
 		delete_transient( 'rocketcdn_status' );
+
+		parent::tear_down();
 	}
 
 	/**

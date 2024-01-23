@@ -1,0 +1,86 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = User Exclusion Textarea
+
+\*-----------------------------------------------*/
+
+.wpr-field--categorizedmultiselect {
+
+  .wpr-list{
+	padding-right: 15px;
+	padding-left: 15px;
+
+	&.open{
+	  .wpr-list-header{
+		padding-bottom: 9px;
+		margin-bottom: 10px;
+	  }
+	  .wpr-list-header{
+		max-height:32px;
+	  }
+	}
+	.wpr-list-header{
+	  max-height:32px;
+	}
+
+	[type=checkbox]{
+	  & + label{
+		&:before{
+		  top: 4px;
+		}
+	  }
+	  &:checked{
+		& + label{
+		  &:after{
+			top: 4px;
+		  }
+		}
+	  }
+	}
+
+	&-header{
+	  .wpr-checkbox{
+		padding-left: 29px;
+
+	  }
+	}
+  }
+
+  .wpr-list-body {
+	display: block;
+	max-height: 250px;
+	overflow-y: auto;
+
+	ul{
+	  margin: 0;
+	  li{
+		margin-bottom: 10px;
+
+		.wpr-checkbox{
+		  padding-left: 25px;
+
+		  label{
+			color: #121116 !important;
+			font-weight: normal;
+		  }
+		}
+	  }
+	}
+  }
+
+  .dashicons{
+	color: #72777c;
+  }
+
+  .wpr-multiple-select-title{
+	font-weight: bold;
+	margin-left: 5px;
+  }
+}
+@media only screen and (min-width: 782px) {
+  .wpr-field--categorizedmultiselect {
+	padding-right: 80px;
+  }
+}

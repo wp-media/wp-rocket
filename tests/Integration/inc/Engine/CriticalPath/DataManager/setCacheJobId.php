@@ -13,8 +13,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_SetCacheJobId extends TestCase {
 	private $transient;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		delete_transient( $this->transient );
 	}

@@ -171,4 +171,28 @@ $(document).ready(function(){
 			}
         );
     } );
+	$( '#wpr-update-exclusion-list' ).on( 'click', function( e ) {
+		e.preventDefault();
+		$('#wpr-update-exclusion-msg').html('');
+		$.ajax({
+			url: rocket_ajax_data.rest_url,
+			beforeSend: function ( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', rocket_ajax_data.rest_nonce );
+			},
+			method: "PUT",
+			success: function(responses) {
+				let exclusion_msg_container = $('#wpr-update-exclusion-msg');
+				exclusion_msg_container.html('');
+				if ( undefined !== responses['success'] ) {
+					exclusion_msg_container.append( '<div class="notice notice-error">' + responses['message'] + '</div>' );
+					return;
+				}
+				Object.keys( responses ).forEach(( response_key ) => {
+					exclusion_msg_container.append( '<strong>' + response_key + ': </strong>' );
+					exclusion_msg_container.append( responses[response_key]['message'] );
+					exclusion_msg_container.append( '<br>' );
+				});
+			}
+		});
+	} );
 });

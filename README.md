@@ -13,7 +13,7 @@ If you are not a developer, visit our [documentation](http://docs.wp-rocket.me/?
 Need detailed setup instructions?
 
 We are very proud of WP Rocket’s knowledge base.
-We have [documentation](http://docs.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) in English, French, Italian, Spanish and German.
+We have [documentation](http://docs.wp-rocket.me/?utm_source=github&utm_medium=wp_rocket_profile) in English and French.
 
 You can also check out our [changelog](https://wp-rocket.me/changelog/?utm_source=github&utm_medium=wp_rocket_profile).
 
@@ -40,7 +40,11 @@ If you find an issue in WP Rocket, please let us know [here](https://github.com/
 Be advised, this point of contact is to be used to report bugs and not to receive support. 
 Check out our [support page](https://wp-rocket.me/support/?utm_source=github&utm_medium=wp_rocket_profile) if you need to submit a ticket. 
 
-To disclose a security issue to our team, please reach out to contact@wp-media.me
+## Security Policy  
+  
+### Reporting Security Bugs  
+  
+You can report any security bugs found in the source code of the site-reviews plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-rocket). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 ## Contributions
 

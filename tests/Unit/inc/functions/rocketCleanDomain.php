@@ -27,32 +27,24 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_RocketCleanDomain extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		parent::tearDownAfterClass();
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
-
-		Functions\expect( 'rocket_get_constant' )
-			->with( 'WP_ROCKET_CACHE_PATH' )
-			->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $GLOBALS['debug_fs'] );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -113,6 +105,9 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		Actions\expectDone( 'after_rocket_clean_domain' )
 			->once()
 			->with( $config['root'], $lang, $url );
+		Actions\expectDone( 'rocket_after_clean_domain' )
+			->once()
+			->with( $lang, $expected['rocket_clean_domain_urls'] );
 
 		// Run it.
 		rocket_clean_domain( $lang );

@@ -16,8 +16,8 @@ class Test_Optimize extends TestCase {
 
 	private $filter_value;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
 			'request'    => 'http://example.org',
@@ -27,13 +27,13 @@ class Test_Optimize extends TestCase {
         ];
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_combined_google_fonts_display', [ $this, 'set_display_value' ] );
 
 		unset( $this->filter_value );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

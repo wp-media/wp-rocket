@@ -13,25 +13,25 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_WarningNotice extends TestCase {
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
-		CapTrait::setAdminCap();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::setAdminCap();
 
 		$user = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $user );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		set_current_screen( 'front' );
 
-		parent::tearDown();
+		parent::tear_down();
 
 		delete_option( 'wphb_settings' );
 		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
@@ -45,6 +45,10 @@ class Test_WarningNotice extends TestCase {
 	}
 
 	public function active_plugin( $plugins ) {
+		if ( ! is_array( $plugins ) ) {
+			$plugins = (array) $plugins;
+		}
+
 		$plugins[] = 'hummingbird-performance/wp-hummingbird.php';
 
 		return $plugins;
@@ -63,7 +67,7 @@ class Test_WarningNotice extends TestCase {
 
 		update_option( 'wphb_settings', $hb_settings );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$this->format_the_html( '<div class="notice notice-error is-dismissible">' . $html . '</div>' ),
 			$this->getActualHtml()
 		);

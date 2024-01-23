@@ -13,8 +13,8 @@ use WP_Rocket\Engine\Cache\WPCache;
 class Test_MaybePreventDeactivation extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/maybePreventDeactivation.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 	}

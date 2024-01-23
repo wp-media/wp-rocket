@@ -14,22 +14,22 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_TruncateUsedCssTable extends TestCase{
 	use DBTrait;
 
-	public static function setUpBeforeClass(): void {
+	public static function set_up_before_class() {
 		self::installFresh();
 
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
+	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testShouldTruncateTableWhenOptionIsEnabled(){
@@ -43,7 +43,6 @@ class Test_TruncateUsedCssTable extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => false,
 			]
@@ -52,7 +51,6 @@ class Test_TruncateUsedCssTable extends TestCase{
 			[
 				'url'            => 'http://example.org/home',
 				'css'            => 'h1{color:red;}',
-				'unprocessedcss' => wp_json_encode( [] ),
 				'retries'        => 3,
 				'is_mobile'      => true,
 			]
@@ -63,7 +61,7 @@ class Test_TruncateUsedCssTable extends TestCase{
 		$this->assertTrue( $rucss_usedcss_table->exists() );
 		$this->assertCount( 2, $result );
 
-		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ) );
+		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ), new \WP_Theme( 'test2', 'test2' ) );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();

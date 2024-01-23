@@ -11,20 +11,23 @@ abstract class TestCase extends BaseTestCase {
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
-	use FilterTrait;
+	use IsolateHookTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
 
 	protected $config;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::installFresh();
+
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -34,13 +37,15 @@ abstract class TestCase extends BaseTestCase {
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::uninstallAll();
+
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {
@@ -52,28 +57,28 @@ abstract class TestCase extends BaseTestCase {
 		}
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
 		$this->stubRocketGetConstant();
 
-		parent::setUp();
-
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		$this->resetStubProperties();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
 	}
 
 	public function configTestData() {

@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_MaybeAddDelayJsExclusion extends TestCase {
 	private $plugin_active;
 
-	public function tearDown(): void {
+	public function tear_down() {
 		remove_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -37,6 +37,8 @@ class Test_MaybeAddDelayJsExclusion extends TestCase {
 		if ( ! $this->plugin_active ) {
 			return $plugins;
 		}
+
+		$plugins = [];
 
 		$plugins[] = 'adthrive-ads/adthrive-ads.php';
 

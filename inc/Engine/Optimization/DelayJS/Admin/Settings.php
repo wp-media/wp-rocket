@@ -3,16 +3,26 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\DelayJS\Admin;
 
-use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Settings {
+
 	/**
-	 * Options data instance
+	 * Options instance.
 	 *
-	 * @var Options_Data
+	 * @var Options
 	 */
-	private $options;
+	protected $options_api;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Options $options_api Options instance.
+	 */
+	public function __construct( Options $options_api ) {
+		$this->options_api = $options_api;
+	}
 
 	/**
 	 * Add the delay JS options to the WP Rocket options array
@@ -24,7 +34,7 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function add_options( $options ) : array {
+	public function add_options( $options ): array {
 		$options = (array) $options;
 
 		$options['delay_js']            = 0;
@@ -48,7 +58,7 @@ class Settings {
 			return;
 		}
 
-		$options = get_option( 'wp_rocket_settings', [] );
+		$options = $this->options_api->get( 'settings', [] );
 
 		$options['delay_js_exclusions'] = [];
 
@@ -60,7 +70,7 @@ class Settings {
 			$options['minify_concatenate_js'] = 0;
 		}
 
-		update_option( 'wp_rocket_settings', $options );
+		$this->options_api->set( 'settings', $options );
 	}
 
 	/**
@@ -73,9 +83,14 @@ class Settings {
 	 *
 	 * @return array
 	 */
-	public function sanitize_options( $input, $settings ) : array {
+	public function sanitize_options( $input, $settings ): array {
 		$input['delay_js']            = $settings->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_exclusions'] = ! empty( $input['delay_js_exclusions'] ) ? rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] ) : [];
+		$input['delay_js_exclusions'] =
+			! empty( $input['delay_js_exclusions'] )
+				?
+				rocket_sanitize_textarea_field( 'delay_js_exclusions', $input['delay_js_exclusions'] )
+				:
+				[];
 
 		return $input;
 	}
@@ -128,20 +143,11 @@ class Settings {
 	 * @return string[]
 	 */
 	public static function get_delay_js_default_exclusions(): array {
-		global $wp_version;
 
 		$exclusions = [
-			'/jquery-?[0-9.](.*)(.min|.slim|.slim.min)?.js',
+			'\/jquery(-migrate)?-?([0-9.]+)?(.min|.slim|.slim.min)?.js(\?(.*))?( |\'|"|>)',
 			'js-(before|after)',
 		];
-
-		if (
-			isset( $wp_version )
-			&&
-			version_compare( $wp_version, '5.7', '<' )
-		) {
-			$exclusions[] = '/jquery-migrate(.min)?.js';
-		}
 
 		$wp_content  = wp_parse_url( content_url( '/' ), PHP_URL_PATH );
 		$wp_includes = wp_parse_url( includes_url( '/' ), PHP_URL_PATH );
@@ -192,5 +198,4 @@ class Settings {
 		}
 		return true;
 	}
-
 }

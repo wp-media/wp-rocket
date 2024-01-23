@@ -18,22 +18,22 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_DisplayRocketcdnStatus extends TestCase {
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		update_option( 'date_format', 'Y-m-d' );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() : void {
+		parent::set_up();
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
+
+		parent::tear_down();
 	}
 
 	/**

@@ -54,6 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'renewal', Renewal::class )
 			->addArgument( $this->getContainer()->get( 'pricing' ) )
 			->addArgument( $this->getContainer()->get( 'user' ) )
+			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $views );
 		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'upgrade' ) )

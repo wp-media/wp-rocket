@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResource;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -15,18 +14,29 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	protected $zones;
 	private $isCSSTestData;
 	private $minify_type;
+	private $src;
+	private $options;
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->isCSSTestData = false;
 		$this->minify_type   = '';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		remove_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
+		remove_filter( 'pre_http_request', [ $this, 'pre_request' ] );
+
+		if ( $this->isCSSTestData ) {
+			wp_dequeue_style( $this->src );
+		} else {
+			wp_dequeue_script( $this->src );
+		}
+
+		$this->unset_settings( $this->options );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -35,6 +45,8 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	public function testCacheDynamicResource( $event, $src, $expected, $settings ) {
 		// Set up the test.
 		$this->isCSSTestData = ( 'style_loader_src' === $event );
+		$this->src = $src;
+		$this->options = $settings;
 		$this->minify_type   = $this->isCSSTestData ? 'css' : 'js';
 		add_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
 
@@ -47,17 +59,10 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			wp_enqueue_script( $src, $src );
 		}
 
+		add_filter( 'pre_http_request', [ $this, 'pre_request' ] );
+
 		// Apply the filter event. Check the result.
 		$this->assertSame( $expected, apply_filters( $event, $src, '' ) );
-
-		// Clean up.
-		if ( $this->isCSSTestData ) {
-			wp_dequeue_style( $src );
-		} else {
-			wp_dequeue_script( $src );
-		}
-
-		$this->unset_settings( $settings );
 	}
 
 	public function getMinifyKey() {
@@ -113,4 +118,14 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
     public function set_zones() {
         return $this->zones;
     }
+
+	public function pre_request() {
+		return [
+			'headers' => [],
+			'body' => 'test',
+			'response' => [],
+			'cookies' => [],
+			'filename' => ''
+		];
+	}
 }

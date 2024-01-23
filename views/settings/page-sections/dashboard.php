@@ -80,7 +80,14 @@ defined( 'ABSPATH' ) || exit;
 						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
 							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span><br>
+						</span>
+						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
+							<span>
+								<?php esc_html_e( 'with', 'rocket' ); ?>
+								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
+							</span>
+						<?php endif; ?>
+						<br>
 						<?php
 						/**
 						 * Fires when displaying the license information
@@ -140,7 +147,7 @@ defined( 'ABSPATH' ) || exit;
 							'link',
 							'purge_cache',
 							[
-								'label'      => __( 'Clear cache', 'rocket' ),
+								'label'      => (bool) get_rocket_option( 'manual_preload', false ) ? __( 'Clear and preload cache', 'rocket' ) : __( 'Clear cache', 'rocket' ),
 								'parameters' => [
 									'type' => 'all',
 								],
@@ -152,24 +159,6 @@ defined( 'ABSPATH' ) || exit;
 						?>
 					</div>
 					<?php endif; ?>
-					<?php if ( get_rocket_option( 'manual_preload' ) && current_user_can( 'rocket_preload_cache' ) ) : ?>
-					<div class="wpr-field">
-						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
-						<?php
-						$this->render_action_button(
-							'link',
-							'preload',
-							[
-								'label'      => __( 'Preload cache', 'rocket' ),
-								'attributes' => [
-									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
-								],
-							]
-						);
-						?>
-					</div>
-					<?php endif; ?>
-
 					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>

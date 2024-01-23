@@ -7,6 +7,7 @@ use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
@@ -25,7 +26,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_CpcssHeartbeat extends AjaxTestCase {
-	use ProviderTrait;
+	use ProviderTrait, DBTrait;
 	protected static $provider_class = 'Admin';
 
 	private static   $admin_user_id      = 0;
@@ -38,17 +39,23 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	protected $async_css;
 	protected $subscriber;
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
-
+		self::setAdminCap();
+		self::installFresh();
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function tear_down_after_class()
+	{
+		parent::tear_down_after_class();
+		self::uninstallAll();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		$this->action = 'rocket_cpcss_heartbeat';
 
@@ -60,10 +67,10 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		delete_transient( 'rocket_cpcss_generation_pending' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
-		parent::tearDown();
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		delete_transient( 'rocket_critical_css_generation_process_running' );

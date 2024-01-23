@@ -16,22 +16,22 @@ class Test_TruncateUsedCss extends TestCase{
 
 	private $input;
 
-	public static function setUpBeforeClass(): void {
+	public static function set_up_before_class() {
 		self::installFresh();
 
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
+	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Test_TruncateUsedCss extends TestCase{
 
 		$this->assertCount( count( $input['items'] ), $result );
 
-		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ) );
+		do_action( 'switch_theme', 'Test Theme', new \WP_Theme( 'test', 'test' ), new \WP_Theme( 'test2', 'test2' ) );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();

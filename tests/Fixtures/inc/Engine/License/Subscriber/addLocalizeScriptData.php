@@ -19,10 +19,7 @@ return [
 			'nonce'      => 12345,
 			'origin_url' => 'https://wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnDefaultWhenLicenseIsExpired' => [
 		'config'   => [
@@ -42,10 +39,7 @@ return [
 			'nonce'      => 12345,
 			'origin_url' => 'https://wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnDefaultWhenPromoNotActive' => [
 		'config'   => [
@@ -65,10 +59,7 @@ return [
 			'nonce'      => 12345,
 			'origin_url' => 'https://wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
 		'config'   => [
@@ -88,10 +79,7 @@ return [
 			'nonce'      => 12345,
 			'origin_url' => 'https://wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnUpdatedArrayWhenLicenseIsSoonExpired' => [
 		'config'   => [
@@ -112,8 +100,6 @@ return [
 			'origin_url' => 'https://wp-rocket.me',
 		],
 		'expected' => [
-			'nonce'              => 12345,
-			'origin_url'         => 'https://wp-rocket.me',
 			'license_expiration' => strtotime( 'next week' ),
 		],
 	],
@@ -136,8 +122,6 @@ return [
 			'origin_url' => 'https://wp-rocket.me',
 		],
 		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
 			'promo_end'  => strtotime( 'next week' ),
 		],
 	],

@@ -56,7 +56,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	public static function get_subscribed_events() {
 		return [
 			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
-			'rocket_after_cdn_sections'           => 'display_manage_subscription',
 			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
 			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
 			'rocket_settings_page_footer'         => 'add_subscription_modal',
@@ -72,6 +71,15 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 * @return void
 	 */
 	public function display_rocketcdn_status() {
+		/**
+		 * Filters the display of the RocketCDN status.
+		 *
+		 * @param bool $display_rocketcdn_status; true to display, false otherwise.
+		 */
+		if ( ! apply_filters( 'rocket_display_rocketcdn_status', true ) ) {
+			return;
+		}
+
 		if ( $this->is_white_label_account() ) {
 			return;
 		}
@@ -161,35 +169,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		];
 
 		return $fields;
-	}
-
-	/**
-	 * Displays the button to open the subscription modal
-	 *
-	 * @since  3.5
-	 *
-	 * @return void
-	 */
-	public function display_manage_subscription() {
-		if ( $this->is_white_label_account() ) {
-			return;
-		}
-
-		if ( ! rocket_is_live_site() ) {
-			return;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		if ( 'running' !== $subscription_data['subscription_status'] ) {
-			return;
-		}
-
-		?>
-		<p class="wpr-rocketcdn-subscription">
-			<button class="wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal"><?php esc_html_e( 'Manage Subscription', 'rocket' ); ?></button>
-		</p>
-		<?php
 	}
 
 	/**

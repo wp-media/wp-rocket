@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\ThirdParty\Plugins\Security\WordFence;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Security\WordFence;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
@@ -14,27 +14,30 @@ use Brain\Monkey\Filters;
  * @group  ThirdParty
  */
 class Test_WordFenceWhitelistIPs extends TestCase {
+	private $WordFenceCompatibility;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setup();
+
 		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
-		wordfence::$white_listed_ips =[];
-		$this->WordFenceCompatibility        = new WordFenceCompatibility();
+		require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
+
+		wordfence::$white_listed_ips  = [];
+		$this->WordFenceCompatibility = new WordFenceCompatibility();
 	}
+
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddWitelistIPs( $expected ) {
-
-		Filters\expectApplied( 'rocket_wordfence_whitelisted_ips')->with($expected)->once()
+		Filters\expectApplied( 'rocket_wordfence_whitelisted_ips' )
+			->with( $expected )
+			->once()
 			->andReturn( $expected );
 
 		$this->WordFenceCompatibility->whitelist_wordfence_firewall_ips();
 
 		$this->assertEquals( $expected, wordfence::getWhiteListedIPs() );
 
-	}
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'whitelistIPs' );
 	}
 }

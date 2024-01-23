@@ -23,7 +23,7 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 	private $settings;
 	private $database;
-	private $usedCSS;
+	private $used_css;
 	private $subscriber;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/cleanUsedCssAndCache.php';
@@ -33,8 +33,8 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 
 		$this->settings    = Mockery::mock( Settings::class );
 		$this->database    = Mockery::mock( Database::class );
-		$this->usedCSS     = Mockery::mock( UsedCSS::class );
-		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
+		$this->used_css    = Mockery::mock( UsedCSS::class );
+		$this->subscriber  = new Subscriber( $this->settings, $this->database, $this->used_css, Mockery::mock( Queue::class ) );
 	}
 
 	/**
@@ -46,10 +46,11 @@ class Test_CleanUsedCssAndCache extends FilesystemTestCase {
 			&&
 			$input['settings']['remove_unused_css_safelist'] !== $input['old_settings']['remove_unused_css_safelist']
 		 ) {
-			$this->usedCSS->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
+			$this->used_css->shouldReceive( 'delete_all_used_css' )->once();
+			$this->used_css->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
 
 			if ( $input['not_completed_count'] > 0 ) {
-				$this->usedCSS->shouldReceive( 'remove_all_completed_rows' )->once();
+				$this->database->shouldReceive( 'remove_all_completed_rows' )->once();
 			} else {
 				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			}

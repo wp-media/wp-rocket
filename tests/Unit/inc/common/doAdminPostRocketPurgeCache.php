@@ -67,6 +67,7 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'all', HOUR_IN_SECONDS )->andReturnNull();
 				Functions\expect( 'rocket_clean_domain' )->once()->with( $config['lang'] )->andReturnNull();
 				Functions\expect( 'rocket_dismiss_box' )->once()->with( 'rocket_warning_plugin_modification' )->andReturnNull();
+				Functions\expect( 'rocket_renew_box' )->once()->with( 'preload_notice' )->andReturnNull();
 				break;
 			case 'post':
 				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'post', HOUR_IN_SECONDS )->andReturnNull();

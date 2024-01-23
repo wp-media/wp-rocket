@@ -19,22 +19,22 @@ class GetPricingData extends TestCase {
 
 	private $response;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 
 		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

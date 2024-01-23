@@ -30,6 +30,22 @@
         font-style: normal;
     }
 
+	.wpr-field-helper {
+		@include font-size(13,20);
+		color: $cGreyDark2;
+		background-color: $cGrey;
+		padding: $space;
+		margin: $space 0;
+
+		span.wpr-helper-title {
+			font-weight: 600;
+			&::after {
+				content: "\a";
+				white-space: pre;
+			}
+		}
+	}
+
     .wpr-addon-logo{
         text-align: center;
         flex: 0 0 160px;

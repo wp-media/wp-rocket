@@ -4,8 +4,9 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Common\Queue;
 
 use WP_Rocket\Logger\Logger;
+use ActionScheduler_Abstract_QueueRunner;
 
-class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
+class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/**
 	 * Cron hook name.
@@ -56,10 +57,24 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @param \ActionScheduler_Store|null                    $store Store Instance.
 	 * @param \ActionScheduler_FatalErrorMonitor|null        $monitor Fatal Error monitor instance.
-	 * @param \ActionScheduler_QueueCleaner|null             $cleaner Cleaner instance.
+	 * @param Cleaner|null                                   $cleaner Cleaner instance.
 	 * @param \ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
 	 */
-	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, \ActionScheduler_QueueCleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, Cleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+		if ( is_null( $cleaner ) ) {
+			/**
+			 * Filters the clean batch size.
+			 *
+			 * @since 3.11.0.5
+			 *
+			 * @param int $batch_size Batch size.
+			 *
+			 * @return int
+			 */
+			$batch_size = (int) apply_filters( 'rocket_action_scheduler_clean_batch_size', 100, $this->group );
+			$cleaner    = new Cleaner( $store, $batch_size, $this->group );
+		}
+
 		parent::__construct( $store, $monitor, $cleaner );
 
 		if ( is_null( $async_request ) ) {
@@ -189,7 +204,7 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 					break;
 				}
 				$this->process_action( $action_id, $context );
-				$processed_actions++;
+				++$processed_actions;
 
 				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
 					break;
@@ -198,13 +213,25 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 			$this->store->release_claim( $claim );
 			$this->monitor->detach();
 			$this->clear_caches();
-
+			$this->reset_group();
 			return $processed_actions;
 		} catch ( \Exception $exception ) {
 			Logger::debug( $exception->getMessage() );
-
+			$this->reset_group();
 			return 0;
 		}
+	}
+
+	/**
+	 * Reset group in store's claim filter.
+	 *
+	 * @return void
+	 */
+	private function reset_group() {
+		if ( ! method_exists( $this->store, 'set_claim_filter' ) ) {
+			return;
+		}
+		$this->store->set_claim_filter( 'group', '' );
 	}
 
 	/**
@@ -241,4 +268,12 @@ class RUCSSQueueRunner extends \ActionScheduler_Abstract_QueueRunner {
 		return $schedules;
 	}
 
+	/**
+	 * Get the number of concurrent batches a runner allows.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_concurrent_batches() {
+		return 2;
+	}
 }

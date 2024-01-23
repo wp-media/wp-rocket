@@ -2,13 +2,14 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
-use WP_Post;
-use WP_Term;
-use Mockery;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use Mockery;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Post;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Term;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
@@ -21,7 +22,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->purge = new Purge( $this->filesystem );
+		$query = $this->createPartialMock(Cache::class, ['query']);
+		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
 	public function tearDown(): void {
@@ -120,6 +122,8 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
 			return parse_url( $url, $component );
 		} );
+
+		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
 
 		$this->purge->purge_post_terms_urls( $post_mocked );
 

@@ -11,14 +11,14 @@ abstract class TestCase extends BaseTestCase {
 
 	protected $config;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
+		parent::setUp();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
 		$this->stubRocketGetConstant();
-
-		parent::setUp();
 	}
 
 	public function configTestData() {

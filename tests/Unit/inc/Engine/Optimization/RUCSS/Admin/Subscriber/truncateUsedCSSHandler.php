@@ -5,38 +5,35 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
-use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
-use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WPDieException;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database,Settings,Subscriber};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css_handler
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_TruncateUsedCSSHandler extends TestCase {
-
 	private $settings;
 	private $database;
-	private $usedCSS;
+	private $used_css;
 	private $subscriber;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/truncateUsedCSSHandler.php';
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->settings   = Mockery::mock( Settings::class );
 		$this->database   = Mockery::mock( Database::class );
-		$this->usedCSS    = Mockery::mock( UsedCSS::class );
-		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->usedCSS, Mockery::mock( Queue::class ) );
+		$this->used_css   = Mockery::mock( UsedCSS::class );
+		$this->subscriber = new Subscriber( $this->settings, $this->database, $this->used_css, Mockery::mock( Queue::class ) );
 	}
 
-	public function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 
 		unset( $_GET['_wpnonce'] );
@@ -53,7 +50,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		if ( ! isset( $input['nonce'] ) ) {
 			Functions\expect( 'wp_verify_nonce' )->never();
 			Functions\expect( 'sanitize_key' )->never();
-		} else{
+		} else {
 			Functions\expect( 'wp_verify_nonce' )->once()->with( $input['nonce'], 'rocket_clear_usedcss' )->andReturn( 'rocket_clear_usedcss' === $input['nonce'] );
 			Functions\expect( 'sanitize_key' )->once()->andReturnFirstArg();
 		}
@@ -68,7 +65,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 
 		if ( ! isset( $input['cap'] ) ) {
 			Functions\expect( 'current_user_can' )->never();
-		}else{
+		}else {
 			Functions\expect( 'current_user_can' )
 				->once()
 				->with( 'rocket_remove_unused_css' )
@@ -111,10 +108,11 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 		}
 
 		if ( $expected['truncated'] ) {
-			$this->usedCSS->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
+			$this->used_css->shouldReceive( 'delete_all_used_css' )->once();
+			$this->used_css->shouldReceive( 'get_not_completed_count' )->once()->andReturn( $input['not_completed_count'] );
 
 			if ( $input['not_completed_count'] > 0 ) {
-				$this->usedCSS->shouldReceive( 'remove_all_completed_rows' )->once();
+				$this->database->shouldReceive( 'remove_all_completed_rows' )->once();
 			} else {
 				$this->database->shouldReceive( 'truncate_used_css_table' )->once();
 			}
@@ -127,6 +125,7 @@ class Test_TruncateUsedCSSHandler extends TestCase {
 					90
 				);
 
+			Functions\when('home_url')->justReturn($input['home_url']);
 			Functions\expect( 'rocket_renew_box' )
 				->once()
 				->with( 'rucss_success_notice' );

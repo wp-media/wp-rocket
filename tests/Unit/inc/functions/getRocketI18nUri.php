@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 use Brain\Monkey\Functions;
 use PLL_Frontend;
 use SitePress;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers ::get_rocket_i18n_uri
@@ -16,28 +16,27 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group i18n
  */
 class Test_GetRocketI18nUri extends TestCase {
-
-	public static function setUpBeforeClass() : void {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/PLL_Frontend.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		parent::tearDown();
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $i18n_plugin, $rocket_has_i18n, $config, $expected ) {
 		Functions\expect( 'rocket_has_i18n' )->once()->andReturn( $rocket_has_i18n );
@@ -95,9 +94,5 @@ class Test_GetRocketI18nUri extends TestCase {
 
 				Functions\expect( 'pll_languages_list' )->andReturn( $config['codes'] );
 		}
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
 }

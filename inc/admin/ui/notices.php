@@ -112,88 +112,6 @@ function rocket_plugins_to_deactivate() {
 	$plugins              = [];
 	$plugins_explanations = [];
 
-	// Deactivate all plugins who can cause conflicts with WP Rocket.
-	$plugins = [
-		'w3-total-cache'                             => 'w3-total-cache/w3-total-cache.php',
-		'wp-super-cache'                             => 'wp-super-cache/wp-cache.php',
-		'litespeed-cache'                            => 'litespeed-cache/litespeed-cache.php',
-		'quick-cache'                                => 'quick-cache/quick-cache.php',
-		'hyper-cache'                                => 'hyper-cache/plugin.php',
-		'hyper-cache-extended'                       => 'hyper-cache-extended/plugin.php',
-		'wp-fast-cache'                              => 'wp-fast-cache/wp-fast-cache.php',
-		'flexicache'                                 => 'flexicache/wp-plugin.php',
-		'wp-fastest-cache'                           => 'wp-fastest-cache/wpFastestCache.php',
-		'lite-cache'                                 => 'lite-cache/plugin.php',
-		'gator-cache'                                => 'gator-cache/gator-cache.php',
-		'cache-enabler'                              => 'cache-enabler/cache-enabler.php',
-		'swift-performance-lite'                     => 'swift-performance-lite/performance.php',
-		'swift-performance'                          => 'swift-performance/performance.php',
-		'speed-booster-pack'                         => 'speed-booster-pack/speed-booster-pack.php',
-		'wp-http-compression'                        => 'wp-http-compression/wp-http-compression.php',
-		'wordpress-gzip-compression'                 => 'wordpress-gzip-compression/ezgz.php',
-		'gzip-ninja-speed-compression'               => 'gzip-ninja-speed-compression/gzip-ninja-speed.php',
-		'wp-performance-score-booster'               => 'wp-performance-score-booster/wp-performance-score-booster.php',
-		'remove-query-strings-from-static-resources' => 'remove-query-strings-from-static-resources/remove-query-strings.php',
-		'query-strings-remover'                      => 'query-strings-remover/query-strings-remover.php',
-		'wp-ffpc'                                    => 'wp-ffpc/wp-ffpc.php',
-		'far-future-expiry-header'                   => 'far-future-expiry-header/far-future-expiration.php',
-		'combine-css'                                => 'combine-css/combine-css.php',
-		'super-static-cache'                         => 'super-static-cache/super-static-cache.php',
-		'wpcompressor'                               => 'wpcompressor/wpcompressor.php',
-		'check-and-enable-gzip-compression'          => 'check-and-enable-gzip-compression/richards-toolbox.php',
-		'leverage-browser-caching-ninjas'            => 'leverage-browser-caching-ninjas/leverage-browser-caching-ninja.php',
-		'force-gzip'                                 => 'force-gzip/force-gzip.php',
-		'enable-gzip-compression'                    => 'enable-gzip-compression/enable-gzip-compression.php',
-		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
-		'add-expires-headers'                        => 'add-expires-headers/add-expires-headers.php',
-		'page-optimize'                              => 'page-optimize/page-optimize.php',
-		'psn-pagespeed-ninja'                        => 'psn-pagespeed-ninja/pagespeedninja.php',
-	];
-
-	if ( get_rocket_option( 'lazyload' ) ) {
-		$plugins['bj-lazy-load']              = 'bj-lazy-load/bj-lazy-load.php';
-		$plugins['lazy-load']                 = 'lazy-load/lazy-load.php';
-		$plugins['jquery-image-lazy-loading'] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
-		$plugins['advanced-lazy-load']        = 'advanced-lazy-load/advanced_lazyload.php';
-		$plugins['crazy-lazy']                = 'crazy-lazy/crazy-lazy.php';
-		$plugins['specify-image-dimensions']  = 'specify-image-dimensions/specify-image-dimensions.php';
-	}
-
-	if ( get_rocket_option( 'lazyload_iframes' ) ) {
-		$plugins['lazy-load-for-videos'] = 'lazy-load-for-videos/codeispoetry.php';
-	}
-
-	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
-		$plugins['wp-super-minify']         = 'wp-super-minify/wp-super-minify.php';
-		$plugins['bwp-minify']              = 'bwp-minify/bwp-minify.php';
-		$plugins['wp-minify']               = 'wp-minify/wp-minify.php';
-		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
-		$plugins['minqueue']                = 'minqueue/plugin.php';
-		$plugins['dependency-minification'] = 'dependency-minification/dependency-minification.php';
-		$plugins['fast-velocity-minify']    = 'fast-velocity-minify/fvm.php';
-	}
-
-	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
-		$plugins['async-js-and-css']     = 'async-js-and-css/asyncJSandCSS.php';
-		$plugins['merge-minify-refresh'] = 'merge-minify-refresh/merge-minify-refresh.php';
-	}
-
-	if ( get_rocket_option( 'minify_js' ) ) {
-		$plugins['wp-js']                = 'wp-js/wp-js.php';
-		$plugins['combine-js']           = 'combine-js/combine-js.php';
-		$plugins['footer-javascript']    = 'footer-javascript/footer-javascript.php';
-		$plugins['scripts-to-footerphp'] = 'scripts-to-footerphp/scripts-to-footer.php';
-	}
-
-	if ( get_rocket_option( 'do_cloudflare' ) ) {
-		$plugins['cloudflare']              = 'cloudflare/cloudflare.php';
-		$plugins_explanations['cloudflare'] = __( 'WP Rocket Cloudflare Add-on provides similar functionalities. They can not be active at the same time.', 'rocket' );
-	}
-
-	if ( get_rocket_option( 'control_heartbeat' ) ) {
-		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
-	}
-
 	/**
 	 * Filter the recommended plugins to deactivate to prevent conflicts
 	 *
@@ -539,7 +457,7 @@ function rocket_thank_you_license() {
 			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
 			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
 			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
+			'<a href="https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
 			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
 			'</a>'
 		);
@@ -736,13 +654,14 @@ add_action( 'admin_notices', 'rocket_clear_cache_notice' );
  */
 function rocket_notice_html( $args ) {
 	$defaults = [
-		'status'           => 'success',
-		'dismissible'      => 'is-dismissible',
-		'message'          => '',
-		'action'           => '',
-		'dismiss_button'   => false,
-		'readonly_content' => '',
-		'id'               => '',
+		'status'                 => 'success',
+		'dismissible'            => 'is-dismissible',
+		'message'                => '',
+		'action'                 => '',
+		'dismiss_button'         => false,
+		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
+		'readonly_content'       => '',
+		'id'                     => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -751,8 +670,31 @@ function rocket_notice_html( $args ) {
 		case 'clear_cache':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
 			break;
+		case 'clear_used_css':
+			$params = [
+				'action' => 'rocket_clear_usedcss',
+			];
+
+			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
+				$referer_url                = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
+				$params['_wp_http_referer'] = rawurlencode( $referer_url );
+			}
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), $params['action'] ) ) . '">' . __( 'Clear Used CSS', 'rocket' ) . '</a>';
+			break;
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
+			break;
+		case 'switch_to_rucss':
+			$params         = [
+				'action' => 'switch_to_rucss',
+			];
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
+			break;
+		case 'enable_separate_mobile_cache':
+			$params         = [
+				'action' => 'rocket_enable_separate_mobile_cache',
+			];
+			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rocket_enable_separate_mobile_cache' ) ) . '">' . __( 'Enable “Separate Cache Files for Mobile Devices” now', 'rocket' ) . '</a>';
 			break;
 		case 'force_deactivation':
 			/**
@@ -773,6 +715,17 @@ function rocket_notice_html( $args ) {
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
 			break;
+	}
+	/**
+	 * Notice arguments.
+	 *
+	 * @param array $args arguments from the notice.
+	 * @return array
+	 */
+	$filtered_args = apply_filters( 'rocket_notice_args', $args );
+
+	if ( is_array( $filtered_args ) ) {
+		$args = wp_parse_args( $filtered_args, $defaults );
 	}
 
 	$notice_id = '';
@@ -799,7 +752,7 @@ function rocket_notice_html( $args ) {
 		<p>
 			<?php echo $args['action']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss <?php echo $args['dismiss_button_class'] ?? ''; ?>" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></a>
+			<a class="rocket-dismiss <?php echo $args['dismiss_button_class'] ?? ''; ?>" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"><?php echo esc_html( $args['dismiss_button_message'] ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>
@@ -840,3 +793,4 @@ function rocket_notice_writing_permissions( $file ) {
 
 	return $message;
 }
+

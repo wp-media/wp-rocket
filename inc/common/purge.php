@@ -29,122 +29,128 @@ function rocket_widget_update_callback( $instance ) {
 }
 add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 
-/**
- * Get post purge urls.
- *
- * @since 3.4.3
- *
- * @param int     $post_id The post ID.
- * @param WP_Post $post    WP_Post object.
- * @return array           Array with all URLs which need to be purged.
- */
-function rocket_get_purge_urls( $post_id, $post ) {
-	$purge_urls = [];
+if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
+	/**
+	 * Get post purge urls.
+	 *
+	 * @since 3.4.3
+	 *
+	 * @param int     $post_id The post ID.
+	 * @param WP_Post $post    WP_Post object.
+	 * @return array           Array with all URLs which need to be purged.
+	 */
+	function rocket_get_purge_urls( $post_id, $post ) {
+		$purge_urls = [];
 
-	// Get the permalink structure.
-	$permalink_structure = get_rocket_sample_permalink( $post_id );
+		// Get the permalink structure.
+		$permalink_structure = get_rocket_sample_permalink( $post_id );
 
-	// Get permalink.
-	$permalink = str_replace( [ '%postname%', '%pagename%' ], $permalink_structure[1], $permalink_structure[0] );
+		// Get permalink.
+		$permalink = str_replace( [ '%postname%', '%pagename%' ], $permalink_structure[1], $permalink_structure[0] );
 
-	// Add permalink.
-	if ( rocket_extract_url_component( $permalink, PHP_URL_PATH ) !== '/' ) {
-		$purge_urls[] = $permalink;
-	}
-
-	// Add Posts page.
-	if ( 'post' === $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
-		$purge_urls[] = get_permalink( get_option( 'page_for_posts' ) );
-	}
-
-	// Add Post Type archive.
-	$post_type = $post->post_type;
-	if ( 'post' !== $post_type ) {
-		$post_type_archive = get_post_type_archive_link( $post_type );
-		if ( $post_type_archive ) {
-			// Rename the caching filename for SSL URLs.
-			$filename = 'index';
-			if ( is_ssl() ) {
-				$filename .= '-https';
-			}
-
-			$post_type_archive = trailingslashit( $post_type_archive );
-			$purge_urls[]      = $post_type_archive . $filename . '.html';
-			$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
-			$purge_urls[]      = $post_type_archive . $filename . $GLOBALS['wp_rewrite']->pagination_base;
-		}
-	}
-
-	// Add next post.
-	$next_post = get_adjacent_post( false, '', false );
-	if ( $next_post ) {
-		$purge_urls[] = get_permalink( $next_post );
-	}
-
-	// Add next post in same category.
-	$next_in_same_cat_post = get_adjacent_post( true, '', false );
-	if ( $next_in_same_cat_post && $next_in_same_cat_post !== $next_post ) {
-		$purge_urls[] = get_permalink( $next_in_same_cat_post );
-	}
-
-	// Add previous post.
-	$previous_post = get_adjacent_post( false, '', true );
-	if ( $previous_post ) {
-		$purge_urls[] = get_permalink( $previous_post );
-	}
-
-	// Add previous post in same category.
-	$previous_in_same_cat_post = get_adjacent_post( true, '', true );
-	if ( $previous_in_same_cat_post && $previous_in_same_cat_post !== $previous_post ) {
-		$purge_urls[] = get_permalink( $previous_in_same_cat_post );
-	}
-
-	// Add urls page to purge every time a post is save.
-	$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
-	if ( $cache_purge_pages ) {
-		global $blog_id;
-
-		$home_url = get_option( 'home' );
-
-		if ( ! empty( $blog_id ) && is_multisite() ) {
-			switch_to_blog( $blog_id );
-			$home_url = get_option( 'home' );
-			restore_current_blog();
+		// Add permalink.
+		if ( rocket_extract_url_component( $permalink, PHP_URL_PATH ) !== '/' ) {
+			$purge_urls[] = $permalink;
 		}
 
-		$home_parts = get_rocket_parse_url( $home_url );
-		$home_url   = "{$home_parts['scheme']}://{$home_parts['host']}";
-		$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $home_parts['host'];
+		// Add Posts page.
+		if ( 'post' === $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
+			$purge_urls[] = get_permalink( get_option( 'page_for_posts' ) );
+		}
 
-		foreach ( $cache_purge_pages as $page ) {
-			// Check if it contains regex pattern.
-			if ( strstr( $page, '*' ) ) {
-				$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
-				foreach ( $matches_files as $file ) {
-					// Convert path to URL.
-					$purge_urls[] = str_replace( $cache_path, untrailingslashit( $home_url ), $file->getPath() );
+		// Add Post Type archive.
+		$post_type = $post->post_type;
+		if ( 'post' !== $post_type ) {
+			$post_type_archive = get_post_type_archive_link( $post_type );
+			if ( $post_type_archive ) {
+				// Rename the caching filename for SSL URLs.
+				$filename = 'index';
+				if ( is_ssl() ) {
+					$filename .= '-https';
 				}
-				continue;
+
+				$post_type_archive = trailingslashit( $post_type_archive );
+				$purge_urls[]      = $post_type_archive . $filename . '.html';
+				$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
+				$purge_urls[]      = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
 			}
-			$purge_urls[] = trailingslashit( $home_url ) . $page;
 		}
-	}
 
-	// Add the author page.
-	$purge_urls[] = get_author_posts_url( $post->post_author );
-
-	// Add all parents.
-	$parents = get_post_ancestors( $post_id );
-	if ( (bool) $parents ) {
-		foreach ( $parents as $parent_id ) {
-			$purge_urls[] = get_permalink( $parent_id );
+		// Add next post.
+		$next_post = get_adjacent_post( false, '', false );
+		if ( $next_post ) {
+			$purge_urls[] = get_permalink( $next_post );
 		}
+
+		// Add next post in same category.
+		$next_in_same_cat_post = get_adjacent_post( true, '', false );
+		if ( $next_in_same_cat_post && $next_in_same_cat_post !== $next_post ) {
+			$purge_urls[] = get_permalink( $next_in_same_cat_post );
+		}
+
+		// Add previous post.
+		$previous_post = get_adjacent_post( false, '', true );
+		if ( $previous_post ) {
+			$purge_urls[] = get_permalink( $previous_post );
+		}
+
+		// Add previous post in same category.
+		$previous_in_same_cat_post = get_adjacent_post( true, '', true );
+		if ( $previous_in_same_cat_post && $previous_in_same_cat_post !== $previous_post ) {
+			$purge_urls[] = get_permalink( $previous_in_same_cat_post );
+		}
+
+		// Add urls page to purge every time a post is save.
+		$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
+		if ( $cache_purge_pages ) {
+			global $blog_id;
+
+			$home_url = get_option( 'home' );
+
+			if ( ! empty( $blog_id ) && is_multisite() ) {
+				switch_to_blog( $blog_id );
+				$home_url = get_option( 'home' );
+				restore_current_blog();
+			}
+
+			$home_parts = get_rocket_parse_url( $home_url );
+			$home_url   = "{$home_parts['scheme']}://{$home_parts['host']}";
+			$cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $home_parts['host'];
+
+			foreach ( $cache_purge_pages as $page ) {
+				// Check if it contains regex pattern.
+				if ( strstr( $page, '*' ) ) {
+					$matches_files = _rocket_get_recursive_dir_files_by_regex( '#' . $page . '#i' );
+					foreach ( $matches_files as $file ) {
+						// Convert path to URL.
+						$purge_urls[] = str_replace( $cache_path, untrailingslashit( $home_url ), $file->getPath() );
+					}
+					continue;
+				}
+
+				$purge_urls[] = trailingslashit( $home_url ) . ltrim( $page, '/' );
+			}
+		}
+
+		// Add the author page.
+		$author_url = trailingslashit( get_author_posts_url( $post->post_author ) );
+		if ( trailingslashit( site_url() ) !== $author_url && trailingslashit( home_url() ) !== $author_url ) {
+			$purge_urls[] = $author_url;
+		}
+
+		// Add all parents.
+		$parents = get_post_ancestors( $post_id );
+		if ( (bool) $parents ) {
+			foreach ( $parents as $parent_id ) {
+				$purge_urls[] = get_permalink( $parent_id );
+			}
+		}
+
+		// Remove entries with empty values in array.
+		$purge_urls = array_filter( $purge_urls, 'is_string' );
+
+		return array_flip( array_flip( $purge_urls ) );
 	}
-
-	// Remove entries with empty values in array.
-	$purge_urls = array_filter( $purge_urls, 'is_string' );
-
-	return array_flip( array_flip( $purge_urls ) );
 }
 
 /**
@@ -166,6 +172,10 @@ function rocket_get_purge_urls( $post_id, $post ) {
  * @param WP_Post $post    WP_Post object.
  */
 function rocket_clean_post( $post_id, $post = null ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	static $done = [];
 
 	if ( isset( $done[ $post_id ] ) ) {
@@ -203,7 +213,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 
 	// Get the post language.
 	$i18n_plugin = rocket_has_i18n();
-	$lang        = false;
+	$lang        = '';
 
 	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
 		// WPML.
@@ -242,7 +252,18 @@ function rocket_clean_post( $post_id, $post = null ) {
 	rocket_clean_home( $lang );
 
 	// Purge home feeds (blog & comments).
-	rocket_clean_home_feeds();
+	if ( has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) !== false ) {
+		rocket_clean_home_feeds();
+	}
+
+	/**
+	 *  URLs cache files to remove after cache files related with the post are deleted
+	 *
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param WP_Post $post       The post object
+	 * @returns array   $purge_urls URLs cache files to remove
+	 */
+	$purge_urls = (array) apply_filters( 'after_rocket_clean_post_urls', $purge_urls, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Fires after cache files related with the post are deleted
@@ -271,6 +292,10 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	if ( 'publish' !== get_post_field( 'post_status', $post_id ) || 'draft' !== $post_data['post_status'] ) {
 		return;
 	}
@@ -324,6 +349,15 @@ function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
 
 	// Purge home feeds (blog & comments).
 	rocket_clean_home_feeds();
+
+	/**
+	 *  URLs cache files to remove after cache files related with the post are deleted
+	 *
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param WP_Post $post       The post object
+	 * @returns array   $purge_urls URLs cache files to remove
+	 */
+	$purge_urls = (array) apply_filters( 'after_rocket_clean_post_urls', $purge_urls, $post ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	/**
 	 * Fires after cache files related with the post are deleted
@@ -482,6 +516,7 @@ function do_admin_post_rocket_purge_cache() { // phpcs:ignore WordPress.NamingCo
 				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+				rocket_renew_box( 'preload_notice' );
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.
@@ -548,15 +583,19 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  * @param array       $hook_extra  Array of bulk item update data.
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
-	if ( 'update' !== $hook_extra['action'] ) {
+	if ( rocket_is_importing() ) {
 		return;
 	}
 
-	if ( 'theme' !== $hook_extra['type'] ) {
+	if ( ! isset( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
 		return;
 	}
 
-	if ( ! is_array( $hook_extra['themes'] ) ) {
+	if ( ! isset( $hook_extra['type'] ) || 'theme' !== $hook_extra['type'] ) {
+		return;
+	}
+
+	if ( ! isset( $hook_extra['themes'] ) || ! is_array( $hook_extra['themes'] ) ) {
 		return;
 	}
 
@@ -584,8 +623,12 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	// Bail out if the post status is draft, pending or auto-draft.
-	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft' ], true ) ) {
+	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft', 'trash' ], true ) ) {
 		return;
 	}
 	$post_name = get_post_field( 'post_name', $post_id );

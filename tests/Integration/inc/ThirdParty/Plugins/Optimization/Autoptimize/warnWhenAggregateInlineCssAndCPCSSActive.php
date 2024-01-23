@@ -16,14 +16,14 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	use CapTrait;
 
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 	}
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept(
 			'admin_notices',
@@ -35,9 +35,9 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 			->andReturn( '123456' );
 	}
 
-	public function tearDown() {
-		$this->restoreWpFilter( 'admin_notices' );
-		parent::tearDown();
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_notices' );
+		parent::tear_down();
 	}
 
 	/**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
@@ -20,22 +21,28 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 	private $posts;
 	private $input;
 
-	public static function setUpBeforeClass(): void {
+	public static function set_up_before_class() {
 		self::installFresh();
 
-		parent::setUpBeforeClass();
+		parent::set_up_before_class();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
 		self::uninstallAll();
 	}
 
-	public function tearDown() : void {
-		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+	public function set_up() {
+		parent::set_up();
+		UsedCSS::$table_exists = true;
+	}
 
-		parent::tearDown();
+	public function tear_down() : void {
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		UsedCSS::$table_exists = false;
+
+		parent::tear_down();
 	}
 
 	/**
@@ -44,6 +51,10 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 	public function testShouldTruncateTableWhenOptionIsEnabled( $input ){
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$subscriber          = $container->get( 'rucss_admin_subscriber' );
+		$event_manager       = $container->get( 'event_manager' );
+
+		$event_manager->remove_callback( 'permalink_structure_changed', [ $subscriber, 'truncate_used_css' ] );
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

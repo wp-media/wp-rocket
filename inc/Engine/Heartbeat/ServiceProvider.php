@@ -29,7 +29,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber' )
+		$this->getContainer()->share( 'heartbeat_subscriber', HeartbeatSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addTag( 'common_subscriber' );
 	}

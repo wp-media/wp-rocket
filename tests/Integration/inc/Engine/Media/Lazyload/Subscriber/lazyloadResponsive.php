@@ -13,8 +13,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_LazyloadResponsive extends TestCase {
 	private $is_native;
 
-	public function tearDown() : void {
-		parent::tearDown();
+	public function tear_down() : void {
+		parent::tear_down();
 
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'set_is_native' ] );
 	}

@@ -30,7 +30,7 @@ class Savvii implements Subscriber_Interface {
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => 'return_empty_array',
 			'init'                                    => 'clear_cache_after_savvii',
-			'after_rocket_clean_domain'               => 'clean_savvii',
+			'rocket_after_clean_domain'               => 'clean_savvii',
 		];
 	}
 
@@ -74,6 +74,10 @@ class Savvii implements Subscriber_Interface {
 				check_admin_referer( CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW )
 			)
 		) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 

@@ -4,17 +4,26 @@ declare( strict_types=1 );
 namespace WP_Rocket\Engine\Optimization\DelayJS;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Logger\Logger;
 
 class HTML {
+	use RegexTrait;
 
 	/**
 	 * Plugin options instance.
 	 *
-	 * @since  3.7
-	 *
 	 * @var Options_Data
 	 */
 	protected $options;
+
+	/**
+	 * DataManager instance
+	 *
+	 * @var DataManager
+	 */
+	private $data_manager;
 
 	/**
 	 * Array of excluded patterns from delay JS
@@ -23,65 +32,51 @@ class HTML {
 	 *
 	 * @var array
 	 */
-	protected $excluded = [
-		'nowprocket',
-		'/wp-includes/js/wp-embed.min.js',
-		'lazyLoadOptions',
-		'lazyLoadThumb',
-		'wp-rocket/assets/js/lazyload/(.*)',
-		'et_core_page_resource_fallback',
-		'window.\$us === undefined',
-		'js-extra',
-		'fusionNavIsCollapsed',
-		'/assets/js/smush-lazy-load', // Smush & Smush Pro.
-		'eio_lazy_vars',
-		'\/lazysizes(\.min|-pre|-post)?\.js', // lazyload library (used in EWWW, Autoptimize, Avada).
-		'document\.body\.classList\.remove\("no-js"\)',
-		'document\.documentElement\.className\.replace\( \'no-js\', \'js\' \)',
-		'et_animation_data',
-		'wpforms_settings',
-		'var nfForms',
-		'//stats.wp.com', // Jetpack Stats.
-		'_stq.push', // Jetpack Stats.
-		'fluent_form_ff_form_instance_', // Fluent Forms.
-		'cpLoadCSS', // Convert Pro.
-		'ninja_column_', // Ninja Tables.
-		'var rbs_gallery_', // Robo Gallery.
-		'var lepopup_', // Green Popup.
-		'var billing_additional_field', // Woo Autocomplete Nish.
-		'var gtm4wp',
-		'var dataLayer_content',
-		'/ewww-image-optimizer/includes/load[_-]webp(\.min)?.js', // EWWW WebP rewrite external script.
-		'/ewww-image-optimizer/includes/check-webp(\.min)?.js', // EWWW WebP check external script.
-		'ewww_webp_supported', // EWWW WebP inline scripts.
-		'/dist/js/browser-redirect/app.js', // WPML browser redirect script.
-		'/perfmatters/js/lazyload.min.js',
-		'lazyLoadInstance',
-		'scripts.mediavine.com/tags/', // allows mediavine-video schema to be accessible by search engines.
-		'initCubePortfolio', // Cube Portfolio show images.
-		'simpli.fi', // simpli.fi Advertising Platform scripts.
-		'gforms_recaptcha_', // Gravity Forms recaptcha.
-		'/jetpack-boost/vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack Boost plugin lazyload.
-		'jetpack-lazy-images-js-enabled',  // Jetpack Boost plugin lazyload.
-		'jetpack-boost-critical-css', // Jetpack Boost plugin critical CSS.
-		'wpformsRecaptchaCallback', // WPForms reCAPTCHA v2.
-		'booking-suedtirol-js', // bookingsuedtirol.com widgets.
-		'/gravityforms/js/conditional_logic.min.js', // Gravity forms conditions.
-		'statcounter.com/counter/counter.js', // StatsCounter.
-		'var sc_project', // Statscounter.
-		'/jetpack/jetpack_vendor/automattic/jetpack-lazy-images/(.*)', // Jetpack plugin lazyload.
-		'/themify-builder/themify/js/modules/fallback(\.min)?.js',
+	protected $excluded = [];
+
+	/**
+	 * Allowed type attributes.
+	 *
+	 * @var array Array of allowed type attributes.
+	 */
+	private $allowed_types = [
+		'text/javascript',
+		'module',
+		'application/javascript',
+		'application/ecmascript',
+		'application/x-ecmascript',
+		'application/x-javascript',
+		'text/ecmascript',
+		'text/javascript1.0',
+		'text/javascript1.1',
+		'text/javascript1.2',
+		'text/javascript1.3',
+		'text/javascript1.4',
+		'text/javascript1.5',
+		'text/jscript',
+		'text/livescript',
+		'text/x-ecmascript',
+		'text/x-javascript',
 	];
+
+	/**
+	 * Logger instance.
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
 
 	/**
 	 * Creates an instance of HTML.
 	 *
-	 * @since  3.7
-	 *
 	 * @param Options_Data $options Plugin options instance.
+	 * @param DataManager  $data_manager DataManager instance.
+	 * @param Logger       $logger Logger instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, DataManager $data_manager, Logger $logger ) {
+		$this->options      = $options;
+		$this->data_manager = $data_manager;
+		$this->logger       = $logger;
 	}
 
 	/**
@@ -99,7 +94,10 @@ class HTML {
 			return $html;
 		}
 
+		$this->set_exclusions();
+
 		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions', [] ) );
+		$this->excluded = array_merge( $this->excluded, $this->options->get( 'delay_js_exclusions_selected_exclusions', [] ) );
 
 		/**
 		 * Filters the delay JS exclusions array
@@ -108,9 +106,13 @@ class HTML {
 		 *
 		 * @param array $excluded Array of excluded patterns.
 		 */
-		$this->excluded = apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
+		$this->excluded = (array) apply_filters( 'rocket_delay_js_exclusions', $this->excluded );
 		$this->excluded = array_map(
 			function ( $value ) {
+				if ( ! is_string( $value ) ) {
+					$value = (string) $value;
+				}
+
 				return str_replace(
 					[ '+', '?ver', '#' ],
 					[ '\+', '\?ver', '\#' ],
@@ -168,20 +170,28 @@ class HTML {
 	 * @return string
 	 */
 	private function parse( $html ): string {
+
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
+		$result = $this->replace_xmp_tags( $html );
+		$result = $this->replace_svg_tags( $result );
+
 		$replaced_html = preg_replace_callback(
-			'/<\s*script\s*(?<attr>[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
+			'/<\s*script(?<attr>\s*[^>]*?)?>(?<content>.*?)?<\s*\/\s*script\s*>/ims',
 			[
 				$this,
 				'replace_scripts',
 			],
-			$html
+			$result
 		);
-
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
 
-		return $replaced_html;
+		$replaced_html = $this->restore_xmp_tags( $replaced_html );
+		return $this->restore_svg_tags( $replaced_html );
 	}
 
 	/**
@@ -197,32 +207,38 @@ class HTML {
 	public function replace_scripts( $matches ): string {
 		foreach ( $this->excluded as $pattern ) {
 			if ( preg_match( "#{$pattern}#i", $matches[0] ) ) {
+				$this->logger->debug( "DelayJS: Script {$matches[0]} excluded by $pattern" );
 				return $matches[0];
 			}
 		}
 
-		$matches['attr'] = trim( $matches['attr'] );
-		$delay_js        = $matches[0];
-
-		if ( ! empty( $matches['attr'] ) ) {
-
-			if (
-				strpos( $matches['attr'], 'type=' ) !== false
-				&&
-				! preg_match( '/type\s*=\s*["\'](?:text|application)\/(?:(?:x\-)?javascript|ecmascript|jscript)["\']|type\s*=\s*["\'](?:module)[ "\']/i', $matches['attr'] )
-			) {
-				return $matches[0];
-			}
-
-			$delay_attr = preg_replace( '/type=(["\'])(.*?)\1/i', 'data-rocket-$0', $matches['attr'], 1 );
-
-			if ( null !== $delay_attr ) {
-				$delay_js = preg_replace( '#' . preg_quote( $matches['attr'], '#' ) . '#i', $delay_attr, $matches[0], 1 );
-			}
+		if ( empty( $matches['attr'] ) ) {
+			return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
 		}
 
-		return preg_replace( '/<script/i', '<script type="rocketlazyloadscript"', $delay_js, 1 );
+		$type_regex = '/type\s*=\s*(["\'])(?<type>.*)\1/i';
+		preg_match( $type_regex . 'U', $matches['attr'], $type_matches );
+		if (
+			! empty( $type_matches )
+			&&
+			! empty( trim( $type_matches['type'] ) )
+			&&
+			! in_array( trim( $type_matches['type'] ), $this->allowed_types, true )
+		) {
+			return $matches[0];
+		}
+
+		$matches['attr'] = preg_replace( $type_regex, 'data-rocket-type=$1$2$1', $matches['attr'] );
+		// To remove type attribute without any value.
+		$matches['attr'] = preg_replace( '/(\s+type\s+)|(^type\s+)|(\s+type$)/i', '', $matches['attr'] );
+
+		// Checks if script has src attribute so then treat as external script and replace src with data-rocket-src.
+		$src_regex       = '/src\s*=\s*(["\'])(.*)\1/i';
+		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
+
+		return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
+
 
 	/**
 	 * Move meta charset to head if not found to the top of page content.
@@ -247,7 +263,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<head\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -257,7 +273,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<html\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}${matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -266,12 +282,23 @@ class HTML {
 			return $replaced_html;
 		}
 
-		$replaced_html = preg_replace( '/(<\w+)/', "${matches[0]}\${1}", $replaced_html, 1 );
+		$replaced_html = preg_replace( '/(<\w+)/', "{$matches[0]}\${1}", $replaced_html, 1 );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
 
 		return $replaced_html;
+	}
+
+	/**
+	 * Get exclusions
+	 *
+	 * @return void
+	 */
+	private function set_exclusions() {
+		$lists = $this->data_manager->get_lists();
+
+		$this->excluded = isset( $lists->delay_js_exclusions ) ? $lists->delay_js_exclusions : [];
 	}
 }

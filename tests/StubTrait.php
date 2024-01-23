@@ -22,6 +22,8 @@ trait StubTrait {
 	protected $plugin_name = 'WP Rocket';
 	protected $rucss_api = 'http://localhost';
 	protected $constants = [];
+	protected $dontasynccss = false;
+	protected $rest_request = false;
 
 	protected function resetStubProperties() {
 		$defaults = [
@@ -35,7 +37,8 @@ trait StubTrait {
 			'wp_rocket_debug'          => false,
 			'wp_rocket_advanced_cache' => true,
 			'donotrocketoptimize'      => null,
-			'dontasynccss'             => null,
+			'dontasynccss'             => false,
+			'rest_request'             => false,
 			'white_label'              => false,
 			'white_label_footprint'    => null,
 			'constants'                => [],
@@ -77,6 +80,9 @@ trait StubTrait {
 
 			case 'SCRIPT_DEBUG':
 				return $this->script_debug;
+
+			case 'REST_REQUEST':
+				return $this->rest_request;
 
 			case 'WP_CACHE':
 				return $this->wp_cache_constant;

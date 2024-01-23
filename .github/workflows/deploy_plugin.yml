@@ -11,10 +11,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '7.3'
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -34,6 +35,10 @@ jobs:
           mv wp-rocket-* wp-rocket
         working-directory: /tmp
 
+      - name: Remove unmet dependencies by legacy versions
+        run: composer remove --dev --update-no-dev --no-scripts coenjacobs/mozart
+        working-directory: /tmp/wp-rocket
+
       - name: Run composer
         run: composer install --no-scripts --no-dev
         working-directory: /tmp/wp-rocket
@@ -50,31 +55,10 @@ jobs:
         run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
         working-directory: /tmp
 
-      - name: Install Swift
-        run: |
-          sudo apt update
-          sudo apt install python3-swiftclient -y
-      # Use Openstack Swift to upload the zip to OVH block storage
-      # We post a header to instruct the file to be deleted after 10 minutes
       - name: Upload Zip
-        env:
-          OS_AUTH_URL: ${{ secrets.OBJECT_STORAGE_URL }}
-          OS_PASSWORD: ${{ secrets.OBJECT_STORAGE_PASSWORD }}
-          OS_PROJECT_NAME: ${{ secrets.OBJECT_STORAGE_PROJECT }}
-          OS_PROJECT_ID: ${{ secrets.OBJECT_STORAGE_PROJECT_ID }}
-          OS_REGION_NAME: ${{ secrets.OBJECT_STORAGE_REGION }}
-          OS_USERNAME: ${{ secrets.OBJECT_STORAGE_USERNAME }}
-          OS_USER_DOMAIN_NAME: "Default"
-        working-directory: /tmp
         run: |
-          /usr/bin/swift upload rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
-          /usr/bin/swift post --header "X-Delete-After: 600" rocket-plugin __wp-rocket_${GITHUB_REF##*v}.zip
-
-
-      # Call the webhook on AWX to fetch and deploy the zip
-      - name: Invoke deployment hook
-        uses: distributhor/workflow-webhook@v1
-        env:
-          webhook_type: 'json-extended'
-          webhook_url: ${{ secrets.WEBHOOK_URL_PLUGIN }}
-          webhook_secret: ${{ secrets.WEBHOOK_KEY_PLUGIN }}
+          curl -v -X POST \
+            -H "Content-Type: multipart/form-data" \
+            -F "file=@/tmp/__wp-rocket_${GITHUB_REF##*v}.zip;type=application/zip" \
+            -H "Authorization: Bearer ${{ secrets.UPLOAD_ZIP_TOKEN }}" \
+            ${{ secrets.UPLOAD_ZIP_URL }}

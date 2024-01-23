@@ -5,16 +5,42 @@ namespace WP_Rocket\Tests\Integration;
 trait DBTrait {
 	public static function resourceFound( array $resource ) : bool {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_resources_query' );
-		return $resource_query->query( $resource );
+		$resource_query = $container->get( 'rucss_used_css_query' );
+		return count($resource_query->query( $resource )) > 0;
+	}
+
+	public static function addResource(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$resource_query = $container->get( 'rucss_used_css_query' );
+		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
+		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
+			$resource_query->make_status_inprogress($job_id);
+		}
+		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
+			$resource_query->make_status_pending($job_id);
+		}
+		return $job_id;
+	}
+
+	public static function cacheFound( array $cache): bool {
+		$container = apply_filters( 'rocket_container', null );
+		$resource_query = $container->get( 'preload_caches_query' );
+		return count($resource_query->query( $cache )) > 0;
 	}
 
 	public static function truncateUsedCssTable() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+
 		if ( $rucss_usedcss_table->exists() ){
 			$rucss_usedcss_table->truncate();
 		}
+	}
+
+	public static function addCache( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$cache_query = $container->get( 'preload_caches_query' );
+		return $cache_query->create_or_update( $resource );
 	}
 
 	public static function installFresh() {
@@ -22,36 +48,36 @@ trait DBTrait {
 
 		self::uninstallAll();
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		$rucss_resources_table->install();
-
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
+		$container->get( 'rucss_used_css_query' )::$table_exists = true;
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+		$preload_cache_table->install();
 	}
 
 	public static function uninstallAll() {
-		$container             = apply_filters( 'rocket_container', null );
+		$container           = apply_filters( 'rocket_container', null );
+		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
-		if ( $rucss_resources_table->exists() ) {
-			$rucss_resources_table->uninstall();
-		}
-
-		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		if ( $rucss_usedcss_table->exists() ) {
 			$rucss_usedcss_table->uninstall();
+		}
+
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+		if ( $preload_cache_table->exists() ) {
+			$preload_cache_table->uninstall();
 		}
 	}
 
 	public static function removeDBHooks() {
 		$container             = apply_filters( 'rocket_container', null );
-		$rucss_resources_table = $container->get( 'rucss_resources_table' );
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
+		$preload_table         = $container->get( 'preload_caches_table' );
 
-		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_resources_table ), 'maybe_upgrade', 10);
-		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_resources_table ), 'switch_blog', 10);
 		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $rucss_usedcss_table ), 'maybe_upgrade', 10);
 		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $rucss_usedcss_table ), 'switch_blog', 10);
+		self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $preload_table ), 'maybe_upgrade', 10);
+		self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $preload_table ), 'switch_blog', 10);
 	}
 
 	public static function forceRemoveTableAdminInitHooks( $hook_name = '', $class_name = '', $method_name = '', $priority = 0 ) {

@@ -3,10 +3,10 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
 use Mockery;
-use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 /**
  * @covers \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
@@ -15,16 +15,17 @@ use WP_Rocket\Engine\Cache\Purge;
 class Test_PurgeDatesArchives extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeDatesArchives.php';
 
-	public function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
-
-		$this->purge = new Purge( $this->filesystem );
+		
+		$query = $this->createPartialMock(Cache::class, ['query']);
+		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $GLOBALS['wp_rewrite'] );
+
+		parent::tearDown();
 	}
 
 	/**

@@ -7,16 +7,17 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
  * @group ThirdParty
  * @group Smush
  * @group WithSmush
+ * @requires PHP >= 7.4
  */
 class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 	private $option_hook_prefix = 'pre_get_rocket_option_';
 	private $rocket_settings;
 	private $filters;
 
-	public function setUp() : void {
+	public function set_up() {
 		global $wp_filter;
 
-		parent::setUp();
+		parent::set_up();
 
 		$this->filters = [
 			$this->option_hook_prefix . 'lazyload'         => null,
@@ -34,8 +35,8 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 		$this->rocket_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		foreach ( $this->filters as $tag => $list ) {
 			if ( ! empty( $this->filters[ $tag ] ) ) {

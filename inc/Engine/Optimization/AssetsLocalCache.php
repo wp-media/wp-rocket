@@ -183,6 +183,5 @@ class AssetsLocalCache {
 		}
 
 		return str_replace( $integrity_matches[0], '', $asset_matched[0] );
-
 	}
 }

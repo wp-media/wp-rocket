@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.3.0
  *
  * @param string $option  The option name.
- * @param bool   $default (default: false) The default value of option.
+ * @param mixed  $default (default: false) The default value of option.
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -23,13 +23,25 @@ function get_rocket_option( $option, $default = false ) { // phpcs:ignore WordPr
 }
 
 /**
+ * Export settings into JSON.
+ *
+ * @return array
+ */
+function rocket_export_options() {
+	$site_name = get_rocket_parse_url( get_home_url() );
+	$site_name = $site_name['host'] . $site_name['path'];
+	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+	return [ $filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ) ]; // do not use get_rocket_option() here.
+}
+
+/**
  * Update a WP Rocket option.
  *
  * @since 3.0 Use the new options classes
  * @since 2.7
  *
  * @param  string $key    The option name.
- * @param  string $value  The value of the option.
+ * @param  mixed  $value  The value of the option.
  * @return void
  */
 function update_rocket_option( $key, $value ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
@@ -154,80 +166,18 @@ function rocket_get_dns_prefetch_domains() {
  * These parameters are ignored when checking the query string during caching to allow serving the default cache when they are present
  *
  * @since 3.4
- * @author Remy Perona
  *
  * @return array
  */
 function rocket_get_ignored_parameters() {
-	$params = [
-		'utm_source'            => 1,
-		'utm_medium'            => 1,
-		'utm_campaign'          => 1,
-		'utm_expid'             => 1,
-		'utm_term'              => 1,
-		'utm_content'           => 1,
-		'mtm_source'            => 1,
-		'mtm_medium'            => 1,
-		'mtm_campaign'          => 1,
-		'mtm_keyword'           => 1,
-		'mtm_cid'               => 1,
-		'mtm_content'           => 1,
-		'pk_source'             => 1,
-		'pk_medium'             => 1,
-		'pk_campaign'           => 1,
-		'pk_keyword'            => 1,
-		'pk_cid'                => 1,
-		'pk_content'            => 1,
-		'fb_action_ids'         => 1,
-		'fb_action_types'       => 1,
-		'fb_source'             => 1,
-		'fbclid'                => 1,
-		'campaignid'            => 1,
-		'adgroupid'             => 1,
-		'adid'                  => 1,
-		'gclid'                 => 1,
-		'age-verified'          => 1,
-		'ao_noptimize'          => 1,
-		'usqp'                  => 1,
-		'cn-reloaded'           => 1,
-		'_ga'                   => 1,
-		'sscid'                 => 1,
-		'gclsrc'                => 1,
-		'_gl'                   => 1,
-		'mc_cid'                => 1,
-		'mc_eid'                => 1,
-		'_bta_tid'              => 1,
-		'_bta_c'                => 1,
-		'trk_contact'           => 1,
-		'trk_msg'               => 1,
-		'trk_module'            => 1,
-		'trk_sid'               => 1,
-		'gdfms'                 => 1,
-		'gdftrk'                => 1,
-		'gdffi'                 => 1,
-		'_ke'                   => 1,
-		'redirect_log_mongo_id' => 1,
-		'redirect_mongo_id'     => 1,
-		'sb_referer_host'       => 1,
-		'mkwid'                 => 1,
-		'pcrid'                 => 1,
-		'ef_id'                 => 1,
-		's_kwcid'               => 1,
-		'msclkid'               => 1,
-		'dm_i'                  => 1,
-		'epik'                  => 1,
-		'pp'                    => 1,
-	];
-
 	/**
 	 * Filters the ignored parameters
 	 *
 	 * @since 3.4
-	 * @author Remy Perona
 	 *
 	 * @param array $params An array of ignored parameters as array keys.
 	 */
-	return apply_filters( 'rocket_cache_ignored_parameters', $params );
+	return apply_filters( 'rocket_cache_ignored_parameters', [] );
 }
 
 /**
@@ -239,10 +189,10 @@ function rocket_get_ignored_parameters() {
  * @since 2.0
  *
  * @param bool $force Force the static uris to be reverted to null.
- *
+ * @param bool $show_safe_content show sensitive uris.
  * @return string A pipe separated list of rejected uri.
  */
-function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	static $uris;
 	global $wp_rewrite;
 
@@ -253,7 +203,8 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 		return $uris;
 	}
 
-	$uris              = (array) get_rocket_option( 'cache_reject_uri', [] );
+	$uris = (array) get_rocket_option( 'cache_reject_uri', [] );
+
 	$home_root         = rocket_get_home_dirname();
 	$home_root_escaped = preg_quote( $home_root, '/' ); // The site is not at the domain root, it's in a folder.
 	$home_root_len     = strlen( $home_root );
@@ -287,13 +238,22 @@ function get_rocket_cache_reject_uri( $force = false ) { // phpcs:ignore WordPre
 	 * @since 2.1
 	 *
 	 * @param array $uris List of rejected uri
+	 * @param bool $show_safe_content show sensitive uris.
 	*/
-	$uris = apply_filters( 'rocket_cache_reject_uri', $uris );
+	$uris = apply_filters( 'rocket_cache_reject_uri', $uris, $show_safe_content );
 	$uris = array_filter( $uris );
 
 	if ( ! $uris ) {
 		return '';
 	}
+
+	$uris = array_map(
+			function ( $uri ) {
+				// Sanitize URIs and remove single quote from them to avoid syntax errors in .htaccess and php config file.
+				return str_replace( "'", '', esc_url_raw( $uri ) );
+			},
+		$uris
+		);
 
 	if ( '' !== $home_root ) {
 		foreach ( $uris as $i => $uri ) {
@@ -455,12 +415,12 @@ function get_rocket_cache_query_string() { // phpcs:ignore WordPress.NamingConve
  * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	$rocket_secret_key = get_rocket_option( 'secret_key' );
+	$rocket_secret_key = (string) get_rocket_option( 'secret_key', '' );
 	if ( ! $rocket_secret_key ) {
 		return false;
 	}
 
-	$valid_details = 8 === strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
+	$valid_details = 8 === strlen( (string) get_rocket_option( 'consumer_key', '' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email', '' ) ) );
 
 	if ( ! $valid_details ) {
 		set_transient(
@@ -617,6 +577,7 @@ function rocket_check_key() {
 	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );
 	rocket_delete_licence_data_file();
+	update_option( 'wp_rocket_no_licence', 0 );
 
 	return $rocket_options;
 }

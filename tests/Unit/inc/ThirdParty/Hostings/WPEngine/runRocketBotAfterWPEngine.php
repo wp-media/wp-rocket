@@ -17,10 +17,14 @@ use WP_Rocket\ThirdParty\Hostings\WPEngine;
  * @group  ThirdParty
  */
 class Test_RunRocketBotAfterWPEngine extends TestCase {
+	private $wpengine;
+
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRunRocketBotAfterWPEngine( $config, $expected ) {
+		Functions\when( 'current_user_can' )->justReturn( true );
+
 		if ( isset( $config['wpe_param'] ) ) {
 			Functions\expect( 'wpe_param' )
 				->once()

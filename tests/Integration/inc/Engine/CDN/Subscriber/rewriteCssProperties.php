@@ -9,8 +9,8 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group  CDN
  */
 class Test_RewriteCssProperties extends TestCase {
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->cnames = [
 			'cdn.example.org',
@@ -24,10 +24,10 @@ class Test_RewriteCssProperties extends TestCase {
 		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'do_rocket_cdn_css_properties', [ $this, 'return_false' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

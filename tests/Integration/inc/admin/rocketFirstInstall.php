@@ -26,8 +26,8 @@ class Test_RocketFirstInstall extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->previous_user_id = get_current_user_id();
 
@@ -47,10 +47,12 @@ class Test_RocketFirstInstall extends TestCase {
 		delete_option( $this->option_name );
 		delete_user_meta( self::$user_id, 'rocket_boxes' );
 		set_transient( $this->box_name, 'foobar' );
+
+		add_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		wp_set_current_user( $this->previous_user_id );
 
@@ -77,6 +79,8 @@ class Test_RocketFirstInstall extends TestCase {
 		} else {
 			delete_transient( $this->box_name );
 		}
+
+		remove_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
 	/**

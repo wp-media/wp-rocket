@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Engine\Activation;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\Container;
+use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
@@ -20,6 +22,8 @@ class Activation {
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'action_scheduler_check',
+		'preload_activation',
 	];
 
 	/**
@@ -31,8 +35,12 @@ class Activation {
 		$container = new Container();
 
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
-		$container->addServiceProvider( 'WP_Rocket\Engine\Activation\ServiceProvider' );
-		$container->addServiceProvider( 'WP_Rocket\ThirdParty\Hostings\ServiceProvider' );
+		$options_api = new Options( 'wp_rocket_' );
+		$container->add( 'options_api', $options_api );
+		$container->addServiceProvider( \WP_Rocket\ServiceProvider\Options::class );
+		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
+		$container->addServiceProvider( ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
 
 		$host_type = HostResolver::get_host_service();
 
@@ -56,6 +64,7 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
+		require WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 
 		/**
 		 * WP Rocket activation.
@@ -83,14 +92,9 @@ class Activation {
 			]
 		);
 
-		wp_remote_get(
-			home_url(),
-			[
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-			]
-		);
+		/**
+		 * Fires after WP Rocket is activated
+		 */
+		do_action( 'rocket_after_activation' );
 	}
 }

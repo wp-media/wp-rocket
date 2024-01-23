@@ -40,9 +40,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'before_rocket_clean_domain' => [ 'clean_domain', 10, 3 ],
-			'before_rocket_clean_file'   => [ 'clean_file' ],
-			'before_rocket_clean_home'   => [ 'clean_home', 10, 2 ],
+			'before_rocket_clean_domain'          => [ 'clean_domain', 10, 3 ],
+			'before_rocket_clean_file'            => [ 'clean_file' ],
+			'rocket_rucss_after_clearing_usedcss' => [ 'clean_file' ],
+			'before_rocket_clean_home'            => [ 'clean_home', 10, 2 ],
+			'rocket_rucss_complete_job_status'    => [ 'clean_file' ],
 		];
 	}
 

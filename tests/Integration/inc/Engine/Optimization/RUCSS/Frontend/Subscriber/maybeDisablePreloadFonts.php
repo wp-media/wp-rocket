@@ -17,7 +17,7 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 	private $rucss;
 	private $post;
 
-	public function tearDown(): void {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
 
 		if ( isset( $this->post->ID ) ) {
@@ -26,7 +26,7 @@ class Test_MaybeDisablePreloadFonts extends TestCase {
 
 		remove_filter( 'pre_option_wp_rocket_prewarmup_stats', [ $this, 'return_prewarmup_stats' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

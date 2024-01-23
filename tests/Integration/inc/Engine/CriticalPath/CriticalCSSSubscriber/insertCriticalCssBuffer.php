@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -16,8 +17,19 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
-	use ContentTrait;
+	use ContentTrait, DBTrait;
 
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/insertCriticalCssBuffer.php';
 
 	protected static $use_settings_trait = true;
@@ -34,16 +46,16 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		wp_set_current_user( self::$user_id );
 		set_current_screen( 'front' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		$this->reset_post_types();
 		$this->reset_taxonomies();

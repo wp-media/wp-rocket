@@ -25,15 +25,15 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 		self::$post_id = $factory->post->create();
 	}
 
-	public function setUp() : void {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );

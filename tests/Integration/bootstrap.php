@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 use WC_Install;
+use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
 
@@ -15,6 +16,15 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function() {
+
+        if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Url_Converter.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Languages.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Language_Switcher.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {
 			// Load Simple Custom CSS plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/simple-custom-css/simple-custom-css.php';
@@ -39,6 +49,8 @@ tests_add_filter(
 				[
 					'do_cloudflare'               => 1,
 					'cloudflare_protocol_rewrite' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
 				]
 			);
 		}
@@ -50,6 +62,12 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
+		if ( BootstrapManager::isGroup('Kinsta') ) {
+			$_SERVER['KINSTA_CACHE_ZONE'] = true ;
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/Kinsta_Cache.php';
+			$GLOBALS['kinsta_cache'] = new Kinsta_Cache();
 		}
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
@@ -65,6 +83,14 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'Elementor' ) ) {
 			define( 'ELEMENTOR_VERSION', '2.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'ConvertPlug' ) ) {
+			define( 'CP_VERSION', '1.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
+			define( 'TRIBE_EVENTS_FILE', true );
 		}
 
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
@@ -93,6 +119,10 @@ tests_add_filter(
 			$_SERVER[ 'DH_USER'] = 'wp_74cgrq';
 		}
 
+		if ( BootstrapManager::isGroup( 'Pressidium' ) ) {
+			define('WP_NINUKIS_WP_NAME', 'WP_NINUKIS_WP_NAME');
+		}
+
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
 		}
@@ -110,8 +140,30 @@ tests_add_filter(
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
-		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
-			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		if ( BootstrapManager::isGroup( 'Cloudflare' ) ) {
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', true );
+
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+					'cloudflare_zone_id' => '12234',
+				]
+			);
+		}
+
+		if ( BootstrapManager::isGroup( 'CloudflareAdmin' ) ) {
+			define( 'WP_ADMIN', true );
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+				]
+			);
 		}
 
 		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
@@ -120,6 +172,10 @@ tests_add_filter(
 			// Load WP Engine mocked files.
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WPXCloud' ) ) {
+			$_SERVER[ 'HTTP_WPXCLOUD'] = true;
 		}
 
 		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
@@ -139,17 +195,80 @@ tests_add_filter(
 		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
 			define( 'WORDFENCE_VERSION', '1' );
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
 		}
+
+		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
+			define('RANK_MATH_FILE', '1');
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'SEOPress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'TheSEOFramework' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WPGeotargeting' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/WPGeotargeting/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
+			if(! defined('AIOSEOP_VERSION')) {
+				define('AIOSEOP_VERSION', true);
+			}
+			if(! defined('AIOSEO_VERSION')) {
+				define('AIOSEO_VERSION', true);
+			}
+		}
+
+		if ( BootstrapManager::isGroup( 'Jetpack' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/jetpack/jetpack.php';
+			update_option(
+				'jetpack_active_modules',
+				[
+					'sitemaps',
+					'widgets',
+				]
+			);
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Jetpack/functions.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RocketLazyLoad' ) ) {
+			define( 'ROCKET_LL_VERSION', '2.3.6' );
+		}
+
+		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'one.com';
+			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
+			$_SERVER[ 'HTTP_HOST'] = 'example.com';
+		}
+
+		if ( BootstrapManager::isGroup( 'Perfmatters' ) ) {
+			define( 'PERFMATTERS_VERSION', '2.0.2' );
+		}
+
+		if ( BootstrapManager::isGroup( 'RapidLoad' ) ) {
+			define( 'UUCSS_VERSION', '1.6.34' );
+		}
+
+		if ( BootstrapManager::isGroup( 'ProIsp' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'proisp.no';
+		}
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
 );
 
-
 // install WC.
 tests_add_filter(
 	'setup_theme',
 	function() {
+
 		if ( ! BootstrapManager::isGroup( 'WithWoo' ) ) {
 			return;
 		}

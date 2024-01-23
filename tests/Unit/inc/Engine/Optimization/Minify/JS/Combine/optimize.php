@@ -24,7 +24,7 @@ class Test_Optimize extends TestCase {
 	private   $minify;
 	private   $defer_js;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->minify = Mockery::mock( Minify\JS::class );
@@ -86,6 +86,9 @@ class Test_Optimize extends TestCase {
 			->andReturnUsing( function ( $url, $original_url ) use ( $config ) {
 				return str_replace( 'http://example.org', $config['cdn_url'], $url );
 			} );
+
+		Filters\expectApplied( 'rocket_excluded_inline_js_content' )
+			->andReturn( ['nonce'] );
 
 		$combine = new Combine( $this->options, $this->minify, Mockery::mock( AssetsLocalCache::class ), $this->defer_js );
 

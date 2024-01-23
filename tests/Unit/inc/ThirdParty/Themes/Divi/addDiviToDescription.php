@@ -1,9 +1,12 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
-use Mockery;
-use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\{Options, Options_Data};
+use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 use WP_Theme;
 
@@ -15,13 +18,14 @@ use WP_Theme;
  */
 class Test_AddDiviToDescription extends TestCase {
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testAddDiviToDescription( $config, $expected ) {
-		$options_api = Mockery::mock( 'WP_Rocket\Admin\Options' );
-		$options     = Mockery::mock( 'WP_Rocket\Admin\Options_Data' );
-		$delayjs_html     = Mockery::mock( 'WP_Rocket\Engine\Optimization\DelayJS\HTML' );
-		$theme       = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
+		$options_api  = Mockery::mock( Options::class );
+		$options      = Mockery::mock( Options_Data::class );
+		$delayjs_html = Mockery::mock( HTML::class );
+		$used_css     = Mockery::mock( UsedCSS::class );
+		$theme        = new WP_Theme( $config['theme-name'], 'wp-content/themes/' );
 		$theme->set_name( $config['theme-name'] );
 
 		if ( $config['theme-template'] ) {
@@ -30,13 +34,8 @@ class Test_AddDiviToDescription extends TestCase {
 
 		Functions\when( 'wp_get_theme' )->justReturn( $theme );
 
-		$divi = new Divi( $options_api, $options , $delayjs_html);
+		$divi = new Divi( $options_api, $options , $delayjs_html, $used_css );
 
 		$this->assertSame( $expected, $divi->add_divi_to_description( $config['disabled-items'] ) );
 	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'addDiviToDescription' );
-	}
-
 }

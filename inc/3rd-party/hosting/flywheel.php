@@ -69,7 +69,7 @@ function rocket_flywheel_remove_partial_purge_hooks() {
 
 	// Remove rocket_clean_post() from core action hooks.
 	array_map(
-		function( $hook ) {
+		function ( $hook ) {
 			remove_action( $hook, 'rocket_clean_post' );
 		},
 		$clean_post_hooks

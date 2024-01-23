@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Theme;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
@@ -25,10 +24,10 @@ class Test_InsertScript extends TestCase {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Theme.php';
 	}
 
-	public function setUp(): void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		Functions\stubEscapeFunctions();
+		$this->stubEscapeFunctions();
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->data    = Mockery::mock( Data::class );
 		$this->beacon  = Mockery::mock( Beacon::class . '[generate]', [
@@ -38,12 +37,19 @@ class Test_InsertScript extends TestCase {
 		] );
 	}
 
+	protected function tearDown(): void {
+		$this->white_label = false;
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnBeaconScript( $config, $expected ) {
+		$this->white_label = $config['white_label'];
+
 		Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
-		$this->white_label = ( $config['white_label'] );
 		Functions\when( 'get_user_locale' )->justReturn( $config['locale'] );
 		Functions\when( 'wp_json_encode' )->alias( 'json_encode' );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
@@ -77,11 +83,5 @@ class Test_InsertScript extends TestCase {
 			->shouldReceive( 'generate' )
 			->with( $view, $data )
 			->andReturn( '' );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		$this->white_label = false;
 	}
 }

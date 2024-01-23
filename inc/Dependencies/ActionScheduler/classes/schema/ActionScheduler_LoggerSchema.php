@@ -37,12 +37,12 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 			case self::LOG_TABLE:
 
 				$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
-				return "CREATE TABLE {$table_name} (
+				return "CREATE TABLE $table_name (
 				        log_id bigint(20) unsigned NOT NULL auto_increment,
 				        action_id bigint(20) unsigned NOT NULL,
 				        message text NOT NULL,
-				        log_date_gmt datetime NULL default '${default_date}',
-				        log_date_local datetime NULL default '${default_date}',
+				        log_date_gmt datetime NULL default '{$default_date}',
+				        log_date_local datetime NULL default '{$default_date}',
 				        PRIMARY KEY  (log_id),
 				        KEY action_id (action_id),
 				        KEY log_date_gmt (log_date_gmt)
@@ -74,14 +74,14 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$table_name   = $wpdb->prefix . 'actionscheduler_logs';
-		$table_list   = $wpdb->get_col( "SHOW TABLES LIKE '${table_name}'" );
+		$table_list   = $wpdb->get_col( "SHOW TABLES LIKE '{$table_name}'" );
 		$default_date = ActionScheduler_StoreSchema::DEFAULT_DATE;
 
 		if ( ! empty( $table_list ) ) {
 			$query = "
-				ALTER TABLE ${table_name}
-				MODIFY COLUMN log_date_gmt datetime NULL default '${default_date}',
-				MODIFY COLUMN log_date_local datetime NULL default '${default_date}'
+				ALTER TABLE {$table_name}
+				MODIFY COLUMN log_date_gmt datetime NULL default '{$default_date}',
+				MODIFY COLUMN log_date_local datetime NULL default '{$default_date}'
 			";
 			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}

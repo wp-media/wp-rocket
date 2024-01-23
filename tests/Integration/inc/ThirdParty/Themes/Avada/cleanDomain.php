@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Avada;
 
+use WP_Rocket\Tests\Integration\DBTrait;
+
 /**
  * @covers \WP_Rocket\ThirdParty\Avada::clean_domain
  *
@@ -9,7 +11,21 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Avada;
  * @group  ThirdParty
  */
 class Test_CleanDomain extends TestCase {
+	use DBTrait;
+
 	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Avada/cleanDomain.php';
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAll();
+
+		parent::tear_down_after_class();
+	}
 
 	public function testShouldCleanCacheWhenAvadaCacheIsCleaned() {
 		$cache_exists = false;

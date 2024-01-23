@@ -57,6 +57,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
 			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
 			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'         => [ 'add_cdn_url', 10, 2 ],
 		];
 	}
 

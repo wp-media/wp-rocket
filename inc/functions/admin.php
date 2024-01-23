@@ -39,7 +39,7 @@ function rocket_need_api_key() {
  */
 function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
 	// Delete a user meta for 1 user or all at a time.
-	delete_metadata( 'user', $uid, 'rocket_boxes', null === $uid );
+	delete_metadata( 'user', $uid, 'rocket_boxes', '', ! $uid );
 
 	// $keep_this works only for the current user.
 	if ( ! empty( $keep_this ) && null !== $uid ) {
@@ -62,7 +62,7 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
  * @param int    $uid User ID.
  * @return void
  */
-function rocket_renew_box( $function, $uid = 0 ) {
+function rocket_renew_box( $function, $uid = 0 ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	global $current_user;
 	$uid    = 0 === $uid ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
@@ -81,7 +81,7 @@ function rocket_renew_box( $function, $uid = 0 ) {
  *
  * @param string $function Function (box) name.
  */
-function rocket_dismiss_box( $function ) {
+function rocket_dismiss_box( $function ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	$actual = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$actual = array_merge( (array) $actual, [ $function ] );
 	$actual = array_filter( $actual );
@@ -361,7 +361,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= sprintf( '<em>%s</em>', $data['web_server'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -370,7 +370,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['php_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -379,7 +379,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['wordpress_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -388,7 +388,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['multisite'] ? 'true' : 'false' );
+	$html .= sprintf( '<em>%s</em>', $data['multisite'] ? 'true' : 'false' );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -397,7 +397,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= sprintf( '<em>%s</em>', $data['current_theme'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -406,7 +406,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= sprintf( '<em>%s</em>', $data['locale'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -425,6 +425,15 @@ function rocket_data_collection_preview_table() {
 	$html .= '</td>';
 	$html .= '<td>';
 	$html .= sprintf( '<em>%s</em>', __( 'Which WP Rocket settings are active', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', $data['license_type'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -452,4 +461,103 @@ function rocket_settings_import_redirect( $message, $status ) {
 	$goback = add_query_arg( 'settings-updated', 'true', wp_get_referer() );
 	wp_safe_redirect( esc_url_raw( $goback ) );
 	die();
+}
+
+/**
+ * Check if WPR options should be displayed.
+ *
+ * @return bool
+ */
+function rocket_can_display_options() {
+	$disallowed_post_status = [
+		'draft',
+		'trash',
+		'private',
+		'future',
+		'pending',
+	];
+
+	$post_status = get_post_status();
+	if ( in_array( $post_status, $disallowed_post_status, true ) ) {
+		return false;
+	}
+
+	if ( function_exists( 'get_current_screen' ) && is_object( get_current_screen() ) && 'add' === get_current_screen()->action ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Create a hash from wp rocket options.
+ *
+ * @param array $value options.
+ *
+ * @return string
+ */
+function rocket_create_options_hash( $value ) {
+	$removed = [
+		'cache_mobile'                => true,
+		'purge_cron_interval'         => true,
+		'purge_cron_unit'             => true,
+		'database_revisions'          => true,
+		'database_auto_drafts'        => true,
+		'database_trashed_posts'      => true,
+		'database_spam_comments'      => true,
+		'database_trashed_comments'   => true,
+		'database_all_transients'     => true,
+		'database_optimize_tables'    => true,
+		'schedule_automatic_cleanup'  => true,
+		'automatic_cleanup_frequency' => true,
+		'do_cloudflare'               => true,
+		'cloudflare_email'            => true,
+		'cloudflare_api_key'          => true,
+		'cloudflare_zone_id'          => true,
+		'cloudflare_devmode'          => true,
+		'cloudflare_auto_settings'    => true,
+		'cloudflare_old_settings'     => true,
+		'heartbeat_admin_behavior'    => true,
+		'heartbeat_editor_behavior'   => true,
+		'varnish_auto_purge'          => true,
+		'analytics_enabled'           => true,
+		'sucury_waf_cache_sync'       => true,
+		'sucury_waf_api_key'          => true,
+		'manual_preload'              => true,
+		'preload_excluded_uri'        => true,
+		'cache_reject_uri'            => true,
+		'version'                     => true,
+	];
+
+	// Create 2 arrays to compare.
+	$value_diff = array_diff_key( $value, $removed );
+	ksort( $value_diff );
+
+	return md5( wp_json_encode( $value_diff ) );
+}
+
+/**
+ * This function returns the license type for a customer.
+ *
+ * @param object $customer_data customer data as an object.
+ * @return string the type of the license the user has.
+ */
+function rocket_get_license_type( $customer_data ) {
+	if ( false === $customer_data
+		||
+		! isset( $customer_data->licence_account )
+	) {
+		return __( 'Unavailable', 'rocket' );
+	}
+
+	if ( 1 <= $customer_data->licence_account
+		&&
+		$customer_data->licence_account < 3
+	) {
+		return 'Single';
+	} elseif ( -1 === (int) $customer_data->licence_account ) {
+		return 'Infinite';
+	}
+
+	return 'Plus';
 }

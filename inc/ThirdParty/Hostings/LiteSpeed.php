@@ -6,6 +6,12 @@ namespace WP_Rocket\ThirdParty\Hostings;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class LiteSpeed implements Subscriber_Interface {
+	/**
+	 * Litespeed headers
+	 *
+	 * @var array
+	 */
+	private $headers = [];
 
 	/**
 	 * Subscribed events for Litespeed.
@@ -80,7 +86,7 @@ class LiteSpeed implements Subscriber_Interface {
 
 		array_walk(
 			$urls,
-			function( &$url ) {
+			function ( &$url ) {
 				$url = wp_parse_url( $url, PHP_URL_PATH );
 			}
 		);
@@ -93,7 +99,6 @@ class LiteSpeed implements Subscriber_Interface {
 
 		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['home'] );
 		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['pagination'] );
-
 	}
 
 	/**

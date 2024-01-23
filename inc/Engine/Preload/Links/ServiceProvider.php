@@ -29,10 +29,10 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'preload_links_admin_subscriber', 'WP_Rocket\Engine\Preload\Links\AdminSubscriber' )
+		$this->getContainer()->share( 'preload_links_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'preload_links_subscriber', 'WP_Rocket\Engine\Preload\Links\Subscriber' )
+		$this->getContainer()->share( 'preload_links_subscriber', Subscriber::class )
 			->addArgument( $options )
 			->addArgument( rocket_direct_filesystem() )
 			->addTag( 'common_subscriber' );

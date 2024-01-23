@@ -14,15 +14,15 @@ class Test_AddFixAnimationsScript extends TestCase {
 	protected $path_to_test_data = '/inc/ThirdParty/Plugins/PageBuilder/Elementor/addFixAnimationsScript.php';
 	private $delay_js = false;
 
-	public function setUp(): void {
+	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_fix_animation_script', 28 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js_option' ] );
 		$this->delay_js = false;
-		$this->restoreWpFilter( 'rocket_buffer' );
-		parent::tearDown();
+		$this->restoreWpHook( 'rocket_buffer' );
+		parent::tear_down();
 	}
 
 	/**

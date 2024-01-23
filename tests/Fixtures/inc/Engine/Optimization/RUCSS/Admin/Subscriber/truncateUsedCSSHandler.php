@@ -4,14 +4,12 @@ $items = [
 	[
 		'url'            => 'http://example.org/home',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => false,
 	],
 	[
 		'url'            => 'http://example.org/home',
 		'css'            => 'h1{color:red;}',
-		'unprocessedcss' => json_encode( [] ),
 		'retries'        => 3,
 		'is_mobile'      => true,
 	],
@@ -57,6 +55,13 @@ return [
 				'nonce' => null,
 				'db_items' => $items,
 				'cache_files' => $cache_files,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => false,
@@ -70,6 +75,13 @@ return [
 				'nonce' => 'invalid',
 				'db_items' => $items,
 				'cache_files' => $cache_files,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => false,
@@ -84,6 +96,13 @@ return [
 				'cap'     => false,
 				'db_items' => $items,
 				'cache_files' => $cache_files,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => false,
@@ -99,6 +118,13 @@ return [
 				'option_enabled' => false,
 				'db_items' => $items,
 				'cache_files' => $cache_files,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => false,
@@ -119,6 +145,13 @@ return [
 				'db_items' => $items,
 				'cache_files' => $cache_files,
 				'not_completed_count' => 0,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => true,
@@ -138,6 +171,13 @@ return [
 				'db_items' => $items,
 				'cache_files' => $cache_files,
 				'not_completed_count' => 10,
+				'home_url' => 'http://example.org',
+				'home_request_configs' => [
+					'timeout'    => 0.01,
+					'blocking'   => false,
+					'user-agent' => 'WP Rocket/Homepage Preload',
+					'sslverify'  => false,
+				]
 			],
 			'expected' => [
 				'truncated' => true,

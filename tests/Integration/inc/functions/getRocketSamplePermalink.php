@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
@@ -10,16 +11,30 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group Posts
  */
 class Test_GetRocketSamePermalink extends TestCase {
+	use DBTrait;
+
 	private $did_filter;
 
-	public function setUp() : void {
-		parent::setUp();
+	public static function set_up_before_class()
+	{
+		parent::set_up_before_class();
+		self::installFresh();
+	}
+
+	public static function tear_down_after_class()
+	{
+		self::uninstallAll();
+		parent::tear_down_after_class();
+	}
+
+	public function set_up() {
+		parent::set_up();
 
 		$this->did_filter = [ 'editable_slug' => 0 ];
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'editable_slug', [ $this, 'editable_slug_cb' ] );
 	}

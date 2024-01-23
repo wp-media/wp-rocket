@@ -23,10 +23,7 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadImages( $html, $buffer, $use_native = true ) {
-		$clean_buffer = preg_replace( '/<script\b(?:[^>]*)>(?:.+)?<\/script>/Umsi', '', $html );
-		$clean_buffer = preg_replace( '#<noscript>(?:.+)</noscript>#Umsi', '', $clean_buffer );
-
-		if ( ! preg_match_all( '#<img(?<atts>\s.+)\s?/?>#iUs', $clean_buffer, $images, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '#<img(?<atts>\s.+)\s?/?>#iUs', $buffer, $images, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
@@ -70,10 +67,25 @@ class Image {
 				continue;
 			}
 
-			if ( ! preg_match( '#background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?#is', $element['styles'], $url ) ) {
+			/**
+			 * Regex to detect bg images inside CSS.
+			 *
+			 * @param string $regex regex to detect.
+			 * @return string
+			 */
+			$regex = apply_filters( 'rocket_lazyload_bg_images_regex', 'background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?' );
+
+			if ( @preg_match( "#$regex#is", '' ) === false ) {// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				$regex = 'background-image\s*:\s*(?<attr>\s*url\s*\((?<url>[^)]+)\))\s*;?';
+			}
+
+			if ( ! preg_match( "#$regex#is", $element['styles'], $url ) ) {
 				continue;
 			}
 
+			if ( preg_match( '#data:image#is', $url['url'], $img ) ) {
+				continue;
+			}
 			$url['url'] = esc_url(
 				trim(
 					wp_strip_all_tags(
@@ -358,7 +370,7 @@ class Image {
 	 */
 	public function isExcluded( $string, $excluded_values ) {
 		if ( ! is_array( $excluded_values ) ) {
-			(array) $excluded_values;
+			$excluded_values = (array) $excluded_values;
 		}
 
 		if ( empty( $excluded_values ) ) {
@@ -448,12 +460,19 @@ class Image {
 	 * @return string
 	 */
 	private function replaceImage( $image, $use_native = true ) {
+		if ( empty( $image ) ) {
+			return '';
+		}
+
+		$native_pattern = '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i';
+		$image_lazyload = $image[0];
+
 		if ( $use_native ) {
-			if ( preg_match( '@\sloading\s*=\s*(\'|")(?:lazy|auto)\1@i', $image[0] ) ) {
+			if ( preg_match( $native_pattern, $image[0] ) ) {
 				return $image[0];
 			}
 
-			$image_lazyload = str_replace( '<img', '<img loading="lazy"', $image[0] );
+			$image_lazyload = str_replace( '<img', '<img loading="lazy"', $image_lazyload );
 		} else {
 			$width  = 0;
 			$height = 0;
@@ -468,7 +487,11 @@ class Image {
 
 			$placeholder_atts = preg_replace( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', ' src="' . $this->getPlaceholder( $width, $height ) . '"', $image['atts'] );
 
-			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image[0] );
+			$image_lazyload = str_replace( $image['atts'], $placeholder_atts . ' data-lazy-src="' . $image['src'] . '"', $image_lazyload );
+
+			if ( preg_match( $native_pattern, $image_lazyload ) ) {
+				$image_lazyload = preg_replace( $native_pattern, '', $image_lazyload );
+			}
 		}
 
 		/**

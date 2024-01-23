@@ -85,12 +85,14 @@ class CriticalCSS {
 	/**
 	 * Performs the critical CSS generation.
 	 *
+	 * @since 3.13.2 Always clear all CPCSS files.
 	 * @since 3.6 Added the $version parameter.
 	 * @since 2.11
 	 *
 	 * @param string $version Optional. Version of the CPCSS files to generate. Possible values: default, mobile, all.
+	 * @param string $clean_version Optional: Version of the CPCSS files to clean. Possible values: default, mobile, all.
 	 */
-	public function process_handler( $version = 'default' ) {
+	public function process_handler( $version = 'default', $clean_version = '' ) {
 		/**
 		 * Filters the critical CSS generation process.
 		 *
@@ -108,7 +110,11 @@ class CriticalCSS {
 			return;
 		}
 
-		$this->clean_critical_css( $version );
+		if ( empty( $clean_version ) ) {
+			$clean_version = $version;
+		}
+
+		$this->clean_critical_css( $clean_version );
 
 		$this->stop_generation();
 
@@ -275,7 +281,7 @@ class CriticalCSS {
 
 		foreach ( $this->items as $item ) {
 			if ( ! isset( $item['mobile'] ) ) {
-				$total ++;
+				++$total;
 				continue;
 			}
 
@@ -283,7 +289,7 @@ class CriticalCSS {
 				continue;
 			}
 
-			$total ++;
+			++$total;
 		}
 
 		$transient = [

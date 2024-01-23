@@ -11,17 +11,17 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $skip_setting_up_settings = false;
 	protected static $transients         = [];
 
-	public static function setUpBeforeClass() : void {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -34,11 +34,9 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
+	public static function tear_down_after_class() {
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( static::$transients as $transient => $value ) {
@@ -51,21 +49,24 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() : void {
+	public function set_up() {
+		parent::set_up();
+
 		$this->initDefaultStructure();
+		$this->init();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
-
-		parent::setUp();
 
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
@@ -74,6 +75,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		unset( $GLOBALS['debug_fs'] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 }

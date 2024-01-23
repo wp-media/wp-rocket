@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.7
  */
 if ( class_exists( 'Custom_Login_Page_Template' ) ) {
-	add_filter( 'rocket_cache_reject_uri', 'rocket_add_custom_login_exclude_pages' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_add_custom_login_exclude_pages', 2, 2 );
 	add_action( 'update_option_custom_login_page_template', 'rocket_after_update_single_options', 10, 2 );
 }
 
@@ -19,9 +19,14 @@ if ( class_exists( 'Custom_Login_Page_Template' ) ) {
  * @author Remy Perona
  *
  * @param Array $urls Array of pages to exclude.
+ * @param bool  $show_safe_content show sensitive uris.
  * @return Array Updated array of pages to exclude
  */
-function rocket_add_custom_login_exclude_pages( $urls ) {
+function rocket_add_custom_login_exclude_pages( $urls, $show_safe_content = true ) {
+	if ( ! $show_safe_content ) {
+		return $urls;
+	}
+
 	$clpt_options = get_option( 'custom_login_page_template' );
 	$urls         = array_merge( $urls, get_rocket_i18n_translated_post_urls( $clpt_options['login_page_id'], 'page' ) );
 
@@ -35,7 +40,7 @@ function rocket_add_custom_login_exclude_pages( $urls ) {
  * @author Remy Perona
  */
 function rocket_activate_custom_login_page_template() {
-	add_filter( 'rocket_cache_reject_uri', 'rocket_add_custom_login_exclude_pages' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_add_custom_login_exclude_pages', 2, 2 );
 
 	// Update the WP Rocket rules on the .htaccess.
 	flush_rocket_htaccess();

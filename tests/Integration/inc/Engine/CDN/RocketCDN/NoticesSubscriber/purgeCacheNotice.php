@@ -13,7 +13,7 @@ use Brain\Monkey\Functions;
  * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
-	public static function setUpBeforeClass() : void {
+	public static function set_up_before_class() {
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_manage_options' );
 	}
@@ -38,8 +38,9 @@ class Test_PurgeCacheNotice extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
 
 		wp_set_current_user( $user_id );
+		set_current_screen( 'edit.php' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -51,7 +52,7 @@ class Test_PurgeCacheNotice extends TestCase {
 		wp_set_current_user( $user_id );
 		set_current_screen( 'edit.php' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -64,7 +65,7 @@ class Test_PurgeCacheNotice extends TestCase {
 
 		set_current_screen( 'settings_page_wprocket' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -82,6 +83,6 @@ class Test_PurgeCacheNotice extends TestCase {
 		->once()
 		->with( 'rocketcdn_purge_cache_response' );
 
-		$this->assertContains( $this->get_notice( 'success', 'RocketCDN cache purge successful.' ), $this->getActualHtml() );
+		$this->assertStringContainsString( $this->get_notice( 'success', 'RocketCDN cache purge successful.' ), $this->getActualHtml() );
 	}
 }
