@@ -38,7 +38,6 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		parent::tear_down_after_class();
 
 		self::resetAdminCap();
-
 	}
 
 	public function set_up() {
@@ -49,15 +48,14 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		$this->container = apply_filters( 'rocket_container', '' );
 		$this->event = $this->container->get( 'event_manager' );
-
-		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'admin_notices' );
+
 		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
-		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 	}
@@ -78,6 +76,8 @@ class Test_HandleDiviAdminNotice extends WPThemeTestcase {
 		$this->subscriber = new Divi( $options_api, $options, $delayjs_html, $used_css );
 
 		$this->event->add_subscriber( $this->subscriber );
+
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'handle_divi_admin_notice' );
 
 		$this->set_theme( 'divi', 'Divi' );
 
