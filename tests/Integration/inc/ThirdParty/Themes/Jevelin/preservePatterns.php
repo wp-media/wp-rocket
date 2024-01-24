@@ -1,50 +1,43 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Jevelin;
 
-use WP_Rocket\Tests\Integration\WPThemeTestcase;
+use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Themes\Jevelin;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Jevelin::preserve_patterns
- * @group Jevelin
- * @group ThirdParty
+ *
+ * @group Themes
  */
-class Test_PreservePatterns extends WPThemeTestcase {
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Jevelin/integrations/preservePatterns.php';
-	private static $container;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::$container = apply_filters( 'rocket_container', '' );
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'jevelin' ) );
-	}
+class Test_PreservePatterns extends TestCase {
+	private $event;
+	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'jevelin' ) );
+		$container = apply_filters( 'rocket_container', '' );
+
+		$this->event = $container->get( 'event_manager' );
 	}
+
+	public function tear_down() {
+		$this->event->remove_subscriber( $this->subscriber );
+
+		parent::tear_down();
+	}
+
 	/**
-	 * @dataProvider ProviderTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		if ( ! $config['is-child'] ) {
-			$this->set_theme( $config['stylesheet'], $config['theme-name'] );
-		} else {
-			$this->set_theme( $config['is-child'], $config['parent-name'] )
-				->set_child_theme( $config['stylesheet'], $config['theme-name'], $config['is-child'] );
-		}
+		$this->subscriber = new Jevelin();
 
-		$jevelin = new Jevelin();
+		$this->event->add_subscriber( $this->subscriber );
 
-        $result = $jevelin->preserve_patterns( $config['patterns'] );
-
-		$this->assertSame( $expected, $result );
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_rucss_inline_content_exclusions', $config['patterns'] )
+		);
 	}
 }

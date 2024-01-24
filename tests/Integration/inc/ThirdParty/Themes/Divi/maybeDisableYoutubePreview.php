@@ -6,41 +6,55 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::maybe_disable_youtube_preview
+ * @covers \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
  *
- * @group ThirdParty
+ * @group Themes
  */
 class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 	use DBTrait;
 
+	private $container;
+	private $event;
+	private $subscriber;
+
 	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/maybeDisableYoutubePreview.php';
-	private static $container;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installFresh();
-
-		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAll();
 
 		parent::tear_down_after_class();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		$this->container = apply_filters( 'rocket_container', '' );
+		$this->event = $this->container->get( 'event_manager' );
+	}
+
+	public function tear_down() {
+		$this->event->remove_subscriber( $this->subscriber );
+
+		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider ProviderTestData
 	 */
 	public function testSetsCorrectOptions( $config, $expected ) {
+		$options     = $this->container->get( 'options' );
+		$options_api = $this->container->get( 'options_api' );
+		$delayjs_html = $this->container->get( 'delay_js_html' );
+		$used_css = $this->container->get( 'rucss_used_css_controller' );
+		$options_api->set( 'settings', [] );
+		$this->subscriber = new Divi( $options_api, $options, $delayjs_html, $used_css );
+
+		$this->event->add_subscriber( $this->subscriber );
 
 		if ( ! $config['template'] ) {
 			$this->set_theme( $config['stylesheet'], $config['stylesheet'] );
@@ -49,17 +63,7 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 				->set_child_theme( $config['stylesheet'], $config['stylesheet'], $config['template'] );
 		}
 
-		$options     = self::$container->get( 'options' );
-		$options_api = self::$container->get( 'options_api' );
-		$delayjs_html = self::$container->get( 'delay_js_html' );
-		$used_css = self::$container->get( 'rucss_used_css_controller' );
-		$options_api->set( 'settings', [] );
-
-		$divi        = new Divi( $options_api, $options, $delayjs_html, $used_css );
-
 		switch_theme( $config['stylesheet'] );
-
-		$divi->maybe_disable_youtube_preview( $config['stylesheet'], $this->theme );
 
 		$this->assertSame( $expected['settings'], $options_api->get( 'settings' ) );
 	}
