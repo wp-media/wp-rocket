@@ -1,7 +1,7 @@
 <?php
 return [
-    'pendingShouldAddToTheQueue' => [
-        'config' => [
+	'pendingShouldAddToTheQueue' => [
+		'config' => [
 			'rocket_preload_cache_pending_jobs_cron_rows_count' => 10,
 			'manual_preload' => true,
 			'rocket_preload_outdated' => -1,
@@ -18,7 +18,7 @@ return [
 			'actions' => [
 
 			]
-        ],
+		],
 		'expected' => [
 			'rows' => [
 				[
@@ -47,7 +47,7 @@ return [
 				],
 			]
 		]
-    ],
+	],
 	'InProgressAndInQueueShouldNotFail' => [
 		'config' => [
 			'rocket_preload_cache_pending_jobs_cron_rows_count' => 10,
@@ -120,7 +120,7 @@ return [
 				],
 				[
 					'url' => 'http://example.org/test3',
-					'status' => 'in-progress'
+					'status' => 'pending'
 				],
 				[
 					'url' => 'http://example.org/test4',
@@ -147,11 +147,11 @@ return [
 				],
 				[
 					'url' => 'http://example.org/test3',
-					'status' => 'in-progress'
+					'status' => 'pending'
 				],
 				[
 					'url' => 'http://example.org/test4',
-					'status' => 'in-progress'
+					'status' => 'pending'
 				],
 				[
 					'url' => 'http://example.org/test5',
@@ -181,7 +181,7 @@ return [
 					],
 				],
 				[
-					'exists' => true,
+					'exists' => false,
 					'args' => [
 						'hook'   => 'rocket_preload_job_preload_url',
 						'args' => ['http://example.org/test4']
