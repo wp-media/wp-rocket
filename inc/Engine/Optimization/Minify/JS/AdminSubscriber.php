@@ -27,15 +27,15 @@ class AdminSubscriber implements Subscriber_Interface {
 	/**
 	 * Clean minify JS files when options change.
 	 *
-	 * @param array $old An array of previous settings.
-	 * @param array $new An array of submitted settings.
+	 * @param array $old_value The old option value.
+	 * @param array $value The new option value.
 	 */
-	public function clean_minify( $old, $new ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		if ( ! is_array( $old ) || ! is_array( $new ) ) {
+	public function clean_minify( $old_value, $value ) {
+		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
 			return;
 		}
 
-		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
+		if ( ! $this->maybe_minify_regenerate( $value, $old_value ) ) {
 			return;
 		}
 		// Purge all minify cache files.
@@ -47,23 +47,23 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.5.4
 	 *
-	 * @param array $new An array of submitted settings.
-	 * @param array $old An array of previous settings.
+	 * @param array $value The new option value.
+	 * @param array $old_value The old option value.
 	 *
 	 * @return array Updates 'minify_js_key' setting when regenerated; else, original submitted settings.
 	 */
-	public function regenerate_minify_js_key( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
-		if ( ! is_array( $old ) || ! is_array( $new ) ) {
-			return $new;
+	public function regenerate_minify_js_key( $value, $old_value ) {
+		if ( ! is_array( $old_value ) || ! is_array( $value ) ) {
+			return $value;
 		}
 
-		if ( ! $this->maybe_minify_regenerate( $new, $old ) ) {
-			return $new;
+		if ( ! $this->maybe_minify_regenerate( $value, $old_value ) ) {
+			return $value;
 		}
 
-		$new['minify_js_key'] = create_rocket_uniqid();
+		$value['minify_js_key'] = create_rocket_uniqid();
 
-		return $new;
+		return $value;
 	}
 
 	/**
@@ -71,12 +71,12 @@ class AdminSubscriber implements Subscriber_Interface {
 	 *
 	 * @since  3.5.4
 	 *
-	 * @param array $new An array of submitted settings.
-	 * @param array $old An array of previous settings.
+	 * @param array $value The new option value.
+	 * @param array $old_value The old option value.
 	 *
 	 * @return bool true when should regenerate; else false.
 	 */
-	protected function maybe_minify_regenerate( array $new, array $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+	protected function maybe_minify_regenerate( array $value, array $old_value ) {
 		$settings_to_check = [
 			'minify_js',
 			'exclude_js',
@@ -84,17 +84,17 @@ class AdminSubscriber implements Subscriber_Interface {
 		];
 
 		foreach ( $settings_to_check as $setting ) {
-			if ( $this->did_setting_change( $setting, $new, $old ) ) {
+			if ( $this->did_setting_change( $setting, $value, $old_value ) ) {
 				return true;
 			}
 		}
 
 		return (
-			array_key_exists( 'cdn', $new )
+			array_key_exists( 'cdn', $value )
 			&&
-			1 === (int) $new['cdn']
+			1 === (int) $value['cdn']
 			&&
-			$this->did_setting_change( 'cdn_cnames', $new, $old )
+			$this->did_setting_change( 'cdn_cnames', $value, $old_value )
 		);
 	}
 
@@ -104,18 +104,18 @@ class AdminSubscriber implements Subscriber_Interface {
 	 * @since 3.5.4
 	 *
 	 * @param string $setting The settings's value to check in the old and new values.
-	 * @param array  $new     An array of submitted settings.
-	 * @param array  $old     An array of previous settings.
+	 * @param array  $value     The new option value.
+	 * @param array  $old_value     The old option value.
 	 *
 	 * @return bool
 	 */
-	protected function did_setting_change( $setting, array $new, array $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
+	protected function did_setting_change( $setting, array $value, array $old_value ) {
 		return (
-			array_key_exists( $setting, $old )
+			array_key_exists( $setting, $old_value )
 			&&
-			array_key_exists( $setting, $new )
+			array_key_exists( $setting, $value )
 			&&
-			$old[ $setting ] !== $new[ $setting ]
+			$old_value[ $setting ] !== $value[ $setting ]
 		);
 	}
 }
