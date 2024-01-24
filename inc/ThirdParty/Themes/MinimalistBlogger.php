@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class MinimalistBlogger {
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
+class MinimalistBlogger implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *

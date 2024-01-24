@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Xstore {
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
+class Xstore implements Subscriber_Interface {
 
 	/**
 	 * Return an array of events that this subscriber wants to listen to.

@@ -2,9 +2,10 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Bridge {
+class Bridge implements Subscriber_Interface {
 	use ReturnTypesTrait;
 
 	/**

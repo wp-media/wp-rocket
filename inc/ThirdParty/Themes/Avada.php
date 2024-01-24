@@ -2,11 +2,12 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Compatibility class for Avada theme
  */
-class Avada {
+class Avada implements Subscriber_Interface {
 	/**
 	 * Options instance
 	 *

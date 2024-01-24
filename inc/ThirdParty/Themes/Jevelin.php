@@ -1,7 +1,9 @@
 <?php
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Jevelin {
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
+class Jevelin implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *

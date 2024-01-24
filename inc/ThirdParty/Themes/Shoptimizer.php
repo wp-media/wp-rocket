@@ -1,7 +1,9 @@
 <?php
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Shoptimizer {
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
+class Shoptimizer implements Subscriber_Interface {
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *

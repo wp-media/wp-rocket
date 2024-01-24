@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Polygon {
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
+class Polygon implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *

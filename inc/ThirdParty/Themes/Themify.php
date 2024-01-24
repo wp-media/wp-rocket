@@ -2,8 +2,9 @@
 namespace WP_Rocket\ThirdParty\Themes;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Themify {
+class Themify implements Subscriber_Interface {
 	/**
 	 * WP Rocket options instance.
 	 *

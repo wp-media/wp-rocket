@@ -5,8 +5,9 @@ namespace WP_Rocket\ThirdParty\Themes;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Divi {
+class Divi implements Subscriber_Interface {
 	/**
 	 * Options API instance.
 	 *
