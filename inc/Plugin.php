@@ -136,7 +136,6 @@ class Plugin {
 		$this->container->add( 'options_api', $this->options_api );
 		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
-		
 
 		$this->container->addServiceProvider( LoggerServiceProvider::class );
 
@@ -404,7 +403,7 @@ class Plugin {
 		$services = DebugResolver::get_services();
 
 		if ( ! empty( $services ) ) {
-			foreach( $services as $service ) {
+			foreach ( $services as $service ) {
 				$common_subscribers[] = $service['service'];
 			}
 		}

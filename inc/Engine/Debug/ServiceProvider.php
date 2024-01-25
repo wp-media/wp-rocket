@@ -7,7 +7,6 @@ use WP_Rocket\Engine\Debug\Resolver;
 
 /**
  * Service provider for Debug
- *
  */
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 
@@ -30,13 +29,13 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	public function boot() {
 		$services = Resolver::get_services();
 
-        if ( empty( $services ) ) {
-            return;
-        }
+		if ( empty( $services ) ) {
+			return;
+		}
 
-        foreach( $services as $service ) {
-            $this->provides[] = $service['service'];
-        }
+		foreach ( $services as $service ) {
+			$this->provides[] = $service['service'];
+		}
 	}
 
 	/**
@@ -45,17 +44,17 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @return void
 	 */
 	public function register() {
-		$options = $this->getContainer()->get( 'options_debug' );
-        $services = Resolver::get_services();
+		$options  = $this->getContainer()->get( 'options_debug' );
+		$services = Resolver::get_services();
 
-        if ( empty( $services ) ) {
-            return;
-        }
+		if ( empty( $services ) ) {
+			return;
+		}
 
-        foreach( $services as $service ) {
-            $this->getContainer()->add( $service['service'], $service['class'] )
-                ->addArgument( $options )
-                ->addArgument( $this->getContainer()->get( 'options_api' ) );
-        }
+		foreach ( $services as $service ) {
+			$this->getContainer()->add( $service['service'], $service['class'] )
+				->addArgument( $options )
+				->addArgument( $this->getContainer()->get( 'options_api' ) );
+		}
 	}
 }

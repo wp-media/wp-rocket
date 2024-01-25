@@ -7,29 +7,29 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 
-    /**
+	/**
 	 * Plugin options instance.
 	 *
 	 * @var Options_Data
 	 */
 	protected $options;
 
-    /**
+	/**
 	 * Options instance.
 	 *
 	 * @var Options
 	 */
 	private $options_api;
 
-    /**
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Options instance.
-     * @param Options              $options_api Options instance.
+	 * @param Options      $options_api Options instance.
 	 */
 	public function __construct( Options_Data $options, Options $options_api ) {
-		$this->options = $options;
-        $this->options_api  = $options_api;
+		$this->options     = $options;
+		$this->options_api = $options_api;
 	}
 
 	/**
@@ -43,19 +43,19 @@ class Subscriber implements Subscriber_Interface {
 		];
 	}
 
-    /**
-     * Saves the last time a new job was added to rucss table.
-     *
-     * @param mixed $is_success New job status: ID of inserted row if successfully added; false otherwise.
-     * @param string $timestamp Current timestamp.
-     * @return void
-     */
-    public function log_last_added_job_time( $is_success, $timestamp ) {
-        if ( ! $is_success ) {
-            return;
-        }
+	/**
+	 * Saves the last time a new job was added to rucss table.
+	 *
+	 * @param mixed  $is_success New job status: ID of inserted row if successfully added; false otherwise.
+	 * @param string $timestamp Current timestamp.
+	 * @return void
+	 */
+	public function log_last_added_job_time( $is_success, $timestamp ) {
+		if ( ! $is_success ) {
+			return;
+		}
 
-        $this->options->set( 'last_rucss_job_added', $timestamp );
+		$this->options->set( 'last_rucss_job_added', $timestamp );
 		$this->options_api->set( 'debug', $this->options->get_options() );
-    }
+	}
 }

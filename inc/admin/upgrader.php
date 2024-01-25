@@ -145,7 +145,7 @@ function rocket_first_install() {
 	);
 
 	add_option(
-		rocket_get_constant( 'WP_ROCKET_DEBUG_SLUG' ), 
+		rocket_get_constant( 'WP_ROCKET_DEBUG_SLUG' ),
 		/**
 		 * Filters the default rocket debug options array.
 		 *
@@ -155,7 +155,7 @@ function rocket_first_install() {
 			'rocket_first_install_debug_options',
 			[
 				'last_rucss_job_added' => '',
-			] 
+			]
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );

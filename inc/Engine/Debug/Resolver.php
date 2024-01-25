@@ -15,7 +15,7 @@ class Resolver {
 	private static $options = [
 		'remove_unused_css' => [
 			'service' => 'rucss_subscriber',
-			'class' => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
+			'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
 		],
 	];
 
