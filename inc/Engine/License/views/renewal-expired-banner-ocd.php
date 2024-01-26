@@ -12,7 +12,16 @@ defined( 'ABSPATH' ) || exit;
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
-				<?php esc_html_e( 'Some features essential to address key PageSpeed Insights recommendations and improve your website performance, such as Remove Unused CSS, Auto-optimize LCP and images above the fold, are processed remotely and require an active license to work.', 'rocket' ); ?>
+				<?php
+				printf(
+					// translators: %1$s = <strong>, %2$s = </strong>.
+					esc_html__( 'You need an %1$sactive license to continue optimizing your CSS delivery%2$s.', 'rocket' ),
+					'<strong>',
+					'</strong>'
+				);
+				?>
+				<br>
+				<?php esc_html_e( 'The Remove Unused CSS and Load CSS asynchronously features are great options to address the PageSpeed Insights recommendations and improve your website performance.', 'rocket' ); ?>
 				<br>
 				<?php
 				printf(
