@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Debug\Resolver;
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Debug\Resolver;
 
 /**
@@ -15,16 +16,18 @@ class Test_GetServices extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
+        $options = Mockery::mock( Options_Data::class );
+        new Resolver( $options );
 
         if ( empty( $config['options'] ) ) {
-            Functions\expect( 'get_rocket_option' )->never();
+            $options->shouldReceive( 'get' )->never();
             return;
         }
 
         foreach ( $config['options'] as $option => $services ) {
-            Functions\expect( 'get_rocket_option' )
-				->with( $option )
-				->andReturn($services['enabled']);
+            $options->shouldReceive( 'get' )
+                ->with( $option, 0 )
+                ->andReturn( $services['enabled'] );
         }
 
 		$this->assertSame(
