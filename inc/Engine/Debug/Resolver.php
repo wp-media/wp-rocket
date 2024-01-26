@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Engine\Debug;
 
+use WP_Rocket\Admin\Options_Data;
+
 /**
  * Resolver.
  */
@@ -12,12 +14,28 @@ class Resolver {
 	 *
 	 * @var array
 	 */
-	private static $options = [
+	private static $options_services = [
 		'remove_unused_css' => [
 			'service' => 'rucss_subscriber',
 			'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
 		],
 	];
+
+	/**
+	 * Debug options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private static $options;
+
+	/**
+	 * Instantiate the class.
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		self::$options = $options;
+	}
 
 	/**
 	 * Ships an array of available services.
@@ -27,13 +45,12 @@ class Resolver {
 	public static function get_services(): array {
 		$set_services = [];
 
-		if ( empty( self::$options ) ) {
+		if ( empty( self::$options_services ) ) {
 			return [];
 		}
 
-		foreach ( self::$options as $option => $services ) {
-
-			if ( ! (bool) get_rocket_option( $option ) ) {
+		foreach ( self::$options_services as $option => $services ) {
+			if ( ! (bool) self::$options->get( $option, 0 ) ) {
 				continue;
 			}
 
