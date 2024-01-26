@@ -22,7 +22,6 @@ class Options extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'options',
-		'options_debug',
 	];
 
 	/**
@@ -36,8 +35,5 @@ class Options extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'options', 'WP_Rocket\Admin\Options_Data' )
 			->addArgument( $this->getContainer()->get( 'options_api' )->get( 'settings', [] ) );
-
-		$this->getContainer()->add( 'options_debug', 'WP_Rocket\Admin\Options_Data' )
-			->addArgument( $this->getContainer()->get( 'options_api' )->get( 'debug', [] ) );
 	}
 }
