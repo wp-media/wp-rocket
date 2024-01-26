@@ -89,6 +89,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_lazyload_excluded_attributes'      => 'add_exclusions',
 			'rocket_lazyload_excluded_src'             => 'add_exclusions',
 			'rocket_lazyload_iframe_excluded_patterns' => 'add_exclusions',
+			'rocket_lazyload_exclude_youtube_thumbnail' => 'add_exclusions',
 		];
 	}
 
