@@ -49,7 +49,7 @@ class Iframe {
 				continue;
 			}
 
-			if ( $args['youtube'] && ! $this->is_youtube_excluded( $iframe ) ) {
+			if ( $args['youtube'] ) {
 				$iframe_lazyload = $this->replaceYoutubeThumbnail( $iframe );
 			}
 
@@ -233,32 +233,5 @@ class Iframe {
 		$path       = isset( $parsed_url['path'] ) ? $parsed_url['path'] : '';
 
 		return $scheme . $host . $path;
-	}
-
-	/**
-	 * Checks if a youtube thumbnail is excluded from lazyload.
-	 *
-	 * @param array $iframe Array of matched patterns.
-	 * @return boolean
-	 */
-	private function is_youtube_excluded( array $iframe ): bool {
-		/**
-		 * Filters the patterns excluded from lazyload for youtube thumbnails.
-		 *
-		 * @param array $excluded_patterns Array of excluded patterns.
-		 */
-		$excluded_patterns = apply_filters( 'rocket_lazyload_exclude_youtube_thumbnail', [] );
-
-		if ( ! is_array( $excluded_patterns ) ) {
-			return false;
-		}
-
-		foreach ( $excluded_patterns as $excluded_pattern ) {
-			if ( strpos( $iframe[0], $excluded_pattern ) !== false ) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
