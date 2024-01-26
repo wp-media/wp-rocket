@@ -17,6 +17,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
+
 class UsedCSS implements LoggerAwareInterface {
 	use RegexTrait;
 	use CSSTrait;
@@ -493,6 +494,13 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
+		/**
+		 * Fires at the start of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+
+		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
 		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
 		if ( ! $this->is_enabled() ) {
@@ -531,6 +539,13 @@ class UsedCSS implements LoggerAwareInterface {
 				$this->queue->add_job_status_check_async( (int) $used_css_row->id );
 			}
 		}
+
+		/**
+		 * Fires at the end of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
@@ -611,6 +626,13 @@ class UsedCSS implements LoggerAwareInterface {
 		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 
 		$this->used_css_query->make_status_completed( $id, $hash );
+
+		/**
+		 * Fires after successfully saving the used CSS for an URL
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_check_job_status_end', $this->wpr_clock->current_time( 'mysql', true ) );
 
 		/**
 		 * Fires after successfully saving the used CSS for an URL
@@ -987,7 +1009,12 @@ class UsedCSS implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
-
+		/**
+		 * Fires at the start of the process on submit jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
 		if ( ! $this->is_enabled() ) {
 			$this->logger::debug( 'RUCSS: Stop processing cron iteration because option is disabled.' );
 
@@ -1031,6 +1058,13 @@ class UsedCSS implements LoggerAwareInterface {
 				(bool) $row->is_mobile
 			);
 		}
+
+		/**
+		 * Fires at the end of the process on submit jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_on_submit_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
