@@ -136,6 +136,9 @@ class Plugin {
 		$this->container->add( 'options_api', $this->options_api );
 		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
+		
+		$this->container->add( 'debug_resolver', DebugResolver::class )
+			->addArgument( $this->options );
 
 		$this->container->addServiceProvider( LoggerServiceProvider::class );
 
