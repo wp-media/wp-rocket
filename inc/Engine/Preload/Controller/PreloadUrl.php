@@ -69,7 +69,9 @@ class PreloadUrl {
 
 		// Do we need to compute the duration transient?
 		$check_duration = false;
+		$previous_request_durations = 0;
 		if( ! get_transient( 'rocket_preload_request_duration' ) ) {
+			$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
 			$check_duration = true;
 		}
 
@@ -128,7 +130,7 @@ class PreloadUrl {
 					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
 			);
-			
+
 			if ( $check_duration ) {
 				$requests['headers']['blocking'] = true;
 				$requests['headers']['timeout'] = 20;
@@ -149,7 +151,7 @@ class PreloadUrl {
 			}
 
 			if ( $check_duration ) {
-				$start = microtime(true); 
+				$start = microtime(true);
 			}
 
 			wp_safe_remote_get(
@@ -160,6 +162,8 @@ class PreloadUrl {
 			if ( $check_duration ) {
 				$duration = (microtime(true) - $start);
 				set_transient('rocket_preload_request_duration', $duration, 5 * 60);
+				$previous_request_durations = $previous_request_durations  + $duration;
+				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 60 * 60);
 				$check_duration = false;
 			}
 			/**
@@ -168,9 +172,9 @@ class PreloadUrl {
 			 * @param float $delay_between the defined delay.
 			 * @returns float
 			 */
-			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
+			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 2 );
 
-			usleep( $delay_between );
+			sleep( $delay_between );
 		}
 	}
 
@@ -209,7 +213,7 @@ class PreloadUrl {
 		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) );
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
-		$preload_request_duration = get_transient( 'rocket_preload_request_duration' );
+		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
 		if ( ! $preload_request_duration || $preload_request_duration <= 0 ){
 			$next_batch_size = $max_batch_size;
 		}
