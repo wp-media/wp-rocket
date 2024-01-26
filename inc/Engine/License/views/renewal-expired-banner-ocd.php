@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
-	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to product updates, support and features relying on our optimization servers', 'rocket' ); ?></h3>
+	<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features.', 'rocket' ); ?></h3>
 	<div class="rocket-renewal-expired-banner-container">
 		<div class="rocket-expired-message">
 			<p>
