@@ -67,10 +67,9 @@ class PreloadUrl {
 			return;
 		}
 
-		// Do we need to compute the duration transient?
-		$check_duration = true;
-		$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
-
+		// Should we perform a duration check?
+		$check_duration = get_transient( 'rocket_preload_check_duration' ) ? false : true;
+		
 		$requests = [
 			[
 				'url'       => $url,
@@ -156,15 +155,18 @@ class PreloadUrl {
 			);
 
 			if ( $check_duration ) {
-				$duration = (microtime(true) - $start);
+				$duration = (microtime(true) - $start); //Duration of the request
 
+				//Update average duration
+				$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0; 
 				if ($previous_request_durations <= 0) {
 					$previous_request_durations = $duration;
 				} else {
 					$previous_request_durations = $previous_request_durations * 0.7 + $duration * 0.3;
 				}
-
 				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 60 * 60);
+
+				set_transient('rocket_preload_check_duration', $duration, 60); //Don't check request duration for 1 minute.
 				$check_duration = false;
 			}
 			/**
