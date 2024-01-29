@@ -68,12 +68,8 @@ class PreloadUrl {
 		}
 
 		// Do we need to compute the duration transient?
-		$check_duration = false;
-		$previous_request_durations = 0;
-		if( ! get_transient( 'rocket_preload_request_duration' ) ) {
-			$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
-			$check_duration = true;
-		}
+		$check_duration = true;
+		$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
 
 		$requests = [
 			[
@@ -161,7 +157,6 @@ class PreloadUrl {
 
 			if ( $check_duration ) {
 				$duration = (microtime(true) - $start);
-				set_transient('rocket_preload_request_duration', $duration, 5 * 60);
 
 				if ($previous_request_durations <= 0) {
 					$previous_request_durations = $duration;
@@ -221,10 +216,10 @@ class PreloadUrl {
 
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
 		if ( ! $preload_request_duration || $preload_request_duration <= 0 ){
-			$next_batch_size = $max_batch_size;
+			$next_batch_size = $min_batch_size;
 		}
 		else{ // jobs per second / seconds per minute -> jobs per minute
-			$next_batch_size = (1/$preload_request_duration) / 2 * 60; // /2 for mobile/desktop
+			$next_batch_size = round((1/$preload_request_duration) / 2 * 60); // /2 for mobile/desktop
 		}
 
 		// Limit next_batch_size
