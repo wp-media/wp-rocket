@@ -162,7 +162,13 @@ class PreloadUrl {
 			if ( $check_duration ) {
 				$duration = (microtime(true) - $start);
 				set_transient('rocket_preload_request_duration', $duration, 5 * 60);
-				$previous_request_durations = $previous_request_durations  + $duration;
+
+				if ($previous_request_durations <= 0) {
+					$previous_request_durations = $duration;
+				} else {
+					$previous_request_durations = $previous_request_durations * 0.7 + $duration * 0.3;
+				}
+
 				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 60 * 60);
 				$check_duration = false;
 			}
