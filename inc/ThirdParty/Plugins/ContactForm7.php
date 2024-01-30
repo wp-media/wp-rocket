@@ -25,16 +25,6 @@ class ContactForm7 implements Subscriber_Interface {
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
-		/**
-		 * Filters register this compatibility events or not.
-		 *
-		 * @param bool $status Load the compatibility file or not, default is True.
-		 * @param string $thirdparty Thirdparty id.
-		 */
-		if ( ! apply_filters( 'rocket_thirdparty_load', true, 'contact-form-7' ) ) {
-			return [];
-		}
-
 		return [
 			'template_redirect' => 'maybe_optimize_contact_form_7',
 		];
@@ -44,6 +34,16 @@ class ContactForm7 implements Subscriber_Interface {
 	 * Optimize ContactForm7 scripts.
 	 */
 	public function maybe_optimize_contact_form_7() {
+		/**
+		 * Filters register this compatibility events or not.
+		 *
+		 * @param bool $status Load the compatibility file or not, default is True.
+		 * @param string $thirdparty Thirdparty id.
+		 */
+		if ( ! apply_filters( 'rocket_thirdparty_load', true, 'contact-form-7' ) ) {
+			return;
+		}
+
 		// The wpcf7_shortcode_callback action was added in CF7 version 5.8.1.
 		if ( ! defined( 'WPCF7_VERSION' ) || version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '<' ) ) {
 			return;
