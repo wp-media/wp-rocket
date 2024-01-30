@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Preload\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
-use WP_Rocket\Logger\Logger;
 
 class PreloadUrl {
 	use CheckExcludedTrait;
@@ -175,9 +174,9 @@ class PreloadUrl {
 			 * @param float $delay_between the defined delay.
 			 * @returns float
 			 */
-			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 2 );
+			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
 
-			sleep( $delay_between );
+			usleep( $delay_between );
 		}
 	}
 
@@ -213,7 +212,7 @@ class PreloadUrl {
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
 		// Retrieve previous batch size information
-		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) );
+		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
