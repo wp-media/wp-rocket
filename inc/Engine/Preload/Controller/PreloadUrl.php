@@ -126,8 +126,8 @@ class PreloadUrl {
 			);
 
 			if ( $check_duration ) {
-				$requests['headers']['blocking'] = true;
-				$requests['headers']['timeout'] = 20;
+				$headers['blocking'] = true;
+				$headers['timeout']  = 20;
 			}
 
 			/**
