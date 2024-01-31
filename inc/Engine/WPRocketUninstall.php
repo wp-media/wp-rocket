@@ -73,6 +73,12 @@ class WPRocketUninstall {
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
 		'rocket_divi_notice',
+		'rocket_rucss_processing',
+		'rocket_mod_pagespeed_enabled',
+		'wp_rocket_pricing',
+		'wp_rocket_pricing_timeout',
+		'wp_rocket_pricing_timeout_active',
+		'rocket_get_refreshed_fragments_cache',
 	];
 
 	/**
