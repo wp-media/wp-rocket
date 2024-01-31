@@ -28,6 +28,8 @@ function rocket_init() {
 		return;
 	}
 
+	do_action( 'wp_rocket_before_load' );
+
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
