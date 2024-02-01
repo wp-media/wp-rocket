@@ -13,6 +13,14 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 	global $sitepress;
 	$langlinks = [];
 
+	// Making all languages the first option either when it's set or not.
+	$langlinks[] = [
+		'code'    => 'all',
+		'current' => 'all' === $sitepress->get_current_language(),
+		'anchor'  => __( 'All languages', 'rocket' ),
+		'flag'    => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />',
+	];
+
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag.
 		$flag     = $sitepress->get_flag( $lang['code'] );
@@ -29,28 +37,6 @@ function get_rocket_wpml_langs_for_admin_bar() {  // phpcs:ignore WordPress.Nami
 			'anchor'  => $lang['display_name'],
 			'flag'    => '<img class="icl_als_iclflag" src="' . esc_url( $flag_url ) . '" alt="' . esc_attr( $lang['code'] ) . '" width="18" height="12" />',
 		];
-	}
-
-	if ( isset( $_GET['lang'] ) && 'all' === $_GET['lang'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		array_unshift(
-			$langlinks,
-			[
-				'code'    => 'all',
-				'current' => 'all' === $sitepress->get_current_language(),
-				'anchor'  => __( 'All languages', 'rocket' ),
-				'flag'    => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />',
-			]
-		);
-	} else {
-		array_push(
-			$langlinks,
-			[
-				'code'    => 'all',
-				'current' => 'all' === $sitepress->get_current_language(),
-				'anchor'  => __( 'All languages', 'rocket' ),
-				'flag'    => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />',
-			]
-		);
 	}
 
 	return $langlinks;
