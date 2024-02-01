@@ -1,15 +1,15 @@
-# Copyright (C) 2023 WP Media
+# Copyright (C) 2024 WP Media
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15.6-alpha1\n"
+"Project-Id-Version: WP Rocket 3.15.8\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-05T09:26:37+02:00\n"
+"POT-Creation-Date: 2024-01-17T13:48:27+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: rocket\n"
@@ -297,7 +297,7 @@ msgid "WP Rocket will create separate cache files to serve your WebP images."
 msgstr ""
 
 #: inc/admin/admin.php:18
-#: inc/common/admin-bar.php:272
+#: inc/common/admin-bar.php:273
 #: inc/deprecated/deprecated.php:1787
 msgid "Support"
 msgstr ""
@@ -307,12 +307,12 @@ msgid "Docs"
 msgstr ""
 
 #: inc/admin/admin.php:22
-#: inc/common/admin-bar.php:260
+#: inc/common/admin-bar.php:261
 msgid "FAQ"
 msgstr ""
 
 #: inc/admin/admin.php:24
-#: inc/common/admin-bar.php:69
+#: inc/common/admin-bar.php:70
 msgid "Settings"
 msgstr ""
 
@@ -413,8 +413,8 @@ msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:37
 #: inc/admin/ui/notices.php:671
-#: inc/common/admin-bar.php:90
-#: inc/common/admin-bar.php:153
+#: inc/common/admin-bar.php:91
+#: inc/common/admin-bar.php:154
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear cache"
 msgstr ""
@@ -636,36 +636,36 @@ msgstr[1] ""
 msgid "https://docs.wp-rocket.me/article/99-pages-not-cached-or-minify-cssjs-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket#theme"
 msgstr ""
 
-#: inc/common/admin-bar.php:90
-#: inc/common/admin-bar.php:153
+#: inc/common/admin-bar.php:91
+#: inc/common/admin-bar.php:154
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear and preload cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:141
+#: inc/common/admin-bar.php:131
 #: inc/functions/i18n.php:40
 #: inc/functions/i18n.php:50
 msgid "All languages"
 msgstr ""
 
-#: inc/common/admin-bar.php:177
+#: inc/common/admin-bar.php:178
 msgid "Clear this post"
 msgstr ""
 
-#: inc/common/admin-bar.php:191
+#: inc/common/admin-bar.php:192
 msgid "Purge this URL"
 msgstr ""
 
-#: inc/common/admin-bar.php:211
+#: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:235
+#: inc/common/admin-bar.php:236
 #: views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:248
+#: inc/common/admin-bar.php:249
 #: views/settings/partials/documentation.php:14
 msgid "Documentation"
 msgstr ""
