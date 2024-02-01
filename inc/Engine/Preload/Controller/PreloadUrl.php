@@ -163,7 +163,7 @@ class PreloadUrl {
 				} else {
 					$previous_request_durations = $previous_request_durations * 0.7 + $duration * 0.3;
 				}
-				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 60 * 60);
+				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 5 * 60);
 
 				set_transient('rocket_preload_check_duration', $duration, 60); //Don't check request duration for 1 minute.
 				$check_duration = false;
@@ -211,16 +211,17 @@ class PreloadUrl {
 
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
-		// Retrieve previous batch size information
+		// Retrieve batch size limits and request timing estimaiton
 		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
 		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
-
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
-		if ( ! $preload_request_duration || $preload_request_duration <= 0 ){
-			$next_batch_size = $min_batch_size;
-		}
-		else{ // jobs per second / seconds per minute -> jobs per minute
-			$next_batch_size = round((1/$preload_request_duration) / 2 * 60); // /2 for mobile/desktop
+
+		//Estimate batch size based on request duration
+		if ( ! $preload_request_duration ){
+			$next_batch_size = $min_batch_size; // In case no estimation or there is an issue with the value.
+		} else {
+			// Linear function: 2s -> 45 jobs // 10s -> 5 jobs
+			$next_batch_size = round( -5 * $preload_request_duration + 55 ); 
 		}
 
 		// Limit next_batch_size
