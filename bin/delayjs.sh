@@ -8,6 +8,7 @@ fi
 
 # Create a regular directory
 dir_name="delayjs_temp_directory"
+delayjs_dir="/assets/js/lazyload-scripts.min.js"
 echo "Creating directory: $dir_name"
 mkdir "$dir_name"
 
@@ -29,7 +30,7 @@ branch_name=$1
 git switch "$branch_name"
 
 echo "Copying delayjs content to plugin"
-cp delay-js.js ../assets/js/lazyload-scripts.min.js
+cp delay-js.js ..$delayjs_dir
 
 # Come up one level out of the temp dir and run gulp
 cd "./"
@@ -41,4 +42,18 @@ echo "Deleting temporary directory"
 cd ..
 rm -rf "$dir_name"
 
-echo "Script completed successfully"
+# Set the paths for the mock test script
+php_file="./bin/addDelayJsScript.php"
+
+# Read the content of the delayjs script
+delayjs_content=$(<".$delayjs_dir")
+
+# Replace the placeholder in the mock test file with the delayjs content using parameter expansion
+placeholder="%%DELAYJS%%"
+php_content=$(<"$php_file")
+php_content="${php_content//$placeholder/$delayjs_content}"
+
+# Write the modified content to the test fixture.
+echo "$php_content" > "./tests/Fixtures/inc/Engine/Optimization/DelayJS/Subscriber/addDelayJsScript.php"
+
+echo "DelayJs updated successfully"
