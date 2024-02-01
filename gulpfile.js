@@ -200,6 +200,30 @@ exports.bundleLazyloadJsWithoutWatch = bundleLazyloadJsWithoutWatch;
 // Run build without watching: watching keeps git actions stuck on 'build'
 gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, bundleLazyloadJsWithoutWatch, 'run:build:sass'));
 
+// Compiles DelayJS script.
+gulp.task('run:build-delayjs', () => {
+    const bundle = browserify({
+        entries: './assets/js/lazyload-scripts.min.js',
+        debug: true
+    }).transform(babel);
+
+    const uglifyOptions = {
+        mangle: {
+           properties: {
+             regex: /^_/
+          }
+        }
+    };
+
+    return bundle.bundle()
+        .pipe(source('lazyload-scripts.min.js'))
+        .pipe(buffer())
+        .pipe(uglify(uglifyOptions))
+        .pipe(sourcemaps.init({loadMaps: false}))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('assets/js'))
+});
+
 /**
  * Compiles a standalone script file.
  *
