@@ -68,7 +68,7 @@ class PreloadUrl {
 
 		// Should we perform a duration check?
 		$check_duration = get_transient( 'rocket_preload_check_duration' ) ? false : true;
-		
+
 		$requests = [
 			[
 				'url'       => $url,
@@ -145,7 +145,7 @@ class PreloadUrl {
 			}
 
 			if ( $check_duration ) {
-				$start = microtime(true);
+				$start = microtime( true );
 			}
 
 			wp_safe_remote_get(
@@ -154,18 +154,18 @@ class PreloadUrl {
 			);
 
 			if ( $check_duration ) {
-				$duration = (microtime(true) - $start); //Duration of the request
+				$duration = ( microtime( true ) - $start ); // Duration of the request.
 
-				//Update average duration
-				$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0; 
-				if ($previous_request_durations <= 0) {
+				// Update average duration.
+				$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
+				if ( $previous_request_durations <= 0 ) {
 					$previous_request_durations = $duration;
 				} else {
 					$previous_request_durations = $previous_request_durations * 0.7 + $duration * 0.3;
 				}
-				set_transient('rocket_preload_previous_request_durations', $previous_request_durations, 5 * 60);
+				set_transient( 'rocket_preload_previous_request_durations', $previous_request_durations, 5 * 60 );
 
-				set_transient('rocket_preload_check_duration', $duration, 60); //Don't check request duration for 1 minute.
+				set_transient( 'rocket_preload_check_duration', $duration, 60 ); // Don't check request duration for 1 minute.
 				$check_duration = false;
 			}
 			/**
@@ -211,22 +211,22 @@ class PreloadUrl {
 
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
-		// Retrieve batch size limits and request timing estimaiton
-		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
-		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
+		// Retrieve batch size limits and request timing estimaiton.
+		$max_batch_size           = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+		$min_batch_size           = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
 
-		//Estimate batch size based on request duration
-		if ( ! $preload_request_duration ){
+		// Estimate batch size based on request duration/
+		if ( ! $preload_request_duration ) {
 			$next_batch_size = $min_batch_size; // In case no estimation or there is an issue with the value.
 		} else {
-			// Linear function: 2s -> 45 jobs // 10s -> 5 jobs
-			$next_batch_size = round( -5 * $preload_request_duration + 55 ); 
+			// Linear function: 2s -> 45 jobs // 10s -> 5 jobs.
+			$next_batch_size = round( -5 * $preload_request_duration + 55 );
 		}
 
-		// Limit next_batch_size
-		$next_batch_size = min( $next_batch_size, $max_batch_size); //Not higher than 45
-		$next_batch_size = max( $next_batch_size, $min_batch_size); //Not lower than 5
+		// Limit next_batch_size.
+		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
+		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
 
 		// Get all in-progress jobs with request sent and no results.
 		/**
@@ -247,7 +247,7 @@ class PreloadUrl {
 		);
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
-		// Make sure the request has been sent for those jobs
+		// Make sure the request has been sent for those jobs.
 		$stuck_rows = array_filter(
 			$stuck_rows,
 			function ( $row ) use ( $pending_actions ) {
@@ -265,7 +265,7 @@ class PreloadUrl {
 			$this->query->make_status_failed( $row->id );
 		}
 
-		//Add new jobs in progress
+		// Add new jobs in progress.
 		$rows = $this->query->get_pending_jobs( $next_batch_size );
 		foreach ( $rows as $row ) {
 
