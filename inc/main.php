@@ -28,6 +28,9 @@ function rocket_init() {
 		return;
 	}
 
+	/**
+	 * Fires when WP Rocket starts to load.
+	 */
 	do_action( 'wp_rocket_before_load' );
 
 	// Call defines and functions.
