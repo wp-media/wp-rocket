@@ -216,7 +216,7 @@ class PreloadUrl {
 		$min_batch_size           = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
 
-		// Estimate batch size based on request duration/
+		// Estimate batch size based on request duration.
 		if ( ! $preload_request_duration ) {
 			$next_batch_size = $min_batch_size; // In case no estimation or there is an issue with the value.
 		} else {
