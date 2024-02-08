@@ -1,20 +1,33 @@
 #!/bin/bash
 
+# Check if Gulp is installed
+if ! command -v gulp &> /dev/null; then
+    echo "Error: Gulp is not installed or recognized. Please install Gulp globally and try again."
+    exit 1
+fi
+
 # Check if branch argument is provided
 if [ -z "$1" ]; then
     echo "Error: Please provide a branch name as an argument."
     exit 1
 fi
 
-# Create a regular directory
 dir_name="delayjs_temp_directory"
+
+# Check if directory exists and delete if it does
+if [ -d "$dir_name" ]; then
+    echo "Directory $dir_name already exists. Deleting..."
+    rm -rf "$dir_name"
+fi
+
+# Create a regular directory
 delayjs_dir="/assets/js/lazyload-scripts.min.js"
 echo "Creating directory: $dir_name"
 mkdir "$dir_name"
 
 # Clone repository into the regular directory
 echo "Cloning repository to $dir_name"
-if git clone https://github.com/wp-media/delay-javascript-loading.git "$dir_name"; then
+if git clone git@github.com:wp-media/delay-javascript-loading.git "$dir_name"; then
     echo "Git clone successful"
 else
     echo "Error: Git clone failed."
