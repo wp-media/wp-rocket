@@ -219,8 +219,6 @@ gulp.task('run:build-delayjs', () => {
         .pipe(source('lazyload-scripts.min.js'))
         .pipe(buffer())
         .pipe(uglify(uglifyOptions))
-        .pipe(sourcemaps.init({loadMaps: false}))
-        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('assets/js'))
 });
 
