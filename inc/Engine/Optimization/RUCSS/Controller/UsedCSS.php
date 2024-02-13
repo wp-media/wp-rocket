@@ -785,6 +785,14 @@ class UsedCSS implements LoggerAwareInterface {
 			return $html;
 		}
 
+        /**
+         * Filters the list of fonts to exclude from preload
+         *
+         * @since 3.15.10
+         *
+         * @param array $excluded_fonts_preload List of fonts to exclude from preload
+         */
+        $exclude_fonts_preload = apply_filters( 'rocket_exclude_rucss_fonts_preload', [] );
 		$urls = [];
 
 		foreach ( $font_faces as $font_face ) {
@@ -793,6 +801,7 @@ class UsedCSS implements LoggerAwareInterface {
 			}
 
 			$font_url = $this->extract_first_font( $font_face['content'] );
+
 
 			/**
 			 * Filters font URL with CDN hostname
@@ -806,6 +815,11 @@ class UsedCSS implements LoggerAwareInterface {
 			if ( empty( $font_url ) ) {
 				continue;
 			}
+
+            // Check if the font URL is in the exclude_fonts_preload array
+            if (in_array($font_url, $exclude_fonts_preload)) {
+                continue; // Skip this iteration as the font URL is in the exclusion list
+            }
 
 			$urls[] = $font_url;
 		}
