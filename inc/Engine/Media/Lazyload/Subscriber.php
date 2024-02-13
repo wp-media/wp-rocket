@@ -460,7 +460,7 @@ class Subscriber implements Subscriber_Interface {
 		if ( ! is_array( $exclusions ) ) {
 			$exclusions = [];
 		}
-		
+
 		$exclude_lazyload = $this->options->get( 'exclude_lazyload', [] );
 
 		if ( empty( $exclude_lazyload ) ) {
