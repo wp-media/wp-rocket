@@ -10,7 +10,7 @@ return [
         'config' => [
             'options' => [
                 'remove_unused_css' => [
-                    'service' => 'rucss_subscriber',
+                    'service' => 'rucss_debug_subscriber',
                     'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
                     'enabled' => false,
                 ],
@@ -22,7 +22,7 @@ return [
         'config' => [
             'options' => [
                 'remove_unused_css' => [
-                    'service' => 'rucss_subscriber',
+                    'service' => 'rucss_debug_subscriber',
                     'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
                     'enabled' => true,
                 ],
@@ -30,7 +30,7 @@ return [
         ],
         'expected' => [
             [
-                'service' => 'rucss_subscriber',
+                'service' => 'rucss_debug_subscriber',
                 'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
             ],
         ],
