@@ -143,7 +143,6 @@ function rocket_first_install() {
 			]
 		)
 	);
-
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 }
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
