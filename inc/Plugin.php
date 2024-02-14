@@ -388,6 +388,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'contactform7',
+			'debug_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
