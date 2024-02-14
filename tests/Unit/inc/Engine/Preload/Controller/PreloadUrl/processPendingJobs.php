@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 
 /**
  * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::process_pending_jobs
@@ -38,7 +39,8 @@ class Test_processPendingJobs extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
-
+		Functions\when( 'get_transient' )
+			->justReturn( $config['transient'] );
 		$this->queue->expects()->get_pending_preload_actions()->andReturn([]);
 		Filters\expectApplied('rocket_preload_cache_pending_jobs_cron_rows_count')->with(100)->andReturn($config['rows']);
 		$this->query->expects(self::once())->method( 'get_outdated_in_progress_jobs' )->with()->willReturn($config['outdated_jobs']);

@@ -25,13 +25,13 @@ return [
 			'user_agent' => 'user_agent',
 			'request' => [
 				'config' => [
-					'blocking' => false,
-					'timeout'  => 0.01,
+					'blocking' => true,
+					'timeout'  => 20,
 					'user-agent' => 'WP Rocket/Preload',
 					'sslverify' => false,
 				]
 			],
-			'transient' => 0,
+			'transient' => 1,
 		],
 	],
 	'mobileActivatedShouldPreloadTwice' => [

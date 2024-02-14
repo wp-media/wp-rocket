@@ -42,7 +42,9 @@ class Test_PreloadUrl extends TestCase
 	 */
 	public function testShouldDoAsExpected($config) {
 		Functions\when( 'get_transient' )
-			->justReturn( $config['transient'] );
+			->justReturn();
+		Functions\when( 'set_transient' )
+			->justReturn();
 		Functions\when( 'wp_safe_remote_get' )
 			->justReturn();
 
