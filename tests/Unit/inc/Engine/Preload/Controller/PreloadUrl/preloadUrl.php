@@ -43,6 +43,9 @@ class Test_PreloadUrl extends TestCase
 	public function testShouldDoAsExpected($config) {
 		Functions\when( 'get_transient' )
 			->justReturn( $config['transient'] );
+		Functions\when( 'wp_safe_remote_get' )
+			->justReturn();
+
 		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
 		$this->configureRequest($config);
