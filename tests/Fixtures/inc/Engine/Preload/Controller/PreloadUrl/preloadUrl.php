@@ -14,6 +14,7 @@ return [
 					'sslverify' => false,
 				]
 			],
+			'transient' => 0,
 		]
 	],
 	'mobileNotActivatedShouldPreloadOnlyOnce' => [
