@@ -30,7 +30,7 @@ return [
 					'sslverify' => false,
 				]
 			],
-			'rocket_preload_check_duration' => 1,
+			'transient' => 0,
 		],
 	],
 	'mobileActivatedShouldPreloadTwice' => [
@@ -55,7 +55,7 @@ return [
 					'sslverify' => false,
 				]
 			],
-			'rocket_preload_check_duration' => 1,
+			'transient' => 0,
 		]
 	]
 ];
