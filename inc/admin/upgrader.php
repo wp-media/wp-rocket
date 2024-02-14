@@ -144,20 +144,6 @@ function rocket_first_install() {
 		)
 	);
 
-	add_option(
-		rocket_get_constant( 'WP_ROCKET_DEBUG_SLUG' ),
-		/**
-		 * Filters the default rocket debug options array.
-		 *
-		 * @param array Array of default rocket debug options.
-		 */
-		apply_filters(
-			'rocket_first_install_debug_options',
-			[
-				'last_rucss_job_added' => '',
-			]
-		)
-	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 }
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );

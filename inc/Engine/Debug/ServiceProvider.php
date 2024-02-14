@@ -20,7 +20,9 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @var array
 	 */
-	protected $provides = [];
+	protected $provides = [
+		'debug_subscriber',
+	];
 
 	/**
 	 * Register the service in the provider array
@@ -45,6 +47,8 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @return void
 	 */
 	public function register() {
+		$this->container->add( 'debug_subscriber', DebugSubscriber::class );
+
 		$services = Resolver::get_services();
 
 		if ( empty( $services ) ) {
