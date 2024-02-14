@@ -35,7 +35,7 @@ class DebugSubscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function on_upgrade( $new_version, $old_version ) {
+	public function on_upgrade( $new_version, $old_version ): void {
 		if ( version_compare( $old_version, '3.16', '>=' ) ) {
 			return;
 		}
