@@ -45,8 +45,6 @@ class Test_PreloadUrl extends TestCase
 			->justReturn();
 		Functions\when( 'set_transient' )
 			->justReturn();
-		Functions\when( 'wp_safe_remote_get' )
-			->justReturn();
 
 		$this->options->expects()->get('do_caching_mobile_files', false)->andReturn($config['cache_mobile']);
 		$this->controller->expects()->is_already_cached($config['url'])->andReturn($config['cache_exists']);
