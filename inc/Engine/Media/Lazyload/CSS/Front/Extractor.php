@@ -37,8 +37,7 @@ class Extractor {
 			},
 			$content
 			);
-		$background_regex = '([^{}]+?)\s*{\s*[^}]*\bbackground\s*:\s*([^;}]+)';
-		//$background_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
+		$background_regex = '(?P<selector>[^{}]+)\s*{\s*(?>[^{}]+{[^{}]*})*\bbackground\s*:\s*(?P<property>[^;}]+)';
 
 		$background_image_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
 
