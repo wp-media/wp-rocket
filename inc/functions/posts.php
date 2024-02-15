@@ -76,7 +76,8 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 	/**
 	 * Get the post ID from the URL.
 	 *
-	 * @param string $url URL of the page.
+	 * @param string         $url URL of the page.
+	 * @param array|string[] $search_in_post_statuses Post statuses to search in.
 	 * @return float|int Post ID.
 	 */
 	function rocket_url_to_postid( string $url, array $search_in_post_statuses = [ 'publish', 'private' ] ) {
