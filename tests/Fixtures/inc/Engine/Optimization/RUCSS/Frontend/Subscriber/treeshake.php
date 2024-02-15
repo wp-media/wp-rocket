@@ -2,6 +2,7 @@
 
 $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
+$html_output_font_excluded = file_get_contents(__DIR__ . '/HTML/outputFontExcluded.html');
 
 
 return [
@@ -15,8 +16,8 @@ return [
 				],
 				'files' => [
 
-				]
-
+				],
+				'font_excluded' => [],
 			],
 			'expected' => [
 				'html' => $html_output,
@@ -51,7 +52,8 @@ return [
 				],
 				'files' => [
 
-				]
+				],
+				'font_excluded' => [],
 
 			],
 			'expected' => [
@@ -71,5 +73,43 @@ return [
 				]
 			]
 		],
+		'shouldNotPreloadFontExcluded' => [
+			'config' => [
+				'rucss' => true,
+				'html' => $html_input,
+				'rows' => [
+					[
+						'url' => 'http://example.org',
+						'job_id' => '1234',
+						'queue_name' => 'eu',
+						'is_mobile' => false,
+						'status'        => 'completed',
+						'retries'       => 0,
+						'hash'          => '1234abcd',
+					]
+				],
+				'font_excluded' => ['https://domaina.com'],
+				'files' => [
+					'wp-content/cache/used-css/1/1/2/3/4abcd.css.gz' => gzencode( file_get_contents(__DIR__ . '/CSS/test.css') )
+				],
+			],
+			'expected' => [
+				'html' => $html_output_font_excluded,
+				'rows' => [
+					[
+						'url' => 'http://example.org',
+						'job_id' => '1234',
+						'queue_name' => 'eu',
+						'is_mobile' => false,
+						'status'        => 'completed',
+						'retries'       => 0,
+						'hash'          => '1234abcd',
+					]
+				],
+				'files' => [
+
+				]
+			]
+		]
 	]
 ];

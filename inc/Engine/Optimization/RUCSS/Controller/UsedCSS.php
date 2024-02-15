@@ -819,8 +819,16 @@ class UsedCSS implements LoggerAwareInterface {
 				continue;
 			}
 
-			// Combine the array elements into a single string with | as a separator.
-			$exclude_fonts_preload_pattern = implode( '|', array_map( 'preg_quote', $exclude_fonts_preload ) );
+			// Combine the array elements into a single string with | as a separator and returning a pattern.
+			$exclude_fonts_preload_pattern = implode(
+				'|',
+				array_map(
+					function ( $item ) {
+						return preg_quote( $item, '/' );
+					},
+					$exclude_fonts_preload
+				)
+			);
 
 			// Check if the font URL matches any part of the exclude_fonts_preload array.
 			if ( preg_match( '/' . $exclude_fonts_preload_pattern . '/i', $font_url ) ) {
