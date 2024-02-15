@@ -58,7 +58,7 @@ class Divi implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX ],
+			'after_switch_theme'              => [ 'maybe_disable_youtube_preview', PHP_INT_MAX ],
 			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 

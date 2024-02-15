@@ -63,7 +63,7 @@ class Test_MaybeDisableYoutubePreview extends WPThemeTestcase {
 				->set_child_theme( $config['stylesheet'], $config['stylesheet'], $config['template'] );
 		}
 
-		switch_theme( $config['stylesheet'] );
+		do_action( 'after_switch_theme', '', '' );
 
 		$this->assertSame( $expected['settings'], $options_api->get( 'settings' ) );
 	}
