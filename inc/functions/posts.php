@@ -79,7 +79,7 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 	 * @param string $url URL of the page.
 	 * @return float|int Post ID.
 	 */
-	function rocket_url_to_postid( string $url ) {
+	function rocket_url_to_postid( string $url, array $search_in_post_statuses = [ 'publish', 'private' ] ) {
 		global $wp_rewrite;
 
 		/**
@@ -239,7 +239,9 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 				// Resolve conflicts between posts with numeric slugs and date archive queries.
 				$query = wp_resolve_numeric_slug_conflicts( $query );
 
-				$query['post_status'] = [ 'publish', 'private' ];
+				if ( ! empty( $search_in_post_statuses ) ) {
+					$query['post_status'] = $search_in_post_statuses;
+				}
 
 				/**
 				 * Filters WP_Query class passed args.

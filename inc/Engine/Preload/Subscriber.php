@@ -549,12 +549,6 @@ class Subscriber implements Subscriber_Interface {
 			return true;
 		}
 
-		$post_id = rocket_url_to_postid( $url );
-
-		$post = get_post( $post_id );
-		if ( $post ) {
-			return 'private' === $post->post_status;
-		}
-		return false;
+		return ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
 	}
 }
