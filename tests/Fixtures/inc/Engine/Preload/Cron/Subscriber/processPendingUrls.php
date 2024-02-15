@@ -120,7 +120,7 @@ return [
 				],
 				[
 					'url' => 'http://example.org/test3',
-					'status' => 'pending'
+					'status' => 'failed'
 				],
 				[
 					'url' => 'http://example.org/test4',
@@ -147,15 +147,15 @@ return [
 				],
 				[
 					'url' => 'http://example.org/test3',
-					'status' => 'pending'
+					'status' => 'failed'
 				],
 				[
 					'url' => 'http://example.org/test4',
-					'status' => 'pending'
+					'status' => 'in-progress'
 				],
 				[
 					'url' => 'http://example.org/test5',
-					'status' => 'pending'
+					'status' => 'in-progress'
 				],
 			],
 			'actions' => [
@@ -181,14 +181,14 @@ return [
 					],
 				],
 				[
-					'exists' => false,
+					'exists' => true,
 					'args' => [
 						'hook'   => 'rocket_preload_job_preload_url',
 						'args' => ['http://example.org/test4']
 					],
 				],
 				[
-					'exists' => false,
+					'exists' => true,
 					'args' => [
 						'hook'   => 'rocket_preload_job_preload_url',
 						'args' => ['http://example.org/test5']
