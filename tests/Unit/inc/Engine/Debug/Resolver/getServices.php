@@ -17,7 +17,7 @@ class Test_GetServices extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
         $options = Mockery::mock( Options_Data::class );
-        new Resolver( $options );
+        $resolver = new Resolver( $options );
 
         if ( empty( $config['options'] ) ) {
             $options->shouldReceive( 'get' )->never();
@@ -32,7 +32,7 @@ class Test_GetServices extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			Resolver::get_services()
+			$resolver->get_services()
 		);
 	}
 }
