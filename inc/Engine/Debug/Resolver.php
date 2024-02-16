@@ -14,7 +14,7 @@ class Resolver {
 	 *
 	 * @var array
 	 */
-	private static $options_services = [
+	private $options_services = [
 		'remove_unused_css' => [
 			'service' => 'rucss_debug_subscriber',
 			'class'   => 'WP_Rocket\Engine\Debug\RUCSS\Subscriber',
@@ -26,7 +26,7 @@ class Resolver {
 	 *
 	 * @var Options_Data
 	 */
-	private static $options;
+	private $options;
 
 	/**
 	 * Instantiate the class.
@@ -34,7 +34,7 @@ class Resolver {
 	 * @param Options_Data $options Options instance.
 	 */
 	public function __construct( Options_Data $options ) {
-		self::$options = $options;
+		$this->options = $options;
 	}
 
 	/**
@@ -42,15 +42,15 @@ class Resolver {
 	 *
 	 * @return array Array of services.
 	 */
-	public static function get_services(): array {
+	public function get_services(): array {
 		$set_services = [];
 
-		if ( empty( self::$options_services ) ) {
+		if ( empty( $this->options_services ) ) {
 			return [];
 		}
 
-		foreach ( self::$options_services as $option => $services ) {
-			if ( ! (bool) self::$options->get( $option, 0 ) ) {
+		foreach ( $this->options_services as $option => $services ) {
+			if ( ! (bool) $this->options->get( $option, 0 ) ) {
 				continue;
 			}
 

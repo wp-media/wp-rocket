@@ -404,7 +404,7 @@ class Plugin {
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
-		$services = DebugResolver::get_services();
+		$services = $this->container->get( 'debug_resolver' )->get_services();
 
 		if ( ! empty( $services ) ) {
 			foreach ( $services as $service ) {

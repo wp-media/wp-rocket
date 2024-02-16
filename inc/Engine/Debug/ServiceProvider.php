@@ -25,18 +25,25 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	];
 
 	/**
+	 * Array of available debug services.
+	 *
+	 * @var array
+	 */
+	protected $services;
+
+	/**
 	 * Register the service in the provider array
 	 *
 	 * @return void
 	 */
 	public function boot() {
-		$services = $this->getContainer()->get( 'debug_resolver' )::get_services();
+		$this->services = $this->getContainer()->get( 'debug_resolver' )->get_services();
 
-		if ( empty( $services ) ) {
+		if ( empty( $this->services ) ) {
 			return;
 		}
 
-		foreach ( $services as $service ) {
+		foreach ( $this->services as $service ) {
 			$this->provides[] = $service['service'];
 		}
 	}
@@ -49,16 +56,14 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	public function register() {
 		$this->container->add( 'debug_subscriber', DebugSubscriber::class );
 
-		$services = Resolver::get_services();
-
-		if ( empty( $services ) ) {
+		if ( empty( $this->services ) ) {
 			return;
 		}
 
 		$this->container->add( 'options_debug', Options_Data::class )
 			->addArgument( $this->container->get( 'options_api' )->get( 'debug', [] ) );
 
-		foreach ( $services as $service ) {
+		foreach ( $this->services as $service ) {
 			$this->getContainer()->add( $service['service'], $service['class'] )
 				->addArgument( $this->getContainer()->get( 'options_debug' ) )
 				->addArgument( $this->getContainer()->get( 'options_api' ) );
