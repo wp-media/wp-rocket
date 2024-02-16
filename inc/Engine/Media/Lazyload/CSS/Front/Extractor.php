@@ -37,7 +37,10 @@ class Extractor {
 			},
 			$content
 			);
-		$background_regex = '(?P<selector>[^{}]+)\s*{\s*(?>[^{}]+{[^{}]*})*\bbackground\s*:\s*(?P<property>[^;}]+)';
+		$background_regex = '(?:background|background-image)\s*:(?<property>[^;}]*)[^}]*}';
+		$html_reversed = strrev( $content );
+
+		/*$background_regex = '(?P<selector>[^{}]+)\s*{\s*(?>[^{}]+{[^{}]*})*\bbackground\s*:\s*(?P<property>[^;}]+)';*/
 
 		$background_image_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
 
@@ -55,18 +58,57 @@ class Extractor {
 		 */
 		$background_image_regex = $this->apply_string_filter( 'lazyload_css_extract_bg_img_property_regex', $background_image_regex );
 
-		$background_matches       = $this->find( $background_regex, $content, 'mi' );
+		$background_matches       = $this->find( $background_regex, $content, 'mi', PREG_OFFSET_CAPTURE );
 		$background_image_matches = $this->find( $background_image_regex, $content, 'mi' );
 
 		$matches = array_merge( $background_matches, $background_image_matches );
 
-		if ( empty( $matches ) ) {
+		if ( empty( $background_matches ) ) {
 			return [];
 		}
 
 		$results = [];
 
-		foreach ( $matches as $match ) {
+		foreach ($background_matches[0] as $index => $match) {
+			$original_offset = $match[1];
+
+			$adjusted_offset = strlen( $content ) - $original_offset - strlen( $match[0] );
+
+			// Reverse the selector regex.
+			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r^>[*"\'=\]#]|(?:\][^\]]+\[))+)}/mi';
+
+			// Execute preg_match to find reversed selector.
+			preg_match( $reversed_selector_regex, $html_reversed, $matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
+
+			if ( empty( $matches ) ) {
+				continue;
+			}
+			// Extract reversed selector and reverse it back.
+			$reversed_selector = $matches['reversed_selector'][0];
+			$selector = strrev( $reversed_selector );
+			$property = $background_matches[1][$index][0];
+
+			$property = trim( $property );
+			$selector = trim( $selector );
+
+			$urls  = $this->extract_urls( $property, $file_url );
+			$block = trim( $match[0] );
+
+			foreach ( $this->comments_mapping as $id => $comment ) {
+				$block = str_replace( $id, $comment, $block );
+			}
+
+			foreach ( $urls as $url ) {
+				$results[ $selector ][] = [
+					'selector' => $selector,
+					'url'      => $url['url'],
+					'original' => $url['original'],
+					'block'    => $block,
+				];
+			}
+		}
+
+		/*foreach ( $matches as $match ) {
 			if ( ! key_exists( 'property', $match ) || ! key_exists( 'selector', $match ) ) {
 				continue;
 			}
@@ -91,7 +133,7 @@ class Extractor {
 					'block'    => $block,
 				];
 			}
-		}
+		}*/
 
 		return $results;
 	}
