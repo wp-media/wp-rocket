@@ -36,13 +36,12 @@ class Extractor {
 				return $id;
 			},
 			$content
-			);
-		$background_regex = '(?:background|background-image)\s*:(?<property>[^;}]*)[^}]*}';
-		$html_reversed = strrev( $content );
+		);
 
-		/*$background_regex = '(?P<selector>[^{}]+)\s*{\s*(?>[^{}]+{[^{}]*})*\bbackground\s*:\s*(?P<property>[^;}]+)';*/
+		$background_regex       = '(?:background)\s*:(?<property>[^;}]*)[^}]*}';
+		$background_image_regex = '(?:background-image)\s*:(?<property>[^;}]*)[^}]*}';
 
-		$background_image_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
+		$content_reversed = strrev( $content );
 
 		/**
 		 * Lazyload background property regex.
@@ -59,40 +58,49 @@ class Extractor {
 		$background_image_regex = $this->apply_string_filter( 'lazyload_css_extract_bg_img_property_regex', $background_image_regex );
 
 		$background_matches       = $this->find( $background_regex, $content, 'mi', PREG_OFFSET_CAPTURE );
-		$background_image_matches = $this->find( $background_image_regex, $content, 'mi' );
+		$background_image_matches = $this->find( $background_image_regex, $content, 'mi', PREG_OFFSET_CAPTURE );
 
-		$matches = array_merge( $background_matches, $background_image_matches );
+		$background_property_matches       = $background_matches['property'] ?? [];
+		$background_image_property_matches = $background_image_matches['property'] ?? [];
 
-		if ( empty( $background_matches ) ) {
+		$matches = array_merge( $background_property_matches, $background_image_property_matches );
+
+		if ( empty( $matches ) ) {
 			return [];
 		}
 
 		$results = [];
 
-		foreach ($background_matches[0] as $index => $match) {
+		foreach ( $matches as $match ) {
 			$original_offset = $match[1];
-
 			$adjusted_offset = strlen( $content ) - $original_offset - strlen( $match[0] );
 
 			// Reverse the selector regex.
-			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r^>[*"\'=\]#]|(?:\][^\]]+\[))+)}/mi';
+			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r^>[*"\'=~\]#]|(?:\][^\]]+\[))+)/mi';
 
 			// Execute preg_match to find reversed selector.
-			preg_match( $reversed_selector_regex, $html_reversed, $matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
+			preg_match( $reversed_selector_regex, $content_reversed, $matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
 
 			if ( empty( $matches ) ) {
 				continue;
 			}
+
 			// Extract reversed selector and reverse it back.
 			$reversed_selector = $matches['reversed_selector'][0];
-			$selector = strrev( $reversed_selector );
-			$property = $background_matches[1][$index][0];
+			$selector          = strrev( $reversed_selector );
+			$property          = $match[0];
 
 			$property = trim( $property );
 			$selector = trim( $selector );
 
-			$urls  = $this->extract_urls( $property, $file_url );
-			$block = trim( $match[0] );
+			$block_regex_selector   = $selector;
+			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
+
+			preg_match( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $content, $block_matches );
+
+			$urls = $this->extract_urls( $property, $file_url );
+
+			$block = trim( $block_matches[0] );
 
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
@@ -107,33 +115,6 @@ class Extractor {
 				];
 			}
 		}
-
-		/*foreach ( $matches as $match ) {
-			if ( ! key_exists( 'property', $match ) || ! key_exists( 'selector', $match ) ) {
-				continue;
-			}
-
-			$property = $match['property'];
-			$selector = $match['selector'];
-
-			$property = trim( $property );
-			$selector = trim( $selector );
-
-			$urls  = $this->extract_urls( $property, $file_url );
-			$block = trim( $match[0] );
-			foreach ( $this->comments_mapping as $id => $comment ) {
-				$block = str_replace( $id, $comment, $block );
-			}
-
-			foreach ( $urls as $url ) {
-				$results[ $selector ][] = [
-					'selector' => $selector,
-					'url'      => $url['url'],
-					'original' => $url['original'],
-					'block'    => $block,
-				];
-			}
-		}*/
 
 		return $results;
 	}

@@ -31,7 +31,7 @@ trait RegexTrait {
 	 * @param string $pattern Pattern to match.
 	 * @param string $html HTML content.
 	 * @param string $modifiers Regex modifiers.
-	 *
+	 * @param mixed  $flag Flag to use.
 	 * @return array
 	 */
 	protected function find( string $pattern, string $html, string $modifiers = 'Umsi', $flag = PREG_SET_ORDER ) {

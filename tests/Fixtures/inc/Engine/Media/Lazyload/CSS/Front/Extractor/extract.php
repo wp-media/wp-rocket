@@ -5,41 +5,41 @@ $content_with_url = file_get_contents(__DIR__ . '/CSS/content_with_url.php');
 $content_without_url = file_get_contents(__DIR__ . '/CSS/content_without_url.php');
 
 return [
-    'noBackgroundUrlShouldReturnEmpty' => [
-        'config' => [
-              'content' => $content_without_url,
-        ],
-        'expected' => []
-    ],
+	'noBackgroundUrlShouldReturnEmpty' => [
+		'config' => [
+			'content' => $content_without_url,
+		],
+		'expected' => []
+	],
 	'BackgroundUrlShouldReturnList' => [
 		'config' => [
 			'content' => $content_with_url,
 		],
 		'expected' => [
 			'.header-bg-image' => [
- [
-			'selector' => '.header-bg-image',
-            'url' => 'http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg',
-            'original' => 'url(\'http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg\')',
-            'block' => ".header-bg-image
+				[
+					'selector' => '.header-bg-image',
+					'url' => 'http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg',
+					'original' => 'url(\'http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg\')',
+					'block' => ".header-bg-image
            {
             background-image:url('http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg') !important;
            }"
-        ]
-    ],
+				]
+			],
 			'.internal-css-background-image' => [
-					[
+				[
 					'selector' => '.internal-css-background-image',
-        			'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-        			'original' => 'url("/wp-content/rocket-test-data/images/paper.jpeg")',
-        			'block' => '.internal-css-background-image{
+					'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+					'original' => 'url("/wp-content/rocket-test-data/images/paper.jpeg")',
+					'block' => '.internal-css-background-image{
 width: 100%;
 height: 400px;
 background-image: url("/wp-content/rocket-test-data/images/paper.jpeg");
 background-color: #cccccc;
 }'
-					],
 				],
+			],
 			'.internal-css-background-images' => [
 				[
 					'selector' => '.internal-css-background-images',
@@ -66,10 +66,10 @@ background-color: #cccccc;
 			],
 			'.fl-node-reyn24wd18os > .fl-row-content-wrap' => [
 				[
-				'selector' => '.fl-node-reyn24wd18os > .fl-row-content-wrap',
-				'url' => "https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg",
-				'original' => 'url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg)',
-				'block' => '.fl-node-reyn24wd18os > .fl-row-content-wrap {
+					'selector' => '.fl-node-reyn24wd18os > .fl-row-content-wrap',
+					'url' => "https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg",
+					'original' => 'url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg)',
+					'block' => '.fl-node-reyn24wd18os > .fl-row-content-wrap {
  background-image: url(https://www.villmarksbua.no/wp-content/uploads/2022/03/nordic-pocket-saw-foldbar-tursag-for-tre-og-metall.jpg);
  }'
 				],
