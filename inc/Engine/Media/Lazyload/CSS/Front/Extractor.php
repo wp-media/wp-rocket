@@ -42,6 +42,7 @@ class Extractor {
 		$background_image_regex = '(?:background-image)\s*:(?<property>[^;}]*)[^}]*}';
 
 		$content_reversed = strrev( $content );
+		$format_content   = $this->reformat_css( $content );
 
 		/**
 		 * Lazyload background property regex.
@@ -69,7 +70,8 @@ class Extractor {
 			return [];
 		}
 
-		$results = [];
+		$results      = [];
+		$arr_selector = [];
 
 		foreach ( $matches as $match ) {
 			$original_offset = $match[1];
@@ -96,11 +98,25 @@ class Extractor {
 			$block_regex_selector   = $selector;
 			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
 
-			preg_match( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $content, $block_matches );
+			preg_match_all( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
 
 			$urls = $this->extract_urls( $property, $file_url );
 
-			$block = trim( $block_matches[0] );
+			$block_index   = 0;
+			$default_index = 0;
+
+			if ( in_array( $selector, $arr_selector, true ) ) {
+				$indexes     = array_keys( $arr_selector, trim( $selector ), true );
+				$block_index = count( $indexes );
+			}
+
+			$arr_selector[] = $selector;
+
+			$block = trim( $block_matches[ $default_index ][ $default_index ] );
+
+			if ( ! empty( $block_matches[ $default_index ][ $block_index ] ) ) {
+				$block = trim( $block_matches[ $default_index ][ $block_index ] );
+			}
 
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
@@ -169,6 +185,28 @@ class Extractor {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Reformat css
+	 *
+	 * @param string $css_content The css content to be formatted.
+	 *
+	 * @return string
+	 */
+	protected function reformat_css( string $css_content ): string {
+		preg_match_all( '/(.*?\{.*?\})/s', $css_content, $matches );
+
+		$formatted_css = '';
+		if ( empty( $matches ) ) {
+			return $formatted_css;
+		}
+
+		foreach ( $matches[0] as $class_block ) {
+			$formatted_css .= $class_block . "\n";
+		}
+
+		return $formatted_css;
 	}
 
 	/**
