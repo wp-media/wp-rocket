@@ -127,7 +127,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function log_process_on_submit_end( $timestamp ) {
 		if ( Logger::debug_enabled() ) {
-			$this->options->set( 'log_process_on_submit_end', $timestamp );
+			$this->options->set( 'rucss_process_on_submit_jobs_end', $timestamp );
 			$this->options_api->set( 'debug', $this->options->get_options() );
 		}
 	}
