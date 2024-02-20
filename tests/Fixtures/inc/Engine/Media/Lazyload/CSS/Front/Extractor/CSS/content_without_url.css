@@ -19,3 +19,32 @@ background-color: #4fc1dd;
 .external-css-backgroundsvg{
 background-color: #c63dd8;
 }
+
+body{
+	width:40%;
+	margin-left: auto;
+	margin-right: auto;
+}
+div{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+p {
+	font-size: 0.85em;
+	color: black;
+	background-image: none;
+	background-color: transparent;
+}
+
+.test{
+	color:rgb(165, 36, 197);
+}
+
+h1 {
+	background-color: aqua;
+	font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.exclude-internal-relative-file{
+	display:none;
+}
