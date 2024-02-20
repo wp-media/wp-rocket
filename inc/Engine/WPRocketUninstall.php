@@ -37,6 +37,7 @@ class WPRocketUninstall {
 		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',
 		'wp_rocket_last_option_hash',
+		'wp_rocket_debug',
 	];
 
 	/**

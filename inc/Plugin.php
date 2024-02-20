@@ -44,6 +44,8 @@ use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
 use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServiceProvider;
+use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
+use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
 /**
  * Plugin Manager.
  */
@@ -134,6 +136,9 @@ class Plugin {
 		$this->container->add( 'options_api', $this->options_api );
 		$this->container->addServiceProvider( OptionsServiceProvider::class );
 		$this->options = $this->container->get( 'options' );
+
+		$this->container->add( 'debug_resolver', DebugResolver::class )
+			->addArgument( $this->options );
 
 		$this->container->addServiceProvider( LoggerServiceProvider::class );
 
@@ -289,6 +294,7 @@ class Plugin {
 		$this->container->addServiceProvider( APIServiceProvider::class );
 		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
 		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
+		$this->container->addServiceProvider( DebugServiceProvider::class );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -382,6 +388,7 @@ class Plugin {
 			'shoptimizer',
 			'weglot',
 			'contactform7',
+			'debug_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
@@ -395,6 +402,14 @@ class Plugin {
 
 			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';
+		}
+
+		$services = $this->container->get( 'debug_resolver' )->get_services();
+
+		if ( ! empty( $services ) ) {
+			foreach ( $services as $service ) {
+				$common_subscribers[] = $service['service'];
+			}
 		}
 
 		return $common_subscribers;
