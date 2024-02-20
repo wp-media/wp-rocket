@@ -195,11 +195,11 @@ class Extractor {
 	 * @return string
 	 */
 	protected function reformat_css( string $css_content ): string {
-		preg_match_all( '/(.*?\{.*?\})/s', $css_content, $matches );
+		$matches = $this->find( '(.*?\{.*?\})', $css_content, 's', PREG_PATTERN_ORDER );
 
 		$formatted_css = '';
 		if ( empty( $matches ) ) {
-			return $formatted_css;
+			return $css_content;
 		}
 
 		foreach ( $matches[0] as $class_block ) {
