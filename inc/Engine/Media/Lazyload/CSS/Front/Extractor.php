@@ -188,7 +188,8 @@ class Extractor {
 	}
 
 	/**
-	 * Reformat css
+	 * Reformat css most especially minified css to make sure each rule are on
+	 * a separate line.
 	 *
 	 * @param string $css_content The css content to be formatted.
 	 *

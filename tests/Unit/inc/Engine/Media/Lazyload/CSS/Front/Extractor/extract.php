@@ -7,7 +7,6 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor;
 
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
-
 /**
  * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Front\Extractor::extract
  */
