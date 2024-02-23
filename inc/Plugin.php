@@ -119,6 +119,7 @@ class Plugin {
 		return $this->container;
 	}
 
+
 	/**
 	 * Loads the plugin into WordPress.
 	 *
