@@ -81,19 +81,16 @@ class Extractor {
 			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r^>[*"\'=~\]#]|(?:\][^\]]+\[))+)/mi';
 
 			// Execute preg_match to find reversed selector.
-			preg_match( $reversed_selector_regex, $content_reversed, $matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
+			preg_match( $reversed_selector_regex, $content_reversed, $reversed_selector_matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
 
-			if ( empty( $matches ) ) {
+			if ( empty( $reversed_selector_matches ) ) {
 				continue;
 			}
 
 			// Extract reversed selector and reverse it back.
-			$reversed_selector = $matches['reversed_selector'][0];
-			$selector          = strrev( $reversed_selector );
-			$property          = $match[0];
-
-			$property = trim( $property );
-			$selector = trim( $selector );
+			$reversed_selector = $reversed_selector_matches['reversed_selector'][0];
+			$selector          = trim( strrev( $reversed_selector ) );
+			$property          = trim( $match[0] );
 
 			$block_regex_selector   = $selector;
 			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
