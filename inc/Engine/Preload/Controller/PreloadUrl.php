@@ -211,18 +211,28 @@ class PreloadUrl {
 
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
-		// Retrieve batch size limits and request timing estimaiton.
-		$max_batch_size           = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
-		$min_batch_size           = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
+		// Retrieve batch size limits and request timing estimation.
+		/**
+		 * Get the number of pending cron job
+		 *
+		 * @param int $args Maximum number of job size.
+		 */
+		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+
+		/**
+		 * Get the number of in progress cron job
+		 *
+		 * @param int $args Minimum number of job size.
+		 */
+		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
+
 		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
 
-		// Estimate batch size based on request duration.
-		if ( ! $preload_request_duration ) {
-			$next_batch_size = $min_batch_size; // In case no estimation or there is an issue with the value.
-		} else {
-			// Linear function: 2s -> 45 jobs // 10s -> 5 jobs.
-			$next_batch_size = round( -5 * $preload_request_duration + 55 );
-		}
+		/**
+		 * Estimate batch size based on request duration.
+		 * In case no estimation or there is an issue with the value use $min_batch_size.
+		*/
+		$next_batch_size = ! $preload_request_duration ? $min_batch_size : round( -5 * $preload_request_duration + 55 );
 
 		// Limit next_batch_size.
 		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
