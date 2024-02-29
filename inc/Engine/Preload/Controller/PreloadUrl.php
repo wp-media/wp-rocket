@@ -153,6 +153,10 @@ class PreloadUrl {
 				$headers
 			);
 
+			if ( $check_duration ) {
+				$duration = ( microtime( true ) - $start ); // Duration of the request.
+			}
+
 			/**
 			 * Filter the delay between each preload request.
 			 *
@@ -161,27 +165,19 @@ class PreloadUrl {
 			 */
 			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
 
+			usleep( $delay_between );
 			if ( ! $check_duration ) {
-				usleep( $delay_between );
-
-				return;
+				continue;
 			}
-
-			$duration = ( microtime( true ) - $start ); // Duration of the request.
 
 			// Update average duration.
 			$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
-			if ( $previous_request_durations <= 0 ) {
-				$previous_request_durations = $duration;
-			} else {
-				$previous_request_durations = $previous_request_durations * 0.7 + $duration * 0.3;
-			}
+			$previous_request_durations = ( $previous_request_durations <= 0 ) ? $duration : ( $previous_request_durations * 0.7 + $duration * 0.3 );
+
 			set_transient( 'rocket_preload_previous_request_durations', $previous_request_durations, 5 * 60 );
 
 			set_transient( 'rocket_preload_check_duration', $duration, 60 ); // Don't check request duration for 1 minute.
 			$check_duration = false;
-
-			usleep( $delay_between );
 		}
 	}
 
