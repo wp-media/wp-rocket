@@ -118,7 +118,11 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 		if ( preg_match( '#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values ) ) {
 			$id = absint( $values[2] );
 			if ( $id ) {
-				return $id;
+				if ( ! empty( $search_in_post_statuses ) && in_array( get_post_status( $id ), $search_in_post_statuses, true ) ) {
+					return $id;
+				} else {
+					return 0;
+				}
 			}
 		}
 
@@ -148,7 +152,11 @@ if ( ! function_exists( 'rocket_url_to_postid' ) ) {
 			$page_on_front = get_option( 'page_on_front' );
 
 			if ( $page_on_front && get_post( $page_on_front ) instanceof WP_Post ) {
-				return (int) $page_on_front;
+				if ( ! empty( $search_in_post_statuses ) && in_array( get_post_status( (int) $page_on_front ), $search_in_post_statuses, true ) ) {
+					return (int) $page_on_front;
+				} else {
+					return 0;
+				}
 			}
 		}
 

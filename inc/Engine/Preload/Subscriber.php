@@ -540,7 +540,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Exclude private urls.
 	 *
 	 * @param bool   $excluded In case we want to exclude that url.
-	 * @param string $url Current URL to test..
+	 * @param string $url Current URL to test.
 	 *
 	 * @return bool Tells if it's excluded or not.
 	 */
