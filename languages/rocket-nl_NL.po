@@ -1698,7 +1698,7 @@ msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
 "name, to exclude external JS. %1$sMore info%2$s"
 msgstr ""
-"<strong>van derden:</strong> gebruik het volledige URL-pad of alleen de "
+"<strong>3e partij:</strong> gebruik het volledige URL-pad of alleen de "
 "domeinnaam om externe JS uit te sluiten. %1$sMeer informatie%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:858
