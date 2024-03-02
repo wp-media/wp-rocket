@@ -2336,7 +2336,7 @@ msgid ""
 "to one hit every 2 minutes."
 msgstr ""
 "Verminderen van de Heartbeat frequentie zal ervoor zorgen dat de API van één"
-" keer per minuut, naar één keer per twee minuten uitvoeren wordt ingesteld."
+" keer per minuut, naar één keer per 2 minuten uitvoeren wordt ingesteld."
 
 #: inc/Engine/Admin/Settings/Page.php:1712
 msgid ""
