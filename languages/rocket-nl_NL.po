@@ -3485,7 +3485,7 @@ msgstr "WP Rocket Ongebruikte CSS verwijderen-mislukte taken legen"
 
 #: inc/Engine/Optimization/RUCSS/Cron/Subscriber.php:197
 msgid "WP Rocket procees on submit jobs"
-msgstr "WP Rocket-procedures voor het indienen van taken"
+msgstr "WP Rocket-procedures voor indienen taken"
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:57
