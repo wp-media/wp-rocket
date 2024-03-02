@@ -1648,9 +1648,9 @@ msgid ""
 " JS reducing HTTP requests. Not recommended if your site uses HTTP/2. "
 "%1$sMore info%2$s"
 msgstr ""
-"JavaScript-bestanden combineren, combineert de interne, externe en inline JS"
-" van je site waardoor HTTP-verzoeken worden verminderd. Niet aanbevolen als "
-"je site HTTP/2 gebruikt. %1$sMeer info%2$s"
+"JavaScript-bestanden combineren, combineert de interne, 3e partij en inline "
+"JS van je site waardoor HTTP-verzoeken worden verminderd. Niet aanbevolen "
+"als je site HTTP/2 gebruikt. %1$sMeer info%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:799
