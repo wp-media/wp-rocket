@@ -826,7 +826,7 @@ class UsedCSS implements LoggerAwareInterface {
 					'|',
 					array_map(
 						function ( $item ) {
-							return preg_quote( $item, '/' );
+							return is_string( $item ) ? preg_quote( $item, '/' ) : '';
 						},
 						$exclude_fonts_preload
 					)
