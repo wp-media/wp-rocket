@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
@@ -34,15 +35,25 @@ class Controller {
 	private $context;
 
 	/**
+	 * WordPress filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param ATFQuery     $query Queries instance.
-	 * @param Context      $context Context instance.     */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
-		$this->options = $options;
-		$this->query   = $query;
-		$this->context = $context;
+	 * @param Options_Data              $options Options instance.
+	 * @param ATFQuery                  $query Queries instance.
+	 * @param Context                   $context Context instance.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 */
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager, WP_Filesystem_Direct $filesystem = null ) {
+		$this->options    = $options;
+		$this->query      = $query;
+		$this->context    = $context;
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
 	/**
@@ -64,11 +75,10 @@ class Controller {
 		$row       = $this->query->get_row( $url, $is_mobile );
 
 		if ( empty( $row ) ) {
-			$this->manager->add_url_to_the_queue( $url, $is_mobile );
-			return $html;
+			return $this->inject_beacon( $html );
 		}
 
-		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp ) {
+		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp || 'failed' === $row->status ) {
 			return $html;
 		}
 
@@ -325,5 +335,31 @@ class Controller {
 		return $this->options->get( 'cache_mobile', 0 )
 			&& $this->options->get( 'do_caching_mobile_files', 0 )
 			&& wp_is_mobile();
+	}
+
+	/**
+	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content.
+	 *
+	 * @param string $html The HTML content where the beacon will be injected.
+	 *
+	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
+	 */
+	public function inject_beacon( $html ): string {
+		if ( ! $this->filesystem ) {
+			return $html;
+		}
+
+		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon.min.js' ) ) {
+			return $html;
+		}
+
+		// Get the URL of the script.
+		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon.min.js';
+
+		// Create the script tag.
+		$script_tag = "<script src='{$script_url}'></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+
+		// Append the script tag just before the closing body tag.
+		return str_replace( '</body>', $script_tag . '</body>', $html );
 	}
 }

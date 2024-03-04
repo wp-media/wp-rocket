@@ -195,11 +195,26 @@ const bundleLazyloadJsWithoutWatch = () => {
 		.pipe(gulp.dest('assets/js'))
 }
 
+const bundleLcpBeaconWithoutWatch = () => {
+	var bundle = browserify({
+		entries: './src/js/global/lcp-beacon.js',
+		debug: true
+	}).transform(babel);
+
+	return bundle.bundle()
+		.pipe(source('lcp-beacon.js'))
+		.pipe(buffer())
+		.pipe(uglify())
+		.pipe(sourcemaps.init({loadMaps: false}))
+		.pipe(sourcemaps.write('./'))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest('assets/js'));
+}
+
 exports.bundleLazyloadJsWithoutWatch = bundleLazyloadJsWithoutWatch;
 
 // Run build without watching: watching keeps git actions stuck on 'build'
-gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, bundleLazyloadJsWithoutWatch, 'run:build:sass'));
-
+gulp.task('run:build', gulp.parallel(bundleJsWithoutWatch, bundleLazyloadJsWithoutWatch, bundleLcpBeaconWithoutWatch, 'run:build:sass'));
 /**
  * Compiles a standalone script file.
  *
