@@ -785,6 +785,18 @@ class UsedCSS implements LoggerAwareInterface {
 			return $html;
 		}
 
+		/**
+		 * Filters the list of fonts to exclude from preload
+		 *
+		 * @since 3.15.10
+		 *
+		 * @param array $excluded_fonts_preload List of fonts to exclude from preload
+		 */
+		$exclude_fonts_preload = apply_filters( 'rocket_exclude_rucss_fonts_preload', [] );
+		if ( ! is_array( $exclude_fonts_preload ) ) {
+			$exclude_fonts_preload = [];
+		}
+
 		$urls = [];
 
 		foreach ( $font_faces as $font_face ) {
@@ -805,6 +817,25 @@ class UsedCSS implements LoggerAwareInterface {
 
 			if ( empty( $font_url ) ) {
 				continue;
+			}
+
+			// Making sure the excluded fonts array isn't empty to avoid excluding all fonts.
+			if ( ! empty( $exclude_fonts_preload ) ) {
+				// Combine the array elements into a single string with | as a separator and returning a pattern.
+				$exclude_fonts_preload_pattern = implode(
+					'|',
+					array_map(
+						function ( $item ) {
+							return is_string( $item ) ? preg_quote( $item, '/' ) : '';
+						},
+						$exclude_fonts_preload
+					)
+				);
+
+				// Check if the font URL matches any part of the exclude_fonts_preload array.
+				if ( ! empty( $exclude_fonts_preload_pattern ) && preg_match( '/' . $exclude_fonts_preload_pattern . '/i', $font_url ) ) {
+					continue; // Skip this iteration as the font URL is in the exclusion list.
+				}
 			}
 
 			$urls[] = $font_url;
