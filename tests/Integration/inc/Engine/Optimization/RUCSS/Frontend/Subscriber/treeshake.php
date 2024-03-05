@@ -32,12 +32,14 @@ class Test_treeshake extends FilesystemTestCase {
 	public function set_up()
 	{
 		parent::set_up();
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'treeshake', 1000 );
 		add_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
 	}
 
 	public function tear_down()
 	{
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 
