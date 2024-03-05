@@ -88,4 +88,13 @@ class AboveTheFold extends Row {
 		$this->modified      = empty( $this->modified ) ? 0 : strtotime( (string) $this->modified );
 		$this->last_accessed = empty( $this->last_accessed ) ? 0 : strtotime( (string) $this->last_accessed );
 	}
+
+	/**
+	 * Checks if the object has a valid LCP (Largest Contentful Paint) value.
+	 *
+	 * @return bool Returns true if the object's status is 'completed' and the LCP value is not empty or 'not found', false otherwise.
+	 */
+	public function has_lcp() {
+		return 'completed' === $this->status && ! empty( $this->lcp ) && 'not found' !== $this->lcp && 'failed' !== $this->status;
+	}
 }

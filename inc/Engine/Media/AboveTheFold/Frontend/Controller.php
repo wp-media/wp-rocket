@@ -78,13 +78,11 @@ class Controller {
 			return $this->inject_beacon( $html );
 		}
 
-		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp || 'failed' === $row->status ) {
+		if ( ! $row->has_lcp() ) {
 			return $html;
 		}
 
-		$html = $this->preload_lcp( $html, $row );
-
-		return $html;
+		return $this->preload_lcp( $html, $row );
 	}
 
 	/**
