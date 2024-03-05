@@ -18,6 +18,7 @@ $expected_html = <<<EXPECTEDHTML
 <body>
 	<img src="https://example.org/wp-content/uploads/logo.jpg" data-height-percentage="54">
 	<img width="1" height="1" src="https://example.org/wp-content/uploads/my-picture.jpg">
+	<script src='http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js'></script>
 </body>
 </html>
 EXPECTEDHTML;
@@ -92,7 +93,7 @@ return [
 			],
 			'html' => [
 				'original' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"></body></html>',
-				'expected' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"></body></html>',
+				'expected' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"><script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script></body></html>',
 			],
 		],
 	],
