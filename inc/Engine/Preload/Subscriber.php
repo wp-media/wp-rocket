@@ -558,7 +558,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			$this->logger::debug(
 				"Private URL excluded from preload: {$url}",
 				[
-					'method' => __METHOD__
+					'method' => __METHOD__,
 				]
 			);
 		}
