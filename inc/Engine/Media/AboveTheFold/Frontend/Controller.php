@@ -343,10 +343,11 @@ class Controller {
 	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
 	 */
 	public function inject_beacon( $html ): string {
-		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon.min.js' ) ) {
+		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
 			return $html;
 		}
-		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		// Get the URL of the script.
 		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
