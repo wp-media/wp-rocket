@@ -1,0 +1,98 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
+
+use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+
+class Controller {
+	use RegexTrait;
+
+	/**
+	 * Above the fold Job Manager.
+	 *
+	 * @var ManagerInterface
+	 */
+	private $manager;
+
+	/**
+	 * Constructor
+	 *
+	 * @param ManagerInterface $manager Above the fold Job Manager.
+	 */
+	public function __construct( ManagerInterface $manager ) {
+		$this->manager = $manager;
+	}
+
+	/**
+	 * Process links fetched from homepage.
+	 *
+	 * @return void
+	 */
+	public function process_links(): void {
+		if ( ! $this->manager->is_allowed() ) {
+			return;
+		}
+
+		error_log( print_r( $this->fetch_links(), true ) );  // To be replaced by sending links to SaaS.
+	}
+
+	/**
+	 * Fetch links from homepage.
+	 *
+	 * @return array
+	 */
+	private function fetch_links(): array {
+		$home_url = home_url();
+		$args     = [
+			'user-agent' => 'WP Rocket/Pre-fetch Home Links',
+			'timeout'    => 60,
+		];
+
+		$response = wp_remote_get( $home_url, $args );
+
+		if ( ! is_array( $response ) && is_wp_error( $response ) ) {
+			return [];
+		}
+
+		$html = wp_remote_retrieve_body( $response );
+
+		if ( ! preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(.*?)\1/', $html, $matches ) ) {
+			return [];
+		}
+
+		$links = $matches[2];
+
+		// Filter links.
+		$links = array_filter(
+			$links,
+			function ( $link ) use ( $home_url ) {
+				$link_host = wp_parse_url( $link );
+				$site_host = wp_parse_url( $home_url );
+
+				/**
+				 * Check for valid link.
+				 * Check that no WP link.
+				 * Check that no external link.
+				 */
+				return wp_http_validate_url( $link ) && ! strpos( $link, 'wordpress.org' ) && $link_host['host'] === $site_host['host'];
+			}
+			);
+
+		// Remove duplicate links.
+		$links = array_unique( $links );
+
+		/**
+		 * Filters the number of links to return from the homepage.
+		 *
+		 * @since 2.5.12
+		 *
+		 * @param bool false will force to cache the WP REST API
+		 */
+		$link_number = apply_filters( 'rocket_atf_warmup_links_number', 10 );
+		$links       = array_slice( $links, 0, $link_number );
+
+		return $links;
+	}
+}
