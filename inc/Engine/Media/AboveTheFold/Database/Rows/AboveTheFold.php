@@ -95,6 +95,18 @@ class AboveTheFold extends Row {
 	 * @return bool Returns true if the object's status is 'completed' and the LCP value is not empty or 'not found', false otherwise.
 	 */
 	public function has_lcp() {
-		return 'completed' === $this->status && ! empty( $this->lcp ) && 'not found' !== $this->lcp && 'failed' !== $this->status;
+		if ( $this->status !== 'completed' ) {
+			return false;
+		}
+
+		if ( empty( $this->lcp ) ) {
+			return false;
+		}
+
+		if ( $this->lcp === 'not found' ) {
+			return false;
+		}
+
+		return true;
 	}
 }
