@@ -392,6 +392,7 @@ class Plugin {
 			'contactform7',
 			'rucss_cron_subscriber',
 			'saas_admin_subscriber',
+			'warmup_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();

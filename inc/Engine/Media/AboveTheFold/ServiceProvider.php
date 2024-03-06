@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuer
 use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Jobs\{Manager, Factory};
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{Controller as WarmUpController, Subscriber as WarmUpSubscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -31,6 +32,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_factory',
 		'atf_admin_controller',
 		'atf_admin_subscriber',
+		'warmup_controller',
+		'warmup_subscriber',
 	];
 
 	/**
@@ -51,7 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
 				]
-				);
+			);
 
 		$this->getContainer()->share( 'atf_factory', Factory::class )
 			->addArguments(
@@ -59,7 +62,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_manager' ),
 					$this->getContainer()->get( 'atf_table' ),
 				]
-				);
+			);
 
 		$this->getContainer()->add( 'atf_controller', FrontController::class )
 			->addArguments(
@@ -69,7 +72,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_context' ),
 					$this->getContainer()->get( 'atf_manager' ),
 				]
-				);
+		);
 
 		$this->getContainer()->share( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
@@ -79,5 +82,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_context' ) );
 		$this->getContainer()->share( 'atf_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
+		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
+			->addArgument( $this->getContainer()->get( 'atf_manager' ) );
+		$this->getContainer()->share( 'warmup_subscriber', WarmUpSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
 	}
 }
