@@ -38,7 +38,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min.css?ver={{mtime}}">
 					</head>
 					<body>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -83,7 +83,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/ajax/libs/font-awesome/5.15.2/css/fontawesome.css?ver={{mtime}}">
 					</head>
 					<body>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -126,7 +126,7 @@ return [
 						<link data-minify="1" rel="stylesheet" href="http://example.org/wp-content/cache/min/1/font-awesome/4.7.0/css/font-awesome.min.css?ver={{mtime}}">
 					</head>
 					<body>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -172,7 +172,7 @@ return [
 
 					</head>
 					<body>
-					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -220,7 +220,7 @@ return [
 
 					</head>
 					<body>
-					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -265,7 +265,7 @@ return [
 
 					</head>
 					<body>
-					<script src=\'https://123456.rocketcdn.me/cdnpath/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\'></script>
+					<script src=\'https://123456.rocketcdn.me/cdnpath/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
