@@ -52,9 +52,9 @@ class Controller {
 
 		$response = wp_remote_get( $home_url, $args );
 
-        if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-            return [];
-        }
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return [];
+		}
 
 		$html = wp_remote_retrieve_body( $response );
 
