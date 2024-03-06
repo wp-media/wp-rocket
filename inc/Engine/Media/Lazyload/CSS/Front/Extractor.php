@@ -109,6 +109,10 @@ class Extractor {
 
 			$arr_selector[] = $selector;
 
+			if ( empty( $block_matches ) ) {
+				continue;
+			}
+
 			$block = trim( $block_matches[ $default_index ][ $default_index ] );
 
 			if ( ! empty( $block_matches[ $default_index ][ $block_index ] ) ) {
