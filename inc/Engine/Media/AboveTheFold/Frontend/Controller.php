@@ -355,12 +355,13 @@ class Controller {
 		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon.min.js' ) ) {
 			return $html;
 		}
+		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		// Get the URL of the script.
-		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon.min.js';
+		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
 
 		// Create the script tag.
-		$script_tag = "<script src='{$script_url}'></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+		$script_tag = "<script src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 
 		// Append the script tag just before the closing body tag.
 		return str_replace( '</body>', $script_tag . '</body>', $html );

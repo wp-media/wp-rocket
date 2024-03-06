@@ -197,7 +197,7 @@ const bundleLazyloadJsWithoutWatch = () => {
 
 const bundleLcpBeaconWithoutWatch = () => {
 	var bundle = browserify({
-		entries: './src/js/global/lcp-beacon.js',
+		entries: './assets/js/lcp-beacon.js',
 		debug: true
 	}).transform(babel);
 
