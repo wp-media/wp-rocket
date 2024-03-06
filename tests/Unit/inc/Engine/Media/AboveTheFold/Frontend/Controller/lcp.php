@@ -5,10 +5,14 @@ namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\Frontend\Controller
 use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Capabilities\Manager;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Rows\AboveTheFold as ATFRow;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::lcp
@@ -21,6 +25,8 @@ class Test_lcp extends TestCase {
 	private $query;
 	private $controller;
 	private $context;
+	private $manager;
+	private $filesystem;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -28,8 +34,10 @@ class Test_lcp extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
 		$this->context = Mockery::mock( Context::class );
+		$this->manager = Mockery::mock(ManagerInterface::class);
+		$this->filesystem = Mockery::mock( WP_Filesystem_Direct::class );
 
-		$this->controller = new Controller( $this->options, $this->query, $this->context );
+		$this->controller = new Controller( $this->options, $this->query, $this->context, $this->manager, $this->filesystem );
 	}
 
 	protected function tearDown(): void {
@@ -42,6 +50,8 @@ class Test_lcp extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $html, $expected ) {
+		$row = $this->createPartialMock( ATFRow::class, [ 'has_lcp' ] );
+
 		$this->context->shouldReceive( 'is_allowed' )
 			->atMost()
 			->once()
@@ -55,6 +65,11 @@ class Test_lcp extends TestCase {
 		$this->query->method( 'get_row' )
 			->with( $config['url'], $config['is_mobile'] )
 			->willReturn( $config['row'] );
+
+		$row->method('has_lcp')->willReturn($config['row_exists']);
+		if ( $config['row_exists'] ) {
+			$this->filesystem->shouldReceive('exists')->andReturn(true);
+		}
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cache_mobile', 0 )

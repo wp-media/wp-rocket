@@ -1,5 +1,6 @@
 <?php
 $html     = '<html><head><title></title></head><body><img src="http://example.org/wp-content/uploads/image.jpg"/></body></html>';
+$html_expected     = '<html><head><title></title></head><body><img src="http://example.org/wp-content/uploads/image.jpg"/><script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script></body></html>';
 $html_lcp = '<html><head><title></title><link rel="preload" as="image" href="http://example.org/wp-content/uploads/image.jpg" fetchpriority="high"></head><body><img fetchpriority="high" src="http://example.org/wp-content/uploads/image.jpg"/></body></html>';
 
 $html_srcset     = '<html><head><title></title></head><body><img src="http://example.org/wp-content/uploads/image.jpg" srcset="http://example.org/wp-content/uploads/image-640x400.jpg 640w" sizes="50vw"/></body></html>';
@@ -28,9 +29,10 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => false,
 		],
 		'html'     => $html,
-		'expected' => $html,
+		'expected' => $html_expected,
 	],
 	'testShouldReturnSameWhenEmptyRow' => [
 		'config'   => [
@@ -44,9 +46,10 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => false,
 		],
 		'html'     => $html,
-		'expected' => $html,
+		'expected' => $html_expected,
 	],
 	'testShouldReturnSameWhenMissingLCP' => [
 		'config'   => [
@@ -62,9 +65,10 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => false,
 		],
 		'html'     => $html,
-		'expected' => $html,
+		'expected' => $html_expected,
 	],
 	'testShouldReturnUpdatedWhenImgLCP' => [
 		'config'   => [
@@ -75,6 +79,7 @@ return [
 			'url'                     => 'http://example.org',
 			'is_mobile'               => false,
 			'row'                     => (object) [
+				'status' => 'completed',
 				'lcp'      => json_encode( (object) [
 					'type' => 'img',
 					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
@@ -89,6 +94,7 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => true,
 		],
 		'html'     => $html,
 		'expected' => $html_lcp,
@@ -102,6 +108,7 @@ return [
 			'url'                     => 'http://example.org',
 			'is_mobile'               => false,
 			'row'                     => (object) [
+				'status' => 'completed',
 				'lcp'      => json_encode( (object) [
 					'type' => 'img-srcset',
 					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
@@ -113,6 +120,7 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => true,
 		],
 		'html'     => $html_srcset,
 		'expected' => $html_srcset_lcp,
@@ -126,6 +134,7 @@ return [
 			'url'                     => 'http://example.org',
 			'is_mobile'               => false,
 			'row'                     => (object) [
+				'status' => 'completed',
 				'lcp'      => json_encode( (object) [
 					'type' => 'picture',
 					'src'  => 'http://example.org/wp-content/uploads/image.jpg',
@@ -141,6 +150,7 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => true,
 		],
 		'html'     => $html_picture,
 		'expected' => $html_picture_lcp,
@@ -154,6 +164,7 @@ return [
 			'url'                     => 'http://example.org',
 			'is_mobile'               => false,
 			'row'                     => (object) [
+				'status' => 'completed',
 				'lcp'      => json_encode( (object) [
 					'type' => 'bg-img',
 					'bg_set'  => [
@@ -167,6 +178,7 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => true,
 		],
 		'html'     => $html_bg_img,
 		'expected' => $html_bg_img_lcp,
@@ -181,6 +193,7 @@ return [
 			'is_mobile'               => false,
 			'row'                     => (object) [
 				'lcp'      => json_encode( (object) [
+					'status' => 'completed',
 					'type' => 'bg-img-set',
 					'bg_set'  => [
 						(object) [
@@ -196,6 +209,7 @@ return [
 			'cache_mobile'            => 0,
 			'do_caching_mobile_files' => 0,
 			'wp_is_mobile'            => false,
+			'row_exists' => true,
 		],
 		'html'     => $html_bg_img,
 		'expected' => $html_bg_img_set_lcp,
