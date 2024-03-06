@@ -86,9 +86,7 @@ class Controller {
 		/**
 		 * Filters the number of links to return from the homepage.
 		 *
-		 * @since 2.5.12
-		 *
-		 * @param bool false will force to cache the WP REST API
+		 * @param int number of links to return.
 		 */
 		$link_number = apply_filters( 'rocket_atf_warmup_links_number', 10 );
 		$links       = array_slice( $links, 0, $link_number );
