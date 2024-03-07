@@ -33,8 +33,9 @@ class Test_addExclusions extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-
-		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+        Functions\when( 'home_url' )->alias( function( $link = '' ) {
+            return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
+        } );
 
         Functions\expect( 'wp_remote_get' )
             ->once()
