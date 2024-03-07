@@ -91,7 +91,6 @@ class Controller {
 
 				/**
 				 * Check for valid link.
-				 * Check that no WP link.
 				 * Check that no external link.
 				 */
 				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'];
