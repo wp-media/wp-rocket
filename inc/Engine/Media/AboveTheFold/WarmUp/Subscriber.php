@@ -29,7 +29,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade'           => [ 'process_links_on_update', 10, 2 ],
+			'wp_rocket_upgrade'      => [ 'process_links_on_update', 10, 2 ],
 			'rocket_after_clear_atf' => 'process_links',
 		];
 	}
