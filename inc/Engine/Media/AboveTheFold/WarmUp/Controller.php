@@ -43,7 +43,7 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	private function fetch_links(): array {
+	public function fetch_links(): array {
 		$home_url = home_url();
 		$args     = [
 			'user-agent' => 'WP Rocket/Pre-fetch Home Links',
@@ -64,6 +64,24 @@ class Controller {
 
 		$links = $matches[2];
 
+        // Cater for relative urls
+        $links = array_map( function( $link ) {
+            $link_path = wp_parse_url( $link );
+
+            // Return if absolute url.
+            if ( isset( $link_path['path'], $link_path['scheme'] ) ) {
+                return $link;
+            }
+
+            // Transform to absolute url if relative.
+            if ( isset( $link_path['path'] ) ) {
+                return home_url( $link );
+            }
+
+            return $link;
+
+        }, $links );
+
 		// Filter links.
 		$links = array_filter(
 			$links,
@@ -76,9 +94,9 @@ class Controller {
 				 * Check that no WP link.
 				 * Check that no external link.
 				 */
-				return wp_http_validate_url( $link ) && ! strpos( $link, 'wordpress.org' ) && $link_host['host'] === $site_host['host'];
+				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'];
 			}
-			);
+		);
 
 		// Remove duplicate links.
 		$links = array_unique( $links );
