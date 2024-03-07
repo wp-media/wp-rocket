@@ -62,23 +62,25 @@ class Controller {
 
 		$links = $matches[2];
 
-        // Cater for relative urls
-        $links = array_map( function( $link ) {
-            $link_path = wp_parse_url( $link );
+		// Cater for relative urls.
+		$links = array_map(
+				function ( $link ) {
+					$link_path = wp_parse_url( $link );
 
-            // Return if absolute url.
-            if ( isset( $link_path['path'], $link_path['scheme'] ) ) {
-                return $link;
-            }
+					// Return if absolute url.
+					if ( isset( $link_path['path'], $link_path['scheme'] ) ) {
+							return $link;
+					}
 
-            // Transform to absolute url if relative.
-            if ( isset( $link_path['path'] ) ) {
-                return home_url( $link );
-            }
+					// Transform to absolute url if relative.
+					if ( isset( $link_path['path'] ) ) {
+						return home_url( $link );
+					}
 
-            return $link;
-
-        }, $links );
+					return $link;
+				},
+			$links
+			);
 
 		// Filter links.
 		$links = array_filter(
