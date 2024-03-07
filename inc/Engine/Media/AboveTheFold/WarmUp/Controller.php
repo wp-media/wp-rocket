@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
-use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
-	use RegexTrait;
 
 	/**
 	 * Above the fold Job Manager.
