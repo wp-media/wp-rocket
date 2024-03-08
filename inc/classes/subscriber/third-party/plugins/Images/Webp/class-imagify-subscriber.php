@@ -321,8 +321,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			// No Imagify, no webp.
 			return false;
 		}
-
-		return (bool) get_imagify_option( 'display_webp' );
+		return (bool) ( get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' ) );
 	}
 
 	/**
