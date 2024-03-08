@@ -45,7 +45,7 @@ class Activation implements ActivationInterface {
 	 *
 	 * @return void
 	 */
-	public function fetch_links() {
+	public function process_links() {
 		if ( ! $this->manager->is_allowed() ) {
 			return;
 		}
