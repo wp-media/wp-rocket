@@ -304,7 +304,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return (bool) get_imagify_option( 'convert_to_webp' );
+		return (bool) ! get_imagify_option( 'convert_to_avif' ) || get_imagify_option( 'convert_to_webp' );
 	}
 
 	/**
