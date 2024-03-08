@@ -338,7 +338,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return 'rewrite' !== get_imagify_option( 'display_webp_method' );
+		return 'rewrite' !== get_imagify_option( 'display_webp_method' ) || 'rewrite' !== get_imagify_option( 'display_nextgen_method' );
 	}
 
 	/**
