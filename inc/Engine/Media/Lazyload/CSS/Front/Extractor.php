@@ -78,7 +78,7 @@ class Extractor {
 			$adjusted_offset = strlen( $content ) - $original_offset - strlen( $match[0] );
 
 			// Reverse the selector regex.
-			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r^>[*"\'=~\]#]|(?:\][^\]]+\[))+)/mi';
+			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\n\r\$\|^>[*"\'=~\]#]|(?:\][^\]]+\[))+)/mi';
 
 			// Execute preg_match to find reversed selector.
 			preg_match( $reversed_selector_regex, $content_reversed, $reversed_selector_matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
