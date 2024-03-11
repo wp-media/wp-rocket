@@ -18,7 +18,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Controller $controller Controller instance.
 	 */
-	public function __construct( $controller ) {
+	public function __construct( Controller $controller ) {
 		$this->controller = $controller;
 	}
 
