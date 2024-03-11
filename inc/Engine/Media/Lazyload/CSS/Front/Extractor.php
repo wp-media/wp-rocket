@@ -95,7 +95,7 @@ class Extractor {
 			$block_regex_selector   = $selector;
 			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
 
-			preg_match_all( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
+			preg_match_all( "/\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
 
 			$urls = $this->extract_urls( $property, $file_url );
 
