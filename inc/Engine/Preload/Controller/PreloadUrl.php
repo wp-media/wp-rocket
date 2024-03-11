@@ -236,8 +236,8 @@ class PreloadUrl {
 		$next_batch_size = ! $preload_request_duration ? $min_batch_size : round( -5 * $preload_request_duration + 55 );
 
 		// Limit next_batch_size.
-		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
 		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
+		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
 
 		// Get all in-progress jobs with request sent and no results.
 		/**
