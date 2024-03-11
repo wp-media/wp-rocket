@@ -106,7 +106,7 @@ return [
 	],
 	'InProgressShouldNotExceedMaxQueue' => [
 		'config' => [
-			'rocket_preload_cache_pending_jobs_cron_rows_count' => 3,
+			'rocket_preload_cache_pending_jobs_cron_rows_count' => 5,
 			'manual_preload' => true,
 			'rocket_preload_outdated' => 1000,
 			'rows' => [
