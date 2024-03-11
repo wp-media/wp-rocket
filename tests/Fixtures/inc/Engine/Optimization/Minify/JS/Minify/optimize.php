@@ -7,6 +7,7 @@ $original_html = <<<ORIGINAL_HTML
 		<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+		<script type="module" src="http://example.org/wp-content/module.js"></script>
 	</head>
 	<body>
 	</body>
@@ -29,6 +30,7 @@ return [
 		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
 		<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+		<script type="module" src="http://example.org/wp-content/module.js"></script>
 	</head>
 	<body>
 	</body>
@@ -59,6 +61,7 @@ EXPECTED_HTML
 		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/themes/twentytwenty/assets/script.js?ver={{mtime}}"></script>
 		<script data-minify="1" type="text/javascript" src="https://123456.rocketcdn.me/wp-content/cache/min/1/wp-content/plugins/hello-dolly/script.js?ver={{mtime}}"></script>
 		<script type="text/javascript" src="http://example.org/wp-includes/js/jquery/jquery.js"></script>
+		<script type="module" src="http://example.org/wp-content/module.js"></script>
 	</head>
 	<body>
 	</body>

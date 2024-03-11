@@ -100,6 +100,8 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			false !== strpos( $tag[0], 'data-minify=' )
 			||
 			false !== strpos( $tag[0], 'data-no-minify=' )
+			||
+			preg_match( '/type=(?<quote>[\'"])module\g<quote>/', $tag[0] )
 		) {
 			return true;
 		}
