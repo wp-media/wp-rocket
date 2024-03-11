@@ -474,6 +474,7 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType font/otf                      "access plus 4 months"
 	ExpiresByType font/woff                     "access plus 4 months"
 	ExpiresByType font/woff2                    "access plus 4 months"
+	ExpiresByType application/x-font-woff	    "access plus 4 months"
 	ExpiresByType image/svg+xml                 "access plus 4 months"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
