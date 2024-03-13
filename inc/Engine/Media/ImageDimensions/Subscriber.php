@@ -30,6 +30,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Subscriber constructor.
 	 *
 	 * @param ImageDimensions $dimensions Images dimensions class that handles all business logic.
+	 * @param Tests           $buffer_tests Buffer tests instance.
 	 */
 	public function __construct( ImageDimensions $dimensions, Tests $buffer_tests ) {
 		$this->dimensions   = $dimensions;
@@ -43,7 +44,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'specify_image_dimensions', 17 ],
+			'rocket_buffer'     => [ 'specify_image_dimensions', 17 ],
 			'template_redirect' => [ 'start_image_dimensions_buffer', 3 ],
 		];
 	}
@@ -69,7 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function start_image_dimensions_buffer() {
-		if ( empty( $_GET['wpr_imagedimensions'] ) ) {
+		if ( empty( $_GET['wpr_imagedimensions'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
