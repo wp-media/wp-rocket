@@ -77,6 +77,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
+
 		ob_start( [ $this, 'specify_image_dimensions' ] );
 	}
 }
