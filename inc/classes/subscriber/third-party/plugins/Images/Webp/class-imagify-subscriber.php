@@ -221,10 +221,10 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @param mixed $value     The new option value.
 	 */
 	public function sync_on_option_update( $old_value, $value ) {
-		$old_display = ! empty( $old_value['display_webp'] );
-		$display     = ! empty( $value['display_webp'] );
+		$old_display = ! empty( $old_value['display_nextgen'] );
+		$display     = ! empty( $value['display_nextgen'] );
 
-		if ( $old_display !== $display || $old_value['display_webp_method'] !== $value['display_webp_method'] ) {
+		if ( $old_display !== $display || $old_value['display_nextgen_method'] !== $value['display_nextgen_method'] ) {
 			$this->trigger_webp_change();
 		}
 	}
