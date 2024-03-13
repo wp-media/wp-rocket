@@ -36,11 +36,13 @@ class Extractor {
 				return $id;
 			},
 			$content
-			);
+		);
 
-		$background_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
+		$background_regex       = '\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
+		$background_image_regex = '(?:background-image)\s*:(?<property>[^;}]*)[^}]*}';
 
-		$background_image_regex = '(?<selector>(?:[ \-,:\w.()\n\r^>[*"\'=\]#]|(?:\[[^\]]+\]))+)\s?{[^{}]*background-image\s*:(?<property>[^;}]*)[^}]*}';
+		$content_reversed = strrev( $content );
+		$format_content   = $this->reformat_css( $content );
 
 		/**
 		 * Lazyload background property regex.
@@ -56,30 +58,78 @@ class Extractor {
 		 */
 		$background_image_regex = $this->apply_string_filter( 'lazyload_css_extract_bg_img_property_regex', $background_image_regex );
 
-		$background_matches       = $this->find( $background_regex, $content, 'mi' );
-		$background_image_matches = $this->find( $background_image_regex, $content, 'mi' );
+		$background_matches       = $this->find( $background_regex, $content, 'mi', PREG_OFFSET_CAPTURE );
+		$background_image_matches = $this->find( $background_image_regex, $content, 'mi', PREG_OFFSET_CAPTURE );
 
-		$matches = array_merge( $background_matches, $background_image_matches );
+		$background_property_matches       = $background_matches['property'] ?? [];
+		$background_image_property_matches = $background_image_matches['property'] ?? [];
+
+		$matches = array_merge( $background_property_matches, $background_image_property_matches );
 
 		if ( empty( $matches ) ) {
 			return [];
 		}
 
-		$results = [];
+		$results      = [];
+		$arr_selector = [];
 
 		foreach ( $matches as $match ) {
-			if ( ! key_exists( 'property', $match ) || ! key_exists( 'selector', $match ) ) {
+			$original_offset = $match[1];
+			$adjusted_offset = strlen( $content ) - $original_offset - strlen( $match[0] );
+
+			// Reverse the selector regex.
+			$reversed_selector_regex = '/dnuorgkcab[^{}]*{\s?(?<reversed_selector>(?:[ \-,:\w\.\(\)\n\r\$\|^>[*"\'=~\]#]|(?:\][^\]]+\[))+)/mi';
+
+			// Execute preg_match to find reversed selector.
+			preg_match( $reversed_selector_regex, $content_reversed, $reversed_selector_matches, PREG_OFFSET_CAPTURE, $adjusted_offset );
+
+			if ( empty( $reversed_selector_matches ) ) {
 				continue;
 			}
 
-			$property = $match['property'];
-			$selector = $match['selector'];
+			// Extract reversed selector and reverse it back.
+			$reversed_selector = $reversed_selector_matches['reversed_selector'][0];
+			$selector          = trim( strrev( $reversed_selector ) );
+			$property          = trim( $match[0] );
 
-			$property = trim( $property );
-			$selector = trim( $selector );
+			$block_regex_selector   = $selector;
+			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
 
-			$urls  = $this->extract_urls( $property, $file_url );
-			$block = trim( $match[0] );
+			preg_match_all( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
+
+			$block_index   = 0;
+			$default_index = 0;
+
+			/**
+			 * If block matches is empty then try to use the second regex pattern.
+			 * The first pattern will match the selector literally but sometimes fails to match
+			 * selector within an internal style, the second make sure we capture it.
+			 * e.g. style>.selector_name within <style>.selector_name will not be capture
+			 * with the first pattern.
+			*/
+			if ( empty( $block_matches[ $default_index ] ) ) {
+				preg_match_all( "/\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
+			}
+
+			$urls = $this->extract_urls( $property, $file_url );
+
+			if ( in_array( $selector, $arr_selector, true ) ) {
+				$indexes     = array_keys( $arr_selector, trim( $selector ), true );
+				$block_index = count( $indexes );
+			}
+
+			$arr_selector[] = $selector;
+
+			if ( empty( $block_matches ) ) {
+				continue;
+			}
+
+			$block = trim( $block_matches[ $default_index ][ $default_index ] );
+
+			if ( ! empty( $block_matches[ $default_index ][ $block_index ] ) ) {
+				$block = trim( $block_matches[ $default_index ][ $block_index ] );
+			}
+
 			foreach ( $this->comments_mapping as $id => $comment ) {
 				$block = str_replace( $id, $comment, $block );
 			}
@@ -147,6 +197,29 @@ class Extractor {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Reformat css most especially minified css to make sure each rule are on
+	 * a separate line.
+	 *
+	 * @param string $css_content The css content to be formatted.
+	 *
+	 * @return string
+	 */
+	protected function reformat_css( string $css_content ): string {
+		$matches = $this->find( '(.*?\{.*?\})', $css_content, 's', PREG_PATTERN_ORDER );
+
+		$formatted_css = '';
+		if ( empty( $matches ) ) {
+			return $css_content;
+		}
+
+		foreach ( $matches[0] as $class_block ) {
+			$formatted_css .= $class_block . "\n";
+		}
+
+		return $formatted_css;
 	}
 
 	/**
