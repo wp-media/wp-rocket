@@ -4,7 +4,8 @@ namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 use Brain\Monkey\{Filters, Functions};
 use Mockery;
-use WP_Rocket\Engine\Media\AboveTheFold\Jobs\Manager;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -15,14 +16,16 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group ATF
  */
 class Test_addExclusions extends TestCase {
-	private $manager;
+	private $context;
+	private $options;
 	private $controller;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->manager = Mockery::mock( Manager::class );
-		$this->controller = new Controller( $this->manager );
+		$this->context = Mockery::mock( ContextInterface::class );
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->controller = new Controller( $this->context, $this->options );
 	}
 
 	protected function tearDown(): void {
