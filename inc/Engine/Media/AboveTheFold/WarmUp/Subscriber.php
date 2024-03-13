@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function process_links(): void {
-		$this->controller->process_links();
+		$this->controller->warm_up();
 	}
 
 	/**
@@ -55,6 +55,6 @@ class Subscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.16', '>=' ) ) {
 			return;
 		}
-		$this->controller->process_links();
+		$this->controller->warm_up();
 	}
 }

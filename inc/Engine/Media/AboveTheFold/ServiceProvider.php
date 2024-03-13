@@ -72,7 +72,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_context' ),
 					$this->getContainer()->get( 'atf_manager' ),
 				]
-		);
+			);
 
 		$this->getContainer()->share( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
@@ -83,7 +83,12 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->share( 'atf_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
-			->addArgument( $this->getContainer()->get( 'atf_manager' ) );
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_context' ),
+					$this->getContainer()->get( 'options' ),
+				]
+			);
 		$this->getContainer()->share( 'warmup_subscriber', WarmUpSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
 	}

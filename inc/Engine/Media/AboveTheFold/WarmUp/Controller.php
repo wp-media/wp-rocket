@@ -3,33 +3,47 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Admin\Options_Data;
 
 class Controller {
 
 	/**
-	 * Above the fold Job Manager.
+	 * ATF context.
 	 *
-	 * @var ManagerInterface
+	 * @var ContextInterface
 	 */
-	private $manager;
+	protected $context;
+
+    /**
+	 * Plugin options instance.
+	 *
+	 * @var Options_Data
+	 */
+	protected $options;
 
 	/**
 	 * Constructor
 	 *
-	 * @param ManagerInterface $manager Above the fold Job Manager.
+	 * @param ContextInterface  $context ATF Context.
+     * @param Options_Data      $options Options instance.
 	 */
-	public function __construct( ManagerInterface $manager ) {
-		$this->manager = $manager;
+	public function __construct( ContextInterface $context, Options_Data $options ) {
+		$this->context = $context;
+		$this->options = $options;  
 	}
 
 	/**
-	 * Process links fetched from homepage.
+	 * Send links for warm up.
 	 *
 	 * @return void
 	 */
-	public function process_links(): void {
-		if ( ! $this->manager->is_allowed() ) {
+	public function warm_up(): void {
+        if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+        
+		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 
