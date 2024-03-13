@@ -38,7 +38,7 @@ class Extractor {
 			$content
 		);
 
-		$background_regex       = '(?:background)\s*:(?<property>[^;}]*)[^}]*}';
+		$background_regex       = '\s?{[^{}]*background\s*:(?<property>[^;}]*)[^}]*}';
 		$background_image_regex = '(?:background-image)\s*:(?<property>[^;}]*)[^}]*}';
 
 		$content_reversed = strrev( $content );
@@ -95,12 +95,23 @@ class Extractor {
 			$block_regex_selector   = $selector;
 			$escaped_block_selector = preg_quote( $block_regex_selector, '/' );
 
-			preg_match_all( "/\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
-
-			$urls = $this->extract_urls( $property, $file_url );
+			preg_match_all( "/^\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
 
 			$block_index   = 0;
 			$default_index = 0;
+
+			/**
+			 * If block matches is empty then try to use the second regex pattern.
+			 * The first pattern will match the selector literally but sometimes fails to match
+			 * selector within an internal style, the second make sure we capture it.
+			 * e.g. style>.selector_name within <style>.selector_name will not be capture
+			 * with the first pattern.
+			*/
+			if ( empty( $block_matches[ $default_index ] ) ) {
+				preg_match_all( "/\s*$escaped_block_selector\s*{(.*?)}/ms", $format_content, $block_matches );
+			}
+
+			$urls = $this->extract_urls( $property, $file_url );
 
 			if ( in_array( $selector, $arr_selector, true ) ) {
 				$indexes     = array_keys( $arr_selector, trim( $selector ), true );

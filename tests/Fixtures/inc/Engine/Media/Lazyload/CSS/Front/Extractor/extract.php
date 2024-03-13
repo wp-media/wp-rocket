@@ -9,6 +9,80 @@ return [
 		],
 		'expected' => [],
 	],
+	'inlineStyleWith'                  => [
+		'config'   => [
+			'content' => file_get_contents( __DIR__ . '/CSS/inline.html' ),
+		],
+		'expected' => [
+			'[class|="top"]' => [
+				[
+					'selector' => '[class|="top"]',
+					'url' => 'https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8',
+					'original' => 'url(https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8)',
+					'block' => '[class|="top"] {
+		background: #3dd83d;
+		background: url(https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8) right bottom no-repeat, url(https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg) left top repeat;
+		/* background : url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat; */
+	}'
+				],
+				[
+					'selector' => '[class|="top"]',
+					'url' => 'https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg',
+					'original' => 'url(https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg)',
+					'block' => '[class|="top"] {
+		background: #3dd83d;
+		background: url(https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8) right bottom no-repeat, url(https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg) left top repeat;
+		/* background : url("/wp-content/rocket-test-data/images/wp-rocket.svg") no-repeat; */
+	}'
+				],
+			]
+		],
+	],
+	'inlinePseudoClass'		=> [
+		'config'   => [
+			'content' => file_get_contents( __DIR__ . '/CSS/pseudo-inline.html' ),
+		],
+		'expected' => [
+			'li:nth-child(even)' => [
+				[
+					'selector' => "li:nth-child(even)",
+					'url' => '/wp-content/rocket-test-data/images/underline.png',
+					'original' => 'url(/wp-content/rocket-test-data/images/underline.png)',
+					'block' => 'li:nth-child(even) {
+		background: url(/wp-content/rocket-test-data/images/underline.png) no-repeat;
+	}'
+				],
+				[
+					'selector' => 'li:nth-child(even)',
+					'url' => '/wp-content/rocket-test-data/images/fetchpriority.jpg',
+					'original' => 'url(/wp-content/rocket-test-data/images/fetchpriority.jpg)',
+					'block' => 'li:nth-child(even) {
+		background: url(/wp-content/rocket-test-data/images/fetchpriority.jpg) no-repeat;
+	}'
+				]
+			],
+			'.external dd:nth-last-of-type(3n)' => [
+				[
+					'selector' => '.external dd:nth-last-of-type(3n)',
+					'url' => '/wp-content/rocket-test-data/images/img_nature.jpg',
+					'original' => 'url(/wp-content/rocket-test-data/images/img_nature.jpg)',
+					'block' => '.external dd:nth-last-of-type(3n) {
+		background: url(/wp-content/rocket-test-data/images/img_nature.jpg) no-repeat;
+	}'
+				],
+			],
+			'dd:nth-last-of-type(3n)' => [
+				[
+					'selector' => 'dd:nth-last-of-type(3n)',
+					'url' => '/wp-content/rocket-test-data/images/flowers.jpg',
+					'original' => 'url(/wp-content/rocket-test-data/images/flowers.jpg)',
+					'block' => 'dd:nth-last-of-type(3n) {
+		background: url(/wp-content/rocket-test-data/images/flowers.jpg) no-repeat;
+	}'
+				],
+			]
+		]
+	],
 	'TwoBlocksWithSameSelectorShouldHaveTheRightBlocks' => [
 		'config'   => [
 			'content' => file_get_contents( __DIR__ . '/CSS/content_same_selector.css' ),
@@ -140,8 +214,8 @@ return [
 			"#internal-BG-images" => [
 				[
 					"selector" => "#internal-BG-images",
-					"url" => "/wp-content/rocket-test-data/images/first.avif",
-					"original" => "url(/wp-content/rocket-test-data/images/first.avif)",
+					"url" => "/wp-content/rocket-test-data/images/butterfly.avif",
+					"original" => "url(/wp-content/rocket-test-data/images/butterfly.avif)",
 					"block" => "#internal-BG-images {
 	background: url(/wp-content/rocket-test-data/images/first.avif) right bottom no-repeat;
 	background: url(/wp-content/rocket-test-data/images/butterfly.avif) right bottom no-repeat;
@@ -150,8 +224,8 @@ return [
 				],
 				[
 					"selector" => "#internal-BG-images",
-					"url" => "/wp-content/rocket-test-data/images/first.avif",
-					"original" => "url(/wp-content/rocket-test-data/images/first.avif)",
+					"url" => "/wp-content/rocket-test-data/images/butterfly.avif",
+					"original" => "url(/wp-content/rocket-test-data/images/butterfly.avif)",
 					"block" => "#internal-BG-images{background: url(/wp-content/rocket-test-data/images/first.avif) right bottom no-repeat;background: url(/wp-content/rocket-test-data/images/butterfly.avif) right bottom no-repeat;padding:15px;}"
 				]
 			],
