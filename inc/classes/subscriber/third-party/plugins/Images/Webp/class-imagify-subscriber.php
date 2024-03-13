@@ -224,6 +224,10 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 		$old_display = ! empty( $old_value['display_nextgen'] );
 		$display     = ! empty( $value['display_nextgen'] );
 
+		if ( ! isset( $old_value['display_nextgen_method'] ) ) {
+			$old_value['display_nextgen_method'] = $old_value['display_webp_method'] ?? '';
+		}
+
 		if ( $old_display !== $display || $old_value['display_nextgen_method'] !== $value['display_nextgen_method'] ) {
 			$this->trigger_webp_change();
 		}
