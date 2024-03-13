@@ -17,7 +17,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 
 	public function testShouldReturnFalseWhenImagifyNotEnabled() {
 		Functions\expect( 'get_imagify_option' )
-			->once()
+			->twice()
 			->andReturn( false );
 
 		$optionsData = Mockery::mock( Options_Data::class );
@@ -31,7 +31,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->once()
+			->twice()
 			->andReturnUsing(
 				function( $option_name ) {
 					if ( 'display_webp' === $option_name ) {
@@ -53,13 +53,13 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->twice()
+			->times(3)
 			->andReturnUsing(
 				function( $option_name ) {
-					if ( 'display_webp' === $option_name ) {
+					if ( 'display_webp' === $option_name || 'display_nextgen' === $option_name ) {
 						return 1;
 					}
-					if ( 'display_webp_method' === $option_name ) {
+					if ( 'display_webp_method' === $option_name || 'display_nextgen_method' === $option_name ) {
 						return 'rewrite';
 					}
 

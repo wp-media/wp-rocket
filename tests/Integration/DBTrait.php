@@ -19,6 +19,9 @@ trait DBTrait {
 		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
 			$resource_query->make_status_pending($job_id);
 		}
+		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
+			$resource_query->make_status_completed($job_id, $resource['hash']);
+		}
 		return $job_id;
 	}
 

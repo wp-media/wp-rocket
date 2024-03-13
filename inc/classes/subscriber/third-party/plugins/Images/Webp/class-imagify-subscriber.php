@@ -221,10 +221,10 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @param mixed $value     The new option value.
 	 */
 	public function sync_on_option_update( $old_value, $value ) {
-		$old_display = ! empty( $old_value['display_webp'] );
-		$display     = ! empty( $value['display_webp'] );
+		$old_display = ! empty( $old_value['display_nextgen'] );
+		$display     = ! empty( $value['display_nextgen'] );
 
-		if ( $old_display !== $display || $old_value['display_webp_method'] !== $value['display_webp_method'] ) {
+		if ( $old_display !== $display || $old_value['display_nextgen_method'] !== $value['display_nextgen_method'] ) {
 			$this->trigger_webp_change();
 		}
 	}
@@ -304,7 +304,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return (bool) get_imagify_option( 'convert_to_webp' );
+		return (bool) ! get_imagify_option( 'convert_to_avif' ) || get_imagify_option( 'convert_to_webp' );
 	}
 
 	/**
@@ -321,8 +321,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			// No Imagify, no webp.
 			return false;
 		}
-
-		return (bool) get_imagify_option( 'display_webp' );
+		return (bool) ( get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' ) );
 	}
 
 	/**
@@ -339,7 +338,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return 'rewrite' !== get_imagify_option( 'display_webp_method' );
+		return 'rewrite' !== get_imagify_option( 'display_webp_method' ) || 'rewrite' !== get_imagify_option( 'display_nextgen_method' );
 	}
 
 	/**
