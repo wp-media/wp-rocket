@@ -66,6 +66,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options );
 		$this->getContainer()->share( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
+			->addArgument( $this->getContainer()->get( 'tests' ) )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
