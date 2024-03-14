@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Media
  * @group ATF
  */
-class Test_addExclusions extends TestCase {
+class Test_fetchLinks extends TestCase {
 	private $context;
 	private $options;
 	private $controller;
