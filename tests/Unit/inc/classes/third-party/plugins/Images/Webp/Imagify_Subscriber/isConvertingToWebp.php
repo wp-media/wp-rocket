@@ -22,8 +22,8 @@ class Test_IsConvertingToWebp extends TestCase {
 		$this->assertFalse( $subscriber->is_converting_to_webp() );
 
 		Functions\expect( 'get_imagify_option' )
-			->twice()
-			->andReturnValues( [ true, false ] );
+			->once()
+			->andReturn( false );
 
 		$this->assertFalse( $subscriber->is_converting_to_webp() );
 	}
