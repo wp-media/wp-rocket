@@ -211,20 +211,45 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	}
 
 	/**
-	 * Maybe activate or deactivate webp cache after Imagify option has been modified.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * This function is used to synchronize the option update for Imagify plugin.
+	 * It checks for the existence of certain keys in the old and new values of the options.
+	 * Depending on the version of Imagify, the keys may differ.
+	 * For Imagify version 2.2 and above, the keys are 'display_nextgen' and 'display_nextgen_method'.
+	 * For Imagify version 2.1 and below, the keys are 'display_webp' and 'display_webp_method'.
+	 * The function then checks if the old and new values of the display and method options have changed.
+	 * If they have, it triggers a webp change.
 	 *
 	 * @param mixed $old_value The old option value.
 	 * @param mixed $value     The new option value.
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
 	 */
 	public function sync_on_option_update( $old_value, $value ) {
-		$old_display = ! empty( $old_value['display_nextgen'] );
-		$display     = ! empty( $value['display_nextgen'] );
+		// Determine the key for the display option in the old and new values.
+		$old_display_key = array_key_exists( 'display_nextgen', $old_value ) ? 'display_nextgen' : 'display_webp';
+		$display_key     = array_key_exists( 'display_nextgen', $value ) ? 'display_nextgen' : 'display_webp';
 
-		if ( $old_display !== $display || $old_value['display_nextgen_method'] !== $value['display_nextgen_method'] ) {
+		// Get the old and new values of the display option.
+		$old_display = ! empty( $old_value[ $old_display_key ] );
+		$display     = ! empty( $value[ $display_key ] );
+
+		// Determine the key for the method option in the old and new values.
+		$old_method_key = array_key_exists( 'display_nextgen_method', $old_value ) ? 'display_nextgen_method' : 'display_webp_method';
+		$method_key     = array_key_exists( 'display_nextgen_method', $value ) ? 'display_nextgen_method' : 'display_webp_method';
+
+		// If the old value of the method option is not set, set it to the corresponding display option.
+		if ( ! isset( $old_value[ $old_method_key ] ) ) {
+			$old_value[ $old_method_key ] = $old_value[ $old_display_key . '_method' ] ?? '';
+		}
+
+		// If the new value of the method option is not set, set it to the corresponding display option.
+		if ( ! isset( $value[ $method_key ] ) ) {
+			$value[ $method_key ] = $value[ $display_key . '_method' ] ?? '';
+		}
+
+		// If the old and new values of the display or method options have changed, trigger a webp change.
+		if ( $old_display !== $display || $old_value[ $old_method_key ] !== $value[ $method_key ] ) {
 			$this->trigger_webp_change();
 		}
 	}
@@ -304,7 +329,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return (bool) ! get_imagify_option( 'convert_to_avif' ) || get_imagify_option( 'convert_to_webp' );
+		return ( defined( 'IMAGIFY_VERSION' ) && version_compare( IMAGIFY_VERSION, '2.2', '>=' ) ) || get_imagify_option( 'convert_to_webp' );
 	}
 
 	/**
@@ -321,7 +346,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			// No Imagify, no webp.
 			return false;
 		}
-		return (bool) ( get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' ) );
+		return get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' );
 	}
 
 	/**
