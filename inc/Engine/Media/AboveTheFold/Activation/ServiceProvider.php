@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller as WarmUpController;
-use WP_Rocket\Engine\Media\AboveTheFold\Jobs\Manager;
 
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -21,10 +19,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'atf_query',
 		'atf_context',
 		'warmup_controller',
-		'atf_manager',
 		'atf_activation',
 	];
 
@@ -34,25 +30,21 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'atf_query', ATFQuery::class );
 		$this->getContainer()->add( 'atf_context', Context::class );
 
-		$this->getContainer()->add( 'atf_manager', Manager::class )
+		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
+					$this->getContainer()->get( 'options' ),
 				]
 			);
-
-		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
-			->addArgument( $this->getContainer()->get( 'atf_manager' ) );
 
 		$this->getContainer()->add( 'atf_activation', Activation::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'warmup_controller' ),
-					$this->getContainer()->get( 'atf_manager' ),
+					$this->getContainer()->get( 'atf_context' ),
 				]
 			);
 	}

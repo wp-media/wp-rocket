@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\Activation;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Activation implements ActivationInterface {
 	/**
@@ -16,40 +16,40 @@ class Activation implements ActivationInterface {
 	private $controller;
 
 	/**
-	 * Above the fold Job Manager.
+	 * ATF context.
 	 *
-	 * @var ManagerInterface
+	 * @var ContextInterface
 	 */
-	private $manager;
+	protected $context;
 
 	/**
 	 * Instantiate class.
 	 *
 	 * @param Controller       $controller Controller instance.
-	 * @param ManagerInterface $manager Above the fold Job Manager.
+	 * @param ContextInterface $context ATF Context.
 	 */
-	public function __construct( Controller $controller, ManagerInterface $manager ) {
+	public function __construct( Controller $controller, ContextInterface $context ) {
 		$this->controller = $controller;
-		$this->manager    = $manager;
+		$this->context    = $context;
 	}
 
 	/**
 	 * Add actions on activation.
 	 */
 	public function activate() {
-		add_action( 'rocket_after_activation', [ $this, 'fetch_links' ] );
+		add_action( 'rocket_after_activation', [ $this, 'warm_up' ] );
 	}
 
 	/**
-	 * Process links fetched from homepage.
+	 * Start warm up.
 	 *
 	 * @return void
 	 */
-	public function process_links() {
-		if ( ! $this->manager->is_allowed() ) {
+	public function warm_up() {
+		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
 
-		$this->controller->process_links();
+		$this->controller->warm_up();
 	}
 }
