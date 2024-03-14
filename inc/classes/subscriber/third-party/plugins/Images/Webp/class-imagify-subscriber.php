@@ -329,7 +329,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return (bool) ! get_imagify_option( 'convert_to_avif' ) || get_imagify_option( 'convert_to_webp' );
+		return get_imagify_option( 'convert_to_avif' ) || get_imagify_option( 'convert_to_webp' );
 	}
 
 	/**
@@ -346,7 +346,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			// No Imagify, no webp.
 			return false;
 		}
-		return (bool) ( get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' ) );
+		return (bool) ( get_imagify_option( 'display_webp' ) || get_imagify_option( 'display_nextgen' ) || get_imagify_option( 'convert_to_avif' ) );
 	}
 
 	/**
