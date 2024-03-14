@@ -329,7 +329,7 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		return version_compare( IMAGIFY_VERSION, '2.2', '>=' ) || get_imagify_option( 'convert_to_webp' );
+		return ( defined( 'IMAGIFY_VERSION' ) && version_compare( IMAGIFY_VERSION, '2.2', '>=' ) ) || get_imagify_option( 'convert_to_webp' );
 	}
 
 	/**
