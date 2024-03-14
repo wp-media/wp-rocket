@@ -29,8 +29,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade'      => [ 'process_links_on_update', 10, 2 ],
-			'rocket_after_clear_atf' => 'process_links',
+			'wp_rocket_upgrade'      => [ 'warm_up_on_update', 10, 2 ],
+			'rocket_after_clear_atf' => 'warm_up',
 		];
 	}
 
@@ -39,7 +39,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function process_links(): void {
+	public function warm_up(): void {
 		$this->controller->warm_up();
 	}
 
@@ -51,7 +51,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function process_links_on_update( $new_version, $old_version ) {
+	public function warm_up_on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.16', '>=' ) ) {
 			return;
 		}

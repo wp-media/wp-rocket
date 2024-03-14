@@ -15,7 +15,7 @@ class Controller {
 	 */
 	protected $context;
 
-    /**
+	/**
 	 * Plugin options instance.
 	 *
 	 * @var Options_Data
@@ -25,12 +25,12 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param ContextInterface  $context ATF Context.
-     * @param Options_Data      $options Options instance.
+	 * @param ContextInterface $context ATF Context.
+	 * @param Options_Data     $options Options instance.
 	 */
 	public function __construct( ContextInterface $context, Options_Data $options ) {
 		$this->context = $context;
-		$this->options = $options;  
+		$this->options = $options;
 	}
 
 	/**
@@ -39,10 +39,10 @@ class Controller {
 	 * @return void
 	 */
 	public function warm_up(): void {
-        if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
 			return;
 		}
-        
+
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
