@@ -99,7 +99,7 @@ class Test_processPendingJobs extends TestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
-
+		$this->wpr_clock->shouldReceive('current_time')->with('mysql', true)->zeroOrMoreTimes()->andReturn('2024-01-26');
 		$this->options->allows()->get('remove_unused_css', 0)->andReturn($config['enabled']);
 
 		$this->configureDisabled($config, $expected);
