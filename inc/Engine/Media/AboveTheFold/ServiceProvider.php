@@ -9,6 +9,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
+use WP_Rocket\Engine\Media\AboveTheFold\Jobs\{Manager, Factory};
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{Controller as WarmUpController, Subscriber as WarmUpSubscriber};
 
 class ServiceProvider extends AbstractServiceProvider {
@@ -27,6 +28,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_context',
 		'atf_controller',
 		'atf_subscriber',
+		'atf_manager',
+		'atf_factory',
 		'atf_admin_controller',
 		'atf_admin_subscriber',
 		'warmup_controller',
@@ -45,12 +48,29 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->get( 'atf_table' );
 
+		$this->getContainer()->add( 'atf_manager', Manager::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_query' ),
+					$this->getContainer()->get( 'atf_context' ),
+				]
+				);
+
+		$this->getContainer()->share( 'atf_factory', Factory::class )
+			->addArguments(
+				[
+					$this->getContainer()->get( 'atf_manager' ),
+					$this->getContainer()->get( 'atf_table' ),
+				]
+				);
+
 		$this->getContainer()->add( 'atf_controller', FrontController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'options' ),
 					$this->getContainer()->get( 'atf_query' ),
 					$this->getContainer()->get( 'atf_context' ),
+					$this->getContainer()->get( 'atf_manager' ),
 				]
 			);
 
