@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
 	use RegexTrait;
@@ -34,12 +33,6 @@ class Controller {
 	 */
 	private $context;
 
-	/**
-	 * Above the fold Job Manager.
-	 *
-	 * @var ManagerInterface
-	 */
-	private $manager;
 
 	/**
 	 * WordPress filesystem.
@@ -51,18 +44,14 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data              $options Options instance.
-	 * @param ATFQuery                  $query Queries instance.
-	 * @param Context                   $context Context instance.
-	 * @param ManagerInterface          $manager Above the fold Job Manager.
-	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
+	 * @param Options_Data $options Options instance.
+	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager, WP_Filesystem_Direct $filesystem = null ) {
-		$this->options    = $options;
-		$this->query      = $query;
-		$this->context    = $context;
-		$this->manager    = $manager;
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
+		$this->options = $options;
+		$this->query   = $query;
+		$this->context = $context;
 	}
 
 	/**
