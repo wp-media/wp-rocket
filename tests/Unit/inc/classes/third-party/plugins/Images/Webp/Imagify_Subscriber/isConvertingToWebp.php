@@ -33,7 +33,7 @@ class Test_IsConvertingToWebp extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->twice()
+			->once()
 			->andReturn( true );
 
 		$this->assertTrue( $subscriber->is_converting_to_webp() );
