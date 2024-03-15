@@ -361,6 +361,7 @@ class Controller {
 		}
 
 		$data = [
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
 			'url'       => $url,
 			'is_mobile' => $is_mobile,
