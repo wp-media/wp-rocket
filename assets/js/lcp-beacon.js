@@ -1,4 +1,4 @@
-(function () {
+console.log('Hello world');(function () {
 	const data = new FormData();
 
 	data.append('action', 'rocket_lcp');
