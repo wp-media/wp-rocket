@@ -132,6 +132,11 @@ class Tests {
 	/** TESTS =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
 
+	/**
+	 * Tell if any buffer process should be initiated.
+	 *
+	 * @return bool
+	 */
 	public function can_process_any_buffer() {
 		$this->last_error = [];
 
