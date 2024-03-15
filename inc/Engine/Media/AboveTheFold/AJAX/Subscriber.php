@@ -29,7 +29,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_ajax_rocket_lcp' => 'add_lcp_data',
+			'wp_ajax_rocket_lcp'        => 'add_lcp_data',
+			'wp_ajax_nopriv_rocket_lcp' => 'add_lcp_data',
 		];
 	}
 
