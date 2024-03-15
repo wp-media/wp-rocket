@@ -148,7 +148,7 @@ class Controller {
 			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
+				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}

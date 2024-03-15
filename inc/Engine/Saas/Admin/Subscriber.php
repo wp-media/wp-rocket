@@ -62,6 +62,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'display_saas_error_notice' ],
 			],
 			'rocket_localize_admin_script'     => 'add_localize_script_data',
+			'rocket_dashboard_actions'         => 'display_dashboard_button',
 		];
 	}
 
@@ -159,5 +160,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_localize_script_data( $data ): array {
 		return $this->notices->add_localize_script_data( $data );
+	}
+
+	/**
+	 * Display the dashboard button to clean SaaS features
+	 *
+	 * @return void
+	 */
+	public function display_dashboard_button() {
+		$this->admin_bar->display_dashboard_button();
 	}
 }
