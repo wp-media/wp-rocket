@@ -35,7 +35,6 @@ class Test_Treeshake extends TestCase {
 	 */
 	protected $wpr_clock;
 
-	protected $optimisedContext;
 	protected function setUp(): void
 	{
 		parent::setUp();
@@ -44,7 +43,6 @@ class Test_Treeshake extends TestCase {
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem = Mockery::mock( Filesystem::class );
 		$this->context = Mockery::mock(ContextInterface::class);
-		$this->optimisedContext = Mockery::mock(ContextInterface::class);
 		$this->manager = Mockery::mock(Manager::class);
 
 		$this->usedCss = Mockery::mock(
@@ -55,7 +53,6 @@ class Test_Treeshake extends TestCase {
 				$this->data_manager,
 				$this->filesystem,
 				$this->context,
-				$this->optimisedContext,
 				$this->manager
 			]
 		);
