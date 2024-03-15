@@ -38,7 +38,7 @@ class Controller {
 	 * @return bool
 	 */
 	public function add_lcp_data() {
-		check_ajax_referer( 'rocket_lcp' );
+		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
 
 		if ( ! $this->context->is_allowed() ) {
 			wp_send_json_error( 'not allowed' );
@@ -59,13 +59,6 @@ class Controller {
 			'viewport'      => $viewport,
 			'last_accessed' => current_time( 'mysql', true ),
 		];
-
-		$insert = $this->query->add_item( $item );
-
-		if ( ! $insert ) {
-			wp_send_json_error( 'error when inserting the item in the database' );
-			return;
-		}
 
 		wp_send_json_success( 'item added to the database' );
 	}
