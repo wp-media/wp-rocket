@@ -47,19 +47,35 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? esc_url_raw( wp_unslash( $_POST['url'] ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? wp_unslash( (bool) $_POST['is_mobile'] ) : false;
-		$status    = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : '';
-		$lcp       = isset( $_POST['lcp'] ) ? wp_json_encode( wp_unslash( $_POST['lcp'] ), JSON_UNESCAPED_SLASHES ) : 'not found';
-		$viewport  = isset( $_POST['viewport'] ) ? wp_json_encode( wp_unslash( $_POST['viewport'] ), JSON_UNESCAPED_SLASHES ) : 'not found';
+		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : '';
+		$lcp       = [];
+		$viewport  = [];
+
+		foreach ( $images as $image ) {
+			if ( 'lcp' === $image->label ) {
+				$lcp[] = (object) [
+					'type' => 'img',
+					'src'  => $image,
+				];
+			} elseif ( 'above-the-fold' === $image->label ) {
+				$viewport[] = (object) [
+					'type' => 'img',
+					'src'  => $image,
+				];
+			}
+		}
 
 		$item = [
 			'url'           => untrailingslashit( $url ),
 			'is_mobile'     => $is_mobile,
-			'status'        => $status,
+			'status'        => 'completed',
 			'lcp'           => $lcp,
 			'viewport'      => $viewport,
 			'last_accessed' => current_time( 'mysql', true ),
 		];
 
-		wp_send_json_success( 'item added to the database' );
+		$this->query->add_item( $item );
+
+		wp_send_json_success( $item );
 	}
 }
