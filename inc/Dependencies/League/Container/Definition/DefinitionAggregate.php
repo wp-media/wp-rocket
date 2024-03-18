@@ -14,6 +14,8 @@ class DefinitionAggregate implements DefinitionAggregateInterface
      * @var DefinitionInterface[]
      */
     protected $definitions = [];
+    protected $aliases = [];
+    protected $tags = [];
 
     /**
      * Construct.
@@ -22,9 +24,24 @@ class DefinitionAggregate implements DefinitionAggregateInterface
      */
     public function __construct(array $definitions = [])
     {
-        $this->definitions = array_filter($definitions, function ($definition) {
+        $definitions = array_filter($definitions, function ($definition) {
             return ($definition instanceof DefinitionInterface);
         });
+
+        foreach ($definitions as $definition) {
+            // TODO: this line here needs review before merging:
+            //  using the alias as key will significantly speed up the lookup in getDefinition()
+            //  but it will also remove any duplicate definitions.
+            //  In my testcases there definitely were duplicates, but I'm not sure if they are
+            //  actually needed and if removing them might break some of WP Rockets functionality.
+            $this->definitions[$definition->getAlias()] = $definition;
+
+            $this->aliases[$definition->getAlias()] = true;
+
+            foreach ($definition->getTags() as $tag) {
+                $this->tags[$tag] = true;
+            }
+        }
     }
 
     /**
@@ -36,10 +53,17 @@ class DefinitionAggregate implements DefinitionAggregateInterface
             $definition = new Definition($id, $definition);
         }
 
-        $this->definitions[] = $definition
+        // TODO: review, see comment in __construct()
+        $this->definitions[$id] = $definition
             ->setAlias($id)
             ->setShared($shared)
         ;
+
+        $this->aliases[$definition->getAlias()] = true;
+
+        foreach ($definition->getTags() as $tag) {
+            $this->tags[$tag] = true;
+        }
 
         return $definition;
     }
@@ -49,13 +73,7 @@ class DefinitionAggregate implements DefinitionAggregateInterface
      */
     public function has(string $id) : bool
     {
-        foreach ($this->getIterator() as $definition) {
-            if ($id === $definition->getAlias()) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->aliases[$id]);
     }
 
     /**
@@ -63,13 +81,7 @@ class DefinitionAggregate implements DefinitionAggregateInterface
      */
     public function hasTag(string $tag) : bool
     {
-        foreach ($this->getIterator() as $definition) {
-            if ($definition->hasTag($tag)) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset($this->tags[$tag]);
     }
 
     /**
@@ -77,10 +89,9 @@ class DefinitionAggregate implements DefinitionAggregateInterface
      */
     public function getDefinition(string $id) : DefinitionInterface
     {
-        foreach ($this->getIterator() as $definition) {
-            if ($id === $definition->getAlias()) {
-                return $definition->setLeagueContainer($this->getLeagueContainer());
-            }
+        // TODO: review, see comment in __construct()
+        if(isset($this->definitions[$id])) {
+            return $this->definitions[$id]->setLeagueContainer($this->getLeagueContainer());
         }
 
         throw new NotFoundException(sprintf('Alias (%s) is not being handled as a definition.', $id));

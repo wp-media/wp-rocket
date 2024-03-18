@@ -81,6 +81,11 @@ class Definition implements ArgumentResolverInterface, DefinitionInterface
         return isset($this->tags[$tag]);
     }
 
+     public function getTags() : array
+     {
+          return array_keys($this->tags);
+     }
+
     /**
      * {@inheritdoc}
      */
