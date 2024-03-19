@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Cron;
 
-use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 
@@ -21,19 +19,19 @@ class Controller {
 	/**
 	 * Instance of the ATFQuery class.
 	 *
-	 * @var ATFTable
+	 * @var ATFQuery
 	 */
-	private $table;
+	private $query;
 
 
 	/**
 	 * Constructor method.
 	 * Initializes a new instance of the Controller class.
 	 *
-	 * @param ATFTable $table An instance of the ATFQuery class.
+	 * @param ATFQuery $query An instance of the ATFQuery class.
 	 */
-	public function __construct( ATFTable $table ) {
-		$this->table = $table;
+	public function __construct( ATFQuery $query ) {
+		$this->query = $query;
 	}
 
 	/**
@@ -52,7 +50,7 @@ class Controller {
 	 */
 	public function atf_cleanup() {
 		// Delete the rows with failed status or not accessed.
-		$this->table->delete_old_rows();
+		$this->query->delete_old_rows();
 	}
 
 	/**

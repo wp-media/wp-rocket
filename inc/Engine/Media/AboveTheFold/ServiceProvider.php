@@ -84,7 +84,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 
 		$this->getContainer()->add( 'atf_cron_controller', CronController::class )
-			->addArgument( $this->getContainer()->get( 'atf_table' ) );
+			->addArgument( $this->getContainer()->get( 'atf_query' ) );
 		$this->getContainer()->share( 'atf_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_cron_controller' ) );
 	}
