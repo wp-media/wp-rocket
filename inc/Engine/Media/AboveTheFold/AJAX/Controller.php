@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 class Controller {
 	/**
@@ -24,10 +24,10 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param ATFQuery $query ATFQuery instance.
-	 * @param Context  $context Context interface.
+	 * @param ATFQuery         $query ATFQuery instance.
+	 * @param ContextInterface $context Context interface.
 	 */
-	public function __construct( ATFQuery $query, Context $context ) {
+	public function __construct( ATFQuery $query, ContextInterface $context ) {
 		$this->query   = $query;
 		$this->context = $context;
 	}
@@ -55,12 +55,12 @@ class Controller {
 			if ( 'lcp' === $image->label ) {
 				$lcp[] = (object) [
 					'type' => 'img',
-					'src'  => $image,
+					'src'  => $image->src,
 				];
 			} elseif ( 'above-the-fold' === $image->label ) {
 				$viewport[] = (object) [
 					'type' => 'img',
-					'src'  => $image,
+					'src'  => $image->src,
 				];
 			}
 		}
@@ -69,12 +69,17 @@ class Controller {
 			'url'           => untrailingslashit( $url ),
 			'is_mobile'     => $is_mobile,
 			'status'        => 'completed',
-			'lcp'           => $lcp,
-			'viewport'      => $viewport,
+			'lcp'           => wp_json_encode( $lcp ),
+			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
 
-		$this->query->add_item( $item );
+		$result = $this->query->add_item( $item );
+
+		if ( ! $result ) {
+			wp_send_json_error( 'error when adding the entry to the database' );
+			return;
+		}
 
 		wp_send_json_success( $item );
 	}
