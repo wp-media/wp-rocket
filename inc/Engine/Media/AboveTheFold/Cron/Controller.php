@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\Media\AboveTheFold\Cron;
+
+use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
+use WP_Rocket\Engine\Optimization\RegexTrait;
+
+
+/**
+ * The Controller class is responsible for scheduling, executing, and unscheduling the 'above the fold' cleanup.
+ *
+ * It uses the RegexTrait for regular expression related methods.
+ * It has private properties for ATFTable, ATFQuery, and Context instances.
+ */
+class Controller {
+	use RegexTrait;
+
+	/**
+	 * Instance of the ATFQuery class.
+	 *
+	 * @var ATFTable
+	 */
+	private $table;
+
+
+	/**
+	 * Constructor method.
+	 * Initializes a new instance of the Controller class.
+	 *
+	 * @param ATFTable $table An instance of the ATFQuery class.
+	 */
+	public function __construct( ATFTable $table ) {
+		$this->table = $table;
+	}
+
+	/**
+	 * Schedules the 'above the fold' cleanup to run daily if it's not already scheduled.
+	 */
+	public function schedule_atf_cleanup() {
+		if ( ! wp_next_scheduled( 'rocket_atf_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'rocket_atf_cleanup' );
+		}
+	}
+
+	/**
+	 * Executes the 'above the fold' cleanup.
+	 * It gets the current date and subtracts the interval (default to 1 month) from it.
+	 * Then it deletes the rows with 'failed' status or not accessed since the interval.
+	 */
+	public function atf_cleanup() {
+		// Delete the rows with failed status or not accessed.
+		$this->table->delete_old_rows();
+	}
+
+	/**
+	 * Unschedules the 'above the fold' cleanup, preventing it from running at the previously scheduled time.
+	 */
+	public function unschedule_atf_cleanup() {
+		$timestamp = wp_next_scheduled( 'rocket_atf_cleanup' );
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, 'rocket_atf_cleanup' );
+		}
+	}
+}

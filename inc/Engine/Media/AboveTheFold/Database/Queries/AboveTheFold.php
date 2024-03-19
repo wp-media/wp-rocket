@@ -104,4 +104,26 @@ class AboveTheFold extends AbstractQuery {
 
 		return $db->update( $prefixed_table_name, $data, $where );
 	}
+
+	/**
+	 * Deletes rows from the 'above_the_fold' table that have a 'failed' status and have not been accessed since a specified date.
+	 *
+	 * @return int|false The number of rows affected if the query is successful, or false on failure.
+	 */
+	public function delete_failed_and_not_accessed_rows() {
+		// Get the database object.
+		$db = $this->get_db();
+
+		// If no database interface is available, return false.
+		if ( empty( $db ) ) {
+			return false;
+		}
+
+		// Prepare the SQL query. The '%s' placeholder will be replaced by the value of $date.
+		// The query will delete rows from the 'above_the_fold' table where 'status' is 'failed' and 'last_accessed' is less than or equal to $date.
+		$query = $db->prepare( "DELETE FROM {$this->table_name} WHERE status = 'failed' AND last_accessed <= %s", $date );
+
+		// Execute the query and return the result. If the query is successful, the number of affected rows will be returned. If the query fails, false will be returned.
+		return $db->query( $query );
+	}
 }

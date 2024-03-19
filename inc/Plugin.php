@@ -391,6 +391,7 @@ class Plugin {
 			'atf_admin_subscriber',
 			'contactform7',
 			'rucss_cron_subscriber',
+			'atf_cron_subscriber',
 			'saas_admin_subscriber',
 		];
 
