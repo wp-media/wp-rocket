@@ -110,10 +110,12 @@ return [
 		'rowShouldShouldReturnCss' => [
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',
@@ -145,10 +147,12 @@ return [
 		'408ShouldRecreateJob' => [
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',
@@ -192,10 +196,12 @@ return [
 		'400ShouldRetry' =>[
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',
@@ -239,10 +245,12 @@ return [
 		'404ShouldFail' =>[
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',
@@ -285,10 +293,12 @@ return [
 		'500ShouldFail' =>[
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',
@@ -331,10 +341,12 @@ return [
 		'422ShouldFail' =>[
 			'config' => [
 				'hash' => 'hash',
+				'optimization_type' => 'rucss',
 				'row' => [
 					'url' => 'https://example.org',
 					'job_id' => '123',
 					'queue_name' => 'queue',
+					'is_mobile' => false,
 				],
 				'request' => [
 					'url' => 'http://localhostrucss-job',

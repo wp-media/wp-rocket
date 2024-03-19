@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use ReflectionObject;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::cron_clean_rows
+ * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_clean_rows
  *
- * @group  RUCSS
+ * @group  JobManager
  */
 class Test_CronCleanRows extends TestCase {
 	use DBTrait;
@@ -37,7 +37,8 @@ class Test_CronCleanRows extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'rocket_rucss_delete_interval', [ $this, 'set_rucss_delay' ] );
+		remove_filter( 'rocket_saas_delete_interval', [ $this, 'set_rucss_delay' ] );
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tear_down();
 	}
@@ -46,6 +47,8 @@ class Test_CronCleanRows extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $input ) {
+		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+		
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$current_date        = current_time( 'mysql', true );
@@ -53,7 +56,7 @@ class Test_CronCleanRows extends TestCase {
 
 		$this->input = $input;
 
-		add_filter( 'rocket_rucss_delete_interval', [ $this, 'set_rucss_delay' ] );
+		add_filter( 'rocket_saas_delete_interval', [ $this, 'set_rucss_delay' ] );
 		$this->set_permalink_structure( "/%postname%/" );
 
 		$count_remain_used_css = 0;
@@ -68,7 +71,7 @@ class Test_CronCleanRows extends TestCase {
 		$result_used_css = $rucss_usedcss_query->query();
 		$this->assertCount( count( $input['used_css'] ), $result_used_css );
 
-		do_action( 'rocket_rucss_clean_rows_time_event' );
+		do_action( 'rocket_saas_clean_rows_time_event' );
 
 		$rucss_usedcss_query     = $container->get( 'rucss_used_css_query' );
 		$resultUsedCssAfterClean = $rucss_usedcss_query->query();
@@ -83,5 +86,9 @@ class Test_CronCleanRows extends TestCase {
 
 	public function set_rucss_delay() {
 		return $this->input['delay'];
+	}
+
+	public function set_rucss_option() {
+		return 1;
 	}
 }

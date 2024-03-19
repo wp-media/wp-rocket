@@ -15,7 +15,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 60,
-			'display'  => 'WP Rocket Remove Unused CSS pending jobs',
+			'display'  => 'WP Rocket process pending jobs',
 		],
 	],
 	'shouldAddFilteredIntervalWhenRUCSSEnabledAndFilter' => [
@@ -25,7 +25,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 120,
-			'display'  => 'WP Rocket Remove Unused CSS pending jobs',
+			'display'  => 'WP Rocket process pending jobs',
 		],
 	],
 	'shouldAddDefaultIntervalWhenRUCSSEnabledForDeletingFailedRows' => [
@@ -35,7 +35,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 259200,
-			'display'  => 'WP Rocket clear Remove Unused CSS failed jobs',
+			'display'  => 'WP Rocket clear failed jobs',
 		],
 	],
 	'shouldAddDefaultIntervalWhenRUCSSEnabledForDeletingFailedRowsWithFilter' => [
@@ -45,7 +45,7 @@ return [
 		],
 		'expected' => [
 			'interval' => 604800,
-			'display'  => 'WP Rocket clear Remove Unused CSS failed jobs',
+			'display'  => 'WP Rocket clear failed jobs',
 		]
 	],
 ];

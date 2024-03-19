@@ -1,16 +1,18 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::check_job_status
+ * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::check_job_status
+ * 
+ * @group JobManager
  */
 class Test_checkJobStatus extends FilesystemTestCase {
 
-	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Cron/Subscriber/checkJobStatus.php';
+	protected $path_to_test_data = '/inc/Engine/Common/JobManager/Cron/Subscriber/checkJobStatus.php';
 
 	protected $config;
 
@@ -33,6 +35,7 @@ class Test_checkJobStatus extends FilesystemTestCase {
 	{
 		remove_filter('rocket_rucss_hash', [$this, 'rucss_hash']);
 		remove_filter('pre_http_request', [$this, 'mock_http']);
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		parent::tear_down();
 	}
 
@@ -47,9 +50,11 @@ class Test_checkJobStatus extends FilesystemTestCase {
      */
     public function testShouldDoAsExpected( $config, $expected )
     {
+		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+
 		$this->config = $config;
 		$id = self::addResource($config['row']);
-        do_action('rocket_rucss_job_check_status', $id);
+        do_action('rocket_saas_job_check_status', $config['row']['url'], $config['row']['is_mobile'], $config['optimization_type']);
 
 		foreach ($expected['rows'] as $row) {
 			self::assertTrue(self::resourceFound($row));
@@ -75,5 +80,8 @@ class Test_checkJobStatus extends FilesystemTestCase {
 		return $this->config['hash'];
 	}
 
+	public function set_rucss_option() {
+		return 1;
+	}
 }
 

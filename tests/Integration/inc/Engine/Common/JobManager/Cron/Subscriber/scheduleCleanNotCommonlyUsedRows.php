@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_clean_not_commonly_used_rows
+ * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
- * @group  RUCSS
+ * @group  JobManager
  */
 class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 	private $input;
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		wp_clear_scheduled_hook( 'rocket_rucss_clean_rows_time_event' );
+		wp_clear_scheduled_hook( 'rocket_saas_clean_rows_time_event' );
 
 		parent::tear_down();
 	}
@@ -31,9 +31,9 @@ class Test_ScheduleCleanNotCommonlyUsedRows extends TestCase {
 		do_action( 'init' );
 
 		if ( $this->input['remove_unused_css'] ) {
-			$this->assertNotFalse( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) );
+			$this->assertNotFalse( wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) );
 		} else {
-			$this->assertFalse( wp_next_scheduled( 'rocket_rucss_clean_rows_time_event' ) );
+			$this->assertFalse( wp_next_scheduled( 'rocket_saas_clean_rows_time_event' ) );
 		}
 	}
 
