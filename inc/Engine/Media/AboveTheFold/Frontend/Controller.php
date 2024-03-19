@@ -110,10 +110,12 @@ class Controller {
 		$title   = $matches[0];
 		$preload = $title;
 
-		$preload .= $this->preload_tag( $row->lcp );
+		$lcp = json_decode( $row->lcp );
+
+		$preload .= $this->preload_tag( $lcp );
 
 		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
-		$replace = $this->set_fetchpriority( $row->lcp, $replace );
+		$replace = $this->set_fetchpriority( $lcp, $replace );
 
 		return $replace;
 	}
@@ -193,13 +195,13 @@ class Controller {
 		}
 
 		if ( $row->lcp && 'not found' !== $row->lcp ) {
-			$lcp = $this->generate_lcp_link_tag_with_sources( $row->lcp );
+			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
 			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
 		if ( $row->viewport && 'not found' !== $row->viewport ) {
-			$atf = $this->get_atf_sources( $row->viewport );
+			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
 			$atf = $this->get_path_for_exclusion( $atf );
 		}
 
