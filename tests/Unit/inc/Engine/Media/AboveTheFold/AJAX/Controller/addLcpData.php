@@ -22,7 +22,9 @@ class Test_AddLcpData extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->query      = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
+		$this->stubEscapeFunctions();
+
+		$this->query      = $this->createPartialMock( AboveTheFold::class, [ 'add_item' ] );
 		$this->context    = Mockery::mock( Context::class );
 		$this->controller = new Controller( $this->query, $this->context );
 	}
@@ -37,10 +39,44 @@ class Test_AddLcpData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$_POST = [
+			'url'       => $config['url'],
+			'is_mobile' => $config['is_mobile'],
+			'images'    => $config['images'],
+		];
+
+		Functions\expect( 'check_ajax_referer' )
+			->once()
+			->with( 'rocket_lcp', 'rocket_lcp_nonce' )
+			->andReturn( true );
+
 		$this->context->shouldReceive( 'is_allowed' )
 			->atMost()
 			->once()
 			->andReturn( $config['filter'] );
+
+		Functions\when( 'wp_unslash' )
+			->returnArg();
+
+		Functions\when( 'sanitize_text_field' )
+			->returnArg();
+
+		Functions\when( 'current_time' )
+			->justReturn( $expected['item']['last_accessed'] );
+
+		$this->query->method( 'add_item' )
+			->with( $expected['item'] )
+			->willReturn( $expected['result'] );
+
+		if ( ! $expected['result'] ) {
+			Functions\expect( 'wp_send_json_error' )
+				->once()
+				->with( $expected['message'] );
+		} elseif ( $expected['result'] ) {
+			Functions\expect( 'wp_send_json_success' )
+				->once()
+				->with( $expected['message'] );
+		}
 
 		$this->controller->add_lcp_data();
 	}
