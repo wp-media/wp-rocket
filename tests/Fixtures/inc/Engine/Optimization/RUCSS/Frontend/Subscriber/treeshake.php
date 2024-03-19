@@ -59,8 +59,6 @@ return [
 				'rows' => [
 					[
 						'url' => 'http://example.org',
-						'job_id' => '',
-						'queue_name' => '',
 						'is_mobile' => false,
 						'status'        => 'pending',
 						'retries'       => 0,
