@@ -44,7 +44,6 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$factories = [
 			$this->getContainer()->get( 'rucss_factory' ),
-			$this->getContainer()->get( 'atf_factory' ),
 		];
 
 		$this->getContainer()->add( 'wpr_clock', WPRClock::class );
