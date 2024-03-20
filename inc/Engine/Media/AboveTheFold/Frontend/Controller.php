@@ -49,7 +49,7 @@ class Controller {
 	 * @param Context                   $context Context instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
 		$this->options    = $options;
 		$this->query      = $query;
 		$this->context    = $context;
