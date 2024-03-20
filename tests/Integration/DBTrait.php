@@ -43,6 +43,12 @@ trait DBTrait {
 		return $cache_query->create_or_update( $resource );
 	}
 
+	public static function addLcp( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lcp_query = $container->get( 'atf_query' );
+		return $lcp_query->add_item( $resource );
+	}
+
 	public static function installFresh() {
 		$container             = apply_filters( 'rocket_container', null );
 
