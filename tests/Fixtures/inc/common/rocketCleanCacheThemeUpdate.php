@@ -55,6 +55,7 @@ return [
 				'themes' => [ 'default' ],
 			],
 			'expected'   => [
+				'rocket_clean_domain_urls' => [ 'http://example.org' ],
 				'cleaned'      => [
 					'vfs://public/wp-content/cache/wp-rocket/example.org/'                => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/' => null,
