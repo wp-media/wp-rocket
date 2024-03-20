@@ -2,15 +2,16 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\AboveTheFold\Frontend\Subscriber;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WP_Rocket\Tests\Integration\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Subscriber::lcp
+ *
+ * @group AboveTheFold
  */
-class Test_lcp extends FilesystemTestCase
-{
+class Test_lcp extends FilesystemTestCase {
 
 	use DBTrait;
 
@@ -18,41 +19,40 @@ class Test_lcp extends FilesystemTestCase
 
 	protected $config;
 
-	public static function set_up_before_class()
-	{
+	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installFresh();
 	}
 
-	public static function tear_down_after_class()
-	{
+	public static function tear_down_after_class() {
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
 
-	public function set_up()
-	{
+	public function set_up() {
 		parent::set_up();
-		$this->unregisterAllCallbacksExcept('rocket_buffer', 'lcp', 17);
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lcp', 17 );
 	}
 
-	public function tear_down()
-	{
-		$this->restoreWpHook('rocket_buffer');
+	public function tear_down() {
+		$this->restoreWpHook( 'rocket_buffer' );
 		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
+	public function testShouldReturnAsExpected( $config, $expected ) {
 		$this->config = $config;
-		if (!empty($config['row']))
-		{
-			self::addLcp($config['row']);
+		if ( ! empty( $config['row'] ) ) {
+			self::addLcp( $config['row'] );
 		}
 
-		$this->assertSame($expected, apply_filters('rocket_buffer', $config['html']));
-	}
+		Functions\when( 'wp_create_nonce' )->justReturn( '96ac96b69e' );
 
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_buffer', $config['html'] )
+		);
+	}
 }
