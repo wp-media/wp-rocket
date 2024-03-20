@@ -44,18 +44,18 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => [
+				'lcp'           => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				],
-				'viewport'      => [
+				] ),
+				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
-				],
+				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 			'result'  => false,
@@ -85,18 +85,18 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => [
+				'lcp'           => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				],
-				'viewport'      => [
+				] ),
+				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
-				],
+				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 			'result'  => true,
@@ -104,18 +104,18 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => [
+				'lcp'           => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				],
-				'viewport'      => [
+				] ),
+				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
-				],
+				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 		],
@@ -143,18 +143,22 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => true,
 				'status'        => 'completed',
-				'lcp'           => [
-					(object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/lcp.jpg',
+				'lcp'           => json_encode(
+					[
+						(object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/lcp.jpg',
+						],
+					]
+				),
+				'viewport'      => json_encode(
+					[
+						(object) [
+							'type' => 'img',
+							'src'  => 'http://example.org/above-the-fold.jpg',
+						],
 					],
-				],
-				'viewport'      => [
-					(object) [
-						'type' => 'img',
-						'src'  => 'http://example.org/above-the-fold.jpg',
-					],
-				],
+				),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 			'result'  => true,
@@ -162,18 +166,18 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => true,
 				'status'        => 'completed',
-				'lcp'           => [
+				'lcp'           => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				],
-				'viewport'      => [
+				] ),
+				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
-				],
+				] ),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 		],
