@@ -41,13 +41,6 @@ class Controller {
 	protected $filesystem;
 
 	/**
-	 * WordPress filesystem.
-	 *
-	 * @var WP_Filesystem_Direct
-	 */
-	protected $filesystem;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data              $options Options instance.
