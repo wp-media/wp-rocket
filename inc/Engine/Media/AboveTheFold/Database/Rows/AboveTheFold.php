@@ -109,25 +109,4 @@ class AboveTheFold extends Row {
 
 		return true;
 	}
-
-	/**
-	 * Checks if the object has a valid LCP (Largest Contentful Paint) value.
-	 *
-	 * @return bool Returns true if the object's status is 'completed' and the LCP value is not empty or 'not found', false otherwise.
-	 */
-	public function has_lcp() {
-		if ( 'completed' !== $this->status ) {
-			return false;
-		}
-
-		if ( empty( $this->lcp ) ) {
-			return false;
-		}
-
-		if ( 'not found' !== $this->lcp ) {
-			return false;
-		}
-
-		return true;
-	}
 }
