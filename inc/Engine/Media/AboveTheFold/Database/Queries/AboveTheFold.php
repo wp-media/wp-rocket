@@ -131,7 +131,7 @@ class AboveTheFold extends AbstractQuery {
 			return false;
 		}
 
-		$prefixed_table_name = $this->apply_prefix( $this->table_name );
+		$prefixed_table_name = $db->prefix . $this->table_name;
 		$query               = "DELETE FROM `$prefixed_table_name` WHERE status = 'failed' OR `last_accessed` <= date_sub(now(), interval $delete_interval month)";
 		$rows_affected       = $db->query( $query );
 
