@@ -33,6 +33,12 @@ class Controller {
 	 */
 	private $context;
 
+	/**
+	 * WordPress filesystem.
+	 *
+	 * @var WP_Filesystem_Direct
+	 */
+	protected $filesystem;
 
 	/**
 	 * WordPress filesystem.
@@ -44,14 +50,16 @@ class Controller {
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options Options instance.
-	 * @param ATFQuery     $query Queries instance.
-	 * @param Context      $context Context instance.
+	 * @param Options_Data              $options Options instance.
+	 * @param ATFQuery                  $query Queries instance.
+	 * @param Context                   $context Context instance.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
-		$this->options = $options;
-		$this->query   = $query;
-		$this->context = $context;
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
+		$this->options    = $options;
+		$this->query      = $query;
+		$this->context    = $context;
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
 	/**

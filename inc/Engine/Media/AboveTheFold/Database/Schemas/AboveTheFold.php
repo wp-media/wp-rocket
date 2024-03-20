@@ -107,6 +107,5 @@ class AboveTheFold extends Schema {
 			'date_query' => true,
 			'sortable'   => true,
 		],
-
 	];
 }
