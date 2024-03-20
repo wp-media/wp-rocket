@@ -45,8 +45,8 @@ class Controller {
 			return;
 		}
 
-		$url       = isset( $_POST['url'] ) ? esc_url_raw( wp_unslash( $_POST['url'] ) ) : '';
-		$is_mobile = isset( $_POST['is_mobile'] ) ? wp_unslash( (bool) $_POST['is_mobile'] ) : false;
+		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
+		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOL ) : false;
 		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : '';
 		$lcp       = [];
 		$viewport  = [];
@@ -65,8 +65,15 @@ class Controller {
 			}
 		}
 
+		$row = $this->query->get_row( $url, $is_mobile );
+
+		if ( ! empty( $row ) ) {
+			wp_send_json_error( 'item already in the database' );
+			return;
+		}
+
 		$item = [
-			'url'           => untrailingslashit( $url ),
+			'url'           => $url,
 			'is_mobile'     => $is_mobile,
 			'status'        => 'completed',
 			'lcp'           => wp_json_encode( $lcp ),
