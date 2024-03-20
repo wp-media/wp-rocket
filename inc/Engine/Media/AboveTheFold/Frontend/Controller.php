@@ -8,7 +8,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
 	use RegexTrait;
@@ -35,13 +34,6 @@ class Controller {
 	private $context;
 
 	/**
-	 * Above the fold Job Manager.
-	 *
-	 * @var ManagerInterface
-	 */
-	private $manager;
-
-	/**
 	 * WordPress filesystem.
 	 *
 	 * @var WP_Filesystem_Direct
@@ -54,14 +46,12 @@ class Controller {
 	 * @param Options_Data              $options Options instance.
 	 * @param ATFQuery                  $query Queries instance.
 	 * @param Context                   $context Context instance.
-	 * @param ManagerInterface          $manager Above the fold Job Manager.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
 		$this->options    = $options;
 		$this->query      = $query;
 		$this->context    = $context;
-		$this->manager    = $manager;
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
@@ -84,7 +74,7 @@ class Controller {
 		$row       = $this->query->get_row( $url, $is_mobile );
 
 		if ( empty( $row ) ) {
-			return $this->inject_beacon( $html, $url, $is_mobile );
+			return $this->inject_beacon( $html );
 		}
 
 		if ( ! $row->has_lcp() ) {
@@ -348,26 +338,15 @@ class Controller {
 	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content.
 	 *
 	 * @param string $html The HTML content where the beacon will be injected.
-	 * @param string $url The current URL.
-	 * @param bool   $is_mobile True for mobile device, false otherwise.
 	 *
 	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
 	 */
-	public function inject_beacon( $html, $url, $is_mobile ): string {
+	public function inject_beacon( $html ): string {
 		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
 			return $html;
 		}
-
-		$data = [
-			'ajax_url'  => admin_url( 'admin-ajax.php' ),
-			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
-			'url'       => $url,
-			'is_mobile' => $is_mobile,
-		];
-
-		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
 
 		// Get the URL of the script.
 		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
@@ -376,6 +355,6 @@ class Controller {
 		$script_tag = "<script src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 
 		// Append the script tag just before the closing body tag.
-		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
+		return str_replace( '</body>', $script_tag . '</body>', $html );
 	}
 }
