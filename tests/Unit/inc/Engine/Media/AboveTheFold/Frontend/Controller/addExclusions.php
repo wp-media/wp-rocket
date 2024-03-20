@@ -2,25 +2,27 @@
 
 namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\Frontend\Controller;
 
-use Brain\Monkey\{Filters, Functions};
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
+use WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::add_exclusions
  *
  * @group Media
- * @group ATF
+ * @group AboveTheFold
  */
 class Test_addExclusions extends TestCase {
 	private $options;
 	private $query;
 	private $controller;
 	private $context;
+	private $filesystem;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -28,8 +30,9 @@ class Test_addExclusions extends TestCase {
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->query   = $this->createPartialMock( AboveTheFold::class, [ 'get_row' ] );
 		$this->context = Mockery::mock( Context::class );
+		$this->filesystem = Mockery::mock( WP_Filesystem_Direct::class );
 
-		$this->controller = new Controller( $this->options, $this->query, $this->context );
+		$this->controller = new Controller( $this->options, $this->query, $this->context, $this->filesystem );
 	}
 
 	protected function tearDown(): void {
@@ -51,6 +54,7 @@ class Test_addExclusions extends TestCase {
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 		Functions\when( 'add_query_arg' )->returnArg( 2 );
+		$this->stubWpParseUrl();
 
 		$this->query->method( 'get_row' )
 			->with( $config['url'], $config['is_mobile'] )
