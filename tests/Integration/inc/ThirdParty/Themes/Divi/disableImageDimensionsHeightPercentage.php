@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::disable_image_dimensions_height_percentage()
+ * @covers \WP_Rocket\ThirdParty\Divi::disable_image_dimensions_height_percentage
  *
  * @group  ThirdParty
  */
