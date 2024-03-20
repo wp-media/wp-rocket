@@ -34,25 +34,15 @@ class Controller {
 	private $context;
 
 	/**
-	 * Above the fold Job Manager.
-	 *
-	 * @var ManagerInterface
-	 */
-	private $manager;
-
-	/**
 	 * Constructor
 	 *
-	 * @param Options_Data     $options Options instance.
-	 * @param ATFQuery         $query Queries instance.
-	 * @param Context          $context Context instance.
-	 * @param ManagerInterface $manager Above the fold Job Manager.
-	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager ) {
+	 * @param Options_Data $options Options instance.
+	 * @param ATFQuery     $query Queries instance.
+	 * @param Context      $context Context instance.     */
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context ) {
 		$this->options = $options;
 		$this->query   = $query;
 		$this->context = $context;
-		$this->manager = $manager;
 	}
 
 	/**

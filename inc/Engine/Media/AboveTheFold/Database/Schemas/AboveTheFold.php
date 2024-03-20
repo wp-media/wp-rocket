@@ -67,17 +67,6 @@ class AboveTheFold extends Schema {
 			'sortable'   => true,
 		],
 
-		// error_code column.
-		[
-			'name'       => 'error_code',
-			'type'       => 'varchar',
-			'length'     => '32',
-			'default'    => null,
-			'cache_key'  => false,
-			'searchable' => true,
-			'sortable'   => true,
-		],
-
 		// error_message column.
 		[
 			'name'       => 'error_message',
@@ -86,39 +75,6 @@ class AboveTheFold extends Schema {
 			'cache_key'  => false,
 			'searchable' => true,
 			'sortable'   => true,
-		],
-
-		// RETRIES column.
-		[
-			'name'       => 'retries',
-			'type'       => 'tinyint',
-			'length'     => '1',
-			'default'    => 1,
-			'cache_key'  => false,
-			'searchable' => true,
-			'sortable'   => true,
-		],
-
-		// JOB_ID column.
-		[
-			'name'       => 'job_id',
-			'type'       => 'varchar',
-			'length'     => '255',
-			'default'    => null,
-			'cache_key'  => true,
-			'searchable' => false,
-			'sortable'   => false,
-		],
-
-		// QUEUE_NAME column.
-		[
-			'name'       => 'queue_name',
-			'type'       => 'varchar',
-			'length'     => '255',
-			'default'    => null,
-			'cache_key'  => true,
-			'searchable' => false,
-			'sortable'   => false,
 		],
 
 		// STATUS column.
@@ -130,16 +86,6 @@ class AboveTheFold extends Schema {
 			'cache_key'  => true,
 			'searchable' => true,
 			'sortable'   => false,
-		],
-
-		// Submitted_at column.
-		[
-			'name'       => 'submitted_at',
-			'type'       => 'timestamp',
-			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
-			'date_query' => true,
-			'sortable'   => true,
 		],
 
 		// MODIFIED column.
@@ -155,16 +101,6 @@ class AboveTheFold extends Schema {
 		// LAST_ACCESSED column.
 		[
 			'name'       => 'last_accessed',
-			'type'       => 'timestamp',
-			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
-			'date_query' => true,
-			'sortable'   => true,
-		],
-
-		// NEXT_RETRY_TIME column.
-		[
-			'name'       => 'next_retry_time',
 			'type'       => 'timestamp',
 			'default'    => '0000-00-00 00:00:00',
 			'created'    => true,
