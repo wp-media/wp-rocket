@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
 use WP_Filesystem_Direct;
-use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
