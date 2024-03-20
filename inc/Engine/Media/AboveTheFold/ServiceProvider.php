@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Media\AboveTheFold;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
+use WP_Rocket\Engine\Media\AboveTheFold\AJAX\{Controller as AJAXController, Subscriber as AJAXSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
-use WP_Rocket\Engine\Media\AboveTheFold\Admin\{Controller as AdminController, Subscriber as AdminSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subscriber as CronSubscriber};
 
@@ -31,6 +32,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_admin_subscriber',
 		'atf_cron_controller',
 		'atf_cron_subscriber',
+		'atf_ajax_controller',
+		'atf_ajax_subscriber',
 	];
 
 	/**
@@ -67,5 +70,16 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'atf_query' ) );
 		$this->getContainer()->share( 'atf_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_cron_controller' ) );
+
+		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
+			->addArguments(
+			[
+				$this->getContainer()->get( 'atf_query' ),
+				$this->getContainer()->get( 'atf_context' ),
+			]
+		);
+
+		$this->getContainer()->share( 'atf_ajax_subscriber', AJAXSubscriber::class )
+			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
 	}
 }
