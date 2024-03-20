@@ -14,6 +14,11 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 
 	private $config_data = [];
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept('rocket_buffer', 'specify_image_dimensions', 17);
+	}
 	public function tear_down() {
 		if ( isset( $this->config_data['image_dimensions'] ) ){
 			remove_filter( 'pre_get_rocket_option_image_dimensions', [$this, 'set_image_dimensions'] );
@@ -37,6 +42,8 @@ class Test_SpecifyImageDimensions extends FilesystemTestCase {
 		remove_filter( 'home_url', [ $this, 'setHomeUrl' ] );
 
 		unset( $GLOBALS['wp'] );
+
+		$this->restoreWpHook('rocket_buffer');
 
 		parent::tear_down();
 	}
