@@ -4288,7 +4288,7 @@ msgstr "Snelle acties"
 
 #: views/settings/page-sections/dashboard.php:144
 msgid "Remove all cached files"
-msgstr "Alle gecachte bestanden verwijderen"
+msgstr "Alle gecachete bestanden verwijderen"
 
 #: views/settings/page-sections/dashboard.php:164
 #: views/settings/page-sections/dashboard.php:170
