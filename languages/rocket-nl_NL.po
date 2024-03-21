@@ -2000,7 +2000,7 @@ msgstr "Geavanceerde regels"
 
 #: inc/Engine/Admin/Settings/Page.php:1273
 msgid "Fine-tune cache rules"
-msgstr "Cache regels finetunen"
+msgstr "Cache regels verfijnen"
 
 #: inc/Engine/Admin/Settings/Page.php:1284
 msgid ""
