@@ -2104,7 +2104,7 @@ msgid ""
 "or page (one per line)"
 msgstr ""
 "Specificeer URL's die je altijd uit de cache wilt legen als je een bericht "
-"of pagina bijwerkt (één per regel)"
+"of pagina updatet (één per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1388
 msgid "Specify query strings for caching (one per line)"
