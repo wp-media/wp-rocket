@@ -3469,7 +3469,7 @@ msgstr "%1$s: Gebruikte CSS-optie is niet ingeschakeld!"
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 msgid "%1$s: Used CSS cache cleared!"
-msgstr "%1$s: Gebruikte CSS-cache gewist!"
+msgstr "%1$s: Gebruikte CSS-cache geleegd!"
 
 #: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
