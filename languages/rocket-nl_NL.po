@@ -1834,8 +1834,8 @@ msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
 msgstr ""
-"Lazy-load voor afbeeldingen is op dit moment geactiveerd in %2$s. Als je "
-"%1$s’s Lazy-load wilt gebruiken, schakel deze optie uit in %2$s."
+"LazyLoad voor afbeeldingen is op dit moment geactiveerd in %2$s. Als je "
+"%1$s’s LazyLoad wilt gebruiken, schakel deze optie uit in %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1070
 msgid "Enable for CSS background images"
