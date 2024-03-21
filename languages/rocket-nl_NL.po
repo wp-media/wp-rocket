@@ -4221,7 +4221,7 @@ msgstr "Cloudflare-cache"
 #: views/settings/page-sections/cloudflare.php:35
 #: views/settings/page-sections/sucuri.php:36
 msgid "Purges cached resources for your website. %s"
-msgstr "Leegt gecachte bronnen op je website. %s"
+msgstr "Leegt gecachete bronnen op je website. %s"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
