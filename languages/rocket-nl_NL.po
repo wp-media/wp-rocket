@@ -692,7 +692,7 @@ msgstr "Betreffend(e) bestand/map: %s"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr "Het debug bestand kan niet verwijderd worden."
+msgstr "Het debug-bestand kan niet verwijderd worden."
 
 #. Translators: %1$s = Plugin name, %2$s = Plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:147
