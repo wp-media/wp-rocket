@@ -3055,7 +3055,7 @@ msgstr "Gepland cache legen"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:143
 msgid "Scheduled Database Optimization"
-msgstr "Ingeplande database optimalisatie"
+msgstr "Geplande database optimalisatie"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:144
 msgid "Database Optimization Process"
