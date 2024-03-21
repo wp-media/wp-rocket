@@ -48,12 +48,13 @@ return [
 			false,
 			true,
 			],
-			'rows' => 101,
+			'rows' => 5,
 			'jobs' => [
 				$row1,
 				$row2,
 				$row3
-			]
+			],
+			'transient' => 0,
 		],
 		'expected' => [
 			'outdated_jobs_id' => [

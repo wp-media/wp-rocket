@@ -66,6 +66,9 @@ class PreloadUrl {
 			return;
 		}
 
+		// Should we perform a duration check?
+		$check_duration = get_transient( 'rocket_preload_check_duration' ) ? false : true;
+
 		$requests = [
 			[
 				'url'       => $url,
@@ -120,7 +123,12 @@ class PreloadUrl {
 					 */
 					'sslverify' => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 				]
-				);
+			);
+
+			if ( $check_duration ) {
+				$headers['blocking'] = true;
+				$headers['timeout']  = 20;
+			}
 
 			/**
 			 * Filters the arguments for the preload request.
@@ -136,10 +144,19 @@ class PreloadUrl {
 				return;
 			}
 
+			if ( $check_duration ) {
+				$start = microtime( true );
+			}
+
 			wp_safe_remote_get(
 				user_trailingslashit( $request['url'] ),
 				$headers
 			);
+
+			if ( $check_duration ) {
+				$duration = ( microtime( true ) - $start ); // Duration of the request.
+			}
+
 			/**
 			 * Filter the delay between each preload request.
 			 *
@@ -149,6 +166,18 @@ class PreloadUrl {
 			$delay_between = apply_filters( 'rocket_preload_delay_between_requests', 500000 );
 
 			usleep( $delay_between );
+			if ( ! $check_duration ) {
+				continue;
+			}
+
+			// Update average duration.
+			$previous_request_durations = get_transient( 'rocket_preload_previous_request_durations' ) ?? 0;
+			$previous_request_durations = ( $previous_request_durations <= 0 ) ? $duration : ( $previous_request_durations * 0.7 + $duration * 0.3 );
+
+			set_transient( 'rocket_preload_previous_request_durations', $previous_request_durations, 5 * 60 );
+
+			set_transient( 'rocket_preload_check_duration', $duration, 60 ); // Don't check request duration for 1 minute.
+			$check_duration = false;
 		}
 	}
 
@@ -183,7 +212,35 @@ class PreloadUrl {
 
 		$pending_actions = $this->queue->get_pending_preload_actions();
 
-		$count = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+		// Retrieve batch size limits and request timing estimation.
+		/**
+		 * Get the number of pending cron job
+		 *
+		 * @param int $args Maximum number of job size.
+		 */
+		$max_batch_size = ( (int) apply_filters( 'rocket_preload_cache_pending_jobs_cron_rows_count', 45 ) ) - count( $pending_actions );
+
+		/**
+		 * Get the number of in progress cron job
+		 *
+		 * @param int $args Minimum number of job size.
+		 */
+		$min_batch_size = ( (int) apply_filters( 'rocket_preload_cache_min_in_progress_jobs_count', 5 ) );
+
+		$preload_request_duration = get_transient( 'rocket_preload_previous_request_durations' );
+
+		/**
+		 * Estimate batch size based on request duration.
+		 * In case no estimation or there is an issue with the value use $min_batch_size.
+		*/
+		$next_batch_size = ! $preload_request_duration ? $min_batch_size : round( -5 * $preload_request_duration + 55 );
+
+		// Limit next_batch_size.
+		$next_batch_size = max( $next_batch_size, $min_batch_size ); // Not lower than 5.
+		$next_batch_size = min( $next_batch_size, $max_batch_size ); // Not higher than 45.
+		$next_batch_size = max( $next_batch_size, 0 ); // Not lower than 0.
+
+		// Get all in-progress jobs with request sent and no results.
 		/**
 		 * Set the delay before an in-progress row is considered as outdated.
 		 *
@@ -198,11 +255,11 @@ class PreloadUrl {
 			 * @param int $count number of rows in batches.
 			 * @return int
 			 */
-			(int) ( $count / 15 )
+			(int) ( $max_batch_size / 15 )
 		);
-
 		$stuck_rows = $this->query->get_outdated_in_progress_jobs( $delay );
 
+		// Make sure the request has been sent for those jobs.
 		$stuck_rows = array_filter(
 			$stuck_rows,
 			function ( $row ) use ( $pending_actions ) {
@@ -215,10 +272,13 @@ class PreloadUrl {
 			}
 			);
 
+		// Make those hanging jobs failed.
 		foreach ( $stuck_rows as $row ) {
 			$this->query->make_status_failed( $row->id );
 		}
-		$rows = $this->query->get_pending_jobs( $count );
+
+		// Add new jobs in progress.
+		$rows = $this->query->get_pending_jobs( $next_batch_size );
 		foreach ( $rows as $row ) {
 
 			if ( $this->is_excluded_by_filter( $row->url ) ) {
