@@ -634,7 +634,7 @@ msgstr "%s: cache geleegd."
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:612
 msgid "%s: Post cache cleared."
-msgstr "%s: bericht-cache geleegd."
+msgstr "%s: berichtencache geleegd."
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
@@ -644,7 +644,7 @@ msgstr "%s: term-cache geleegd."
 #. translators: %s = plugin name).
 #: inc/admin/ui/notices.php:626
 msgid "%s: User cache cleared."
-msgstr "%s: gebruiker-cache geleegd."
+msgstr "%s: gebruikerscache geleegd."
 
 #: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
