@@ -4230,7 +4230,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Alle Cloudflare cache bestanden legen"
+msgstr "Alle Cloudflare cache-bestanden legen"
 
 #: views/settings/page-sections/dashboard.php:38
 msgid "Congratulations!"
