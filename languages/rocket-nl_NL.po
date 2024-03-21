@@ -658,7 +658,7 @@ msgstr "Negeer deze melding"
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
-msgstr "Gebruikte CSS wissen"
+msgstr "Gebruikte CSS legen"
 
 #: inc/admin/ui/notices.php:685
 msgid "Stop Preload"
