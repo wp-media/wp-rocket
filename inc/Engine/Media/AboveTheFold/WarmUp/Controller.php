@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 
 class Controller {
 
@@ -23,14 +24,23 @@ class Controller {
 	protected $options;
 
 	/**
+	 * API Client Instance.
+	 *
+	 * @var APIClient
+	 */
+	private $api_client;
+
+	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
+	 * @param APIClient        $api_client API Client instance.
 	 */
-	public function __construct( ContextInterface $context, Options_Data $options ) {
-		$this->context = $context;
-		$this->options = $options;
+	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client ) {
+		$this->context    = $context;
+		$this->options    = $options;
+		$this->api_client = $api_client;
 	}
 
 	/**
@@ -47,7 +57,7 @@ class Controller {
 			return;
 		}
 
-		error_log( print_r( $this->fetch_links(), true ) );  // To be replaced by sending links to SaaS.
+		$this->send_to_saas( $this->fetch_links() );
 	}
 
 	/**
@@ -123,5 +133,32 @@ class Controller {
 		$links       = array_slice( $links, 0, $link_number );
 
 		return $links;
+	}
+
+	/**
+	 * Send fetched links to SaaS to do the warmup.
+	 *
+	 * @param array $links Array of links to be sent.
+	 * @return void
+	 */
+	private function send_to_saas( $links ) {
+		if ( empty( $links ) ) {
+			return;
+		}
+
+		/**
+		 * Filter the delay between each request.
+		 *
+		 * @param int $delay_between the defined delay.
+		 *
+		 * @returns int
+		 */
+		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
+
+		foreach ( $links as $link ) {
+			$this->api_client->add_to_atf_queue( $link );
+
+			usleep( $delay_between );
+		}
 	}
 }

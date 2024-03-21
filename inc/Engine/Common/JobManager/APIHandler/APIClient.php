@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class APIClient extends AbstractAPIClient {
+class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
+	use LoggerAware;
 
 	/**
 	 * SaaS main API path.
@@ -51,13 +55,24 @@ class APIClient extends AbstractAPIClient {
 			'timeout' => 5,
 		];
 
+		$this->logger::debug(
+			'Add to queue request arguments',
+			$args
+		);
+
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
-			return [
+			$output = [
 				'code'    => $this->response_code,
 				'message' => $this->error_message,
 			];
+
+			$this->logger::error(
+				'Add to queue request failure',
+				$output
+			);
+			return $output;
 		}
 
 		$default = [
@@ -69,6 +84,11 @@ class APIClient extends AbstractAPIClient {
 			],
 		];
 		$result  = json_decode( $this->response_body, true );
+
+		$this->logger::debug(
+			'Add to queue response body',
+			$result
+		);
 
 		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
 			update_option( 'wp_rocket_no_licence', true );
@@ -120,5 +140,26 @@ class APIClient extends AbstractAPIClient {
 
 		$result = json_decode( $this->response_body, true );
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
+	}
+
+	/**
+	 * Send the link to Above the fold SaaS.
+	 *
+	 * @param string $url Url to be sent.
+	 * @return array
+	 */
+	public function add_to_atf_queue( string $url ): array {
+		$url = add_query_arg(
+			[
+				'wpr_imagedimensions' => 1,
+			],
+			$url
+		);
+
+		$config = [
+			'optimization_list' => '',
+		];
+
+		return $this->add_to_queue( $url, $config );
 	}
 }
