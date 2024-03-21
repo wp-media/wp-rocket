@@ -1959,7 +1959,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1232
 msgid "URLs to prefetch"
-msgstr "URL’s om voor te laden"
+msgstr "URL’s om te prefetchen"
 
 #: inc/Engine/Admin/Settings/Page.php:1233
 msgid ""
