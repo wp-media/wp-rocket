@@ -80,7 +80,7 @@ msgstr "Ontbrekend Cloudflare resultaat."
 #: inc/Addon/Cloudflare/API/Client.php:194 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
-msgstr "Ongeldig Cloudflare e-mailadres of API sleutel."
+msgstr "Ongeldig Cloudflare e-mailadres of API-sleutel."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/Addon/Cloudflare/API/Client.php:198
@@ -253,7 +253,7 @@ msgstr "Sucuri firewall API sleutel is niet gevonden."
 
 #: inc/Addon/Sucuri/Subscriber.php:231
 msgid "Sucuri firewall API key is invalid."
-msgstr "Sucuri firewall API sleutel is ongeldig."
+msgstr "Sucuri firewall API-sleutel is ongeldig."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:286
