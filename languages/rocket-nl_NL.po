@@ -1954,8 +1954,8 @@ msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
 msgstr ""
-"Geef URL's op die moeten worden uitgesloten van de functie voor vooraf laden"
-" (één per regel). %1$sMeer informatie%2$s"
+"Geef URL's op die moeten worden uitgesloten van de preload functie (één per "
+"regel). %1$sMeer informatie%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1232
 msgid "URLs to prefetch"
