@@ -46,7 +46,7 @@ class AboveTheFold extends AbstractTable {
 			is_mobile        tinyint(1)          NOT NULL default 0,
 			lcp              longtext                     default '',
 			viewport         longtext                     default '',
-			error_message    longtext                NULL default NULL,,
+			error_message    longtext                NULL default NULL,
 			status           varchar(255)        NOT NULL default '',
 			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
 			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',

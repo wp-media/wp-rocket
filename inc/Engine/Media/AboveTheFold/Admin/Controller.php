@@ -53,6 +53,11 @@ class Controller {
 		}
 
 		$this->delete_rows();
+
+		/**
+		 * Fires after clearing lcp & atf data.
+		 */
+		do_action( 'rocket_after_clear_atf' );
 	}
 
 	/**

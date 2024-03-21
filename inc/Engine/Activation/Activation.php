@@ -24,6 +24,7 @@ class Activation {
 		'wp_cache',
 		'action_scheduler_check',
 		'preload_activation',
+		'atf_activation',
 	];
 
 	/**
@@ -41,6 +42,7 @@ class Activation {
 		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
 		$container->addServiceProvider( ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\Engine\Media\AboveTheFold\Activation\ServiceProvider::class );
 
 		$host_type = HostResolver::get_host_service();
 
