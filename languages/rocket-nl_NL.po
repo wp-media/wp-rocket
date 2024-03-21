@@ -3500,11 +3500,11 @@ msgstr ""
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
-msgstr "WP Rocket Preload wachtende taken"
+msgstr "WP Rocket preload wachtende taken"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "WP Rocket Preload terugdraaien vastgelopen mislukte taken"
+msgstr "WP Rocket preload terugdraaien vastgelopen mislukte taken"
 
 #: inc/functions/admin.php:21
 msgid ""
