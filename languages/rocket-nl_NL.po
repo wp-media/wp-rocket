@@ -203,7 +203,7 @@ msgstr "Fout bij Cloudflare rocket loader: %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
 msgid "Cloudflare rocket loader %s"
-msgstr "Cloudflare rocket loader %s"
+msgstr "Cloudflare Rocket Loader %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:418
