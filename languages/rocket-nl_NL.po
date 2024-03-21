@@ -2116,7 +2116,7 @@ msgstr "Optimaliseer, verminder bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1421
 msgid "Post Cleanup"
-msgstr "Berichten Opschonen"
+msgstr "Berichten opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1423
 msgid ""
@@ -2128,7 +2128,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1428
 msgid "Comments Cleanup"
-msgstr "Reacties Opschonen"
+msgstr "Reacties opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1430
 msgid "Spam and trashed comments will be permanently deleted."
