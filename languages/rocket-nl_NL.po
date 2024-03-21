@@ -1325,7 +1325,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:468
 msgid "Cache Lifespan"
-msgstr "Cache Levensduur"
+msgstr "Cache levensduur"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:471
