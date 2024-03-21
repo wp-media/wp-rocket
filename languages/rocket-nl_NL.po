@@ -1778,7 +1778,7 @@ msgstr "Media"
 
 #: inc/Engine/Admin/Settings/Page.php:952
 msgid "LazyLoad, image dimensions"
-msgstr "Lazy-load, afbeeldingsafmetingen"
+msgstr "LazyLoad, afbeeldingsafmetingen"
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Autoptimize"
