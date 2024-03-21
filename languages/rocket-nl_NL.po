@@ -1291,7 +1291,7 @@ msgstr "Cache"
 
 #: inc/Engine/Admin/Settings/Page.php:439
 msgid "Basic cache options"
-msgstr "Basis cache instellingen"
+msgstr "Basis cache-instellingen"
 
 #: inc/Engine/Admin/Settings/Page.php:446
 msgid "Mobile Cache"
