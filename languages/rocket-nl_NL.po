@@ -4130,7 +4130,7 @@ msgid ""
 "button if you want to update them manually. %1$sMore info%2$s"
 msgstr ""
 "Compatibiliteitslijsten worden elke week automatisch gedownload. Klik op de "
-"knop als je ze handmatig wilt bijwerken. %1$sMeer info%2$s"
+"knop als je ze handmatig wilt updaten. %1$sMeer info%2$s"
 
 #: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
