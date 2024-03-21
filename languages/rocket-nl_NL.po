@@ -198,7 +198,7 @@ msgstr "Cloudflare verkleining %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Fout bij Cloudflare rocket loader: %s"
+msgstr "Fout bij Cloudflare Rocket Loader: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
