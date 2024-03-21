@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15.8.1\n"
+"Project-Id-Version: WP Rocket 3.15.10-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-01-31T18:04:18+02:00\n"
+"POT-Creation-Date: 2024-03-14T17:10:16+02:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Toine <toinerademacher@hotmail.com>, 2024\n"
 "Language-Team: Dutch (Netherlands) (https://app.transifex.com/wp-media/teams/18133/nl_NL/)\n"
@@ -1574,7 +1574,7 @@ msgstr "Verwijder ongebruikte CSS activeren"
 
 #: inc/Engine/Admin/Settings/Page.php:731
 msgid "CSS safelist"
-msgstr "CSS-safelijst"
+msgstr "CSS veilge lijst"
 
 #: inc/Engine/Admin/Settings/Page.php:732
 msgid ""
@@ -3471,7 +3471,7 @@ msgstr "%1$s: Gebruikte CSS-optie is niet ingeschakeld!"
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: Gebruikte CSS-cache gewist!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:672
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr "Gebruikte CSS van deze URL legen"
 
@@ -3966,11 +3966,11 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:116
+#: inc/ThirdParty/Themes/Avada.php:107
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/ThirdParty/Themes/Divi.php:313
+#: inc/ThirdParty/Themes/Divi.php:293
 msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
