@@ -764,7 +764,7 @@ msgstr ""
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear and preload cache"
-msgstr "Cache wissen en vooraf laden"
+msgstr "Cache legen en preloaden"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
