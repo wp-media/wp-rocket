@@ -24,8 +24,8 @@ class Test_createLazyInlineCss extends TestCase {
     {
 		Functions\when('wp_generate_uuid4')->justReturn('hash');
 
-		foreach ($config['extract'] as $content => $urls) {
-			$this->extractor->expects()->extract($content)->andReturn($urls);
+		foreach ($config['extract'] as $content => $conf) {
+			$this->extractor->expects()->extract($content, $conf['css_file'])->andReturn($conf['results']);
 		}
 
 		foreach ($config['rule_format'] as $url_tag) {

@@ -182,4 +182,78 @@ return [
 			],
 		]
 	],
+	'testSucceedTrailingSlashRequestShouldReturnBody' => [
+		'config' => [
+			'url' => 'https://example.com/test',
+			'api_url' => 'https://api.example.com',
+			'email' => 'example@email.com',
+			'key' => 'key',
+			'response' => [
+				'code' => 200,
+				'message' => 'message',
+				'body' => 'body',
+			],
+			'errors_count' => 1,
+			'request_uri' => 'https://api.example.comrucss-job',
+			'args' => [
+				'body' => [
+					'wpr_email' => 'example@email.com',
+					'wpr_key' => 'key',
+					'url'          => 'https://example.com/test/',
+					'config' => [
+						'aa' => 'aa'
+					],
+				],
+				'timeout' => 5,
+				'method' => 'POST'
+			],
+			'options' => [
+				'aa' => 'aa'
+			],
+			'is_succeed' => true,
+			'code' => 200,
+			'message' => 'message',
+			'body' => json_encode([
+				'code'     => 200,
+				'message'  => 'message',
+				'contents' => [
+					'jobId'     => 10,
+					'queueName' => 'EU',
+				],
+			]),
+			'to_merge' => [
+				'code'     => 200,
+				'message'  => 'message',
+				'contents' => [
+					'jobId'     => 10,
+					'queueName' => 'EU',
+				],
+			],
+			'merged' => [
+				'code'     => 200,
+				'message'  => 'message',
+				'contents' => [
+					'jobId'     => 10,
+					'queueName' => 'EU',
+				],
+			],
+			'default' => [
+				'code'     => 400,
+				'message'  => 'Bad json',
+				'contents' => [
+					'jobId'     => 0,
+					'queueName' => '',
+				],
+			],
+			'is_unauthorized' => false,
+		],
+		'expected' => [
+			'code'     => 200,
+			'message'  => 'message',
+			'contents' => [
+				'jobId'     => 10,
+				'queueName' => 'EU',
+			],
+		]
+	],
 ];

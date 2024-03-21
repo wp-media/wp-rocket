@@ -72,8 +72,6 @@ class Test_generateUrl extends TestCase {
 			return $default;
 		});
 
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
-
         $this->assertSame($expected['output'], $this->filesystemcache->generate_url($config['url']));
 
     }

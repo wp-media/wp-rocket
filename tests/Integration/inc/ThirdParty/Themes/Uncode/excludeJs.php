@@ -3,28 +3,18 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Uncode;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\ThirdParty\Themes\Uncode;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Uncode::exclude_js
+ * @covers \WP_Rocket\ThirdParty\Themes\Uncode::exclude_js
  *
- * @group  Uncode
- * @group  ThirdParty
+ * @group Uncode
+ * @group Themes
  */
 class Test_ExcludeJs extends FilesystemTestCase {
-	private static $container;
-	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Uncode/excludeJs.php';
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::$container = apply_filters( 'rocket_container', '' );
-	}
-
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'uncode' ) );
-	}
+	private $event;
+	private $subscriber;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Uncode/excludeJs.php';
 
 	public function set_up() {
 		parent::set_up();
@@ -33,7 +23,8 @@ class Test_ExcludeJs extends FilesystemTestCase {
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 		add_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'uncode' ) );
+		$container = apply_filters( 'rocket_container', '' );
+		$this->event = $container->get( 'event_manager' );
 	}
 
 	public function tear_down() {
@@ -43,6 +34,8 @@ class Test_ExcludeJs extends FilesystemTestCase {
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 		remove_filter( 'template_directory_uri', [ $this, 'set_template_uri' ] );
+
+		$this->event->remove_subscriber( $this->subscriber );
 
 		parent::tear_down();
 	}
@@ -67,7 +60,12 @@ class Test_ExcludeJs extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->subscriber = new Uncode();
+
+		$this->event->add_subscriber( $this->subscriber );
+
 		$actual = apply_filters( 'rocket_exclude_js', $config['exclusions'] );
+
 		foreach ( $expected as $item ) {
 			$this->assertContains( $item, $actual );
 		}

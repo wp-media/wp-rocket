@@ -82,6 +82,8 @@ class Test_CheckJobStatus extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
+		$this->wpr_clock->shouldReceive('current_time')->with('mysql', true)->zeroOrMoreTimes()->andReturn('2024-01-26');
+
 		$this->logger->allows()->error(Mockery::any());
 		if ( $config['row_details'] ) {
 			$row_details = new UsedCSS_Row( $config['row_details'] );

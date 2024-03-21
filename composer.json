@@ -68,10 +68,10 @@
 		"wpackagist-plugin/amp": "^1.1.4",
 		"wpackagist-plugin/hummingbird-performance": "2.0.1",
 		"wpackagist-plugin/jetpack": "9.3.2",
-		"wpackagist-plugin/pdf-embedder": "^4.6",
+		"wpackagist-plugin/pdf-embedder": "4.6.*",
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
-		"wpackagist-plugin/woocommerce": "^7",
+		"wpackagist-plugin/woocommerce": "^8",
 		"wpackagist-plugin/wp-smushit": "^3",
 		"wp-media/monolog": "^0.0"
 	},

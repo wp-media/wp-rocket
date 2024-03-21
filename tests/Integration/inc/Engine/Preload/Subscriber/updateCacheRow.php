@@ -22,6 +22,7 @@ class Test_UpdateCacheRow extends AdminTestCase
 	{
 		parent::set_up();
 		add_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
+		add_filter('pre_get_rocket_option_manual_preload', [$this, 'manual_preload']);
 	}
 
 	public static function tear_down_after_class()
@@ -33,6 +34,7 @@ class Test_UpdateCacheRow extends AdminTestCase
 	public function tear_down()
 	{
 		remove_filter('rocket_preload_exclude_urls', [$this, 'excluded']);
+		remove_filter('pre_get_rocket_option_manual_preload', [$this, 'rucss']);
 		parent::tear_down();
 	}
 
@@ -47,6 +49,7 @@ class Test_UpdateCacheRow extends AdminTestCase
 		}
 
 		do_action('rocket_after_process_buffer');
+
 
 		if($config['is_preloaded']) {
 			$this->assertGreaterThan( 0, did_action('rocket_preload_completed') );
@@ -63,5 +66,9 @@ class Test_UpdateCacheRow extends AdminTestCase
 
 	public function excluded($regexes): array {
 		return array_merge($regexes, $this->config['regexes']);
+	}
+
+	public function manual_preload() {
+		return $this->config['manual_preload'];
 	}
 }

@@ -178,9 +178,6 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function generate_url( string $url ): string {
 		$path = $this->generate_path( $url );
-		if ( ! $this->filesystem->exists( $path ) ) {
-			return $url;
-		}
 
 		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 
