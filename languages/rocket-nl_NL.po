@@ -3713,11 +3713,11 @@ msgstr "Validatie van de licentie is mislukt: %s"
 
 #: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
 msgid "The log file does not exist."
-msgstr "Het log bestand bestaat niet."
+msgstr "Het logbestand bestaat niet."
 
 #: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
 msgid "The log file could not be read."
-msgstr "Het log bestand kon niet gelezen worden."
+msgstr "Het logbestand kon niet gelezen worden."
 
 #: inc/Logger/Logger.php:250
 msgid "The logs are not saved into a file."
