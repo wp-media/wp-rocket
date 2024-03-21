@@ -3355,7 +3355,7 @@ msgstr "Lijsten zijn up-to-date."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
 msgid "Could not update lists."
-msgstr "Kan lijsten niet bijwerken."
+msgstr "Kan lijsten niet updaten."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
 msgid "Lists are successfully updated."
@@ -4134,7 +4134,7 @@ msgstr ""
 
 #: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
-msgstr "Lijsten bijwerken"
+msgstr "Lijsten updaten"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
