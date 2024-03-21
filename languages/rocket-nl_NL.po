@@ -715,7 +715,7 @@ msgid ""
 "version %1$s or higher."
 msgstr ""
 "Wordpress %1$s. Om deze versie van WP Rocket te gebruiken, raden wij je aan "
-"om Wordpress bij te werken naar versie %1$s of hoger."
+"om Wordpress te updaten naar versie %1$s of hoger."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
