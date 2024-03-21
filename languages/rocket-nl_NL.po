@@ -3494,7 +3494,7 @@ msgid ""
 "continue to cache all your pages whenever they are purged. No further action"
 " is needed."
 msgstr ""
-"%1$s: de preload service is nu actief. Na de initiële preload zal deze "
+"%1$s: de preload-service is nu actief. Na de initiële preload zal deze "
 "doorgaan met het cachen van al je pagina's wanneer ze worden geleegd. Er is "
 "geen verdere actie nodig."
 
