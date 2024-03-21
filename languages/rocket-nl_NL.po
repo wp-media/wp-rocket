@@ -1924,7 +1924,7 @@ msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
 msgstr ""
-"DNS prefetching kan zorgen voor het sneller inladen van externe bestanden, "
+"DNS prefetchen kan zorgen voor het sneller inladen van externe bestanden, "
 "vooral op mobiele netwerken"
 
 #: inc/Engine/Admin/Settings/Page.php:1188
