@@ -2647,7 +2647,7 @@ msgstr "WP_CACHE is ingesteld op false"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:90
 msgid "Next Billing Date"
-msgstr "Volgende facturatie datum"
+msgstr "Volgende facturatiedatum"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:99
 msgid "No Subscription"
