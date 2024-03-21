@@ -780,7 +780,7 @@ msgstr "Deze URL legen"
 
 #: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
-msgstr "Sucuri cache legen"
+msgstr "Sucuri-cache legen"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
