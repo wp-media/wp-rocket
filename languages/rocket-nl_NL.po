@@ -1175,7 +1175,7 @@ msgstr "Automatische concepten"
 #: inc/Engine/Admin/Database/Optimization.php:32
 #: inc/Engine/Admin/Settings/Page.php:1477
 msgid "Trashed Posts"
-msgstr "Verwijderde Berichten"
+msgstr "Verwijderde berichten"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1487
