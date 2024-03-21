@@ -2491,7 +2491,7 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1953
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Synchroniseer Sucuri cache met deze add-on."
+msgstr "Synchroniseer Sucuri-cache met deze add-on."
 
 #: inc/Engine/Admin/Settings/Page.php:1991
 msgid "Cloudflare credentials"
@@ -2619,7 +2619,7 @@ msgstr "Aan de slag en how-to videos"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Rocket Verlopen cacheinterval"
+msgstr "WP Rocket verlopen cacheinterval"
 
 #: inc/Engine/Cache/WPCache.php:337
 msgid "WP_CACHE value"
