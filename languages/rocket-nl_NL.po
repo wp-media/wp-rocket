@@ -3791,7 +3791,7 @@ msgid ""
 msgstr ""
 "Je moet Cloudflare APO uitschakelen of navragen bij de ontwikkelaars van "
 "thema's/plugin die het gebruik van “Dynamische cookies cache\" vereisen voor"
-" een alternatieve manier om pagina-cache-vriendelijk te zijn. %1$sMeer "
+" een alternatieve manier om paginacache-vriendelijk te zijn. %1$sMeer "
 "info%2$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
