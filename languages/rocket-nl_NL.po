@@ -121,7 +121,7 @@ msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
 "for further guidance."
 msgstr ""
-"Cloudflare e-mail en/of API sleutel zijn niet ingesteld. Lees de "
+"Cloudflare e-mail en/of API-sleutel zijn niet ingesteld. Lees de "
 "%1$sdocumentatie%2$s voor verdere uitleg."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
