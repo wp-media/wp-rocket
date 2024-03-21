@@ -84,7 +84,67 @@ $(document).ready(function(){
         return wprIsParentActive( $parent.closest( '.wpr-field' ) );
     }
 
-    // Display/Hide childern fields on checkbox change.
+	/**
+	 * Masks sensitive information in an input field by replacing all but the last 4 characters with asterisks.
+	 *
+	 * @param {string} id_selector - The ID of the input field to be masked.
+	 * @returns {void} - Modifies the input field value in-place.
+	 *
+	 * @example
+	 * // HTML: <input type="text" id="creditCardInput" value="1234567890123456">
+	 * maskField('creditCardInput');
+	 * // Result: Updates the input field value to '************3456'.
+	 */
+	function maskField(proxy_selector, concrete_selector) {
+		var concrete = {
+			'val': concrete_selector.val(),
+			'length': concrete_selector.val().length
+		}
+
+		if (concrete.length > 4) {
+
+			var hiddenPart = '\u2022'.repeat(Math.max(0, concrete.length - 4));
+			var visiblePart = concrete.val.slice(-4);
+
+			// Combine the hidden and visible parts
+			var maskedValue = hiddenPart + visiblePart;
+
+			proxy_selector.val(maskedValue);
+		}
+		// Ensure events are not added more than once
+		if (!proxy_selector.data('eventsAttached')) {
+			proxy_selector.on('input', handleInput);
+			proxy_selector.on('focus', handleFocus);
+			proxy_selector.data('eventsAttached', true);
+		}
+
+		/**
+		 * Handle the input event
+		 */
+		function handleInput() {
+			var proxyValue = proxy_selector.val();
+			if (proxyValue.indexOf('\u2022') === -1) {
+				concrete_selector.val(proxyValue);
+			}
+		}
+
+		/**
+		 * Handle the focus event
+		 */
+		function handleFocus() {
+			var concrete_value = concrete_selector.val();
+			proxy_selector.val(concrete_value);
+		}
+
+	}
+
+		// Update the concrete field when the proxy is updated.
+
+
+	maskField($('#cloudflare_api_key_mask'), $('#cloudflare_api_key'));
+	maskField($('#cloudflare_zone_id_mask'), $('#cloudflare_zone_id'));
+
+	// Display/Hide childern fields on checkbox change.
     $( '.wpr-isParent input[type=checkbox]' ).on('change', function() {
         wprShowChildren($(this));
     });

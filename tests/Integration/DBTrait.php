@@ -22,6 +22,9 @@ trait DBTrait {
 		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
 			$resource_query->make_status_completed($job_id, $resource['hash']);
 		}
+		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
+			$resource_query->make_status_completed($job_id, $resource['hash']);
+		}
 		return $job_id;
 	}
 

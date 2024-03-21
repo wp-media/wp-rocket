@@ -1,26 +1,22 @@
 <?php
 
-use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Actions;
-use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
-use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
+use Brain\Monkey\{Actions, Filters};
 use WP_Rocket\Engine\Common\Clock\WPRClock;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 
 /**
  * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess::execute
  */
-class Test_DefaultProcess_Execute extends TestCase {
+class Test_Execute extends TestCase {
 	protected $used_css_query;
 	protected $wpr_clock;
 	protected $manager;
 
 	protected $strategy;
 
-	public function setUp():void {
+	public function setUp(): void {
 		parent::setUp();
 		$this->wpr_clock = Mockery::mock(WPRClock::class);
 		$this->manager = Mockery::mock( Manager::class );
@@ -35,10 +31,9 @@ class Test_DefaultProcess_Execute extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldBehaveAsExpected( $config, $expected )
-	{
+	public function testShouldBehaveAsExpected( $config, $expected ) {
 		if ( $config['row_details']->retries >= count( $config['time_table'] ) ) {
-			Actions\expectDone('rocket_preload_unlock_url')->with($config['row_details']->url);
+			Actions\expectDone( 'rocket_preload_unlock_url' )->with( $config['row_details']->url );
 
 			$this->manager->shouldReceive( 'make_status_failed' )
 				->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
@@ -50,9 +45,9 @@ class Test_DefaultProcess_Execute extends TestCase {
 		$this->manager->shouldReceive( 'increment_retries' )
 			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, strval($config['job_details']['code']), $config['job_details']['message']]);
 
-		Filters\expectApplied('rocket_rucss_retry_duration')->andReturn($config['duration_retry']);
+		Filters\expectApplied( 'rocket_rucss_retry_duration' )->andReturn( $config['duration_retry'] );
 
-		$this->wpr_clock->expects('current_time')->with('timestamp', true)->andReturn(0);
+		$this->wpr_clock->expects( 'current_time' )->with( 'timestamp', true )->andReturn( 0 );
 		// update the `next_retry_time` column.
 
 		$this->manager->shouldReceive( 'update_message' )
@@ -61,7 +56,6 @@ class Test_DefaultProcess_Execute extends TestCase {
 		$this->manager->shouldReceive( 'update_next_retry_time' )
 			->withArgs([$config['row_details']->url, $config['row_details']->is_mobile, $config['duration_retry']]);
 
-		$this->strategy->execute($config['row_details'], $config['job_details']);
-		return;
+		$this->strategy->execute( $config['row_details'], $config['job_details'] );
 	}
 }

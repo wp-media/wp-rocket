@@ -66,6 +66,7 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
+		require WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 
 		/**
 		 * WP Rocket activation.

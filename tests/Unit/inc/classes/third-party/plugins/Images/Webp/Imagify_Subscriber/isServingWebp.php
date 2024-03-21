@@ -20,7 +20,7 @@ class Test_IsServingWebp extends TestCase {
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->once()
+			->twice()
 			->andReturn( false );
 
 		$this->assertFalse( $subscriber->is_serving_webp() );
