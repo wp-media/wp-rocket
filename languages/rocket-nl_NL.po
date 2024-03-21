@@ -3014,7 +3014,7 @@ msgstr "Kritieke CSS voor %s in uitvoering."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:262
 msgid "Mobile Critical CSS for %s generated."
-msgstr "Mobile kritieke CSS voor %s gegenereerd."
+msgstr "Mobiel kritieke CSS voor %s gegenereerd."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:273
