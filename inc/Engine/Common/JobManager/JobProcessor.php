@@ -582,4 +582,26 @@ class JobProcessor implements LoggerAwareInterface {
 			$factory->manager()->make_status_pending( $url, $job_id, $queue_name, $is_mobile, $optimization_type );
 		}
 	}
+
+	/**
+	 * Send the link to Above the fold SaaS.
+	 *
+	 * @param string $url Url to be sent.
+	 * @return array
+	 */
+	public function add_to_atf_queue( string $url ): array {
+		$url = add_query_arg(
+			[
+				'wpr_imagedimensions' => 1,
+			],
+			$url
+		);
+
+		$config = [
+			'optimization_list' => '',
+			'is_home'           => $this->is_home( $url ),
+		];
+
+		return $this->api->add_to_queue( $url, $config );
+	}
 }

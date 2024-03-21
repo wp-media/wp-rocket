@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -140,26 +139,5 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 
 		$result = json_decode( $this->response_body, true );
 		return (array) wp_parse_args( ( $result && $result['returnvalue'] ) ? (array) $result['returnvalue'] : [], $default );
-	}
-
-	/**
-	 * Send the link to Above the fold SaaS.
-	 *
-	 * @param string $url Url to be sent.
-	 * @return array
-	 */
-	public function add_to_atf_queue( string $url ): array {
-		$url = add_query_arg(
-			[
-				'wpr_imagedimensions' => 1,
-			],
-			$url
-		);
-
-		$config = [
-			'optimization_list' => '',
-		];
-
-		return $this->add_to_queue( $url, $config );
 	}
 }
