@@ -3815,10 +3815,10 @@ msgid ""
 "mobile and desktop, we suggest you enable our “Separate Cache Files for "
 "Mobiles Devices” to ensure the generated cache is accurate."
 msgstr ""
-"%1$sWP Rocket:%2$s je hebt \"Cache per apparaattype\" ingeschakeld op "
+"%1$sWP Rocket:%2$s je hebt \"Cache by Device Type\" ingeschakeld op "
 "Cloudflare APO. Als je het nodig vindt dat de site een verschillende cache "
-"heeft op mobiel en desktop, raden we je aan om onze \"Separate Cache Files "
-"for Mobiles Devices\" in te schakelen om ervoor te zorgen dat de "
+"heeft op mobiel en desktop, raden we je aan om onze \"Cache-bestanden voor "
+"mobiele apparaten scheiden\" in te schakelen om ervoor te zorgen dat de "
 "gegenereerde cache accuraat is."
 
 #. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
