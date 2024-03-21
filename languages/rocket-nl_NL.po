@@ -1806,8 +1806,8 @@ msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
 msgstr ""
-"Lazy-load is op dit moment geactiveerd in %2$s. Als je WP Rocket’s Lazy-load"
-" wilt gebruiken, schakel deze optie uit in %2$s."
+"LazyLoad is op dit moment geactiveerd in %2$s. Als je WP Rocket’s LazyLoad "
+"wilt gebruiken, schakel deze optie uit in %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Image Dimensions"
