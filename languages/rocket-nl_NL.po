@@ -2715,7 +2715,7 @@ msgstr "RocketCDN cache legen mislukt: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN cache succesvol geleegd."
+msgstr "RocketCDN-cache succesvol geleegd."
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 #: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
@@ -3051,7 +3051,7 @@ msgstr "Kan geen CPCSS genereren voor ongepubliceerd bericht."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:142
 msgid "Scheduled Cache Purge"
-msgstr "Planning Cache legen"
+msgstr "Gepland cache legen"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:143
 msgid "Scheduled Database Optimization"
