@@ -1180,12 +1180,12 @@ msgstr "Verwijderde Berichten"
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1487
 msgid "Spam Comments"
-msgstr "Spam Reacties"
+msgstr "Spam reacties"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1497
 msgid "Trashed Comments"
-msgstr "Verwijderde Reacties"
+msgstr "Verwijderde reacties"
 
 #: inc/Engine/Admin/Database/Optimization.php:35
 msgid "Transients"
