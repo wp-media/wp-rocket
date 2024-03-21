@@ -1312,7 +1312,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:457
 msgid "User Cache"
-msgstr "Gebruikers Cache"
+msgstr "Gebruikerscache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:460
