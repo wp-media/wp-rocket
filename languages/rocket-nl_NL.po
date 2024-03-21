@@ -2474,7 +2474,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1936
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
-msgstr "Securi-cache legen wanneer WP Rocket's cache is geleegd."
+msgstr "Sucuri-cache legen wanneer WP Rocket's cache is geleegd."
 
 #: inc/Engine/Admin/Settings/Page.php:1939
 msgid ""
