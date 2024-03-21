@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller::fetch_links
  *
  * @group Media
- * @group ATF
+ * @group AboveTheFold
  */
 class Test_fetchLinks extends TestCase {
 	private $context;
@@ -62,9 +62,7 @@ class Test_fetchLinks extends TestCase {
 
         if ( isset( $config['found_link'] ) && $config['found_link'] ) {
 
-            Functions\when( 'wp_parse_url' )->alias( function( $link ) {
-                return parse_url( $link );
-            } );
+			$this->stubWpParseUrl();
 
             Functions\when( 'wp_http_validate_url' )->alias( function( $link ) {
                 return false !== strpos( $link, 'https' ) ? $link : false;

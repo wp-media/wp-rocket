@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\License\API\User;
+namespace WP_Rocket\Tests\Unit\inc\Engine\License\API\User;
 
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group License
  */
-class hasLicenseExpiredPast15Days extends TestCase {
+class Test_hasLicenseExpiredPast15Days extends TestCase {
 
 	/**
 	 * @var User
