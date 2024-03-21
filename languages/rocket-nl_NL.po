@@ -821,8 +821,8 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Preloaden sitemap: %d niet-gecachte pagina's zijn nu gepreload. (Ververs om "
-"voortgang te bekijken)"
+"Preloaden sitemap: %d niet-gecachete pagina's zijn nu gepreload. (Ververs om"
+" voortgang te bekijken)"
 
 #. translators: %s is an URL.
 #: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
@@ -2091,8 +2091,8 @@ msgstr ""
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Specificeer user agent-strings die nooit gecachte pagina's moeten zien (één "
-"per regel)"
+"Specificeer user agent-strings die nooit gecachete pagina's moeten zien (één"
+" per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1370
 msgid "Use (.*) wildcards to detect parts of UA strings."
