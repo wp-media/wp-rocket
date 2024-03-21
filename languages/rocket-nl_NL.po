@@ -2112,7 +2112,7 @@ msgstr "Specificeer query strings voor caching (één per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1414
 msgid "Optimize, reduce bloat"
-msgstr "Optimaliseer, reduceer databubbels"
+msgstr "Optimaliseer, verminder bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1421
 msgid "Post Cleanup"
