@@ -2136,7 +2136,7 @@ msgstr "Spam en verwijderde reacties worden definitief verwijderd."
 
 #: inc/Engine/Admin/Settings/Page.php:1434
 msgid "Transients Cleanup"
-msgstr "Transients Opschonen"
+msgstr "Transients opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1436
 msgid ""
