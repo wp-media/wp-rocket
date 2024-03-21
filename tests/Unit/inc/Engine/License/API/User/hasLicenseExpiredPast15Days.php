@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\tests\Unit\inc\Engine\License\API\User;
 
-use Mockery;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -20,7 +19,6 @@ class hasLicenseExpiredPast15Days extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-		$this->user = Mockery::mock(User::class);
 	}
 
 

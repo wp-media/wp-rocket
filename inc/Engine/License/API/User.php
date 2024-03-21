@@ -128,9 +128,9 @@ class User {
 	 */
 	public function has_license_expired_more_than_15_days() {
 		if ( $this->is_license_expired() && ( time() - $this->user->licence_expiration > 15 * 24 * 60 * 60 ) ) {
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 }
