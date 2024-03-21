@@ -541,7 +541,7 @@ msgstr ""
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
 #: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr "Probleemoplossing: %1$shoe systeembestanden schrijfbaar te maken%2$s"
+msgstr "Probleemoplossing: %1$shoe maak je systeembestanden schrijfbaar%2$s"
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
 #. if applicable
