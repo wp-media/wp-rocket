@@ -4539,7 +4539,7 @@ msgstr "versie %s"
 
 #: views/settings/page.php:60
 msgid "Show Sidebar"
-msgstr "Sidebar weergeven"
+msgstr "Zijbalk weergeven"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page.php:82
