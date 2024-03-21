@@ -3699,7 +3699,7 @@ msgstr "Neem contact op met %1$sde support%2$s."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
 msgid "This license key is not recognized."
-msgstr "Deze licentie code word niet herkend."
+msgstr "Deze licentiecode word niet herkend."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
