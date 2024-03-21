@@ -3611,7 +3611,7 @@ msgstr "Meld je aan bij je WP Rocket %1$saccount%2$s"
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
-msgstr "Download het zip bestand"
+msgstr "Download het zip-bestand"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
