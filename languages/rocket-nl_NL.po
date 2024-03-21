@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid "Activate Preloading"
-msgstr "Activeer preloading"
+msgstr "Activeer preloaden"
 
 #: inc/Engine/Admin/Settings/Page.php:1216
 msgid "Exclude URLs"
