@@ -4403,7 +4403,7 @@ msgstr "%1$s%2$s%3$ssupport%4$s"
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
-msgstr "Verwijder alle Sucuri cache bestanden"
+msgstr "Verwijder alle Sucuri cache-bestanden"
 
 #. translators: %1$s = formatted file size, %2$s = formatted number of entries
 #. (don't use %2$d).
