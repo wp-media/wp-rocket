@@ -670,7 +670,7 @@ msgstr "Verwijder ongebruikte CSS inschakelen"
 
 #: inc/admin/ui/notices.php:697
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
-msgstr "Schakel nu \"Gescheiden cache-bestanden voor mobiele apparaten\" in"
+msgstr "Schakel nu \"Cache-bestanden voor mobiele apparaten scheiden\" in"
 
 #: inc/admin/ui/notices.php:715
 msgid "Force deactivation "
