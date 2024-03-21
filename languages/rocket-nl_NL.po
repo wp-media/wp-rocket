@@ -208,7 +208,7 @@ msgstr "Cloudflare rocket loader %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:418
 msgid "Cloudflare browser cache error: %s"
-msgstr "Fout bij Cloudflare browser-cache: %s"
+msgstr "Fout bij Cloudflare browsercache: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:425
