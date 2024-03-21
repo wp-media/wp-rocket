@@ -237,14 +237,14 @@ msgstr "WP Rocket: "
 #. translators: %s is the error message returned by the API.
 #: inc/Addon/Sucuri/Subscriber.php:96
 msgid "Sucuri cache purge error: %s"
-msgstr "Sucuri cache legen foutmelding: %s"
+msgstr "Sucuri-cache legen foutmelding: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:101
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
 msgstr ""
-"De Sucuri cache wordt leeggemaakt. Merk op dat het tot twee minuten kan "
+"De Sucuri-cache wordt leeggemaakt. Merk op dat het tot twee minuten kan "
 "duren voordat deze volledig is doorgespoeld."
 
 #: inc/Addon/Sucuri/Subscriber.php:218
