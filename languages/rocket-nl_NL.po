@@ -813,7 +813,7 @@ msgstr "Meer details"
 #. translators: %d is the number of pages preloaded.
 #: inc/deprecated/3.2.php:228
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "Preloaden sitemap: %d pagina's zijn gecacht."
+msgstr "Preloaden sitemap: %d pagina's zijn gecachet."
 
 #. translators: %d = Number of pages preloaded.
 #: inc/deprecated/3.2.php:261
