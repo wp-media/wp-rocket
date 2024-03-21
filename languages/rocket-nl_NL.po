@@ -3029,7 +3029,7 @@ msgstr "Kritieke CSS-bestand succesvol verwijderd."
 #: inc/Engine/CriticalPath/ProcessorService.php:317
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
-"Mobile kritieke CSS voor %1$s timeout. Probeer het iets later opnieuw."
+"Kritieke CSS voor %1$s  timeout op mobiel. Probeer het iets later opnieuw."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:330
