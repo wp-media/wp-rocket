@@ -11,6 +11,8 @@ $original_html = <<<ORIGINALHTML
 </html>
 ORIGINALHTML;
 
+$nonce = wp_create_nonce( 'rocket_lcp' );
+
 $expected_html = <<<EXPECTEDHTML
 <!doctype>
 <html>
@@ -18,6 +20,7 @@ $expected_html = <<<EXPECTEDHTML
 <body>
 	<img src="https://example.org/wp-content/uploads/logo.jpg" data-height-percentage="54">
 	<img width="1" height="1" src="https://example.org/wp-content/uploads/my-picture.jpg">
+	<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"$nonce","url":"http:\/\/example.org\/http:\/\/example.org","is_mobile":false}</script>
 	<script src='http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js' async></script>
 </body>
 </html>
@@ -93,7 +96,7 @@ return [
 			],
 			'html' => [
 				'original' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"></body></html>',
-				'expected' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"><script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script></body></html>',
+				'expected' => '<!doctype><html><body><img src="http://example.org/wp-content/uploads/logo.jpg" width="100" DATA-height-PERcenTAGE="54"><script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.$nonce.'","url":"http:\/\/example.org\/http:\/\/example.org","is_mobile":false}</script><script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script></body></html>',
 			],
 		],
 	],
