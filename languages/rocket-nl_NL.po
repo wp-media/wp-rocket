@@ -301,7 +301,7 @@ msgstr[1] ""
 
 #: inc/Addon/WebP/AdminSubscriber.php:105
 msgid "WebP cache is disabled by filter."
-msgstr "WebP cache is uitschakelt door een filter."
+msgstr "WebP-cache is uitschakelt door een filter."
 
 #. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
 #. </a> tag.
