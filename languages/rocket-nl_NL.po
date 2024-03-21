@@ -3323,7 +3323,7 @@ msgstr "LazyLoad voor iframes/video's"
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
 msgid "LazyLoad CSS backgrounds"
-msgstr "Lazy-load CSS achtergronden"
+msgstr "LazyLoad CSS achtergronden"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"
@@ -4057,8 +4057,8 @@ msgid ""
 "see if your issue is resolved."
 msgstr ""
 "Ons advies? In plaats van WP Rocket te deactiveren, gebruik je onze "
-"%1$sVeilige modus%2$s om snel Lazy-load, Bestandsoptimalisatie en CDN-opties"
-" uit te schakelen. Controleer vervolgens of je probleem is opgelost."
+"%1$sVeilige modus%2$s om snel LazyLoad, Bestandsoptimalisatie en CDN-opties "
+"uit te schakelen. Controleer vervolgens of je probleem is opgelost."
 
 #: views/deactivation-intent/form.php:35
 msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
