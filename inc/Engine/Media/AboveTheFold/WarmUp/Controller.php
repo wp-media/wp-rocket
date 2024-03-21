@@ -35,7 +35,7 @@ class Controller {
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
-	 * @param User $user User instance.
+	 * @param User             $user User instance.
 	 */
 	public function __construct( ContextInterface $context, Options_Data $options, User $user ) {
 		$this->context = $context;
