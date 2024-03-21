@@ -1917,7 +1917,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1181
 msgid "Prefetch DNS Requests"
-msgstr "DNS verzoeken voorladen"
+msgstr "DNS verzoeken prefetchen"
 
 #: inc/Engine/Admin/Settings/Page.php:1183
 msgid ""
