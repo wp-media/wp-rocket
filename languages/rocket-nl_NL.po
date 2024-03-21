@@ -1978,7 +1978,7 @@ msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"Specificeer URL's van de lettertype bestanden die voorgeladen moeten worden "
+"Specificeer URL's van de lettertype bestanden die moeten worden gepreload "
 "(één per regel). Lettertypes moeten gehost worden op je eigen domein of het "
 "domein dat je hebt ingesteld op het CDN tabblad."
 
