@@ -4462,7 +4462,7 @@ msgstr "Debug modus"
 
 #: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
-msgstr "Creëer een debug log bestand."
+msgstr "Creëer een debug log-bestand."
 
 #: views/settings/page-sections/tutorials.php:13
 #: views/settings/partials/getting-started.php:18
