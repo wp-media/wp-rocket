@@ -21,6 +21,7 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'minify_css_admin_subscriber',
+		'minify_js_admin_subscriber',
 		'google_fonts_settings',
 		'google_fonts_admin_subscriber',
 		'minify_admin_subscriber',
@@ -33,6 +34,8 @@ class AdminServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->share( 'minify_css_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber' )
+			->addTag( 'admin_subscriber' );
+		$this->getContainer()->share( 'minify_js_admin_subscriber', 'WP_Rocket\Engine\Optimization\Minify\JS\AdminSubscriber' )
 			->addTag( 'admin_subscriber' );
 		$this->getContainer()->add( 'google_fonts_settings', 'WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings' )
 			->addArgument( $this->getContainer()->get( 'options' ) )

@@ -41,7 +41,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
 		$this->expected = $expected;
 		$this->rocket_clean_domain();
-		$this->rocket_clean_minify();
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_advanced_cache_file();
 		$this->rocket_generate_config_file();
@@ -56,14 +55,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
 		} else {
 			Functions\expect( 'rocket_clean_domain' )->never();
-		}
-	}
-
-	private function rocket_clean_minify() {
-		if ( isset( $this->expected['rocket_clean_minify'] ) ) {
-			Functions\expect( 'rocket_clean_minify' )->once()->with( 'js' )->andReturnNull();
-		} else {
-			Functions\expect( 'rocket_clean_minify' )->never();
 		}
 	}
 
