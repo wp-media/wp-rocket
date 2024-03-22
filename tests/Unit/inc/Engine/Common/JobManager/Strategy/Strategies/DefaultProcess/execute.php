@@ -4,7 +4,7 @@ use Brain\Monkey\{Actions, Filters};
 use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
-
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess::execute
