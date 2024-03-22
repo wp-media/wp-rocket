@@ -58,7 +58,7 @@ class AbstractTable extends Table implements TableInterface {
 		 *
 		 * @param int $delete_interval Old RUCSS deletion interval in months
 		 */
-		$delete_interval = (int) apply_filters( 'rocket_rucss_delete_interval', 1 );
+		$delete_interval = (int) apply_filters( 'rocket_saas_delete_interval', 1 );
 
 		if ( $delete_interval <= 0 ) {
 			return false;

@@ -9,6 +9,8 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * @group RUCSS
  * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
+ * 
+ * @group RUCSS
  */
 class Test_treeshake extends FilesystemTestCase
 {
