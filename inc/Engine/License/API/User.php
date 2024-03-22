@@ -127,7 +127,7 @@ class User {
 	 * @return boolean
 	 */
 	public function is_license_expired_grace_period() {
-		if ( $this->is_license_expired() && ( time() - $this->user->licence_expiration > 15 * 24 * 60 * 60 ) ) {
+		if ( $this->is_license_expired() && ( time() - $this->get_license_expiration() > 15 * 24 * 60 * 60 ) ) {
 			return true;
 		}
 
