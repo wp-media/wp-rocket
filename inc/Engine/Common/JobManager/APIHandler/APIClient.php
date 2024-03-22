@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -16,13 +15,6 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
-
-	/**
-	 * Plugin options instance.
-	 *
-	 * @var Options_Data
-	 */
-	protected $options;
 
 	/**
 	 * Array of Factories.
