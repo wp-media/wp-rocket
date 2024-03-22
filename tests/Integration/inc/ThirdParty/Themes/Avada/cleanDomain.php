@@ -3,17 +3,17 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Avada;
 
 use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\ThirdParty\Themes\Avada;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Avada::clean_domain
+ * @covers \WP_Rocket\ThirdParty\Themes\Avada::clean_domain
  *
- * @group  AvadaTheme
- * @group  ThirdParty
+ * @group Themes
  */
 class Test_CleanDomain extends TestCase {
 	use DBTrait;
 
-	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Avada/cleanDomain.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Avada/cleanDomain.php';
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -28,6 +28,10 @@ class Test_CleanDomain extends TestCase {
 	}
 
 	public function testShouldCleanCacheWhenAvadaCacheIsCleaned() {
+		$this->subscriber = new Avada( $this->container->get( 'options' ) );
+
+		$this->event->add_subscriber( $this->subscriber );
+
 		$cache_exists = false;
 
 		$this->assertSame( ! $cache_exists, $this->filesystem->exists( 'wp-content/cache/wp-rocket/example.org/index.html' ) );

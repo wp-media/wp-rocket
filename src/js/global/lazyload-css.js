@@ -13,7 +13,7 @@ function rocket_css_lazyload_launch() {
 
 
 
-	const styleElement = document.querySelector('#wpr-lazyload-bg');
+	const styleElement = document.querySelector('#wpr-lazyload-bg-container');
 
 	const threshold = rocket_lazyload_css_data.threshold || 300;
 
@@ -23,7 +23,10 @@ function rocket_css_lazyload_launch() {
 				const pairs = usable_pairs.filter(s => entry.target.matches(s.selector));
 				pairs.map(pair => {
 					if (pair) {
-						styleElement.innerHTML += pair.style;
+						var new_style_element = document.createElement('style');
+						new_style_element.textContent = pair.style;
+						styleElement.insertAdjacentElement('afterend', new_style_element);
+
 						pair.elements.forEach(el => {
 							// Stop observing the target element
 							observer.unobserve(el);

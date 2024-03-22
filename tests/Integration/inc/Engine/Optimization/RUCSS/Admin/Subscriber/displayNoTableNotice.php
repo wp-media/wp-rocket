@@ -52,6 +52,7 @@ class Test_DisplayNoTableNotice extends AdminTestCase
 		$filesystem_mock->shouldReceive('is_readable')->zeroOrMoreTimes()->andReturn(true);
 		$filesystem_mock->shouldReceive('exists')->zeroOrMoreTimes()->andReturn(true);
 		$filesystem_mock->shouldReceive('is_dir')->zeroOrMoreTimes()->andReturn(true);
+		$filesystem_mock->shouldReceive('mkdir')->zeroOrMoreTimes()->andReturn(true);
 		$this->setCurrentUser('administrator');
 		set_current_screen( 'settings_page_wprocket' );
 		Functions\when('rocket_direct_filesystem')->justReturn($filesystem_mock);

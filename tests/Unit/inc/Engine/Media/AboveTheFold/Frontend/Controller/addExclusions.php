@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller;
 use WP_Filesystem_Direct;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
  * @covers \WP_Rocket\Engine\Media\AboveTheFold\Frontend\Controller::add_exclusions

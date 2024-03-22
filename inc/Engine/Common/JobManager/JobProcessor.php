@@ -4,11 +4,11 @@ namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
+use WP_Rocket\Engine\Common\Utils;
 
 class JobProcessor implements LoggerAwareInterface {
 	use LoggerAware;
@@ -96,6 +96,14 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
+		/**
+		 * Fires at the start of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
+
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for pending jobs.' );
 
@@ -130,6 +138,13 @@ class JobProcessor implements LoggerAwareInterface {
 				$this->queue->add_job_status_check_async( $row->url, $row->is_mobile, $optimization_type );
 			}
 		}
+
+		/**
+		 * Fires at the end of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
@@ -151,7 +166,7 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		// Send the request to get the job status from SaaS.
-		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, $this->is_home( $row_details->url ) );
+		$job_details = $this->api->get_queue_job_status( $row_details->job_id, $row_details->queue_name, Utils::is_home( $row_details->url ) );
 
 		foreach ( $this->factories as $factory ) {
 			$factory->manager()->validate_and_fail( $job_details, $row_details, $optimization_type );
@@ -191,6 +206,12 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
+		/**
+		 * Fires at the start of the process on submit jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
 
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for to-submit jobs.' );
@@ -242,6 +263,13 @@ class JobProcessor implements LoggerAwareInterface {
 				$optimization_type
 			);
 		}
+
+		/**
+		 * Fires at the end of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
@@ -256,7 +284,7 @@ class JobProcessor implements LoggerAwareInterface {
 		$config = [
 			'treeshake' => 1,
 			'is_mobile' => $is_mobile,
-			'is_home'   => $this->is_home( $url ),
+			'is_home'   => Utils::is_home( $url ),
 		];
 
 		$config = $this->set_request_params( $config, $optimization_type );
@@ -351,27 +379,6 @@ class JobProcessor implements LoggerAwareInterface {
 			}
 		}
 	}
-
-	/**
-	 * Check if current page is the home page.
-	 *
-	 * @param string $url Current page url.
-	 *
-	 * @return bool
-	 */
-	private function is_home( string $url ): bool {
-		/**
-		 * Filters the home url.
-		 *
-		 * @since 3.11.4
-		 *
-		 * @param string  $home_url home url.
-		 * @param string  $url url of current page.
-		 */
-		$home_url = apply_filters( 'rocket_saas_is_home_url', home_url(), $url );
-		return untrailingslashit( $url ) === untrailingslashit( $home_url );
-	}
-
 
 	/**
 	 * Change the status to be in-progress.
