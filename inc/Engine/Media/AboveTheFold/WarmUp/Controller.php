@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 
 class Controller {
 
@@ -26,21 +25,21 @@ class Controller {
 	/**
 	 * Job processor Instance.
 	 *
-	 * @var JobProcessor
+	 * @var APIClient
 	 */
-	private $job_processor;
+	private $api_client;
 
 	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
-	 * @param JobProcessor     $job_processor Job processor instance.
+	 * @param APIClient        $api_client Job processor instance.
 	 */
-	public function __construct( ContextInterface $context, Options_Data $options, JobProcessor $job_processor ) {
-		$this->context       = $context;
-		$this->options       = $options;
-		$this->job_processor = $job_processor;
+	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client ) {
+		$this->context    = $context;
+		$this->options    = $options;
+		$this->api_client = $api_client;
 	}
 
 	/**
@@ -156,7 +155,7 @@ class Controller {
 		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
 
 		foreach ( $links as $link ) {
-			$this->job_processor->add_to_atf_queue( $link );
+			$this->api_client->add_to_atf_queue( $link );
 
 			usleep( $delay_between );
 		}

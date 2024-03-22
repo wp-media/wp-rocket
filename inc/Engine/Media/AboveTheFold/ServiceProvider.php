@@ -11,7 +11,11 @@ use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold as ATFTable
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Frontend\{Controller as FrontController, Subscriber as FrontSubscriber};
 use WP_Rocket\Engine\Media\AboveTheFold\Cron\{Controller as CronController, Subscriber as CronSubscriber};
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{Controller as WarmUpController, Subscriber as WarmUpSubscriber};
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
+	APIClient,
+	Controller as WarmUpController,
+	Subscriber as WarmUpSubscriber
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -37,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'atf_ajax_subscriber',
 		'warmup_controller',
 		'warmup_subscriber',
+		'warmup_apiclient',
 	];
 
 	/**
@@ -84,12 +89,15 @@ class ServiceProvider extends AbstractServiceProvider {
 
 		$this->getContainer()->share( 'atf_ajax_subscriber', AJAXSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
+
+		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'atf_context' ),
 					$this->getContainer()->get( 'options' ),
-					$this->getContainer()->get( 'job_processor' ),
+					$this->getContainer()->get( 'warmup_apiclient' ),
 				]
 			);
 		$this->getContainer()->share( 'warmup_subscriber', WarmUpSubscriber::class )
