@@ -75,7 +75,7 @@ class Controller {
 	 * @return array
 	 */
 	public function fetch_links(): array {
-		if ( $this->user->has_license_expired_more_than_15_days() ) {
+		if ( $this->user->is_license_expired_grace_period() ) {
 			return [];
 		}
 
