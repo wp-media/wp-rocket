@@ -15,7 +15,7 @@ return [
 	],
 	'rocketRucssCompleteJobStatusSshouldCleanUrl' => [
 		'config' => [
-			'hook' => 'rocket_rucss_complete_job_status',
+			'hook' => 'rocket_saas_complete_job_status',
 			'url' => 'url',
 		],
 		'expected' => [
