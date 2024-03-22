@@ -6,22 +6,11 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\User::has_license_expired_more_than_15_days
+ * @covers \WP_Rocket\Engine\License\API\User::is_license_expired_grace_period
  *
  * @group License
  */
-class Test_hasLicenseExpiredPast15Days extends TestCase {
-
-	/**
-	 * @var User
-	 */
-	protected $user;
-
-	public function set_up() {
-		parent::set_up();
-	}
-
-
+class Test_IsLicenseExpiredGracePeriod extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -30,7 +19,7 @@ class Test_hasLicenseExpiredPast15Days extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$user->has_license_expired_more_than_15_days()
+			$user->is_license_expired_grace_period()
 		);
 	}
 }

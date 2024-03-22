@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Media
  * @group AboveTheFold
  */
-class Test_fetchLinks extends TestCase {
+class Test_FetchLinks extends TestCase {
 	private $user;
 	private $controller;
 
@@ -39,39 +39,45 @@ class Test_fetchLinks extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-        Functions\when( 'home_url' )->alias( function( $link = '' ) {
-            return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
-        } );
+		$this->user->shouldReceive( 'is_license_expired_grace_period' )
+			->once()
+			->andReturn( $config['license_expired'] );
 
-        Functions\expect( 'wp_remote_get' )
-            ->once()
-            ->with( 'https://example.org', $config['headers'] )
-            ->andReturn( $config['response'] );
+		Functions\when( 'home_url' )->alias( function( $link = '' ) {
+			return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
+		} );
 
-        Functions\expect( 'wp_remote_retrieve_response_code' )
-            ->once()
-            ->with( $config['response'] )
-            ->andReturn( $config['response']['response']['code'] );
+		Functions\expect( 'wp_remote_get' )
+			->atMost()
+			->once()
+			->with( 'https://example.org', $config['headers'] )
+			->andReturn( $config['response'] );
 
-        if ( 200 === $config['response']['response']['code'] ) {
-            Functions\expect( 'wp_remote_retrieve_body' )
-                ->once()
-                ->with( $config['response'] )
-                ->andReturn( $config['response']['body'] );
-        }
+		Functions\expect( 'wp_remote_retrieve_response_code' )
+			->atMost()
+			->once()
+			->with( $config['response'] )
+			->andReturn( $config['response']['response']['code'] );
 
-        if ( isset( $config['found_link'] ) && $config['found_link'] ) {
+		if ( 200 === $config['response']['response']['code'] ) {
+			Functions\expect( 'wp_remote_retrieve_body' )
+				->once()
+				->with( $config['response'] )
+				->andReturn( $config['response']['body'] );
+		}
+
+		if ( isset( $config['found_link'] ) && $config['found_link'] ) {
 
 			$this->stubWpParseUrl();
 
-            Functions\when( 'wp_http_validate_url' )->alias( function( $link ) {
-                return false !== strpos( $link, 'https' ) ? $link : false;
-            } );
+			Functions\when( 'wp_http_validate_url' )->alias( function( $link ) {
+				return false !== strpos( $link, 'https' ) ? $link : false;
+			} );
 
-            Filters\expectApplied( 'rocket_atf_warmup_links_number' )
-                ->once()
-                ->with( 10 );
-        }
+			Filters\expectApplied( 'rocket_atf_warmup_links_number' )
+				->once()
+				->with( 10 );
+		}
 
 		$this->assertSame(
 			$expected,
