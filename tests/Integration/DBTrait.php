@@ -20,10 +20,7 @@ trait DBTrait {
 			$resource_query->make_status_pending($resource['url'], $job_id, $resource['queue_name'], $resource['is_mobile']);
 		}
 		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
-			$resource_query->make_status_completed($job_id, $resource['hash']);
-		}
-		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
-			$resource_query->make_status_completed($job_id, $resource['hash']);
+			$resource_query->make_status_completed($resource['url'], $resource['is_mobile'], $resource['hash']);
 		}
 		return $job_id;
 	}
