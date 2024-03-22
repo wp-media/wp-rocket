@@ -49,7 +49,7 @@ class Controller {
 		$this->context    = $context;
 		$this->options    = $options;
 		$this->api_client = $api_client;
-		$this->user    = $user;
+		$this->user       = $user;
 	}
 
 	/**
