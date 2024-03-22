@@ -23,7 +23,7 @@ class Controller {
 	protected $options;
 
 	/**
-	 * Job processor Instance.
+	 * APIClient Instance.
 	 *
 	 * @var APIClient
 	 */
@@ -34,7 +34,7 @@ class Controller {
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
-	 * @param APIClient        $api_client Job processor instance.
+	 * @param APIClient        $api_client APIClient instance.
 	 */
 	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client ) {
 		$this->context    = $context;

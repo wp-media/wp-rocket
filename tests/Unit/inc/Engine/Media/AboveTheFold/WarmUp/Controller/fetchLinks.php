@@ -6,7 +6,7 @@ use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\JobManager\JobProcessor;
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\APIClient;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -22,10 +22,10 @@ class Test_fetchLinks extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$context       = Mockery::mock( ContextInterface::class );
-		$options       = Mockery::mock( Options_Data::class );
-		$job_processor = Mockery::mock( JobProcessor::class );
-		$this->controller = new Controller( $context, $options, $job_processor );
+		$context    = Mockery::mock( ContextInterface::class );
+		$options    = Mockery::mock( Options_Data::class );
+		$api_client = Mockery::mock( APIClient::class );
+		$this->controller = new Controller( $context, $options, $api_client );
 	}
 
 	protected function tearDown(): void {
