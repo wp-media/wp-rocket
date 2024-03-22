@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Frontend\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\APIHandler\APIClient;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;

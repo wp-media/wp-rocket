@@ -1,11 +1,12 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Frontend\APIClient;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\JobManager\APIHandler\APIClient;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Unit\HasLoggerTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::add_to_queue
@@ -13,6 +14,7 @@ use Brain\Monkey\Functions;
  * @group  SaaS
  */
 class Test_AddToQueue extends TestCase {
+	use HasLoggerTrait;
 
 	protected $options;
 	protected $client;
@@ -22,6 +24,7 @@ class Test_AddToQueue extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->client = new APIClient($this->options);
+		$this->set_logger($this->client);
 	}
 
 	/**

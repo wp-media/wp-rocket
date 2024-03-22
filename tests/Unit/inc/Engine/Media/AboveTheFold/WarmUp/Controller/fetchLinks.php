@@ -6,6 +6,7 @@ use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\APIClient;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -16,16 +17,15 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group AboveTheFold
  */
 class Test_fetchLinks extends TestCase {
-	private $context;
-	private $options;
 	private $controller;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->context = Mockery::mock( ContextInterface::class );
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->controller = new Controller( $this->context, $this->options );
+		$context    = Mockery::mock( ContextInterface::class );
+		$options    = Mockery::mock( Options_Data::class );
+		$api_client = Mockery::mock( APIClient::class );
+		$this->controller = new Controller( $context, $options, $api_client );
 	}
 
 	protected function tearDown(): void {
