@@ -48,8 +48,8 @@ class Test_createLazyCssFiles extends TestCase {
 			$this->fetcher->expects()->fetch($path, $data['path'])->andReturn($data['content']);
 		}
 
-		foreach ($config['extract'] as $content => $urls) {
-			$this->extractor->expects()->extract($content)->andReturn($urls);
+		foreach ($config['extract'] as $content => $conf) {
+			$this->extractor->expects()->extract($content, $conf['css_file'])->andReturn($conf['results']);
 		}
 
 		foreach ($config['rule_format'] as $url_tag) {
@@ -69,8 +69,8 @@ class Test_createLazyCssFiles extends TestCase {
 			$this->filesystem_cache->expects()->set($url, $content);
 		}
 
-		foreach ($config['generate_url'] as $url => $output) {
-			$this->filesystem_cache->expects()->generate_url($url)->andReturn($output);
+		foreach ($config['generate_url'] as $conf) {
+			$this->filesystem_cache->expects()->generate_url($conf['url'])->atLeast(1)->atMost(2)->andReturn($conf['output']);
 		}
 
 		foreach ($config['generate_path'] as $url => $path) {

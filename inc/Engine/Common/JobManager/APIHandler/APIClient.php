@@ -39,7 +39,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 						'nowprocket'  => 1,
 						'no_optimize' => 1,
 					],
-					$url
+					user_trailingslashit( $url )
 				),
 				'config' => $options,
 			],

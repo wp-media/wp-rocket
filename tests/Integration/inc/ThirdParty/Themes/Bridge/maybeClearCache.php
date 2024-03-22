@@ -4,43 +4,42 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Bridge;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\ThirdParty\Themes\Bridge;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Bridge::maybe_clear_cache
+ * @covers \WP_Rocket\ThirdParty\Themes\Bridge::maybe_clear_cache
  *
- * @group  BridgeTheme
- * @group  ThirdParty
+ * @group Themes
  */
 class Test_MaybeClearCache extends FilesystemTestCase {
 	use DBTrait;
 
-	protected      $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
-	private static $container;
+	private $container;
+	private $event;
+	private $subscriber;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Bridge/maybeClearCache.php';
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installFresh();
-
-		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallAll();
 
 		parent::tear_down_after_class();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'bridge_subscriber' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
+		$this->container = apply_filters( 'rocket_container', '' );
+		$this->event = $this->container->get( 'event_manager' );
+
 		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		add_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
 		add_filter( 'pre_get_rocket_option_minify_css', [ $this, 'minify_css_value' ] );
 		add_filter( 'pre_get_rocket_option_minify_js', [ $this, 'minify_js_value' ] );
-
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'bridge_subscriber' ) );
 	}
 
 	public function tear_down() {
@@ -48,6 +47,8 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 		unset( $wp_theme_directories['virtual'] );
 
 		delete_option( 'qode_options_proya' );
+
+		$this->event->remove_subscriber( $this->subscriber );
 
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 		remove_filter( 'pre_option_stylesheet_root', [ $this, 'set_stylesheet_root' ] );
@@ -62,6 +63,9 @@ class Test_MaybeClearCache extends FilesystemTestCase {
 	 */
 	public function testShouldCleanCacheWhenSettingsMatch( $old_value, $value, $settings, $expected ) {
 		$this->settings = $settings;
+		$this->subscriber = new Bridge( $this->container->get( 'options' ) );
+
+		$this->event->add_subscriber( $this->subscriber );
 
 		apply_filters( 'update_option_qode_options_proya', $old_value, $value );
 

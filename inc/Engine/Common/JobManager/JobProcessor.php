@@ -96,6 +96,14 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_pending_jobs() {
+		/**
+		 * Fires at the start of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
+
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for pending jobs.' );
 
@@ -130,6 +138,13 @@ class JobProcessor implements LoggerAwareInterface {
 				$this->queue->add_job_status_check_async( $row->url, $row->is_mobile, $optimization_type );
 			}
 		}
+
+		/**
+		 * Fires at the end of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
@@ -191,6 +206,12 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
+		/**
+		 * Fires at the start of the process on submit jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
 
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for to-submit jobs.' );
@@ -242,6 +263,13 @@ class JobProcessor implements LoggerAwareInterface {
 				$optimization_type
 			);
 		}
+
+		/**
+		 * Fires at the end of the process pending jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
 	}
 
 	/**
