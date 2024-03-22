@@ -98,6 +98,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'atf_context' ),
 					$this->getContainer()->get( 'options' ),
 					$this->getContainer()->get( 'warmup_apiclient' ),
+					$this->getContainer()->get( 'user' ),
 				]
 			);
 		$this->getContainer()->share( 'warmup_subscriber', WarmUpSubscriber::class )
