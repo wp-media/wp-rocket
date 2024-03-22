@@ -24,6 +24,7 @@ class Test_AddToQueue extends TestCase {
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->client = new APIClient($this->options);
+		$this->set_logger($this->client);
 	}
 
 	/**
