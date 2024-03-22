@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\APIClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -16,7 +17,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Media
  * @group AboveTheFold
  */
-class Test_fetchLinks extends TestCase {
+class Test_FetchLinks extends TestCase {
+	private $user;
 	private $controller;
 
 	protected function setUp(): void {
@@ -25,7 +27,8 @@ class Test_fetchLinks extends TestCase {
 		$context    = Mockery::mock( ContextInterface::class );
 		$options    = Mockery::mock( Options_Data::class );
 		$api_client = Mockery::mock( APIClient::class );
-		$this->controller = new Controller( $context, $options, $api_client );
+		$this->user = Mockery::mock( User::class );
+		$this->controller = new Controller( $context, $options, $api_client, $this->user );
 	}
 
 	protected function tearDown(): void {
@@ -36,16 +39,22 @@ class Test_fetchLinks extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->user->shouldReceive( 'is_license_expired_grace_period' )
+			->once()
+			->andReturn( $config['license_expired'] );
+
 		Functions\when( 'home_url' )->alias( function( $link = '' ) {
 			return '' === $link ? 'https://example.org' : 'https://example.org' . $link;
 		} );
 
 		Functions\expect( 'wp_remote_get' )
+			->atMost()
 			->once()
 			->with( 'https://example.org', $config['headers'] )
 			->andReturn( $config['response'] );
 
 		Functions\expect( 'wp_remote_retrieve_response_code' )
+			->atMost()
 			->once()
 			->with( $config['response'] )
 			->andReturn( $config['response']['response']['code'] );

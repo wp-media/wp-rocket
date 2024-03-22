@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 
 class Controller {
 
@@ -30,16 +31,25 @@ class Controller {
 	private $api_client;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor
 	 *
 	 * @param ContextInterface $context ATF Context.
 	 * @param Options_Data     $options Options instance.
 	 * @param APIClient        $api_client APIClient instance.
+	 * @param User             $user User instance.
 	 */
-	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client ) {
+	public function __construct( ContextInterface $context, Options_Data $options, APIClient $api_client, User $user ) {
 		$this->context    = $context;
 		$this->options    = $options;
 		$this->api_client = $api_client;
+		$this->user       = $user;
 	}
 
 	/**
@@ -65,6 +75,10 @@ class Controller {
 	 * @return array
 	 */
 	public function fetch_links(): array {
+		if ( $this->user->is_license_expired_grace_period() ) {
+			return [];
+		}
+
 		$home_url = home_url();
 		$args     = [
 			'user-agent' => 'WP Rocket/Pre-fetch Home Links',
