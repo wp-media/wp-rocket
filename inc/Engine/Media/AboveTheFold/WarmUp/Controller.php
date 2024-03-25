@@ -169,6 +169,7 @@ class Controller {
 		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
 
 		foreach ( $links as $link ) {
+			error_log('added to queue : '. $link);
 			$this->api_client->add_to_atf_queue( $link );
 
 			usleep( $delay_between );
