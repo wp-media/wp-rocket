@@ -84,7 +84,6 @@ abstract class AbstractAPIClient {
 			$args
 		);
 
-		error_log(print_r($response, true));
 		return $this->check_response( $response );
 	}
 
