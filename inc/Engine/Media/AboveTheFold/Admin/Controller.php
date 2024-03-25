@@ -48,6 +48,7 @@ class Controller {
 	 * @return void
 	 */
 	public function truncate_atf() {
+		error_log('truncate_atf');
 		if ( ! $this->context->is_allowed() ) {
 			return;
 		}
