@@ -68,7 +68,7 @@ abstract class AbstractAPIClient {
 		$api_url = rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			? rocket_get_constant( 'WP_ROCKET_SAAS_API_URL', false )
 			: self::API_URL;
-		error_log('$api_url : '. $api_url);
+
 		if ( empty( $args['body'] ) ) {
 			$args['body'] = [];
 		}
