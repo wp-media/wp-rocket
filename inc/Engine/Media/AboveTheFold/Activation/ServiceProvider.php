@@ -5,7 +5,10 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\Activation;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
-use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller as WarmUpController;
+use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\{
+	APIClient,
+	Controller as WarmUpController
+};
 
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -20,6 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'atf_context',
+		'warmup_apiclient',
 		'warmup_controller',
 		'atf_activation',
 	];
@@ -32,11 +36,16 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'atf_context', Context::class );
 
+		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
+			->addArgument( $this->getContainer()->get( 'options' ) );
+
 		$this->getContainer()->add( 'warmup_controller', WarmUpController::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'atf_context' ),
 					$this->getContainer()->get( 'options' ),
+					$this->getContainer()->get( 'warmup_apiclient' ),
+					$this->getContainer()->get( 'user' ),
 				]
 			);
 

@@ -42,6 +42,9 @@ class Activation {
 		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
 		$container->addServiceProvider( ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\Engine\License\ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\Logger\ServiceProvider::class );
+		$container->get( 'logger' );
 		$container->addServiceProvider( \WP_Rocket\Engine\Media\AboveTheFold\Activation\ServiceProvider::class );
 
 		$host_type = HostResolver::get_host_service();
