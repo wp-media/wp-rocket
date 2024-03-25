@@ -145,8 +145,14 @@ async function main() {
 	});
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
-    console.time("extract");
-    setTimeout(main, 500);
-    console.timeEnd("extract");
-});
+if (document.readyState !== 'loading') {
+	console.time("extract");
+	setTimeout(main, 500);
+	console.timeEnd("extract");
+} else {
+	document.addEventListener("DOMContentLoaded", async function () {
+		console.time("extract");
+		setTimeout(main, 500);
+		console.timeEnd("extract");
+	});
+}
