@@ -54,10 +54,6 @@ class Controller {
 
 		$this->delete_rows();
 
-		/**
-		 * Fires after clearing lcp & atf data.
-		 */
-		do_action( 'rocket_after_clear_atf' );
 	}
 
 	/**
@@ -72,6 +68,12 @@ class Controller {
 		}
 
 		$this->table->truncate_atf_table();
+
+		/**
+		 * Fires after clearing lcp & atf data.
+		 */
+		do_action( 'rocket_after_clear_atf' );
+
 	}
 
 	/**
@@ -123,7 +125,7 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	public function truncate( $clean ) {
+	public function truncate_atf_admin( $clean ) {
 		if ( ! $this->context->is_allowed() ) {
 			return $clean;
 		}
