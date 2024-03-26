@@ -72,7 +72,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
 			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
-			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
+			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 			'rocket_cdn_helper_addons'            => 'add_cdn_helper_message',

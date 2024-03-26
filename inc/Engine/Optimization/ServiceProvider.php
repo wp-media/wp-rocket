@@ -1,9 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Optimization;
 
-use WP_Rocket\Buffer\Config;
 use WP_Rocket\Engine\Optimization\Buffer\Optimization;
-use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Combine;
 use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
@@ -28,8 +26,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
-		'config',
-		'tests',
 		'buffer_optimization',
 		'buffer_subscriber',
 		'cache_dynamic_resource',
@@ -50,10 +46,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$options    = $this->getContainer()->get( 'options' );
 		$filesystem = rocket_direct_filesystem();
 
-		$this->getContainer()->add( 'config', Config::class )
-			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
-		$this->getContainer()->add( 'tests', Tests::class )
-			->addArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', Optimization::class )
 			->addArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->share( 'buffer_subscriber', BufferSubscriber::class )

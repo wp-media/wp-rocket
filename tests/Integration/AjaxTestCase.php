@@ -75,7 +75,7 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	}
 
 	public function tear_down() {
-		unset( $_POST['action'], $_POST['nonce'] );
+		unset( $_POST );
 		$this->action = null;
 		self::resetAdminCap();
 

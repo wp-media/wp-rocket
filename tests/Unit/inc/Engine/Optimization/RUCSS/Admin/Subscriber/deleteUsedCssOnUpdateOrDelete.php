@@ -6,7 +6,7 @@ use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use Brain\Monkey\Functions;
 

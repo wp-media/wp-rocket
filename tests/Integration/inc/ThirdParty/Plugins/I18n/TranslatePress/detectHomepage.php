@@ -18,7 +18,7 @@ class Test_detectHomepage extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_rucss_is_home_url', $config['home_url'], $config['url'] )
+			apply_filters( 'rocket_saas_is_home_url', $config['home_url'], $config['url'] )
 		);
 	}
 }

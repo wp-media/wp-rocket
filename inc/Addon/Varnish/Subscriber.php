@@ -44,7 +44,7 @@ class Subscriber implements Subscriber_Interface {
 			'before_rocket_clean_file'            => [ 'clean_file' ],
 			'rocket_rucss_after_clearing_usedcss' => [ 'clean_file' ],
 			'before_rocket_clean_home'            => [ 'clean_home', 10, 2 ],
-			'rocket_rucss_complete_job_status'    => [ 'clean_file' ],
+			'rocket_saas_complete_job_status'     => [ 'clean_file' ],
 		];
 	}
 

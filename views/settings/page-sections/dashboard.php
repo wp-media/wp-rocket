@@ -177,23 +177,14 @@ defined( 'ABSPATH' ) || exit;
 					</div>
 					<?php endif; ?>
 
-					<?php if ( 'local' !== wp_get_environment_type() && get_rocket_option( 'remove_unused_css' ) && current_user_can( 'rocket_remove_unused_css' ) ) : ?>
-						<div class="wpr-field">
-							<h4 class="wpr-title3"><?php esc_html_e( 'Remove Used CSS Cache', 'rocket' ); ?></h4>
-							<?php
-							$this->render_action_button(
-									'link',
-									'rocket_clear_usedcss',
-									[
-										'label'      => __( 'Clear Used CSS', 'rocket' ),
-										'attributes' => [
-											'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
-										],
-									]
-							);
-							?>
-						</div>
-					<?php endif; ?>
+					<?php
+					/**
+					 * Fires in the dasbhoard actions column
+					 *
+					 * @since 3.16
+					 */
+					do_action( 'rocket_dashboard_actions' );
+					?>
 				</fieldset>
 			</div>
 		</div>

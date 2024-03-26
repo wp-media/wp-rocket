@@ -65,7 +65,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 		$this->assertTrue( $rucss_usedcss_table->exists() );
 		$this->assertCount( 2, $result );
 
-		do_action( 'rocket_rucss_clean_rows_time_event' );
+		do_action( 'rocket_saas_clean_rows_time_event' );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();

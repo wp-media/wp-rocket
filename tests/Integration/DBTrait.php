@@ -14,13 +14,13 @@ trait DBTrait {
 		$resource_query = $container->get( 'rucss_used_css_query' );
 		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
 		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
-			$resource_query->make_status_inprogress($job_id);
+			$resource_query->make_status_inprogress($resource['url'], $resource['is_mobile']);
 		}
 		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
-			$resource_query->make_status_pending($job_id);
+			$resource_query->make_status_pending($resource['url'], $job_id, $resource['queue_name'], $resource['is_mobile']);
 		}
 		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
-			$resource_query->make_status_completed($job_id, $resource['hash']);
+			$resource_query->make_status_completed($resource['url'], $resource['is_mobile'], $resource['hash']);
 		}
 		return $job_id;
 	}
@@ -44,6 +44,11 @@ trait DBTrait {
 		$container = apply_filters( 'rocket_container', null );
 		$cache_query = $container->get( 'preload_caches_query' );
 		return $cache_query->create_or_update( $resource );
+	}
+	public static function addLcp( array $resource ) {
+		$container = apply_filters( 'rocket_container', null );
+		$lcp_query = $container->get( 'atf_query' );
+		return $lcp_query->add_item( $resource );
 	}
 
 	public static function installFresh() {

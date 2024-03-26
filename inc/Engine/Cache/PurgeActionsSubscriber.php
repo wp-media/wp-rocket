@@ -53,7 +53,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
-			'rocket_rucss_complete_job_status'    => [ 'purge_url_cache', 100 ],
+			'rocket_saas_complete_job_status'     => [ 'purge_url_cache', 100 ],
 			'rocket_rucss_after_clearing_usedcss' => 'purge_url_cache',
 			'rocket_after_save_dynamic_lists'     => 'purge_cache_after_saving_dynamic_lists',
 			'update_option_' . $slug              => [ 'purge_cache_reject_uri_partially', 10, 2 ],

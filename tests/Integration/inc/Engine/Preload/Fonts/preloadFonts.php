@@ -15,6 +15,11 @@ class Test_PreloadFonts extends TestCase {
 	private   $cdn;
 	private   $cnames;
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'preload_fonts', 20);
+	}
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_preload_fonts', [ $this, 'return_preload_fonts' ] );
 		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_cdn' ] );
@@ -23,7 +28,7 @@ class Test_PreloadFonts extends TestCase {
 		remove_filter( 'rocket_disable_preload_fonts', [ $this, 'return_true' ] );
 
 		unset( $_GET['nowprocket'] );
-
+		$this->restoreWpHook('rocket_buffer');
 		parent::tear_down();
 	}
 

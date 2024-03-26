@@ -27,6 +27,6 @@ class Test_AddFootprint extends TestCase {
 	}
 
 	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'addFootprint' );
+		return $this->getTestData( __DIR__ . '/Int', 'addFootprint' );
 	}
 }

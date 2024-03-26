@@ -4,7 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\{Database,Settings,Subscriber};
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\{Queue,UsedCSS};
+use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**

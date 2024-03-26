@@ -40,6 +40,7 @@ class Test_AddDelayJsExclusion extends TestCase {
 		do_action( 'activate_adthrive-ads/adthrive-ads.php' );
 
 		$options = get_option( 'wp_rocket_settings' );
+		unset($options['cache_reject_uri']);
 
 		$this->assertSame(
 			$options,

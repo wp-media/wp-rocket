@@ -70,7 +70,7 @@ class Test_DeleteTermUsedCss extends TestCase {
 		$this->assertCount( 1, $result );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		add_filter( 'rocket_rucss_deletion_enabled', [ $this, 'set_rucss_enabled' ] );
+		add_filter( 'rocket_saas_deletion_enabled', [ $this, 'set_rucss_enabled' ] );
 
 		if ( $config['wp_error'] ) {
 			do_action( 'edit_term', 0, 0, 'category' );

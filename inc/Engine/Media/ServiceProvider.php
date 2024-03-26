@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Media;
 
+use WP_Rocket\Buffer\Config;
+use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Dependencies\RocketLazyload\Assets;
 use WP_Rocket\Dependencies\RocketLazyload\Iframe;
@@ -29,6 +31,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'config',
+		'tests',
 		'lazyload_assets',
 		'lazyload_image',
 		'lazyload_iframe',
@@ -48,6 +52,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register() {
 		$options = $this->getContainer()->get( 'options' );
 
+		$this->getContainer()->add( 'config', Config::class )
+			->addArgument( [ 'config_dir_path' => rocket_get_constant( 'WP_ROCKET_CONFIG_PATH' ) ] );
+		$this->getContainer()->add( 'tests', Tests::class )
+			->addArgument( $this->getContainer()->get( 'config' ) );
+
 		$this->getContainer()->add( 'lazyload_assets', Assets::class );
 		$this->getContainer()->add( 'lazyload_image', Image::class );
 		$this->getContainer()->add( 'lazyload_iframe', Iframe::class );
@@ -66,6 +75,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $options );
 		$this->getContainer()->share( 'image_dimensions_subscriber', ImageDimensionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )
+			->addArgument( $this->getContainer()->get( 'tests' ) )
 			->addTag( 'front_subscriber' );
 		$this->getContainer()->share( 'image_dimensions_admin_subscriber', ImageDimensionsAdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'image_dimensions' ) )

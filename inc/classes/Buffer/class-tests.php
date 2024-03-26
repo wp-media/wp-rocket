@@ -133,14 +133,11 @@ class Tests {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Tell if the process should be initiated.
-	 *
-	 * @since  3.3
-	 * @author Grégory Viguier
+	 * Tell if any buffer process should be initiated.
 	 *
 	 * @return bool
 	 */
-	public function can_init_process() {
+	public function can_process_any_buffer() {
 		$this->last_error = [];
 
 		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
@@ -175,6 +172,22 @@ class Tests {
 					'request_method' => $this->get_request_method(),
 				]
 			);
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Tell if the process should be initiated.
+	 *
+	 * @since  3.3
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function can_init_process() {
+		if ( ! $this->can_process_any_buffer() ) {
 			return false;
 		}
 
