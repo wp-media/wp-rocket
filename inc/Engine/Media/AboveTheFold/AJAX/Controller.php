@@ -48,12 +48,13 @@ class Controller {
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOL ) : false;
 		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : '';
-		$lcp       = [];
+		$lcp       = "not found";
 		$viewport  = [];
 
 		foreach ( $images as $image ) {
-			if ( 'lcp' === $image->label ) {
-				$lcp[] = (object) [
+			if ( 'lcp' === $image->label && $lcp == "not found") {
+				// We should only get one LCP from the beacon.
+				$lcp = (object) [
 					'type' => 'img',
 					'src'  => $image->src,
 				];

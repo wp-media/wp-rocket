@@ -103,7 +103,7 @@ class AboveTheFold extends Row {
 			return false;
 		}
 
-		if ( 'not found' !== $this->lcp ) {
+		if ( 'not found' == $this->lcp ) {
 			return false;
 		}
 
