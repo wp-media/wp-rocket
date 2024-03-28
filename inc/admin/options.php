@@ -178,7 +178,14 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		|| (
+			(
+				( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) )
+				||
+				! isset( $oldvalue['cdn'] )
+			)
+			&& isset( $newvalue['cdn'] )
+		)
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
