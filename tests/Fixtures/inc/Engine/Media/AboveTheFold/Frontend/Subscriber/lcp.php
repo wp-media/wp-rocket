@@ -2,6 +2,7 @@
 
 $html_input = file_get_contents(__DIR__ . '/HTML/input.html');
 $html_output = file_get_contents(__DIR__ . '/HTML/output.html');
+$html_output_with_preload = file_get_contents(__DIR__ . '/HTML/output_w_preload.html');
 $html_output_with_beacon = file_get_contents(__DIR__ . '/HTML/output_w_beacon.html');
 
 return [
@@ -31,7 +32,7 @@ return [
 					] ),
 				],
 			],
-			'expected' => $html_output,
+			'expected' => $html_output_with_preload,
 		],
 		'shouldNotAddBeaconToPageWhenLcpFailed' => [
 			'config' => [

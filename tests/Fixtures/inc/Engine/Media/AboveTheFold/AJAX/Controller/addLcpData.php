@@ -44,12 +44,12 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => json_encode( [
+				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				] ),
+				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
@@ -85,12 +85,12 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => json_encode( [
+				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				] ),
+				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
@@ -104,12 +104,12 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => false,
 				'status'        => 'completed',
-				'lcp'           => json_encode( [
+				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				] ),
+				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',
@@ -144,12 +144,10 @@ return [
 				'is_mobile'     => true,
 				'status'        => 'completed',
 				'lcp'           => json_encode(
-					[
-						(object) [
-							'type' => 'img',
-							'src'  => 'http://example.org/lcp.jpg',
-						],
-					]
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/lcp.jpg',
+					],
 				),
 				'viewport'      => json_encode(
 					[
@@ -166,12 +164,12 @@ return [
 				'url'           => 'http://example.org',
 				'is_mobile'     => true,
 				'status'        => 'completed',
-				'lcp'           => json_encode( [
+				'lcp'           => json_encode(
 					(object) [
 						'type' => 'img',
 						'src'  => 'http://example.org/lcp.jpg',
 					],
-				] ),
+				),
 				'viewport'      => json_encode( [
 					(object) [
 						'type' => 'img',

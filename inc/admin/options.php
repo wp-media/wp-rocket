@@ -34,7 +34,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 
 	// Regenerate advanced-cache.php file.
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
+	if ( ! empty( $_POST )
+		&&
+		(
+			( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) )
+			||
+			( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) )
+			||
+			( ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] )
+		)
+	) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -150,7 +159,10 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Clear WP Rocket database optimize cron if the setting has been modified.
-	if ( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) || ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) ) ) {
+	if (
+		( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) )
+		|| ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) )
+	) {
 		if ( wp_next_scheduled( 'rocket_database_optimization_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 		}
@@ -160,7 +172,10 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		|| (
+			( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) )
+			|| ( ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		)
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
