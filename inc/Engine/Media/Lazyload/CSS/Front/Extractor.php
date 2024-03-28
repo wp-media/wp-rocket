@@ -268,7 +268,7 @@ class Extractor {
 	protected function make_url_complete( string $url, string $file_url ): string {
 		$host = wp_parse_url( $url, PHP_URL_HOST );
 
-		if ( $host || $this->is_relative( $url ) && ! empty( $file_url ) ) {
+		if ( $host || ( $this->is_relative( $url ) && ! empty( $file_url ) ) ) {
 			return $this->transform_relative_to_absolute( $url, $file_url );
 		}
 
