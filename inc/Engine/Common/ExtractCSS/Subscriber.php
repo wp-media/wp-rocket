@@ -72,11 +72,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				(
-					! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
-					&&
-					! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
-				)
+				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+				&&
+				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
 				||
 				( strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
