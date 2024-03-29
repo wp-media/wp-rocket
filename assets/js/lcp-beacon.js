@@ -16,22 +16,23 @@ function LCPCandidates(count) {
         ) {
             const area = rect.width * rect.height;
             const imageURL = getImageUrlFromElement(element);
-
-            // Insert element into topCandidates in descending order of area
-            for (let i = 0; i < topCandidates.length; i++) {
-                if (area > topCandidates[i].area) {
-                    topCandidates.splice(i, 0, { element, area, imageURL });
-                    topCandidates.length = Math.min(
-                        count,
-                        topCandidates.length
-                    ); // Keep only specified number of elements
-                    break;
+            if (imageURL !== null) {
+                // Insert element into topCandidates in descending order of area
+                for (let i = 0; i < topCandidates.length; i++) {
+                    
+                    if (area > topCandidates[i].area) {
+                        topCandidates.splice(i, 0, { element, area, imageURL });
+                        topCandidates.length = Math.min(
+                            count,
+                            topCandidates.length
+                        ); // Keep only specified number of elements
+                        break;
+                    }
                 }
-            }
-
-            // If topCandidates is not full, append
-            if (topCandidates.length < count) {
-                topCandidates.push({ element, area, imageURL });
+                // If topCandidates is not full, append
+                if (topCandidates.length < count) {
+                    topCandidates.push({ element, area, imageURL });
+                }
             }
         }
     });
@@ -68,9 +69,7 @@ let performance_images = [];
 
 async function main() {
     // Filter the array based on the condition imageURL is not null
-    const filteredArray = LCPCandidates(3).filter(
-        (item) => item.imageURL !== null
-    );
+    const filteredArray = LCPCandidates(1)
     if (filteredArray.length !== 0) {
         console.log("Estimated LCP element:", filteredArray);
         performance_images = filteredArray.map((item) => ({
