@@ -1,0 +1,63 @@
+name: Alpha Release
+
+on:
+  pull_request:
+    types: [ labeled ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    if: ${{ github.event.label.name == 'release-alpha' }}
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout transifex branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          ref: 'transifex-clone'
+
+      - name: Merge develop into transifex
+        run: git merge develop-clone
+
+      - name: Set up Node.js
+        uses: actions/setup-node@@v4
+        with:
+          node-version: '16'
+          cache: npm
+
+      - name: Install npm Dependencies
+        run: npm ci
+
+      - name: Update Pot file with new translatable strings
+        run: npm run makepot
+
+      - name: Generate mo files
+        run: ./bin/makemo.sh
+
+      - name: Commit all changes to transifex branch
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Prepare transifex before alpha release
+          commit_user_name: WP Media GitHub Actions Bot
+
+      - name: Checkout develop branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          ref: 'develop-clone'
+
+      - name: Merge transifex into develop
+        run: git merge transifex-clone
+
+
