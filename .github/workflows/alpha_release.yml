@@ -84,6 +84,7 @@ jobs:
         with:
           text: ${{ github.event.pull_request.body }}
           regex: '^(Release Version:\s*)(.*)$'
+          flags: 'gm'
 
       - name: Echo extracted version number
         run: |
