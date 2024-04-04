@@ -92,6 +92,6 @@ jobs:
 
       - name: Create the tag/release
         if: ${{ steps.release-version.outputs.group2 != '' }}
-        run: gh release create v${{ steps.release-version.outputs.group2 }} --draft --notes "${{ github.event.pull_request.body }}" --title "${{ steps.release-version.outputs.group2 }}" --target "develop-clone"
+        run: gh release create v${{ steps.release-version.outputs.group2 }} --draft --prerelease --notes "${{ github.event.pull_request.body }}" --title "${{ steps.release-version.outputs.group2 }}" --target "develop-clone"
         env:
           GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
