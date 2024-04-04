@@ -10,17 +10,10 @@ use WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck;
 
 /**
  * Service Provider for the activation process.
- *
- * @since 3.6.3
  */
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -32,11 +25,22 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Executes this method when the service provider is registered
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		$this->getContainer()
 			->inflector( ActivationInterface::class )
 			->invokeMethod( 'activate', [] );
@@ -45,7 +49,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	/**
 	 * Registers the option array in the container.
 	 */
-	public function register() {
+	public function register(): void {
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )

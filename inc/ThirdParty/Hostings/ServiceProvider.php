@@ -9,23 +9,32 @@ use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 
 /**
  * Hostings compatibility service provider
- *
- * @since 3.6.3
  */
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
-	 * Services provided
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Register the service in the provider array
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
@@ -40,12 +49,12 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
 			$this->getContainer()
-				->share( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() )
+				->addShared( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() )
 				->addTag( 'hosting_subscriber' );
 		}
 	}

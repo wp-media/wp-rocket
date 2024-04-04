@@ -11,13 +11,8 @@ use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Logger\Logger;
 
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -30,13 +25,24 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers the subscribers in the container
 	 *
 	 * @since 3.3
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$options = $this->getContainer()->get( 'options' );
 
 		$this->getContainer()->add( 'preload_cache_table', CacheTable::class );
