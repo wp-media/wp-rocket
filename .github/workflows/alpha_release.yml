@@ -20,8 +20,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@master
-
       - name: Merge develop into transifex
         uses: devmasx/merge-branch@master
         with:
@@ -69,12 +67,7 @@ jobs:
         with:
           directory: "."
           github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-
-      - name: Checkout develop branch
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-          ref: 'develop-clone'
+          branch: "transifex-clone"
 
       - name: Merge transifex into develop
         uses: devmasx/merge-branch@master
@@ -84,3 +77,14 @@ jobs:
           target_branch: develop-clone
           github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           message: Merge transifex into develop
+
+      - name: Get Release Version
+        uses: actions-ecosystem/action-regex-match@v2
+        id: release-version
+        with:
+          text: ${{ github.event.pull_request.body }}
+          regex: 'Release Version:\s*(.*)$'
+
+      - name: Echo extracted version number
+        run: |
+          echo "${{ steps.release-version.outputs.group1 }}"
