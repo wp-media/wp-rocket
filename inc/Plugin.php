@@ -15,6 +15,7 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
@@ -111,7 +112,7 @@ class Plugin {
 
 		add_filter( 'rocket_container', [ $this, 'get_container' ] );
 
-		$this->container->add( 'template_path', $template_path );
+		$this->container->add( 'template_path', new StringArgument( $template_path ) );
 	}
 
 	/**
