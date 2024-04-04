@@ -53,7 +53,7 @@ jobs:
         run: npm run makepot
 
       - name: Generate mo files
-        run: ./bin/makemo.sh
+        run: for file in `find . -name "*.po"` ; do msgfmt -o ${file/.po/.mo} $file ; done
 
       - name: Commit all changes to transifex branch
         uses: stefanzweifel/git-auto-commit-action@v4
