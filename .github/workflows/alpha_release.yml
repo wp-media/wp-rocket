@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
       contents: write
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -59,10 +58,17 @@ jobs:
           DIR: languages
 
       - name: Commit all changes to transifex branch
-        uses: stefanzweifel/git-auto-commit-action@v5
+        run: |
+          git config --local user.email "bot@wp-media.com"
+          git config --local user.name "WP Media GitHub Actions Bot"
+          git add -A
+          git commit -m "Prepare transifex before alpha release"
+
+      - name: Push all changes
+        uses: ad-m/github-push-action@v0.6.0
         with:
-          commit_message: Prepare transifex before alpha release
-          commit_user_name: WP Media GitHub Actions Bot
+          directory: "."
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
       - name: Checkout develop branch
         uses: actions/checkout@v3
