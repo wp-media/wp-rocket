@@ -46,8 +46,8 @@ jobs:
       - name: Install npm Dependencies
         run: npm ci
 
-      - name: Run composer
-        run: composer install
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
 
       - name: Update Pot file with new translatable strings
         run: npm run makepot
