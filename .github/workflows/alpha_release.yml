@@ -53,7 +53,9 @@ jobs:
         run: npm run makepot
 
       - name: Generate mo files
-        run: for file in `find . -name "*.po"` ; do msgfmt -o ${file/.po/.mo} $file ; done
+        uses: text-adi/build-language-i18n-action@v1
+        env:
+          DIR: languages
 
       - name: Commit all changes to transifex branch
         uses: stefanzweifel/git-auto-commit-action@v4
