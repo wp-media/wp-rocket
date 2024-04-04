@@ -34,7 +34,9 @@ jobs:
           ref: 'transifex-clone'
 
       - name: Merge develop into transifex
-        run: git merge origin/develop-clone --allow-unrelated-histories
+        run: git merge develop-clone --allow-unrelated-histories
+        env:
+          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
