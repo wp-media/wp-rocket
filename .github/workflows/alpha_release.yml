@@ -83,8 +83,8 @@ jobs:
         id: release-version
         with:
           text: ${{ github.event.pull_request.body }}
-          regex: 'Release Version:\s*(.*)$'
+          regex: '^(Release Version:\s*)(.*)$'
 
       - name: Echo extracted version number
         run: |
-          echo "${{ steps.release-version.outputs.group1 }}"
+          echo "${{ steps.release-version.outputs.group2 }}"
