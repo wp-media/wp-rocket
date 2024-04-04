@@ -21,6 +21,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Checkout develop branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          ref: 'develop-clone'
+
       - name: Checkout transifex branch
         uses: actions/checkout@v3
         with:
