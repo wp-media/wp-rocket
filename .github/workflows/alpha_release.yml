@@ -21,8 +21,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@master
-
       - name: Merge develop into transifex
         uses: devmasx/merge-branch@master
         with:
@@ -30,6 +28,7 @@ jobs:
           from_branch: develop-clone
           target_branch: transifex-clone
           github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          message: Merge develop into transifex
 
       - name: Checkout transifex branch
         uses: actions/checkout@v3
@@ -63,12 +62,6 @@ jobs:
           commit_message: Prepare transifex before alpha release
           commit_user_name: WP Media GitHub Actions Bot
 
-      - name: Checkout develop branch
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-          ref: 'develop-clone'
-
       - name: Merge transifex into develop
         uses: devmasx/merge-branch@master
         with:
@@ -76,3 +69,4 @@ jobs:
           from_branch: transifex-clone
           target_branch: develop-clone
           github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          message: Merge transifex into develop
