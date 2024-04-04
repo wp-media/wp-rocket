@@ -89,3 +89,7 @@ jobs:
       - name: Echo extracted version number
         run: |
           echo "${{ steps.release-version.outputs.group2 }}"
+
+      - name: Create the tag/release
+        if: ${{ steps.release-version.outputs.group2 != '' }}
+        run: gh release create v${{ steps.release-version.outputs.group2 }} --draft --notes ${{ github.event.pull_request.body }} --title ${{ steps.release-version.outputs.group2 }} --target "develop-clone"
