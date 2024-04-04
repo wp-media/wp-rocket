@@ -59,12 +59,10 @@ jobs:
           DIR: languages
 
       - name: Commit all changes to transifex branch
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Prepare transifex before alpha release
           commit_user_name: WP Media GitHub Actions Bot
-          skip_fetch: false
-          skip_checkout: false
 
       - name: Checkout develop branch
         uses: actions/checkout@v3
