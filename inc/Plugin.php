@@ -131,7 +131,7 @@ class Plugin {
 	 */
 	public function load() {
 		$this->event_manager = new Event_Manager();
-		$this->container->share( 'event_manager', $this->event_manager );
+		$this->container->addShared( 'event_manager', $this->event_manager );
 
 		$this->options_api = new Options( 'wp_rocket_' );
 		$this->container->add( 'options_api', $this->options_api );
