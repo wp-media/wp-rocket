@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.15.8.1\n"
+"Project-Id-Version: WP Rocket 3.15.10-alpha1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2024-01-31T18:04:18+02:00\n"
+"POT-Creation-Date: 2024-03-14T17:10:16+02:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Toine <toinerademacher@hotmail.com>, 2024\n"
 "Language-Team: Dutch (Netherlands) (https://app.transifex.com/wp-media/teams/18133/nl_NL/)\n"
@@ -80,7 +80,7 @@ msgstr "Ontbrekend Cloudflare resultaat."
 #: inc/Addon/Cloudflare/API/Client.php:194 inc/deprecated/3.5.php:112
 #: inc/deprecated/3.5.php:169
 msgid "Incorrect Cloudflare email address or API key."
-msgstr "Ongeldig Cloudflare e-mailadres of API sleutel."
+msgstr "Ongeldig Cloudflare e-mailadres of API-sleutel."
 
 #. translators: %1$s = opening link; %2$s = closing link
 #: inc/Addon/Cloudflare/API/Client.php:198
@@ -121,7 +121,7 @@ msgid ""
 "Cloudflare email and/or API key are not set. Read the %1$sdocumentation%2$s "
 "for further guidance."
 msgstr ""
-"Cloudflare e-mail en/of API sleutel zijn niet ingesteld. Lees de "
+"Cloudflare e-mail en/of API-sleutel zijn niet ingesteld. Lees de "
 "%1$sdocumentatie%2$s voor verdere uitleg."
 
 #: inc/Addon/Cloudflare/Cloudflare.php:71 inc/deprecated/3.5.php:88
@@ -198,17 +198,17 @@ msgstr "Cloudflare verkleining %s"
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:393
 msgid "Cloudflare rocket loader error: %s"
-msgstr "Fout bij Cloudflare rocket loader: %s"
+msgstr "Fout bij Cloudflare Rocket Loader: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:400
 msgid "Cloudflare rocket loader %s"
-msgstr "Cloudflare rocket loader %s"
+msgstr "Cloudflare Rocket Loader %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:418
 msgid "Cloudflare browser cache error: %s"
-msgstr "Fout bij Cloudflare browser-cache: %s"
+msgstr "Fout bij Cloudflare browsercache: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
 #: inc/Addon/Cloudflare/Subscriber.php:425
@@ -237,23 +237,23 @@ msgstr "WP Rocket: "
 #. translators: %s is the error message returned by the API.
 #: inc/Addon/Sucuri/Subscriber.php:96
 msgid "Sucuri cache purge error: %s"
-msgstr "Sucuri cache legen foutmelding: %s"
+msgstr "Sucuri-cache legen foutmelding: %s"
 
 #: inc/Addon/Sucuri/Subscriber.php:101
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
 msgstr ""
-"De Sucuri cache wordt leeggemaakt. Merk op dat het tot twee minuten kan "
+"De Sucuri-cache wordt leeggemaakt. Merk op dat het tot twee minuten kan "
 "duren voordat deze volledig is doorgespoeld."
 
 #: inc/Addon/Sucuri/Subscriber.php:218
 msgid "Sucuri firewall API key was not found."
-msgstr "Sucuri firewall API sleutel is niet gevonden."
+msgstr "Sucuri firewall API-sleutel is niet gevonden."
 
 #: inc/Addon/Sucuri/Subscriber.php:231
 msgid "Sucuri firewall API key is invalid."
-msgstr "Sucuri firewall API sleutel is ongeldig."
+msgstr "Sucuri firewall API-sleutel is ongeldig."
 
 #. translators: %s is an error message.
 #: inc/Addon/Sucuri/Subscriber.php:286
@@ -301,7 +301,7 @@ msgstr[1] ""
 
 #: inc/Addon/WebP/AdminSubscriber.php:105
 msgid "WebP cache is disabled by filter."
-msgstr "WebP cache is uitschakelt door een filter."
+msgstr "WebP-cache is uitschakelt door een filter."
 
 #. Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing
 #. </a> tag.
@@ -541,7 +541,7 @@ msgstr ""
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
 #: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr "Probleemoplossing: %1$shoe systeembestanden schrijfbaar te maken%2$s"
+msgstr "Probleemoplossing: %1$shoe maak je systeembestanden schrijfbaar%2$s"
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
 #. if applicable
@@ -634,7 +634,7 @@ msgstr "%s: cache geleegd."
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:612
 msgid "%s: Post cache cleared."
-msgstr "%s: bericht-cache geleegd."
+msgstr "%s: berichtencache geleegd."
 
 #. translators: %s = plugin name.
 #: inc/admin/ui/notices.php:619
@@ -644,7 +644,7 @@ msgstr "%s: term-cache geleegd."
 #. translators: %s = plugin name).
 #: inc/admin/ui/notices.php:626
 msgid "%s: User cache cleared."
-msgstr "%s: gebruiker-cache geleegd."
+msgstr "%s: gebruikerscache geleegd."
 
 #: inc/admin/ui/notices.php:662 inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:32
@@ -658,11 +658,11 @@ msgstr "Negeer deze melding"
 #: inc/Engine/Optimization/RUCSS/Admin/Settings.php:131
 #: views/settings/page-sections/dashboard.php:188
 msgid "Clear Used CSS"
-msgstr "Gebruikte CSS wissen"
+msgstr "Gebruikte CSS legen"
 
 #: inc/admin/ui/notices.php:685
 msgid "Stop Preload"
-msgstr "Stop Preload"
+msgstr "Stop preloaden"
 
 #: inc/admin/ui/notices.php:691
 msgid "Turn on Remove Unused CSS"
@@ -670,7 +670,7 @@ msgstr "Verwijder ongebruikte CSS inschakelen"
 
 #: inc/admin/ui/notices.php:697
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
-msgstr "Schakel nu \"Gescheiden cache-bestanden voor mobiele apparaten\" in"
+msgstr "Schakel nu \"Cache-bestanden voor mobiele apparaten scheiden\" in"
 
 #: inc/admin/ui/notices.php:715
 msgid "Force deactivation "
@@ -692,7 +692,7 @@ msgstr "Betreffend(e) bestand/map: %s"
 
 #: inc/classes/admin/class-logs.php:124
 msgid "The debug file could not be deleted."
-msgstr "Het debug bestand kan niet verwijderd worden."
+msgstr "Het debug-bestand kan niet verwijderd worden."
 
 #. Translators: %1$s = Plugin name, %2$s = Plugin version.
 #: inc/classes/class-wp-rocket-requirements-check.php:147
@@ -714,8 +714,8 @@ msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
 "version %1$s or higher."
 msgstr ""
-"Wordpress %1$s. Om deze versie van WP Rocket te gebruiken, raden wij je aan "
-"om Wordpress bij te werken naar versie %1$s of hoger."
+"WordPress %1$s. Om deze versie van WP Rocket te gebruiken, raden wij je aan "
+"om WordPress te updaten naar versie %1$s of hoger."
 
 #: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
@@ -764,7 +764,7 @@ msgstr ""
 #: inc/common/admin-bar.php:91 inc/common/admin-bar.php:154
 #: views/settings/page-sections/dashboard.php:150
 msgid "Clear and preload cache"
-msgstr "Cache wissen en vooraf laden"
+msgstr "Cache legen en preloaden"
 
 #: inc/common/admin-bar.php:131 inc/functions/i18n.php:20
 msgid "All languages"
@@ -780,11 +780,11 @@ msgstr "Deze URL legen"
 
 #: inc/common/admin-bar.php:212
 msgid "Purge Sucuri cache"
-msgstr "Sucuri cache legen"
+msgstr "Sucuri-cache legen"
 
 #: inc/common/admin-bar.php:236 views/settings/fields/rocket-cdn.php:55
 msgid "Purge RocketCDN cache"
-msgstr "RocketCDN cache legen"
+msgstr "RocketCDN-cache legen"
 
 #: inc/common/admin-bar.php:249 views/settings/partials/documentation.php:14
 msgid "Documentation"
@@ -813,7 +813,7 @@ msgstr "Meer details"
 #. translators: %d is the number of pages preloaded.
 #: inc/deprecated/3.2.php:228
 msgid "Sitemap preload: %d pages have been cached."
-msgstr "Preloaden sitemap: %d pagina's zijn gecacht."
+msgstr "Preloaden sitemap: %d pagina's zijn gecachet."
 
 #. translators: %d = Number of pages preloaded.
 #: inc/deprecated/3.2.php:261
@@ -821,8 +821,8 @@ msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr ""
-"Preloaden sitemap: %d niet-gecachte pagina's zijn nu gepreload. (Ververs om "
-"voortgang te bekijken)"
+"Preloaden sitemap: %d niet-gecachete pagina's zijn nu gepreload. (Ververs om"
+" voortgang te bekijken)"
 
 #. translators: %s is an URL.
 #: inc/deprecated/3.3.php:761 inc/deprecated/3.3.php:770
@@ -1175,17 +1175,17 @@ msgstr "Automatische concepten"
 #: inc/Engine/Admin/Database/Optimization.php:32
 #: inc/Engine/Admin/Settings/Page.php:1477
 msgid "Trashed Posts"
-msgstr "Verwijderde Berichten"
+msgstr "Verwijderde berichten"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1487
 msgid "Spam Comments"
-msgstr "Spam Reacties"
+msgstr "Spam reacties"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
 #: inc/Engine/Admin/Settings/Page.php:1497
 msgid "Trashed Comments"
-msgstr "Verwijderde Reacties"
+msgstr "Verwijderde reacties"
 
 #: inc/Engine/Admin/Database/Optimization.php:35
 msgid "Transients"
@@ -1291,7 +1291,7 @@ msgstr "Cache"
 
 #: inc/Engine/Admin/Settings/Page.php:439
 msgid "Basic cache options"
-msgstr "Basis cache instellingen"
+msgstr "Basis cache-instellingen"
 
 #: inc/Engine/Admin/Settings/Page.php:446
 msgid "Mobile Cache"
@@ -1312,7 +1312,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:457
 msgid "User Cache"
-msgstr "Gebruikers Cache"
+msgstr "Gebruikerscache"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:460
@@ -1325,7 +1325,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:468
 msgid "Cache Lifespan"
-msgstr "Cache Levensduur"
+msgstr "Cache levensduur"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:471
@@ -1574,7 +1574,7 @@ msgstr "Verwijder ongebruikte CSS activeren"
 
 #: inc/Engine/Admin/Settings/Page.php:731
 msgid "CSS safelist"
-msgstr "CSS-safelijst"
+msgstr "CSS veilge lijst"
 
 #: inc/Engine/Admin/Settings/Page.php:732
 msgid ""
@@ -1778,7 +1778,7 @@ msgstr "Media"
 
 #: inc/Engine/Admin/Settings/Page.php:952
 msgid "LazyLoad, image dimensions"
-msgstr "Lazy-load, afbeeldingsafmetingen"
+msgstr "LazyLoad, afbeeldingsafmetingen"
 
 #: inc/Engine/Admin/Settings/Page.php:961
 msgid "Autoptimize"
@@ -1806,8 +1806,8 @@ msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
 "LazyLoad, disable this option in %2$s."
 msgstr ""
-"Lazy-load is op dit moment geactiveerd in %2$s. Als je WP Rocket’s Lazy-load"
-" wilt gebruiken, schakel deze optie uit in %2$s."
+"LazyLoad is op dit moment geactiveerd in %2$s. Als je WP Rocket’s LazyLoad "
+"wilt gebruiken, schakel deze optie uit in %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1028
 msgid "Image Dimensions"
@@ -1834,8 +1834,8 @@ msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
 "%1$s’s LazyLoad, disable this option in %2$s."
 msgstr ""
-"Lazy-load voor afbeeldingen is op dit moment geactiveerd in %2$s. Als je "
-"%1$s’s Lazy-load wilt gebruiken, schakel deze optie uit in %2$s."
+"LazyLoad voor afbeeldingen is op dit moment geactiveerd in %2$s. Als je "
+"%1$s’s LazyLoad wilt gebruiken, schakel deze optie uit in %2$s."
 
 #: inc/Engine/Admin/Settings/Page.php:1070
 msgid "Enable for CSS background images"
@@ -1917,14 +1917,14 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1181
 msgid "Prefetch DNS Requests"
-msgstr "DNS verzoeken voorladen"
+msgstr "DNS verzoeken prefetchen"
 
 #: inc/Engine/Admin/Settings/Page.php:1183
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
 msgstr ""
-"DNS prefetching kan zorgen voor het sneller inladen van externe bestanden, "
+"DNS prefetchen kan zorgen voor het sneller inladen van externe bestanden, "
 "vooral op mobiele netwerken"
 
 #: inc/Engine/Admin/Settings/Page.php:1188
@@ -1942,7 +1942,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1205
 msgid "Activate Preloading"
-msgstr "Activeer preloading"
+msgstr "Activeer preloaden"
 
 #: inc/Engine/Admin/Settings/Page.php:1216
 msgid "Exclude URLs"
@@ -1954,12 +1954,12 @@ msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
 "%1$sMore info%2$s"
 msgstr ""
-"Geef URL's op die moeten worden uitgesloten van de functie voor vooraf laden"
-" (één per regel). %1$sMeer informatie%2$s"
+"Geef URL's op die moeten worden uitgesloten van de preload functie (één per "
+"regel). %1$sMeer informatie%2$s"
 
 #: inc/Engine/Admin/Settings/Page.php:1232
 msgid "URLs to prefetch"
-msgstr "URL’s om voor te laden"
+msgstr "URL’s om te prefetchen"
 
 #: inc/Engine/Admin/Settings/Page.php:1233
 msgid ""
@@ -1978,7 +1978,7 @@ msgid ""
 "Specify urls of the font files to be preloaded (one per line). Fonts must be"
 " hosted on your own domain, or the domain you have specified on the CDN tab."
 msgstr ""
-"Specificeer URL's van de lettertype bestanden die voorgeladen moeten worden "
+"Specificeer URL's van de lettertype bestanden die moeten worden gepreload "
 "(één per regel). Lettertypes moeten gehost worden op je eigen domein of het "
 "domein dat je hebt ingesteld op het CDN tabblad."
 
@@ -2000,7 +2000,7 @@ msgstr "Geavanceerde regels"
 
 #: inc/Engine/Admin/Settings/Page.php:1273
 msgid "Fine-tune cache rules"
-msgstr "Cache regels finetunen"
+msgstr "Cache-regels verfijnen"
 
 #: inc/Engine/Admin/Settings/Page.php:1284
 msgid ""
@@ -2091,8 +2091,8 @@ msgstr ""
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
-"Specificeer user agent-strings die nooit gecachte pagina's moeten zien (één "
-"per regel)"
+"Specificeer user agent-strings die nooit gecachete pagina's moeten zien (één"
+" per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1370
 msgid "Use (.*) wildcards to detect parts of UA strings."
@@ -2104,7 +2104,7 @@ msgid ""
 "or page (one per line)"
 msgstr ""
 "Specificeer URL's die je altijd uit de cache wilt legen als je een bericht "
-"of pagina bijwerkt (één per regel)"
+"of pagina updatet (één per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1388
 msgid "Specify query strings for caching (one per line)"
@@ -2112,11 +2112,11 @@ msgstr "Specificeer query strings voor caching (één per regel)"
 
 #: inc/Engine/Admin/Settings/Page.php:1414
 msgid "Optimize, reduce bloat"
-msgstr "Optimaliseer, reduceer databubbels"
+msgstr "Optimaliseer, verminder bloat"
 
 #: inc/Engine/Admin/Settings/Page.php:1421
 msgid "Post Cleanup"
-msgstr "Berichten Opschonen"
+msgstr "Berichten opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1423
 msgid ""
@@ -2128,7 +2128,7 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1428
 msgid "Comments Cleanup"
-msgstr "Reacties Opschonen"
+msgstr "Reacties opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1430
 msgid "Spam and trashed comments will be permanently deleted."
@@ -2136,7 +2136,7 @@ msgstr "Spam en verwijderde reacties worden definitief verwijderd."
 
 #: inc/Engine/Admin/Settings/Page.php:1434
 msgid "Transients Cleanup"
-msgstr "Transients Opschonen"
+msgstr "Transients opschonen"
 
 #: inc/Engine/Admin/Settings/Page.php:1436
 msgid ""
@@ -2316,7 +2316,7 @@ msgstr "Heartbeat"
 
 #: inc/Engine/Admin/Settings/Page.php:1697
 msgid "Control WordPress Heartbeat API"
-msgstr "Beheer Wordpress Heartbeat API"
+msgstr "Beheer WordPress Heartbeat API"
 
 #: inc/Engine/Admin/Settings/Page.php:1705
 msgid ""
@@ -2419,8 +2419,8 @@ msgid ""
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
 "Rocket."
 msgstr ""
-"Geef je account-e-mail, globale API-sleutel en domein op om opties te "
-"gebruiken zoals het wissen van de Cloudflare-cache en het inschakelen van "
+"Geef je account e-mail, globale API-sleutel en domein op om opties te "
+"gebruiken zoals het legen van de Cloudflare-cache en het inschakelen van "
 "optimale instellingen met WP Rocket."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
@@ -2474,14 +2474,14 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1936
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
-msgstr "Securi cache legen wanneer WP Rocket's cache is geleegd."
+msgstr "Sucuri-cache legen wanneer WP Rocket's cache is geleegd."
 
 #: inc/Engine/Admin/Settings/Page.php:1939
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
-"Voer je API sleutel in om de Sucuri cache te legen op het moment dat WP "
+"Voer je API-sleutel in om de Sucuri-cache te legen op het moment dat WP "
 "Rocket’s cache wordt geleegd."
 
 #: inc/Engine/Admin/Settings/Page.php:1947
@@ -2491,7 +2491,7 @@ msgstr "Sucuri"
 
 #: inc/Engine/Admin/Settings/Page.php:1953
 msgid "Synchronize Sucuri cache with this add-on."
-msgstr "Synchroniseer Sucuri cache met deze add-on."
+msgstr "Synchroniseer Sucuri-cache met deze add-on."
 
 #: inc/Engine/Admin/Settings/Page.php:1991
 msgid "Cloudflare credentials"
@@ -2619,7 +2619,7 @@ msgstr "Aan de slag en how-to videos"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Rocket Verlopen cacheinterval"
+msgstr "WP Rocket verlopen cacheinterval"
 
 #: inc/Engine/Cache/WPCache.php:337
 msgid "WP_CACHE value"
@@ -2647,7 +2647,7 @@ msgstr "WP_CACHE is ingesteld op false"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:90
 msgid "Next Billing Date"
-msgstr "Volgende facturatie datum"
+msgstr "Volgende facturatiedatum"
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:99
 msgid "No Subscription"
@@ -2684,38 +2684,38 @@ msgstr "RocketCDN is momenteel niet beschikbaar. Probeer het later nog eens."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:177
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
-msgstr "RocketCDN cache legen mislukt: identificatie parameter mist."
+msgstr "RocketCDN-cache legen mislukt: identificatie parameter mist."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:186
 msgid "RocketCDN cache purge failed: Missing user token."
-msgstr "RocketCDN cache legen mislukt: gebruikerstoken mist."
+msgstr "RocketCDN-cache legen mislukt: gebruikerstoken mist."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:212
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
-"RocketCDN cache legen mislukt: de API heeft een onverwachte responscode "
+"RocketCDN-cache legen mislukt: de API heeft een onverwachte responscode "
 "geretourneerd."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:221
 msgid "RocketCDN cache purge failed: The API returned an empty response."
 msgstr ""
-"RocketCDN cache legen mislukt: de API heeft een leeg antwoord teruggestuurd."
+"RocketCDN-cache legen mislukt: de API heeft een leeg antwoord teruggestuurd."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:230
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
 msgstr ""
-"RocketCDN cache legen mislukt: de API heeft een onverwachte respons "
+"RocketCDN-cache legen mislukt: de API heeft een onverwachte respons "
 "teruggestuurd."
 
 #. translators: %s = message returned by the API.
 #: inc/Engine/CDN/RocketCDN/APIClient.php:239
 msgid "RocketCDN cache purge failed: %s."
-msgstr "RocketCDN cache legen mislukt: %s."
+msgstr "RocketCDN-cache legen mislukt: %s."
 
 #: inc/Engine/CDN/RocketCDN/APIClient.php:247
 msgid "RocketCDN cache purge successful."
-msgstr "RocketCDN cache succesvol geleegd."
+msgstr "RocketCDN-cache succesvol geleegd."
 
 #: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:137
 #: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php:72
@@ -3004,7 +3004,7 @@ msgstr "Kritieke CSS-bestand kan niet worden verwijderd"
 #. translators: %1$s = item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:187
 msgid "Mobile Critical CSS for %1$s not generated."
-msgstr "Mobile kritieke CSS voor %1$s niet gegenereerd."
+msgstr "Kritieke CSS voor %1$s op mobiel niet gegenereerd."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:228
@@ -3014,7 +3014,7 @@ msgstr "Kritieke CSS voor %s in uitvoering."
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:262
 msgid "Mobile Critical CSS for %s generated."
-msgstr "Mobile kritieke CSS voor %s gegenereerd."
+msgstr "Kritieke CSS voor %s op mobiel gegenereerd."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:273
@@ -3029,7 +3029,7 @@ msgstr "Kritieke CSS-bestand succesvol verwijderd."
 #: inc/Engine/CriticalPath/ProcessorService.php:317
 msgid "Mobile Critical CSS for %1$s timeout. Please retry a little later."
 msgstr ""
-"Mobile kritieke CSS voor %1$s timeout. Probeer het iets later opnieuw."
+"Kritieke CSS voor %1$s  timeout op mobiel. Probeer het iets later opnieuw."
 
 #. translators: %1$s = Item URL or item type.
 #: inc/Engine/CriticalPath/ProcessorService.php:330
@@ -3051,11 +3051,11 @@ msgstr "Kan geen CPCSS genereren voor ongepubliceerd bericht."
 
 #: inc/Engine/HealthCheck/HealthCheck.php:142
 msgid "Scheduled Cache Purge"
-msgstr "Planning Cache legen"
+msgstr "Gepland cache legen"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:143
 msgid "Scheduled Database Optimization"
-msgstr "Ingeplande database optimalisatie"
+msgstr "Geplande database optimalisatie"
 
 #: inc/Engine/HealthCheck/HealthCheck.php:144
 msgid "Database Optimization Process"
@@ -3323,7 +3323,7 @@ msgstr "LazyLoad voor iframes/video's"
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:48
 msgid "LazyLoad CSS backgrounds"
-msgstr "Lazy-load CSS achtergronden"
+msgstr "LazyLoad CSS achtergronden"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:195
 msgid "Analytics & Ads"
@@ -3355,7 +3355,7 @@ msgstr "Lijsten zijn up-to-date."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:134
 msgid "Could not update lists."
-msgstr "Kan lijsten niet bijwerken."
+msgstr "Kan lijsten niet updaten."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:143
 msgid "Lists are successfully updated."
@@ -3469,9 +3469,9 @@ msgstr "%1$s: Gebruikte CSS-optie is niet ingeschakeld!"
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:306
 msgid "%1$s: Used CSS cache cleared!"
-msgstr "%1$s: Gebruikte CSS-cache gewist!"
+msgstr "%1$s: Gebruikte CSS-cache geleegd!"
 
-#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:672
+#: inc/Engine/Optimization/RUCSS/Controller/UsedCSS.php:694
 msgid "Clear Used CSS of this URL"
 msgstr "Gebruikte CSS van deze URL legen"
 
@@ -3494,17 +3494,17 @@ msgid ""
 "continue to cache all your pages whenever they are purged. No further action"
 " is needed."
 msgstr ""
-"%1$s: de preload service is nu actief. Na de initiële preload zal deze "
+"%1$s: de preload-service is nu actief. Na de initiële preload zal deze "
 "doorgaan met het cachen van al je pagina's wanneer ze worden geleegd. Er is "
 "geen verdere actie nodig."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
-msgstr "WP Rocket Preload wachtende taken"
+msgstr "WP Rocket preload wachtende taken"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr "WP Rocket Preload terugdraaien vastgelopen mislukte taken"
+msgstr "WP Rocket preload terugdraaien vastgelopen mislukte taken"
 
 #: inc/functions/admin.php:21
 msgid ""
@@ -3611,7 +3611,7 @@ msgstr "Meld je aan bij je WP Rocket %1$saccount%2$s"
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
 msgid "Download the zip file"
-msgstr "Download het zip bestand"
+msgstr "Download het zip-bestand"
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:507 inc/functions/options.php:549
@@ -3637,7 +3637,7 @@ msgstr ""
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:515
 msgid "To resolve, please contact support."
-msgstr "Om op te lossen, gelieve support te contacteren."
+msgstr "Neem contact op met ondersteuning om dit op te lossen."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:523
@@ -3699,7 +3699,7 @@ msgstr "Neem contact op met %1$sde support%2$s."
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
 msgid "This license key is not recognized."
-msgstr "Deze licentie code word niet herkend."
+msgstr "Deze licentiecode word niet herkend."
 
 #. Translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/functions/options.php:549
@@ -3713,11 +3713,11 @@ msgstr "Validatie van de licentie is mislukt: %s"
 
 #: inc/Logger/Logger.php:227 inc/Logger/Logger.php:257
 msgid "The log file does not exist."
-msgstr "Het log bestand bestaat niet."
+msgstr "Het logbestand bestaat niet."
 
 #: inc/Logger/Logger.php:233 inc/Logger/Logger.php:263
 msgid "The log file could not be read."
-msgstr "Het log bestand kon niet gelezen worden."
+msgstr "Het logbestand kon niet gelezen worden."
 
 #: inc/Logger/Logger.php:250
 msgid "The logs are not saved into a file."
@@ -3740,7 +3740,7 @@ msgid ""
 "working correctly. Please get in touch with Kinsta support through your "
 "%1$sMyKinsta%2$s account to resolve this issue."
 msgstr ""
-"Je installatie lijkt kernbestanden van Kinsta te missen die Cache legen "
+"Je installatie lijkt kernbestanden van Kinsta te missen die het cache legen "
 "beheert, waardoor je Kinsta installatie en WP Rocket niet correct werken. "
 "Neem contact op met Kinsta support via je %1$sMyKinsta%2$s account om dit "
 "probleem op te lossen."
@@ -3791,7 +3791,7 @@ msgid ""
 msgstr ""
 "Je moet Cloudflare APO uitschakelen of navragen bij de ontwikkelaars van "
 "thema's/plugin die het gebruik van “Dynamische cookies cache\" vereisen voor"
-" een alternatieve manier om pagina-cache-vriendelijk te zijn. %1$sMeer "
+" een alternatieve manier om paginacache-vriendelijk te zijn. %1$sMeer "
 "info%2$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
@@ -3815,10 +3815,10 @@ msgid ""
 "mobile and desktop, we suggest you enable our “Separate Cache Files for "
 "Mobiles Devices” to ensure the generated cache is accurate."
 msgstr ""
-"%1$sWP Rocket:%2$s je hebt \"Cache per apparaattype\" ingeschakeld op "
+"%1$sWP Rocket:%2$s je hebt \"Cache by Device Type\" ingeschakeld op "
 "Cloudflare APO. Als je het nodig vindt dat de site een verschillende cache "
-"heeft op mobiel en desktop, raden we je aan om onze \"Separate Cache Files "
-"for Mobiles Devices\" in te schakelen om ervoor te zorgen dat de "
+"heeft op mobiel en desktop, raden we je aan om onze \"Cache-bestanden voor "
+"mobiele apparaten scheiden\" in te schakelen om ervoor te zorgen dat de "
 "gegenereerde cache accuraat is."
 
 #. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
@@ -3966,16 +3966,16 @@ msgstr ""
 msgid "Smush"
 msgstr "Smush"
 
-#: inc/ThirdParty/Themes/Avada.php:116
+#: inc/ThirdParty/Themes/Avada.php:107
 msgid "Avada"
 msgstr "Avada"
 
-#: inc/ThirdParty/Themes/Divi.php:313
+#: inc/ThirdParty/Themes/Divi.php:293
 msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
 msgstr ""
-"Je Divi-template is bijgewerkt. Wis de Gebruikte CSS als de lay-out, het "
+"Je Divi-template is bijgewerkt. Leeg de Gebruikte CSS als de lay-out, het "
 "ontwerp of de CSS-stijlen werden gewijzigd."
 
 #: views/cpcss/activate-cpcss-mobile.php:13
@@ -4014,7 +4014,7 @@ msgstr ""
 
 #: views/cpcss/activate-cpcss-mobile.php:39
 msgid "Generate Mobile Specific CPCSS"
-msgstr "Mobiel specifieke CPCSS genereren"
+msgstr "Mobiel-specifieke CPCSS genereren"
 
 #: views/cpcss/metabox/container.php:19
 msgid "Critical Path CSS"
@@ -4057,8 +4057,8 @@ msgid ""
 "see if your issue is resolved."
 msgstr ""
 "Ons advies? In plaats van WP Rocket te deactiveren, gebruik je onze "
-"%1$sVeilige modus%2$s om snel Lazy-load, Bestandsoptimalisatie en CDN-opties"
-" uit te schakelen. Controleer vervolgens of je probleem is opgelost."
+"%1$sVeilige modus%2$s om snel LazyLoad, Bestandsoptimalisatie en CDN-opties "
+"uit te schakelen. Controleer vervolgens of je probleem is opgelost."
 
 #: views/deactivation-intent/form.php:35
 msgid "Do you want to use our Safe Mode to troubleshoot WP Rocket?"
@@ -4121,7 +4121,7 @@ msgstr ""
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr "Lijsten met insluitingen en uitsluitingen bijwerken"
+msgstr "Lijsten met insluitingen en uitsluitingen updaten"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/settings/dynamic-lists-update.php:19
@@ -4130,11 +4130,11 @@ msgid ""
 "button if you want to update them manually. %1$sMore info%2$s"
 msgstr ""
 "Compatibiliteitslijsten worden elke week automatisch gedownload. Klik op de "
-"knop als je ze handmatig wilt bijwerken. %1$sMeer info%2$s"
+"knop als je ze handmatig wilt updaten. %1$sMeer info%2$s"
 
 #: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
-msgstr "Lijsten bijwerken"
+msgstr "Lijsten updaten"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
@@ -4215,13 +4215,13 @@ msgstr "Alle RocketCDN cache-bestanden legen"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
-msgstr "Cloudflare Cache"
+msgstr "Cloudflare-cache"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:35
 #: views/settings/page-sections/sucuri.php:36
 msgid "Purges cached resources for your website. %s"
-msgstr "Leegt gecachte bronnen op je website. %s"
+msgstr "Leegt gecachete bronnen op je website. %s"
 
 #. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
@@ -4230,7 +4230,7 @@ msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
 #: views/settings/page-sections/cloudflare.php:45
 msgid "Clear all Cloudflare cache files"
-msgstr "Alle Cloudflare cache bestanden legen"
+msgstr "Alle Cloudflare cache-bestanden legen"
 
 #: views/settings/page-sections/dashboard.php:38
 msgid "Congratulations!"
@@ -4288,7 +4288,7 @@ msgstr "Snelle acties"
 
 #: views/settings/page-sections/dashboard.php:144
 msgid "Remove all cached files"
-msgstr "Alle gecachte bestanden verwijderen"
+msgstr "Alle gecachete bestanden verwijderen"
 
 #: views/settings/page-sections/dashboard.php:164
 #: views/settings/page-sections/dashboard.php:170
@@ -4403,7 +4403,7 @@ msgstr "%1$s%2$s%3$ssupport%4$s"
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
-msgstr "Verwijder alle Sucuri cache bestanden"
+msgstr "Verwijder alle Sucuri cache-bestanden"
 
 #. translators: %1$s = formatted file size, %2$s = formatted number of entries
 #. (don't use %2$d).
@@ -4462,7 +4462,7 @@ msgstr "Debug modus"
 
 #: views/settings/page-sections/tools.php:111
 msgid "Create a debug log file."
-msgstr "Creëer een debug log bestand."
+msgstr "Creëer een debug log-bestand."
 
 #: views/settings/page-sections/tutorials.php:13
 #: views/settings/partials/getting-started.php:18
@@ -4539,7 +4539,7 @@ msgstr "versie %s"
 
 #: views/settings/page.php:60
 msgid "Show Sidebar"
-msgstr "Sidebar weergeven"
+msgstr "Zijbalk weergeven"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page.php:82
