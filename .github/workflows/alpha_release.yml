@@ -21,22 +21,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout develop branch
-        uses: actions/checkout@v3
+      - uses: actions/checkout@master
+
+      - name: Merge develop into transifex
+        uses: devmasx/merge-branch@master
         with:
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-          ref: 'develop-clone'
+          type: now
+          from_branch: develop-clone
+          target_branch: transifex-clone
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
       - name: Checkout transifex branch
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           ref: 'transifex-clone'
-
-      - name: Merge develop into transifex
-        run: git merge origin/develop-clone --allow-unrelated-histories
-        env:
-          GH_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -66,6 +65,9 @@ jobs:
           ref: 'develop-clone'
 
       - name: Merge transifex into develop
-        run: git merge transifex-clone --allow-unrelated-histories
-
-
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: transifex-clone
+          target_branch: develop-clone
+          github_token: ${{ secrets.GH_WORKFLOW_TOKEN }}
