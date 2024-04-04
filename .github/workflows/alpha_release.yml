@@ -28,12 +28,12 @@ jobs:
           ref: 'transifex-clone'
 
       - name: Merge develop into transifex
-        run: git merge develop-clone
+        run: git merge origin/develop-clone
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '20'
           cache: npm
 
       - name: Install npm Dependencies
