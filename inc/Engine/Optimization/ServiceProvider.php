@@ -5,7 +5,7 @@ use WP_Rocket\Buffer\Config;
 use WP_Rocket\Engine\Optimization\Buffer\Optimization;
 use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Optimization\{GoogleFonts\Combine, CombineV2, Subscriber};
+use WP_Rocket\Engine\Optimization\GoogleFonts\{Combine, CombineV2, Subscriber};
 use WP_Rocket\Engine\Optimization\Buffer\Subscriber as BufferSubscriber;
 
 /**
