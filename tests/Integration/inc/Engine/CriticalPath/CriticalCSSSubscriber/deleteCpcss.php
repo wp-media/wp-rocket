@@ -61,7 +61,7 @@ class Test_DeleteCpcss extends FilesystemTestCase {
 			$this->assertTrue( $this->filesystem->exists( $mobile_item_path ) );
 		}
 
-		do_action( 'before_delete_post', self::$post_id );
+		do_action( 'before_delete_post', self::$post_id, self::factory()->post->get_object_by_id( self::$post_id ) );
 
 		if ( ! $config['current_user_can'] || ! $config['async_css'] ) {
 			// should bail out & files will exist.
