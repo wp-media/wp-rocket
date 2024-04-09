@@ -65,6 +65,23 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Update images that have no width/height with real dimentions for the SaaS
+	 *
+	 * @param string $buffer Page HTML content.
+	 *
+	 * @return string Page HTML content after update.
+	 */
+	public function prepare_critical_image_saas_visit( $buffer ) {
+		if ( ! isset( $_GET['wpr_imagedimensions'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return $buffer;
+		}
+
+		do_action( 'rocket_critical_image_saas_visit_buffer', $buffer );
+
+		return $this->dimensions->specify_image_dimensions( $buffer );
+	}
+
+	/**
 	 * Start image dimensions buffer to add
 	 *
 	 * @return void
@@ -80,6 +97,6 @@ class Subscriber implements Subscriber_Interface {
 
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
 
-		ob_start( [ $this, 'specify_image_dimensions' ] );
+		ob_start( [ $this, 'prepare_critical_image_saas_visit' ] );
 	}
 }
