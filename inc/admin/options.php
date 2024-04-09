@@ -177,9 +177,16 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	// Regenerate the minify key if JS files have been modified.
 	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
-	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
-		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+	if (
+		( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] ) // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+		||
+		( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
+		||
+		(
+			( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) )
+			||
+			( ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		)
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
