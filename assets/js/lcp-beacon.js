@@ -19,7 +19,7 @@ function LCPCandidates(count) {
             if (imageURL !== null) {
                 // Insert element into topCandidates in descending order of area
                 for (let i = 0; i < topCandidates.length; i++) {
-                    
+
                     if (area > topCandidates[i].area) {
                         topCandidates.splice(i, 0, { element, area, imageURL });
                         topCandidates.length = Math.min(
@@ -68,6 +68,31 @@ function getImageUrlFromElement(element) {
 let performance_images = [];
 
 async function main() {
+	// AJAX call to check if there are any records for the current URL
+	const response = await fetch(rocket_lcp_data.ajax_url, {
+		method: "POST",
+		credentials: 'same-origin',
+		body: new URLSearchParams({
+			action: 'rocket_check_lcp',
+			url: rocket_lcp_data.url,
+			rocket_lcp_nonce: rocket_lcp_data.nonce
+		})
+	});
+	const lcp_data = await response.json();
+	if ( true === lcp_data.success ) {
+		console.log('Bailing out because data is already available');
+		return;
+	}
+
+	// Check screen size
+	const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+	const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+	if (
+		( ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) ) {
+		console.log('Bailing out because screen size is not acceptable');
+		return;
+	}
+
     // Filter the array based on the condition imageURL is not null
     const filteredArray = LCPCandidates(1)
     if (filteredArray.length !== 0) {

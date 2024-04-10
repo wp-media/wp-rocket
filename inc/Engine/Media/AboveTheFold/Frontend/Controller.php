@@ -350,11 +350,35 @@ class Controller {
 			return $html;
 		}
 
+		/**
+		 * Filters the width threshold for the LCP beacon.
+		 *
+		 * @param int    $width_threshold The width threshold. Default is 393 for mobile and 1920 for others.
+		 * @param bool   $is_mobile       True if the current device is mobile, false otherwise.
+		 * @param string $url             The current URL.
+		 *
+		 * @return int The filtered width threshold.
+		 */
+		$width_threshold = apply_filters( 'rocket_lcp_width_threshold', ( $is_mobile ? 393 : 1920 ), $is_mobile, $url );
+
+		/**
+		 * Filters the height threshold for the LCP beacon.
+		 *
+		 * @param int    $height_threshold The height threshold. Default is 830 for mobile and 1080 for others.
+		 * @param bool   $is_mobile        True if the current device is mobile, false otherwise.
+		 * @param string $url              The current URL.
+		 *
+		 * @return int The filtered height threshold.
+		 */
+		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', ( $is_mobile ? 830 : 1080 ), $is_mobile, $url );
+
 		$data = [
-			'ajax_url'  => admin_url( 'admin-ajax.php' ),
-			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
-			'url'       => $url,
-			'is_mobile' => $is_mobile,
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'url'              => $url,
+			'is_mobile'        => $is_mobile,
+			'width_threshold'  => $width_threshold,
+			'height_threshold' => $height_threshold,
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';

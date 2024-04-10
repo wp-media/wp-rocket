@@ -91,4 +91,34 @@ class Controller {
 
 		wp_send_json_success( $item );
 	}
+
+	/**
+	 * Checks if there is existing LCP data for the current URL and device type.
+	 *
+	 * This method is called via AJAX. It checks if there is existing LCP data for the current URL and device type.
+	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
+	 * If the context is not allowed, it returns a JSON error response with false.
+	 *
+	 * @return void
+	 */
+	public function check_lcp_data() {
+		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+
+		if ( ! $this->context->is_allowed() ) {
+			wp_send_json_error( false );
+			return;
+		}
+
+		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
+		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOL ) : false;
+
+		$row = $this->query->get_row( $url, $is_mobile );
+
+		if ( ! empty( $row ) ) {
+			wp_send_json_success( 'data already exists' );
+			return;
+		}
+
+		wp_send_json_error( 'data does not exist' );
+	}
 }
