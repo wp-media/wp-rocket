@@ -44,8 +44,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'     => [ 'specify_image_dimensions', 17 ],
-			'template_redirect' => [ 'start_image_dimensions_buffer', 3 ],
+			'rocket_buffer'                           => [ 'specify_image_dimensions', 17 ],
+			'template_redirect'                       => [ 'start_image_dimensions_buffer', 3 ],
+			'rocket_critical_image_saas_visit_buffer' => 'specify_image_dimensions',
 		];
 	}
 
@@ -76,9 +77,7 @@ class Subscriber implements Subscriber_Interface {
 			return $buffer;
 		}
 
-		do_action( 'rocket_critical_image_saas_visit_buffer', $buffer );
-
-		return $this->dimensions->specify_image_dimensions( $buffer );
+		return apply_filters( 'rocket_critical_image_saas_visit_buffer', $buffer );
 	}
 
 	/**
