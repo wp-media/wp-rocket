@@ -213,7 +213,7 @@ class Controller {
 		$exclusions = array_map(
 				function ( $exclusion ) {
 					$exclusion = wp_parse_url( $exclusion );
-					return $exclusion['path'];
+					return ltrim( $exclusion['path'], '/' );
 				},
 			$exclusions
 			);
