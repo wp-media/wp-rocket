@@ -19,7 +19,7 @@ function LCPCandidates(count) {
             if (imageURL !== null) {
                 // Insert element into topCandidates in descending order of area
                 for (let i = 0; i < topCandidates.length; i++) {
-                    
+
                     if (area > topCandidates[i].area) {
                         topCandidates.splice(i, 0, { element, area, imageURL });
                         topCandidates.length = Math.min(
@@ -137,6 +137,8 @@ async function main() {
 	})
 	.then((response) => response.json())
 	.then((data) => {
+		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
+		beaconscript.setAttribute('beacon-completed', 'true');
 		console.log(data);
 	})
 	.catch((error) => {
