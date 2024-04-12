@@ -170,7 +170,7 @@ class AdminBar extends Abstract_Render {
 		$title = __( 'Clear Critical Images of this URL', 'rocket' );
 
 		if ( $this->rucss_url_context->is_allowed() ) {
-			$title = __( 'Clean Used CSS of this URL', 'rocket' );
+			$title = __( 'Clear Used CSS of this URL', 'rocket' );
 		}
 
 		$wp_admin_bar->add_menu(
@@ -201,7 +201,7 @@ class AdminBar extends Abstract_Render {
 		}
 
 		$title = __( 'Critical Images Cache', 'rocket' );
-		$label = esc_html__( 'Clean Critical Images', 'rocket' );
+		$label = esc_html__( 'Clear Critical Images', 'rocket' );
 
 		if ( $this->rucss_url_context->is_allowed() ) {
 			$title = __( 'Remove Used CSS Cache', 'rocket' );
