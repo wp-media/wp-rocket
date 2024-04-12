@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
