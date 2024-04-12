@@ -133,7 +133,10 @@ async function main() {
 	await fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
-		body: data
+		body: data,
+		headers: {
+			'wpr-saas-no-intercept':  true
+		}
 	})
 	.then((response) => response.json())
 	.then((data) => {
