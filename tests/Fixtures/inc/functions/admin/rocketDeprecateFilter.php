@@ -7,7 +7,7 @@ return [
             'args' => [ 1 * 60 ],
             'version' => '3.16',
         ],
-        'expected' => 1,
+        'expected' => 120,
     ],
     'rocketSaasPendingJobsCronRowsCount' => [
         'config' => [
@@ -16,6 +16,6 @@ return [
             'args' => [ 100 ],
             'version' => '3.16',
         ],
-        'expected' => 1,
+        'expected' => 200,
     ],
 ];

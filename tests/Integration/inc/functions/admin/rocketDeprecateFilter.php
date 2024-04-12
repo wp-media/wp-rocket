@@ -30,15 +30,9 @@ class Test_RocketDeprecateFilter extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-
-        global $wp_filters;
-
         add_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 
-        rocket_deprecate_filter( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] );
-
-		$this->assertSame( $expected, $wp_filters[ $config['new_hook'] ] );
-		$this->assertSame( $expected,  $wp_filters[ $config['old_hook'] ] );
+        $this->assertSame( $expected, rocket_deprecate_filter( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] ) );
 
         remove_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 	}
@@ -51,8 +45,8 @@ class Test_RocketDeprecateFilter extends TestCase {
         return;
     }
 
-    public function filter_hook_callback() {
-        return true;
+    public function filter_hook_callback( $value ) {
+        return $value * 2;
     }
 
     public function return_false(){
