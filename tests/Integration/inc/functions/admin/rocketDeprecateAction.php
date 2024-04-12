@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -10,12 +11,19 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_RocketDeprecateAction extends TestCase {
 
+    use IsolateHookTrait;
+
     public function set_up() {
-        add_filter( 'deprecated_hook_trigger_error', [ $this, 'return_false' ] );
+        parent::set_up();
+
+        add_action( 'deprecated_hook_run', [ $this, 'hook_callback' ] );
+        $this->unregisterAllCallbacksExcept('deprecated_hook_run', 'hook_callback');
 	}
 
     public function tear_down() {
-		remove_filter( 'deprecated_hook_trigger_error', [ $this, 'return_true' ] );
+        $this->restoreWpHook('deprecated_hook_run');
+
+        parent::tear_down();
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\functions;
 
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -10,12 +11,19 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_RocketDeprecateFilter extends TestCase {
 
+    use IsolateHookTrait;
+
     public function set_up() {
-        add_filter( 'deprecated_hook_trigger_error', [ $this, 'return_false' ] );
+        parent::set_up();
+
+        add_action( 'deprecated_hook_run', [ $this, 'action_hook_callback' ] );
+        $this->unregisterAllCallbacksExcept('deprecated_hook_run', 'action_hook_callback');
 	}
 
     public function tear_down() {
-		remove_filter( 'deprecated_hook_trigger_error', [ $this, 'return_true' ] );
+        $this->restoreWpHook('deprecated_hook_run');
+
+        parent::tear_down();
 	}
 
 	/**
@@ -23,21 +31,27 @@ class Test_RocketDeprecateFilter extends TestCase {
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
 
-        add_filter( $config['old_hook'], [$this, 'hook_callback']);
+        global $wp_filters;
+
+        add_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 
         rocket_deprecate_filter( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] );
 
-		$this->assertSame( $expected, did_filter( $config['new_hook'] ) );
-		$this->assertSame( $expected, did_filter( $config['old_hook'] ) );
+		$this->assertSame( $expected, $wp_filters[ $config['new_hook'] ] );
+		$this->assertSame( $expected,  $wp_filters[ $config['old_hook'] ] );
 
-        remove_filter( $config['old_hook'], [$this, 'hook_callback']);
+        remove_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 	}
 
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
 
-    public function hook_callback() {
+    public function action_hook_callback() {
+        return;
+    }
+
+    public function filter_hook_callback() {
         return true;
     }
 
