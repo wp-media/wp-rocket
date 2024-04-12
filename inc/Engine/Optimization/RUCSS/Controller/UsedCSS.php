@@ -9,7 +9,6 @@ use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
-use WP_Admin_Bar;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class UsedCSS {
@@ -52,13 +51,6 @@ class UsedCSS {
 	protected $context;
 
 	/**
-	 * RUCSS optimize url context.
-	 *
-	 * @var ContextInterface
-	 */
-	protected $optimize_url_context;
-
-	/**
 	 * External exclusions list, can be urls or attributes.
 	 *
 	 * @var array
@@ -94,7 +86,6 @@ class UsedCSS {
 	 * @param DataManager      $data_manager DataManager instance.
 	 * @param Filesystem       $filesystem Filesystem instance.
 	 * @param ContextInterface $context RUCSS context.
-	 * @param ContextInterface $optimize_url_context RUCSS optimize url context.
 	 * @param ManagerInterface $manager RUCSS manager.
 	 */
 	public function __construct(
@@ -103,16 +94,14 @@ class UsedCSS {
 		DataManager $data_manager,
 		Filesystem $filesystem,
 		ContextInterface $context,
-		ContextInterface $optimize_url_context,
 		ManagerInterface $manager
 	) {
-		$this->options              = $options;
-		$this->used_css_query       = $used_css_query;
-		$this->data_manager         = $data_manager;
-		$this->filesystem           = $filesystem;
-		$this->context              = $context;
-		$this->optimize_url_context = $optimize_url_context;
-		$this->manager              = $manager;
+		$this->options        = $options;
+		$this->used_css_query = $used_css_query;
+		$this->data_manager   = $data_manager;
+		$this->filesystem     = $filesystem;
+		$this->context        = $context;
+		$this->manager        = $manager;
 	}
 
 	/**
@@ -264,9 +253,11 @@ class UsedCSS {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
-				&&
-				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
+				(
+					! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+					&&
+					! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
+				)
 				||
 				( $preserve_google_font && strstr( $style['url'], '//fonts.googleapis.com/css' ) )
 			) {
@@ -416,60 +407,6 @@ class UsedCSS {
 	}
 
 	/**
-	 * Add clear UsedCSS adminbar item.
-	 *
-	 * @param WP_Admin_Bar $wp_admin_bar Adminbar object.
-	 *
-	 * @return void
-	 */
-	public function add_clear_usedcss_bar_item( WP_Admin_Bar $wp_admin_bar ) {
-		global $post;
-
-		if ( ! $this->optimize_url_context->is_allowed() ) {
-			return;
-		}
-
-		/**
-		 * Filters the rocket `clear used css of this url` option on admin bar menu.
-		 *
-		 * @since 3.12.1
-		 *
-		 * @param bool  $should_skip Should skip adding `clear used css of this url` option in admin bar.
-		 * @param type  $post Post object.
-		 */
-		if ( apply_filters( 'rocket_skip_admin_bar_clear_used_css_option', false, $post ) ) {
-			return;
-		}
-
-		$referer = '';
-		$action  = 'rocket_clear_usedcss_url';
-
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-
-			/**
-			 * Filters to act on the referer url for the admin bar.
-			 *
-			 * @param string $uri Current uri
-			 */
-			$referer = (string) apply_filters( 'rocket_admin_bar_referer', esc_url( $referer_url ) );
-			$referer = '&_wp_http_referer=' . rawurlencode( remove_query_arg( 'fl_builder', $referer ) );
-		}
-
-		/**
-		 * Clear usedCSS for this URL (frontend).
-		 */
-		$wp_admin_bar->add_menu(
-			[
-				'parent' => 'wp-rocket',
-				'id'     => 'clear-usedcss-url',
-				'title'  => __( 'Clear Used CSS of this URL', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-			]
-		);
-	}
-
-	/**
 	 * Clear specific url.
 	 *
 	 * @param string $url Page url.
@@ -526,6 +463,18 @@ class UsedCSS {
 			return $html;
 		}
 
+		/**
+		 * Filters the list of fonts to exclude from preload
+		 *
+		 * @since 3.15.10
+		 *
+		 * @param array $excluded_fonts_preload List of fonts to exclude from preload
+		 */
+		$exclude_fonts_preload = apply_filters( 'rocket_exclude_rucss_fonts_preload', [] );
+		if ( ! is_array( $exclude_fonts_preload ) ) {
+			$exclude_fonts_preload = [];
+		}
+
 		$urls = [];
 
 		foreach ( $font_faces as $font_face ) {
@@ -546,6 +495,25 @@ class UsedCSS {
 
 			if ( empty( $font_url ) ) {
 				continue;
+			}
+
+			// Making sure the excluded fonts array isn't empty to avoid excluding all fonts.
+			if ( ! empty( $exclude_fonts_preload ) ) {
+				// Combine the array elements into a single string with | as a separator and returning a pattern.
+				$exclude_fonts_preload_pattern = implode(
+					'|',
+					array_map(
+						function ( $item ) {
+							return is_string( $item ) ? preg_quote( $item, '/' ) : '';
+						},
+						$exclude_fonts_preload
+					)
+				);
+
+				// Check if the font URL matches any part of the exclude_fonts_preload array.
+				if ( ! empty( $exclude_fonts_preload_pattern ) && preg_match( '/' . $exclude_fonts_preload_pattern . '/i', $font_url ) ) {
+					continue; // Skip this iteration as the font URL is in the exclusion list.
+				}
 			}
 
 			$urls[] = $font_url;

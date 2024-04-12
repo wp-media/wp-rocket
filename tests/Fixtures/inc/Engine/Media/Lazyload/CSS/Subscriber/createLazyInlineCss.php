@@ -90,7 +90,7 @@ return [
               'data' => [
 				  'css_inline' => [
 					  $css_content
-			  ],
+				  ],
 			],
 			'extract' => [],
 			'rule_format' => [],
@@ -123,17 +123,20 @@ return [
 			],
 			'extract' => [
 				$css_content => [
-					'selector' => [
-						[
-							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+					'css_file' => '',
+					'results' => [
+						'selector' => [
+							[
+								'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+							],
+							[
+								'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
+							],
+							[
+								'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
+							],
 						],
-						[
-							'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/images/test.png',
-						],
-						[
-							'url' => '/wp-content/rocket-test-data/images/paper.jpeg',
-						],
-					]
+					],
 				],
 			],
 			'rule_format' => [

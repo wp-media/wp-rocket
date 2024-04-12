@@ -21,11 +21,13 @@ class MappingFormatter {
 			$url      = $datum['url'];
 
 			$placeholder          = "--wpr-bg-$hash";
-			$variable_placeholder = ':root{' . $placeholder . ': ' . $url . ';}';
+			$img_url              = "url('$url')";
+			$variable_placeholder = $datum['selector'] . '{' . $placeholder . ': ' . $img_url . ';}';
 			$formatted_urls[]     = [
 				'selector' => $selector,
 				'style'    => $variable_placeholder,
 				'hash'     => $hash,
+				'url'      => $url,
 			];
 		}
 

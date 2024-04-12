@@ -38,7 +38,7 @@ class Test_OnPermalinkChanged extends TestCase
 	}
 
 	public function testShouldDoAsExpected() {
-		$this->queue->expects()->add_job_preload_job_load_initial_sitemap_async();
+		$this->options->expects()->get('manual_preload', false)->andReturn(false);
 		$this->query->expects(self::once())->method('remove_all');
 		$this->queue->expects()->cancel_pending_jobs();
 		$this->subscriber->on_permalink_changed();

@@ -24,6 +24,7 @@ class Activation {
 		'wp_cache',
 		'action_scheduler_check',
 		'preload_activation',
+		'atf_activation',
 	];
 
 	/**
@@ -41,6 +42,10 @@ class Activation {
 		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
 		$container->addServiceProvider( ServiceProvider::class );
 		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\Engine\License\ServiceProvider::class );
+		$container->addServiceProvider( \WP_Rocket\Logger\ServiceProvider::class );
+		$container->get( 'logger' );
+		$container->addServiceProvider( \WP_Rocket\Engine\Media\AboveTheFold\Activation\ServiceProvider::class );
 
 		$host_type = HostResolver::get_host_service();
 
@@ -64,6 +69,7 @@ class Activation {
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
+		require WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 
 		/**
 		 * WP Rocket activation.

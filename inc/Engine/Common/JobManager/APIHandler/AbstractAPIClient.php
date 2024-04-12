@@ -5,8 +5,6 @@ namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
 use WP_Error;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Logger\Logger;
-use WP_Rocket\Engine\Common\Context\ContextInterface;
 
 abstract class AbstractAPIClient {
 	/**
@@ -126,6 +124,12 @@ abstract class AbstractAPIClient {
 		if ( 200 !== $this->response_code ) {
 			$previous_errors = (int) get_transient( 'wp_rocket_rucss_errors_count' );
 			set_transient( 'wp_rocket_rucss_errors_count', $previous_errors + 1, 5 * MINUTE_IN_SECONDS );
+
+			if ( empty( $response ) ) {
+				$this->error_message = 'API Client Error';
+				return false;
+			}
+
 			$this->error_message = is_array( $response )
 				? wp_remote_retrieve_response_message( $response )
 				: $response->get_error_message();

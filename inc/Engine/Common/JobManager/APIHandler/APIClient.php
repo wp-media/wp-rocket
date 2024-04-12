@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\JobManager\APIHandler;
 
-use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class APIClient extends AbstractAPIClient {
+class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
+	use LoggerAware;
 
 	/**
 	 * SaaS main API path.
@@ -13,13 +15,6 @@ class APIClient extends AbstractAPIClient {
 	 * @var string
 	 */
 	protected $request_path = 'rucss-job';
-
-	/**
-	 * Plugin options instance.
-	 *
-	 * @var Options_Data
-	 */
-	protected $options;
 
 	/**
 	 * Array of Factories.
@@ -44,20 +39,31 @@ class APIClient extends AbstractAPIClient {
 						'nowprocket'  => 1,
 						'no_optimize' => 1,
 					],
-					$url
+					user_trailingslashit( $url )
 				),
 				'config' => $options,
 			],
 			'timeout' => 5,
 		];
 
+		$this->logger::debug(
+			'Add to queue request arguments',
+			$args
+		);
+
 		$sent = $this->handle_post( $args );
 
 		if ( ! $sent ) {
-			return [
+			$output = [
 				'code'    => $this->response_code,
 				'message' => $this->error_message,
 			];
+
+			$this->logger::error(
+				'Add to queue request failure',
+				$output
+			);
+			return $output;
 		}
 
 		$default = [
@@ -69,6 +75,11 @@ class APIClient extends AbstractAPIClient {
 			],
 		];
 		$result  = json_decode( $this->response_body, true );
+
+		$this->logger::debug(
+			'Add to queue response body',
+			$result
+		);
 
 		if ( key_exists( 'code', $result ) && 401 === $result['code'] ) {
 			update_option( 'wp_rocket_no_licence', true );

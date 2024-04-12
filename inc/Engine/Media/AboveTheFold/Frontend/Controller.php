@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\AboveTheFold\Frontend;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
-use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
 
 class Controller {
 	use RegexTrait;
@@ -34,25 +34,25 @@ class Controller {
 	private $context;
 
 	/**
-	 * Above the fold Job Manager.
+	 * WordPress filesystem.
 	 *
-	 * @var ManagerInterface
+	 * @var WP_Filesystem_Direct
 	 */
-	private $manager;
+	protected $filesystem;
 
 	/**
 	 * Constructor
 	 *
-	 * @param Options_Data     $options Options instance.
-	 * @param ATFQuery         $query Queries instance.
-	 * @param Context          $context Context instance.
-	 * @param ManagerInterface $manager Above the fold Job Manager.
+	 * @param Options_Data              $options Options instance.
+	 * @param ATFQuery                  $query Queries instance.
+	 * @param Context                   $context Context instance.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Options_Data $options, ATFQuery $query, Context $context, ManagerInterface $manager ) {
-		$this->options = $options;
-		$this->query   = $query;
-		$this->context = $context;
-		$this->manager = $manager;
+	public function __construct( Options_Data $options, ATFQuery $query, Context $context, WP_Filesystem_Direct $filesystem = null ) {
+		$this->options    = $options;
+		$this->query      = $query;
+		$this->context    = $context;
+		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
 	/**
@@ -74,17 +74,14 @@ class Controller {
 		$row       = $this->query->get_row( $url, $is_mobile );
 
 		if ( empty( $row ) ) {
-			$this->manager->add_url_to_the_queue( $url, $is_mobile );
+			return $this->inject_beacon( $html, $url, $is_mobile );
+		}
+
+		if ( ! $row->has_lcp() ) {
 			return $html;
 		}
 
-		if ( 'completed' !== $row->status || empty( $row->lcp ) || 'not found' === $row->lcp ) {
-			return $html;
-		}
-
-		$html = $this->preload_lcp( $html, $row );
-
-		return $html;
+		return $this->preload_lcp( $html, $row );
 	}
 
 	/**
@@ -148,7 +145,7 @@ class Controller {
 			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
-				if ( preg_match( '/fetchpriority=[\'"]([^\'"]+)[\'"]/', $matches[0] ) ) {
+				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
 					// If it exists, don't modify the tag.
 					return $matches[0];
 				}
@@ -190,16 +187,36 @@ class Controller {
 		if ( $row->lcp && 'not found' !== $row->lcp ) {
 			$lcp = $this->generate_lcp_link_tag_with_sources( json_decode( $row->lcp ) );
 			$lcp = $lcp['sources'];
+			$lcp = $this->get_path_for_exclusion( $lcp );
 		}
 
 		if ( $row->viewport && 'not found' !== $row->viewport ) {
 			$atf = $this->get_atf_sources( json_decode( $row->viewport ) );
+			$atf = $this->get_path_for_exclusion( $atf );
 		}
 
 		$exclusions = array_merge( $exclusions, $lcp, $atf );
 
 		// Remove lcp candidate from the atf array.
 		$exclusions = array_unique( $exclusions );
+
+		return $exclusions;
+	}
+
+	/**
+	 * Get only the url path to exclude.
+	 *
+	 * @param array $exclusions Array of exclusions.
+	 * @return array
+	 */
+	private function get_path_for_exclusion( array $exclusions ): array {
+		$exclusions = array_map(
+				function ( $exclusion ) {
+					$exclusion = wp_parse_url( $exclusion );
+					return $exclusion['path'];
+				},
+			$exclusions
+			);
 
 		return $exclusions;
 	}
@@ -315,5 +332,40 @@ class Controller {
 		return $this->options->get( 'cache_mobile', 0 )
 			&& $this->options->get( 'do_caching_mobile_files', 0 )
 			&& wp_is_mobile();
+	}
+
+	/**
+	 * The `inject_beacon` function is used to inject a JavaScript beacon into the HTML content.
+	 *
+	 * @param string $html The HTML content where the beacon will be injected.
+	 * @param string $url The current URL.
+	 * @param bool   $is_mobile True for mobile device, false otherwise.
+	 *
+	 * @return string The modified HTML content with the beacon script injected just before the closing body tag.
+	 */
+	public function inject_beacon( $html, $url, $is_mobile ): string {
+		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
+			return $html;
+		}
+
+		$data = [
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
+			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
+			'url'       => $url,
+			'is_mobile' => $is_mobile,
+		];
+
+		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
+
+		// Get the URL of the script.
+		$script_url = rocket_get_constant( 'WP_ROCKET_ASSETS_JS_URL' ) . 'lcp-beacon' . $min . '.js';
+
+		// Create the script tag.
+		$script_tag = "<script src='{$script_url}' async></script>"; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+
+		// Append the script tag just before the closing body tag.
+		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
 	}
 }

@@ -3,19 +3,21 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
+use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
  * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
  *
- * @group  ThirdParty
- * @group  Divi
+ * @group Themes
  */
 class Test_handleSaveTemplate extends WPThemeTestcase {
 	use CapTrait;
 
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
+	private $container;
+	private $event;
+	private $subscriber;
 
-	private static $container;
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/handleSaveTemplate.php';
 
 	private static $user_without_permission;
 	private static $user_with_permission;
@@ -28,27 +30,26 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 		self::setAdminCap();
 		self::$user_with_permission    = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		self::$user_without_permission = static::factory()->user->create( [ 'role' => 'editor' ] );
-
-		self::$container = apply_filters( 'rocket_container', '' );
 	}
 
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
 		self::resetAdminCap();
-
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
 
-		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
+		$this->container = apply_filters( 'rocket_container', '' );
+		$this->event = $this->container->get( 'event_manager' );
 
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
+		add_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 	}
 
-	public function tear_down() : void {
+	public function tear_down() {
+		$this->event->remove_subscriber( $this->subscriber );
+
 		remove_filter( 'pre_option_stylesheet', [ $this, 'set_stylesheet' ] );
 
 		parent::tear_down();
@@ -62,6 +63,15 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 	 * @dataProvider ProviderTestData
 	 */
 	public function testTransientSet( $config, $expected ) {
+		$options     = $this->container->get( 'options' );
+		$options_api = $this->container->get( 'options_api' );
+		$delayjs_html = $this->container->get( 'delay_js_html' );
+		$used_css = $this->container->get( 'rucss_used_css_controller' );
+		$options_api->set( 'settings', [] );
+		$this->subscriber = new Divi( $options_api, $options, $delayjs_html, $used_css );
+
+		$this->event->add_subscriber( $this->subscriber );
+
 		$this->set_theme( 'divi', 'Divi' );
 
 		$post = $this->factory->post->create_and_get( $config['template_post'] );
@@ -87,5 +97,4 @@ class Test_handleSaveTemplate extends WPThemeTestcase {
 
 		$this->assertEquals( $expected['transient_set'], get_transient( 'rocket_divi_notice' ) );
 	}
-
 }

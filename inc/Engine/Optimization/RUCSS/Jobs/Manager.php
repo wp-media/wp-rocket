@@ -43,7 +43,7 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 *
 	 * @var string
 	 */
-	protected $optimization_type = 'somethingelse';
+	protected $optimization_type = 'rucss';
 
 	/**
 	 * Check if manager can process.

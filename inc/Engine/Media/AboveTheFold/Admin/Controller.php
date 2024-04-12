@@ -53,6 +53,11 @@ class Controller {
 		}
 
 		$this->delete_rows();
+
+		/**
+		 * Fires after clearing lcp & atf data.
+		 */
+		do_action( 'rocket_after_clear_atf' );
 	}
 
 	/**
@@ -66,7 +71,7 @@ class Controller {
 			return;
 		}
 
-		$this->table->truncate();
+		$this->table->truncate_atf_table();
 	}
 
 	/**
@@ -106,6 +111,56 @@ class Controller {
 
 		if ( is_wp_error( $url ) ) {
 			return;
+		}
+
+		$this->query->delete_by_url( untrailingslashit( $url ) );
+	}
+
+	/**
+	 * Deletes rows when triggering clean from admin
+	 *
+	 * @param array $clean An array containing the status and message.
+	 *
+	 * @return array
+	 */
+	public function truncate( $clean ) {
+		if ( ! $this->context->is_allowed() ) {
+			return $clean;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return [
+				'status' => 'die',
+			];
+		}
+
+		$this->delete_rows();
+
+		return [
+			'status'  => 'success',
+			'message' => sprintf(
+				// translators: %1$s = plugin name.
+				__( '%1$s: Critical images cleared!', 'rocket' ),
+				'<strong>WP Rocket</strong>'
+			),
+		];
+	}
+
+	/**
+	 * Cleans rows for the current URL.
+	 *
+	 * @return void
+	 */
+	public function clean_url() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_nonce_ays( '' );
+		}
+
+		$url = wp_get_referer();
+
+		if ( 0 !== strpos( $url, 'http' ) ) {
+			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+			$url       = $parse_url['scheme'] . '://' . $parse_url['host'] . $url;
 		}
 
 		$this->query->delete_by_url( untrailingslashit( $url ) );
