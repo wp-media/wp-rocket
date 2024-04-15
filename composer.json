@@ -162,8 +162,14 @@
       "test-integration-weglot": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Weglot --coverage-php tests/report/integration-Weglot.cov",
 		  "test-integration-pressidium": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Pressidium --coverage-php tests/report/integration-Pressidium.cov",
 		"run-tests": [
+			"@run-tests-general",
+			"@run-tests-integration-specific"
+		],
+		"run-tests-general": [
 			"@test-unit",
-			"@test-integration",
+			"@test-integration"
+		],
+		"run-tests-integration-specific": [
 			"@test-integration-adminonly",
 			"@test-integration-cloudflare",
 			"@test-integration-cloudflareadmin",
@@ -205,10 +211,6 @@
       "@test-integration-translatepress",
       "@test-integration-weglot",
 			"@test-integration-pressidium"
-		],
-		"run-tests-general": [
-			"@test-unit",
-			"@test-integration"
 		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
