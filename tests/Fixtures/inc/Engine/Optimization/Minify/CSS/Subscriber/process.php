@@ -39,7 +39,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -85,7 +85,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -129,7 +129,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -176,7 +176,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -225,7 +225,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'https://123456.rocketcdn.me/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
@@ -271,7 +271,7 @@ return [
 					</head>
 					<body>
 					<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false}</script>
-					<script src=\'https://123456.rocketcdn.me/cdnpath/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+					<script data-name="wpr-lcp-beacon" src=\'https://123456.rocketcdn.me/cdnpath/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
 					</body>
 				</html>',
 				'files' => [
