@@ -206,6 +206,10 @@
       "@test-integration-weglot",
 			"@test-integration-pressidium"
 		],
+		"run-tests-general": [
+			"@test-unit",
+			"@test-integration"
+		],
 		"run-stan": "vendor/bin/phpstan analyze --memory-limit=2G --no-progress",
 		"install-codestandards": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
 		"phpcs": "phpcs --basepath=.",
