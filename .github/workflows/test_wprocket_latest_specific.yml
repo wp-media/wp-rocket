@@ -1,4 +1,4 @@
-name: Unit/Integration tests PHP8
+name: Integration specific tests Latest version
 
 on:
   pull_request:

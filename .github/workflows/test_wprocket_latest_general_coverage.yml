@@ -1,4 +1,4 @@
-name: Unit/Integration tests PHP8
+name: Unit/Integration General tests Latest version
 
 on:
   pull_request:
@@ -20,7 +20,7 @@ jobs:
         php-versions: ['8.3']
         wp-versions: ['latest']
 
-    name: Code Coverage.
+    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
 
     env:
       WP_TESTS_DIR: "/tmp/tests/phpunit"
