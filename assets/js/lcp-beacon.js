@@ -69,16 +69,18 @@ let performance_images = [];
 
 async function main() {
 	// AJAX call to check if there are any records for the current URL
+	let data_check = new FormData();
+	data_check.append('action', 'rocket_check_lcp');
+	data_check.append('rocket_lcp_nonce', rocket_lcp_data.nonce);
+	data_check.append('url', rocket_lcp_data.url);
+	data_check.append('is_mobile', rocket_lcp_data.is_mobile);
+
 	const response = await fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
-		body: new URLSearchParams({
-			action: 'rocket_check_lcp',
-			url: rocket_lcp_data.url,
-			rocket_lcp_nonce: rocket_lcp_data.nonce
-		})
+		body: data_check
 	});
-	const lcp_data = await response.json();
+
 	if ( true === lcp_data.success ) {
 		console.log('Bailing out because data is already available');
 		return;
