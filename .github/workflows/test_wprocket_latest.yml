@@ -17,7 +17,7 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['8.0', '8.1', '8.2']
+        php-versions: ['8.3']
         wp-versions: ['latest']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
@@ -45,7 +45,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
+        coverage: xdebug
         tools: composer:v2, phpunit
 
     - name: Start mysql service
@@ -68,6 +68,9 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
+    - name: Require phpcov for coverage reporting
+      run: composer require --dev --no-scripts phpunit/phpcov -W
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
 
@@ -79,3 +82,13 @@ jobs:
 
     - name: Test
       run: composer run-tests
+
+    - name: Code Coverage Report
+      run: composer report-code-coverage
+
+    - name: Run codacy-coverage-reporter
+      run: composer report-code-coverage
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: tests/report/coverage.clover

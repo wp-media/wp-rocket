@@ -55,7 +55,6 @@
 		"mobiledetect/mobiledetectlib": "^2.8",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpstan/phpstan": "^1.8",
-		"phpunit/phpcov": "^8.2",
 		"phpunit/phpunit": "^7.5 || ^8 || ^9",
 		"psr/container": "1.0.0",
 		"roave/security-advisories": "dev-master",
