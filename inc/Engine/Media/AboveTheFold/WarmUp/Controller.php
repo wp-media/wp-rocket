@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Common\Utils;
 
 class Controller {
 
@@ -130,7 +131,7 @@ class Controller {
 				 * Check for valid link.
 				 * Check that no external link.
 				 */
-				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'];
+				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'] && ! Utils::is_home( $link );
 			}
 		);
 
@@ -144,6 +145,8 @@ class Controller {
 		 */
 		$link_number = apply_filters( 'rocket_atf_warmup_links_number', 10 );
 		$links       = array_slice( $links, 0, $link_number );
+		// Add home url to the list of links.
+		$links[] = home_url();
 
 		return $links;
 	}
