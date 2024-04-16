@@ -48,5 +48,41 @@ return [
 			],
 			'expected' => $html_output,
 		],
+		'shouldPreloadLcpResponsiveImgset' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_bg_responsive_imgset_template.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'bg-img-set',
+						'bg_set'  => [
+							['src' => "http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif 1dppx"],
+							['src' => "http://example.org/wp-content/rocket-test-data/images/lcp/testwebp.webp 2dppx"]
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_imgset_template.php'),
+		],
+		'shouldPreloadLcpResponsiveWebkit' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_bg_responsive_webkit_template.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'bg-img-set',
+						'bg_set'  => [
+							['src' => "https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8 1dppx"],
+							['src' => "https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg 2dppx"]
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
+		],
 	],
 ];

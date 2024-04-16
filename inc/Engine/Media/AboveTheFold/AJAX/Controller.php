@@ -51,18 +51,16 @@ class Controller {
 		$lcp       = 'not found';
 		$viewport  = [];
 
-		foreach ( $images as $image ) {
-			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
-				// We should only get one LCP from the beacon.
-				$lcp = (object) [
-					'type' => $image->type,
-					'src'  => $image->src,
-				];
-			} elseif ( 'above-the-fold' === $image->label ) {
-				$viewport[] = (object) [
-					'type' => $image->type,
-					'src'  => $image->src,
-				];
+		$keys = ['bg_set', 'src']; // Add more keys here in the order of their priority
+
+		foreach ($images as $image) {
+			if ('lcp' === $image->label && 'not found' === $lcp) {
+				$lcp = $this->createObject($image, $keys);
+			} elseif ('above-the-fold' === $image->label) {
+				$viewportImage = $this->createObject($image, $keys);
+				if ($viewportImage !== null) {
+					$viewport[] = $viewportImage;
+				}
 			}
 		}
 
@@ -90,5 +88,25 @@ class Controller {
 		}
 
 		wp_send_json_success( $item );
+	}
+
+	/**
+	 * Creates an object with the 'type' property and the first key that exists in the image object.
+	 *
+	 * @param object $image The image object.
+	 * @param array  $keys  An array of keys in the order of their priority.
+	 *
+	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
+	 */
+	private function createObject($image, $keys) {
+		foreach ($keys as $key) {
+			if (isset($image->$key)) {
+				return (object) [
+					'type' => $image->type,
+					$key => $image->$key,
+				];
+			}
+		}
+		return null;
 	}
 }
