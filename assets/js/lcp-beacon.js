@@ -63,7 +63,13 @@ function getElementInfo(element) {
 
 	const css_bg_url_rgx = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)\s*?([a-zA-Z0-9\s]*[x|dpcm|dpi|dppx]?)/ig;
 
-	if (nodeName === "img") {
+	if (nodeName === "img" && element.srcset) {
+		element_info.type = "img-srcset";
+		element_info.src = element.src;
+		element_info.srcset = element.srcset; // capture srcset
+		element_info.sizes = element.sizes; // capture sizes
+		element_info.current_src = element.currentSrc;
+	} else if (nodeName === "img") {
 		element_info.type = "img";
 		element_info.src = element.src;
 		element_info.current_src = element.currentSrc;

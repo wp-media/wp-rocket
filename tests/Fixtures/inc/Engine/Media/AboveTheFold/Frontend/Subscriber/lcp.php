@@ -118,7 +118,23 @@ return [
 				],
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
-
-		]
+		],
+		'shouldPreloadLcpResponsiveImage' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_responsive.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'img-srcset',
+						'src' => 'wolf.jpg',
+						"srcset" => "wolf_400px.jpg 400w, wolf_800px.jpg 800w, wolf_1600px.jpg 1600w",
+						"sizes" => "50vw",
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_responsive.php'),
+		],
 	],
 ];

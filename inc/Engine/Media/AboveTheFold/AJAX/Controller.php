@@ -99,14 +99,29 @@ class Controller {
 	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
 	 */
 	private function createObject($image, $keys) {
-		foreach ($keys as $key) {
-			if (isset($image->$key)) {
-				return (object) [
-					'type' => $image->type,
-					$key => $image->$key,
-				];
+		$object = new \stdClass();
+		$object->type = $image->type;
+
+		if ($image->type === 'img-srcset') {
+			// If the type is 'img-srcset', add all the required parameters to the object.
+			$object->src = $image->src;
+			$object->srcset = $image->srcset;
+			$object->sizes = $image->sizes;
+		} else {
+			// For other types, add the first non-empty key to the object.
+			foreach ($keys as $key) {
+				if (isset($image->$key) && !empty($image->$key)) {
+					$object->$key = $image->$key;
+					break;
+				}
 			}
 		}
-		return null;
+
+		// If none of the keys exist in the image object, return null.
+		if (count((array)$object) <= 1) {
+			return null;
+		}
+
+		return $object;
 	}
 }
