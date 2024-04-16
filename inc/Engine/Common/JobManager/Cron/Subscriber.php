@@ -173,7 +173,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = rocket_deprecate_filter(
+		$interval = rocket_apply_filter_and_deprecated(
 			'rocket_saas_pending_jobs_cron_interval',
 			[ 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) ],
 			'3.16',
@@ -191,7 +191,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = rocket_deprecate_filter(
+		$interval = rocket_apply_filter_and_deprecated(
 			'rocket_remove_saas_failed_jobs_cron_interval',
 			[ $default_interval ],
 			'3.16',
@@ -209,7 +209,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param int $interval Interval in seconds.
 		 */
-		$interval = (int) rocket_deprecate_filter(
+		$interval = (int) rocket_apply_filter_and_deprecated(
 			'rocket_remove_saas_on_submit_jobs_cron_interval',
 			[ 1 * rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ) ],
 			'3.16',
