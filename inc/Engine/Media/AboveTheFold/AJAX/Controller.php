@@ -107,6 +107,9 @@ class Controller {
 			$object->src = $image->src;
 			$object->srcset = $image->srcset;
 			$object->sizes = $image->sizes;
+		} elseif ($image->type === 'picture') {
+			$object->src = $image->src;
+			$object->sources = $image->sources;
 		} else {
 			// For other types, add the first non-empty key to the object.
 			foreach ($keys as $key) {

@@ -77,6 +77,15 @@ function getElementInfo(element) {
 		element_info.type = "img";
 		element_info.src = element.poster;
 		element_info.current_src = element.poster;
+	} else if (nodeName === "picture") {
+		element_info.type = "picture";
+		element_info.src = element.querySelector('img').src;
+		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => {
+			return {
+				srcset: source.srcset,
+				media: source.media
+			};
+		});
 	} else {
 		const computed_style = window.getComputedStyle(element, null);
 		const bg_props = [

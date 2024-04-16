@@ -271,14 +271,23 @@ class Controller {
 				}
 				break;
 			case 'picture':
-				if ( ! empty( $lcp->sources ) ) {
-					foreach ( $lcp->sources as $source ) {
-						$sources[] = $source->srcset;
-						$tag      .= $start_tag . 'href="' . $source->srcset . '" media="' . $source->media . '"' . $end_tag;
+				$prev_max_width = null;
+				foreach ( $lcp->sources as $source ) {
+					$media = $source->media;
+					if ( $prev_max_width !== null ) {
+						$media = '(min-width: ' . ($prev_max_width + 0.1) . 'px) and ' . $media;
+					}
+					$sources[] = $source->srcset;
+					$tag      .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '"' . $end_tag;
+					if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
+						$prev_max_width = floatval( $matches[1] );
 					}
 				}
-				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
+				if ( $prev_max_width !== null ) {
+					$media = '(min-width: ' . ($prev_max_width + 0.1) . 'px)';
+					$sources[] = $lcp->src;
+					$tag      .= $start_tag . 'href="' . $lcp->src . '" media="' . $media . '"' . $end_tag;
+				}
 				break;
 		}
 
