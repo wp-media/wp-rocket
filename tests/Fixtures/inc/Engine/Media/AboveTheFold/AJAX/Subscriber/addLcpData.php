@@ -29,10 +29,12 @@ return [
 				[
 					(object) [
 						'label' => 'lcp',
+						'type'  => 'img',
 						'src'   => 'http://example.org/lcp.jpg',
 					],
 					(object) [
 						'label' => 'above-the-fold',
+						'type'  => 'img',
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
@@ -69,10 +71,12 @@ return [
 				[
 					(object) [
 						'label' => 'lcp',
+						'type'  => 'img',
 						'src'   => 'http://example.org/lcp.jpg',
 					],
 					(object) [
 						'label' => 'above-the-fold',
+						'type'  => 'img',
 						'src'   => 'http://example.org/above-the-fold.jpg',
 					],
 				]
