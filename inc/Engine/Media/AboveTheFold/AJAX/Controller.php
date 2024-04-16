@@ -102,22 +102,26 @@ class Controller {
 		$object       = new \stdClass();
 		$object->type = $image->type;
 
-		if ( 'img-srcset' === $image->type ) {
-			// If the type is 'img-srcset', add all the required parameters to the object.
-			$object->src    = $image->src;
-			$object->srcset = $image->srcset;
-			$object->sizes  = $image->sizes;
-		} elseif ( 'picture' === $image->type ) {
-			$object->src     = $image->src;
-			$object->sources = $image->sources;
-		} else {
-			// For other types, add the first non-empty key to the object.
-			foreach ( $keys as $key ) {
-				if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
-					$object->$key = $image->$key;
-					break;
+		switch ( $image->type ) {
+			case 'img-srcset':
+				// If the type is 'img-srcset', add all the required parameters to the object.
+				$object->src    = $image->src;
+				$object->srcset = $image->srcset;
+				$object->sizes  = $image->sizes;
+				break;
+			case 'picture':
+				$object->src     = $image->src;
+				$object->sources = $image->sources;
+				break;
+			default:
+				// For other types, add the first non-empty key to the object.
+				foreach ( $keys as $key ) {
+					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
+						$object->$key = $image->$key;
+						break;
+					}
 				}
-			}
+				break;
 		}
 
 		// If none of the keys exist in the image object, return null.
