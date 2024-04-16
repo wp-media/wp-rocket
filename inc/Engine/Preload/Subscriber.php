@@ -12,9 +12,12 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
+	use LoggerAware;
 	use CheckExcludedTrait;
 
 	/**
@@ -550,6 +553,17 @@ class Subscriber implements Subscriber_Interface {
 			return true;
 		}
 
-		return ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
+		$is_private = ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
+
+		if ( $is_private ) {
+			$this->logger::debug(
+				"Private URL excluded from preload: {$url}",
+				[
+					'method' => __METHOD__,
+				]
+			);
+		}
+
+		return $is_private;
 	}
 }

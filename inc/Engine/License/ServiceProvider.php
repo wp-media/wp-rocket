@@ -3,22 +3,15 @@
 namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\License\API\PricingClient;
-use WP_Rocket\Engine\License\API\Pricing;
-use WP_Rocket\Engine\License\API\UserClient;
-use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\Renewal;
-use WP_Rocket\Engine\License\Subscriber;
-use WP_Rocket\Engine\License\Upgrade;
+use WP_Rocket\Engine\License\API\{PricingClient, Pricing, UserClient, User};
+use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber};
 
 /**
  * Service Provider for the License module
- *
- * @since 3.7.3
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * Aliases the service provider provides
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -33,19 +26,30 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$views = __DIR__ . '/views';
 
 		$this->getContainer()->add( 'pricing_client', PricingClient::class );
 		$this->getContainer()->add( 'user_client', UserClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'pricing', Pricing::class )
+		$this->getContainer()->addShared( 'pricing', Pricing::class )
 			->addArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
-		$this->getContainer()->share( 'user', User::class )
+		$this->getContainer()->addShared( 'user', User::class )
 			->addArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
 			->addArgument( $this->getContainer()->get( 'pricing' ) )
@@ -56,7 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'user' ) )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $views );
-		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'license_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'upgrade' ) )
 			->addArgument( $this->getContainer()->get( 'renewal' ) )
 			->addTag( 'admin_subscriber' );

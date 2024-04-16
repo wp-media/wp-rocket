@@ -3,24 +3,25 @@
 namespace WP_Rocket\Engine\Optimization\DynamicLists;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\APIClient as DefaultListsAPIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager as DefaultListsDataManager;
-use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\APIClient as DelayJSListsAPIClient;
-use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\DataManager as DelayJSListsDataManager;
-use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\DataManager as IncompatiblePluginsListsDataManager;
-use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\APIClient as IncompatiblePluginsListsAPIClient;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\{
+	APIClient as DefaultListsAPIClient,
+	DataManager as DefaultListsDataManager
+};
+use WP_Rocket\Engine\Optimization\DynamicLists\DelayJSLists\{
+	APIClient as DelayJSListsAPIClient,
+	DataManager as DelayJSListsDataManager
+};
+use WP_Rocket\Engine\Optimization\DynamicLists\IncompatiblePluginsLists\{
+	APIClient as IncompatiblePluginsListsAPIClient,
+	DataManager as IncompatiblePluginsListsDataManager
+};
 
 /**
  * Service provider for the WP Rocket DynamicLists
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -36,11 +37,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers the option array in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->getContainer()->add( 'dynamic_lists_defaultlists_data_manager', DefaultListsDataManager::class );
 		$this->getContainer()->add( 'dynamic_lists_defaultlists_api_client', DefaultListsAPIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
@@ -80,7 +92,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'template_path' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) );
 
-		$this->getContainer()->share( 'dynamic_lists_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'dynamic_lists_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'dynamic_lists' ) );
 	}
 }
