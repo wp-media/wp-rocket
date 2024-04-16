@@ -45,12 +45,23 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers the classes in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$this->getContainer()->share( 'atf_table', ATFTable::class );
+	public function register(): void {
+		$this->getContainer()->addShared( 'atf_table', ATFTable::class );
 		$this->getContainer()->add( 'atf_query', ATFQuery::class );
 		$this->getContainer()->add( 'atf_context', Context::class );
 
@@ -65,18 +76,18 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->share( 'atf_subscriber', FrontSubscriber::class )
+		$this->getContainer()->addShared( 'atf_subscriber', FrontSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_controller' ) );
 		$this->getContainer()->add( 'atf_admin_controller', AdminController::class )
 			->addArgument( $this->getContainer()->get( 'atf_table' ) )
 			->addArgument( $this->getContainer()->get( 'atf_query' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) );
-		$this->getContainer()->share( 'atf_admin_subscriber', AdminSubscriber::class )
+		$this->getContainer()->addShared( 'atf_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_admin_controller' ) );
 
 		$this->getContainer()->add( 'atf_cron_controller', CronController::class )
 			->addArgument( $this->getContainer()->get( 'atf_query' ) );
-		$this->getContainer()->share( 'atf_cron_subscriber', CronSubscriber::class )
+		$this->getContainer()->addShared( 'atf_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_cron_controller' ) );
 
 		$this->getContainer()->add( 'atf_ajax_controller', AJAXController::class )
@@ -87,7 +98,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			]
 		);
 
-		$this->getContainer()->share( 'atf_ajax_subscriber', AJAXSubscriber::class )
+		$this->getContainer()->addShared( 'atf_ajax_subscriber', AJAXSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'atf_ajax_controller' ) );
 
 		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
@@ -101,7 +112,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'user' ),
 				]
 			);
-		$this->getContainer()->share( 'warmup_subscriber', WarmUpSubscriber::class )
+		$this->getContainer()->addShared( 'warmup_subscriber', WarmUpSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'warmup_controller' ) );
 	}
 }
