@@ -285,7 +285,7 @@ class Notices {
 
 		$main_message = sprintf(
 			// translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the Remove Unused CSS generator. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
+			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the SaaS features. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
 			'<a href="' . esc_url( $firewall_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $firewall_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
