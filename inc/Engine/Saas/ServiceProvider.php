@@ -24,11 +24,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->getContainer()->add( 'sass_admin_bar', Adminbar::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) )
@@ -39,7 +50,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addArgument( $this->getContainer()->get( 'atf_context' ) );
-		$this->getContainer()->share( 'saas_admin_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'saas_admin_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'sass_admin_bar' ) )
 			->addArgument( $this->getContainer()->get( 'sass_clean' ) )
 			->addArgument( $this->getContainer()->get( 'sass_notices' ) );
