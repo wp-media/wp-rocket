@@ -104,8 +104,7 @@ function getElementInfo(element) {
 		}
 
 		const matches = [...full_bg_prop.matchAll(css_bg_url_rgx)];
-		console.log('matches : '+ JSON.stringify(matches));
-		element_info.bg_set = matches.map(m => m[1] ? {src: m[1].trim() + (m[2] ? " " + m[2].trim() : "")} : {});		console.log('element_info.bg_set : '+ JSON.stringify(element_info.bg_set));
+		element_info.bg_set = matches.map(m => m[1] ? {src: m[1].trim() + (m[2] ? " " + m[2].trim() : "")} : {});
 		// Check if bg_set array is populated with empty objects
 		if (element_info.bg_set.every(item => item.src === "")) {
 			// If bg_set array is populated with empty objects, populate it with the URLs from the matches array
@@ -170,7 +169,6 @@ async function main() {
 	console.log(performance_images);
 	var performance_images_json = JSON.stringify(performance_images);
 	window.performance_images_json = performance_images_json;
-	console.log(performance_images_json);
 
 	const data = new FormData();
 
