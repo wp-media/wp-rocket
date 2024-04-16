@@ -121,7 +121,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $rows Number of rows to grab with each CRON iteration.
 		 */
-		$rows = rocket_deprecate_filter(
+		$rows = rocket_apply_filter_and_deprecated(
 			'rocket_saas_pending_jobs_cron_rows_count',
 			[ 100 ],
 			'3.16',
@@ -202,7 +202,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 * @param string $url Optimized Url.
 		 * @param array  $job_details Result of the request to get the job status from SaaS.
 		 */
-		rocket_deprecate_action(
+		rocket_do_action_and_deprecated(
 			'rocket_saas_complete_job_status',
 			[ $row_details->url, $job_details ],
 			'3.16',
@@ -234,7 +234,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $count Number of rows.
 		 */
-		$pending_job = rocket_deprecate_filter(
+		$pending_job = rocket_apply_filter_and_deprecated(
 			'rocket_saas_pending_jobs_cron_rows_count',
 			[ 100 ],
 			'3.16',
@@ -246,7 +246,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param int $max Max processing rows.
 		 */
-		$max_pending_rows = (int) rocket_deprecate_filter(
+		$max_pending_rows = (int) rocket_apply_filter_and_deprecated(
 			'rocket_saas_max_pending_jobs',
 			[ 3 * $pending_job, $pending_job ],
 			'3.16',
@@ -370,7 +370,7 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $delay delay before failed saas jobs are deleted.
 		 */
-		$delay = (string) rocket_deprecate_filter(
+		$delay = (string) rocket_apply_filter_and_deprecated(
 			'rocket_delay_remove_saas_failed_jobs',
 			[ '3 days' ],
 			'3.16',

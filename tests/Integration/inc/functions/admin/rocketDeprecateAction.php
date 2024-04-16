@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_deprecate_action
+ * @covers ::rocket_do_action_and_deprecated
  * @group Functions
  */
 class Test_RocketDeprecateAction extends TestCase {
@@ -33,7 +33,7 @@ class Test_RocketDeprecateAction extends TestCase {
 
         add_action( $config['old_hook'], [$this, 'hook_callback']);
 
-        rocket_deprecate_action( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] );
+        rocket_do_action_and_deprecated( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] );
 
 		$this->assertSame( $expected, did_action( $config['new_hook'] ) );
 		$this->assertSame( $expected, did_action( $config['old_hook'] ) );

@@ -572,7 +572,7 @@ function rocket_get_license_type( $customer_data ) {
  *
  * @return mixed The filtered value after all hooked functions are applied to it.
  */
-function rocket_deprecate_filter( string $new_hook, array $args, string $version, string $old_hook ) {
+function rocket_apply_filter_and_deprecated( string $new_hook, array $args, string $version, string $old_hook ) {
 	$filtered_value = apply_filters_deprecated( $old_hook, $args, $version, $new_hook );
 	$args[0]        = $filtered_value;
 
@@ -589,7 +589,7 @@ function rocket_deprecate_filter( string $new_hook, array $args, string $version
  *
  * @return void
  */
-function rocket_deprecate_action( string $new_hook, array $args, string $version, string $old_hook ): void {
+function rocket_do_action_and_deprecated( string $new_hook, array $args, string $version, string $old_hook ): void {
 	do_action_deprecated( $old_hook, $args, $version, $new_hook );
 	do_action_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }

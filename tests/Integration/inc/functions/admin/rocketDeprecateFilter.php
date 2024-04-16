@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_deprecate_filter
+ * @covers ::rocket_apply_filter_and_deprecated
  * @group Functions
  */
 class Test_RocketDeprecateFilter extends TestCase {
@@ -32,7 +32,7 @@ class Test_RocketDeprecateFilter extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
         add_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 
-        $this->assertSame( $expected, rocket_deprecate_filter( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] ) );
+        $this->assertSame( $expected, rocket_apply_filter_and_deprecated( $config['new_hook'], $config['args'], $config['version'], $config['old_hook'] ) );
 
         remove_filter( $config['old_hook'], [$this, 'filter_hook_callback']);
 	}
