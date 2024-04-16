@@ -101,6 +101,23 @@ return [
 				],
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
+		],
+		'shouldPreloadLcpSingleBackground' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_single_bg.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'bg-img',
+						'bg_set'  => [
+							['src' => "http://example.org/wp-content/rocket-test-data/images/lcp/testavif.avif"],
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_single_bg.php'),
 
 		]
 	],
