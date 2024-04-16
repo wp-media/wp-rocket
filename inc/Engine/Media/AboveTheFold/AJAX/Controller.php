@@ -55,12 +55,12 @@ class Controller {
 			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
 				// We should only get one LCP from the beacon.
 				$lcp = (object) [
-					'type' => 'img',
+					'type' => $image->type,
 					'src'  => $image->src,
 				];
 			} elseif ( 'above-the-fold' === $image->label ) {
 				$viewport[] = (object) [
-					'type' => 'img',
+					'type' => $image->type,
 					'src'  => $image->src,
 				];
 			}
