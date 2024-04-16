@@ -274,8 +274,8 @@ class Controller {
 				$prev_max_width = null;
 				foreach ( $lcp->sources as $source ) {
 					$media = $source->media;
-					if ( $prev_max_width !== null ) {
-						$media = '(min-width: ' . ($prev_max_width + 0.1) . 'px) and ' . $media;
+					if ( null !== $prev_max_width ) {
+						$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
 					}
 					$sources[] = $source->srcset;
 					$tag      .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '"' . $end_tag;
@@ -283,8 +283,8 @@ class Controller {
 						$prev_max_width = floatval( $matches[1] );
 					}
 				}
-				if ( $prev_max_width !== null ) {
-					$media = '(min-width: ' . ($prev_max_width + 0.1) . 'px)';
+				if ( null !== $prev_max_width ) {
+					$media     = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)';
 					$sources[] = $lcp->src;
 					$tag      .= $start_tag . 'href="' . $lcp->src . '" media="' . $media . '"' . $end_tag;
 				}

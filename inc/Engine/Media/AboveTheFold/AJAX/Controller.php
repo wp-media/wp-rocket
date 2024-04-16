@@ -51,15 +51,15 @@ class Controller {
 		$lcp       = 'not found';
 		$viewport  = [];
 
-		$keys = ['bg_set', 'src']; // Add more keys here in the order of their priority
+		$keys = [ 'bg_set', 'src' ];
 
-		foreach ($images as $image) {
-			if ('lcp' === $image->label && 'not found' === $lcp) {
-				$lcp = $this->createObject($image, $keys);
-			} elseif ('above-the-fold' === $image->label) {
-				$viewportImage = $this->createObject($image, $keys);
-				if ($viewportImage !== null) {
-					$viewport[] = $viewportImage;
+		foreach ( $images as $image ) {
+			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
+				$lcp = $this->create_object( $image, $keys );
+			} elseif ( 'above-the-fold' === $image->label ) {
+				$viewport_image = $this->create_object( $image, $keys );
+				if ( null !== $viewport_image ) {
+					$viewport[] = $viewport_image;
 				}
 			}
 		}
@@ -98,22 +98,22 @@ class Controller {
 	 *
 	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
 	 */
-	private function createObject($image, $keys) {
-		$object = new \stdClass();
+	private function create_object( $image, $keys ) {
+		$object       = new \stdClass();
 		$object->type = $image->type;
 
-		if ($image->type === 'img-srcset') {
+		if ( 'img-srcset' === $image->type ) {
 			// If the type is 'img-srcset', add all the required parameters to the object.
-			$object->src = $image->src;
+			$object->src    = $image->src;
 			$object->srcset = $image->srcset;
-			$object->sizes = $image->sizes;
-		} elseif ($image->type === 'picture') {
-			$object->src = $image->src;
+			$object->sizes  = $image->sizes;
+		} elseif ( 'picture' === $image->type ) {
+			$object->src     = $image->src;
 			$object->sources = $image->sources;
 		} else {
 			// For other types, add the first non-empty key to the object.
-			foreach ($keys as $key) {
-				if (isset($image->$key) && !empty($image->$key)) {
+			foreach ( $keys as $key ) {
+				if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
 					$object->$key = $image->$key;
 					break;
 				}
@@ -121,7 +121,7 @@ class Controller {
 		}
 
 		// If none of the keys exist in the image object, return null.
-		if (count((array)$object) <= 1) {
+		if ( count( (array) $object ) <= 1 ) {
 			return null;
 		}
 
