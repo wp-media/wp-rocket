@@ -16,62 +16,31 @@ function LCPCandidates(count) {
 		if (
 			rect.width > 0 &&
 			rect.height > 0 &&
-			isIntersecting(rect)
+			isIntersecting( rect )
 		) {
 			const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
 			const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
 			const area = visibleWidth * visibleHeight;
 			const elementInfo = getElementInfo(element);
 			if (elementInfo !== null) {
+				// Insert element into topCandidates in descending order of area
 				for (let i = 0; i < topCandidates.length; i++) {
 					if (area > topCandidates[i].area) {
 						topCandidates.splice(i, 0, {element, area, elementInfo});
 						topCandidates.length = Math.min(
 							count,
 							topCandidates.length
-						);
+						); // Keep only specified number of elements
 						break;
 					}
 				}
+				// If topCandidates is not full, append
 				if (topCandidates.length < count) {
 					topCandidates.push({element, area, elementInfo});
 				}
 			}
 		}
 	});
-
-    potentialCandidates.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        if (
-            rect.width > 0 &&
-            rect.height > 0 &&
-            rect.top >= 0 &&
-            rect.bottom <= window.innerHeight &&
-            rect.left >= 0 &&
-            rect.right <= window.innerWidth
-        ) {
-            const area = rect.width * rect.height;
-            const imageURL = getImageUrlFromElement(element);
-            if (imageURL !== null) {
-                // Insert element into topCandidates in descending order of area
-                for (let i = 0; i < topCandidates.length; i++) {
-
-                    if (area > topCandidates[i].area) {
-                        topCandidates.splice(i, 0, { element, area, imageURL });
-                        topCandidates.length = Math.min(
-                            count,
-                            topCandidates.length
-                        ); // Keep only specified number of elements
-                        break;
-                    }
-                }
-                // If topCandidates is not full, append
-                if (topCandidates.length < count) {
-                    topCandidates.push({ element, area, imageURL });
-                }
-            }
-        }
-    });
 
 	return topCandidates.map((candidate) => ({
 		element: candidate.element,
@@ -120,8 +89,14 @@ function getElementInfo(element) {
 		}
 
 		const matches = [...full_bg_prop.matchAll(css_bg_url_rgx)];
+		console.log('matches : '+ JSON.stringify(matches));
+		element_info.bg_set = matches.map(m => m[1] ? {src: m[1].trim() + (m[2] ? " " + m[2].trim() : "")} : {});		console.log('element_info.bg_set : '+ JSON.stringify(element_info.bg_set));
+		// Check if bg_set array is populated with empty objects
+		if (element_info.bg_set.every(item => item.src === "")) {
+			// If bg_set array is populated with empty objects, populate it with the URLs from the matches array
+			element_info.bg_set = matches.map(m => m[1] ? {src: m[1].trim()} : {});
+		}
 
-		element_info.bg_set = matches.map(m => m[1] && m[2] ? m[1].trim() + " " + m[2].trim() : "");
 		if (element_info.bg_set.length > 0) {
 			element_info.src = element_info.bg_set[0].src;
 			if (element_info.type === "bg-img-set") {

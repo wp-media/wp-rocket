@@ -84,5 +84,24 @@ return [
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_bg_responsive_webkit_template.php'),
 		],
+		'shouldPreloadLcpLayeredBackground' => [
+			'config' => [
+				'html' => file_get_contents(__DIR__ . '/HTML/input_lcp_layered_bg.php'),
+				'row' => [
+					'status' => 'completed',
+					'url' => 'http://example.org',
+					'lcp' => json_encode( (object) [
+						'type' => 'bg-img',
+						'bg_set'  => [
+							['src' => "https://fastly.picsum.photos/id/976/200/300.jpg?hmac=s1Uz9fgJv32r8elfaIYn7pLpQXps7X9oYNwC5XirhO8"],
+							['src' => "https://rocketlabsqa.ovh/wp-content/rocket-test-data/images/fixtheissue.jpg"]
+						]
+					]),
+					'viewport' => json_encode ( [] ),
+				],
+			],
+			'expected' => file_get_contents(__DIR__ . '/HTML/output_lcp_layered_bg.php'),
+
+		]
 	],
 ];
