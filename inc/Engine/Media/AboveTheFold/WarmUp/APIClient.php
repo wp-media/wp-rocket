@@ -15,6 +15,8 @@ class APIClient extends BaseAPIClient {
 	 * @return array
 	 */
 	public function add_to_atf_queue( string $url ): array {
+		$is_home = Utils::is_home( $url );
+		
 		$url = add_query_arg(
 			[
 				'wpr_imagedimensions' => 1,
@@ -24,7 +26,7 @@ class APIClient extends BaseAPIClient {
 
 		$config = [
 			'optimization_list' => '',
-			'is_home'           => Utils::is_home( $url ),
+			'is_home'           => $is_home,
 		];
 
 		return $this->add_to_queue( $url, $config );
