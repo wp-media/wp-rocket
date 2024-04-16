@@ -301,7 +301,7 @@ class Notices {
 				'message'              => $message,
 				'dismissible'          => '',
 				'id'                   => 'rocket-notice-rucss-error-http',
-				'dismiss_button'       => 'rucss_error_notice',
+				'dismiss_button'       => 'saas_error_notice',
 				'dismiss_button_class' => 'button-primary',
 			]
 		);
