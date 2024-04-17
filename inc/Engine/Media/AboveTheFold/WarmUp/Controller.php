@@ -126,12 +126,16 @@ class Controller {
 			function ( $link ) use ( $home_url ) {
 				$link_host = wp_parse_url( $link );
 				$site_host = wp_parse_url( $home_url );
-
 				/**
 				 * Check for valid link.
 				 * Check that no external link.
+				 * Check that it's not home.
 				 */
-				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'] && ! Utils::is_home( $link );
+				$is_valid_url = wp_http_validate_url( $link );
+				$is_same_host = isset( $link_host['host'] ) ? $link_host['host'] === $site_host['host'] : false;
+				$is_not_home = ! Utils::is_home( $link );
+
+				return $is_valid_url && $is_same_host && $is_not_home;
 			}
 		);
 
