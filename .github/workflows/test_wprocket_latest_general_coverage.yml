@@ -84,7 +84,7 @@ jobs:
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Remove covers annotations on integration tests
-      run: php vendor/bin/covers-ignore tests/Integration
+      run: composer vendor/bin/covers-ignore tests/Integration
 
     - name: Test
       run: composer run-tests-general

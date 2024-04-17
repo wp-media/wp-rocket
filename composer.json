@@ -57,13 +57,11 @@
 		"phpstan/phpstan": "^1.8",
 		"phpunit/phpunit": "^7.5 || ^8 || ^9",
 		"psr/container": "1.1.1",
-		"rawr/covers-ignore": "^0.11.0",
 		"roave/security-advisories": "dev-master",
 		"szepeviktor/phpstan-wordpress": "^1.3",
 		"woocommerce/action-scheduler": "^3.4",
 		"wp-coding-standards/wpcs": "^3",
 		"wp-media/background-processing": "^1.3",
-		"wp-media/monolog": "^0.0",
 		"wp-media/phpunit": "^3",
 		"wp-media/rocket-lazyload-common": "^3.0.11",
 		"wp-media/wp-imagify-partner": "^1.0",
@@ -74,7 +72,8 @@
 		"wpackagist-plugin/simple-custom-css": "^4.0.3",
 		"wpackagist-plugin/spinupwp": "^1.1",
 		"wpackagist-plugin/woocommerce": "^8",
-		"wpackagist-plugin/wp-smushit": "^3"
+		"wpackagist-plugin/wp-smushit": "^3",
+		"wp-media/monolog": "^0.0"
 	},
 	"autoload": {
 		"classmap": [
