@@ -29,11 +29,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->getContainer()->add( 'atf_context', Context::class );
 
 		$this->getContainer()->add( 'warmup_apiclient', APIClient::class )
