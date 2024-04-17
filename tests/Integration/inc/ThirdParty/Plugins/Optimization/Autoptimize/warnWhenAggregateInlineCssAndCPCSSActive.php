@@ -2,6 +2,8 @@
 
 declare( strict_types=1 );
 
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\Autoptimize;
+
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;

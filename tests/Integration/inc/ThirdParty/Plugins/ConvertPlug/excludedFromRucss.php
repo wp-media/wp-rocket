@@ -1,5 +1,7 @@
 <?php
 
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\ConvertPlug;
+
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
