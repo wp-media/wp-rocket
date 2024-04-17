@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\Engine\Media\AboveTheFold\AJAX\Subscri
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Subscriber::add_lcp_data
+ *
  *
  * @group AboveTheFold
  */
