@@ -4,8 +4,10 @@ namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
+use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 
 /**
  * Plugin activation controller
@@ -37,10 +39,10 @@ class Activation {
 		$container->add( 'template_path', WP_ROCKET_PATH . 'views' );
 		$options_api = new Options( 'wp_rocket_' );
 		$container->add( 'options_api', $options_api );
-		$container->addServiceProvider( \WP_Rocket\ServiceProvider\Options::class );
-		$container->addServiceProvider( \WP_Rocket\Engine\Preload\Activation\ServiceProvider::class );
-		$container->addServiceProvider( ServiceProvider::class );
-		$container->addServiceProvider( \WP_Rocket\ThirdParty\Hostings\ServiceProvider::class );
+		$container->addServiceProvider( new OptionsServiceProvider() );
+		$container->addServiceProvider( new PreloadActivationServiceProvider() );
+		$container->addServiceProvider( new ServiceProvider() );
+		$container->addServiceProvider( new HostingsServiceProvider() );
 
 		$host_type = HostResolver::get_host_service();
 
