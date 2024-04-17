@@ -71,6 +71,9 @@ jobs:
     - name: Require phpcov for coverage reporting
       run: composer require --dev --no-scripts phpunit/phpcov -W
 
+    - name: Require phpcov for coverage reporting
+      run: composer require --dev --no-scripts rawr/covers-ignore -W      
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-interaction --no-scripts
 
@@ -79,6 +82,9 @@ jobs:
 
     - name: Mysql8 auth plugin workaround
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+
+    - name: Remove covers annotations on integration tests
+      run: composer vendor/bin/covers-ignore tests/Integration
 
     - name: Test
       run: composer run-tests-general
