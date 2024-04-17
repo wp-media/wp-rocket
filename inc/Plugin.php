@@ -16,6 +16,7 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
@@ -50,6 +51,7 @@ use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServicePr
 use WP_Rocket\ThirdParty\Themes\ThemeResolver;
 use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
 use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
+
 /**
  * Plugin Manager.
  */
@@ -113,7 +115,7 @@ class Plugin {
 
 		add_filter( 'rocket_container', [ $this, 'get_container' ] );
 
-		$this->container->add( 'template_path', $template_path );
+		$this->container->add( 'template_path', new StringArgument( $template_path ) );
 	}
 
 	/**
@@ -134,29 +136,29 @@ class Plugin {
 	 */
 	public function load() {
 		$this->event_manager = new Event_Manager();
-		$this->container->share( 'event_manager', $this->event_manager );
+		$this->container->addShared( 'event_manager', $this->event_manager );
 
 		$this->options_api = new Options( 'wp_rocket_' );
 		$this->container->add( 'options_api', $this->options_api );
-		$this->container->addServiceProvider( OptionsServiceProvider::class );
+		$this->container->addServiceProvider( new OptionsServiceProvider() );
 		$this->options = $this->container->get( 'options' );
 
 		$this->container->add( 'debug_resolver', DebugResolver::class )
 			->addArgument( $this->options );
 
-		$this->container->addServiceProvider( LoggerServiceProvider::class );
+		$this->container->addServiceProvider( new LoggerServiceProvider() );
 
 		$this->container->get( 'logger' );
 
-		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
-		$this->container->addServiceProvider( SupportServiceProvider::class );
-		$this->container->addServiceProvider( BeaconServiceProvider::class );
-		$this->container->addServiceProvider( RocketCDNServiceProvider::class );
-		$this->container->addServiceProvider( CacheServiceProvider::class );
-		$this->container->addServiceProvider( CriticalPathServiceProvider::class );
-		$this->container->addServiceProvider( HealthCheckServiceProvider::class );
-		$this->container->addServiceProvider( MediaServiceProvider::class );
-		$this->container->addServiceProvider( DeferJSServiceProvider::class );
+		$this->container->addServiceProvider( new AdminDatabaseServiceProvider() );
+		$this->container->addServiceProvider( new SupportServiceProvider() );
+		$this->container->addServiceProvider( new BeaconServiceProvider() );
+		$this->container->addServiceProvider( new RocketCDNServiceProvider() );
+		$this->container->addServiceProvider( new CacheServiceProvider() );
+		$this->container->addServiceProvider( new CriticalPathServiceProvider() );
+		$this->container->addServiceProvider( new HealthCheckServiceProvider() );
+		$this->container->addServiceProvider( new MediaServiceProvider() );
+		$this->container->addServiceProvider( new DeferJSServiceProvider() );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -173,12 +175,12 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function get_subscribers() {
+		$subscribers = [];
+
 		if ( is_admin() ) {
 			$subscribers = $this->init_admin_subscribers();
 		} elseif ( $this->is_valid_key ) {
 			$subscribers = $this->init_valid_key_subscribers();
-		} else {
-			$subscribers = [];
 		}
 
 		return array_merge( $subscribers, $this->init_common_subscribers() );
@@ -207,11 +209,11 @@ class Plugin {
 			]
 		);
 
-		$this->container->addServiceProvider( SettingsServiceProvider::class );
-		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
-		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
-		$this->container->addServiceProvider( DomainChangeServiceProvider::class );
-		$this->container->addServiceProvider( AdminLazyloadCSSServiceProvider::class );
+		$this->container->addServiceProvider( new SettingsServiceProvider() );
+		$this->container->addServiceProvider( new EngineAdminServiceProvider() );
+		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
+		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
+		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
 
 		return [
 			'beacon',
@@ -247,7 +249,7 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function init_valid_key_subscribers() {
-		$this->container->addServiceProvider( OptimizationServiceProvider::class );
+		$this->container->addServiceProvider( new OptimizationServiceProvider() );
 
 		$subscribers = [
 			'buffer_subscriber',
@@ -278,30 +280,30 @@ class Plugin {
 	 * @return array array of common subscribers.
 	 */
 	private function init_common_subscribers() {
-		$this->container->addServiceProvider( CapabilitiesServiceProvider::class );
-		$this->container->addServiceProvider( AddonServiceProvider::class );
+		$this->container->addServiceProvider( new CapabilitiesServiceProvider() );
+		$this->container->addServiceProvider( new AddonServiceProvider() );
 
-		$this->container->addServiceProvider( VarnishServiceProvider::class );
-		$this->container->addServiceProvider( PreloadServiceProvider::class );
-		$this->container->addServiceProvider( PreloadLinksServiceProvider::class );
-		$this->container->addServiceProvider( CDNServiceProvider::class );
-		$this->container->addServiceProvider( Common_Subscribers::class );
-		$this->container->addServiceProvider( ThirdPartyServiceProvider::class );
-		$this->container->addServiceProvider( HostingsServiceProvider::class );
-		$this->container->addServiceProvider( PluginServiceProvider::class );
-		$this->container->addServiceProvider( DelayJSServiceProvider::class );
-		$this->container->addServiceProvider( RUCSSServiceProvider::class );
-		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
-		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
-		$this->container->addServiceProvider( LicenseServiceProvider::class );
-		$this->container->addServiceProvider( ThemesServiceProvider::class );
-		$this->container->addServiceProvider( APIServiceProvider::class );
-		$this->container->addServiceProvider( CommmonExtractCSSServiceProvider::class );
-		$this->container->addServiceProvider( LazyloadCSSServiceProvider::class );
-		$this->container->addServiceProvider( DebugServiceProvider::class );
-		$this->container->addServiceProvider( ATFServiceProvider::class );
-		$this->container->addServiceProvider( JobManagerServiceProvider::class );
-		$this->container->addServiceProvider( SaasAdminServiceProvider::class );
+		$this->container->addServiceProvider( new VarnishServiceProvider() );
+		$this->container->addServiceProvider( new PreloadServiceProvider() );
+		$this->container->addServiceProvider( new PreloadLinksServiceProvider() );
+		$this->container->addServiceProvider( new CDNServiceProvider() );
+		$this->container->addServiceProvider( new Common_Subscribers() );
+		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
+		$this->container->addServiceProvider( new HostingsServiceProvider() );
+		$this->container->addServiceProvider( new PluginServiceProvider() );
+		$this->container->addServiceProvider( new DelayJSServiceProvider() );
+		$this->container->addServiceProvider( new RUCSSServiceProvider() );
+		$this->container->addServiceProvider( new HeartbeatServiceProvider() );
+		$this->container->addServiceProvider( new DynamicListsServiceProvider() );
+		$this->container->addServiceProvider( new LicenseServiceProvider() );
+		$this->container->addServiceProvider( new ThemesServiceProvider() );
+		$this->container->addServiceProvider( new APIServiceProvider() );
+		$this->container->addServiceProvider( new CommmonExtractCSSServiceProvider() );
+		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
+		$this->container->addServiceProvider( new DebugServiceProvider() );
+		$this->container->addServiceProvider( new ATFServiceProvider() );
+		$this->container->addServiceProvider( new JobManagerServiceProvider() );
+		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -406,7 +408,7 @@ class Plugin {
 		}
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
-			$this->container->addServiceProvider( CloudflareServiceProvider::class );
+			$this->container->addServiceProvider( new CloudflareServiceProvider() );
 
 			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';

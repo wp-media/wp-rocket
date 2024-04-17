@@ -1,27 +1,21 @@
 <?php
 namespace WP_Rocket\Engine\Debug;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Debug\Resolver;
 
 /**
  * Service provider for Debug
  */
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [
 		'debug_subscriber',
+		'options_debug',
 	];
 
 	/**
@@ -29,14 +23,25 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @var array
 	 */
-	protected $services;
+	protected $services = [];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
 
 	/**
 	 * Register the service in the provider array
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		$this->services = $this->getContainer()->get( 'debug_resolver' )->get_services();
 
 		if ( empty( $this->services ) ) {
@@ -53,7 +58,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$this->container->add( 'debug_subscriber', DebugSubscriber::class );
 
 		if ( empty( $this->services ) ) {

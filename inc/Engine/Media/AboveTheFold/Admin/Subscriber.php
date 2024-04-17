@@ -38,7 +38,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_update_comment_count'       => 'delete_post_atf',
 			'edit_term'                     => 'delete_term_atf',
 			'pre_delete_term'               => 'delete_term_atf',
-			'rocket_saas_clean_all'         => 'truncate',
+			'rocket_saas_clean_all'         => 'truncate_atf_admin',
 			'rocket_saas_clean_url'         => 'clean_url',
 		];
 	}
@@ -81,8 +81,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function truncate( $clean ) {
-		return $this->controller->truncate( $clean );
+	public function truncate_atf_admin( $clean ) {
+		return $this->controller->truncate_atf_admin( $clean );
 	}
 
 	/**

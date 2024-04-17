@@ -12,23 +12,16 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS as UsedCSSController;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSSQuery;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Factory\RUCSSFactory;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\{Manager, Factory};
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContextSaas;
 use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
+
 /**
  * Service provider for the WP Rocket RUCSS
- *
- * @since  3.9
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -52,13 +45,24 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers the option array in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 
-		$this->getContainer()->share( 'rucss_usedcss_table', UsedCSSTable::class );
+		$this->getContainer()->addShared( 'rucss_usedcss_table', UsedCSSTable::class );
 		$this->getContainer()->add( 'rucss_database', Database::class )
 			->addArgument( $this->getContainer()->get( 'rucss_usedcss_table' ) );
 
@@ -93,7 +97,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 				);
 
-		$this->getContainer()->share( 'rucss_factory', Factory::class )
+		$this->getContainer()->addShared( 'rucss_factory', Factory::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'rucss_manager' ),
@@ -109,18 +113,18 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_manager' ) );
 
-		$this->getContainer()->share( 'rucss_option_subscriber', OptionSubscriber::class )
+		$this->getContainer()->addShared( 'rucss_option_subscriber', OptionSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) );
-		$this->getContainer()->share( 'rucss_admin_subscriber', AdminSubscriber::class )
+		$this->getContainer()->addShared( 'rucss_admin_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_settings' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_database' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_queue' ) );
-		$this->getContainer()->share( 'rucss_frontend_subscriber', FrontendSubscriber::class )
+		$this->getContainer()->addShared( 'rucss_frontend_subscriber', FrontendSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_controller' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_context' ) );
 
-		$this->getContainer()->share( 'rucss_cron_subscriber', CronSubscriber::class )
+		$this->getContainer()->addShared( 'rucss_cron_subscriber', CronSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'job_processor' ) )
 			->addArgument( $this->getContainer()->get( 'rucss_used_css_query' ) );
 	}

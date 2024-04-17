@@ -93,6 +93,10 @@ class Controller {
 	 * @return string
 	 */
 	private function preload_lcp( $html, $row ) {
+		if ( rocket_bypass() ) { // Bail out if rocket_bypass() returns true.
+			return $html;
+		}
+
 		if ( ! preg_match( '#</title\s*>#', $html, $matches ) ) {
 			return $html;
 		}

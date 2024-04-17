@@ -10,17 +10,10 @@ use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
  * Service Provider for cache subscribers
- *
- * @since 3.5.5
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -37,11 +30,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$filesystem = rocket_direct_filesystem();
 
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
@@ -56,18 +60,18 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'purge', Purge::class )
 			->addArgument( $filesystem )
 			->addArgument( $cache_query );
-		$this->getContainer()->share( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
+		$this->getContainer()->addShared( 'purge_actions_subscriber', PurgeActionsSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'purge' ) )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'admin_cache_subscriber', AdminSubscriber::class )
+		$this->getContainer()->addShared( 'admin_cache_subscriber', AdminSubscriber::class )
 			->addArgument( $this->getContainer()->get( 'advanced_cache' ) )
 			->addArgument( $this->getContainer()->get( 'wp_cache' ) )
 			->addTag( 'admin_subscriber' );
 
 		$this->getContainer()->add( 'expired_cache_purge', PurgeExpiredCache::class )
 			->addArgument( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
-		$this->getContainer()->share( 'expired_cache_purge_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'expired_cache_purge_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $this->getContainer()->get( 'expired_cache_purge' ) )
 			->addTag( 'common_subscriber' );

@@ -1,3 +1,10 @@
+function isIntersecting(rect) {
+	return (
+		rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+	);
+}
+
 function LCPCandidates(count) {
     const potentialCandidates = document.querySelectorAll(
         "img, video, p, main, div"
@@ -6,20 +13,18 @@ function LCPCandidates(count) {
 
     potentialCandidates.forEach((element) => {
         const rect = element.getBoundingClientRect();
-        if (
-            rect.width > 0 &&
-            rect.height > 0 &&
-            rect.top >= 0 &&
-            rect.bottom <= window.innerHeight &&
-            rect.left >= 0 &&
-            rect.right <= window.innerWidth
-        ) {
-            const area = rect.width * rect.height;
-            const imageURL = getImageUrlFromElement(element);
+		if (
+			rect.width > 0 &&
+			rect.height > 0 &&
+			isIntersecting(rect)
+		) {
+			const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
+			const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
+			const area = visibleWidth * visibleHeight;
+			const imageURL = getImageUrlFromElement(element);
             if (imageURL !== null) {
                 // Insert element into topCandidates in descending order of area
                 for (let i = 0; i < topCandidates.length; i++) {
-
                     if (area > topCandidates[i].area) {
                         topCandidates.splice(i, 0, { element, area, imageURL });
                         topCandidates.length = Math.min(
@@ -37,10 +42,10 @@ function LCPCandidates(count) {
         }
     });
 
-    return topCandidates.map((candidate) => ({
-        element: candidate.element,
-        imageURL: candidate.imageURL,
-    }));
+	return topCandidates.map((candidate) => ({
+		element: candidate.element,
+		imageURL: candidate.imageURL,
+	}));
 }
 
 function getImageUrlFromElement(element) {
@@ -112,13 +117,7 @@ async function main() {
     for (var i = 0; i < above_the_fold_images.length; i++) {
         var image = above_the_fold_images[i];
         var rect = image.getBoundingClientRect();
-        var intersecting =
-            rect.top <
-                (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.left <
-                (window.innerWidth || document.documentElement.clientWidth) &&
-            rect.bottom > 0 &&
-            rect.right > 0;
+        var intersecting = isIntersecting(rect);
         if (intersecting) {
             var parent = image.parentNode;
             while (parent !== document) {
