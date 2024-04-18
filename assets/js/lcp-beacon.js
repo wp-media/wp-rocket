@@ -1,7 +1,34 @@
+function isDuplicateImage(image, performance_images) {
+	const elementInfo = getElementInfo(image);
+
+	if (elementInfo === null) {
+		return false;
+	}
+
+	if (elementInfo.type === "img" || elementInfo.type === "img-srcset" || elementInfo.type === "video") {
+		return performance_images.some((item) => {
+			return item.src === elementInfo.src;
+		});
+	} else if (elementInfo.type === "bg-img" || elementInfo.type === "bg-img-set") {
+		return performance_images.some((item) => {
+			return item.src === elementInfo.src;
+		});
+	} else if (elementInfo.type === "picture") {
+		return performance_images.some((item) => {
+			return item.src === elementInfo.src;
+		});
+	}
+
+	return false;
+}
+
 function isIntersecting(rect) {
+	// Check if the image is fully within the viewport
 	return (
-		rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-		rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth)
 	);
 }
 
@@ -136,7 +163,9 @@ async function main() {
 		console.log("No LCP candidate found.");
 	}
 
-	var above_the_fold_images = document.querySelectorAll("img");
+	var above_the_fold_images = document.querySelectorAll(
+		"img, video, picture, p, main, div"
+	);
 
 	for (var i = 0; i < above_the_fold_images.length; i++) {
 		var image = above_the_fold_images[i];
@@ -153,14 +182,16 @@ async function main() {
 				}
 				parent = parent.parentNode;
 			}
-			const isDuplicate = performance_images.some(
-				(item) => item.src === image.src
-			);
+			// const isDuplicate = performance_images.some(
+			// 	(item) => item.src === image.src
+			// );
+			const isDuplicate = isDuplicateImage(image, performance_images);
 
 			// If it's not a duplicate, push the new element
 			if (!isDuplicate && parent === document) {
+				const elementInfo = getElementInfo(image);
 				performance_images.push({
-					src: image.src,
+					...elementInfo,
 					label: "above-the-fold",
 				});
 			}
@@ -184,13 +215,13 @@ async function main() {
 		credentials: 'same-origin',
 		body: data
 	})
-	.then((response) => response.json())
-	.then((data) => {
-		console.log(data);
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+		.then((response) => response.json())
+		.then((data) => {
+			console.log(data);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
 }
 
 if (document.readyState !== 'loading') {
