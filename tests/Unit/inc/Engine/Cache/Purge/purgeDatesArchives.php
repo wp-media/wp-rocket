@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
+ * Test class covering \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
  * @group  purge_actions
  */
 class Test_PurgeDatesArchives extends FilesystemTestCase {

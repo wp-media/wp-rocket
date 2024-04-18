@@ -9,7 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Debug\Resolver;
 
 /**
- * @covers \WP_Rocket\Engine\Debug\Resolver::get_services
+ * Test class covering \WP_Rocket\Engine\Debug\Resolver::get_services
  */
 class Test_GetServices extends TestCase {
 	/**

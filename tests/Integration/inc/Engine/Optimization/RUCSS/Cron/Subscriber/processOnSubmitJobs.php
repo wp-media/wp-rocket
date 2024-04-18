@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::process_on_submit_jobs
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::process_on_submit_jobs
  */
 class Test_processOnSubmitJobs extends TestCase {
 

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::remove_assets_generated
+ * Test class covering \WP_Rocket\ThirdParty\Divi::remove_assets_generated
  *
  * @group Themes
  */

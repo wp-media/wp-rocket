@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::delete
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::delete
  */
 class Test_delete extends TestCase {
 

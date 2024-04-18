@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Subscriber::delay_js
  * @group  Optimize
  * @group  DelayJS
  *

@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::add_localize_script_data
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::add_localize_script_data
  *
  * @group  RUCSS
  */

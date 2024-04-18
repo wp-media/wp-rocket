@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
  * @uses   ::rocket_get_constant
  * @uses   \RocketLazyload\Assets::insertLazyloadScript
  *

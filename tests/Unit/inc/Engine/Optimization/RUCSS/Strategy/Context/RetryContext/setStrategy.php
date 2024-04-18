@@ -5,7 +5,7 @@ use Brain\Monkey\Functions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext::set_strategy
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Context\RetryContext::set_strategy
  *
  * @group  RUCSS
  */

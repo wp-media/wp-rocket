@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::maybe_disable_youtube_preview
  *
  * @group Themes
  */

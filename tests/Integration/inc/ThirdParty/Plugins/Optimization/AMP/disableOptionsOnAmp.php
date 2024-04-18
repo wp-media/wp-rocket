@@ -6,7 +6,7 @@ use AMP_Theme_Support;
 use AMP_Options_Manager;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group ThirdParty
  * @group WithAmp
  */

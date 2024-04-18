@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subs
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::maybe_disable_combine_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::maybe_disable_combine_js
  *
  * @group DelayJS
  * @group AdminOnly

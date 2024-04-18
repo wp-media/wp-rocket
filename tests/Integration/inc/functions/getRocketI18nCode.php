@@ -7,7 +7,7 @@ use SitePress;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_code
+ * Test class covering ::get_rocket_i18n_code
  * @uses  ::rocket_has_i18n
  * @group Functions
  * @group i18n

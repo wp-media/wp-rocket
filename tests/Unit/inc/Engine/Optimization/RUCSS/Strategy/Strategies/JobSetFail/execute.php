@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail::execute
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\JobSetFail::execute
  *
  * @group  RUCSS
  */

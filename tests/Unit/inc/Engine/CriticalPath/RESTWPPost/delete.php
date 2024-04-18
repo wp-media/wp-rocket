@@ -14,7 +14,7 @@ use WP_Error;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
  * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
  * @uses   \WP_Rocket\Admin\Options_Data::get
  *

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscri
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_on_submit_jobs
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_on_submit_jobs
  */
 class Test_scheduleOnSubmitJobs extends TestCase {
 

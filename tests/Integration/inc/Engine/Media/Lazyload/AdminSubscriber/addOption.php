@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Media\Lazyload\AdminSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::add_option
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::add_option
  *
  * @group  AdminOnly
  * @group  Lazyload

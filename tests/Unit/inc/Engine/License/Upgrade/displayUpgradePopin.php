@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::display_upgrade_popin
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::display_upgrade_popin
  *
  * @group License
  */

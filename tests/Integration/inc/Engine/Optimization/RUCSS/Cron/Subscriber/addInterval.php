@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::add_interval
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::add_interval
  *
  * @group  RUCSS
  */
