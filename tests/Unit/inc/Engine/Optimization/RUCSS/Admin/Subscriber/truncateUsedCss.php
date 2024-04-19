@@ -64,8 +64,8 @@ class Test_TruncateUsedCss extends TestCase {
 		}
 		Actions\expectDone('rocket_after_clean_used_css');
 
-		Functions\expect('set_transient')->with('rocket_rucss_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
+		Functions\expect('set_transient')->with('rocket_saas_processing', time() + 90, 1.5 * MINUTE_IN_SECONDS);
 
-		Functions\expect('rocket_renew_box')->with('rucss_success_notice');
+		Functions\expect('rocket_renew_box')->with('saas_success_notice');
 	}
 }
