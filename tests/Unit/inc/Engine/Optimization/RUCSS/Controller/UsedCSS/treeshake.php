@@ -23,6 +23,7 @@ class Test_Treeshake extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 	protected $context;
+	protected $usedCss;
 	protected $manager;
 
 	/**
@@ -48,7 +49,7 @@ class Test_Treeshake extends TestCase {
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
-				$this->options, 
+				$this->options,
 				$this->usedCssQuery,
 				$this->data_manager,
 				$this->filesystem,
