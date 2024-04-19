@@ -144,8 +144,11 @@ class Notices {
 
 		$message = sprintf(
 			// translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of seconds.
-			__( '%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.
-			 WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
+			__(
+				'%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.
+			 WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).',
+				'rocket'
+				),
 			'<strong>WP Rocket</strong>',
 			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
