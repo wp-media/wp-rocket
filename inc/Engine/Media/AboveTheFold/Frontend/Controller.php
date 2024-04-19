@@ -146,7 +146,7 @@ class Controller {
 
 		$url  = preg_quote( $lcp->src, '/' );
 		$html = preg_replace_callback(
-			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
+			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
 				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
@@ -217,7 +217,7 @@ class Controller {
 		$exclusions = array_map(
 				function ( $exclusion ) {
 					$exclusion = wp_parse_url( $exclusion );
-					return $exclusion['path'];
+					return ltrim( $exclusion['path'], '/' );
 				},
 			$exclusions
 			);
