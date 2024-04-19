@@ -94,8 +94,9 @@ async function main() {
 	// Check screen size
 	const screenWidth = window.innerWidth || document.documentElement.clientWidth;
 	const screenHeight = window.innerHeight || document.documentElement.clientHeight;
-	if (
-		( ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) ) {
+	if ( ( rocket_lcp_data.is_mobile && ( screenWidth > rocket_lcp_data.width_threshold || screenHeight > rocket_lcp_data.height_threshold ) ) ||
+		( ! rocket_lcp_data.is_mobile && ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) )
+	{
 		console.log('Bailing out because screen size is not acceptable');
 		return;
 	}
