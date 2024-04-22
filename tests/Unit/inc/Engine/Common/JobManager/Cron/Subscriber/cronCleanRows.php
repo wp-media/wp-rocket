@@ -8,7 +8,6 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Common\JobManager\JobProcessor;
 use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Factory as RUCSSFactory;
-use WP_Rocket\Engine\Media\AboveTheFold\Jobs\Factory as ATFFactory;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -31,7 +30,6 @@ class Test_CronCleanRows extends TestCase {
 
 		$this->factories = [
 			Mockery::mock( RUCSSFactory::class ),
-			Mockery::mock( ATFFactory::class ),
 		];
 		
 		$this->subscriber = new Subscriber( Mockery::mock( JobProcessor::class ), $this->factories );
@@ -41,14 +39,14 @@ class Test_CronCleanRows extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config ) {
-		Functions\expect( 'apply_filters' )
-			->with( 'rocket_rucss_deletion_enabled', true )
+		Functions\expect( 'rocket_apply_filter_and_deprecated' )
+			->with( 'rocket_saas_deletion_enabled', [ true ], '3.16', 'rocket_rucss_deletion_enabled' )
 			->andReturn( $config['deletion_activated'] );
 
 		if ( $config['deletion_activated'] ) {
 			foreach ( $this->factories as $factory ) {
 				$manager = Mockery::mock( Manager::class );
-				$manager->shouldReceive( 'is_allowed' )->once()->andReturn( $config['is_allowed'] );
+				$manager->expects()->is_allowed()->once()->andReturn( $config['is_allowed'] );
 
 				$factory->expects()
 					->manager()

@@ -54,7 +54,10 @@ class Test_DeleteTermUsedCss extends TestCase {
 		if(! array_key_exists('is_disabled', $config)) {
 			return;
 		}
-		Functions\expect('apply_filters')->with( 'rocket_rucss_deletion_activated' )->andReturn($config['is_disabled']);
+		
+		Functions\expect( 'rocket_apply_filter_and_deprecated' )
+			->with( 'rocket_saas_deletion_enabled', [ true ], '3.16', 'rocket_rucss_deletion_enabled' )
+			->andReturn( $config['is_disabled'] );
 	}
 
 	protected function configureDeletion($config) {
