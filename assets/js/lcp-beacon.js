@@ -5,21 +5,19 @@ function isDuplicateImage(image, performance_images) {
 		return false;
 	}
 
-	if (elementInfo.type === "img" || elementInfo.type === "img-srcset" || elementInfo.type === "video") {
-		return performance_images.some((item) => {
-			return item.src === elementInfo.src;
-		});
-	} else if (elementInfo.type === "bg-img" || elementInfo.type === "bg-img-set") {
-		return performance_images.some((item) => {
-			return item.src === elementInfo.src;
-		});
-	} else if (elementInfo.type === "picture") {
-		return performance_images.some((item) => {
-			return item.src === elementInfo.src;
-		});
-	}
+	const isImageOrVideo =
+		elementInfo.type === "img" ||
+		elementInfo.type === "img-srcset" ||
+		elementInfo.type === "video";
 
-	return false;
+	const isBgImageOrPicture =
+		elementInfo.type === "bg-img" ||
+		elementInfo.type === "bg-img-set" ||
+		elementInfo.type === "picture";
+
+	return (
+		isImageOrVideo || isBgImageOrPicture
+	) && performance_images.some(item => item.src === elementInfo.src);
 }
 
 function isIntersecting(rect) {
@@ -32,57 +30,40 @@ function isIntersecting(rect) {
 	);
 }
 
-	function LCPCandidates(count) {
-	const potentialCandidates = document.querySelectorAll(
+function LCPCandidates(count) {
+	const potentialCandidates = Array.from(document.querySelectorAll(
 		"img, video, picture, p, main, div, li, svg",
-	);
-	console.log('potentialCandidates', potentialCandidates);
-	const topCandidates = [];
+	));
 
-	potentialCandidates.forEach(( element ) => {
-		console.log('-------------------');
-		const rect = element.getBoundingClientRect();
-		console.log('element', element);
-		console.log('rect.width', rect.width);
-		console.log('rect.height', rect.height);
-		console.log('isIntersecting( rect )', isIntersecting( rect ));
-		if (
-			rect.width > 0 &&
-			rect.height > 0 &&
-			isIntersecting( rect )
-		) {
-			const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
-			const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
-			const area = visibleWidth * visibleHeight;
-			console.log('element', element);
-			const elementInfo = getElementInfo(element);
+	const topCandidates = potentialCandidates
+		.filter(element => {
+			const rect = element.getBoundingClientRect();
+			return (
+				rect.width > 0 &&
+				rect.height > 0 &&
+				isIntersecting(rect)
+			);
+		})
+		.map(element => ({
+			element,
+			area: getArea(element),
+			elementInfo: getElementInfo(element),
+		}))
+		.sort((a, b) => b.area - a.area)
+		.slice(0, count);
 
-			console.log('elementInfo', elementInfo);
-			if (elementInfo !== null) {
-				// Insert element into topCandidates in descending order of area
-				for (let i = 0; i < topCandidates.length; i++) {
-					if (area > topCandidates[i].area) {
-						topCandidates.splice(i, 0, {element, area, elementInfo});
-						topCandidates.length = Math.min(
-							count,
-							topCandidates.length
-						); // Keep only specified number of elements
-						break;
-					}
-				}
-				// If topCandidates is not full, append
-				if (topCandidates.length < count) {
-					topCandidates.push({element, area, elementInfo});
-				}
-			}
-		}
-	});
-
-	return topCandidates.map((candidate) => ({
+	return topCandidates.map(candidate => ({
 		element: candidate.element,
-		elementInfo: getElementInfo(candidate.element),
+		elementInfo: candidate.elementInfo,
 	}));
+}
 
+function getArea(element) {
+	const rect = element.getBoundingClientRect();
+	const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
+	const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
+
+	return visibleWidth * visibleHeight;
 }
 
 function getElementInfo(element) {
@@ -96,7 +77,6 @@ function getElementInfo(element) {
 		bg_set: [],
 		current_src: ""
 	};
-	console.log('nodeName', nodeName);
 
 	const css_bg_url_rgx = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)\s*?([a-zA-Z0-9\s]*[x|dpcm|dpi|dppx]?)/ig;
 
@@ -112,31 +92,24 @@ function getElementInfo(element) {
 		element_info.current_src = element.currentSrc;
 	} else if (nodeName === "video") {
 		element_info.type = "img";
-		if (element.poster) {
-			element_info.src = element.poster;
-			element_info.current_src = element.poster;
-		} else {
-			// Handle video without poster attribute
-			// For example, you might want to use the video's source URL
-			element_info.src = element.querySelector('source').src;
-			element_info.current_src = element.querySelector('source').src;
-		}
+		const source = element.querySelector('source');
+		element_info.src = element.poster || (source ? source.src : '');
+		element_info.current_src = element_info.src;
 	} else if (nodeName === "svg") {
 		const imageElement = element.querySelector('image');
 		if (imageElement) {
 			element_info.type = "img";
-			element_info.src = imageElement.getAttribute('href');
-			element_info.current_src = imageElement.getAttribute('href');
+			element_info.src = imageElement.getAttribute('href') || '';
+			element_info.current_src = element_info.src;
 		}
 	} else if (nodeName === "picture") {
 		element_info.type = "picture";
-		element_info.src = element.querySelector('img').src;
-		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => {
-			return {
-				srcset: source.srcset,
-				media: source.media
-			};
-		});
+		const img = element.querySelector('img');
+		element_info.src = img ? img.src : "";
+		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
+			srcset: source.srcset || '',
+			media: source.media || ''
+		}));
 	} else {
 		const computed_style = window.getComputedStyle(element, null);
 		const bg_props = [
