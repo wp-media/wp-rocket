@@ -35,31 +35,34 @@ function LCPCandidates(count) {
 		rocket_lcp_data.elements,
 	));
 
-	const topCandidates = potentialCandidates
-		.filter(element => {
-			const rect = element.getBoundingClientRect();
-			return (
-				rect.width > 0 &&
-				rect.height > 0 &&
-				isIntersecting(rect)
-			);
-		})
-		.map(element => ({
-			element,
-			area: getArea(element),
-			elementInfo: getElementInfo(element),
-		}))
-		.sort((a, b) => b.area - a.area)
-		.slice(0, count);
+	const topCandidates = potentialCandidates.map(element => {
+		const rect = element.getBoundingClientRect();
+		return {
+			element: element,
+			rect: rect,
+		};
+	}).filter(item => {
+		return (
+			item.rect.width > 0 &&
+			item.rect.height > 0 &&
+			isIntersecting(item.rect)
+		);
+	})
+	.map(item => ({
+		item,
+		area: getArea(item.rect),
+		elementInfo: getElementInfo(item.element),
+	}))
+	.sort((a, b) => b.area - a.area)
+	.slice(0, count);
 
 	return topCandidates.map(candidate => ({
-		element: candidate.element,
+		element: candidate.item.element,
 		elementInfo: candidate.elementInfo,
 	}));
 }
 
-function getArea(element) {
-	const rect = element.getBoundingClientRect();
+function getArea(rect) {
 	const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
 	const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
 
@@ -104,7 +107,7 @@ function getElementInfo(element) {
 		}
 	} else if (nodeName === "picture") {
 		element_info.type = "picture";
-		const img = element.querySelector('img');
+		const img = element.querySelector('img:not(picture>img)');
 		element_info.src = img ? img.src : "";
 		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
 			srcset: source.srcset || '',
@@ -148,42 +151,38 @@ function getElementInfo(element) {
 
 let performance_images = [];
 
-async function main() {
-	// Use LCPCandidates function to get the top 1 element in the viewport
-	const filteredArray = LCPCandidates(1);
-	if (filteredArray.length !== 0) {
-		console.log("Estimated LCP element:", filteredArray);
-		performance_images = filteredArray.map((item) => ({
-			...item.elementInfo,
+function main() {
+	// Use LCPCandidates function to get all the elements in the viewport
+	const above_the_fold_images = LCPCandidates(Infinity);
+
+	if (above_the_fold_images.length !== 0) {
+		// Get the first element in the viewport and use as LCP
+		performance_images = [{
+			...above_the_fold_images[0].elementInfo,
 			label: "lcp",
-		}));
+		}];
 	} else {
 		console.log("No LCP candidate found.");
 	}
 
-	// Use LCPCandidates function to get all the elements in the viewport
-	const above_the_fold_images = LCPCandidates(Infinity);
+	above_the_fold_images.forEach(({ element, elementInfo }) => {
+		const isDuplicate = isDuplicateImage(element, performance_images);
 
-	for (var i = 0; i < above_the_fold_images.length; i++) {
-		var image = above_the_fold_images[i].element;
-		var elementInfo = above_the_fold_images[i].elementInfo;
-
-		// const isDuplicate = performance_images.some(
-		//  (item) => item.src === image.src
-		// );
-		const isDuplicate = isDuplicateImage(image, performance_images);
-
-		// If it's not a duplicate, push the new element
 		if (!isDuplicate) {
-			performance_images.push({
-				...elementInfo,
-				label: "above-the-fold",
-			});
+			performance_images.push({ ...elementInfo, label: "above-the-fold" });
 		}
-	}
-	console.log(performance_images);
-	var performance_images_json = JSON.stringify(performance_images);
+	});
+
+	let performance_images_json = JSON.stringify(performance_images);
 	window.performance_images_json = performance_images_json;
+	const payload = {
+		action: 'rocket_lcp',
+		rocket_lcp_nonce: rocket_lcp_data.nonce,
+		url: rocket_lcp_data.url,
+		is_mobile: rocket_lcp_data.is_mobile,
+		images: performance_images_json,
+		status: 'success'
+	};
 
 	const data = new FormData();
 	data.append('action', 'rocket_lcp');
@@ -193,7 +192,7 @@ async function main() {
 	data.append('images', performance_images_json);
 	data.append('status', 'success');
 
-	await fetch(rocket_lcp_data.ajax_url, {
+	fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
 		body: data
@@ -212,7 +211,7 @@ if (document.readyState !== 'loading') {
 	setTimeout(main, 500);
 	console.timeEnd("extract");
 } else {
-	document.addEventListener("DOMContentLoaded", async function () {
+	document.addEventListener("DOMContentLoaded", function () {
 		console.time("extract");
 		setTimeout(main, 500);
 		console.timeEnd("extract");
