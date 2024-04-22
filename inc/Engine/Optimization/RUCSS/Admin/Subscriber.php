@@ -584,7 +584,7 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		return (bool) rocket_apply_filter_and_deprecated(
 			'rocket_saas_deletion_enabled',
-			true,
+			[ true ],
 			'3.16',
 			'rocket_rucss_deletion_enabled'
 		);
