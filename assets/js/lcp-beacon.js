@@ -32,7 +32,7 @@ function isIntersecting(rect) {
 
 function LCPCandidates(count) {
 	const potentialCandidates = Array.from(document.querySelectorAll(
-		"img, video, picture, p, main, div, li, svg",
+		rocket_lcp_data.elements,
 	));
 
 	const topCandidates = potentialCandidates
@@ -186,7 +186,6 @@ async function main() {
 	window.performance_images_json = performance_images_json;
 
 	const data = new FormData();
-
 	data.append('action', 'rocket_lcp');
 	data.append('rocket_lcp_nonce', rocket_lcp_data.nonce);
 	data.append('url', rocket_lcp_data.url);
