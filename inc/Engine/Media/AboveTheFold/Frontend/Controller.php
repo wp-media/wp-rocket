@@ -346,7 +346,7 @@ class Controller {
 		$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		if ( ! $this->filesystem->exists( rocket_get_constant( 'WP_ROCKET_ASSETS_JS_PATH' ) . 'lcp-beacon' . $min . '.js' ) ) {
-			//return $html;
+			return $html;
 		}
 
 		$data = [
@@ -354,7 +354,7 @@ class Controller {
 			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
 			'url'       => $url,
 			'is_mobile' => $is_mobile,
-			'elements' => $this->lcp_atf_elements()
+			'elements'  => $this->lcp_atf_elements(),
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
@@ -428,7 +428,14 @@ class Controller {
 	 */
 	public function lcp_atf_elements(): string {
 		$elements = [
-			'img', 'video', 'picture', 'p', 'main', 'div', 'li', 'svg'
+			'img',
+			'video',
+			'picture',
+			'p',
+			'main',
+			'div',
+			'li',
+			'svg',
 		];
 
 		$default_elements = $elements;
