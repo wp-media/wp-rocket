@@ -23,23 +23,29 @@ function isDuplicateImage(image, performance_images) {
 }
 
 function isIntersecting(rect) {
-	// Check if the image is fully within the viewport
+	// Check if any part of the image is within the viewport
 	return (
-		rect.top >= 0 &&
-		rect.left >= 0 &&
-		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-		rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+		rect.bottom >= 0 &&
+		rect.right >= 0 &&
+		rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+		rect.left <= (window.innerWidth || document.documentElement.clientWidth)
 	);
 }
 
-function LCPCandidates(count) {
+	function LCPCandidates(count) {
 	const potentialCandidates = document.querySelectorAll(
-		"img, video, picture, p, main, div"
+		"img, video, picture, p, main, div, li, svg",
 	);
+	console.log('potentialCandidates', potentialCandidates);
 	const topCandidates = [];
 
 	potentialCandidates.forEach(( element ) => {
+		console.log('-------------------');
 		const rect = element.getBoundingClientRect();
+		console.log('element', element);
+		console.log('rect.width', rect.width);
+		console.log('rect.height', rect.height);
+		console.log('isIntersecting( rect )', isIntersecting( rect ));
 		if (
 			rect.width > 0 &&
 			rect.height > 0 &&
@@ -48,7 +54,10 @@ function LCPCandidates(count) {
 			const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
 			const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
 			const area = visibleWidth * visibleHeight;
+			console.log('element', element);
 			const elementInfo = getElementInfo(element);
+
+			console.log('elementInfo', elementInfo);
 			if (elementInfo !== null) {
 				// Insert element into topCandidates in descending order of area
 				for (let i = 0; i < topCandidates.length; i++) {
@@ -87,6 +96,7 @@ function getElementInfo(element) {
 		bg_set: [],
 		current_src: ""
 	};
+	console.log('nodeName', nodeName);
 
 	const css_bg_url_rgx = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)\s*?([a-zA-Z0-9\s]*[x|dpcm|dpi|dppx]?)/ig;
 
@@ -100,10 +110,24 @@ function getElementInfo(element) {
 		element_info.type = "img";
 		element_info.src = element.src;
 		element_info.current_src = element.currentSrc;
-	} else if (nodeName === "video" && element.poster) {
+	} else if (nodeName === "video") {
 		element_info.type = "img";
-		element_info.src = element.poster;
-		element_info.current_src = element.poster;
+		if (element.poster) {
+			element_info.src = element.poster;
+			element_info.current_src = element.poster;
+		} else {
+			// Handle video without poster attribute
+			// For example, you might want to use the video's source URL
+			element_info.src = element.querySelector('source').src;
+			element_info.current_src = element.querySelector('source').src;
+		}
+	} else if (nodeName === "svg") {
+		const imageElement = element.querySelector('image');
+		if (imageElement) {
+			element_info.type = "img";
+			element_info.src = imageElement.getAttribute('href');
+			element_info.current_src = imageElement.getAttribute('href');
+		}
 	} else if (nodeName === "picture") {
 		element_info.type = "picture";
 		element_info.src = element.querySelector('img').src;
@@ -152,6 +176,7 @@ function getElementInfo(element) {
 let performance_images = [];
 
 async function main() {
+	// Use LCPCandidates function to get the top 1 element in the viewport
 	const filteredArray = LCPCandidates(1);
 	if (filteredArray.length !== 0) {
 		console.log("Estimated LCP element:", filteredArray);
@@ -163,38 +188,24 @@ async function main() {
 		console.log("No LCP candidate found.");
 	}
 
-	var above_the_fold_images = document.querySelectorAll(
-		"img, video, picture, p, main, div"
-	);
+	// Use LCPCandidates function to get all the elements in the viewport
+	const above_the_fold_images = LCPCandidates(Infinity);
 
 	for (var i = 0; i < above_the_fold_images.length; i++) {
-		var image = above_the_fold_images[i];
-		var rect = image.getBoundingClientRect();
-		var intersecting = isIntersecting(rect);
-		if (intersecting) {
-			var parent = image.parentNode;
-			while (parent !== document) {
-				var displayStyle = window.getComputedStyle(parent).display;
-				var visibilityStyle =
-					window.getComputedStyle(parent).visibility;
-				if (displayStyle === "none" || visibilityStyle === "hidden") {
-					break;
-				}
-				parent = parent.parentNode;
-			}
-			// const isDuplicate = performance_images.some(
-			// 	(item) => item.src === image.src
-			// );
-			const isDuplicate = isDuplicateImage(image, performance_images);
+		var image = above_the_fold_images[i].element;
+		var elementInfo = above_the_fold_images[i].elementInfo;
 
-			// If it's not a duplicate, push the new element
-			if (!isDuplicate && parent === document) {
-				const elementInfo = getElementInfo(image);
-				performance_images.push({
-					...elementInfo,
-					label: "above-the-fold",
-				});
-			}
+		// const isDuplicate = performance_images.some(
+		//  (item) => item.src === image.src
+		// );
+		const isDuplicate = isDuplicateImage(image, performance_images);
+
+		// If it's not a duplicate, push the new element
+		if (!isDuplicate) {
+			performance_images.push({
+				...elementInfo,
+				label: "above-the-fold",
+			});
 		}
 	}
 	console.log(performance_images);
