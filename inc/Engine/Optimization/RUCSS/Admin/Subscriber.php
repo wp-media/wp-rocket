@@ -582,6 +582,11 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param bool $delete_saas_jobs True to enable deletion, false otherwise.
 		 */
-		return (bool) apply_filters( 'rocket_saas_deletion_enabled', true );
+		return (bool) rocket_apply_filter_and_deprecated(
+			'rocket_saas_deletion_enabled',
+			true,
+			'3.16',
+			'rocket_rucss_deletion_enabled'
+		);
 	}
 }
