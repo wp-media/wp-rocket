@@ -155,10 +155,11 @@ function main() {
 	// Use LCPCandidates function to get all the elements in the viewport
 	const above_the_fold_images = LCPCandidates(Infinity);
 
-	if (above_the_fold_images.length !== 0) {
-		// Get the first element in the viewport and use as LCP
+	const firstElementWithInfo = above_the_fold_images.find(item => item.elementInfo !== null);
+
+	if (firstElementWithInfo) {
 		performance_images = [{
-			...above_the_fold_images[0].elementInfo,
+			...firstElementWithInfo.elementInfo,
 			label: "lcp",
 		}];
 	} else {
