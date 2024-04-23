@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enable_mobile_cache
  * @uses   \WP_Rocket\Engine\Admin\Settings\Page::enable_mobile_cache
- * 
+ *
  * @group  AdminOnly
  */
 class Test_EnableMobileCache extends AjaxTestCase {
@@ -20,10 +20,10 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		$options['do_caching_mobile_files'] = 0;
 		update_option( 'wp_rocket_settings', $options );
 
-        $this->action = 'rocket_enable_mobile_cache';
+		$this->action = 'rocket_enable_mobile_cache';
 	}
 
-    public function testCallbackIsRegistered() {
+	public function testCallbackIsRegistered() {
 		$this->assertTrue( has_action( 'wp_ajax_rocket_enable_mobile_cache' ) );
 
 		global $wp_filter;
@@ -37,8 +37,8 @@ class Test_EnableMobileCache extends AjaxTestCase {
 	 */
 	public function testShouldEnableMobileCache( $is_user_auth ) {
 		if ( $is_user_auth ) {
-            $role = get_role( 'administrator' );
-		    $role->add_cap( 'rocket_manage_options' );
+			$role = get_role( 'administrator' );
+			$role->add_cap( 'rocket_manage_options' );
 
 			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
 		} else {
@@ -46,7 +46,7 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-        $_POST['action'] = 'rocket_enable_mobile_cache';
+		$_POST['action'] = 'rocket_enable_mobile_cache';
 
 		$response       = $this->callAjaxAction();
 
