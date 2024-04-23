@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscri
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_clean_not_commonly_used_rows
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
  * @group  RUCSS
  */

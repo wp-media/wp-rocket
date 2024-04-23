@@ -20,7 +20,7 @@ use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::clear_generated_css
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::clear_generated_css
  */
 class Test_clearGeneratedCss extends TestCase {
 	use SubscriberTrait;

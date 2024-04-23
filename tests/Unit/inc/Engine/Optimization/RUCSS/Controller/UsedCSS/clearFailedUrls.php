@@ -18,7 +18,7 @@ use Brain\Monkey\Actions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::clear_failed_urls
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::clear_failed_urls
  *
  * @group  RUCSS
  */

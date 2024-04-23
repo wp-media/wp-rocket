@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\Weglot::add_langs_to_referer
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\Weglot::add_langs_to_referer
  */
 class Test_AddLangsToReferer extends TestCase {
 

@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Cron\Subscri
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::schedule_pending_jobs
  *
  * @group  RUCSS
  */

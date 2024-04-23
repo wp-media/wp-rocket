@@ -12,7 +12,7 @@ use WP_Rocket\Addon\WebP\Subscriber;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
+ * Test class covering \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
  *
  * @group WebP
  */

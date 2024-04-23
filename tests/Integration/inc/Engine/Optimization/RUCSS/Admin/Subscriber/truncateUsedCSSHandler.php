@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css_handler
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::truncate_used_css_handler
  *
  * @group  RUCSS
  * @group  AdminOnly

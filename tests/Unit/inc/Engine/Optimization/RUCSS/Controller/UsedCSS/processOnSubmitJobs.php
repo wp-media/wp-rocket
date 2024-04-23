@@ -20,7 +20,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::process_on_submit_jobs
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::process_on_submit_jobs
  */
 class Test_processOnSubmitJobs extends TestCase {
 

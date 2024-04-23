@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Preload\Controller\PreloadUrl;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Admin\Settings::maybe_display_preload_notice
+ * Test class covering \WP_Rocket\Engine\Preload\Admin\Settings::maybe_display_preload_notice
  * @group  Preload
  */
 class Test_MaybeDisplayPreloadNotice extends TestCase {

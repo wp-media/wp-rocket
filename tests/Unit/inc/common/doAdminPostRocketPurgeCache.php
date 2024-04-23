@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::do_admin_post_rocket_purge_cache
+ * Test class covering ::do_admin_post_rocket_purge_cache
  * @group Common
  * @group vfs
  */

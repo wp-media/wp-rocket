@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::do_admin_post_rocket_purge_cache
+ * Test class covering ::do_admin_post_rocket_purge_cache
  * @uses ::get_rocket_i18n_home_url
  * @uses ::get_rocket_option
  * @uses ::get_rocket_parse_url

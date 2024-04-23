@@ -8,7 +8,7 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Subscriber::register_support_route
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_support_route
  *
  * @group Support
  */

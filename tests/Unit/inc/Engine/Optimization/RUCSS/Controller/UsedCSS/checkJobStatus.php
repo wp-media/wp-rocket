@@ -19,7 +19,7 @@ use WP_Rocket\Engine\Common\Clock\WPRClock;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::check_job_status
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::check_job_status
  *
  * @group  RUCSS
  */

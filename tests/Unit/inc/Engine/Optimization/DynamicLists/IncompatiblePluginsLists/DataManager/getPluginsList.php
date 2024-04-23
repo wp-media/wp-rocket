@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\DataManager::get_lists
  *
  * @group DynamicLists
  */

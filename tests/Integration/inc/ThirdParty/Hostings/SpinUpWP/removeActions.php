@@ -5,7 +5,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\SpinUpWP::remove_actions
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\SpinUpWP::remove_actions
  *
  * @group  SpinUpWP
  * @group  ThirdParty

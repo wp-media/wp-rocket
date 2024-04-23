@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::display_renewal_expired_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::display_renewal_expired_banner
  *
  * @group License
  * @group AdminOnly

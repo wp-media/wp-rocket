@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_saas_error_notice
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_saas_error_notice
  *
  * @group  RUCSS
  * @group  AdminOnly

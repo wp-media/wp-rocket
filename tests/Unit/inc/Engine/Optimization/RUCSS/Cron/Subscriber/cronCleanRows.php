@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::cron_clean_rows
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber::cron_clean_rows
  *
  * @group  RUCSS
  */

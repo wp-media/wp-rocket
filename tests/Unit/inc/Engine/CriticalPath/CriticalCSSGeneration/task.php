@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
  *
  * @group  CriticalPath
  */

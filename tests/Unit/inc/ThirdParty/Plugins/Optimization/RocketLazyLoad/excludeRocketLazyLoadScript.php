@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad::exclude_rocket_lazyload_script
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad::exclude_rocket_lazyload_script
  */
 class Test_ExcludeRocketLazyLoadScript extends TestCase {
 	protected $subscriber;

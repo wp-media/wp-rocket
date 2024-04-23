@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
  * @group  CriticalPath
  * @group  vfs
  */

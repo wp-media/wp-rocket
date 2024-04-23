@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_meta_box
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::add_meta_box
  */
 class Test_AddMetaBox extends TestCase {
 	/**

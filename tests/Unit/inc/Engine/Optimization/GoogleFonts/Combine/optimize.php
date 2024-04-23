@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\GoogleFonts\AbstractGFOptimization;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::optimize
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::optimize
  *
  * @uses \WP_Rocket\Logger\Logger::info
  * @uses \WP_Rocket\Logger\Logger::debug
