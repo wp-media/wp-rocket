@@ -250,11 +250,11 @@ class Controller {
 		switch ( $lcp->type ) {
 			case 'img':
 				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . esc_url( $lcp->src ) . '"' . $end_tag;
 				break;
 			case 'img-srcset':
 				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . $lcp->src . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . esc_url( $lcp->src ) . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"' . $end_tag;
 				break;
 			case 'bg-img-set':
 				foreach ( $lcp->bg_set as $set ) {

@@ -56,12 +56,12 @@ class Controller {
 				// We should only get one LCP from the beacon.
 				$lcp = (object) [
 					'type' => 'img',
-					'src'  => $image->src,
+					'src'  => esc_url_raw( $image->src ),
 				];
 			} elseif ( 'above-the-fold' === $image->label ) {
 				$viewport[] = (object) [
 					'type' => 'img',
-					'src'  => $image->src,
+					'src'  => esc_url_raw( $image->src ),
 				];
 			}
 		}
