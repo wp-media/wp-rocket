@@ -6,7 +6,7 @@ use WpeCommon;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine
  *
  * @group  WPEngine
  * @group  ThirdParty

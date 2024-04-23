@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\CacheDynamicResource;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CacheDynamicResource::is_excluded_file
+ * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::is_excluded_file
  * @group  Optimize
  * @group  CacheDynamicResource
  */

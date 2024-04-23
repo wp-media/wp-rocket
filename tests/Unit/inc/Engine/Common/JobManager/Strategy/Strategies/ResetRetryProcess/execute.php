@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess::execute
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\ResetRetryProcess::execute
  */
 class Test_ResetRetryProcess_Execute extends TestCase {
 	protected $used_css_query;

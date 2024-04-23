@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\AssetsLocalCache::validate_integrity
+ * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::validate_integrity
  * @group  Optimize
  * @group  AssetsLocalCache
  */

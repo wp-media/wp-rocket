@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::remove_html_expire
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Godaddy::remove_html_expire
  *
  * @group  Godaddy
  * @group  ThirdParty

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Deactivation\Deactivation
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::activate_safe_mode
  *
  * @group  DeactivationIntent
  * @group  AdminOnly

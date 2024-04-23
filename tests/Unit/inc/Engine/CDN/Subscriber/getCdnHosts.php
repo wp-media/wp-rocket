@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
  * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {

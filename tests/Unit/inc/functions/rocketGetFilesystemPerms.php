@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_get_filesystem_perms
+ * Test class covering ::rocket_get_filesystem_perms
  *
  * @group  Files
  * @group  Functions

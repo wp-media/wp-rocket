@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail::execute
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\JobSetFail::execute
  */
 class Test_JobSetFail_Execute extends TestCase {
 

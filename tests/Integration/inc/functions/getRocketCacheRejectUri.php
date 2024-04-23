@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_cache_reject_uri
+ * Test class covering ::get_rocket_cache_reject_uri
  * @group Functions
  * @group Options
  */

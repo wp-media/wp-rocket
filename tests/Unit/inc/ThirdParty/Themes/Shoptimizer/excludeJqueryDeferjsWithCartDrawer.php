@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Shoptimizer::exclude_jquery_deferjs_with_cart_drawer
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Shoptimizer::exclude_jquery_deferjs_with_cart_drawer
  */
 class Test_excludeJqueryDeferjsWithCartDrawer extends TestCase {
 

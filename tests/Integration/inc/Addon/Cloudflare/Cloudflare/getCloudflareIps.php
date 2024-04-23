@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::get_cloudflare_ips
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::get_cloudflare_ips
  *
  * @group Cloudflare
  */

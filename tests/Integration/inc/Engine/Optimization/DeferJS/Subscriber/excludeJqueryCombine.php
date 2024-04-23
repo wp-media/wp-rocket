@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DynamicListsTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::exclude_jquery_combine
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::exclude_jquery_combine
  *
  * @group  DeferJS
  */

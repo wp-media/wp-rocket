@@ -6,8 +6,8 @@ use WPMedia\PHPUnit\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
- * @covers ::rocket_validate_css
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
+ * Test class covering ::rocket_validate_css
  *
  * @group  AdminOnly
  * @group  Settings

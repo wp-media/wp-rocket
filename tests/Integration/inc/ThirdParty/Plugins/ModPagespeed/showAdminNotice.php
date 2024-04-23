@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
  * @group AdminOnly
  * @group mod_pagespeed
  * @group ThirdParty

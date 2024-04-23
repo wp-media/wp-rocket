@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscrib
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::schedule_clean_not_commonly_used_rows
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::schedule_clean_not_commonly_used_rows
  *
  * @group  JobManager
  */

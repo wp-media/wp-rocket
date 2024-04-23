@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache::purge_expired_files
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache::purge_expired_files
  * @uses   \WP_Rocket\Buffer\Cache::can_generate_caching_files
  * @group  Cache
  * @group  vfs

@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Saas\Admin\Notices;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Saas\Admin\Notices::display_success_notice
+ * Test class covering \WP_Rocket\Engine\Saas\Admin\Notices::display_success_notice
  *
  * @group  RUCSS
  */

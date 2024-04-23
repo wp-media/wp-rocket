@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\ASTrait;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
+ * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
  * @group  Preload
  */
 class Test_PreloadUrl extends AdminTestCase

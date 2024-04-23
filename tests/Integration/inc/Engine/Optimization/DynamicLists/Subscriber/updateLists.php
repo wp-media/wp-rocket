@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::update_lists
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::update_lists
  *
  * @group  DynamicLists
  */

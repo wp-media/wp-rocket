@@ -9,7 +9,7 @@ use WP_Rocket\Engine\HealthCheck\HealthCheck;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
+ * Test class covering \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
  *
  * @group  HealthCheck
  */

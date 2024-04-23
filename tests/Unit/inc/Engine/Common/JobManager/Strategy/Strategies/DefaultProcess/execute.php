@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess::execute
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Strategy\Strategies\DefaultProcess::execute
  */
 class Test_Execute extends TestCase {
 	protected $used_css_query;

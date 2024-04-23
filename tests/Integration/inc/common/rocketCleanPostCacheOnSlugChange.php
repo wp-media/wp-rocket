@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::rocket_clean_post_cache_on_slug_change
+ * Test class covering ::rocket_clean_post_cache_on_slug_change
  * @uses  ::rocket_clean_files
  * @group Purge
  */

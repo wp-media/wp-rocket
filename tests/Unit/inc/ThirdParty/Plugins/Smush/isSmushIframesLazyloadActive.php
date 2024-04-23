@@ -9,7 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Smush::is_smush_iframes_lazyload_active
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Smush::is_smush_iframes_lazyload_active
  * @group ThirdParty
  * @group Smush
  */

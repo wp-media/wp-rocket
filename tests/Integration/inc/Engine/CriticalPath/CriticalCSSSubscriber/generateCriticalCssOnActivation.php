@@ -5,7 +5,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_path
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process

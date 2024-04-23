@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::check_job_status
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::check_job_status
  * 
  * @group JobManager
  */

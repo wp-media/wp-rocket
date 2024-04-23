@@ -5,7 +5,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::activate
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::activate
  *
  * @group  AdvancedCache
  */

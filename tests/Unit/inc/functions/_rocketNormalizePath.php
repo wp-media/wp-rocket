@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::_rocket_normalize_path
+ * Test class covering ::_rocket_normalize_path
  * @uses  ::_rocket_is_windows_fs
  *
  * @group Files
