@@ -25,9 +25,8 @@ class WPML implements Subscriber_Interface {
 	 * @param WP_Filesystem_Direct $filesystem Filesystem instance.
 	 */
 	public function __construct( WP_Filesystem_Direct $filesystem = null ) {
-		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
+		$this->filesystem = ! empty( $filesystem ) ? $filesystem : rocket_direct_filesystem();
 	}
-
 
 	/**
 	 * Events for subscriber to listen to.
@@ -49,7 +48,7 @@ class WPML implements Subscriber_Interface {
 		$events['rocket_preload_all_to_pending_condition']  = 'clean_only_right_domain';
 		$events['rocket_preload_sitemap_before_queue']      = 'add_languages_sitemaps';
 		$events['after_rocket_clean_home']                  = 'remove_root_cached_files';
-		$events['after_rocket_clean_domain']                = 'remove_root_cached_files';
+		$events['rocket_after_clean_domain']                = 'remove_root_cached_files';
 		$events['pre_update_option_icl_sitepress_settings'] = [ 'on_change_directory_for_default_language_clean_cache', 10, 2 ];
 
 		return $events;
@@ -157,7 +156,7 @@ class WPML implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function on_change_directory_for_default_language_clean_cache( $new, $old ) {
+	public function on_change_directory_for_default_language_clean_cache( $new, $old ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.newFound
 		if ( ! is_array( $old ) || ! is_array( $new ) ) {
 			return $new;
 		}

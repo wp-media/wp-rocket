@@ -21,8 +21,8 @@ class Test_SyncOnNetworkOptionUpdate extends TestCase {
 		$subscriber = new Imagify_Subscriber( $optionsData );
 
 		$option     = 'imagify_settings';
-		$value      = [ 'display_webp' => 1, 'display_webp_method' => 'htaccess' ];
-		$old_value  = [ 'display_webp' => 1, 'display_webp_method' => 'picture' ];
+		$value      = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'htaccess' ];
+		$old_value  = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'picture' ];
 		$network_id = 3;
 
 		Functions\when( 'get_current_network_id' )->justReturn( $network_id );
@@ -39,8 +39,8 @@ class Test_SyncOnNetworkOptionUpdate extends TestCase {
 		$subscriber = new Imagify_Subscriber( $optionsData );
 
 		$option     = 'imagify_settings';
-		$value      = [ 'display_webp' => 1, 'display_webp_method' => 'htaccess' ];
-		$old_value  = [ 'display_webp' => 1, 'display_webp_method' => 'picture' ];
+		$value      = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'htaccess' ];
+		$old_value  = [ 'display_nextgen' => 1, 'display_nextgen_method' => 'picture' ];
 		$network_id = 3;
 
 		Functions\when( 'get_current_network_id' )->justReturn( 2 );

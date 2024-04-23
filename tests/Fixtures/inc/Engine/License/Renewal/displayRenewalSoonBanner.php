@@ -36,7 +36,7 @@ $pricing = [
 	'renewals' => json_decode( json_encode( [
 		'extra_days'=> 90,
 		'grandfather_date'=> 1567296000,
-		'grandmother_date'=> 1672389000,
+		'grandmother_date'=> 315532800,
 		'discount_percent'=> [
 			'is_grandfather' => 20,
 			'not_grandfather'=> 0,
@@ -118,7 +118,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>$9.8 discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
+			'message' => 'Renew before it is too late, you will only pay <strong>$34.3</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -135,7 +135,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'message' => 'Renew with a <strong>$9.8 discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.5</strong>!',
 
 			'countdown'        => $countdown,
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -173,7 +173,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>$19.8 discount</strong> before it is too late, you will only pay <strong>$49.5</strong>!',
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -191,7 +191,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>$49.8 discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
+			'message' => 'Renew before it is too late, you will only pay <strong>$174.3</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -227,7 +227,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>$49.8 discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
+			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$124.5</strong>!',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],

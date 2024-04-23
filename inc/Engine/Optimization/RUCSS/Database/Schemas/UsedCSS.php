@@ -140,7 +140,7 @@ class UsedCSS extends Schema {
 			'name'       => 'modified',
 			'type'       => 'timestamp',
 			'default'    => '0000-00-00 00:00:00',
-			'created'    => true,
+			'modified'   => true,
 			'date_query' => true,
 			'sortable'   => true,
 		],
@@ -148,6 +148,25 @@ class UsedCSS extends Schema {
 		// LAST_ACCESSED column.
 		[
 			'name'       => 'last_accessed',
+			'type'       => 'timestamp',
+			'default'    => '0000-00-00 00:00:00',
+			'date_query' => true,
+			'sortable'   => true,
+		],
+
+		// SUBMITTED_AT column.
+		[
+			'name'       => 'submitted_at',
+			'type'       => 'timestamp',
+			'default'    => null,
+			'created'    => true,
+			'date_query' => true,
+			'sortable'   => true,
+		],
+
+		// NEXT_RETRY_TIME column.
+		[
+			'name'       => 'next_retry_time',
 			'type'       => 'timestamp',
 			'default'    => '0000-00-00 00:00:00',
 			'created'    => true,

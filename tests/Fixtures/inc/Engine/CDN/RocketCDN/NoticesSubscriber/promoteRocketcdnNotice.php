@@ -69,8 +69,8 @@ HTML
 			'config'         => [
 				'role'      => 'administrator',
 				'user_meta' => true,
-				'screen'    => 'settings_page_wprocket',
-			],
+				'screen'    => 'settings_page_wprocket'
+            ],
 		],
 
 		'testShouldNotDisplayNoticeWhenActive' => [

@@ -28,7 +28,7 @@ class UsedCSS extends Table {
 	 *
 	 * @var int
 	 */
-	protected $version = 20220926;
+	protected $version = 20231031;
 
 	/**
 	 * Key => value array of versions => methods.
@@ -41,6 +41,8 @@ class UsedCSS extends Table {
 		20220513 => 'add_hash_column',
 		20220920 => 'make_status_column_index_instead_queue_name',
 		20221104 => 'add_error_columns',
+		20231010 => 'add_submitted_at_column',
+		20231031 => 'add_next_retry_time_column',
 	];
 
 	/**
@@ -59,20 +61,22 @@ class UsedCSS extends Table {
 	 */
 	protected function set_schema() {
 		$this->schema = "
-			id               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			url              varchar(2000)       NOT NULL default '',
-			css              longtext                     default NULL,
-			hash             varchar(32)                  default '',
-			error_code       varchar(32)             NULL default NULL,
-			error_message    longtext                NULL default NULL,
-			unprocessedcss   longtext                NULL,
-			retries          tinyint(1)          NOT NULL default 1,
-			is_mobile        tinyint(1)          NOT NULL default 0,
-			job_id           varchar(255)        NOT NULL default '',
-			queue_name       varchar(255)        NOT NULL default '',
-			status           varchar(255)        NOT NULL default '',
-			modified         timestamp           NOT NULL default '0000-00-00 00:00:00',
-			last_accessed    timestamp           NOT NULL default '0000-00-00 00:00:00',
+			id               		bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			url              		varchar(2000)       NOT NULL default '',
+			css              		longtext                     default NULL,
+			hash             		varchar(32)                  default '',
+			error_code       		varchar(32)             NULL default NULL,
+			error_message    		longtext                NULL default NULL,
+			unprocessedcss   		longtext                NULL,
+			retries          		tinyint(1)          NOT NULL default 1,
+			is_mobile        		tinyint(1)          NOT NULL default 0,
+			job_id           		varchar(255)        NOT NULL default '',
+			queue_name       		varchar(255)        NOT NULL default '',
+			status           		varchar(255)        NOT NULL default '',
+			modified         		timestamp           NOT NULL default '0000-00-00 00:00:00',
+			last_accessed    		timestamp           NOT NULL default '0000-00-00 00:00:00',
+			submitted_at     		timestamp           NULL,
+			next_retry_time     	timestamp           NOT NULL default '0000-00-00 00:00:00',
 			PRIMARY KEY (id),
 			KEY url (url(150), is_mobile),
 			KEY modified (modified),
@@ -119,7 +123,7 @@ class UsedCSS extends Table {
 	 *
 	 * @return array
 	 */
-	public function get_old_used_css() : array {
+	public function get_old_used_css(): array {
 		// Get the database interface.
 		$db = $this->get_db();
 
@@ -322,5 +326,39 @@ class UsedCSS extends Table {
 
 		$index_added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD INDEX `error_code_index` (`error_code`) " );
 		return $this->is_success( $index_added );
+	}
+
+	/**
+	 * Adds the submitted_at column
+	 *
+	 * @return bool
+	 */
+	protected function add_submitted_at_column() {
+		$submitted_at_column_exists = $this->column_exists( 'submitted_at' );
+
+		$created = true;
+
+		if ( ! $submitted_at_column_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN submitted_at timestamp NULL AFTER last_accessed" );
+		}
+
+		return $this->is_success( $created );
+	}
+
+	/**
+	 * Adds the next_retry_time column
+	 *
+	 * @return bool
+	 */
+	protected function add_next_retry_time_column() {
+		$next_retry_time_exists = $this->column_exists( 'next_retry_time' );
+
+		$created = true;
+
+		if ( ! $next_retry_time_exists ) {
+			$created &= $this->get_db()->query( "ALTER TABLE `{$this->table_name}` ADD COLUMN next_retry_time timestamp NOT NULL default '0000-00-00 00:00:00' AFTER submitted_at" );
+		}
+
+		return $this->is_success( $created );
 	}
 }

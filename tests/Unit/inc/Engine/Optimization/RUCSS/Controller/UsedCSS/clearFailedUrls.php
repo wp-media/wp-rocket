@@ -1,12 +1,15 @@
 <?php
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\Queue\QueueInterface;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
+use WP_Rocket\Engine\Optimization\RUCSS\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
@@ -28,6 +31,16 @@ class Test_ClearFailedUrls extends TestCase {
 	protected $data_manager;
 	protected $filesystem;
 
+	/**
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->options      = Mockery::mock( Options_Data::class );
@@ -36,15 +49,23 @@ class Test_ClearFailedUrls extends TestCase {
 		$this->queue        = Mockery::mock( QueueInterface::class );
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem   = Mockery::mock( Filesystem::class );
+		$this->context = Mockery::mock(ContextInterface::class);
+		$this->optimisedContext = Mockery::mock(ContextInterface::class);
+		$this->strategy_factory = Mockery::mock(StrategyFactory::class);
+		$this->wpr_clock = Mockery::mock(WPRClock::class);
 		$this->usedCss      = Mockery::mock(
-			UsedCSS::class . '[is_allowed,update_last_accessed]',
+			UsedCSS::class . '[is_allowed,update_last_accessed,add_url_to_the_queue]',
 			[
 				$this->options,
 				$this->usedCssQuery,
 				$this->api,
 				$this->queue,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->context,
+				$this->optimisedContext,
+				$this->strategy_factory,
+				$this->wpr_clock,
 			]
 		);
 	}
@@ -68,26 +89,9 @@ class Test_ClearFailedUrls extends TestCase {
             }
             else {
                 foreach ( $config['rows'] as $row ) {
-					$this->options->expects()
-						->get( 'remove_unused_css_safelist', [] )
-						->andReturn( [] );
 					Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-					$this->api->expects()->add_to_queue( $row->url, [
-						'treeshake'      => 1,
-						'rucss_safelist' => [],
-						'skip_attr' => [],
-						'is_mobile'      => $row->is_mobile,
-						'is_home'        => false,
-					] )
-						->andReturn( $config['add_to_queue_response']);
-                    $this->usedCssQuery->expects( self::any() )
-                                ->method( 'reset_job' )
-                                ->with($this->anything())
-                                ->will($this->returnCallback(
-                                    function ( $value ) use ($row) {
-                                        return $value === $row->id;
-                                    }
-                                 ) );
+
+					$this->usedCss->expects()->add_url_to_the_queue($row->url, $row->is_mobile);
                 }
             }
 

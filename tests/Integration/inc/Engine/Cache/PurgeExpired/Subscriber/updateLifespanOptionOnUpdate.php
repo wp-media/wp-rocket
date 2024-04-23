@@ -26,7 +26,7 @@ class Test_UpdateLifespanOptionOnUpdate extends TestCase {
 		remove_filter( 'pre_get_rocket_option_purge_cron_interval', [$this, 'set_purge_cron_interval'] );
 		remove_filter( 'pre_get_rocket_option_purge_cron_unit', [$this, 'set_purge_cron_unit'] );
 
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 
 	/**

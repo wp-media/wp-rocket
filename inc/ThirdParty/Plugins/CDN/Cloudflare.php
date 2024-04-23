@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
-use WP_Rocket\Admin\{Options,Options_Data};
+use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -70,7 +70,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'rocket_display_input_do_cloudflare'  => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings'    => 'update_addon_field',
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
-			'after_rocket_clean_domain'           => 'purge_cloudflare',
+			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
 			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',

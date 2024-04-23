@@ -25,6 +25,7 @@ return [
 		],
 		'expected' => [
 			'notice_end_time' => time(),
+			'cron_disabled'   => false
 		],
 	],
 ];

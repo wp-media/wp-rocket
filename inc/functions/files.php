@@ -603,7 +603,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
-					$cb_encode_non_latin = function( $non_latin ) {
+					$cb_encode_non_latin = function ( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
@@ -709,6 +709,14 @@ function rocket_clean_home( $lang = '' ) {
 		}
 	}
 
+	$param_dirs = glob( $root . '/#*', GLOB_NOSORT );
+
+	if ( $param_dirs ) {
+		foreach ( $param_dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_NOSORT );
 	if ( $nginx_mobile_detect_files ) {
@@ -795,10 +803,17 @@ function rocket_clean_home_feeds() {
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
 function rocket_clean_domain( $lang = '', $filesystem = null ) {
+	if ( did_action( 'rocket_after_clean_domain' ) ) {
+		return;
+	}
+
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
 		? (array) get_rocket_i18n_uri()
 		: (array) get_rocket_i18n_home_url( $lang );
-
 	/**
 	 * Filter URLs to delete all caching files from a domain.
 	 *
@@ -867,6 +882,16 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 		 */
 		do_action( 'after_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
+
+	/**
+	 * Fires after all cache files was deleted.
+	 *
+	 * @since 3.15.5
+	 *
+	 * @param string $lang The current lang to purge.
+	 * @param array|string[] $urls  All urls to clean.
+	 */
+	do_action( 'rocket_after_clean_domain', $lang, $urls );
 
 	return true;
 }
@@ -1340,7 +1365,6 @@ function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPr
 	} catch ( Exception $e ) {
 		return [];
 	}
-
 }
 
 /**

@@ -188,7 +188,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $cache_filepath );
+		readfile( $cache_filepath ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
 
 		$this->log(
 			'Serving cache file.',
@@ -584,7 +584,15 @@ class Cache extends Abstract_Buffer {
 
 		$detect = new \WP_Rocket_Mobile_Detect();
 
-		if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $cache_mobile_files_tablet ) {
+		if (
+			( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet )
+			||
+			(
+				( $detect->isMobile() || $detect->isTablet() )
+				&&
+				'mobile' === $cache_mobile_files_tablet
+			)
+		) {
 				return $filename .= '-mobile';
 		}
 

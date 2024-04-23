@@ -40,7 +40,7 @@ abstract class AbstractGFOptimization {
 	 *
 	 * @return string
 	 */
-	abstract public function optimize( $html): string;
+	abstract public function optimize( $html ): string;
 
 	/**
 	 * Check whether the optimizer has found google fonts on the page.

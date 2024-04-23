@@ -15,7 +15,7 @@ if ( defined( 'POLYLANG_VERSION' ) && POLYLANG_VERSION ) :
 			rocket_clean_cache_dir();
 		}
 	}
-	add_action( 'after_rocket_clean_domain', 'rocket_force_clean_domain_on_polylang' );
+	add_action( 'rocket_after_clean_domain', 'rocket_force_clean_domain_on_polylang' );
 
 	// Filter mandatory cookies and WP Rocket rewrite rules if Polylang module 'Detect browser language' is enabled.
 	if ( function_exists( 'PLL' ) && PLL()->options['browser'] ) {

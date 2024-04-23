@@ -28,6 +28,11 @@ function rocket_init() {
 		return;
 	}
 
+	/**
+	 * Fires when WP Rocket starts to load.
+	 */
+	do_action( 'wp_rocket_before_load' );
+
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
@@ -101,4 +106,3 @@ add_action( 'plugins_loaded', 'rocket_init' );
 
 register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate_plugin' ] );
 register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate_plugin' ] );
-

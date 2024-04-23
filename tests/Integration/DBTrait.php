@@ -5,8 +5,24 @@ namespace WP_Rocket\Tests\Integration;
 trait DBTrait {
 	public static function resourceFound( array $resource ) : bool {
 		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_resources_query' );
-		return $resource_query->query( $resource );
+		$resource_query = $container->get( 'rucss_used_css_query' );
+		return count($resource_query->query( $resource )) > 0;
+	}
+
+	public static function addResource(array $resource) {
+		$container = apply_filters( 'rocket_container', null );
+		$resource_query = $container->get( 'rucss_used_css_query' );
+		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
+		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
+			$resource_query->make_status_inprogress($job_id);
+		}
+		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
+			$resource_query->make_status_pending($job_id);
+		}
+		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
+			$resource_query->make_status_completed($job_id, $resource['hash']);
+		}
+		return $job_id;
 	}
 
 	public static function cacheFound( array $cache): bool {
@@ -37,7 +53,7 @@ trait DBTrait {
 
 		$rucss_usedcss_table   = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_table->install();
-
+		$container->get( 'rucss_used_css_query' )::$table_exists = true;
 		$preload_cache_table = $container->get( 'preload_caches_table' );
 		$preload_cache_table->install();
 	}

@@ -10,13 +10,8 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Service provider for WP Rocket addons.
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -27,23 +22,34 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 */
-	public function register() {
+	public function register(): void {
 		$options = $this->getContainer()->get( 'options' );
 
 		// Sucuri Addon.
-		$this->getContainer()->share( 'sucuri_subscriber', SucuriSubscriber::class )
+		$this->getContainer()->addShared( 'sucuri_subscriber', SucuriSubscriber::class )
 			->addArgument( $options )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->share( 'webp_admin_subscriber', WebPAdminSubscriber::class )
+		$this->getContainer()->addShared( 'webp_admin_subscriber', WebPAdminSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
 			->addArgument( $this->getContainer()->get( 'beacon' ) )
 			->addTag( 'common_subscriber' );
 
-		$this->getContainer()->share( 'webp_subscriber', WebPSubscriber::class )
+		$this->getContainer()->addShared( 'webp_subscriber', WebPSubscriber::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'options_api' ) )
 			->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )

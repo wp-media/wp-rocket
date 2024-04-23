@@ -52,8 +52,7 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		do_action( 'rocket_remove_rucss_failed_jobs' );
 
 		$rucss_usedcss_query     = $container->get( 'rucss_used_css_query' );
-		$resultUsedCssAfterClean = $rucss_usedcss_query->query( [ 'status'  => 'pending' ] );
-
+		$resultUsedCssAfterClean = $rucss_usedcss_query->query( [ 'status'  => 'to-submit' ] );
 		$this->assertCount( count( $expected ), $resultUsedCssAfterClean );
 	}
 	public function edit_http_request($response, $args, $url) {

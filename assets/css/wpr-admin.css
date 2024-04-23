@@ -926,6 +926,15 @@ a:focus, button:focus {
   text-decoration: underline;
 }
 
+/* ----------------------------------------------- *\
+
+    Rocket Analytics CTA
+
+/* ----------------------------------------------- */
+.wpr-rocket-analytics-cta.wpr-isHidden {
+  display: none;
+}
+
 /*-----------------------------------------------*\
 
 	Upgrade popin
@@ -2048,6 +2057,21 @@ div.wpr-upgrade-websites {
 }
 .wpr-addon .wpr-field-description {
   font-style: normal;
+}
+.wpr-addon .wpr-field-helper {
+  font-size: 0.8125rem;
+  line-height: 1.5384615385;
+  color: #666666;
+  background-color: #E0E4E9;
+  padding: 8px;
+  margin: 8px 0;
+}
+.wpr-addon .wpr-field-helper span.wpr-helper-title {
+  font-weight: 600;
+}
+.wpr-addon .wpr-field-helper span.wpr-helper-title::after {
+  content: "\a";
+  white-space: pre;
 }
 .wpr-addon .wpr-addon-logo {
   text-align: center;

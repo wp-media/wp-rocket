@@ -26,7 +26,7 @@ class Test_CleanWPEngine extends TestCase {
 	}
 
 	public function testShouldCleanWPEngine() {
-		do_action( 'after_rocket_clean_domain' );
+		do_action( 'rocket_after_clean_domain' );
 
 		$this->assertEquals( 1, WpeCommon::getNumberTimesPurgeMemcachedCalled() );
 		$this->assertEquals( 1, WpeCommon::getNumberTimesVarnishCacheCalled() );

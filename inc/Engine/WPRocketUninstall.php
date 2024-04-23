@@ -37,6 +37,7 @@ class WPRocketUninstall {
 		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',
 		'wp_rocket_last_option_hash',
+		'wp_rocket_debug',
 	];
 
 	/**
@@ -73,6 +74,12 @@ class WPRocketUninstall {
 		'wp_rocket_rucss_errors_count',
 		'wpr_dynamic_lists_incompatible_plugins',
 		'rocket_divi_notice',
+		'rocket_rucss_processing',
+		'rocket_mod_pagespeed_enabled',
+		'wp_rocket_pricing',
+		'wp_rocket_pricing_timeout',
+		'wp_rocket_pricing_timeout_active',
+		'rocket_get_refreshed_fragments_cache',
 	];
 
 	/**
@@ -184,7 +191,6 @@ class WPRocketUninstall {
 
 			restore_current_blog();
 		}
-
 	}
 
 	/**
@@ -272,7 +278,6 @@ class WPRocketUninstall {
 
 			restore_current_blog();
 		}
-
 	}
 
 	/**
@@ -285,7 +290,7 @@ class WPRocketUninstall {
 	 */
 	private function delete( $file ) {
 		if ( ! is_dir( $file ) ) {
-			@unlink( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_delete_file( $file );
 			return;
 		}
 
@@ -300,14 +305,14 @@ class WPRocketUninstall {
 
 		foreach ( $iterator as $item ) {
 			if ( $item->isDir() ) {
-				@rmdir( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@rmdir( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_rmdir
 
 				continue;
 			}
 
-			@unlink( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_delete_file( $item );
 		}
 
-		@rmdir( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@rmdir( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_rmdir
 	}
 }

@@ -7,6 +7,7 @@ use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 class Kinsta implements Subscriber_Interface {
 	use ReturnTypesTrait;
+
 	/**
 	 * Subscribed events for Kinsta.
 	 *
@@ -22,7 +23,7 @@ class Kinsta implements Subscriber_Interface {
 		];
 
 		if ( isset( $kinsta_cache ) ) {
-			$events['after_rocket_clean_domain']           = 'clean_kinsta_cache';
+			$events['rocket_after_clean_domain']           = 'clean_kinsta_cache';
 			$events['after_rocket_clean_post']             = 'clean_kinsta_post_cache';
 			$events['rocket_rucss_after_clearing_usedcss'] = 'clean_kinsta_cache_url';
 			$events['rocket_rucss_complete_job_status']    = 'clean_kinsta_cache_url';
@@ -125,7 +126,7 @@ class Kinsta implements Subscriber_Interface {
 
 		// Remove rocket_clean_post() from core action hooks.
 		array_map(
-			function( $hook ) {
+			function ( $hook ) {
 				remove_action( $hook, 'rocket_clean_post' );
 			},
 			$clean_post_hooks

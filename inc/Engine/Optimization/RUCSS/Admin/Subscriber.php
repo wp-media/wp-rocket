@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		$slug = rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
 
 		return [
@@ -233,8 +233,6 @@ class Subscriber implements Subscriber_Interface {
 		 */
 		do_action( 'rocket_after_clean_used_css' );
 	}
-
-
 
 	/**
 	 * Truncate UsedCSS DB Table when `remove_unused_css_safelist` is changed.
@@ -608,6 +606,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function spawn_cron() {
+		if ( rocket_get_constant( 'DISABLE_WP_CRON', false ) ) {
+			return;// Bailout and don't fire the CRON.
+		}
+
 		check_ajax_referer( 'rocket-ajax', 'nonce' );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {

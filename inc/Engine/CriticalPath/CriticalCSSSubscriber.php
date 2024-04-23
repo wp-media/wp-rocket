@@ -16,6 +16,7 @@ use WP_Filesystem_Direct;
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
 	use RegexTrait;
+
 	/**
 	 * Instance of Critical CSS.
 	 *
@@ -371,7 +372,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				if ( $status_nonmobile && $status_mobile ) {
 					$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 					if ( $item['status']['nonmobile']['success'] ) {
-						$success_counter ++;
+						++$success_counter;
 					}
 				}
 			}
@@ -450,7 +451,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				}
 				$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 				if ( $item['status']['nonmobile']['success'] ) {
-					$success_counter ++;
+					++$success_counter;
 				}
 			}
 
@@ -845,7 +846,6 @@ JS;
 				'dismiss_button_message' => __( 'Stay with the old option', 'rocket' ),
 			]
 		);
-
 	}
 
 	/**

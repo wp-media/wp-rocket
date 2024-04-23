@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  * @since 1.1.0 Remove empty spacings when .htaccess is generated.
  *
- * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
- * @return bool               True on success, false otherwise.
+ * @param bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
+ *
+ * @return bool
  */
 function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $is_apache;
@@ -29,39 +30,135 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
-	$htaccess_file = get_home_path() . '.htaccess';
-
-	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
-		// The file is not writable or does not exist.
-		return false;
-	}
-
-	// Get content of .htaccess file.
-	$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
-
-	if ( false === $ftmp ) {
-		// Could not get the file contents.
-		return false;
-	}
-
-	// Check if the file contains the WP rules, before modifying anything.
-	$has_wp_rules = rocket_has_wp_htaccess_rules( $ftmp );
-
-	// Remove the WP Rocket marker.
-	$ftmp = preg_replace( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', PHP_EOL . PHP_EOL, $ftmp );
-	$ftmp = ltrim( $ftmp );
+	$filename  = get_home_path() . '.htaccess';
+	$insertion = '';
 
 	if ( ! $remove_rules ) {
-		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
+		$insertion = get_rocket_htaccess_marker();
 	}
 
-	// Make sure the WP rules are still there.
-	if ( $has_wp_rules && ! rocket_has_wp_htaccess_rules( $ftmp ) ) {
+	if ( ! file_exists( $filename ) ) {
+		if ( ! is_writable( dirname( $filename ) ) ) {
+			return false;
+		}
+
+		if ( ! touch( $filename ) ) {
+			return false;
+		}
+
+		// Make sure the file is created with a minimum set of permissions.
+		$perms = fileperms( $filename );
+
+		if ( $perms ) {
+			chmod( $filename, $perms | 0644 );
+		}
+	} elseif ( ! is_writable( $filename ) ) {
 		return false;
 	}
 
-	// Update the .htacces file.
-	return rocket_put_content( $htaccess_file, $ftmp );
+	if ( ! is_array( $insertion ) ) {
+		$insertion = explode( "\n", $insertion );
+	}
+
+	$start_marker = '# BEGIN WP Rocket';
+	$end_marker   = '# END WP Rocket';
+
+	$pointer = fopen( $filename, 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+
+	if ( ! $pointer ) {
+		return false;
+	}
+
+	// Attempt to get a lock. If the filesystem supports locking, this will block until the lock is acquired.
+	flock( $pointer, LOCK_EX );
+
+	$lines = [];
+
+	while ( ! feof( $pointer ) ) {
+		$lines[] = rtrim( fgets( $pointer ), "\r\n" );
+	}
+
+	// Split out the existing file into the preceding lines, and those that appear after the marker.
+	$pre_lines        = [];
+	$post_lines       = [];
+	$existing_lines   = [];
+	$found_marker     = false;
+	$found_end_marker = false;
+
+	foreach ( $lines as $line ) {
+		if ( ! $found_marker && str_contains( $line, $start_marker ) ) {
+			$found_marker = true;
+			continue;
+		} elseif ( ! $found_end_marker && str_contains( $line, $end_marker ) ) {
+			$found_end_marker = true;
+			continue;
+		}
+
+		if ( ! $found_marker ) {
+			$pre_lines[] = $line;
+		} elseif ( $found_marker && $found_end_marker ) {
+			$post_lines[] = $line;
+		} else {
+			$existing_lines[] = $line;
+		}
+	}
+
+	// Check to see if there was a change.
+	if ( $existing_lines === $insertion ) {
+		flock( $pointer, LOCK_UN );
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+
+		return true;
+	}
+
+	if ( ! $found_marker ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$pre_lines,
+				$post_lines
+			)
+		);
+	} elseif ( $remove_rules ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				$post_lines
+			)
+		);
+	} else {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$post_lines
+			)
+		);
+	}
+
+	// Write to the start of the file, and truncate it to that length.
+	fseek( $pointer, 0 );
+	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+
+	if ( $bytes ) {
+		ftruncate( $pointer, ftell( $pointer ) );
+	}
+
+	fflush( $pointer );
+	flock( $pointer, LOCK_UN );
+	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+
+	return (bool) $bytes;
 }
 
 /**
@@ -112,9 +209,6 @@ function rocket_htaccess_rules_test( $rules_name ) {
  * @return string $marker Rules that will be printed
  */
 function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	// Recreate WP Rocket marker.
-	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-
 	/**
 	 * Add custom rules before rules added by WP Rocket
 	 *
@@ -122,7 +216,7 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 *
 	 * @param string $before_marker The content of all rules.
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$marker = apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -143,8 +237,6 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 * @param string $after_marker The content of all rules.
 	*/
 	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-
-	$marker .= '# END WP Rocket' . PHP_EOL;
 
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
@@ -172,7 +264,11 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	}
 
 	// No rewrite rules for Korean.
-	if ( defined( 'WPLANG' ) && 'ko_KR' === WPLANG || 'ko_KR' === get_locale() ) {
+	if (
+		( defined( 'WPLANG' ) && 'ko_KR' === WPLANG )
+		||
+		'ko_KR' === get_locale()
+		) {
 		return;
 	}
 

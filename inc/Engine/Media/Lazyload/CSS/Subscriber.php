@@ -21,7 +21,8 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use LoggerAware, RegexTrait;
+	use LoggerAware;
+	use RegexTrait;
 
 	/**
 	 * Extract background images from CSS.
@@ -142,11 +143,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'add_lazy_tag', 24 ],
 			],
 			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
-			'after_rocket_clean_domain'             => 'clear_generated_css',
+			'rocket_after_clean_domain'             => 'clear_generated_css',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
-			'rocket_exclude_js'                     => 'add_lazyload_script_exclude_js',
-			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
-			'rocket_delay_js_exclusions'            => 'add_lazyload_script_rocket_delay_js_exclusions',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
 			'rocket_lazyload_css_ignored_urls'      => 'remove_svg_from_lazyload_css',
 		];
@@ -417,7 +415,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return [];
 		}
 
-		$output = $this->generate_content( $content );
+		$output = $this->generate_content( $content, $this->cache->generate_url( $url ) );
 
 		if ( count( $output->get_urls() ) === 0 ) {
 			return [];
@@ -436,10 +434,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Generate lazy content for a certain content.
 	 *
 	 * @param string $content Content to generate lazy for.
+	 * @param string $url URL of the file we are extracting content from.
 	 * @return LazyloadedContent
 	 */
-	protected function generate_content( string $content ): LazyloadedContent {
-		$urls           = $this->extractor->extract( $content );
+	protected function generate_content( string $content, string $url = '' ): LazyloadedContent {
+		$urls           = $this->extractor->extract( $content, $url );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
 			$url_tags       = $this->add_hashes( $url_tags );
@@ -521,7 +520,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param string $string String to check.
 	 * @return bool
 	 */
-	protected function is_excluded( string $string ) {
+	protected function is_excluded( string $string ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.stringFound
 
 		$values = [
 			$string,
@@ -530,7 +529,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$parsed_url_host = wp_parse_url( $string, PHP_URL_HOST );
 
 		if ( ! $parsed_url_host ) {
-			$values [] = home_url() . $string;
+			$values [] = rocket_get_home_url() . $string;
 		}
 
 		/**
@@ -557,51 +556,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Add the lazyload script to exclude js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_exclude_js( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
-	}
-
-	/**
-	 * Add the lazyload script to defer js exclusions.
-	 *
-	 * @param array $exclude_defer_js Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
-		if ( ! $this->is_activated() ) {
-			return $exclude_defer_js;
-		}
-
-		$exclude_defer_js [] = '#rocket_lazyload_css-js-after';
-		return $exclude_defer_js;
-	}
-
-	/**
-	 * Add the lazyload script to delay js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
 	}
 
 	/**

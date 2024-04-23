@@ -25,7 +25,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
 
 		parent::tear_down();
 
-	    $this->restoreWpFilter( 'wp_rocket_upgrade' );
+	    $this->restoreWpHook( 'wp_rocket_upgrade' );
     }
 
 	/**

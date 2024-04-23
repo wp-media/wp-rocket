@@ -33,8 +33,26 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Regenerate advanced-cache.php file.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] || $oldvalue['cache_mobile'] !== $value['cache_mobile'] ) ) {
+	if (
+		! empty( $_POST ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		&&
+		(
+			(
+				isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] )
+			)
+			||
+			(
+				! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] )
+			)
+			||
+			(
+				isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] )
+				&&
+				$oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files']
+			)
+			||
+			$oldvalue['cache_mobile'] !== $value['cache_mobile']
+		) ) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -92,6 +110,9 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		'cdn_reject_files'    => __( 'Exclude files from CDN', 'rocket' ),
 	];
 
+	// unset the *_mask value as we don't need to save them.
+	unset( $newvalue['cloudflare_api_key_mask'], $newvalue['cloudflare_zone_id_mask'] );
+
 	foreach ( $pattern_labels as $pattern_field => $label ) {
 		if ( empty( $newvalue[ $pattern_field ] ) ) {
 			// The field is empty.
@@ -104,7 +125,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		// Validate.
 		$newvalue[ $pattern_field ] = array_filter(
 			$newvalue[ $pattern_field ],
-			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+			function ( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
 					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
@@ -154,10 +175,16 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Regenerate the minify key if JS files have been modified.
-	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
-		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+	if (
+		( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] ) // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+		||
+		( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
+		||
+		(
+			( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) )
+			||
+			( ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		)
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}

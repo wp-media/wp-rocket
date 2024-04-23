@@ -115,5 +115,4 @@ interface QueueInterface {
 	 * @return array
 	 */
 	public function search( $args = [], $return_format = OBJECT );
-
 }

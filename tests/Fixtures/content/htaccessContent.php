@@ -3,7 +3,7 @@
 $rocket_version = rocket_get_constant( 'WP_ROCKET_VERSION' );
 
 $start = <<<HTACCESS
-# BEGIN WP Rocket v{$rocket_version}
+# BEGIN WP Rocket
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset UTF-8
 # Force UTF-8 for a number of file formats
@@ -189,10 +189,10 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
-
 # Random
-# add a trailing slash to /wp-admin# BEGIN WordPress
-
+# add a trailing slash to /wp-admin
+# BEGIN WordPress
+# END WordPress
 HTACCESS;
 
 return [

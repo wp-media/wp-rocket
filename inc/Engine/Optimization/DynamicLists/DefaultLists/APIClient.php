@@ -15,5 +15,4 @@ class APIClient extends AbstractAPIClient {
 	protected function get_api_path() {
 		return 'exclusions/list';
 	}
-
 }

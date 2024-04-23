@@ -38,8 +38,8 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 		if($this->filesystem->exists( $this->cancel_file_path )){
 			$this->filesystem->delete( $this->cancel_file_path );
 		}
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
-		$this->restoreWpFilter( 'rocket_before_rollback' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'rocket_before_rollback' );
 	}
 	/**
 	 * @dataProvider providerTestData

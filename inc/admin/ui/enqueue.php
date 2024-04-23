@@ -36,7 +36,6 @@ function rocket_add_admin_css_js() {
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'wpr-admin-rtl', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin-rtl' . $suffix . '.css', null, WP_ROCKET_VERSION );
 	}
-
 }
 add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 

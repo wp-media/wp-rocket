@@ -282,25 +282,7 @@ class Page extends Abstract_Render {
 			'is_from_one_dot_com' => false,
 		];
 
-		if (
-			false === $user
-			||
-			! isset( $user->licence_account, $user->licence_expiration )
-		) {
-			return $data;
-		}
-
-		if (
-			1 <= $user->licence_account
-			&&
-			$user->licence_account < 3
-		) {
-			$data['license_type'] = 'Single';
-		} elseif ( -1 === (int) $user->licence_account ) {
-			$data['license_type'] = 'Infinite';
-		} else {
-			$data['license_type'] = 'Plus';
-		}
+		$data['license_type'] = rocket_get_license_type( $user );
 
 		$data['license_class']       = time() < $user->licence_expiration ? 'wpr-isValid' : 'wpr-isInvalid';
 		$data['license_expiration']  = date_i18n( get_option( 'date_format' ), (int) $user->licence_expiration );
@@ -1984,7 +1966,7 @@ class Page extends Abstract_Render {
 		if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN ) {
 			$this->settings->add_settings_fields(
 				[
-					'cloudflare_api_key' => [
+					'cloudflare_api_key_mask' => [
 						'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
 						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( $beacon_cf_credentials_api['url'] ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
 						'default'     => '',
@@ -2006,7 +1988,7 @@ class Page extends Abstract_Render {
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
-				'cloudflare_zone_id'          => [
+				'cloudflare_zone_id_mask'     => [
 					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
 					'default'         => '',
 					'container_class' => [
@@ -2104,6 +2086,29 @@ class Page extends Abstract_Render {
 	 * @since 3.0
 	 */
 	private function hidden_fields() {
+
+		$hidden_fields = [
+			'consumer_key',
+			'consumer_email',
+			'secret_key',
+			'license',
+			'secret_cache_key',
+			'minify_css_key',
+			'minify_js_key',
+			'version',
+			'cloudflare_old_settings',
+			'cache_ssl',
+			'minify_google_fonts',
+			'emoji',
+			'remove_unused_css',
+			'async_css',
+			'cache_mobile',
+			'do_caching_mobile_files',
+			'minify_concatenate_css',
+			'cloudflare_api_key',
+			'cloudflare_zone_id',
+		];
+
 		$this->settings->add_hidden_settings_fields(
 			/**
 			 * Filters the hidden settings fields
@@ -2115,25 +2120,7 @@ class Page extends Abstract_Render {
 			 */
 			apply_filters(
 				'rocket_hidden_settings_fields',
-				[
-					'consumer_key',
-					'consumer_email',
-					'secret_key',
-					'license',
-					'secret_cache_key',
-					'minify_css_key',
-					'minify_js_key',
-					'version',
-					'cloudflare_old_settings',
-					'cache_ssl',
-					'minify_google_fonts',
-					'emoji',
-					'remove_unused_css',
-					'async_css',
-					'cache_mobile',
-					'do_caching_mobile_files',
-					'minify_concatenate_css',
-				]
+				$hidden_fields
 			)
 		);
 	}
@@ -2147,7 +2134,7 @@ class Page extends Abstract_Render {
 	 * @param  string $tag_name Name of the HTML tag that will wrap each element of the list.
 	 * @return array
 	 */
-	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) {
+	private function sanitize_and_format_list( $list, $tag_name = 'strong' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.listFound
 		if ( ! is_array( $list ) || empty( $list ) ) {
 			return [];
 		}
