@@ -120,10 +120,12 @@ class Controller {
 			$links
 			);
 
+		$reject_uri_pattern = get_rocket_cache_reject_uri();	
+
 		// Filter links.
 		$links = array_filter(
 			$links,
-			function ( $link ) use ( $home_url ) {
+			function ( $link ) use ( $home_url, $reject_uri_pattern ) {
 				$link_host = wp_parse_url( $link );
 				$site_host = wp_parse_url( $home_url );
 				/**
@@ -134,8 +136,9 @@ class Controller {
 				$is_valid_url = wp_http_validate_url( $link );
 				$is_same_host = isset( $link_host['host'] ) ? $link_host['host'] === $site_host['host'] : false;
 				$is_not_home  = ! Utils::is_home( $link );
+				$is_not_excluded_uri = ! (bool) preg_match( '#^(' . $reject_uri_pattern . ')$#i', $link );
 
-				return $is_valid_url && $is_same_host && $is_not_home;
+				return $is_valid_url && $is_same_host && $is_not_home && $is_not_excluded_uri;
 			}
 		);
 
