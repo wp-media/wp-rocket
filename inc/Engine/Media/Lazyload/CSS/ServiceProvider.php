@@ -18,14 +18,8 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
  * Service provider.
  */
 class ServiceProvider extends AbstractServiceProvider {
-
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -33,32 +27,44 @@ class ServiceProvider extends AbstractServiceProvider {
 		'lazyload_css_cache',
 		'lazyload_css_subscriber',
 	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
 	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$this->getLeagueContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
+	public function register(): void {
+		$this->getContainer()->add( 'lazyload_css_cache', FilesystemCache::class )
 			->addArgument( apply_filters( 'rocket_lazyload_css_cache_root', 'background-css/' . get_current_blog_id() ) );
 
 		$cache = $this->getContainer()->get( 'lazyload_css_cache' );
 
-		$this->getLeagueContainer()->add( 'lazyload_css_context', LazyloadCSSContext::class )
+		$this->getContainer()->add( 'lazyload_css_context', LazyloadCSSContext::class )
 			->addArgument( $this->getContainer()->get( 'options' ) )
 			->addArgument( $cache );
 
-		$this->getLeagueContainer()->add( 'lazyload_css_fetcher', ContentFetcher::class );
+		$this->getContainer()->add( 'lazyload_css_fetcher', ContentFetcher::class );
 
-		$this->getLeagueContainer()->add( 'lazyload_css_extractor', Extractor::class );
-		$this->getLeagueContainer()->add( 'lazyload_css_file_resolver', FileResolver::class );
-		$this->getLeagueContainer()->add( 'lazyload_css_json_formatter', MappingFormatter::class );
-		$this->getLeagueContainer()->add( 'lazyload_css_rule_formatter', RuleFormatter::class );
-		$this->getLeagueContainer()->add( 'lazyload_css_tag_generator', TagGenerator::class );
+		$this->getContainer()->add( 'lazyload_css_extractor', Extractor::class );
+		$this->getContainer()->add( 'lazyload_css_file_resolver', FileResolver::class );
+		$this->getContainer()->add( 'lazyload_css_json_formatter', MappingFormatter::class );
+		$this->getContainer()->add( 'lazyload_css_rule_formatter', RuleFormatter::class );
+		$this->getContainer()->add( 'lazyload_css_tag_generator', TagGenerator::class );
 
-		$this->getLeagueContainer()->add( 'lazyload_css_factory', LazyloadCSSContentFactory::class );
+		$this->getContainer()->add( 'lazyload_css_factory', LazyloadCSSContentFactory::class );
 
-		$this->getLeagueContainer()->share( 'lazyload_css_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'lazyload_css_subscriber', Subscriber::class )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_extractor' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_rule_formatter' ) )
 			->addArgument( $this->getContainer()->get( 'lazyload_css_file_resolver' ) )

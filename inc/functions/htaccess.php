@@ -264,7 +264,11 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	}
 
 	// No rewrite rules for Korean.
-	if ( defined( 'WPLANG' ) && 'ko_KR' === WPLANG || 'ko_KR' === get_locale() ) {
+	if (
+		( defined( 'WPLANG' ) && 'ko_KR' === WPLANG )
+		||
+		'ko_KR' === get_locale()
+		) {
 		return;
 	}
 

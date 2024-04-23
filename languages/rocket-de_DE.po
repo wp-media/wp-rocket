@@ -4,8 +4,8 @@
 # Caspar Hübinger, 2020
 # Rico Michael <webmaster@hotel-brunner.de>, 2021
 # Ben_Mew <benjaminmewes@web.de>, 2023
-# Romain • WP Rocket <contact@wp-rocket.me>, 2023
 # Christian Herrmann, 2023
+# Romain • WP Rocket <contact@wp-rocket.me>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2023-09-25T14:39:29+03:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Christian Herrmann, 2023\n"
+"Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2023\n"
 "Language-Team: German (Germany) (https://app.transifex.com/wp-media/teams/18133/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -557,9 +557,8 @@ msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
-"https://de.docs.wp-rocket.me/article/1042-fehlende-schreibrechte-fuer-"
-"system-dateien-beheben-htaccess-wp-"
-"configphp?utm_source=wp_plugin&utm_medium=wp_rocket"
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
 #: inc/admin/ui/notices.php:311
 msgid ""

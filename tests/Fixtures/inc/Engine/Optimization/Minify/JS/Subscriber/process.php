@@ -1,8 +1,9 @@
 <?php
 
-global $wp_scripts;
+$scripts = new WP_Scripts();
+wp_default_scripts( $scripts );
 
-$jquery_path = $wp_scripts->registered['jquery-core']->src;
+$jquery_path = $scripts->registered['jquery-core']->src;
 $timenow = time();
 
 return [

@@ -1,0 +1,6 @@
+.external-css-background-images{
+	width: 100%;
+	height: 400px;
+	background-image: url('/wp-content/rocket-test-data/images/test.png'), url( "/wp-content/rocket-test-data/images/paper.jpeg" );
+	background-color: #3dd83d;
+}

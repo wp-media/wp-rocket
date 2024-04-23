@@ -7,6 +7,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Smush;
  * @group ThirdParty
  * @group Smush
  * @group WithSmush
+ * @requires PHP >= 7.4
  */
 class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 	private $option_hook_prefix = 'pre_get_rocket_option_';

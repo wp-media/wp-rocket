@@ -7,7 +7,7 @@ return [
               'queue_name' => 'EU',
               'is_mobile' => false,
 			  'now' => '2023-10-11 20:21:00',
-			  'result' => true
+			  'result' => true,
 		],
         'expected' => [
 			'item' => [
@@ -29,7 +29,7 @@ return [
 			'queue_name' => '',
 			'is_mobile' => false,
 			'now' => '2023-10-11 20:21:00',
-			'result' => true
+			'result' => true,
 		],
 		'expected' => [
 			'item' => [
@@ -43,5 +43,6 @@ return [
 			],
 			'result' => true
 		]
-	],
+	]
+
 ];

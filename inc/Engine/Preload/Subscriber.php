@@ -12,9 +12,12 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
 
-class Subscriber implements Subscriber_Interface {
+class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
+	use LoggerAware;
 	use CheckExcludedTrait;
 
 	/**
@@ -189,6 +192,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( (bool) ! $this->options->get( 'manual_preload', true ) ) {
+			return; // Bail out if preload is disabled.
+		}
+
 		$url = home_url( add_query_arg( [], $wp->request ) );
 
 		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
@@ -238,6 +245,10 @@ class Subscriber implements Subscriber_Interface {
 	public function on_permalink_changed() {
 		$this->query->remove_all();
 		$this->queue->cancel_pending_jobs();
+		if ( ! $this->options->get( 'manual_preload', false ) ) {
+			return;
+		}
+
 		$this->queue->add_job_preload_job_load_initial_sitemap_async();
 	}
 
@@ -272,7 +283,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_url( string $url ) {
-
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
 		$this->clear_cache->partial_clean( [ $url ] );
 	}
 
@@ -296,6 +309,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_partial_cache( $object, array $urls, $lang ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
+		if ( ! $this->options->get( 'manual_preload', false ) ) {
+			return;
+		}
+
 		// Add Homepage URL to $purge_urls for preload.
 		$urls[] = get_rocket_i18n_home_url( $lang );
 
@@ -310,6 +327,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_urls( array $urls ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
 
 		$this->clear_cache->partial_clean( $urls );
 	}
@@ -465,7 +485,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function remove_private_post( string $new_status, string $old_status, $post ) {
-
 		if ( $new_status === $old_status ) {
 			return;
 		}
@@ -524,7 +543,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Exclude private urls.
 	 *
 	 * @param bool   $excluded In case we want to exclude that url.
-	 * @param string $url Current URL to test..
+	 * @param string $url Current URL to test.
 	 *
 	 * @return bool Tells if it's excluded or not.
 	 */
@@ -533,12 +552,17 @@ class Subscriber implements Subscriber_Interface {
 			return true;
 		}
 
-		$post_id = rocket_url_to_postid( $url );
+		$is_private = ! empty( rocket_url_to_postid( $url, [ 'private' ] ) );
 
-		$post = get_post( $post_id );
-		if ( $post ) {
-			return 'private' === $post->post_status;
+		if ( $is_private ) {
+			$this->logger::debug(
+				"Private URL excluded from preload: {$url}",
+				[
+					'method' => __METHOD__,
+				]
+			);
 		}
-		return false;
+
+		return $is_private;
 	}
 }
