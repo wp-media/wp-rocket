@@ -38,7 +38,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	}
 
 	if ( ! file_exists( $filename ) ) {
-		if ( ! is_writable( dirname( $filename ) ) ) {
+		if ( ! is_writable( dirname( $filename ) ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 			return false;
 		}
 
@@ -50,9 +50,9 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		$perms = fileperms( $filename );
 
 		if ( $perms ) {
-			chmod( $filename, $perms | 0644 );
+			chmod( $filename, $perms | 0644 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod
 		}
-	} elseif ( ! is_writable( $filename ) ) {
+	} elseif ( ! is_writable( $filename ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 		return false;
 	}
 
@@ -63,7 +63,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	$start_marker = '# BEGIN WP Rocket';
 	$end_marker   = '# END WP Rocket';
 
-	$pointer = fopen( $filename, 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fopen
+	$pointer = fopen( $filename, 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 
 	if ( ! $pointer ) {
 		return false;
@@ -106,7 +106,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	// Check to see if there was a change.
 	if ( $existing_lines === $insertion ) {
 		flock( $pointer, LOCK_UN );
-		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 		return true;
 	}
@@ -148,7 +148,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 
 	// Write to the start of the file, and truncate it to that length.
 	fseek( $pointer, 0 );
-	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
+	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 
 	if ( $bytes ) {
 		ftruncate( $pointer, ftell( $pointer ) );
@@ -156,7 +156,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 
 	fflush( $pointer );
 	flock( $pointer, LOCK_UN );
-	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
+	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 	return (bool) $bytes;
 }

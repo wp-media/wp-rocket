@@ -2203,7 +2203,7 @@ class Page extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function display_mobile_cache_option() : void {
+	public function display_mobile_cache_option(): void {
 		if ( (bool) $this->options->get( 'cache_mobile', 0 ) ) {
 			return;
 		}
@@ -2217,7 +2217,7 @@ class Page extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function enable_mobile_cache() : void {
+	public function enable_mobile_cache(): void {
 		check_ajax_referer( 'rocket-ajax', 'nonce', true );
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
@@ -2237,7 +2237,7 @@ class Page extends Abstract_Render {
 	 *
 	 * @return void
 	 */
-	public function enable_separate_cache_files_mobile() : void {
+	public function enable_separate_cache_files_mobile(): void {
 		if ( ! (bool) $this->options->get( 'cache_mobile', 0 ) ) {
 			return;
 		}

@@ -274,7 +274,7 @@ class AdminSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 	 * @param boolean $regenerate_configs Returns whether to regenerate config.
 	 * @return void
 	 */
-	public function maybe_regenerate_advanced_cache( bool $regenerate_configs ) : void {
+	public function maybe_regenerate_advanced_cache( bool $regenerate_configs ): void {
 		if ( ! $regenerate_configs ) {
 			return;
 		}

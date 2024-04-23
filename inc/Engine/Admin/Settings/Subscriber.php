@@ -239,7 +239,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function display_mobile_cache_option() : void {
+	public function display_mobile_cache_option(): void {
 		$this->page->display_mobile_cache_option();
 	}
 
@@ -248,7 +248,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function enable_mobile_cache() : void {
+	public function enable_mobile_cache(): void {
 		$this->page->enable_mobile_cache();
 	}
 
@@ -259,7 +259,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $old_version Previous plugin version.
 	 * @return void
 	 */
-	public function enable_separate_cache_files_mobile( $new_version, $old_version ) : void {
+	public function enable_separate_cache_files_mobile( $new_version, $old_version ): void {
 		if ( version_compare( $old_version, '3.16', '>' ) ) {
 			return;
 		}
