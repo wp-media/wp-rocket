@@ -7,7 +7,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @group RUCSS
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::treeshake
  * 
  * @group RUCSS
