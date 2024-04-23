@@ -166,7 +166,7 @@ class AdminBar extends Abstract_Render {
 		$wp_admin_bar->add_menu(
 			[
 				'parent' => 'wp-rocket',
-				'id'     => 'clear-saaas-url',
+				'id'     => 'clear-saas-url',
 				'title'  => $title,
 				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			]
