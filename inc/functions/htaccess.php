@@ -42,7 +42,7 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 			return false;
 		}
 
-		if ( ! touch( $filename ) ) {
+		if ( ! touch( $filename ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_touch
 			return false;
 		}
 
