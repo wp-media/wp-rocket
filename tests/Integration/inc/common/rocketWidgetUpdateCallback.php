@@ -7,7 +7,7 @@ use WP_Widget_Text;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_widget_update_callback
+ * Test class covering ::rocket_widget_update_callback
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
  *
  * @group Themes
  * @group AdminOnly

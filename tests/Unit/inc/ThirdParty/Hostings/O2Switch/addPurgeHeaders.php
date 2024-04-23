@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\O2Switch::add_purge_headers
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\O2Switch::add_purge_headers
  *
  * @group  O2Switch
  * @group  ThirdParty

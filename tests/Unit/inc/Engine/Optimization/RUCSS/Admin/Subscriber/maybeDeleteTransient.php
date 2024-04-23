@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
  */
 class Test_maybeDeleteTransient extends TestCase {
 

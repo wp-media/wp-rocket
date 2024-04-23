@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  * @uses   ::rocket_direct_filesystem
  * @uses   ::is_rocket_post_excluded_option
  *

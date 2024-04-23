@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_cdn_helper_message
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::add_cdn_helper_message
  */
 class Test_addCdnHelperMessage extends TestCase {
 

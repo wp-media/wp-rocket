@@ -9,7 +9,7 @@ use Mockery;
 use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 
 /**
- * @covers \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_atf_admin
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::truncate_atf_admin
  *
  * @group AboveTheFold
  */

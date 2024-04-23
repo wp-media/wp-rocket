@@ -6,7 +6,7 @@ use WPRocketUninstall;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers WPRocketUninstall::uninstall
+ * Test class covering WPRocketUninstall::uninstall
  *
  * @group  AdminOnly
  * @group  Uninstall

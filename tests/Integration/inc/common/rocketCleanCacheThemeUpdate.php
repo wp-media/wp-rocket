@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * Test class covering ::rocket_clean_cache_theme_update
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

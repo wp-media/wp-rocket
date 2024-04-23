@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Polygon;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Polygon::add_rucss_content_excluded
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Polygon::add_rucss_content_excluded
  *
  * @group  ThirdParty
  */

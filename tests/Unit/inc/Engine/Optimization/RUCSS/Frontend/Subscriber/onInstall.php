@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::on_install
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber::on_install
  */
 class Test_onInstall extends TestCase {
 

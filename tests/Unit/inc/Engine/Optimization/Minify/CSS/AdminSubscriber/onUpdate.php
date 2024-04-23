@@ -13,7 +13,7 @@ use function Brain\Monkey\Functions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::on_update
  */
 class Test_onUpdate extends TestCase {
 

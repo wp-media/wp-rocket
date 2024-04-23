@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_put_content
+ * Test class covering ::rocket_put_content
  * @uses  ::rocket_get_filesystem_perms
  * @uses  ::rocket_direct_filesystem
  *

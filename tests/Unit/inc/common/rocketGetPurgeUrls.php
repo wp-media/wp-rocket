@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * Test class covering ::rocket_clean_cache_theme_update
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

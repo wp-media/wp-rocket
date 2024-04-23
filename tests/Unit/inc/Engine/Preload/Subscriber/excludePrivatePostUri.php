@@ -15,7 +15,7 @@ use WP_Rocket_Mobile_Detect;
 use WP_Query;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
  *
  * @group  Preload
  */
