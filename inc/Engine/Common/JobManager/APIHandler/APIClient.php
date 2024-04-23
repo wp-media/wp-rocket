@@ -32,15 +32,19 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_to_queue( string $url, array $options ): array {
+		$url = add_query_arg(
+			[
+				'nowprocket'  => 1,
+				'no_optimize' => 1,
+			],
+			user_trailingslashit( $url )
+		);
+
+		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
+
 		$args = [
 			'body'    => [
-				'url'    => add_query_arg(
-					[
-						'nowprocket'  => 1,
-						'no_optimize' => 1,
-					],
-					user_trailingslashit( $url )
-				),
+				'url'    => $url,
 				'config' => $options,
 			],
 			'timeout' => 5,

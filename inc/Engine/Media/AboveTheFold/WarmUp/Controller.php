@@ -181,4 +181,9 @@ class Controller {
 			usleep( $delay_between );
 		}
 	}
+
+	public function add_wpr_imagedimensions_query_arg()
+	{
+
+	}
 }
