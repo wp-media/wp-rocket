@@ -207,7 +207,7 @@ class JobProcessor implements LoggerAwareInterface {
 	 */
 	public function process_on_submit_jobs() {
 		$this->logger::debug( 'Start processing on submit jobs for adding jobs to queue.' );
-		
+
 		/**
 		 * Fires at the start of the process on submit jobs.
 		 *
