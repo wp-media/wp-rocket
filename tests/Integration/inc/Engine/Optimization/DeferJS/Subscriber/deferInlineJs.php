@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
  *
  * @group  DeferJSInline
  */

@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Themify::disabling_concat_on_rucss
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Themify::disabling_concat_on_rucss
  */
 class Test_disablingConcatOnRucss extends TestCase {
 

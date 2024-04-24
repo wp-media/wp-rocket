@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Fonts;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Fonts::preload_fonts
+ * Test class covering \WP_Rocket\Engine\Preload\Fonts::preload_fonts
  *
  * @group  Preload
  * @group  PreloadFonts

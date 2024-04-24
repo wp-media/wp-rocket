@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::update_safelist_items
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::update_safelist_items
  *
  * @group  RUCSS
  * @group  AdminOnly

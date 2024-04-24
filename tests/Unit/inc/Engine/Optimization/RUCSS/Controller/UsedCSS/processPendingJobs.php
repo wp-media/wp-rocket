@@ -20,7 +20,7 @@ use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::process_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::process_pending_jobs
  */
 class Test_processPendingJobs extends TestCase {
 

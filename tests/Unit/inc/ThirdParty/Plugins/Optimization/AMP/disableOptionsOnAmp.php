@@ -11,7 +11,7 @@ use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group  ThirdParty
  * @group  WithAmp
  */

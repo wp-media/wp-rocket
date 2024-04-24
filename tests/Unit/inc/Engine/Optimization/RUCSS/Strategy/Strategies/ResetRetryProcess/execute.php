@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess::execute
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Strategy\Strategies\ResetRetryProcess::execute
  *
  * @group  RUCSS
  */

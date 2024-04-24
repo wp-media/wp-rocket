@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Hostings\Pressidium;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_post
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_post
  *
  */
 class Test_cleanPost extends TestCase {

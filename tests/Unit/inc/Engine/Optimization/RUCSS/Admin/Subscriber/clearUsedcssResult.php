@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clear_usedcss_result
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clear_usedcss_result
  *
  * @group  RUCSS
  */

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPEngine::varnish_addon_title
  *
  * @group  WPEngine
  * @group  ThirdParty

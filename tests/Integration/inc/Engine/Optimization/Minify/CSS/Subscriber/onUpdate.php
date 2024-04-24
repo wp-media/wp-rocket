@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::on_update
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::on_update
  */
 class Test_onUpdate extends TestCase {
 

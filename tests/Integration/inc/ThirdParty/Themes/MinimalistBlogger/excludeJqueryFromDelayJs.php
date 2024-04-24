@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Themes\MinimalistBlogger;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\MinimalistBlogger::exclude_jquery_from_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Themes\MinimalistBlogger::exclude_jquery_from_delay_js
  *
  * @group Themes
  */

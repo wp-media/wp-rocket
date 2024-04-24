@@ -12,7 +12,7 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  *
  * @group  CriticalPath
  * @group  CriticalPathAdmin

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::clean_full_cache
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::clean_full_cache
  */
 class Test_CleanFullCache extends AdminTestCase
 {

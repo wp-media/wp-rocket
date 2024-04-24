@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
+ * Test class covering \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
  * @group CriticalPath
  */
 class Test_SendGenerationRequest extends TestCase {

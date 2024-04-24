@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::add_license_expire_warning
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_license_expire_warning
  *
  * @group License
  * @group AdminOnly

@@ -12,7 +12,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Addon\WebP\Subscriber::sync_webp_cache_with_third_party_plugins
+ * Test class covering \WP_Rocket\Addon\WebP\Subscriber::sync_webp_cache_with_third_party_plugins
  *
  * @group WebP
  */

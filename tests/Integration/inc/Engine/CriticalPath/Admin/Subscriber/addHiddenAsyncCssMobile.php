@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_hidden_async_css_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_hidden_async_css_mobile
  *
  * @group  AdminOnly
  * @group  CriticalPath

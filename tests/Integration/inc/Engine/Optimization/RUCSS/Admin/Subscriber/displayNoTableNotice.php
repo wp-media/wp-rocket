@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::display_no_table_notice
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::display_no_table_notice
  *
  * @group  RUCSS
  * @group  AdminOnly

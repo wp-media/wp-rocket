@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient::add_to_queue
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient::add_to_queue
  *
  * @group  RUCSS
  */

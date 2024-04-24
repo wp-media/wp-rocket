@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
  */
 class Test_maybeReplaceCssImages extends FilesystemTestCase {
 

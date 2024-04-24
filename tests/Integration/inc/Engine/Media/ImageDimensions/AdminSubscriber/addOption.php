@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Media\ImageDimensions\AdminSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber::add_option
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber::add_option
  *
  * @group  AdminOnly
  * @group  ImageDimensions

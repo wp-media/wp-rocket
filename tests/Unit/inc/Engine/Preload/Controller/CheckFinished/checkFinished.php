@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\CheckFinished::check_finished
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\CheckFinished::check_finished
  * @group  Preload
  */
 class Test_CheckFinished extends TestCase

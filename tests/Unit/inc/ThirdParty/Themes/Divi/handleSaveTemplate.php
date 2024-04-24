@@ -10,7 +10,7 @@ use wpdb;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_save_template
  *
  * @group  ThirdParty
  * @group  Divi

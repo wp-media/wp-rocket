@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
  *

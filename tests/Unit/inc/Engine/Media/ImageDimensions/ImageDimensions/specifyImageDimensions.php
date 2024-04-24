@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::specify_image_dimensions
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::specify_image_dimensions
  * @group  ImageDimensions
  * @group  Media
  */

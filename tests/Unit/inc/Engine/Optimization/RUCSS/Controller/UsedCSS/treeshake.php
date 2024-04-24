@@ -17,7 +17,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
  * @group  RUCSS
  */

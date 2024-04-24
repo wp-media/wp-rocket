@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_processing_notice
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_processing_notice
  *
  * @group  RUCSS
  */

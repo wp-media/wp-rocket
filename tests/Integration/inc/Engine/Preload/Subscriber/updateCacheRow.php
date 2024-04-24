@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::update_cache_row
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::update_cache_row
  * @group  Preload
  */
 class Test_UpdateCacheRow extends AdminTestCase

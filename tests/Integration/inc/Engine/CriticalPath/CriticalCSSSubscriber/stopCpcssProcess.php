@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\ContentTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::stop_critical_css_generation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::stop_critical_css_generation
  *
  * @group  CriticalPath
  * @group  vfs

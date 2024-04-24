@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::rocket_extract_url_component
+ * Test class covering ::rocket_extract_url_component
  * @group Functions
  */
 class Test_RocketExtractUrlComponent extends TestCase {
