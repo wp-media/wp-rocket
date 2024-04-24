@@ -182,8 +182,13 @@ class Controller {
 		}
 	}
 
-	public function add_wpr_imagedimensions_query_arg()
+	public function add_wpr_imagedimensions_query_arg(): string
 	{
-		error_log('filter option here');
+		return add_query_arg(
+			[
+				'wpr_imagedimensions' => 1,
+				'test_parameter' => 1
+			],
+		);
 	}
 }
