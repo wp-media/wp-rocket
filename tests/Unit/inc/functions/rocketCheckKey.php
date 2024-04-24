@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_check_key
+ * Test class covering ::rocket_check_key
  * @group Functions
  * @group Options
  */

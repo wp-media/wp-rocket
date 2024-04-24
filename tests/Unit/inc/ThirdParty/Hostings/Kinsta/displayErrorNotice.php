@@ -10,7 +10,7 @@ use WP_Rocket\ThirdParty\Hostings\Kinsta;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::display_error_notice
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::display_error_notice
  *
  * @group  Kinsta
  * @group  ThirdParty

@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2;
 use WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
  * @group GoogleFonts
  */
 class Test_Preconnect extends TestCase {

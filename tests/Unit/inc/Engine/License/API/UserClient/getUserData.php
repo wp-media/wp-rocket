@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\UserClient::get_user_data
+ * Test class covering \WP_Rocket\Engine\License\API\UserClient::get_user_data
  *
  * @group License
  */

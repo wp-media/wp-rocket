@@ -6,7 +6,7 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::save_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::save_cpcss
  *
  * @group CriticalPath
  * @group vfs

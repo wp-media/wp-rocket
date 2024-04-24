@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Pressidium;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_pressidium
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_pressidium
  *
  */
 class Test_cleanPressidium extends TestCase {

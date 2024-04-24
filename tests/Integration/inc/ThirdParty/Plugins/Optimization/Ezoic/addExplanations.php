@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Optimization\Ezoic;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic::add_explanations
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic::add_explanations
  *
  * @group Ezoic
  * @group ThirdParty

@@ -145,13 +145,20 @@ class Controller {
 		// Remove duplicate links.
 		$links = array_unique( $links );
 
+		$default_limit = 10;
+
 		/**
 		 * Filters the number of links to return from the homepage.
 		 *
-		 * @param int number of links to return.
+		 * @param int $links_limit number of links to return.
 		 */
-		$link_number = apply_filters( 'rocket_atf_warmup_links_number', 10 );
-		$links       = array_slice( $links, 0, $link_number );
+		$links_limit = apply_filters( 'rocket_atf_warmup_links_number', $default_limit );
+
+		if ( ! is_int( $links_limit ) || $links_limit < 1 ) {
+			$links_limit = $default_limit;
+		}
+
+		$links = array_slice( $links, 0, $links_limit );
 		// Add home url to the list of links.
 		$links[] = home_url();
 

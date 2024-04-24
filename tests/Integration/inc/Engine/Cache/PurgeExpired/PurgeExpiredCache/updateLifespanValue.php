@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers PurgeExpiredCache::update_lifespan_value
+ * Test class covering PurgeExpiredCache::update_lifespan_value
  * @group  Cache
  */
 class Test_UpdateLifespanValue extends TestCase {

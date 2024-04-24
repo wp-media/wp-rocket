@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller::fetch_links
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\WarmUp\Controller::fetch_links
  *
  * @group Media
  * @group AboveTheFold

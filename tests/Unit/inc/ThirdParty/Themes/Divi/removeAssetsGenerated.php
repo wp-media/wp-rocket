@@ -13,7 +13,7 @@ use WP_Theme;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::remove_assets_generated
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::remove_assets_generated
  * @uses   \WP_Rocket\ThirdParty\Themes\Divi::is_divi
  *
  * @group  ThirdParty

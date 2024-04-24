@@ -14,7 +14,7 @@ use WP_Error;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
  *
  * @group  CriticalPath
  * @group  vfs

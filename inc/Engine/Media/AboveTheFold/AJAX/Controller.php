@@ -51,18 +51,16 @@ class Controller {
 		$lcp       = 'not found';
 		$viewport  = [];
 
+		$keys = [ 'bg_set', 'src' ];
+
 		foreach ( $images as $image ) {
 			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
-				// We should only get one LCP from the beacon.
-				$lcp = (object) [
-					'type' => 'img',
-					'src'  => $image->src,
-				];
+				$lcp = $this->create_object( $image, $keys );
 			} elseif ( 'above-the-fold' === $image->label ) {
-				$viewport[] = (object) [
-					'type' => 'img',
-					'src'  => $image->src,
-				];
+				$viewport_image = $this->create_object( $image, $keys );
+				if ( null !== $viewport_image ) {
+					$viewport[] = $viewport_image;
+				}
 			}
 		}
 
@@ -90,5 +88,47 @@ class Controller {
 		}
 
 		wp_send_json_success( $item );
+	}
+
+	/**
+	 * Creates an object with the 'type' property and the first key that exists in the image object.
+	 *
+	 * @param object $image The image object.
+	 * @param array  $keys  An array of keys in the order of their priority.
+	 *
+	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
+	 */
+	private function create_object( $image, $keys ) {
+		$object       = new \stdClass();
+		$object->type = $image->type;
+
+		switch ( $image->type ) {
+			case 'img-srcset':
+				// If the type is 'img-srcset', add all the required parameters to the object.
+				$object->src    = $image->src;
+				$object->srcset = $image->srcset;
+				$object->sizes  = $image->sizes;
+				break;
+			case 'picture':
+				$object->src     = $image->src;
+				$object->sources = $image->sources;
+				break;
+			default:
+				// For other types, add the first non-empty key to the object.
+				foreach ( $keys as $key ) {
+					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
+						$object->$key = $image->$key;
+						break;
+					}
+				}
+				break;
+		}
+
+		// If none of the keys exist in the image object, return null.
+		if ( count( (array) $object ) <= 1 ) {
+			return null;
+		}
+
+		return $object;
 	}
 }

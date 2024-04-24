@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_term_atf
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\Admin\Controller::delete_term_atf
  *
  * @group ATF
  */

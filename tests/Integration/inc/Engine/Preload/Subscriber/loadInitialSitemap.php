@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\ASTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::maybe_load_initial_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::maybe_load_initial_sitemap
  * @group  Preload
  */
 class Test_LoadInitialSitemap extends AdminTestCase

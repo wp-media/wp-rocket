@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
  *

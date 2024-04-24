@@ -5,7 +5,7 @@ use WP_Rocket\ThirdParty\Hostings\WPXCloud;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPXCloud::varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPXCloud::varnish_addon_title
  * @group WPXCloud
  */
 class Test_VarnishAddonTitle extends TestCase {

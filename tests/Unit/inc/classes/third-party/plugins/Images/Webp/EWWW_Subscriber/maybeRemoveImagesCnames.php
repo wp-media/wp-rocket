@@ -10,7 +10,7 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_cnames
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_cnames
  * @group  ThirdParty
  * @group  Webp
  */

@@ -11,7 +11,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Actions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::remove_partial_purge_hooks
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::remove_partial_purge_hooks
  *
  * @group  Kinsta
  * @group  ThirdParty

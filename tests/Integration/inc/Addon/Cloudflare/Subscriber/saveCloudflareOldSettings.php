@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::save_cloudflare_old_settings
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::save_cloudflare_old_settings
  *
  * @group Cloudflare
  */

@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Themify::maybe_enable_dev_mode
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Themify::maybe_enable_dev_mode
  */
 class Test_maybeEnableDevMode extends TestCase {
 

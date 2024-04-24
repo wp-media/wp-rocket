@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Page::async_wistia_script
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::async_wistia_script
  * @group  Admin
  * @group  SettingsPage
  */

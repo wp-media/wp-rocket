@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
  * @group  RUCSS
  */

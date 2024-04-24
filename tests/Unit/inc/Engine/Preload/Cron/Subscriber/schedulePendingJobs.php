@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_pending_jobs
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::schedule_pending_jobs
  *
  * @group Cron
  * @group Preload

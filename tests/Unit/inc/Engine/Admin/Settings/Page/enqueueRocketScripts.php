@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Page::enqueue_rocket_scripts
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Page::enqueue_rocket_scripts
  * @group  Admin
  * @group  SettingsPage
  */

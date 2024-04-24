@@ -7,7 +7,7 @@ use WPMedia\PHPUnit\Integration\TestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers ::rocket_is_live_site
+ * Test class covering ::rocket_is_live_site
  * @group Functions
  * @group API
  */

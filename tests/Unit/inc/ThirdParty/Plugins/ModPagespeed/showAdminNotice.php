@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
  * @group mod_pagespeed
  * @group ThirdParty
  */
