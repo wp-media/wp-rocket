@@ -354,6 +354,7 @@ class Controller {
 			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
 			'url'       => $url,
 			'is_mobile' => $is_mobile,
+			'elements'  => $this->lcp_atf_elements(),
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
@@ -418,5 +419,40 @@ class Controller {
 			'sources' => $sources,
 			'tag'     => $tag,
 		];
+	}
+
+	/**
+	 * Pre-define the lcp/atf element
+	 *
+	 * @return string
+	 */
+	public function lcp_atf_elements(): string {
+		$elements = [
+			'img',
+			'video',
+			'picture',
+			'p',
+			'main',
+			'div',
+			'li',
+			'svg',
+		];
+
+		$default_elements = $elements;
+
+		/**
+		 * Filters the array of elements
+		 *
+		 * @since 3.16
+		 *
+		 * @param array $formats Array of elements
+		 */
+		$elements = apply_filters( 'rocket_above_the_fold_elements', $elements );
+
+		if ( ! is_array( $elements ) ) {
+			$elements = $default_elements;
+		}
+
+		return implode( ', ', $elements );
 	}
 }

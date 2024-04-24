@@ -1,52 +1,72 @@
-function isIntersecting(rect) {
+function isDuplicateImage(image, performance_images) {
+	const elementInfo = getElementInfo(image);
+
+	if (elementInfo === null) {
+		return false;
+	}
+
+	const isImageOrVideo =
+		elementInfo.type === "img" ||
+		elementInfo.type === "img-srcset" ||
+		elementInfo.type === "video";
+
+	const isBgImageOrPicture =
+		elementInfo.type === "bg-img" ||
+		elementInfo.type === "bg-img-set" ||
+		elementInfo.type === "picture";
+
 	return (
+		isImageOrVideo || isBgImageOrPicture
+	) && performance_images.some(item => item.src === elementInfo.src);
+}
+
+function isIntersecting(rect) {
+	// Check if any part of the image is within the viewport
+	return (
+		rect.bottom >= 0 &&
+		rect.right >= 0 &&
 		rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
 		rect.left <= (window.innerWidth || document.documentElement.clientWidth)
 	);
 }
 
 function LCPCandidates(count) {
-	const potentialCandidates = document.querySelectorAll(
-		"img, video, picture, p, main, div"
-	);
-	const topCandidates = [];
+	const potentialCandidates = Array.from(document.querySelectorAll(
+		rocket_lcp_data.elements,
+	));
 
-	potentialCandidates.forEach(( element ) => {
+	const topCandidates = potentialCandidates.map(element => {
 		const rect = element.getBoundingClientRect();
-		if (
-			rect.width > 0 &&
-			rect.height > 0 &&
-			isIntersecting( rect )
-		) {
-			const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
-			const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
-			const area = visibleWidth * visibleHeight;
-			const elementInfo = getElementInfo(element);
-			if (elementInfo !== null) {
-				// Insert element into topCandidates in descending order of area
-				for (let i = 0; i < topCandidates.length; i++) {
-					if (area > topCandidates[i].area) {
-						topCandidates.splice(i, 0, {element, area, elementInfo});
-						topCandidates.length = Math.min(
-							count,
-							topCandidates.length
-						); // Keep only specified number of elements
-						break;
-					}
-				}
-				// If topCandidates is not full, append
-				if (topCandidates.length < count) {
-					topCandidates.push({element, area, elementInfo});
-				}
-			}
-		}
-	});
+		return {
+			element: element,
+			rect: rect,
+		};
+	}).filter(item => {
+		return (
+			item.rect.width > 0 &&
+			item.rect.height > 0 &&
+			isIntersecting(item.rect)
+		);
+	})
+	.map(item => ({
+		item,
+		area: getArea(item.rect),
+		elementInfo: getElementInfo(item.element),
+	}))
+	.sort((a, b) => b.area - a.area)
+	.slice(0, count);
 
-	return topCandidates.map((candidate) => ({
-		element: candidate.element,
-		elementInfo: getElementInfo(candidate.element),
+	return topCandidates.map(candidate => ({
+		element: candidate.item.element,
+		elementInfo: candidate.elementInfo,
 	}));
+}
 
+function getArea(rect) {
+	const visibleWidth = Math.min(rect.width, (window.innerWidth || document.documentElement.clientWidth) - rect.left);
+	const visibleHeight = Math.min(rect.height, (window.innerHeight || document.documentElement.clientHeight) - rect.top);
+
+	return visibleWidth * visibleHeight;
 }
 
 function getElementInfo(element) {
@@ -73,19 +93,26 @@ function getElementInfo(element) {
 		element_info.type = "img";
 		element_info.src = element.src;
 		element_info.current_src = element.currentSrc;
-	} else if (nodeName === "video" && element.poster) {
+	} else if (nodeName === "video") {
 		element_info.type = "img";
-		element_info.src = element.poster;
-		element_info.current_src = element.poster;
+		const source = element.querySelector('source');
+		element_info.src = element.poster || (source ? source.src : '');
+		element_info.current_src = element_info.src;
+	} else if (nodeName === "svg") {
+		const imageElement = element.querySelector('image');
+		if (imageElement) {
+			element_info.type = "img";
+			element_info.src = imageElement.getAttribute('href') || '';
+			element_info.current_src = element_info.src;
+		}
 	} else if (nodeName === "picture") {
 		element_info.type = "picture";
-		element_info.src = element.querySelector('img').src;
-		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => {
-			return {
-				srcset: source.srcset,
-				media: source.media
-			};
-		});
+		const img = element.querySelector('img:not(picture>img)');
+		element_info.src = img ? img.src : "";
+		element_info.sources = Array.from(element.querySelectorAll('source')).map(source => ({
+			srcset: source.srcset || '',
+			media: source.media || ''
+		}));
 	} else {
 		const computed_style = window.getComputedStyle(element, null);
 		const bg_props = [
@@ -124,54 +151,41 @@ function getElementInfo(element) {
 
 let performance_images = [];
 
-async function main() {
-	const filteredArray = LCPCandidates(1);
-	if (filteredArray.length !== 0) {
-		console.log("Estimated LCP element:", filteredArray);
-		performance_images = filteredArray.map((item) => ({
-			...item.elementInfo,
+function main() {
+	// Use LCPCandidates function to get all the elements in the viewport
+	const above_the_fold_images = LCPCandidates(Infinity);
+
+	const firstElementWithInfo = above_the_fold_images.find(item => item.elementInfo !== null);
+
+	if (firstElementWithInfo) {
+		performance_images = [{
+			...firstElementWithInfo.elementInfo,
 			label: "lcp",
-		}));
+		}];
 	} else {
 		console.log("No LCP candidate found.");
 	}
 
-	var above_the_fold_images = document.querySelectorAll("img");
+	above_the_fold_images.forEach(({ element, elementInfo }) => {
+		const isDuplicate = isDuplicateImage(element, performance_images);
 
-	for (var i = 0; i < above_the_fold_images.length; i++) {
-		var image = above_the_fold_images[i];
-		var rect = image.getBoundingClientRect();
-		var intersecting = isIntersecting(rect);
-		if (intersecting) {
-			var parent = image.parentNode;
-			while (parent !== document) {
-				var displayStyle = window.getComputedStyle(parent).display;
-				var visibilityStyle =
-					window.getComputedStyle(parent).visibility;
-				if (displayStyle === "none" || visibilityStyle === "hidden") {
-					break;
-				}
-				parent = parent.parentNode;
-			}
-			const isDuplicate = performance_images.some(
-				(item) => item.src === image.src
-			);
-
-			// If it's not a duplicate, push the new element
-			if (!isDuplicate && parent === document) {
-				performance_images.push({
-					src: image.src,
-					label: "above-the-fold",
-				});
-			}
+		if (!isDuplicate) {
+			performance_images.push({ ...elementInfo, label: "above-the-fold" });
 		}
-	}
-	console.log(performance_images);
-	var performance_images_json = JSON.stringify(performance_images);
+	});
+
+	let performance_images_json = JSON.stringify(performance_images);
 	window.performance_images_json = performance_images_json;
+	const payload = {
+		action: 'rocket_lcp',
+		rocket_lcp_nonce: rocket_lcp_data.nonce,
+		url: rocket_lcp_data.url,
+		is_mobile: rocket_lcp_data.is_mobile,
+		images: performance_images_json,
+		status: 'success'
+	};
 
 	const data = new FormData();
-
 	data.append('action', 'rocket_lcp');
 	data.append('rocket_lcp_nonce', rocket_lcp_data.nonce);
 	data.append('url', rocket_lcp_data.url);
@@ -179,18 +193,18 @@ async function main() {
 	data.append('images', performance_images_json);
 	data.append('status', 'success');
 
-	await fetch(rocket_lcp_data.ajax_url, {
+	fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
 		body: data
 	})
-	.then((response) => response.json())
-	.then((data) => {
-		console.log(data);
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+		.then((response) => response.json())
+		.then((data) => {
+			console.log(data);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
 }
 
 if (document.readyState !== 'loading') {
@@ -198,7 +212,7 @@ if (document.readyState !== 'loading') {
 	setTimeout(main, 500);
 	console.timeEnd("extract");
 } else {
-	document.addEventListener("DOMContentLoaded", async function () {
+	document.addEventListener("DOMContentLoaded", function () {
 		console.time("extract");
 		setTimeout(main, 500);
 		console.timeEnd("extract");
