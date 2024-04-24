@@ -182,13 +182,16 @@ class Controller {
 		}
 	}
 
-	public function add_wpr_imagedimensions_query_arg(): string
-	{
+	/**
+	 * Add wpr_imagedimensions to URL query
+	 *
+	 * @return string
+	 */
+	public function add_wpr_imagedimensions_query_arg(): string {
 		if ( ! $this->context->is_allowed() ) {
 			return '';
 		}
 
-		error_log( 'log here before adding arg');
 		return add_query_arg(
 			[
 				'wpr_imagedimensions' => 1,
