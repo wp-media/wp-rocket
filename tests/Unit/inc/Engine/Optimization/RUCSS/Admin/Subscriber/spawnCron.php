@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::spawn_cron
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::spawn_cron
  *
  * @group RUCSS
  */

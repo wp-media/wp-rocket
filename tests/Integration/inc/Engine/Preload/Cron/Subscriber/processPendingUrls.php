@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::process_pending_urls
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::process_pending_urls
  */
 class Test_processPendingUrls extends TestCase {
 

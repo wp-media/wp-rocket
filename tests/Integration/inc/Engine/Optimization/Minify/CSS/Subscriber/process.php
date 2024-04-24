@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
  * @uses   \WP_Rocket\Engine\Optimization\Minify\CSS\Combine::optimize
  * @uses   \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
  * @uses   ::get_rocket_parse_url

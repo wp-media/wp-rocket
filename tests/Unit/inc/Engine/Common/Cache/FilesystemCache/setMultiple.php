@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::setMultiple
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::setMultiple
  */
 class Test_setMultiple extends TestCase {
 

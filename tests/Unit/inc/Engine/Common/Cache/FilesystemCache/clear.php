@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::clear
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::clear
  */
 class Test_clear extends TestCase {
 

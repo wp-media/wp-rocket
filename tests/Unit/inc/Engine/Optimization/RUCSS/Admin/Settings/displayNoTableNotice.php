@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_no_table_notice
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::display_no_table_notice
  *
  * @group  RUCSS
  */

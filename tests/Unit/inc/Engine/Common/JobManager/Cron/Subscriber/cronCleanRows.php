@@ -13,7 +13,7 @@ use WP_Rocket\Tests\Fixtures\inc\Engine\Common\JobManager\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_clean_rows
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_clean_rows
  *
  */
 class Test_CronCleanRows extends TestCase {

@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  *
  * @group  CriticalCss
  * @group  CriticalPath

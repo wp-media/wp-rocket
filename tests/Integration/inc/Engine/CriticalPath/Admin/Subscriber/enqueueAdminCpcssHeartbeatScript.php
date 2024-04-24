@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_cpcss_heartbeat_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_cpcss_heartbeat_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly

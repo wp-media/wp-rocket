@@ -9,7 +9,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\HasLoggerTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::add_to_queue
+ * Test class covering \WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::add_to_queue
  *
  * @group  SaaS
  */

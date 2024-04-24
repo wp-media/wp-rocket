@@ -13,7 +13,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Actions;
 /**
- * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::maybe_clean_cache_domain_change
+ * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::maybe_clean_cache_domain_change
  */
 class Test_maybeCleanCacheDomainChange extends TestCase {
 

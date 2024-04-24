@@ -8,7 +8,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
+ * Test class covering \WP_Rocket\Engine\CDN\CDN::rewrite_srcset
  * @group  CDN
  */
 class Test_RewriteSrcset extends TestCase {

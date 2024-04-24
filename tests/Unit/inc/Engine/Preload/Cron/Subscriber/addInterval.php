@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Cron\Subscriber::add_interval
+ * Test class covering \WP_Rocket\Engine\Preload\Cron\Subscriber::add_interval
  *
  * @group Cron
  * @group Preload

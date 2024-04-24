@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
  * @uses   ::rocket_direct_filesystem

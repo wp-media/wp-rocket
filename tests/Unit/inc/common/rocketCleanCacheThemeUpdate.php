@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Theme;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * Test class covering ::rocket_clean_cache_theme_update
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

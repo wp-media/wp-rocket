@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::is_accessible
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::is_accessible
  */
 class Test_isAccessible extends TestCase {
 

@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::exclude_script_from_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::exclude_script_from_delay_js
  * @group  ThirdParty
  * @group  WithAmp
  */

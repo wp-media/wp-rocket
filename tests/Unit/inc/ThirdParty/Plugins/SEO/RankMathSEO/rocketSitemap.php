@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO::rocket_sitemap
  *
  * @group  AllInOneSEOPack
  * @group  ThirdParty

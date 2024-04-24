@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\JS\Subscrib
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\JS\Subscriber::process
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\JS\Subscriber::process
  * @uses   \WP_Rocket\Engine\Optimization\Minify\JS\Combine::optimize
  * @uses   \WP_Rocket\Engine\Optimization\Minify\JS\Minify::optimize
  * @uses   ::get_rocket_parse_url

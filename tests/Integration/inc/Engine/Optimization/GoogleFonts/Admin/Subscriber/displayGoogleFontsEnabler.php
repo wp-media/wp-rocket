@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::display_google_fonts_enabler
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::display_google_fonts_enabler
  * @uses   \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::display_google_fonts_enabler
  *
  * @group  AdminOnly

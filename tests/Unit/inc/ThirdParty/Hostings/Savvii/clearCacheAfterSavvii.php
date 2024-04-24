@@ -6,7 +6,7 @@ use WP_Rocket\ThirdParty\Hostings\Savvii;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Savvii::clear_cache_after_savvii
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Savvii::clear_cache_after_savvii
  * @group Savvii
  * @group ThirdParty
  */

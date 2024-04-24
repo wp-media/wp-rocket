@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Addon\Sucuri\Subscriber::add_cdn_helper_message
+ * Test class covering \WP_Rocket\Addon\Sucuri\Subscriber::add_cdn_helper_message
  */
 class Test_addCdnHelperMessage extends TestCase {
 

@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
  *
  * @group  CriticalPath
  * @group  vfs
