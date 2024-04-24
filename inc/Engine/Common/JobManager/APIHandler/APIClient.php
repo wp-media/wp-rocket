@@ -39,6 +39,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			],
 			user_trailingslashit( $url )
 		);
+		error_log( 'url' .  print_r($url, true));
 
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
 

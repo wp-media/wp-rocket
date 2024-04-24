@@ -184,6 +184,6 @@ class Controller {
 
 	public function add_wpr_imagedimensions_query_arg()
 	{
-
+		error_log('filter option here');
 	}
 }
