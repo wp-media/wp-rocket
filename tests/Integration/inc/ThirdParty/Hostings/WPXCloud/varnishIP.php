@@ -5,7 +5,7 @@ use WP_Rocket\ThirdParty\Hostings\WPXCloud;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPXCloud::varnish_ip
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPXCloud::varnish_ip
  * @group WPXCloud
  */
 class Test_VarnishIP extends TestCase {

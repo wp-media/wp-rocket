@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
+ * Test class covering WP_Rocket\Engine\Media\AboveTheFold\AJAX\Controller::add_lcp_data
  *
  * @group AboveTheFold
  */

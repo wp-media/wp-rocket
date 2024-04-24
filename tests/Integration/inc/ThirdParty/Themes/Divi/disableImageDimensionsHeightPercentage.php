@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\WPThemeTestcase;
 use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage()
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage()
  *
  * @group Themes
  */

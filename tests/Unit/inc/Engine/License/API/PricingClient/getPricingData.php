@@ -8,7 +8,7 @@ use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
+ * Test class covering \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
  *
  * @group  License
  */

@@ -14,7 +14,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_set_processing_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_set_processing_transient
  *
  * @group  RUCSS
  */

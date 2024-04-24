@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Data::get_support_data
+ * Test class covering \WP_Rocket\Engine\Support\Data::get_support_data
  *
  * @group Support
  */

@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_after_save_options
+ * Test class covering ::rocket_after_save_options
  * @uses  ::rocket_clean_domain
  * @uses  ::rocket_clean_minify
  * @uses  ::rocket_generate_advanced_cache_file

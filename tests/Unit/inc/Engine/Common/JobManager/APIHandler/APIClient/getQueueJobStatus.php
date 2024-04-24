@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::get_queue_job_status
+ * Test class covering WP_Rocket\Engine\Common\JobManager\APIHandler\APIClient::get_queue_job_status
  *
  * @group  SaaS
  */

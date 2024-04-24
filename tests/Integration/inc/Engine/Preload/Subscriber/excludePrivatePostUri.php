@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::exclude_private_post_uri
  *
  * @group  Preload
  */

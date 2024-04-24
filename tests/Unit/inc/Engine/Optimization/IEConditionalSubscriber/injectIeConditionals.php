@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\IEConditionalSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\IEConditionalSubscriber::inject_ie_conditionals
+ * Test class covering \WP_Rocket\Engine\Optimization\IEConditionalSubscriber::inject_ie_conditionals
  *
  * @group  IE
  * @group  Optimization

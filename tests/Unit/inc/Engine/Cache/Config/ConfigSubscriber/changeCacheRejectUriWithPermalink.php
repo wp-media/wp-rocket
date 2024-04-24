@@ -10,7 +10,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Config\ConfigSubscriber::change_cache_reject_uri_with_permalink
+ * Test class covering \WP_Rocket\Engine\Cache\Config\ConfigSubscriber::change_cache_reject_uri_with_permalink
  */
 class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
     private $config_subscriber;

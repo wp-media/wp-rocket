@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Pressidium;
 use Brain\Monkey\Functions;
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clear_cache_after_pressidium
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::clear_cache_after_pressidium
  *
  */
 class Test_clearCacheAfterPressidium extends TestCase {

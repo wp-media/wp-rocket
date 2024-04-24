@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
 /**
- * @covers \WP_Rocket\Addon\Webp\AdminSubscriber::webp_section_description
+ * Test class covering \WP_Rocket\Addon\Webp\AdminSubscriber::webp_section_description
  * @group WebP
  */
 class Test_WebpSectionDescription extends TestCase {

@@ -146,7 +146,7 @@ class Controller {
 
 		$url  = preg_quote( $lcp->src, '/' );
 		$html = preg_replace_callback(
-			'#<img(?:[^>]*?\s+src=["\']' . $url . '["\'][^>]*?|[^>]*?)>#',
+			'#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#',
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
 				if ( preg_match( '/fetchpriority\s*=\s*[\'"]([^\'"]+)[\'"]/i', $matches[0] ) ) {
@@ -217,7 +217,7 @@ class Controller {
 		$exclusions = array_map(
 				function ( $exclusion ) {
 					$exclusion = wp_parse_url( $exclusion );
-					return $exclusion['path'];
+					return ltrim( $exclusion['path'], '/' );
 				},
 			$exclusions
 			);
@@ -271,14 +271,9 @@ class Controller {
 				}
 				break;
 			case 'picture':
-				if ( ! empty( $lcp->sources ) ) {
-					foreach ( $lcp->sources as $source ) {
-						$sources[] = $source->srcset;
-						$tag      .= $start_tag . 'href="' . $source->srcset . '" media="' . $source->media . '"' . $end_tag;
-					}
-				}
-				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . $lcp->src . '"' . $end_tag;
+				$result  = $this->generate_source_tags( $lcp, $start_tag, $end_tag );
+				$sources = $result['sources'];
+				$tag    .= $result['tag'];
 				break;
 		}
 
@@ -359,6 +354,7 @@ class Controller {
 			'nonce'     => wp_create_nonce( 'rocket_lcp' ),
 			'url'       => $url,
 			'is_mobile' => $is_mobile,
+			'elements'  => $this->lcp_atf_elements(),
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
@@ -371,5 +367,92 @@ class Controller {
 
 		// Append the script tag just before the closing body tag.
 		return str_replace( '</body>', $inline_script . $script_tag . '</body>', $html );
+	}
+
+	/**
+	 * Generates the source tags for the given LCP object.
+	 *
+	 * This method is used to generate the source tags for the given LCP object. It iterates over the sources of the LCP object,
+	 * and for each source, it generates a media query and adds the source to the sources array. It also constructs a tag string
+	 * with the source and media query. If a previous max-width is found, it is used to update the media query. The method also
+	 * handles the case where a max-width is found in the source's media attribute.
+	 *
+	 * @param object $lcp The LCP object containing the sources.
+	 * @param string $start_tag The starting tag for each source.
+	 * @param string $end_tag The ending tag for each source.
+	 *
+	 * @return array An associative array containing the sources array and the tag string.
+	 */
+	private function generate_source_tags( $lcp, $start_tag, $end_tag ) {
+		// Initialize the previous max-width to null.
+		$prev_max_width = null;
+		// Initialize the sources array and the tag string.
+		$sources = [];
+		$tag     = '';
+
+		// Iterate over the sources in the LCP object.
+		foreach ( $lcp->sources as $source ) {
+			// Get the media attribute of the source.
+			$media = $source->media;
+			// If a previous max-width is found, update the media query.
+			if ( null !== $prev_max_width ) {
+				$media = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px) and ' . $media;
+			}
+			// Add the source to the sources array.
+			$sources[] = $source->srcset;
+			// Append the source and media query to the tag string.
+			$tag .= $start_tag . 'href="' . $source->srcset . '" media="' . $media . '"' . $end_tag;
+			// If a max-width is found in the source's media attribute, update the previous max-width.
+			if ( preg_match( '/\(max-width: (\d+(\.\d+)?)px\)/', $source->media, $matches ) ) {
+				$prev_max_width = floatval( $matches[1] );
+			}
+		}
+		// If a previous max-width is found, update the media query and add the LCP source to the sources array and the tag string.
+		if ( null !== $prev_max_width ) {
+			$media     = '(min-width: ' . ( $prev_max_width + 0.1 ) . 'px)';
+			$sources[] = $lcp->src;
+			$tag      .= $start_tag . 'href="' . $lcp->src . '" media="' . $media . '"' . $end_tag;
+		}
+
+		// Return an associative array containing the sources array and the tag string.
+		return [
+			'sources' => $sources,
+			'tag'     => $tag,
+		];
+	}
+
+	/**
+	 * Pre-define the lcp/atf element
+	 *
+	 * @return string
+	 */
+	public function lcp_atf_elements(): string {
+		$elements = [
+			'img',
+			'video',
+			'picture',
+			'p',
+			'main',
+			'div',
+			'li',
+			'svg',
+		];
+
+		$default_elements = $elements;
+
+		/**
+		 * Filters the array of elements
+		 *
+		 * @since 3.16
+		 *
+		 * @param array $formats Array of elements
+		 */
+		$elements = apply_filters( 'rocket_above_the_fold_elements', $elements );
+
+		if ( ! is_array( $elements ) ) {
+			$elements = $default_elements;
+		}
+
+		return implode( ', ', $elements );
 	}
 }

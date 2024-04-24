@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Varnish\Subscriber::clean_file
+ * Test class covering WP_Rocket\Addon\Varnish\Subscriber::clean_file
  * @group  Varnish
  * @group  Addon
  */

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clear_cache_after_pressidium
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::clear_cache_after_pressidium
  * @group Pressidium
  */
 class Test_clearCacheAfterPressidium extends AdminTestCase {

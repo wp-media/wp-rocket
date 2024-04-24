@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\SettingsTrait;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::add_delay_js_exclusion
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::add_delay_js_exclusion
  *
  * @group Adthrive
  * @group ThirdParty

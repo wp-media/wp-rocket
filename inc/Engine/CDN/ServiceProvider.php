@@ -6,16 +6,10 @@ use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
 
 /**
  * Service provider for WP Rocket CDN
- *
- * @since 3.5.5
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -26,20 +20,31 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 		$options = $this->getContainer()->get( 'options' );
 
-		$this->getContainer()->share( 'cdn', CDN::class )
+		$this->getContainer()->addShared( 'cdn', CDN::class )
 			->addArgument( $options );
-		$this->getContainer()->share( 'cdn_subscriber', Subscriber::class )
+		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArgument( $options )
 			->addArgument( $this->getContainer()->get( 'cdn' ) )
 			->addTag( 'common_subscriber' );
-		$this->getContainer()->share( 'cdn_admin_subscriber', AdminSubscriber::class )
+		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class )
 		->addTag( 'admin_subscriber' );
 	}
 }

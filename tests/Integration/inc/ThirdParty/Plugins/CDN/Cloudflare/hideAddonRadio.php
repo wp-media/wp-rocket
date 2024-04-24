@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::hide_addon_radio
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::hide_addon_radio
  *
  * @group ThirdParty
  * @group CloudflarePlugin

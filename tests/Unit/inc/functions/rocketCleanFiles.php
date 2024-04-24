@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::_rocket_get_wp_rocket_cache_path
  * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir

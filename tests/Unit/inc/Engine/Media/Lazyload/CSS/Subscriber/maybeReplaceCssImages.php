@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
  */
 class Test_maybeReplaceCssImages extends TestCase {
 	use SubscriberTrait;

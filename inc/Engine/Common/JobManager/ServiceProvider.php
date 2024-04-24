@@ -36,11 +36,22 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
 	 * Registers the classes in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 
 		$factories = [
 			$this->getContainer()->get( 'rucss_factory' ),
@@ -58,7 +69,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'api_client', APIClient::class )
 			->addArgument( $this->getContainer()->get( 'options' ) );
 
-		$this->getContainer()->share( 'job_processor', JobProcessor::class )
+		$this->getContainer()->addShared( 'job_processor', JobProcessor::class )
 			->addArguments(
 				[
 					$factories,
@@ -69,7 +80,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 		);
 
-		$this->getContainer()->share( 'cron_subscriber', CronSubscriber::class )
+		$this->getContainer()->addShared( 'cron_subscriber', CronSubscriber::class )
 			->addArguments(
 				[
 					$this->getContainer()->get( 'job_processor' ),

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_dates_archives
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_dates_archives
  * @uses   ::get_rocket_parse_url
  *
  * @group  purge_actions

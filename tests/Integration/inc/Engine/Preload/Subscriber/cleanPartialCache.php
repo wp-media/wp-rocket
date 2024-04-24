@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::clean_partial_cache
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::clean_partial_cache
  */
 class Test_CleanPartialCache extends AdminTestCase
 {

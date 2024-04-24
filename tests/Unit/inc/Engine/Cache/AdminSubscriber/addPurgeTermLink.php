@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
  *
  * @group Cache
  */

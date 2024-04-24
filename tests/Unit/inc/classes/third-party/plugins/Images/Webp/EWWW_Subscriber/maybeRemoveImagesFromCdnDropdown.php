@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_from_cdn_dropdown
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber::maybe_remove_images_from_cdn_dropdown
  * @group  ThirdParty
  * @group  Webp
  */

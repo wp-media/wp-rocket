@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CSSTrait::apply_font_display_swap
+ * Test class covering \WP_Rocket\Engine\Optimization\CSSTrait::apply_font_display_swap
  *
  * @group  Optimize
  * @group  CSSTrait

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\AboveTheFold\Cron\Subscriber::atf_cleanup
+ * Test class covering \WP_Rocket\Engine\Media\AboveTheFold\Cron\Subscriber::atf_cleanup
  *
  * @group AboveTheFold
  */

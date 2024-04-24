@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber::preconnect
  * @group CombineGoogleFonts
  */
 class Test_Preconnect extends TestCase {

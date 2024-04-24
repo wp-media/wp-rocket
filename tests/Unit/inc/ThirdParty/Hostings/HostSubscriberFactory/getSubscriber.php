@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
  *
  * @group  Hostings
  * @group  ThirdParty
