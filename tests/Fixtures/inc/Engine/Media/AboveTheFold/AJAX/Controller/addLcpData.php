@@ -1,5 +1,28 @@
 <?php
 
+$long_array = [
+	(object) [
+		'label' => 'lcp',
+		'src'   => 'http://example.org/lcp.jpg',
+	],
+];
+$long_array_2 = [
+	(object) [
+		'type' => 'img',
+		'src'   => 'http://example.org/lcp.jpg',
+	],
+];
+for ( $i = 1; $i <= 50; $i++ ) {
+	$long_array[] = (object) [
+		'label' => 'above-the-fold',
+		'src'   => 'http://example.org/above-the-fold-' . $i . '.jpg',
+	];
+	$long_array_2[] = (object) [
+		'type' => 'img',
+		'src'   => 'http://example.org/above-the-fold-' . $i . '.jpg',
+	];
+}
+
 return [
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
@@ -176,6 +199,94 @@ return [
 						'src'  => 'http://example.org/above-the-fold.jpg',
 					],
 				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+		],
+	],
+	'testShouldSanitizeLCPAndATF' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				[
+					(object) [
+						'label' => 'lcp',
+						'src'   => 'http://example.org/lcp.jpg<script>alert("Test XSS");</script>',
+					],
+					(object) [
+						'label' => 'above-the-fold',
+						'src'   => 'http://example.org/above-the-fold.jpg<script>alert("Test XSS");</script>',
+					],
+				]
+			),
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/lcp.jpgalert("Test XSS");',
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpgalert("Test XSS");',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode(
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/lcp.jpgalert("Test XSS");',
+					],
+				),
+				'viewport'      => json_encode( [
+					(object) [
+						'type' => 'img',
+						'src'  => 'http://example.org/above-the-fold.jpgalert("Test XSS");',
+					],
+				] ),
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+		],
+	],
+
+	'testShouldAddLongItemToDB' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => json_encode(
+				$long_array
+			),
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode( $long_array_2[0] ),
+				'viewport'      => json_encode( array_slice( $long_array_2, 1, 20 ) ),
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => json_encode( $long_array_2[0] ),
+				'viewport'      => json_encode( array_slice( $long_array_2, 1, 20 ) ),
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 		],

@@ -47,9 +47,21 @@ class Controller {
 
 		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
 		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
-		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : '';
+		$images    = isset( $_POST['images'] ) ? json_decode( sanitize_text_field( wp_unslash( $_POST['images'] ) ) ) : [];
 		$lcp       = 'not found';
 		$viewport  = [];
+
+		/**
+		 * Filters the maximum number of ATF images being saved into the database.
+		 *
+		 * @param int $max_number Maximum number to allow.
+		 * @param string $url Current page url.
+		 * @param string[]|array $images Current list of ATF images.
+		 */
+		$max_atf_images_number = (int) apply_filters( 'rocket_atf_images_number', 20, $url, $images );
+		if ( 0 >= $max_atf_images_number ) {
+			$max_atf_images_number = 1;
+		}
 
 		foreach ( $images as $image ) {
 			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
@@ -59,10 +71,14 @@ class Controller {
 					'src'  => esc_url_raw( $image->src ),
 				];
 			} elseif ( 'above-the-fold' === $image->label ) {
+				if ( 0 === $max_atf_images_number ) {
+					continue;
+				}
 				$viewport[] = (object) [
 					'type' => 'img',
 					'src'  => esc_url_raw( $image->src ),
 				];
+				$max_atf_images_number--;
 			}
 		}
 
