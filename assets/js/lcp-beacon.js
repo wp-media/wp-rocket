@@ -160,13 +160,13 @@ function main() {
 	data_check.append('url', rocket_lcp_data.url);
 	data_check.append('is_mobile', rocket_lcp_data.is_mobile);
 
-	const response = fetch(rocket_lcp_data.ajax_url, {
+	const lcp_data_response = fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
 		body: data_check
 	});
 
-	if ( true === lcp_data.success ) {
+	if ( true === lcp_data_response.success ) {
 		console.log('Bailing out because data is already available');
 		return;
 	}
@@ -174,6 +174,7 @@ function main() {
 	// Check screen size
 	const screenWidth = window.innerWidth || document.documentElement.clientWidth;
 	const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+
 	if ( ( rocket_lcp_data.is_mobile && ( screenWidth > rocket_lcp_data.width_threshold || screenHeight > rocket_lcp_data.height_threshold ) ) ||
 		( ! rocket_lcp_data.is_mobile && ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) )
 	{
