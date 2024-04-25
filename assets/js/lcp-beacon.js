@@ -226,15 +226,20 @@ function main() {
 	fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
-		body: data
+		body: data,
+		headers: {
+			'wpr-saas-no-intercept':  true
+		}
 	})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data);
-		})
-		.catch((error) => {
-			console.error(error);
-		});
+	.then((response) => response.json())
+	.then((data) => {
+		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
+		beaconscript.setAttribute('beacon-completed', 'true');
+		console.log(data);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
 }
 
 if (document.readyState !== 'loading') {
