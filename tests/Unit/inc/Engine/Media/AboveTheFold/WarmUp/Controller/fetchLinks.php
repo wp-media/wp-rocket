@@ -66,9 +66,6 @@ class Test_FetchLinks extends TestCase {
 				->andReturn( $config['response']['body'] );
 		}
 
-		$cache_reject_uri = '/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|/wc-api/v(.*)|/(index.php/)?(.*)wp-json(/.*|$)';
-		Functions\when( 'get_rocket_cache_reject_uri' )->justReturn( $cache_reject_uri );
-
 		if ( isset( $config['found_link'] ) && $config['found_link'] ) {
 
 			$this->stubWpParseUrl();
