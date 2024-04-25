@@ -2,6 +2,7 @@
 
 $long_array = [
 	(object) [
+		'type' => 'img',
 		'label' => 'lcp',
 		'src'   => 'http://example.org/lcp.jpg',
 	],
@@ -267,7 +268,6 @@ return [
 			],
 		],
 	],
-
 	'testShouldAddLongItemToDB' => [
 		'config'   => [
 			'filter'    => true,
@@ -293,6 +293,33 @@ return [
 				'status'        => 'completed',
 				'lcp'           => json_encode( $long_array_2[0] ),
 				'viewport'      => json_encode( array_slice( $long_array_2, 1, 20 ) ),
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+		],
+	],
+	'testShouldNotAddItemToDBWhenNoData' => [
+		'config'   => [
+			'filter'    => true,
+			'url'       => 'http://example.org',
+			'is_mobile' => false,
+			'images'    => '',
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => '"not found"',
+				'viewport'      => '[]',
+				'last_accessed' => '2024-01-01 00:00:00',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'lcp'           => '"not found"',
+				'viewport'      => '[]',
 				'last_accessed' => '2024-01-01 00:00:00',
 			],
 		],

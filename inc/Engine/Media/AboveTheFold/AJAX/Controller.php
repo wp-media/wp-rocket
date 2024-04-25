@@ -65,7 +65,7 @@ class Controller {
 
 		$keys = [ 'bg_set', 'src' ];
 
-		foreach ( $images as $image ) {
+		foreach ( (array) $images as $image ) {
 			$image_object = $this->create_object( $image, $keys );
 			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
 				$lcp = $image_object;
@@ -116,17 +116,17 @@ class Controller {
 	 */
 	private function create_object( $image, $keys ) {
 		$object       = new \stdClass();
-		$object->type = $image->type;
+		$object->type = $image->type ?? 'img';
 
-		switch ( $image->type ) {
+		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = $image->src;
+				$object->src    = esc_url_raw( $image->src );
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = $image->src;
+				$object->src     = esc_url_raw( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:
