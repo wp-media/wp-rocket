@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\AJAX;
 
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Controller {
+	use UrlTrait;
+
 	/**
 	 * ATFQuery instance
 	 *
@@ -121,12 +124,12 @@ class Controller {
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
-				$object->src    = esc_url_raw( $image->src );
+				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
 				$object->srcset = $image->srcset;
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src     = esc_url_raw( $image->src );
+				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:
