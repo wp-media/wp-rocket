@@ -174,6 +174,7 @@ function main() {
 	// Check screen size
 	const screenWidth = window.innerWidth || document.documentElement.clientWidth;
 	const screenHeight = window.innerHeight || document.documentElement.clientHeight;
+
 	if ( ( rocket_lcp_data.is_mobile && ( screenWidth > rocket_lcp_data.width_threshold || screenHeight > rocket_lcp_data.height_threshold ) ) ||
 		( ! rocket_lcp_data.is_mobile && ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) )
 	{
@@ -225,15 +226,20 @@ function main() {
 	fetch(rocket_lcp_data.ajax_url, {
 		method: "POST",
 		credentials: 'same-origin',
-		body: data
+		body: data,
+		headers: {
+			'wpr-saas-no-intercept':  true
+		}
 	})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data);
-		})
-		.catch((error) => {
-			console.error(error);
-		});
+	.then((response) => response.json())
+	.then((data) => {
+		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
+		beaconscript.setAttribute('beacon-completed', 'true');
+		console.log(data);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
 }
 
 if (document.readyState !== 'loading') {
