@@ -185,7 +185,7 @@ class Controller {
 	/**
 	 * Add wpr_imagedimensions to URL query.
 	 *
-	 * @param string $url
+	 * @param string $url URL to be sent.
 	 *
 	 * @return string
 	 */
