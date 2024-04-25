@@ -63,21 +63,19 @@ class Controller {
 			$max_atf_images_number = 1;
 		}
 
+		$keys = [ 'bg_set', 'src' ];
+
 		foreach ( $images as $image ) {
+			$image_object = $this->create_object( $image, $keys );
 			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
-				// We should only get one LCP from the beacon.
-				$lcp = (object) [
-					'type' => 'img',
-					'src'  => esc_url_raw( $image->src ),
-				];
+				$lcp = $image_object;
 			} elseif ( 'above-the-fold' === $image->label ) {
 				if ( 0 === $max_atf_images_number ) {
 					continue;
 				}
-				$viewport[] = (object) [
-					'type' => 'img',
-					'src'  => esc_url_raw( $image->src ),
-				];
+				if ( null !== $image_object ) {
+					$viewport[] = $image_object;
+				}
 				--$max_atf_images_number;
 			}
 		}
@@ -106,5 +104,77 @@ class Controller {
 		}
 
 		wp_send_json_success( $item );
+	}
+
+	/**
+	 * Creates an object with the 'type' property and the first key that exists in the image object.
+	 *
+	 * @param object $image The image object.
+	 * @param array  $keys  An array of keys in the order of their priority.
+	 *
+	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
+	 */
+	private function create_object( $image, $keys ) {
+		$object       = new \stdClass();
+		$object->type = $image->type;
+
+		switch ( $image->type ) {
+			case 'img-srcset':
+				// If the type is 'img-srcset', add all the required parameters to the object.
+				$object->src    = $image->src;
+				$object->srcset = $image->srcset;
+				$object->sizes  = $image->sizes;
+				break;
+			case 'picture':
+				$object->src     = $image->src;
+				$object->sources = $image->sources;
+				break;
+			default:
+				// For other types, add the first non-empty key to the object.
+				foreach ( $keys as $key ) {
+					if ( isset( $image->$key ) && ! empty( $image->$key ) ) {
+						$object->$key = $image->$key;
+						break;
+					}
+				}
+				break;
+		}
+
+		// If none of the keys exist in the image object, return null.
+		if ( count( (array) $object ) <= 1 ) {
+			return null;
+		}
+
+		return $object;
+	}
+
+	/**
+	 * Checks if there is existing LCP data for the current URL and device type.
+	 *
+	 * This method is called via AJAX. It checks if there is existing LCP data for the current URL and device type.
+	 * If the data exists, it returns a JSON success response with true. If the data does not exist, it returns a JSON success response with false.
+	 * If the context is not allowed, it returns a JSON error response with false.
+	 *
+	 * @return void
+	 */
+	public function check_lcp_data() {
+		check_ajax_referer( 'rocket_lcp', 'rocket_lcp_nonce' );
+
+		if ( ! $this->context->is_allowed() ) {
+			wp_send_json_error( false );
+			return;
+		}
+
+		$url       = isset( $_POST['url'] ) ? untrailingslashit( esc_url_raw( wp_unslash( $_POST['url'] ) ) ) : '';
+		$is_mobile = isset( $_POST['is_mobile'] ) ? filter_var( wp_unslash( $_POST['is_mobile'] ), FILTER_VALIDATE_BOOLEAN ) : false;
+
+		$row = $this->query->get_row( $url, $is_mobile );
+
+		if ( ! empty( $row ) ) {
+			wp_send_json_success( 'data already exists' );
+			return;
+		}
+
+		wp_send_json_error( 'data does not exist' );
 	}
 }

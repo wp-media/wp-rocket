@@ -18,7 +18,7 @@ $expected_html = <<<EXPECTEDHTML
 <body>
 	<img src="https://example.org/wp-content/uploads/logo.jpg" data-height-percentage="54">
 	<img width="1" height="1" src="https://example.org/wp-content/uploads/my-picture.jpg">
-	<script src='http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js' async></script>
+	<script data-name="wpr-lcp-beacon" src='http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js' async></script>
 </body>
 </html>
 EXPECTEDHTML;
