@@ -25,7 +25,7 @@ class Test_Rewrite extends TestCase {
 	}
 
 	/**
-	 * @dataProvider configTestData
+	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURL( $home_url, $original, $expected ) {
 		$this->cnames       = [
@@ -49,5 +49,9 @@ class Test_Rewrite extends TestCase {
 			$this->format_the_html( $expected ),
 			$this->format_the_html( apply_filters( 'rocket_buffer', $original ) )
 		);
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'rewrite' );
 	}
 }
