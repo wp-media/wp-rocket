@@ -349,6 +349,8 @@ class Controller {
 			return $html;
 		}
 
+		$default_width_threshold  = $is_mobile ? 393 : 1600;
+		$default_height_threshold = $is_mobile ? 830 : 700;
 		/**
 		 * Filters the width threshold for the LCP beacon.
 		 *
@@ -358,7 +360,7 @@ class Controller {
 		 *
 		 * @return int The filtered width threshold.
 		 */
-		$width_threshold = absint( apply_filters( 'rocket_lcp_width_threshold', ( $is_mobile ? 393 : 1920 ), $is_mobile, $url ) );
+		$width_threshold = apply_filters( 'rocket_lcp_width_threshold', $default_width_threshold, $is_mobile, $url );
 
 		/**
 		 * Filters the height threshold for the LCP beacon.
@@ -369,7 +371,15 @@ class Controller {
 		 *
 		 * @return int The filtered height threshold.
 		 */
-		$height_threshold = absint( apply_filters( 'rocket_lcp_height_threshold', ( $is_mobile ? 830 : 1080 ), $is_mobile, $url ) );
+		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', $default_height_threshold, $is_mobile, $url );
+
+		if ( ! is_int( $width_threshold ) ) {
+			$width_threshold = $default_width_threshold;
+		}
+
+		if ( ! is_int( $height_threshold ) ) {
+			$height_threshold = $default_height_threshold;
+		}
 
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
