@@ -120,7 +120,7 @@ class Controller {
 			$links
 			);
 
-		$reject_uri_pattern = get_rocket_cache_reject_uri();
+		$reject_uri_pattern = '/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|/wc-api/v(.*)|/(index.php/)?(.*)wp-json(/.*|$)';
 
 		// Filter links.
 		$links = array_filter(
