@@ -140,7 +140,7 @@ class Controller {
 			'picture',
 		];
 
-		if ( ! in_array( $lcp->type, $allowed_types, true ) ) {
+		if ( empty( $lcp ) || empty( $lcp->type ) || ! in_array( $lcp->type, $allowed_types, true ) ) {
 			return $html;
 		}
 
