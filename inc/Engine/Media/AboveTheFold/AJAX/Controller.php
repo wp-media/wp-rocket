@@ -78,7 +78,7 @@ class Controller {
 					'type' => 'img',
 					'src'  => esc_url_raw( $image->src ),
 				];
-				$max_atf_images_number--;
+				--$max_atf_images_number;
 			}
 		}
 
