@@ -8,9 +8,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Media\AboveTheFold\Database\Queries\AboveTheFold as ATFQuery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Optimization\UrlTrait;
 
 class Controller {
 	use RegexTrait;
+	use UrlTrait;
 
 	/**
 	 * Options instance
@@ -250,24 +252,24 @@ class Controller {
 		switch ( $lcp->type ) {
 			case 'img':
 				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . esc_url( $lcp->src ) . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . ( $this->is_relative( $lcp->src ) ? esc_attr( $lcp->src ) : esc_url( $lcp->src ) ) . '"' . $end_tag;
 				break;
 			case 'img-srcset':
 				$sources[] = $lcp->src;
-				$tag      .= $start_tag . 'href="' . esc_url( $lcp->src ) . '" imagesrcset="' . $lcp->srcset . '" imagesizes="' . $lcp->sizes . '"' . $end_tag;
+				$tag      .= $start_tag . 'href="' . ( $this->is_relative( $lcp->src ) ? esc_attr( $lcp->src ) : esc_url( $lcp->src ) ) . '" imagesrcset="' . esc_attr( $lcp->srcset ) . '" imagesizes="' . esc_attr( $lcp->sizes ) . '"' . $end_tag;
 				break;
 			case 'bg-img-set':
 				foreach ( $lcp->bg_set as $set ) {
 					$sources[] = $set->src;
 				}
 
-				$tag .= $start_tag . 'imagesrcset="' . implode( ',', $sources ) . '"' . $end_tag;
+				$tag .= $start_tag . 'imagesrcset="' . esc_attr( implode( ',', $sources ) ) . '"' . $end_tag;
 				break;
 			case 'bg-img':
 				foreach ( $lcp->bg_set as $set ) {
 					$sources[] = $set->src;
 
-					$tag .= $start_tag . 'href="' . $set->src . '"' . $end_tag;
+					$tag .= $start_tag . 'href="' . $this->is_relative( $set->src ) ? esc_attr( $set->src ) : esc_url( $set->src ) . '"' . $end_tag;
 				}
 				break;
 			case 'picture':
