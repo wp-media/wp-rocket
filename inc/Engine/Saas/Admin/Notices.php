@@ -138,7 +138,7 @@ class Notices {
 		$transient = get_transient( 'rocket_saas_processing' );
 		$class     = '';
 
-        if ( false !== $transient || ( ! $this->options->get( 'remove_unused_css', 0 ) ) ) {
+		if ( false !== $transient || ( ! $this->options->get( 'remove_unused_css', 0 ) ) ) {
 			$class = 'hidden';
 		}
 
