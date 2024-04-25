@@ -101,7 +101,7 @@ class Notices {
 
 		$message = sprintf(
 			// translators: %1$s = plugin name, %2$s = number of seconds.
-			__( '%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your pages, the plugin is optimizing LCP and the images above the fold..', 'rocket' ),
+			__( '%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your pages, the plugin is optimizing LCP and the images above the fold.', 'rocket' ),
 			'<strong>WP Rocket</strong>',
 			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
 		);
@@ -138,7 +138,7 @@ class Notices {
 		$transient = get_transient( 'rocket_saas_processing' );
 		$class     = '';
 
-		if ( false !== $transient ) {
+        if ( false !== $transient || ( ! $this->options->get( 'remove_unused_css', 0 ) ) ) {
 			$class = 'hidden';
 		}
 
