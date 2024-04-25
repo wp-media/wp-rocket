@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Preload\Frontend\{FetchSitemap, SitemapParser};
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Frontend\FetchSitemap::parse_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Frontend\FetchSitemap::parse_sitemap
  * @group  Preload
  */
 class Test_ParseSitemap extends TestCase {

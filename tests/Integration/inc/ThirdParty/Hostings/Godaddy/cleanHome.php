@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::clean_home
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Godaddy::clean_home
  *
  * @group  Godaddy
  * @group  ThirdParty

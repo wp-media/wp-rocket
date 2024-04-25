@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::register_generate_route
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::register_generate_route
  *
  * @group  CriticalPath
  */

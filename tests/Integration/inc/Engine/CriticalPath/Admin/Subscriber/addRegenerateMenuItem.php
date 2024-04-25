@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_regenerate_menu_item
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_regenerate_menu_item
  * @uses   \WP_Rocket\Tests\CriticalPath\Admin\Admin::add_regenerate_menu_item
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @uses   ::rocket_has_constant

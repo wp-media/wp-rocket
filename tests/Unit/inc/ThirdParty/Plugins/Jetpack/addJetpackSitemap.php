@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Jetpack::add_jetpack_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Jetpack::add_jetpack_sitemap
  * @group Jetpack
  * @group ThirdParty
  */

@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::sanitize_options
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::sanitize_options
  *
  * @group  DelayJS
  */

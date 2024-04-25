@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Term;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
+ * Test class covering \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
  * @group  Purge
  * @group  purge_actions
  */

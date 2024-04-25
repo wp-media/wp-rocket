@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enqueue_rocket_scripts
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Subscriber::enqueue_rocket_scripts
  * @group  AdminOnly
  * @group  SettingsPage
  */

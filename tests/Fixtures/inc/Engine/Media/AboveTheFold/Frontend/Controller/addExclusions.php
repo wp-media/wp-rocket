@@ -55,12 +55,12 @@ return [
 			'row'                     => (object) [
 				'lcp'      => json_encode( (object) [
 					'type' => 'img',
-					'src'  => 'bar',
+					'src'  => 'https://example.com/bar.jpg',
 				] ),
 				'viewport' => json_encode( [
 					0 => (object) [
 						'type' => 'img',
-						'src'  => 'foobar',
+						'src'  => 'https://example.com/foobar.jpg',
 					],
 				] ),
 			],
@@ -73,8 +73,8 @@ return [
 		],
 		'expected'   => [
 			'foo',
-			'bar',
-			'foobar',
+			'bar.jpg',
+			'foobar.jpg',
 		],
 	],
 ];

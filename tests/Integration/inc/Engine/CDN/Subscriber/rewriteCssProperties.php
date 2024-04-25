@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @group  CDN

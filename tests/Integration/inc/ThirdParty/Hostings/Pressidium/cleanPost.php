@@ -9,7 +9,7 @@ use NinukisCaching;
 
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_post
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Pressidium::clean_post
  * @group Pressidium
  */
 class Test_cleanPost extends TestCase

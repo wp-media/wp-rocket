@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Media\AboveTheFold\WarmUp;
 use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Common\Utils;
 
 class Controller {
 
@@ -125,25 +126,38 @@ class Controller {
 			function ( $link ) use ( $home_url ) {
 				$link_host = wp_parse_url( $link );
 				$site_host = wp_parse_url( $home_url );
-
 				/**
 				 * Check for valid link.
 				 * Check that no external link.
+				 * Check that it's not home.
 				 */
-				return wp_http_validate_url( $link ) && $link_host['host'] === $site_host['host'];
+				$is_valid_url = wp_http_validate_url( $link );
+				$is_same_host = isset( $link_host['host'] ) ? $link_host['host'] === $site_host['host'] : false;
+				$is_not_home  = ! Utils::is_home( $link );
+
+				return $is_valid_url && $is_same_host && $is_not_home;
 			}
 		);
 
 		// Remove duplicate links.
 		$links = array_unique( $links );
 
+		$default_limit = 10;
+
 		/**
 		 * Filters the number of links to return from the homepage.
 		 *
-		 * @param int number of links to return.
+		 * @param int $links_limit number of links to return.
 		 */
-		$link_number = apply_filters( 'rocket_atf_warmup_links_number', 10 );
-		$links       = array_slice( $links, 0, $link_number );
+		$links_limit = apply_filters( 'rocket_atf_warmup_links_number', $default_limit );
+
+		if ( ! is_int( $links_limit ) || $links_limit < 1 ) {
+			$links_limit = $default_limit;
+		}
+
+		$links = array_slice( $links, 0, $links_limit );
+		// Add home url to the list of links.
+		$links[] = home_url();
 
 		return $links;
 	}

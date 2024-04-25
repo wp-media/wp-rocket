@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::set_current_language
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::set_current_language
  * @group TranslatePress
  */
 class Test_SetCurrentLanguage extends TestCase {

@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_dynamic_lists_script
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_dynamic_lists_script
  *
  * @group  DynamicLists
  */

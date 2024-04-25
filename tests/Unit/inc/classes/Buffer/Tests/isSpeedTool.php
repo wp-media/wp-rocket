@@ -8,7 +8,7 @@ use WP_Rocket\Buffer\Tests;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Buffer\Tests::is_speed_tool
+ * Test class covering \WP_Rocket\Buffer\Tests::is_speed_tool
  * @uses   \WP_Rocket\Buffer\Tests::get_ip
  * @group  Buffer
  */

@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\Minify\JS\Combine;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\JS\Combine::optimize
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\JS\Combine::optimize
  *
  * @group  Optimize
  * @group  CombineJS

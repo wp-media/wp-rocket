@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @uses   \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  * @uses   \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request

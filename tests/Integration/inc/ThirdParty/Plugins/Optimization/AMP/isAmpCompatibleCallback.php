@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use AMP_Options_Manager;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
  * @group  ThirdParty
  * @group  WithAmp
  */

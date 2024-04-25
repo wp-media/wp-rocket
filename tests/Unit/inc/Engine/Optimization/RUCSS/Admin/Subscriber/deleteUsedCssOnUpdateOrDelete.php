@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
  *
  * @group  RUCSS
  */

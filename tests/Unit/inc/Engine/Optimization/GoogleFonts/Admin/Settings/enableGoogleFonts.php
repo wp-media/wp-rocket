@@ -9,7 +9,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts()
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts()
  *
  * @group  GoogleFontsAdmin
  */

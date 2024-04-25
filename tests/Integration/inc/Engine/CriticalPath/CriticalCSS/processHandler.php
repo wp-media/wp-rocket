@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::save
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::dispatch
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process

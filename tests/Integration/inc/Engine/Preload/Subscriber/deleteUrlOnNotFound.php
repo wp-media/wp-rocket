@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Subscriber::delete_url_on_not_found
+ * Test class covering \WP_Rocket\Engine\Preload\Subscriber::delete_url_on_not_found
  * @group  Preload
  */
 class Test_DeleteUrlOnNotFound extends AdminTestCase

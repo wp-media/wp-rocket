@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\Minify\CSS\Minify;
 use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\Minify::optimize
  *
  * @uses \WP_Rocket\Logger\Logger::info()
  * @uses \WP_Rocket\Logger\Logger::debug()

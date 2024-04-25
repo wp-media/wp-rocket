@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\ThirdParty\Themes\Flatsome;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Flatsome::preserve_patterns
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Flatsome::preserve_patterns
  *
  * @group Themes
  */

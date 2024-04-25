@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clear_usedcss_result
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::clear_usedcss_result
  *
  * @group  RUCSS
  * @group  AdminOnly

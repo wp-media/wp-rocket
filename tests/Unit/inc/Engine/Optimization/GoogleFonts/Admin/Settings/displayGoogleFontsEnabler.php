@@ -11,7 +11,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts()
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts()
  *
  * @group  GoogleFontsAdmin
  */
