@@ -101,7 +101,7 @@ class Notices {
 
 		$message = sprintf(
 			// translators: %1$s = plugin name, %2$s = number of seconds.
-			__( '%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your pages.', 'rocket' ),
+			__( '%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing your pages, the plugin is optimizing LCP and the images above the fold.', 'rocket' ),
 			'<strong>WP Rocket</strong>',
 			'<span id="rocket-rucss-timer">' . $remaining . '</span>'
 		);
@@ -138,13 +138,17 @@ class Notices {
 		$transient = get_transient( 'rocket_saas_processing' );
 		$class     = '';
 
-		if ( false !== $transient ) {
+		if ( false !== $transient || ( ! $this->options->get( 'remove_unused_css', 0 ) ) ) {
 			$class = 'hidden';
 		}
 
 		$message = sprintf(
 			// translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of seconds.
-			__( '%1$s: The Used CSS of your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
+			__(
+				'%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.
+			 WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).',
+				'rocket'
+				),
 			'<strong>WP Rocket</strong>',
 			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
 			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
@@ -285,7 +289,7 @@ class Notices {
 
 		$main_message = sprintf(
 			// translators: %1$s = <a> open tag, %2$s = </a> closing tag.
-			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the Remove Unused CSS generator. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
+			__( 'It seems a security plugin or the server\'s firewall prevents WP Rocket from accessing the SaaS features. IPs listed %1$shere in our documentation%2$s should be added to your allowlists:', 'rocket' ),
 			'<a href="' . esc_url( $firewall_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $firewall_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
 			'</a>'
 		);
@@ -301,7 +305,7 @@ class Notices {
 				'message'              => $message,
 				'dismissible'          => '',
 				'id'                   => 'rocket-notice-rucss-error-http',
-				'dismiss_button'       => 'rucss_error_notice',
+				'dismiss_button'       => 'saas_error_notice',
 				'dismiss_button_class' => 'button-primary',
 			]
 		);
