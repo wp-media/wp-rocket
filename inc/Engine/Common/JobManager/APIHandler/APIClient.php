@@ -40,6 +40,11 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 			user_trailingslashit( $url )
 		);
 
+		/**
+		 * Filter the url that is sent to Saas when RUCSS and LCP/ATF is on.
+		 *
+		 * @param string $url contains the URL that is sent to Saas.
+		 */
 		$url = apply_filters( 'rocket_saas_api_queued_url', $url );
 
 		$args = [

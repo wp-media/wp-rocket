@@ -45,7 +45,7 @@ class Test_AddWPRImageDimensionQueryArg extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			$this->controller->add_wpr_imagedimensions_query_arg()
+			$this->controller->add_wpr_imagedimensions_query_arg( $config['url'] )
 		);
 	}
 

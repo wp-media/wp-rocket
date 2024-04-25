@@ -61,10 +61,11 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Add image dimensions query parameter to URL.
+	 * @param string $url
 	 *
 	 * @return string
 	 */
-	public function add_wpr_imagedimensions_query_arg(): string {
-		return $this->controller->add_wpr_imagedimensions_query_arg();
+	public function add_wpr_imagedimensions_query_arg( string $url ): string {
+		return $this->controller->add_wpr_imagedimensions_query_arg( $url );
 	}
 }

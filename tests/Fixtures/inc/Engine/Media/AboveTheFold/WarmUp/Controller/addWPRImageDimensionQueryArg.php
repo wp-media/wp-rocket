@@ -4,13 +4,15 @@ return [
 	'testShoulDoNothingWhenDisabled' => [
 		'config' => [
 			'filter' => false,
+			'url' => 'http://example.com'
 		],
-		'expected' => "",
+		'expected' => 'http://example.com',
 	],
 	'testShoulDoReturnArgument' => [
 		'config' => [
 			'filter' => true,
+			'url' => 'http://example.com'
 		],
-		'expected' => "/?wpr_imagedimensions=1",
+		'expected' => 'http://example.com/?wpr_imagedimensions=1',
 	],
 ];
