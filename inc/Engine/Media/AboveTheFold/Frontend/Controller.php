@@ -372,13 +372,13 @@ class Controller {
 		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', ( $is_mobile ? 830 : 1080 ), $is_mobile, $url );
 
 		$data = [
-			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-			'nonce'             => wp_create_nonce( 'rocket_lcp' ),
-			'url'               => $url,
-			'is_mobile'         => $is_mobile,
-			'elements'          => $this->lcp_atf_elements(),
-			'width_threshold'   => $width_threshold,
-			'height_threshold'  => $height_threshold,
+			'ajax_url'         => admin_url( 'admin-ajax.php' ),
+			'nonce'            => wp_create_nonce( 'rocket_lcp' ),
+			'url'              => $url,
+			'is_mobile'        => $is_mobile,
+			'elements'         => $this->lcp_atf_elements(),
+			'width_threshold'  => $width_threshold,
+			'height_threshold' => $height_threshold,
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
