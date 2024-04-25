@@ -1033,7 +1033,7 @@ var storefrontScreenReaderText = {"expand":"Ouvrir le menu enfant","collapse":"F
 <script type='text/javascript' src='http://cdn.example.org/wp-content/themes/storefront/assets/js/vendor/pep.min.js?ver=0.4.3'></script>
 <script type='text/javascript' src='http://cdn.example.org/wp-includes/js/wp-embed.min.js?ver=5.2.2'></script>
 <script src="http://cdn.example.org/wp-content/plugins/test/script.js"></script>
-<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"<?php echo wp_create_nonce( 'rocket_lcp' ) ?>","url":"http:\/\/example.org","is_mobile":false,"elements":"img, video, picture, p, main, div, li, svg"}</script>
+<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"<?php echo wp_create_nonce( 'rocket_lcp' ) ?>","url":"http:\/\/example.org","is_mobile":false,"elements":"img, video, picture, p, main, div, li, svg","width_threshold":1920,"height_threshold":1080}</script>
 <script src='http://cdn.example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js' async></script>
 </body>
 </html>

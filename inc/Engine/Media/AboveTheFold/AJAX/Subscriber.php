@@ -29,8 +29,10 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_ajax_rocket_lcp'        => 'add_lcp_data',
-			'wp_ajax_nopriv_rocket_lcp' => 'add_lcp_data',
+			'wp_ajax_rocket_lcp'              => 'add_lcp_data',
+			'wp_ajax_nopriv_rocket_lcp'       => 'add_lcp_data',
+			'wp_ajax_rocket_check_lcp'        => 'check_lcp_data',
+			'wp_ajax_nopriv_rocket_check_lcp' => 'check_lcp_data',
 		];
 	}
 
@@ -41,5 +43,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_lcp_data() {
 		$this->controller->add_lcp_data();
+	}
+
+	/**
+	 * Callback for checking lcp data
+	 *
+	 * @return void
+	 */
+	public function check_lcp_data() {
+		$this->controller->check_lcp_data();
 	}
 }
