@@ -288,8 +288,8 @@ return [
 					</head>
 					<body>
 						<script>var rocket_lcp_data = {"ajax_url":"http:\/\/example.org\/wp-admin\/admin-ajax.php","nonce":"'.wp_create_nonce( 'rocket_lcp' ).'","url":"http:\/\/example.org","is_mobile":false,"elements":"img, video, picture, p, main, div, li, svg","width_threshold":1920,"height_threshold":1080}</script>
-						<script src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
-						<script data-name="wpr-lcp-beacon" src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+						<script data-name="wpr-lcp-beacon" src=\'http://example.org/wp-content/plugins/wp-rocket/assets/js/lcp-beacon.min.js\' async></script>
+						<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
 					</body>
 				</html>',
 				'files'   => [
