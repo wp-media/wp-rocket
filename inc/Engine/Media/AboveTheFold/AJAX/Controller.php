@@ -129,7 +129,7 @@ class Controller {
 				$object->sizes  = $image->sizes;
 				break;
 			case 'picture':
-				$object->src    = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
+				$object->src     = $this->is_relative( $image->src ) ? sanitize_text_field( $image->src ) : esc_url_raw( $image->src );
 				$object->sources = $image->sources;
 				break;
 			default:

@@ -135,6 +135,6 @@ trait UrlTrait {
 	 * @return bool
 	 */
 	protected function is_relative( string $url ): bool {
-		return preg_match( '/^\./', $url );
+		return ! empty( preg_match( '/^\./', $url ) );
 	}
 }
