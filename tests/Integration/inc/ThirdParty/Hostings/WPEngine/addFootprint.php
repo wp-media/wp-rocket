@@ -12,6 +12,17 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  ThirdParty
  */
 class Test_AddFootprint extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'add_footprint', 50 );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'rocket_buffer' );
+
+		parent::tear_down();
+	}
 
 	/**
 	 * @dataProvider providerTestData
