@@ -214,14 +214,6 @@ function main() {
 
 	let performance_images_json = JSON.stringify(performance_images);
 	window.performance_images_json = performance_images_json;
-	const payload = {
-		action: 'rocket_lcp',
-		rocket_lcp_nonce: rocket_lcp_data.nonce,
-		url: rocket_lcp_data.url,
-		is_mobile: rocket_lcp_data.is_mobile,
-		images: performance_images_json,
-		status: 'success'
-	};
 
 	const data = new FormData();
 	data.append('action', 'rocket_lcp');
