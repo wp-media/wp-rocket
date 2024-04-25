@@ -269,7 +269,7 @@ class Controller {
 				foreach ( $lcp->bg_set as $set ) {
 					$sources[] = $set->src;
 
-					$tag .= $start_tag . 'href="' . $this->is_relative( $set->src ) ? esc_attr( $set->src ) : esc_url( $set->src ) . '"' . $end_tag;
+					$tag .= $start_tag . 'href="' . ( $this->is_relative( $set->src ) ? esc_attr( $set->src ) : esc_url( $set->src ) ) . '"' . $end_tag;
 				}
 				break;
 			case 'picture':
