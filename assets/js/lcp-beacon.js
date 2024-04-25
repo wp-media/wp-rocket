@@ -181,18 +181,6 @@ function main() {
 		return;
 	}
 
-	// Filter the array based on the condition imageURL is not null
-	const filteredArray = LCPCandidates(1)
-	if (filteredArray.length !== 0) {
-		console.log("Estimated LCP element:", filteredArray);
-		performance_images = filteredArray.map((item) => ({
-			src: item.imageURL,
-			label: "lcp",
-		}));
-	} else {
-		console.log("No LCP candidate found.");
-	}
-
 	// Use LCPCandidates function to get all the elements in the viewport
 	const above_the_fold_images = LCPCandidates(Infinity);
 

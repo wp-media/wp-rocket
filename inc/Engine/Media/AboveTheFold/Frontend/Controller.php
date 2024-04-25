@@ -358,7 +358,7 @@ class Controller {
 		 *
 		 * @return int The filtered width threshold.
 		 */
-		$width_threshold = apply_filters( 'rocket_lcp_width_threshold', ( $is_mobile ? 393 : 1920 ), $is_mobile, $url );
+		$width_threshold = absint( apply_filters( 'rocket_lcp_width_threshold', ( $is_mobile ? 393 : 1920 ), $is_mobile, $url ) );
 
 		/**
 		 * Filters the height threshold for the LCP beacon.
@@ -369,7 +369,7 @@ class Controller {
 		 *
 		 * @return int The filtered height threshold.
 		 */
-		$height_threshold = apply_filters( 'rocket_lcp_height_threshold', ( $is_mobile ? 830 : 1080 ), $is_mobile, $url );
+		$height_threshold = absint( apply_filters( 'rocket_lcp_height_threshold', ( $is_mobile ? 830 : 1080 ), $is_mobile, $url ) );
 
 		$data = [
 			'ajax_url'         => admin_url( 'admin-ajax.php' ),
