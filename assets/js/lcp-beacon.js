@@ -167,7 +167,10 @@ function main() {
 	});
 
 	if ( true === lcp_data_response.success ) {
-		console.log('Bailing out because data is already available');
+		if (rocket_lcp_data.debug) {
+			console.log('Bailing out because data is already available');
+		}
+
 		return;
 	}
 
@@ -178,7 +181,10 @@ function main() {
 	if ( ( rocket_lcp_data.is_mobile && ( screenWidth > rocket_lcp_data.width_threshold || screenHeight > rocket_lcp_data.height_threshold ) ) ||
 		( ! rocket_lcp_data.is_mobile && ( screenWidth < rocket_lcp_data.width_threshold || screenHeight < rocket_lcp_data.height_threshold ) ) )
 	{
-		console.log('Bailing out because screen size is not acceptable');
+		if (rocket_lcp_data.debug) {
+			console.log('Bailing out because screen size is not acceptable');
+		}
+
 		return;
 	}
 
@@ -193,7 +199,9 @@ function main() {
 			label: "lcp",
 		}];
 	} else {
-		console.log("No LCP candidate found.");
+		if (rocket_lcp_data.debug) {
+			console.log("No LCP candidate found.");
+		}
 	}
 
 	above_the_fold_images.forEach(({ element, elementInfo }) => {
@@ -206,14 +214,6 @@ function main() {
 
 	let performance_images_json = JSON.stringify(performance_images);
 	window.performance_images_json = performance_images_json;
-	const payload = {
-		action: 'rocket_lcp',
-		rocket_lcp_nonce: rocket_lcp_data.nonce,
-		url: rocket_lcp_data.url,
-		is_mobile: rocket_lcp_data.is_mobile,
-		images: performance_images_json,
-		status: 'success'
-	};
 
 	const data = new FormData();
 	data.append('action', 'rocket_lcp');
@@ -235,21 +235,22 @@ function main() {
 	.then((data) => {
 		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
 		beaconscript.setAttribute('beacon-completed', 'true');
-		console.log(data);
+
+		if (rocket_lcp_data.debug) {
+			console.log(data);
+		}
 	})
 	.catch((error) => {
-		console.error(error);
+		if (rocket_lcp_data.debug) {
+			console.error(error);
+		}
 	});
 }
 
 if (document.readyState !== 'loading') {
-	console.time("extract");
 	setTimeout(main, 500);
-	console.timeEnd("extract");
 } else {
 	document.addEventListener("DOMContentLoaded", function () {
-		console.time("extract");
 		setTimeout(main, 500);
-		console.timeEnd("extract");
 	});
 }

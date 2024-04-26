@@ -69,17 +69,21 @@ class Controller {
 		$keys = [ 'bg_set', 'src' ];
 
 		foreach ( (array) $images as $image ) {
-			$image_object = $this->create_object( $image, $keys );
-			if ( 'lcp' === $image->label && 'not found' === $lcp ) {
-				$lcp = $image_object;
-			} elseif ( 'above-the-fold' === $image->label ) {
-				if ( 0 === $max_atf_images_number ) {
-					continue;
+			if ( isset( $image->type ) ) {
+				$image_object = $this->create_object( $image, $keys );
+
+				if ( 'lcp' === $image->label && null !== $image_object ) {
+					$lcp = $image_object;
+				} elseif ( 'above-the-fold' === $image->label && null !== $image_object ) {
+					if ( 0 === $max_atf_images_number ) {
+						continue;
+					}
+
+					if ( null !== $image_object ) {
+						$viewport[] = $image_object;
+					}
+					--$max_atf_images_number;
 				}
-				if ( null !== $image_object ) {
-					$viewport[] = $image_object;
-				}
-				--$max_atf_images_number;
 			}
 		}
 
@@ -94,7 +98,7 @@ class Controller {
 			'url'           => $url,
 			'is_mobile'     => $is_mobile,
 			'status'        => 'completed',
-			'lcp'           => wp_json_encode( $lcp ),
+			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp,
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
