@@ -4,14 +4,22 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite
- * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite
- * @group  CDN
- * @group  rewrite
+ *
+ * @uses \WP_Rocket\Engine\CDN\CDN::rewrite
+ * @group CDN
  */
 class Test_Rewrite extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 20 );
+	}
+
 	public function tear_down() {
 		remove_filter( 'content_url', [ $this, 'setContentURL' ] );
 		remove_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
+
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}
@@ -20,14 +28,14 @@ class Test_Rewrite extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURL( $home_url, $original, $expected ) {
-		$this->cnames = [
+		$this->cnames       = [
 			'cdn.example.org',
 		];
-		$this->cdn_zone = [
-			'all'
+		$this->cdn_zone     = [
+			'all',
 		];
-		$this->home_url = $home_url;
-		$this->content_url = "{$home_url}/wp-content/";
+		$this->home_url     = $home_url;
+		$this->content_url  = "{$home_url}/wp-content/";
 		$this->includes_url = "{$home_url}/wp-includes/";
 
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
