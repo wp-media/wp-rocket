@@ -67,22 +67,34 @@ class Controller {
 			return;
 		}
 
+		if ( $this->is_mobile() ) {
+			$this->send_to_saas( $this->fetch_links( 'mobile' ), 'mobile' );
+		}
+
 		$this->send_to_saas( $this->fetch_links() );
 	}
 
 	/**
 	 * Fetch links from homepage.
 	 *
+	 * @param string $device Device type.
+	 *
 	 * @return array
 	 */
-	public function fetch_links(): array {
+	public function fetch_links( $device = 'desktop' ): array {
 		if ( $this->user->is_license_expired_grace_period() ) {
 			return [];
 		}
 
+		$user_agent = 'WP Rocket/Pre-fetch Home Links';
+
+		if ( 'mobile' === $device ) {
+			$user_agent = 'WP Rocket/Pre-fetch Home Links Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1';
+		}
+
 		$home_url = home_url();
 		$args     = [
-			'user-agent' => 'WP Rocket/Pre-fetch Home Links',
+			'user-agent' => $user_agent,
 			'timeout'    => 60,
 		];
 
@@ -168,10 +180,12 @@ class Controller {
 	/**
 	 * Send fetched links to SaaS to do the warmup.
 	 *
-	 * @param array $links Array of links to be sent.
+	 * @param array  $links Array of links to be sent.
+	 * @param string $device Device type.
+	 *
 	 * @return void
 	 */
-	private function send_to_saas( $links ) {
+	private function send_to_saas( $links, $device = 'desktop' ) {
 		if ( empty( $links ) ) {
 			return;
 		}
@@ -186,7 +200,7 @@ class Controller {
 		$delay_between = (int) apply_filters( 'rocket_delay_between_requests', 500000 );
 
 		foreach ( $links as $link ) {
-			$this->api_client->add_to_atf_queue( $link );
+			$this->api_client->add_to_atf_queue( $link, $device );
 
 			usleep( $delay_between );
 		}
@@ -210,5 +224,14 @@ class Controller {
 			],
 			$url
 		);
+	}
+
+	/**
+	 * Check if the current request is for mobile.
+	 *
+	 * @return bool
+	 */
+	private function is_mobile(): bool {
+		return $this->options->get( 'cache_mobile', 0 ) && $this->options->get( 'do_caching_mobile_files', 0 );
 	}
 }
