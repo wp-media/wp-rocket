@@ -75,7 +75,7 @@ class Controller {
 			'url'           => $url,
 			'is_mobile'     => $is_mobile,
 			'status'        => 'completed',
-			'lcp'           => wp_json_encode( $lcp ),
+			'lcp'           => ( is_array( $lcp ) || is_object( $lcp ) ) ? wp_json_encode( $lcp ) : $lcp,
 			'viewport'      => wp_json_encode( $viewport ),
 			'last_accessed' => current_time( 'mysql', true ),
 		];
