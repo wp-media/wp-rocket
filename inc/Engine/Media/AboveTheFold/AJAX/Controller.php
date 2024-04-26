@@ -99,7 +99,7 @@ class Controller {
 	 * @return object|null Returns an object with the 'type' property and the first key that exists in the image object. If none of the keys exist in the image object, it returns null.
 	 */
 	private function create_object( $image, $keys ) {
-		// Bail out if type doesn't exist, it would mean no lcp has been found
+		// Bail out if type doesn't exist, it would mean no lcp has been found.
 		if ( ! isset( $image->type ) ) {
 			return null;
 		}
