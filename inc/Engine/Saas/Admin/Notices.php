@@ -146,8 +146,18 @@ class Notices {
 			// translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of seconds.
 			__( '%1$s: The Used CSS of your homepage has been processed. WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s).', 'rocket' ),
 			'<strong>WP Rocket</strong>',
-			apply_filters( 'rocket_rucss_pending_jobs_cron_rows_count', 100 ),
-			apply_filters( 'rocket_rucss_pending_jobs_cron_interval', MINUTE_IN_SECONDS )
+			rocket_apply_filter_and_deprecated(
+				'rocket_saas_pending_jobs_cron_rows_count',
+				[ 100 ],
+				'3.16',
+				'rocket_rucss_pending_jobs_cron_rows_count'
+			),
+			rocket_apply_filter_and_deprecated(
+				'rocket_saas_pending_jobs_cron_interval',
+				[ MINUTE_IN_SECONDS ],
+				'3.16',
+				'rocket_rucss_pending_jobs_cron_interval'
+			)
 		);
 
 		if ( ! $this->options->get( 'manual_preload', 0 ) ) {

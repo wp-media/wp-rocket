@@ -101,7 +101,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_pending_jobs_start',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_pending_jobs_start'
+		);
 		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
 		if ( ! $this->is_allowed() ) {
@@ -149,7 +154,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_pending_jobs_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_pending_jobs_end'
+		);
 	}
 
 	/**
@@ -197,6 +207,18 @@ class JobProcessor implements LoggerAwareInterface {
 		}
 
 		/**
+		 * Fires after successfully Processing the SaaS jobs.
+		 *
+		 * @param string $current_time Current time.
+		 */
+		rocket_do_action_and_deprecated(
+			'rocket_saas_check_job_status_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_check_job_status_end'
+		);
+
+		/**
 		 * Fires after successfully processing the SaaS jobs.
 		 *
 		 * @param string $url Optimized Url.
@@ -221,7 +243,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_on_submit_jobs_start', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_on_submit_jobs_start',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_on_submit_jobs_start'
+		);
 
 		if ( ! $this->is_allowed() ) {
 			$this->logger::debug( 'Stop processing cron iteration for to-submit jobs.' );
@@ -290,7 +317,12 @@ class JobProcessor implements LoggerAwareInterface {
 		 *
 		 * @param string $current_time Current time.
 		 */
-		do_action( 'rocket_rucss_process_pending_jobs_end', $this->wpr_clock->current_time( 'mysql', true ) );
+		rocket_do_action_and_deprecated(
+			'rocket_saas_process_on_submit_jobs_end',
+			[ $this->wpr_clock->current_time( 'mysql', true ) ],
+			'3.16',
+			'rocket_rucss_process_on_submit_jobs_end'
+		);
 	}
 
 	/**
