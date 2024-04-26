@@ -5,8 +5,6 @@ class RocketLcpBeacon {
 	}
 
 	init() {
-		console.time("extract");
-
 		if ( ! this._isValidPreconditions() ) {
 			this._finalize();
 			return;
@@ -20,19 +18,17 @@ class RocketLcpBeacon {
 		}
 
 		this._saveFinalResultIntoDB();
-
-		console.timeEnd("extract");
 	}
 
 	_isValidPreconditions() {
 		// Check the screensize first because starting any logic.
 		if ( this._isValidScreensize() ) {
-			console.log('Bailing out because screen size is not acceptable');
+			this._logMessage('Bailing out because screen size is not acceptable');
 			return false;
 		}
 
 		if ( this._isGeneratedBefore() ) {
-			console.log('Bailing out because data is already available');
+			this._logMessage('Bailing out because data is already available');
 			return false;
 		}
 
@@ -206,7 +202,7 @@ class RocketLcpBeacon {
 		const firstElementWithInfo = elements.find(item => item.elementInfo !== null);
 
 		if ( ! firstElementWithInfo ) {
-			console.log("No LCP candidate found.");
+			this._logMessage("No LCP candidate found.");
 			this.performanceImages = [];
 			return;
 		}
@@ -272,10 +268,10 @@ class RocketLcpBeacon {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				this._logMessage(data);
 			})
 			.catch((error) => {
-				console.error(error);
+				this._logMessage(error);
 			})
 			.finally(() => {
 				this._finalize();
@@ -285,6 +281,13 @@ class RocketLcpBeacon {
 	_finalize() {
 		const beaconscript = document.querySelector('[data-name="wpr-lcp-beacon"]');
 		beaconscript.setAttribute('beacon-completed', 'true');
+	}
+
+	_logMessage( msg ) {
+		if ( ! this.config.debug ) {
+			return;
+		}
+		console.log( msg );
 	}
 
 	static run() {
