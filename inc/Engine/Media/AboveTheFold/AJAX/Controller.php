@@ -79,9 +79,8 @@ class Controller {
 						continue;
 					}
 
-					if ( null !== $image_object ) {
-						$viewport[] = $image_object;
-					}
+					$viewport[] = $image_object;
+
 					--$max_atf_images_number;
 				}
 			}
