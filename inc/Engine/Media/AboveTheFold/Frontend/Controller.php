@@ -457,11 +457,11 @@ class Controller {
 	}
 
 	/**
-	 * Pre-define the lcp/atf element
+	 * Returns a comma-separated list of elements to be considered for the lcp/above-the-fold optimization.
 	 *
 	 * @return string
 	 */
-	public function lcp_atf_elements(): string {
+	private function lcp_atf_elements(): string {
 		$elements = [
 			'img',
 			'video',
@@ -482,11 +482,13 @@ class Controller {
 		 *
 		 * @param array $formats Array of elements
 		 */
-		$elements = apply_filters( 'rocket_above_the_fold_elements', $elements );
+		$elements = apply_filters( 'rocket_atf_elements', $elements );
 
 		if ( ! is_array( $elements ) ) {
 			$elements = $default_elements;
 		}
+
+		$elements = array_filter( $elements, 'is_string' );
 
 		return implode( ', ', $elements );
 	}
