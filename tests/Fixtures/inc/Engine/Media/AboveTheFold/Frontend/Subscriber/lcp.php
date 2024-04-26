@@ -240,4 +240,17 @@ return [
 		],
 		'expected' => $html_output_with_img_lcp,
 	],
+	'shouldNotDoAnythingIfNoLcp' => [
+		'config' => [
+			'html' => $html_input,
+			'row' => [
+				'status' => 'completed',
+				'url' => 'http://example.org',
+				'lcp'      => 'not found',
+				'viewport' => json_encode( [
+				] ),
+			],
+		],
+		'expected' => $html_output,
+	],
 ];
