@@ -389,6 +389,7 @@ class Controller {
 			'elements'         => $this->lcp_atf_elements(),
 			'width_threshold'  => $width_threshold,
 			'height_threshold' => $height_threshold,
+			'debug'            => rocket_get_constant( 'WP_ROCKET_DEBUG' ),
 		];
 
 		$inline_script = '<script>var rocket_lcp_data = ' . wp_json_encode( $data ) . '</script>';
