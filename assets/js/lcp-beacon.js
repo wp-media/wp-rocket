@@ -22,7 +22,7 @@ class RocketLcpBeacon {
 
 	_isValidPreconditions() {
 		// Check the screensize first because starting any logic.
-		if ( this._isValidScreensize() ) {
+		if ( this._isNotValidScreensize() ) {
 			this._logMessage('Bailing out because screen size is not acceptable');
 			return false;
 		}
@@ -52,7 +52,7 @@ class RocketLcpBeacon {
 		return lcp_data_response.success;
 	}
 
-	_isValidScreensize() {
+	_isNotValidScreensize() {
 		// Check screen size
 		const screenWidth = window.innerWidth || document.documentElement.clientWidth;
 		const screenHeight= window.innerHeight || document.documentElement.clientHeight;
@@ -62,7 +62,7 @@ class RocketLcpBeacon {
 		const isNotValidForDesktop = !this.config.is_mobile &&
 			( screenWidth < this.config.width_threshold || screenHeight < this.config.height_threshold );
 
-		return ! ( isNotValidForMobile || isNotValidForDesktop );
+		return isNotValidForMobile || isNotValidForDesktop;
 	}
 
 	_generateLcpCandidates( count ) {
