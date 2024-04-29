@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::maybe_recreate_as_tables
+ * Test class covering \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::maybe_recreate_as_tables
  * @group  HealthCheck
  */
 class Test_MaybeRecreateAsTables extends TestCase {

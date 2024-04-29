@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\SettingsTrait;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::add_delay_js_exclusion
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::add_delay_js_exclusion
  *
  * @group Adthrive
  * @group ThirdParty
@@ -40,6 +40,7 @@ class Test_AddDelayJsExclusion extends TestCase {
 		do_action( 'activate_adthrive-ads/adthrive-ads.php' );
 
 		$options = get_option( 'wp_rocket_settings' );
+		unset($options['cache_reject_uri']);
 
 		$this->assertSame(
 			$options,

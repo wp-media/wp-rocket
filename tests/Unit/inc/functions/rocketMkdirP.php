@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_mkdir_p
+ * Test class covering ::rocket_mkdir_p
  * @uses  ::rocket_is_stream
  * @uses  ::rocket_direct_filesystem
  *

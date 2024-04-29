@@ -7,7 +7,7 @@ use WP_Rocket\Buffer\Tests;
 use WP_Rocket\Buffer\Config;
 
 /**
- * @covers \WP_Rocket\Buffer\Tests::is_speed_tool
+ * Test class covering \WP_Rocket\Buffer\Tests::is_speed_tool
  * @uses   \WP_Rocket\Buffer\Tests::get_ip
  * @uses   \WP_Rocket\Buffer\Config
  * @group  Buffer

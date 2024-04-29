@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::regenerate_minify_css_key
  *
  * @group  Optimize
  * @group  Minify

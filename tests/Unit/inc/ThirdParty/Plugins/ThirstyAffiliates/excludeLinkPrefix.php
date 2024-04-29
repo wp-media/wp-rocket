@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates::exclude_link_prefix
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates::exclude_link_prefix
  *
  * @group  ThirdParty
  */

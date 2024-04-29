@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResour
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
+ * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {

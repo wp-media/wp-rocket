@@ -120,4 +120,17 @@ class User {
 
 		return $this->user->renewal_url;
 	}
+
+	/**
+	 * Checks if the user license has expired for more than 15 days
+	 *
+	 * @return boolean
+	 */
+	public function is_license_expired_grace_period() {
+		if ( $this->is_license_expired() && ( time() - $this->get_license_expiration() > 15 * 24 * 60 * 60 ) ) {
+			return true;
+		}
+
+		return false;
+	}
 }

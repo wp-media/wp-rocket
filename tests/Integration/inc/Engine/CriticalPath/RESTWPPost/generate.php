@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::generate
  * @group  CriticalPath
  * @group  vfs
  */
@@ -25,6 +25,14 @@ class Test_Generate extends RESTVfsTestCase {
 		self::uninstallAll();
 		parent::tear_down_after_class();
 	}
+	/**
+	 * Prepares the test environment before each test.
+	 */
+	public function set_up() {
+		$this->set_permalink_structure( "" );
+		parent::set_up();
+	}
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/generate.php';
 	private static $post_id;
 

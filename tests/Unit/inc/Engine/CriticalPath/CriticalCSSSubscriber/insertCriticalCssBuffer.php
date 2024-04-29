@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  * @uses   ::rocket_get_constant
  * @uses   ::is_rocket_post_excluded_option
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content

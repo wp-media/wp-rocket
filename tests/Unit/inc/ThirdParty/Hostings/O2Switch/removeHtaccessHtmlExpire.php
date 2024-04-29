@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\O2Switch;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\O2Switch::remove_htaccess_html_expire
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\O2Switch::remove_htaccess_html_expire
  *
  * @group  O2Switch
  * @group  ThirdParty

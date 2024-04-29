@@ -12,7 +12,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::schedule_lists_update
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::schedule_lists_update
  *
  * @group  DynamicLists
  */

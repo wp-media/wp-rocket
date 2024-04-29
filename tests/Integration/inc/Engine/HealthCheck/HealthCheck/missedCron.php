@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
+ * Test class covering \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
  *
  * @group  HealthCheck
  * @group  AdminOnly

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_purge_request_host
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_purge_request_host
  *
  * @group Cloudflare
  */

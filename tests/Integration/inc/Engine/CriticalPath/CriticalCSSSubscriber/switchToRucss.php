@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss
  * @group  AdminOnly
  */
 class Test_switchToRucss extends TestCase {

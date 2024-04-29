@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_new_upgrade
+ * Test class covering ::rocket_new_upgrade
  * @group admin
  * @group upgrade
  * @group AdminOnly

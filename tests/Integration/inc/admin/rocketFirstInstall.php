@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\admin;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
  * @group admin
  * @group upgrade
  * @group AdminOnly

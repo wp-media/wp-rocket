@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::delete_old_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::delete_old_used_css
  *
  * @group  RUCSS
  */
@@ -65,7 +65,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 		$this->assertTrue( $rucss_usedcss_table->exists() );
 		$this->assertCount( 2, $result );
 
-		do_action( 'rocket_rucss_clean_rows_time_event' );
+		do_action( 'rocket_saas_clean_rows_time_event' );
 
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 		$resultAfterTruncate = $rucss_usedcss_query->query();

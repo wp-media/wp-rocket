@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
  *
  * @group  RUCSS
  */

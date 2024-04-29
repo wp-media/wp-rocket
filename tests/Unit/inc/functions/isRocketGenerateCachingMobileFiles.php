@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::is_rocket_generate_caching_mobile_files
+ * Test class covering ::is_rocket_generate_caching_mobile_files
  * @uses   ::get_rocket_option
  *
  * @group  Options

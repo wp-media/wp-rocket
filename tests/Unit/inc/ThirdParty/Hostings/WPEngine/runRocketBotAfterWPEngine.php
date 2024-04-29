@@ -7,7 +7,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\WPEngine;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::run_rocket_bot_after_wpengine
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPEngine::run_rocket_bot_after_wpengine
  * @uses   ::rocket_has_constant
  * @uses   ::rocket_get_constant
  * @uses   ::run_rocket_bot

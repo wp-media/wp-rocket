@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache
  *
  * @group  Kinsta
  * @group  ThirdParty

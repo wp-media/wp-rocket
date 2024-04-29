@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
